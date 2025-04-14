@@ -164,7 +164,7 @@ struct ItemDetailToolbar: ToolbarContent {
 private extension ItemDetailToolbar {
     @ViewBuilder
     var leaveButton: some View {
-        if !viewModel.itemIsLinkToVault, viewModel.itemSharingEnabled {
+        if !viewModel.itemIsLinkToVault {
             Label("Leave", image: IconProvider.arrowOutFromRectangle)
                 .buttonEmbeded {
                     viewModel.showingLeaveShareAlert.toggle()

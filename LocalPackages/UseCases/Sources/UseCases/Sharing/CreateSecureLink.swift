@@ -45,28 +45,22 @@ public final class CreateSecureLink: CreateSecureLinkUseCase {
     private let datasource: any RemoteSecureLinkDatasourceProtocol
     private let manager: any SecureLinkManagerProtocol
     private let userManager: any UserManagerProtocol
-    private let getFeatureFlagStatus: any GetFeatureFlagStatusUseCase
 
     public init(datasource: any RemoteSecureLinkDatasourceProtocol,
                 getSecureLinkKeys: any GetSecureLinkKeysUseCase,
                 userManager: any UserManagerProtocol,
-                manager: any SecureLinkManagerProtocol,
-                getFeatureFlagStatus: any GetFeatureFlagStatusUseCase) {
+                manager: any SecureLinkManagerProtocol) {
         self.datasource = datasource
         self.getSecureLinkKeys = getSecureLinkKeys
         self.userManager = userManager
         self.manager = manager
-        self.getFeatureFlagStatus = getFeatureFlagStatus
     }
 
     public func execute(item: ItemContent,
                         share: Share,
                         expirationTime: Int,
                         maxReadCount: Int?) async throws -> NewSecureLink {
-        let encryptedWithItemKey = getFeatureFlagStatus(for: FeatureFlagType.passSecureLinkCryptoChangeV1)
-        let keys = try await getSecureLinkKeys(item: item,
-                                               share: share,
-                                               encryptedWithItemKey: encryptedWithItemKey)
+        let keys = try await getSecureLinkKeys(item: item, share: share)
         let userId = try await userManager.getActiveUserId()
         let configuration = SecureLinkCreationConfiguration(shareId: item.shareId,
                                                             itemId: item.itemId,
@@ -75,8 +69,7 @@ public final class CreateSecureLink: CreateSecureLinkUseCase {
                                                             encryptedItemKey: keys.itemKeyEncoded,
                                                             maxReadCount: maxReadCount,
                                                             encryptedLinkKey: keys.linkKeyEncoded,
-                                                            linkKeyShareKeyRotation: keys.shareKeyRotation,
-                                                            linkKeyEncryptedWithItemKey: encryptedWithItemKey)
+                                                            linkKeyShareKeyRotation: keys.shareKeyRotation)
         let link = try await datasource.createLink(userId: userId, configuration: configuration)
         try await manager.updateSecureLinks()
         return link.update(with: keys.linkKey)

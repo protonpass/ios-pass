@@ -39,7 +39,6 @@ final class ShareElementViewModel: ObservableObject {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
     @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
     @LazyInjected(\SharedServiceContainer.userManager) var userManager
     @LazyInjected(\SharedRepositoryContainer.accessRepository) private(set) var accessRepository
@@ -48,19 +47,12 @@ final class ShareElementViewModel: ObservableObject {
 
     weak var sheetPresentation: UISheetPresentationController?
 
-    var itemSharingEnabled: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passItemSharingV1)
-    }
-
     var isShared: Bool {
         share.shared || itemContent.shared
     }
 
     var showSecureLinkCreation: Bool {
-        !itemContent
-            .isAlias &&
-            (share.shareType == .vault ? share.shareRole == .admin : share
-                .shareRole == .admin && getFeatureFlagStatus(for: FeatureFlagType.passSecureLinkCryptoChangeV1))
+        !itemContent.isAlias && share.shareRole == .admin
     }
 
     init(share: Share, itemContent: ItemContent, itemCount: Int?) {
@@ -146,7 +138,7 @@ private extension ShareElementViewModel {
             do {
                 let userId = try await userManager.getActiveUserId()
                 let passUserInfos = try await accessRepository.getPassUserInformation(userId: userId)
-                canDisplayFeatureDiscovery = passUserInfos.canDisplayFeatureDiscovery && itemSharingEnabled
+                canDisplayFeatureDiscovery = passUserInfos.canDisplayFeatureDiscovery
             } catch {
                 router.display(element: .displayErrorBanner(error))
             }
