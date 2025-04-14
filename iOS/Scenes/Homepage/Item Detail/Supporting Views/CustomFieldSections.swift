@@ -107,7 +107,8 @@ private struct TextCustomFieldSection: View {
                     .sectionTitleText()
 
                 if isFreeUser {
-                    UpgradeButtonLite(action: onUpgrade)
+                    UpgradeButtonLite(foregroundColor: itemContentType.normMajor2Color,
+                                      action: onUpgrade)
                 } else if content.isEmpty {
                     Text("Empty")
                         .placeholderText()
@@ -155,7 +156,8 @@ private struct HiddenCustomFieldSection: View {
                     .sectionTitleText()
 
                 if isFreeUser {
-                    UpgradeButtonLite(action: onUpgrade)
+                    UpgradeButtonLite(foregroundColor: itemContentType.normMajor2Color,
+                                      action: onUpgrade)
                 } else {
                     if isShowingText {
                         TextView(.constant(content))
@@ -250,7 +252,8 @@ private struct TotpCustomFieldSection: View {
                     .sectionTitleText()
 
                 if isFreeUser {
-                    UpgradeButtonLite(action: onUpgrade)
+                    UpgradeButtonLite(foregroundColor: itemContentType.normMajor2Color,
+                                      action: onUpgrade)
                 } else {
                     switch viewModel.state {
                     case .empty:
@@ -328,7 +331,8 @@ private struct TimestampCustomFieldSection: View {
                     .sectionTitleText()
 
                 if isFreeUser {
-                    UpgradeButtonLite(action: onUpgrade)
+                    UpgradeButtonLite(foregroundColor: itemContentType.normMajor2Color,
+                                      action: onUpgrade)
                 } else if let timeInterval = TimeInterval(content) {
                     Text(verbatim: formatter.string(from: Date(timeIntervalSince1970: timeInterval)))
                         .foregroundStyle(PassColor.textNorm.toColor)
