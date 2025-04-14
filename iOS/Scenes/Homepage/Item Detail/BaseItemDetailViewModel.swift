@@ -125,6 +125,18 @@ class BaseItemDetailViewModel: ObservableObject {
         return canUserPerformActionOnVault(for: vault.vault)
     }
 
+    var isAllowedToClone: Bool {
+        guard itemIsLinkToVault else { return false }
+        switch itemContent.type {
+        case .alias:
+            return false
+        case .creditCard, .custom, .sshKey, .wifi:
+            return !isFreeUser
+        default:
+            return true
+        }
+    }
+
     var fileAttachmentsEnabled: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passFileAttachmentsV1)
     }
