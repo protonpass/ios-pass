@@ -15899,7 +15899,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sebuah kunci sandi akan dibuat untuk entri masuk \"%@\"."
+            "value" : "Passkey akan dibuat untuk entri masuk \"%@\"."
           }
         },
         "it" : {
@@ -51034,6 +51034,12 @@
             "value" : "Vlastní pole Datum"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brugerdefineret datafelt"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -66288,6 +66294,12 @@
             "value" : "Filtrováno podle vlastních položek. Položky z koše nejsou zobrazeny."
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtreret efter brugerdefinerede elementer. Elementer i papirkurven vises ikke."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -66902,6 +66914,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Peníze"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finans"
           }
         },
         "de" : {
@@ -70012,10 +70030,118 @@
     },
     "Generated passwords" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Згенерыраваныя паролі"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generovaná hesla"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Genererede adgangskoder"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generierte Passwörter"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Δημιουργημένοι κωδικοί πρόσβασης"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Generated passwords"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contraseñas generadas"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contraseñas generadas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mots de passe générés"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kata sandi yang dihasilkan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password generate"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gegenereerde wachtwoorden"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wygenerowane hasła"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Senhas geradas"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parole generate"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generované heslá"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Genererade lösenord"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oluşturulmuş parolalar"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "生成的密码"
           }
         }
       }
@@ -74175,6 +74301,12 @@
             "value" : "Jméno držitele"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indehavernavn"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -74309,6 +74441,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nemocnice"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hospital"
           }
         },
         "de" : {
@@ -75037,6 +75175,12 @@
           }
         },
         "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IBAN"
+          }
+        },
+        "da" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "IBAN"
@@ -79313,6 +79457,12 @@
             "value" : "IP adresa"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IP-adresse"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -79447,6 +79597,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vydávající orgán"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udstedende myndighed"
           }
         },
         "de" : {
@@ -79585,6 +79741,12 @@
             "value" : "Země vydání průkazu"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udstedelsesland"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -79719,6 +79881,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Stát/země vydání průkazu"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udstedende stat/land"
           }
         },
         "de" : {
@@ -86169,6 +86337,12 @@
             "value" : "Licenční klíč"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Licensnøgle"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -90629,6 +90803,12 @@
             "value" : "Zdravotní obtíže"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medicinske forhold"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -91039,6 +91219,12 @@
             "value" : "ID člena"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medlems-ID"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -91340,6 +91526,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Jméno člena"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medlemsnavn"
           }
         },
         "de" : {
@@ -91646,6 +91838,12 @@
             "value" : "Členství"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medlemskab"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -91780,6 +91978,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ID členství"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medlemskabs-ID"
           }
         },
         "de" : {
@@ -95068,6 +95272,12 @@
             "value" : "Název (SSID)"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navn (SSID)"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -95370,6 +95580,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Síť"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Netværk"
           }
         },
         "de" : {
@@ -102618,6 +102834,12 @@
             "value" : "Otevřít vlastní položku"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Åbn brugerdefineret element"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -104466,6 +104688,12 @@
             "value" : "Název organizace"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organisationsnavn"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -104598,6 +104826,12 @@
           }
         },
         "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OS"
+          }
+        },
+        "da" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "OS"
@@ -105735,6 +105969,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cestovní pas"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas"
           }
         },
         "de" : {
@@ -107035,6 +107275,12 @@
             "value" : "Vložit ze schránky"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indsæt fra udklipsholder"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -107170,6 +107416,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Jméno pacienta"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Patientnavn"
           }
         },
         "de" : {
@@ -108510,6 +108762,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Oprávnění"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilladelser"
           }
         },
         "de" : {
@@ -112591,6 +112849,12 @@
             "value" : "Zůstatek bodů"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pointssaldo"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -114021,6 +114285,12 @@
             "value" : "Soukromý klíč"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privat nøgle"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -114153,6 +114423,12 @@
           }
         },
         "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Produkt"
+          }
+        },
+        "da" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Produkt"
@@ -114460,6 +114736,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Název programu"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Programnavn"
           }
         },
         "de" : {
@@ -116185,6 +116467,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Veřejný klíč"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Offentlig nøgle"
           }
         },
         "de" : {
@@ -124649,6 +124937,12 @@
             "value" : "Program odměn"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Belønningsprogram"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -125254,6 +125548,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Naskenujte QR kód k připojení"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan QR-koden for at deltage"
           }
         },
         "de" : {
@@ -127066,6 +127366,12 @@
             "value" : "Secret"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hemmelighed"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -128699,6 +129005,12 @@
             "value" : "Typ zabezpečení"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sikkerhedstype"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -129328,6 +129640,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Seed fráze"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seed-sætning"
           }
         },
         "de" : {
@@ -130177,7 +130495,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pilih Kunci Sandi"
+            "value" : "Pilih Passkey"
           }
         },
         "it" : {
@@ -131286,6 +131604,12 @@
           }
         },
         "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Server"
+          }
+        },
+        "da" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Server"
@@ -136242,6 +136566,12 @@
             "value" : "Zobrazit QR kód sítě"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vis netværks-QR-kode"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -138674,6 +139004,12 @@
             "value" : "Rodné číslo (číslo sociálního pojištění)"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personnummer"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -138809,6 +139145,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Softwarová licence"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Softwarelicens"
           }
         },
         "de" : {
@@ -139588,6 +139930,12 @@
             "value" : "SSH klíč"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH-nøgle"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -139723,6 +140071,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SSH klíč"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH-nøgle"
           }
         },
         "de" : {
@@ -139861,6 +140215,12 @@
             "value" : "SSH klíč vytvořen"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH-nøgle oprettet"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -139995,6 +140355,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SSH klíč přesunut do koše"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH-nøgle flyttet til papirkurven"
           }
         },
         "de" : {
@@ -140133,6 +140499,12 @@
             "value" : "SSH klíč trvale smazán"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH-nøgle slettet permanent"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -140267,6 +140639,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SSH klíč obnoven"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH-nøgle genoprettet"
           }
         },
         "de" : {
@@ -140405,6 +140783,12 @@
             "value" : "SSH klíč aktualizován"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH-nøgle opdateret"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -140541,6 +140925,12 @@
             "value" : "SSH klíče"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH-nøgler"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -140675,6 +141065,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SSID zkopírováno"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSID kopieret"
           }
         },
         "de" : {
@@ -140978,6 +141374,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Začít od nuly"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start helt fra bunden"
           }
         },
         "de" : {
@@ -142774,6 +143176,12 @@
           }
         },
         "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SWIFT/BIC"
+          }
+        },
+        "da" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "SWIFT/BIC"
@@ -144731,6 +145139,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Technologie"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Teknologi"
           }
         },
         "de" : {
@@ -154353,6 +154767,12 @@
             "value" : "Nespecifikováno"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uspecificeret"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -156457,6 +156877,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Navyšte tarif pro vytváření vlastních položek"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opgradér for at oprette brugerdefinerede elementer"
           }
         },
         "de" : {
@@ -163422,6 +163848,12 @@
             "value" : "Název peněženky"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wallet-navn"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -165859,6 +166291,12 @@
             "value" : "Wi-Fi síť"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi-netværk"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -165988,6 +166426,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wi-Fi síť"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi-netværk"
           }
         },
         "de" : {
@@ -166120,6 +166564,12 @@
             "value" : "Wi-Fi síť vytvořena"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi-netværk oprettet"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -166248,6 +166698,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wi-Fi síť přesunuta do koše"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi-netværk flyttet til papirkurven"
           }
         },
         "de" : {
@@ -166380,6 +166836,12 @@
             "value" : "Wi-Fi síť trvale smazána"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi-netværk slettet permanent"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -166508,6 +166970,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wi-Fi síť obnovena"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi-netværk genoprettet"
           }
         },
         "de" : {
@@ -166646,6 +167114,12 @@
             "value" : "Wi-Fi síť aktualizována"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi-netværk opdateret"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -166782,6 +167256,12 @@
             "value" : "Wi-Fi sítě"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi-netværk"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -166916,6 +167396,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Heslo Wi-Fi zkopírováno"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi-adgangskode kopieret"
           }
         },
         "de" : {
