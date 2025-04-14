@@ -34,8 +34,7 @@ struct ShareElementView: View {
                 .font(.body.bold())
                 .foregroundStyle(PassColor.textNorm.toColor)
 
-            if viewModel.itemSharingEnabled,
-               viewModel.itemSharingAllowed,
+            if viewModel.itemSharingAllowed,
                viewModel.share.canShareWithMorePeople,
                !viewModel.itemContent.isAlias {
                 itemSharing
