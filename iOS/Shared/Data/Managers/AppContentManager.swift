@@ -357,14 +357,7 @@ extension AppContentManager {
         case .all:
             return items
         case let .precise(type):
-            return items.filter {
-                if type == .custom {
-                    // Treat WiFi and SSH keys as custom items
-                    $0.type == .custom || $0.type == .wifi || $0.type == .sshKey
-                } else {
-                    $0.type == type
-                }
-            }
+            return items.filter { $0.type.isSameType(with: type) }
         case .itemSharedWithMe:
             return sharesData.itemsSharedWithMe
         case .itemSharedByMe:

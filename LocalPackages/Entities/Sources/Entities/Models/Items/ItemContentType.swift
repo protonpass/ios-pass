@@ -30,6 +30,15 @@ public enum ItemContentType: Int, CaseIterable, Equatable, Sendable, Hashable, C
     case sshKey = 5
     case wifi = 6
     case custom = 7
+
+    public func isSameType(with other: Self) -> Bool {
+        if other == .custom {
+            // Treat WiFi and SSH keys as custom items
+            self == .custom || self == .sshKey || self == .wifi
+        } else {
+            self == other
+        }
+    }
 }
 
 extension ItemContentType: CustomDebugStringConvertible {
