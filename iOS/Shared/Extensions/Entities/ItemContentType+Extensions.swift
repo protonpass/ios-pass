@@ -40,7 +40,7 @@ extension ItemContentType {
         case .identity:
             IconProvider.cardIdentity
         case .custom, .sshKey, .wifi:
-            PassIcon.penSparks
+            IconProvider.wrench
         }
     }
 

@@ -43,7 +43,9 @@ struct WifiDetailView: View {
 
                 ssidAndPasswordSection
 
-                if !viewModel.ssid.isEmpty, !viewModel.password.isEmpty {
+                if !viewModel.isFreeUser,
+                   !viewModel.ssid.isEmpty,
+                   !viewModel.password.isEmpty {
                     showQrCodeButton
                 }
 

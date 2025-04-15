@@ -357,7 +357,7 @@ extension AppContentManager {
         case .all:
             return items
         case let .precise(type):
-            return items.filter { $0.type == type }
+            return items.filter { $0.type.isSameType(with: type) }
         case .itemSharedWithMe:
             return sharesData.itemsSharedWithMe
         case .itemSharedByMe:

@@ -94,8 +94,7 @@ struct ItemDetailToolbar: ToolbarContent {
                                 .buttonEmbeded { viewModel.copyNoteContent() }
                         }
 
-                        if viewModel.itemContent.type != .alias,
-                           viewModel.itemIsLinkToVault {
+                        if viewModel.isAllowedToClone {
                             Label("Clone", image: IconProvider.squares)
                                 .buttonEmbeded { viewModel.clone() }
                         }
