@@ -560,7 +560,8 @@ private extension CreateEditLoginView {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("2FA limit reached")
                     .editableSectionTitleText()
-                UpgradeButtonLite { viewModel.upgrade() }
+                UpgradeButtonLite(foregroundColor: viewModel.itemContentType.normMajor2Color,
+                                  action: viewModel.upgrade)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }

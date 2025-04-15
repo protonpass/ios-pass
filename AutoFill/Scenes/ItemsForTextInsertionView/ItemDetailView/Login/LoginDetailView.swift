@@ -130,7 +130,8 @@ private extension LoginDetailView {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("2FA limit reached")
                     .sectionTitleText()
-                UpgradeButtonLite { viewModel.upgrade() }
+                UpgradeButtonLite(foregroundColor: viewModel.type.normMajor2Color,
+                                  action: viewModel.upgrade)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
