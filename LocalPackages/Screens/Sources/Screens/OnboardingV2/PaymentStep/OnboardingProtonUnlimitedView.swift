@@ -102,14 +102,14 @@ private extension OnboardingProtonUnlimitedView {
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                Text(verbatim: "Plus")
-                    .fontWeight(.bold)
+                PassPlusTitle()
 
                 Text(verbatim: "Unlimited")
                     .fontWeight(.bold)
                     .padding(.vertical, 4)
                     .padding(.horizontal)
-                    .background(Color(red: 0.05, green: 0.05, blue: 0.05).opacity(0.6))
+                    .background(.white)
+                    .foregroundStyle(PassColor.textInvert.toColor)
                     .clipShape(.capsule)
 
                 ForEach(features) { feature in

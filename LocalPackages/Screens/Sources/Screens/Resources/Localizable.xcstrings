@@ -4791,6 +4791,17 @@
         }
       }
     },
+    "Auto renews at %@ every year" : {
+      "comment" : "Placeholder is the subscription price",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auto renews at %@ every year"
+          }
+        }
+      }
+    },
     "Automatically enter your passwords in Safari and other apps in a really fast and easy way." : {
       "localizations" : {
         "en" : {
@@ -9951,6 +9962,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Get Pass Plus"
+          }
+        }
+      }
+    },
+    "Get Proton Unlimited" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get Proton Unlimited"
           }
         }
       }
