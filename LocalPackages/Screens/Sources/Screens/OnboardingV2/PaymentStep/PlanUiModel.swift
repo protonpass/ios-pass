@@ -19,24 +19,32 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Macro
 import ProtonCorePaymentsV2
 import StoreKit
 
 struct PlanUiModel: Equatable {
     let plan: ComposedPlan
-    let currencySymbol: String
-    let monthlyPrice: Decimal
-    let yearlyPrice: Decimal
+    let displayMonthlyPrice: String
+    let displayYearlyPrice: String
 
     init?(plan: ComposedPlan) {
         self.plan = plan
         guard let product = plan.product as? Product else {
             return nil
         }
-        let priceFormat = product.priceFormatStyle
-        currencySymbol = priceFormat.locale.currencySymbol ?? priceFormat.currencyCode
-        monthlyPrice = product.price / 12
-        yearlyPrice = product.price
+
+        let formatter = NumberFormatter()
+        formatter.locale = product.priceFormatStyle.locale
+        formatter.numberStyle = .currency
+
+        let monthlyPrice = (product.price / 12) as NSNumber
+        guard let monthlyPrice = formatter.string(from: monthlyPrice),
+              let yearlyPrice = formatter.string(from: product.price as NSNumber) else {
+            return nil
+        }
+        displayMonthlyPrice = #localized("%@/month", bundle: .module, monthlyPrice)
+        displayYearlyPrice = #localized("%@/month", bundle: .module, yearlyPrice)
     }
 
     static func == (lhs: Self, rhs: Self) -> Bool {

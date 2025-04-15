@@ -68,7 +68,7 @@ struct OnboardingCreateFirstLoginStep: View {
                                            onSave: viewModel.save)
             } else {
                 focusedServiceName = true
-                topBar = .skipButton
+                topBar = .notNowButton
             }
         }
         .onChange(of: viewModel.saveable) { newValue in

@@ -47,7 +47,9 @@ struct OnboardingProtonUnlimitedView: View {
                 .font(.callout)
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.top)
             protonApps
+                .padding(.vertical)
             ZStack {
                 HStack {
                     Spacer()

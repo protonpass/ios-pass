@@ -29,11 +29,11 @@ public struct OnboardingV2View: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: OnboardingV2ViewModel
     @State private var saveable = false
-    @State private var topBar: TopBar = .skipButton
+    @State private var topBar: TopBar = .notNowButton
 
     enum TopBar {
         case none
-        case skipButton
+        case notNowButton
         case createFirstLogin(KnownService,
                               onClose: () -> Void,
                               onSave: () -> Void)
@@ -59,7 +59,7 @@ public struct OnboardingV2View: View {
                     RetryableErrorView(mode: .defaultHorizontal,
                                        error: error,
                                        onRetry: { Task { await viewModel.setUp() } })
-                    skipButton
+                    notNowButton
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
             }
@@ -81,14 +81,7 @@ private extension OnboardingV2View {
                     .padding(DesignConstant.onboardingPadding)
             }
         }
-        .background(LinearGradient(stops:
-            [
-                Gradient.Stop(color: Color(red: 0.81, green: 0.51, blue: 0.53), location: 0.00),
-                Gradient.Stop(color: Color(red: 0.29, green: 0.2, blue: 0.47), location: 0.59),
-                Gradient.Stop(color: Color(red: 0.12, green: 0.12, blue: 0.19), location: 1.00)
-            ],
-            startPoint: UnitPoint(x: 0, y: 0),
-            endPoint: UnitPoint(x: 0.66, y: 0.36)))
+        .background(background(for: currentStep))
         .onChange(of: viewModel.isSaving) { newValue in
             if !newValue {
                 topBar = .none
@@ -99,15 +92,41 @@ private extension OnboardingV2View {
         }
     }
 
+    func background(for step: OnboardV2Step) -> some View {
+        ZStack(alignment: .topLeading) {
+            LinearGradient(stops:
+                [
+                    Gradient.Stop(color: Color(red: 0.81, green: 0.51, blue: 0.53), location: 0.00),
+                    Gradient.Stop(color: Color(red: 0.29, green: 0.2, blue: 0.47), location: 0.59),
+                    Gradient.Stop(color: Color(red: 0.12, green: 0.12, blue: 0.19), location: 1.00)
+                ],
+                startPoint: UnitPoint(x: 0, y: 0),
+                endPoint: UnitPoint(x: 0.66, y: 0.36))
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .ignoresSafeArea()
+
+            if case .payment = step {
+                GeometryReader { proxy in
+                    let imageWidth = proxy.size.width
+                    Image(uiImage: PassIcon.passIcon)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: imageWidth)
+                        .offset(x: -imageWidth * 0.3, y: -imageWidth * 0.65)
+                }
+            }
+        }
+    }
+
     var topBarView: some View {
         HStack {
             switch topBar {
             case .none:
                 EmptyView()
 
-            case .skipButton:
+            case .notNowButton:
                 Spacer()
-                skipButton
+                notNowButton
 
             case let .createFirstLogin(service, onClose, onSave):
                 ZStack {
@@ -140,7 +159,6 @@ private extension OnboardingV2View {
             }
         }
         .padding(.horizontal, DesignConstant.onboardingPadding)
-        .padding(.vertical, DesignConstant.onboardingPadding / 2)
         .animation(.default, value: viewModel.isSaving)
     }
 
@@ -210,7 +228,7 @@ private extension OnboardingV2View {
         .multilineTextAlignment(.center)
     }
 
-    var skipButton: some View {
+    var notNowButton: some View {
         CapsuleTextButton(title: #localized("Not now", bundle: .module),
                           titleColor: .white,
                           backgroundColor: .clear,
