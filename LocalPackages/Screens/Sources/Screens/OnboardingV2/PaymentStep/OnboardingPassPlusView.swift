@@ -76,12 +76,7 @@ private extension OnboardingPassPlusView {
                 Text("Free")
                     .fontWeight(.bold)
 
-                Text(verbatim: "Plus")
-                    .fontWeight(.bold)
-                    .padding(.vertical, 4)
-                    .padding(.horizontal)
-                    .background(Color(red: 0.05, green: 0.05, blue: 0.05).opacity(0.6))
-                    .clipShape(.capsule)
+                PassPlusTitle()
 
                 ForEach(features) { feature in
                     Text(feature.description)
@@ -93,5 +88,16 @@ private extension OnboardingPassPlusView {
             }
             .foregroundStyle(.white)
             .padding(.vertical)
+    }
+}
+
+struct PassPlusTitle: View {
+    var body: some View {
+        Text(verbatim: "Plus")
+            .fontWeight(.bold)
+            .padding(.vertical, 4)
+            .padding(.horizontal)
+            .background(Color(red: 0.05, green: 0.05, blue: 0.05).opacity(0.6))
+            .clipShape(.capsule)
     }
 }

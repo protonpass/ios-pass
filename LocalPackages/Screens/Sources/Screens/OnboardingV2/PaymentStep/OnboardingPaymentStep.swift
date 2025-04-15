@@ -20,6 +20,7 @@
 //
 
 import DesignSystem
+import Macro
 import ProtonCorePaymentsV2
 import SwiftUI
 
@@ -28,9 +29,19 @@ struct OnboardingPaymentStep: View {
     let plusPlan: PlanUiModel
     let unlimitedPlan: PlanUiModel
     @Binding var selectedPlan: PlanUiModel?
+    let onPurchase: () -> Void
 
-    enum Selection {
+    private enum Selection {
         case plus, unlimited
+
+        var ctaTitle: String {
+            switch self {
+            case .plus:
+                #localized("Get Pass Plus", bundle: .module)
+            case .unlimited:
+                #localized("Get Proton Unlimited", bundle: .module)
+            }
+        }
     }
 
     var body: some View {
@@ -43,8 +54,10 @@ struct OnboardingPaymentStep: View {
                 .fontWeight(.bold)
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, DesignConstant.onboardingPadding)
 
             planSelector
+                .padding(.horizontal, DesignConstant.onboardingPadding)
 
             ScrollView(showsIndicators: false) {
                 switch selection {
@@ -54,10 +67,15 @@ struct OnboardingPaymentStep: View {
                     OnboardingProtonUnlimitedView()
                 }
             }
+            .padding(.horizontal, DesignConstant.onboardingPadding)
+
+            ctaButton
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(.horizontal, DesignConstant.onboardingPadding)
         .animation(.default, value: selection)
+        .onAppear {
+            selectedPlan = plusPlan
+        }
     }
 }
 
@@ -67,11 +85,17 @@ private extension OnboardingPaymentStep {
             planDetail(name: "Plus",
                        plan: plusPlan,
                        selected: selection == .plus,
-                       onSelect: { selection = .plus })
+                       onSelect: {
+                           selection = .plus
+                           selectedPlan = plusPlan
+                       })
             planDetail(name: "Unlimited",
                        plan: unlimitedPlan,
                        selected: selection == .unlimited,
-                       onSelect: { selection = .unlimited })
+                       onSelect: {
+                           selection = .unlimited
+                           selectedPlan = unlimitedPlan
+                       })
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 8)
@@ -109,5 +133,35 @@ private extension OnboardingPaymentStep {
         .foregroundStyle(selected ? PassColor.textInvert.toColor : .white)
         .contentShape(.rect)
         .onTapGesture(perform: onSelect)
+    }
+
+    var ctaButton: some View {
+        VStack(alignment: .center, spacing: 0) {
+            CapsuleTextButton(title: selection.ctaTitle,
+                              titleColor: PassColor.textInvert,
+                              font: .body,
+                              fontWeight: .medium,
+                              backgroundColor: .white,
+                              height: 52,
+                              action: onPurchase)
+                .padding(DesignConstant.onboardingPadding)
+
+            if let selectedPlan {
+                Text("Auto renews at \(selectedPlan.displayYearlyPrice) every year",
+                     bundle: .module)
+                    .font(.callout)
+                    .foregroundStyle(.white)
+                    .padding([.bottom, .horizontal], DesignConstant.onboardingPadding)
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .background(.ultraThinMaterial)
+        .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: -4)
+        .overlay(alignment: .top) {
+            Rectangle()
+                .inset(by: 0.5)
+                .stroke(Color.white.opacity(0.1), lineWidth: 1)
+                .frame(height: 1)
+        }
     }
 }

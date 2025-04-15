@@ -168,7 +168,8 @@ private extension OnboardingV2View {
         case let .payment(plus, unlimited):
             OnboardingPaymentStep(plusPlan: plus,
                                   unlimitedPlan: unlimited,
-                                  selectedPlan: $viewModel.selectedPlan)
+                                  selectedPlan: $viewModel.selectedPlan,
+                                  onPurchase: viewModel.purchaseSelectedPlan)
 
         case .biometric:
             descriptiveIllustration(illustration: PassIcon.onboardFaceID,
@@ -245,6 +246,7 @@ private extension OnboardingV2View {
     func ctaButton(with title: String) -> some View {
         CapsuleTextButton(title: title,
                           titleColor: PassColor.textInvert,
+                          font: .body,
                           backgroundColor: PassColor.interactionNormMajor2,
                           height: 52,
                           action: { Task { await viewModel.performCta() } })

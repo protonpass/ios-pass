@@ -240,6 +240,23 @@ extension OnboardingV2ViewModel {
             }
         }
     }
+
+    func purchaseSelectedPlan() {
+        guard let delegate else {
+            assertionFailure("Delegate not set")
+            return
+        }
+        guard let selectedPlan else { return }
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await delegate.purchase(selectedPlan.plan)
+                _ = await goNext()
+            } catch {
+                delegate.handle(error)
+            }
+        }
+    }
 }
 
 private extension OnboardingV2ViewModel {
