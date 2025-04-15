@@ -44,7 +44,7 @@ struct PlanUiModel: Equatable {
             return nil
         }
         displayMonthlyPrice = #localized("%@/month", bundle: .module, monthlyPrice)
-        displayYearlyPrice = #localized("%@/month", bundle: .module, yearlyPrice)
+        displayYearlyPrice = yearlyPrice
     }
 
     static func == (lhs: Self, rhs: Self) -> Bool {
