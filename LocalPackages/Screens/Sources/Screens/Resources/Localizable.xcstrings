@@ -1,6 +1,17 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%@/month" : {
+      "comment" : "Placeholder is the subscription price",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@/month"
+          }
+        }
+      }
+    },
     "%1$@ of %2$@" : {
       "comment" : "For displaying storage usage. For example \"100MB of 2.5GB\".",
       "localizations" : {
@@ -20067,6 +20078,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "打开自动填充"
+          }
+        }
+      }
+    },
+    "Unlock premium features." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock premium features."
           }
         }
       }
