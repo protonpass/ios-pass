@@ -52,7 +52,7 @@ public struct OnboardingV2View: View {
                 ProgressView()
 
             case let .fetched(step):
-                mainContainer(currentStep: step)
+                mainContainer(for: step)
 
             case let .error(error):
                 VStack(alignment: .center) {
@@ -70,18 +70,14 @@ public struct OnboardingV2View: View {
 }
 
 private extension OnboardingV2View {
-    func mainContainer(currentStep: OnboardV2Step) -> some View {
-        VStack {
+    func mainContainer(for step: OnboardV2Step) -> some View {
+        VStack(spacing: 0) {
             topBarView
-
-            content(for: currentStep)
-
-            if let ctaTitle = currentStep.ctaTitle {
-                ctaButton(with: ctaTitle)
-                    .padding(DesignConstant.onboardingPadding)
-            }
+            content(for: step)
+            ctaButton(for: step)
+            secondaryCtaButton(for: step)
         }
-        .background(background(for: currentStep))
+        .background(background(for: step))
         .onChange(of: viewModel.isSaving) { newValue in
             if !newValue {
                 topBar = .none
@@ -185,6 +181,16 @@ private extension OnboardingV2View {
                                     // swiftlint:disable:next line_length
                                     description: "Automatically enter your passwords in Safari and other apps in a really fast and easy way.")
 
+        case .aliasExplanation:
+            descriptiveIllustration(illustration: PassIcon.onboardAliasExplanation,
+                                    illustrationMaxHeight: 300,
+                                    title: "Control what lands in your inbox",
+                                    // swiftlint:disable:next line_length
+                                    description: "Stop sharing your real email address. Instead hide it with email aliases–a Proton Pass exclusive.")
+                .onAppear {
+                    topBar = .none
+                }
+
         case let .createFirstLogin(shareId, services):
             OnboardingCreateFirstLoginStep(saveable: $saveable,
                                            topBar: $topBar,
@@ -243,13 +249,32 @@ private extension OnboardingV2View {
                           })
     }
 
-    func ctaButton(with title: String) -> some View {
-        CapsuleTextButton(title: title,
-                          titleColor: PassColor.textInvert,
-                          font: .body,
-                          backgroundColor: PassColor.interactionNormMajor2,
-                          height: 52,
-                          action: { Task { await viewModel.performCta() } })
+    @ViewBuilder
+    func ctaButton(for step: OnboardV2Step) -> some View {
+        if let ctaTitle = step.ctaTitle {
+            CapsuleTextButton(title: ctaTitle,
+                              titleColor: PassColor.textInvert,
+                              font: .body,
+                              backgroundColor: PassColor.interactionNormMajor2,
+                              height: 52,
+                              action: { Task { await viewModel.performCta() } })
+                .padding(.horizontal, DesignConstant.onboardingPadding)
+                .padding(.vertical, DesignConstant.sectionPadding)
+        }
+    }
+
+    @ViewBuilder
+    func secondaryCtaButton(for step: OnboardV2Step) -> some View {
+        if let secondaryCtaTitle = step.secondaryCtaTitle {
+            CapsuleTextBorderedButton(title: secondaryCtaTitle,
+                                      titleColor: .white,
+                                      font: .body,
+                                      borderColor: .white.opacity(0.3),
+                                      height: 52,
+                                      action: viewModel.performSecondaryCta)
+                .padding(.horizontal, DesignConstant.onboardingPadding)
+                .padding(.bottom, DesignConstant.sectionPadding)
+        }
     }
 }
 
@@ -276,11 +301,22 @@ private extension OnboardV2Step {
         case .autofill:
             #localized("Turn on AutoFill", bundle: .module)
 
+        case .aliasExplanation:
+            #localized("Start using Proton Pass", bundle: .module)
+
         case .createFirstLogin:
             nil
 
         case .firstLoginCreated:
             #localized("Get Started", bundle: .module)
+        }
+    }
+
+    var secondaryCtaTitle: String? {
+        if case .aliasExplanation = self {
+            #localized("Learn how to use Proton Pass", bundle: .module)
+        } else {
+            nil
         }
     }
 }

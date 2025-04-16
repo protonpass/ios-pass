@@ -73,6 +73,7 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.magnifyingGlass
 
         _ = PassIcon.onboardAliases
+        _ = PassIcon.onboardAliasExplanation
         _ = PassIcon.onboardAuthentication
         _ = PassIcon.onboardAuthenticationBackground
         _ = PassIcon.onboardAuthenticationEnabled
