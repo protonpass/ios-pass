@@ -18293,7 +18293,6 @@
       }
     },
     "Stop sharing your real email address. Instead hide it with email aliases-a Proton Pass exclusive." : {
-      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -18458,9 +18457,6 @@
           }
         }
       }
-    },
-    "Stop sharing your real email address. Instead hide it with email aliases–a Proton Pass exclusive." : {
-
     },
     "Storage" : {
       "localizations" : {

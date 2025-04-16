@@ -70,6 +70,7 @@ public protocol OnboardingV2Delegate: Sendable, AnyObject {
     func enableAutoFill() async -> Bool
     @MainActor
     func openTutorialVideo()
+    // periphery:ignore
     func createFirstLogin(payload: OnboardFirstLoginPayload) async throws
     func markAsOnboarded() async
     @MainActor

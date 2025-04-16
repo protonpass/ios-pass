@@ -190,7 +190,7 @@ private extension OnboardingV2View {
                                     illustrationMaxHeight: 300,
                                     title: "Control what lands in your inbox",
                                     // swiftlint:disable:next line_length
-                                    description: "Stop sharing your real email address. Instead hide it with email aliases–a Proton Pass exclusive.")
+                                    description: "Stop sharing your real email address. Instead hide it with email aliases-a Proton Pass exclusive.")
                 .onAppear {
                     topBar = .none
                 }
