@@ -58,6 +58,7 @@ struct OnboardingPaymentStep: View {
 
             planSelector
                 .padding(.horizontal, DesignConstant.onboardingPadding)
+                .animation(.default, value: selection)
 
             ScrollView(showsIndicators: false) {
                 switch selection {
@@ -72,7 +73,6 @@ struct OnboardingPaymentStep: View {
             ctaButton
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .animation(.default, value: selection)
         .onAppear {
             selectedPlan = plusPlan
         }
