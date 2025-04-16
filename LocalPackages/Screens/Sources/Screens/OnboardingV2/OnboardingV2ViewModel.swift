@@ -25,6 +25,7 @@ import LocalAuthentication
 import ProtonCorePaymentsV2
 import StoreKit
 
+// periphery:ignore
 public enum OnboardFirstLoginSuggestion: Sendable {
     case none
     case suggestedShare(shareId: String)
@@ -59,6 +60,7 @@ public protocol OnboardingV2Datasource: Sendable, AnyObject {
     func getAvailablePlans() async throws -> [ComposedPlan]
     func getBiometryType() async throws -> LABiometryType?
     func isAutoFillEnabled() async -> Bool
+    // periphery:ignore
     func getFirstLoginSuggestion() async -> OnboardFirstLoginSuggestion
 }
 
@@ -265,6 +267,7 @@ extension OnboardingV2ViewModel {
 }
 
 private extension OnboardingV2ViewModel {
+    // periphery:ignore
     func fetchKnownServices() throws -> [KnownService] {
         guard let url = Bundle.module.url(forResource: "Top100services",
                                           withExtension: "json") else {
