@@ -122,7 +122,12 @@ enum UIElementDisplay: Sendable {
     case displayErrorBanner(any Error)
     case errorMessage(String)
     case successMessage(String? = nil, config: NavigationConfiguration? = nil)
-    case infosMessage(String? = nil, config: NavigationConfiguration? = nil)
+    case infosMessage(String? = nil,
+                      /// Sometimes we don't want to show a toast message over a presented sheet
+                      /// (e.g. we don't want to display  "The app is ready to use" toast while onboarding the
+                      /// user)
+                      showWhenNoSheets: Bool = false,
+                      config: NavigationConfiguration? = nil)
 }
 
 enum AlertDestination: Sendable {
