@@ -110,6 +110,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\SharedToolingContainer.doh) var doh
     @LazyInjected(\SharedToolingContainer.appVersion) var appVersion
     @LazyInjected(\UseCasesContainer.enableAutoFill) var enableAutoFillUseCase
+    @LazyInjected(\SharedUseCasesContainer.authenticateBiometrically) var authenticateBiometrically
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
 
     private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
