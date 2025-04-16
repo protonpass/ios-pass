@@ -5743,10 +5743,166 @@
     },
     "Control what lands in your inbox" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Кантралюйце, што трапляе ў вашу паштовую скрыню"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mějte kontrolu nad tím, co skončí ve vaší doručené poště"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Få kontrol over, hvad der lander i din indbakke"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entscheide, was in deinem Posteingang landet."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ελέγξτε τι προσγειώνεται στα εισερχόμενά σας"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Control what lands in your inbox"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controla lo que llega a tu buzón."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controle lo que llega a el buzón"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hallitse, mitä postilaatikkoosi päätyy"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gardez le contrôle sur ce qui arrive dans votre boite de réception."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kendalikan apa-apa saja yang diterima oleh kotak masuk Anda"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controlla quello che arriva nella tua posta in arrivo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "受信箱の中身を管理する"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "აკონტროლეთ, საფოსტო ყუთში რას დაინახავთ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "받은 편지함에 도착하는 메일을 관리하세요."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontroller hva som lander i innboksen din"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bepaal wat er in uw inbox terechtkomt"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontroluj, co trafia do Twojej skrzynki odbiorczej"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controle o que chega na sua caixa de entrada"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controlați ce sosește în adresa de e-mail"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Získajte kontrolu nad tým, čo sa dostane do vašej doručenej pošty"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nadzorujte, kaj pristane v vaši mapi »Prejeto«."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontrollera vad som hamnar i din inkorg"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gelen kutunuza ulaşacak e-postaları belirleyin"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Контролюйте, що потрапляє до вашої поштової скриньки."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quản lý những gì vào hộp thư đến của bạn"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "控制收件箱中的内容"
           }
         }
       }
@@ -18136,15 +18292,175 @@
         }
       }
     },
-    "Stop sharing your real email address. Instead hide it with email aliases–a Proton Pass exclusive." : {
+    "Stop sharing your real email address. Instead hide it with email aliases-a Proton Pass exclusive." : {
+      "extractionState" : "stale",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Больш няма неабходнасці паведамляць іншым свой сапраўдны адрас электроннай пошты. Замест гэтага схавайце яго з дапамогай псеўданімаў электроннай пошты. Дадзеная функцыя з'яўляецца эксклюзіўнай у Proton Pass."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přestaňte sdílet svou skutečnou e-mailovou adresu. Místo toho ji skryjte pomocí e-mailových aliasů⏤exkluzivní služba Proton Pass."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hold op med at dele din rigtige e-mailadresse. Skjul den i stedet med e-mail-alias – eksklusivt for Proton Pass."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gib deine echte E-Mail-Adresse nicht mehr weiter. Verstecke sie stattdessen mit E-Mail-Aliassen ⏤ exklusiv bei Proton Pass."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Σταματήστε να μοιράζεστε την πραγματική σας διεύθυνση ηλεκτρονικού ταχυδρομείου. Αντ 'αυτού, αποκρύψτε το με ψευδώνυμα email⏤αποκλειστικά από το Proton Pass."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Stop sharing your real email address. Instead hide it with email aliases–a Proton Pass exclusive."
+            "value" : "Stop sharing your real email address. Instead hide it with email aliases-a Proton Pass exclusive."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deja de compartir tu dirección de correo real. En su lugar, ocúltala usando alias de correo electrónico, una exclusividad de Proton Pass."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deje de compartir la dirección de correo real. En su lugar, ocúltela usando alias de correo electrónico: una exclusividad de Proton Pass."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lopeta todellisen sähköpostiosoitteesi jakaminen ja piilota se sen sijaan sähköpostialiaksilla — ainutlaatuinen Proton Pass -ominaisuus."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ne communiquez plus votre véritable adresse e-mail. Masquez-la plutôt avec des alias d'adresse e-mail, une exclusivité de Proton Pass."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Berhenti membagikan alamat email asli Anda. Sebaliknya, sembunyikan dengan alias email⏤sebuah fitur eksklusif dalam Proton Pass."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non condividere più il tuo vero indirizzo email. Nascondilo invece con un alias email - un'esclusiva di Proton Pass."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本当のメールアドレスを共有するのはやめてください。 代わりに、メール エイリアスを使用して非表示にします⏤Proton Pass 専用です。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შეწყვიტეთ თქვენი რეალური მისამართის გაზიარება. უმჯობესია - დამალოთ ის ელფოსტის ფსევდონიმით, რაც, მხოლოდ, Proton Pass-ს შეუძლია."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "실제 이메일 주소 공유를 멈추세요. Proton Pass 특전으로 이메일 변경을 통해 숨겨보세요."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slutt å dele den virkelige e-postadressen din. I stedet skjuler du den med e-postaliaser⏤en Proton Pass-eksklusiv."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop met het delen van je echte e-mailadres. Verberg het in plaats daarvan met e-mailaliassen--exclusief voor Proton Pass."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zatrzymaj udostępnianie swojego prawdziwego adres e-mail. Zamiast tego ukryj go za pomocą aliasów — wyłącznie w Proton Pass."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pare de compartilhar seu endereço de e-mail real. Em vez disso, oculte-o com aliases de email, uma⏤exclusividade do Proton Pass."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nu vă mai partajați adresa de e-mail reală. În schimb, ascundeți-o cu aliasuri de e-mail ⏤ exclusiv cu Proton Pass."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prestaňte zdieľať svoju skutočnú emailovú adresu. Namiesto toho ju skryte pomocou emailových aliasov ⏤ exkluzívne v Proton Pass."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nehajte deliti svoj pravi e-poštni naslov. Namesto tega ga skrijte z e-poštnimi vzdevki ⏤ ekskluzivno za Proton Pass."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sluta dela din riktiga e-postadress. Dölj den istället med e-postalias⏤ett exklusivt Proton Pass."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerçek e-posta adresinizi paylaşmayın. Onun yerine, Proton Pass takma adlarıyla e-posta adresinizi gizleyin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не повідомляйте свою справжню адресу електронної пошти. Натомість приховайте її за допомогою псевдонімів – це ексклюзивна функція Proton Pass."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ngừng chia sẻ địa chỉ email thật của bạn. Thay vào đó hãy giấu nó bằng các email bí danh-độc quyền trên Proton Pass."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Pass 独家提供：使用邮箱别名将您的真实邮箱地址隐藏，不必再对外公开。"
           }
         }
       }
+    },
+    "Stop sharing your real email address. Instead hide it with email aliases–a Proton Pass exclusive." : {
+
     },
     "Storage" : {
       "localizations" : {
