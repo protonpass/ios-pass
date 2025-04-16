@@ -21,6 +21,7 @@
 import Core
 import DesignSystem
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct QAFeaturesView: View {
@@ -38,10 +39,14 @@ struct QAFeaturesView: View {
     @AppStorage(Constants.QA.useSwiftUIList, store: kSharedUserDefaults)
     private var useSwiftUIList = false
 
+    let onboardingV2Delegate: (any OnboardingV2Delegate)?
+    let onboardingV2Datasource: (any OnboardingV2Datasource)?
+
     var body: some View {
         NavigationStack {
             Form {
-                OnboardSection()
+                OnboardSection(delegate: onboardingV2Delegate,
+                               datasource: onboardingV2Datasource)
                 if #available(iOS 17, *) {
                     FeatureFlagsSection()
                 }

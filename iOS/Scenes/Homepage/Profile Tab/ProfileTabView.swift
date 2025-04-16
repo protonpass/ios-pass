@@ -73,7 +73,8 @@ struct ProfileTabView: View {
                 ImportFromChromeInstructions()
             }
             .sheet(isPresented: $showQaFeatures) {
-                QAFeaturesView()
+                QAFeaturesView(onboardingV2Delegate: viewModel.homepageCoordinator,
+                               onboardingV2Datasource: viewModel.homepageCoordinator)
             }
             .task {
                 await viewModel.reload()

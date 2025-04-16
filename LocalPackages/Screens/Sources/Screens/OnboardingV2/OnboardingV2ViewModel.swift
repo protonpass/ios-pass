@@ -69,10 +69,10 @@ public protocol OnboardingV2Delegate: Sendable, AnyObject {
     func enableBiometric() async throws
     func enableAutoFill() async -> Bool
     @MainActor
-    func openYoutubeTutorial()
+    func openTutorialVideo()
     func createFirstLogin(payload: OnboardFirstLoginPayload) async throws
     @MainActor
-    func handle(_ error: any Error)
+    func handle(error: any Error)
 }
 
 enum OnboardV2Step: Sendable, Equatable {
@@ -221,7 +221,7 @@ extension OnboardingV2ViewModel {
                 shouldGoToNextStep = true
             }
         } catch {
-            delegate.handle(error)
+            delegate.handle(error: error)
         }
 
         if shouldGoToNextStep, await !goNext() {
@@ -231,7 +231,7 @@ extension OnboardingV2ViewModel {
 
     func performSecondaryCta() {
         if case .aliasExplanation = currentStep.fetchedObject {
-            delegate?.openYoutubeTutorial()
+            delegate?.openTutorialVideo()
             finished = true
         } else {
             assertionFailure("Missing secondary action")
@@ -247,7 +247,7 @@ extension OnboardingV2ViewModel {
                 try await delegate?.createFirstLogin(payload: payload)
                 currentStep = .fetched(.firstLoginCreated(payload))
             } catch {
-                delegate?.handle(error)
+                delegate?.handle(error: error)
             }
         }
     }
@@ -260,7 +260,7 @@ extension OnboardingV2ViewModel {
                 try await delegate?.purchase(selectedPlan.plan)
                 _ = await goNext()
             } catch {
-                delegate?.handle(error)
+                delegate?.handle(error: error)
             }
         }
     }

@@ -19,17 +19,14 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
-import Entities
 import Factory
-import LocalAuthentication
-import ProtonCorePaymentsUIV2
-import ProtonCorePaymentsV2
 import Screens
-import StoreKit
 import SwiftUI
 
 struct OnboardSection: View {
     @StateObject private var viewModel = OnboardSectionViewModel()
+    let delegate: (any OnboardingV2Delegate)?
+    let datasource: (any OnboardingV2Datasource)?
 
     var body: some View {
         Section(content: {
@@ -50,8 +47,8 @@ struct OnboardSection: View {
             })
 
             Button(action: {
-                viewModel.present(view: OnboardingV2View(datasource: viewModel,
-                                                         delegate: viewModel))
+                viewModel.present(view: OnboardingV2View(datasource: datasource,
+                                                         delegate: delegate))
             }, label: {
                 Text(verbatim: "Onboard V2")
             })
@@ -72,40 +69,14 @@ private final class OnboardSectionViewModel: ObservableObject {
         }
     }
 
-    @LazyInjected(\SharedServiceContainer.credentialManager)
-    private var credentialManager
-
-    @LazyInjected(\UseCasesContainer.enableAutoFill)
-    private var enableAutoFillUseCase
-
-    @LazyInjected(\SharedUseCasesContainer.checkBiometryType)
-    private var checkBiometryType
-
     @LazyInjected(\SharedUseCasesContainer.getAppPreferences)
     private var getAppPreferences
 
     @LazyInjected(\SharedUseCasesContainer.updateAppPreferences)
     private var updateAppPreferences
 
-    @LazyInjected(\SharedToolingContainer.localAuthenticationEnablingPolicy)
-    private var policy
-
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var router
-
-    @LazyInjected(\SharedToolingContainer.doh)
-    private var doh
-
-    @LazyInjected(\SharedDataContainer.credentialProvider)
-    private var credentialProvider
-
-    @LazyInjected(\SharedServiceContainer.userManager)
-    private var userManager
-
-    @LazyInjected(\SharedToolingContainer.appVersion)
-    private var appVersion
-
-    private var plansManager: ProtonPlansManager?
 
     init() {
         Task { [weak self] in
@@ -120,90 +91,5 @@ private final class OnboardSectionViewModel: ObservableObject {
         } else {
             router.navigate(to: .fullScreen(view))
         }
-    }
-}
-
-private extension OnboardSectionViewModel {
-    func getPlansManager() async throws -> ProtonPlansManager? {
-        if let plansManager {
-            return plansManager
-        }
-        guard let doh = doh as? ProtonPassDoH else {
-            assertionFailure("DoH should be ProtonPassDoH")
-            return nil
-        }
-
-        let userId = try await userManager.getActiveUserId()
-        guard let credentials = credentialProvider.getCredential(userId: userId) else {
-            assertionFailure("No credentials for current user")
-            return nil
-        }
-
-        let remoteManager = RemoteManager(sessionID: credentials.sessionID,
-                                          authToken: credentials.accessToken,
-                                          appVersion: appVersion)
-        let manager = ProtonPlansManager(doh: doh,
-                                         remoteManager: remoteManager)
-        plansManager = manager
-        return manager
-    }
-}
-
-extension OnboardSectionViewModel: OnboardingV2Datasource {
-    func getAvailablePlans() async throws -> [ComposedPlan] {
-        guard let manager = try await getPlansManager() else {
-            return []
-        }
-        return try await manager.getAvailablePlans()
-    }
-
-    func getBiometryType() async throws -> LABiometryType? {
-        try checkBiometryType(policy: policy)
-    }
-
-    func isAutoFillEnabled() async -> Bool {
-        await credentialManager.isAutoFillEnabled
-    }
-
-    func getFirstLoginSuggestion() async -> OnboardFirstLoginSuggestion {
-        .none
-    }
-}
-
-extension OnboardSectionViewModel: OnboardingV2Delegate {
-    func purchase(_ plan: ComposedPlan) async throws {
-        guard let manager = try await getPlansManager() else { return }
-
-        guard let product = plan.product as? Product else {
-            assertionFailure("Failed to parse product")
-            return
-        }
-        let cycle = BillingCycle(rawValue: plan.instance.cycle) ?? .all
-        _ = try await manager.purchase(product,
-                                       planName: plan.plan.name ?? "",
-                                       planCycle: cycle.rawValue)
-    }
-
-    func enableBiometric() async throws {
-        print(#function)
-    }
-
-    func enableAutoFill() async -> Bool {
-        await enableAutoFillUseCase()
-    }
-
-    func createFirstLogin(payload: OnboardFirstLoginPayload) async throws {
-        try await Task.sleep(seconds: 2)
-        print(payload)
-    }
-
-    @MainActor
-    func openYoutubeTutorial() {
-        router.navigate(to: .urlPage(urlString: ProtonLink.youtubeTutorial))
-    }
-
-    @MainActor
-    func handle(_ error: any Error) {
-        router.display(element: .displayErrorBanner(error))
     }
 }
