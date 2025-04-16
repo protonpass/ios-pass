@@ -20,6 +20,7 @@
 
 import Core
 import LocalAuthentication
+import Macro
 import ProtonCorePaymentsUIV2
 import ProtonCorePaymentsV2
 import Screens
@@ -61,7 +62,14 @@ extension HomepageCoordinator: OnboardingV2Delegate {
                                        planCycle: cycle.rawValue)
     }
 
-    func enableBiometric() async throws {}
+    func enableBiometric() async throws {
+        let authenticated = try await authenticateBiometrically(policy: localAuthenticationEnablingPolicy,
+                                                                reason: #localized("Please authenticate"))
+        if authenticated {
+            try await preferencesManager.updateSharedPreferences(\.localAuthenticationMethod,
+                                                                 value: .biometric)
+        }
+    }
 
     func enableAutoFill() async -> Bool {
         await enableAutoFillUseCase()
