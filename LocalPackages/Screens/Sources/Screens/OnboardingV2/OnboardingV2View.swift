@@ -59,7 +59,10 @@ public struct OnboardingV2View: View {
                     RetryableErrorView(mode: .defaultHorizontal,
                                        error: error,
                                        onRetry: { Task { await viewModel.setUp() } })
-                    notNowButton
+                    Button(action: dismiss.callAsFunction) {
+                        Text("Cancel", bundle: .module)
+                            .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                    }
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
             }
