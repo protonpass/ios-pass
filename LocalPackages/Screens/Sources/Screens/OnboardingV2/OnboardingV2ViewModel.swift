@@ -71,6 +71,7 @@ public protocol OnboardingV2Delegate: Sendable, AnyObject {
     @MainActor
     func openTutorialVideo()
     func createFirstLogin(payload: OnboardFirstLoginPayload) async throws
+    func markAsOnboarded() async
     @MainActor
     func handle(error: any Error)
 }
@@ -214,6 +215,7 @@ extension OnboardingV2ViewModel {
                 shouldGoToNextStep = await delegate.enableAutoFill()
 
             case .aliasExplanation:
+                await delegate.markAsOnboarded()
                 finished = true
                 return
 
@@ -225,6 +227,7 @@ extension OnboardingV2ViewModel {
         }
 
         if shouldGoToNextStep, await !goNext() {
+            await delegate.markAsOnboarded()
             finished = true
         }
     }

@@ -68,6 +68,12 @@ extension HomepageCoordinator: OnboardingV2Delegate {
     }
 
     func createFirstLogin(payload: OnboardFirstLoginPayload) async throws {}
+
+    func markAsOnboarded() async {
+        // Optionally update "onboarded" to not block users from using the app
+        // in case errors happens
+        try? await updateAppPreferences(\.onboarded, value: true)
+    }
 }
 
 private extension HomepageCoordinator {
