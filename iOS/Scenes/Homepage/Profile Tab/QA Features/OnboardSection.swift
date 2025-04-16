@@ -198,6 +198,11 @@ extension OnboardSectionViewModel: OnboardingV2Delegate {
     }
 
     @MainActor
+    func openYoutubeTutorial() {
+        router.navigate(to: .urlPage(urlString: ProtonLink.youtubeTutorial))
+    }
+
+    @MainActor
     func handle(_ error: any Error) {
         router.display(element: .displayErrorBanner(error))
     }

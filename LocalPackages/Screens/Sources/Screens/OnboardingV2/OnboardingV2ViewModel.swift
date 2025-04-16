@@ -66,6 +66,8 @@ public protocol OnboardingV2Delegate: Sendable, AnyObject {
     func purchase(_ plan: ComposedPlan) async throws
     func enableBiometric() async throws
     func enableAutoFill() async -> Bool
+    @MainActor
+    func openYoutubeTutorial()
     func createFirstLogin(payload: OnboardFirstLoginPayload) async throws
     @MainActor
     func handle(_ error: any Error)
@@ -75,6 +77,7 @@ enum OnboardV2Step: Sendable, Equatable {
     case payment(plus: PlanUiModel, unlimited: PlanUiModel)
     case biometric(LABiometryType)
     case autofill
+    case aliasExplanation
     case createFirstLogin(shareId: String, [KnownService])
     case firstLoginCreated(OnboardFirstLoginPayload)
 }
@@ -101,7 +104,6 @@ extension OnboardingV2ViewModel {
     func setUp() async {
         do {
             guard let datasource else {
-                assertionFailure("Datasource not set")
                 currentStep = .fetched(.autofill)
                 return
             }
@@ -128,14 +130,10 @@ extension OnboardingV2ViewModel {
         }
     }
 
-    // swiftlint:disable cyclomatic_complexity
     /// Returns `true` if other steps are available,
     /// `false` if no more steps so the onboarding process could be ended
     func goNext() async -> Bool {
-        guard let datasource else {
-            assertionFailure("Datasource not set")
-            return false
-        }
+        guard let datasource else { return false }
 
         guard let step = currentStep.fetchedObject else {
             assertionFailure("Current step is not initialized")
@@ -161,19 +159,27 @@ extension OnboardingV2ViewModel {
             }
 
         case .autofill:
-            switch await datasource.getFirstLoginSuggestion() {
-            case .none:
-                return false
-            case let .suggestedShare(shareId):
-                do {
-                    let services = try fetchKnownServices()
-                    currentStep = .fetched(.createFirstLogin(shareId: shareId, services))
-                    return true
-                } catch {
-                    currentStep = .error(error)
-                    return false
-                }
-            }
+            // Reenable when supporting creating first login
+            /*
+             switch await datasource.getFirstLoginSuggestion() {
+             case .none:
+                 return false
+             case let .suggestedShare(shareId):
+                 do {
+                     let services = try fetchKnownServices()
+                     currentStep = .fetched(.createFirstLogin(shareId: shareId, services))
+                     return true
+                 } catch {
+                     currentStep = .error(error)
+                     return false
+                 }
+             }
+              */
+            currentStep = .fetched(.aliasExplanation)
+            return true
+
+        case .aliasExplanation:
+            return false
 
         case .createFirstLogin:
             // Not applicable
@@ -184,13 +190,8 @@ extension OnboardingV2ViewModel {
         }
     }
 
-    // swiftlint:enable cyclomatic_complexity
-
     func performCta() async {
-        guard let delegate else {
-            assertionFailure("Delegate not set")
-            return
-        }
+        guard let delegate else { return }
 
         var shouldGoToNextStep = false
         do {
@@ -210,6 +211,10 @@ extension OnboardingV2ViewModel {
             case .autofill:
                 shouldGoToNextStep = await delegate.enableAutoFill()
 
+            case .aliasExplanation:
+                finished = true
+                return
+
             default:
                 shouldGoToNextStep = true
             }
@@ -222,38 +227,38 @@ extension OnboardingV2ViewModel {
         }
     }
 
-    func createFirstLogin(payload: OnboardFirstLoginPayload) {
-        guard let delegate else {
-            assertionFailure("Delegate not set")
-            return
+    func performSecondaryCta() {
+        if case .aliasExplanation = currentStep.fetchedObject {
+            delegate?.openYoutubeTutorial()
+            finished = true
+        } else {
+            assertionFailure("Missing secondary action")
         }
+    }
 
+    func createFirstLogin(payload: OnboardFirstLoginPayload) {
         Task { [weak self] in
             guard let self else { return }
             defer { isSaving = false }
             isSaving = true
             do {
-                try await delegate.createFirstLogin(payload: payload)
+                try await delegate?.createFirstLogin(payload: payload)
                 currentStep = .fetched(.firstLoginCreated(payload))
             } catch {
-                delegate.handle(error)
+                delegate?.handle(error)
             }
         }
     }
 
     func purchaseSelectedPlan() {
-        guard let delegate else {
-            assertionFailure("Delegate not set")
-            return
-        }
         guard let selectedPlan else { return }
         Task { [weak self] in
             guard let self else { return }
             do {
-                try await delegate.purchase(selectedPlan.plan)
+                try await delegate?.purchase(selectedPlan.plan)
                 _ = await goNext()
             } catch {
-                delegate.handle(error)
+                delegate?.handle(error)
             }
         }
     }
