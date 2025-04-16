@@ -64,7 +64,6 @@ public struct OnboardingV2View: View {
                 .frame(maxWidth: .infinity, alignment: .center)
             }
         }
-        .animation(.default, value: viewModel.currentStep)
         .task { await viewModel.setUp() }
     }
 }
@@ -73,9 +72,12 @@ private extension OnboardingV2View {
     func mainContainer(for step: OnboardV2Step) -> some View {
         VStack(spacing: 0) {
             topBarView
+                .animation(.default, value: viewModel.isSaving)
             content(for: step)
             ctaButton(for: step)
+                .animation(.default, value: viewModel.currentStep)
             secondaryCtaButton(for: step)
+                .animation(.default, value: viewModel.currentStep)
         }
         .background(background(for: step))
         .onChange(of: viewModel.isSaving) { newValue in
@@ -155,7 +157,6 @@ private extension OnboardingV2View {
             }
         }
         .padding(.horizontal, DesignConstant.onboardingPadding)
-        .animation(.default, value: viewModel.isSaving)
     }
 
     @ViewBuilder
