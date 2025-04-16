@@ -93,6 +93,7 @@ public extension PassIcon {
     static let sentinelLogo = Self.icon(named: "SentinelLogo")
 
     static let onboardAliases = Self.icon(named: "OnboardAliases")
+    static let onboardAliasExplanation = Self.icon(named: "OnboardAliasExplanation")
     static let onboardAuthentication = Self.icon(named: "OnboardAuthentication")
     static let onboardAuthenticationBackground = Self.icon(named: "OnboardAuthenticationBackground")
     static let onboardAuthenticationEnabled = Self.icon(named: "OnboardAuthenticationEnabled")
