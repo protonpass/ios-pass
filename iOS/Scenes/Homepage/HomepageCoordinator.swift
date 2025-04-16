@@ -183,7 +183,9 @@ private extension HomepageCoordinator {
                     #localized("Signed in as %@", email) : #localized("Switched to %@", email)
                 isFirstLaunched = false
 
-                bannerManager.displayBottomInfoMessage(message)
+                if rootViewController.presentedViewController == nil {
+                    bannerManager.displayBottomInfoMessage(message)
+                }
                 removeInAppNotificationDisplay()
                 refreshInAppNotifications()
             }
@@ -634,8 +636,11 @@ extension HomepageCoordinator {
                     bannerManager.displayTopErrorMessage(message)
                 case let .successMessage(message, config):
                     displaySuccessBanner(with: message, and: config)
-                case let .infosMessage(message, config):
-                    displayInfoBanner(with: message, and: config)
+                case let .infosMessage(message, showWhenNoSheets, config):
+                    if !showWhenNoSheets ||
+                        (showWhenNoSheets && rootViewController.presentedViewController == nil) {
+                        displayInfoBanner(with: message, and: config)
+                    }
                 }
             }
             .store(in: &cancellables)
