@@ -110,9 +110,10 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\SharedToolingContainer.doh) var doh
     @LazyInjected(\SharedToolingContainer.appVersion) var appVersion
     @LazyInjected(\UseCasesContainer.enableAutoFill) var enableAutoFillUseCase
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
 
     private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
-    private let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
+    let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
     let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
     let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
 
@@ -1267,11 +1268,14 @@ private extension HomepageCoordinator {
 
     func presentOnboardView(forced: Bool) {
         guard forced || !getAppPreferences().onboarded else { return }
-        let view = OnboardingView { [weak self] in
-            guard let self else { return }
-            openTutorialVideo()
+        let vc = if getFeatureFlagStatus(for: FeatureFlagType.passMobileOnboardingV2) {
+            UIHostingController(rootView: OnboardingV2View(datasource: self, delegate: self))
+        } else {
+            UIHostingController(rootView: OnboardingView { [weak self] in
+                guard let self else { return }
+                openTutorialVideo()
+            })
         }
-        let vc = UIHostingController(rootView: view)
         vc.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
         vc.isModalInPresentation = true
         topMostViewController.present(vc, animated: true)
