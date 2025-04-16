@@ -512,6 +512,7 @@
 		53E07DC22D58BD29009D6EE5 /* Screens in Frameworks */ = {isa = PBXBuildFile; productRef = 53E07DC12D58BD29009D6EE5 /* Screens */; };
 		53E07DC32D58BD50009D6EE5 /* ItemTypeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24802A7814C20060EDF7 /* ItemTypeFilter.swift */; };
 		53E07DC42D58BD6C009D6EE5 /* BaseCreateEditItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE1A28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift */; };
+		53EA92762DAFD07400A36D87 /* HomepageCoordinator+Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EA92752DAFD06600A36D87 /* HomepageCoordinator+Onboarding.swift */; };
 		53F19E5C2D81962200496168 /* DetailHistoryView+Ssh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53F19E5B2D81961600496168 /* DetailHistoryView+Ssh.swift */; };
 		53F19E5E2D81AA7700496168 /* DetailHisotryView+Wifi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53F19E5D2D81AA6E00496168 /* DetailHisotryView+Wifi.swift */; };
 		53F19E602D81B14D00496168 /* DetailHistoryView+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53F19E5F2D81B13900496168 /* DetailHistoryView+Custom.swift */; };
@@ -1093,6 +1094,7 @@
 		53AEE4692D7F0E1200CE0CA7 /* CustomSectionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSectionsSection.swift; sourceTree = "<group>"; };
 		53B981782D7ED258003BD70E /* WifiDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiDetailView.swift; sourceTree = "<group>"; };
 		53B9817A2D7ED289003BD70E /* WifiDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiDetailViewModel.swift; sourceTree = "<group>"; };
+		53EA92752DAFD06600A36D87 /* HomepageCoordinator+Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+Onboarding.swift"; sourceTree = "<group>"; };
 		53F19E5B2D81961600496168 /* DetailHistoryView+Ssh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailHistoryView+Ssh.swift"; sourceTree = "<group>"; };
 		53F19E5D2D81AA6E00496168 /* DetailHisotryView+Wifi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailHisotryView+Wifi.swift"; sourceTree = "<group>"; };
 		53F19E5F2D81B13900496168 /* DetailHistoryView+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailHistoryView+Custom.swift"; sourceTree = "<group>"; };
@@ -2107,6 +2109,7 @@
 				5BC03E982C175FE50028516E /* HomepageCoordinator+Sharing.swift */,
 				5B5DBF122B68009D00F72F6C /* HomepageCoordinator+DeepLinks.swift */,
 				35AF16CA2C108E5800277E79 /* HomepageCoordinator+ExtraPassword.swift */,
+				53EA92752DAFD06600A36D87 /* HomepageCoordinator+Onboarding.swift */,
 				356A1EFF2B889DDA00561950 /* HomepageCoordinator+Passkey.swift */,
 				5BECDE432B90D6E90040FCA7 /* HomepageCoordinator+TabBar.swift */,
 				35983C992C36CBE300A82080 /* HomepageCoordinator+ManageAccount.swift */,
@@ -3814,6 +3817,7 @@
 				5BA09B802CAE94D0000001B7 /* AliasContactsViewModel.swift in Sources */,
 				5BA09B812CAE94D0000001B7 /* AliasContactsView.swift in Sources */,
 				5B0C75022A30776100272CE8 /* SharedTooling+DependencyInjections.swift in Sources */,
+				53EA92762DAFD07400A36D87 /* HomepageCoordinator+Onboarding.swift in Sources */,
 				3590A3392A9F9C2600622F45 /* View+Extensions.swift in Sources */,
 				354FBF5F2A02939600A0B27D /* AliasLimitView.swift in Sources */,
 				354361572941D419000CAE12 /* OnboardingViewModel.swift in Sources */,
