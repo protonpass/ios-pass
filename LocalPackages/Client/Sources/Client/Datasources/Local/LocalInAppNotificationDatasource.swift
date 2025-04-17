@@ -23,6 +23,7 @@ import Entities
 
 // sourcery: AutoMockable
 public protocol LocalInAppNotificationDatasourceProtocol: Sendable {
+    // periphery:ignore
     func getAllNotificationsByPriority(userId: String) async throws -> [InAppNotification]
     func upsertNotifications(_ notifications: [InAppNotification], userId: String) async throws
     func removeAllNotifications(userId: String) async throws
