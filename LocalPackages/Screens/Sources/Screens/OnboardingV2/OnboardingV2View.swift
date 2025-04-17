@@ -39,10 +39,8 @@ public struct OnboardingV2View: View {
                               onSave: () -> Void)
     }
 
-    public init(datasource: OnboardingV2Datasource?,
-                delegate: OnboardingV2Delegate?) {
-        _viewModel = .init(wrappedValue: .init(datasource: datasource,
-                                               delegate: delegate))
+    public init(handler: OnboardingV2Handling?) {
+        _viewModel = .init(wrappedValue: .init(handler: handler))
     }
 
     public var body: some View {
@@ -165,9 +163,8 @@ private extension OnboardingV2View {
     @ViewBuilder
     func content(for step: OnboardV2Step) -> some View {
         switch step {
-        case let .payment(plus, unlimited):
-            OnboardingPaymentStep(plusPlan: plus,
-                                  unlimitedPlan: unlimited,
+        case let .payment(plans):
+            OnboardingPaymentStep(plans: plans,
                                   selectedPlan: $viewModel.selectedPlan,
                                   onPurchase: viewModel.purchaseSelectedPlan)
 

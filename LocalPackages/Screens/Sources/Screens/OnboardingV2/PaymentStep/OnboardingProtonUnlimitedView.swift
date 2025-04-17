@@ -43,7 +43,7 @@ struct OnboardingProtonUnlimitedView: View {
 
     var body: some View {
         VStack {
-            Text("The best of Proton with one subscription.")
+            Text("The best of Proton with one subscription.", bundle: .module)
                 .font(.callout)
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity, alignment: .center)
@@ -97,7 +97,7 @@ private extension OnboardingProtonUnlimitedView {
                 .init(.fixed(detailColumnWidth))
             ],
             spacing: DesignConstant.sectionPadding * 2) {
-                Text("What's included")
+                Text("What's included", bundle: .module)
                     .font(.callout)
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity, alignment: .leading)

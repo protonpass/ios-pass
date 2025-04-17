@@ -24,8 +24,6 @@ import SwiftUI
 
 struct OnboardSection: View {
     @StateObject private var viewModel = OnboardSectionViewModel()
-    let delegate: (any OnboardingV2Delegate)?
-    let datasource: (any OnboardingV2Datasource)?
 
     var body: some View {
         Section(content: {
@@ -46,8 +44,7 @@ struct OnboardSection: View {
             })
 
             Button(action: {
-                viewModel.present(view: OnboardingV2View(datasource: datasource,
-                                                         delegate: delegate))
+                viewModel.present(view: OnboardingV2View(handler: viewModel.handler))
             }, label: {
                 Text(verbatim: "Onboard V2")
             })
@@ -77,11 +74,11 @@ private final class OnboardSectionViewModel: ObservableObject {
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var router
 
+    @LazyInjected(\ServiceContainer.onboardingV2Handler)
+    var handler
+
     init() {
-        Task { [weak self] in
-            guard let self else { return }
-            onboarded = getAppPreferences().onboarded
-        }
+        onboarded = getAppPreferences().onboarded
     }
 
     func present(view: some View) {
