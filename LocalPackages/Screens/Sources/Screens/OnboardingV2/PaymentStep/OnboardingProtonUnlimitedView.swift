@@ -28,17 +28,17 @@ struct OnboardingProtonUnlimitedView: View {
     let features: [FeatureUiModel] =
         [
             .init(description: "Storage",
-                  leftPerk: .text("10 GB"),
-                  rightPerk: .text("500 GB")),
+                  lowerPerk: .text("10 GB"),
+                  higherPerk: .text("500 GB")),
             .init(description: "Extra email addresses",
-                  leftPerk: .number(1),
-                  rightPerk: .number(15)),
+                  lowerPerk: .number(1),
+                  higherPerk: .number(15)),
             .init(description: "VPN Devices",
-                  leftPerk: .number(1),
-                  rightPerk: .number(10)),
+                  lowerPerk: .number(1),
+                  higherPerk: .number(10)),
             .init(description: "VPN Speed",
-                  leftPerk: .text("Medium"),
-                  rightPerk: .text("Highest"))
+                  lowerPerk: .text("Medium"),
+                  higherPerk: .text("Highest"))
         ]
 
     var body: some View {
@@ -116,8 +116,8 @@ private extension OnboardingProtonUnlimitedView {
                     Text(feature.description)
                         .font(.callout)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                    PerkDetailView(perk: feature.leftPerk)
-                    PerkDetailView(perk: feature.rightPerk)
+                    PerkDetailView(perk: feature.lowerPerk)
+                    PerkDetailView(perk: feature.higherPerk)
                 }
             }
             .foregroundStyle(.white)
