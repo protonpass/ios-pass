@@ -149,7 +149,7 @@ private extension PaymentsManager {
     func createPaymentsV2UI(hideCurrentPlan: Bool = false,
                             doh: DoHInterface & ServerConfig,
                             completion: @escaping (Result<Bool, any Error>) -> Void) throws {
-        guard let userData = userManager.currentActiveUser.value, let envString = doh as? ProtonPassDoH else {
+        guard let userData = userManager.currentActiveUser.value else {
             throw PassError.payments(.couldNotCreatePaymentStack)
         }
 
