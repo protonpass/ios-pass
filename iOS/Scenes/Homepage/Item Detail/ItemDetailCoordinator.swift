@@ -60,7 +60,7 @@ final class ItemDetailCoordinator: DeinitPrintable {
         itemDetailPage.viewModel.delegate = itemDetailViewModelDelegate
         currentViewModel = itemDetailPage.viewModel
 
-        router.navigate(to: .itemDetail(view: itemDetailPage.view, asSheet: asSheet))
+        router.navigate(to: .detail(view: itemDetailPage.view, asSheet: asSheet))
     }
 
     /// Refresh the currently presented item detail page

@@ -1,7 +1,7 @@
 //
-// DesignConstant.swift
-// Proton Pass - Created on 09/10/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// FeatureUiModel.swift
+// Proton Pass - Created on 10/04/2025.
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,21 +17,21 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Foundation
+import SwiftUI
 
-public enum DesignConstant {
-    public static let sectionPadding: CGFloat = 16
-    public static let defaultPickerHeight: CGFloat = 50
-    public static let searchBarHeight: CGFloat = 48
-    public static let previewBreachItemCount = 5
-    public static let onboardingPadding: CGFloat = 24
+struct FeatureUiModel: Identifiable {
+    let id = UUID().uuidString
+    let description: LocalizedStringKey
+    let lowerPerk: PerkDetail
+    let higherPerk: PerkDetail
+}
 
-    // SwiftUI's default animation duration is 0.35
-    // https://developer.apple.com/documentation/swiftui/animation/linear#
-    public static let animationDuration: CGFloat = 0.35
-
-    public enum Icons {
-        public static let defaultIconSize: CGFloat = 20
-    }
+enum PerkDetail {
+    case available
+    case unavailable
+    case infinite
+    case number(Int)
+    case text(LocalizedStringKey)
 }

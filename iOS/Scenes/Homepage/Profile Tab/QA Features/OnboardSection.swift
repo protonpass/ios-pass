@@ -18,32 +18,74 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Factory
+import Screens
 import SwiftUI
 
 struct OnboardSection: View {
-    @State private var isShowingFullScreen = false
-    @State private var isShowingSheet = false
+    @StateObject private var viewModel = OnboardSectionViewModel()
 
     var body: some View {
         Section(content: {
-            Button(action: {
-                if UIDevice.current.isIpad {
-                    isShowingSheet.toggle()
-                } else {
-                    isShowingFullScreen.toggle()
+            VStack(alignment: .leading) {
+                Toggle(isOn: $viewModel.onboarded) {
+                    Text(verbatim: "Onboarded")
                 }
+                Text(verbatim: "Automatically onboard after logging in with the first account")
+                    .foregroundStyle(.secondary)
+                    .font(.footnote)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            Button(action: {
+                viewModel.present(view: OnboardingView(onWatchTutorial: {}))
             }, label: {
                 Text(verbatim: "Onboard")
+            })
+
+            Button(action: {
+                viewModel.present(view: OnboardingV2View(handler: viewModel.handler))
+            }, label: {
+                Text(verbatim: "Onboard V2")
             })
         }, header: {
             Text(verbatim: "👋")
         })
-        .fullScreenCover(isPresented: $isShowingFullScreen) { onboardingView }
-        .sheet(isPresented: $isShowingSheet) { onboardingView }
+    }
+}
+
+@MainActor
+private final class OnboardSectionViewModel: ObservableObject {
+    @Published var onboarded = false {
+        didSet {
+            Task { [weak self] in
+                guard let self else { return }
+                try? await updateAppPreferences(\.onboarded, value: onboarded)
+            }
+        }
     }
 
-    @MainActor
-    private var onboardingView: some View {
-        OnboardingView(onWatchTutorial: {})
+    @LazyInjected(\SharedUseCasesContainer.getAppPreferences)
+    private var getAppPreferences
+
+    @LazyInjected(\SharedUseCasesContainer.updateAppPreferences)
+    private var updateAppPreferences
+
+    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private var router
+
+    @LazyInjected(\ServiceContainer.onboardingV2Handler)
+    var handler
+
+    init() {
+        onboarded = getAppPreferences().onboarded
+    }
+
+    func present(view: some View) {
+        if UIDevice.current.isIpad {
+            router.navigate(to: .sheet(view))
+        } else {
+            router.navigate(to: .fullScreen(view))
+        }
     }
 }

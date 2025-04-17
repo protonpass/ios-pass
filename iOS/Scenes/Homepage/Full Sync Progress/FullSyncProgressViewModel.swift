@@ -88,7 +88,8 @@ private extension FullSyncProgressViewModel {
             router.display(element: .infosMessage(#localized("Sync complete"),
                                                   config: .init(dismissBeforeShowing: true)))
         } else {
-            router.display(element: .infosMessage(#localized("The app is now ready to use")))
+            router.display(element: .infosMessage(#localized("The app is now ready to use"),
+                                                  showWhenNoSheets: true))
         }
     }
 }

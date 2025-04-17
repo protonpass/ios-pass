@@ -100,7 +100,7 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
         }
 
         var (localShares, remoteShares) = try await (fetchLocalShares, fetchRemoteShares)
-        logger.trace("Finished fetching local and remote shares")
+        logger.trace("Finished fetching \(localShares.count) local and \(remoteShares.count) remote shares")
 
         let updatedShares = try await removeSuperfluousLocalShares(userId: userId,
                                                                    localShares: localShares,

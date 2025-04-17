@@ -113,7 +113,7 @@ private extension UpsellingView {
                                   action: onUpgrade)
                     .padding(.horizontal, DesignConstant.sectionPadding)
 
-                CapsuleTextButton(title: #localized("Not Now", bundle: .module),
+                CapsuleTextButton(title: #localized("Not now", bundle: .module),
                                   titleColor: PassColor.interactionNormMajor2,
                                   backgroundColor: .clear,
                                   height: 48,
