@@ -26,8 +26,7 @@ import SwiftUI
 
 struct OnboardingPaymentStep: View {
     @State private var selection: Selection = .plus
-    let plusPlan: PlanUiModel
-    let unlimitedPlan: PlanUiModel
+    let plans: PassPlans
     @Binding var selectedPlan: PlanUiModel?
     let onPurchase: () -> Void
 
@@ -74,7 +73,7 @@ struct OnboardingPaymentStep: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear {
-            selectedPlan = plusPlan
+            selectedPlan = plans.plus
         }
     }
 }
@@ -83,18 +82,18 @@ private extension OnboardingPaymentStep {
     var planSelector: some View {
         HStack {
             planDetail(name: "Plus",
-                       plan: plusPlan,
+                       plan: plans.plus,
                        selected: selection == .plus,
                        onSelect: {
                            selection = .plus
-                           selectedPlan = plusPlan
+                           selectedPlan = plans.plus
                        })
             planDetail(name: "Unlimited",
-                       plan: unlimitedPlan,
+                       plan: plans.unlimited,
                        selected: selection == .unlimited,
                        onSelect: {
                            selection = .unlimited
-                           selectedPlan = unlimitedPlan
+                           selectedPlan = plans.unlimited
                        })
         }
         .frame(maxWidth: .infinity)

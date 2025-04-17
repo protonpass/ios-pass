@@ -56,8 +56,20 @@ public struct KnownService: Sendable, Decodable, Equatable {
     }
 }
 
+public typealias OnboardingV2Handling = OnboardingV2Datasource & OnboardingV2Delegate
+
+public struct PassPlans: Sendable, Equatable {
+    let plus: PlanUiModel
+    let unlimited: PlanUiModel
+
+    public init(plus: PlanUiModel, unlimited: PlanUiModel) {
+        self.plus = plus
+        self.unlimited = unlimited
+    }
+}
+
 public protocol OnboardingV2Datasource: Sendable, AnyObject {
-    func getAvailablePlans() async throws -> [ComposedPlan]
+    func getPassPlans() async throws -> PassPlans?
     func getBiometryType() async throws -> LABiometryType?
     func isAutoFillEnabled() async -> Bool
     // periphery:ignore
@@ -78,7 +90,7 @@ public protocol OnboardingV2Delegate: Sendable, AnyObject {
 }
 
 enum OnboardV2Step: Sendable, Equatable {
-    case payment(plus: PlanUiModel, unlimited: PlanUiModel)
+    case payment(PassPlans)
     case biometric(LABiometryType)
     case autofill
     case aliasExplanation
@@ -97,10 +109,9 @@ final class OnboardingV2ViewModel: ObservableObject {
     private weak var datasource: (any OnboardingV2Datasource)?
     private weak var delegate: (any OnboardingV2Delegate)?
 
-    init(datasource: (any OnboardingV2Datasource)?,
-         delegate: (any OnboardingV2Delegate)?) {
-        self.datasource = datasource
-        self.delegate = delegate
+    init(handler: OnboardingV2Handling?) {
+        datasource = handler
+        delegate = handler
     }
 }
 
@@ -114,16 +125,8 @@ extension OnboardingV2ViewModel {
 
             availableBiometryType = try await datasource.getBiometryType()
 
-            let plans = try await datasource.getAvailablePlans()
-            // When user is paid, no plans are fetched
-            let plusId = "iospass_pass2023_12_usd_auto_renewing"
-            let unlimitedId = "iospass_bundle2022_12_usd_auto_renewing"
-            if !plans.isEmpty,
-               let plusComposedPlan = plans.first(where: { $0.product.id == plusId }),
-               let plusPlan = PlanUiModel(plan: plusComposedPlan),
-               let unlimitedComposedPlan = plans.first(where: { $0.product.id == unlimitedId }),
-               let unlimitedPlan = PlanUiModel(plan: unlimitedComposedPlan) {
-                currentStep = .fetched(.payment(plus: plusPlan, unlimited: unlimitedPlan))
+            if let plans = try await datasource.getPassPlans() {
+                currentStep = .fetched(.payment(plans))
             } else if let availableBiometryType, availableBiometryType != .none {
                 currentStep = .fetched(.biometric(availableBiometryType))
             } else {
@@ -182,14 +185,7 @@ extension OnboardingV2ViewModel {
             currentStep = .fetched(.aliasExplanation)
             return true
 
-        case .aliasExplanation:
-            return false
-
-        case .createFirstLogin:
-            // Not applicable
-            return false
-
-        case .firstLoginCreated:
+        case .aliasExplanation, .createFirstLogin, .firstLoginCreated:
             return false
         }
     }
@@ -209,8 +205,8 @@ extension OnboardingV2ViewModel {
                 shouldGoToNextStep = true
 
             case .biometric:
-                shouldGoToNextStep = true
                 try await delegate.enableBiometric()
+                shouldGoToNextStep = true
 
             case .autofill:
                 shouldGoToNextStep = await delegate.enableAutoFill()

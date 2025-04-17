@@ -117,7 +117,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private var currentUserTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any ProfileTabViewModelDelegate)?
-    weak var homepageCoordinator: HomepageCoordinator?
 
     var isChromeInstalled: Bool {
         #if DEBUG

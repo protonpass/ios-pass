@@ -68,12 +68,12 @@ private extension OnboardingPassPlusView {
                 .init(.fixed(detailColumnWidth))
             ],
             spacing: DesignConstant.sectionPadding * 2) {
-                Text("What's included")
+                Text("What's included", bundle: .module)
                     .font(.callout)
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                Text("Free")
+                Text("Free", bundle: .module)
                     .fontWeight(.bold)
 
                 PassPlusTitle()

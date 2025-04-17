@@ -90,14 +90,14 @@ private struct ServiceSelectionView: View {
 
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
-            Text("Create your first login")
+            Text("Create your first login", bundle: .module)
                 .font(.title)
                 .fontWeight(.bold)
                 .foregroundStyle(PassColor.textNorm.toColor)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .multilineTextAlignment(.center)
 
-            Text("Which service do you want to create the login for?")
+            Text("Which service do you want to create the login for?", bundle: .module)
                 .font(.headline)
                 .foregroundStyle(PassColor.textWeak.toColor)
                 .frame(maxWidth: .infinity, alignment: .center)
@@ -273,7 +273,7 @@ private extension CreateFirstLoginView {
             ItemDetailSectionIcon(icon: IconProvider.envelope)
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text("Email address")
+                Text("Email address", bundle: .module)
                     .editableSectionTitleText(for: email)
 
                 TrimmingTextField("Add email address", text: $email)
@@ -304,7 +304,7 @@ private extension CreateFirstLoginView {
             ItemDetailSectionIcon(icon: IconProvider.user)
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text("Username")
+                Text("Username", bundle: .module)
                     .editableSectionTitleText(for: username)
 
                 TrimmingTextField("Add username", text: $username)
@@ -331,7 +331,7 @@ private extension CreateFirstLoginView {
             ItemDetailSectionIcon(icon: IconProvider.key)
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text("Password")
+                Text("Password", bundle: .module)
                     .editableSectionTitleText(for: password)
 
                 SensitiveTextField(text: $password,

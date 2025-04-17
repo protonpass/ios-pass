@@ -23,12 +23,12 @@ import Macro
 import ProtonCorePaymentsV2
 import StoreKit
 
-struct PlanUiModel: Equatable {
+public struct PlanUiModel: Equatable, Sendable {
     let plan: ComposedPlan
     let displayMonthlyPrice: String
     let displayYearlyPrice: String
 
-    init?(plan: ComposedPlan) {
+    public init?(plan: ComposedPlan) {
         self.plan = plan
         guard let product = plan.product as? Product else {
             return nil
@@ -47,7 +47,7 @@ struct PlanUiModel: Equatable {
         displayYearlyPrice = yearlyPrice
     }
 
-    static func == (lhs: Self, rhs: Self) -> Bool {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.plan.plan.id == rhs.plan.plan.id
     }
 }

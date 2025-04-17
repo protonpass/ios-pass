@@ -1,6 +1,6 @@
 //
-// HomepageCoordinator+Onboarding.swift
-// Proton Pass - Created on 16/04/2025.
+// OnboardingV2Handler.swift
+// Proton Pass - Created on 17/04/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Factory
 import LocalAuthentication
 import Macro
 import ProtonCorePaymentsUIV2
@@ -26,12 +27,65 @@ import ProtonCorePaymentsV2
 import Screens
 import StoreKit
 
-extension HomepageCoordinator: OnboardingV2Datasource {
-    func getAvailablePlans() async throws -> [ComposedPlan] {
+@MainActor
+final class OnboardingV2Handler {
+    @LazyInjected(\SharedToolingContainer.preferencesManager)
+    private var preferencesManager
+
+    @LazyInjected(\SharedServiceContainer.credentialManager)
+    private var credentialManager
+
+    @LazyInjected(\SharedDataContainer.credentialProvider)
+    private var credentialProvider
+
+    @LazyInjected(\SharedServiceContainer.userManager)
+    private var userManager
+
+    @LazyInjected(\SharedUseCasesContainer.checkBiometryType)
+    private var checkBiometryType
+
+    @LazyInjected(\SharedToolingContainer.localAuthenticationEnablingPolicy)
+    private var localAuthenticationEnablingPolicy
+
+    @LazyInjected(\SharedToolingContainer.doh)
+    private var doh
+
+    @LazyInjected(\SharedToolingContainer.appVersion)
+    private var appVersion
+
+    @LazyInjected(\UseCasesContainer.enableAutoFill)
+    private var enableAutoFillUseCase
+
+    @LazyInjected(\SharedUseCasesContainer.authenticateBiometrically)
+    private var authenticateBiometrically
+
+    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private var router
+
+    private var plansManager: ProtonPlansManager?
+    private let logger: Logger
+
+    nonisolated init(logManager: any LogManagerProtocol) {
+        logger = .init(manager: logManager)
+    }
+}
+
+extension OnboardingV2Handler: OnboardingV2Datasource {
+    func getPassPlans() async throws -> PassPlans? {
         guard let manager = try await getPlansManager() else {
-            return []
+            return nil
         }
-        return try await manager.getAvailablePlans()
+        let plans = try await manager.getAvailablePlans()
+        let plusId = "iospass_pass2023_12_usd_auto_renewing"
+        let unlimitedId = "iospass_bundle2022_12_usd_auto_renewing"
+        if let plusComposedPlan = plans.first(where: { $0.product.id == plusId }),
+           let plusPlan = PlanUiModel(plan: plusComposedPlan),
+           let unlimitedComposedPlan = plans.first(where: { $0.product.id == unlimitedId }),
+           let unlimitedPlan = PlanUiModel(plan: unlimitedComposedPlan) {
+            return .init(plus: plusPlan, unlimited: unlimitedPlan)
+        } else {
+            return nil
+        }
     }
 
     func getBiometryType() async throws -> LABiometryType? {
@@ -48,7 +102,7 @@ extension HomepageCoordinator: OnboardingV2Datasource {
     }
 }
 
-extension HomepageCoordinator: OnboardingV2Delegate {
+extension OnboardingV2Handler: OnboardingV2Delegate {
     func purchase(_ plan: ComposedPlan) async throws {
         guard let manager = try await getPlansManager() else { return }
 
@@ -75,16 +129,26 @@ extension HomepageCoordinator: OnboardingV2Delegate {
         await enableAutoFillUseCase()
     }
 
+    func openTutorialVideo() {
+        router.navigate(to: .urlPage(urlString: ProtonLink.youtubeTutorial))
+    }
+
+    // periphery:ignore
     func createFirstLogin(payload: OnboardFirstLoginPayload) async throws {}
 
     func markAsOnboarded() async {
         // Optionally update "onboarded" to not block users from using the app
         // in case errors happens
-        try? await updateAppPreferences(\.onboarded, value: true)
+        try? await preferencesManager.updateAppPreferences(\.onboarded, value: true)
+    }
+
+    func handle(error: any Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
     }
 }
 
-private extension HomepageCoordinator {
+private extension OnboardingV2Handler {
     func getPlansManager() async throws -> ProtonPlansManager? {
         if let plansManager {
             return plansManager

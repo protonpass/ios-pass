@@ -25,6 +25,7 @@ import ProtonCoreAuthentication
 import ProtonCorePayments
 import ProtonCorePaymentsUI
 import ProtonCorePushNotifications
+import Screens
 
 final class ServiceContainer: SharedContainer, AutoRegistering {
     static let shared = ServiceContainer()
@@ -51,5 +52,9 @@ extension ServiceContainer {
     var secureLinkManager: Factory<any SecureLinkManagerProtocol> {
         self { SecureLinkManager(dataSource: SharedRepositoryContainer.shared.remoteSecureLinkDatasource(),
                                  userManager: SharedServiceContainer.shared.userManager()) }
+    }
+
+    var onboardingV2Handler: Factory<any OnboardingV2Handling> {
+        self { OnboardingV2Handler(logManager: SharedToolingContainer.shared.logManager()) }
     }
 }
