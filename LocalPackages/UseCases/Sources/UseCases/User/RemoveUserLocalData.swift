@@ -35,7 +35,6 @@ public extension RemoveUserLocalDataUseCase {
 
 public final class RemoveUserLocalData: Sendable, RemoveUserLocalDataUseCase {
     private let accessDatasource: any LocalAccessDatasourceProtocol
-    private let authCredentialDatasource: any LocalAuthCredentialDatasourceProtocol
     private let itemDatasource: any LocalItemDatasourceProtocol
     private let itemReadEventDatasource: any LocalItemReadEventDatasourceProtocol
     private let organizationDatasource: any LocalOrganizationDatasourceProtocol
@@ -51,7 +50,6 @@ public final class RemoveUserLocalData: Sendable, RemoveUserLocalDataUseCase {
     private let passwordDatasource: any LocalPasswordDatasourceProtocol
 
     public init(accessDatasource: any LocalAccessDatasourceProtocol,
-                authCredentialDatasource: any LocalAuthCredentialDatasourceProtocol,
                 itemDatasource: any LocalItemDatasourceProtocol,
                 itemReadEventDatasource: any LocalItemReadEventDatasourceProtocol,
                 organizationDatasource: any LocalOrganizationDatasourceProtocol,
@@ -66,7 +64,6 @@ public final class RemoveUserLocalData: Sendable, RemoveUserLocalDataUseCase {
                 inAppNotificationDatasource: any LocalInAppNotificationDatasourceProtocol,
                 passwordDatasource: any LocalPasswordDatasourceProtocol) {
         self.accessDatasource = accessDatasource
-        self.authCredentialDatasource = authCredentialDatasource
         self.itemDatasource = itemDatasource
         self.itemReadEventDatasource = itemReadEventDatasource
         self.organizationDatasource = organizationDatasource
@@ -86,7 +83,6 @@ public final class RemoveUserLocalData: Sendable, RemoveUserLocalDataUseCase {
 public extension RemoveUserLocalData {
     func execute(userId: String) async throws {
         async let removeAccess: () = accessDatasource.removeAccess(userId: userId)
-        async let removeAuthCreds: () = authCredentialDatasource.removeAllCredentials(userId: userId)
         async let removeItems: () = itemDatasource.removeAllItems(userId: userId)
         async let removeItemReadEvents: () = itemReadEventDatasource.removeEvents(userId: userId)
         async let removeOrganization: () = organizationDatasource.removeOrganization(userId: userId)
@@ -103,7 +99,6 @@ public extension RemoveUserLocalData {
         async let removePasswords: () = passwordDatasource.deleteAllPasswords(userId: userId)
 
         _ = try await (removeAccess,
-                       removeAuthCreds,
                        removeItems,
                        removeItemReadEvents,
                        removeOrganization,

@@ -404,7 +404,6 @@ extension SharedUseCasesContainer {
         self {
             let container = SharedRepositoryContainer.shared
             return RemoveUserLocalData(accessDatasource: container.localAccessDatasource(),
-                                       authCredentialDatasource: container.localAuthCredentialDatasource(),
                                        itemDatasource: container.localItemDatasource(),
                                        itemReadEventDatasource: container.localItemReadEventDatasource(),
                                        organizationDatasource: container.localOrganizationDatasource(),
