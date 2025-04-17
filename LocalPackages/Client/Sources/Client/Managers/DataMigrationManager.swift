@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+// periphery:ignore:all
 import Foundation
 
 public struct MigrationType: OptionSet, Sendable {

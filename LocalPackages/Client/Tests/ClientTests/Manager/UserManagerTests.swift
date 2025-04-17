@@ -278,3 +278,9 @@ private extension Error {
         return false
     }
 }
+
+private extension UserProfile {
+    func copy(isActive: Bool) -> UserProfile {
+        UserProfile(userdata: userdata, isActive: isActive, updateTime: updateTime)
+    }
+}
