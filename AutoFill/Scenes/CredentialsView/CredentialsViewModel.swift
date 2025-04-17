@@ -24,7 +24,6 @@ import Core
 import CryptoKit
 import Entities
 import Factory
-import Screens
 import SwiftUI
 
 enum CredentialsViewState: Equatable {

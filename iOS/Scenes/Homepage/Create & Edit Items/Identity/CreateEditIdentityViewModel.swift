@@ -363,8 +363,6 @@ private extension IdentityData {
             workSection.contains { !$0.isEmpty }
         case .contact:
             contactSection.contains { !$0.isEmpty }
-        default:
-            false
         }
     }
 }
