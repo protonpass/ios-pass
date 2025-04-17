@@ -35,7 +35,6 @@ import ProtonCoreDataModel
 import ProtonCoreLoginUI
 import ProtonCoreNetworking
 import ProtonCorePasswordChange
-import ProtonCorePaymentsV2
 import ProtonCoreUIFoundations
 import Screens
 import StoreKit
@@ -84,8 +83,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\SharedRepositoryContainer.aliasRepository) var aliasRepository
     @LazyInjected(\SharedRepositoryContainer.passwordHistoryRepository)
     private var passwordHistoryRepository
-    @LazyInjected(\SharedServiceContainer.credentialManager) var credentialManager
-    @LazyInjected(\SharedDataContainer.credentialProvider) var credentialProvider
+    @LazyInjected(\ServiceContainer.onboardingV2Handler) private var onboardingV2Handler
 
     // Use cases
     private let refreshFeatureFlags = resolve(\SharedUseCasesContainer.refreshFeatureFlags)
@@ -104,13 +102,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     var addAndSwitchToNewUserAccount
     @LazyInjected(\ SharedUseCasesContainer.addTelemetryEvent) var addTelemetryEvent
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
-    @LazyInjected(\SharedUseCasesContainer.checkBiometryType) var checkBiometryType
-    @LazyInjected(\SharedToolingContainer.localAuthenticationEnablingPolicy)
-    var localAuthenticationEnablingPolicy
-    @LazyInjected(\SharedToolingContainer.doh) var doh
-    @LazyInjected(\SharedToolingContainer.appVersion) var appVersion
-    @LazyInjected(\UseCasesContainer.enableAutoFill) var enableAutoFillUseCase
-    @LazyInjected(\SharedUseCasesContainer.authenticateBiometrically) var authenticateBiometrically
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
 
     private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
@@ -123,7 +114,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
     private var cancellables = Set<AnyCancellable>()
-    var plansManager: ProtonPlansManager?
 
     lazy var logInAndSignUp = makeLoginAndSignUp()
 
@@ -308,7 +298,6 @@ private extension HomepageCoordinator {
 
         let profileTabViewModel = ProfileTabViewModel(childCoordinatorDelegate: self)
         profileTabViewModel.delegate = self
-        profileTabViewModel.homepageCoordinator = self
 
         let placeholderView = ItemDetailPlaceholderView { [weak self] in
             guard let self else { return }
@@ -1270,7 +1259,7 @@ private extension HomepageCoordinator {
     func presentOnboardView(forced: Bool) {
         guard forced || !getAppPreferences().onboarded else { return }
         let vc = if getFeatureFlagStatus(for: FeatureFlagType.passMobileOnboardingV2) {
-            UIHostingController(rootView: OnboardingV2View(datasource: self, delegate: self))
+            UIHostingController(rootView: OnboardingV2View(handler: onboardingV2Handler))
         } else {
             UIHostingController(rootView: OnboardingView { [weak self] in
                 guard let self else { return }
