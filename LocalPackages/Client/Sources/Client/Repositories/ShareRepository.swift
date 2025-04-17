@@ -204,7 +204,8 @@ public extension ShareRepository {
     func upsertShares(userId: String,
                       shares: [Share],
                       eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws {
-        logger.trace("Upserting \(shares.count) shares for user \(userId)")
+        let shareIds = shares.map(\.id)
+        logger.trace("Upserting \(shares.count) shares for user \(userId), shares \(shareIds)")
         let key = try await getSymmetricKey()
         let encryptedShares = try await shares
             .parallelMap { [weak self] in
@@ -215,7 +216,7 @@ public extension ShareRepository {
             .compactMap { $0 }
         try await localDatasource.upsertShares(encryptedShares, userId: userId)
 
-        logger.trace("Upserted \(shares.count) shares for user \(userId)")
+        logger.trace("Upserted \(shares.count) shares for user \(userId), shares \(shareIds)")
     }
 
     func getUsersLinkedToVaultShare(to shareId: String,

@@ -83,6 +83,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\SharedRepositoryContainer.aliasRepository) var aliasRepository
     @LazyInjected(\SharedRepositoryContainer.passwordHistoryRepository)
     private var passwordHistoryRepository
+    @LazyInjected(\ServiceContainer.onboardingV2Handler) private var onboardingV2Handler
 
     // Use cases
     private let refreshFeatureFlags = resolve(\SharedUseCasesContainer.refreshFeatureFlags)
@@ -101,9 +102,10 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     var addAndSwitchToNewUserAccount
     @LazyInjected(\ SharedUseCasesContainer.addTelemetryEvent) var addTelemetryEvent
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
 
     private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
-    private let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
+    let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
     let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
     let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
 
@@ -183,7 +185,9 @@ private extension HomepageCoordinator {
                     #localized("Signed in as %@", email) : #localized("Switched to %@", email)
                 isFirstLaunched = false
 
-                bannerManager.displayBottomInfoMessage(message)
+                if rootViewController.presentedViewController == nil {
+                    bannerManager.displayBottomInfoMessage(message)
+                }
                 removeInAppNotificationDisplay()
                 refreshInAppNotifications()
             }
@@ -486,14 +490,14 @@ extension HomepageCoordinator {
             .store(in: &cancellables)
 
         router
-            .itemDestinations
+            .itemDestination
             .receive(on: DispatchQueue.main)
             .sink { [weak self] destination in
                 guard let self else { return }
                 switch destination {
-                case let .presentView(view, dismissible):
+                case let .createEdit(view, dismissible):
                     createEditItemCoordinatorWantsToPresent(view: view, dismissable: dismissible)
-                case let .itemDetail(view, asSheet):
+                case let .detail(view, asSheet):
                     itemDetailCoordinatorWantsToPresent(view: view, asSheet: asSheet)
                 }
             }
@@ -634,8 +638,11 @@ extension HomepageCoordinator {
                     bannerManager.displayTopErrorMessage(message)
                 case let .successMessage(message, config):
                     displaySuccessBanner(with: message, and: config)
-                case let .infosMessage(message, config):
-                    displayInfoBanner(with: message, and: config)
+                case let .infosMessage(message, showWhenNoSheets, config):
+                    if !showWhenNoSheets ||
+                        (showWhenNoSheets && rootViewController.presentedViewController == nil) {
+                        displayInfoBanner(with: message, and: config)
+                    }
                 }
             }
             .store(in: &cancellables)
@@ -677,6 +684,19 @@ extension HomepageCoordinator {
                     case .all:
                         dismissAllViewControllers(animated: true, completion: nil)
                     }
+                }
+            }
+            .store(in: &cancellables)
+
+        router.genericDestination
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] destination in
+                guard let self else { return }
+                switch destination {
+                case let .sheet(view):
+                    present(view)
+                case let .fullScreen(view):
+                    present(view, fullScreen: true)
                 }
             }
             .store(in: &cancellables)
@@ -1095,8 +1115,14 @@ extension HomepageCoordinator {
     func present(_ view: some View,
                  animated: Bool = true,
                  dismissible: Bool = true,
+                 fullScreen: Bool = false,
                  uniquenessTag: (any RawRepresentable<Int>)? = nil) {
-        present(UIHostingController(rootView: view),
+        let vc = UIHostingController(rootView: view)
+        if fullScreen {
+            vc.modalPresentationStyle = .fullScreen
+            vc.isModalInPresentation = true
+        }
+        present(vc,
                 animated: animated,
                 dismissible: dismissible,
                 uniquenessTag: uniquenessTag)
@@ -1232,11 +1258,14 @@ private extension HomepageCoordinator {
 
     func presentOnboardView(forced: Bool) {
         guard forced || !getAppPreferences().onboarded else { return }
-        let view = OnboardingView { [weak self] in
-            guard let self else { return }
-            openTutorialVideo()
+        let vc = if getFeatureFlagStatus(for: FeatureFlagType.passMobileOnboardingV2) {
+            UIHostingController(rootView: OnboardingV2View(handler: onboardingV2Handler))
+        } else {
+            UIHostingController(rootView: OnboardingView { [weak self] in
+                guard let self else { return }
+                openTutorialVideo()
+            })
         }
-        let vc = UIHostingController(rootView: view)
         vc.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
         vc.isModalInPresentation = true
         topMostViewController.present(vc, animated: true)
