@@ -24,8 +24,8 @@ import SwiftUI
 struct FeatureUiModel: Identifiable {
     let id = UUID().uuidString
     let description: LocalizedStringKey
-    let leftPerk: PerkDetail
-    let rightPerk: PerkDetail
+    let lowerPerk: PerkDetail
+    let higherPerk: PerkDetail
 }
 
 enum PerkDetail {

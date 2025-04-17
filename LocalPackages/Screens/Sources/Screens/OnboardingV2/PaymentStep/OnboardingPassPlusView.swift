@@ -27,23 +27,23 @@ struct OnboardingPassPlusView: View {
     let features: [FeatureUiModel] =
         [
             .init(description: "Hide-my-email aliases",
-                  leftPerk: .number(10),
-                  rightPerk: .infinite),
+                  lowerPerk: .number(10),
+                  higherPerk: .infinite),
             .init(description: "Built-in 2FA",
-                  leftPerk: .unavailable,
-                  rightPerk: .available),
+                  lowerPerk: .unavailable,
+                  higherPerk: .available),
             .init(description: "Vault, item & link sharing",
-                  leftPerk: .unavailable,
-                  rightPerk: .available),
+                  lowerPerk: .unavailable,
+                  higherPerk: .available),
             .init(description: "Credit cards",
-                  leftPerk: .unavailable,
-                  rightPerk: .infinite),
+                  lowerPerk: .unavailable,
+                  higherPerk: .infinite),
             .init(description: "Dark Web Monitoring",
-                  leftPerk: .unavailable,
-                  rightPerk: .available),
+                  lowerPerk: .unavailable,
+                  higherPerk: .available),
             .init(description: "File attachments",
-                  leftPerk: .unavailable,
-                  rightPerk: .available)
+                  lowerPerk: .unavailable,
+                  higherPerk: .available)
         ]
 
     var body: some View {
@@ -82,8 +82,8 @@ private extension OnboardingPassPlusView {
                     Text(feature.description)
                         .font(.callout)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                    PerkDetailView(perk: feature.leftPerk)
-                    PerkDetailView(perk: feature.rightPerk)
+                    PerkDetailView(perk: feature.lowerPerk)
+                    PerkDetailView(perk: feature.higherPerk)
                 }
             }
             .foregroundStyle(.white)
