@@ -25,6 +25,7 @@ public enum DesignConstant {
     public static let defaultPickerHeight: CGFloat = 50
     public static let searchBarHeight: CGFloat = 48
     public static let previewBreachItemCount = 5
+    public static let onboardingPadding: CGFloat = 24
 
     // SwiftUI's default animation duration is 0.35
     // https://developer.apple.com/documentation/swiftui/animation/linear#

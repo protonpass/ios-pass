@@ -115,7 +115,7 @@ private extension CreateEditItemCoordinator {
     }
 
     func present(_ view: any View, dismissable: Bool) {
-        router.navigate(to: .presentView(view: view, dismissible: dismissable))
+        router.navigate(to: .createEdit(view: view, dismissible: dismissable))
     }
 
     func presentCreateEditLoginView(mode: ItemMode) throws {

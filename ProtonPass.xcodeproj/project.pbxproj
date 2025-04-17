@@ -447,6 +447,7 @@
 		5335C6DD2D7889FA00190897 /* CreateEditCustomSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5335C6DB2D7889DF00190897 /* CreateEditCustomSections.swift */; };
 		5335C6DE2D7889FA00190897 /* CreateEditCustomSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5335C6DB2D7889DF00190897 /* CreateEditCustomSections.swift */; };
 		533EAB952D3F975E00217171 /* AliasDiscoverySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533EAB942D3F974B00217171 /* AliasDiscoverySection.swift */; };
+		533F20342DA5ADC600CE1C5E /* ProtonCorePaymentsV2 in Frameworks */ = {isa = PBXBuildFile; productRef = 533F20332DA5ADC600CE1C5E /* ProtonCorePaymentsV2 */; };
 		534090592D709856002E42F8 /* CreateEditSshKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534090582D70984A002E42F8 /* CreateEditSshKeyView.swift */; };
 		5340905C2D70988C002E42F8 /* CreateEditWifiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5340905B2D709885002E42F8 /* CreateEditWifiView.swift */; };
 		5340905E2D70991C002E42F8 /* CreateEditCustomItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5340905D2D709917002E42F8 /* CreateEditCustomItemView.swift */; };
@@ -492,6 +493,7 @@
 		537FC0792D59ECB900011AEA /* UpsellingViewConfiguration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71062BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift */; };
 		538548E82D58ACF300AEFB66 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 538548E72D58ACF300AEFB66 /* UniformTypeIdentifiers.framework */; };
 		538548F42D58ACF300AEFB66 /* Action.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 538548E62D58ACF300AEFB66 /* Action.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		538694A32DB0F10400416368 /* OnboardingV2Handler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538694A22DB0F0FB00416368 /* OnboardingV2Handler.swift */; };
 		5386ACFF2D4276EC00DEEB8B /* HomepageCoordinator+SLSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5386ACFE2D4276E500DEEB8B /* HomepageCoordinator+SLSync.swift */; };
 		539182CA2D7F2C5C00815D7F /* SshDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539182C92D7F2C5800815D7F /* SshDetailView.swift */; };
 		539182CC2D7F2C9100815D7F /* SshDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539182CB2D7F2C8F00815D7F /* SshDetailViewModel.swift */; };
@@ -1083,6 +1085,7 @@
 		536CA2C32CF0BDBA00BA3C69 /* FileAttachmentViewerSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileAttachmentViewerSection.swift; sourceTree = "<group>"; };
 		538548E62D58ACF300AEFB66 /* Action.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Action.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		538548E72D58ACF300AEFB66 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
+		538694A22DB0F0FB00416368 /* OnboardingV2Handler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingV2Handler.swift; sourceTree = "<group>"; };
 		5386ACFE2D4276E500DEEB8B /* HomepageCoordinator+SLSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+SLSync.swift"; sourceTree = "<group>"; };
 		539182C92D7F2C5800815D7F /* SshDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SshDetailView.swift; sourceTree = "<group>"; };
 		539182CB2D7F2C8F00815D7F /* SshDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SshDetailViewModel.swift; sourceTree = "<group>"; };
@@ -1357,6 +1360,7 @@
 			files = (
 				5379EAA52D59EEAD00F56DBC /* ProtonCoreForceUpgrade in Frameworks */,
 				5347B5802D58BA960014013F /* MBProgressHUD in Frameworks */,
+				533F20342DA5ADC600CE1C5E /* ProtonCorePaymentsV2 in Frameworks */,
 				5379EAA12D59EE9D00F56DBC /* Factory in Frameworks */,
 				5379EAA72D59EEB800F56DBC /* ProtonCorePasswordChange in Frameworks */,
 				5347B5842D58BABB0014013F /* Core in Frameworks */,
@@ -2114,6 +2118,7 @@
 				355723C12BF37F5E00C76244 /* HomepageCoordinator+UniqueSheet.swift */,
 				5BEE71E12BFDE63300B3C005 /* HomepageCoordinator+ItemCreateEditDetails.swift */,
 				355C138829DB71D800264CD0 /* HomepageTabbarView.swift */,
+				538694A22DB0F0FB00416368 /* OnboardingV2Handler.swift */,
 				35603A0029B6587C00021BFB /* Create & Edit Items */,
 				356650D72AAF606500BFF4F3 /* Full Sync Progress */,
 				3565622529BA760800C43F72 /* Item Detail */,
@@ -3146,6 +3151,7 @@
 				5379EAA42D59EEAD00F56DBC /* ProtonCoreForceUpgrade */,
 				5379EAA62D59EEB800F56DBC /* ProtonCorePasswordChange */,
 				5379EAA82D59EEBC00F56DBC /* UseCases */,
+				533F20332DA5ADC600CE1C5E /* ProtonCorePaymentsV2 */,
 			);
 			productName = Action;
 			productReference = 538548E62D58ACF300AEFB66 /* Action.appex */;
@@ -3849,6 +3855,7 @@
 				5386ACFF2D4276EC00DEEB8B /* HomepageCoordinator+SLSync.swift in Sources */,
 				354361552941D251000CAE12 /* OnboardingView.swift in Sources */,
 				356B697B2949E55600868771 /* ItemDetailPlaceholderView.swift in Sources */,
+				538694A32DB0F10400416368 /* OnboardingV2Handler.swift in Sources */,
 				5BF35D6E2B21FB1800D3E297 /* Pinnable+Extensions.swift in Sources */,
 				35E152C42A38866900E47E57 /* CreateEditCreditCardViewModel.swift in Sources */,
 				353EC0162A05A7EF004AF925 /* TrashItemsSection.swift in Sources */,
@@ -6315,6 +6322,11 @@
 		};
 		40EC90992D1AE451004FCA37 /* ProtonCorePaymentsV2 */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = ProtonCorePaymentsV2;
+		};
+		533F20332DA5ADC600CE1C5E /* ProtonCorePaymentsV2 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 57459FC02AE5A72100280A10 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
 			productName = ProtonCorePaymentsV2;
 		};
 		5347B57F2D58BA960014013F /* MBProgressHUD */ = {
