@@ -1667,9 +1667,20 @@ extension HomepageCoordinator: GeneratePasswordViewModelDelegate {
     func generatePasswordViewModelDidConfirm(password: String) {
         dismissTopMostViewController(animated: true) { [weak self] in
             guard let self else { return }
-            copyToClipboard(password,
-                            bannerMessage: #localized("Password copied"),
-                            bannerDisplay: bannerManager)
+            let viewPasswordHistory: @Sendable (PMBanner) -> Void = { [weak self] banner in
+                guard let self else { return }
+                Task { @MainActor [weak self] in
+                    guard let self else {
+                        return
+                    }
+                    banner.dismiss()
+                    presentPasswordHistoryView()
+                }
+            }
+            bannerManager.displayBottomInfoMessage(#localized("Password copied"),
+                                                   dismissButtonTitle: #localized("View"),
+                                                   onDismiss: viewPasswordHistory)
+            copyToClipboard(password)
         }
     }
 }
