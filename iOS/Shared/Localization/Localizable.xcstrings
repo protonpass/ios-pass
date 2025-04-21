@@ -1371,7 +1371,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "过去 14 天内有 %1$@、 %2$@、 %3$@。"
+            "value" : "过去 14 天内有 %1$@、%2$@、%3$@。"
           }
         }
       }
@@ -3431,7 +3431,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld 已屏蔽"
+                  "value" : "%lld 已屏蔽"
                 }
               }
             }
@@ -17943,7 +17943,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "添加自定义电子邮件地址"
+            "value" : "添加自定义邮箱地址"
           }
         }
       }
@@ -31694,7 +31694,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "生日"
+            "value" : "出生日期"
           }
         }
       }
@@ -38772,7 +38772,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "代码"
+            "value" : "验证码"
           }
         }
       }
@@ -42248,7 +42248,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "复制电子邮件地址"
+            "value" : "复制邮箱地址"
           }
         }
       }
@@ -44995,7 +44995,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "创建一个 Hide My Email 别名"
+            "value" : "创建 Hide My Email 别名"
           }
         }
       }
@@ -48122,7 +48122,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "自定义电子邮件地址"
+            "value" : "自定义邮箱地址"
           }
         }
       }
@@ -48288,7 +48288,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "自定义电子邮件监测"
+            "value" : "自定义邮箱监测"
           }
         }
       }
@@ -52155,7 +52155,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "删除账号"
+            "value" : "删除账户"
           }
         }
       }
@@ -52475,7 +52475,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "删除它，我不在需要这个了"
+            "value" : "删除它，我不再需要这个了"
           }
         }
       }
@@ -52967,7 +52967,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "确定永久删除？"
+            "value" : "确定要永久删除吗？"
           }
         }
       }
@@ -55221,7 +55221,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "驱动授权"
+            "value" : "驾驶证"
           }
         }
       }
@@ -55388,7 +55388,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "例如，恢复密钥、PIN 码"
+            "value" : "例如：恢复密钥、PIN 码"
           }
         }
       }
@@ -55555,7 +55555,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "例如，用户 ID、账号"
+            "value" : "例如：用户 ID、账号"
           }
         }
       }
@@ -56554,7 +56554,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "电子邮件地址"
+            "value" : "邮箱地址"
           }
         }
       }
@@ -56887,7 +56887,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "电子邮件地址已复制"
+            "value" : "邮箱地址已复制"
           }
         }
       }
@@ -57053,7 +57053,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "电邮地址已复制"
+            "value" : "邮箱地址已复制"
           }
         }
       }
@@ -63004,7 +63004,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "到期于:"
+            "value" : "到期于："
           }
         }
       }
@@ -64639,7 +64639,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "面容 ID 已启用"
+            "value" : "Face ID 已启用"
           }
         }
       }
@@ -68392,7 +68392,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "从"
+            "value" : "发件人"
           }
         }
       }
@@ -68552,7 +68552,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "来自您的别名 < %@ >"
+            "value" : "来自您的别名地址 <%@>"
           }
         }
       }
@@ -69952,6 +69952,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Password generate"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "パスワードを生成する"
           }
         },
         "nl" : {
@@ -72817,7 +72823,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hide-my-email"
+            "value" : "Hide My Email"
           }
         }
       }
@@ -90804,6 +90810,12 @@
             "value" : "Zdravotní záznam"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medicinsk journal"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -90939,6 +90951,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Přehled léků"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medicin"
           }
         },
         "de" : {
@@ -93795,10 +93813,124 @@
     "More" : {
       "comment" : "The title of the button to reveal the list of custom item templates",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Больш"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Další"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mere"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mehr"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Περισσότερα"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "More"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Más"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Más"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lainnya"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra altro"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "さらに表示"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meer"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Więcej"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mais"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mai mult"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viac"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mer"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diğer"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "更多"
           }
         }
       }
@@ -101146,7 +101278,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cyfry i symbole"
+            "value" : "Cyfry i znaki specjalne"
           }
         },
         "pt-BR" : {
@@ -125240,10 +125372,124 @@
     },
     "Save WiFi, passport, SSH, or go custom" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Захоўвайце Wi-Fi, пашпарт, SSH або карыстальніцкія запісы"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ukládejte Wi-Fi, hesla, SSH, nebo vlastní položky"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gem WiFi, pas, SSH eller noget brugerdefineret"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WLAN, Reisepass, SSH oder benutzerdefinierte Einträge speichern"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αποθηκεύστε WiFi, διαβατήριο, SSH ή προσαρμοσμένες πληροφορίες"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Save WiFi, passport, SSH, or go custom"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guarda los datos WiFi, contraseña, SSH o personalízalo"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guarde los datos de Wi-Fi, contraseña, SSH o personalícelo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistrez le code wifi, votre passeport, SSH ou optez pour une personnalisation"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Simpan WiFi, paspor, SSH, atau item khusus lainnya"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salva WiFi, passaporto, SSH, oppure personalizza"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi、パスポート、SSH、またはカスタムを保存"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wifi, paspoort, SSH opslaan of aangepast instellen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zapisz sieć Wi-Fi, paszport, klucz SSH lub coś innego"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salve Wi-Fi, passaporte, SSH ou personalizado"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salvați Wi-Fi, pașaportul, SSH sau personalizați"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uložte si WiFi, pas, SSH alebo si vytvorte vlastné"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spara WiFi, pass, SSH eller anpassad"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wi-Fi, pasaport, SSH veya özel olarak kaydedin"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保存 WiFi、护照信息、SSH 密钥，或使用自定义"
           }
         }
       }
@@ -141235,7 +141481,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "集成单点登录（即将推出）"
+            "value" : "SSO 集成（即将推出）"
           }
         }
       }
@@ -147024,7 +147270,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ini adalah upaya Anda yang terakhir. Anda akan dikeluarkan dari akun apabila Anda kembali gagal untuk mengautentikasi."
+            "value" : "Ini adalah upaya Anda yang terakhir. Anda akan dikeluarkan dari akun apabila Anda kembali gagal untuk mengautentikasi diri Anda."
           }
         },
         "it" : {
@@ -157361,7 +157607,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "面容 ID 失败时使用系统密码"
+            "value" : "Face ID 失败时使用系统密码"
           }
         }
       }
@@ -157693,7 +157939,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "触控 ID 失败时使用系统密码"
+            "value" : "Touch ID 失败时使用系统密码"
           }
         }
       }
@@ -164246,7 +164492,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kami mendeteksi perubahan dalam pengaturan autentikasi biometrik Anda. Demi keamanan, Anda telah dikeluarkan."
+            "value" : "Kami mendeteksi perubahan dalam pengaturan autentikasi biometrik Anda. Demi alasan keamanan, Anda telah dikeluarkan dari akun."
           }
         },
         "it" : {
@@ -167258,7 +167504,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "WiFi网络"
+            "value" : "WiFi 网络"
           }
         }
       }
@@ -173583,7 +173829,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Anda dikeluarkan dari akun gratis lainnya"
+            "value" : "Anda telah dikeluarkan dari akun gratis lainnya"
           }
         },
         "it" : {
