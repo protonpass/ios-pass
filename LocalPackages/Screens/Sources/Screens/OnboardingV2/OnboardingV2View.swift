@@ -65,6 +65,7 @@ public struct OnboardingV2View: View {
                 .frame(maxWidth: .infinity, alignment: .center)
             }
         }
+        .showSpinner(viewModel.isPurchasing)
         .task { await viewModel.setUp() }
     }
 }
