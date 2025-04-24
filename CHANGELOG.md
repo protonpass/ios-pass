@@ -1,3 +1,10 @@
+# Version 1.17.0
+Password history:
+You can now view a list of all your previously generated passwords. Navigate to the Profile tab > Generated passwords.
+
+Others:
+- New onboarding flow with payment support (behind feature flags)
+
 # Version 1.16.3
 - File attachment v2
 - Removed "PassIOSImportCsv" flag

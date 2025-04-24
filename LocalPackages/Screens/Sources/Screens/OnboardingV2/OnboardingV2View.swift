@@ -65,6 +65,7 @@ public struct OnboardingV2View: View {
                 .frame(maxWidth: .infinity, alignment: .center)
             }
         }
+        .showSpinner(viewModel.isPurchasing)
         .task { await viewModel.setUp() }
     }
 }
@@ -157,7 +158,7 @@ private extension OnboardingV2View {
                 }
             }
         }
-        .padding(.horizontal, DesignConstant.onboardingPadding)
+        .padding(UIDevice.current.isIpad ? .all : .horizontal, DesignConstant.onboardingPadding)
     }
 
     @ViewBuilder
@@ -237,17 +238,17 @@ private extension OnboardingV2View {
     }
 
     var notNowButton: some View {
-        CapsuleTextButton(title: #localized("Not now", bundle: .module),
-                          titleColor: .white,
-                          backgroundColor: .clear,
-                          maxWidth: nil,
-                          action: {
-                              Task {
-                                  if await !viewModel.goNext() {
-                                      dismiss()
-                                  }
-                              }
-                          })
+        Button(action: {
+            Task {
+                if await !viewModel.goNext() {
+                    dismiss()
+                }
+            }
+        }, label: {
+            Text("Not now", bundle: .module)
+                .font(.callout)
+                .foregroundStyle(.white)
+        })
     }
 
     @ViewBuilder
