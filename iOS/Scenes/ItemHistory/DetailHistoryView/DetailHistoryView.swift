@@ -72,8 +72,8 @@ struct DetailHistoryView: View {
             }
             .sheet(item: $selectedKeyType) { keyType in
                 let value = switch keyType {
-                case .private: viewModel.currentRevision.sshKey?.privateKey
-                case .public: viewModel.currentRevision.sshKey?.publicKey
+                case .private: viewModel.selectedRevisionContent.sshKey?.privateKey
+                case .public: viewModel.selectedRevisionContent.sshKey?.publicKey
                 }
 
                 if let value {
