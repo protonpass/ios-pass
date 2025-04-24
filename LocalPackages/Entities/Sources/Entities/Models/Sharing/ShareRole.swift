@@ -21,8 +21,8 @@
 import Foundation
 
 public enum ShareRole: String, CaseIterable, Equatable, Sendable, Comparable {
-    /// Administrator
-    case admin = "1"
+    /// Formerly "admin"
+    case manager = "1"
     /// Full write permission. They can do anything an admin can do except manage membership and invite users.
     case write = "2"
     /// Read only. Can only read the contents of a share. They can update the last used time for themselves.
@@ -37,7 +37,7 @@ private extension ShareRole {
     // Used for comparison
     var weight: Int {
         switch self {
-        case .admin: 3
+        case .manager: 3
         case .write: 2
         case .read: 1
         }

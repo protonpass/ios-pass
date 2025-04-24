@@ -137,7 +137,7 @@ private extension SharingSummaryView {
                 .foregroundStyle(PassColor.textWeak.toColor)
                 .frame(height: 20)
             VStack(alignment: .leading, spacing: 15) {
-                Text(infos.role.title)
+                Text(infos.role.title(managerAsAdmin: viewModel.managerAsAdmin))
                     .foregroundStyle(PassColor.textNorm.toColor)
                 Text(infos.role.description(isItemSharing: infos.shareElement.isItem))
                     .foregroundStyle(PassColor.textWeak.toColor)
@@ -171,7 +171,7 @@ private extension SharingSummaryView {
                                 Text(info.email)
                                     .foregroundStyle(PassColor.textNorm.toColor)
                                 HStack {
-                                    Text(info.role.title)
+                                    Text(info.role.title(managerAsAdmin: viewModel.managerAsAdmin))
                                         .foregroundStyle(PassColor.textWeak.toColor)
                                 }
                             }

@@ -52,7 +52,7 @@ public final class GetUserShareStatus: @unchecked Sendable, GetUserShareStatusUs
     }
 
     public func execute(for vault: Share) -> UserShareStatus {
-        guard let plan, vault.isAdmin || vault.isOwner else {
+        guard let plan, vault.isManager || vault.isOwner else {
             return .cantShare
         }
 

@@ -90,7 +90,7 @@ private extension ManageSharedShareView {
             if !viewModel.itemMembers.isEmpty {
                 inviteesSection(for: viewModel.itemMembers,
                                 isVaultSection: false,
-                                canExecuteActions: viewModel.share.shareRole == .admin,
+                                canExecuteActions: viewModel.share.shareRole == .manager,
                                 canSeeAccessLevel: viewModel.share.shareRole != .read,
                                 title: "Item sharing: \(viewModel.itemMembers.count) users")
             }
@@ -98,8 +98,8 @@ private extension ManageSharedShareView {
             if !viewModel.vaultMembers.isEmpty {
                 inviteesSection(for: viewModel.vaultMembers,
                                 isVaultSection: true,
-                                canExecuteActions: viewModel.share.shareRole == .admin && viewModel.share
-                                    .isVaultRepresentation,
+                                canExecuteActions: viewModel.share.shareRole == .manager &&
+                                    viewModel.share.isVaultRepresentation,
                                 canSeeAccessLevel: viewModel.share.isVaultRepresentation,
                                 title: "Vault sharing: \(viewModel.vaultMembers.count) members")
             }
@@ -168,7 +168,8 @@ private extension ManageSharedShareView {
                 }
                 ForEach(Array(invitees.enumerated()), id: \.element.id) { index, invitee in
                     ShareInviteeView(invitee: invitee,
-                                     isAdmin: canExecuteActions,
+                                     isManager: canExecuteActions,
+                                     managerAsAdmin: viewModel.managerAsAdmin,
                                      isCurrentUser: viewModel.isCurrentUser(invitee),
                                      canSeeAccessLevel: canSeeAccessLevel,
                                      canTransferOwnership: viewModel.canTransferOwnership(to: invitee),
