@@ -40,11 +40,11 @@ extension UserShareInfos: @retroactive ShareInvitee {
         userEmail
     }
 
-    public var subtitle: String {
+    public func subtitle(managerAsAdmin: Bool) -> String {
         if owner {
             #localized("Owner")
         } else {
-            shareRole.title
+            shareRole.title(managerAsAdmin: managerAsAdmin)
         }
     }
 
@@ -52,8 +52,8 @@ extension UserShareInfos: @retroactive ShareInvitee {
         false
     }
 
-    public var isAdmin: Bool {
-        shareRole == .admin
+    public var isManager: Bool {
+        shareRole == .manager
     }
 
     public var options: [ShareInviteeOption] {
@@ -74,7 +74,7 @@ extension ShareExistingUserInvite: @retroactive ShareInvitee {
         invitedEmail
     }
 
-    public var subtitle: String {
+    public func subtitle(managerAsAdmin: Bool) -> String {
         #localized("Invitation sent")
     }
 
@@ -82,8 +82,8 @@ extension ShareExistingUserInvite: @retroactive ShareInvitee {
         true
     }
 
-    public var isAdmin: Bool {
-        shareRole == .admin
+    public var isManager: Bool {
+        shareRole == .manager
     }
 
     public var options: [ShareInviteeOption] {
@@ -103,12 +103,12 @@ extension ShareNewUserInvite: @retroactive ShareInvitee {
         invitedEmail
     }
 
-    public var subtitle: String {
+    public func subtitle(managerAsAdmin: Bool) -> String {
         switch inviteState {
         case .waitingForAccountCreation:
             #localized("Pending account creation")
         case .accountCreated:
-            shareRole.title
+            shareRole.title(managerAsAdmin: managerAsAdmin)
         }
     }
 
@@ -116,8 +116,8 @@ extension ShareNewUserInvite: @retroactive ShareInvitee {
         true
     }
 
-    public var isAdmin: Bool {
-        shareRole == .admin
+    public var isManager: Bool {
+        shareRole == .manager
     }
 
     public var options: [ShareInviteeOption] {

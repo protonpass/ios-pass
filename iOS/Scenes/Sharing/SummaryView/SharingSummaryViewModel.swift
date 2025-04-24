@@ -37,8 +37,15 @@ final class SharingSummaryViewModel: ObservableObject {
     private let sendShareInvite = resolve(\UseCasesContainer.sendShareInvite)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
 
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private var getFeatureFlagStatus
+
     private var lastTask: Task<Void, Never>?
     private var plan: Plan?
+
+    var managerAsAdmin: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passRenameAdminToManager)
+    }
 
     init() {
         setUp()

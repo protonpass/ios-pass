@@ -88,7 +88,7 @@ struct ShareTests {
     @Test("Check computed properties")
     func computedProperties() throws {
         let share = try decoder.decode(Share.self, from: validVaultJSON)
-        #expect(share.isAdmin)
+        #expect(share.isManager)
         #expect(share.reachedSharingLimit == false)
         #expect(share.canShareWithMorePeople)
         #expect(share.totalOverallMembers == 12)

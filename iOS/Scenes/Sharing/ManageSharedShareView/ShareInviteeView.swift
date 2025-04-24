@@ -27,7 +27,8 @@ import SwiftUI
 struct ShareInviteeView: View {
     @State private var isExpanded = false
     let invitee: any ShareInvitee
-    let isAdmin: Bool
+    let isManager: Bool
+    let managerAsAdmin: Bool
     let isCurrentUser: Bool
     let canSeeAccessLevel: Bool
     let canTransferOwnership: Bool
@@ -72,7 +73,7 @@ private extension ShareInviteeView {
                             .background(Capsule().fill(PassColor.interactionNorm.toColor))
                     }
                     if canSeeAccessLevel {
-                        Text(invitee.subtitle)
+                        Text(invitee.subtitle(managerAsAdmin: managerAsAdmin))
                             .foregroundStyle(PassColor.textWeak.toColor)
                     } else {
                         Text(invitee.owner ? "Owner" : "Viewer")
@@ -83,7 +84,7 @@ private extension ShareInviteeView {
 
             Spacer()
 
-            if isAdmin, !isCurrentUser, !invitee.owner {
+            if isManager, !isCurrentUser, !invitee.owner {
                 trailingView
             }
         }
@@ -112,7 +113,7 @@ private extension ShareInviteeView {
                             Button(action: {
                                 onSelect(.updateRole(shareId: shareId, role: role))
                             }, label: {
-                                Text(role.title)
+                                Text(role.title(managerAsAdmin: managerAsAdmin))
                                 Text(role.description(isItemSharing: invitee.shareType == .item))
                             })
                         }, icon: {
