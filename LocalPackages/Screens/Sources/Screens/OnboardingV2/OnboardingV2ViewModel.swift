@@ -101,6 +101,7 @@ enum OnboardV2Step: Sendable, Equatable {
 @MainActor
 final class OnboardingV2ViewModel: ObservableObject {
     @Published private(set) var currentStep: FetchableObject<OnboardV2Step> = .fetching
+    @Published private(set) var isPurchasing = false
     @Published private(set) var isSaving = false
     @Published private(set) var finished = false
     @Published var selectedPlan: PlanUiModel?
@@ -256,6 +257,8 @@ extension OnboardingV2ViewModel {
         guard let selectedPlan else { return }
         Task { [weak self] in
             guard let self else { return }
+            defer { isPurchasing = false }
+            isPurchasing = true
             do {
                 try await delegate?.purchase(selectedPlan.plan)
                 _ = await goNext()
