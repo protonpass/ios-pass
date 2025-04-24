@@ -72,7 +72,7 @@ final class OnboardingV2Handler {
 
 extension OnboardingV2Handler: OnboardingV2Datasource {
     func getPassPlans() async throws -> PassPlans? {
-        guard let manager = try await getPlansManager() else {
+        guard !Bundle.main.isBetaBuild, let manager = try await getPlansManager() else {
             return nil
         }
         let plans = try await manager.getAvailablePlans()
