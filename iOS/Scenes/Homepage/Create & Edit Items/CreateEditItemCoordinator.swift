@@ -98,7 +98,7 @@ extension CreateEditItemCoordinator {
         case .identity:
             try presentCreateEditIdentityView(mode: .create(shareId: shareId, type: .identity))
         case .custom:
-            try presentCustomItemList(onError)
+            try presentCustomItemList(shareId: shareId, onError: onError)
         }
     }
 
@@ -208,11 +208,11 @@ private extension CreateEditItemCoordinator {
 // MARK: - Custom item
 
 private extension CreateEditItemCoordinator {
-    func presentCustomItemList(_ onError: @escaping (any Error) -> Void) throws {
+    func presentCustomItemList(shareId: String?, onError: @escaping (any Error) -> Void) throws {
         let view = CustomItemTemplatesList { [weak self] template in
             guard let self else { return }
             do {
-                try handle(template: template)
+                try handle(template: template, shareId: shareId)
             } catch {
                 onError(error)
             }
@@ -221,14 +221,14 @@ private extension CreateEditItemCoordinator {
         present(view, dismissable: true)
     }
 
-    func handle(template: CustomItemTemplate) throws {
+    func handle(template: CustomItemTemplate, shareId: String?) throws {
         switch template {
         case .sshKey:
-            try presentCreateEditSshKeyView(mode: .create(shareId: nil, type: .sshKey))
+            try presentCreateEditSshKeyView(mode: .create(shareId: shareId, type: .sshKey))
         case .wifi:
-            try presentCreateEditWifiView(mode: .create(shareId: nil, type: .wifi))
+            try presentCreateEditWifiView(mode: .create(shareId: shareId, type: .wifi))
         default:
-            try presentCreateEditCustomView(mode: .create(shareId: nil, type: .custom(template)))
+            try presentCreateEditCustomView(mode: .create(shareId: shareId, type: .custom(template)))
         }
     }
 }
