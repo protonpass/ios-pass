@@ -217,7 +217,7 @@ private extension SearchViewModel {
             let filteredResults: [ItemSearchResult] = if let selectedType {
                 try results.filter {
                     try Task.checkCancellation()
-                    return $0.type == selectedType
+                    return $0.type.isSameType(with: selectedType)
                 }
             } else {
                 results
