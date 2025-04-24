@@ -129,6 +129,37 @@ extension ItemContentType {
     }
 }
 
+// MARK: Thumbnail colors
+
+extension ItemContentType {
+    var thumbnailTintColor: UIColor {
+        switch self {
+        case .custom, .sshKey, .wifi:
+            PassColor.textNorm
+        default:
+            normMajor2Color
+        }
+    }
+
+    var thumbnailBackgroundColor: UIColor {
+        switch self {
+        case .custom, .sshKey, .wifi:
+            PassColor.customItemBackground
+        default:
+            normMinor1Color
+        }
+    }
+
+    var thumbnailAlternativeBackgroundColor: UIColor {
+        switch self {
+        case .custom, .sshKey, .wifi:
+            PassColor.customItemBackground
+        default:
+            normMinor2Color
+        }
+    }
+}
+
 // MARK: - Messages
 
 extension ItemContentType {
