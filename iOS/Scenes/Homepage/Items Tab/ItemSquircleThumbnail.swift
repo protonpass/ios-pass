@@ -95,9 +95,9 @@ private extension ItemSquircleThumbnail {
         switch data {
         case let .icon(type):
             SquircleThumbnail(data: iconData(type: type),
-                              tintColor: type.normMajor2Color,
-                              backgroundColor: !isEnabled ? .clear : alternativeBackground ? type
-                                  .normMinor2Color : type.normMinor1Color,
+                              tintColor: type.thumbnailTintColor,
+                              backgroundColor: !isEnabled ? .clear : alternativeBackground ?
+                                  type.thumbnailAlternativeBackgroundColor : type.thumbnailBackgroundColor,
                               height: size.height)
                 .if(!isEnabled) { view in
                     view.overlay {
@@ -110,7 +110,8 @@ private extension ItemSquircleThumbnail {
         case let .initials(type, initials):
             SquircleThumbnail(data: .initials(initials),
                               tintColor: type.normMajor2Color,
-                              backgroundColor: alternativeBackground ? type.normMinor2Color : type.normMinor1Color,
+                              backgroundColor: alternativeBackground ?
+                                  type.thumbnailAlternativeBackgroundColor : type.thumbnailBackgroundColor,
                               height: size.height)
 
         case let .favIcon(type, url, initials):
@@ -129,8 +130,8 @@ private extension ItemSquircleThumbnail {
                 } else {
                     SquircleThumbnail(data: .initials(initials),
                                       tintColor: type.normMajor2Color,
-                                      backgroundColor: alternativeBackground ? type.normMinor2Color : type
-                                          .normMinor1Color,
+                                      backgroundColor: alternativeBackground ?
+                                          type.thumbnailAlternativeBackgroundColor : type.thumbnailBackgroundColor,
                                       height: size.height)
                 }
             }

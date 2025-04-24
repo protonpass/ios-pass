@@ -21,6 +21,7 @@
 import Core
 import Entities
 import Foundation
+import Macro
 
 final class CreateEditWifiViewModel: BaseCreateEditItemViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
@@ -43,6 +44,9 @@ final class CreateEditWifiViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
 
     override func bindValues() {
         switch mode {
+        case .create:
+            customFields = [.init(title: #localized("Note"), type: .text, content: "")]
+
         case let .clone(itemContent), let .edit(itemContent):
             if case let .wifi(data) = itemContent.contentData {
                 title = itemContent.name
@@ -51,9 +55,6 @@ final class CreateEditWifiViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
                 security = data.security
                 customSections = data.extraSections
             }
-
-        default:
-            break
         }
     }
 

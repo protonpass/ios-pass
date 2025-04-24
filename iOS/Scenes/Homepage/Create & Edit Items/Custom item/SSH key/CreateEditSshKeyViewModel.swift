@@ -21,6 +21,7 @@
 import Core
 import Entities
 import Foundation
+import Macro
 
 final class CreateEditSshKeyViewModel: BaseCreateEditItemViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
@@ -42,15 +43,19 @@ final class CreateEditSshKeyViewModel: BaseCreateEditItemViewModel, DeinitPrinta
 
     override func bindValues() {
         switch mode {
+        case .create:
+            customFields = [
+                .init(title: #localized("Username"), type: .text, content: ""),
+                .init(title: #localized("Host"), type: .text, content: ""),
+                .init(title: #localized("Note"), type: .text, content: "")
+            ]
+
         case let .clone(itemContent), let .edit(itemContent):
             if case let .sshKey(data) = itemContent.contentData {
                 title = itemContent.name
                 publicKey = data.publicKey
                 privateKey = data.privateKey
             }
-
-        default:
-            break
         }
     }
 

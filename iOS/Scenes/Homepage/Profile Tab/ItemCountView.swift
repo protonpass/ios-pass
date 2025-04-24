@@ -144,7 +144,9 @@ private struct CounterChip: View {
 
 private extension ItemContentType {
     var toConfiguration: CounterChip.Configuration {
-        .init(icon: regularIcon, iconTint: normColor, iconBackground: normMinor1Color)
+        .init(icon: regularIcon,
+              iconTint: thumbnailTintColor,
+              iconBackground: thumbnailBackgroundColor)
     }
 }
 
