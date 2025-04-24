@@ -183,7 +183,7 @@ struct EditableVaultListView: View {
                     viewModel.router.present(for: .manageSharedShare(.vault(vault), .none))
                 }, label: {
                     Label(title: {
-                        Text(vault.isAdmin ? "Manage access" : "View members")
+                        Text(vault.isManager ? "Manage access" : "View members")
                     }, icon: {
                         IconProvider.users
                     })

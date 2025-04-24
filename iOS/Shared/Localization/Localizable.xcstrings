@@ -90320,6 +90320,16 @@
         }
       }
     },
+    "Manager" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manager"
+          }
+        }
+      }
+    },
     "Mark as resolved" : {
       "localizations" : {
         "be" : {

@@ -24,13 +24,14 @@ import Foundation
 public protocol ShareInvitee: Identifiable, Equatable {
     var id: String { get }
     var email: String { get }
-    var subtitle: String { get }
     var isPending: Bool { get }
-    var isAdmin: Bool { get }
+    var isManager: Bool { get }
     var owner: Bool { get }
     var shareRole: ShareRole { get }
     var shareType: TargetType { get }
     var options: [ShareInviteeOption] { get }
+
+    func subtitle(managerAsAdmin: Bool) -> String
 }
 
 public enum ShareInviteeOption: Identifiable, Sendable {

@@ -415,7 +415,7 @@ private extension BaseItemDetailViewModel {
                 let passUserInfos = try await accessRepository.getPassUserInformation(userId: userId)
                 guard passUserInfos.canDisplayFeatureDiscovery else { return }
 
-                guard vault?.vault.shareRole == .admin else { return }
+                guard vault?.vault.shareRole == .manager else { return }
 
                 // If user is B2B, make sure the policy allows item sharing
                 if let org = try await organizationRepository.getOrganization(userId: userId),
