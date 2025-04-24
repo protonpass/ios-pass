@@ -100,7 +100,7 @@ private extension UserPermissionView {
                     Button(action: {
                         viewModel.setRoleForAll(with: role)
                     }, label: {
-                        Text(role.title)
+                        Text(role.title(managerAsAdmin: viewModel.managerAsAdmin))
                         Text(role.description(isItemSharing: viewModel.isItemSharing))
                     })
                 }
@@ -127,7 +127,7 @@ private extension UserPermissionView {
                             .foregroundStyle(PassColor.textNorm.toColor)
                         if let currentRole = viewModel.emails[email] {
                             HStack {
-                                Text(currentRole.title)
+                                Text(currentRole.title(managerAsAdmin: viewModel.managerAsAdmin))
                                     .foregroundStyle(PassColor.textWeak.toColor)
                             }
                         }
@@ -152,7 +152,7 @@ private extension UserPermissionView {
                     Button(action: {
                         viewModel.updateRole(for: email, with: role)
                     }, label: {
-                        Text(role.title)
+                        Text(role.title(managerAsAdmin: viewModel.managerAsAdmin))
                         Text(role.description(isItemSharing: viewModel.isItemSharing))
                     })
                 }, icon: {
@@ -196,7 +196,7 @@ private extension UserPermissionView {
                 } label: {
                     HStack(spacing: 16) {
                         VStack(alignment: .leading, spacing: 2) {
-                            Text(role.title)
+                            Text(role.title(managerAsAdmin: viewModel.managerAsAdmin))
                                 .foregroundStyle(PassColor.textNorm.toColor)
                                 .padding(.bottom, 2)
 

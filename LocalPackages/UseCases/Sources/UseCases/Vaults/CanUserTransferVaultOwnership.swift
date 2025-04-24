@@ -41,7 +41,10 @@ public final class CanUserTransferVaultOwnership: CanUserTransferVaultOwnershipU
     }
 
     public func execute(for vault: Share, to invitee: any ShareInvitee) -> Bool {
-        guard invitee.shareType == .vault else { return false }
-        return vault.isOwner && !invitee.isPending && invitee.isAdmin && !appContentManager.hasOnlyOneOwnedVault
+        invitee.shareType == .vault &&
+            vault.isOwner &&
+            !invitee.isPending &&
+            invitee.isManager &&
+            !appContentManager.hasOnlyOneOwnedVault
     }
 }

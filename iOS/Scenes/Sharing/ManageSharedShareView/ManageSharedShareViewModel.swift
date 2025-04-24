@@ -64,6 +64,13 @@ final class ManageSharedShareViewModel: ObservableObject, @unchecked Sendable {
     @LazyInjected(\SharedRepositoryContainer.organizationRepository)
     private var organizationRepository
 
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private var getFeatureFlagStatus
+
+    var managerAsAdmin: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passRenameAdminToManager)
+    }
+
     var reachedLimit: Bool {
         numberOfInvitesLeft <= 0
     }
@@ -319,7 +326,7 @@ private extension ManageSharedShareViewModel {
     }
 
     func fetchPendingInvitations() async throws -> ShareInvites {
-        guard share.isAdmin else {
+        guard share.isManager else {
             return .default
         }
         return try await getPendingInvitationsForShare(with: share.shareId)

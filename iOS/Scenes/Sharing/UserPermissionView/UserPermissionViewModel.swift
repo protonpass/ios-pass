@@ -20,6 +20,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Client
 import Entities
 import Factory
 import Foundation
@@ -32,6 +33,13 @@ final class UserPermissionViewModel: ObservableObject {
 
     private let setShareInviteRole = resolve(\UseCasesContainer.setShareInviteRole)
     private let shareInviteService = resolve(\ServiceContainer.shareInviteService)
+
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private var getFeatureFlagStatus
+
+    var managerAsAdmin: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passRenameAdminToManager)
+    }
 
     var hasOnlyOneInvite: Bool {
         emails.count == 1

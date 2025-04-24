@@ -187,8 +187,8 @@ public extension Share {
         shareType == .vault
     }
 
-    var isAdmin: Bool {
-        shareRole == ShareRole.admin
+    var isManager: Bool {
+        shareRole == ShareRole.manager
     }
 
     var canEdit: Bool {
@@ -208,7 +208,7 @@ public extension Share {
     }
 
     var canShareWithMorePeople: Bool {
-        (isOwner || isAdmin) && !reachedSharingLimit
+        (isOwner || isManager) && !reachedSharingLimit
     }
 
     var vaultName: String? {
