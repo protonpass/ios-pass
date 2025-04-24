@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Core
 import Macro
 import ProtonCorePaymentsV2
 import StoreKit
@@ -38,8 +39,8 @@ public struct PlanUiModel: Equatable, Sendable {
         formatter.locale = product.priceFormatStyle.locale
         formatter.numberStyle = .currency
 
-        let monthlyPrice = (product.price / 12) as NSNumber
-        guard let monthlyPrice = formatter.string(from: monthlyPrice),
+        let monthlyPrice = (product.price / 12).floored(to: 2)
+        guard let monthlyPrice = formatter.string(from: monthlyPrice as NSNumber),
               let yearlyPrice = formatter.string(from: product.price as NSNumber) else {
             return nil
         }
