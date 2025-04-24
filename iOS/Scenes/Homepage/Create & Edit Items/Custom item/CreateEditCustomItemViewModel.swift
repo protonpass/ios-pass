@@ -219,11 +219,11 @@ private extension CustomItemTemplate {
         case .passport:
             [
                 .init(title: #localized("Full name")),
-                .init(title: #localized("Passport number")),
+                .init(title: #localized("Passport number"), type: .hiddenText),
                 .init(title: #localized("Country")),
                 .expiryDate,
                 .dateOfBirth,
-                .init(title: #localized("Issuing authority"), type: .date),
+                .init(title: #localized("Issuing authority")),
                 .note
             ]
 
