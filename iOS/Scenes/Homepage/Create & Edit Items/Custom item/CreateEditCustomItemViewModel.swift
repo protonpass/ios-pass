@@ -223,7 +223,7 @@ private extension CustomItemTemplate {
                 .init(title: #localized("Country")),
                 .expiryDate,
                 .dateOfBirth,
-                .init(title: #localized("Issuing authority"), type: .date),
+                .init(title: #localized("Issuing authority")),
                 .note
             ]
 
