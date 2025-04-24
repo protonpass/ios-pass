@@ -22,14 +22,14 @@ import Entities
 import Macro
 
 extension ShareRole {
-    var title: String {
+    func title(managerAsAdmin: Bool) -> String {
         switch self {
         case .read:
             #localized("Viewer")
         case .write:
             #localized("Editor")
-        case .admin:
-            #localized("Admin")
+        case .manager:
+            managerAsAdmin ? #localized("Manager") : #localized("Admin")
         }
     }
 
@@ -40,7 +40,7 @@ extension ShareRole {
         case .write:
             isItemSharing ? #localized("Can edit and delete this item.") :
                 #localized("Can create, edit, delete and export items in this vault")
-        case .admin:
+        case .manager:
             isItemSharing ? #localized("Can grant and revoke access to the item.") :
                 #localized("Can grant and revoke access to this vault")
         }

@@ -52,7 +52,7 @@ final class ShareElementViewModel: ObservableObject {
     }
 
     var showSecureLinkCreation: Bool {
-        !itemContent.isAlias && share.shareRole == .admin
+        !itemContent.isAlias && share.shareRole == .manager
     }
 
     init(share: Share, itemContent: ItemContent, itemCount: Int?) {

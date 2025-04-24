@@ -35,7 +35,7 @@ public struct SharesData: Hashable, Sendable {
         var sharedWithMeShareIds: Set<String> = []
 
         for share in shares {
-            if share.share.shareRole == .admin {
+            if share.share.shareRole == .manager {
                 sharedByMeShareIds.insert(share.share.shareId)
             }
             if !share.share.isVaultRepresentation, !share.share.owner {
