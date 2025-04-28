@@ -70,6 +70,12 @@
             "value" : "%@/月"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@/måned"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -92,6 +98,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@/lună"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@/mesiac"
           }
         },
         "sv" : {
@@ -1659,6 +1671,30 @@
             }
           }
         },
+        "nb" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld element"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elementer"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld element"
+                }
+              }
+            }
+          }
+        },
         "nl" : {
           "variations" : {
             "plural" : {
@@ -2497,6 +2533,12 @@
             "value" : "10 GB"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "10 GB"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2519,6 +2561,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "10 GiB"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "10 GB"
           }
         },
         "sv" : {
@@ -2610,6 +2658,12 @@
             "value" : "500 GB"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "500 GB"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2632,6 +2686,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "500 GiB"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "500 GB"
           }
         },
         "sv" : {
@@ -3724,6 +3784,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "セクションを追加"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legg til seksjon"
           }
         },
         "nl" : {
@@ -5145,7 +5211,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se renueva automáticamente a %@ cada año"
+            "value" : "Se renueva automáticamente por %@ cada año"
           }
         },
         "fr" : {
@@ -5172,6 +5238,12 @@
             "value" : "毎年%@で自動更新されます"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fornyes automatisk til %@ hvert år"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5194,6 +5266,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reînnoire automată cu %@ anual"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatické obnovenie každoročne za %@"
           }
         },
         "sv" : {
@@ -5257,7 +5335,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ingrese automáticamente sus contraseñas en Safari y otras aplicaciones de forma rápida y sencilla."
+            "value" : "Ingresa automáticamente sus contraseñas en Safari y otras aplicaciones de forma rápida y sencilla."
           }
         },
         "fr" : {
@@ -5284,10 +5362,22 @@
             "value" : "Safariやその他のアプリで、 パスワード を非常に速く簡単に入力できます。"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fyll automatisk inn passordene dine i Safari og andre apper på en rask og enkel måte."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Voer uw wachtwoorden automatisch in Safari en andere apps op een zeer snelle en eenvoudige manier in."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatycznie uzupełniaj hasła w Safari i innych aplikacjach."
           }
         },
         "pt-BR" : {
@@ -5300,6 +5390,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vă introduceți automat parolele în Safari și alte aplicații într-un mod foarte rapid și ușor."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatické zadávanie hesiel v Safari a iných aplikáciách naozaj rýchlym a jednoduchým spôsobom."
           }
         },
         "sv" : {
@@ -5390,6 +5486,12 @@
             "value" : "内蔵の2要素認証"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Innebygd 2FA"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5412,6 +5514,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "A2F încorporată"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zabudovaná 2FA"
           }
         },
         "sv" : {
@@ -6141,6 +6249,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "履歴の消去"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tøm historikk"
           }
         },
         "nl" : {
@@ -7755,6 +7869,12 @@
             "value" : "最初のログインを作成"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opprett din første pålogging"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7777,6 +7897,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Creați-vă prima autentificare"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vytvorte si svoje prvé prihlásenie"
           }
         },
         "sv" : {
@@ -8995,6 +9121,12 @@
             "value" : "例：LinkedIn"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "F.eks. LinkedIn"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9017,6 +9149,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "De ex. LinkedIn"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Napr. LinkedIn"
           }
         },
         "sv" : {
@@ -9117,6 +9255,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "セクションのタイトルを編集"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rediger seksjonens tittel"
           }
         },
         "nl" : {
@@ -9735,6 +9879,12 @@
             "value" : "Optic ID を有効にする"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiver Optisk ID"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9757,6 +9907,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Activați Optic ID"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Povoliť Optic ID"
           }
         },
         "sv" : {
@@ -10677,10 +10833,22 @@
             "value" : "追加のメールアドレス"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ekstra e-postadresser"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Extra e-mailadressen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodatkowe adresy e-mail"
           }
         },
         "pt-BR" : {
@@ -10693,6 +10861,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Adrese de e-mail suplimentare"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ďalšie emailové adresy"
           }
         },
         "sv" : {
@@ -10886,7 +11060,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "První vytvořené přihlášení"
+            "value" : "První přihlášení vytvořeno"
           }
         },
         "de" : {
@@ -10943,10 +11117,22 @@
             "value" : "最初のログインが作成されました"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Første pålogging opprettet"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Eerste login aangemaakt"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utworzono pierwsze dane logowania"
           }
         },
         "pt-BR" : {
@@ -10959,6 +11145,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "S-a creat prima autentificare."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prvé prihlásenie vytvorené"
           }
         },
         "sv" : {
@@ -11548,10 +11740,16 @@
             "value" : "無料"
           }
         },
-        "nl" : {
+        "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Free"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gratis"
           }
         },
         "pt-BR" : {
@@ -11561,6 +11759,12 @@
           }
         },
         "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free"
+          }
+        },
+        "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Free"
@@ -11658,6 +11862,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "パスワードを生成する"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Genererte passord"
           }
         },
         "nl" : {
@@ -11782,6 +11992,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "生成されたパスワードは 2 週間保存されます。"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Genererte passord vil bli lagret i 2 uker."
           }
         },
         "nl" : {
@@ -12195,7 +12411,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Obtenga Proton Unlimited"
+            "value" : "Obtener Proton Unlimited"
           }
         },
         "fr" : {
@@ -12222,6 +12438,18 @@
             "value" : "Proton Unlimitedを入手"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Unlimited 구매"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skaff deg Proton Unlimited"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12244,6 +12472,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Obțineți Proton Unlimited"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Získajte Proton Unlimited"
           }
         },
         "sv" : {
@@ -12334,6 +12568,12 @@
             "value" : "始めましょう"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kom i gang"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12356,6 +12596,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Începeți"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Začíname"
           }
         },
         "sv" : {
@@ -12934,6 +13180,12 @@
             "value" : "最高速"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Høyeste"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12956,6 +13208,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Maximă"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Najvyššia"
           }
         },
         "sv" : {
@@ -13849,6 +14107,12 @@
             "value" : "Proton Passの利用方法"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lær hvordan du bruker Proton Pass"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13871,6 +14135,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aflați cum să utilizați Proton Pass"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Naučte sa, ako používať Proton Pass"
           }
         },
         "sv" : {
@@ -14294,6 +14564,12 @@
             "value" : "中"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Middels"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14316,6 +14592,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Medie"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stredná"
           }
         },
         "sv" : {
@@ -14410,6 +14692,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "履歴はありません"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen historikk"
           }
         },
         "nl" : {
@@ -14843,6 +15131,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "なし"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen"
           }
         },
         "nl" : {
@@ -17735,6 +18029,12 @@
             "value" : "履歴から削除"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fjern fra historikk"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17863,6 +18163,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "セクションを削除"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fjern seksjon"
           }
         },
         "nl" : {
@@ -19596,6 +19902,12 @@
             "value" : "サービス"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tjeneste"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19618,6 +19930,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Serviciu"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Služba"
           }
         },
         "sv" : {
@@ -19690,6 +20008,12 @@
             "value" : "Paramétrez Proton Pass pour qu'il se déverrouille avec votre visage ou votre empreinte digitale afin que vous seul puissiez y accéder."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atur Proton Pass untuk membuka kunci dengan wajah atau sidik jari Anda sehingga hanya Anda yang memiliki akses."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19702,10 +20026,22 @@
             "value" : "Proton Pass を設定して顔または指紋でロックを解除し、自分だけがアクセスできるようにします."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sett Proton Pass til å låse opp med ansiktet eller fingeravtrykket slik at bare du har tilgang."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Stel Proton Pass in om te ontgrendelen met uw gezicht of vingerafdruk, zodat alleen u toegang hebt."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odblokuj aplikację Proton Pass za pomocą twarzy lub odcisku palca."
           }
         },
         "pt-BR" : {
@@ -19718,6 +20054,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Setați deblocarea Proton Pass cu fața sau amprenta, pentru a avea acces exclusiv."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastavte Proton Pass na odomknutie tvárou alebo odtlačkom prsta, aby ste iba vy mali k nemu prístup."
           }
         },
         "sv" : {
@@ -21402,6 +21744,12 @@
             "value" : "Ne communiquez plus votre véritable adresse e-mail. Masquez-la plutôt avec des alias d'adresse e-mail, une exclusivité de Proton Pass."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Berhenti membagikan alamat email Anda yang sebenarnya. Sembunyikan dengan alias email—eksklusif untuk Proton Pass."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21414,10 +21762,22 @@
             "value" : "本当のメールアドレスを共有するのはやめてください。代わりに、メールエイリアスで非表示にします - Proton Pass専用です。"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slutt å dele den virkelige e-postadressen din. Skjul den heller med e-postaliaser – en Proton Pass-eksklusivitet."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Stop met het delen van uw echte e-mailadres. Verberg het in plaats daarvan met e-mailadres aliassen, exclusief voor Proton Pass."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zatrzymaj udostępnianie swojego prawdziwego adres e-mail. Zamiast tego ukryj go za pomocą aliasów — wyłącznie w Proton Pass."
           }
         },
         "pt-BR" : {
@@ -21430,6 +21790,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nu vă mai partajați adresa de e-mail reală. În schimb, ascundeți-o cu aliasuri de e-mail - exclusiv cu Proton Pass."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prestaňte zdieľať svoju skutočnú emailovú adresu. Namiesto toho ju skryte pomocou emailových aliasov – exkluzívne v službe Proton Pass."
           }
         },
         "tr" : {
@@ -22993,10 +23359,22 @@
             "value" : "1つのサブスクリプションで最高のProtonを。"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Det beste av Proton med ett abonnement."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Het beste van Proton met één abonnement."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To, co najlepsze w Proton, w jednej subskrypcji."
           }
         },
         "pt-BR" : {
@@ -23009,6 +23387,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ce e mai bun de la Proton cu un singur abonament."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To najlepšie z Protonu s jedným predplatným."
           }
         },
         "sv" : {
@@ -23736,7 +24120,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Desbloquee las funciones prémium."
+            "value" : "Desbloquee las funciones premium."
           }
         },
         "fr" : {
@@ -23763,10 +24147,22 @@
             "value" : "プレミアム機能を解除。"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lås opp premiumfunksjoner."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ontgrendel premium functies."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odblokuj funkcje premium."
           }
         },
         "pt-BR" : {
@@ -23779,6 +24175,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Deblocați funcțiile premium."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odomknite prémiové funkcie."
           }
         },
         "sv" : {
@@ -24957,7 +25359,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bóveda y intercambio de enlaces y elementos"
+            "value" : "Bóveda, intercambio de enlaces y elementos"
           }
         },
         "fr" : {
@@ -24984,10 +25386,22 @@
             "value" : "保管庫、アイテム、リンクの共有"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deling av hvelv, element og kobling"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kluis, item & link delen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udostępnianie sejfu, elementu i linku"
           }
         },
         "pt-BR" : {
@@ -25000,6 +25414,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Partajare seif, articole și legături web"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zdieľanie trezoru, položiek a odkazov"
           }
         },
         "sv" : {
@@ -25091,6 +25511,12 @@
             "value" : "VPNデバイス"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VPN-enheter"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25113,6 +25539,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dispozitive VPN"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zariadenia s VPN"
           }
         },
         "sv" : {
@@ -25203,6 +25635,12 @@
             "value" : "VPN速度"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VPN-hastighet"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25225,6 +25663,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Viteză VPN"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rýchlosť VPN"
           }
         },
         "sv" : {
@@ -25989,6 +26433,12 @@
             "value" : "内容"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hva er inkludert"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -26011,6 +26461,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ce este inclus"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Čo obsahuje"
           }
         },
         "sv" : {
@@ -26074,7 +26530,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "¿Para qué servicio quiere crear el inicio de sesión?"
+            "value" : "¿Para qué servicio desea crear el inicio de sesión?"
           }
         },
         "fr" : {
@@ -26101,10 +26557,22 @@
             "value" : "どのサービスのログインを作成しますか？"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hvilken tjeneste vil du opprette påloggingen for?"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Voor welke service wilt u de login aanmaken?"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dla jakiej usługi chcesz utworzyć dane logowania?"
           }
         },
         "pt-BR" : {
@@ -26117,6 +26585,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pentru ce serviciu vreți să creați datele de conectare?"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pre ktorú službu chcete vytvoriť prihlásenie?"
           }
         },
         "sv" : {
@@ -26180,7 +26654,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ya está listo para aprovechar al máximo Proton Pass: la magia del completado automático, la privacidad de los alias y mucho más."
+            "value" : "Todo está listo para aprovechar al máximo Proton Pass: la magia del completado automático, la privacidad de los alias y mucho más."
           }
         },
         "fr" : {
@@ -26207,10 +26681,22 @@
             "value" : "これで Proton Pass を最大限に活用する準備ができました。自動入力の魔法、エイリアスのプライバシーなど、さまざまな機能をご利用いただけます。"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du er klar til å få mest mulig ut av Proton Pass: magien med autofyll, personvernet til aliaser og mye mer."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "U bent klaar om het meeste te halen uit Proton Pass: de magie van AutoFill, de privacy van Aliassen en nog meer."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jesteś gotowy, aby w pełni wykorzystać możliwości Proton Pass: autouzupełnianie, prywatne aliasy i wiele więcej."
           }
         },
         "pt-BR" : {
@@ -26223,6 +26709,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sunteți gata să profitați la maximum de Proton Pass: magia funcției de autocompletare, confidențialitatea aliasurilor și multe altele."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vyťažte z aplikácie Proton Pass maximum: čaro funkcie AutoFill, súkromie aliasov a mnoho ďalšieho."
           }
         },
         "tr" : {

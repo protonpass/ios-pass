@@ -7461,6 +7461,30 @@
             }
           }
         },
+        "nb" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld element"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elementer"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld element"
+                }
+              }
+            }
+          }
+        },
         "nl" : {
           "variations" : {
             "plural" : {
@@ -10618,6 +10642,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld개의 다른 로그인 항목에서 동일한 비밀번호가 사용되고 있습니다"
+                }
+              }
+            }
+          }
+        },
+        "nb" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld annen pålogging bruker dette passordet"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld andre pålogginger bruker dette passordet"
                 }
               }
             }
@@ -16581,6 +16623,12 @@
             "value" : "계좌번호"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontonummer"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16728,6 +16776,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "계정 유형"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontotype"
           }
         },
         "nl" : {
@@ -19173,6 +19227,12 @@
             "value" : "名前を追加 (SSID)"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legg til navn (SSID)"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19647,6 +19707,12 @@
             "value" : "秘密鍵を追加"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legg til privat nøkkel"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19787,6 +19853,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "公開鍵を追加"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legg til offentlig nøkkel"
           }
         },
         "nl" : {
@@ -20095,6 +20167,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "アドレス"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adresse"
           }
         },
         "nl" : {
@@ -28063,6 +28141,12 @@
             "value" : "API認証情報"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API-identifikator"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28203,6 +28287,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "API キー"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API-nøkkel"
           }
         },
         "nl" : {
@@ -31328,6 +31418,12 @@
             "value" : "銀行口座"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bankkonto"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -31469,6 +31565,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "銀行名"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Banknavn"
           }
         },
         "nl" : {
@@ -37390,6 +37492,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "クラス"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klasse"
           }
         },
         "nl" : {
@@ -43490,6 +43598,12 @@
             "value" : "SSID をコピー"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopier SSID"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -43797,6 +43911,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "国"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Land"
           }
         },
         "nl" : {
@@ -44770,6 +44890,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "カスタムアイテムを作成"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opprett et tilpasset element"
           }
         },
         "nl" : {
@@ -47567,6 +47693,12 @@
             "value" : "暗号通貨ウォレット"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Krypto-wallet"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48872,6 +49004,12 @@
             "value" : "カスタムアイテム"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilpasset element"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49012,6 +49150,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "カスタムアイテムを作成しました"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilpasset element opprettet"
           }
         },
         "nl" : {
@@ -49156,6 +49300,12 @@
             "value" : "カスタムアイテムをゴミ箱に移動しました"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilpasset element flyttet til papirkurven"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49296,6 +49446,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "カスタムアイテムが完全に削除されました"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilpasset element permanent slettet"
           }
         },
         "nl" : {
@@ -49440,6 +49596,12 @@
             "value" : "カスタムアイテムを復元しました"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilpasset element gjenopprettet"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49582,6 +49744,12 @@
             "value" : "カスタムアイテムを更新しました"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilpasset element oppdatert"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49722,6 +49890,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "カスタムアイテム"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilpassede elementer"
           }
         },
         "nl" : {
@@ -50531,6 +50705,12 @@
             "value" : "データベース"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Database"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -50672,6 +50852,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "データベースタイプ"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Databasetype"
           }
         },
         "nl" : {
@@ -50816,6 +51002,12 @@
             "value" : "日付"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dato"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -50958,6 +51150,12 @@
             "value" : "日付のカスタムフィールド"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datofelt for tilpasset felt"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -51098,6 +51296,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "生年月日"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fødselsdato"
           }
         },
         "nl" : {
@@ -54528,6 +54732,12 @@
             "value" : "医者"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Doktor"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -55162,6 +55372,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "運転免許証"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Førerkort"
           }
         },
         "nl" : {
@@ -63089,6 +63305,12 @@
             "value" : "有効期限"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utløpsdato"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -66218,6 +66440,12 @@
             "value" : "カスタムアイテムでフィルターされています。ゴミ箱にあるアイテムは表示されません。"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtrert etter tilpassede elementer. Slettede elementer vises ikke."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -66838,6 +67066,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ファイナンス"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finans"
           }
         },
         "nl" : {
@@ -69958,6 +70192,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "パスワードを生成する"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Genererte passord"
           }
         },
         "nl" : {
@@ -74231,6 +74471,12 @@
             "value" : "所有者名"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navn på innehaveren"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -74373,6 +74619,12 @@
             "value" : "病院"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sykehus"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -74510,6 +74762,12 @@
             "value" : "ホスト"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vert"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -74639,6 +74897,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ホスト名"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vertsnavn"
           }
         },
         "nl" : {
@@ -75105,6 +75369,12 @@
           }
         },
         "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IBAN"
+          }
+        },
+        "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "IBAN"
@@ -79387,6 +79657,12 @@
             "value" : "IPアドレス"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IP-adresse"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -79527,6 +79803,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "発行機関"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utstedende myndighet"
           }
         },
         "nl" : {
@@ -79671,6 +79953,12 @@
             "value" : "発行国"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utstedende land"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -79811,6 +80099,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "発行州/国"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utstedende stat/land"
           }
         },
         "nl" : {
@@ -86267,6 +86561,12 @@
             "value" : "ライセンスキー"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisensnøkkel"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -90322,10 +90622,106 @@
     },
     "Manager" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Кіраўнік"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Správce"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verwaltung"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Διαχειριστής"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Manager"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Administrador"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Administrador"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gestionnaire"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pengelola"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gestore"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Administrator"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beheer"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menedżer"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerenciador"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manager"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Správca"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "管理"
           }
         }
       }
@@ -90743,6 +91139,12 @@
             "value" : "医療状況"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medisinske tilstander"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -90884,6 +91286,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "医療記録"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medisinsk journal"
           }
         },
         "nl" : {
@@ -91029,6 +91437,12 @@
             "value" : "くすり"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medisiner"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -91169,6 +91583,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "メンバーID"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medlems-ID"
           }
         },
         "nl" : {
@@ -91478,6 +91898,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "メンバー名"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medlemsnavn"
           }
         },
         "nl" : {
@@ -91790,6 +92216,12 @@
             "value" : "メンバーシップ"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medlemskap"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -91930,6 +92362,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "メンバーシップID"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medlemskaps-ID"
           }
         },
         "nl" : {
@@ -93895,6 +94333,12 @@
             "value" : "さらに表示"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mer"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -95349,6 +95793,12 @@
             "value" : "名前 (SSID)"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navn (SSID)"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -95663,6 +96113,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "네트워크"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nettverk"
           }
         },
         "nl" : {
@@ -102911,6 +103367,12 @@
             "value" : "カスタムアイテムを開く"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Åpne tilpasset element"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -103693,6 +104155,12 @@
             "value" : "SSHキーを開く"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Åpne SSH-nøkkel"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -103993,6 +104461,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wi-Fiネットワークを開く"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Åpne WiFi-nettverk"
           }
         },
         "nl" : {
@@ -104765,6 +105239,12 @@
             "value" : "組織名"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organisasjonsnavn"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -104903,6 +105383,12 @@
           }
         },
         "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OS"
+          }
+        },
+        "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "OS"
@@ -106046,6 +106532,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "パスポート"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pass"
           }
         },
         "nl" : {
@@ -107352,6 +107844,12 @@
             "value" : "クリップボードから貼り付け"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lim inn fra utklippstavlen"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -107493,6 +107991,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "患者名"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pasientnavn"
           }
         },
         "nl" : {
@@ -108839,6 +109343,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "アクセス許可"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tillatelser"
           }
         },
         "nl" : {
@@ -112926,6 +113436,12 @@
             "value" : "ポイント残高"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poengsaldo"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -113061,6 +113577,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ポート"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Port"
           }
         },
         "nl" : {
@@ -114362,6 +114884,12 @@
             "value" : "秘密鍵"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privat nøkkel"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -114503,6 +115031,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "製品"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Produkt"
           }
         },
         "nl" : {
@@ -114813,6 +115347,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "プログラム名"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Programnavn"
           }
         },
         "nl" : {
@@ -116546,6 +117086,12 @@
             "value" : "公開鍵"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Offentlig nøkkel"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -117678,6 +118224,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "レコード番号"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registreringsnummer"
           }
         },
         "nl" : {
@@ -125014,6 +125566,12 @@
             "value" : "報酬プログラム"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Belønningsprogram"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -125149,6 +125707,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "支店名"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rutenummer"
           }
         },
         "nl" : {
@@ -125454,6 +126018,12 @@
             "value" : "WiFi、パスポート、SSH、またはカスタムを保存"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lagre WiFi, pass, SSH eller gå for tilpasset"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -125749,6 +126319,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "QRコードをスキャンして参加する"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skann QR-koden for å bli med"
           }
         },
         "nl" : {
@@ -127567,6 +128143,12 @@
             "value" : "秘密"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hemmelig"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -129206,6 +129788,12 @@
             "value" : "セキュリティの種類"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sikkerhetstype"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -129841,6 +130429,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "シードフレーズ"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gjenopprettingsfrase"
           }
         },
         "nl" : {
@@ -131808,6 +132402,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "サーバー"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tjener"
           }
         },
         "nl" : {
@@ -136767,6 +137367,12 @@
             "value" : "ネットワークのQRコードを表示"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vis QR-kode for nettverk"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -139205,6 +139811,12 @@
             "value" : "社会保障番号"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personnummer"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -139346,6 +139958,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ソフトウェアライセンス"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Programvarelisens"
           }
         },
         "nl" : {
@@ -139989,6 +140607,12 @@
             "value" : "Spotlight"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spotlight"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -140129,6 +140753,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SSH キー"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH-nøkkel"
           }
         },
         "nl" : {
@@ -140274,6 +140904,12 @@
             "value" : "SSH キー"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH-nøkkel"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -140414,6 +141050,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SSHキーが作成されました"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH-nøkkel opprettet"
           }
         },
         "nl" : {
@@ -140558,6 +141200,12 @@
             "value" : "SSHキーをゴミ箱に移動しました"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH-nøkkel flyttet til papirkurven"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -140698,6 +141346,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SSH キーは完全に削除されました"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH-nøkkel permanent slettet"
           }
         },
         "nl" : {
@@ -140842,6 +141496,12 @@
             "value" : "SSHキーが復元されました"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH-nøkkel gjenopprettet"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -140982,6 +141642,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SSH キーが更新されました"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH-nøkkel oppdatert"
           }
         },
         "nl" : {
@@ -141126,6 +141792,12 @@
             "value" : "SSH キー"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH-nøkler"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -141266,6 +141938,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SSID をコピーしました"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSID kopiert"
           }
         },
         "nl" : {
@@ -141575,6 +142253,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ゼロから始める"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start fra begynnelsen"
           }
         },
         "nl" : {
@@ -143377,6 +144061,12 @@
           }
         },
         "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SWIFT/BIC"
+          }
+        },
+        "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "SWIFT/BIC"
@@ -145340,6 +146030,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "テクノロジー"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Teknologi"
           }
         },
         "nl" : {
@@ -148766,6 +149462,12 @@
             "value" : "階級/レベル"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nivå"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -148895,6 +149597,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "階級/ステータス"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nivå/status"
           }
         },
         "nl" : {
@@ -154968,6 +155676,12 @@
             "value" : "未指定"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uspesifisert"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -157072,6 +157786,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "アップグレードしてカスタムアイテムを作成"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oppgrader for å opprette tilpassede elementer"
           }
         },
         "nl" : {
@@ -164049,6 +164769,12 @@
             "value" : "ウォレット名"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navn på lommebok"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -164082,7 +164808,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : ""
+            "value" : "Plånboksnamn"
           }
         },
         "tr" : {
@@ -166492,6 +167218,12 @@
             "value" : "Wi-Fiネットワーク"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi-nettverk"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -166627,6 +167359,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wi-Fiネットワーク"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi-nettverk"
           }
         },
         "nl" : {
@@ -166765,6 +167503,12 @@
             "value" : "Wi-Fiネットワークが作成されました"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi-nettverk opprettet"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -166901,6 +167645,12 @@
             "value" : "Wi-Fiネットワークをゴミ箱に移動しました"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi-nettverk flyttet til papirkurven"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -167035,6 +167785,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wi-Fiネットワークが完全に削除されました"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi-nettverk permanent slettet"
           }
         },
         "nl" : {
@@ -167179,6 +167935,12 @@
             "value" : "WiFi 네트워크 복구됨"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi-nettverk gjenopprettet"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -167319,6 +168081,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "WiFi 네트워크 업데이트됨"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi-nettverk oppdatert"
           }
         },
         "nl" : {
@@ -167463,6 +168231,12 @@
             "value" : "WiFi 네트워크"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi-nettverk"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -167603,6 +168377,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "WiFi 네트워크 복사됨"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi-passord kopiert"
           }
         },
         "nl" : {
