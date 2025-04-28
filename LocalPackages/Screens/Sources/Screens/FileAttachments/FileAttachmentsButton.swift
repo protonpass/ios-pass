@@ -160,7 +160,10 @@ public struct FileAttachmentsButton: View {
         case .choosePhotoOrVideo:
             showPhotosPicker.toggle()
         case .chooseFile:
-            showFileImporter.toggle()
+            // Workaround SwiftUI bug that doesn't show file picker in some circumstances
+            MainActor.assumeIsolated {
+                showFileImporter.toggle()
+            }
         }
     }
 
