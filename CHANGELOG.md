@@ -5,6 +5,8 @@ You can now view a list of all your previously generated passwords. Navigate to 
 Others:
 - New onboarding flow with payment support (behind feature flags)
 - Fixed an issue where file picker sometimes not show up
+- Reduced app install size from ~430MB to ~250MB
+- Renamed "Admin" to "Manager"
 
 # Version 1.16.3
 - File attachment v2

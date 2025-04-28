@@ -3078,6 +3078,7 @@
 				3544BCBB28E1E42B00EFE130 /* Embed Frameworks */,
 				3544F5F228E2341900834CA4 /* Embed Foundation Extensions */,
 				35C2162A29EA92A4001720FF /* Copy appropriate Settings.bundle base on configuration */,
+				53968A9B2DBF86FD00924EDF /* Symlink common bundles */,
 			);
 			buildRules = (
 			);
@@ -3451,6 +3452,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "scripts/internal/replace_obfuscated_constants.sh\n";
+		};
+		53968A9B2DBF86FD00924EDF /* Symlink common bundles */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Symlink common bundles";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# https://developer.apple.com/forums/thread/749265\nfor path in \"$BUILT_PRODUCTS_DIR/$CONTENTS_FOLDER_PATH\"/PlugIns/*/*.bundle; do\n  bundle=$(basename \"$path\")\n  if [ -d \"$BUILT_PRODUCTS_DIR/$CONTENTS_FOLDER_PATH/$bundle\" ]; then\n    >&2 echo \"Stripping $path ...\"\n    rm -rf \"$path\"\n    ln -vs \"../../$bundle\" \"$path\"\n  else\n    >&2 echo \"Not stripping $path\"\n  fi\ndone\n";
 		};
 		5BB2B6F02A4479F3005E831C /* SwiftFormat */ = {
 			isa = PBXShellScriptBuildPhase;
