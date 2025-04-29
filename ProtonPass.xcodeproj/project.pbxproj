@@ -3469,7 +3469,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# https://developer.apple.com/forums/thread/749265\nfor path in \"$BUILT_PRODUCTS_DIR/$CONTENTS_FOLDER_PATH\"/PlugIns/*/*.bundle; do\n  bundle=$(basename \"$path\")\n  if [ -d \"$BUILT_PRODUCTS_DIR/$CONTENTS_FOLDER_PATH/$bundle\" ]; then\n    >&2 echo \"Stripping $path ...\"\n    rm -rf \"$path\"\n    ln -vs \"../../$bundle\" \"$path\"\n  else\n    >&2 echo \"Not stripping $path\"\n  fi\ndone\n";
+			shellScript = "# https://developer.apple.com/forums/thread/749265\n#for path in \"$BUILT_PRODUCTS_DIR/$CONTENTS_FOLDER_PATH\"/PlugIns/*/*.bundle; do\n#  bundle=$(basename \"$path\")\n#  if [ -d \"$BUILT_PRODUCTS_DIR/$CONTENTS_FOLDER_PATH/$bundle\" ]; then\n#    >&2 echo \"Stripping $path ...\"\n#    rm -rf \"$path\"\n#    ln -vs \"../../$bundle\" \"$path\"\n#  else\n#    >&2 echo \"Not stripping $path\"\n#  fi\n#done\n";
 		};
 		5BB2B6F02A4479F3005E831C /* SwiftFormat */ = {
 			isa = PBXShellScriptBuildPhase;
