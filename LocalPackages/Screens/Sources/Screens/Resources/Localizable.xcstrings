@@ -106,6 +106,12 @@
             "value" : "%@/mesiac"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@/mesec"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2569,6 +2575,12 @@
             "value" : "10 GB"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "10 GB"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2689,6 +2701,12 @@
           }
         },
         "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "500 GB"
+          }
+        },
+        "sl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "500 GB"
@@ -3822,6 +3840,12 @@
             "value" : "Pridať sekciu"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodaj razdelek"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4591,6 +4615,36 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Vsi računi (%lld)"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Vsi računi (%lld)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Vsi računi (%lld)"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Vsi računi (%lld)"
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -4809,6 +4863,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Všetky vaše heslá."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vsa vaša gesla."
           }
         },
         "sv" : {
@@ -11770,6 +11830,12 @@
             "value" : "Free"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12604,6 +12670,12 @@
             "value" : "Začíname"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Začnite"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13216,6 +13288,12 @@
             "value" : "Najvyššia"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Najvišja"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13529,6 +13607,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Importovať z Chrome"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uvoz iz Chroma"
           }
         },
         "sv" : {
@@ -14600,6 +14684,12 @@
             "value" : "Stredná"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Srednja"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15167,6 +15257,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Prázdne"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brez"
           }
         },
         "sv" : {
@@ -16128,6 +16224,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Otvoriť Chrome"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odpri Chrome"
           }
         },
         "sv" : {
@@ -18201,6 +18303,12 @@
             "value" : "Odstrániť sekciu"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odstrani odsek"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19936,6 +20044,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Služba"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Storitev"
           }
         },
         "sv" : {
@@ -25545,6 +25659,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zariadenia s VPN"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Naprave VPN"
           }
         },
         "sv" : {
