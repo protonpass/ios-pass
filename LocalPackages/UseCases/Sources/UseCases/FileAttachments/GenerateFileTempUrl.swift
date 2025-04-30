@@ -38,17 +38,19 @@ public extension GenerateFileTempUrlUseCase {
 }
 
 public final class GenerateFileTempUrl: GenerateFileTempUrlUseCase {
-    public init() {}
+    private let sanitizeFileName: any SanitizeFileNameUseCase
+
+    public init(sanitizeFileName: any SanitizeFileNameUseCase) {
+        self.sanitizeFileName = sanitizeFileName
+    }
 
     public func execute(userId: String,
                         item: any ItemIdentifiable,
                         file: ItemFile) throws -> URL {
-        // When initializing FileHandle using FileHandle(forWritingTo:), file name with spaces
-        // fails the initialization hence break the whole download process.
-        // So we replace spaces by hyphens to bypass this system bug.
-        guard let name = file.name?.replacingOccurrences(of: " ", with: "_") else {
+        guard let name = file.name else {
             throw PassError.fileAttachment(.failedToDownloadMissingFileName(file.fileID))
         }
+        let sanitizedName = sanitizeFileName(name)
         return FileManager.default.temporaryDirectory
             .appending(path: Constants.Attachment.rootDirectoryName)
             .appending(path: userId)
@@ -56,6 +58,6 @@ public final class GenerateFileTempUrl: GenerateFileTempUrlUseCase {
             .appending(path: item.itemId)
             .appending(path: file.fileID)
             .appending(path: "\(file.modifyTime)")
-            .appendingPathComponent(name, conformingTo: .data)
+            .appendingPathComponent(sanitizedName, conformingTo: .data)
     }
 }
