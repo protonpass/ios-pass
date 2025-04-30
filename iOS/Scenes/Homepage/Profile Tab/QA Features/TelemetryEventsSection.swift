@@ -193,6 +193,15 @@ private extension TelemetryEventType {
             UIImage(systemName: "icloud.and.arrow.up.fill")!
         case .newLoginFlow:
             UIImage(systemName: "house")!
+        case .onboardingAliasVideoOpened,
+             .onboardingBiometricsEnabled,
+             .onboardingBiometricsSkipped,
+             .onboardingPassAsAutofillProviderEnabled,
+             .onboardingPassAsAutofillProviderSkipped,
+             .onboardingUpsellCtaClicked,
+             .onboardingUpsellSkipped,
+             .onboardingUpsellSubscribed:
+            UIImage(systemName: "hand.wave.fill")!
         }
     }
 
@@ -231,6 +240,15 @@ private extension TelemetryEventType {
             ItemContentType.creditCard.normMajor1Color
         case .fileUploaded:
             ItemContentType.identity.normMajor1Color
+        case .onboardingAliasVideoOpened,
+             .onboardingBiometricsEnabled,
+             .onboardingBiometricsSkipped,
+             .onboardingPassAsAutofillProviderEnabled,
+             .onboardingPassAsAutofillProviderSkipped,
+             .onboardingUpsellCtaClicked,
+             .onboardingUpsellSkipped,
+             .onboardingUpsellSubscribed:
+            ItemContentType.note.normMajor1Color
         }
     }
 
@@ -269,6 +287,15 @@ private extension TelemetryEventType {
             ItemContentType.creditCard.normMinor1Color
         case .fileUploaded:
             ItemContentType.identity.normMinor1Color
+        case .onboardingAliasVideoOpened,
+             .onboardingBiometricsEnabled,
+             .onboardingBiometricsSkipped,
+             .onboardingPassAsAutofillProviderEnabled,
+             .onboardingPassAsAutofillProviderSkipped,
+             .onboardingUpsellCtaClicked,
+             .onboardingUpsellSkipped,
+             .onboardingUpsellSubscribed:
+            ItemContentType.note.normMinor1Color
         }
     }
 
@@ -340,6 +367,22 @@ private extension TelemetryEventType {
             "File uploaded (\(mimeType))"
         case let .newLoginFlow(event, item):
             "New Login flow with event (\(event)) and item (\(String(describing: item)))"
+        case .onboardingUpsellCtaClicked:
+            "Clicked onboarding upsell CTA"
+        case .onboardingUpsellSubscribed:
+            "Subscribed while onboarding"
+        case .onboardingUpsellSkipped:
+            "Skipped onboarding upsell"
+        case .onboardingBiometricsEnabled:
+            "Enabled biometrics while onboarding"
+        case .onboardingBiometricsSkipped:
+            "Skipped biometrics while onboarding"
+        case .onboardingPassAsAutofillProviderEnabled:
+            "Enabled AutoFill while onboarding"
+        case .onboardingPassAsAutofillProviderSkipped:
+            "Skipped AutoFill while onboarding"
+        case .onboardingAliasVideoOpened:
+            "Watch alias video while onboarding"
         }
     }
 }
