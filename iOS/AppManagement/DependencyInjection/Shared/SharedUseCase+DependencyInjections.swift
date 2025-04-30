@@ -586,7 +586,7 @@ extension SharedUseCasesContainer {
     }
 
     var generateFileTempUrl: Factory<any GenerateFileTempUrlUseCase> {
-        self { GenerateFileTempUrl() }
+        self { GenerateFileTempUrl(sanitizeFileName: self.sanitizeFileName()) }
     }
 
     var downloadAndDecryptFile: Factory<any DownloadAndDecryptFileUseCase> {
@@ -604,5 +604,9 @@ extension SharedUseCasesContainer {
         self {
             ClearCacheForLoggedOutUsers(datasource: SharedRepositoryContainer.shared.localUserDataDatasource())
         }
+    }
+
+    var sanitizeFileName: Factory<any SanitizeFileNameUseCase> {
+        self { SanitizeFileName() }
     }
 }
