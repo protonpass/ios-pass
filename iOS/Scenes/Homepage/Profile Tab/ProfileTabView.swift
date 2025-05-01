@@ -174,6 +174,8 @@ struct ProfileTabView: View {
                 .padding()
                 .roundedEditableSection()
                 .accessibilityIdentifierLeaf("AccountCell")
+
+                signInToAnotherDeviceSection
             }.padding()
         }
     }
@@ -453,6 +455,13 @@ struct ProfileTabView: View {
             .roundedEditableSection()
         }
         .padding(.horizontal)
+    }
+
+    private var signInToAnotherDeviceSection: some View {
+        TextOptionRow(title: #localized("Sign in to another device"),
+                      action: { viewModel.showSignInToAnotherDevice() })
+            .frame(height: 75)
+            .roundedEditableSection()
     }
 }
 

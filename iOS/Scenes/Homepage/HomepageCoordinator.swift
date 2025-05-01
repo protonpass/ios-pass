@@ -613,6 +613,8 @@ extension HomepageCoordinator {
                     }
                 case .passwordHistory:
                     presentPasswordHistoryView()
+                case .signInToAnotherDevice:
+                    presentSignInToAnotherDeviceView()
                 }
             }
             .store(in: &cancellables)
@@ -1059,6 +1061,45 @@ extension HomepageCoordinator {
                                                            bannerDisplay: bannerManager)
                                        })
         present(view)
+    }
+
+    func presentSignInToAnotherDeviceView() {
+        guard let userId = userManager.activeUserId,
+              let apiService = try? apiManager.getApiService(userId: userId),
+              let authCredential = authManager.getCredential(userId: userId)
+        else {
+            return
+        }
+
+        Task { @MainActor in
+            let passphrase = authCredential.mailboxpassword
+            let email = await (try? userManager.getActiveUserData()?.user.email) ?? ""
+
+            let qrCodeInstructionsView = ScanQRCodeInstructionsView(viewModel: .init(dependencies:
+                .init(passphrase: passphrase,
+                      userEmail: email,
+                      apiService: apiService)))
+
+            let viewWithCloseButton = VStack(spacing: 0) {
+                HStack(alignment: .center, spacing: 0) {
+                    CircleButton(icon: IconProvider.cross,
+                                 iconColor: PassColor.interactionNormMajor2,
+                                 backgroundColor: PassColor.interactionNormMinor1,
+                                 accessibilityLabel: "Go back",
+                                 action: { [weak self] in self?.dismissTopMostViewController(animated: true) })
+                        .padding(.leading, DesignConstant.sectionPadding)
+                        .padding(.top, DesignConstant.sectionPadding / 2)
+                    Spacer()
+                }
+                .background(PassColor.backgroundNorm.toColor)
+
+                qrCodeInstructionsView
+            }
+            .navigationBarHidden(true)
+            .navigationStackEmbeded()
+
+            present(viewWithCloseButton)
+        }
     }
 
     private func filledUserInfo(userData: UserData) async throws -> UserInfo {
