@@ -110,6 +110,7 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case breach(BreachDetailsInfo)
     case addMailbox
     case passwordHistory
+    case signInToAnotherDevice
 }
 
 enum ItemDestination {

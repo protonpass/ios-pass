@@ -290,6 +290,10 @@ extension ProfileTabViewModel {
         router.action(.manage(userId: account.id))
     }
 
+    func showSignInToAnotherDevice() {
+        router.present(for: .signInToAnotherDevice)
+    }
+
     func showSettingsMenu() {
         delegate?.profileTabViewModelWantsToShowSettingsMenu()
     }
