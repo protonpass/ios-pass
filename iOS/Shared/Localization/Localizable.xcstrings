@@ -139076,7 +139076,15 @@
       }
     },
     "Sign in to another device" : {
-
+      "comment" : "Settings item under account",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in to another device"
+          }
+        }
+      }
     },
     "Sign out" : {
       "localizations" : {
