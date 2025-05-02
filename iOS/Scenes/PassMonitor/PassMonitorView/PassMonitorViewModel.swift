@@ -56,13 +56,15 @@ final class PassMonitorViewModel: ObservableObject {
         setUp()
     }
 
-    func refresh() async {
+    func refresh(fromView: Bool = false) async {
         do {
             try Task.checkCancellation()
             breaches = nil
             let userId = try await userManager.getActiveUserId()
             try await refreshAccessAndMonitorState(userId: userId)
-            addTelemetryEvent(with: .monitorDisplayHome)
+            if fromView {
+                addTelemetryEvent(with: .monitorDisplayHome)
+            }
         } catch {
             handle(error: error)
         }

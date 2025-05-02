@@ -69,6 +69,7 @@ public struct PassPlans: Sendable, Equatable {
 }
 
 public protocol OnboardingV2Datasource: Sendable, AnyObject {
+    func getCurrentPlan() async throws -> Entities.Plan
     func getPassPlans() async throws -> PassPlans?
     func getBiometryType() async throws -> LABiometryType?
     func isAutoFillEnabled() async -> Bool
@@ -80,13 +81,12 @@ public protocol OnboardingV2Delegate: Sendable, AnyObject {
     func purchase(_ plan: ComposedPlan) async throws
     func enableBiometric() async throws
     func enableAutoFill() async -> Bool
-    @MainActor
-    func openTutorialVideo()
+    func openTutorialVideo() async
     // periphery:ignore
     func createFirstLogin(payload: OnboardFirstLoginPayload) async throws
     func markAsOnboarded() async
-    @MainActor
-    func handle(error: any Error)
+    func add(event: TelemetryEventType) async
+    func handle(error: any Error) async
 }
 
 enum OnboardV2Step: Sendable, Equatable {
@@ -140,8 +140,9 @@ extension OnboardingV2ViewModel {
 
     /// Returns `true` if other steps are available,
     /// `false` if no more steps so the onboarding process could be ended
-    func goNext() async -> Bool {
-        guard let datasource else { return false }
+    /// `isManual` means triggered by user (manually skip the step)
+    func goNext(isManual: Bool = false) async -> Bool {
+        guard let delegate, let datasource else { return false }
 
         guard let step = currentStep.fetchedObject else {
             assertionFailure("Current step is not initialized")
@@ -150,6 +151,9 @@ extension OnboardingV2ViewModel {
 
         switch step {
         case .payment:
+            if isManual {
+                await delegate.add(event: .onboardingUpsellSkipped)
+            }
             if let availableBiometryType, availableBiometryType != .none {
                 currentStep = .fetched(.biometric(availableBiometryType))
             } else {
@@ -158,6 +162,9 @@ extension OnboardingV2ViewModel {
             return true
 
         case .biometric:
+            if isManual {
+                await delegate.add(event: .onboardingBiometricsSkipped)
+            }
             if await datasource.isAutoFillEnabled() {
                 // swiftlint:disable:next fallthrough
                 fallthrough
@@ -167,6 +174,9 @@ extension OnboardingV2ViewModel {
             }
 
         case .autofill:
+            if isManual {
+                await delegate.add(event: .onboardingPassAsAutofillProviderSkipped)
+            }
             // Reenable when supporting creating first login
             /*
              switch await datasource.getFirstLoginSuggestion() {
@@ -192,7 +202,7 @@ extension OnboardingV2ViewModel {
     }
 
     func performCta() async {
-        guard let delegate else { return }
+        guard let delegate, let datasource else { return }
 
         var shouldGoToNextStep = false
         do {
@@ -202,14 +212,19 @@ extension OnboardingV2ViewModel {
                     assertionFailure("No selected plan")
                     return
                 }
+                let plan = try await datasource.getCurrentPlan()
+                await delegate.add(event: .onboardingUpsellCtaClicked(planName: plan.internalName))
                 try await delegate.purchase(selectedPlan.plan)
+                await delegate.add(event: .onboardingUpsellSubscribed)
                 shouldGoToNextStep = true
 
             case .biometric:
+                await delegate.add(event: .onboardingBiometricsEnabled)
                 try await delegate.enableBiometric()
                 shouldGoToNextStep = true
 
             case .autofill:
+                await delegate.add(event: .onboardingPassAsAutofillProviderEnabled)
                 shouldGoToNextStep = await delegate.enableAutoFill()
 
             case .aliasExplanation:
@@ -221,7 +236,7 @@ extension OnboardingV2ViewModel {
                 shouldGoToNextStep = true
             }
         } catch {
-            delegate.handle(error: error)
+            await delegate.handle(error: error)
         }
 
         if shouldGoToNextStep, await !goNext() {
@@ -231,11 +246,15 @@ extension OnboardingV2ViewModel {
     }
 
     func performSecondaryCta() {
-        if case .aliasExplanation = currentStep.fetchedObject {
-            delegate?.openTutorialVideo()
-            finished = true
-        } else {
-            assertionFailure("Missing secondary action")
+        Task { [weak self] in
+            guard let self, let delegate else { return }
+            if case .aliasExplanation = currentStep.fetchedObject {
+                await delegate.add(event: .onboardingAliasVideoOpened)
+                await delegate.openTutorialVideo()
+                finished = true
+            } else {
+                assertionFailure("Missing secondary action")
+            }
         }
     }
 
@@ -248,7 +267,7 @@ extension OnboardingV2ViewModel {
                 try await delegate?.createFirstLogin(payload: payload)
                 currentStep = .fetched(.firstLoginCreated(payload))
             } catch {
-                delegate?.handle(error: error)
+                await delegate?.handle(error: error)
             }
         }
     }
@@ -263,7 +282,7 @@ extension OnboardingV2ViewModel {
                 try await delegate?.purchase(selectedPlan.plan)
                 _ = await goNext()
             } catch {
-                delegate?.handle(error: error)
+                await delegate?.handle(error: error)
             }
         }
     }

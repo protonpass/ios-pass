@@ -23,13 +23,12 @@ import Core
 import Entities
 
 public protocol AddTelemetryEventUseCase: Sendable {
-    func execute(with eventType: TelemetryEventType)
     func execute(with eventTypes: [TelemetryEventType])
 }
 
 public extension AddTelemetryEventUseCase {
     func callAsFunction(with eventType: TelemetryEventType) {
-        execute(with: eventType)
+        execute(with: [eventType])
     }
 
     func callAsFunction(with eventTypes: [TelemetryEventType]) {
@@ -37,7 +36,7 @@ public extension AddTelemetryEventUseCase {
     }
 }
 
-public final class AddTelemetryEvent: @unchecked Sendable, AddTelemetryEventUseCase {
+public final class AddTelemetryEvent: AddTelemetryEventUseCase {
     private let repository: any TelemetryEventRepositoryProtocol
     private let userManager: any UserManagerProtocol
     private let logger: Logger
@@ -50,6 +49,7 @@ public final class AddTelemetryEvent: @unchecked Sendable, AddTelemetryEventUseC
         logger = .init(manager: logManager)
     }
 
+    // periphery:ignore
     public func execute(with eventType: TelemetryEventType) {
         Task { [weak self] in
             guard let self else { return }
