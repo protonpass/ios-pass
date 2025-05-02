@@ -4584,7 +4584,7 @@
 				EXCLUDED_SOURCE_FILE_NAMES = "${SRCROOT}/iOS/AppManagement/Configurations/Pass-Constant-Black.plist";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/App/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "Scan 2FA code, credit card, hand-written note, and QR code";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Scan 2FA code, credit card, hand-written note and QR code";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Restrict unwelcome access to your Proton Pass account on this device";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -4944,7 +4944,7 @@
 				EXCLUDED_SOURCE_FILE_NAMES = "${SRCROOT}/iOS/AppManagement/Configurations/Pass-Constant-Black.plist";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/App/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "Scan 2FA code, credit card, hand-written note, and QR code";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Scan 2FA code, credit card, hand-written note and QR code";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Restrict unwelcome access to your Proton Pass account on this device";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -5524,7 +5524,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/App/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "Scan 2FA code, credit card, hand-written note, and QR code";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Scan 2FA code, credit card, hand-written note and QR code";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Restrict unwelcome access to your Proton Pass account on this device";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -5661,7 +5661,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/App/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "Scan 2FA code, credit card, hand-written note, and QR code";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Scan 2FA code, credit card, hand-written note and QR code";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Restrict unwelcome access to your Proton Pass account on this device";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
