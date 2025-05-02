@@ -1075,33 +1075,24 @@ extension HomepageCoordinator {
             let passphrase = authCredential.mailboxpassword
             let email = await (try? userManager.getActiveUserData()?.user.email) ?? ""
 
-            let qrCodeInstructionsView = ScanQRCodeInstructionsView(viewModel: .init(dependencies:
-                .init(passphrase: passphrase,
-                      userEmail: email,
-                      apiService: apiService)))
-
-            let viewWithCloseButton = VStack(spacing: 0) {
-                HStack(alignment: .center, spacing: 0) {
+            let view = NavigationStackEmbededView(content: {
+                ScanQRCodeInstructionsView(viewModel: .init(dependencies: .init(passphrase: passphrase,
+                                                                                userEmail: email,
+                                                                                apiService: apiService)))
+            }, toolbar: {
+                ToolbarItem(placement: .topBarLeading) {
                     CircleButton(icon: IconProvider.cross,
                                  iconColor: PassColor.interactionNormMajor2,
                                  backgroundColor: PassColor.interactionNormMinor1,
-                                 accessibilityLabel: "Go back",
+                                 accessibilityLabel: "Close",
                                  action: { [weak self] in
                                      guard let self else { return }
                                      dismissTopMostViewController(animated: true)
                                  })
-                                 .padding(.leading, DesignConstant.sectionPadding)
-                                 .padding(.top, DesignConstant.sectionPadding / 2)
-                    Spacer()
                 }
-                .background(PassColor.backgroundNorm.toColor)
+            })
 
-                qrCodeInstructionsView
-            }
-            .navigationBarHidden(true)
-            .navigationStackEmbeded()
-
-            present(viewWithCloseButton)
+            present(view)
         }
     }
 
