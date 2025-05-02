@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Entities
 import Factory
 import LocalAuthentication
 import Macro
@@ -41,6 +42,9 @@ final class OnboardingV2Handler {
     @LazyInjected(\SharedServiceContainer.userManager)
     private var userManager
 
+    @LazyInjected(\SharedRepositoryContainer.accessRepository)
+    private var accessRepository
+
     @LazyInjected(\SharedUseCasesContainer.checkBiometryType)
     private var checkBiometryType
 
@@ -62,6 +66,9 @@ final class OnboardingV2Handler {
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var router
 
+    @LazyInjected(\ SharedUseCasesContainer.addTelemetryEvent)
+    private var addTelemetryEvent
+
     private var plansManager: ProtonPlansManager?
     private let logger: Logger
 
@@ -71,6 +78,10 @@ final class OnboardingV2Handler {
 }
 
 extension OnboardingV2Handler: OnboardingV2Datasource {
+    func getCurrentPlan() async throws -> Entities.Plan {
+        try await accessRepository.getPlan(userId: nil)
+    }
+
     func getPassPlans() async throws -> PassPlans? {
         guard !Bundle.main.isBetaBuild, let manager = try await getPlansManager() else {
             return nil
@@ -140,6 +151,10 @@ extension OnboardingV2Handler: OnboardingV2Delegate {
         // Optionally update "onboarded" to not block users from using the app
         // in case errors happens
         try? await preferencesManager.updateAppPreferences(\.onboarded, value: true)
+    }
+
+    func add(event: TelemetryEventType) {
+        addTelemetryEvent(with: event)
     }
 
     func handle(error: any Error) {

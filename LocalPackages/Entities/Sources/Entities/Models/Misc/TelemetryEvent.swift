@@ -66,7 +66,7 @@ public enum TelemetryEventType: Sendable, Equatable, Codable {
     case notificationCtaClick(key: String)
     case fileUploaded(mimeType: String)
     case newLoginFlow(event: String, item: String?)
-    case onboardingUpsellCtaClicked
+    case onboardingUpsellCtaClicked(planName: String)
     case onboardingUpsellSubscribed
     case onboardingUpsellSkipped
     case onboardingBiometricsEnabled
