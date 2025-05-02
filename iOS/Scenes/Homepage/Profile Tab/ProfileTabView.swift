@@ -156,28 +156,30 @@ struct ProfileTabView: View {
                     .profileSectionTitle()
                     .accessibilityIdentifierLeaf("Text")
 
-                Group {
-                    if showSwitcher {
-                        AccountCell(detail: AccountCellDetail.empty,
-                                    animationNamespace: animationNamespace)
-                    } else {
-                        AccountCell(detail: activeUser,
-                                    animationNamespace: animationNamespace)
-                            .animation(.default, value: showSwitcher)
-                            .onTapGesture {
-                                withAnimation {
-                                    showSwitcher.toggle()
+                VStack(spacing: 0) {
+                    Group {
+                        if showSwitcher {
+                            AccountCell(detail: AccountCellDetail.empty,
+                                        animationNamespace: animationNamespace)
+                        } else {
+                            AccountCell(detail: activeUser,
+                                        animationNamespace: animationNamespace)
+                                .animation(.default, value: showSwitcher)
+                                .onTapGesture {
+                                    withAnimation {
+                                        showSwitcher.toggle()
+                                    }
                                 }
-                            }
+                        }
                     }
-                }
-                .padding()
-                .roundedEditableSection()
-                .accessibilityIdentifierLeaf("AccountCell")
+                    .padding()
+                    .accessibilityIdentifierLeaf("AccountCell")
 
-                if viewModel.isEasyDeviceMigrationEnabled {
-                    signInToAnotherDeviceSection
-                }
+                    if viewModel.isEasyDeviceMigrationEnabled {
+                        PassDivider()
+                        signInToAnotherDeviceSection
+                    }
+                }.roundedEditableSection()
             }.padding()
         }
     }
@@ -463,7 +465,6 @@ struct ProfileTabView: View {
         TextOptionRow(title: #localized("Sign in to another device"),
                       action: { viewModel.showSignInToAnotherDevice() })
             .frame(height: 75)
-            .roundedEditableSection()
     }
 }
 
