@@ -23,6 +23,8 @@ import Combine
 import Core
 import Entities
 import Factory
+import ProtonCoreDataModel
+import ProtonCoreFeatureFlags
 import ProtonCoreLogin
 import ProtonCoreServices
 import Screens
@@ -33,6 +35,7 @@ import UseCases
 protocol ProfileTabViewModelDelegate: AnyObject {
     func profileTabViewModelWantsToShowSettingsMenu()
     func profileTabViewModelWantsToShowFeedback()
+    func profileTabViewModelWantsUserInfo() async -> UserInfo?
 }
 
 struct StorageUiModel: Sendable {
@@ -87,6 +90,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     // Accounts management
     @Published private var currentActiveUser: UserData?
+    @Published private(set) var isEasyDeviceMigrationEnabled: Bool = false
+
     var activeAccountDetail: AccountCellDetail? {
         if let currentActiveUser {
             .init(id: currentActiveUser.userId,
@@ -459,6 +464,15 @@ private extension ProfileTabViewModel {
                 plan = userAccess.access.plan
             }
             .store(in: &cancellables)
+
+        Task {
+            let userInfo = await delegate?.profileTabViewModelWantsUserInfo()
+            let qrLoginOptedOut = userInfo?.edmOptOut == 1
+            let qrLoginFeatureDisabled = FeatureFlagsRepository.shared
+                .isEnabled(CoreFeatureFlagType.easyDeviceMigrationDisabled)
+
+            isEasyDeviceMigrationEnabled = !qrLoginFeatureDisabled && !qrLoginOptedOut
+        }
     }
 
     func refreshLocalAuthenticationMethod() {
