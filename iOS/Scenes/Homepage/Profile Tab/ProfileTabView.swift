@@ -462,8 +462,21 @@ struct ProfileTabView: View {
     }
 
     private var signInToAnotherDeviceSection: some View {
-        TextOptionRow(title: #localized("Sign in to another device"),
-                      action: { viewModel.showSignInToAnotherDevice() })
+        OptionRow(action: { viewModel.showSignInToAnotherDevice() },
+                  content: {
+                      Text(#localized("Sign in to another device"))
+                          .foregroundStyle(PassColor.textNorm.toColor)
+                          .frame(maxWidth: .infinity, alignment: .leading)
+                  },
+                  leading: {
+                      Image(uiImage: ProtonCoreUIFoundations.IconProvider.qrCode)
+                          .resizable()
+                          .scaledToFit()
+                          .frame(width: 24, height: 24)
+                          .padding(6)
+                          .padding(.trailing)
+                  },
+                  trailing: { ChevronRight() })
             .frame(height: 75)
     }
 }
