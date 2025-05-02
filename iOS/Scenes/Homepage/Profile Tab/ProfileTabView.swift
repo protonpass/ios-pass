@@ -175,7 +175,9 @@ struct ProfileTabView: View {
                 .roundedEditableSection()
                 .accessibilityIdentifierLeaf("AccountCell")
 
-                signInToAnotherDeviceSection
+                if viewModel.isEasyDeviceMigrationEnabled {
+                    signInToAnotherDeviceSection
+                }
             }.padding()
         }
     }
