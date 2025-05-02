@@ -240,7 +240,7 @@ private extension OnboardingV2View {
     var notNowButton: some View {
         Button(action: {
             Task {
-                if await !viewModel.goNext() {
+                if await !viewModel.goNext(isManual: true) {
                     dismiss()
                 }
             }
