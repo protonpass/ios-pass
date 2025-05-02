@@ -1086,9 +1086,12 @@ extension HomepageCoordinator {
                                  iconColor: PassColor.interactionNormMajor2,
                                  backgroundColor: PassColor.interactionNormMinor1,
                                  accessibilityLabel: "Go back",
-                                 action: { [weak self] in self?.dismissTopMostViewController(animated: true) })
-                        .padding(.leading, DesignConstant.sectionPadding)
-                        .padding(.top, DesignConstant.sectionPadding / 2)
+                                 action: { [weak self] in
+                                     guard let self else { return }
+                                     dismissTopMostViewController(animated: true)
+                                 })
+                                 .padding(.leading, DesignConstant.sectionPadding)
+                                 .padding(.top, DesignConstant.sectionPadding / 2)
                     Spacer()
                 }
                 .background(PassColor.backgroundNorm.toColor)
