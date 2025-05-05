@@ -468,8 +468,7 @@ private extension ProfileTabViewModel {
         Task {
             let userInfo = await delegate?.profileTabViewModelWantsUserInfo()
             let qrLoginOptedOut = userInfo?.edmOptOut == 1
-            let qrLoginFeatureDisabled = FeatureFlagsRepository.shared
-                .isEnabled(CoreFeatureFlagType.easyDeviceMigrationDisabled)
+            let qrLoginFeatureDisabled = getFeatureFlagStatus(for: CoreFeatureFlagType.easyDeviceMigrationDisabled)
 
             isEasyDeviceMigrationEnabled = !qrLoginFeatureDisabled && !qrLoginOptedOut
         }
