@@ -55,7 +55,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tuo"
+            "value" : "Tuo Proton Passiin"
           }
         },
         "fr" : {
@@ -216,7 +216,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tuo"
+            "value" : "Tuo Proton Passiin"
           }
         },
         "fr" : {
@@ -377,7 +377,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proton"
+            "value" : "Proton AG"
           }
         },
         "fr" : {
