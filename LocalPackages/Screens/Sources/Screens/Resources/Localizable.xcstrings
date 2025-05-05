@@ -2485,6 +2485,12 @@
             "value" : "10 GB"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "10 GB"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2513,6 +2519,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "10 GB"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "10 Gt"
           }
         },
         "fr" : {
@@ -2616,6 +2628,12 @@
             "value" : "500 GB"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "500 GB"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2644,6 +2662,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "500 GB"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "500 Gt"
           }
         },
         "fr" : {
@@ -6287,6 +6311,12 @@
             "value" : "Borrar historial"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tyhjennä historia"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7875,6 +7905,12 @@
             "value" : "Vytvořte své první přihlášení"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opret dit første login"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7903,6 +7939,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cree su primer inicio de sesión"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Luo ensimmäinen kirjautumistietosi"
           }
         },
         "fr" : {
@@ -9885,6 +9927,12 @@
             "value" : "Povolit Optic ID"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktivér Optic ID"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10839,6 +10887,12 @@
             "value" : "Další e-mailové adresy"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ekstra e-mailadresser"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11121,6 +11175,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "První přihlášení vytvořeno"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Første login oprettet"
           }
         },
         "de" : {
@@ -11906,6 +11966,12 @@
             "value" : "Contraseñas generadas"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Luodut salasanat"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12169,7 +12235,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Saat hälytyksiä, jos sähköpostiosoitteesi löytyy pimeästä verkosta."
+            "value" : "Vastaanota hälytyksiä, jos sähköpostiosoitteesi löytyy pimeästä verkosta."
           }
         },
         "fr" : {
@@ -12450,6 +12516,12 @@
             "value" : "Získejte Proton Unlimited"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Få Proton Unlimited"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12478,6 +12550,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Obtener Proton Unlimited"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hanki Proton Unlimited"
           }
         },
         "fr" : {
@@ -12580,6 +12658,12 @@
             "value" : "Začínáme"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kom i gang"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12608,6 +12692,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Comenzar"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aloita"
           }
         },
         "fr" : {
@@ -12750,7 +12840,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mene **Salasanan hallinta** ja paina **Asetukset**"
+            "value" : "Avaa **Salasanojen ylläpito** ja paina **Asetukset**"
           }
         },
         "fr" : {
@@ -13198,6 +13288,12 @@
             "value" : "Nejvyšší"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Højeste"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13226,6 +13322,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Máxima"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Korkein"
           }
         },
         "fr" : {
@@ -13368,7 +13470,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tuonti"
+            "value" : "Tuo"
           }
         },
         "fr" : {
@@ -13534,7 +13636,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tuo"
+            "value" : "Tuo Chromesta"
           }
         },
         "fr" : {
@@ -13701,7 +13803,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tuo kirjautumiset (%1$lld/%2$lld)"
+            "value" : "Tuo kirjautumistiedot (%1$lld/%2$lld)"
           }
         },
         "fr" : {
@@ -14137,6 +14239,12 @@
             "value" : "Naučte se používat Proton Pass"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lær, hvordan du bruger Proton Pass"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14165,6 +14273,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aprenda a usar Proton Pass"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opi käyttämään Proton Passia"
           }
         },
         "fr" : {
@@ -14594,6 +14708,12 @@
             "value" : "Střední"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medium"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14622,6 +14742,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Media"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keskitasoinen"
           }
         },
         "fr" : {
@@ -14760,6 +14886,12 @@
             "value" : "Sin historial"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Historiaa ei ole"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14893,7 +15025,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kuvassa ei havaittu tekstiä. Yritä uudelleen ja varmista, että teksti on selkeää, hyvin valaistua ja kameran tarkennusalueella."
+            "value" : "Kuvassa ei havaittu tekstiä. Yritä uudelleen ja varmista, että teksti on selkeää, hyvin valaistua ja kamera on tarkentunut siihen."
           }
         },
         "fr" : {
@@ -15997,7 +16129,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Avaa **Chrome** valikko"
+            "value" : "Avaa **Chrome**-valikko"
           }
         },
         "fr" : {
@@ -16808,6 +16940,12 @@
             "value" : "Inicie sesión para usar la extensión de acciones de Proton Pass"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kirjaudu sisään käyttääksesi Proton Passin toimintolaajennusta"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17125,7 +17263,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Käytä Proton Passin jakamislaajennusta kirjautumalla sisään"
+            "value" : "Käytä Proton Passin jakolaajennusta kirjautumalla sisään"
           }
         },
         "fr" : {
@@ -17291,7 +17429,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Paina ja pidä kohde painettuna paljastaaksesi lisävaihtoehtoja."
+            "value" : "Näytä lisää valintoja painamalla kohdetta pitkään."
           }
         },
         "fr" : {
@@ -18107,6 +18245,12 @@
             "value" : "Eliminar del historial"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poista historiasta"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18880,7 +19024,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Skannaa dokumentit"
+            "value" : "Skannaa dokumentteja"
           }
         },
         "fr" : {
@@ -19678,6 +19822,12 @@
             "value" : "Seleccione **Importar a Proton Pass**"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valitse **Tuo Proton Passiin**"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19956,6 +20106,12 @@
             "value" : "Služba"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tjeneste"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19984,6 +20140,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Servicio"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Palvelu"
           }
         },
         "fr" : {
@@ -20086,6 +20248,12 @@
             "value" : "Nastavte Proton Pass na odemykání obličejem nebo otiskem prstu, abyste měli přístup jen vy."
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indstil Proton Pass til at låse op med dit ansigt eller fingeraftryk, så kun du har adgang."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20114,6 +20282,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Configure Proton Pass para el desbloqueo con su rostro o huella dactilar, así solo usted tendrá acceso."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Määritä Proton Pass avautumaan kasvoillasi tai sormenjäljelläsi, jotta vain sinä voit käyttää sitä."
           }
         },
         "fr" : {
@@ -21822,6 +21996,12 @@
             "value" : "Přestaňte sdílet svou skutečnou e-mailovou adresu. Místo toho ji skryjte pomocí e-mailových aliasů - exkluzivní služba Proton Pass."
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hold op med at dele din rigtige e-mailadresse. Skjul den i stedet med e-mail-aliasser – eksklusivt for Proton Pass."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23419,6 +23599,12 @@
             "value" : "To nejlepší z Protonu s jedním předplatným."
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Det bedste fra Proton med ét abonnement."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23447,6 +23633,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lo mejor de Proton con una sola suscripción."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protonin parhaat yhdellä tilauksella."
           }
         },
         "fr" : {
@@ -24207,6 +24399,12 @@
             "value" : "Odemkněte prémiové funkce."
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lås op for premium funktioner."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -24235,6 +24433,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Desbloquee las funciones premium."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avaa premium-ominaisuudet."
           }
         },
         "fr" : {
@@ -25446,6 +25650,12 @@
             "value" : "Sdílení trezorů, položek a odkazů"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Boks-, element- og linkdeling"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25571,6 +25781,12 @@
             "value" : "Zařízení s VPN"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VPN-enheder"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25599,6 +25815,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dispositivos VPN"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VPN-laitteet"
           }
         },
         "fr" : {
@@ -25701,6 +25923,12 @@
             "value" : "Rychlost VPN"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VPN-hastighed"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25729,6 +25957,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Velocidad de VPN"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VPN-nopeus"
           }
         },
         "fr" : {
@@ -26499,6 +26733,12 @@
             "value" : "Co je zahrnuto"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hvad er inkluderet"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -26623,6 +26863,12 @@
             "value" : "Pro kterou službu chcete vytvořit přihlášení?"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hvilken tjeneste vil du oprette login til?"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -26745,6 +26991,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Jste připraveni využít Proton Pass na maximum: kouzlo automatického vyplňování, soukromí aliasů a mnoho dalšího."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du er klar til at få mest muligt ud af Proton Pass: magien ved autofyld, privatlivet ved aliasser og meget mere."
           }
         },
         "de" : {
