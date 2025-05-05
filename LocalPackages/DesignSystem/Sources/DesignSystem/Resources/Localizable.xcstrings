@@ -1206,7 +1206,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tietosuoja- tai rajoitusasetukset ovat estäneet kameran käytön. Voit sallia kameran käytön Asetuksissa."
+            "value" : "Tietosuoja- tai rajoitusasetukset ovat estäneet kameran käytön. Voit sallia kameran käytön asetuksista."
           }
         },
         "fr" : {
@@ -1692,7 +1692,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tähän kohteeseen on tehty joitain muutoksia, siirrytään takaisin edelliselle sivulle."
+            "value" : "Kohteeseen on tehty muutoksia. Palataan edelliselle sivulle."
           }
         },
         "fr" : {

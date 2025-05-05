@@ -52,6 +52,12 @@
             "value" : "Registros de la extensión de acciones"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toimintolaajennuksen lokitiedot"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2011,7 +2017,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hae minun jakamistani kohteista"
+            "value" : "Etsi jakamistani kohteista"
           }
         },
         "fr" : {
@@ -2165,7 +2171,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hae minulle jaetuista kohteista"
+            "value" : "Etsi minulle jaetuista kohteista"
           }
         },
         "fr" : {
@@ -3145,6 +3151,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No tiene bóvedas con acceso a editor o administrador. Cree una en la aplicación principal o pida ayuda al administrador de su organización."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sinulla ei ole holveja muokkaus- tai ylläpito-oikeuksilla. Yritä luoda sellainen pääsovelluksessa tai pyydä apua organisaatiosi ylläpidolta."
           }
         },
         "fr" : {

@@ -1269,7 +1269,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@, %2$@, %3$@ viimeisten 14 päivän aikana."
+            "value" : "%1$@, %2$@, %3$@ viimeisten kahden viikon aikana."
           }
         },
         "fr" : {
@@ -3107,13 +3107,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld estettiin"
+                  "value" : "%lld esto"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld estettiin"
+                  "value" : "%lld estoa"
                 }
               }
             }
@@ -5201,13 +5201,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld välitetty"
+                  "value" : "%lld ohjaus"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld välitetty"
+                  "value" : "%lld ohjausta"
                 }
               }
             }
@@ -5709,13 +5709,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld välitys"
+                  "value" : "%lld ohjaus"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld välitystä"
+                  "value" : "%lld ohjausta"
                 }
               }
             }
@@ -10563,13 +10563,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld toinen kirjautuminen käyttää tätä salasanaa"
+                  "value" : "%lld toinen kirjautumistieto käyttää tätä salasanaa"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld toiset kirjautumiset käyttävät tätä salasanaa"
+                  "value" : "%lld muuta kirjautumistietoa käyttää tätä salasanaa"
                 }
               }
             }
@@ -13684,13 +13684,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld tarkastelukerta"
+                  "value" : "%lld avaus"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld tarkastelukertaa"
+                  "value" : "%lld avausta"
                 }
               }
             }
@@ -15603,7 +15603,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Yhteystieto luodaan jokaiselle sähköpostiosoitteelle, joka lähettää tai vastaanottaa sähköposteja osoitteelta %@"
+            "value" : "Yhteystieto luodaan jokaiselle sähköpostiosoitteelle, joka lähettää tai vastaanottaa sähköposteja osoitteesta %@"
           }
         },
         "fr" : {
@@ -16095,7 +16095,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hyväksy ja tarkastele kohdetta"
+            "value" : "Hyväksy ja avaa kohde"
           }
         },
         "fr" : {
@@ -17077,7 +17077,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Toiminta viimeisten 14 päivän aikana"
+            "value" : "Tapahtumat viimeisten kahden viikon ajalta"
           }
         },
         "fr" : {
@@ -20973,7 +20973,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Edistynyt aliashallinta sisältyy Pass Plussaan. Hanki se heti päivittämällä tilauksesi."
+            "value" : "Edistynyt aliastenhallinta sisältyy Pass Plussaan. Hanki se heti päivittämällä tilauksesi."
           }
         },
         "fr" : {
@@ -22874,7 +22874,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias-toimintovalikko"
+            "value" : "Aliastoimintovalikko"
           }
         },
         "fr" : {
@@ -25674,7 +25674,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Roskakorissa olevat aliakset välittävät viestejä edelleen. Lopeta viestien vastaanottaminen tällä osoitteella poistamalla alias käytöstä."
+            "value" : "Roskakorissa olevat aliakset ohjaavat viestejä edelleen. Lopeta viestien vastaanottaminen tällä osoitteella poistamalla alias käytöstä."
           }
         },
         "fr" : {
@@ -26167,7 +26167,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kaikki postilaatikkoa **%@** käyttävät aliakset poistetaan myös. Jos haluat jatkaa sähköpostien vastaanottamista, siirrä nämä aliakset toiseen postilaatikkoon:"
+            "value" : "Myös kaikki postilaatikkoa **%@** käyttävät aliakset poistetaan. Jos haluat edelleen vastaanottaa viestejä, siirrä nämä aliakset toiseen postilaatikkoon:"
           }
         },
         "fr" : {
@@ -27983,7 +27983,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Näytä käyttäjätunnuskenttä aina"
+            "value" : "Näytä käyttäjätunnus-kenttä aina"
           }
         },
         "fr" : {
@@ -28144,7 +28144,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "API- tunnistetiedot"
+            "value" : "API-tunnistetieto"
           }
         },
         "fr" : {
@@ -28612,7 +28612,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Haluatko varmasti lisätä salaisen todennusavaimen kohteeseen \"%@\"?"
+            "value" : "Haluatko varmasti lisätä 2FA -avaimen kohteeseen \"%@\"?"
           }
         },
         "fr" : {
@@ -29775,7 +29775,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ainakin yksi valituista kohteista on jaettu tällä hetkellä. Sen siirtäminen toiseen holviin poistaa pääsyn kaikilta toisilta käyttäjiltä."
+            "value" : "Ainakin yksi valituista kohteista on jaettu tällä hetkellä. Sen siirtäminen toiseen holviin poistaa pääsyn muilta käyttäjiltä."
           }
         },
         "fr" : {
@@ -30768,7 +30768,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Automaattitäytä sovelluksissa ja verkkosivustoilla ottamalla Proton Passin automaattitäyttö käyttöön"
+            "value" : "Käytä automaattitäyttöä sovelluksissa ja verkkosivustoilla ottamalla Proton Passin automaattitäyttö käyttöön"
           }
         },
         "fr" : {
@@ -30934,7 +30934,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vahvistuskoodien automaattinen kopiointi edellyttää biometrisen lukituksen tai PIN-koodin käyttöönottoa"
+            "value" : "2FA-vahvistuskoodien automaattinen kopiointi edellyttää biometrisen lukituksen tai PIN-koodin käyttöönottoa"
           }
         },
         "fr" : {
@@ -34869,7 +34869,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Peruuta postilaatikon muutos"
+            "value" : "Peru postilaatikon muutos"
           }
         },
         "fr" : {
@@ -36364,7 +36364,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vaihda postilaatikon sähköpostiosoitetta"
+            "value" : "Vaihda postilaatikon sähköpostiosoite"
           }
         },
         "fr" : {
@@ -47732,7 +47732,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Crypto"
+            "value" : "Kryptolompakko"
           }
         },
         "fr" : {
@@ -49339,7 +49339,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mukautettu kohde siirretty roskakoriin"
+            "value" : "Mukautettu kohde siirrettiin roskakoriin"
           }
         },
         "fr" : {
@@ -49487,7 +49487,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mukautettu kohde poistettu pysyvästi"
+            "value" : "Mukautettu kohde poistettiin pysyvästi"
           }
         },
         "fr" : {
@@ -49635,7 +49635,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mukautettu kohde palautettu"
+            "value" : "Mukautettu kohde palautettiin"
           }
         },
         "fr" : {
@@ -49783,7 +49783,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mukautettu kohde päivitetty"
+            "value" : "Mukautettu kohde päivitettiin"
           }
         },
         "fr" : {
@@ -51053,7 +51053,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Päivämäärä"
+            "value" : "Päiväys"
           }
         },
         "fr" : {
@@ -51207,7 +51207,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Päivämäärä mukautettu kenttä"
+            "value" : "Mukautettu päiväyskenttä"
           }
         },
         "fr" : {
@@ -60752,7 +60752,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Syötä holvin \"%@\" uusi nimi"
+            "value" : "Syötä kentän \"%@\" uusi nimi"
           }
         },
         "fr" : {
@@ -61742,7 +61742,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Joka kerta kun aliaksesi saa sähköpostin joltain, niin uusi kontakti luodaan automaattisesti."
+            "value" : "Aina kun aliaksesi vastaanottaa viestin, luodaan automaattisesti uusi yhteystieto."
           }
         },
         "fr" : {
@@ -63398,7 +63398,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Voimassaolopäivämäärä"
+            "value" : "Voimassaolo päättyy"
           }
         },
         "fr" : {
@@ -66213,7 +66213,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Suodatettu aliasten perusteella. Roskakorissa olevia kohteita ei näytetä."
+            "value" : "Aliakset näytetään. \"Roskakorissa olevia kohteita ei näytetä.\""
           }
         },
         "fr" : {
@@ -66373,7 +66373,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Suodatettu maksukorttien perusteella. Roskakorissa olevia kohteita ei näytetä."
+            "value" : "Maksukortit näytetään. Roskakorissa olevia kohteita ei näytetä."
           }
         },
         "fr" : {
@@ -66533,7 +66533,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Suodatettu mukautetuilla kohteilla. Poistettuja kohteita ei näytetä."
+            "value" : "Mukautetut kohteet näytetään. Poistettuja kohteita ei näytetä."
           }
         },
         "fr" : {
@@ -66681,7 +66681,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Suodatettu identiteettien perusteella. Roskakorissa olevia kohteita ei näytetä."
+            "value" : "Identiteetit näytetään. Roskakorissa olevia kohteita ei näytetä."
           }
         },
         "fr" : {
@@ -66841,7 +66841,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Suodatettu kirjautumistietojen perusteella. Roskakorissa olevia kohteita ei näytetä."
+            "value" : "Kirjautumistiedot näytetään. Roskakorissa olevia kohteita ei näytetä."
           }
         },
         "fr" : {
@@ -67001,7 +67001,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Suodatettu muistiinpanojen perusteella. Roskakorissa olevia kohteita ei näytetä."
+            "value" : "Muistiinpanot näytetään. Roskakorissa olevia kohteita ei näytetä."
           }
         },
         "fr" : {
@@ -70294,6 +70294,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Contraseñas generadas"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Luodut salasanat"
           }
         },
         "fr" : {
@@ -76611,7 +76617,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Identität bearbeitet."
+            "value" : "Identität aktualisiert."
           }
         },
         "el" : {
@@ -76974,7 +76980,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tuo"
+            "value" : "Tuo Chromesta"
           }
         },
         "fr" : {
@@ -77301,7 +77307,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tuo"
+            "value" : "Tuo Proton Passiin"
           }
         },
         "fr" : {
@@ -77467,7 +77473,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pass-kohteiden muistiinpanot salataan kohdekohtaisilla salausavaimilla ja vain kohteiden käyttöoikeuden omaavat käyttäjät voivat tarkastella niitä."
+            "value" : "Pass-kohteiden muistiinpanot salataan kohteiden salausavaimilla ja vain niiden käyttöoikeuden omaavat käyttäjät voivat tarkastella muistiinpanoja."
           }
         },
         "fr" : {
@@ -79946,7 +79952,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Myöntäjäviranomainen"
+            "value" : "Myöntänyt viranomainen"
           }
         },
         "fr" : {
@@ -80722,7 +80728,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kohteenhistoria tyhjennettiin"
+            "value" : "Kohteen historia tyhjennettiin"
           }
         },
         "fr" : {
@@ -86702,7 +86708,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lisenssikoodi"
+            "value" : "Lisenssiavain"
           }
         },
         "fr" : {
@@ -89691,7 +89697,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Postilaatikko on paikka, johon aliakselle lähetetyt sähköpostit välitetään. Se on tuttu postilaatikkosi, esim. Gmail, Outlook, Proton Mail jne."
+            "value" : "Postilaatikko on aliakseen lähetettyjen viestien ohjauskohde. Se on normaalistikäyttämäsi postilaatikko, eli esim. Gmail, Outlook tai Proton Mail."
           }
         },
         "fr" : {
@@ -90850,6 +90856,12 @@
             "value" : "Gestore"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "管理者"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -91292,7 +91304,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hoitotarpeet"
+            "value" : "Sairaudet"
           }
         },
         "fr" : {
@@ -91447,7 +91459,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Terveystiedot"
+            "value" : "Hoitohistoria"
           }
         },
         "fr" : {
@@ -91602,7 +91614,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lääkkeet"
+            "value" : "Lääkitykset"
           }
         },
         "fr" : {
@@ -94501,6 +94513,12 @@
             "value" : "Más"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisää"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -97277,7 +97295,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ei toimintaa kahteen viikkoon."
+            "value" : "Ei tapahtumia viimeisten kahden viikon aikana."
           }
         },
         "fr" : {
@@ -101568,7 +101586,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Voit nyt avata Proton Passin lukituksen vain silloin, kun tarvitset sitä ⏤ nopeasti ja turvallisesti"
+            "value" : "Nyt voit avata Proton Passin lukituksen vain tarvittaessa ⏤ nopeasti ja turvallisesti"
           }
         },
         "fr" : {
@@ -102398,7 +102416,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vain yksi napautus ja käyttäjätunnuksesi ja salasanasi on täytetty"
+            "value" : "Vain yksi napautus ja käyttäjätunnuksesi ja salasanasi on täytetty."
           }
         },
         "fr" : {
@@ -104695,6 +104713,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Open Wifi-netwerk"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otwórz sieć Wi-Fi"
           }
         },
         "pt-BR" : {
@@ -112028,7 +112052,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ole yhteydessä organisaatiosi tukee."
+            "value" : "Ole yhteydessä organisaatiosi tukeen."
           }
         },
         "fr" : {
@@ -112686,7 +112710,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Huomaa, että poistettuja aliaksia ei voi palauttaa. Haluatko sen sijaan poistaa aliaksen käytöstä?"
+            "value" : "Huomioi, että poistettuja aliaksia ei ole mahdollista palauttaa. Haluatko sen sijaan poistaa aliaksen käytöstä?"
           }
         },
         "fr" : {
@@ -112846,7 +112870,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Huomaa, että poistettuja aliaksia ei voi palauttaa. Alias on jo poistettu käytöstä, eikä se välitä sähköposteja postilaatikkoosi."
+            "value" : "Huomioi, että poistettuja aliaksia ei ole mahdollista palauttaa. Alias on jo poistettu käytöstä, eikä se ohjaa viestejä postilaatikkoosi."
           }
         },
         "fr" : {
@@ -113006,7 +113030,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Huomaa, että poistettuja aliaksia ei voi palauttaa"
+            "value" : "Huomioi, että poistettuja aliaksia ei ole mahdollista palauttaa."
           }
         },
         "fr" : {
@@ -113166,7 +113190,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Huomaa, että poistettuja aliaksia ei voi palauttaa."
+            "value" : "Huomioi, että poistettuja aliaksia ei ole mahdollista palauttaa."
           }
         },
         "fr" : {
@@ -113327,7 +113351,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Anna meille lisätietoja kuvauksessa"
+            "value" : "Kerro meille lisätietoja kuvauksessa"
           }
         },
         "fr" : {
@@ -119457,7 +119481,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Poista välimuistissa olevat liitetiedostot aiemmista latauksista"
+            "value" : "Poista aiemmista latauksista puskuroidut liitteet välimuistista"
           }
         },
         "fr" : {
@@ -126270,6 +126294,12 @@
             "value" : "Guarde los datos de Wi-Fi, contraseña, SSH o personalícelo"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tallenna Wi-Fi, passi, SSH tai siirry mukautettuun"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -130043,7 +130073,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Suojaustyyppi"
+            "value" : "Suojauksen tyyppi"
           }
         },
         "fr" : {
@@ -130358,7 +130388,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Näytä jäsenten ja käyttöoikeuksien yleiskatsaus."
+            "value" : "Näytä jäsenten ja käyttöoikeuksien yhteenveto."
           }
         },
         "fr" : {
@@ -132825,7 +132855,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Istunto erääntyi"
+            "value" : "Istunto on erääntynyt"
           }
         },
         "fr" : {
@@ -135978,7 +136008,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Jakotapa:"
+            "value" : "Jaettu käyttäen:"
           }
         },
         "fr" : {
@@ -137307,7 +137337,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Näytä suurennettuna"
+            "value" : "Näytä suuri"
           }
         },
         "fr" : {
@@ -139597,7 +139627,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "SimpleLogin-muistiinpano tallennetaan samaan paikkaan alias-osoitteen kanssa. Vaikka se on suojattu salauksella levossa, sitä ei ole päästä päähän -salattu, joten kuka tahansa SimpleLogin-tietokantaan pääsevä voi lukea sen."
+            "value" : "SimpleLogin-muistiinpano tallennetaan aliasosoitteen sijaintiin ja vaikka se säilytetäänkin salattuna, se ei ole päästä päähän -salattu, eli kuka tahansa SimpleLogin-tietokantaan pääsevä voi lukea sen."
           }
         },
         "fr" : {
@@ -144673,7 +144703,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vaihdettu tiliin %@"
+            "value" : "Vaihdettiin tunnukseen %@"
           }
         },
         "fr" : {
@@ -149890,7 +149920,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tila"
+            "value" : "Taso/tila"
           }
         },
         "fr" : {
@@ -151189,7 +151219,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Liian monta virheellistä yritystä"
+            "value" : "Liian monta epäonnistunutta yritystä"
           }
         },
         "fr" : {
@@ -155973,7 +156003,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Määrittelemätön"
+            "value" : "Määrittämätön"
           }
         },
         "fr" : {
@@ -156779,7 +156809,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vahvistamaton postilaatikon muutos"
+            "value" : "Vahvistamaton postilaatikon vaihto"
           }
         },
         "fr" : {
@@ -158092,6 +158122,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mejore para crear elementos personalizados"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Luo mukautettuja kohteita päivittämällä tilauksesi"
           }
         },
         "fr" : {
@@ -167361,7 +167397,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kun kohteita siirretään holvista toiseen, säilytämme enintään 50 viimeisintä kuhunkin kohteeseen tehtyä muokkausta"
+            "value" : "Kun kohteita siirretään holvien välillä, säilytetään enintään 50 viimeisintä kuhunkin kohteeseen tehtyä muokkausta."
           }
         },
         "fr" : {
@@ -167527,7 +167563,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "WiFi-verkko"
+            "value" : "Wi-Fi-verkko"
           }
         },
         "fr" : {
@@ -167670,7 +167706,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "WiFi-verkko"
+            "value" : "Wi-Fi-verkko"
           }
         },
         "fr" : {
@@ -167812,7 +167848,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wi-Fi-verkko luotu"
+            "value" : "Wi-Fi-verkko luotiin"
           }
         },
         "fr" : {
@@ -167954,7 +167990,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wi-Fi-verkko siirretty roskakoriin"
+            "value" : "Wi-Fi-verkko siirrettiin roskakoriin"
           }
         },
         "fr" : {
@@ -168096,7 +168132,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wi-Fi-verkko poistettu pysyvästi"
+            "value" : "Wi-Fi-verkko poistettiin pysyvästi"
           }
         },
         "fr" : {
@@ -168238,7 +168274,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wi-Fi-verkko palautettu"
+            "value" : "Wi-Fi-verkko palautettiin"
           }
         },
         "fr" : {
@@ -168386,7 +168422,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wi-Fi-verkko päivitetty"
+            "value" : "Wi-Fi-verkko päivitettiin"
           }
         },
         "fr" : {
@@ -168682,7 +168718,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wi-Fi-salasana kopioitu"
+            "value" : "Wi-Fi-salasana kopioitiin"
           }
         },
         "fr" : {
@@ -169656,6 +169692,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "¿Desea asociar «%1$@» con «%2$@»?"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haluatko yhdistää kohteen \"%1$@\" nimikkeeseen \"%2$@\"?"
           }
         },
         "fr" : {
@@ -172188,7 +172230,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Et voi kutsua organisaatiosi ulkopuolisia henkilöitä, ota yhteyttä ylläpitäjään saadaksesi lisätietoja."
+            "value" : "Et voi kutsua henkilöitä organisaatiosi ulkopuolelta. Ole yhteydessä ylläpitoosi saadaksesi lisätietoja."
           }
         },
         "fr" : {
@@ -173000,7 +173042,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sinulla ei ole yhtään holvia"
+            "value" : "Sinulla ei ole holveja"
           }
         },
         "fr" : {
@@ -173641,7 +173683,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Olet saavuttanut tässä holvissa olevien käyttäjien enimmäismäärän."
+            "value" : "Olet saavuttanut holvin käyttäjärajoituksen."
           }
         },
         "fr" : {
@@ -173807,7 +173849,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Olet saavuttanut luomiesi holvien enimmäismäärän. Päivitä maksulliseen tilaukseen luodaksesi useita holveja."
+            "value" : "Olet saavuttanut luomiesi holvien enimmäismäärän. Luo useita holveja päivitämällä maksulliseen tilaukseen."
           }
         },
         "fr" : {
@@ -174460,7 +174502,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Menetät pääsyn tähän kohteeseen ja sen tietoihin. Haluatko jatkaa"
+            "value" : "Menetät pääsyn kohteeseen ja sen tietoihin. Haluatko jatkaa?"
           }
         },
         "fr" : {
@@ -174949,7 +174991,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sinut on kirjattu ulos muilta ilmaisilta tileiltä"
+            "value" : "Sinut on kirjattu ulos muilta ilmaistileiltä"
           }
         },
         "fr" : {
@@ -175115,7 +175157,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nykyinen asiakirjasi palautetaan versioon %@"
+            "value" : "Nykyinen dokumentti palautetaan versioon %@"
           }
         },
         "fr" : {
@@ -175281,7 +175323,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sovelluksesi nykyistä versiota ei enää tueta. Päivitä uusimpaan versioon."
+            "value" : "Nykyistä sovellusversiotasi ei enää tueta. Päivitä uusimpaan versioon."
           }
         },
         "fr" : {
@@ -175447,7 +175489,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sinun verkkotunnuksesi"
+            "value" : "Oman verkkotunnuksesi"
           }
         },
         "fr" : {
