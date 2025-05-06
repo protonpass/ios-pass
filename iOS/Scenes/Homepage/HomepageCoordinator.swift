@@ -1413,15 +1413,6 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 // MARK: - ProfileTabViewModelDelegate
 
 extension HomepageCoordinator: ProfileTabViewModelDelegate {
-    func profileTabViewModelWantsUserInfo() async -> UserInfo? {
-        do {
-            let userData = try await userManager.getUnwrappedActiveUserData()
-            return try await filledUserInfo(userData: userData)
-        } catch {
-            return nil
-        }
-    }
-
     func profileTabViewModelWantsToShowSettingsMenu() {
         let asSheet = shouldShowAsSheet()
         let viewModel = SettingsViewModel(isShownAsSheet: asSheet)
