@@ -613,6 +613,8 @@ extension HomepageCoordinator {
                     }
                 case .passwordHistory:
                     presentPasswordHistoryView()
+                case .signInToAnotherDevice:
+                    presentSignInToAnotherDeviceView()
                 }
             }
             .store(in: &cancellables)
@@ -1059,6 +1061,43 @@ extension HomepageCoordinator {
                                                            bannerDisplay: bannerManager)
                                        })
         present(view)
+    }
+
+    func presentSignInToAnotherDeviceView() {
+        Task { @MainActor in
+            do {
+                guard let userId = userManager.activeUserId,
+                      let authCredential = authManager.getCredential(userId: userId)
+                else {
+                    return
+                }
+
+                let passphrase = authCredential.mailboxpassword
+                let email = try await (userManager.getActiveUserData()?.user.email) ?? ""
+                let apiService = try apiManager.getApiService(userId: userId)
+
+                let view = NavigationStackEmbededView(content: {
+                    ScanQRCodeInstructionsView(viewModel: .init(dependencies: .init(passphrase: passphrase,
+                                                                                    userEmail: email,
+                                                                                    apiService: apiService)))
+                }, toolbar: {
+                    ToolbarItem(placement: .topBarLeading) {
+                        CircleButton(icon: IconProvider.cross,
+                                     iconColor: PassColor.interactionNormMajor2,
+                                     backgroundColor: PassColor.interactionNormMinor1,
+                                     accessibilityLabel: "Close",
+                                     action: { [weak self] in
+                                         guard let self else { return }
+                                         dismissTopMostViewController(animated: true)
+                                     })
+                    }
+                })
+
+                present(view)
+            } catch {
+                handle(error: error)
+            }
+        }
     }
 
     private func filledUserInfo(userData: UserData) async throws -> UserInfo {
