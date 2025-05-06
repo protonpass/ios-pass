@@ -77,6 +77,26 @@ public struct FileAttachmentsButton: View {
         }, label: {
             attachFileButton()
         })
+        .onAppear {
+            // Workaround showFileImporter boolean not set to `false`
+            // when users close the file picker
+            showFileImporter = false
+        }
+        // This fileImporter modifier must be first applied otherwise file picker
+        // won't be shown in some cases
+        .fileImporter(isPresented: $showFileImporter,
+                      allowedContentTypes: [.item],
+                      allowsMultipleSelection: false,
+                      onCompletion: { result in
+                          switch result {
+                          case let .success(urls):
+                              if let url = urls.first {
+                                  handler.handleAttachment(url)
+                              }
+                          case let .failure(error):
+                              handler.handleAttachmentError(error)
+                          }
+                      })
         .sheet(isPresented: $showCamera) {
             CameraView {
                 capturedImageToEdit = $0
@@ -98,19 +118,6 @@ public struct FileAttachmentsButton: View {
         .photosPicker(isPresented: $showPhotosPicker,
                       selection: $viewModel.selectedPhotos,
                       maxSelectionCount: 1)
-        .fileImporter(isPresented: $showFileImporter,
-                      allowedContentTypes: [.item],
-                      allowsMultipleSelection: false,
-                      onCompletion: { result in
-                          switch result {
-                          case let .success(urls):
-                              if let url = urls.first {
-                                  handler.handleAttachment(url)
-                              }
-                          case let .failure(error):
-                              handler.handleAttachmentError(error)
-                          }
-                      })
         .cameraUnavailableAlert(isPresented: $showCameraUnavailable)
         .alert("No Text Found",
                isPresented: $viewModel.showNoTextFound,
@@ -160,10 +167,7 @@ public struct FileAttachmentsButton: View {
         case .choosePhotoOrVideo:
             showPhotosPicker.toggle()
         case .chooseFile:
-            // Workaround SwiftUI bug that doesn't show file picker in some circumstances
-            MainActor.assumeIsolated {
-                showFileImporter.toggle()
-            }
+            showFileImporter.toggle()
         }
     }
 
