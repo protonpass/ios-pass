@@ -1064,35 +1064,39 @@ extension HomepageCoordinator {
     }
 
     func presentSignInToAnotherDeviceView() {
-        guard let userId = userManager.activeUserId,
-              let apiService = try? apiManager.getApiService(userId: userId),
-              let authCredential = authManager.getCredential(userId: userId)
-        else {
-            return
-        }
-
         Task { @MainActor in
-            let passphrase = authCredential.mailboxpassword
-            let email = await (try? userManager.getActiveUserData()?.user.email) ?? ""
-
-            let view = NavigationStackEmbededView(content: {
-                ScanQRCodeInstructionsView(viewModel: .init(dependencies: .init(passphrase: passphrase,
-                                                                                userEmail: email,
-                                                                                apiService: apiService)))
-            }, toolbar: {
-                ToolbarItem(placement: .topBarLeading) {
-                    CircleButton(icon: IconProvider.cross,
-                                 iconColor: PassColor.interactionNormMajor2,
-                                 backgroundColor: PassColor.interactionNormMinor1,
-                                 accessibilityLabel: "Close",
-                                 action: { [weak self] in
-                                     guard let self else { return }
-                                     dismissTopMostViewController(animated: true)
-                                 })
+            do {
+                guard let userId = userManager.activeUserId,
+                      let authCredential = authManager.getCredential(userId: userId)
+                else {
+                    return
                 }
-            })
 
-            present(view)
+                let passphrase = authCredential.mailboxpassword
+                let email = try await (userManager.getActiveUserData()?.user.email) ?? ""
+                let apiService = try apiManager.getApiService(userId: userId)
+
+                let view = NavigationStackEmbededView(content: {
+                    ScanQRCodeInstructionsView(viewModel: .init(dependencies: .init(passphrase: passphrase,
+                                                                                    userEmail: email,
+                                                                                    apiService: apiService)))
+                }, toolbar: {
+                    ToolbarItem(placement: .topBarLeading) {
+                        CircleButton(icon: IconProvider.cross,
+                                     iconColor: PassColor.interactionNormMajor2,
+                                     backgroundColor: PassColor.interactionNormMinor1,
+                                     accessibilityLabel: "Close",
+                                     action: { [weak self] in
+                                         guard let self else { return }
+                                         dismissTopMostViewController(animated: true)
+                                     })
+                    }
+                })
+
+                present(view)
+            } catch {
+                handle(error: error)
+            }
         }
     }
 
