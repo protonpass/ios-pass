@@ -66,6 +66,14 @@ public enum TelemetryEventType: Sendable, Equatable, Codable {
     case notificationCtaClick(key: String)
     case fileUploaded(mimeType: String)
     case newLoginFlow(event: String, item: String?)
+    case onboardingUpsellCtaClicked(planName: String)
+    case onboardingUpsellSubscribed
+    case onboardingUpsellSkipped
+    case onboardingBiometricsEnabled
+    case onboardingBiometricsSkipped
+    case onboardingPassAsAutofillProviderEnabled
+    case onboardingPassAsAutofillProviderSkipped
+    case onboardingAliasVideoOpened
 
     // swiftlint:disable:next cyclomatic_complexity
     public init?(rawValue: String) {
@@ -215,6 +223,22 @@ public enum TelemetryEventType: Sendable, Equatable, Codable {
             "pass_file_attachment.file_uploaded"
         case let .newLoginFlow(name, _):
             name
+        case .onboardingUpsellCtaClicked:
+            "onboarding_upsell_cta_clicked"
+        case .onboardingUpsellSubscribed:
+            "onboarding_upsell_subscribed"
+        case .onboardingUpsellSkipped:
+            "onboarding_upsell_skipped"
+        case .onboardingBiometricsEnabled:
+            "onboarding_biometrics_enabled"
+        case .onboardingBiometricsSkipped:
+            "onboarding_biometrics_skipped"
+        case .onboardingPassAsAutofillProviderEnabled:
+            "onboarding_pass_as_autofill_provider_enabled"
+        case .onboardingPassAsAutofillProviderSkipped:
+            "onboarding_pass_as_autofill_provider_skipped"
+        case .onboardingAliasVideoOpened:
+            "onboarding_alias_video_opened"
         }
     }
 }

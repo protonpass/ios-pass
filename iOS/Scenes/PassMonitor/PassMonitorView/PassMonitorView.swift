@@ -187,7 +187,7 @@ struct PassMonitorView: View {
             .navigationStackEmbeded($router.path)
             .environmentObject(router)
             .task {
-                await viewModel.refresh()
+                await viewModel.refresh(fromView: true)
             }
     }
 }
