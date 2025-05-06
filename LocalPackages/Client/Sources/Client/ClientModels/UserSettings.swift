@@ -25,22 +25,26 @@ public struct UserSettings: Sendable {
     public var highSecurity: HighSecurity
     public let password: Password
     public let twoFactor: TwoFactor
+    public let flags: Flags
 
     public init(telemetry: Bool,
                 highSecurity: HighSecurity,
                 password: Password,
-                twoFactor: TwoFactor) {
+                twoFactor: TwoFactor,
+                flags: Flags) {
         self.telemetry = telemetry
         self.highSecurity = highSecurity
         self.password = password
         self.twoFactor = twoFactor
+        self.flags = flags
     }
 
     static var `default`: UserSettings {
         UserSettings(telemetry: false,
                      highSecurity: HighSecurity.default,
                      password: .init(mode: .singlePassword),
-                     twoFactor: .init(type: .disabled))
+                     twoFactor: .init(type: .disabled),
+                     flags: .init(edmOptOut: .optedIn))
     }
 
     public struct Password: Sendable, Codable {
@@ -91,6 +95,29 @@ public struct UserSettings: Sendable {
             type = try container.decode(TwoFactorType.self, forKey: .type)
         }
     }
+
+    public struct Flags: Sendable, Codable {
+        public let edmOptOut: EdmOptOut
+
+        public enum EdmOptOut: Int, Sendable, Codable {
+            case optedIn = 0
+            case optedOut = 1
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case edmOptOut
+        }
+
+        public init(edmOptOut: EdmOptOut) {
+            self.edmOptOut = edmOptOut
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            edmOptOut = try container.decode(EdmOptOut.self, forKey: .edmOptOut)
+        }
+    }
 }
 
 extension UserSettings: Codable {
@@ -99,6 +126,7 @@ extension UserSettings: Codable {
         case highSecurity
         case password
         case twoFactor = "_2FA"
+        case flags
     }
 
     public init(from decoder: any Decoder) throws {
@@ -110,6 +138,7 @@ extension UserSettings: Codable {
         highSecurity = try container.decode(HighSecurity.self, forKey: .highSecurity)
         password = try container.decode(Password.self, forKey: .password)
         twoFactor = try container.decode(TwoFactor.self, forKey: .twoFactor)
+        flags = try container.decode(Flags.self, forKey: .flags)
     }
 
     public func encode(to encoder: any Encoder) throws {
@@ -126,6 +155,9 @@ extension UserSettings: Codable {
 
         // Encode `twoFactorVerify` as it is (it handles its own encoding logic)
         try container.encode(twoFactor, forKey: .twoFactor)
+
+        // Encode `flags` as it is (it handles its own encoding logic)
+        try container.encode(flags, forKey: .flags)
     }
 }
 

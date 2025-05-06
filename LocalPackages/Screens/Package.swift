@@ -27,7 +27,7 @@ let package = Package(
         .package(name: "UseCases", path: "../UseCases"),
         .package(name: "DesignSystem", path: "../DesignSystem"),
         .package(name: "Macro", path: "../Macro"),
-        .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "31.1.2")
+        .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "32.0.5")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
