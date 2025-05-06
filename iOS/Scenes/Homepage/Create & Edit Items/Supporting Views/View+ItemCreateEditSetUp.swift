@@ -64,12 +64,7 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                 onRemove: viewModel.removeCustomSection(_:))
             .pickCustomFieldTypeSheet(payload: $viewModel.addCustomFieldPayload,
                                       suppportedTypes: viewModel.supportedCustomFieldTypes,
-                                      onAdd: { type in
-                                          if let payload = viewModel.addCustomFieldPayload {
-                                              addCustomFieldTypePayload = .init(type: type,
-                                                                                payload: payload)
-                                          }
-                                      })
+                                      onAdd: { handleAddCustomField(type: $0) })
             .addCustomFieldAlert(payload: $addCustomFieldTypePayload,
                                  title: $customFieldTitle,
                                  onAdd: { payload in
@@ -125,6 +120,25 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
             .task {
                 await viewModel.fetchAttachedFiles()
             }
+    }
+}
+
+private extension ItemCreateEditSetUpModifier {
+    func handleAddCustomField(type: CustomFieldType) {
+        guard let payload = viewModel.addCustomFieldPayload else { return }
+        let showAddCustomFieldAlert: () -> Void = {
+            addCustomFieldTypePayload = .init(type: type, payload: payload)
+        }
+        if #available(iOS 17, *) {
+            showAddCustomFieldAlert()
+        } else {
+            // Manually dismiss custom field type picker
+            // Wait for 0.5 sec to make sure it's fully dismissed before showing add custom field alert
+            viewModel.addCustomFieldPayload = nil
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                showAddCustomFieldAlert()
+            }
+        }
     }
 }
 
@@ -227,6 +241,20 @@ private extension View {
         }
     }
 
+    // Only iOS 17+ support disabling alert's buttons
+    @ViewBuilder
+    func adaptiveDisabledButton(title: LocalizedStringKey,
+                                disabled: Bool,
+                                action: @escaping () -> Void) -> some View {
+        let button = Button(title, role: nil, action: action)
+        if #available(iOS 17, *) {
+            button
+                .disabled(disabled)
+        } else {
+            button
+        }
+    }
+
     func addCustomFieldAlert(payload: Binding<AddCustomFieldTypePayload?>,
                              title: Binding<String>,
                              onAdd: @escaping (AddCustomFieldTypePayload) -> Void) -> some View {
@@ -235,8 +263,9 @@ private extension View {
               actions: {
                   if let payload = payload.wrappedValue {
                       TextField(payload.type.placeholder, text: title)
-                      Button("Add", role: nil, action: { onAdd(payload) })
-                          .disabled(title.wrappedValue.isEmpty)
+                      adaptiveDisabledButton(title: "Add",
+                                             disabled: title.wrappedValue.isEmpty,
+                                             action: { onAdd(payload) })
                   }
 
                   Button("Cancel", role: .cancel, action: { title.wrappedValue = "" })
@@ -256,8 +285,9 @@ private extension View {
               actions: {
                   if let field = field.wrappedValue {
                       TextField(field.type.placeholder, text: title)
-                      Button("Save", role: nil, action: { onEdit(field) })
-                          .disabled(title.wrappedValue.isEmpty)
+                      adaptiveDisabledButton(title: "Save",
+                                             disabled: title.wrappedValue.isEmpty,
+                                             action: { onEdit(field) })
                   }
 
                   Button("Cancel", role: .cancel, action: { title.wrappedValue = "" })
