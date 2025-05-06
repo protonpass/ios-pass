@@ -156,24 +156,30 @@ struct ProfileTabView: View {
                     .profileSectionTitle()
                     .accessibilityIdentifierLeaf("Text")
 
-                Group {
-                    if showSwitcher {
-                        AccountCell(detail: AccountCellDetail.empty,
-                                    animationNamespace: animationNamespace)
-                    } else {
-                        AccountCell(detail: activeUser,
-                                    animationNamespace: animationNamespace)
-                            .animation(.default, value: showSwitcher)
-                            .onTapGesture {
-                                withAnimation {
-                                    showSwitcher.toggle()
+                VStack(spacing: 0) {
+                    Group {
+                        if showSwitcher {
+                            AccountCell(detail: AccountCellDetail.empty,
+                                        animationNamespace: animationNamespace)
+                        } else {
+                            AccountCell(detail: activeUser,
+                                        animationNamespace: animationNamespace)
+                                .animation(.default, value: showSwitcher)
+                                .onTapGesture {
+                                    withAnimation {
+                                        showSwitcher.toggle()
+                                    }
                                 }
-                            }
+                        }
                     }
-                }
-                .padding()
-                .roundedEditableSection()
-                .accessibilityIdentifierLeaf("AccountCell")
+                    .padding()
+                    .accessibilityIdentifierLeaf("AccountCell")
+
+                    if viewModel.isEasyDeviceMigrationEnabled {
+                        PassDivider()
+                        signInToAnotherDeviceSection
+                    }
+                }.roundedEditableSection()
             }.padding()
         }
     }
@@ -453,6 +459,25 @@ struct ProfileTabView: View {
             .roundedEditableSection()
         }
         .padding(.horizontal)
+    }
+
+    private var signInToAnotherDeviceSection: some View {
+        OptionRow(action: { viewModel.showSignInToAnotherDevice() },
+                  content: {
+                      Text(#localized("Sign in to another device"))
+                          .foregroundStyle(PassColor.textNorm.toColor)
+                          .frame(maxWidth: .infinity, alignment: .leading)
+                  },
+                  leading: {
+                      Image(uiImage: ProtonCoreUIFoundations.IconProvider.qrCode)
+                          .resizable()
+                          .scaledToFit()
+                          .frame(width: 24, height: 24)
+                          .padding(6)
+                          .padding(.trailing)
+                  },
+                  trailing: { ChevronRight() })
+            .frame(height: 75)
     }
 }
 

@@ -246,21 +246,24 @@ extension TelemetryEventRepositoryTests {
                     .init(telemetry: false,
                           highSecurity: .default,
                           password: .init(mode: .singlePassword),
-                          twoFactor: .init(type: .disabled))
+                          twoFactor: .init(type: .disabled),
+                          flags: .init(edmOptOut: .optedIn))
 
             case userId3:
                 // Business user with telemetry turned on
                     .init(telemetry: true,
                           highSecurity: .default,
                           password: .init(mode: .singlePassword),
-                          twoFactor: .init(type: .disabled))
+                          twoFactor: .init(type: .disabled),
+                          flags: .init(edmOptOut: .optedIn))
 
             default:
                 // Free user with telemetry turned on
                     .init(telemetry: true,
                           highSecurity: .default,
                           password: .init(mode: .singlePassword),
-                          twoFactor: .init(type: .disabled))
+                          twoFactor: .init(type: .disabled),
+                          flags: .init(edmOptOut: .optedIn))
             }
 
             nonMutatingSelf.userSettingsRepository.stubbedGetSettingsResult = settings
@@ -328,7 +331,8 @@ extension TelemetryEventRepositoryTests {
         userSettingsRepository.stubbedGetSettingsResult = .init(telemetry: false,
                                                                 highSecurity: .default,
                                                                 password: .init(mode: .singlePassword),
-                                                                twoFactor: .init(type: .disabled))
+                                                                twoFactor: .init(type: .disabled),
+                                                                flags: .init(edmOptOut: .optedIn))
 
         let freeAccess = Access(plan: .init(type: "free",
                                             internalName: .random(),
@@ -404,7 +408,8 @@ extension TelemetryEventRepositoryTests {
         userSettingsRepository.stubbedGetSettingsResult = .init(telemetry: false,
                                                                 highSecurity: .default,
                                                                 password: .init(mode: .singlePassword),
-                                                                twoFactor: .init(type: .disabled))
+                                                                twoFactor: .init(type: .disabled),
+                                                                flags: .init(edmOptOut: .optedIn))
 
         let businessAccess = Access(plan: .init(type: "business",
                                                 internalName: .random(),
@@ -460,7 +465,8 @@ extension TelemetryEventRepositoryTests {
         userSettingsRepository.stubbedGetSettingsResult = .init(telemetry: true,
                                                                 highSecurity: .default,
                                                                 password: .init(mode: .singlePassword),
-                                                                twoFactor: .init(type: .disabled))
+                                                                twoFactor: .init(type: .disabled),
+                                                                flags: .init(edmOptOut: .optedIn))
 
         let businessAccess = Access(plan: .init(type: "business",
                                                 internalName: .random(),

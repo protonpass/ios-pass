@@ -23,6 +23,8 @@ import Combine
 import Core
 import Entities
 import Factory
+import ProtonCoreDataModel
+import ProtonCoreFeatureFlags
 import ProtonCoreLogin
 import ProtonCoreServices
 import Screens
@@ -66,6 +68,9 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let secureLinkManager = resolve(\ServiceContainer.secureLinkManager)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
+    // Repositories
+    private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
+
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedUseCasesContainer.switchUser) private var switchUser
 
@@ -87,6 +92,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     // Accounts management
     @Published private var currentActiveUser: UserData?
+    @Published private(set) var isEasyDeviceMigrationEnabled = false
+
     var activeAccountDetail: AccountCellDetail? {
         if let currentActiveUser {
             .init(id: currentActiveUser.userId,
@@ -290,6 +297,10 @@ extension ProfileTabViewModel {
         router.action(.manage(userId: account.id))
     }
 
+    func showSignInToAnotherDevice() {
+        router.present(for: .signInToAnotherDevice)
+    }
+
     func showSettingsMenu() {
         delegate?.profileTabViewModelWantsToShowSettingsMenu()
     }
@@ -455,6 +466,21 @@ private extension ProfileTabViewModel {
                 plan = userAccess.access.plan
             }
             .store(in: &cancellables)
+
+        Task {
+            do {
+                let userId = try await userManager.getActiveUserId()
+                let userSettings = await userSettingsRepository.getSettings(for: userId)
+                let qrLoginOptedOut = userSettings.flags.edmOptOut == .optedOut
+                let qrLoginFeatureDisabled = getFeatureFlagStatus(for: CoreFeatureFlagType
+                    .easyDeviceMigrationDisabled)
+
+                isEasyDeviceMigrationEnabled = !qrLoginFeatureDisabled && !qrLoginOptedOut
+            } catch {
+                isEasyDeviceMigrationEnabled = false
+                handle(error: error)
+            }
+        }
     }
 
     func refreshLocalAuthenticationMethod() {
