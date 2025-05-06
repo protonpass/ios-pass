@@ -92,7 +92,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     // Accounts management
     @Published private var currentActiveUser: UserData?
-    @Published private(set) var isEasyDeviceMigrationEnabled: Bool = false
+    @Published private(set) var isEasyDeviceMigrationEnabled = false
 
     var activeAccountDetail: AccountCellDetail? {
         if let currentActiveUser {
@@ -477,7 +477,8 @@ private extension ProfileTabViewModel {
 
                 isEasyDeviceMigrationEnabled = !qrLoginFeatureDisabled && !qrLoginOptedOut
             } catch {
-                return
+                isEasyDeviceMigrationEnabled = false
+                handle(error: error)
             }
         }
     }
