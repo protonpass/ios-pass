@@ -35,7 +35,6 @@ import UseCases
 protocol ProfileTabViewModelDelegate: AnyObject {
     func profileTabViewModelWantsToShowSettingsMenu()
     func profileTabViewModelWantsToShowFeedback()
-    func profileTabViewModelWantsUserInfo() async -> UserInfo?
 }
 
 struct StorageUiModel: Sendable {
@@ -68,6 +67,9 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
     private let secureLinkManager = resolve(\ServiceContainer.secureLinkManager)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+
+    // Repositories
+    private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
 
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedUseCasesContainer.switchUser) private var switchUser
@@ -466,11 +468,17 @@ private extension ProfileTabViewModel {
             .store(in: &cancellables)
 
         Task {
-            let userInfo = await delegate?.profileTabViewModelWantsUserInfo()
-            let qrLoginOptedOut = userInfo?.edmOptOut == 1
-            let qrLoginFeatureDisabled = getFeatureFlagStatus(for: CoreFeatureFlagType.easyDeviceMigrationDisabled)
+            do {
+                let userId = try await userManager.getActiveUserId()
+                let userSettings = await userSettingsRepository.getSettings(for: userId)
+                let qrLoginOptedOut = userSettings.flags.edmOptOut == .optedOut
+                let qrLoginFeatureDisabled = getFeatureFlagStatus(for: CoreFeatureFlagType
+                    .easyDeviceMigrationDisabled)
 
-            isEasyDeviceMigrationEnabled = !qrLoginFeatureDisabled && !qrLoginOptedOut
+                isEasyDeviceMigrationEnabled = !qrLoginFeatureDisabled && !qrLoginOptedOut
+            } catch {
+                return
+            }
         }
     }
 
