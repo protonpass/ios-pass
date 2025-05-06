@@ -147,6 +147,8 @@ private extension TelemetryEvent {
             itemContentType.dimensionType
         case .twoFaCreation, .twoFaUpdate:
             "login"
+        case let .onboardingUpsellCtaClicked(planName):
+            planName
         default:
             nil
         }
