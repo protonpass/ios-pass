@@ -199,6 +199,11 @@ extension SharedRepositoryContainer {
                                        databaseService: self.databaseService) }
     }
 
+    var localAuthCredentialDatasource: Factory<any LocalAuthCredentialDatasourceProtocol> {
+        self { LocalAuthCredentialDatasource(symmetricKeyProvider: self.symmetricKeyProvider,
+                                             databaseService: self.databaseService) }
+    }
+
     var remoteInviteDatasource: Factory<any RemoteInviteDatasourceProtocol> {
         self { RemoteInviteDatasource(apiServicing: self.apiManager) }
     }
@@ -338,9 +343,13 @@ extension SharedRepositoryContainer {
         }
     }
 
+    var sharedGroup: UserDefaults {
+        UserDefaults(suiteName: "group.me.proton.pass")!
+    }
+
     var featureFlagsRepository: Factory<any FeatureFlagsRepositoryProtocol> {
         self {
-            FeatureFlagsRepository.shared
+            FeatureFlagsRepository.makeFeatureFlagsRepository(userDefaults: self.sharedGroup)
         }
     }
 
