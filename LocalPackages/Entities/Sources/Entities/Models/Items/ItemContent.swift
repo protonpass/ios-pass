@@ -136,6 +136,30 @@ extension ItemContent: ItemTypeIdentifiable {
 
     public var aliasEmail: String? { item.aliasEmail }
     public var aliasEnabled: Bool { item.isAliasEnabled }
+
+    public var hasEmail: Bool {
+        if case let .login(data) = contentData {
+            !data.email.isEmpty
+        } else {
+            false
+        }
+    }
+
+    public var hasUsername: Bool {
+        if case let .login(data) = contentData {
+            !data.username.isEmpty
+        } else {
+            false
+        }
+    }
+
+    public var hasPassword: Bool {
+        if case let .login(data) = contentData {
+            !data.password.isEmpty
+        } else {
+            false
+        }
+    }
 }
 
 extension ItemContent: ItemThumbnailable {

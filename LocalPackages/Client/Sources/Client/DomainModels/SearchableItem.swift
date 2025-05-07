@@ -45,6 +45,9 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
     public let lastUseTime: Int64
     public let modifyTime: Int64
     public let pinned: Bool
+    public let hasEmail: Bool
+    public let hasUsername: Bool
+    public let hasPassword: Bool
 
     public init(from item: SymmetricallyEncryptedItem,
                 symmetricKey: SymmetricKey,
@@ -54,6 +57,7 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
         self.init(from: itemContent, allVaults: allVaults)
     }
 
+    // swiftlint:disable:next function_body_length
     public init(from itemContent: ItemContent,
                 allVaults: [Share]) {
         itemId = itemContent.item.itemID
@@ -75,6 +79,9 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
         var hasTotpUri = false
         var extraCustomFields: [CustomField] = []
         var customSections: [CustomSection] = []
+        var hasEmail = false
+        var hasUsername = false
+        var hasPassword = false
 
         switch itemContent.contentData {
         case let .login(data):
@@ -82,6 +89,9 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
             requiredExtras = [data.email, data.username]
             optionalExtras = data.urls
             hasTotpUri = !data.totpUri.isEmpty
+            hasEmail = !data.email.isEmpty
+            hasUsername = !data.username.isEmpty
+            hasPassword = !data.password.isEmpty
 
         case let .identity(data):
             url = nil
@@ -164,6 +174,9 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
         pinned = itemContent.item.pinned
         self.optionalExtras = optionalExtras
         self.hasTotpUri = hasTotpUri
+        self.hasEmail = hasEmail
+        self.hasUsername = hasUsername
+        self.hasPassword = hasPassword
     }
 }
 
@@ -228,7 +241,10 @@ private extension SearchableItem {
                      modifyTime: modifyTime,
                      pinned: pinned,
                      owner: owner,
-                     shared: shared)
+                     shared: shared,
+                     hasEmail: hasEmail,
+                     hasUsername: hasUsername,
+                     hasPassword: hasPassword)
     }
 
     var toItemSearchResult: ItemSearchResult {
@@ -245,7 +261,10 @@ private extension SearchableItem {
                          modifyTime: modifyTime,
                          pinned: pinned,
                          owner: owner,
-                         shared: shared)
+                         shared: shared,
+                         hasEmail: hasEmail,
+                         hasUsername: hasUsername,
+                         hasPassword: hasPassword)
     }
 }
 
