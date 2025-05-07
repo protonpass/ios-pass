@@ -186,6 +186,10 @@ public extension String {
         content.append(contentsOf: strings)
         return String.concatenateOptionalStrings(content, separator: separator)
     }
+
+    var accentsRemoved: String {
+        folding(options: .diacriticInsensitive, locale: .init(identifier: "en_US"))
+    }
 }
 
 // MARK: Computed Extensions
