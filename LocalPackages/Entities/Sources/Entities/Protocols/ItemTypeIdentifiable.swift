@@ -27,4 +27,7 @@ public protocol ItemTypeIdentifiable: ItemIdentifiable {
     var aliasEmail: String? { get }
     var aliasEnabled: Bool { get }
     var shared: Bool { get }
+    var hasEmail: Bool { get }
+    var hasUsername: Bool { get }
+    var hasPassword: Bool { get }
 }

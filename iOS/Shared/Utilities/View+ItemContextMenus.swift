@@ -124,17 +124,26 @@ enum ItemContextMenu {
                         onTrash):
             var sections: [ItemContextMenuOptionSection] = []
 
-            sections.append(.init(options: [
-                .init(title: "Copy email",
-                      icon: IconProvider.envelope,
-                      action: onCopyEmail),
-                .init(title: "Copy username",
-                      icon: IconProvider.user,
-                      action: onCopyUsername),
-                .init(title: "Copy password",
-                      icon: IconProvider.key,
-                      action: onCopyPassword)
-            ]))
+            var emailUsernamePasswordOptions = [ItemContextMenuOption]()
+            if item.hasEmail {
+                emailUsernamePasswordOptions.append(.init(title: "Copy email",
+                                                          icon: IconProvider.envelope,
+                                                          action: onCopyEmail))
+            }
+
+            if item.hasUsername {
+                emailUsernamePasswordOptions.append(.init(title: "Copy username",
+                                                          icon: IconProvider.user,
+                                                          action: onCopyUsername))
+            }
+
+            if item.hasPassword {
+                emailUsernamePasswordOptions.append(.init(title: "Copy password",
+                                                          icon: IconProvider.key,
+                                                          action: onCopyPassword))
+            }
+
+            sections.append(.init(options: emailUsernamePasswordOptions))
 
             sections += Self.commonLastSections(item: item,
                                                 isEditable: isEditable,
