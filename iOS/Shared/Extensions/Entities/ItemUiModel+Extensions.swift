@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Core
 import Entities
 import Foundation
 
@@ -31,5 +32,5 @@ extension ItemUiModel: @retroactive DateSortable {
 }
 
 extension ItemUiModel: @retroactive AlphabeticalSortable {
-    public var alphabeticalSortableString: String { title }
+    public var alphabeticalSortableString: String { title.accentsRemoved }
 }
