@@ -92,6 +92,9 @@ public struct ItemSearchResult: Sendable, ItemTypeIdentifiable, Identifiable, Pi
     public let pinned: Bool
     public let owner: Bool
     public let shared: Bool
+    public let hasEmail: Bool
+    public let hasUsername: Bool
+    public let hasPassword: Bool
 
     public let precomputedHash: Int
 
@@ -108,7 +111,10 @@ public struct ItemSearchResult: Sendable, ItemTypeIdentifiable, Identifiable, Pi
                 modifyTime: Int64,
                 pinned: Bool,
                 owner: Bool,
-                shared: Bool) {
+                shared: Bool,
+                hasEmail: Bool,
+                hasUsername: Bool,
+                hasPassword: Bool) {
         var hasher = Hasher()
 
         self.shareId = shareId
@@ -152,6 +158,15 @@ public struct ItemSearchResult: Sendable, ItemTypeIdentifiable, Identifiable, Pi
 
         self.shared = shared
         hasher.combine(shared)
+
+        self.hasEmail = hasEmail
+        hasher.combine(hasEmail)
+
+        self.hasUsername = hasUsername
+        hasher.combine(hasUsername)
+
+        self.hasPassword = hasPassword
+        hasher.combine(hasPassword)
 
         precomputedHash = hasher.finalize()
     }
