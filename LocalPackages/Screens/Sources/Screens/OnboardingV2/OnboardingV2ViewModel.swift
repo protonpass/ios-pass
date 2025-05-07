@@ -208,14 +208,7 @@ extension OnboardingV2ViewModel {
         do {
             switch currentStep.fetchedObject {
             case .payment:
-                guard let selectedPlan else {
-                    assertionFailure("No selected plan")
-                    return
-                }
-                let plan = try await datasource.getCurrentPlan()
-                await delegate.add(event: .onboardingUpsellCtaClicked(planName: plan.internalName))
-                try await delegate.purchase(selectedPlan.plan)
-                await delegate.add(event: .onboardingUpsellSubscribed)
+                // Not applicable because payment step has custom CTA button
                 shouldGoToNextStep = true
 
             case .biometric:
@@ -275,14 +268,17 @@ extension OnboardingV2ViewModel {
     func purchaseSelectedPlan() {
         guard let selectedPlan else { return }
         Task { [weak self] in
-            guard let self else { return }
+            guard let self, let delegate, let datasource else { return }
             defer { isPurchasing = false }
             isPurchasing = true
             do {
-                try await delegate?.purchase(selectedPlan.plan)
+                let plan = try await datasource.getCurrentPlan()
+                await delegate.add(event: .onboardingUpsellCtaClicked(planName: plan.internalName))
+                try await delegate.purchase(selectedPlan.plan)
+                await delegate.add(event: .onboardingUpsellSubscribed)
                 _ = await goNext()
             } catch {
-                await delegate?.handle(error: error)
+                await delegate.handle(error: error)
             }
         }
     }

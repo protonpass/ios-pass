@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Core
 import PassRustCore
 
 public protocol SanitizeFileNameUseCase: Sendable {
@@ -58,7 +59,6 @@ public final class SanitizeFileName: SanitizeFileNameUseCase {
         fileName = fileDecoder.sanitizeFilename(name: fileName, windows: false)
 
         // Remove accents
-        return fileName.folding(options: .diacriticInsensitive,
-                                locale: .init(identifier: "en_US"))
+        return fileName.accentsRemoved
     }
 }
