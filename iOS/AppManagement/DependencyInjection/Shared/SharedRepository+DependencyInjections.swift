@@ -343,13 +343,9 @@ extension SharedRepositoryContainer {
         }
     }
 
-    var sharedGroup: UserDefaults {
-        UserDefaults(suiteName: "group.me.proton.pass")!
-    }
-
     var featureFlagsRepository: Factory<any FeatureFlagsRepositoryProtocol> {
         self {
-            FeatureFlagsRepository.makeFeatureFlagsRepository(userDefaults: self.sharedGroup)
+            FeatureFlagsRepository.makeFeatureFlagsRepository(userDefaults: kSharedUserDefaults)
         }
     }
 
