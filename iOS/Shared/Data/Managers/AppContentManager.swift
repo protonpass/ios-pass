@@ -216,8 +216,11 @@ extension AppContentManager {
 
             try await loadContents(userId: userId, for: remoteShares)
         } catch {
-            vaultSyncEventStream.send(.error(userId: userId, error: error))
-            return
+            if error.isInactiveUserKey {
+                logger.warning(error.localizedDebugDescription)
+            } else {
+                vaultSyncEventStream.send(.error(userId: userId, error: error))
+            }
         }
 
         incompleteFullSyncUserId = nil

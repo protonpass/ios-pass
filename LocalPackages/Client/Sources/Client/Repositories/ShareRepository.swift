@@ -168,12 +168,8 @@ public extension ShareRepository {
                     do {
                         return try await decryptVaultContent(userId: userId, $0)
                     } catch {
-                        if let passError = error as? PassError,
-                           case let .crypto(reason) = passError,
-                           case .inactiveUserKey = reason {
-                            // We can’t decrypt old vaults because of password reset
-                            // just log and move on instead of throwing
-                            logger.warning(reason.debugDescription)
+                        if error.isInactiveUserKey {
+                            logger.warning(error.localizedDebugDescription)
                             return nil
                         } else {
                             throw error
@@ -413,12 +409,8 @@ private extension ShareRepository {
         do {
             return try await symmetricallyEncrypt(userId: userId, share, symmetricKey: symmetricKey)
         } catch {
-            if let passError = error as? PassError,
-               case let .crypto(reason) = passError,
-               case .inactiveUserKey = reason {
-                // We can’t decrypt old vaults because of password reset
-                // just log and move on instead of throwing
-                logger.warning(reason.debugDescription)
+            if error.isInactiveUserKey {
+                logger.warning(error.localizedDebugDescription)
                 return nil
             } else {
                 throw error
