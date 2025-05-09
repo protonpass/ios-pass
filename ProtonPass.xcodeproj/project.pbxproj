@@ -1251,7 +1251,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		538548F92D58ACF300AEFB66 /* Exceptions for "Action" folder in "Action" target */ = {
+		538548F92D58ACF300AEFB66 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -1261,18 +1261,7 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		538548E92D58ACF300AEFB66 /* Action */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				538548F92D58ACF300AEFB66 /* Exceptions for "Action" folder in "Action" target */,
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Action;
-			sourceTree = "<group>";
-		};
+		538548E92D58ACF300AEFB66 /* Action */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (538548F92D58ACF300AEFB66 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Action; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3469,7 +3458,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# https://developer.apple.com/forums/thread/749265\n#for path in \"$BUILT_PRODUCTS_DIR/$CONTENTS_FOLDER_PATH\"/PlugIns/*/*.bundle; do\n#  bundle=$(basename \"$path\")\n#  if [ -d \"$BUILT_PRODUCTS_DIR/$CONTENTS_FOLDER_PATH/$bundle\" ]; then\n#    >&2 echo \"Stripping $path ...\"\n#    rm -rf \"$path\"\n#    ln -vs \"../../$bundle\" \"$path\"\n#  else\n#    >&2 echo \"Not stripping $path\"\n#  fi\n#done\n";
+			shellScript = "scripts/public/symlink_common_bundles.sh\n";
 		};
 		5BB2B6F02A4479F3005E831C /* SwiftFormat */ = {
 			isa = PBXShellScriptBuildPhase;
