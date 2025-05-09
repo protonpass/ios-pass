@@ -176,11 +176,12 @@ private extension View {
                          },
                          label: { Text("Cancel") })
 
-                  Button("Add") {
-                      onAdd(title.wrappedValue)
-                      title.wrappedValue = ""
-                  }
-                  .disabled(title.wrappedValue.isEmpty)
+                  adaptiveDisabledButton(title: "Add",
+                                         disabled: title.wrappedValue.isEmpty,
+                                         action: {
+                                             onAdd(title.wrappedValue)
+                                             title.wrappedValue = ""
+                                         })
               },
               message: { Text("Enter a section title") })
     }
