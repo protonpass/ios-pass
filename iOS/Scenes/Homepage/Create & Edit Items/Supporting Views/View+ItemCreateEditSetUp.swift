@@ -70,7 +70,7 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                  onAdd: { payload in
                                      viewModel.addCustomField(.init(title: customFieldTitle,
                                                                     type: payload.type,
-                                                                    content: ""),
+                                                                    content: payload.type.defaultContent),
                                                               to: payload.payload.sectionId)
                                      customFieldTitle = ""
                                  })
