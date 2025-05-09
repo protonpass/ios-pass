@@ -246,11 +246,8 @@ private extension EventSynchronizer {
             try Task.checkCancellation()
             _ = try await (upsertShares, refreshItems)
         } catch {
-            if let passError = error as? PassError,
-               case let .crypto(reason) = passError,
-               case .inactiveUserKey = reason {
-                // Ignore the case where user key is inactive
-                logger.warning(reason.debugDescription)
+            if error.isInactiveUserKey {
+                logger.warning(error.localizedDebugDescription)
             } else {
                 throw error
             }
