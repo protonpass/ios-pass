@@ -179,16 +179,16 @@ extension AppContentManager {
             // 2. Get all remote shares and their items
             let remoteShares = try await shareRepository.getDecryptedRemoteShares(userId: userId)
             hasUndecryptableShares = remoteShares.hasUndecryptableShares
-            vaultSyncEventStream.send(.downloadedShares(remoteShares.value.representingVaults))
+            vaultSyncEventStream.send(.downloadedShares(remoteShares.shares.representingVaults))
 
             try await withThrowingTaskGroup(of: Void.self) { taskGroup in
                 // Step 1: Upsert all shares in a single batch
                 async let upsertSharesTask: Void = shareRepository.upsertShares(userId: userId,
-                                                                                shares: remoteShares.value,
+                                                                                shares: remoteShares.shares,
                                                                                 eventStream: vaultSyncEventStream)
 
                 // Step 2: Process each share's items concurrently
-                for share in remoteShares.value {
+                for share in remoteShares.shares {
                     taskGroup.addTask { [weak self] in
                         guard let self else { return }
                         try await itemRepository.refreshItems(userId: userId,
@@ -202,7 +202,7 @@ extension AppContentManager {
             }
 
             // 3. Create default vault if no vaults
-            if remoteShares.value.isEmpty {
+            if remoteShares.shares.isEmpty {
                 do {
                     try await createDefaultVault()
                 } catch {
@@ -215,7 +215,7 @@ extension AppContentManager {
                 }
             }
 
-            try await loadContents(userId: userId, for: remoteShares.value)
+            try await loadContents(userId: userId, for: remoteShares.shares)
         } catch {
             vaultSyncEventStream.send(.error(userId: userId, error: error))
             return

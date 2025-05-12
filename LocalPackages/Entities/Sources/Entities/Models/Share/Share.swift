@@ -223,12 +223,12 @@ public extension [Share] {
 }
 
 public struct DecryptedRemoteShares: Sendable {
-    public let value: [Share]
+    public let shares: [Share]
     /// There might be undecryptable shares due to password resets
     public let hasUndecryptableShares: Bool
 
-    public init(value: [Share], hasUndecryptableShares: Bool) {
-        self.value = value
+    public init(shares: [Share], hasUndecryptableShares: Bool) {
+        self.shares = shares
         self.hasUndecryptableShares = hasUndecryptableShares
     }
 }

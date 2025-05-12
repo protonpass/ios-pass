@@ -180,7 +180,7 @@ public extension ShareRepository {
                 }
             logger
                 .trace("Got \(shares.count) and decrypted \(decryptedShares.count) remote shares for user \(userId)")
-            return await .init(value: decryptedShares,
+            return await .init(shares: decryptedShares,
                                hasUndecryptableShares: hasUndecryptableShares.value)
         } catch {
             logger.error(message: "Failed to get remote shares for user \(userId)", error: error)
