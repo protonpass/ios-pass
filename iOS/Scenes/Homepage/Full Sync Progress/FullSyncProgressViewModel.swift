@@ -20,6 +20,7 @@
 
 import Client
 import Combine
+import Core
 import Factory
 import Foundation
 import Macro
@@ -27,8 +28,8 @@ import Macro
 @MainActor
 final class FullSyncProgressViewModel: ObservableObject {
     @Published private(set) var progresses = [VaultSyncProgress]()
-    @Published private(set) var isDoneSynching = false
     @Published private(set) var error: (any Error)?
+    @Published var showUndecryptableSharesAlert = false
     private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private let processVaultSyncEvent = resolve(\SharedUseCasesContainer.processVaultSyncEvent)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -51,11 +52,21 @@ final class FullSyncProgressViewModel: ObservableObject {
             .sink { [weak self] event in
                 guard let self else { return }
                 switch event {
-                case .done:
-                    handleDoneEvent()
+                case let .done(hasUndecryptableShares):
+                    if hasUndecryptableShares {
+                        showUndecryptableSharesAlert = true
+                    } else {
+                        dismissAndNotifySyncCompletion()
+                    }
+
                 case let .error(userId, error):
-                    self.userId = userId
-                    self.error = error
+                    if error.isInactiveUserKey {
+                        showUndecryptableSharesAlert = true
+                    } else {
+                        self.userId = userId
+                        self.error = error
+                    }
+
                 default:
                     progresses = processVaultSyncEvent(event, with: progresses)
                 }
@@ -79,11 +90,14 @@ extension FullSyncProgressViewModel {
         progresses.removeAll()
         await appContentManager.fullSync(userId: userId)
     }
+
+    func openReactivateAccountKeysArticle() {
+        router.navigate(to: .urlPage(urlString: ProtonLink.recoverEncryptedData))
+    }
 }
 
 private extension FullSyncProgressViewModel {
-    func handleDoneEvent() {
-        isDoneSynching = true
+    func dismissAndNotifySyncCompletion() {
         if mode.isFullSync {
             router.display(element: .infosMessage(#localized("Sync complete"),
                                                   config: .init(dismissBeforeShowing: true)))

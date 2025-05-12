@@ -70,7 +70,7 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                  onAdd: { payload in
                                      viewModel.addCustomField(.init(title: customFieldTitle,
                                                                     type: payload.type,
-                                                                    content: ""),
+                                                                    content: payload.type.defaultContent),
                                                               to: payload.payload.sectionId)
                                      customFieldTitle = ""
                                  })
@@ -176,11 +176,12 @@ private extension View {
                          },
                          label: { Text("Cancel") })
 
-                  Button("Add") {
-                      onAdd(title.wrappedValue)
-                      title.wrappedValue = ""
-                  }
-                  .disabled(title.wrappedValue.isEmpty)
+                  adaptiveDisabledButton(title: "Add",
+                                         disabled: title.wrappedValue.isEmpty,
+                                         action: {
+                                             onAdd(title.wrappedValue)
+                                             title.wrappedValue = ""
+                                         })
               },
               message: { Text("Enter a section title") })
     }

@@ -117,9 +117,9 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
     public var invokedGetDecryptedRemoteSharesCount = 0
     public var invokedGetDecryptedRemoteSharesParameters: (userId: String, Void)?
     public var invokedGetDecryptedRemoteSharesParametersList = [(userId: String, Void)]()
-    public var stubbedGetDecryptedRemoteSharesResult: [Share]!
+    public var stubbedGetDecryptedRemoteSharesResult: DecryptedRemoteShares!
 
-    public func getDecryptedRemoteShares(userId: String) async throws -> [Share] {
+    public func getDecryptedRemoteShares(userId: String) async throws -> DecryptedRemoteShares {
         invokedGetDecryptedRemoteSharesfunction = true
         invokedGetDecryptedRemoteSharesCount += 1
         invokedGetDecryptedRemoteSharesParameters = (userId, ())
