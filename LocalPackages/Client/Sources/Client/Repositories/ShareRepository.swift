@@ -37,7 +37,7 @@ public protocol ShareRepositoryProtocol: Sendable {
 
     /// Get all remote shares and decrypts the content of vault and fills up the vaultcontent of the shares if
     /// possible
-    func getDecryptedRemoteShares(userId: String) async throws -> [Share]
+    func getDecryptedRemoteShares(userId: String) async throws -> DecryptedRemoteShares
 
     /// Delete all local shares
     func deleteAllCurrentUserSharesLocally() async throws
@@ -158,9 +158,10 @@ public extension ShareRepository {
 
     /// Get all remote shares for a user. This function decrypts the content of vault and fills up the
     /// `vaultContent` of share if possible
-    func getDecryptedRemoteShares(userId: String) async throws -> [Share] {
+    func getDecryptedRemoteShares(userId: String) async throws -> DecryptedRemoteShares {
         logger.trace("Getting all remote shares for user \(userId)")
         do {
+            let hasUndecryptableShares = StateHolder(initialValue: false)
             let shares = try await remoteDatasource.getShares(userId: userId)
             let decryptedShares: [Share] = try await shares
                 .compactParallelMap(parallelism: 5) { [weak self] in
@@ -170,14 +171,17 @@ public extension ShareRepository {
                     } catch {
                         if error.isInactiveUserKey {
                             logger.warning(error.localizedDebugDescription)
+                            await hasUndecryptableShares.update(true)
                             return nil
                         } else {
                             throw error
                         }
                     }
                 }
-            logger.trace("Got \(shares.count) remote shares for user \(userId)")
-            return decryptedShares
+            logger
+                .trace("Got \(shares.count) and decrypted \(decryptedShares.count) remote shares for user \(userId)")
+            return await .init(value: decryptedShares,
+                               hasUndecryptableShares: hasUndecryptableShares.value)
         } catch {
             logger.error(message: "Failed to get remote shares for user \(userId)", error: error)
             throw error

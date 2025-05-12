@@ -46,7 +46,7 @@ public extension CreateVaultRequest {
         contentFormatVersion = Constants.ContentFormatVersion.vault
         addressID = userData.addresses.first?.addressID ?? ""
 
-        guard let userKey = userData.user.keys.first else {
+        guard let userKey = userData.user.keys.first(where: { $0.active == 1 }) else {
             throw PassError.crypto(.missingUserKey(userID: userData.user.ID))
         }
 

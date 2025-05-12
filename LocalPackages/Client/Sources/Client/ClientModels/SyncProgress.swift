@@ -65,7 +65,7 @@ public enum VaultSyncProgressEvent: Sendable {
     /// Decrypting fetched remote items of a share
     case decryptItems(DecryptItemsProgress)
     /// The sync progress is done
-    case done
+    case done(hasUndecryptableShares: Bool)
     /// Error occurred
     case error(userId: String, error: any Error)
 }
