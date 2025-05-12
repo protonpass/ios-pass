@@ -218,6 +218,17 @@ public extension Share {
 
 public extension [Share] {
     var representingVaults: [Share] {
-        self.filter(\.isVaultRepresentation)
+        filter(\.isVaultRepresentation)
+    }
+}
+
+public struct DecryptedRemoteShares: Sendable {
+    public let value: [Share]
+    /// There might be undecryptable shares due to password resets
+    public let hasUndecryptableShares: Bool
+
+    public init(value: [Share], hasUndecryptableShares: Bool) {
+        self.value = value
+        self.hasUndecryptableShares = hasUndecryptableShares
     }
 }

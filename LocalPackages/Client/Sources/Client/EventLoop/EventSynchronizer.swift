@@ -100,11 +100,11 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
         }
 
         var (localShares, remoteShares) = try await (fetchLocalShares, fetchRemoteShares)
-        logger.trace("Finished fetching \(localShares.count) local and \(remoteShares.count) remote shares")
+        logger.trace("Finished fetching \(localShares.count) local and \(remoteShares.value.count) remote shares")
 
         let updatedShares = try await removeSuperfluousLocalShares(userId: userId,
                                                                    localShares: localShares,
-                                                                   remoteShares: remoteShares)
+                                                                   remoteShares: remoteShares.value)
         if updatedShares {
             if Task.isCancelled {
                 return true
@@ -121,7 +121,7 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
 
         let hasNewEvents = try await syncCreateAndUpdateEvents(userId: userId,
                                                                localShares: localShares,
-                                                               remoteShares: remoteShares)
+                                                               remoteShares: remoteShares.value)
         // swiftlint:disable:next todo
         // TODO: Check alias sync QA
         // Must keep an eye on this `aliasSync` await as there could be lot of aliases to sync for a user
