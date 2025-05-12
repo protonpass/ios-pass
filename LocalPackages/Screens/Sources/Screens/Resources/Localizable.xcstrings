@@ -16,6 +16,12 @@
             "value" : "%@/měsíc"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@/måned"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -44,6 +50,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@/mes"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@/kuukausi"
           }
         },
         "fr" : {
@@ -3549,6 +3561,12 @@
             "value" : "Pridať poštovú schránku"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodaj poštni predal"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5268,6 +5286,12 @@
             "value" : "Automatické obnovení za %@ každý rok"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fornyes automatisk til %@ hvert år"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5296,6 +5320,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Se renueva automáticamente por %@ cada año"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uusiutuu automaattisesti vuosittain hintaan %@"
           }
         },
         "fr" : {
@@ -5392,6 +5422,12 @@
             "value" : "Automatické zadávání hesel v Safari a dalších aplikacích je opravdu rychlé a snadné."
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Få automatisk indtastet dine adgangskoder i Safari og andre apps på en virkelig hurtig og nem måde."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5420,6 +5456,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ingresa automáticamente sus contraseñas en Safari y otras aplicaciones de forma rápida y sencilla."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Syötä salasanasi automaattisesti, todella nopeasti ja helposti Safarissa ja muissa sovelluksissa."
           }
         },
         "fr" : {
@@ -5516,6 +5558,12 @@
             "value" : "Integrované 2FA"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indbygget 2FA"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5544,6 +5592,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "2FA integrado"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sisäänrakennettu 2FA"
           }
         },
         "fr" : {
@@ -5604,6 +5658,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zabudovaná 2FA"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vgrajena 2FA"
           }
         },
         "sv" : {
@@ -5676,6 +5736,12 @@
             "value" : "Al agregar su dominio, puede crear alias como hola@mi-dominio.com."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisäämällä oman verkkotunnuksesi voit luoda aliaksia, kuten hei@verkkotunnukseni.com."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5746,6 +5812,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pridaním domény môžete vytvoriť aliasy, ako napríklad ahoj@moja-domena.sk."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Če dodate svojo domeno, lahko ustvarite vzdevke, kot je npr. zdravo@moja-domena.com."
           }
         },
         "sv" : {
@@ -9169,6 +9241,12 @@
             "value" : "Např. LinkedIn"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "F.eks. LinkedIn"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9197,6 +9275,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "P. ej., LinkedIn"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kuten LinkedIn"
           }
         },
         "fr" : {
@@ -9961,6 +10045,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Activar Optic ID"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Käytä Optic ID:ta"
           }
         },
         "fr" : {
@@ -10923,6 +11013,12 @@
             "value" : "Direcciones de correo electrónico adicionales"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisäsähköpostiosoitteita"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11131,6 +11227,12 @@
             "value" : "Priložené súbory"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datotečne priponke"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11211,6 +11313,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Primer inicio de sesión creado"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ensimmäiset kirjautumistiedot luotu"
           }
         },
         "fr" : {
@@ -11806,6 +11914,12 @@
             "value" : "Free"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11870,6 +11984,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gratis"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free"
           }
         },
         "pt-BR" : {
@@ -12032,6 +12152,12 @@
             "value" : "Generované heslá"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generirana gesla"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12100,6 +12226,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Las contraseñas generadas se almacenarán durante 2 semanas."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Luodut salasanat tallennetaan kahdeksi viikoksi."
           }
         },
         "fr" : {
@@ -14952,6 +15084,12 @@
             "value" : "Žiadna história"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ni zgodovine"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15098,6 +15236,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Na obrázku nebolo možné rozpoznať žiadny text. Skúste to prosím znova a uistite sa, že je text jasný, dobre osvetlený a v rámci zaostrenia fotoaparátu."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "V sliki ni bilo mogoče zaznati besedila. Poskusite znova in se prepričajte, da je besedilo jasno, dobro osvetljeno in v fokusu kamere."
           }
         },
         "sv" : {
@@ -19673,6 +19817,12 @@
             "value" : "De forma segura en un solo lugar y protegido por el nombre más confiable en privacidad."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turvallisesti samassa paikassa yksityisyyden luotetuimman nimen suojaamina."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19743,6 +19893,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bezpečne na jednom mieste a chránené najdôveryhodnejšou značkou v oblasti súkromia."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varno na enem mestu in pod zaščito najzanesljivejšega imena na področju zasebnosti."
           }
         },
         "sv" : {
@@ -20586,6 +20742,12 @@
             "value" : "Comparta alias con otros agregando sus bandejas de entrada como buzón adicional."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jaa aliaksia muiden kanssa lisäämällä heidän saapuneet-kansionsa ylimääräiseksi postilaatikoksi."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20734,6 +20896,12 @@
             "value" : "Comparta contraseñas e información confidencial de forma segura y sin esfuerzo."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jaa salasanoja ja muita arkaluonteisia tietoja turvallisesti ja vaivattomasti."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20804,6 +20972,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zdieľajte heslá a citlivé informácie bezpečne a bez námahy."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varno in preprosto deli gesla in občutljive informacije."
           }
         },
         "sv" : {
@@ -21956,6 +22130,12 @@
             "value" : "Buďte vždy v obraze."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bodite obveščeni."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22030,6 +22210,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Deje de compartir la dirección de correo real. En su lugar, ocúltela usando alias de correo electrónico: una exclusividad de Proton Pass."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lakkaa jakamasta oikeaa sähköpostiosoitettasi. Piilota se Proton Passin ainutlaatuisella sähköpostialias-ominaisuudella."
           }
         },
         "fr" : {
@@ -25686,6 +25872,12 @@
             "value" : "Bóveda, intercambio de enlaces y elementos"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Holvin, kohteen ja linkin jakaminen"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -26023,6 +26215,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rýchlosť VPN"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hitrost VPN"
           }
         },
         "sv" : {
@@ -26769,6 +26967,12 @@
             "value" : "Lo que está incluido"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mitä kuuluu mukaan"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -26899,6 +27103,12 @@
             "value" : "¿Para qué servicio desea crear el inicio de sesión?"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mille palvelulle haluat luoda kirjautumistiedon?"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -27027,6 +27237,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Todo está listo para aprovechar al máximo Proton Pass: la magia del completado automático, la privacidad de los alias y mucho más."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Olet valmis saamaan kaiken irti Proton Passista: automaattitäytön taian, aliaksien yksityisyyden ja paljon muuta."
           }
         },
         "fr" : {

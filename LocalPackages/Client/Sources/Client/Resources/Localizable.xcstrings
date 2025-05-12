@@ -3225,6 +3225,12 @@
             "value" : "Nemáte žiadne trezory s prístupom editora alebo administrátora. Skúste si ich vytvoriť v hlavnej aplikácii alebo požiadajte o podporu správcu vašej organizácie."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nimate nobenih trezorjev z dostopom urejevalnika ali skrbnika. Poskusite ustvariti trezor v glavni aplikaciji ali prosite skrbnika vaše organizacije za pomoč."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",

@@ -47,32 +47,32 @@
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Сканіраваць код 2ФА, крэдытную картку і рукапісную нататку"
+            "state" : "translated",
+            "value" : "Сканіраваць 2ФА код, крэдытную картку, рукапісную нататку і QR-код"
           }
         },
         "cs" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Naskenujte 2FA kód, platební kartu a ručně psanou poznámku"
+            "state" : "translated",
+            "value" : "Naskenujte 2FA kód, platební kartu, učně psanou poznámku a QR kód"
           }
         },
         "da" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Scan 2FA-kode, betalingskort og håndskrevet note"
+            "state" : "translated",
+            "value" : "Scan 2FA-kode, betalingskort, håndskrevet notat og QR-kode"
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "2FA-Code, Kreditkarte und handschriftliche Notiz scannen"
+            "state" : "translated",
+            "value" : "Scannen von 2FA-Code, Kreditkarte, handgeschriebener Notiz und QR-Code"
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Σάρωση κωδικού 2FA, πιστωτικής κάρτας και χειρόγραφης σημείωσης"
+            "state" : "translated",
+            "value" : "Σάρωση κωδικού 2FA, πιστωτικής κάρτας, χειρόγραφης σημείωσης και κωδικού QR"
           }
         },
         "en" : {
@@ -83,128 +83,80 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Escanea códigos 2FA, tarjetas de crédito y notas escritas"
+            "state" : "translated",
+            "value" : "Escanea código 2FA, tarjetas de crédito, nota escrita y código QR"
           }
         },
         "es-419" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Escanee códigos 2FA, tarjetas de crédito y notas escritas"
+            "state" : "translated",
+            "value" : "Escanee código 2FA, tarjetas de crédito, nota escrita y código QR"
           }
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Skannaa kaksivaiheisen tunnistautumisen koodi, maksukortti tai käsin kirjoitettu muistiinpano"
+            "state" : "translated",
+            "value" : "Skannaa 2FA-koodi, maksukortti, käsinkirjoitettu muistiinpano ja QR-koodi"
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Scannez un code 2FA, une carte de crédit ou une note écrite"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Salin kode 2FA, kartu kredit, dan catatan yang ditulis tangan"
+            "state" : "translated",
+            "value" : "Scannez un code A2F, une carte de paiement, une note manuscrite et un QR code"
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Scansiona il codice 2FA, la carta di credito e la nota scritta a mano"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "2要素認証コードとクレジットカード、手書きメモをスキャンする"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "დაასკანერეთ 2FA კოდი, საკრედიტო ბარათი და ხელნაწერი შენიშვნა"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "2단계 인증 코드, 신용카드, 직접 작성한 메모 스캔"
+            "state" : "translated",
+            "value" : "Scansiona codice 2FA, carta di credito, nota scritta a mano e codice QR"
           }
         },
         "nb" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Skann 2FA-kode, kredittkort og håndskrevet notat"
+            "state" : "translated",
+            "value" : "Skann 2FA-kode, kredittkort, håndskrevet notat og QR-kode"
           }
         },
         "nl" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Scan 2FA-code, kredietkaart en handgeschreven notitie"
+            "state" : "translated",
+            "value" : "Scan 2FA code, creditcard, handgeschreven notitie en QR-code"
           }
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Zeskanuj kod uwierzytelniający, kartę płatniczą i ręcznie zapisaną notatkę"
+            "state" : "translated",
+            "value" : "Zeskanuj kod uwierzytelniający, kartę płatniczą, ręcznie zapisaną notatkę i kod QR"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Escaneie códigos A2F, cartões de crédito e notas escritas à mão"
+            "state" : "translated",
+            "value" : "Escaneie códigos A2F, cartões de crédito, notas escritas à mão e código QR"
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Scanați coduri de A2F, carduri de plată și notiță de mână"
+            "state" : "translated",
+            "value" : "Scanare coduri A2F, carduri de plată, note de mână și coduri QR"
           }
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Naskenujte 2FA kód, platobnú kartu a rukou napísanú poznámku"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Optično preberi 2FA kode, plačilne kartice ali ročno napisane opombe"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Skanna 2FA-kod, kreditkort och handskriven anteckning"
+            "state" : "translated",
+            "value" : "Naskenujte 2FA kód, platobnú kartu, rukou napísanú poznámku a QR kód"
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "İki adımlı doğrulama kodunu, kredi kartını ve elle yazılmış notu tarayın"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Сканувати код 2ЕП, кредитну картку та рукописну нотатку"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Quét mã 2FA, thẻ tín dụng hoặc chữ viết tay"
+            "state" : "translated",
+            "value" : "2FA kodunu, kredi kartını, el yazısı notu ve kare kodunu tarayın"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "扫描 2FA 代码、信用卡和手写笔记"
+            "state" : "translated",
+            "value" : "扫描 2FA 代码、信用卡、手写笔记和二维码"
           }
         }
       }
