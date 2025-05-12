@@ -96,6 +96,7 @@ public enum ProtonLink {
     public static let privacyPolicy = "https://proton.me/legal/privacy"
     public static let termsOfService = "https://proton.me/legal/terms"
     public static let youtubeTutorial = "https://www.youtube.com/watch?v=Nm4DCAjePOM"
+    public static let recoverEncryptedData = "https://proton.me/support/recover-encrypted-messages-files"
 }
 
 /// The following enum contains all the keys liked to the data contained in the custom plists `Pass-Constant-Black`
