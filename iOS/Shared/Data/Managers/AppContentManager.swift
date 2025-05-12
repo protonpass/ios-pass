@@ -171,23 +171,24 @@ extension AppContentManager {
         vaultSyncEventStream.send(.started)
 
         incompleteFullSyncUserId = userId
-
+        var hasUndecryptableShares = false
         do {
             // 1. Delete all local data
             try await deleteLocalDataBeforeFullSync()
 
             // 2. Get all remote shares and their items
             let remoteShares = try await shareRepository.getDecryptedRemoteShares(userId: userId)
-            vaultSyncEventStream.send(.downloadedShares(remoteShares.representingVaults))
+            hasUndecryptableShares = remoteShares.hasUndecryptableShares
+            vaultSyncEventStream.send(.downloadedShares(remoteShares.shares.representingVaults))
 
             try await withThrowingTaskGroup(of: Void.self) { taskGroup in
                 // Step 1: Upsert all shares in a single batch
                 async let upsertSharesTask: Void = shareRepository.upsertShares(userId: userId,
-                                                                                shares: remoteShares,
+                                                                                shares: remoteShares.shares,
                                                                                 eventStream: vaultSyncEventStream)
 
                 // Step 2: Process each share's items concurrently
-                for share in remoteShares {
+                for share in remoteShares.shares {
                     taskGroup.addTask { [weak self] in
                         guard let self else { return }
                         try await itemRepository.refreshItems(userId: userId,
@@ -201,7 +202,7 @@ extension AppContentManager {
             }
 
             // 3. Create default vault if no vaults
-            if remoteShares.isEmpty {
+            if remoteShares.shares.isEmpty {
                 do {
                     try await createDefaultVault()
                 } catch {
@@ -214,14 +215,14 @@ extension AppContentManager {
                 }
             }
 
-            try await loadContents(userId: userId, for: remoteShares)
+            try await loadContents(userId: userId, for: remoteShares.shares)
         } catch {
             vaultSyncEventStream.send(.error(userId: userId, error: error))
             return
         }
 
         incompleteFullSyncUserId = nil
-        vaultSyncEventStream.send(.done)
+        vaultSyncEventStream.send(.done(hasUndecryptableShares: hasUndecryptableShares))
     }
 
     func localFullSync(userId: String) async throws {
