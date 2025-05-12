@@ -1,3 +1,18 @@
+# Version 1.17.1
+You can now sign in to another device using a QR code. Go to the Profile tab > "Sign in to another device".
+
+Improvements:
+- Fixed issue preventing creation/editing of custom fields and sections on iOS 16
+- Fixed file preview failure for filenames with special characters
+- Alphabetical sorting now ignores diacritics
+
+Others:
+- Core libraries upgraded from 30.0.4 to 30.0.5
+- Hide copy options for email/username/password if the field is empty
+- Added telemetry for onboarding flow
+- Show message when vaults can't be decrypted due to password resets
+- Reduced app size by symlinking shared bundles for extensions
+
 # Version 1.17.0
 Password history:
 You can now view a list of all your previously generated passwords. Navigate to the Profile tab > Generated passwords.
