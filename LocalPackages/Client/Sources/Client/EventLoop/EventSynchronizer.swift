@@ -100,11 +100,11 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
         }
 
         var (localShares, remoteShares) = try await (fetchLocalShares, fetchRemoteShares)
-        logger.trace("Finished fetching \(localShares.count) local and \(remoteShares.count) remote shares")
+        logger.trace("Finished fetching \(localShares.count) local and \(remoteShares.shares.count) remote shares")
 
         let updatedShares = try await removeSuperfluousLocalShares(userId: userId,
                                                                    localShares: localShares,
-                                                                   remoteShares: remoteShares)
+                                                                   remoteShares: remoteShares.shares)
         if updatedShares {
             if Task.isCancelled {
                 return true
@@ -121,7 +121,7 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
 
         let hasNewEvents = try await syncCreateAndUpdateEvents(userId: userId,
                                                                localShares: localShares,
-                                                               remoteShares: remoteShares)
+                                                               remoteShares: remoteShares.shares)
         // swiftlint:disable:next todo
         // TODO: Check alias sync QA
         // Must keep an eye on this `aliasSync` await as there could be lot of aliases to sync for a user
@@ -246,11 +246,8 @@ private extension EventSynchronizer {
             try Task.checkCancellation()
             _ = try await (upsertShares, refreshItems)
         } catch {
-            if let passError = error as? PassError,
-               case let .crypto(reason) = passError,
-               case .inactiveUserKey = reason {
-                // Ignore the case where user key is inactive
-                logger.warning(reason.debugDescription)
+            if error.isInactiveUserKey {
+                logger.warning(error.localizedDebugDescription)
             } else {
                 throw error
             }

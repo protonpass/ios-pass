@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Entities
 import Foundation
 
 public extension Error {
@@ -29,6 +30,17 @@ public extension Error {
             "\(localizedDescription) \(debug.debugDescription)"
         } else {
             localizedDescription
+        }
+    }
+
+    /// Inactive user key due to password reset, we couldn't do anything but only log it
+    var isInactiveUserKey: Bool {
+        if let passError = self as? PassError,
+           case let .crypto(reason) = passError,
+           case .inactiveUserKey = reason {
+            true
+        } else {
+            false
         }
     }
 }
