@@ -23,6 +23,7 @@ import Combine
 import Core
 import Entities
 import Factory
+import LocalAuthentication
 import ProtonCoreDataModel
 import ProtonCoreFeatureFlags
 import ProtonCoreLogin
@@ -475,7 +476,18 @@ private extension ProfileTabViewModel {
                 let qrLoginFeatureDisabled = getFeatureFlagStatus(for: CoreFeatureFlagType
                     .easyDeviceMigrationDisabled)
 
-                isEasyDeviceMigrationEnabled = !qrLoginFeatureDisabled && !qrLoginOptedOut
+                let isDeviceSecured: Bool = {
+                    #if targetEnvironment(simulator)
+                    return true
+                    #else
+                    let context = LAContext()
+                    var error: NSError?
+
+                    return context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error)
+                    #endif
+                }()
+
+                isEasyDeviceMigrationEnabled = !qrLoginFeatureDisabled && !qrLoginOptedOut && isDeviceSecured
             } catch {
                 isEasyDeviceMigrationEnabled = false
                 handle(error: error)
