@@ -1281,6 +1281,12 @@
             "value" : "Nastavenia ochrany súkromia alebo obmedzenia zakázali používanie fotoaparátu. Môžete to zmeniť v Nastaveniach."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastavitve zasebnosti ali omejitev so onemogočile uporabo kamere. To lahko spremenite v nastavitvah."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
