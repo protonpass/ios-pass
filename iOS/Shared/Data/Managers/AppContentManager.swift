@@ -221,6 +221,7 @@ extension AppContentManager {
             } else {
                 vaultSyncEventStream.send(.error(userId: userId, error: error))
             }
+            return
         }
 
         incompleteFullSyncUserId = nil
