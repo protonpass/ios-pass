@@ -615,6 +615,8 @@ extension HomepageCoordinator {
                     presentPasswordHistoryView()
                 case .signInToAnotherDevice:
                     presentSignInToAnotherDeviceView()
+                case let .undecryptableSharesBanner(dismissTopSheetBeforeShowing):
+                    displayUndecryptableSharesBanner(dismissTopSheetBeforeShowing)
                 }
             }
             .store(in: &cancellables)
@@ -1308,6 +1310,35 @@ private extension HomepageCoordinator {
         vc.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
         vc.isModalInPresentation = true
         topMostViewController.present(vc, animated: true)
+    }
+
+    func displayUndecryptableSharesBanner(_ dismissTopSheetBeforeShowing: Bool) {
+        let learnMore: @Sendable (PMBanner) -> Void = { [weak self] banner in
+            guard let self else { return }
+            Task { @MainActor [weak self] in
+                guard let self else {
+                    return
+                }
+                banner.dismiss()
+                urlOpener.open(urlString: ProtonLink.recoverEncryptedData)
+            }
+        }
+        let message =
+            // swiftlint:disable:next line_length
+            #localized("Some vaults are no longer accessible due to a password reset. Reactivate your account keys in order to regain access.")
+        let displayBanner: () -> Void = { [weak self] in
+            guard let self else { return }
+            bannerManager.displayBottomErrorMessage(message,
+                                                    dismissButtonTitle: #localized("Learn more"),
+                                                    onDismiss: learnMore)
+        }
+        if dismissTopSheetBeforeShowing {
+            dismissTopMostViewController(animated: true) {
+                displayBanner()
+            }
+        } else {
+            displayBanner()
+        }
     }
 }
 
