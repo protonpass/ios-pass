@@ -111,6 +111,7 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case addMailbox
     case passwordHistory
     case signInToAnotherDevice
+    case undecryptableSharesBanner(dismissTopSheetBeforeShowing: Bool)
 }
 
 enum ItemDestination {
