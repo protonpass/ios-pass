@@ -29,7 +29,6 @@ import Macro
 final class FullSyncProgressViewModel: ObservableObject {
     @Published private(set) var progresses = [VaultSyncProgress]()
     @Published private(set) var error: (any Error)?
-    @Published var showUndecryptableSharesAlert = false
     private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private let processVaultSyncEvent = resolve(\SharedUseCasesContainer.processVaultSyncEvent)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -54,14 +53,14 @@ final class FullSyncProgressViewModel: ObservableObject {
                 switch event {
                 case let .done(hasUndecryptableShares):
                     if hasUndecryptableShares {
-                        showUndecryptableSharesAlert = true
+                        dismissAndDisplayUndecryptableSharesBanner()
                     } else {
                         dismissAndNotifySyncCompletion()
                     }
 
                 case let .error(userId, error):
                     if error.isInactiveUserKey {
-                        showUndecryptableSharesAlert = true
+                        dismissAndDisplayUndecryptableSharesBanner()
                     } else {
                         self.userId = userId
                         self.error = error
@@ -90,13 +89,13 @@ extension FullSyncProgressViewModel {
         progresses.removeAll()
         await appContentManager.fullSync(userId: userId)
     }
-
-    func openReactivateAccountKeysArticle() {
-        router.navigate(to: .urlPage(urlString: ProtonLink.recoverEncryptedData))
-    }
 }
 
 private extension FullSyncProgressViewModel {
+    func dismissAndDisplayUndecryptableSharesBanner() {
+        router.present(for: .undecryptableSharesBanner(dismissTopSheetBeforeShowing: mode.isFullSync))
+    }
+
     func dismissAndNotifySyncCompletion() {
         if mode.isFullSync {
             router.display(element: .infosMessage(#localized("Sync complete"),

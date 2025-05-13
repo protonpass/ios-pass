@@ -36,6 +36,9 @@ public protocol BannerDisplayProtocol: Sendable {
     func displayTopErrorMessage(_ message: String,
                                 dismissButtonTitle: String,
                                 onDismiss: (@Sendable (PMBanner) -> Void)?)
+    func displayBottomErrorMessage(_ message: String,
+                                   dismissButtonTitle: String,
+                                   onDismiss: (@Sendable (PMBanner) -> Void)?)
 
     func displayTopErrorMessage(_ error: any Error)
 }
@@ -108,6 +111,25 @@ public final class BannerManager: @unchecked Sendable, BannerDisplayProtocol {
             let banner = PMBanner(message: message, style: PMBannerNewStyle.error)
             banner.addButton(text: dismissButtonTitle, handler: onDismiss)
             banner.show(at: .top, on: container.topMostViewController)
+        }
+    }
+
+    public func displayBottomErrorMessage(_ message: String,
+                                          dismissButtonTitle: String,
+                                          onDismiss: (@Sendable (PMBanner) -> Void)?) {
+        guard let container else {
+            return
+        }
+
+        Task { @MainActor in
+            let onDismiss = onDismiss ?? { banner in
+                Task { @MainActor in
+                    banner.dismiss()
+                }
+            }
+            let banner = PMBanner(message: message, style: PMBannerNewStyle.error)
+            banner.addButton(text: dismissButtonTitle, handler: onDismiss)
+            banner.show(at: .bottom, on: container.topMostViewController)
         }
     }
 
