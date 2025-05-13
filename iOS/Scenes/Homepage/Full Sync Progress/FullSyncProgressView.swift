@@ -23,7 +23,6 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct FullSyncProgressView: View {
-    @Environment(\.dismiss) private var dismiss
     @State private var isShowingDetail = false
     @StateObject private var viewModel: FullSyncProgressViewModel
 
@@ -54,7 +53,7 @@ private extension FullSyncProgressView {
             if let error = viewModel.error {
                 RetryableErrorView(error: error, onRetry: retry)
                     .padding()
-            } else if !viewModel.showUndecryptableSharesAlert {
+            } else {
                 VStack {
                     Spacer()
                     overallProgressView
@@ -71,23 +70,6 @@ private extension FullSyncProgressView {
             }
         }
         .animation(.default, value: viewModel.error == nil)
-        .alert("Sync complete",
-               isPresented: $viewModel.showUndecryptableSharesAlert,
-               actions: {
-                   Button(role: nil,
-                          action: {
-                              dismiss()
-                              viewModel.openReactivateAccountKeysArticle()
-                          },
-                          label: { Text("Learn more") })
-
-                   Button(role: nil,
-                          action: dismiss.callAsFunction,
-                          label: { Text("Close") })
-               }, message: {
-                   // swiftlint:disable:next line_length
-                   Text("Some vaults are no longer accessible due to a password reset. Reactivate your account keys in order to regain access.")
-               })
     }
 
     func retry() {
