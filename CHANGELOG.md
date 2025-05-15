@@ -7,7 +7,7 @@ Improvements:
 - Alphabetical sorting now ignores diacritics
 
 Others:
-- Core libraries upgraded from 30.0.4 to 32.1.1
+- Core libraries upgraded from 30.0.4 to 32.1.2
 - Hide copy options for email/username/password if the field is empty
 - Added telemetry for onboarding flow
 - Show message when vaults can't be decrypted due to password resets
