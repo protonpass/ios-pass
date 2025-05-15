@@ -1,7 +1,7 @@
 //
-// FeatureFlagType.swift
-// Proton Pass - Created on 04/10/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// GetLastUserEventIdResponseTests.swift
+// Proton Pass - Created on 15/05/2025.
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,17 +17,23 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import ProtonCoreFeatureFlags
+@testable import Client
+import Testing
 
-// periphery:ignore
-/// Should be activated when new feature flags are added to the project
-/// following is how a flag should be added:
-/// Example:
-///    case passSharingV1 = "PassSharingV1"
-public enum FeatureFlagType: String, CaseIterable, FeatureFlagTypeProtocol {
-    case passCustomTypeV1 = "PassCustomTypeV1"
-    case passRenameAdminToManager = "PassRenameAdminToManager"
-    case passHideShowVault = "PassHideShowVault"
-    case passUserEventsV1 = "PassUserEventsV1"
+@Suite(.tags(.endpoint))
+struct GetLastUserEventIdResponseTests {
+    @Test("Decode")
+    func decode() throws {
+        let given = """
+            {
+                "EventID": "TestID",
+                "Code": 1000
+            }
+            """
+
+        let response = try GetLastUserEventIdResponse.decode(from: given)
+        #expect(response.eventID == "TestID")
+    }
 }
