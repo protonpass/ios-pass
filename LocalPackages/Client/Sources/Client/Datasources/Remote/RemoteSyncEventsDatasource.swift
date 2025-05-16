@@ -20,6 +20,10 @@
 
 public protocol RemoteSyncEventsDatasourceProtocol: Sendable {
     func getEvents(userId: String, shareId: String, lastEventId: String) async throws -> SyncEvents
+
+    // User events
+    func getLastEventId(userId: String) async throws -> String
+    func getUserEvents(userId: String, lastEventId: String) async throws -> UserEvents
 }
 
 public final class RemoteSyncEventsDatasource: RemoteDatasource, RemoteSyncEventsDatasourceProtocol,
@@ -28,6 +32,22 @@ public final class RemoteSyncEventsDatasource: RemoteDatasource, RemoteSyncEvent
 public extension RemoteSyncEventsDatasource {
     func getEvents(userId: String, shareId: String, lastEventId: String) async throws -> SyncEvents {
         let endpoint = GetEventsEndpoint(shareId: shareId, lastEventId: lastEventId)
+        let response = try await exec(userId: userId, endpoint: endpoint)
+        return response.events
+    }
+}
+
+// MARK: - User events
+
+public extension RemoteSyncEventsDatasource {
+    func getLastEventId(userId: String) async throws -> String {
+        let endpoint = GetLastUserEventIdEndpoint()
+        let response = try await exec(userId: userId, endpoint: endpoint)
+        return response.eventID
+    }
+
+    func getUserEvents(userId: String, lastEventId: String) async throws -> UserEvents {
+        let endpoint = GetUserEventsEndpoint(lastEventId: lastEventId)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.events
     }

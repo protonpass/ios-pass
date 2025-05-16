@@ -27,12 +27,12 @@ struct GetUserEventsResponse: Decodable, Sendable {
 
 struct GetUserEventsEndpoint: Endpoint {
     typealias Body = EmptyRequest
-    typealias Response = GetPassUserInformationsResponse
+    typealias Response = GetUserEventsResponse
 
     var debugDescription: String
     var path: String
 
-    init(lastEventId: Int) {
+    init(lastEventId: String) {
         debugDescription = "Get user events since a given eventID"
         path = "/pass/v1/user/sync_event/\(lastEventId)"
     }
