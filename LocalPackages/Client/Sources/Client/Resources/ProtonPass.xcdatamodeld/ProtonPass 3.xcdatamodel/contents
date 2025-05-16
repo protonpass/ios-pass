@@ -246,6 +246,15 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
+    <entity name="UserEventIDEntity" representedClassName="UserEventIDEntity" syncable="YES">
+        <attribute name="lastEventID" attributeType="String"/>
+        <attribute name="userID" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="userID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
     <entity name="UserPreferencesEntity" representedClassName="UserPreferencesEntity" syncable="YES">
         <attribute name="encryptedContent" attributeType="Binary"/>
         <attribute name="userID" attributeType="String"/>
