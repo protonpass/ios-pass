@@ -27,7 +27,7 @@ struct GetLastUserEventIdResponse: Decodable, Sendable {
 
 struct GetLastUserEventIdEndpoint: Endpoint {
     typealias Body = EmptyRequest
-    typealias Response = GetPassUserInformationsResponse
+    typealias Response = GetLastUserEventIdResponse
 
     let debugDescription = "Get last user sync event ID"
     let path = "/pass/v1/user/sync_event"
