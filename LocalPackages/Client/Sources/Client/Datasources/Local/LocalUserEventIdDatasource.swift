@@ -22,6 +22,7 @@
 import CoreData
 import Foundation
 
+// sourcery: AutoMockable
 public protocol LocalUserEventIdDatasourceProtocol: Sendable {
     func getLastEventId(userId: String) async throws -> String?
     func upsertLastEventId(userId: String, lastEventId: String) async throws

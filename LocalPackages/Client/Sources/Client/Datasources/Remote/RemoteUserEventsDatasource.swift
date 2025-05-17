@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+// sourcery: AutoMockable
 public protocol RemoteUserEventsDatasourceProtocol: Sendable {
     func getLastEventId(userId: String) async throws -> String
     func getUserEvents(userId: String, lastEventId: String) async throws -> UserEvents
