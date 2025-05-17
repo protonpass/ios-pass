@@ -32,6 +32,10 @@ public protocol RemoteItemDatasourceProtocol: Sendable {
         -> [Item]
     func getItemRevisions(userId: String, shareId: String, itemId: String, lastToken: String?) async throws
         -> Paginated<Item>
+    func getItem(userId: String,
+                 shareId: String,
+                 itemId: String,
+                 eventToken: String) async throws -> Item
     func createItem(userId: String, shareId: String, request: CreateItemRequest) async throws -> Item
     func createAlias(userId: String, shareId: String, request: CreateCustomAliasRequest) async throws -> Item
     func createAliasAndAnotherItem(userId: String, shareId: String, request: CreateAliasAndAnotherItemRequest)
@@ -99,6 +103,15 @@ public extension RemoteItemDatasource {
         return Paginated(lastToken: response.revisions.lastToken,
                          data: response.revisions.revisionsData,
                          total: response.revisions.total)
+    }
+
+    func getItem(userId: String,
+                 shareId: String,
+                 itemId: String,
+                 eventToken: String) async throws -> Item {
+        let endpoint = GetSpecificItemEndpoint(shareId: shareId, itemId: itemId, eventToken: eventToken)
+        let response = try await exec(userId: userId, endpoint: endpoint)
+        return response.item
     }
 
     func createItem(userId: String, shareId: String, request: CreateItemRequest) async throws -> Item {
