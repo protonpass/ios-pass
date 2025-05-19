@@ -19275,6 +19275,12 @@
             "value" : "名前を追加 (SSID)"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름 추가 (SSID)"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28714,7 +28720,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Haluatko varmasti lisätä 2FA -avaimen kohteeseen \"%@\"?"
+            "value" : "Haluatko varmasti lisätä 2FA-avaimen kohteeseen \"%@\"?"
           }
         },
         "fr" : {
@@ -52913,7 +52919,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Usuń go. Nigdy nie będę go potrzebować"
+            "value" : "Usuń trwale"
           }
         },
         "pt-BR" : {
@@ -54347,7 +54353,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Älä käytä aliaksia"
+            "value" : "Poista aliakset käytöstä"
           }
         },
         "fr" : {
@@ -58968,7 +58974,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Käytä aliaksia"
+            "value" : "Ota aliakset käyttöön"
           }
         },
         "fr" : {
@@ -61952,7 +61958,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aina kun aliaksesi vastaanottaa viestin, luodaan automaattisesti uusi yhteystieto."
+            "value" : "Aina kun aliaksesi vastaanottaa viestin, uusi yhteystieto luodaan automaattisesti."
           }
         },
         "fr" : {
@@ -66447,7 +66453,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aliakset näytetään. \"Roskakorissa olevia kohteita ei näytetä.\""
+            "value" : "Suodatettu aliasten perusteella. Roskakorissa olevia kohteita ei näytetä."
           }
         },
         "fr" : {
@@ -66607,7 +66613,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Maksukortit näytetään. Roskakorissa olevia kohteita ei näytetä."
+            "value" : "Suodatettu maksukorttien perusteella. Roskakorissa olevia kohteita ei näytetä."
           }
         },
         "fr" : {
@@ -66767,7 +66773,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mukautetut kohteet näytetään. Poistettuja kohteita ei näytetä."
+            "value" : "Suodatettu mukautettujen kohteiden perusteella. Roskakorissa olevia kohteita ei näytetä."
           }
         },
         "fr" : {
@@ -66915,7 +66921,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Identiteetit näytetään. Roskakorissa olevia kohteita ei näytetä."
+            "value" : "Suodatettu identiteettien perusteella. Roskakorissa olevia kohteita ei näytetä."
           }
         },
         "fr" : {
@@ -67075,7 +67081,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kirjautumistiedot näytetään. Roskakorissa olevia kohteita ei näytetä."
+            "value" : "Suodatettu kirjautumistietojen perusteella. Roskakorissa olevia kohteita ei näytetä."
           }
         },
         "fr" : {
@@ -67235,7 +67241,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Muistiinpanot näytetään. Roskakorissa olevia kohteita ei näytetä."
+            "value" : "Suodatettu muistiinpanojen perusteella. Roskakorissa olevia kohteita ei näytetä."
           }
         },
         "fr" : {
@@ -80998,7 +81004,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kohteen historia tyhjennettiin"
+            "value" : "Kohdehistoria tyhjennettiin"
           }
         },
         "fr" : {
@@ -82996,7 +83002,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kohteiden suodatusvalikko"
+            "value" : "Kohteiden suodatusvalikot"
           }
         },
         "fr" : {
@@ -83329,7 +83335,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Holvin \"%@\" kohteet siirrettiin holviin \"%@\""
+            "value" : "Kohteet holvista %@ siirrettiin holviin \"%@\""
           }
         },
         "fr" : {
@@ -106018,6 +106024,12 @@
             "value" : "OS"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OS"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -107162,6 +107174,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "パスポート"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "여권"
           }
         },
         "nb" : {
@@ -108480,6 +108498,12 @@
             "value" : "クリップボードから貼り付け"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "클립보드에서 붙여넣기"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -108633,6 +108657,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "患者名"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "환자 이름"
           }
         },
         "nb" : {
@@ -109991,6 +110021,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "アクセス許可"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "권한"
           }
         },
         "nb" : {
@@ -114102,6 +114138,12 @@
             "value" : "ポイント残高"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "포인트 잔액"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -114255,6 +114297,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ポート"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "포트"
           }
         },
         "nb" : {
@@ -115574,6 +115622,12 @@
             "value" : "秘密鍵"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "개인 키"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -115727,6 +115781,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "製品"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "제품"
           }
         },
         "nb" : {
@@ -116049,6 +116109,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "プログラム名"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "프로그램 이름"
           }
         },
         "nb" : {
@@ -117806,6 +117872,12 @@
             "value" : "公開鍵"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "공개 키"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -118956,6 +119028,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "レコード番号"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "의료 기록 번호"
           }
         },
         "nb" : {
@@ -126322,6 +126400,12 @@
             "value" : "報酬プログラム"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "보상 프로그램"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -126475,6 +126559,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "支店名"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "라우팅 번호"
           }
         },
         "nb" : {
@@ -126792,6 +126882,12 @@
             "value" : "WiFi、パスポート、SSH、またはカスタムを保存"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi, 여권, SSH를 저장하거나 커스텀으로 설정"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -127093,6 +127189,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "QRコードをスキャンして参加する"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "QR 코드를 스캔하여 참여하기"
           }
         },
         "nb" : {
@@ -128917,6 +129019,12 @@
             "value" : "秘密"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시크릿"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -130568,6 +130676,12 @@
             "value" : "セキュリティの種類"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "보안 유형"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -131209,6 +131323,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "シードフレーズ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시드 구문"
           }
         },
         "nb" : {
@@ -133194,6 +133314,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "サーバー"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "서버"
           }
         },
         "nb" : {
@@ -138165,6 +138291,12 @@
             "value" : "ネットワークのQRコードを表示"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "네트워크의 QR 코드 보기"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -139606,10 +139738,28 @@
             "value" : "Se connecter à un autre appareil"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Masuk ke perangkat lain"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Accedi con un altro dispositivo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ほかのデバイスでサインイン"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다른 기기에서 로그인"
           }
         },
         "nb" : {
@@ -139651,7 +139801,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Başka bir cihaza giriş yapın"
+            "value" : "Başka bir aygıta oturum açın"
           }
         },
         "zh-Hans" : {
@@ -140734,6 +140884,12 @@
             "value" : "社会保障番号"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "주민등록번호"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -140883,6 +141039,12 @@
             "value" : "ソフトウェアライセンス"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "소프트웨어 라이선스"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -140962,31 +141124,31 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Некаторыя сховішчы больш недаступны па прычыне таго, што было выканана скіданне пароля. Паўторна актывуйце ключы ўліковага запісу, каб аднавіць доступ."
+            "value" : "Па прычыне скінутага пароля некаторыя сховішчы больш недаступны. Паўторна актывуйце ключы свайго ўліковага запісу, каб аднавіць доступ."
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Některé trezory již nejsou přístupné z důvodu resetování hesla. Chcete-li získat přístup, znovu aktivujte klíče k účtu."
+            "value" : "Některé trezory již nejsou přístupné z důvodu resetu hesla. Znovu aktivujte klíče svého účtu pro obnovení přístupu."
           }
         },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nogle bokse er ikke længere tilgængelige grundet en nulstilling af adgangskoden. Genaktiver dine kontonøgler for at få adgang igen."
+            "value" : "Nogle bokse er ikke længere tilgængelige på grund af en nulstilling af adgangskoden. Genaktiver dine kontonøgler for at få adgang igen."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Einige Tresore sind aufgrund einer Passwortzurücksetzung nicht mehr zugänglich. Reaktiviere deine Kontoschlüssel, um wieder Zugang zu erhalten."
+            "value" : "Einige Tresore sind aufgrund eines Passwortzurücksetzens nicht mehr zugänglich. Reaktiviere deine Kontoschlüssel, um wieder Zugriff zu erhalten."
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ορισμένα θησαυροφυλάκια δεν είναι πλέον προσβάσιμα λόγω επαναφοράς κωδικού πρόσβασης. Ενεργοποιήστε ξανά τα κλειδιά του λογαριασμού σας για να αποκτήσετε ξανά πρόσβαση."
+            "value" : "Κάποιες κρύπτες δεν είναι πλέον προσβάσιμες λόγω επαναφοράς κωδικού. Ενεργοποιήστε ξανά τα κλειδιά του λογαριασμού σας για να αποκτήσετε ξανά πρόσβαση."
           }
         },
         "en" : {
@@ -140998,127 +141160,97 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Algunas cajas fuertes ya no son accesibles debido a un restablecimiento de contraseña. Reactiva las claves de tu cuenta para recuperar el acceso."
+            "value" : "Algunas cajas fuertes ya no son accesibles debido a un restablecimiento de la contraseña. Reactiva las claves de tu cuenta para recuperar el acceso."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Algunas bóvedas ya no son accesibles debido a un restablecimiento de contraseña. Reactive las claves de la cuenta para recuperar el acceso."
+            "value" : "Algunas bóvedas ya no son accesibles debido a un restablecimiento de contraseña. Reactive sus claves de cuenta para recuperar el acceso."
           }
         },
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Jotkin kolvit eivät ole enää käytettävissä salasanan uudelleenasetuksen vuoksi. Palauta käyttöoikeus aktivoimalla tilisi avaimet uudelleen."
+            "value" : "Jotkin holvit eivät ole enää saatavilla salasanan nollaamisen vuoksi. Uudelleenaktivoi tilisi avaimet palauttaaksesi pääsyn holveihin."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Certains coffres-forts ne sont plus accessibles à cause d'une réinitialisation du mot de passe. Réactivez les clés de votre compte pour pouvoir y accéder à nouveau."
+            "value" : "Certains coffres-forts ne sont plus accessibles suite à une réinitialisation du mot de passe. Réactivez les clés de votre compte afin de retrouver l'accès."
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sebagian brankas tidak lagi dapat diakses akibat pengaturan ulang kata sandi. Aktifkan ulang kunci akun Anda untuk mengakses kembali brankas yang terkunci."
+            "value" : "Beberapa brankas tidak lagi dapat diakses karena kata sandi diatur ulang. Aktifkan kembali kunci akun Anda agar dapat mengakses kembali."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alcune casseforti non sono più accessibili in seguito alla reimpostazione della password. Riattiva le chiavi del tuo account per ottenere nuovamente l'accesso."
+            "value" : "Alcune casseforti non sono più accessibili a causa di un reset della password. Riattiva le chiavi del tuo account per recuperare l'accesso."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "パスワードのリセットにより、一部の保管庫にアクセスできなくなります。 アクセスを取り戻すには、アカウント キーを再アクティブ化してください。"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "პაროლის შესვლის გამო ზოგიერთი საცავი ხელმისაწვდომი აღარაა. წვდომის დასაბრუნებლად თავიდან გაააქტიურეთ ანგარიშის გასაღებები."
+            "value" : "パスワードリセットにより、一部保管庫にアクセスできなくなりました。アカウントキーを再アクティブ化して、アクセスを回復してください。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "일부 금고가 비밀번호 리셋으로 더 이상 접근할 수 없습니다. 다시 접근하려면 계정을 재활성화 하세요."
+            "value" : "일부 금고가 비밀번호 재설정으로 인해 접근할 수 없습니다. 다시 접근하려면 계정 키를 다시 활성화해야 합니다."
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Noen hvelv er ikke lenger tilgjengelige på grunn av tilbakestilling av passord. Aktiver kontonøklene dine på nytt for å få tilgang igjen."
+            "value" : "Noen hvelv er ikke lenger tilgjengelige på grunn av tilbakestilling av passord. Aktiver kontonøklene på nytt for å få tilgang igjen."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sommige kluizen zijn niet langer toegankelijk door een wachtwoordreset. Activeer uw accountsleutels opnieuw om terug toegang te krijgen."
+            "value" : "Sommige kluizen zijn niet meer toegankelijk vanwege een wachtwoordreset. Activeer uw accountkeys opnieuw om weer toegang te krijgen."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Niektóre sejfy nie są dostępne z powodu zresetowania hasła. Aby odzyskać do nich dostęp, reaktywuj klucze konta."
+            "value" : "Niektóre sejfy nie są już dostępne z powodu zresetowania hasła. Reaktywuj klucze konta, aby odzyskać dostęp."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alguns cofres não estão mais acessíveis devido a uma redefinição de senha. Reative suas chaves de conta para recuperar o acesso."
+            "value" : "Alguns cofres não estão mais acessíveis devido a uma redefinição de senha. Reative as chaves de sua conta para recuperar o acesso."
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Unele seifuri nu mai sunt accesibile din cauza resetării parolei. Reactivați cheile contului pentru a redobândi accesul."
+            "value" : "Unele seifuri nu mai sunt accesibile datorită unei resetări a parolei. Reactivați cheile contului pentru a redobândi accesul."
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Niektoré trezory už nie sú dostupné z dôvodu obnovenia hesla. Pre opätovné získanie prístupu znova aktivujte kľúče účtu."
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nekateri trezorji niso več dostopni zaradi ponastavitve gesla. Ponovno aktivirajte ključe računa, da ponovno pridobite dostop."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Några valv är inte längre åtkomliga på grund av en lösenordsåterställning. Återaktivera dina kontonycklar för att få åtkomst igen."
+            "value" : "Niektoré trezory už nie sú prístupné z dôvodu obnovenia hesla. Ak chcete opätovne získať prístup, znovu aktivujte kľúče svojho účtu."
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Parola sıfırlandığı için bazı kasalara artık erişilemiyor. Yeniden erişebilmek için hesap anahtarlarınızı yeniden kullanıma alın."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Деякі сховища більше не доступні через скидання пароля. Повторно активуйте ключі облікового запису, щоб відновити доступ."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Một số kho lưu trữ không thể truy cập được do việc đặt lại mật khẩu. Để khôi phục quyền truy cập, vui lòng kích hoạt lại các khóa tài khoản của bạn."
+            "value" : "Bir parola sıfırlama işlemi nedeniyle bazı kasalara artık erişilemiyor. Bunlara yeniden erişebilmek için hesap anahtarlarınızı yeniden etkinleştirin."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "由于密码重置，有些保险库已无法访问。请重新激活您的账户密钥，以重新获得访问权"
+            "value" : "由于密码重置，有些保险库已无法访问。请重新激活您的账户密钥，以重新获得访问权。"
           }
         }
       }
@@ -141702,6 +141834,12 @@
             "value" : "Spotlight"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spotlight"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -141854,6 +141992,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SSH キー"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH 키"
           }
         },
         "nb" : {
@@ -142011,6 +142155,12 @@
             "value" : "SSH キー"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH 키"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -142165,6 +142315,12 @@
             "value" : "SSHキーが作成されました"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH 키가 생성됨"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -142311,6 +142467,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SSHキーをゴミ箱に移動しました"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH 키가 휴지통으로 이동됨"
           }
         },
         "nb" : {
@@ -142461,6 +142623,12 @@
             "value" : "SSH キーは完全に削除されました"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH 키가 영구적으로 삭제됨"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -142607,6 +142775,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SSHキーが復元されました"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH 키가 복원됨"
           }
         },
         "nb" : {
@@ -142757,6 +142931,12 @@
             "value" : "SSH キーが更新されました"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH 키가 업데이트됨"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -142903,6 +143083,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SSH キー"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH 키"
           }
         },
         "nb" : {
@@ -143057,6 +143243,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SSID をコピーしました"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSID 복사됨"
           }
         },
         "nb" : {
@@ -143378,6 +143570,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ゼロから始める"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "처음부터 시작하기"
           }
         },
         "nb" : {
@@ -145186,6 +145384,12 @@
           }
         },
         "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SWIFT/BIC"
+          }
+        },
+        "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "SWIFT/BIC"
@@ -147167,6 +147371,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "テクノロジー"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기술"
           }
         },
         "nb" : {
@@ -150617,6 +150827,12 @@
             "value" : "階級/レベル"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "티어/레벨"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -150758,6 +150974,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "階級/ステータス"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "티어/상태"
           }
         },
         "nb" : {
@@ -155220,7 +155442,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zrozumiałem. Nigdy nie będę ich potrzebować"
+            "value" : "Usuń trwale"
           }
         },
         "pt-BR" : {
@@ -156847,6 +157069,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "未指定"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "미지정"
           }
         },
         "nb" : {
@@ -158971,6 +159199,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "アップグレードしてカスタムアイテムを作成"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "사용자 지정 항목 추가하려면 업그레이드하기"
           }
         },
         "nb" : {
@@ -165954,6 +166188,12 @@
             "value" : "ウォレット名"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지갑 이름"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -168409,6 +168649,12 @@
             "value" : "Wi-Fiネットワーク"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi 네트워크"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -168556,6 +168802,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wi-Fiネットワーク"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi 네트워크"
           }
         },
         "nb" : {
@@ -168706,6 +168958,12 @@
             "value" : "Wi-Fiネットワークが作成されました"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi 네트워크가 생성됨"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -168848,6 +169106,12 @@
             "value" : "Wi-Fiネットワークをゴミ箱に移動しました"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi 네트워크가 휴지통으로 이동되었습니다"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -168988,6 +169252,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wi-Fiネットワークが完全に削除されました"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi 네트워크가 영구적으로 삭제되었습니다"
           }
         },
         "nb" : {
