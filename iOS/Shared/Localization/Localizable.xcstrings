@@ -135391,6 +135391,28 @@
         }
       }
     },
+    "Share ID" : {
+      "comment" : "Advanced item's information along with Item ID, Vault ID (Item detail page -> More info). \"Share ID\" is the ID of the vault if item is accessible via vault. \"Share ID\" is the ID of the share if item is accessible via item sharing. This is quite technical so we might use English for it.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share ID"
+          }
+        }
+      }
+    },
+    "Share ID copied" : {
+      "comment" : "Please refer to the comment of \"Share ID\" string for context.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share ID copied"
+          }
+        }
+      }
+    },
     "Share Item" : {
       "localizations" : {
         "be" : {

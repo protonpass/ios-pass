@@ -27,10 +27,9 @@ import UIKit
 public protocol CoordinatorProtocol: AnyObject {
     var rootViewController: UIViewController { get }
 
-    func start<PrimaryView: View, SecondaryView: View>(with view: PrimaryView,
-                                                       secondaryView: SecondaryView)
+    func start(with view: some View, secondaryView: some View)
     func start(with viewController: UIViewController, secondaryViewController: UIViewController?)
-    func push<V: View>(_ view: V, animated: Bool, hidesBackButton: Bool)
+    func push(_ view: some View, animated: Bool, hidesBackButton: Bool)
     func push(_ viewController: UIViewController, animated: Bool, hidesBackButton: Bool)
     func present(_ viewController: UIViewController,
                  animated: Bool,
@@ -45,8 +44,7 @@ public protocol CoordinatorProtocol: AnyObject {
 }
 
 public extension CoordinatorProtocol {
-    func start(with view: some View,
-               secondaryView: some View) {
+    func start(with view: some View, secondaryView: some View) {
         start(with: UIHostingController(rootView: view),
               secondaryViewController: UIHostingController(rootView: secondaryView))
     }
