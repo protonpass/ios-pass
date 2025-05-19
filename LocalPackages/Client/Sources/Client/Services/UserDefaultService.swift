@@ -22,7 +22,7 @@ import Entities
 import Foundation
 
 public protocol UserDefaultPersistency: Sendable {
-    func set<T>(value: T, forKey key: UserDefaultsKey, and id: String) throws
+    func set(value: some Any, forKey key: UserDefaultsKey, and id: String) throws
     func value<T>(forKey key: UserDefaultsKey, and id: String) -> T?
 //    func remove(forKey key: UserDefaultsKey, and id: String)
 }
