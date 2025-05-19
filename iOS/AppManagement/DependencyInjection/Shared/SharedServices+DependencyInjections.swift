@@ -20,7 +20,7 @@
 
 import Client
 import Core
-import Factory
+import FactoryKit
 @preconcurrency import ProtonCoreTelemetry
 
 final class SharedServiceContainer: SharedContainer, AutoRegistering {

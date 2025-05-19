@@ -25,7 +25,7 @@ import Core
 import DesignSystem
 import DocScanner
 import Entities
-import Factory
+import FactoryKit
 import Foundation
 import Macro
 import Screens

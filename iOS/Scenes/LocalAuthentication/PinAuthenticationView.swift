@@ -20,7 +20,7 @@
 
 import Core
 import DesignSystem
-import Factory
+import FactoryKit
 import Macro
 import SwiftUI
 

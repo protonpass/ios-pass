@@ -23,7 +23,7 @@ import Combine
 import Core
 @preconcurrency import CryptoKit
 import Entities
-import Factory
+import FactoryKit
 import Macro
 import SwiftUI
 

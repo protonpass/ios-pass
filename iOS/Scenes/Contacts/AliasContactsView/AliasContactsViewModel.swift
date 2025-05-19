@@ -24,7 +24,7 @@ import Client
 import Combine
 import DesignSystem
 import Entities
-import Factory
+import FactoryKit
 import Foundation
 import Macro
 import Screens

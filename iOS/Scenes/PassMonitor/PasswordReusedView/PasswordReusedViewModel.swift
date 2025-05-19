@@ -22,7 +22,7 @@
 
 import Core
 import Entities
-import Factory
+import FactoryKit
 import Foundation
 
 @MainActor

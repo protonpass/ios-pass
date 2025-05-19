@@ -22,7 +22,7 @@ import Combine
 import Core
 import DesignSystem
 import Entities
-import Factory
+import FactoryKit
 import SwiftUI
 
 // swiftlint:disable identifier_name line_length

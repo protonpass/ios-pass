@@ -23,7 +23,7 @@ import Client
 import Core
 import DesignSystem
 import Entities
-import Factory
+import FactoryKit
 @preconcurrency import Foundation
 import Macro
 import Screens

@@ -21,7 +21,7 @@
 import Client
 import Core
 import CryptoKit
-import Factory
+import FactoryKit
 import LocalAuthentication
 import UseCases
 

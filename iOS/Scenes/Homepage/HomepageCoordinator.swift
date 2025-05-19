@@ -25,7 +25,7 @@ import Core
 @preconcurrency import CryptoKit
 import DesignSystem
 import Entities
-import Factory
+import FactoryKit
 import Macro
 import MBProgressHUD
 import ProtonCoreAccountDeletion
