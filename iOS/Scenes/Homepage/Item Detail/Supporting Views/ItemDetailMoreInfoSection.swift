@@ -67,22 +67,31 @@ struct ItemDetailMoreInfoSection: View {
 
             if isExpanded {
                 Grid(alignment: .topTrailing, verticalSpacing: 8) {
+                    let modificationCount = item.item.revision - 1
+                    if modificationCount <= 0 {
+                        infoRow(title: #localized("Modified"),
+                                value: #localized("Never"))
+                    } else {
+                        infoRow(title: #localized("Modified"),
+                                value: #localized("%lld time(s)", modificationCount))
+                    }
+
                     infoRow(title: #localized("Item ID"),
                             value: item.itemId,
                             copyMessage: #localized("Item ID copied"))
 
                     if let vault {
                         infoRow(title: #localized("Vault ID"),
-                                value: vault.id,
+                                value: vault.vaultID,
                                 copyMessage: #localized("Vault ID copied"))
                     }
 
-                    if Bundle.main.isQaBuild {
-                        infoRow(title: "Share ID",
-                                value: item.shareId,
-                                copyMessage: "Share ID copied")
+                    infoRow(title: #localized("Share ID"),
+                            value: item.shareId,
+                            copyMessage: #localized("Share ID copied"))
 
-                        infoRow(title: "CVF", value: "\(item.item.contentFormatVersion)")
+                    if Bundle.main.isQaBuild {
+                        infoRow(title: "CFV", value: "\(item.item.contentFormatVersion)")
                     }
                 }
                 .font(.caption)
