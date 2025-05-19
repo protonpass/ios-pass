@@ -23,7 +23,7 @@ import Combine
 import Core
 import DesignSystem
 import Entities
-import Factory
+import FactoryKit
 import ProtonCoreUIFoundations
 import SwiftUI
 import UIKit

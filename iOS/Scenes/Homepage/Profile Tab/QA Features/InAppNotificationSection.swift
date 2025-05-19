@@ -23,7 +23,7 @@
 import Combine
 import Core
 import Entities
-import Factory
+import FactoryKit
 import SwiftUI
 
 @available(iOS 17, *)

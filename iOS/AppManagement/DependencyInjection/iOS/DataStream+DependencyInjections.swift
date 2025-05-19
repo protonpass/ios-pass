@@ -21,7 +21,7 @@
 import Client
 import Combine
 import Entities
-import Factory
+import FactoryKit
 import Foundation
 
 final class DataStreamContainer: SharedContainer, AutoRegistering {

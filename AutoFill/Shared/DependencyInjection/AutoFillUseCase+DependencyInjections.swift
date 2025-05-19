@@ -21,7 +21,7 @@
 import AuthenticationServices
 import Client
 import Core
-import Factory
+import FactoryKit
 import Foundation
 import UseCases
 

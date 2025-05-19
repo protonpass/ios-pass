@@ -23,7 +23,7 @@ import Core
 import CoreMocks
 import ClientMocks
 import Entities
-import Factory
+import FactoryKit
 @testable import Client
 import ProtonCoreKeymaker
 import ProtonCoreLogin

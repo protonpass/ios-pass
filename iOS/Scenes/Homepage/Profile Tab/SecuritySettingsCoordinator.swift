@@ -21,7 +21,7 @@
 import Core
 import DesignSystem
 import Entities
-import Factory
+import FactoryKit
 import LocalAuthentication
 import Macro
 

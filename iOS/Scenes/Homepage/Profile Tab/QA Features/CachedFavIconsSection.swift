@@ -20,7 +20,7 @@
 
 import Client
 import DesignSystem
-import Factory
+import FactoryKit
 import SwiftUI
 
 struct CachedFavIconsSection: View {
