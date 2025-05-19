@@ -19,7 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import Factory
+import FactoryKit
 import UIKit
 
 final class SharedViewContainer: SharedContainer, AutoRegistering {

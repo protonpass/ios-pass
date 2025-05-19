@@ -23,7 +23,7 @@ import Client
 import Core
 @preconcurrency import CryptoKit
 import Entities
-import Factory
+import FactoryKit
 import Foundation
 import Macro
 import ProtonCoreLogin

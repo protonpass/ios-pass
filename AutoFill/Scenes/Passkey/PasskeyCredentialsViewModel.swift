@@ -21,7 +21,7 @@
 @preconcurrency import AuthenticationServices
 import Client
 import Entities
-import Factory
+import FactoryKit
 import Foundation
 
 enum PasskeyCredentialsViewModelState {

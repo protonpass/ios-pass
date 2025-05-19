@@ -20,7 +20,7 @@
 
 import Core
 import DesignSystem
-import Factory
+import FactoryKit
 import Observation
 import Screens
 import SwiftUI

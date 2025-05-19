@@ -23,7 +23,7 @@ import Client
 import Core
 import CryptoKit
 import Entities
-import Factory
+import FactoryKit
 import SwiftUI
 
 enum CredentialsViewState: Equatable {

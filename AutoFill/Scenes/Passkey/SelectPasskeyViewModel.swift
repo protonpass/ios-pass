@@ -20,7 +20,7 @@
 
 @preconcurrency import AuthenticationServices
 import Entities
-import Factory
+import FactoryKit
 import Foundation
 
 @MainActor
