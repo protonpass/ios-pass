@@ -48,13 +48,13 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Сканіраваць 2ФА код, крэдытную картку, рукапісную нататку і QR-код"
+            "value" : "Сканіраваць код 2ФА, крэдытную картку, рукапісную нататку і QR-код"
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Naskenujte 2FA kód, platební kartu, učně psanou poznámku a QR kód"
+            "value" : "Naskenujte 2FA kód, platební kartu, ručně psanou poznámku a QR kód"
           }
         },
         "da" : {
@@ -90,7 +90,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Escanee código 2FA, tarjetas de crédito, nota escrita y código QR"
+            "value" : "Escanee códigos 2FA, tarjetas de crédito, nota escrita y código QR"
           }
         },
         "fi" : {
@@ -105,10 +105,28 @@
             "value" : "Scannez un code A2F, une carte de paiement, une note manuscrite et un QR code"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pindai kode 2FA, kartu kredit, catatan tulisan tangan, dan kode QR"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Scansiona codice 2FA, carta di credito, nota scritta a mano e codice QR"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2要素認証コード、クレジットカード、手書きメモ、およびQRコードをスキャンする"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2단계 인증 코드, 신용카드, 직접 작성한 메모 및 QR 코드를 스캔"
           }
         },
         "nb" : {
@@ -147,10 +165,28 @@
             "value" : "Naskenujte 2FA kód, platobnú kartu, rukou napísanú poznámku a QR kód"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Optično preberi 2FA kode, plačilne kartice ali ročno napisane opombe in QR kodo"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2FA kodunu, kredi kartını, el yazısı notu ve kare kodunu tarayın"
+            "value" : "İki adımlı doğrulama kodunu, kredi kartını, elle yazılmış notu ve kare kodu tarayın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сканувати 2FA-код, банківську картку, рукописну записку та QR-код"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quét mã Đứng lên, thẻ tín dụng, ghi chú viết tay và mã QR"
           }
         },
         "zh-Hans" : {
