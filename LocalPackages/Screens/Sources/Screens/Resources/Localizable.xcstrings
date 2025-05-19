@@ -82,6 +82,12 @@
             "value" : "%@/月"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@/월간"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2563,6 +2569,12 @@
             "value" : "10 GB"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "10 GB"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2701,6 +2713,12 @@
           }
         },
         "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "500 GB"
+          }
+        },
+        "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "500 GB"
@@ -3844,6 +3862,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "セクションを追加"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "입력란 추가"
           }
         },
         "nb" : {
@@ -5352,6 +5376,12 @@
             "value" : "毎年%@で自動更新されます"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "매년 %@에 자동 갱신됨"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5488,6 +5518,12 @@
             "value" : "Safariやその他のアプリで、 パスワード を非常に速く簡単に入力できます。"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Safari 및 기타 앱에서 사용자의 비밀번호를 매우 빠르고 쉽게 자동으로 입력합니다."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5622,6 +5658,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "内蔵の2要素認証"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2단계 인증기 내장화"
           }
         },
         "nb" : {
@@ -6411,6 +6453,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "履歴の消去"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기록 지우기"
           }
         },
         "nb" : {
@@ -8043,6 +8091,12 @@
             "value" : "最初のログインを作成"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "첫 로그인 항목 생성하기"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9307,6 +9361,12 @@
             "value" : "例：LinkedIn"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "예: 링크드인"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9441,6 +9501,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "セクションのタイトルを編集"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "입력란 제목 편집"
           }
         },
         "nb" : {
@@ -10075,6 +10141,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Optic ID を有効にする"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Optic ID 활성화"
           }
         },
         "nb" : {
@@ -11043,6 +11115,12 @@
             "value" : "追加のメールアドレス"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "추가 이메일 주소"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11343,6 +11421,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "最初のログインが作成されました"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "첫 로그인이 생성되었습니다"
           }
         },
         "nb" : {
@@ -11974,6 +12058,12 @@
             "value" : "無料"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "무료"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12256,6 +12346,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "生成されたパスワードは 2 週間保存されます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "생성된 비밀번호가 2주간 저장됩니다"
           }
         },
         "nb" : {
@@ -12854,6 +12950,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "始めましょう"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시작하기"
           }
         },
         "nb" : {
@@ -13484,6 +13586,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "最高速"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "최고"
           }
         },
         "nb" : {
@@ -14437,6 +14545,12 @@
             "value" : "Proton Passの利用方法"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prootn Pass 사용법 알아보기"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14906,6 +15020,12 @@
             "value" : "中"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "중간"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15046,6 +15166,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "履歴はありません"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기록 없음"
           }
         },
         "nb" : {
@@ -15497,6 +15623,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "なし"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "없음"
           }
         },
         "nb" : {
@@ -18419,6 +18551,12 @@
             "value" : "履歴から削除"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기록에서 제거"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18553,6 +18691,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "セクションを削除"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "섹션 제거"
           }
         },
         "nb" : {
@@ -20328,6 +20472,12 @@
             "value" : "サービス"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "서비스"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20468,6 +20618,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton Pass を設定して顔または指紋でロックを解除し、自分だけがアクセスできるようにします."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오직 나만 접근할 수 있도록 Proton Pass에 얼굴 및 지문 인식 잠금 해제를 설정하세요."
           }
         },
         "nb" : {
@@ -22242,6 +22398,12 @@
             "value" : "本当のメールアドレスを共有するのはやめてください。代わりに、メールエイリアスで非表示にします - Proton Pass専用です。"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "실제 이메일 주소 공유를 멈추세요. Proton Pass 특전으로 이메일 변경을 통해 숨겨보세요."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23851,6 +24013,12 @@
             "value" : "1つのサブスクリプションで最高のProtonを。"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "하나의 구독으로 Proton 맘껏 즐기기"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -24649,6 +24817,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "プレミアム機能を解除。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "프리미엄 기능을 잠금해제 하세요."
           }
         },
         "nb" : {
@@ -25902,6 +26076,12 @@
             "value" : "保管庫、アイテム、リンクの共有"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "금고, 항목 및 링크 공유"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -26037,6 +26217,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "VPNデバイス"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VPN 장치"
           }
         },
         "nb" : {
@@ -26179,6 +26365,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "VPN速度"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VPN 속도"
           }
         },
         "nb" : {
@@ -26997,6 +27189,12 @@
             "value" : "内容"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "포함된 기능"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -27133,6 +27331,12 @@
             "value" : "どのサービスのログインを作成しますか？"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "어떤 서비스에 대해 로그인을 생성하시겠어요?"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -27267,6 +27471,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "これで Proton Pass を最大限に活用する準備ができました。自動入力の魔法、エイリアスのプライバシーなど、さまざまな機能をご利用いただけます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Pass를 최대한 활용할 준비되셨나요?: 자동 채우기의 마법, 별칭의 개인정보 보호, 그리고 그 외 다양한 기능까지."
           }
         },
         "nb" : {
