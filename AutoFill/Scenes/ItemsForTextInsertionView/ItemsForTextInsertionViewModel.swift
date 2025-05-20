@@ -23,7 +23,7 @@ import Combine
 import Core
 import DesignSystem
 import Entities
-import Factory
+import FactoryKit
 import SwiftUI
 
 // Wrap UI models inside an enum to support displaying the same items

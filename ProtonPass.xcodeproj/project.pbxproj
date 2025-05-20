@@ -249,7 +249,6 @@
 		3577746D2B8F24670087A275 /* CreateAndAssociatePasskey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3577746C2B8F24670087A275 /* CreateAndAssociatePasskey.swift */; };
 		3577746F2B8FD71D0087A275 /* FetchCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3577746E2B8FD71D0087A275 /* FetchCredentials.swift */; };
 		357919B12B70E7630085B532 /* HomepageCoordinator+Spotlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357919B02B70E7630085B532 /* HomepageCoordinator+Spotlight.swift */; };
-		35796CE92B5EE5AE00BF4E9E /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 35796CE82B5EE5AE00BF4E9E /* Factory */; };
 		35796CEA2B5EE5F300BF4E9E /* SharedTooling+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C75012A30776100272CE8 /* SharedTooling+DependencyInjections.swift */; };
 		35796CEB2B5EE66300BF4E9E /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356043F828ED6B54003BDDDC /* Preferences.swift */; };
 		35796CED2B5EE68B00BF4E9E /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3590A3382A9F9C2600622F45 /* View+Extensions.swift */; };
@@ -479,7 +478,6 @@
 		536CA2C42CF0BDBA00BA3C69 /* FileAttachmentViewerSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536CA2C32CF0BDBA00BA3C69 /* FileAttachmentViewerSection.swift */; };
 		5379EA9D2D59EE6500F56DBC /* Entities in Frameworks */ = {isa = PBXBuildFile; productRef = 5379EA9C2D59EE6500F56DBC /* Entities */; };
 		5379EA9F2D59EE6B00F56DBC /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 5379EA9E2D59EE6B00F56DBC /* CodeScanner */; };
-		5379EAA12D59EE9D00F56DBC /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 5379EAA02D59EE9D00F56DBC /* Factory */; };
 		5379EAA32D59EEA700F56DBC /* ProtonCoreCryptoGoImplementation in Frameworks */ = {isa = PBXBuildFile; productRef = 5379EAA22D59EEA700F56DBC /* ProtonCoreCryptoGoImplementation */; };
 		5379EAA52D59EEAD00F56DBC /* ProtonCoreForceUpgrade in Frameworks */ = {isa = PBXBuildFile; productRef = 5379EAA42D59EEAD00F56DBC /* ProtonCoreForceUpgrade */; };
 		5379EAA72D59EEB800F56DBC /* ProtonCorePasswordChange in Frameworks */ = {isa = PBXBuildFile; productRef = 5379EAA62D59EEB800F56DBC /* ProtonCorePasswordChange */; };
@@ -509,6 +507,10 @@
 		53C769992D5A42B60079C757 /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
 		53C7699A2D5A42B90079C757 /* Pass-Constant-Prod.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */; };
 		53C7699B2D5A42BE0079C757 /* Pass-Constant-Scientist.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3569AE412A6983440026B780 /* Pass-Constant-Scientist.plist */; };
+		53C81ECA2DDB6E0F00A367C1 /* FactoryKit in Frameworks */ = {isa = PBXBuildFile; productRef = 53C81EC92DDB6E0F00A367C1 /* FactoryKit */; };
+		53C81ECC2DDB6E1700A367C1 /* FactoryKit in Frameworks */ = {isa = PBXBuildFile; productRef = 53C81ECB2DDB6E1700A367C1 /* FactoryKit */; };
+		53C81ECE2DDB6E2000A367C1 /* FactoryKit in Frameworks */ = {isa = PBXBuildFile; productRef = 53C81ECD2DDB6E2000A367C1 /* FactoryKit */; };
+		53C81ED02DDB6E2700A367C1 /* FactoryKit in Frameworks */ = {isa = PBXBuildFile; productRef = 53C81ECF2DDB6E2700A367C1 /* FactoryKit */; };
 		53D6B3962D58C12B003EA6D3 /* LoggerManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C22A2965754C0087518A /* LoggerManager+Extensions.swift */; };
 		53E07DC22D58BD29009D6EE5 /* Screens in Frameworks */ = {isa = PBXBuildFile; productRef = 53E07DC12D58BD29009D6EE5 /* Screens */; };
 		53E07DC32D58BD50009D6EE5 /* ItemTypeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24802A7814C20060EDF7 /* ItemTypeFilter.swift */; };
@@ -532,9 +534,7 @@
 		5B0783732B1A33F90006424C /* ClientMocks in Frameworks */ = {isa = PBXBuildFile; productRef = 5B0783722B1A33F90006424C /* ClientMocks */; };
 		5B0939182C04DD250046F467 /* IdentityDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0939162C04DD250046F467 /* IdentityDetailView.swift */; };
 		5B0939192C04DD250046F467 /* IdentityDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0939172C04DD250046F467 /* IdentityDetailViewModel.swift */; };
-		5B0C74F82A2F4B1200272CE8 /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 5B0C74F72A2F4B1200272CE8 /* Factory */; };
 		5B0C74FD2A2F606C00272CE8 /* SharedServices+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C74FB2A2F5F3400272CE8 /* SharedServices+DependencyInjections.swift */; };
-		5B0C74FF2A2F617900272CE8 /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 5B0C74FE2A2F617900272CE8 /* Factory */; };
 		5B0C75002A2F61D000272CE8 /* SharedServices+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C74FB2A2F5F3400272CE8 /* SharedServices+DependencyInjections.swift */; };
 		5B0C75022A30776100272CE8 /* SharedTooling+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C75012A30776100272CE8 /* SharedTooling+DependencyInjections.swift */; };
 		5B0C75032A30806D00272CE8 /* SharedTooling+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C75012A30776100272CE8 /* SharedTooling+DependencyInjections.swift */; };
@@ -1271,7 +1271,6 @@
 			files = (
 				35855C132AC8744A00794DB4 /* UseCases in Frameworks */,
 				3544F5E128E2341900834CA4 /* AuthenticationServices.framework in Frameworks */,
-				5B0C74FF2A2F617900272CE8 /* Factory in Frameworks */,
 				5B8D20B12AA751AF00457CA3 /* MBProgressHUD in Frameworks */,
 				356A34CA2978642800969BA2 /* CodeScanner in Frameworks */,
 				5B8D20AD2AA74B6600457CA3 /* DesignSystem in Frameworks */,
@@ -1280,6 +1279,7 @@
 				40EC90982D1AE440004FCA37 /* ProtonCorePaymentsV2 in Frameworks */,
 				5B8D209F2AA748F700457CA3 /* Client in Frameworks */,
 				3535182B2AE14FBD00574991 /* Screens in Frameworks */,
+				53C81ECC2DDB6E1700A367C1 /* FactoryKit in Frameworks */,
 				354192862AC1CB9F001F2996 /* Macro in Frameworks */,
 				578B8BA42AE5AB6600719DA6 /* ProtonCoreForceUpgrade in Frameworks */,
 				578B8BA22AE5AB2800719DA6 /* ProtonCoreCryptoGoImplementation in Frameworks */,
@@ -1310,10 +1310,10 @@
 				357C71D52B5FB52C00AA0BF1 /* Screens in Frameworks */,
 				35796CFC2B5EE82D00BF4E9E /* DocScanner in Frameworks */,
 				35C9B82F2B5E99940062D787 /* Client in Frameworks */,
+				53C81ECE2DDB6E2000A367C1 /* FactoryKit in Frameworks */,
 				40EC909A2D1AE451004FCA37 /* ProtonCorePaymentsV2 in Frameworks */,
 				35796CFE2B5EEAC800BF4E9E /* Entities in Frameworks */,
 				35796CFA2B5EE80900BF4E9E /* ProtonCoreCryptoGoImplementation in Frameworks */,
-				35796CE92B5EE5AE00BF4E9E /* Factory in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1321,6 +1321,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				53C81ECA2DDB6E0F00A367C1 /* FactoryKit in Frameworks */,
 				57F59FB22AE5C4DE002EFDFD /* ProtonCoreCryptoGoImplementation in Frameworks */,
 				35855C112AC8743F00794DB4 /* UseCases in Frameworks */,
 				5B8D20AB2AA74B5E00457CA3 /* DesignSystem in Frameworks */,
@@ -1343,7 +1344,6 @@
 				578AA8792BB1DC85003FA50B /* ProtonCoreAccountRecovery in Frameworks */,
 				57F59FB02AE5C3EB002EFDFD /* ProtonCoreForceUpgrade in Frameworks */,
 				35ABE12A2AA08275001E20F9 /* DocScanner in Frameworks */,
-				5B0C74F82A2F4B1200272CE8 /* Factory in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1361,7 +1361,6 @@
 				5379EAA52D59EEAD00F56DBC /* ProtonCoreForceUpgrade in Frameworks */,
 				5347B5802D58BA960014013F /* MBProgressHUD in Frameworks */,
 				533F20342DA5ADC600CE1C5E /* ProtonCorePaymentsV2 in Frameworks */,
-				5379EAA12D59EE9D00F56DBC /* Factory in Frameworks */,
 				5379EAA72D59EEB800F56DBC /* ProtonCorePasswordChange in Frameworks */,
 				5347B5842D58BABB0014013F /* Core in Frameworks */,
 				537FC0752D59EC3300011AEA /* DesignSystem in Frameworks */,
@@ -1371,6 +1370,7 @@
 				538548E82D58ACF300AEFB66 /* UniformTypeIdentifiers.framework in Frameworks */,
 				5379EA9D2D59EE6500F56DBC /* Entities in Frameworks */,
 				5347B5822D58BAB80014013F /* Client in Frameworks */,
+				53C81ED02DDB6E2700A367C1 /* FactoryKit in Frameworks */,
 				53E07DC22D58BD29009D6EE5 /* Screens in Frameworks */,
 				5379EA9F2D59EE6B00F56DBC /* CodeScanner in Frameworks */,
 			);
@@ -2982,7 +2982,6 @@
 			name = AutoFill;
 			packageProductDependencies = (
 				356A34C92978642800969BA2 /* CodeScanner */,
-				5B0C74FE2A2F617900272CE8 /* Factory */,
 				5B1453782A6038FE0048B022 /* Entities */,
 				35ABE12B2AA082BB001E20F9 /* DocScanner */,
 				5B8D209E2AA748F700457CA3 /* Client */,
@@ -2996,6 +2995,7 @@
 				578B8BA32AE5AB6600719DA6 /* ProtonCoreForceUpgrade */,
 				8B7078692BD1209600E920D7 /* ProtonCorePasswordChange */,
 				40EC90972D1AE440004FCA37 /* ProtonCorePaymentsV2 */,
+				53C81ECB2DDB6E1700A367C1 /* FactoryKit */,
 			);
 			productName = AutoFill;
 			productReference = 3544F5E028E2341800834CA4 /* AutoFill.appex */;
@@ -3039,7 +3039,6 @@
 				35C9B82C2B5E99910062D787 /* Core */,
 				35C9B82E2B5E99940062D787 /* Client */,
 				35C9B8302B5EA7600062D787 /* DesignSystem */,
-				35796CE82B5EE5AE00BF4E9E /* Factory */,
 				35796CF72B5EE7CA00BF4E9E /* ProtonCoreForceUpgrade */,
 				35796CF92B5EE80900BF4E9E /* ProtonCoreCryptoGoImplementation */,
 				35796CFB2B5EE82D00BF4E9E /* DocScanner */,
@@ -3050,6 +3049,7 @@
 				357C71D42B5FB52C00AA0BF1 /* Screens */,
 				8B7078672BD1208400E920D7 /* ProtonCorePasswordChange */,
 				40EC90992D1AE451004FCA37 /* ProtonCorePaymentsV2 */,
+				53C81ECD2DDB6E2000A367C1 /* FactoryKit */,
 			);
 			productName = Share;
 			productReference = 35C9B8142B5E8AA90062D787 /* Share.appex */;
@@ -3079,7 +3079,6 @@
 			name = iOS;
 			packageProductDependencies = (
 				356A34C72978630100969BA2 /* CodeScanner */,
-				5B0C74F72A2F4B1200272CE8 /* Factory */,
 				5B1453662A6033F60048B022 /* Entities */,
 				35ABE1292AA08275001E20F9 /* DocScanner */,
 				5B8D20632AA7454400457CA3 /* MBProgressHUD */,
@@ -3099,6 +3098,7 @@
 				8B7078632BD1205A00E920D7 /* ProtonCorePasswordChange */,
 				5BAB7A5E2CFDAB69001C8815 /* EntitiesMocks */,
 				40EC90952D1AE426004FCA37 /* ProtonCorePaymentsV2 */,
+				53C81EC92DDB6E0F00A367C1 /* FactoryKit */,
 			);
 			productName = "Proton Key (iOS)";
 			productReference = 35E5063B286F819F00A3F6EA /* Proton Pass.app */;
@@ -3147,12 +3147,12 @@
 				537FC0742D59EC3300011AEA /* DesignSystem */,
 				5379EA9C2D59EE6500F56DBC /* Entities */,
 				5379EA9E2D59EE6B00F56DBC /* CodeScanner */,
-				5379EAA02D59EE9D00F56DBC /* Factory */,
 				5379EAA22D59EEA700F56DBC /* ProtonCoreCryptoGoImplementation */,
 				5379EAA42D59EEAD00F56DBC /* ProtonCoreForceUpgrade */,
 				5379EAA62D59EEB800F56DBC /* ProtonCorePasswordChange */,
 				5379EAA82D59EEBC00F56DBC /* UseCases */,
 				533F20332DA5ADC600CE1C5E /* ProtonCorePaymentsV2 */,
+				53C81ECF2DDB6E2700A367C1 /* FactoryKit */,
 			);
 			productName = Action;
 			productReference = 538548E62D58ACF300AEFB66 /* Action.appex */;
@@ -6193,7 +6193,7 @@
 			repositoryURL = "https://github.com/hmlongco/Factory";
 			requirement = {
 				kind = exactVersion;
-				version = 2.4.1;
+				version = 2.5.1;
 			};
 		};
 		5B8D20622AA7454400457CA3 /* XCRemoteSwiftPackageReference "MBProgressHUD" */ = {
@@ -6245,11 +6245,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 356A34C62978630100969BA2 /* XCRemoteSwiftPackageReference "CodeScanner" */;
 			productName = CodeScanner;
-		};
-		35796CE82B5EE5AE00BF4E9E /* Factory */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5B0C74F62A2F4B1200272CE8 /* XCRemoteSwiftPackageReference "Factory" */;
-			productName = Factory;
 		};
 		35796CF72B5EE7CA00BF4E9E /* ProtonCoreForceUpgrade */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -6370,11 +6365,6 @@
 			package = 356A34C62978630100969BA2 /* XCRemoteSwiftPackageReference "CodeScanner" */;
 			productName = CodeScanner;
 		};
-		5379EAA02D59EE9D00F56DBC /* Factory */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5B0C74F62A2F4B1200272CE8 /* XCRemoteSwiftPackageReference "Factory" */;
-			productName = Factory;
-		};
 		5379EAA22D59EEA700F56DBC /* ProtonCoreCryptoGoImplementation */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 57459FC02AE5A72100280A10 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
@@ -6402,6 +6392,26 @@
 		537FC0742D59EC3300011AEA /* DesignSystem */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DesignSystem;
+		};
+		53C81EC92DDB6E0F00A367C1 /* FactoryKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5B0C74F62A2F4B1200272CE8 /* XCRemoteSwiftPackageReference "Factory" */;
+			productName = FactoryKit;
+		};
+		53C81ECB2DDB6E1700A367C1 /* FactoryKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5B0C74F62A2F4B1200272CE8 /* XCRemoteSwiftPackageReference "Factory" */;
+			productName = FactoryKit;
+		};
+		53C81ECD2DDB6E2000A367C1 /* FactoryKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5B0C74F62A2F4B1200272CE8 /* XCRemoteSwiftPackageReference "Factory" */;
+			productName = FactoryKit;
+		};
+		53C81ECF2DDB6E2700A367C1 /* FactoryKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5B0C74F62A2F4B1200272CE8 /* XCRemoteSwiftPackageReference "Factory" */;
+			productName = FactoryKit;
 		};
 		53E07DC12D58BD29009D6EE5 /* Screens */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -6469,16 +6479,6 @@
 		5B0783722B1A33F90006424C /* ClientMocks */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ClientMocks;
-		};
-		5B0C74F72A2F4B1200272CE8 /* Factory */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5B0C74F62A2F4B1200272CE8 /* XCRemoteSwiftPackageReference "Factory" */;
-			productName = Factory;
-		};
-		5B0C74FE2A2F617900272CE8 /* Factory */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5B0C74F62A2F4B1200272CE8 /* XCRemoteSwiftPackageReference "Factory" */;
-			productName = Factory;
 		};
 		5B1453662A6033F60048B022 /* Entities */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -23,7 +23,7 @@ import Core
 import CoreData
 import CryptoKit
 import Entities
-import Factory
+import FactoryKit
 import LocalAuthentication
 import ProtonCoreDoh
 import ProtonCoreKeymaker

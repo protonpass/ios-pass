@@ -22,7 +22,7 @@ import Combine
 import Core
 import CoreMocks
 import ClientMocks
-import Factory
+import FactoryKit
 @testable import Client
 import ProtonCoreKeymaker
 import ProtonCoreLogin

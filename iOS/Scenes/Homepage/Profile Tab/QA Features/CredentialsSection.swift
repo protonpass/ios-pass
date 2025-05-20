@@ -20,7 +20,7 @@
 
 @_spi(QA)
 import Client
-import Factory
+import FactoryKit
 import SwiftUI
 
 struct CredentialsSection: View {

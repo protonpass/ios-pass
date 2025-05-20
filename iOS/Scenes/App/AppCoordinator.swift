@@ -23,7 +23,7 @@ import Combine
 import Core
 import CoreSpotlight
 import Entities
-import Factory
+import FactoryKit
 import Macro
 import ProtonCoreAccountRecovery
 import ProtonCoreFeatureFlags

@@ -20,7 +20,7 @@
 
 import DesignSystem
 import Entities
-import Factory
+import FactoryKit
 import ProtonCoreFeatureFlags
 import ProtonCoreUIFoundations
 import SwiftUI

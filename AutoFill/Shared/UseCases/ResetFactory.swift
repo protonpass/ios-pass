@@ -20,7 +20,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Factory
+import FactoryKit
 
 protocol ResetFactoryUseCase: Sendable {
     func execute()

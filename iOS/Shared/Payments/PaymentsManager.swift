@@ -22,7 +22,7 @@
 import Combine
 import Core
 import Entities
-import Factory
+import FactoryKit
 import Foundation
 @preconcurrency import ProtonCoreDoh
 import ProtonCoreFeatureFlags

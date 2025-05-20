@@ -24,7 +24,7 @@ import Client
 import Combine
 import Core
 import Entities
-import Factory
+import FactoryKit
 import ProtonCoreLogin
 import ProtonCoreServices
 import SwiftUI

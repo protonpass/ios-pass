@@ -22,7 +22,7 @@
 
 import Combine
 import Entities
-import Factory
+import FactoryKit
 import Foundation
 import Macro
 
