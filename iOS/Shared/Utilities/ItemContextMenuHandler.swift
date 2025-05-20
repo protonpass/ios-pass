@@ -21,7 +21,7 @@
 import Client
 import Core
 import Entities
-import Factory
+import FactoryKit
 import Macro
 @preconcurrency import ProtonCoreUIFoundations
 import Screens

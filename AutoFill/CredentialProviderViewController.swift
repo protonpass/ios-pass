@@ -19,7 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import AuthenticationServices
-import Factory
+import FactoryKit
 import ProtonCoreCryptoGoImplementation
 
 final class CredentialProviderViewController: ASCredentialProviderViewController {

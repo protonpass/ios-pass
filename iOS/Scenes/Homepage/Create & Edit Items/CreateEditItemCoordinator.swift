@@ -20,7 +20,7 @@
 
 import Core
 import Entities
-import Factory
+import FactoryKit
 import ProtonCoreLogin
 import SwiftUI
 import UIKit

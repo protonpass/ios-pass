@@ -22,7 +22,7 @@
 import Client
 import DesignSystem
 import Entities
-import Factory
+import FactoryKit
 import SwiftUI
 
 struct TelemetryEventsSection: View {

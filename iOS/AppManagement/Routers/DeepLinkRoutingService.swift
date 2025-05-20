@@ -20,7 +20,7 @@
 
 import Core
 import CoreSpotlight
-import Factory
+import FactoryKit
 import Foundation
 import UIKit
 import UseCases

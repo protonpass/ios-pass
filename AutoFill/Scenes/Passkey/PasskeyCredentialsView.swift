@@ -20,7 +20,7 @@
 
 import AuthenticationServices
 import DesignSystem
-import Factory
+import FactoryKit
 import Screens
 import SwiftUI
 

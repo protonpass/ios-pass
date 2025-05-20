@@ -22,7 +22,7 @@
 
 import Combine
 import Entities
-import Factory
+import FactoryKit
 import Macro
 import SwiftUI
 import UIKit
