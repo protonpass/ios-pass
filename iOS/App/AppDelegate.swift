@@ -20,7 +20,7 @@
 
 import BackgroundTasks
 import Core
-import Factory
+import FactoryKit
 import ProtonCoreAccountRecovery
 import ProtonCoreCryptoGoImplementation
 import ProtonCoreCryptoGoInterface

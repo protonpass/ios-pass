@@ -21,7 +21,7 @@
 import Client
 import Combine
 import Core
-import Factory
+import FactoryKit
 import Foundation
 import Macro
 

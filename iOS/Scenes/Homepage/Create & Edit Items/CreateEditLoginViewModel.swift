@@ -24,7 +24,7 @@ import CodeScanner
 import Combine
 import Core
 import Entities
-import Factory
+import FactoryKit
 import Macro
 import Screens
 import SwiftUI

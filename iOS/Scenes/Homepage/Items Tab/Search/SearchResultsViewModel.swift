@@ -20,7 +20,7 @@
 
 import Client
 import Entities
-import Factory
+import FactoryKit
 import SwiftUI
 
 @MainActor

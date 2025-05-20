@@ -23,7 +23,7 @@ import Combine
 import Core
 import CryptoKit
 import Entities
-import Factory
+import FactoryKit
 import Screens
 import SwiftUI
 

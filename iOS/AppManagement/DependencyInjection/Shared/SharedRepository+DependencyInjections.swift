@@ -22,7 +22,7 @@ import Client
 import Core
 import CoreData
 import CryptoKit
-import Factory
+import FactoryKit
 import ProtonCoreFeatureFlags
 import ProtonCoreLogin
 @preconcurrency import ProtonCoreServices

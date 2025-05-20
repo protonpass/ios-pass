@@ -22,7 +22,7 @@ import Client
 import Combine
 import DesignSystem
 import Entities
-import Factory
+import FactoryKit
 import Screens
 @preconcurrency import UIKit
 import UniformTypeIdentifiers

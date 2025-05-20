@@ -20,7 +20,7 @@
 
 import Client
 import Combine
-import Factory
+import FactoryKit
 import LocalAuthentication
 import Macro
 import SwiftUI

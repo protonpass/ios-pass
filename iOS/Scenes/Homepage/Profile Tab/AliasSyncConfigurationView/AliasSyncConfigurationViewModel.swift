@@ -25,7 +25,7 @@ import Combine
 import Core
 import DesignSystem
 import Entities
-import Factory
+import FactoryKit
 import Macro
 import ProtonCoreLogin
 import ProtonCoreServices
