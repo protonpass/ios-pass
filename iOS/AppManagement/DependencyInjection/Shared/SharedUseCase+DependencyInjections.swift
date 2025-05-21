@@ -416,7 +416,8 @@ extension SharedUseCasesContainer {
                                        userDataDatasource: container.localUserDataDatasource(),
                                        userPreferencesDatasource: container.userPreferencesDatasource(),
                                        inAppNotificationDatasource: container.localInAppNotificationDatasource(),
-                                       passwordDatasource: container.localPasswordDatasource())
+                                       passwordDatasource: container.localPasswordDatasource(),
+                                       userEventIdDatasource: container.localUserEventIdDatasource())
         }
     }
 
@@ -453,6 +454,14 @@ extension SharedUseCasesContainer {
                                  authManager: self.authManager,
                                  credentialManager: SharedServiceContainer.shared.credentialManager(),
                                  keychain: self.keychain) }
+    }
+
+    var getLastEventIdIfNotExist: Factory<any GetLastEventIdIfNotExistUseCase> {
+        self {
+            let container = SharedRepositoryContainer.shared
+            return GetLastEventIdIfNotExist(localDatasource: container.localUserEventIdDatasource(),
+                                            remoteDatasource: container.remoteUserEventsDatasource())
+        }
     }
 }
 

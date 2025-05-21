@@ -87,6 +87,9 @@ final class AppContentManager: ObservableObject, @unchecked Sendable, DeinitPrin
     private let indexItemsForSpotlight = resolve(\SharedUseCasesContainer.indexItemsForSpotlight)
     private let deleteLocalDataBeforeFullSync = resolve(\SharedUseCasesContainer.deleteLocalDataBeforeFullSync)
 
+    @LazyInjected(\SharedUseCasesContainer.getLastEventIdIfNotExist)
+    private var getLastEventIdIfNotExist
+
     private var cancellables = Set<AnyCancellable>()
 
     @Published private(set) var state = AppContentState.loading
@@ -176,7 +179,10 @@ extension AppContentManager {
             // 1. Delete all local data
             try await deleteLocalDataBeforeFullSync()
 
-            // 2. Get all remote shares and their items
+            // 2. Get the lastEventID as a starting point for user events sync loop
+            try await getLastEventIdIfNotExist(userId: userId)
+
+            // 3. Get all remote shares and their items
             let remoteShares = try await shareRepository.getDecryptedRemoteShares(userId: userId)
             hasUndecryptableShares = remoteShares.hasUndecryptableShares
             vaultSyncEventStream.send(.downloadedShares(remoteShares.shares.representingVaults))
@@ -201,7 +207,7 @@ extension AppContentManager {
                 _ = try await (upsertSharesTask, taskGroup.waitForAll())
             }
 
-            // 3. Create default vault if no vaults
+            // 4. Create default vault if no vaults
             if remoteShares.shares.isEmpty {
                 do {
                     try await createDefaultVault()
