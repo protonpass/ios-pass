@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import Foundation
 
 public struct UserEvents: Sendable, Decodable {
@@ -31,12 +32,44 @@ public struct UserEvents: Sendable, Decodable {
     public let planChanged: Bool
     public let eventsPending: Bool
     public let fullRefresh: Bool
+
+    public init(lastEventID: String,
+                itemsUpdated: [UserEventItem],
+                itemsDeleted: [UserEventItem],
+                sharesUpdated: [UserEventShare],
+                sharesDeleted: [UserEventShare],
+                sharesToGetInvites: [UserEventShare],
+                sharesWithInvitesToCreate: [UserEventShare],
+                planChanged: Bool,
+                eventsPending: Bool,
+                fullRefresh: Bool) {
+        self.lastEventID = lastEventID
+        self.itemsUpdated = itemsUpdated
+        self.itemsDeleted = itemsDeleted
+        self.sharesUpdated = sharesUpdated
+        self.sharesDeleted = sharesDeleted
+        self.sharesToGetInvites = sharesToGetInvites
+        self.sharesWithInvitesToCreate = sharesWithInvitesToCreate
+        self.planChanged = planChanged
+        self.eventsPending = eventsPending
+        self.fullRefresh = fullRefresh
+    }
 }
 
-public struct UserEventItem: Sendable, Decodable, Equatable {
+public struct UserEventItem: Sendable, Decodable, Equatable, ItemIdentifiable {
     public let shareID: String
     public let itemID: String
     public let eventToken: String
+
+    // Seemingly redundant but we need to keep `shareID` and `itemID`
+    // with capitalized D in order to not break the decoding process
+    public var shareId: String {
+        shareID
+    }
+
+    public var itemId: String {
+        itemID
+    }
 
     public init(shareID: String, itemID: String, eventToken: String) {
         self.shareID = shareID
