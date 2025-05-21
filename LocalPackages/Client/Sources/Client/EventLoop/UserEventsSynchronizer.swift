@@ -66,18 +66,56 @@ public extension UserEventsSynchronizer {
         guard let lastEventId = try await localUserEventIdDatasource.getLastEventId(userId: userId) else {
             return .init(dataUpdated: false, planChanged: false, fullRefreshNeeded: true)
         }
-        let events = try await remoteUserEventsDatasource.getUserEvents(userId: userId,
-                                                                        lastEventId: lastEventId)
-        try await process(events: events, userId: userId)
-        if events.eventsPending {
-            return try await sync(userId: userId)
-        }
-        return .init(dataUpdated: false, planChanged: false, fullRefreshNeeded: false)
+        var dataUpdated = false
+        var planChanged = false
+        var fullRefreshNeeded = false
+        try await sync(userId: userId,
+                       lastEventId: lastEventId,
+                       dataUpdated: &dataUpdated,
+                       planChanged: &planChanged,
+                       fullRefreshNeeded: &fullRefreshNeeded)
+        return .init(dataUpdated: dataUpdated,
+                     planChanged: planChanged,
+                     fullRefreshNeeded: fullRefreshNeeded)
     }
 }
 
 private extension UserEventsSynchronizer {
-    func process(events: UserEvents, userId: String) async throws {
+    func sync(userId: String,
+              lastEventId: String,
+              dataUpdated: inout Bool,
+              planChanged: inout Bool,
+              fullRefreshNeeded: inout Bool) async throws {
+        let events = try await remoteUserEventsDatasource.getUserEvents(userId: userId,
+                                                                        lastEventId: lastEventId)
+
+        try await process(events: events, for: userId)
+
+        // Flip the value of the boolean to `true` onlt when it's currently `false`
+        // because we might sync events in multiple batches
+        // one batch might imply a change while others don't
+        if !dataUpdated {
+            dataUpdated = events.dataUpdated
+        }
+
+        if !planChanged {
+            planChanged = events.planChanged
+        }
+
+        if !fullRefreshNeeded {
+            fullRefreshNeeded = events.fullRefresh
+        }
+
+        if events.eventsPending {
+            return try await sync(userId: userId,
+                                  lastEventId: events.lastEventID,
+                                  dataUpdated: &dataUpdated,
+                                  planChanged: &planChanged,
+                                  fullRefreshNeeded: &fullRefreshNeeded)
+        }
+    }
+
+    func process(events: UserEvents, for userId: String) async throws {
         for updatedItem in events.itemsUpdated {
             try await itemRepository.refreshItem(userId: userId,
                                                  shareId: updatedItem.shareID,
@@ -85,17 +123,8 @@ private extension UserEventsSynchronizer {
                                                  eventToken: updatedItem.eventToken)
         }
 
-        try await itemRepository.delete(userId: userId, items: events.itemsDeleted)
+        if !events.itemsDeleted.isEmpty {
+            try await itemRepository.delete(userId: userId, items: events.itemsDeleted)
+        }
     }
 }
-
-// public let lastEventID: String
-// public let itemsUpdated: [UserEventItem]
-// public let itemsDeleted: [UserEventItem]
-// public let sharesUpdated: [UserEventShare]
-// public let sharesDeleted: [UserEventShare]
-// public let sharesToGetInvites: [UserEventShare]
-// public let sharesWithInvitesToCreate: [UserEventShare]
-// public let planChanged: Bool
-// public let eventsPending: Bool
-// public let fullRefresh: Bool
