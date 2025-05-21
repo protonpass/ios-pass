@@ -37,9 +37,9 @@ struct UserEventsSynchronizerTests {
         itemRepository = .init()
         accessRespository = .init()
         sut = UserEventsSynchronizer(localUserEventIdDatasource: localUserEventIdDatasource,
-                               remoteUserEventsDatasource: remoteUserEventsDatasource,
-                               itemRepository: itemRepository,
-                               accessRepository: accessRespository)
+                                     remoteUserEventsDatasource: remoteUserEventsDatasource,
+                                     itemRepository: itemRepository,
+                                     accessRepository: accessRespository)
     }
 }
 
@@ -49,7 +49,7 @@ private struct Args {
     let result: UserEventsSyncResult
     let getUserEventsRouteCalled: Bool
     var refreshItemInvokeCount: Int?
-    var deleteItemInvokeCount: Int?
+    var deleteItemsInvokeCount: Int?
 
     static var noLocalLastEventIdTriggerFullRefresh: Self {
         .init(result: .init(dataUpdated: false,
@@ -57,12 +57,89 @@ private struct Args {
                             fullRefreshNeeded: true),
               getUserEventsRouteCalled: false)
     }
+
+    static var fullRefresh: Self {
+        .init(lastEventId: .random(),
+              events: [
+                .init(lastEventID: .random(),
+                      itemsUpdated: [],
+                      itemsDeleted: [],
+                      sharesUpdated: [],
+                      sharesDeleted: [],
+                      sharesToGetInvites: [],
+                      sharesWithInvitesToCreate: [],
+                      planChanged: false,
+                      eventsPending: false,
+                      fullRefresh: true)
+              ],
+              result: .init(dataUpdated: false,
+                            planChanged: false,
+                            fullRefreshNeeded: true),
+              getUserEventsRouteCalled: true)
+    }
+
+    static var oneEventBatch: Self {
+        .init(lastEventId: .random(),
+              events: [
+                .init(lastEventID: .random(),
+                      itemsUpdated: .random(count: 5),
+                      itemsDeleted: .random(count: 8),
+                      sharesUpdated: [],
+                      sharesDeleted: [],
+                      sharesToGetInvites: [],
+                      sharesWithInvitesToCreate: [],
+                      planChanged: false,
+                      eventsPending: false,
+                      fullRefresh: false)
+              ],
+              result: .init(dataUpdated: true,
+                            planChanged: false,
+                            fullRefreshNeeded: false),
+              getUserEventsRouteCalled: true,
+              refreshItemInvokeCount: 5,
+              deleteItemsInvokeCount: 1)
+    }
+
+    static var twoEventBatches: Self {
+        .init(lastEventId: .random(),
+              events: [
+                .init(lastEventID: .random(),
+                      itemsUpdated: .random(count: 7),
+                      itemsDeleted: .random(count: 16),
+                      sharesUpdated: [],
+                      sharesDeleted: [],
+                      sharesToGetInvites: [],
+                      sharesWithInvitesToCreate: [],
+                      planChanged: true,
+                      eventsPending: true,
+                      fullRefresh: false),
+                .init(lastEventID: .random(),
+                      itemsUpdated: .random(count: 10),
+                      itemsDeleted: .random(count: 3),
+                      sharesUpdated: [],
+                      sharesDeleted: [],
+                      sharesToGetInvites: [],
+                      sharesWithInvitesToCreate: [],
+                      planChanged: false,
+                      eventsPending: false,
+                      fullRefresh: false)
+              ],
+              result: .init(dataUpdated: true,
+                            planChanged: true,
+                            fullRefreshNeeded: false),
+              getUserEventsRouteCalled: true,
+              refreshItemInvokeCount: 17,
+              deleteItemsInvokeCount: 2)
+    }
 }
 
 private extension UserEventsSynchronizerTests {
     @Test("User events sync",
           arguments: [
-            Args.noLocalLastEventIdTriggerFullRefresh
+            Args.noLocalLastEventIdTriggerFullRefresh,
+            Args.fullRefresh,
+            Args.oneEventBatch,
+            Args.twoEventBatches
           ])
     func sync(args: Args) async throws {
         localUserEventIdDatasource.stubbedGetLastEventIdResult = args.lastEventId
@@ -83,8 +160,8 @@ private extension UserEventsSynchronizerTests {
             #expect(itemRepository.invokedRefreshItemCount == refreshItemInvokeCount)
         }
 
-        if let deleteItemInvokeCount = args.deleteItemInvokeCount {
-            #expect(itemRepository.invokedDeleteItemsCount == deleteItemInvokeCount)
+        if let deleteItemsInvokeCount = args.deleteItemsInvokeCount {
+            #expect(itemRepository.invokedDeleteCount == deleteItemsInvokeCount)
         }
     }
 }
@@ -96,7 +173,7 @@ private extension UserEventItem {
 }
 
 private extension [UserEventItem] {
-    static func random(count: Int) {
+    static func random(count: Int = .random(in: 1...100)) -> Self {
         Array(repeating: UserEventItem.random(), count: count)
     }
 }
@@ -104,5 +181,11 @@ private extension [UserEventItem] {
 private extension UserEventShare {
     static func random() -> UserEventShare {
         UserEventShare(shareID: .random(), eventToken: .random())
+    }
+}
+
+private extension [UserEventShare] {
+    static func random(count: Int = .random(in: 1...100)) -> Self {
+        Array(repeating: UserEventShare.random(), count: count)
     }
 }

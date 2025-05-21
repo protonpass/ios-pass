@@ -54,6 +54,14 @@ public struct UserEvents: Sendable, Decodable {
         self.eventsPending = eventsPending
         self.fullRefresh = fullRefresh
     }
+
+    /// Reflect the least changes in user's data in order to locally reload everything
+    public var dataUpdated: Bool {
+        !itemsUpdated.isEmpty ||
+            !itemsDeleted.isEmpty ||
+            !sharesUpdated.isEmpty ||
+            !sharesDeleted.isEmpty
+    }
 }
 
 public struct UserEventItem: Sendable, Decodable, Equatable, ItemIdentifiable {
