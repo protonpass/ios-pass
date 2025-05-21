@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import Foundation
 
 /// The result of user events sync giving information to act upon on
@@ -48,22 +49,30 @@ public actor UserEventsSynchronizer: UserEventsSynchronizerProtocol {
     private let localUserEventIdDatasource: any LocalUserEventIdDatasourceProtocol
     private let remoteUserEventsDatasource: any RemoteUserEventsDatasourceProtocol
     private let itemRepository: any ItemRepositoryProtocol
+    private let shareRepository: any ShareRepositoryProtocol
     private let accessRepository: any AccessRepositoryProtocol
+    private let logger: Logger
 
     public init(localUserEventIdDatasource: any LocalUserEventIdDatasourceProtocol,
                 remoteUserEventsDatasource: any RemoteUserEventsDatasourceProtocol,
                 itemRepository: any ItemRepositoryProtocol,
-                accessRepository: any AccessRepositoryProtocol) {
+                shareRepository: any ShareRepositoryProtocol,
+                accessRepository: any AccessRepositoryProtocol,
+                logManager: any LogManagerProtocol) {
         self.localUserEventIdDatasource = localUserEventIdDatasource
         self.remoteUserEventsDatasource = remoteUserEventsDatasource
         self.itemRepository = itemRepository
+        self.shareRepository = shareRepository
         self.accessRepository = accessRepository
+        logger = .init(manager: logManager)
     }
 }
 
 public extension UserEventsSynchronizer {
     func sync(userId: String) async throws -> UserEventsSyncResult {
+        logger.trace("Syncing with user events for user \(userId)")
         guard let lastEventId = try await localUserEventIdDatasource.getLastEventId(userId: userId) else {
+            logger.warning("No local user event ID for user \(userId). Force full refresh.")
             return .init(dataUpdated: false, planChanged: false, fullRefreshNeeded: true)
         }
         var dataUpdated = false
@@ -74,6 +83,7 @@ public extension UserEventsSynchronizer {
                        dataUpdated: &dataUpdated,
                        planChanged: &planChanged,
                        fullRefreshNeeded: &fullRefreshNeeded)
+        logger.info("Finished syncing with user events for user \(userId)")
         return .init(dataUpdated: dataUpdated,
                      planChanged: planChanged,
                      fullRefreshNeeded: fullRefreshNeeded)
@@ -86,27 +96,23 @@ private extension UserEventsSynchronizer {
               dataUpdated: inout Bool,
               planChanged: inout Bool,
               fullRefreshNeeded: inout Bool) async throws {
+        logger.trace("Getting user events for user \(userId)")
         let events = try await remoteUserEventsDatasource.getUserEvents(userId: userId,
                                                                         lastEventId: lastEventId)
-
+        logger.trace("Processing events for user \(userId)")
         try await process(events: events, for: userId)
+        logger.trace("Processed events for user \(userId)")
 
-        // Flip the value of the boolean to `true` onlt when it's currently `false`
-        // because we might sync events in multiple batches
-        // one batch might imply a change while others don't
-        if !dataUpdated {
-            dataUpdated = events.dataUpdated
-        }
+        dataUpdated = dataUpdated || events.dataUpdated
+        planChanged = planChanged || events.planChanged
+        fullRefreshNeeded = fullRefreshNeeded || events.fullRefresh
 
-        if !planChanged {
-            planChanged = events.planChanged
-        }
-
-        if !fullRefreshNeeded {
-            fullRefreshNeeded = events.fullRefresh
-        }
+        logger.trace("Upserting last user event ID for user \(userId)")
+        try await localUserEventIdDatasource.upsertLastEventId(userId: userId,
+                                                               lastEventId: events.lastEventID)
 
         if events.eventsPending {
+            logger.trace("Continue syncing because events are still pending for user \(userId)")
             return try await sync(userId: userId,
                                   lastEventId: events.lastEventID,
                                   dataUpdated: &dataUpdated,
@@ -116,15 +122,44 @@ private extension UserEventsSynchronizer {
     }
 
     func process(events: UserEvents, for userId: String) async throws {
-        for updatedItem in events.itemsUpdated {
-            try await itemRepository.refreshItem(userId: userId,
-                                                 shareId: updatedItem.shareID,
-                                                 itemId: updatedItem.itemID,
-                                                 eventToken: updatedItem.eventToken)
+        if events.itemsUpdated.isEmpty {
+            logger.trace("No updated items for user \(userId)")
+        } else {
+            logger.trace("Refreshing \(events.itemsUpdated.count) updated items for user \(userId)")
+            for updatedItem in events.itemsUpdated {
+                try await itemRepository.refreshItem(userId: userId,
+                                                     shareId: updatedItem.shareID,
+                                                     itemId: updatedItem.itemID,
+                                                     eventToken: updatedItem.eventToken)
+            }
         }
 
-        if !events.itemsDeleted.isEmpty {
+        if events.itemsDeleted.isEmpty {
+            logger.trace("No deleted items for user \(userId)")
+        } else {
+            logger.trace("Deleting \(events.itemsDeleted.count) items for user \(userId)")
             try await itemRepository.delete(userId: userId, items: events.itemsDeleted)
+        }
+
+        if events.sharesUpdated.isEmpty {
+            logger.trace("No updated shares for user \(userId)")
+        } else {
+            logger.trace("Refreshing \(events.sharesUpdated.count) shares for user \(userId)")
+            for updatedShare in events.sharesUpdated {
+                try await shareRepository.refreshShare(userId: userId,
+                                                       shareId: updatedShare.shareID,
+                                                       eventToken: updatedShare.eventToken)
+            }
+        }
+
+        if events.sharesDeleted.isEmpty {
+            logger.trace("No deleted shares for user \(userId)")
+        } else {
+            logger.trace("Deleting \(events.sharesDeleted.count) shares for user \(userId)")
+            for deletedShare in events.sharesDeleted {
+                try await shareRepository.deleteShareLocally(userId: userId,
+                                                             shareId: deletedShare.shareID)
+            }
         }
     }
 }

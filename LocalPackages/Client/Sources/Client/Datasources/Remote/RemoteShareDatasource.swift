@@ -24,8 +24,7 @@ import Foundation
 // sourcery: AutoMockable
 public protocol RemoteShareDatasourceProtocol: Sendable {
     func getShares(userId: String) async throws -> [Share]
-    // periphery:ignore
-    func getShare(shareId: String, userId: String) async throws -> Share
+    func getShare(shareId: String, userId: String, eventToken: String?) async throws -> Share
     func getUsersLinkedToVaultShare(userId: String, shareId: String, lastToken: String?) async throws
         -> PaginatedUsersLinkedToShare
     func getUsersLinkedToItemShare(userId: String,
@@ -54,11 +53,17 @@ public protocol RemoteShareDatasourceProtocol: Sendable {
                           sharesToUnhide: [String]) async throws -> [Share]
 }
 
+public extension RemoteShareDatasourceProtocol {
+    func getShare(shareId: String, userId: String) async throws -> Share {
+        try await getShare(shareId: shareId, userId: userId, eventToken: nil)
+    }
+}
+
 public final class RemoteShareDatasource: RemoteDatasource, RemoteShareDatasourceProtocol, @unchecked Sendable {}
 
 public extension RemoteShareDatasource {
-    func getShare(shareId: String, userId: String) async throws -> Share {
-        let getShareEndpoint = GetShareEndpoint(for: shareId)
+    func getShare(shareId: String, userId: String, eventToken: String?) async throws -> Share {
+        let getShareEndpoint = GetShareEndpoint(for: shareId, eventToken: eventToken)
         let getSharesResponse = try await exec(userId: userId, endpoint: getShareEndpoint)
         return getSharesResponse.share
     }
