@@ -21,7 +21,7 @@
 import Foundation
 
 /// The result of user events sync giving information to act upon on
-public struct UserEventsSyncResult: Sendable {
+public struct UserEventsSyncResult: Sendable, Equatable {
     /// Items or shares were updated, a UI refresh is needed to reflect updated data
     public let dataUpdated: Bool
 
@@ -30,6 +30,14 @@ public struct UserEventsSyncResult: Sendable {
 
     /// Force full sync (e.g users haven't used the app for a long period and last event ID is obsolete)
     public let fullRefreshNeeded: Bool
+
+    public init(dataUpdated: Bool,
+                planChanged: Bool,
+                fullRefreshNeeded: Bool) {
+        self.dataUpdated = dataUpdated
+        self.planChanged = planChanged
+        self.fullRefreshNeeded = fullRefreshNeeded
+    }
 }
 
 public protocol UserEventsSynchronizerProtocol: Sendable {
@@ -40,18 +48,54 @@ public actor UserEventsSynchronizer: UserEventsSynchronizerProtocol {
     private let localUserEventIdDatasource: any LocalUserEventIdDatasourceProtocol
     private let remoteUserEventsDatasource: any RemoteUserEventsDatasourceProtocol
     private let itemRepository: any ItemRepositoryProtocol
+    private let accessRepository: any AccessRepositoryProtocol
 
     public init(localUserEventIdDatasource: any LocalUserEventIdDatasourceProtocol,
                 remoteUserEventsDatasource: any RemoteUserEventsDatasourceProtocol,
-                itemRepository: any ItemRepositoryProtocol) {
+                itemRepository: any ItemRepositoryProtocol,
+                accessRepository: any AccessRepositoryProtocol) {
         self.localUserEventIdDatasource = localUserEventIdDatasource
         self.remoteUserEventsDatasource = remoteUserEventsDatasource
         self.itemRepository = itemRepository
+        self.accessRepository = accessRepository
     }
 }
 
 public extension UserEventsSynchronizer {
     func sync(userId: String) async throws -> UserEventsSyncResult {
-        .init(dataUpdated: false, planChanged: false, fullRefreshNeeded: false)
+        guard let lastEventId = try await localUserEventIdDatasource.getLastEventId(userId: userId) else {
+            return .init(dataUpdated: false, planChanged: false, fullRefreshNeeded: true)
+        }
+        let events = try await remoteUserEventsDatasource.getUserEvents(userId: userId,
+                                                                        lastEventId: lastEventId)
+        try await process(events: events, userId: userId)
+        if events.eventsPending {
+            return try await sync(userId: userId)
+        }
+        return .init(dataUpdated: false, planChanged: false, fullRefreshNeeded: false)
     }
 }
+
+private extension UserEventsSynchronizer {
+    func process(events: UserEvents, userId: String) async throws {
+        for updatedItem in events.itemsUpdated {
+            try await itemRepository.refreshItem(userId: userId,
+                                                 shareId: updatedItem.shareID,
+                                                 itemId: updatedItem.itemID,
+                                                 eventToken: updatedItem.eventToken)
+        }
+
+        try await itemRepository.delete(userId: userId, items: events.itemsDeleted)
+    }
+}
+
+// public let lastEventID: String
+// public let itemsUpdated: [UserEventItem]
+// public let itemsDeleted: [UserEventItem]
+// public let sharesUpdated: [UserEventShare]
+// public let sharesDeleted: [UserEventShare]
+// public let sharesToGetInvites: [UserEventShare]
+// public let sharesWithInvitesToCreate: [UserEventShare]
+// public let planChanged: Bool
+// public let eventsPending: Bool
+// public let fullRefresh: Bool
