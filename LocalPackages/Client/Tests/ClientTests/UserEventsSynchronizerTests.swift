@@ -22,24 +22,24 @@
 import Client
 import ClientMocks
 import Core
+import CoreMocks
 import Testing
 
 struct UserEventsSynchronizerTests {
-    var localUserEventIdDatasource: LocalUserEventIdDatasourceProtocolMock!
-    var remoteUserEventsDatasource: RemoteUserEventsDatasourceProtocolMock!
-    var itemRepository: ItemRepositoryProtocolMock!
-    var accessRespository: AccessRepositoryProtocolMock!
+    let localUserEventIdDatasource = LocalUserEventIdDatasourceProtocolMock()
+    let remoteUserEventsDatasource = RemoteUserEventsDatasourceProtocolMock()
+    let itemRepository = ItemRepositoryProtocolMock()
+    let shareRepository = ShareRepositoryProtocolMock()
+    let accessRespository = AccessRepositoryProtocolMock()
     var sut: UserEventsSynchronizerProtocol!
 
     init() {
-        localUserEventIdDatasource = .init()
-        remoteUserEventsDatasource = .init()
-        itemRepository = .init()
-        accessRespository = .init()
         sut = UserEventsSynchronizer(localUserEventIdDatasource: localUserEventIdDatasource,
                                      remoteUserEventsDatasource: remoteUserEventsDatasource,
                                      itemRepository: itemRepository,
-                                     accessRepository: accessRespository)
+                                     shareRepository: shareRepository,
+                                     accessRepository: accessRespository,
+                                     logManager: LogManagerProtocolMock())
     }
 }
 
@@ -50,6 +50,9 @@ private struct Args {
     let getUserEventsRouteCalled: Bool
     var refreshItemInvokeCount: Int?
     var deleteItemsInvokeCount: Int?
+    var refreshShareInvokeCount: Int?
+    var deleteShareInvokeCount: Int?
+    var storedLastEventId: String?
 
     static var noLocalLastEventIdTriggerFullRefresh: Self {
         .init(result: .init(dataUpdated: false,
@@ -81,11 +84,11 @@ private struct Args {
     static var oneEventBatch: Self {
         .init(lastEventId: .random(),
               events: [
-                .init(lastEventID: .random(),
+                .init(lastEventID: "TestID",
                       itemsUpdated: .random(count: 5),
                       itemsDeleted: .random(count: 8),
-                      sharesUpdated: [],
-                      sharesDeleted: [],
+                      sharesUpdated: .random(count: 19),
+                      sharesDeleted: .random(count: 21),
                       sharesToGetInvites: [],
                       sharesWithInvitesToCreate: [],
                       planChanged: false,
@@ -97,27 +100,30 @@ private struct Args {
                             fullRefreshNeeded: false),
               getUserEventsRouteCalled: true,
               refreshItemInvokeCount: 5,
-              deleteItemsInvokeCount: 1)
+              deleteItemsInvokeCount: 1,
+              refreshShareInvokeCount: 19,
+              deleteShareInvokeCount: 21,
+              storedLastEventId: "TestID")
     }
 
     static var twoEventBatches: Self {
         .init(lastEventId: .random(),
               events: [
-                .init(lastEventID: .random(),
+                .init(lastEventID: "TestID1",
                       itemsUpdated: .random(count: 7),
                       itemsDeleted: .random(count: 16),
-                      sharesUpdated: [],
-                      sharesDeleted: [],
+                      sharesUpdated: .random(count: 3),
+                      sharesDeleted: .random(count: 8),
                       sharesToGetInvites: [],
                       sharesWithInvitesToCreate: [],
                       planChanged: true,
                       eventsPending: true,
                       fullRefresh: false),
-                .init(lastEventID: .random(),
+                .init(lastEventID: "TestID2",
                       itemsUpdated: .random(count: 10),
                       itemsDeleted: .random(count: 3),
-                      sharesUpdated: [],
-                      sharesDeleted: [],
+                      sharesUpdated: .random(count: 27),
+                      sharesDeleted: .random(count: 14),
                       sharesToGetInvites: [],
                       sharesWithInvitesToCreate: [],
                       planChanged: false,
@@ -129,7 +135,10 @@ private struct Args {
                             fullRefreshNeeded: false),
               getUserEventsRouteCalled: true,
               refreshItemInvokeCount: 17,
-              deleteItemsInvokeCount: 2)
+              deleteItemsInvokeCount: 2,
+              refreshShareInvokeCount: 30,
+              deleteShareInvokeCount: 22,
+              storedLastEventId: "TestID2")
     }
 }
 
@@ -162,6 +171,19 @@ private extension UserEventsSynchronizerTests {
 
         if let deleteItemsInvokeCount = args.deleteItemsInvokeCount {
             #expect(itemRepository.invokedDeleteCount == deleteItemsInvokeCount)
+        }
+
+        if let refreshShareInvokeCount = args.refreshShareInvokeCount {
+            #expect(shareRepository.invokedRefreshShareCount == refreshShareInvokeCount)
+        }
+
+        if let deleteShareInvokeCount = args.deleteShareInvokeCount {
+            #expect(shareRepository.invokedDeleteShareLocallyCount == deleteShareInvokeCount)
+        }
+
+        if let storedLastEventId = args.storedLastEventId {
+            #expect(localUserEventIdDatasource.invokedUpsertLastEventIdParameters?.lastEventId ==
+                    storedLastEventId)
         }
     }
 }

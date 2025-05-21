@@ -180,8 +180,26 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
         }
         closureUpsertShares()
     }
+    // MARK: - refreshShare
+    public var refreshShareUserIdShareIdEventTokenThrowableError9: Error?
+    public var closureRefreshShare: () -> () = {}
+    public var invokedRefreshSharefunction = false
+    public var invokedRefreshShareCount = 0
+    public var invokedRefreshShareParameters: (userId: String, shareId: String, eventToken: String?)?
+    public var invokedRefreshShareParametersList = [(userId: String, shareId: String, eventToken: String?)]()
+
+    public func refreshShare(userId: String, shareId: String, eventToken: String?) async throws {
+        invokedRefreshSharefunction = true
+        invokedRefreshShareCount += 1
+        invokedRefreshShareParameters = (userId, shareId, eventToken)
+        invokedRefreshShareParametersList.append((userId, shareId, eventToken))
+        if let error = refreshShareUserIdShareIdEventTokenThrowableError9 {
+            throw error
+        }
+        closureRefreshShare()
+    }
     // MARK: - getUsersLinkedToVaultShare
-    public var getUsersLinkedToVaultShareToLastTokenThrowableError9: Error?
+    public var getUsersLinkedToVaultShareToLastTokenThrowableError10: Error?
     public var closureGetUsersLinkedToVaultShare: () -> () = {}
     public var invokedGetUsersLinkedToVaultSharefunction = false
     public var invokedGetUsersLinkedToVaultShareCount = 0
@@ -194,14 +212,14 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
         invokedGetUsersLinkedToVaultShareCount += 1
         invokedGetUsersLinkedToVaultShareParameters = (shareId, lastToken)
         invokedGetUsersLinkedToVaultShareParametersList.append((shareId, lastToken))
-        if let error = getUsersLinkedToVaultShareToLastTokenThrowableError9 {
+        if let error = getUsersLinkedToVaultShareToLastTokenThrowableError10 {
             throw error
         }
         closureGetUsersLinkedToVaultShare()
         return stubbedGetUsersLinkedToVaultShareResult
     }
     // MARK: - getUsersLinkedToItemShare
-    public var getUsersLinkedToItemShareToItemIdLastTokenThrowableError10: Error?
+    public var getUsersLinkedToItemShareToItemIdLastTokenThrowableError11: Error?
     public var closureGetUsersLinkedToItemShare: () -> () = {}
     public var invokedGetUsersLinkedToItemSharefunction = false
     public var invokedGetUsersLinkedToItemShareCount = 0
@@ -214,14 +232,14 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
         invokedGetUsersLinkedToItemShareCount += 1
         invokedGetUsersLinkedToItemShareParameters = (shareId, itemId, lastToken)
         invokedGetUsersLinkedToItemShareParametersList.append((shareId, itemId, lastToken))
-        if let error = getUsersLinkedToItemShareToItemIdLastTokenThrowableError10 {
+        if let error = getUsersLinkedToItemShareToItemIdLastTokenThrowableError11 {
             throw error
         }
         closureGetUsersLinkedToItemShare()
         return stubbedGetUsersLinkedToItemShareResult
     }
     // MARK: - updateUserPermission
-    public var updateUserPermissionUserShareIdShareIdShareRoleExpireTimeThrowableError11: Error?
+    public var updateUserPermissionUserShareIdShareIdShareRoleExpireTimeThrowableError12: Error?
     public var closureUpdateUserPermission: () -> () = {}
     public var invokedUpdateUserPermissionfunction = false
     public var invokedUpdateUserPermissionCount = 0
@@ -234,14 +252,14 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
         invokedUpdateUserPermissionCount += 1
         invokedUpdateUserPermissionParameters = (userShareId, shareId, shareRole, expireTime)
         invokedUpdateUserPermissionParametersList.append((userShareId, shareId, shareRole, expireTime))
-        if let error = updateUserPermissionUserShareIdShareIdShareRoleExpireTimeThrowableError11 {
+        if let error = updateUserPermissionUserShareIdShareIdShareRoleExpireTimeThrowableError12 {
             throw error
         }
         closureUpdateUserPermission()
         return stubbedUpdateUserPermissionResult
     }
     // MARK: - deleteUserShare
-    public var deleteUserShareUserShareIdShareIdThrowableError12: Error?
+    public var deleteUserShareUserShareIdShareIdThrowableError13: Error?
     public var closureDeleteUserShare: () -> () = {}
     public var invokedDeleteUserSharefunction = false
     public var invokedDeleteUserShareCount = 0
@@ -254,14 +272,14 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
         invokedDeleteUserShareCount += 1
         invokedDeleteUserShareParameters = (userShareId, shareId)
         invokedDeleteUserShareParametersList.append((userShareId, shareId))
-        if let error = deleteUserShareUserShareIdShareIdThrowableError12 {
+        if let error = deleteUserShareUserShareIdShareIdThrowableError13 {
             throw error
         }
         closureDeleteUserShare()
         return stubbedDeleteUserShareResult
     }
     // MARK: - deleteShare
-    public var deleteShareUserIdShareIdThrowableError13: Error?
+    public var deleteShareUserIdShareIdThrowableError14: Error?
     public var closureDeleteShare: () -> () = {}
     public var invokedDeleteSharefunction = false
     public var invokedDeleteShareCount = 0
@@ -274,14 +292,14 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
         invokedDeleteShareCount += 1
         invokedDeleteShareParameters = (userId, shareId)
         invokedDeleteShareParametersList.append((userId, shareId))
-        if let error = deleteShareUserIdShareIdThrowableError13 {
+        if let error = deleteShareUserIdShareIdThrowableError14 {
             throw error
         }
         closureDeleteShare()
         return stubbedDeleteShareResult
     }
     // MARK: - createVault
-    public var createVaultUserIdVaultThrowableError14: Error?
+    public var createVaultUserIdVaultThrowableError15: Error?
     public var closureCreateVault: () -> () = {}
     public var invokedCreateVaultfunction = false
     public var invokedCreateVaultCount = 0
@@ -294,14 +312,14 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
         invokedCreateVaultCount += 1
         invokedCreateVaultParameters = (userId, vault)
         invokedCreateVaultParametersList.append((userId, vault))
-        if let error = createVaultUserIdVaultThrowableError14 {
+        if let error = createVaultUserIdVaultThrowableError15 {
             throw error
         }
         closureCreateVault()
         return stubbedCreateVaultResult
     }
     // MARK: - edit
-    public var editOldVaultNewVaultThrowableError15: Error?
+    public var editOldVaultNewVaultThrowableError16: Error?
     public var closureEdit: () -> () = {}
     public var invokedEditfunction = false
     public var invokedEditCount = 0
@@ -313,13 +331,13 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
         invokedEditCount += 1
         invokedEditParameters = (oldVault, newVault)
         invokedEditParametersList.append((oldVault, newVault))
-        if let error = editOldVaultNewVaultThrowableError15 {
+        if let error = editOldVaultNewVaultThrowableError16 {
             throw error
         }
         closureEdit()
     }
     // MARK: - deleteVault
-    public var deleteVaultShareIdThrowableError16: Error?
+    public var deleteVaultShareIdThrowableError17: Error?
     public var closureDeleteVault: () -> () = {}
     public var invokedDeleteVaultfunction = false
     public var invokedDeleteVaultCount = 0
@@ -331,13 +349,13 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
         invokedDeleteVaultCount += 1
         invokedDeleteVaultParameters = (shareId, ())
         invokedDeleteVaultParametersList.append((shareId, ()))
-        if let error = deleteVaultShareIdThrowableError16 {
+        if let error = deleteVaultShareIdThrowableError17 {
             throw error
         }
         closureDeleteVault()
     }
     // MARK: - transferVaultOwnership
-    public var transferVaultOwnershipVaultShareIdNewOwnerShareIdThrowableError17: Error?
+    public var transferVaultOwnershipVaultShareIdNewOwnerShareIdThrowableError18: Error?
     public var closureTransferVaultOwnership: () -> () = {}
     public var invokedTransferVaultOwnershipfunction = false
     public var invokedTransferVaultOwnershipCount = 0
@@ -350,7 +368,7 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
         invokedTransferVaultOwnershipCount += 1
         invokedTransferVaultOwnershipParameters = (vaultShareId, newOwnerShareId)
         invokedTransferVaultOwnershipParametersList.append((vaultShareId, newOwnerShareId))
-        if let error = transferVaultOwnershipVaultShareIdNewOwnerShareIdThrowableError17 {
+        if let error = transferVaultOwnershipVaultShareIdNewOwnerShareIdThrowableError18 {
             throw error
         }
         closureTransferVaultOwnership()
