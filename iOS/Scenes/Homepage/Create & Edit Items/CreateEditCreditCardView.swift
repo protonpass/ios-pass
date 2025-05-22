@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Entities
 import Macro
 import ProtonCoreUIFoundations
 import Screens
@@ -31,8 +32,9 @@ struct CreateEditCreditCardView: View {
 
     private var tintColor: UIColor { viewModel.itemContentType.normMajor1Color }
 
-    enum Field {
+    enum Field: CustomFieldTypes {
         case title, cardholderName, cardNumber, verificationNumber, pin, note
+        case custom(CustomField?)
     }
 
     init(viewModel: CreateEditCreditCardViewModel) {
@@ -76,6 +78,17 @@ private extension CreateEditCreditCardView {
                     NoteEditSection(note: $viewModel.note,
                                     focusedField: $focusedField,
                                     field: .note)
+
+                    if viewModel.customTypeEnabled {
+                        EditCustomFieldSections(focusedField: $focusedField,
+                                                focusedCustomField: viewModel.recentlyAddedOrEditedField,
+                                                contentType: .creditCard,
+                                                fields: $viewModel.customFields,
+                                                canAddMore: viewModel.canAddMoreCustomFields,
+                                                onAddMore: { viewModel.requestAddCustomField(to: nil) },
+                                                onEditTitle: viewModel.requestEditCustomFieldTitle,
+                                                onUpgrade: { viewModel.upgrade() })
+                    }
 
                     if viewModel.fileAttachmentsEnabled {
                         FileAttachmentsEditSection(files: viewModel.fileUiModels,

@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// swiftlint:disable file_length
 import CodeScanner
 import Core
 import DesignSystem
@@ -50,15 +49,6 @@ struct CreateEditLoginView: View {
     enum Field: CustomFieldTypes {
         case title, emailOrUsername, email, username, password, totp, websites, note
         case custom(CustomField?)
-
-        static func == (lhs: Field, rhs: Field) -> Bool {
-            if case let .custom(lhsfield) = lhs,
-               case let .custom(rhsfield) = rhs {
-                lhsfield?.id == rhsfield?.id
-            } else {
-                lhs.hashValue == rhs.hashValue
-            }
-        }
     }
 
     var body: some View {
@@ -702,5 +692,3 @@ private struct WebsiteSection<Field: Hashable>: View {
         }
     }
 }
-
-// swiftlint:enable file_length
