@@ -195,10 +195,14 @@ class BaseCreateEditItemViewModel: ObservableObject {
 
     var supportedCustomFieldTypes: [CustomFieldType] {
         var allCases = CustomFieldType.allCases
-        if !getFeatureFlagStatus(for: FeatureFlagType.passCustomTypeV1) {
+        if !customTypeEnabled {
             allCases.removeAll { $0 == .timestamp }
         }
         return allCases
+    }
+
+    var customTypeEnabled: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passCustomTypeV1)
     }
 
     var fileUiModels: [FileAttachmentUiModel] {
