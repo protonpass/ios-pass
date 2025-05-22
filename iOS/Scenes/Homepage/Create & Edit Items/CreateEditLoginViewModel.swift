@@ -321,12 +321,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         delegate?.createEditLoginViewModelWantsToGeneratePassword(self)
     }
 
-    func pasteTotpUriFromClipboard() {
-        totpUri = UIPasteboard.general.string ?? ""
-    }
-
     func pastePasswordFromClipboard() {
-        password = UIPasteboard.general.string ?? ""
+        password = getClipboardContent()
     }
 
     func openCodeScanner() {
@@ -346,7 +342,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         emailOrUsername = ""
     }
 
-    func handleScanResult(_ result: Result<String, any Error>, customField: CustomField? = nil) {
+    override func handleScanResult(_ result: Result<String, any Error>,
+                                   customField: CustomField? = nil) {
         switch result {
         case let .success(scanResult):
             if let customField {

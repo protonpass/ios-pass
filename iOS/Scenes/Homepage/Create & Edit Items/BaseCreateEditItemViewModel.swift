@@ -391,6 +391,35 @@ class BaseCreateEditItemViewModel: ObservableObject {
     func removeCustomSection(_ section: CustomSection) {
         customSections.removeAll { $0.id == section.id }
     }
+
+    /// To be overridden by subclasses if they support scanning into different static fields
+    /// (e.g scan into TOTP field of logins)
+    func handleScanResult(_ result: Result<String, any Error>, customField: CustomField? = nil) {
+        switch result {
+        case let .success(scanResult):
+            if let customField {
+                editCustomField(customField, update: .content(scanResult))
+            }
+
+        case let .failure(error):
+            router.display(element: .displayErrorBanner(error))
+        }
+    }
+
+    /// Paste clipboard content's to custom field if exist, optionally fallback
+    /// (e.g paste into TOTP field of logins)
+    func handlePastingTotpUri(customField: CustomField?, fallback: ((String) -> Void)?) {
+        let clipboardContent = getClipboardContent()
+        if let customField {
+            editCustomField(customField, update: .content(clipboardContent))
+        } else {
+            fallback?(clipboardContent)
+        }
+    }
+
+    func getClipboardContent() -> String {
+        UIPasteboard.general.string ?? ""
+    }
 }
 
 // MARK: - Private APIs

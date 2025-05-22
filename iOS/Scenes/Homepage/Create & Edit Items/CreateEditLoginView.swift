@@ -49,6 +49,14 @@ struct CreateEditLoginView: View {
     enum Field: CustomFieldTypes {
         case title, emailOrUsername, email, username, password, totp, websites, note
         case custom(CustomField?)
+
+        var customField: CustomField? {
+            if case let .custom(customField) = self {
+                customField
+            } else {
+                nil
+            }
+        }
     }
 
     var body: some View {
@@ -189,7 +197,8 @@ private extension CreateEditLoginView {
     var emailTextFieldToolbar: some View {
         ScrollView(.horizontal) {
             HStack {
-                toolbarButton("Hide my email",
+                ToolbarButton("Hide my email",
+                              titleBundle: .main,
                               image: IconProvider.alias,
                               action: { viewModel.generateAlias() })
 
@@ -215,7 +224,8 @@ private extension CreateEditLoginView {
 
     var totpTextFieldToolbar: some View {
         HStack {
-            toolbarButton("Open camera",
+            ToolbarButton("Open camera",
+                          titleBundle: .main,
                           image: IconProvider.camera,
                           action: {
                               lastFocusedField = focusedField
@@ -224,41 +234,32 @@ private extension CreateEditLoginView {
 
             PassDivider()
 
-            toolbarButton("Paste",
+            ToolbarButton("Paste",
+                          titleBundle: .main,
                           image: IconProvider.squares,
-                          action: { viewModel.pasteTotpUriFromClipboard() })
+                          action: {
+                              viewModel.handlePastingTotpUri(customField: focusedField?.customField,
+                                                             fallback: { viewModel.totpUri = $0 })
+                          })
         }
         .animationsDisabled() // Disable animation when switching between toolbars
     }
 
     var passwordTextFieldToolbar: some View {
         HStack {
-            toolbarButton("Generate password",
+            ToolbarButton("Generate password",
+                          titleBundle: .main,
                           image: IconProvider.arrowsRotate,
                           action: { viewModel.generatePassword() })
 
             PassDivider()
 
-            toolbarButton("Paste",
+            ToolbarButton("Paste",
+                          titleBundle: .main,
                           image: IconProvider.squares,
                           action: { viewModel.pastePasswordFromClipboard() })
         }
         .animationsDisabled()
-    }
-
-    func toolbarButton(_ title: LocalizedStringKey,
-                       image: UIImage,
-                       action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            // Use HStack instead of Label because Label's text is not rendered in toolbar
-            HStack {
-                Image(uiImage: image)
-                    .resizable()
-                    .frame(width: 18, height: 18)
-                Text(title)
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .center)
     }
 }
 
