@@ -28,6 +28,7 @@ public enum MailboxUpdateEvent: Sendable {
     case verified(Mailbox)
 }
 
+// sourcery: AutoMockable
 public protocol AliasRepositoryProtocol: Sendable {
     var mailboxUpdated: PassthroughSubject<MailboxUpdateEvent, Never> { get }
     var contactsUpdated: PassthroughSubject<Void, Never> { get }

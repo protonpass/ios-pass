@@ -1,7 +1,7 @@
 //
-// File.swift
-// Proton Pass - Created on 10/10/2024.
-// Copyright (c) 2024 Proton Technologies AG
+// Randomable.swift
+// Proton Pass - Created on 20/06/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,16 +17,19 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import Testing
+import Foundation
 
-extension Tag {
-    @Tag static var localDatasource: Self
-    @Tag static var remoteDatasource: Self
-    @Tag static var repository: Self
-    @Tag static var manager: Self
-    @Tag static var endpoint: Self
-    @Tag static var models: Self
-    @Tag static var synchronizer: Self
+public protocol Randomable: Sendable {
+    static func random() -> Self
+}
+
+public extension Array where Element: Randomable {
+    static func random(count: Int = 10) -> Self {
+        var results = [Element]()
+        for _ in 0..<count {
+            results.append(Element.random())
+        }
+        return results
+    }
 }
