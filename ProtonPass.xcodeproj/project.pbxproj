@@ -498,6 +498,9 @@
 		539182CF2D7F3EB500815D7F /* CustomDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539182CE2D7F3EAF00815D7F /* CustomDetailView.swift */; };
 		539182D12D7F3ED100815D7F /* CustomDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539182D02D7F3ECF00815D7F /* CustomDetailViewModel.swift */; };
 		53A2EB092D6F538A008A4A0C /* CustomItemTemplatesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53A2EB072D6F5381008A4A0C /* CustomItemTemplatesList.swift */; };
+		53AEB2E32DDF68B40088DA4B /* TotpTextFieldToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AEB2E22DDF68B00088DA4B /* TotpTextFieldToolbar.swift */; };
+		53AEB2E42DDF68B40088DA4B /* TotpTextFieldToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AEB2E22DDF68B00088DA4B /* TotpTextFieldToolbar.swift */; };
+		53AEB2E52DDF68B40088DA4B /* TotpTextFieldToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AEB2E22DDF68B00088DA4B /* TotpTextFieldToolbar.swift */; };
 		53AEE46A2D7F0E1800CE0CA7 /* CustomSectionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AEE4692D7F0E1200CE0CA7 /* CustomSectionsSection.swift */; };
 		53AEE46B2D7F0E1800CE0CA7 /* CustomSectionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AEE4692D7F0E1200CE0CA7 /* CustomSectionsSection.swift */; };
 		53B153882D59EFC100D21AF9 /* ItemUiModel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */; };
@@ -1092,6 +1095,7 @@
 		539182CE2D7F3EAF00815D7F /* CustomDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDetailView.swift; sourceTree = "<group>"; };
 		539182D02D7F3ECF00815D7F /* CustomDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDetailViewModel.swift; sourceTree = "<group>"; };
 		53A2EB072D6F5381008A4A0C /* CustomItemTemplatesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomItemTemplatesList.swift; sourceTree = "<group>"; };
+		53AEB2E22DDF68B00088DA4B /* TotpTextFieldToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotpTextFieldToolbar.swift; sourceTree = "<group>"; };
 		53AEE4692D7F0E1200CE0CA7 /* CustomSectionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSectionsSection.swift; sourceTree = "<group>"; };
 		53B981782D7ED258003BD70E /* WifiDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiDetailView.swift; sourceTree = "<group>"; };
 		53B9817A2D7ED289003BD70E /* WifiDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiDetailViewModel.swift; sourceTree = "<group>"; };
@@ -1869,6 +1873,7 @@
 				3567E46529B0E6F900511D62 /* NoCameraPermissionView.swift */,
 				350AF86D299683940045B7B6 /* NoteEditSection.swift */,
 				35992152299F8C3F00FEFA32 /* PrefixSuffixSection.swift */,
+				53AEB2E22DDF68B00088DA4B /* TotpTextFieldToolbar.swift */,
 				357443792C22E3DC000DE6F7 /* View+ItemCreateEditSetUp.swift */,
 			);
 			path = "Supporting Views";
@@ -3588,6 +3593,7 @@
 				355751F82907FC8D00268116 /* LockedCredentialViewModel.swift in Sources */,
 				354E9AA22A44435E00AD2B9A /* LocalAuthenticationView.swift in Sources */,
 				35F0B4362CDE10F600F75436 /* CredentialItem.swift in Sources */,
+				53AEB2E42DDF68B40088DA4B /* TotpTextFieldToolbar.swift in Sources */,
 				3570E04E2B8E06F5005B8186 /* PasskeyCredentialsView.swift in Sources */,
 				35706C362CB66CF1009F438E /* LoginDetailViewModel.swift in Sources */,
 				35AC9A5A2A0BD22F00FBCEEC /* CustomFieldTypesView.swift in Sources */,
@@ -3662,6 +3668,7 @@
 				35796D032B5EEE7D00BF4E9E /* CreateEditNoteView.swift in Sources */,
 				35796CFF2B5EEB1200BF4E9E /* ItemContentType+Extensions.swift in Sources */,
 				35C9B8292B5E940A0062D787 /* ShareCoordinator.swift in Sources */,
+				53AEB2E52DDF68B40088DA4B /* TotpTextFieldToolbar.swift in Sources */,
 				357C71A22B5FAE5F00AA0BF1 /* SharedRepository+DependencyInjections.swift in Sources */,
 				35796D012B5EEE7400BF4E9E /* CreateEditLoginView.swift in Sources */,
 				357C71AE2B5FB05300AA0BF1 /* PrefixSuffixSection.swift in Sources */,
@@ -4026,6 +4033,7 @@
 				356EAF1C2BD7F6E200C83AE6 /* MonitorProtonAddressesView.swift in Sources */,
 				354E9AA72A4458F400AD2B9A /* PinAuthenticationView.swift in Sources */,
 				5BECDE4E2B97789A0040FCA7 /* SecurityWeaknessDetailView.swift in Sources */,
+				53AEB2E32DDF68B40088DA4B /* TotpTextFieldToolbar.swift in Sources */,
 				5B1F5CEB2A5ED6D000A6C3ED /* CustomFieldTypes.swift in Sources */,
 				356FBD482949246A0063978C /* Coordinator+Extensions.swift in Sources */,
 				35EDB30B2C13101600FE441C /* ExtraPasswordLockView.swift in Sources */,

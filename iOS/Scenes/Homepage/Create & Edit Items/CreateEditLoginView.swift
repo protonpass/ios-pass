@@ -171,6 +171,18 @@ struct CreateEditLoginView: View {
             }
             .toolbar { keyboardToolbar }
             .itemCreateEditSetUp(viewModel)
+            .sheet(isPresented: $viewModel.isShowingCodeScanner) {
+                WrappedCodeScannerView { result in
+                    switch lastFocusedField {
+                    case .totp:
+                        viewModel.handleScanResult(result)
+                    case let .custom(value) where value?.type == .totp:
+                        viewModel.handleScanResult(result, customField: value)
+                    default:
+                        return
+                    }
+                }
+            }
         }
     }
 }
@@ -223,26 +235,13 @@ private extension CreateEditLoginView {
     }
 
     var totpTextFieldToolbar: some View {
-        HStack {
-            ToolbarButton("Open camera",
-                          titleBundle: .main,
-                          image: IconProvider.camera,
-                          action: {
-                              lastFocusedField = focusedField
-                              viewModel.openCodeScanner()
-                          })
-
-            PassDivider()
-
-            ToolbarButton("Paste",
-                          titleBundle: .main,
-                          image: IconProvider.squares,
-                          action: {
-                              viewModel.handlePastingTotpUri(customField: focusedField?.customField,
-                                                             fallback: { viewModel.totpUri = $0 })
-                          })
-        }
-        .animationsDisabled() // Disable animation when switching between toolbars
+        TotpTextFieldToolbar(onScan: {
+            lastFocusedField = focusedField
+            viewModel.openCodeScanner()
+        }, onPasteFromClipboard: {
+            viewModel.handlePastingTotpUri(customField: focusedField?.customField,
+                                           fallback: { viewModel.totpUri = $0 })
+        })
     }
 
     var passwordTextFieldToolbar: some View {
@@ -591,21 +590,6 @@ private extension CreateEditLoginView {
         .padding(.horizontal, DesignConstant.sectionPadding)
         .animation(.default, value: focusedField)
         .animation(.default, value: viewModel.totpUriErrorMessage.isEmpty)
-        .sheet(isPresented: $viewModel.isShowingNoCameraPermissionView) {
-            NoCameraPermissionView { viewModel.openSettings() }
-        }
-        .sheet(isPresented: $viewModel.isShowingCodeScanner) {
-            WrappedCodeScannerView { result in
-                switch lastFocusedField {
-                case .totp:
-                    viewModel.handleScanResult(result)
-                case let .custom(value) where value?.type == .totp:
-                    viewModel.handleScanResult(result, customField: value)
-                default:
-                    return
-                }
-            }
-        }
     }
 }
 
