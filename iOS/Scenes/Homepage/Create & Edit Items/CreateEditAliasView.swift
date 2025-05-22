@@ -42,8 +42,9 @@ struct CreateEditAliasView: View {
         _viewModel = .init(wrappedValue: viewModel)
     }
 
-    enum Field {
+    enum Field: CustomFieldTypes {
         case title, prefix, note, simpleLoginNote, senderName
+        case custom(CustomField?)
     }
 
     var body: some View {
@@ -148,6 +149,17 @@ struct CreateEditAliasView: View {
                             simpleLoginNoteSection
                         }
                         senderNameRow
+                    }
+
+                    if viewModel.customTypeEnabled {
+                        EditCustomFieldSections(focusedField: $focusedField,
+                                                focusedCustomField: viewModel.recentlyAddedOrEditedField,
+                                                contentType: .alias,
+                                                fields: $viewModel.customFields,
+                                                canAddMore: viewModel.canAddMoreCustomFields,
+                                                onAddMore: { viewModel.requestAddCustomField(to: nil) },
+                                                onEditTitle: viewModel.requestEditCustomFieldTitle,
+                                                onUpgrade: { viewModel.upgrade() })
                     }
 
                     if viewModel.fileAttachmentsEnabled {
