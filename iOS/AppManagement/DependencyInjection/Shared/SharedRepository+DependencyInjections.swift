@@ -199,11 +199,6 @@ extension SharedRepositoryContainer {
                                        databaseService: self.databaseService) }
     }
 
-    var localAuthCredentialDatasource: Factory<any LocalAuthCredentialDatasourceProtocol> {
-        self { LocalAuthCredentialDatasource(symmetricKeyProvider: self.symmetricKeyProvider,
-                                             databaseService: self.databaseService) }
-    }
-
     var remoteInviteDatasource: Factory<any RemoteInviteDatasourceProtocol> {
         self { RemoteInviteDatasource(apiServicing: self.apiManager) }
     }
