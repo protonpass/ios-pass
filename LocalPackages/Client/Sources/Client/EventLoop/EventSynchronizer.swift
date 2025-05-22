@@ -58,7 +58,6 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
     private let aliasRepository: any AliasRepositoryProtocol
     private let accessRepository: any AccessRepositoryProtocol
     private let userManager: any UserManagerProtocol
-    private let featureFlagsRepository: any FeatureFlagsRepositoryProtocol
     private let logger: Logger
 
     public init(shareRepository: any ShareRepositoryProtocol,
@@ -69,8 +68,7 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
                 aliasRepository: any AliasRepositoryProtocol,
                 accessRepository: any AccessRepositoryProtocol,
                 userManager: any UserManagerProtocol,
-                logManager: any LogManagerProtocol,
-                featureFlagsRepository: any FeatureFlagsRepositoryProtocol) {
+                logManager: any LogManagerProtocol) {
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
         self.shareKeyRepository = shareKeyRepository
@@ -79,7 +77,6 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
         self.aliasRepository = aliasRepository
         self.accessRepository = accessRepository
         self.userManager = userManager
-        self.featureFlagsRepository = featureFlagsRepository
         logger = .init(manager: logManager)
     }
 
