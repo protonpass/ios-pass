@@ -24,14 +24,16 @@ import ClientMocks
 import Core
 import CoreMocks
 import Testing
+import TestingToolkit
 
+@Suite(.tags(.synchronizer))
 struct UserEventsSynchronizerTests {
     let localUserEventIdDatasource = LocalUserEventIdDatasourceProtocolMock()
     let remoteUserEventsDatasource = RemoteUserEventsDatasourceProtocolMock()
     let itemRepository = ItemRepositoryProtocolMock()
     let shareRepository = ShareRepositoryProtocolMock()
     let accessRespository = AccessRepositoryProtocolMock()
-    var sut: UserEventsSynchronizerProtocol!
+    var sut: (any UserEventsSynchronizerProtocol)!
 
     init() {
         sut = UserEventsSynchronizer(localUserEventIdDatasource: localUserEventIdDatasource,
@@ -188,26 +190,14 @@ private extension UserEventsSynchronizerTests {
     }
 }
 
-private extension UserEventItem {
-    static func random() -> UserEventItem {
-        UserEventItem(shareID: .random(), itemID: .random(), eventToken: .random())
+extension UserEventItem: Randomable {
+    public static func random() -> Self {
+        .init(shareID: .random(), itemID: .random(), eventToken: .random())
     }
 }
 
-private extension [UserEventItem] {
-    static func random(count: Int = .random(in: 1...100)) -> Self {
-        Array(repeating: UserEventItem.random(), count: count)
-    }
-}
-
-private extension UserEventShare {
-    static func random() -> UserEventShare {
-        UserEventShare(shareID: .random(), eventToken: .random())
-    }
-}
-
-private extension [UserEventShare] {
-    static func random(count: Int = .random(in: 1...100)) -> Self {
-        Array(repeating: UserEventShare.random(), count: count)
+extension UserEventShare: Randomable {
+    public static func random() -> Self {
+        .init(shareID: .random(),  eventToken: .random())
     }
 }

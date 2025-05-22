@@ -77,9 +77,7 @@ extension SharedServiceContainer {
                                  aliasRepository: SharedRepositoryContainer.shared.aliasRepository(),
                                  accessRepository: self.accessRepository,
                                  userManager: self.userManager(),
-                                 logManager: self.logManager,
-                                 featureFlagsRepository: SharedRepositoryContainer.shared
-                                     .featureFlagsRepository()) }
+                                 logManager: self.logManager) }
     }
 
     var syncEventLoop: Factory<SyncEventLoop> {
