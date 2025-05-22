@@ -60,8 +60,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var invalidURLs = [String]()
     @Published var note = ""
 
-    @Published var isShowingNoCameraPermissionView = false
-    @Published var isShowingCodeScanner = false
     @Published private(set) var loading = false
 
     private var allowedAndroidApps: [AllowedAndroidApp] = []
@@ -79,7 +77,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published private var aliasCreationLiteInfo: AliasCreationLiteInfo?
     var isAlias: Bool { aliasCreationLiteInfo != nil }
 
-    private let checkCameraPermission = resolve(\SharedUseCasesContainer.checkCameraPermission)
     private let sanitizeTotpUriForEditing = resolve(\SharedUseCasesContainer.sanitizeTotpUriForEditing)
     private let sanitizeTotpUriForSaving = resolve(\SharedUseCasesContainer.sanitizeTotpUriForSaving)
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
@@ -325,17 +322,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         password = getClipboardContent()
     }
 
-    func openCodeScanner() {
-        Task { [weak self] in
-            guard let self else { return }
-            if await checkCameraPermission() {
-                isShowingCodeScanner = true
-            } else {
-                isShowingNoCameraPermissionView = true
-            }
-        }
-    }
-
     func removeAlias() {
         aliasCreationLiteInfo = nil
         email = ""
@@ -354,10 +340,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         case let .failure(error):
             router.display(element: .displayErrorBanner(error))
         }
-    }
-
-    func openSettings() {
-        router.navigate(to: .openSettings)
     }
 
     func validateURLs() -> Bool {

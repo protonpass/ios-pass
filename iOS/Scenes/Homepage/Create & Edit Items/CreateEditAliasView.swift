@@ -30,6 +30,7 @@ struct CreateEditAliasView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditAliasViewModel
     @FocusState private var focusedField: Field?
+    @State private var lastFocusedField: Field?
     @Namespace private var fileAttachmentsID
     @Namespace private var noteID
     @State private var isShowingAdvancedOptions = false
@@ -45,6 +46,14 @@ struct CreateEditAliasView: View {
     enum Field: CustomFieldTypes {
         case title, prefix, note, simpleLoginNote, senderName
         case custom(CustomField?)
+
+        var customField: CustomField? {
+            if case let .custom(customField) = self {
+                customField
+            } else {
+                nil
+            }
+        }
     }
 
     var body: some View {
@@ -196,6 +205,7 @@ struct CreateEditAliasView: View {
                     focusedField = nil
                 }
             }
+            .toolbar { keyboardToolbar }
         }
         .onFirstAppear {
             if case .create = viewModel.mode {
@@ -213,6 +223,16 @@ struct CreateEditAliasView: View {
                                      onDismiss: { sheetState = nil },
                                      onError: { viewModel.handle($0) })
                 .environment(\.colorScheme, colorScheme)
+        }
+        .sheet(isPresented: $viewModel.isShowingCodeScanner) {
+            WrappedCodeScannerView { result in
+                switch lastFocusedField {
+                case let .custom(value) where value?.type == .totp:
+                    viewModel.handleScanResult(result, customField: value)
+                default:
+                    return
+                }
+            }
         }
     }
 
@@ -325,6 +345,23 @@ struct CreateEditAliasView: View {
 }
 
 private extension CreateEditAliasView {
+    @ToolbarContentBuilder
+    var keyboardToolbar: some ToolbarContent {
+        ToolbarItemGroup(placement: .keyboard) {
+            switch focusedField {
+            case let .custom(value) where value?.type == .totp:
+                TotpTextFieldToolbar(onScan: {
+                    lastFocusedField = focusedField
+                    viewModel.openCodeScanner()
+                }, onPasteFromClipboard: {
+                    viewModel.handlePastingTotpUri(customField: focusedField?.customField)
+                })
+            default:
+                EmptyView()
+            }
+        }
+    }
+
     var simpleLoginNoteSection: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.note)
