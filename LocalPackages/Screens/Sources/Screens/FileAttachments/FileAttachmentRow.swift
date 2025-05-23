@@ -28,7 +28,6 @@ public struct FileAttachmentRow: View {
     @State private var name: String
 
     private let mode: Mode
-    private let itemContentType: ItemContentType
     private let uiModel: FileAttachmentUiModel
     private let primaryTintColor: UIColor
     private let secondaryTintColor: UIColor
@@ -43,33 +42,11 @@ public struct FileAttachmentRow: View {
                   onRetryUpload: @MainActor () -> Void)
     }
 
-    enum Style: Sendable {
-        /// Used in both view and edit mode for all item types except note
-        case borderless
-        /// Used in view mode for note item type
-        case bordered
-        /// Used in edit mode for note item type
-        case borderedWithBackground
-
-        var backgroundColor: Color? {
-            switch self {
-            case .borderless:
-                nil
-            case .bordered:
-                .clear
-            case .borderedWithBackground:
-                PassColor.inputBackgroundNorm.toColor
-            }
-        }
-    }
-
     public init(mode: Mode,
-                itemContentType: ItemContentType,
                 uiModel: FileAttachmentUiModel,
                 primaryTintColor: UIColor,
                 secondaryTintColor: UIColor) {
         self.mode = mode
-        self.itemContentType = itemContentType
         _name = .init(initialValue: uiModel.name)
         self.uiModel = uiModel
         self.primaryTintColor = primaryTintColor
@@ -90,7 +67,6 @@ public struct FileAttachmentRow: View {
 private extension FileAttachmentRow {
     @ViewBuilder
     var content: some View {
-        let style = itemContentType.style(for: mode)
         HStack(spacing: DesignConstant.sectionPadding) {
             Image(uiImage: uiModel.group.icon)
                 .resizable()
@@ -186,34 +162,5 @@ private extension FileAttachmentRow {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(style == .borderless ? 0 : DesignConstant.sectionPadding)
-        .background(background(for: style))
-    }
-}
-
-private extension FileAttachmentRow {
-    @ViewBuilder
-    func background(for style: Style) -> some View {
-        if let backgroundColor = style.backgroundColor {
-            backgroundColor
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-                .overlay(RoundedRectangle(cornerRadius: 16)
-                    .stroke(PassColor.inputBorderNorm.toColor, lineWidth: 1))
-        }
-    }
-}
-
-private extension ItemContentType {
-    func style(for mode: FileAttachmentRow.Mode) -> FileAttachmentRow.Style {
-        if case .note = self {
-            switch mode {
-            case .view:
-                .bordered
-            case .edit:
-                .borderedWithBackground
-            }
-        } else {
-            .borderless
-        }
     }
 }

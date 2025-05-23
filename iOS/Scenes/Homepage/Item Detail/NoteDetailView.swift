@@ -89,7 +89,6 @@ struct NoteDetailView: View {
                                 FileAttachmentRow(mode: .view(onOpen: { viewModel.open(file) },
                                                               onSave: { viewModel.save(file) },
                                                               onShare: { viewModel.share(file) }),
-                                                  itemContentType: viewModel.itemContentType,
                                                   uiModel: file,
                                                   primaryTintColor: PassColor.noteInteractionNormMajor2,
                                                   secondaryTintColor: PassColor.noteInteractionNormMinor1)
