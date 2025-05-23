@@ -142,7 +142,7 @@ public struct FileAttachmentsEditSection: View {
             }
 
             if !isFetching, fetchError == nil {
-                FileAttachmentsButton(style: .capsule, handler: handler)
+                FileAttachmentsButton(handler: handler)
                     .opacityReduced(isUploading)
             }
         }
