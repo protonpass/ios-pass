@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// swiftlint:disable file_length
 import CodeScanner
 import Core
 import DesignSystem
@@ -51,12 +50,11 @@ struct CreateEditLoginView: View {
         case title, emailOrUsername, email, username, password, totp, websites, note
         case custom(CustomField?)
 
-        static func == (lhs: Field, rhs: Field) -> Bool {
-            if case let .custom(lhsfield) = lhs,
-               case let .custom(rhsfield) = rhs {
-                lhsfield?.id == rhsfield?.id
+        var customField: CustomField? {
+            if case let .custom(customField) = self {
+                customField
             } else {
-                lhs.hashValue == rhs.hashValue
+                nil
             }
         }
     }
@@ -173,6 +171,18 @@ struct CreateEditLoginView: View {
             }
             .toolbar { keyboardToolbar }
             .itemCreateEditSetUp(viewModel)
+            .sheet(isPresented: $viewModel.isShowingCodeScanner) {
+                WrappedCodeScannerView { result in
+                    switch lastFocusedField {
+                    case .totp:
+                        viewModel.handleScanResult(result)
+                    case let .custom(value) where value?.type == .totp:
+                        viewModel.handleScanResult(result, customField: value)
+                    default:
+                        return
+                    }
+                }
+            }
         }
     }
 }
@@ -199,7 +209,8 @@ private extension CreateEditLoginView {
     var emailTextFieldToolbar: some View {
         ScrollView(.horizontal) {
             HStack {
-                toolbarButton("Hide my email",
+                ToolbarButton("Hide my email",
+                              titleBundle: .main,
                               image: IconProvider.alias,
                               action: { viewModel.generateAlias() })
 
@@ -224,51 +235,30 @@ private extension CreateEditLoginView {
     }
 
     var totpTextFieldToolbar: some View {
-        HStack {
-            toolbarButton("Open camera",
-                          image: IconProvider.camera,
-                          action: {
-                              lastFocusedField = focusedField
-                              viewModel.openCodeScanner()
-                          })
-
-            PassDivider()
-
-            toolbarButton("Paste",
-                          image: IconProvider.squares,
-                          action: { viewModel.pasteTotpUriFromClipboard() })
-        }
-        .animationsDisabled() // Disable animation when switching between toolbars
+        TotpTextFieldToolbar(onScan: {
+            lastFocusedField = focusedField
+            viewModel.openCodeScanner()
+        }, onPasteFromClipboard: {
+            viewModel.handlePastingTotpUri(customField: focusedField?.customField,
+                                           fallback: { viewModel.totpUri = $0 })
+        })
     }
 
     var passwordTextFieldToolbar: some View {
         HStack {
-            toolbarButton("Generate password",
+            ToolbarButton("Generate password",
+                          titleBundle: .main,
                           image: IconProvider.arrowsRotate,
                           action: { viewModel.generatePassword() })
 
             PassDivider()
 
-            toolbarButton("Paste",
+            ToolbarButton("Paste",
+                          titleBundle: .main,
                           image: IconProvider.squares,
                           action: { viewModel.pastePasswordFromClipboard() })
         }
         .animationsDisabled()
-    }
-
-    func toolbarButton(_ title: LocalizedStringKey,
-                       image: UIImage,
-                       action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            // Use HStack instead of Label because Label's text is not rendered in toolbar
-            HStack {
-                Image(uiImage: image)
-                    .resizable()
-                    .frame(width: 18, height: 18)
-                Text(title)
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .center)
     }
 }
 
@@ -600,21 +590,6 @@ private extension CreateEditLoginView {
         .padding(.horizontal, DesignConstant.sectionPadding)
         .animation(.default, value: focusedField)
         .animation(.default, value: viewModel.totpUriErrorMessage.isEmpty)
-        .sheet(isPresented: $viewModel.isShowingNoCameraPermissionView) {
-            NoCameraPermissionView { viewModel.openSettings() }
-        }
-        .sheet(isPresented: $viewModel.isShowingCodeScanner) {
-            WrappedCodeScannerView { result in
-                switch lastFocusedField {
-                case .totp:
-                    viewModel.handleScanResult(result)
-                case let .custom(value) where value?.type == .totp:
-                    viewModel.handleScanResult(result, customField: value)
-                default:
-                    return
-                }
-            }
-        }
     }
 }
 
@@ -702,5 +677,3 @@ private struct WebsiteSection<Field: Hashable>: View {
         }
     }
 }
-
-// swiftlint:enable file_length
