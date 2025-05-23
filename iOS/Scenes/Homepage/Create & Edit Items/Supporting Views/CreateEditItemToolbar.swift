@@ -28,14 +28,12 @@ struct CreateEditItemToolbar: ToolbarContent {
     let saveButtonTitle: String
     let isSaveable: Bool
     let isSaving: Bool
-    let fileAttachmentsEnabled: Bool
     let canScanDocuments: Bool
     let vault: Share
     let canChangeVault: Bool
     let itemContentType: ItemContentType
     let shouldUpgrade: Bool
     let isPhone: Bool
-    let fileAttachmentsEditHandler: any FileAttachmentsEditHandler
     let onSelectVault: () -> Void
     let onGoBack: () -> Void
     let onUpgrade: () -> Void
@@ -77,10 +75,6 @@ private extension CreateEditItemToolbar {
         HStack {
             if canChangeVault, let vaultContent = vault.vaultContent {
                 vaultButton(vaultContent: vaultContent)
-            }
-
-            if itemContentType == .note, fileAttachmentsEnabled {
-                FileAttachmentsButton(style: .circle, handler: fileAttachmentsEditHandler)
             }
 
             if !ProcessInfo.processInfo.isiOSAppOnMac, canScanDocuments {
