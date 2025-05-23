@@ -147,6 +147,10 @@ class BaseItemDetailViewModel: ObservableObject {
             (!files.isFetched || files.fetchedObject?.isEmpty == false)
     }
 
+    var customTypeEnabled: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passCustomTypeV1)
+    }
+
     var canShareItem: Bool {
         vault?.vault.shareRole != .read && !itemContent.isAlias
     }

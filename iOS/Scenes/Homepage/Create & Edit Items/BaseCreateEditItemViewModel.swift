@@ -148,6 +148,9 @@ class BaseCreateEditItemViewModel: ObservableObject {
     @Published var isShowingDiscardAlert = false
 
     // Scanning
+    @Published var isShowingNoCameraPermissionView = false
+    @Published var isShowingCodeScanner = false
+
     @Published var isShowingScanner = false
     let scanResponsePublisher = ScanResponsePublisher()
 
@@ -176,6 +179,7 @@ class BaseCreateEditItemViewModel: ObservableObject {
     @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
     @LazyInjected(\SharedUseCasesContainer.getFilesToLink) private var getFilesToLink
     @LazyInjected(\SharedUseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
+    @LazyInjected(\SharedUseCasesContainer.checkCameraPermission) private var checkCameraPermission
 
     var fileAttachmentsEnabled: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passFileAttachmentsV1)
@@ -195,10 +199,14 @@ class BaseCreateEditItemViewModel: ObservableObject {
 
     var supportedCustomFieldTypes: [CustomFieldType] {
         var allCases = CustomFieldType.allCases
-        if !getFeatureFlagStatus(for: FeatureFlagType.passCustomTypeV1) {
+        if !customTypeEnabled {
             allCases.removeAll { $0 == .timestamp }
         }
         return allCases
+    }
+
+    var customTypeEnabled: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passCustomTypeV1)
     }
 
     var fileUiModels: [FileAttachmentUiModel] {
@@ -317,6 +325,21 @@ class BaseCreateEditItemViewModel: ObservableObject {
 
     func telemetryEventTypes() -> [TelemetryEventType] { [] }
 
+    func openCodeScanner() {
+        Task { [weak self] in
+            guard let self else { return }
+            if await checkCameraPermission() {
+                isShowingCodeScanner = true
+            } else {
+                isShowingNoCameraPermissionView = true
+            }
+        }
+    }
+
+    func openSettings() {
+        router.navigate(to: .openSettings)
+    }
+
     func fetchAttachedFiles() async {
         guard fileAttachmentsEnabled,
               mode.isEditMode, // Do not fetch attachments when cloning items
@@ -386,6 +409,35 @@ class BaseCreateEditItemViewModel: ObservableObject {
 
     func removeCustomSection(_ section: CustomSection) {
         customSections.removeAll { $0.id == section.id }
+    }
+
+    /// To be overridden by subclasses if they support scanning into different static fields
+    /// (e.g scan into TOTP field of logins)
+    func handleScanResult(_ result: Result<String, any Error>, customField: CustomField? = nil) {
+        switch result {
+        case let .success(scanResult):
+            if let customField {
+                editCustomField(customField, update: .content(scanResult))
+            }
+
+        case let .failure(error):
+            router.display(element: .displayErrorBanner(error))
+        }
+    }
+
+    /// Paste clipboard content's to custom field if exist, optionally fallback
+    /// (e.g paste into TOTP field of logins)
+    func handlePastingTotpUri(customField: CustomField?, fallback: ((String) -> Void)? = nil) {
+        let clipboardContent = getClipboardContent()
+        if let customField {
+            editCustomField(customField, update: .content(clipboardContent))
+        } else {
+            fallback?(clipboardContent)
+        }
+    }
+
+    func getClipboardContent() -> String {
+        UIPasteboard.general.string ?? ""
     }
 }
 

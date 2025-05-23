@@ -90,6 +90,15 @@ struct AliasDetailView: View {
                         statsRow(stats: stats)
                     }
 
+                    if viewModel.customTypeEnabled {
+                        CustomFieldSections(itemContentType: viewModel.itemContent.type,
+                                            fields: viewModel.customFields,
+                                            isFreeUser: viewModel.isFreeUser,
+                                            onSelectHiddenText: viewModel.copyHiddenText,
+                                            onSelectTotpToken: viewModel.copyTOTPToken,
+                                            onUpgrade: { viewModel.upgrade() })
+                    }
+
                     if viewModel.showFileAttachmentsSection {
                         FileAttachmentsViewSection(files: viewModel.fileUiModels,
                                                    isFetching: viewModel.files.isFetching,
