@@ -28,6 +28,7 @@ import SwiftUI
 struct CreateEditCreditCardView: View {
     @StateObject private var viewModel: CreateEditCreditCardViewModel
     @FocusState private var focusedField: Field?
+    @State private var lastFocusedField: Field?
     @Namespace private var fileAttachmentsID
 
     private var tintColor: UIColor { viewModel.itemContentType.normMajor1Color }
@@ -35,6 +36,14 @@ struct CreateEditCreditCardView: View {
     enum Field: CustomFieldTypes {
         case title, cardholderName, cardNumber, verificationNumber, pin, note
         case custom(CustomField?)
+
+        var customField: CustomField? {
+            if case let .custom(customField) = self {
+                customField
+            } else {
+                nil
+            }
+        }
     }
 
     init(viewModel: CreateEditCreditCardViewModel) {
@@ -103,6 +112,7 @@ private extension CreateEditCreditCardView {
                 .animation(.default, value: viewModel.showFileAttachmentsBanner)
             }
         }
+        .toolbar { keyboardToolbar }
         .onFirstAppear {
             if case .create = viewModel.mode {
                 focusedField = .title
@@ -112,6 +122,16 @@ private extension CreateEditCreditCardView {
         .scannerSheet(isPresented: $viewModel.isShowingScanner,
                       interpreter: viewModel.interpretor,
                       resultStream: viewModel.scanResponsePublisher)
+        .sheet(isPresented: $viewModel.isShowingCodeScanner) {
+            WrappedCodeScannerView { result in
+                switch lastFocusedField {
+                case let .custom(value) where value?.type == .totp:
+                    viewModel.handleScanResult(result, customField: value)
+                default:
+                    return
+                }
+            }
+        }
     }
 
     var upsellBanner: some View {
@@ -125,6 +145,23 @@ private extension CreateEditCreditCardView {
 }
 
 private extension CreateEditCreditCardView {
+    @ToolbarContentBuilder
+    var keyboardToolbar: some ToolbarContent {
+        ToolbarItemGroup(placement: .keyboard) {
+            switch focusedField {
+            case let .custom(value) where value?.type == .totp:
+                TotpTextFieldToolbar(onScan: {
+                    lastFocusedField = focusedField
+                    viewModel.openCodeScanner()
+                }, onPasteFromClipboard: {
+                    viewModel.handlePastingTotpUri(customField: focusedField?.customField)
+                })
+            default:
+                EmptyView()
+            }
+        }
+    }
+
     var cardDetailSection: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             cardholderNameRow
