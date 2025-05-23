@@ -81,6 +81,9 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                                                      update: .title(customFieldTitle))
                                            customFieldTitle = ""
                                        })
+            .sheet(isPresented: $viewModel.isShowingNoCameraPermissionView) {
+                NoCameraPermissionView { viewModel.openSettings() }
+            }
             .sheet(isPresented: $viewModel.isShowingVaultSelector) {
                 // Add more height when free users to make room for upsell banner
                 let height = viewModel.vaults.filter(\.canEdit).count * 74 + (viewModel.isFreeUser ? 180 : 50)
