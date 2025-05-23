@@ -91,7 +91,6 @@ public struct FileAttachmentsViewSection: View {
                 FileAttachmentRow(mode: .view(onOpen: { handler.open(file) },
                                               onSave: { handler.save(file) },
                                               onShare: { handler.share(file) }),
-                                  itemContentType: handler.itemContentType,
                                   uiModel: file,
                                   primaryTintColor: handler.fileAttachmentsSectionPrimaryColor,
                                   secondaryTintColor: handler.fileAttachmentsSectionSecondaryColor)

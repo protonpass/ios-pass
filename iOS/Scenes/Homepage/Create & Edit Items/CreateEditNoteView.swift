@@ -309,7 +309,6 @@ private extension CreateEditNoteContentUIView {
                                                   onRename: { handler.showRenameAlert(attachment: file) },
                                                   onDelete: { handler.showDeleteAlert(attachment: file) },
                                                   onRetryUpload: { handler.retryUpload(attachment: file) }),
-                                      itemContentType: handler.itemContentType,
                                       uiModel: file,
                                       primaryTintColor: handler.fileAttachmentsSectionPrimaryColor,
                                       secondaryTintColor: handler.fileAttachmentsSectionSecondaryColor)

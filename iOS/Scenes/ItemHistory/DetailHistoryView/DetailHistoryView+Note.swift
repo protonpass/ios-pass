@@ -47,7 +47,6 @@ extension DetailHistoryView {
                 FileAttachmentRow(mode: .view(onOpen: { viewModel.open(file) },
                                               onSave: { viewModel.save(file) },
                                               onShare: { viewModel.share(file) }),
-                                  itemContentType: viewModel.itemContentType,
                                   uiModel: file,
                                   primaryTintColor: viewModel.fileAttachmentsSectionPrimaryColor,
                                   secondaryTintColor: viewModel.fileAttachmentsSectionSecondaryColor)
