@@ -8133,6 +8133,12 @@
             "value" : "Vytvorte si svoje prvé prihlásenie"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ustvarite svojo prvo prijavo"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10744,7 +10750,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Disfruta de la magia del autorrelleno"
+            "value" : "Disfruta de la magia del relleno automático"
           }
         },
         "es-419" : {
@@ -12032,6 +12038,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Free"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ilmainen"
           }
         },
         "fr" : {
@@ -15599,6 +15611,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ninguno"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ei määritetty"
           }
         },
         "fr" : {
@@ -22383,7 +22401,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Berhenti membagikan alamat email Anda yang sebenarnya. Sembunyikan dengan alias email—eksklusif untuk Proton Pass."
+            "value" : "Berhentilah membagikan alamat email asli Anda. Sebagai gantinya, sembunyikan alamat ini dengan alias email—fitur yang tersedia secara eksklusif pada Proton Pass."
           }
         },
         "it" : {
@@ -26049,7 +26067,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Holvin, kohteen ja linkin jakaminen"
+            "value" : "Holvien, kohteiden ja linkkien jakaminen"
           }
         },
         "fr" : {
