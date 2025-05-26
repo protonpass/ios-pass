@@ -171,6 +171,12 @@
             "value" : "Optično preberi 2FA kode, plačilne kartice ali ročno napisane opombe in QR kodo"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skanna 2FA-kod, kreditkort, handskriven anteckning och QR-kod"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
