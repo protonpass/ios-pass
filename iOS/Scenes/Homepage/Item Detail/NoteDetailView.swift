@@ -50,12 +50,11 @@ struct NoteDetailView: View {
                                           height: 24)
                         }
 
-                        TextView(.constant(viewModel.name))
+                        Text(viewModel.name)
                             .font(.title)
                             .fontWeight(.bold)
-                            .isEditable(false)
-                            // swiftlint:disable:next deprecated_foregroundcolor_modifier
-                            .foregroundColor(PassColor.textNorm)
+                            .foregroundStyle(PassColor.textNorm.toColor)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
                     .animation(.default, value: itemContent.item.pinned)
 
@@ -74,9 +73,7 @@ struct NoteDetailView: View {
                             .placeholderText()
                             .frame(maxWidth: .infinity, alignment: .leading)
                     } else {
-                        TextView(.constant(viewModel.note))
-                            .autoDetectDataTypes(.all)
-                            .isEditable(false)
+                        ReadOnlyTextView(viewModel.note)
                     }
 
                     if viewModel.showFileAttachmentsSection {

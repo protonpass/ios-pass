@@ -101,11 +101,7 @@ extension DetailHistoryView {
                     .placeholderText()
                     .frame(maxWidth: .infinity, alignment: .leading)
             } else {
-                TextView(.constant(item.note))
-                    .autoDetectDataTypes(.all)
-                    // swiftlint:disable:next deprecated_foregroundcolor_modifier
-                    .foregroundColor(PassColor.textNorm)
-                    .isEditable(false)
+                ReadOnlyTextView(item.note)
             }
         }
     }
