@@ -123,13 +123,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Το \"%1$@\" αντιγράφεται στο πρόχειρο. Λήγει σε %2$lld δευτερόλεπτο."
+                  "value" : "Το \"%1$@\" αντιγράφηκε στο πρόχειρο. Λήγει σε %2$lld δευτερόλεπτο."
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Το \"%1$@\" αντιγράφεται στο πρόχειρο. Λήγει σε %2$lld δευτερόλεπτα."
+                  "value" : "Το \"%1$@\" αντιγράφηκε στο πρόχειρο. Λήγει σε %2$lld δευτερόλεπτα."
                 }
               }
             }
@@ -195,13 +195,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "\"%1$@\" kopioitiin leikepöydälle. Vanhenee %2$lld sekunnissa."
+                  "value" : "\"%1$@\" kopioitiin leikepöydälle. Erääntyy %2$lld sekunnissa."
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "\"%1$@\" kopioitiin leikepöydälle. Vanhenee %2$lld sekunnissa."
+                  "value" : "\"%1$@\" kopioitiin leikepöydälle. Erääntyy %2$lld sekunnissa."
                 }
               }
             }
@@ -764,7 +764,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ desea compartir un elemento contigo."
+            "value" : "%@ quiere compartir un elemento contigo."
           }
         },
         "es-419" : {
@@ -2066,7 +2066,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld alias disactivados"
+                  "value" : "%lld alias desactivados"
                 }
               }
             }
@@ -2514,7 +2514,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld aktiviert"
+                  "value" : "%lld Alias aktiviert"
                 }
               },
               "other" : {
@@ -15253,7 +15253,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Δείτε όλες τις αποκλειστικές λειτουργίες που είναι διαθέσιμες σε εσάς για περιορισμένο χρονικό διάστημα"
+            "value" : "7 ημέρες για να δοκιμάσετε premium δυνατότητες χωρίς κόστος. Αποκλειστικά την πρώτη εβδομάδα χρήσης Proton Pass."
           }
         },
         "en" : {
@@ -15745,7 +15745,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Η καταχώρηση είναι ένα τύπος αρχείου το οποίο μας υποδεικνύει τις ενέργειες που έγιναν και οδήγησαν σε σφάλμα. Θα χρησιμοποιήσουμε αυτά τα αρχεία, μόνο, για να βοηθήσουμε τους τεχνικούς μας στην επίλυση σφαλμάτων."
+            "value" : "Το αρχείο καταγραφής είναι ένα τύπος αρχείου που μας υποδεικνύει τις ενέργειες που έγιναν και οδήγησαν σε σφάλμα. Θα χρησιμοποιήσουμε αυτά τα αρχεία, μόνο, για να βοηθήσουμε τους τεχνικούς μας στην επίλυση σφαλμάτων."
           }
         },
         "en" : {
@@ -17415,7 +17415,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Agregar clave secreta 2FA"
+            "value" : "Agregar una clave secreta 2FA"
           }
         },
         "fi" : {
@@ -18163,7 +18163,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dodaj prikazano ime"
+            "value" : "Dodaj prikazno ime"
           }
         },
         "sv" : {
@@ -21033,7 +21033,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Edistynyt aliastenhallinta sisältyy Pass Plussaan. Hanki se heti päivittämällä tilauksesi."
+            "value" : "Edistynyt aliashallinta sisältyy Pass Plussaan. Hanki se heti päivittämällä tilauksesi."
           }
         },
         "fr" : {
@@ -28708,7 +28708,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "¿Estás seguro de que quieres añadir un 2FA secreto a \"%@\"?"
+            "value" : "¿Estás seguro de que quieres añadir un secreto de 2FA a \"%@\"?"
           }
         },
         "es-419" : {
@@ -34084,6 +34084,12 @@
             "value" : "Môže udeliť alebo zrušiť prístup k položke."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lahko odobri in prekliče dostop do predmeta."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -38383,7 +38389,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Počisti naložene datoteke"
+            "value" : "Počisti prenesene datoteke"
           }
         },
         "sv" : {
@@ -40424,7 +40430,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Blahopřejeme,\n Váš přístup byl potvrzen"
+            "value" : "Blahopřejeme,\n váš přístup byl potvrzen"
           }
         },
         "da" : {
@@ -46818,6 +46824,12 @@
             "value" : "Vytvorené %@"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ustvarjeno %@"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49432,6 +49444,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vlastná položka vytvorená"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Predmet po meri ustvarjen"
           }
         },
         "sv" : {
@@ -54592,6 +54610,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Namiesto toho vypnúť"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Onemogoči namesto"
           }
         },
         "sv" : {
@@ -60291,7 +60315,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Disfruta de la magia del autorrelleno"
+            "value" : "Disfruta de la magia del relleno automático"
           }
         },
         "es-419" : {
@@ -81004,7 +81028,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kohdehistoria tyhjennettiin"
+            "value" : "Kohteen historia tyhjennettiin"
           }
         },
         "fr" : {
@@ -91093,7 +91117,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Správce"
+            "value" : "Manažer"
           }
         },
         "da" : {
@@ -103834,7 +103858,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Odpri kreditno kartico"
+            "value" : "Odpri plačilno kartico"
           }
         },
         "sv" : {
@@ -135394,10 +135418,124 @@
     "Share ID" : {
       "comment" : "Advanced item's information along with Item ID, Vault ID (Item detail page -> More info). \"Share ID\" is the ID of the vault if item is accessible via vault. \"Share ID\" is the ID of the share if item is accessible via item sharing. This is quite technical so we might use English for it.",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share ID"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ID sdílení"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share-ID"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share ID"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Share ID"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ID para compartir"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ID para compartir"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share ID"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ID de partage"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salin ID"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ID di condivisione"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Del-ID"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deel-ID"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identyfikator udostępnionego obiektu"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ID de compartilhamento"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ID partajare"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ID zdieľania"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delnings-ID"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paylaşım Kimliği"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共享 ID"
           }
         }
       }
@@ -135405,10 +135543,124 @@
     "Share ID copied" : {
       "comment" : "Please refer to the comment of \"Share ID\" string for context.",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share ID скапіяваны"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ID sdílení zkopírováno"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share-ID kopiert"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το Share ID αντιγράφηκε"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Share ID copied"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se ha copiado el ID para compartir."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se copió el ID para compartir."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share ID kopioitiin"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'ID de partage a été copié."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ID Tersalin"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ID di condivisione copiato"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Del-ID kopiert"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deel-ID gekopieerd"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identyfikator udostępnionego obiektu został skopiowany"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O ID de compartilhamento foi copiado."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ID partajare copiat"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ID zdieľania skopírované"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delnings-ID kopierat"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paylaşım kimliği kopyalandı"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共享 ID 已复制"
           }
         }
       }
@@ -139818,6 +140070,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Prihlásiť sa do iného zariadenia"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logga in på annan enhet"
           }
         },
         "tr" : {
@@ -174972,7 +175230,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Olet saavuttanut luomiesi holvien enimmäismäärän. Luo useita holveja päivitämällä maksulliseen tilaukseen."
+            "value" : "Olet saavuttanut luomiesi holvien enimmäismäärän. Päivitä maksulliseen tilaukseen luodaksesi useita holveja."
           }
         },
         "fr" : {
