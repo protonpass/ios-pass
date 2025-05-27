@@ -1,3 +1,8 @@
+# Version 1.17.2
+
+Others:
+- Core libraries upgraded from 32.1.2 to 32.3.1
+
 # Version 1.17.1
 You can now sign in to another device using a QR code. Go to the Profile tab > "Sign in to another device".
 
