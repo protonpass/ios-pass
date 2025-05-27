@@ -31,6 +31,7 @@ import SwiftUI
 struct CreateEditNoteView: View {
     @StateObject private var viewModel: CreateEditNoteViewModel
     @FocusState private var focusedField: Field?
+    @Namespace private var fileAttachmentsID
 
     enum Field: CustomFieldTypes {
         case title, note
@@ -51,7 +52,21 @@ struct CreateEditNoteView: View {
 
     var body: some View {
         NavigationStack {
-            mainContent
+            GeometryReader { geometryReaderProxy in
+                ScrollViewReader { scrollViewProxy in
+                    ScrollView {
+                        mainContent(size: geometryReaderProxy.size,
+                                    proxy: scrollViewProxy)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .itemCreateEditSetUp(viewModel)
+                    .onFirstAppear {
+                        if case .create = viewModel.mode {
+                            focusedField = .title
+                        }
+                    }
+                }
+            }
         }
         .scannerSheet(isPresented: $viewModel.isShowingScanner,
                       interpreter: viewModel.interpretor,
@@ -60,27 +75,52 @@ struct CreateEditNoteView: View {
 }
 
 private extension CreateEditNoteView {
-    var mainContent: some View {
-        ScrollView {
-            VStack {
-                CreateEditItemTitleSection(title: $viewModel.title,
-                                           focusedField: $focusedField,
-                                           field: .title,
-                                           itemContentType: viewModel.itemContentType,
-                                           isEditMode: viewModel.mode.isEditMode,
-                                           onSubmit: { focusedField = .note })
+    func mainContent(size: CGSize, proxy: ScrollViewProxy) -> some View {
+        VStack {
+            FileAttachmentsBanner(isShown: viewModel.showFileAttachmentsBanner,
+                                  onTap: {
+                                      viewModel.dismissFileAttachmentsBanner()
+                                      DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                                          proxy.scrollTo(fileAttachmentsID, anchor: .bottom)
+                                      }
+                                  },
+                                  onClose: { viewModel.dismissFileAttachmentsBanner() })
 
-                EditableTextViewWithPlaceholder(text: $viewModel.note,
-                                                config: .init(minHeight: 180),
-                                                placeholder: #localized("Note"))
-                    .padding(DesignConstant.sectionPadding)
-                    .roundedEditableSection()
-                    .focused($focusedField, equals: .note)
+            CreateEditItemTitleSection(title: $viewModel.title,
+                                       focusedField: $focusedField,
+                                       field: .title,
+                                       itemContentType: viewModel.itemContentType,
+                                       isEditMode: viewModel.mode.isEditMode,
+                                       onSubmit: { focusedField = .note })
+
+            EditableTextViewWithPlaceholder(text: $viewModel.note,
+                                            config: .init(minHeight: size.height / 2),
+                                            placeholder: #localized("Note"))
+                .padding(DesignConstant.sectionPadding)
+                .roundedEditableSection()
+                .focused($focusedField, equals: .note)
+
+            if viewModel.customTypeEnabled {
+                EditCustomFieldSections(focusedField: $focusedField,
+                                        focusedCustomField: viewModel.recentlyAddedOrEditedField,
+                                        contentType: .note,
+                                        fields: $viewModel.customFields,
+                                        canAddMore: viewModel.canAddMoreCustomFields,
+                                        onAddMore: { viewModel.requestAddCustomField(to: nil) },
+                                        onEditTitle: viewModel.requestEditCustomFieldTitle,
+                                        onUpgrade: { viewModel.upgrade() })
             }
-            .padding()
+
+            if viewModel.fileAttachmentsEnabled {
+                FileAttachmentsEditSection(files: viewModel.fileUiModels,
+                                           isFetching: viewModel.isFetchingAttachedFiles,
+                                           fetchError: viewModel.fetchAttachedFilesError,
+                                           isUploading: viewModel.isUploadingFile,
+                                           handler: viewModel)
+                    .id(fileAttachmentsID)
+            }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .itemCreateEditSetUp(viewModel)
+        .padding()
     }
 }
 
