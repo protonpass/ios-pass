@@ -20,6 +20,10 @@
 
 import SwiftUI
 
+/// While this view expands the height as its content grows, scroll position doesn't move accordingly
+/// which results in new lines hidden being behind the keyboard.
+/// Prefer using `EditableTextView` (`UITextView`'s wrapper)
+/// when dealing with potential multilines text editor (e.g content of a note item)
 public struct TextEditorWithPlaceholder<Field: Hashable>: View {
     @Binding var text: String
     let font: UIFont

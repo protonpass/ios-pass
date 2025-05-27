@@ -30,6 +30,20 @@ import SwiftUI
 
 struct CreateEditNoteView: View {
     @StateObject private var viewModel: CreateEditNoteViewModel
+    @FocusState private var focusedField: Field?
+
+    enum Field: CustomFieldTypes {
+        case title, note
+        case custom(CustomField?)
+
+        var customField: CustomField? {
+            if case let .custom(customField) = self {
+                customField
+            } else {
+                nil
+            }
+        }
+    }
 
     init(viewModel: CreateEditNoteViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -37,18 +51,36 @@ struct CreateEditNoteView: View {
 
     var body: some View {
         NavigationStack {
-            CreateEditNoteContentView(title: $viewModel.title,
-                                      content: $viewModel.note,
-                                      files: viewModel.fileUiModels,
-                                      isUploadingFile: viewModel.isUploadingFile,
-                                      handler: viewModel,
-                                      scanResponsePublisher: viewModel.scanResponsePublisher)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .itemCreateEditSetUp(viewModel)
+            mainContent
         }
         .scannerSheet(isPresented: $viewModel.isShowingScanner,
                       interpreter: viewModel.interpretor,
                       resultStream: viewModel.scanResponsePublisher)
+    }
+}
+
+private extension CreateEditNoteView {
+    var mainContent: some View {
+        ScrollView {
+            VStack {
+                CreateEditItemTitleSection(title: $viewModel.title,
+                                           focusedField: $focusedField,
+                                           field: .title,
+                                           itemContentType: viewModel.itemContentType,
+                                           isEditMode: viewModel.mode.isEditMode,
+                                           onSubmit: { focusedField = .note })
+
+                EditableTextViewWithPlaceholder(text: $viewModel.note,
+                                                config: .init(minHeight: 180),
+                                                placeholder: #localized("Note"))
+                    .padding(DesignConstant.sectionPadding)
+                    .roundedEditableSection()
+                    .focused($focusedField, equals: .note)
+            }
+            .padding()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .itemCreateEditSetUp(viewModel)
     }
 }
 
