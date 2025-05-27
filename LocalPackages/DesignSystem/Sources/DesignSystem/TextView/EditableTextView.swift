@@ -21,62 +21,110 @@
 
 import SwiftUI
 
-/// `UITextView` wrapper that automatically adjusts its height depending on the content
-public struct EditableTextView: UIViewRepresentable {
-    @Binding var text: String
-    let minWidth: CGFloat
-    let minHeight: CGFloat
-    let font: UIFont
-    let textColor: UIColor
+public struct TextViewConfiguration: Sendable {
+    public let minWidth: CGFloat
+    public let minHeight: CGFloat
+    public let font: UIFont
+    public let textColor: UIColor
 
-    public init(text: Binding<String>,
-                minWidth: CGFloat = 300,
+    public init(minWidth: CGFloat = 300,
                 minHeight: CGFloat = 100,
                 font: UIFont = .body,
                 textColor: UIColor = PassColor.textNorm) {
-        _text = text
         self.minWidth = minWidth
         self.minHeight = minHeight
         self.font = font
         self.textColor = textColor
     }
+}
+
+/// `UITextView` wrapper that automatically adjusts its height depending on the content
+public struct EditableTextView: UIViewRepresentable {
+    @Binding var text: String
+    let config: TextViewConfiguration
+    let textViewDidChange: ((String) -> Void)?
+
+    public init(text: Binding<String>,
+                config: TextViewConfiguration = .init(),
+                textViewDidChange: ((String) -> Void)? = nil) {
+        _text = text
+        self.config = config
+        self.textViewDidChange = textViewDidChange
+    }
 
     public func makeUIView(context: Context) -> UITextView {
         let view = UITextView()
-        view.font = font
+        view.text = text
+        view.font = config.font
         view.backgroundColor = .clear
-        view.textColor = textColor
+        view.textColor = config.textColor
         view.isEditable = true
         view.isScrollEnabled = false
         view.delegate = context.coordinator
         return view
     }
 
-    public func updateUIView(_ uiView: UITextView, context: Context) {
-        uiView.text = text
-    }
+    public func updateUIView(_ uiView: UITextView, context: Context) {}
 
     public func sizeThatFits(_ proposal: ProposedViewSize,
                              uiView: UITextView,
                              context: Context) -> CGSize? {
-        let width = proposal.width ?? minWidth
+        let width = proposal.width ?? config.minWidth
         let size = uiView.sizeThatFits(CGSize(width: width, height: 0))
-        return CGSize(width: width, height: max(minHeight, size.height))
+        return CGSize(width: width, height: max(config.minHeight, size.height))
     }
 
     public func makeCoordinator() -> Coordinator {
-        Coordinator(text: $text)
+        Coordinator(self)
     }
 
     public final class Coordinator: NSObject, UITextViewDelegate {
-        let text: Binding<String>
+        let parent: EditableTextView
 
-        init(text: Binding<String>) {
-            self.text = text
+        init(_ parent: EditableTextView) {
+            self.parent = parent
         }
 
         public func textViewDidChange(_ textView: UITextView) {
-            text.wrappedValue = textView.text
+            // We don't assign back text here but in `textViewDidEndEditing` instead
+            // Because that would trigger a redraw which then causes UI glitches
+            parent.textViewDidChange?(textView.text)
         }
+
+        public func textViewDidEndEditing(_ textView: UITextView) {
+            parent.$text.wrappedValue = textView.text
+        }
+    }
+}
+
+public struct EditableTextViewWithPlaceholder: View {
+    @State private var showPlaceholder: Bool
+    @Binding var text: String
+    let config: TextViewConfiguration
+    let placeholder: String
+    let placerholderColor: UIColor
+
+    public init(text: Binding<String>,
+                config: TextViewConfiguration = .init(),
+                placeholder: String,
+                placerholderColor: UIColor = PassColor.textWeak) {
+        _showPlaceholder = .init(initialValue: text.wrappedValue.isEmpty)
+        _text = text
+        self.config = config
+        self.placeholder = placeholder
+        self.placerholderColor = placerholderColor
+    }
+
+    public var body: some View {
+        EditableTextView(text: $text,
+                         config: config,
+                         textViewDidChange: { showPlaceholder = $0.isEmpty })
+            .background(Text(verbatim: placeholder)
+                .foregroundStyle(placerholderColor.toColor)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                // Heuristic paddings
+                .padding(.leading, 4)
+                .padding(.top, 8)
+                .opacity(showPlaceholder ? 1 : 0))
     }
 }
