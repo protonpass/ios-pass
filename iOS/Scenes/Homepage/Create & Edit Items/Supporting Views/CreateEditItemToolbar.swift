@@ -85,7 +85,6 @@ private extension CreateEditItemToolbar {
                                  backgroundColor: itemContentType.normMinor1Color,
                                  accessibilityLabel: "Scan \(itemContentType == .note ? "document" : "credit card")",
                                  action: onScan)
-                        .disabled(!isSaveable)
                 default:
                     EmptyView()
                 }
