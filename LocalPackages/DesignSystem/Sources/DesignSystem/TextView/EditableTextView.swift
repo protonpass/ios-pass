@@ -64,7 +64,7 @@ public struct EditableTextView: UIViewRepresentable {
         return view
     }
 
-    public func updateUIView(_ uiView: UITextView, context: Context) {}
+    public func updateUIView(_ textView: UITextView, context: Context) {}
 
     public func sizeThatFits(_ proposal: ProposedViewSize,
                              uiView: UITextView,
