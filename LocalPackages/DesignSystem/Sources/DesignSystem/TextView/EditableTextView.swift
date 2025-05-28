@@ -60,6 +60,7 @@ public struct EditableTextView: UIViewRepresentable {
         view.textColor = config.textColor
         view.isEditable = true
         view.isScrollEnabled = false
+        view.textContainerInset = .zero
         view.delegate = context.coordinator
         return view
     }
