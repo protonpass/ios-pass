@@ -27,18 +27,24 @@ public struct ReadOnlyTextView: UIViewRepresentable {
     let textColor: UIColor
     let font: UIFont
     let minWidth: CGFloat
+    let maxHeight: CGFloat
     let dataDetectorTypes: UIDataDetectorTypes
+    let onRenderCompletion: ((_ isTrimmed: Bool) -> Void)?
 
     public init(_ text: String,
                 textColor: UIColor = PassColor.textNorm,
                 font: UIFont = .body,
                 minWidth: CGFloat = 300,
-                dataDetectorTypes: UIDataDetectorTypes = .all) {
+                maxHeight: CGFloat = .greatestFiniteMagnitude,
+                dataDetectorTypes: UIDataDetectorTypes = .all,
+                onRenderCompletion: ((_ isTrimmed: Bool) -> Void)? = nil) {
         self.text = text
         self.textColor = textColor
         self.font = font
         self.minWidth = minWidth
+        self.maxHeight = maxHeight
         self.dataDetectorTypes = dataDetectorTypes
+        self.onRenderCompletion = onRenderCompletion
     }
 
     public func makeUIView(context: Context) -> UITextView {
@@ -49,18 +55,22 @@ public struct ReadOnlyTextView: UIViewRepresentable {
         view.isEditable = false
         view.isScrollEnabled = false
         view.dataDetectorTypes = dataDetectorTypes
+        view.textContainerInset = .zero
         return view
     }
 
-    public func updateUIView(_ uiView: UITextView, context: Context) {
-        uiView.text = text
+    public func updateUIView(_ textView: UITextView, context: Context) {
+        textView.text = text
     }
 
     public func sizeThatFits(_ proposal: ProposedViewSize,
                              uiView: UITextView,
                              context: Context) -> CGSize? {
         let width = proposal.width ?? minWidth
-        let size = uiView.sizeThatFits(CGSize(width: width, height: 0))
-        return CGSize(width: width, height: size.height)
+        let calculatedSize = uiView.sizeThatFits(CGSize(width: width,
+                                                        height: CGFloat.greatestFiniteMagnitude))
+        onRenderCompletion?(calculatedSize.height > maxHeight)
+        let finalHeight = min(calculatedSize.height, maxHeight)
+        return CGSize(width: width, height: finalHeight)
     }
 }
