@@ -40,23 +40,23 @@ final class MockTests: MockBaseTestCase {
     }
 
     private func mocking() {
-        let resetStaticMocks = self.expectation(description:"Reset static mocks")
+        let resetMocks = self.expectation(description:"Reset static mocks")
         let expectationsrp = self.expectation(description:"Fetch scenarios")
         let parameters: [String: Any] = [
             "UserID": "kmehyJpxDjGQdmwx87J4BQrxqjlPwgYZ_A2lWOWjWOaaut1aTvso_Dg_KS1Z13SVp-dNzvKz1cMEbUyOULkW5g=="
         ] // should match with the mock
         let dynamicMock = DynamicMockBody(name: "loginWithSrp", enabled: true, parameters: AnyCodable(value: parameters))
 
-        client.resetStaticMocks { result in
+        client.resetAllMocksAndSettings { result in
             switch result {
             case .success(_):
                 print("Reset static mocks Success \n")
             case .failure(let error):
                 XCTFail("Failed to fetch scenarios: \(error)")
             }
-            resetStaticMocks.fulfill()
+            resetMocks.fulfill()
         }
-        wait(for: [resetStaticMocks], timeout: defaultTimeout)
+        wait(for: [resetMocks], timeout: defaultTimeout)
 
         client.addDynamicMockScenario(dynamicMock: dynamicMock) { result in
             switch result {
