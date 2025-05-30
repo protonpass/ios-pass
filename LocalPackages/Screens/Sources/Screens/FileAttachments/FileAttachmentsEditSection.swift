@@ -29,7 +29,6 @@ public protocol FileAttachmentsEditHandler: AnyObject {
     var fileAttachmentsSectionPrimaryColor: UIColor { get }
     var fileAttachmentsSectionSecondaryColor: UIColor { get }
     var isFreeUser: Bool { get }
-    var itemContentType: ItemContentType { get }
 
     func generateDatedFileName(prefix: String, extension: String) -> String
     func writeToTemporaryDirectory(data: Data, fileName: String) throws -> URL

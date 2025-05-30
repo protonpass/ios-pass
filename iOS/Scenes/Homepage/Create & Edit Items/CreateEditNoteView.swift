@@ -35,15 +35,8 @@ struct CreateEditNoteView: View {
 
     enum Field: CustomFieldTypes {
         case title, note
+        // periphery:ignore
         case custom(CustomField?)
-
-        var customField: CustomField? {
-            if case let .custom(customField) = self {
-                customField
-            } else {
-                nil
-            }
-        }
     }
 
     init(viewModel: CreateEditNoteViewModel) {
