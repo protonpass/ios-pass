@@ -26,13 +26,8 @@ import Macro
 final class CreateEditSshKeyViewModel: BaseCreateEditItemViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    @Published var title = ""
     @Published var publicKey = ""
     @Published var privateKey = ""
-
-    override var isSaveable: Bool {
-        super.isSaveable && !title.isEmpty
-    }
 
     override var shouldUpgrade: Bool {
         if case .create = mode, isFreeUser {

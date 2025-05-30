@@ -28,7 +28,6 @@ import SwiftUI
 final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    @Published var title = ""
     @Published var note = ""
 
     override init(mode: ItemMode,
@@ -49,10 +48,6 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
                 }
             }
             .store(in: &cancellables)
-    }
-
-    override var isSaveable: Bool {
-        super.isSaveable && !title.isEmpty
     }
 
     override func bindValues() {

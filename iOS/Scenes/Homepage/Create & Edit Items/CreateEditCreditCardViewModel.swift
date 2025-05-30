@@ -28,7 +28,6 @@ import SwiftUI
 final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    @Published var title = ""
     @Published var cardholderName = ""
     @Published var cardNumber = ""
     @Published var verificationNumber = ""
@@ -48,10 +47,6 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
     }
 
     override var itemContentType: ItemContentType { .creditCard }
-
-    override var isSaveable: Bool {
-        super.isSaveable && !title.isEmpty
-    }
 
     override var shouldUpgrade: Bool {
         // Free users can not create more credit cards but can only update
