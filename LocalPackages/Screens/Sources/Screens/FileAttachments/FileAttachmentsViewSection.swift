@@ -28,7 +28,6 @@ import SwiftUI
 public protocol FileAttachmentsViewHandler: AnyObject {
     var fileAttachmentsSectionPrimaryColor: UIColor { get }
     var fileAttachmentsSectionSecondaryColor: UIColor { get }
-    var itemContentType: ItemContentType { get }
 
     func retryFetchingAttachments()
     func open(_ file: FileAttachmentUiModel)
