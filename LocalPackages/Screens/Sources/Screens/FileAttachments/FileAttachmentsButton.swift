@@ -28,7 +28,7 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
-public struct FileAttachmentsButton: View {
+struct FileAttachmentsButton: View {
     @StateObject private var viewModel: FileAttachmentsButtonViewModel
     @State private var showCameraUnavailable = false
     @State private var showCamera = false
@@ -39,12 +39,12 @@ public struct FileAttachmentsButton: View {
 
     private let handler: any FileAttachmentsEditHandler
 
-    public init(handler: any FileAttachmentsEditHandler) {
+    init(handler: any FileAttachmentsEditHandler) {
         _viewModel = .init(wrappedValue: .init(handler: handler))
         self.handler = handler
     }
 
-    public var body: some View {
+    var body: some View {
         if handler.isFreeUser {
             attachFileButton {
                 handler.upsellFileAttachments()

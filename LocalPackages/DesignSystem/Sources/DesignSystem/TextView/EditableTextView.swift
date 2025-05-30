@@ -39,20 +39,20 @@ public struct TextViewConfiguration: Sendable {
 }
 
 /// `UITextView` wrapper that automatically adjusts its height depending on the content
-public struct EditableTextView: UIViewRepresentable {
+struct EditableTextView: UIViewRepresentable {
     @Binding var text: String
     let config: TextViewConfiguration
     let textViewDidChange: ((String) -> Void)?
 
-    public init(text: Binding<String>,
-                config: TextViewConfiguration = .init(),
-                textViewDidChange: ((String) -> Void)? = nil) {
+    init(text: Binding<String>,
+         config: TextViewConfiguration = .init(),
+         textViewDidChange: ((String) -> Void)? = nil) {
         _text = text
         self.config = config
         self.textViewDidChange = textViewDidChange
     }
 
-    public func makeUIView(context: Context) -> UITextView {
+    func makeUIView(context: Context) -> UITextView {
         let view = UITextView()
         view.text = text
         view.font = config.font
@@ -65,34 +65,34 @@ public struct EditableTextView: UIViewRepresentable {
         return view
     }
 
-    public func updateUIView(_ textView: UITextView, context: Context) {}
+    func updateUIView(_ textView: UITextView, context: Context) {}
 
-    public func sizeThatFits(_ proposal: ProposedViewSize,
-                             uiView: UITextView,
-                             context: Context) -> CGSize? {
+    func sizeThatFits(_ proposal: ProposedViewSize,
+                      uiView: UITextView,
+                      context: Context) -> CGSize? {
         let width = proposal.width ?? config.minWidth
         let size = uiView.sizeThatFits(CGSize(width: width, height: 0))
         return CGSize(width: width, height: max(config.minHeight, size.height))
     }
 
-    public func makeCoordinator() -> Coordinator {
+    func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
 
-    public final class Coordinator: NSObject, UITextViewDelegate {
+    final class Coordinator: NSObject, UITextViewDelegate {
         let parent: EditableTextView
 
         init(_ parent: EditableTextView) {
             self.parent = parent
         }
 
-        public func textViewDidChange(_ textView: UITextView) {
+        func textViewDidChange(_ textView: UITextView) {
             // We don't assign back text here but in `textViewDidEndEditing` instead
             // Because that would trigger a redraw which then causes UI glitches
             parent.textViewDidChange?(textView.text)
         }
 
-        public func textViewDidEndEditing(_ textView: UITextView) {
+        func textViewDidEndEditing(_ textView: UITextView) {
             parent.$text.wrappedValue = textView.text
         }
     }
