@@ -42,6 +42,8 @@ final class PassColorTests: XCTestCase {
         _ = PassColor.backgroundWeak
         _ = PassColor.tabBarBackground
 
+        _ = PassColor.newBackgroundStrong
+
         // Items
         _ = PassColor.aliasInteractionNorm
         _ = PassColor.aliasInteractionNormMajor1
