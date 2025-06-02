@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import XCTest
+import ProtonCoreQuarkCommands
 import ProtonCoreTestingToolkitProxy
 import ProtonCoreTestingToolkitUITestsLogin
 
@@ -29,10 +30,18 @@ final class MockTests: MockBaseTestCase {
     // when you record a user the password should be password
     func testMockLoginEmptyUser() throws {
         mocking()
+        let user = User(name: generateRandomString(length: 12), password: "password")
+
+//         not needed for fully mocked but for recording is useful
+//        do {
+//            try quarkCommands.userCreate(user: user)
+//        } catch {
+//            XCTFail("❌ Quark user creation error \n\n Error: \(error)")
+//        }
 
         SigninExternalAccountsCapability()
-            .signInWithAccount(userName: "whatever",
-                               password: "password",
+            .signInWithAccount(userName: user.name,
+                               password: user.password,
                                loginRobot: WelcomeRobot().logIn(),
                                retRobot: GetStartedRobot.self)
             .dismissWelcomeScreen()

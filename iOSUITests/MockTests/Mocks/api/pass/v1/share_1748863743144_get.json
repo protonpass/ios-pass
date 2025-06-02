@@ -1,0 +1,80 @@
+{
+  "request": {
+    "exactUrl": [
+      "/api/pass/v1/share"
+    ],
+    "method": "get"
+  },
+  "response": {
+    "body": {
+      "Code": 1000,
+      "Shares": [
+        {
+          "ShareID": "QXtvI1JtMQQYvOR6e2LTaedwK9oG7oRTYfzkfmbntOYZa1vryrEU81qwgNw6vdIwusjcy5sbI-8T48zB5sWJeA==",
+          "VaultID": "fXhfljChWfOdy_taZZOGyO5P6eekLz8-in6RP-EZ7RFrKhmkIhY-LpTDadiwnypoF5U2Q5IWjpJ81A2-1wQnww==",
+          "AddressID": "tBG9buCiSORChGIlZ2XDqx1EgD90qb27q_hGZ028uiT2kinNdE8eEFQZz2Ytglbxdh_wSs-6ZdAbbyJXAZeS-g==",
+          "Primary": false,
+          "Owner": true,
+          "TargetType": 1,
+          "TargetID": "fXhfljChWfOdy_taZZOGyO5P6eekLz8-in6RP-EZ7RFrKhmkIhY-LpTDadiwnypoF5U2Q5IWjpJ81A2-1wQnww==",
+          "TargetMembers": 1,
+          "TargetMaxMembers": 3,
+          "Shared": false,
+          "PendingInvites": 0,
+          "NewUserInvitesReady": 0,
+          "Permission": 1,
+          "CanAutoFill": true,
+          "ShareRoleID": "1",
+          "Content": "iV2tUnR80fwSIkPZ3/DeQ5xzJnvbNdlEuaX305FVIy4V7eLfulyn54GLkHWTTJzos9KNf/2R",
+          "ContentKeyRotation": 1,
+          "ContentFormatVersion": 1,
+          "ExpireTime": null,
+          "CreateTime": 1748863742,
+          "Hidden": false
+        }
+      ]
+    },
+    "headers": {
+      "server": "nginx",
+      "date": "Mon, 02 Jun 2025 11:29:03 GMT",
+      "content-type": "application/json",
+      "transfer-encoding": "chunked",
+      "connection": "close",
+      "x-pm-code": "1000",
+      "cache-control": "max-age=0, must-revalidate, no-cache, no-store, private",
+      "expires": "Fri, 04 May 1984 22:15:00 GMT",
+      "x-pm-route-pattern": "GET /pass/v1/share",
+      "x-pm-user-id": "955",
+      "x-pm-uid": "ykqdmv7hfi3fnlpybfa4hux6cco4tkds",
+      "access": "application/vnd.protonmail.api+json;apiversion=1",
+      "x-pm-time-total": "83",
+      "x-pm-time-user": "30",
+      "x-pm-time-system": "8",
+      "x-pm-memory": "7",
+      "x-pm-allocated-memory": "10",
+      "x-pm-urgency": "1",
+      "x-pm-apiversion": "develop (75e34602)",
+      "x-b3-traceid": "06e3bb3e0c3b3309357b2ad5d539e0c3",
+      "x-b3-spanid": "a909ae17b77a365a",
+      "x-b3-parentspanid": "",
+      "vary": "Accept-Encoding",
+      "content-encoding": "gzip",
+      "x-pm-nonce": "aD2K/0eJ5YJYRUAZ3mxJLQAAAEw",
+      "set-cookie": [
+        "Session-Id=aD2K-0eJ5YJYRUAZ3mxJLQAAAEw; Domain=hubble.proton.black; Path=/; HttpOnly; Secure; Max-Age=7776000",
+        "Version=; Domain=hubble.proton.black; Path=/; Secure; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+      ],
+      "strict-transport-security": "max-age=15724800; includeSubDomains, max-age=31536000; includeSubDomains; preload, max-age=63072000",
+      "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-eval' 'nonce-aD2K/0eJ5YJYRUAZ3mxJLQAAAEw' 'strict-dynamic' https:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; font-src 'self' https://*.hubble.proton.black; frame-src https:; connect-src https: wss:; media-src https:; frame-ancestors https://*.mock.proton.black/ https://*.hubble.proton.black;",
+      "expect-ct": "max-age=2592000, enforce",
+      "x-content-type-options": "nosniff",
+      "x-xss-protection": "1; mode=block",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "x-permitted-cross-domain-policies": "none"
+    },
+    "statusCode": 200
+  },
+  "enabled": true,
+  "timestamp": 1748863743144,
+  "name": "Mock_get__api_pass_v1_share"
+}
