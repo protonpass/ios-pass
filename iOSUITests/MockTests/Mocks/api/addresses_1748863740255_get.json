@@ -1,0 +1,106 @@
+{
+  "request": {
+    "exactUrl": [
+      "/api/addresses"
+    ],
+    "method": "get"
+  },
+  "response": {
+    "body": {
+      "Code": 1000,
+      "Addresses": [
+        {
+          "ID": "tBG9buCiSORChGIlZ2XDqx1EgD90qb27q_hGZ028uiT2kinNdE8eEFQZz2Ytglbxdh_wSs-6ZdAbbyJXAZeS-g==",
+          "DomainID": "l8vWAXHBQmv0u7OVtPbcqMa4iwQaBqowINSQjPrxAr-Da8fVPKUkUcqAq30_BCxj1X0nW70HQRmAa-rIvzmKUA==",
+          "Email": "J2sqLvDpP7EC@hubble.proton.black",
+          "Status": 1,
+          "Type": 1,
+          "Receive": 1,
+          "Send": 1,
+          "DisplayName": "J2sqLvDpP7EC",
+          "Signature": "",
+          "Order": 1,
+          "Priority": 1,
+          "CatchAll": false,
+          "ProtonMX": true,
+          "ConfirmationState": 1,
+          "HasKeys": 1,
+          "Permissions": 7,
+          "Flags": 0,
+          "Keys": [
+            {
+              "ID": "HB_29cAPkhaWhZsCRwCGuGP5nRajOpeP8wZK3QisI6IGODOgIuRf4-hAMEypQoorfzWw3aby3eYjeUhE2Ou6cw==",
+              "Primary": 1,
+              "Flags": 3,
+              "Fingerprint": "b9d629ae83ae7550400220ebf48d5eceddc27f17",
+              "Fingerprints": [
+                "5d5920409e3be50803300bf96e86deab4e4697e2",
+                "b9d629ae83ae7550400220ebf48d5eceddc27f17"
+              ],
+              "PublicKey": "-----BEGIN PGP PUBLIC KEY BLOCK-----\nVersion: ProtonMail\n\nxjMEaD2K9xYJKwYBBAHaRw8BAQdAFWo+dZSHEJ7NC1A+1vP5y59AA7s/5eWK\nFiKtYVgUG0DNQ0oyc3FMdkRwUDdFQ0BodWJibGUucHJvdG9uLmJsYWNrIDxK\nMnNxTHZEcFA3RUNAaHViYmxlLnByb3Rvbi5ibGFjaz7CvwQTFggAcQWCaD2K\n9wMLCQcJEPSNXs7dwn8XNRQAAAAAABwAEHNhbHRAbm90YXRpb25zLm9wZW5w\nZ3Bqcy5vcmdK+I7Qqzz98k3d6Y6JFen6AhUIAxYAAgIZAQKbAwIeARYhBLnW\nKa6DrnVQQAIg6/SNXs7dwn8XAABoHwEAlc/L138Yk75Y/RPALCDB2ZzXUbaa\nWUXrblXNaIJaTGQBAN+346lkZSxiuFjtMSDSItn+vwRnnvBZEtsKlEgu7mcM\nwsAeBBAWCACQBYJoPYr3BYMA7U4ACRDU0hoFUaey7DUUAAAAAAAcABBzYWx0\nQG5vdGF0aW9ucy5vcGVucGdwanMub3JnEr7NO9u29HP/15wqQPoJgiwcVGVz\ndCBPcGVuUEdQIENBIDx0ZXN0LW9wZW5wZ3AtY2FAcHJvdG9uLm1lPhYhBDYV\nQ78NpW2mDLPalNTSGgVRp7LsAAB2QgD+M8jNYmcTVQajbnKdyQEIObYmzV4e\nqZ74/N7MFRMmdKkA/2cwuh3scLiadGkT1/CVB/lL1jEkdAlnuzdBWffA96YO\nzjgEaD2K9xIKKwYBBAGXVQEFAQEHQMqz5H8Wdr2jcutvy45glswzWupj/38T\n8usT/IpvPjs4AwEKCcKuBBgWCABgBYJoPYr3CRD0jV7O3cJ/FzUUAAAAAAAc\nABBzYWx0QG5vdGF0aW9ucy5vcGVucGdwanMub3Jnlox0V/auQVklsn3P+/gN\nMQKbDBYhBLnWKa6DrnVQQAIg6/SNXs7dwn8XAAB67gEA8EJ+rjus/eGgOco6\npVCd3Wf7Wj4/sO/HRdOO2tBHFkQBAOCVOoVZ2c5m+TS1U++ly+TWc0Cl6v8P\neu/kEJ6xI88D\n=ouNq\n-----END PGP PUBLIC KEY BLOCK-----\n",
+              "Active": 1,
+              "Version": 3,
+              "Activation": null,
+              "PrivateKey": "-----BEGIN PGP PRIVATE KEY BLOCK-----\nVersion: ProtonMail\n\nxYUEaD2K9xYJKwYBBAHaRw8BAQdAFWo+dZSHEJ7NC1A+1vP5y59AA7s/5eWK\nFiKtYVgUG0D+CQEIcmSomCHOG+31fi3Bzdb7SU+FEIkXyDgOAkQG2mV82Dbt\nk+Hg579CW6+t3rti/zt49ar5VbBNI+hmwy4qi03kX+GQvyFN1rz+WE6BXD04\nzUNKMnNxTHZEcFA3RUNAaHViYmxlLnByb3Rvbi5ibGFjayA8SjJzcUx2RHBQ\nN0VDQGh1YmJsZS5wcm90b24uYmxhY2s+wr8EExYIAHEFgmg9ivcDCwkHCRD0\njV7O3cJ/FzUUAAAAAAAcABBzYWx0QG5vdGF0aW9ucy5vcGVucGdwanMub3Jn\nSviO0Ks8/fJN3emOiRXp+gIVCAMWAAICGQECmwMCHgEWIQS51imug651UEAC\nIOv0jV7O3cJ/FwAAaB8BAJXPy9d/GJO+WP0TwCwgwdmc11G2mllF625VzWiC\nWkxkAQDft+OpZGUsYrhY7TEg0iLZ/r8EZ57wWRLbCpRILu5nDMeKBGg9ivcS\nCisGAQQBl1UBBQEBB0DKs+R/Fna9o3Lrb8uOYJbMM1rqY/9/E/LrE/yKbz47\nOAMBCgn+CQEIcmSomCHOG+1cp86agYHILrfMtnTwDHk+oh7N+ECcOjHwfM+V\nJFuXt5zjZwZJPJWhy8BvUdusfpRMMAE4zOc6itasSpIZ26ORaDXOBzsBwq4E\nGBYIAGAFgmg9ivcJEPSNXs7dwn8XNRQAAAAAABwAEHNhbHRAbm90YXRpb25z\nLm9wZW5wZ3Bqcy5vcmeWjHRX9q5BWSWyfc/7+A0xApsMFiEEudYproOudVBA\nAiDr9I1ezt3CfxcAAHruAQDwQn6uO6z94aA5yjqlUJ3dZ/taPj+w78dF047a\n0EcWRAEA4JU6hVnZzmb5NLVT76XL5NZzQKXq/w967+QQnrEjzwM=\n=OFgq\n-----END PGP PRIVATE KEY BLOCK-----\n",
+              "Token": "-----BEGIN PGP MESSAGE-----\nVersion: ProtonMail\n\nwV4DvXjfp1pzSjgSAQdAGFrWCuwmeNY7vStftEfChyevS0z+S09AwVT8cWBb\nRS0w9DIKgC7EMJvGp2YVbnQoGBTDJs7BlRO1YNQO8TNdhylN8gjMUDccn41h\nnzb3BDVL0nEB+sJLVi1k7RPgqkLDUdPHOnfR++GA7vMfVzs+ad/gjW0EN5mM\nJq/xnnglWvNS8Gi33SiZxUkhkOm5KP/ub8HCTuXN8lisLqd9Y2GEVkkcuDP/\npAGrvPIvOncy3O6Kv/xRsPyZi9xgeg1eZf5NmYcFQA==\n=oe7w\n-----END PGP MESSAGE-----\n",
+              "Signature": "-----BEGIN PGP SIGNATURE-----\nVersion: ProtonMail\n\nwqsEARYIAF0Fgmg9ivcJEB44uZakLfSvNRQAAAAAABwAEHNhbHRAbm90YXRp\nb25zLm9wZW5wZ3Bqcy5vcmcc0nj7IDou3juhJkwGkuEUFiEE5yafrWFvtvFK\nOYU9Hji5lqQt9K8AAGc/AQCdEFMQVL4T202lB+JHo016fasV9LqV9kSbgerJ\nyt5u1QD+Jm0jUDvzr2oQ69vzAXPyusqYKnjUks7rWwLz7Aev3go=\n=yxQb\n-----END PGP SIGNATURE-----\n"
+            }
+          ],
+          "SignedKeyList": {
+            "MinEpochID": null,
+            "MaxEpochID": null,
+            "ExpectedMinEpochID": 1,
+            "Data": "[{\"Fingerprint\":\"b9d629ae83ae7550400220ebf48d5eceddc27f17\",\"SHA256Fingerprints\":[\"f1949688c68653ad90256e951d4b0e0486c6a8985bfc8bb1acbdb367d2b2cd88\",\"ed41de3b3635f7947d8bff121039f3f502598dc411a028a95ffa3db07ab7d181\"],\"Primary\":1,\"Flags\":3}]",
+            "ObsolescenceToken": null,
+            "Revision": 1,
+            "Signature": "-----BEGIN PGP SIGNATURE-----\nVersion: ProtonMail\n\nwqsEABYIAF0Fgmg9ivcJEPSNXs7dwn8XNRQAAAAAABwAEHNhbHRAbm90YXRp\nb25zLm9wZW5wZ3Bqcy5vcmdfhBeF74BSGciRmzE3jTCIFiEEudYproOudVBA\nAiDr9I1ezt3CfxcAAB/SAP9MwZ50OzVO7biX0fKJDojovkRgfvF4sh5YUVPq\nhv8BgAD/UfP3B6j0VbW4fVi3MxUIBayz5G2TLQu8PNc/SW1z6Ao=\n=sn0O\n-----END PGP SIGNATURE-----\n"
+          }
+        }
+      ],
+      "Total": 1,
+      "SignedAddressList": []
+    },
+    "headers": {
+      "server": "nginx",
+      "date": "Mon, 02 Jun 2025 11:29:00 GMT",
+      "content-type": "application/json",
+      "transfer-encoding": "chunked",
+      "connection": "close",
+      "x-pm-code": "1000",
+      "cache-control": "max-age=0, must-revalidate, no-cache, no-store, private",
+      "expires": "Fri, 04 May 1984 22:15:00 GMT",
+      "x-pm-route-pattern": "GET /addresses",
+      "x-pm-user-id": "955",
+      "x-pm-uid": "ykqdmv7hfi3fnlpybfa4hux6cco4tkds",
+      "access": "application/vnd.protonmail.api+json;apiversion=3",
+      "x-pm-time-total": "72",
+      "x-pm-time-user": "20",
+      "x-pm-time-system": "6",
+      "x-pm-memory": "7",
+      "x-pm-allocated-memory": "10",
+      "x-pm-urgency": "1",
+      "x-pm-apiversion": "develop (75e34602)",
+      "x-b3-traceid": "10f0d7ff25aebbaf41baa64cd37742b9",
+      "x-b3-spanid": "c0d08a8bff9ce29e",
+      "x-b3-parentspanid": "",
+      "vary": "Accept-Encoding",
+      "content-encoding": "gzip",
+      "x-pm-nonce": "aD2K/Az3Wn3dzpFYK71npwAAANc",
+      "set-cookie": [
+        "Session-Id=aD2K-Az3Wn3dzpFYK71npwAAANc; Domain=hubble.proton.black; Path=/; HttpOnly; Secure; Max-Age=7776000",
+        "Version=; Domain=hubble.proton.black; Path=/; Secure; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+      ],
+      "strict-transport-security": "max-age=15724800; includeSubDomains, max-age=31536000; includeSubDomains; preload, max-age=63072000",
+      "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-eval' 'nonce-aD2K/Az3Wn3dzpFYK71npwAAANc' 'strict-dynamic' https:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; font-src 'self' https://*.hubble.proton.black; frame-src https:; connect-src https: wss:; media-src https:; frame-ancestors https://*.mock.proton.black/ https://*.hubble.proton.black;",
+      "expect-ct": "max-age=2592000, enforce",
+      "x-content-type-options": "nosniff",
+      "x-xss-protection": "1; mode=block",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "x-permitted-cross-domain-policies": "none"
+    },
+    "statusCode": 200
+  },
+  "enabled": true,
+  "timestamp": 1748863740255,
+  "name": "Mock_get__api_addresses"
+}

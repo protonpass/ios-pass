@@ -1,0 +1,51 @@
+{
+  "request": {
+    "exactUrl": [
+      "/api/internal/quark/raw::user:create"
+    ],
+    "method": "get"
+  },
+  "response": {
+    "body": " {\"ID\":\"kmehyJpxDjGQdmwx87J4BQrxqjlPwgYZ_A2lWOWjWOaaut1aTvso_Dg_KS1Z13SVp-dNzvKz1cMEbUyOULkW5g==\",\"Name\":\"J2sqLvDpP7EC\",\"Password\":\"password\",\"Status\":2,\"Recovery\":\"J2sqLvDpP7EC@gmail.com\",\"RecoveryVerified\":0,\"RecoveryPhone\":\"+41586497612\",\"AuthVersion\":4,\"Created at\":\"2025-06-02 11:28:54 UTC\",\"Email\":\"J2sqLvDpP7EC@hubble.proton.black\",\"AddressID (decrypt)\":1165,\"AddressID\":\"tBG9buCiSORChGIlZ2XDqx1EgD90qb27q_hGZ028uiT2kinNdE8eEFQZz2Ytglbxdh_wSs-6ZdAbbyJXAZeS-g==\",\"KeySalt\":\"2\\/uTZ55GQS71mHeKrB10IA==\",\"KeyFingerprint\":\"e7269fad616fb6f14a39853d1e38b996a42df4af\",\"Dec_ID\":955,\"StatusInfo\":\"2 (ACTIVE)\"}\n",
+    "headers": {
+      "server": "nginx",
+      "date": "Mon, 02 Jun 2025 11:28:55 GMT",
+      "content-type": "text/plain; charset=UTF-8",
+      "transfer-encoding": "chunked",
+      "connection": "close",
+      "cache-control": "max-age=0, must-revalidate, no-cache, no-store, private",
+      "expires": "Fri, 04 May 1984 22:15:00 GMT",
+      "x-pm-code": "1000",
+      "x-pm-route-pattern": "GET /quark/{command}",
+      "access": "application/vnd.protonmail.api+json;apiversion=3",
+      "x-pm-time-total": "675",
+      "x-pm-time-user": "308",
+      "x-pm-time-system": "33",
+      "x-pm-memory": "12",
+      "x-pm-allocated-memory": "14",
+      "x-pm-urgency": "1",
+      "x-pm-apiversion": "develop (75e34602)",
+      "x-b3-traceid": "e6c93eef4603dbfbe806697a95e7e238",
+      "x-b3-spanid": "47bf892c05f38dcf",
+      "x-b3-parentspanid": "",
+      "vary": "Accept-Encoding",
+      "content-encoding": "gzip",
+      "x-pm-nonce": "aD2K9gz3Wn3dzpFYK71nogAAAMw",
+      "set-cookie": [
+        "Session-Id=aDheM68@yZhqVhna-XxdHQAAAMc; Domain=hubble.proton.black; Path=/; HttpOnly; Secure; Max-Age=7776000",
+        "Version=; Domain=hubble.proton.black; Path=/; Secure; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+      ],
+      "strict-transport-security": "max-age=15724800; includeSubDomains, max-age=31536000; includeSubDomains; preload, max-age=63072000",
+      "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-eval' 'nonce-aD2K9gz3Wn3dzpFYK71nogAAAMw' 'strict-dynamic' https:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; font-src 'self' https://*.hubble.proton.black; frame-src https:; connect-src https: wss:; media-src https:; frame-ancestors https://*.mock.proton.black/ https://*.hubble.proton.black;",
+      "expect-ct": "max-age=2592000, enforce",
+      "x-content-type-options": "nosniff",
+      "x-xss-protection": "1; mode=block",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "x-permitted-cross-domain-policies": "none"
+    },
+    "statusCode": 200
+  },
+  "enabled": true,
+  "timestamp": 1748863735502,
+  "name": "Mock_get__api_internal_quark_raw__user_create"
+}

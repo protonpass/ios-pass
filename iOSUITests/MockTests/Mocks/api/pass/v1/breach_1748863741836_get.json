@@ -1,0 +1,70 @@
+{
+  "request": {
+    "exactUrl": [
+      "/api/pass/v1/breach"
+    ],
+    "method": "get"
+  },
+  "response": {
+    "body": {
+      "Code": 1000,
+      "Breaches": {
+        "EmailsCount": 0,
+        "DomainsPeek": [],
+        "Addresses": [
+          {
+            "AddressID": "tBG9buCiSORChGIlZ2XDqx1EgD90qb27q_hGZ028uiT2kinNdE8eEFQZz2Ytglbxdh_wSs-6ZdAbbyJXAZeS-g==",
+            "Email": "J2sqLvDpP7EC@hubble.proton.black",
+            "Flags": 0,
+            "BreachCounter": 0,
+            "LastBreachTime": null
+          }
+        ],
+        "CustomEmails": [],
+        "HasCustomDomains": false
+      }
+    },
+    "headers": {
+      "server": "nginx",
+      "date": "Mon, 02 Jun 2025 11:29:01 GMT",
+      "content-type": "application/json",
+      "transfer-encoding": "chunked",
+      "connection": "close",
+      "x-pm-code": "1000",
+      "cache-control": "max-age=0, must-revalidate, no-cache, no-store, private",
+      "expires": "Fri, 04 May 1984 22:15:00 GMT",
+      "x-pm-route-pattern": "GET /pass/v1/breach",
+      "x-pm-user-id": "955",
+      "x-pm-uid": "ykqdmv7hfi3fnlpybfa4hux6cco4tkds",
+      "access": "application/vnd.protonmail.api+json;apiversion=1",
+      "x-pm-time-total": "71",
+      "x-pm-time-user": "24",
+      "x-pm-time-system": "6",
+      "x-pm-memory": "7",
+      "x-pm-allocated-memory": "8",
+      "x-pm-urgency": "1",
+      "x-pm-apiversion": "develop (75e34602)",
+      "x-b3-traceid": "8e61c6880ec3b9e3e8ca3a68124980d4",
+      "x-b3-spanid": "c4e20163b46302ad",
+      "x-b3-parentspanid": "",
+      "vary": "Accept-Encoding",
+      "content-encoding": "gzip",
+      "x-pm-nonce": "aD2K/Qz3Wn3dzpFYK71nrgAAAMc",
+      "set-cookie": [
+        "Session-Id=aD2K-Qz3Wn3dzpFYK71nrgAAAMc; Domain=hubble.proton.black; Path=/; HttpOnly; Secure; Max-Age=7776000",
+        "Version=; Domain=hubble.proton.black; Path=/; Secure; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+      ],
+      "strict-transport-security": "max-age=15724800; includeSubDomains, max-age=31536000; includeSubDomains; preload, max-age=63072000",
+      "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-eval' 'nonce-aD2K/Qz3Wn3dzpFYK71nrgAAAMc' 'strict-dynamic' https:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; font-src 'self' https://*.hubble.proton.black; frame-src https:; connect-src https: wss:; media-src https:; frame-ancestors https://*.mock.proton.black/ https://*.hubble.proton.black;",
+      "expect-ct": "max-age=2592000, enforce",
+      "x-content-type-options": "nosniff",
+      "x-xss-protection": "1; mode=block",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "x-permitted-cross-domain-policies": "none"
+    },
+    "statusCode": 200
+  },
+  "enabled": true,
+  "timestamp": 1748863741835,
+  "name": "Mock_get__api_pass_v1_breach"
+}
