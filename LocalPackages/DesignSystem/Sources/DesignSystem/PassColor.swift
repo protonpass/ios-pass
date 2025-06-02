@@ -50,6 +50,8 @@ public extension PassColor {
     static let backgroundStrong = Self.color(named: "BackgroundStrong")
     static let backgroundWeak = Self.color(named: "BackgroundWeak")
     static let tabBarBackground = Self.color(named: "TabBarBackground")
+
+    static let newBackgroundStrong = Self.color(named: "NewBackgroundStrong")
 }
 
 // MARK: - Items
