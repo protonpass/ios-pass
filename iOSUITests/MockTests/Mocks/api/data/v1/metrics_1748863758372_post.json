@@ -1,0 +1,54 @@
+{
+  "request": {
+    "exactUrl": [
+      "/api/data/v1/metrics"
+    ],
+    "method": "post"
+  },
+  "response": {
+    "body": {
+      "Code": 1000
+    },
+    "headers": {
+      "server": "nginx",
+      "date": "Mon, 02 Jun 2025 11:29:18 GMT",
+      "content-type": "application/json",
+      "transfer-encoding": "chunked",
+      "connection": "close",
+      "x-pm-code": "1000",
+      "cache-control": "max-age=0, must-revalidate, no-cache, no-store, private",
+      "expires": "Fri, 04 May 1984 22:15:00 GMT",
+      "x-pm-route-pattern": "POST /v1/metrics",
+      "x-pm-uid": "evqh5zkmsjv6l6tg3by6dfbas2nzdtbh",
+      "access": "application/vnd.protonmail.api+json;apiversion=1",
+      "x-pm-time-total": "90",
+      "x-pm-time-user": "53",
+      "x-pm-time-system": "15",
+      "x-pm-memory": "12",
+      "x-pm-allocated-memory": "18",
+      "x-pm-urgency": "1",
+      "x-pm-apiversion": "develop (75e34602)",
+      "x-b3-traceid": "91202410faa9fcfce4ddfbf6ba1c50ce",
+      "x-b3-spanid": "240fab0faf816bbb",
+      "x-b3-parentspanid": "",
+      "vary": "Accept-Encoding",
+      "content-encoding": "gzip",
+      "x-pm-nonce": "aD2LDnQeXgvTLVGD1hxC4gAAAIw",
+      "set-cookie": [
+        "Session-Id=aD2LDnQeXgvTLVGD1hxC4gAAAIw; Domain=hubble.proton.black; Path=/; HttpOnly; Secure; Max-Age=7776000",
+        "Version=; Domain=hubble.proton.black; Path=/; Secure; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+      ],
+      "strict-transport-security": "max-age=15724800; includeSubDomains, max-age=31536000; includeSubDomains; preload, max-age=63072000",
+      "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-eval' 'nonce-aD2LDnQeXgvTLVGD1hxC4gAAAIw' 'strict-dynamic' https:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; font-src 'self' https://*.hubble.proton.black; frame-src https:; connect-src https: wss:; media-src https:; frame-ancestors https://*.mock.proton.black/ https://*.hubble.proton.black;",
+      "expect-ct": "max-age=2592000, enforce",
+      "x-content-type-options": "nosniff",
+      "x-xss-protection": "1; mode=block",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "x-permitted-cross-domain-policies": "none"
+    },
+    "statusCode": 200
+  },
+  "enabled": true,
+  "timestamp": 1748863758372,
+  "name": "Mock_post__api_data_v1_metrics"
+}

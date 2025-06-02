@@ -1,0 +1,139 @@
+{
+  "request": {
+    "exactUrl": [
+      "/api/data/v1/stats/multiple"
+    ],
+    "method": "post"
+  },
+  "response": {
+    "body": {
+      "Code": 401,
+      "Error": "Invalid access token",
+      "Details": {},
+      "exception": "Proton\\Http\\Exceptions\\UnauthorizedException",
+      "message": "Invalid access token",
+      "file": "/var/www/bundles/AccountInternalBundle/src/Application/Auth/AuthenticationListener.php",
+      "line": 406,
+      "trace": [
+        {
+          "file": "/var/www/bundles/AccountInternalBundle/src/Application/Auth/AuthenticationListener.php",
+          "line": 173,
+          "function": "Proton\\Bundles\\AccountInternalBundle\\Application\\Auth\\AuthenticationListener#checkRequirements"
+        },
+        {
+          "file": "/var/www/bundles/ObservabilityBundle/src/Service/Symfony/TracedListener.php",
+          "line": 77,
+          "function": "Proton\\Bundles\\AccountInternalBundle\\Application\\Auth\\AuthenticationListener#onKernelRequest"
+        },
+        {
+          "file": "/var/www/bundles/ObservabilityBundle/src/Service/Zipkin/TracerService.php",
+          "line": 99,
+          "function": "Proton\\Bundles\\ObservabilityBundle\\Service\\Symfony\\TracedListener#Proton\\Bundles\\ObservabilityBundle\\Service\\Symfony\\{closure}"
+        },
+        {
+          "file": "/var/www/bundles/ObservabilityBundle/src/Service/Symfony/TracedListener.php",
+          "line": 75,
+          "function": "Proton\\Bundles\\ObservabilityBundle\\Service\\Zipkin\\TracerService#inSpan"
+        },
+        {
+          "file": "/var/www/vendor/symfony/event-dispatcher/EventDispatcher.php",
+          "line": 206,
+          "function": "Proton\\Bundles\\ObservabilityBundle\\Service\\Symfony\\TracedListener#__invoke"
+        },
+        {
+          "file": "/var/www/vendor/symfony/event-dispatcher/EventDispatcher.php",
+          "line": 56,
+          "function": "Symfony\\Component\\EventDispatcher\\EventDispatcher#callListeners"
+        },
+        {
+          "file": "/var/www/bundles/ObservabilityBundle/src/Service/Symfony/TracerEventDispatcher.php",
+          "line": 34,
+          "function": "Symfony\\Component\\EventDispatcher\\EventDispatcher#dispatch"
+        },
+        {
+          "file": "/var/www/bundles/ObservabilityBundle/src/Service/Zipkin/TracerService.php",
+          "line": 99,
+          "function": "Proton\\Bundles\\ObservabilityBundle\\Service\\Symfony\\TracerEventDispatcher#Proton\\Bundles\\ObservabilityBundle\\Service\\Symfony\\{closure}"
+        },
+        {
+          "file": "/var/www/bundles/ObservabilityBundle/src/Service/Symfony/TracerEventDispatcher.php",
+          "line": 30,
+          "function": "Proton\\Bundles\\ObservabilityBundle\\Service\\Zipkin\\TracerService#inSpan"
+        },
+        {
+          "file": "/var/www/vendor/symfony/http-kernel/HttpKernel.php",
+          "line": 159,
+          "function": "Proton\\Bundles\\ObservabilityBundle\\Service\\Symfony\\TracerEventDispatcher#dispatch"
+        },
+        {
+          "file": "/var/www/vendor/symfony/http-kernel/HttpKernel.php",
+          "line": 76,
+          "function": "Symfony\\Component\\HttpKernel\\HttpKernel#handleRaw"
+        },
+        {
+          "file": "/var/www/bundles/ObservabilityBundle/src/Service/Zipkin/TracerHttpKernel.php",
+          "line": 77,
+          "function": "Symfony\\Component\\HttpKernel\\HttpKernel#handle"
+        },
+        {
+          "file": "/var/www/bundles/ObservabilityBundle/src/Service/MetricsHttpKernel.php",
+          "line": 85,
+          "function": "Proton\\Bundles\\ObservabilityBundle\\Service\\Zipkin\\TracerHttpKernel#handle"
+        },
+        {
+          "file": "/var/www/vendor/symfony/http-kernel/Kernel.php",
+          "line": 182,
+          "function": "Proton\\Bundles\\ObservabilityBundle\\Service\\MetricsHttpKernel#handle"
+        },
+        {
+          "file": "/var/www/vendor/symfony/runtime/Runner/Symfony/HttpKernelRunner.php",
+          "line": 35,
+          "function": "Symfony\\Component\\HttpKernel\\Kernel#handle"
+        },
+        {
+          "file": "/var/www/vendor/autoload_runtime.php",
+          "line": 31,
+          "function": "Symfony\\Component\\Runtime\\Runner\\Symfony\\HttpKernelRunner#run"
+        },
+        {
+          "file": "/var/www/html/index.php",
+          "line": 12,
+          "function": "require_once"
+        }
+      ],
+      "previous": null
+    },
+    "headers": {
+      "server": "nginx",
+      "date": "Mon, 02 Jun 2025 11:28:53 GMT",
+      "content-type": "application/json",
+      "transfer-encoding": "chunked",
+      "connection": "close",
+      "cache-control": "max-age=0, must-revalidate, no-cache, no-store, private",
+      "expires": "Fri, 04 May 1984 22:15:00 GMT",
+      "x-pm-code": "401",
+      "x-pm-route-pattern": "POST /v1/stats/multiple",
+      "access": "application/vnd.protonmail.api+json;apiversion=1",
+      "x-pm-time-total": "21",
+      "x-pm-time-user": "5",
+      "x-pm-time-system": "1",
+      "x-pm-memory": "3",
+      "x-pm-allocated-memory": "6",
+      "x-pm-urgency": "1",
+      "x-pm-apiversion": "develop (75e34602)",
+      "x-b3-traceid": "924016fccff694dd497dab52adcd27b3",
+      "x-b3-spanid": "85e4e32d46b031d2",
+      "x-b3-parentspanid": "",
+      "x-pm-nonce": "aD2K9Qz3Wn3dzpFYK71noQAAAMs",
+      "set-cookie": [
+        "Session-Id=aD2K9Qz3Wn3dzpFYK71noQAAAMs; Domain=hubble.proton.black; Path=/; HttpOnly; Secure; Max-Age=7776000",
+        "Version=; Domain=hubble.proton.black; Path=/; Secure; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+      ],
+      "strict-transport-security": "max-age=15724800; includeSubDomains, max-age=63072000"
+    },
+    "statusCode": 401
+  },
+  "enabled": true,
+  "timestamp": 1748863733265,
+  "name": "Mock_post__api_data_v1_stats_multiple"
+}

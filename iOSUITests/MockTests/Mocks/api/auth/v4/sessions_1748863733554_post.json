@@ -1,0 +1,59 @@
+{
+  "request": {
+    "exactUrl": [
+      "/api/auth/v4/sessions"
+    ],
+    "method": "post"
+  },
+  "response": {
+    "body": {
+      "Code": 1000,
+      "AccessToken": "rqghox577vixuheualiu45csjr6h5zn4",
+      "RefreshToken": "tr2sdegfcatqi72qc6kmhvrkoziu25t7",
+      "TokenType": "Bearer",
+      "Scopes": [],
+      "UID": "ykqdmv7hfi3fnlpybfa4hux6cco4tkds",
+      "LocalID": 0
+    },
+    "headers": {
+      "server": "nginx",
+      "date": "Mon, 02 Jun 2025 11:28:53 GMT",
+      "content-type": "application/json",
+      "transfer-encoding": "chunked",
+      "connection": "close",
+      "x-pm-code": "1000",
+      "cache-control": "max-age=0, must-revalidate, no-cache, no-store, private",
+      "expires": "Fri, 04 May 1984 22:15:00 GMT",
+      "x-pm-route-pattern": "POST /auth/{_version}/sessions",
+      "access": "application/vnd.protonmail.api+json;apiversion=4",
+      "x-pm-time-total": "62",
+      "x-pm-time-user": "16",
+      "x-pm-time-system": "3",
+      "x-pm-memory": "6",
+      "x-pm-allocated-memory": "8",
+      "x-pm-urgency": "1",
+      "x-pm-apiversion": "develop (75e34602)",
+      "x-b3-traceid": "0c66f8267d66f250547ef69a6e1b792c",
+      "x-b3-spanid": "e91410fda3c7b276",
+      "x-b3-parentspanid": "",
+      "vary": "Accept-Encoding",
+      "content-encoding": "gzip",
+      "x-pm-nonce": "aD2K9XQeXgvTLVGD1hxC1wAAAJM",
+      "set-cookie": [
+        "Session-Id=aD2K9XQeXgvTLVGD1hxC1wAAAJM; Domain=hubble.proton.black; Path=/; HttpOnly; Secure; Max-Age=7776000",
+        "Version=; Domain=hubble.proton.black; Path=/; Secure; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+      ],
+      "strict-transport-security": "max-age=15724800; includeSubDomains, max-age=31536000; includeSubDomains; preload, max-age=63072000",
+      "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-eval' 'nonce-aD2K9XQeXgvTLVGD1hxC1wAAAJM' 'strict-dynamic' https:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; font-src 'self' https://*.hubble.proton.black; frame-src https:; connect-src https: wss:; media-src https:; frame-ancestors https://*.mock.proton.black/ https://*.hubble.proton.black;",
+      "expect-ct": "max-age=2592000, enforce",
+      "x-content-type-options": "nosniff",
+      "x-xss-protection": "1; mode=block",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "x-permitted-cross-domain-policies": "none"
+    },
+    "statusCode": 200
+  },
+  "enabled": true,
+  "timestamp": 1748863733554,
+  "name": "Mock_post__api_auth_v4_sessions"
+}
