@@ -75224,6 +75224,12 @@
             "value" : "Gostitelj"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Värd"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -75371,6 +75377,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ime gostitelja"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Värdnamn"
           }
         },
         "tr" : {
@@ -91154,6 +91166,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Administrador"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valvonta"
           }
         },
         "fr" : {
@@ -135430,6 +135448,12 @@
             "value" : "ID sdílení"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Del-ID"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -135529,7 +135553,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Paylaşım Kimliği"
+            "value" : "Paylaşım kimliği"
           }
         },
         "zh-Hans" : {
@@ -135553,6 +135577,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ID sdílení zkopírováno"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Del-ID kopieret"
           }
         },
         "de" : {
@@ -135582,7 +135612,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se copió el ID para compartir."
+            "value" : "ID para compartir copiada"
           }
         },
         "fi" : {
