@@ -21,6 +21,7 @@
 import DesignSystem
 import Entities
 import Foundation
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -55,18 +56,15 @@ struct EditCustomFieldSections<Field: CustomFieldTypes>: View {
     }
 
     private var addMoreButton: some View {
-        Button(action: onAddMore) {
-            Label(title: {
-                Text("Add more")
-                    .font(.callout)
-                    .fontWeight(.medium)
-            }, icon: {
-                Image(systemName: "plus")
-            })
-            .foregroundStyle(contentType.normMajor2Color.toColor)
+        HStack {
+            CapsuleLabelButton(icon: UIImage(systemName: "plus") ?? .init(),
+                               title: #localized("Add more"),
+                               titleColor: contentType.normMajor2Color,
+                               backgroundColor: contentType.normMinor1Color,
+                               maxWidth: nil,
+                               action: onAddMore)
+            Spacer()
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.vertical, DesignConstant.sectionPadding)
     }
 
     private var upgradeButton: some View {

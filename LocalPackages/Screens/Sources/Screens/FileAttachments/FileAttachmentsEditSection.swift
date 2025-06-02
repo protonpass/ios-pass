@@ -29,7 +29,6 @@ public protocol FileAttachmentsEditHandler: AnyObject {
     var fileAttachmentsSectionPrimaryColor: UIColor { get }
     var fileAttachmentsSectionSecondaryColor: UIColor { get }
     var isFreeUser: Bool { get }
-    var itemContentType: ItemContentType { get }
 
     func generateDatedFileName(prefix: String, extension: String) -> String
     func writeToTemporaryDirectory(data: Data, fileName: String) throws -> URL
@@ -130,7 +129,6 @@ public struct FileAttachmentsEditSection: View {
                                               onRename: { handler.showRenameAlert(attachment: file) },
                                               onDelete: { handler.showDeleteAlert(attachment: file) },
                                               onRetryUpload: { handler.retryUpload(attachment: file) }),
-                                  itemContentType: handler.itemContentType,
                                   uiModel: file,
                                   primaryTintColor: handler.fileAttachmentsSectionPrimaryColor,
                                   secondaryTintColor: handler.fileAttachmentsSectionSecondaryColor)
@@ -142,7 +140,7 @@ public struct FileAttachmentsEditSection: View {
             }
 
             if !isFetching, fetchError == nil {
-                FileAttachmentsButton(style: .capsule, handler: handler)
+                FileAttachmentsButton(handler: handler)
                     .opacityReduced(isUploading)
             }
         }

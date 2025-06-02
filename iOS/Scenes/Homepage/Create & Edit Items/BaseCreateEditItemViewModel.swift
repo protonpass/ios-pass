@@ -118,6 +118,7 @@ struct AddCustomFieldPayload: Sendable {
 
 @MainActor
 class BaseCreateEditItemViewModel: ObservableObject {
+    @Published var title = ""
     @Published var selectedVault: Share
     @Published private(set) var isFreeUser = false
     @Published private(set) var isSaving = false
@@ -241,12 +242,11 @@ class BaseCreateEditItemViewModel: ObservableObject {
         return uiModels
     }
 
-    var hasEmptyCustomField: Bool {
-        customFields.filter { $0.type != .text }.contains(where: \.content.isEmpty)
-    }
-
     var isSaveable: Bool {
-        !isUploadingFile && fileUiModels.allSatisfy { $0.state == .uploaded }
+        !title.isEmpty &&
+            !customFields.contains { !$0.type.emptyContentAllowed && $0.content.isEmpty } &&
+            !isUploadingFile &&
+            fileUiModels.allSatisfy { $0.state == .uploaded }
     }
 
     var shouldUpgrade: Bool { false }

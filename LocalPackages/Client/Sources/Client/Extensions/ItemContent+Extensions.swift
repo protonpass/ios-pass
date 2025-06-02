@@ -61,7 +61,7 @@ public extension ItemContent {
                      aliasEmail: item.aliasEmail,
                      aliasEnabled: aliasEnabled,
                      title: name,
-                     description: note,
+                     description: note.trimmingCharacters(in: .whitespacesAndNewlines),
                      url: url,
                      isAlias: isAlias,
                      totpUri: totpUri,

@@ -28,7 +28,7 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
-public struct FileAttachmentsButton: View {
+struct FileAttachmentsButton: View {
     @StateObject private var viewModel: FileAttachmentsButtonViewModel
     @State private var showCameraUnavailable = false
     @State private var showCamera = false
@@ -37,21 +37,14 @@ public struct FileAttachmentsButton: View {
     @State private var showPhotosPicker = false
     @State private var showFileImporter = false
 
-    private let style: Style
     private let handler: any FileAttachmentsEditHandler
 
-    public enum Style {
-        case circle, capsule
-    }
-
-    public init(style: Style,
-                handler: any FileAttachmentsEditHandler) {
+    init(handler: any FileAttachmentsEditHandler) {
         _viewModel = .init(wrappedValue: .init(handler: handler))
-        self.style = style
         self.handler = handler
     }
 
-    public var body: some View {
+    var body: some View {
         if handler.isFreeUser {
             attachFileButton {
                 handler.upsellFileAttachments()
@@ -136,22 +129,12 @@ public struct FileAttachmentsButton: View {
         }
     }
 
-    @ViewBuilder
     private func attachFileButton(_ action: (() -> Void)? = nil) -> some View {
-        switch style {
-        case .circle:
-            CircleButton(icon: IconProvider.paperClipVertical,
-                         iconColor: handler.fileAttachmentsSectionPrimaryColor,
-                         backgroundColor: handler.fileAttachmentsSectionSecondaryColor,
-                         action: action)
-
-        case .capsule:
-            CapsuleTextButton(title: #localized("Attach a file", bundle: .module),
-                              titleColor: handler.fileAttachmentsSectionPrimaryColor,
-                              backgroundColor: handler.fileAttachmentsSectionSecondaryColor,
-                              height: 48,
-                              action: action)
-        }
+        CapsuleTextButton(title: #localized("Attach a file", bundle: .module),
+                          titleColor: handler.fileAttachmentsSectionPrimaryColor,
+                          backgroundColor: handler.fileAttachmentsSectionSecondaryColor,
+                          height: 48,
+                          action: action)
     }
 
     private func handle(_ method: FileAttachmentMethod) {

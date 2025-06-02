@@ -48,11 +48,7 @@ struct NoteDetailSection: View {
                 Text(title)
                     .sectionTitleText()
 
-                TextView(.constant(note))
-                    .autoDetectDataTypes(.all)
-                    // swiftlint:disable:next deprecated_foregroundcolor_modifier
-                    .foregroundColor(PassColor.textNorm)
-                    .isEditable(false)
+                ReadOnlyTextView(note)
                     .frame(maxHeight: .infinity)
                     .onTapGesture {
                         // Pure heuristic
@@ -88,11 +84,7 @@ private struct FullNoteView: View {
                         .padding(.bottom)
                     Text(title)
                         .sectionTitleText()
-                    TextView(.constant(note))
-                        .autoDetectDataTypes(.all)
-                        // swiftlint:disable:next deprecated_foregroundcolor_modifier
-                        .foregroundColor(PassColor.textNorm)
-                        .isEditable(false)
+                    ReadOnlyTextView(note)
                 }
                 .padding()
             }
