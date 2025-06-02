@@ -34,7 +34,6 @@ extension Notification.Name {
 final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    @Published var title = ""
     @Published var prefix = ""
     @Published var prefixManuallyEdited = false
     @Published var note = ""

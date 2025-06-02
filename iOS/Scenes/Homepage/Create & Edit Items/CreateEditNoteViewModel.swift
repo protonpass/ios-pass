@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Combine
+import Client
 import Core
 import DocScanner
 import Entities
@@ -28,11 +28,26 @@ import SwiftUI
 final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    @Published var title = ""
     @Published var note = ""
 
-    override var isSaveable: Bool {
-        super.isSaveable && !title.isEmpty
+    override init(mode: ItemMode,
+                  upgradeChecker: any UpgradeCheckerProtocol,
+                  vaults: [Share]) throws {
+        try super.init(mode: mode,
+                       upgradeChecker: upgradeChecker,
+                       vaults: vaults)
+
+        scanResponsePublisher
+            .receive(on: DispatchQueue.main)
+            .sink { _ in } receiveValue: { [weak self] result in
+                guard let self, let result else { return }
+                if let document = result as? ScannedDocument {
+                    transformIntoNote(document: document)
+                } else {
+                    assertionFailure("Expecting ScannedDocument as result")
+                }
+            }
+            .store(in: &cancellables)
     }
 
     override func bindValues() {
@@ -60,6 +75,23 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
                             note: note,
                             itemUuid: UUID().uuidString,
                             data: ItemContentData.note,
-                            customFields: [])
+                            customFields: customFields)
+    }
+}
+
+private extension CreateEditNoteViewModel {
+    func transformIntoNote(document: ScannedDocument) {
+        let pageContents = document.scannedPages.map { page in
+            page.text.reduce(into: "") { partialResult, next in
+                partialResult = partialResult + "\n" + next
+            }
+        }
+
+        for (index, content) in pageContents.enumerated() {
+            note += content
+            if index != pageContents.count - 1 {
+                note += "\n\n"
+            }
+        }
     }
 }
