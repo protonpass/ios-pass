@@ -1,0 +1,1702 @@
+{
+  "request": {
+    "exactUrl": [
+      "/api/feature/v2/frontend"
+    ],
+    "method": "get"
+  },
+  "response": {
+    "body": {
+      "Code": 1000,
+      "toggles": [
+        {
+          "name": "VisionarySignup",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassRemovePrimaryVault",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "MagicLink",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "EmailForwarding",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "WebMailPageSizeSetting",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "BlackFridayCustomLogic",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "AddressDeletion",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassSentinelV1",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "AutoReloadPage",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "SentinelPassPlus",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassSharingV1",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "BF2023OfferCheck",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "CryptoDisableUndecryptableKeys",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassSharingNewUsers",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "BlackFriday",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "ExternalSSO",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "BreachesAccountDashboard",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "MailTrialOffer",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "ColorPerEventWeb",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "WebNextMessageOnMove",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "B2BLogsPass",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "SignedInAccountRecovery",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassPinningV1",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PersistedState",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "AndroidAccountRecovery",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassSpotlight",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "NewOnboardingExperiment",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "CNoOnboarding",
+            "enabled": true,
+            "payload": {
+              "type": "string",
+              "value": "C"
+            }
+          }
+        },
+        {
+          "name": "VPNDrawer",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassUsernameSplit",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "TestFeatureFlagsCore",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "OrganizationPasswordlessKey",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassEnableDesktopAutoUpdate",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PaymentsV6StatusRequest",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassItemHistoryV1",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "SignedInAccountRecoveryReset",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PushNotifications",
+          "enabled": true,
+          "impressionData": true,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "SingleSignup",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassPublicLinkV1",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "FIDO2Mobile",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "IOSTelemetrySignUpMetrics",
+          "enabled": true,
+          "impressionData": true,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassLightThemeV1",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "CalendarBusyTimeSlots",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "ChargebacksCancellationMode",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "no_action",
+            "enabled": true,
+            "payload": {
+              "type": "number",
+              "value": "0"
+            }
+          }
+        },
+        {
+          "name": "LockedState",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassEnableOrganizationSharing",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassEnableOrganizationExport",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassExtensionInjectionKillSwitch",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "IOSChangePassword",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "InboxUpsellFlow",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "ScimTenantCreation",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "BreachesSecurityCenter",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "ABTestInboxUpsellStep",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "InboxDesktopThemeSelection",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassWebInternalAlpha",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassAccountSwitchV1",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "UserGroupsPermissionCheck",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "AIAssistantAddonPaymentsEnabled",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "EnableBitcoinChargebackChecking",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "AutodowngradeDeleteDataAfterRetentionPeriod",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "B2BLogsVPN",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "OrganizationIdentity",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "NewCancellationFlow",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "ExtendCancellationProcess",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassIdentityV1",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "ProtonTips",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "SentinelRecoverySettings",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "BreachAlertsNotificationsCommon",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "InboxDesktopMultiAccountSupport",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassAccessKeyV1",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "UserGroupsMembersPermissionCheck",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "ProtonSubdomains",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "InboxDesktopInAppPayments",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "InboxDesktopWinLinNewAppSwitcher",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassInAppB2bReferralPromo",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "WalletAutoSetup",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "ABTestInboxUpsellOneDollar",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "B",
+            "enabled": true
+          }
+        },
+        {
+          "name": "ChatInProductSwitcher",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "ApplyCreditsImmediately",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "KillPushNotificationDeviceRegistration",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "BillingAddressModal",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PaymentsBlockMemberSubscriptions",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "UnprivatizeMember",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "ComposerAssistant",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "YourPlanSectionV2",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "InboxWebPostSubscriptionFlow",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "DarkWebEmailNotifications",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "SepaPayments",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "EasySwitchConsentExperiment",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "BackupCurrencies",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "ZoomIntegration",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassDigitalAssetLinks",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassAdvancedAliasManagementV1",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "DeleteAccountMergeReason",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "ScheduledDowncycling",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "UnsignedCertificatesPDFRenderer",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassSimpleLoginAliasesSync",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "AndroidCancellationFix",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassLoginFlow",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "ChargebeeCaching",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "ScribeAdminSetting",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PaymentsAcknowledgeGoogleReceiptInApi",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "CalendarHotkeys",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassPassPlusGrantsSL",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassLifetimeBackend",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "RemoveImageMetadata",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassItemSharingV1",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassInAppMessagesV1",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassSLGrantsPassPlus",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "InvoiceNotesInChargebee",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "IOSPaymentsV2",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "TransactionsView",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "EduGainSSO",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassFileAttachmentsV1",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "RegionalCurrenciesBatch2",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassIOSBetterAuthentication",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "HidePassLifetimePlanOnMobile",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "LumoInProductSwitcher",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "IpAddonDowngrade",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PreventPrimaryAdministratorSwitchWithCoupon",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "AINewService",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "LumoSignupAvailable",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "LumoAddonAvailable",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "InboxNewUpsellModals",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "new",
+            "enabled": true,
+            "payload": {
+              "type": "string",
+              "value": "new"
+            }
+          }
+        },
+        {
+          "name": "LumoSeats",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "RolloutLumoPlans",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "ChangePasswordStrengthIndicator",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "SettingsFlagsAllowV6OptIn",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "UseDeleteDomainCommand",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PaymentsDisableVpn2022",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "ChargebeeMobileIntroPricing",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassIOSImportCsv",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "SubscriberNudgeDriveMonthly",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassInAppWelcomePromo",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "MemberFreePassFamily",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "UserDropdownRedesign",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "EnableToggleSubscriptionRenewalFix",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassAliasManagementInAppNotification",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "AccountSessions",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassLifetimeFrontend",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "EncryptionServerAllowV6",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassSecureLinkCryptoChangeV1",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "DisableLegacyPayments",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "Trials",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "EditInvoiceDetails",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "CKODisputeProcessing",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassMobileOnboardingV2",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "SubscriberNudgeMailMonthly",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "GlobalSSO",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassCustomTypeV1",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "OrganizationEntitlements",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "SubscriberNudgeBundleMonthly",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassInAppLifetimePromo",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "ManualTrialsFE",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "ManualTrials",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "EntitlementMedic",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "CustomerDeletionCleanUp",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassFileAttachmentEncryptionV2",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "VatId",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "MultipleSubscriptions",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassOrgSizeLimit",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "InboxBringYourOwnEmail",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "LoginAutofillTelemetry",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassGroupInvitesV1",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassRenameAdminToManager",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "DriveDocsLandingPageEnabled",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "WebNPSModal",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "timestamp",
+            "enabled": true,
+            "payload": {
+              "type": "json",
+              "value": "{\n  \"startTimestamp\": 1745452800,\n  \"endTimestamp\": 1746057600\n}"
+            }
+          }
+        },
+        {
+          "name": "CryptoEnforceOpenpgpGrammar",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "DisallowCheckRemoveScheduledChangesFlowForVariableCycleSubscriptions",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "CoreV6EventLoop",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "DataRetentionPolicy",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "SharedServerFeature",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "BinDataRecording",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PassProtonAnniversary2025Promo",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "MobilePlansLumoUpgrade",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "DeleteOrphanedEntitlementOrganizations",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "PaymentsBackendZipCodeValidation",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "OrgPolicyEnforced",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "LumoPlusFrontend",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "AccountProfiles",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
+          "name": "InboxBringYourOwnEmailSignup",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "Bold",
+            "enabled": true
+          }
+        },
+        {
+          "name": "DwmTrialFree2025",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        }
+      ]
+    },
+    "headers": {
+      "server": "nginx",
+      "date": "Mon, 02 Jun 2025 11:29:01 GMT",
+      "content-type": "application/json",
+      "transfer-encoding": "chunked",
+      "connection": "close",
+      "x-pm-code": "1000",
+      "cache-control": "max-age=0, must-revalidate, no-cache, no-store, private",
+      "expires": "Fri, 04 May 1984 22:15:00 GMT",
+      "x-pm-route-pattern": "GET /{_version}/frontend",
+      "x-pm-user-id": "955",
+      "x-pm-uid": "ykqdmv7hfi3fnlpybfa4hux6cco4tkds",
+      "access": "application/vnd.protonmail.api+json;apiversion=2",
+      "x-pm-time-total": "43",
+      "x-pm-time-user": "22",
+      "x-pm-time-system": "0",
+      "x-pm-memory": "6",
+      "x-pm-allocated-memory": "10",
+      "x-pm-urgency": "1",
+      "x-pm-apiversion": "develop (75e34602)",
+      "x-b3-traceid": "c18a5e952ae17dbee1bb4b2d2250324d",
+      "x-b3-spanid": "ec6c8dcef5707ed2",
+      "x-b3-parentspanid": "",
+      "vary": "Accept-Encoding",
+      "content-encoding": "gzip",
+      "x-pm-nonce": "aD2K/Qz3Wn3dzpFYK71nqAAAAME",
+      "set-cookie": [
+        "Session-Id=aD2K-Qz3Wn3dzpFYK71nqAAAAME; Domain=hubble.proton.black; Path=/; HttpOnly; Secure; Max-Age=7776000",
+        "Version=; Domain=hubble.proton.black; Path=/; Secure; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+      ],
+      "strict-transport-security": "max-age=15724800; includeSubDomains, max-age=31536000; includeSubDomains; preload, max-age=63072000",
+      "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-eval' 'nonce-aD2K/Qz3Wn3dzpFYK71nqAAAAME' 'strict-dynamic' https:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; font-src 'self' https://*.hubble.proton.black; frame-src https:; connect-src https: wss:; media-src https:; frame-ancestors https://*.mock.proton.black/ https://*.hubble.proton.black;",
+      "expect-ct": "max-age=2592000, enforce",
+      "x-content-type-options": "nosniff",
+      "x-xss-protection": "1; mode=block",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "x-permitted-cross-domain-policies": "none"
+    },
+    "statusCode": 200
+  },
+  "enabled": true,
+  "timestamp": 1748863741076,
+  "name": "Mock_get__api_feature_v2_frontend"
+}
