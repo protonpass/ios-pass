@@ -25827,6 +25827,12 @@
             "value" : "Používajte Hide-My-Email aliasy proti phishingovým hrozbám."
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Använd dölj-min-e-post-alias mot nätfiskehot."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
