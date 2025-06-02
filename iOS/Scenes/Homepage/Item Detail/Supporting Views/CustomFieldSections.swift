@@ -113,11 +113,7 @@ private struct TextCustomFieldSection: View {
                     Text("Empty")
                         .placeholderText()
                 } else {
-                    TextView(.constant(content))
-                        // swiftlint:disable:next deprecated_foregroundcolor_modifier
-                        .foregroundColor(PassColor.textNorm)
-                        .isEditable(false)
-                        .autoDetectDataTypes(.all)
+                    ReadOnlyTextView(content)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -163,12 +159,8 @@ private struct HiddenCustomFieldSection: View {
                         Text("Empty")
                             .placeholderText()
                     } else {
-                        TextView(isShowingText ?
-                            .constant(content) : .constant(String(repeating: "•",
-                                                                  count: min(20, content.count))))
-                            // swiftlint:disable:next deprecated_foregroundcolor_modifier
-                            .foregroundColor(PassColor.textNorm)
-                            .isEditable(false)
+                        ReadOnlyTextView(isShowingText ?
+                            content : String(repeating: "•", count: min(20, content.count)))
                     }
                 }
             }

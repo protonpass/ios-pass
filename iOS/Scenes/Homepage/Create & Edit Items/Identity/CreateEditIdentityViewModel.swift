@@ -61,8 +61,6 @@ struct HiddenStringValue: Sendable {
 
 @MainActor
 final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
-    @Published var title = ""
-
     /// Personal details
     /// Shown
     @Published var fullName = ""
@@ -122,10 +120,6 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
     @Published var sections = [CreateEditIdentitySection]()
 
     private var sectionIdToAddCustomField: String?
-
-    override var isSaveable: Bool {
-        super.isSaveable && !title.isEmpty
-    }
 
     override var itemContentType: ItemContentType { .identity }
 

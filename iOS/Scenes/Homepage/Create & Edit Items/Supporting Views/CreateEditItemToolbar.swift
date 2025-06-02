@@ -28,14 +28,12 @@ struct CreateEditItemToolbar: ToolbarContent {
     let saveButtonTitle: String
     let isSaveable: Bool
     let isSaving: Bool
-    let fileAttachmentsEnabled: Bool
     let canScanDocuments: Bool
     let vault: Share
     let canChangeVault: Bool
     let itemContentType: ItemContentType
     let shouldUpgrade: Bool
     let isPhone: Bool
-    let fileAttachmentsEditHandler: any FileAttachmentsEditHandler
     let onSelectVault: () -> Void
     let onGoBack: () -> Void
     let onUpgrade: () -> Void
@@ -79,10 +77,6 @@ private extension CreateEditItemToolbar {
                 vaultButton(vaultContent: vaultContent)
             }
 
-            if itemContentType == .note, fileAttachmentsEnabled {
-                FileAttachmentsButton(style: .circle, handler: fileAttachmentsEditHandler)
-            }
-
             if !ProcessInfo.processInfo.isiOSAppOnMac, canScanDocuments {
                 switch itemContentType {
                 case .creditCard:
@@ -91,7 +85,6 @@ private extension CreateEditItemToolbar {
                                  backgroundColor: itemContentType.normMinor1Color,
                                  accessibilityLabel: "Scan \(itemContentType == .note ? "document" : "credit card")",
                                  action: onScan)
-                        .disabled(!isSaveable)
                 default:
                     EmptyView()
                 }

@@ -23,6 +23,15 @@ import Foundation
 public enum CustomFieldType: CaseIterable, Equatable, Hashable, Sendable {
     case text, totp, hidden, timestamp
 
+    public var emptyContentAllowed: Bool {
+        switch self {
+        case .hidden, .text:
+            true
+        case .timestamp, .totp:
+            false
+        }
+    }
+
     public var defaultContent: String {
         if case .timestamp = self {
             "\(Int(Date.now.timeIntervalSince1970))"

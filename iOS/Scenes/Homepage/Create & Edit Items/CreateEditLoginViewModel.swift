@@ -43,7 +43,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     deinit { print(deinitMessage) }
 
     @Published private(set) var canAddOrEdit2FAURI = true
-    @Published var title = ""
     @Published private(set) var passkeys: [Passkey] = []
 
     @Published var emailOrUsername = ""
@@ -83,10 +82,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private let createPasskey = resolve(\SharedUseCasesContainer.createPasskey)
     private let validateEmail = resolve(\SharedUseCasesContainer.validateEmail)
     private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
-
-    override var isSaveable: Bool {
-        super.isSaveable && !title.isEmpty && !hasEmptyCustomField
-    }
 
     weak var delegate: (any CreateEditLoginViewModelDelegate)?
 

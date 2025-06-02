@@ -49,12 +49,6 @@ private struct DefaultField {
 final class CreateEditCustomItemViewModel: BaseCreateEditItemViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    @Published var title = ""
-
-    override var isSaveable: Bool {
-        super.isSaveable && !title.isEmpty
-    }
-
     override var shouldUpgrade: Bool {
         if case .create = mode, isFreeUser {
             return true

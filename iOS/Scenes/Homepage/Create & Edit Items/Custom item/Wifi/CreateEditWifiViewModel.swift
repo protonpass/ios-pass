@@ -26,14 +26,9 @@ import Macro
 final class CreateEditWifiViewModel: BaseCreateEditItemViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    @Published var title = ""
     @Published var ssid = ""
     @Published var password = ""
     @Published var security: WifiData.Security = .unspecified
-
-    override var isSaveable: Bool {
-        super.isSaveable && !title.isEmpty
-    }
 
     override var shouldUpgrade: Bool {
         if case .create = mode, isFreeUser {

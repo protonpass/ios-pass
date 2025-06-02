@@ -21,6 +21,7 @@
 import UIKit
 
 public extension UIScrollView {
+    // periphery:ignore
     func scrollToBottom(animated: Bool = true) {
         // swiftlint:disable:next identifier_name
         let y = contentSize.height - bounds.size.height
