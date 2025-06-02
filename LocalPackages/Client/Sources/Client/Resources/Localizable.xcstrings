@@ -130,6 +130,12 @@
             "value" : "Záznamy akcií rozšírenia"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Åtgärdstilläggsloggar"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
