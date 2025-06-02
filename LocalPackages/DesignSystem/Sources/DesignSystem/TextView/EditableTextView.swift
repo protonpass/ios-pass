@@ -41,8 +41,8 @@ public struct TextViewConfiguration: Sendable {
 /// `UITextView` wrapper that automatically adjusts its height depending on the content
 struct EditableTextView: UIViewRepresentable {
     @Binding var text: String
-    let config: TextViewConfiguration
-    let textViewDidChange: ((String) -> Void)?
+    private let config: TextViewConfiguration
+    private let textViewDidChange: ((String) -> Void)?
 
     init(text: Binding<String>,
          config: TextViewConfiguration = .init(),
@@ -101,9 +101,9 @@ struct EditableTextView: UIViewRepresentable {
 public struct EditableTextViewWithPlaceholder: View {
     @State private var showPlaceholder: Bool
     @Binding var text: String
-    let config: TextViewConfiguration
-    let placeholder: String
-    let placerholderColor: UIColor
+    private let config: TextViewConfiguration
+    private let placeholder: String
+    private let placerholderColor: UIColor
 
     public init(text: Binding<String>,
                 config: TextViewConfiguration = .init(),
