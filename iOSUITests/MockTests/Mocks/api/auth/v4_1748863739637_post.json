@@ -1,0 +1,96 @@
+{
+  "request": {
+    "exactUrl": [
+      "/api/auth/v4"
+    ],
+    "method": "post"
+  },
+  "response": {
+    "body": {
+      "Code": 1000,
+      "LocalID": 0,
+      "TokenType": "Bearer",
+      "AccessToken": "7eez5q6455qejs3uqtpbylcnuqezsuli",
+      "RefreshToken": "ybrhhkbannme3h6tmp5dv2nkn6zor6in",
+      "Scopes": [
+        "full",
+        "self",
+        "payments",
+        "keys",
+        "parent",
+        "user",
+        "loggedin",
+        "nondelinquent",
+        "mail",
+        "vpn",
+        "calendar",
+        "drive",
+        "docs",
+        "pass",
+        "verified",
+        "settings",
+        "wallet",
+        "neutron",
+        "lumo"
+      ],
+      "UID": "ykqdmv7hfi3fnlpybfa4hux6cco4tkds",
+      "UserID": "kmehyJpxDjGQdmwx87J4BQrxqjlPwgYZ_A2lWOWjWOaaut1aTvso_Dg_KS1Z13SVp-dNzvKz1cMEbUyOULkW5g==",
+      "EventID": "jN--QqzSIAb9n_4Jikz0PomAGHhIEp4hZQh3sJC1EqKA2fSX93rVhG59AnYCwp5VUmM8VWBo8WkeWwcUepdY7Q==",
+      "PasswordMode": 1,
+      "ServerProof": "lA75+iic+Iaac20gOwscHkmGx++UyjVQD4CHWTmhgozi660spLPHLyp4JR4zn6MhoEFkI9P+4PW99h4ZyAT1nQ7jQPCpjhyKQacMTtPr9IjD1e9JEwzwfa8bvzW/9va6ep2dlztTuVTtV11pKvJvEPK2clw5LLXfyiax8sYcHPKmiBOue1A1mj15Baq9oF62WCEr5Fpry55+4AZPa9bWmojGSAbx38zxBj8hN8uADPjeXfHfTNg908XA3qdH4a91YegaRzIJOJ3ZZqNyMRU3kz9THdO0Za+sT3nop7DS1qD8QY/QrcF+r2mbbfypKOSKUFfDNAsfhntmTy92qttC9w==",
+      "Scope": "full self payments keys parent user loggedin nondelinquent mail vpn calendar drive docs pass verified settings wallet neutron lumo",
+      "Uid": "ykqdmv7hfi3fnlpybfa4hux6cco4tkds",
+      "TwoFactor": 0,
+      "2FA": {
+        "Enabled": 0,
+        "FIDO2": {
+          "AuthenticationOptions": null,
+          "RegisteredKeys": []
+        },
+        "TOTP": 0
+      },
+      "TemporaryPassword": 0
+    },
+    "headers": {
+      "server": "nginx",
+      "date": "Mon, 02 Jun 2025 11:28:59 GMT",
+      "content-type": "application/json",
+      "transfer-encoding": "chunked",
+      "connection": "close",
+      "x-pm-code": "1000",
+      "cache-control": "max-age=0, must-revalidate, no-cache, no-store, private",
+      "expires": "Fri, 04 May 1984 22:15:00 GMT",
+      "x-pm-route-pattern": "POST /auth/{_version}",
+      "x-pm-uid": "ykqdmv7hfi3fnlpybfa4hux6cco4tkds",
+      "access": "application/vnd.protonmail.api+json;apiversion=4",
+      "x-pm-time-total": "253",
+      "x-pm-time-user": "66",
+      "x-pm-time-system": "21",
+      "x-pm-memory": "9",
+      "x-pm-allocated-memory": "12",
+      "x-pm-urgency": "1",
+      "x-pm-apiversion": "develop (75e34602)",
+      "x-b3-traceid": "1ca798e559c5fe53f8b04a7e85b52202",
+      "x-b3-spanid": "b9de7988e6ceb445",
+      "x-b3-parentspanid": "",
+      "vary": "Accept-Encoding",
+      "content-encoding": "gzip",
+      "x-pm-nonce": "aD2K+0eJ5YJYRUAZ3mxJJQAAAEI",
+      "set-cookie": [
+        "Session-Id=aD2K@0eJ5YJYRUAZ3mxJJQAAAEI; Domain=hubble.proton.black; Path=/; HttpOnly; Secure; Max-Age=7776000",
+        "Version=; Domain=hubble.proton.black; Path=/; Secure; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+      ],
+      "strict-transport-security": "max-age=15724800; includeSubDomains, max-age=31536000; includeSubDomains; preload, max-age=63072000",
+      "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-eval' 'nonce-aD2K+0eJ5YJYRUAZ3mxJJQAAAEI' 'strict-dynamic' https:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; font-src 'self' https://*.hubble.proton.black; frame-src https:; connect-src https: wss:; media-src https:; frame-ancestors https://*.mock.proton.black/ https://*.hubble.proton.black;",
+      "expect-ct": "max-age=2592000, enforce",
+      "x-content-type-options": "nosniff",
+      "x-xss-protection": "1; mode=block",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "x-permitted-cross-domain-policies": "none"
+    },
+    "statusCode": 200
+  },
+  "enabled": true,
+  "timestamp": 1748863739637,
+  "name": "Mock_post__api_auth_v4"
+}
