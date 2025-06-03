@@ -126,14 +126,12 @@ private struct AppCoverView: View {
 
     var body: some View {
         ZStack {
-            Image(uiImage: PassIcon.coverScreenBackground)
-                .resizable()
-                .scaledToFill()
+            PassColor.newBackgroundStrong.toColor
                 .ignoresSafeArea()
             Image(uiImage: PassIcon.coverScreenLogo)
                 .resizable()
                 .scaledToFit()
-                .frame(width: min(windowSize.width, windowSize.height) * 2 / 3)
+                .frame(width: min(windowSize.width, windowSize.height) / 3)
                 .frame(maxWidth: 245)
         }
         .localAuthentication(manuallyAvoidKeyboard: true,
