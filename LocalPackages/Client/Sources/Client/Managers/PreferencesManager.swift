@@ -136,9 +136,12 @@ public extension PreferencesManager {
         logger.trace("Setting up preferences manager")
 
         // App preferences
+        logger.trace("Setting up app preferences")
         if let preferences = try appPreferencesDatasource.getPreferences() {
+            logger.trace("Found existing app preferences")
             appPreferences.send(preferences)
         } else {
+            logger.trace("App preferences not found. Creating a default new one.")
             let preferences = AppPreferences.default
             try appPreferencesDatasource.upsertPreferences(preferences)
             appPreferences.send(preferences)
@@ -146,15 +149,20 @@ public extension PreferencesManager {
             // so we remove shared preferences which survives because it's stored in Keychain
             try sharedPreferencesDatasource.removePreferences()
         }
+        logger.info("Set up app preferences")
 
         // Shared preferences
+        logger.trace("Setting up shared preferences")
         if let preferences = try await sharedPreferencesDatasource.getPreferences() {
+            logger.trace("Found existing shared preferences")
             sharedPreferences.send(preferences)
         } else {
+            logger.trace("Shared preferences not found. Creating a default new one.")
             let preferences = SharedPreferences.default
             try await sharedPreferencesDatasource.upsertPreferences(preferences)
             sharedPreferences.send(preferences)
         }
+        logger.info("Set up shared preferences")
 
         // User's preferences
         if let userId = try? await userManager.getActiveUserId() {
@@ -332,12 +340,16 @@ public extension Publisher {
 
 private extension PreferencesManager {
     func setUserPreferences(userId: String) async throws {
+        logger.trace("Setting up user preferences")
         if let preferences = try await userPreferencesDatasource.getPreferences(for: userId) {
+            logger.trace("Found existing user preferences")
             userPreferences.send(preferences)
         } else {
+            logger.trace("User preferences not found. Creating a default new one.")
             let preferences = UserPreferences.default
             try await userPreferencesDatasource.upsertPreferences(preferences, for: userId)
             userPreferences.send(preferences)
         }
+        logger.info("Set up user preferences")
     }
 }
