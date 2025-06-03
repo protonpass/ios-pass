@@ -25,6 +25,7 @@ public struct RetryableErrorView: View {
     let mode: Mode
     let tintColor: UIColor
     let error: any Error
+    let onShareLogs: (() -> Void)?
     let onRetry: () -> Void
 
     public enum Mode: Sendable {
@@ -32,6 +33,14 @@ public struct RetryableErrorView: View {
         case vertical(textColor: UIColor)
         /// Inlined error view, error message displayed with retry button on the right
         case horizontal(textColor: UIColor)
+
+        var isVertical: Bool {
+            if case .vertical = self {
+                true
+            } else {
+                false
+            }
+        }
 
         public static var defaultVertical: Mode {
             .vertical(textColor: PassColor.textNorm)
@@ -45,21 +54,27 @@ public struct RetryableErrorView: View {
     public init(mode: Mode = .defaultVertical,
                 tintColor: UIColor = PassColor.interactionNorm,
                 error: any Error,
+                onShareLogs: (() -> Void)? = nil,
                 onRetry: @escaping () -> Void) {
         self.mode = mode
         self.tintColor = tintColor
         self.error = error
         self.onRetry = onRetry
+        self.onShareLogs = onShareLogs
+        if onShareLogs != nil {
+            assert(mode.isVertical, "Sharing logs only supported in vertical mode")
+        }
     }
 
     public var body: some View {
         switch mode {
         case let .vertical(textColor):
-            VStack {
+            VStack(spacing: DesignConstant.sectionPadding) {
                 Text(verbatim: error.localizedDebugDescription)
                     .multilineTextAlignment(.center)
                     .foregroundStyle(textColor.toColor)
                 retryButton
+                shareLogsButton
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
 
@@ -83,6 +98,16 @@ private extension RetryableErrorView {
             .foregroundStyle(tintColor.toColor)
             .labelStyle(.rightIcon)
             .buttonEmbeded(action: onRetry)
+    }
+
+    @ViewBuilder
+    var shareLogsButton: some View {
+        if let onShareLogs {
+            Button(action: onShareLogs) {
+                Text("Share logs", bundle: .module)
+                    .foregroundStyle(tintColor.toColor)
+            }
+        }
     }
 }
 

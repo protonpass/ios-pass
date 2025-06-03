@@ -26,7 +26,6 @@
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
-                        <color key="backgroundColor" name="LaunchScreenPassBackground"/>
                         <constraints>
                             <constraint firstItem="xyQ-3J-R8K" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="5wy-Y2-IEO"/>
                             <constraint firstItem="xyQ-3J-R8K" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="YLt-DF-wqF"/>
@@ -40,8 +39,5 @@
     </scenes>
     <resources>
         <image name="LaunchScreenPassLogo" width="128" height="128"/>
-        <namedColor name="LaunchScreenPassBackground">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
     </resources>
 </document>
