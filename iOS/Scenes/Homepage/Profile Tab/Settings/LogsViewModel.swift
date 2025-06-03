@@ -24,11 +24,6 @@ import FactoryKit
 import SwiftUI
 
 @MainActor
-protocol LogsViewModelDelegate: AnyObject {
-    func logsViewModelWantsToShareLogs(_ url: URL)
-}
-
-@MainActor
 final class LogsViewModel: DeinitPrintable, ObservableObject {
     deinit {
         if let fileToDelete {
@@ -56,8 +51,6 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
 
     private let logFormatter: any LogFormatterProtocol
     let module: PassModule
-
-    weak var delegate: (any LogsViewModelDelegate)?
 
     private let getLogEntries = resolve(\UseCasesContainer.getLogEntries)
     private let extractLogsToFile = resolve(\UseCasesContainer.extractLogsToFile)
@@ -91,7 +84,7 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
                 fileToDelete = try await extractLogsToFile(for: entries,
                                                            in: module.exportLogFileName)
                 if let fileToDelete {
-                    delegate?.logsViewModelWantsToShareLogs(fileToDelete)
+                    router.present(for: .shareLogs(fileToDelete))
                 }
             } catch {
                 router.display(element: .displayErrorBanner(error))
