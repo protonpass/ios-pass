@@ -38,7 +38,6 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.brandTwitter
 
         _ = PassIcon.clearHistory
-        _ = PassIcon.coverScreenBackground
         _ = PassIcon.coverScreenLogo
         _ = PassIcon.extraPassword
 

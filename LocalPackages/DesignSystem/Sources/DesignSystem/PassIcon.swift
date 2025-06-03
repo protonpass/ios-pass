@@ -44,7 +44,6 @@ public extension PassIcon {
     static let magnifyingGlass = Self.icon(named: "MagnifyingGlass")
 
     static let clearHistory = Self.icon(named: "ClearHistory")
-    static let coverScreenBackground = Self.icon(named: "CoverScreenBackground")
     static let coverScreenLogo = Self.icon(named: "CoverScreenLogo")
     static let extraPassword = Self.icon(named: "ExtraPassword")
 
