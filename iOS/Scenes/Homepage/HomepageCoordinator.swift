@@ -617,6 +617,8 @@ extension HomepageCoordinator {
                     presentSignInToAnotherDeviceView()
                 case let .undecryptableSharesBanner(dismissTopSheetBeforeShowing):
                     displayUndecryptableSharesBanner(dismissTopSheetBeforeShowing)
+                case let .shareLogs(url):
+                    presentShareSheet(for: url)
                 }
             }
             .store(in: &cancellables)
@@ -776,9 +778,7 @@ extension HomepageCoordinator {
     }
 
     func presentLogsView(for module: PassModule) {
-        let viewModel = LogsViewModel(module: module)
-        viewModel.delegate = self
-        let view = LogsView(viewModel: viewModel)
+        let view = LogsView(viewModel: .init(module: module))
         present(view)
     }
 
@@ -1100,6 +1100,14 @@ extension HomepageCoordinator {
                 handle(error: error)
             }
         }
+    }
+
+    private func presentShareSheet(for url: URL) {
+        let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        if UIDevice.current.isIpad {
+            activityVC.popoverPresentationController?.sourceView = topMostViewController.view
+        }
+        present(activityVC)
     }
 
     private func filledUserInfo(userData: UserData) async throws -> UserInfo {
@@ -1794,18 +1802,6 @@ extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
                 bannerManager.displayTopErrorMessage(error)
             }
         }
-    }
-}
-
-// MARK: - LogsViewModelDelegate
-
-extension HomepageCoordinator: LogsViewModelDelegate {
-    func logsViewModelWantsToShareLogs(_ url: URL) {
-        let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-        if UIDevice.current.isIpad {
-            activityVC.popoverPresentationController?.sourceView = topMostViewController.view
-        }
-        present(activityVC)
     }
 }
 

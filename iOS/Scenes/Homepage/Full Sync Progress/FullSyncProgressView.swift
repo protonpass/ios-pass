@@ -51,7 +51,9 @@ private extension FullSyncProgressView {
                 .ignoresSafeArea()
 
             if let error = viewModel.error {
-                RetryableErrorView(error: error, onRetry: retry)
+                RetryableErrorView(error: error,
+                                   onShareLogs: viewModel.shareHostAppLogs,
+                                   onRetry: retry)
                     .padding()
             } else {
                 VStack {
