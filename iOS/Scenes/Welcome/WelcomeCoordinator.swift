@@ -125,9 +125,9 @@ private extension WelcomeCoordinator {
         Task { [weak self] in
             guard let self else { return }
             do {
-                async let getGostAppLogs = try createLogsFile(for: PassModule.hostApp)
+                async let getHostAppLogs = try createLogsFile(for: PassModule.hostApp)
                 async let getAutofillLogs = try createLogsFile(for: PassModule.autoFillExtension)
-                let (hostAppLogs, autofillLogs) = try await (getGostAppLogs, getAutofillLogs)
+                let (hostAppLogs, autofillLogs) = try await (getHostAppLogs, getAutofillLogs)
                 let urls = [hostAppLogs, autofillLogs].compactMap { $0 }
 
                 guard !urls.isEmpty else { return }
