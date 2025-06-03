@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import Entities
 import FactoryKit
 import Foundation
 import Macro
@@ -32,6 +33,7 @@ final class FullSyncProgressViewModel: ObservableObject {
     private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private let processVaultSyncEvent = resolve(\SharedUseCasesContainer.processVaultSyncEvent)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    @LazyInjected(\UseCasesContainer.createLogsFile) private var createLogsFile
     private var cancellables = Set<AnyCancellable>()
 
     private var userId: String?
@@ -88,6 +90,19 @@ extension FullSyncProgressViewModel {
         error = nil
         progresses.removeAll()
         await appContentManager.fullSync(userId: userId)
+    }
+
+    func shareHostAppLogs() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                if let logsUrl = try await createLogsFile(for: PassModule.hostApp) {
+                    router.present(for: .shareLogs(logsUrl))
+                }
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
     }
 }
 

@@ -1645,6 +1645,16 @@
         }
       }
     },
+    "Share logs" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share logs"
+          }
+        }
+      }
+    },
     "Some changes happened to this item, heading back to the previous page." : {
       "localizations" : {
         "be" : {
