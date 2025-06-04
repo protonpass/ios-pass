@@ -506,6 +506,9 @@
 		53B153882D59EFC100D21AF9 /* ItemUiModel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */; };
 		53B981792D7ED25D003BD70E /* WifiDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B981782D7ED258003BD70E /* WifiDetailView.swift */; };
 		53B9817B2D7ED28B003BD70E /* WifiDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B9817A2D7ED289003BD70E /* WifiDetailViewModel.swift */; };
+		53BCE8422DF06586002A903D /* CreateEditKeyboardToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BCE8412DF06576002A903D /* CreateEditKeyboardToolbar.swift */; };
+		53BCE8432DF06586002A903D /* CreateEditKeyboardToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BCE8412DF06576002A903D /* CreateEditKeyboardToolbar.swift */; };
+		53BCE8442DF06586002A903D /* CreateEditKeyboardToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BCE8412DF06576002A903D /* CreateEditKeyboardToolbar.swift */; };
 		53C769982D5A3F9F0079C757 /* AppearanceSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3560843929DD4909001F7487 /* AppearanceSettings.swift */; };
 		53C769992D5A42B60079C757 /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
 		53C7699A2D5A42B90079C757 /* Pass-Constant-Prod.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */; };
@@ -1099,6 +1102,7 @@
 		53AEE4692D7F0E1200CE0CA7 /* CustomSectionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSectionsSection.swift; sourceTree = "<group>"; };
 		53B981782D7ED258003BD70E /* WifiDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiDetailView.swift; sourceTree = "<group>"; };
 		53B9817A2D7ED289003BD70E /* WifiDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiDetailViewModel.swift; sourceTree = "<group>"; };
+		53BCE8412DF06576002A903D /* CreateEditKeyboardToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditKeyboardToolbar.swift; sourceTree = "<group>"; };
 		53F19E5B2D81961600496168 /* DetailHistoryView+Ssh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailHistoryView+Ssh.swift"; sourceTree = "<group>"; };
 		53F19E5D2D81AA6E00496168 /* DetailHisotryView+Wifi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailHisotryView+Wifi.swift"; sourceTree = "<group>"; };
 		53F19E5F2D81B13900496168 /* DetailHistoryView+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailHistoryView+Custom.swift"; sourceTree = "<group>"; };
@@ -1870,6 +1874,7 @@
 				5335C6DB2D7889DF00190897 /* CreateEditCustomSections.swift */,
 				3564DE9B299A4EBD0002DDFA /* CreateEditItemTitleSection.swift */,
 				3572E52829940C1900775FAC /* CreateEditItemToolbar.swift */,
+				53BCE8412DF06576002A903D /* CreateEditKeyboardToolbar.swift */,
 				3567E46529B0E6F900511D62 /* NoCameraPermissionView.swift */,
 				350AF86D299683940045B7B6 /* NoteEditSection.swift */,
 				35992152299F8C3F00FEFA32 /* PrefixSuffixSection.swift */,
@@ -3631,6 +3636,7 @@
 				359A90302B90C58300A50138 /* AutoFillPasskey.swift in Sources */,
 				3552D0C72CA6D579004156D8 /* ItemsForTextInsertionView.swift in Sources */,
 				352866BD28E2DCB5000630E2 /* CredentialsView.swift in Sources */,
+				53BCE8422DF06586002A903D /* CreateEditKeyboardToolbar.swift in Sources */,
 				35E81D942CBEAAE8008E7BA0 /* SortFilterItemsMenu.swift in Sources */,
 				354B24762A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift in Sources */,
 				3570E0502B8E070F005B8186 /* PasskeyCredentialsViewModel.swift in Sources */,
@@ -3669,6 +3675,7 @@
 				35796CFF2B5EEB1200BF4E9E /* ItemContentType+Extensions.swift in Sources */,
 				35C9B8292B5E940A0062D787 /* ShareCoordinator.swift in Sources */,
 				53AEB2E52DDF68B40088DA4B /* TotpTextFieldToolbar.swift in Sources */,
+				53BCE8442DF06586002A903D /* CreateEditKeyboardToolbar.swift in Sources */,
 				357C71A22B5FAE5F00AA0BF1 /* SharedRepository+DependencyInjections.swift in Sources */,
 				35796D012B5EEE7400BF4E9E /* CreateEditLoginView.swift in Sources */,
 				357C71AE2B5FB05300AA0BF1 /* PrefixSuffixSection.swift in Sources */,
@@ -3777,6 +3784,7 @@
 				3569B2A129B788600070830B /* ItemsTabView.swift in Sources */,
 				539182D12D7F3ED100815D7F /* CustomDetailViewModel.swift in Sources */,
 				35F8CD0029B617670017DBC6 /* HomepageCoordinator.swift in Sources */,
+				53BCE8432DF06586002A903D /* CreateEditKeyboardToolbar.swift in Sources */,
 				5B5DBF182B68048600F72F6C /* TotpLoginsView.swift in Sources */,
 				66CA927D29F9716E00F2FC59 /* UserDefaultsServicePlanDataStorage.swift in Sources */,
 				35F8CD0929B62F230017DBC6 /* ItemTypeListView.swift in Sources */,

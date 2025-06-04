@@ -112,7 +112,12 @@ private extension CreateEditCreditCardView {
                 .animation(.default, value: viewModel.showFileAttachmentsBanner)
             }
         }
-        .toolbar { keyboardToolbar }
+        .toolbar {
+            CreateEditKeyboardToolbar(lastFocusedField: $lastFocusedField,
+                                      focusedField: focusedField,
+                                      onOpenCodeScanner: viewModel.openCodeScanner,
+                                      onPasteTotpUri: { viewModel.handlePastingTotpUri(customField: $0) })
+        }
         .onFirstAppear {
             if case .create = viewModel.mode {
                 focusedField = .title
@@ -145,23 +150,6 @@ private extension CreateEditCreditCardView {
 }
 
 private extension CreateEditCreditCardView {
-    @ToolbarContentBuilder
-    var keyboardToolbar: some ToolbarContent {
-        ToolbarItemGroup(placement: .keyboard) {
-            switch focusedField {
-            case let .custom(value) where value?.type == .totp:
-                TotpTextFieldToolbar(onScan: {
-                    lastFocusedField = focusedField
-                    viewModel.openCodeScanner()
-                }, onPasteFromClipboard: {
-                    viewModel.handlePastingTotpUri(customField: focusedField?.customField)
-                })
-            default:
-                EmptyView()
-            }
-        }
-    }
-
     var cardDetailSection: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             cardholderNameRow
