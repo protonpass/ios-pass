@@ -152,7 +152,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     var canShareItem: Bool {
-        vault?.vault.shareRole != .read && !itemContent.isAlias
+        vault?.vault.shareRole != .read
     }
 
     var numberOfSharedMembers: Int {
@@ -358,7 +358,9 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func showItemHistory() {
-        router.present(for: .history(itemContent))
+        if canShareItem {
+            router.present(for: .history(itemContent))
+        }
     }
 
     func handle(_ error: any Error) {
