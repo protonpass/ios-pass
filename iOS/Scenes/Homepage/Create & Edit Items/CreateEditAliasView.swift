@@ -58,7 +58,7 @@ struct CreateEditAliasView: View {
 
     var body: some View {
         NavigationStack {
-            ZStack {
+            Group {
                 switch viewModel.state {
                 case .loaded, .loading:
                     content
