@@ -37,6 +37,9 @@ extension DetailHistoryView {
                 customSections(item.extraSections)
             }
 
+            customFields(item: itemContent)
+                .padding(.top, 8)
+
             attachmentsSection(item: itemContent)
                 .padding(.top, 8)
         }
