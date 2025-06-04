@@ -71,6 +71,7 @@ struct CreateEditIdentityView: View {
     @StateObject private var viewModel: CreateEditIdentityViewModel
     @State private var sheetState: SectionsSheetState?
     @FocusState private var focusedField: Field?
+    @State private var lastFocusedField: Field?
 
     init(viewModel: CreateEditIdentityViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -113,6 +114,14 @@ struct CreateEditIdentityView: View {
 //        case workPhoneNumber
 //        case workEmail
         case custom(CustomField?)
+
+        var customField: CustomField? {
+            if case let .custom(customField) = self {
+                customField
+            } else {
+                nil
+            }
+        }
 
         static func == (lhs: Field, rhs: Field) -> Bool {
             if case let .custom(lhsfield) = lhs,
@@ -203,6 +212,12 @@ private extension CreateEditIdentityView {
         .navigationBarBackButtonHidden(true)
         .toolbarBackground(PassColor.backgroundNorm.toColor, for: .navigationBar)
         .itemCreateEditSetUp(viewModel)
+        .toolbar {
+            CreateEditKeyboardToolbar(lastFocusedField: $lastFocusedField,
+                                      focusedField: focusedField,
+                                      onOpenCodeScanner: viewModel.openCodeScanner,
+                                      onPasteTotpUri: { viewModel.handlePastingTotpUri(customField: $0) })
+        }
     }
 
     func addMoreButton(_ action: @escaping () -> Void) -> some View {
