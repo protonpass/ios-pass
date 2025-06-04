@@ -43,15 +43,11 @@ extension DetailHistoryView {
                 .padding(DesignConstant.sectionPadding)
                 .roundedDetailSection(borderColor: borderColor(for: \.note))
 
-            ForEach(viewModel.fileUiModels(for: itemContent)) { file in
-                FileAttachmentRow(mode: .view(onOpen: { viewModel.open(file) },
-                                              onSave: { viewModel.save(file) },
-                                              onShare: { viewModel.share(file) }),
-                                  uiModel: file,
-                                  primaryTintColor: viewModel.fileAttachmentsSectionPrimaryColor,
-                                  secondaryTintColor: viewModel.fileAttachmentsSectionSecondaryColor)
-                    .padding(.top, 8)
-            }
+            customFields(item: itemContent)
+                .padding(.top, 8)
+
+            attachmentsSection(item: itemContent)
+                .padding(.top, 8)
         }
         .frame(maxWidth: .infinity)
         .padding()
