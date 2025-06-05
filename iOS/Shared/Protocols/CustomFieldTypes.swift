@@ -23,4 +23,6 @@ import Foundation
 
 protocol CustomFieldTypes: Hashable, Equatable, Sendable {
     static func custom(_ arg: CustomField?) -> Self
+
+    var customField: CustomField? { get }
 }

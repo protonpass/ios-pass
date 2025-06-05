@@ -67,9 +67,7 @@ struct SshDetailView: View {
                 }
 
                 ItemDetailHistorySection(itemContent: viewModel.itemContent,
-                                         action: {
-                                             viewModel.canShareItem ? viewModel.showItemHistory() : nil
-                                         })
+                                         action: viewModel.showItemHistory)
 
                 ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,
                                           itemContent: viewModel.itemContent,

@@ -5438,6 +5438,17 @@
         }
       }
     },
+    "AutoFill Passkey" : {
+      "comment" : "Title of the page when autofilling passkeys",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AutoFill Passkey"
+          }
+        }
+      }
+    },
     "Automatically enter your passwords in Safari and other apps in a really fast and easy way." : {
       "localizations" : {
         "be" : {
@@ -13668,6 +13679,17 @@
         }
       }
     },
+    "How to autofill fields with a Password" : {
+      "comment" : "Link to a knowledge-base article",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How to autofill fields with a Password"
+          }
+        }
+      }
+    },
     "Import" : {
       "comment" : "Title of the button",
       "localizations" : {
@@ -15244,6 +15266,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "无历史记录"
+          }
+        }
+      }
+    },
+    "No logins with Passkeys found." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No logins with Passkeys found"
           }
         }
       }
