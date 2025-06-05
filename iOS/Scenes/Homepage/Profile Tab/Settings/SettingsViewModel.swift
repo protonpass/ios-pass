@@ -204,7 +204,7 @@ extension SettingsViewModel {
                 router.present(for: .fullSync)
                 logger.info("Doing full sync")
                 let userId = try await userManager.getActiveUserId()
-                await fullContentSync(userId: userId)
+                await fullContentSync(userId: userId, shouldStopEventLoop: true)
                 logger.info("Done full sync")
                 router.display(element: .successMessage(config: .refresh))
             } catch {
