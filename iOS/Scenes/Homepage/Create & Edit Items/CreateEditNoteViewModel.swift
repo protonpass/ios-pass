@@ -68,8 +68,6 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
 
     override var itemContentType: ItemContentType { .note }
 
-    var interpretor: any ScanInterpreting { ScanInterpreter() }
-
     override func generateItemContent() async -> ItemContentProtobuf {
         ItemContentProtobuf(name: title,
                             note: note,

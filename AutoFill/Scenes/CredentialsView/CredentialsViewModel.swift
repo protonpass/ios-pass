@@ -85,6 +85,11 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
     @Published private(set) var matchedItems = [ItemUiModel]()
     @Published private(set) var notMatchedItemSections: FetchableObject<[SectionedItemUiModel]> = .fetching
 
+    var showNoPasskeys: Bool {
+        guard passkeyRequestParams != nil else { return false }
+        return results.allSatisfy(\.matchedItems.isEmpty)
+    }
+
     init(mode: CredentialsMode,
          users: [UserUiModel],
          serviceIdentifiers: [ASCredentialServiceIdentifier],

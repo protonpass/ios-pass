@@ -37,7 +37,6 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
     public let note: String
     public let contentData: ItemContentData
 
-    /// Applicable to logins, ssh keys, wifis and custom items
     public let customFields: [CustomField]
 
     /// Applicable to identities, ssh keys, wifis and custom items

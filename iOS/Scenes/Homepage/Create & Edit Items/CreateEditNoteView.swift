@@ -31,12 +31,20 @@ import SwiftUI
 struct CreateEditNoteView: View {
     @StateObject private var viewModel: CreateEditNoteViewModel
     @FocusState private var focusedField: Field?
+    @State private var lastFocusedField: Field?
     @Namespace private var fileAttachmentsID
 
     enum Field: CustomFieldTypes {
         case title, note
-        // periphery:ignore
         case custom(CustomField?)
+
+        var customField: CustomField? {
+            if case let .custom(customField) = self {
+                customField
+            } else {
+                nil
+            }
+        }
     }
 
     init(viewModel: CreateEditNoteViewModel) {
@@ -61,9 +69,6 @@ struct CreateEditNoteView: View {
                 }
             }
         }
-        .scannerSheet(isPresented: $viewModel.isShowingScanner,
-                      interpreter: viewModel.interpretor,
-                      resultStream: viewModel.scanResponsePublisher)
     }
 }
 
@@ -114,5 +119,11 @@ private extension CreateEditNoteView {
             }
         }
         .padding()
+        .toolbar {
+            CreateEditKeyboardToolbar(lastFocusedField: $lastFocusedField,
+                                      focusedField: focusedField,
+                                      onOpenCodeScanner: viewModel.openCodeScanner,
+                                      onPasteTotpUri: { viewModel.handlePastingTotpUri(customField: $0) })
+        }
     }
 }
