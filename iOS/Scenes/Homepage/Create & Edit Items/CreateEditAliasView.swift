@@ -58,7 +58,7 @@ struct CreateEditAliasView: View {
 
     var body: some View {
         NavigationStack {
-            ZStack {
+            Group {
                 switch viewModel.state {
                 case .loaded, .loading:
                     content
@@ -205,7 +205,12 @@ struct CreateEditAliasView: View {
                     focusedField = nil
                 }
             }
-            .toolbar { keyboardToolbar }
+            .toolbar {
+                CreateEditKeyboardToolbar(lastFocusedField: $lastFocusedField,
+                                          focusedField: focusedField,
+                                          onOpenCodeScanner: viewModel.openCodeScanner,
+                                          onPasteTotpUri: { viewModel.handlePastingTotpUri(customField: $0) })
+            }
         }
         .onFirstAppear {
             if case .create = viewModel.mode {
@@ -345,23 +350,6 @@ struct CreateEditAliasView: View {
 }
 
 private extension CreateEditAliasView {
-    @ToolbarContentBuilder
-    var keyboardToolbar: some ToolbarContent {
-        ToolbarItemGroup(placement: .keyboard) {
-            switch focusedField {
-            case let .custom(value) where value?.type == .totp:
-                TotpTextFieldToolbar(onScan: {
-                    lastFocusedField = focusedField
-                    viewModel.openCodeScanner()
-                }, onPasteFromClipboard: {
-                    viewModel.handlePastingTotpUri(customField: focusedField?.customField)
-                })
-            default:
-                EmptyView()
-            }
-        }
-    }
-
     var simpleLoginNoteSection: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.note)

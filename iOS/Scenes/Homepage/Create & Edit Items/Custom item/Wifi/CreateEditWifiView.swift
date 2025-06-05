@@ -27,10 +27,19 @@ import SwiftUI
 struct CreateEditWifiView: View {
     @StateObject private var viewModel: CreateEditWifiViewModel
     @FocusState private var focusedField: Field?
+    @State private var lastFocusedField: Field?
 
     enum Field: CustomFieldTypes {
         case title, ssid, password
         case custom(CustomField?)
+
+        var customField: CustomField? {
+            if case let .custom(customField) = self {
+                customField
+            } else {
+                nil
+            }
+        }
     }
 
     init(viewModel: CreateEditWifiViewModel) {
@@ -70,6 +79,12 @@ struct CreateEditWifiView: View {
                 }
             }
             .padding()
+            .toolbar {
+                CreateEditKeyboardToolbar(lastFocusedField: $lastFocusedField,
+                                          focusedField: focusedField,
+                                          onOpenCodeScanner: viewModel.openCodeScanner,
+                                          onPasteTotpUri: { viewModel.handlePastingTotpUri(customField: $0) })
+            }
         }
         .fullSheetBackground()
         .navigationStackEmbeded()

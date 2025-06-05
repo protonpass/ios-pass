@@ -39,7 +39,12 @@ struct CredentialsView: View {
         ZStack {
             PassColor.backgroundNorm.toColor
                 .ignoresSafeArea()
-            stateViews
+
+            if viewModel.showNoPasskeys {
+                NoPasskeysView(onCancel: viewModel.handleCancel)
+            } else {
+                stateViews
+            }
         }
         .task {
             await viewModel.fetchItems()

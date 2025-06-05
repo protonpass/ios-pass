@@ -24,7 +24,7 @@ import Entities
 import ProtonCoreUIFoundations
 import SwiftUI
 
-public struct FileAttachmentRow: View {
+struct FileAttachmentRow: View {
     @State private var name: String
 
     private let mode: Mode
@@ -32,7 +32,7 @@ public struct FileAttachmentRow: View {
     private let primaryTintColor: UIColor
     private let secondaryTintColor: UIColor
 
-    public enum Mode: Sendable {
+    enum Mode: Sendable {
         case view(onOpen: @MainActor () -> Void,
                   onSave: @MainActor () -> Void,
                   onShare: @MainActor () -> Void)
@@ -42,10 +42,10 @@ public struct FileAttachmentRow: View {
                   onRetryUpload: @MainActor () -> Void)
     }
 
-    public init(mode: Mode,
-                uiModel: FileAttachmentUiModel,
-                primaryTintColor: UIColor,
-                secondaryTintColor: UIColor) {
+    init(mode: Mode,
+         uiModel: FileAttachmentUiModel,
+         primaryTintColor: UIColor,
+         secondaryTintColor: UIColor) {
         self.mode = mode
         _name = .init(initialValue: uiModel.name)
         self.uiModel = uiModel
@@ -53,7 +53,7 @@ public struct FileAttachmentRow: View {
         self.secondaryTintColor = secondaryTintColor
     }
 
-    public var body: some View {
+    var body: some View {
         VStack {
             content
             if case let .uploading(progress) = uiModel.state {

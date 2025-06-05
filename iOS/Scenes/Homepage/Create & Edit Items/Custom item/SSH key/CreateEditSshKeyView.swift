@@ -28,11 +28,20 @@ import SwiftUI
 struct CreateEditSshKeyView: View {
     @StateObject private var viewModel: CreateEditSshKeyViewModel
     @FocusState private var focusedField: Field?
+    @State private var lastFocusedField: Field?
     @State private var selectedKeyType: SshKeyType?
 
     enum Field: CustomFieldTypes {
         case title
         case custom(CustomField?)
+
+        var customField: CustomField? {
+            if case let .custom(customField) = self {
+                customField
+            } else {
+                nil
+            }
+        }
     }
 
     init(viewModel: CreateEditSshKeyViewModel) {
@@ -72,6 +81,12 @@ struct CreateEditSshKeyView: View {
                 }
             }
             .padding()
+            .toolbar {
+                CreateEditKeyboardToolbar(lastFocusedField: $lastFocusedField,
+                                          focusedField: focusedField,
+                                          onOpenCodeScanner: viewModel.openCodeScanner,
+                                          onPasteTotpUri: { viewModel.handlePastingTotpUri(customField: $0) })
+            }
         }
         .fullSheetBackground()
         .itemCreateEditSetUp(viewModel)

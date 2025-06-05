@@ -1,4 +1,11 @@
 # Version 1.17.2
+New layout for note item
+
+Improvements:
+- Display the actual Vault ID (instead of the Share ID) in the item's details view
+- Show a custom empty state when no passkeys match during autofill
+- Support custom fields across all item types
+- Enable sharing of logs when errors occur during full sync
 
 Others:
 - Core libraries upgraded from 32.1.2 to 32.3.1
