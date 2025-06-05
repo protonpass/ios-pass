@@ -45,6 +45,9 @@ public protocol SyncEventLoopDelegate: AnyObject, Sendable {
     ///    - reason: E.g no internet connection, previous loop not yet finished.
     func syncEventLoopDidSkipLoop(reason: SyncEventLoopSkipReason)
 
+    /// Triggered by user events system when the users are too outdated and a new full sync is needed
+    func syncEventLoopRequiresFullSync() async throws
+
     /// Called after every successful sync loop.
     /// - Parameters:
     ///   - hasNewEvents: whether there are new events like items being updated or deleted.
@@ -282,6 +285,12 @@ private extension SyncEventLoop {
             let hasNewEvents: Bool
             if userEventsEnabled == true {
                 let result = try await userEventsSynchronizer.sync(userId: currentUserId)
+
+                if result.fullRefreshNeeded {
+                    try await delegate?.syncEventLoopRequiresFullSync()
+                    return
+                }
+
                 let syncedAliases = try await aliasSynchronizer.sync(userId: currentUserId)
                 hasNewEvents = result.dataUpdated || syncedAliases
             } else {
