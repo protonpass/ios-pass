@@ -23,15 +23,6 @@ import Foundation
 public enum CustomFieldType: CaseIterable, Equatable, Hashable, Sendable {
     case text, totp, hidden, timestamp
 
-    public var emptyContentAllowed: Bool {
-        switch self {
-        case .hidden, .text:
-            true
-        case .timestamp, .totp:
-            false
-        }
-    }
-
     public var defaultContent: String {
         if case .timestamp = self {
             "\(Int(Date.now.timeIntervalSince1970))"
@@ -80,7 +71,11 @@ public struct CustomField: Equatable, Hashable, Sendable, Identifiable {
 
         case let .timestamp(extraTimestamp):
             type = .timestamp
-            content = String(extraTimestamp.timestamp.seconds)
+            if extraTimestamp.hasTimestamp {
+                content = String(extraTimestamp.timestamp.seconds)
+            } else {
+                content = ""
+            }
 
         case .none:
             type = .text
