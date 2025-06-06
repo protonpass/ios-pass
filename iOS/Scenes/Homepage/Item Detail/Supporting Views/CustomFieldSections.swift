@@ -294,6 +294,13 @@ private struct TotpCustomFieldSection: View {
     }
 }
 
+let kTimestampCustomFieldDateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateStyle = .full
+    formatter.timeStyle = .none
+    return formatter
+}()
+
 private struct TimestampCustomFieldSection: View {
     let title: String
     let content: String
@@ -303,17 +310,10 @@ private struct TimestampCustomFieldSection: View {
     let showIcon: Bool
     let onUpgrade: () -> Void
 
-    let formatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .full
-        formatter.timeStyle = .none
-        return formatter
-    }()
-
     var body: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             if showIcon {
-                ItemDetailSectionIcon(icon: CustomFieldType.text.icon,
+                ItemDetailSectionIcon(icon: CustomFieldType.timestamp.icon,
                                       color: itemContentType.normColor)
             }
 
@@ -324,8 +324,13 @@ private struct TimestampCustomFieldSection: View {
                 if isFreeUser {
                     UpgradeButtonLite(foregroundColor: itemContentType.normMajor2Color,
                                       action: onUpgrade)
+                } else if content.isEmpty {
+                    Text("Empty")
+                        .italic()
+                        .foregroundStyle(PassColor.textWeak.toColor)
                 } else if let timeInterval = TimeInterval(content) {
-                    Text(verbatim: formatter.string(from: Date(timeIntervalSince1970: timeInterval)))
+                    let date = Date(timeIntervalSince1970: timeInterval)
+                    Text(verbatim: kTimestampCustomFieldDateFormatter.string(from: date))
                         .foregroundStyle(PassColor.textNorm.toColor)
                 } else {
                     Text("Error occurred")
