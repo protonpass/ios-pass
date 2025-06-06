@@ -79,7 +79,7 @@ private extension CreateEditItemToolbar {
 
             if !ProcessInfo.processInfo.isiOSAppOnMac, canScanDocuments {
                 switch itemContentType {
-                case .creditCard:
+                case .creditCard, .note:
                     CircleButton(icon: PassIcon.scanner,
                                  iconColor: itemContentType.normMajor2Color,
                                  backgroundColor: itemContentType.normMinor1Color,
