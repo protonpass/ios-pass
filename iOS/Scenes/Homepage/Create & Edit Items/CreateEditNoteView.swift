@@ -69,6 +69,9 @@ struct CreateEditNoteView: View {
                 }
             }
         }
+        .scannerSheet(isPresented: $viewModel.isShowingScanner,
+                      interpreter: viewModel.interpretor,
+                      resultStream: viewModel.scanResponsePublisher)
     }
 }
 
