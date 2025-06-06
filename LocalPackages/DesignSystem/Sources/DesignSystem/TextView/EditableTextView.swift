@@ -67,7 +67,25 @@ struct EditableTextView: UIViewRepresentable {
         return view
     }
 
-    func updateUIView(_ textView: UITextView, context: Context) {}
+    func updateUIView(_ textView: UITextView, context: Context) {
+        // Preserve cursor position and scroll offset
+        let selectedRange = textView.selectedRange
+        let contentOffset = textView.contentOffset
+
+        // Update text and properties
+        textView.text = text
+        textView.font = config.font
+        textView.textColor = config.textColor
+
+        // Restore cursor position and scroll offset
+        textView.selectedRange = selectedRange
+        textView.contentOffset = contentOffset
+        // Ensure cursor is visible
+        if let selectedTextRange = textView.selectedTextRange {
+            let caretRect = textView.caretRect(for: selectedTextRange.end)
+            textView.scrollRectToVisible(caretRect, animated: false)
+        }
+    }
 
     func sizeThatFits(_ proposal: ProposedViewSize,
                       uiView: UITextView,
@@ -89,13 +107,8 @@ struct EditableTextView: UIViewRepresentable {
         }
 
         func textViewDidChange(_ textView: UITextView) {
-            // We don't assign back text here but in `textViewDidEndEditing` instead
-            // Because that would trigger a redraw which then causes UI glitches
+            parent.text = textView.text
             parent.textViewDidChange?(textView.text)
-        }
-
-        func textViewDidEndEditing(_ textView: UITextView) {
-            parent.$text.wrappedValue = textView.text
         }
     }
 }

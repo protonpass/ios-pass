@@ -2,6 +2,7 @@
 New layout for note item
 
 Improvements:
+- Added support for Russian language
 - Display the actual Vault ID (instead of the Share ID) in the item's details view
 - Show a custom empty state when no passkeys match during autofill
 - Support custom fields across all item types
