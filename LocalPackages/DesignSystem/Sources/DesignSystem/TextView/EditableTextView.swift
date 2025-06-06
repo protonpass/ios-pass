@@ -28,7 +28,8 @@ public struct TextViewConfiguration: Sendable {
     public let textColor: UIColor
 
     public init(minWidth: CGFloat = 300,
-                minHeight: CGFloat = 100,
+                // 0 means taking the minimal height for displaying the text view
+                minHeight: CGFloat = 0,
                 font: UIFont = .body,
                 textColor: UIColor = PassColor.textNorm) {
         self.minWidth = minWidth
@@ -61,6 +62,7 @@ struct EditableTextView: UIViewRepresentable {
         view.isEditable = true
         view.isScrollEnabled = false
         view.textContainerInset = .zero
+        view.textContainer.lineFragmentPadding = 0
         view.delegate = context.coordinator
         return view
     }
@@ -123,9 +125,6 @@ public struct EditableTextViewWithPlaceholder: View {
             .background(Text(verbatim: placeholder)
                 .foregroundStyle(placerholderColor.toColor)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                // Heuristic paddings
-                .padding(.leading, 4)
-                .padding(.top, 8)
                 .opacity(showPlaceholder ? 1 : 0))
     }
 }
