@@ -10,6 +10,12 @@
             "value" : "Журнал дзеянняў пашырэння"
           }
         },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registres de l'extensió d'accions"
+          }
+        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -62,6 +68,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Journaux de l'extension d'actions"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Műveletbővítési naplók"
           }
         },
         "id" : {
@@ -124,6 +136,12 @@
             "value" : "Jurnale extensie Action"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Журнал действий расширения"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -162,6 +180,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Журнал праграмы"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registres de l'aplicació"
           }
         },
         "cs" : {
@@ -216,6 +240,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Journaux de l'application"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alkalmazás naplók"
           }
         },
         "id" : {
@@ -278,6 +308,12 @@
             "value" : "Jurnale aplicație"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Журналы приложения"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -319,6 +355,12 @@
             "state" : "translated",
             "value" : "应用程序日志"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "應用程式日誌"
+          }
         }
       }
     },
@@ -328,6 +370,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Журнал пашырэння аўтазапаўнення"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registres de l'extensió d'emplenament automàtic"
           }
         },
         "cs" : {
@@ -382,6 +430,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Journaux de l'extension de remplissage automatique"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatikus kitöltés bővítmény naplók"
           }
         },
         "id" : {
@@ -444,6 +498,12 @@
             "value" : "Jurnal extensie autocompletare"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Автозаполнение журналов расширения"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -485,6 +545,12 @@
             "state" : "translated",
             "value" : "自动填充扩展日志"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自動填入擴充日誌"
+          }
         }
       }
     },
@@ -494,6 +560,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Цёмная"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fosc"
           }
         },
         "cs" : {
@@ -548,6 +620,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sombre"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sötét"
           }
         },
         "id" : {
@@ -610,6 +688,12 @@
             "value" : "Neagră"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тёмная"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -651,6 +735,12 @@
             "state" : "translated",
             "value" : "深色"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "深色"
+          }
         }
       }
     },
@@ -660,6 +750,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Светлая"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clar"
           }
         },
         "cs" : {
@@ -714,6 +810,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Clair"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Világos"
           }
         },
         "id" : {
@@ -776,6 +878,12 @@
             "value" : "Albă"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Светлая"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -817,6 +925,12 @@
             "state" : "translated",
             "value" : "浅色"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "淺色"
+          }
         }
       }
     },
@@ -826,6 +940,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Адпаведна сістэме"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Com a la configuració del sistema"
           }
         },
         "cs" : {
@@ -880,6 +1000,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Identique au système"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A rendszerrel megegyező"
           }
         },
         "id" : {
@@ -942,6 +1068,12 @@
             "value" : "Ca cea din sistem"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Как в системе"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -983,6 +1115,12 @@
             "state" : "translated",
             "value" : "跟随系统"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "匹配系統"
+          }
         }
       }
     },
@@ -992,6 +1130,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Самыя апошнія"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Més recent"
           }
         },
         "cs" : {
@@ -1046,6 +1190,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Le plus récent"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legújabb"
           }
         },
         "id" : {
@@ -1108,6 +1258,12 @@
             "value" : "Cele mai noi"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Самые новые"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1149,6 +1305,12 @@
             "state" : "translated",
             "value" : "最近"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最近的"
+          }
         }
       }
     },
@@ -1158,6 +1320,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ад самых новых да самых старых"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De més recent a més antic"
           }
         },
         "cs" : {
@@ -1212,6 +1380,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Du plus récent au plus ancien"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legújabbtól a legrégebbiig"
           }
         },
         "id" : {
@@ -1274,6 +1448,12 @@
             "value" : "De la noi la vechi"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "От новых к старым"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1315,12 +1495,24 @@
             "state" : "translated",
             "value" : "从新到旧"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "從最新到最舊"
+          }
         }
       }
     },
     "OK" : {
       "localizations" : {
         "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "ca" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
@@ -1375,6 +1567,12 @@
           }
         },
         "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "hu" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
@@ -1440,6 +1638,12 @@
             "value" : "OK"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1481,6 +1685,12 @@
             "state" : "translated",
             "value" : "好的"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "好"
+          }
         }
       }
     },
@@ -1490,6 +1700,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ад самых старых да самых новых"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De més antic a més recent"
           }
         },
         "cs" : {
@@ -1544,6 +1760,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Du plus ancien au plus récent"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legrégebbitől a legújabbig"
           }
         },
         "id" : {
@@ -1606,6 +1828,12 @@
             "value" : "De la vechi la noi"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "От старых к новым"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1647,6 +1875,12 @@
             "state" : "translated",
             "value" : "从旧到新"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "從最舊到最新"
+          }
         }
       }
     },
@@ -1656,6 +1890,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Пошук у %@..."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerca en %@..."
           }
         },
         "cs" : {
@@ -1710,6 +1950,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rechercher dans %@…"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keresés: %@..."
           }
         },
         "id" : {
@@ -1772,6 +2018,12 @@
             "value" : "Căutare în %@..."
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поиск в %@..."
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1813,6 +2065,12 @@
             "state" : "translated",
             "value" : "在 %@ 中搜索..."
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "於 %@ 中搜尋..."
+          }
         }
       }
     },
@@ -1822,6 +2080,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Пошук ва ўсіх элементах..."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerca a tots els elements…"
           }
         },
         "cs" : {
@@ -1876,6 +2140,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rechercher dans tous les éléments…"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keresés minden elemben..."
           }
         },
         "id" : {
@@ -1938,6 +2208,12 @@
             "value" : "Căutare în toate articolele…"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Искать среди всех элементов..."
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1976,6 +2252,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Пошук у элементах, якія абагулены мной"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar als elements compartits per mi"
           }
         },
         "cs" : {
@@ -2030,6 +2312,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rechercher dans les éléments partagés par moi"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keresés az általam megosztott elemekben"
           }
         },
         "id" : {
@@ -2092,6 +2380,12 @@
             "value" : "Căutare în articolele partajate cu mine"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Искать в элементах, которыми я поделился"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2130,6 +2424,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Пошук у элементах, якія абагулены са мной"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerca als elements compartits amb mi"
           }
         },
         "cs" : {
@@ -2184,6 +2484,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rechercher dans les éléments partagés avec moi"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keresés a velem megosztott elemekben"
           }
         },
         "id" : {
@@ -2246,6 +2552,12 @@
             "value" : "Căutare în articolele partajate de mine"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Искать в элементах, которыми поделились со мной"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2284,6 +2596,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Пошук у сметніцы..."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerca a la paperera..."
           }
         },
         "cs" : {
@@ -2338,6 +2656,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rechercher dans la corbeille…"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keresés a lomtárban..."
           }
         },
         "id" : {
@@ -2400,6 +2724,12 @@
             "value" : "Căutare în gunoi..."
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Искать в корзине..."
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2441,6 +2771,12 @@
             "state" : "translated",
             "value" : "在回收站中搜索..."
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "搜尋垃圾桶..."
+          }
         }
       }
     },
@@ -2451,6 +2787,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Пошук замацаваных элементаў"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerca els elements ancorats"
           }
         },
         "cs" : {
@@ -2505,6 +2847,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rechercher dans les éléments épinglés"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keresés kitűzött elemek között"
           }
         },
         "id" : {
@@ -2567,6 +2915,12 @@
             "value" : "Căutare articole fixate"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Искать закрепленные элементы"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2617,6 +2971,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Абагуліць журнал пашырэння"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comparteix els registres d'extensions"
           }
         },
         "cs" : {
@@ -2671,6 +3031,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Partager les journaux de l'extension"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bővítmény napló megosztása"
           }
         },
         "id" : {
@@ -2733,6 +3099,12 @@
             "value" : "Partajare jurnale extensie"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поделиться журналами расширений"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2783,6 +3155,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Па назве (А-Я)"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Títol (A-Z)"
           }
         },
         "cs" : {
@@ -2837,6 +3215,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Titre (A-Z)"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cím (A-Z)"
           }
         },
         "id" : {
@@ -2899,6 +3283,12 @@
             "value" : "Titlu (A-Z)"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Заголовок (А–Я)"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2940,6 +3330,12 @@
             "state" : "translated",
             "value" : "标题 (A-Z)"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "標題 (A 到 Z)"
+          }
         }
       }
     },
@@ -2949,6 +3345,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Па назве (Я-А)"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Títol (Z-A)"
           }
         },
         "cs" : {
@@ -3003,6 +3405,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Titre (Z-A)"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cím (Z-A)"
           }
         },
         "id" : {
@@ -3065,6 +3473,12 @@
             "value" : "Titlu (Z-A)"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Заголовок (Я-А)"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3106,6 +3520,12 @@
             "state" : "translated",
             "value" : "标题 (Z-A)"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "標題 (Z 到 A)"
+          }
         }
       }
     },
@@ -3115,6 +3535,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "У вас адсутнічаюць сховішчы з магчымасцю рэдагавання або доступам адміністратара. Паспрабуйце стварыць яго ў галоўнай праграме або папрасіце дапамагчы з гэтым адміністратара вашай арганізацыі."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No teniu cap caixa forta amb permisos d'editor o administrador. Creeu una a l'aplicació principal o demaneu assistència a l'administrador de la vostra organització."
           }
         },
         "cs" : {
@@ -3171,6 +3597,12 @@
             "value" : "Vous n'avez pas de coffre-fort avec un accès éditeur ou administrateur. Essayez d'en créer un dans l'application principale ou demandez de l'aide à l'administrateur de votre organisation."
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Önnek nincs szerkesztői vagy adminisztrátori hozzáféréssel rendelkező tárolója. Próbáljon meg létrehozni egyet a fő alkalmazásban, vagy kérjen támogatást a szervezet rendszergazdájától."
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3223,6 +3655,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nu aveți seifuri cu acces de editor sau de administrator. Încercați să creați unul în aplicația principală sau cereți asistență administratorului organizației proprii."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "У вас нет хранилищ с доступом редактора или администратора. Попробуйте создать его в главном приложении или обратитесь за поддержкой к администратору вашей организации."
           }
         },
         "sk" : {
