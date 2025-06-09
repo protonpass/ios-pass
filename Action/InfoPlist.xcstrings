@@ -10,6 +10,12 @@
             "value" : "Імпартаваць у Proton Pass"
           }
         },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importa a Proton Pass"
+          }
+        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -62,6 +68,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Importer dans Proton Pass"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importálás Proton Pass-ba"
           }
         },
         "id" : {
@@ -124,6 +136,12 @@
             "value" : "Importare în Proton Pass"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Импортировать в Proton Pass"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -164,6 +182,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "导入到 Proton Pass"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "匯入至 Proton Pass"
           }
         }
       }
@@ -177,6 +201,12 @@
             "value" : "Імпартаваць у Proton Pass"
           }
         },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importa a Proton Pass"
+          }
+        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -229,6 +259,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Importer dans Proton Pass"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importálás Proton Pass-ba"
           }
         },
         "id" : {
@@ -291,6 +327,12 @@
             "value" : "Importare în Proton Pass"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Импортировать в Proton Pass"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -332,6 +374,12 @@
             "state" : "translated",
             "value" : "导入到 Proton Pass"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "匯入至 Proton Pass"
+          }
         }
       }
     },
@@ -339,6 +387,12 @@
       "comment" : "Copyright (human-readable)",
       "localizations" : {
         "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton AG"
+          }
+        },
+        "ca" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton AG"
@@ -393,6 +447,12 @@
           }
         },
         "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton AG"
+          }
+        },
+        "hu" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton AG"
@@ -458,6 +518,12 @@
             "value" : "Proton AG"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton AG"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -495,6 +561,12 @@
           }
         },
         "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton AG"
+          }
+        },
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton AG"

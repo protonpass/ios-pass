@@ -10,6 +10,12 @@
             "value" : "Камера недаступна"
           }
         },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Càmera no disponible"
+          }
+        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -62,6 +68,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "L'appareil photo n'est pas disponible."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A kamera nem elérhető"
           }
         },
         "id" : {
@@ -124,6 +136,12 @@
             "value" : "Cameră indisponibilă"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Камера недоступна"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -162,6 +180,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Скасаваць"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel·la"
           }
         },
         "cs" : {
@@ -216,6 +240,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Annuler"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Törlés"
           }
         },
         "id" : {
@@ -278,6 +308,12 @@
             "value" : "Anulare"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отменить"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -319,6 +355,12 @@
             "state" : "translated",
             "value" : "取消"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消"
+          }
         }
       }
     },
@@ -328,6 +370,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Скасаваць"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descarta"
           }
         },
         "cs" : {
@@ -382,6 +430,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Abandonner"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elvetés"
           }
         },
         "id" : {
@@ -444,6 +498,12 @@
             "value" : "Anulare"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сбросить"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -485,6 +545,12 @@
             "state" : "translated",
             "value" : "清空"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "捨棄"
+          }
         }
       }
     },
@@ -494,6 +560,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Скасаваць змены?"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voleu descartar els canvis?"
           }
         },
         "cs" : {
@@ -548,6 +620,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Abandonner les modifications ?"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Módosítások elvetése?"
           }
         },
         "id" : {
@@ -610,6 +688,12 @@
             "value" : "Renunți la modificări?"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сбросить изменения?"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -651,6 +735,12 @@
             "state" : "translated",
             "value" : "确定要放弃更改吗？"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "要捨棄變更嗎？"
+          }
         }
       }
     },
@@ -660,6 +750,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Адбылася памылка"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S'ha produït un error"
           }
         },
         "cs" : {
@@ -714,6 +810,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Une erreur s'est produite."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hiba történt"
           }
         },
         "id" : {
@@ -776,6 +878,12 @@
             "value" : "A apărut o eroare"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Произошла ошибка"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -817,6 +925,12 @@
             "state" : "translated",
             "value" : "出现错误"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "發生錯誤"
+          }
         }
       }
     },
@@ -826,6 +940,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Працягнуць рэдагаванне"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continua editant"
           }
         },
         "cs" : {
@@ -880,6 +1000,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Poursuivre les modifications"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Szerkesztés folytatása"
           }
         },
         "id" : {
@@ -942,6 +1068,12 @@
             "value" : "Continuare editare"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Продолжить редактирование"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -983,12 +1115,24 @@
             "state" : "translated",
             "value" : "继续编辑"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "繼續編輯"
+          }
         }
       }
     },
     "OK" : {
       "localizations" : {
         "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "ca" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
@@ -1043,6 +1187,12 @@
           }
         },
         "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "hu" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
@@ -1108,6 +1258,12 @@
             "value" : "OK"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1149,6 +1305,12 @@
             "state" : "translated",
             "value" : "好的"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "好"
+          }
         }
       }
     },
@@ -1159,6 +1321,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Налады прыватнасці або абмежаванні адключылі выкарыстанне камеры. Змяніць дазволы можна ў наладах."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La configuració de privadesa o de restriccions ha desactivat l'ús de la càmera. Podeu canviar-ho a les preferències."
           }
         },
         "cs" : {
@@ -1213,6 +1381,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Les paramètres de confidentialité ou de restrictions ont désactivé l'utilisation de la caméra. Vous pouvez modifier cela dans les paramètres."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Az adatvédelmi vagy korlátozási beállítások letiltották a kamera használatát. Ezt a Beállítások menüpontban módosíthatja."
           }
         },
         "id" : {
@@ -1275,6 +1449,12 @@
             "value" : "Setările de confidențialitate sau de restricții au dezactivat utilizarea camerei. Puteți schimba acest lucru în setări."
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Параметры приватности или ограничений отключили использование камеры. Вы можете изменить это в Настройках."
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1319,6 +1499,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Паўтарыць"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Torna-ho a provar"
           }
         },
         "cs" : {
@@ -1373,6 +1559,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Réessayer"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Újra"
           }
         },
         "id" : {
@@ -1435,6 +1627,12 @@
             "value" : "Reîncercare"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Повторить"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1476,6 +1674,12 @@
             "state" : "translated",
             "value" : "重试"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "再試一次"
+          }
         }
       }
     },
@@ -1485,6 +1689,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Налады"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preferències"
           }
         },
         "cs" : {
@@ -1539,6 +1749,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Paramètres"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beállítások"
           }
         },
         "id" : {
@@ -1601,6 +1817,12 @@
             "value" : "Setări"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Настройки"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1642,15 +1864,147 @@
             "state" : "translated",
             "value" : "设置"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "各項設定"
+          }
         }
       }
     },
     "Share logs" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Абагуліць журналы"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartiu els registres"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sdílet logy"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Del logfiler"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protokolle teilen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Κοινοποίηση αρχείων καταγραφής"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Share logs"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartir los registros"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartir los registros"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partager les journaux"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Naplók megosztása"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "bagikan log"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Condividi i log"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "로그 공유"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Del logger"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logboeken delen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udostępnij logi"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartilhar registros"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partajare jurnale"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zdieľať logy"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dela loggar"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Günlüğü paylaş"
           }
         }
       }
@@ -1661,6 +2015,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "У гэтым элеменце адбыліся змены. Вяртанне на папярэднюю старонку."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S'han produït alguns canvis en aquest element. Tornant a la pàgina anterior."
           }
         },
         "cs" : {
@@ -1715,6 +2075,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Certaines modifications ont été apportées à cet élément. Vous allez revenir à la page précédente."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Néhány változás történt ebben az elemben, visszalépés az előző oldalra."
           }
         },
         "id" : {
@@ -1777,6 +2143,12 @@
             "value" : "S-au produs unele modificări la acest articol. Se revine la pagina anterioară."
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "В этом пункте произошли некоторые изменения, при возвращении на предыдущую страницу."
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1827,6 +2199,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Гэты элемент састарэў"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aquest element és obsolet."
           }
         },
         "cs" : {
@@ -1881,6 +2259,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cet élément est obsolète."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ez az elem elavult"
           }
         },
         "id" : {
@@ -1943,6 +2327,12 @@
             "value" : "Acest articol este învechit"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Этот элемент устарел"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1993,6 +2383,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "У вас ёсць незахаваныя змены. Вы сапраўды хочаце скасаваць іх?"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hi ha modificacions que no s'han desat. Segur que voleu descartar-les?"
           }
         },
         "cs" : {
@@ -2047,6 +2443,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Des modifications n'ont pas été enregistrées. Voulez-vous vraiment les abandonner ?"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nem mentett módosításai vannak, biztos, hogy elveti?"
           }
         },
         "id" : {
@@ -2109,6 +2511,12 @@
             "value" : "Aveți modificări nesalvate, sigur doriți să nu le salvați?"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "У вас есть несохраненные изменения. Вы уверены, что хотите отменить их?"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2149,6 +2557,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "您有未保存的更改，您确定要放弃它们吗？"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你有未儲存的修改。你確定要捨棄它嗎？"
           }
         }
       }
