@@ -51,6 +51,12 @@
             "value" : "Сканіраваць код 2ФА, крэдытную картку, рукапісную нататку і QR-код"
           }
         },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escanegeu el codi 2FA, la targeta de crèdit, una nota escrita a mà i un codi QR"
+          }
+        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -103,6 +109,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Scannez un code A2F, une carte de paiement, une note manuscrite et un QR code"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2FA kód, bankkártya, kézzel írott jegyzet és QR-kód beolvasása"
           }
         },
         "id" : {
@@ -159,6 +171,12 @@
             "value" : "Scanare coduri A2F, carduri de plată, note de mână și coduri QR"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сканируйте код двухфакторной идентификации, кредитную карту, рукописную записку и QR-код."
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -210,6 +228,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Забараніць непажаданы доступ да вашага ўліковага запісу Proton Pass на гэтай прыладзе"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restringiu l'accés no desitjat al vostre compte de Proton Pass en aquest dispositiu"
           }
         },
         "cs" : {
@@ -264,6 +288,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Empêchez les intrusions pour votre compte Proton Pass sur cet appareil."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Korlátozza a Proton Pass-fiókjához való nemkívánatos hozzáférést ezen az eszközön"
           }
         },
         "id" : {
@@ -326,6 +356,12 @@
             "value" : "Restricționați accesul la contul Proton Pass pe acest dispozitiv"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ограничить нежелательный доступ к вашему аккаунту Proton Pass на этом устройстве"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -366,6 +402,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在此设备上限制不受欢迎的人访问您的 Proton Pass 账户"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "限制此設備對您的 Proton Pass 帳號的不受歡迎存取"
           }
         }
       }
