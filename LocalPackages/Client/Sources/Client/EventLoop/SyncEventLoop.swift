@@ -196,6 +196,8 @@ public extension SyncEventLoop {
             }
             timerTask?.cancel()
             timerTask = nil
+            fetchEventsTask?.cancel()
+            fetchEventsTask = nil
             secondCount = 0
             delegate?.syncEventLoopDidStopLooping()
         }
