@@ -3280,9 +3280,7 @@
 				"zh-Hans",
 				ca,
 				hu,
-				pt,
 				ru,
-				"zh-Hant",
 			);
 			mainGroup = 35E5062E286F819F00A3F6EA;
 			packageReferences = (
