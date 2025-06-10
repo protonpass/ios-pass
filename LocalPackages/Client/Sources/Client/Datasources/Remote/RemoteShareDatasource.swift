@@ -53,12 +53,6 @@ public protocol RemoteShareDatasourceProtocol: Sendable {
                           sharesToUnhide: [String]) async throws -> [Share]
 }
 
-public extension RemoteShareDatasourceProtocol {
-    func getShare(shareId: String, userId: String) async throws -> Share {
-        try await getShare(shareId: shareId, userId: userId, eventToken: nil)
-    }
-}
-
 public final class RemoteShareDatasource: RemoteDatasource, RemoteShareDatasourceProtocol, @unchecked Sendable {}
 
 public extension RemoteShareDatasource {

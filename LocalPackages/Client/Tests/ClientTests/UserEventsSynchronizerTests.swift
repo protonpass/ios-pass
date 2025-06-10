@@ -19,7 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Client
+@testable import Client
 import ClientMocks
 import Core
 import CoreMocks

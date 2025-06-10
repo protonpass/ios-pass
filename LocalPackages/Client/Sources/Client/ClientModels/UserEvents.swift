@@ -33,28 +33,6 @@ public struct UserEvents: Sendable, Decodable {
     public let eventsPending: Bool
     public let fullRefresh: Bool
 
-    public init(lastEventID: String,
-                itemsUpdated: [UserEventItem],
-                itemsDeleted: [UserEventItem],
-                sharesUpdated: [UserEventShare],
-                sharesDeleted: [UserEventShare],
-                sharesToGetInvites: [UserEventShare],
-                sharesWithInvitesToCreate: [UserEventShare],
-                planChanged: Bool,
-                eventsPending: Bool,
-                fullRefresh: Bool) {
-        self.lastEventID = lastEventID
-        self.itemsUpdated = itemsUpdated
-        self.itemsDeleted = itemsDeleted
-        self.sharesUpdated = sharesUpdated
-        self.sharesDeleted = sharesDeleted
-        self.sharesToGetInvites = sharesToGetInvites
-        self.sharesWithInvitesToCreate = sharesWithInvitesToCreate
-        self.planChanged = planChanged
-        self.eventsPending = eventsPending
-        self.fullRefresh = fullRefresh
-    }
-
     /// Reflect the least changes in user's data in order to locally reload everything
     public var dataUpdated: Bool {
         !itemsUpdated.isEmpty ||
@@ -78,20 +56,9 @@ public struct UserEventItem: Sendable, Decodable, Equatable, ItemIdentifiable {
     public var itemId: String {
         itemID
     }
-
-    public init(shareID: String, itemID: String, eventToken: String) {
-        self.shareID = shareID
-        self.itemID = itemID
-        self.eventToken = eventToken
-    }
 }
 
 public struct UserEventShare: Sendable, Decodable, Equatable {
     public let shareID: String
     public let eventToken: String
-
-    public init(shareID: String, eventToken: String) {
-        self.shareID = shareID
-        self.eventToken = eventToken
-    }
 }
