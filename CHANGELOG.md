@@ -2,7 +2,7 @@
 New layout for note item
 
 Improvements:
-- Added support for Catalan, Hungarian and Russian languages
+- Added support for Catalan, Hungarian, Portuguese, Russian & Traditional Chinese languages
 - Display the actual Vault ID (instead of the Share ID) in the item's details view
 - Show a custom empty state when no passkeys match during autofill
 - Support custom fields across all item types

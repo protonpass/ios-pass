@@ -82,8 +82,7 @@ private extension CreateEditCustomSections {
                                title: addFieldButtonTitle,
                                titleColor: contentType.normMajor2Color,
                                backgroundColor: contentType.normMinor1Color,
-                               fontWeight: .medium,
-                               maxWidth: 140,
+                               maxWidth: nil,
                                action: { onAddMoreField(section.wrappedValue) })
         }
         .frame(maxWidth: .infinity, alignment: .leading)
