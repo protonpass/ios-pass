@@ -159,6 +159,12 @@
             "value" : "Zeskanuj kod uwierzytelniający, kartę płatniczą, ręcznie zapisaną notatkę i kod QR"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escaneie código 2FA, cartão de crédito, nota manuscrita e código QR"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -342,6 +348,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ogranicza niepożądany dostęp do konta Proton Pass na tym urządzeniu"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restrinja os acessos indesejados à sua conta Proton Pass neste dispositivo"
           }
         },
         "pt-BR" : {

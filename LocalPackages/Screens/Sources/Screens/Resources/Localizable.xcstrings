@@ -118,6 +118,12 @@
             "value" : "%@ / miesiąc"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@/mês"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -295,6 +301,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ z %2$@"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ de %2$@"
           }
         },
         "pt-BR" : {
@@ -740,6 +752,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Masz %lld aliasów SimpleLogin, które nie są widoczne w Proton Pass."
+                }
+              }
+            }
+          }
+        },
+        "pt" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "​​​​%lld alias está presente no SimpleLogin, mas ausente no Proton Pass."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "​​​​%lld aliases estão presentes no SimpleLogin, mas ausentes no Proton Pass."
                 }
               }
             }
@@ -1302,6 +1332,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld plików"
+                }
+              }
+            }
+          }
+        },
+        "pt" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ficheiro"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ficheiros"
                 }
               }
             }
@@ -2019,6 +2067,30 @@
             }
           }
         },
+        "pt" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : " %lld item"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld itens"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : " %lld item"
+                }
+              }
+            }
+          }
+        },
         "pt-BR" : {
           "variations" : {
             "plural" : {
@@ -2666,6 +2738,24 @@
             }
           }
         },
+        "pt" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld início de sessão importado"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld inícios de sessão importados"
+                }
+              }
+            }
+          }
+        },
         "pt-BR" : {
           "variations" : {
             "plural" : {
@@ -2965,6 +3055,12 @@
             "value" : "10 GB"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "10 GB"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3133,6 +3229,12 @@
           }
         },
         "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "500 GB"
+          }
+        },
+        "pt" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "500 GB"
@@ -3314,6 +3416,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dodaj konto"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicionar conta"
           }
         },
         "pt-BR" : {
@@ -3506,6 +3614,12 @@
             "value" : "Dodaj domenę"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicionar um domínio"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3694,6 +3808,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dodaj adres e-mail"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicionar um endereço de e-mail"
           }
         },
         "pt-BR" : {
@@ -3887,6 +4007,12 @@
             "value" : "Dodaj pole"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicionar um campo"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4077,6 +4203,12 @@
             "value" : "Dodaj skrzynkę pocztową"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicionar uma caixa de correio"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4259,6 +4391,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dodaj hasło"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicionar uma palavra-passe"
           }
         },
         "pt-BR" : {
@@ -4446,6 +4584,12 @@
             "value" : "Dodaj sekcję"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicionar uma seção"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4616,6 +4760,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dodaj nazwę użytkownika"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicionar um nome de utilizador"
           }
         },
         "pt-BR" : {
@@ -4806,6 +4956,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dodaj pole nazwy użytkownika"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicionar um campo de utilizador"
           }
         },
         "pt-BR" : {
@@ -5251,6 +5407,24 @@
             }
           }
         },
+        "pt" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Todas as contas (%lld)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Todas as contas (%lld)"
+                }
+              }
+            }
+          }
+        },
         "pt-BR" : {
           "variations" : {
             "plural" : {
@@ -5597,6 +5771,12 @@
             "value" : "Wszystkie Twoje hasła."
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todas as suas palavras-passe."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5773,6 +5953,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dodaj plik"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anexar um ficheiro"
           }
         },
         "pt-BR" : {
@@ -5965,6 +6151,12 @@
             "value" : "Załączniki"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anexos"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6150,6 +6342,12 @@
             "value" : "Automatyczne odnowienie w kwocie %@ rocznie"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Renovação automática a %@ todos os anos"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6251,6 +6449,12 @@
             "value" : "Completado automático de clave de acceso"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remplissage automatique de la clé d'accès"
+          }
+        },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6291,6 +6495,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Autouzupełnianie klucza dostępu"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preenchimento automático de Passkey"
           }
         },
         "pt-BR" : {
@@ -6427,6 +6637,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Automatycznie uzupełniaj hasła w Safari i innych aplikacjach."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Introduza automaticamente as suas palavras-passe no Safari e noutras aplicações de forma muito rápida e fácil."
           }
         },
         "pt-BR" : {
@@ -6587,6 +6803,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wbudowane uwierzytelnianie dwustopniowe"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A2F integrada"
           }
         },
         "pt-BR" : {
@@ -6759,6 +6981,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Po dodaniu domeny możesz utworzyć aliasy, takie jak hej@moja-domena.pl."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ao adicionar o seu domínio, pode criar aliases como olá@o-meu-domínio.pt."
           }
         },
         "pt-BR" : {
@@ -6938,6 +7166,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Anuluj"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
           }
         },
         "pt-BR" : {
@@ -7130,6 +7364,12 @@
             "value" : "Wybierz plik"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escolher um ficheiro"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7308,6 +7548,12 @@
             "value" : "Wybierz zdjęcie lub wideo"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escolha uma foto ou vídeo"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7480,6 +7726,12 @@
             "value" : "Usuń historię"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpar o histórico"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7650,6 +7902,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zamknij"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fechar"
           }
         },
         "pt-BR" : {
@@ -7842,6 +8100,12 @@
             "value" : "Kontroluj, co trafia do Twojej skrzynki odbiorczej"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controle o que chega na sua caixa de entrada."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8030,6 +8294,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kopiuj hasło"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar a palavra-passe"
           }
         },
         "pt-BR" : {
@@ -8222,6 +8492,12 @@
             "value" : "Nie można znaleźć \"%@\""
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível encontrar «%@»."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8404,6 +8680,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nie można znaleźć \"%@\" w koszu"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível encontrar «%@ » no Lixo."
           }
         },
         "pt-BR" : {
@@ -8590,6 +8872,12 @@
             "value" : "Nie można znaleźć \"%1$@\" w sejfie %2$@"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível encontrar «%1$@ » no %2$@."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8772,6 +9060,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Utwórz konto"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Criar uma conta"
           }
         },
         "pt-BR" : {
@@ -8964,6 +9258,12 @@
             "value" : "Utwórz dane logowania"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Criar um início de sessão"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9154,6 +9454,12 @@
             "value" : "Utwórz klucz dostępu"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Criar uma chave de acesso"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9338,6 +9644,12 @@
             "value" : "Utwórz pierwsze dane logowania"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crie o seu primeiro início de sessão"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9508,6 +9820,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Karty płatnicze"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cartões de crédito"
           }
         },
         "pt-BR" : {
@@ -9700,6 +10018,12 @@
             "value" : "Monitoring dark web"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monitoramento da Dark Web"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9890,6 +10214,12 @@
             "value" : "Domyślny sejf SimpleLogin"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cofre predefinido do SimpleLogin"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10060,6 +10390,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Usuń"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar"
           }
         },
         "pt-BR" : {
@@ -10252,6 +10588,12 @@
             "value" : "Usuń wszystkie"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar tudo"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10442,6 +10784,12 @@
             "value" : "Usunąć wszystkie załączniki?"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar todos os anexos?"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10613,6 +10961,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Czy wiesz?"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sabia?"
           }
         },
         "pt-BR" : {
@@ -10788,6 +11142,12 @@
             "value" : "Np. LinkedIn"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "P. ex.: LinkedIn"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10946,6 +11306,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Edytuj tytuł sekcji"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar o título da seção"
           }
         },
         "pt-BR" : {
@@ -11112,6 +11478,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Adres e-mail"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Endereço de e-mail"
           }
         },
         "pt-BR" : {
@@ -11304,6 +11676,12 @@
             "value" : "Sejf jest pusty"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esvaziar"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11494,6 +11872,12 @@
             "value" : "Włącz Face ID"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ativar o Face ID"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11678,6 +12062,12 @@
             "value" : "Włącz Optic ID"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ativar o Optic ID"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11842,6 +12232,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Włącz synchronizację SimpleLogin"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ativar a sincronização com SimpleLogin"
           }
         },
         "pt-BR" : {
@@ -12028,6 +12424,12 @@
             "value" : "Włącz wyszukiwanie Spotlight"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ativar a pesquisa Spotlight"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12210,6 +12612,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Włącz Touch ID"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ativar o Touch ID"
           }
         },
         "pt-BR" : {
@@ -12402,6 +12810,12 @@
             "value" : "Ciesz się magią autouzupełniania"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desfrute da magia do preenchimento automático"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12592,6 +13006,12 @@
             "value" : "Wystąpił błąd"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocorreu um erro."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12776,6 +13196,12 @@
             "value" : "Dodatkowe adresy e-mail"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Endereços de e-mail adicionais"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12940,6 +13366,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Załączniki"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anexos de ficheiro"
           }
         },
         "pt-BR" : {
@@ -13120,6 +13552,12 @@
             "value" : "Utworzono pierwsze dane logowania"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Primeiro início de sessão criado"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13285,6 +13723,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ze względów bezpieczeństwa dostęp musi zostać potwierdzony"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por motivos de segurança, o seu acesso precisa ser confirmado."
           }
         },
         "pt-BR" : {
@@ -13477,6 +13921,12 @@
             "value" : "Przekaż do"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Encaminhar para"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13667,6 +14117,12 @@
             "value" : "Przekaż do"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A encaminhar para"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13851,6 +14307,12 @@
             "value" : "Free"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14021,6 +14483,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wygenerowane hasła"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Palavras-passe geradas"
           }
         },
         "pt-BR" : {
@@ -14195,6 +14663,12 @@
             "value" : "Wygenerowane hasła będą przechowywane przez 2 tygodnie."
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As palavras-passe geradas serão armazenadas por 2 semanas."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14359,6 +14833,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Otrzymaj powiadomienie, gdy Twój adres e-mail zostanie znaleziony w sieci dark web."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Receba alertas quando o seu e-mail for encontrado na Dark Web."
           }
         },
         "pt-BR" : {
@@ -14531,6 +15011,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wybierz plan Pass Plus"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obter Pass Plus"
           }
         },
         "pt-BR" : {
@@ -14717,6 +15203,12 @@
             "value" : "Wybierz plan Proton Unlimited"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obter o Proton Unlimited"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14875,6 +15367,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rozpocznij"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Começar"
           }
         },
         "pt-BR" : {
@@ -15056,6 +15554,12 @@
             "value" : "Przejdź do **menedżera haseł** i kliknij **ustawienia**."
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vá a **Gestor de palavras-passe** e toque em **Definições**."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15226,6 +15730,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ukryj hasło"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocultar a palavra-passe"
           }
         },
         "pt-BR" : {
@@ -15418,6 +15928,12 @@
             "value" : "Aliasy hide-my-email"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliases de hide-my-email"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15603,6 +16119,12 @@
             "value" : "Najwyższa"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A mais alta"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15716,6 +16238,12 @@
             "value" : "Cómo usar el completado automático de campos con una contraseña"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comment remplir automatiquement les champs avec un mot de passe"
+          }
+        },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15756,6 +16284,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Jak uzupełnić hasło"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Como realizar o preenchimento automático dos campos em questão com uma palavra-passe"
           }
         },
         "pt-BR" : {
@@ -15905,6 +16439,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Importuj"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importar"
           }
         },
         "pt-BR" : {
@@ -16097,6 +16637,12 @@
             "value" : "Importuj z Chrome"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importar do Chrome"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16282,6 +16828,12 @@
             "value" : "Importuj dane logowania (%1$lld / %2$lld)"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importação de inícios de sessão (%1$lld/%2$lld)"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16455,6 +17007,12 @@
             "value" : "Importowanie zostało zakończone"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A importação está terminada."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16625,6 +17183,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Adres URL TOTP jest nieprawidłowy"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TOTP URI inválido"
           }
         },
         "pt-BR" : {
@@ -16811,6 +17375,12 @@
             "value" : "Dowiedz się, jak używać Proton Pass"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saiba como usar o Proton Pass"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16975,6 +17545,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dowiedz się więcej o Proton Pass"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saiba mais sobre Pass"
           }
         },
         "pt-BR" : {
@@ -17167,6 +17743,12 @@
             "value" : "Zarządzaj kontem"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerir a conta"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17352,6 +17934,12 @@
             "value" : "Umiarkowana"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Média"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17524,6 +18112,12 @@
             "value" : "Brak historii"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sem histórico"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17636,6 +18230,12 @@
             "value" : "No se encontraron inicios de sesión con Passkeys"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun identifiant avec des clés d'accès n'a été trouvé."
+          }
+        },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17676,6 +18276,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Brak danych logowania z kluczem dostępu"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foram encontrados inícios de sessão com Passkeys"
           }
         },
         "pt-BR" : {
@@ -17824,6 +18430,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nie można wykryć tekstu. Spróbuj ponownie. Upewnij się, że tekst jest wyraźny i dobrze oświetlony."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhum texto foi detetado na imagem. Tente novamente, garantindo que o texto esteja claro, bem iluminado e em foco na câmara."
           }
         },
         "pt-BR" : {
@@ -18005,6 +18617,12 @@
             "value" : "Nie znaleziono tekstu"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhum texto foi encontrado."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18169,6 +18787,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Brak"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhum"
           }
         },
         "pt-BR" : {
@@ -18347,6 +18971,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nie teraz"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agora não"
           }
         },
         "pt-BR" : {
@@ -18539,6 +19169,12 @@
             "value" : "OK"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceitar"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18729,6 +19365,12 @@
             "value" : "Po synchronizacji usunięte aliasy w Proton Pass zostaną również usunięte w SimpleLogin."
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uma vez sincronizados, a eliminação de aliases no Pass eliminará também os mesmos no SimpleLogin."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18905,6 +19547,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Otwórz"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir"
           }
         },
         "pt-BR" : {
@@ -19098,6 +19746,12 @@
             "value" : "Otwórz menu **Chrome**"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir o menu **Chrome**"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19268,6 +19922,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Otwórz Chrome"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir o Chrome"
           }
         },
         "pt-BR" : {
@@ -19446,6 +20106,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Otwórz ustawienia"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir definições"
           }
         },
         "pt-BR" : {
@@ -19636,6 +20302,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hasło"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Palavra-passe"
           }
         },
         "pt-BR" : {
@@ -19829,6 +20501,12 @@
             "value" : "Oczekujący dostęp do udostępnionych danych"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acesso pendente aos dados partilhados"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20020,6 +20698,12 @@
             "value" : "Zaloguj się, aby korzystać z rozszerzenia Proton Pass Action"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inicie sessão para utilizar a extensão de ações do Proton Pass."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20190,6 +20874,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zaloguj się, aby uzupełniać dane logowania za pomocą rozszerzenia Proton Pass"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inicie sessão para utilizar a extensão de preenchimento automático do Proton Pass."
           }
         },
         "pt-BR" : {
@@ -20376,6 +21066,12 @@
             "value" : "Zaloguj się, aby udostępniać dane za pomocą rozszerzenia Proton Pass"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inicie sessão para utilizar a extensão de partilha do Proton Pass."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20558,6 +21254,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Przytrzymaj element, aby zobaczyć więcej opcji."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantenha pressionado um item para ver as opções adicionais."
           }
         },
         "pt-BR" : {
@@ -20744,6 +21446,12 @@
             "value" : "Chroń swoją skrzynkę odbiorczą."
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proteja a sua caixa de entrada."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20914,6 +21622,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chroń swoje najbardziej poufne dane"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proteja os seus dados mais sensíveis"
           }
         },
         "pt-BR" : {
@@ -21106,6 +21820,12 @@
             "value" : "Szybkie akcje na elementach"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ações rápidas nos itens"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21289,6 +22009,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ostatnie"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recentes"
           }
         },
         "pt-BR" : {
@@ -21475,6 +22201,12 @@
             "value" : "Usuń z historii"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remover do histórico"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21633,6 +22365,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Usuń sekcję"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remover a seção"
           }
         },
         "pt-BR" : {
@@ -21805,6 +22543,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zmień nazwę"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mudar o nome"
           }
         },
         "pt-BR" : {
@@ -21997,6 +22741,12 @@
             "value" : "Spróbuj ponownie"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Repetir"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22185,6 +22935,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zapisz"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardar"
           }
         },
         "pt-BR" : {
@@ -22377,6 +23133,12 @@
             "value" : "Zeskanuj dokumenty"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analisar os documentos"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22547,6 +23309,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Łatwe wyszukiwanie elementów na ekranie głównym. Aby włączyć, otwórz Ustawienia → Spotlight."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pesquise itens de forma fluida através do seu ecrã inicial. Abra Definições → Spotlight para o ativar."
           }
         },
         "pt-BR" : {
@@ -22731,6 +23499,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Przeszukaj wszystkie sejfy"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pesquisar em todos os cofres"
           }
         },
         "pt-BR" : {
@@ -22923,6 +23697,12 @@
             "value" : "Bezpieczne udostępnianie."
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partilha segura."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23113,6 +23893,12 @@
             "value" : "Bezpieczne w jednym miejscu i chronione przez najbardziej zaufaną markę w dziedzinie prywatności."
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Com segurança num só lugar e protegido pelo nome mais fiável em privacidade."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23292,6 +24078,12 @@
             "value" : "Wybierz **Import do Proton Pass**"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecione **Importar para o Proton Pass**"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23462,6 +24254,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wybierz dane logowania lub utwórz nowe."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecione uma conta existente ou crie uma."
           }
         },
         "pt-BR" : {
@@ -23648,6 +24446,12 @@
             "value" : "Usługa"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Serviço"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23820,6 +24624,12 @@
             "value" : "Odblokuj aplikację Proton Pass za pomocą twarzy lub odcisku palca."
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configure o Proton Pass para desbloquear com o seu rosto ou impressão digital para garantir que só você tem acesso."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23990,6 +24800,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Udostępnij"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partilhar"
           }
         },
         "pt-BR" : {
@@ -24182,6 +24998,12 @@
             "value" : "Udostępniaj aliasy innym użytkownikom, dodając ich adres jako dodatkową skrzynkę pocztową."
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partilhe aliases com outros ao adicionar a sua caixa de entrada como uma caixa de correio adicional."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -24352,6 +25174,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Udostępniaj hasła i poufne informacje w bezpieczny i łatwy sposób."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partilhe palavras-passe e informações confidenciais de forma segura e fácil."
           }
         },
         "pt-BR" : {
@@ -24530,6 +25358,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pokaż hasło"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar a palavra-passe"
           }
         },
         "pt-BR" : {
@@ -24722,6 +25556,12 @@
             "value" : "Zaloguj się"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iniciar sessão"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -24910,6 +25750,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wyloguj"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terminar sessão"
           }
         },
         "pt-BR" : {
@@ -25102,6 +25948,12 @@
             "value" : "Wylogowano"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sessão terminada"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25290,6 +26142,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sortuj"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordenar por"
           }
         },
         "pt-BR" : {
@@ -25482,6 +26340,12 @@
             "value" : "Zacznij korzystać z Proton Pass"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comece a utilizar o Proton Pass"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25672,6 +26536,12 @@
             "value" : "Bądź na bieżąco."
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantenha-se informado."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25844,6 +26714,12 @@
             "value" : "Zatrzymaj udostępnianie swojego prawdziwego adres e-mail. Zamiast tego ukryj go za pomocą aliasów — wyłącznie w Proton Pass."
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pare de partilhar o seu endereço de e-mail real. Em vez disso, oculte-o com aliases de e-mail – uma exclusividade do Proton Pass."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -26002,6 +26878,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Przestrzeń dyskowa"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Armazenamento"
           }
         },
         "pt-BR" : {
@@ -26192,6 +27074,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Przyrostek"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sufixo"
           }
         },
         "pt-BR" : {
@@ -26385,6 +27273,12 @@
             "value" : "Sugestie"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sugestões"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -26574,6 +27468,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Przełącz na konto"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mudar para"
           }
         },
         "pt-BR" : {
@@ -26766,6 +27666,12 @@
             "value" : "Synchronizuj aliasy"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sincronizar os aliases"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -26956,6 +27862,12 @@
             "value" : "Synchronizuj aliasy z SimpleLogin"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sincronize os seus aliases do SimpleLogin"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -27138,6 +28050,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zrób zdjęcie"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tirar uma foto"
           }
         },
         "pt-BR" : {
@@ -27331,6 +28249,12 @@
             "value" : "Kliknij **Eksportuj hasła**"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toque em **Exportar palavras-passe**"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -27501,6 +28425,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kliknij, aby dodać pole nazwy użytkownika."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toque aqui para adicionar um campo para um nome de utilizador."
           }
         },
         "pt-BR" : {
@@ -27681,6 +28611,12 @@
             "value" : "To, co najlepsze w Proton, w jednej subskrypcji."
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O melhor do Proton com uma única subscrição."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -27845,6 +28781,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nie możesz cofnąć tej akcji"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta acção não pode ser desfeita."
           }
         },
         "pt-BR" : {
@@ -28029,6 +28971,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tytuł"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Título"
           }
         },
         "pt-BR" : {
@@ -28221,6 +29169,12 @@
             "value" : "Wyszukaj ponownie, używając innej pisowni lub słów kluczowych"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tente procurar de novo usando diferentes palavras ou palavras-chave"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28403,6 +29357,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Włącz autouzupełnianie"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ativar o preenchimento automático"
           }
         },
         "pt-BR" : {
@@ -28589,6 +29549,12 @@
             "value" : "Odblokuj funkcje premium."
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloqueie funcionalidades premium."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28753,6 +29719,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bez nazwy"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sem título"
           }
         },
         "pt-BR" : {
@@ -28945,6 +29917,12 @@
             "value" : "Ulepsz"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Melhorar o seu plano"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -29135,6 +30113,12 @@
             "value" : "Ulepsz konto, aby zwiększyć przestrzeń dyskową."
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Melhore o seu plano para aumentar o seu armazenamento."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -29305,6 +30289,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Przesyłanie nie powiodło się"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erro no envio"
           }
         },
         "pt-BR" : {
@@ -29483,6 +30473,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Prześlij pliki ze swojego urządzenia"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar ficheiros a partir do seu dispositivo"
           }
         },
         "pt-BR" : {
@@ -29669,6 +30665,12 @@
             "value" : "Używaj aliasów hide-my-email przeciwko próbom wyłudzenia informacji."
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utilize aliases hide-my-email contra ameaças de phishing."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -29840,6 +30842,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nazwa użytkownika"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome de utilizador"
           }
         },
         "pt-BR" : {
@@ -30026,6 +31034,12 @@
             "value" : "Udostępnianie sejfu, elementu i linku"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cofre e partilha de ligações e itens"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -30185,6 +31199,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Urządzenia VPN"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dispositivos VPN"
           }
         },
         "pt-BR" : {
@@ -30351,6 +31371,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Prędkość VPN"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Velocidade da VPN"
           }
         },
         "pt-BR" : {
@@ -30783,6 +31809,24 @@
             }
           }
         },
+        "pt" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Detetámos que tem %lld alias que está presente no SimpleLogin, mas está ausente no Proton Pass. Gostaria de importá-lo?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Detetámos que tem %lld aliases que estão presentes no SimpleLogin, mas estão ausentes no Proton Pass. Gostaria de sincronizá-los?"
+                }
+              }
+            }
+          }
+        },
         "pt-BR" : {
           "variations" : {
             "plural" : {
@@ -31099,6 +32143,12 @@
             "value" : "Strona internetowa"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sítio web"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -31283,6 +32333,12 @@
             "value" : "Co zawiera"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O que está incluído"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -31441,6 +32497,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dla jakiej usługi chcesz utworzyć dane logowania?"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para que serviço deseja criar o início de sessão?"
           }
         },
         "pt-BR" : {
@@ -31603,6 +32665,12 @@
             "value" : "Jesteś gotowy, aby w pełni wykorzystać możliwości Proton Pass: autouzupełnianie, prywatne aliasy i wiele więcej."
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Está pronto para tirar o máximo partido do Proton Pass: a magia do preenchimento automático, a privacidade dos alias e muito mais."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -31761,6 +32829,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Do elementów możesz dodać pliki"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pode anexar ficheiros aos itens para uma melhor organização."
           }
         },
         "pt-BR" : {
@@ -31939,6 +33013,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Przestrzeń dyskowa jest pełna."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O seu armazenamento está cheio."
           }
         },
         "pt-BR" : {

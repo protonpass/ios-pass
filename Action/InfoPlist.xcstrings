@@ -124,6 +124,12 @@
             "value" : "Importuj do Proton Pass"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importar para o Proton Pass"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -315,6 +321,12 @@
             "value" : "Importuj do Proton Pass"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importar para o Proton Pass"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -501,6 +513,12 @@
           }
         },
         "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton AG"
+          }
+        },
+        "pt" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton AG"
