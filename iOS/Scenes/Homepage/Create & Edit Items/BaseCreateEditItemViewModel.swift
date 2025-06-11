@@ -244,7 +244,6 @@ class BaseCreateEditItemViewModel: ObservableObject {
 
     var isSaveable: Bool {
         !title.isEmpty &&
-            !customFields.contains { !$0.type.emptyContentAllowed && $0.content.isEmpty } &&
             !isUploadingFile &&
             fileUiModels.allSatisfy { $0.state == .uploaded }
     }

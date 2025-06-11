@@ -37,10 +37,30 @@ public struct TimestampPicker: View {
     }
 
     public var body: some View {
-        DatePicker(selection: $date, displayedComponents: displayedComponents) {
-            EmptyView()
+        HStack {
+            if value.isEmpty {
+                Button(action: {
+                    value = String(Int(Date.now.timeIntervalSince1970))
+                }, label: {
+                    Image(systemName: "plus.circle")
+                })
+
+                Spacer()
+            } else {
+                DatePicker(selection: $date, displayedComponents: displayedComponents) {
+                    EmptyView()
+                }
+                .labelsHidden()
+
+                Button(action: {
+                    value = ""
+                }, label: {
+                    Image(systemName: "minus.circle")
+                })
+
+                Spacer()
+            }
         }
-        .labelsHidden()
         .onChange(of: date) { newValue in
             value = String(Int(newValue.timeIntervalSince1970))
         }
