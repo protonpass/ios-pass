@@ -20,6 +20,7 @@
 
 import Client
 import Combine
+import Core
 import DesignSystem
 import Entities
 import FactoryKit
@@ -197,8 +198,16 @@ private struct HiddenCustomFieldSection: View {
 private final class TotpCustomFieldSectionViewModel: ObservableObject {
     @Published private(set) var state = TOTPState.empty
 
-    private let totpManager = resolve(\SharedServiceContainer.totpManager)
+    private let totpService = resolve(\SharedServiceContainer.totpService)
+    private let logManager = resolve(\SharedToolingContainer.logManager)
     private var cancellable = Set<AnyCancellable>()
+
+    // Manually construct an instance of TOTPManager instead of getting via Factory
+    // to make sure each custom field has its own uniqe manager that binds to its respective URI
+    // `TOTPManager` is scoped as `unique` but Factory somehow still gives the same instance
+    // for all TOTP custom fields (could be Factory bug as of version 2.5.1)
+    private lazy var totpManager = TOTPManager(logManager: logManager,
+                                               totpService: totpService)
 
     var code: String? {
         totpManager.totpData?.code
@@ -303,17 +312,10 @@ private struct TimestampCustomFieldSection: View {
     let showIcon: Bool
     let onUpgrade: () -> Void
 
-    let formatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .full
-        formatter.timeStyle = .none
-        return formatter
-    }()
-
     var body: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             if showIcon {
-                ItemDetailSectionIcon(icon: CustomFieldType.text.icon,
+                ItemDetailSectionIcon(icon: CustomFieldType.timestamp.icon,
                                       color: itemContentType.normColor)
             }
 
@@ -324,8 +326,13 @@ private struct TimestampCustomFieldSection: View {
                 if isFreeUser {
                     UpgradeButtonLite(foregroundColor: itemContentType.normMajor2Color,
                                       action: onUpgrade)
+                } else if content.isEmpty {
+                    Text("Empty")
+                        .italic()
+                        .foregroundStyle(PassColor.textWeak.toColor)
                 } else if let timeInterval = TimeInterval(content) {
-                    Text(verbatim: formatter.string(from: Date(timeIntervalSince1970: timeInterval)))
+                    let date = Date(timeIntervalSince1970: timeInterval)
+                    Text(verbatim: DateFormatter.timestampCustomField.string(from: date))
                         .foregroundStyle(PassColor.textNorm.toColor)
                 } else {
                     Text("Error occurred")

@@ -34,8 +34,11 @@ extension DetailHistoryView {
             if let item = itemContent.loginItem {
                 passkeySection(logItem: item)
                 usernamePassword2FaSection(logItem: item)
-                urlsSection(logItem: item)
-                    .padding(.top, 8)
+
+                if !item.urls.isEmpty {
+                    urlsSection(logItem: item)
+                        .padding(.top, 8)
+                }
             }
 
             noteFields(item: itemContent)
@@ -186,7 +189,7 @@ extension DetailHistoryView {
             ForEach(item.customFields) { field in
                 HStack(spacing: DesignConstant.sectionPadding) {
                     if showIcon {
-                        ItemDetailSectionIcon(icon: CustomFieldType.text.icon,
+                        ItemDetailSectionIcon(icon: field.type.icon,
                                               color: viewModel.currentRevision.type.normColor)
                     }
 
@@ -194,8 +197,18 @@ extension DetailHistoryView {
                         Text(field.title)
                             .sectionTitleText()
 
-                        Text(field.content)
-                            .foregroundStyle(PassColor.textNorm.toColor)
+                        if field.content.isEmpty {
+                            Text("Empty")
+                                .foregroundStyle(PassColor.textWeak.toColor)
+                        } else if field.type == .timestamp,
+                                  let timeInterval = TimeInterval(field.content) {
+                            let date = Date(timeIntervalSince1970: timeInterval)
+                            Text(verbatim: DateFormatter.timestampCustomField.string(from: date))
+                                .foregroundStyle(PassColor.textNorm.toColor)
+                        } else {
+                            Text(field.content)
+                                .foregroundStyle(PassColor.textNorm.toColor)
+                        }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }

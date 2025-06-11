@@ -126,20 +126,23 @@ extension DetailHistoryView {
         .padding(.bottom, 30)
     }
 
+    @ViewBuilder
     func noteFields(item: ItemContent) -> some View {
-        HStack(spacing: DesignConstant.sectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.note, color: viewModel.currentRevision.type.normColor)
+        if !item.note.isEmpty {
+            HStack(spacing: DesignConstant.sectionPadding) {
+                ItemDetailSectionIcon(icon: IconProvider.note, color: viewModel.currentRevision.type.normColor)
 
-            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text("Note")
-                    .sectionTitleText()
+                VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                    Text("Note")
+                        .sectionTitleText()
 
-                noteRow(item: item)
+                    noteRow(item: item)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(DesignConstant.sectionPadding)
+            .roundedDetailSection(borderColor: borderColor(for: \.note))
         }
-        .padding(DesignConstant.sectionPadding)
-        .roundedDetailSection(borderColor: borderColor(for: \.note))
     }
 
     @ViewBuilder

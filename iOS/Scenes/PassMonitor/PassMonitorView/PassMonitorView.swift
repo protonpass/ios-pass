@@ -283,7 +283,6 @@ private extension PassMonitorView {
                         Text(subTitle)
                             .font(.footnote)
                             .foregroundStyle(PassColor.textWeak.toColor)
-                            .lineLimit(1)
                     }
                 }
                 .contentShape(.rect)
@@ -535,17 +534,12 @@ private extension PassMonitorView {
 
                 VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                     Text(title)
-                        .lineLimit(1)
                         .foregroundStyle(rowType.titleColor.toColor)
-                        .minimumScaleFactor(0.5)
 
                     if let subTitle {
                         Text(subTitle)
                             .font(.callout)
-                            .lineLimit(1)
                             .foregroundStyle(loading ? Color.secondary : rowType.subtitleColor.toColor)
-                            .layoutPriority(1)
-                            .minimumScaleFactor(0.25)
                             .if(loading) { view in
                                 view.redacted(reason: .placeholder)
                             }

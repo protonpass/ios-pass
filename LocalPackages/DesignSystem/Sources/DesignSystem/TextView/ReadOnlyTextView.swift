@@ -56,6 +56,7 @@ public struct ReadOnlyTextView: UIViewRepresentable {
         view.isScrollEnabled = false
         view.dataDetectorTypes = dataDetectorTypes
         view.textContainerInset = .zero
+        view.textContainer.lineFragmentPadding = 0
         return view
     }
 

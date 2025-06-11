@@ -60,14 +60,25 @@ struct CreateEditNoteView: View {
                                     proxy: scrollViewProxy)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .itemCreateEditSetUp(viewModel)
-                    .onFirstAppear {
-                        if case .create = viewModel.mode {
-                            focusedField = .title
-                        }
-                    }
                 }
             }
+            // The below modifiers must be applied to the outer most view container
+            // otherwise we would have bugs like "Add more" button not responsible
+            .toolbar {
+                CreateEditKeyboardToolbar(lastFocusedField: $lastFocusedField,
+                                          focusedField: focusedField,
+                                          onOpenCodeScanner: viewModel.openCodeScanner,
+                                          onPasteTotpUri: { viewModel.handlePastingTotpUri(customField: $0) })
+            }
+            .onFirstAppear {
+                if case .create = viewModel.mode {
+                    focusedField = .title
+                }
+            }
+            .itemCreateEditSetUp(viewModel)
+            .scannerSheet(isPresented: $viewModel.isShowingScanner,
+                          interpreter: viewModel.interpretor,
+                          resultStream: viewModel.scanResponsePublisher)
         }
     }
 }
@@ -119,11 +130,5 @@ private extension CreateEditNoteView {
             }
         }
         .padding()
-        .toolbar {
-            CreateEditKeyboardToolbar(lastFocusedField: $lastFocusedField,
-                                      focusedField: focusedField,
-                                      onOpenCodeScanner: viewModel.openCodeScanner,
-                                      onPasteTotpUri: { viewModel.handlePastingTotpUri(customField: $0) })
-        }
     }
 }
