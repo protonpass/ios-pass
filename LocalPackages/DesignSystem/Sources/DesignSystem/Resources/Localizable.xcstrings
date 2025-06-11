@@ -124,6 +124,12 @@
             "value" : "Aparat jest niedostępny"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A câmara não está disponível."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -294,6 +300,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Anuluj"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
           }
         },
         "pt-BR" : {
@@ -486,6 +498,12 @@
             "value" : "Odrzuć"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descartar"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -674,6 +692,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Czy chcesz odrzucić zmiany?"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descartar as alterações?"
           }
         },
         "pt-BR" : {
@@ -866,6 +890,12 @@
             "value" : "Wystąpił błąd"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocorreu um erro."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1056,6 +1086,12 @@
             "value" : "Kontynuuj edytowanie"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar a editar"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1244,6 +1280,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceitar"
           }
         },
         "pt-BR" : {
@@ -1437,6 +1479,12 @@
             "value" : "Ustawienia prywatności uniemożliwiają dostęp do aparatu. Możesz to zmienić w ustawieniach."
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As definições de privacidade ou restrições desativaram o uso da câmara. Pode alterar isso nas definições."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1613,6 +1661,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Spróbuj ponownie"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Repetir"
           }
         },
         "pt-BR" : {
@@ -1805,6 +1859,12 @@
             "value" : "Ustawienia"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Definições"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1977,6 +2037,12 @@
             "value" : "Udostępnij logi"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partilhar os registos"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2129,6 +2195,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Element uległ zmianie. Nastąpił powrót do poprzedniej strony."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Algumas alterações ocorreram a este item. A voltar à página anterior."
           }
         },
         "pt-BR" : {
@@ -2315,6 +2387,12 @@
             "value" : "Element jest przestarzały"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este item está obsoleto."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2497,6 +2575,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Masz niezapisane zmiany. Czy chcesz je odrzucić?"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tem alterações não guardadas. Tem a certeza de que deseja descartá-las?"
           }
         },
         "pt-BR" : {
