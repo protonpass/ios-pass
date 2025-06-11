@@ -58,6 +58,7 @@ struct CustomFieldTypesView: View {
 
                 Text(type.title)
                     .foregroundStyle(PassColor.textNorm.toColor)
+                    .multilineTextAlignment(.leading)
 
                 Spacer()
             }

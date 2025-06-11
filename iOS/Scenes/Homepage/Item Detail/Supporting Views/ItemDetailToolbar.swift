@@ -46,8 +46,7 @@ struct ItemDetailToolbar: ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
             switch viewModel.itemContent.item.itemState {
             case .active:
-                HStack(spacing: 0) {
-                    Spacer()
+                HStack {
                     if viewModel.isAllowedToEdit {
                         CapsuleLabelButton(icon: IconProvider.pencil,
                                            title: #localized("Edit"),
@@ -172,7 +171,7 @@ private extension ItemDetailToolbar {
     }
 }
 
-struct ShareCounterButton: View {
+private struct ShareCounterButton: View {
     private let iconColor: Color
     private let backgroundColor: Color
     private let numberOfSharedMembers: Int
@@ -189,33 +188,29 @@ struct ShareCounterButton: View {
     }
 
     var body: some View {
-        Button {
-            action()
-        } label: {
-            ZStack(alignment: .topTrailing) {
-                HStack(spacing: 4) {
-                    Image(uiImage: IconProvider.usersPlus)
-                        .resizable()
-                        .scaledToFit()
-                        .foregroundStyle(iconColor)
-                        .frame(maxHeight: 20)
-                    if numberOfSharedMembers > 0 {
-                        Text(verbatim: "\(numberOfSharedMembers)")
-                            .font(.caption)
-                            .fontWeight(.medium)
-                            .foregroundStyle(backgroundColor)
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 2)
-                            .background(iconColor)
-                            .cornerRadius(20)
-                    }
+        Button(action: action) {
+            HStack(spacing: 4) {
+                Image(uiImage: IconProvider.usersPlus)
+                    .resizable()
+                    .scaledToFit()
+                    .foregroundStyle(iconColor)
+                    .frame(maxHeight: 20)
+                if numberOfSharedMembers > 0 {
+                    Text(verbatim: "\(numberOfSharedMembers)")
+                        .font(.caption)
+                        .fontWeight(.medium)
+                        .foregroundStyle(backgroundColor)
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background(iconColor)
+                        .cornerRadius(20)
+                        .frame(maxWidth: .infinity)
                 }
-                .padding(10)
-                .background(backgroundColor)
-                .cornerRadius(20)
             }
+            .padding(10)
+            .background(backgroundColor)
+            .cornerRadius(20)
         }
         .buttonStyle(.plain)
-        .padding(.leading, 5)
     }
 }
