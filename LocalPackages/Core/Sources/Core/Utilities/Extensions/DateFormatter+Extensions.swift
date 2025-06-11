@@ -1,7 +1,7 @@
 //
 // DateFormatter+Extensions.swift
-// Proton Pass - Created on 22/04/2024.
-// Copyright (c) 2024 Proton Technologies AG
+// Proton Pass - Created on 11/06/2025.
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -21,7 +21,7 @@
 // periphery:ignore:all
 import Foundation
 
-extension DateFormatter {
+public extension DateFormatter {
     convenience init(format: String,
                      locale: Locale = .current,
                      timeStyle: DateFormatter.Style = .short,
@@ -32,5 +32,16 @@ extension DateFormatter {
         self.timeStyle = timeStyle
         self.dateStyle = dateStyle
         setLocalizedDateFormatFromTemplate(format)
+    }
+
+    static var fullDateNoTime: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .full
+        formatter.timeStyle = .none
+        return formatter
+    }
+
+    static var timestampCustomField: DateFormatter {
+        fullDateNoTime
     }
 }
