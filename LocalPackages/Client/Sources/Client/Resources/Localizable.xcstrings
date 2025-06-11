@@ -124,6 +124,12 @@
             "value" : "Udostępnij logi rozszerzenia"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registos da extensão de ações"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -294,6 +300,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Logi aplikacji"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registos da aplicação"
           }
         },
         "pt-BR" : {
@@ -486,6 +498,12 @@
             "value" : "Dzienniki rozszerzenia autouzupełniania"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preenchimento automático da extensão de registos"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -674,6 +692,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ciemny"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escuro"
           }
         },
         "pt-BR" : {
@@ -866,6 +890,12 @@
             "value" : "Jasny"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Claro"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1054,6 +1084,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Domyślny systemu"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Idêntico ao sistema"
           }
         },
         "pt-BR" : {
@@ -1246,6 +1282,12 @@
             "value" : "Ostatnie"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mais recente"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1434,6 +1476,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Od najnowszych"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do mais recente para o mais antigo"
           }
         },
         "pt-BR" : {
@@ -1626,6 +1674,12 @@
             "value" : "OK"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceitar"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1814,6 +1868,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Od najstarszych"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do mais antigo para o mais recente"
           }
         },
         "pt-BR" : {
@@ -2006,6 +2066,12 @@
             "value" : "Przeszukaj sejf %@..."
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pesquisar em %@..."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2196,6 +2262,12 @@
             "value" : "Przeszukaj wszystkie elementy…"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pesquisar em todos os itens…"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2366,6 +2438,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Przeszukaj udostępnione przez Ciebie"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pesquisar nos itens partilhados por mim"
           }
         },
         "pt-BR" : {
@@ -2540,6 +2618,12 @@
             "value" : "Przeszukaj elementy udostępnione dla mnie"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pesquisar nos itens partilhados comigo"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2710,6 +2794,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Przeszukaj kosz..."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A pesquisar no Lixo..."
           }
         },
         "pt-BR" : {
@@ -2903,6 +2993,12 @@
             "value" : "Przeszukaj przypięte elementy"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pesquisar nos itens fixados"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3087,6 +3183,12 @@
             "value" : "Udostępnij logi rozszerzenia"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partilhar os registos da extensão"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3269,6 +3371,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tytuł (A-Z)"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Título (A-Z)"
           }
         },
         "pt-BR" : {
@@ -3461,6 +3569,12 @@
             "value" : "Tytuł (Z-A)"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Título (Z-A)"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3643,6 +3757,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nie masz żadnych sejfów z dostępem edytora lub administratora. Spróbuj utworzyć sejf w głównej aplikacji lub poproś administratora organizacji o wsparcie."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não tem cofres com acesso de editor ou de administrador. Tente criar um cofre no aplicação principal ou peça ajuda ao administrador da sua organização."
           }
         },
         "pt-BR" : {
