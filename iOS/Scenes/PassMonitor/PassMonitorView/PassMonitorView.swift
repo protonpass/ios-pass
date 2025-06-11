@@ -281,7 +281,7 @@ private extension PassMonitorView {
                         .foregroundStyle(PassColor.textNorm.toColor)
                     if let subTitle {
                         Text(subTitle)
-                            .font(.callout)
+                            .font(.footnote)
                             .foregroundStyle(PassColor.textWeak.toColor)
                     }
                 }
