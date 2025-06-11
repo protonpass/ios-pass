@@ -20,6 +20,7 @@
 
 import Client
 import Combine
+import Core
 import DesignSystem
 import Entities
 import FactoryKit
@@ -302,13 +303,6 @@ private struct TotpCustomFieldSection: View {
     }
 }
 
-let kTimestampCustomFieldDateFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .full
-    formatter.timeStyle = .none
-    return formatter
-}()
-
 private struct TimestampCustomFieldSection: View {
     let title: String
     let content: String
@@ -338,7 +332,7 @@ private struct TimestampCustomFieldSection: View {
                         .foregroundStyle(PassColor.textWeak.toColor)
                 } else if let timeInterval = TimeInterval(content) {
                     let date = Date(timeIntervalSince1970: timeInterval)
-                    Text(verbatim: kTimestampCustomFieldDateFormatter.string(from: date))
+                    Text(verbatim: DateFormatter.timestampCustomField.string(from: date))
                         .foregroundStyle(PassColor.textNorm.toColor)
                 } else {
                     Text("Error occurred")
