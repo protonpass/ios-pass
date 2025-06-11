@@ -225,8 +225,7 @@ private extension CreateEditIdentityView {
                            title: #localized("Add more"),
                            titleColor: viewModel.itemContentType.normMajor2Color,
                            backgroundColor: viewModel.itemContentType.normMinor1Color,
-                           fontWeight: .medium,
-                           maxWidth: 140,
+                           maxWidth: nil,
                            action: action)
     }
 }
