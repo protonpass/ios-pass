@@ -203,7 +203,7 @@ extension DetailHistoryView {
                         } else if field.type == .timestamp,
                                   let timeInterval = TimeInterval(field.content) {
                             let date = Date(timeIntervalSince1970: timeInterval)
-                            Text(verbatim: kTimestampCustomFieldDateFormatter.string(from: date))
+                            Text(verbatim: DateFormatter.timestampCustomField.string(from: date))
                                 .foregroundStyle(PassColor.textNorm.toColor)
                         } else {
                             Text(field.content)

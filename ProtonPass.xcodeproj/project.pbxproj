@@ -585,7 +585,6 @@
 		5B4459AB2D43B74F00E1F198 /* FeatureDiscoverySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4459AA2D43B74300E1F198 /* FeatureDiscoverySection.swift */; };
 		5B4E53D52BD651F600E8D54A /* BreachEntities+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E53D42BD651F600E8D54A /* BreachEntities+Extensions.swift */; };
 		5B4E53D82BD65E6700E8D54A /* BreachEntitiesExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E53D72BD65E6700E8D54A /* BreachEntitiesExtensionsTests.swift */; };
-		5B4E53DA2BD6A02500E8D54A /* DateFormatter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E53D92BD6A02500E8D54A /* DateFormatter+Extensions.swift */; };
 		5B4E53DE2BD7B8B600E8D54A /* DetailMonitoredItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E53DC2BD7B8B600E8D54A /* DetailMonitoredItemView.swift */; };
 		5B4E53DF2BD7B8B600E8D54A /* DetailMonitoredItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E53DD2BD7B8B600E8D54A /* DetailMonitoredItemViewModel.swift */; };
 		5B4E53E32BD8033A00E8D54A /* BreachDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E53E12BD8033A00E8D54A /* BreachDetailView.swift */; };
@@ -1142,7 +1141,6 @@
 		5B4459AA2D43B74300E1F198 /* FeatureDiscoverySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureDiscoverySection.swift; sourceTree = "<group>"; };
 		5B4E53D42BD651F600E8D54A /* BreachEntities+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BreachEntities+Extensions.swift"; sourceTree = "<group>"; };
 		5B4E53D72BD65E6700E8D54A /* BreachEntitiesExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreachEntitiesExtensionsTests.swift; sourceTree = "<group>"; };
-		5B4E53D92BD6A02500E8D54A /* DateFormatter+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extensions.swift"; sourceTree = "<group>"; };
 		5B4E53DC2BD7B8B600E8D54A /* DetailMonitoredItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMonitoredItemView.swift; sourceTree = "<group>"; };
 		5B4E53DD2BD7B8B600E8D54A /* DetailMonitoredItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMonitoredItemViewModel.swift; sourceTree = "<group>"; };
 		5B4E53E12BD8033A00E8D54A /* BreachDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreachDetailView.swift; sourceTree = "<group>"; };
@@ -1259,7 +1257,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		538548F92D58ACF300AEFB66 /* Exceptions for "Action" folder in "Action" target */ = {
+		538548F92D58ACF300AEFB66 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -1269,18 +1267,7 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		538548E92D58ACF300AEFB66 /* Action */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				538548F92D58ACF300AEFB66 /* Exceptions for "Action" folder in "Action" target */,
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Action;
-			sourceTree = "<group>";
-		};
+		538548E92D58ACF300AEFB66 /* Action */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (538548F92D58ACF300AEFB66 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Action; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2351,7 +2338,6 @@
 				3552A28C29EC8B5200ABDB6E /* URL+Extensions.swift */,
 				3590A3382A9F9C2600622F45 /* View+Extensions.swift */,
 				5BAE71062BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift */,
-				5B4E53D92BD6A02500E8D54A /* DateFormatter+Extensions.swift */,
 				5BD6138C2C202B0E00968E0F /* UpsellEntry+Extensions.swift */,
 			);
 			path = Extensions;
@@ -3824,7 +3810,6 @@
 				359EB88E2A20CFE0009588A9 /* InfoBannerViewStack.swift in Sources */,
 				5BFE87782AF1003D004ABA1E /* LocalAuthenticationMethodUiModel+Extensions.swift in Sources */,
 				5B503FD42A4C7ED900E6681C /* BugReportViewModel.swift in Sources */,
-				5B4E53DA2BD6A02500E8D54A /* DateFormatter+Extensions.swift in Sources */,
 				35E81D922CBEAAE8008E7BA0 /* SortFilterItemsMenu.swift in Sources */,
 				3553C22C296575540087518A /* LoggerManager+Extensions.swift in Sources */,
 				356650D62AAF604D00BFF4F3 /* FullSyncProgressView.swift in Sources */,
