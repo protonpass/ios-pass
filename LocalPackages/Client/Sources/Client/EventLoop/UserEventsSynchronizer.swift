@@ -162,10 +162,5 @@ private extension UserEventsSynchronizer {
                 try await itemRepository.deleteAllItemsLocally(shareId: deletedShare.shareID)
             }
         }
-
-        // swiftlint:disable:next todo
-        // TODO: Do sth with these events
-        print(events.sharesToGetInvites)
-        print(events.sharesWithInvitesToCreate)
     }
 }
