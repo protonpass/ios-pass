@@ -78,6 +78,9 @@ public protocol ShareRepositoryProtocol: Sendable {
 
     @discardableResult
     func transferVaultOwnership(vaultShareId: String, newOwnerShareId: String) async throws -> Bool
+
+    func hideShare(userId: String, shareId: String) async throws
+    func unhideShare(userId: String, shareId: String) async throws
 }
 
 public extension ShareRepositoryProtocol {
@@ -353,6 +356,26 @@ public extension ShareRepository {
                                                                         request: request)
         logger.info("Finished transfer of ownership")
         return updated
+    }
+
+    func hideShare(userId: String, shareId: String) async throws {
+        logger.trace("Hidding share \(shareId) for user \(userId)")
+        let updated = try await remoteDatasource.hideShare(userId: userId, shareId: shareId)
+        logger.trace("Saving hidden share \(shareId) locally for user \(userId)")
+        let key = try await getSymmetricKey()
+        let encrypted = try await symmetricallyEncrypt(userId: userId, updated, symmetricKey: key)
+        try await localDatasource.upsertShares([encrypted], userId: userId)
+        logger.info("Finish hidding share \(shareId) for user \(userId)")
+    }
+
+    func unhideShare(userId: String, shareId: String) async throws {
+        logger.trace("Unhidding share \(shareId) for user \(userId)")
+        let updated = try await remoteDatasource.unhideShare(userId: userId, shareId: shareId)
+        logger.trace("Saving unhidden share \(shareId) locally for user \(userId)")
+        let key = try await getSymmetricKey()
+        let encrypted = try await symmetricallyEncrypt(userId: userId, updated, symmetricKey: key)
+        try await localDatasource.upsertShares([encrypted], userId: userId)
+        logger.info("Finish unhidding share \(shareId) for user \(userId)")
     }
 }
 
