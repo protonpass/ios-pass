@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.2.5 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.2.7 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
@@ -355,5 +355,41 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
         }
         closureTransferVaultOwnership()
         return stubbedTransferVaultOwnershipResult
+    }
+    // MARK: - hideShare
+    public var hideShareUserIdShareIdThrowableError18: Error?
+    public var closureHideShare: () -> () = {}
+    public var invokedHideSharefunction = false
+    public var invokedHideShareCount = 0
+    public var invokedHideShareParameters: (userId: String, shareId: String)?
+    public var invokedHideShareParametersList = [(userId: String, shareId: String)]()
+
+    public func hideShare(userId: String, shareId: String) async throws {
+        invokedHideSharefunction = true
+        invokedHideShareCount += 1
+        invokedHideShareParameters = (userId, shareId)
+        invokedHideShareParametersList.append((userId, shareId))
+        if let error = hideShareUserIdShareIdThrowableError18 {
+            throw error
+        }
+        closureHideShare()
+    }
+    // MARK: - unhideShare
+    public var unhideShareUserIdShareIdThrowableError19: Error?
+    public var closureUnhideShare: () -> () = {}
+    public var invokedUnhideSharefunction = false
+    public var invokedUnhideShareCount = 0
+    public var invokedUnhideShareParameters: (userId: String, shareId: String)?
+    public var invokedUnhideShareParametersList = [(userId: String, shareId: String)]()
+
+    public func unhideShare(userId: String, shareId: String) async throws {
+        invokedUnhideSharefunction = true
+        invokedUnhideShareCount += 1
+        invokedUnhideShareParameters = (userId, shareId)
+        invokedUnhideShareParametersList.append((userId, shareId))
+        if let error = unhideShareUserIdShareIdThrowableError19 {
+            throw error
+        }
+        closureUnhideShare()
     }
 }
