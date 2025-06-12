@@ -66,18 +66,6 @@ struct GetUserEventsResponseTests {
                     "EventToken": "Token6"
                   }
                 ],
-                "SharesToGetInvites": [
-                  {
-                    "ShareID": "ShareID7",
-                    "EventToken": "Token7"
-                  }
-                ],
-                "SharesWithInvitesToCreate": [
-                  {
-                    "ShareID": "ShareID8",
-                    "EventToken": "Token8"
-                  }
-                ],
                 "PlanChanged": true,
                 "EventsPending": true,
                 "FullRefresh": false
@@ -107,12 +95,6 @@ struct GetUserEventsResponseTests {
         #expect(events.sharesDeleted.count == 1)
         #expect(events.sharesDeleted.first == UserEventShare(shareID: "ShareID6",
                                                              eventToken: "Token6"))
-        #expect(events.sharesToGetInvites.count == 1)
-        #expect(events.sharesToGetInvites.first == UserEventShare(shareID: "ShareID7",
-                                                                  eventToken: "Token7"))
-        #expect(events.sharesWithInvitesToCreate.count == 1)
-        #expect(events.sharesWithInvitesToCreate.first == UserEventShare(shareID: "ShareID8",
-                                                                         eventToken: "Token8"))
         #expect(events.planChanged)
         #expect(events.eventsPending)
         #expect(!events.fullRefresh)

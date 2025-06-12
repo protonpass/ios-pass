@@ -71,8 +71,6 @@ private struct Args {
                       itemsDeleted: [],
                       sharesUpdated: [],
                       sharesDeleted: [],
-                      sharesToGetInvites: [],
-                      sharesWithInvitesToCreate: [],
                       planChanged: false,
                       eventsPending: false,
                       fullRefresh: true)
@@ -91,8 +89,6 @@ private struct Args {
                       itemsDeleted: .random(count: 8),
                       sharesUpdated: .random(count: 19),
                       sharesDeleted: .random(count: 21),
-                      sharesToGetInvites: [],
-                      sharesWithInvitesToCreate: [],
                       planChanged: false,
                       eventsPending: false,
                       fullRefresh: false)
@@ -116,8 +112,6 @@ private struct Args {
                       itemsDeleted: .random(count: 16),
                       sharesUpdated: .random(count: 3),
                       sharesDeleted: .random(count: 8),
-                      sharesToGetInvites: [],
-                      sharesWithInvitesToCreate: [],
                       planChanged: true,
                       eventsPending: true,
                       fullRefresh: false),
@@ -126,8 +120,6 @@ private struct Args {
                       itemsDeleted: .random(count: 3),
                       sharesUpdated: .random(count: 27),
                       sharesDeleted: .random(count: 14),
-                      sharesToGetInvites: [],
-                      sharesWithInvitesToCreate: [],
                       planChanged: false,
                       eventsPending: false,
                       fullRefresh: false)
