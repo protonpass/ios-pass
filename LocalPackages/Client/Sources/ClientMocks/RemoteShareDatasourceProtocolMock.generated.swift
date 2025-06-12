@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.2.5 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.2.7 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
@@ -243,5 +243,45 @@ public final class RemoteShareDatasourceProtocolMock: @unchecked Sendable, Remot
         }
         closureTransferVaultOwnership()
         return stubbedTransferVaultOwnershipResult
+    }
+    // MARK: - hideShare
+    public var hideShareUserIdShareIdThrowableError12: Error?
+    public var closureHideShare: () -> () = {}
+    public var invokedHideSharefunction = false
+    public var invokedHideShareCount = 0
+    public var invokedHideShareParameters: (userId: String, shareId: String)?
+    public var invokedHideShareParametersList = [(userId: String, shareId: String)]()
+    public var stubbedHideShareResult: Share!
+
+    public func hideShare(userId: String, shareId: String) async throws -> Share {
+        invokedHideSharefunction = true
+        invokedHideShareCount += 1
+        invokedHideShareParameters = (userId, shareId)
+        invokedHideShareParametersList.append((userId, shareId))
+        if let error = hideShareUserIdShareIdThrowableError12 {
+            throw error
+        }
+        closureHideShare()
+        return stubbedHideShareResult
+    }
+    // MARK: - unhideShare
+    public var unhideShareUserIdShareIdThrowableError13: Error?
+    public var closureUnhideShare: () -> () = {}
+    public var invokedUnhideSharefunction = false
+    public var invokedUnhideShareCount = 0
+    public var invokedUnhideShareParameters: (userId: String, shareId: String)?
+    public var invokedUnhideShareParametersList = [(userId: String, shareId: String)]()
+    public var stubbedUnhideShareResult: Share!
+
+    public func unhideShare(userId: String, shareId: String) async throws -> Share {
+        invokedUnhideSharefunction = true
+        invokedUnhideShareCount += 1
+        invokedUnhideShareParameters = (userId, shareId)
+        invokedUnhideShareParametersList.append((userId, shareId))
+        if let error = unhideShareUserIdShareIdThrowableError13 {
+            throw error
+        }
+        closureUnhideShare()
+        return stubbedUnhideShareResult
     }
 }
