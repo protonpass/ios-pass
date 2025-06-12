@@ -47,7 +47,8 @@ struct ShareTests {
         "contentFormatVersion": 2,
         "expireTime": 1699872000,
         "createTime": 1699785600,
-        "canAutoFill": true
+        "canAutoFill": true,
+        "hidden": true
     }
     """.data(using: .utf8)!
     
@@ -77,6 +78,7 @@ struct ShareTests {
         #expect(share.expireTime == 1699872000)
         #expect(share.createTime == 1699785600)
         #expect(share.canAutoFill)
+        #expect(share.hidden)
     }
 
     @Test("Share can't be decoded")
@@ -118,7 +120,8 @@ struct ShareTests {
                 "contentFormatVersion": null,
                 "expireTime": null,
                 "createTime": 1699785600,
-                "canAutoFill": true
+                "canAutoFill": true,
+                "hidden": false
             }
             """.data(using: .utf8)!
         
@@ -127,7 +130,8 @@ struct ShareTests {
         #expect(share.contentKeyRotation == nil)
         #expect(share.vaultContent == nil)
         #expect(share.contentFormatVersion == nil)
-        #expect(share.isVaultRepresentation == false)
+        #expect(!share.isVaultRepresentation)
+        #expect(!share.hidden)
     }
     
     @Test("Share edge cases for members. Reached limit")
@@ -152,7 +156,8 @@ struct ShareTests {
                 "contentFormatVersion": null,
                 "expireTime": null,
                 "createTime": 1699785600,
-                "canAutoFill": true
+                "canAutoFill": true,
+                "hidden": false
             }
             """.data(using: .utf8)!
         
