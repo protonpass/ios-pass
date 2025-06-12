@@ -27,8 +27,6 @@ public struct UserEvents: Sendable, Decodable {
     public let itemsDeleted: [UserEventItem]
     public let sharesUpdated: [UserEventShare]
     public let sharesDeleted: [UserEventShare]
-    public let sharesToGetInvites: [UserEventShare]
-    public let sharesWithInvitesToCreate: [UserEventShare]
     public let planChanged: Bool
     public let eventsPending: Bool
     public let fullRefresh: Bool
