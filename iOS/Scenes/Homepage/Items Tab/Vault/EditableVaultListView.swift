@@ -27,6 +27,7 @@ import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 
+// swiftlint:disable:next type_body_length
 struct EditableVaultListView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = EditableVaultListViewModel()
@@ -71,7 +72,13 @@ struct EditableVaultListView: View {
                             PassDivider()
                         }
 
-                        ForEach(uiModel.filteredOrderedVaults) { vault in
+                        ForEach(uiModel.filteredOrderedVaults.filter {
+                            if mode.isView {
+                                !$0.hidden
+                            } else {
+                                true
+                            }
+                        }) { vault in
                             vaultRow(for: .precise(vault))
                             PassDivider()
                         }
@@ -133,7 +140,7 @@ struct EditableVaultListView: View {
                                           fontWeight: .semibold,
                                           backgroundColor: PassColor.interactionNormMinor1,
                                           horizontalPadding: DesignConstant.sectionPadding * 2,
-                                          action: { mode = .view })
+                                          action: viewModel.applyVaultsOrganizations)
                             .fixedSize(horizontal: true, vertical: true)
                     }
                 }
@@ -143,6 +150,9 @@ struct EditableVaultListView: View {
         .animation(.default, value: mode)
         .background(PassColor.backgroundWeak.toColor)
         .showSpinner(viewModel.loading)
+        .onChange(of: viewModel.exitOrganiseMode) { _ in
+            mode = .view
+        }
         .frame(maxWidth: .infinity, alignment: .leading)
         .alert("Delete vault?",
                isPresented: $vaultToDelete.mappedToBool(),
@@ -190,7 +200,7 @@ struct EditableVaultListView: View {
                   })
 
         case .organise:
-            .organise(isSelected: viewModel.hiddenShareIds.contains(selection.share?.shareId ?? ""))
+            .organise(isHidden: viewModel.hiddenShareIds.contains(selection.share?.shareId ?? ""))
         }
 
         HStack {

@@ -524,7 +524,11 @@ private extension AppContentManager {
             } else if lastSelectedShareId == VaultSelection.trash.preferenceKey, vaultSelection != .trash {
                 vaultSelection = .trash
             } else if let vault = shares.first(where: { $0.shareId == lastSelectedShareId }) {
-                vaultSelection = .precise(vault)
+                if vault.hidden {
+                    vaultSelection = .all
+                } else {
+                    vaultSelection = .precise(vault)
+                }
             }
         } else {
             vaultSelection = .all
