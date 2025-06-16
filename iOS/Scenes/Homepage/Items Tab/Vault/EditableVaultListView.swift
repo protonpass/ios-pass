@@ -38,6 +38,14 @@ struct EditableVaultListView: View {
     enum Mode {
         case view, organise
 
+        var isView: Bool {
+            if case .view = self {
+                true
+            } else {
+                false
+            }
+        }
+
         var isOrganise: Bool {
             if case .organise = self {
                 true
@@ -68,7 +76,7 @@ struct EditableVaultListView: View {
                             PassDivider()
                         }
 
-                        if !mode.isOrganise {
+                        if mode.isView {
                             if viewModel.canSelectVault(selection: .sharedWithMe) {
                                 vaultRow(for: .sharedWithMe)
                                 PassDivider()
@@ -102,7 +110,7 @@ struct EditableVaultListView: View {
                                       fontWeight: .semibold,
                                       backgroundColor: PassColor.interactionNormMinor1,
                                       horizontalPadding: DesignConstant.sectionPadding * 2,
-                                      action: { mode = .view })
+                                      action: { mode = .view; viewModel.resetHiddenShareIds() })
                         .fixedSize(horizontal: true, vertical: true)
                 }
 
@@ -169,10 +177,34 @@ struct EditableVaultListView: View {
     @ViewBuilder
     private func vaultRow(for selection: VaultSelection) -> some View {
         let itemCount = viewModel.itemCount(for: selection)
+
+        let vaultRowMode: VaultRowMode = switch mode {
+        case .view:
+            .view(isSelected: viewModel.isSelected(selection),
+                  action: { vault in
+                      if viewModel.canShare(vault: vault) {
+                          viewModel.share(vault: vault)
+                      } else {
+                          viewModel.router.present(for: .manageSharedShare(.vault(vault), .none))
+                      }
+                  })
+
+        case .organise:
+            .organise(isSelected: viewModel.hiddenShareIds.contains(selection.share?.shareId ?? ""))
+        }
+
         HStack {
             Button(action: {
-                dismiss()
-                viewModel.select(selection)
+                switch mode {
+                case .view:
+                    dismiss()
+                    viewModel.select(selection)
+
+                case .organise:
+                    if let share = selection.share {
+                        viewModel.hideOrUnhide(share: share)
+                    }
+                }
             }, label: {
                 VaultRow(thumbnail: {
                              CircleButton(icon: selection.icon,
@@ -182,28 +214,22 @@ struct EditableVaultListView: View {
                          title: selection.title,
                          itemCount: itemCount,
                          share: selection.share,
-                         isSelected: viewModel.isSelected(selection),
-                         showBadge: selection.showBadge,
-                         height: 74,
-                         shareAction: { vault in
-                             if viewModel.canShare(vault: vault) {
-                                 viewModel.share(vault: vault)
-                             } else {
-                                 viewModel.router.present(for: .manageSharedShare(.vault(vault), .none))
-                             }
-                         })
+                         mode: vaultRowMode,
+                         height: 74)
             })
             .buttonStyle(.plain)
 
-            Spacer()
+            if mode.isView {
+                Spacer()
 
-            switch selection {
-            case .all, .sharedByMe, .sharedWithMe:
-                EmptyView()
-            case let .precise(vault):
-                vaultTrailingView(vault, haveItems: itemCount > 0)
-            case .trash:
-                trashTrailingView
+                switch selection {
+                case .all, .sharedByMe, .sharedWithMe:
+                    EmptyView()
+                case let .precise(vault):
+                    vaultTrailingView(vault, haveItems: itemCount > 0)
+                case .trash:
+                    trashTrailingView
+                }
             }
         }
     }
