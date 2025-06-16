@@ -63,6 +63,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var state = AppContentState.loading
     @Published private(set) var organization: Organization?
     @Published private(set) var hiddenShareIds = Set<String>()
+    @Published private(set) var exitOrganiseMode = false
     private let count: Count
 
     let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -81,6 +82,9 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     private var organizationRepository
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
+
+    @LazyInjected(\UseCasesContainer.reorganizeVaults)
+    private var reorganizeVaults
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -283,6 +287,27 @@ extension EditableVaultListViewModel {
             hiddenShareIds.remove(id)
         } else {
             hiddenShareIds.insert(id)
+        }
+    }
+
+    func applyVaultsOrganizations() {
+        guard case let .loaded(data) = state else { return }
+        Task { [weak self] in
+            guard let self else { return }
+            defer {
+                loading = false
+                exitOrganiseMode.toggle()
+            }
+            loading = true
+            do {
+                if try await reorganizeVaults(currentShares: data.shares.map(\.share),
+                                              hiddenShareIds: hiddenShareIds) {
+                    let userId = try await userManager.getActiveUserId()
+                    try await appContentManager.localFullSync(userId: userId)
+                }
+            } catch {
+                handle(error)
+            }
         }
     }
 }
