@@ -6520,6 +6520,18 @@
             "state" : "translated",
             "value" : "Automatické vypĺňanie Prístupových kľúčov"
           }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geçiş anahtarını otomatik doldur"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自动填充通行密钥"
+          }
         }
       }
     },
@@ -16315,6 +16327,18 @@
             "state" : "translated",
             "value" : "Hur man fyller i fält automatiskt med ett lösenord"
           }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parola alanları otomatik olarak nasıl doldurulur"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "如何使用密码自动填充"
+          }
         }
       }
     },
@@ -18306,6 +18330,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Inga inloggningar med Passkeys hittades"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geçiş anahtarı kullanan bir oturum açma kaydı yok"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有找到使用通行密钥的登录项"
           }
         }
       }
