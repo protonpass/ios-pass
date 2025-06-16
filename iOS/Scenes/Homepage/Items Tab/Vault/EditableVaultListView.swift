@@ -30,9 +30,22 @@ import SwiftUI
 struct EditableVaultListView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = EditableVaultListViewModel()
+    @State private var mode: Mode = .view
     @State private var vaultNameConfirmation = ""
     @State private var vaultToDelete: Share?
     @State private var isShowingEmptyTrashAlert = false
+
+    enum Mode {
+        case view, organise
+
+        var isOrganise: Bool {
+            if case .organise = self {
+                true
+            } else {
+                false
+            }
+        }
+    }
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -43,40 +56,83 @@ struct EditableVaultListView: View {
                         // Should never happen
                         ProgressView()
                     case let .loaded(uiModel):
-                        vaultRow(for: .all)
-
-                        PassDivider()
+                        if mode.isOrganise {
+                            hiddenVaultsBanner
+                        } else {
+                            vaultRow(for: .all)
+                            PassDivider()
+                        }
 
                         ForEach(uiModel.filteredOrderedVaults) { vault in
                             vaultRow(for: .precise(vault))
                             PassDivider()
                         }
 
-                        if viewModel.canSelectVault(selection: .sharedWithMe) {
-                            vaultRow(for: .sharedWithMe)
-                            PassDivider()
-                        }
-                        if viewModel.canSelectVault(selection: .sharedByMe) {
-                            vaultRow(for: .sharedByMe)
-                            PassDivider()
-                        }
+                        if !mode.isOrganise {
+                            if viewModel.canSelectVault(selection: .sharedWithMe) {
+                                vaultRow(for: .sharedWithMe)
+                                PassDivider()
+                            }
+                            if viewModel.canSelectVault(selection: .sharedByMe) {
+                                vaultRow(for: .sharedByMe)
+                                PassDivider()
+                            }
 
-                        vaultRow(for: .trash)
+                            vaultRow(for: .trash)
+                        }
                     }
                 }
                 .padding(.horizontal)
             }
             HStack {
-                CapsuleTextButton(title: #localized("Create vault"),
-                                  titleColor: PassColor.interactionNormMajor2,
-                                  backgroundColor: PassColor.interactionNormMinor1,
-                                  action: { viewModel.createNewVault() })
-                    .fixedSize(horizontal: true, vertical: true)
-                    .hidden(viewModel.organization?.settings?.vaultCreateMode == .adminsOnly)
+                switch mode {
+                case .view:
+                    CapsuleLabelButton(icon: IconProvider.plus,
+                                       title: #localized("Create vault"),
+                                       titleColor: PassColor.interactionNormMajor2,
+                                       backgroundColor: PassColor.interactionNormMinor1,
+                                       fontWeight: .semibold,
+                                       action: viewModel.createNewVault)
+                        .fixedSize(horizontal: true, vertical: true)
+                        .hidden(viewModel.organization?.settings?.vaultCreateMode == .adminsOnly)
+
+                case .organise:
+                    CapsuleTextButton(title: #localized("Cancel"),
+                                      titleColor: PassColor.interactionNormMajor2,
+                                      fontWeight: .semibold,
+                                      backgroundColor: PassColor.interactionNormMinor1,
+                                      horizontalPadding: DesignConstant.sectionPadding * 2,
+                                      action: { mode = .view })
+                        .fixedSize(horizontal: true, vertical: true)
+                }
+
                 Spacer()
+
+                if viewModel.hideShowVaultSupported {
+                    switch mode {
+                    case .view:
+                        CapsuleLabelButton(icon: IconProvider.listBullets,
+                                           title: #localized("Organise vaults"),
+                                           titleColor: PassColor.interactionNormMajor2,
+                                           backgroundColor: PassColor.interactionNormMinor1,
+                                           fontWeight: .semibold,
+                                           action: { mode = .organise })
+                            .fixedSize(horizontal: true, vertical: true)
+
+                    case .organise:
+                        CapsuleTextButton(title: #localized("Done"),
+                                          titleColor: PassColor.interactionNormMajor2,
+                                          fontWeight: .semibold,
+                                          backgroundColor: PassColor.interactionNormMinor1,
+                                          horizontalPadding: DesignConstant.sectionPadding * 2,
+                                          action: { mode = .view })
+                            .fixedSize(horizontal: true, vertical: true)
+                    }
+                }
             }
             .padding([.bottom, .horizontal])
         }
+        .animation(.default, value: mode)
         .background(PassColor.backgroundWeak.toColor)
         .showSpinner(viewModel.loading)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -97,6 +153,17 @@ struct EditableVaultListView: View {
                    // swiftlint:disable:next line_length
                    Text("This will permanently delete the vault « \(vault.vaultName ?? "") » and all its contents. Enter the vault name to confirm deletion.")
                })
+    }
+
+    private var hiddenVaultsBanner: some View {
+        Text("Hidden vaults won’t be visible during search and autofill.")
+            .frame(maxWidth: .infinity, alignment: .center)
+            .multilineTextAlignment(.center)
+            .foregroundStyle(PassColor.textNorm.toColor)
+            .padding()
+            .background(PassColor.interactionNormMinor1.toColor)
+            .clipShape(RoundedRectangle(cornerRadius: DesignConstant.sectionPadding))
+            .padding(.vertical)
     }
 
     @ViewBuilder
