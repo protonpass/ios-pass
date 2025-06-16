@@ -57,7 +57,7 @@ struct EditSpotlightVaultsView: View {
             VaultRow(thumbnail: { VaultThumbnail(vaultContent: vaultContent) },
                      title: vaultContent.name,
                      itemCount: vault.itemCount,
-                     isSelected: viewModel.isSelected(vault: vault.vault),
+                     mode: .view(isSelected: viewModel.isSelected(vault: vault.vault), action: nil),
                      height: 74)
                 .padding(.horizontal)
         })
