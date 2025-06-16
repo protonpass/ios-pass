@@ -2072,6 +2072,12 @@
             "state" : "translated",
             "value" : "Günlüğü paylaş"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分享日志"
+          }
         }
       }
     },
