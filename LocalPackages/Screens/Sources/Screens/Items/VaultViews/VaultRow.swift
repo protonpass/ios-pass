@@ -25,18 +25,10 @@ import SwiftUI
 
 public enum VaultRowMode: Equatable {
     case view(isSelected: Bool, action: ((Share) -> Void)?)
-    case organise(isSelected: Bool)
+    case organise(isHidden: Bool)
 
     var isView: Bool {
         if case .view = self {
-            true
-        } else {
-            false
-        }
-    }
-
-    var isOrganise: Bool {
-        if case .organise = self {
             true
         } else {
             false
@@ -47,8 +39,8 @@ public enum VaultRowMode: Equatable {
         switch (lhs, rhs) {
         case let (.view(lIsSelected, _), .view(rIsSelected, _)):
             lIsSelected == rIsSelected
-        case let (.organise(lIsSelected), .organise(rIsSelected)):
-            lIsSelected == rIsSelected
+        case let (.organise(lIsHidden), .organise(rIsHidden)):
+            lIsHidden == rIsHidden
         default:
             false
         }
@@ -82,8 +74,8 @@ public struct VaultRow<Thumbnail: View>: View {
 
     public var body: some View {
         HStack(spacing: 16) {
-            if case let .organise(isSelected) = mode {
-                Image(systemName: isSelected ? "checkmark.square.fill" : "square")
+            if case let .organise(isHidden) = mode {
+                Image(systemName: isHidden ? "checkmark.square.fill" : "square")
                     .resizable()
                     .scaledToFit()
                     .frame(maxHeight: 20)
