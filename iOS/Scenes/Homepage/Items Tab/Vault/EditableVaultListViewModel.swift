@@ -62,6 +62,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var loading = false
     @Published private(set) var state = AppContentState.loading
     @Published private(set) var organization: Organization?
+    @Published private(set) var hiddenShareIds = Set<String>()
     private let count: Count
 
     let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -142,6 +143,7 @@ private extension EditableVaultListViewModel {
             .sink { [weak self] newState in
                 guard let self else { return }
                 state = newState
+                resetHiddenShareIds()
             }
             .store(in: &cancellables)
 
@@ -266,6 +268,21 @@ extension EditableVaultListViewModel {
             itemSharedByMeCount
         case .trash:
             count.trashed
+        }
+    }
+
+    func resetHiddenShareIds() {
+        if case let .loaded(data) = state {
+            hiddenShareIds = Set(data.shares.map(\.share).filter(\.hidden).map(\.shareId))
+        }
+    }
+
+    func hideOrUnhide(share: Share) {
+        let id = share.shareId
+        if hiddenShareIds.contains(id) {
+            hiddenShareIds.remove(id)
+        } else {
+            hiddenShareIds.insert(id)
         }
     }
 }

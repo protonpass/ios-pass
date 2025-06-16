@@ -41,14 +41,6 @@ public enum VaultSelection: Hashable, Sendable {
         return nil
     }
 
-    public var showBadge: Bool {
-        if case let .precise(share) = self {
-            share.newUserInvitesReady > 0
-        } else {
-            false
-        }
-    }
-
     public var preferenceKey: String? {
         switch self {
         case .all:

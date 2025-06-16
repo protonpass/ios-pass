@@ -23,42 +23,76 @@ import Entities
 import ProtonCoreUIFoundations
 import SwiftUI
 
+public enum VaultRowMode: Equatable {
+    case view(isSelected: Bool, action: ((Share) -> Void)?)
+    case organise(isSelected: Bool)
+
+    var isView: Bool {
+        if case .view = self {
+            true
+        } else {
+            false
+        }
+    }
+
+    var isOrganise: Bool {
+        if case .organise = self {
+            true
+        } else {
+            false
+        }
+    }
+
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case let (.view(lIsSelected, _), .view(rIsSelected, _)):
+            lIsSelected == rIsSelected
+        case let (.organise(lIsSelected), .organise(rIsSelected)):
+            lIsSelected == rIsSelected
+        default:
+            false
+        }
+    }
+}
+
 public struct VaultRow<Thumbnail: View>: View {
     private let thumbnail: () -> Thumbnail
     private let title: String
     private let itemCount: Int
     private let share: Share?
-    private let isSelected: Bool
-    private let showBadge: Bool
+    private let mode: VaultRowMode
     private let maxWidth: CGFloat?
     private let height: CGFloat
-    private let shareAction: ((Share) -> Void)?
 
     public init(@ViewBuilder thumbnail: @escaping () -> Thumbnail,
                 title: String,
                 itemCount: Int,
                 share: Share? = nil,
-                isSelected: Bool,
-                showBadge: Bool = false,
+                mode: VaultRowMode = .view(isSelected: false, action: nil),
                 maxWidth: CGFloat? = .infinity,
-                height: CGFloat = 70,
-                shareAction: ((Share) -> Void)? = nil) {
+                height: CGFloat = 70) {
         self.thumbnail = thumbnail
         self.title = title
         self.itemCount = itemCount
         self.share = share
-        self.isSelected = isSelected
-        self.showBadge = showBadge
+        self.mode = mode
         self.maxWidth = maxWidth
         self.height = height
-        self.shareAction = shareAction
     }
 
     public var body: some View {
         HStack(spacing: 16) {
+            if case let .organise(isSelected) = mode {
+                Image(systemName: isSelected ? "checkmark.square.fill" : "square")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxHeight: 20)
+                    .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+            }
+
             ZStack(alignment: .bottomTrailing) {
                 thumbnail()
-                if isSelected {
+                if case let .view(isSelected, _) = mode, isSelected {
                     Image(uiImage: IconProvider.checkmarkCircleFilled)
                         .resizable()
                         .scaledToFit()
@@ -87,14 +121,14 @@ public struct VaultRow<Thumbnail: View>: View {
                 Spacer()
             }
 
-            if let share {
+            if mode.isView, let share {
                 HStack(spacing: 4) {
                     Image(uiImage: IconProvider.usersPlus)
                         .resizable()
                         .scaledToFit()
                         .foregroundStyle(PassColor.interactionNormMajor2.toColor)
                         .frame(maxHeight: 20)
-                    if showBadge {
+                    if share.newUserInvitesReady > 0 {
                         Image(uiImage: IconProvider.exclamationCircleFilled)
                             .resizable()
                             .scaledToFit()
@@ -117,7 +151,9 @@ public struct VaultRow<Thumbnail: View>: View {
                 .background(PassColor.interactionNormMinor1.toColor)
                 .cornerRadius(20)
                 .buttonEmbeded {
-                    shareAction?(share)
+                    if case let .view(_, action) = mode {
+                        action?(share)
+                    }
                 }
                 .buttonStyle(.plain)
             }
@@ -125,6 +161,6 @@ public struct VaultRow<Thumbnail: View>: View {
         .frame(maxWidth: maxWidth)
         .frame(height: height)
         .contentShape(.rect)
-        .animation(.default, value: isSelected)
+        .animation(.default, value: mode)
     }
 }
