@@ -65005,6 +65005,16 @@
         }
       }
     },
+    "Done" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        }
+      }
+    },
     "Download all your items again to make sure you are in sync" : {
       "localizations" : {
         "be" : {
@@ -85628,6 +85638,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "隱藏文字複製"
+          }
+        }
+      }
+    },
+    "Hidden vaults won’t be visible during search and autofill." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hidden vaults won’t be visible during search and autofill."
           }
         }
       }
@@ -123901,6 +123921,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "選項"
+          }
+        }
+      }
+    },
+    "Organise vaults" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organise vaults"
           }
         }
       }
