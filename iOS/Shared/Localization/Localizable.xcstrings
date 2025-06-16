@@ -107907,6 +107907,12 @@
             "value" : "くすり"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "약물"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -126416,6 +126422,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "密码更改成功"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "密碼字元變更成功。"
           }
         }
       }
