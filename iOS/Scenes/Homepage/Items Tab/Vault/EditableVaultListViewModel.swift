@@ -78,8 +78,14 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     private var accessRepository
     @LazyInjected(\SharedRepositoryContainer.organizationRepository)
     private var organizationRepository
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private var getFeatureFlagStatus
 
     private var cancellables = Set<AnyCancellable>()
+
+    var hideShowVaultSupported: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passHideShowVault)
+    }
 
     var hasTrashItems: Bool {
         count.trashed > 0
