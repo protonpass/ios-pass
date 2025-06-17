@@ -75,19 +75,22 @@ final class FetchCredentials: FetchCredentialsUseCase {
         async let encryptedItems = itemRepository.getActiveLogInItems(userId: userId)
         try await logger.debug("Mapping \(encryptedItems.count) encrypted items")
 
+        let hiddenShareIds = try await shares.filter(\.hidden).map(\.shareId)
+        let filteredItems = try await encryptedItems.filter { !hiddenShareIds.contains($0.shareId) }
+
         if let params {
             return try await fetchPasskeys(userId: userId,
                                            params: params,
                                            symmetricKey: symmetricKey,
                                            vaults: shares,
-                                           encryptedItems: encryptedItems,
+                                           encryptedItems: filteredItems,
                                            plan: plan)
         }
         return try await fetchPasswords(userId: userId,
                                         identifiers: identifiers,
                                         symmetricKey: symmetricKey,
                                         vaults: shares,
-                                        encryptedItems: encryptedItems,
+                                        encryptedItems: filteredItems,
                                         plan: plan)
     }
 }
