@@ -39,25 +39,28 @@ struct SearchResultChips: View {
                               isSelected: selectedType == nil,
                               action: { selectedType = nil })
 
-                chip(for: .login, count: itemCount.login)
-                chip(for: .alias, count: itemCount.alias)
-                chip(for: .creditCard, count: itemCount.creditCard)
-                chip(for: .note, count: itemCount.note)
-                chip(for: .identity, count: itemCount.identity)
+                chip(for: .login, numberOfEntries: itemCount.login)
+                chip(for: .alias, numberOfEntries: itemCount.alias)
+                chip(for: .creditCard, numberOfEntries: itemCount.creditCard)
+                chip(for: .note, numberOfEntries: itemCount.note)
+                chip(for: .identity, numberOfEntries: itemCount.identity)
                 if customItemEnabled {
-                    chip(for: .custom, count: itemCount.custom)
+                    chip(for: .custom, numberOfEntries: itemCount.custom)
                 }
             }
             .padding(.horizontal)
         }
     }
 
-    private func chip(for type: ItemContentType, count: Int) -> some View {
-        ItemCountChip(icon: type.regularIcon,
-                      title: type.chipTitle,
-                      count: count,
-                      isSelected: selectedType == type,
-                      action: { selectedType = type })
+    @ViewBuilder
+    private func chip(for type: ItemContentType, numberOfEntries: Int) -> some View {
+        if numberOfEntries > 0 {
+            ItemCountChip(icon: type.regularIcon,
+                          title: type.chipTitle,
+                          count: numberOfEntries,
+                          isSelected: selectedType == type,
+                          action: { selectedType = type })
+        }
     }
 }
 
