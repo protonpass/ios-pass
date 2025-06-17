@@ -75,7 +75,7 @@ final class FetchItemsForTextInsertion: FetchItemsForTextInsertionUseCase {
             vaults
         }
 
-        let applicableShareIds = applicableVaults.map(\.shareId)
+        let applicableShareIds = applicableVaults.filter { !$0.hidden }.map(\.shareId)
         let applicableEncryptedItems = encryptedItems.filter { item in
             applicableShareIds.contains(where: { $0 == item.shareId })
         }
