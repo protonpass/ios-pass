@@ -155,9 +155,21 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
         serialAccessQueue.sync {
             for passModule in PassModule.allCases {
                 let key = CredentialsKey(sessionId: sessionUID, module: passModule)
-                let newCredentials = getCredentials(credential: credential,
-                                                    module: passModule)
-                let newAuthCredential = newCredentials.authCredential
+
+                let credentials: Credentials = if let cred = cachedCredentials[key] {
+                    cred
+                } else {
+                    // Note: Credential has `mailboxpassword == ""` so the authCredential will have an empty
+                    // mailboxpassword
+                    // That is why we try to get the cached credentials.
+                    Credentials(credential: credential,
+                                authCredential: AuthCredential(credential),
+                                module: passModule)
+                }
+
+                // Note: updatedKeepingKeyAndPasswordDataIntact is necessary because Credential has
+                // `mailboxpassword == ""` which would override the mailboxpassword with an empty string.
+                let newAuthCredential = credentials.authCredential
                     .updatedKeepingKeyAndPasswordDataIntact(credential: credential)
                 cachedCredentials[key] = Credentials(credential: credential,
                                                      authCredential: newAuthCredential,
@@ -185,9 +197,9 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
 
             for passModule in PassModule.allCases {
                 let key = CredentialsKey(sessionId: credential.UID, module: passModule)
-                let newCredentials = getCredentials(credential: credential,
-                                                    module: passModule)
-                cachedCredentials[key] = newCredentials
+                cachedCredentials[key] = Credentials(credential: credential,
+                                                     authCredential: AuthCredential(credential),
+                                                     module: passModule)
             }
             saveCachedCredentialsToKeychain()
             sendCredentialUpdateInfo(sessionId: credential.UID)
@@ -323,14 +335,6 @@ private extension AuthManager {
         if !didSetUp {
             logger.error("AuthManager not set up")
         }
-    }
-
-    func getCredentials(credential: Credential,
-                        authCredential: AuthCredential? = nil,
-                        module: PassModule) -> Credentials {
-        Credentials(credential: credential,
-                    authCredential: authCredential ?? AuthCredential(credential),
-                    module: module)
     }
 
     func sendCredentialUpdateInfo(sessionId: String) {
