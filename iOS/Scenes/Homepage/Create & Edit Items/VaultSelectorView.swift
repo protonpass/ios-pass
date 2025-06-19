@@ -78,8 +78,7 @@ struct VaultSelectorView: View {
             VaultRow(thumbnail: { VaultThumbnail(vaultContent: vaultContent) },
                      title: vaultContent.name,
                      itemCount: vaultInfos.itemCount,
-                     mode: .view(isSelected: selectedVault == vaultInfos.share,
-                                 action: nil),
+                     mode: .view(isSelected: selectedVault == vaultInfos.share, action: nil),
                      height: 74)
                 .padding(.horizontal)
         })

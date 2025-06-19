@@ -44,7 +44,7 @@ private extension EditableVaultListViewModel {
                 return
             }
             var vaultCounts = [VaultCount]()
-            let hiddenShareIds = sharesData.shares.filter(\.share.hidden).map(\.share.shareId)
+            let hiddenShareIds = sharesData.shares.compactMap(\.share).hiddenShareIds
 
             for shareContent in sharesData.shares where shareContent.share.vaultContent != nil {
                 vaultCounts.append(.init(shareId: shareContent.share.shareId,
@@ -301,7 +301,7 @@ extension EditableVaultListViewModel {
 
     func resetHiddenShareIds() {
         if case let .loaded(data) = state {
-            hiddenShareIds = Set(data.shares.map(\.share).filter(\.hidden).map(\.shareId))
+            hiddenShareIds = Set(data.shares.compactMap(\.share).hiddenShareIds)
         }
     }
 

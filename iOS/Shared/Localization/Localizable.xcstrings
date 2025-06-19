@@ -123926,6 +123926,7 @@
       }
     },
     "Organise vaults" : {
+      "comment" : "Title of the button to enter edit mode to hide/show vaults",
       "localizations" : {
         "en" : {
           "stringUnit" : {

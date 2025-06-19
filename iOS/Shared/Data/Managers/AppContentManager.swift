@@ -339,7 +339,7 @@ extension AppContentManager {
 
     func getFilteredItems() -> [ItemUiModel] {
         guard let sharesData = state.loadedContent else { return [] }
-        let hiddenShareIds = sharesData.shares.filter(\.share.hidden).map(\.share.shareId)
+        let hiddenShareIds = sharesData.shares.compactMap(\.share).hiddenShareIds
         let items: [ItemUiModel] = switch vaultSelection {
         case .all:
             sharesData.shares.flatMap(\.items).filter { !hiddenShareIds.contains($0.shareId) }
@@ -526,6 +526,7 @@ private extension AppContentManager {
                 vaultSelection = .trash
             } else if let vault = shares.first(where: { $0.shareId == lastSelectedShareId }) {
                 if vault.hidden {
+                    // Fallback to selecting all vaults when the previous selected vault is hidden
                     vaultSelection = .all
                 } else {
                     vaultSelection = .precise(vault)

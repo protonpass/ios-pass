@@ -225,6 +225,14 @@ public extension [Share] {
     var representingVaults: [Share] {
         filter(\.isVaultRepresentation)
     }
+
+    var hiddenShareIds: [String] {
+        filter(\.hidden).map(\.shareId)
+    }
+
+    var visibleShareIds: [String] {
+        filter { !$0.hidden }.map(\.shareId)
+    }
 }
 
 public struct DecryptedRemoteShares: Sendable {
