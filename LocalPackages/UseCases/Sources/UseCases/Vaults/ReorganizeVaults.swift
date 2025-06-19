@@ -46,9 +46,6 @@ public final class ReorganizeVaults: ReorganizeVaultsUseCase {
 
     public func execute(currentShares: [Share],
                         hiddenShareIds: Set<String>) async throws -> Bool {
-        var shareIdsToHide = Set<String>()
-        var shareIdsToUnhide = Set<String>()
-
         let userId = try await userManager.getActiveUserId()
         var updated = false
 
