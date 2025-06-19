@@ -27,34 +27,12 @@ import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 
-// swiftlint:disable:next type_body_length
 struct EditableVaultListView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = EditableVaultListViewModel()
-    @State private var mode: Mode = .view
     @State private var vaultNameConfirmation = ""
     @State private var vaultToDelete: Share?
     @State private var isShowingEmptyTrashAlert = false
-
-    enum Mode {
-        case view, organise
-
-        var isView: Bool {
-            if case .view = self {
-                true
-            } else {
-                false
-            }
-        }
-
-        var isOrganise: Bool {
-            if case .organise = self {
-                true
-            } else {
-                false
-            }
-        }
-    }
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -65,7 +43,7 @@ struct EditableVaultListView: View {
                         // Should never happen
                         ProgressView()
                     case let .loaded(uiModel):
-                        if mode.isOrganise {
+                        if viewModel.mode.isOrganise {
                             hiddenVaultsBanner
                         } else {
                             vaultRow(for: .all)
@@ -73,7 +51,7 @@ struct EditableVaultListView: View {
                         }
 
                         ForEach(uiModel.filteredOrderedVaults.filter {
-                            if mode.isView {
+                            if viewModel.mode.isView {
                                 !$0.hidden
                             } else {
                                 true
@@ -83,7 +61,7 @@ struct EditableVaultListView: View {
                             PassDivider()
                         }
 
-                        if mode.isView {
+                        if viewModel.mode.isView {
                             if viewModel.canSelectVault(selection: .sharedWithMe) {
                                 vaultRow(for: .sharedWithMe)
                                 PassDivider()
@@ -100,7 +78,7 @@ struct EditableVaultListView: View {
                 .padding(.horizontal)
             }
             HStack {
-                switch mode {
+                switch viewModel.mode {
                 case .view:
                     CapsuleLabelButton(icon: IconProvider.plus,
                                        title: #localized("Create vault"),
@@ -117,21 +95,24 @@ struct EditableVaultListView: View {
                                       fontWeight: .semibold,
                                       backgroundColor: PassColor.interactionNormMinor1,
                                       horizontalPadding: DesignConstant.sectionPadding * 2,
-                                      action: { mode = .view; viewModel.resetHiddenShareIds() })
-                        .fixedSize(horizontal: true, vertical: true)
+                                      action: {
+                                          viewModel.mode = .view
+                                          viewModel.resetHiddenShareIds()
+                                      })
+                                      .fixedSize(horizontal: true, vertical: true)
                 }
 
                 Spacer()
 
                 if viewModel.hideShowVaultSupported {
-                    switch mode {
+                    switch viewModel.mode {
                     case .view:
                         CapsuleLabelButton(icon: IconProvider.listBullets,
                                            title: #localized("Organise vaults"),
                                            titleColor: PassColor.interactionNormMajor2,
                                            backgroundColor: PassColor.interactionNormMinor1,
                                            fontWeight: .semibold,
-                                           action: { mode = .organise })
+                                           action: { viewModel.mode = .organise })
                             .fixedSize(horizontal: true, vertical: true)
 
                     case .organise:
@@ -147,12 +128,9 @@ struct EditableVaultListView: View {
             }
             .padding([.bottom, .horizontal])
         }
-        .animation(.default, value: mode)
+        .animation(.default, value: viewModel.mode)
         .background(PassColor.backgroundWeak.toColor)
         .showSpinner(viewModel.loading)
-        .onChange(of: viewModel.exitOrganiseMode) { _ in
-            mode = .view
-        }
         .frame(maxWidth: .infinity, alignment: .leading)
         .alert("Delete vault?",
                isPresented: $vaultToDelete.mappedToBool(),
@@ -188,7 +166,7 @@ struct EditableVaultListView: View {
     private func vaultRow(for selection: VaultSelection) -> some View {
         let itemCount = viewModel.itemCount(for: selection)
 
-        let vaultRowMode: VaultRowMode = switch mode {
+        let vaultRowMode: VaultRowMode = switch viewModel.mode {
         case .view:
             .view(isSelected: viewModel.isSelected(selection),
                   action: { vault in
@@ -205,7 +183,7 @@ struct EditableVaultListView: View {
 
         HStack {
             Button(action: {
-                switch mode {
+                switch viewModel.mode {
                 case .view:
                     dismiss()
                     viewModel.select(selection)
@@ -229,7 +207,7 @@ struct EditableVaultListView: View {
             })
             .buttonStyle(.plain)
 
-            if mode.isView {
+            if viewModel.mode.isView {
                 Spacer()
 
                 switch selection {

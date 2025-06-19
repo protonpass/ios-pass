@@ -29,30 +29,31 @@ import Macro
 private extension EditableVaultListViewModel {
     struct VaultCount: Sendable {
         let shareId: String
+        let hidden: Bool
         let value: Int
     }
 
     struct Count: Sendable {
-        let all: Int
         let vaultCounts: [VaultCount]
-        let trashed: Int
+        let allVisibleTrashed: Int
 
         init(appContentManager: AppContentManager) {
             guard let sharesData = appContentManager.state.loadedContent else {
-                all = 0
                 vaultCounts = []
-                trashed = 0
+                allVisibleTrashed = 0
                 return
             }
-            var all = 0
             var vaultCounts = [VaultCount]()
+            let hiddenShareIds = sharesData.shares.filter(\.share.hidden).map(\.share.shareId)
+
             for shareContent in sharesData.shares where shareContent.share.vaultContent != nil {
-                all += shareContent.itemCount
-                vaultCounts.append(.init(shareId: shareContent.share.shareId, value: shareContent.itemCount))
+                vaultCounts.append(.init(shareId: shareContent.share.shareId,
+                                         hidden: shareContent.share.hidden,
+                                         value: shareContent.itemCount))
             }
-            self.all = all
             self.vaultCounts = vaultCounts
-            trashed = sharesData.trashedItems.count
+            allVisibleTrashed =
+                sharesData.trashedItems.filter { !hiddenShareIds.contains($0.shareId) }.count
         }
     }
 }
@@ -63,8 +64,8 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var state = AppContentState.loading
     @Published private(set) var organization: Organization?
     @Published private(set) var hiddenShareIds = Set<String>()
-    @Published private(set) var exitOrganiseMode = false
-    private let count: Count
+    @Published var mode: Mode = .view
+    private var count: Count
 
     let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
@@ -93,7 +94,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     }
 
     var hasTrashItems: Bool {
-        count.trashed > 0
+        count.allVisibleTrashed > 0
     }
 
     var trashedAliasesCount: Int {
@@ -101,6 +102,26 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
             return 0
         }
         return sharesDatas.trashedItems.filter(\.isAlias).count
+    }
+
+    enum Mode {
+        case view, organise
+
+        var isView: Bool {
+            if case .view = self {
+                true
+            } else {
+                false
+            }
+        }
+
+        var isOrganise: Bool {
+            if case .organise = self {
+                true
+            } else {
+                false
+            }
+        }
     }
 
     init() {
@@ -147,6 +168,7 @@ private extension EditableVaultListViewModel {
             .sink { [weak self] newState in
                 guard let self else { return }
                 state = newState
+                count = .init(appContentManager: appContentManager)
                 resetHiddenShareIds()
             }
             .store(in: &cancellables)
@@ -260,18 +282,20 @@ extension EditableVaultListViewModel {
         let itemsSharedWithMe = appContentManager.state.loadedContent?.itemsSharedWithMe ?? []
         let activeItemsSharedWithMeCount = itemsSharedWithMe.filter { $0.state == .active }.count
 
-        let itemSharedByMeCount = appContentManager.state.loadedContent?.itemsSharedByMe.count ?? 0
         return switch selection {
         case .all:
-            count.all + activeItemsSharedWithMeCount
+            count.vaultCounts
+                .filter { !$0.hidden }
+                .map(\.value)
+                .reduce(0, +) + activeItemsSharedWithMeCount
         case let .precise(vault):
             count.vaultCounts.first { $0.shareId == vault.shareId }?.value ?? 0
         case .sharedWithMe:
             itemsSharedWithMe.count
         case .sharedByMe:
-            itemSharedByMeCount
+            appContentManager.state.loadedContent?.itemsSharedByMe.count ?? 0
         case .trash:
-            count.trashed
+            count.allVisibleTrashed
         }
     }
 
@@ -296,7 +320,7 @@ extension EditableVaultListViewModel {
             guard let self else { return }
             defer {
                 loading = false
-                exitOrganiseMode.toggle()
+                mode = .view
             }
             loading = true
             do {
