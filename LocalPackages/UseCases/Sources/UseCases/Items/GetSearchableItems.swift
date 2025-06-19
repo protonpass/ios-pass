@@ -57,7 +57,7 @@ public final class GetSearchableItems: GetSearchableItemsUseCase {
         async let getSymmetricKey = symmetricKeyProvider.getSymmetricKey()
         let (vaults, items, symmetricKey) = try await (getShares, getItems, getSymmetricKey)
 
-        let hiddenShareIds = vaults.filter(\.hidden).map(\.shareId)
+        let hiddenShareIds = vaults.hiddenShareIds
         let filteredItems = items.filter { !hiddenShareIds.contains($0.shareId) }
 
         return try await withThrowingTaskGroup(of: [SearchableItem].self,
