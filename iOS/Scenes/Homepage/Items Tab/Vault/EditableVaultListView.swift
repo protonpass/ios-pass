@@ -42,7 +42,7 @@ struct EditableVaultListView: View {
                     case .error, .loading:
                         // Should never happen
                         ProgressView()
-                    case let .loaded(uiModel):
+                    case .loaded:
                         if viewModel.mode.isOrganise {
                             hiddenVaultsBanner
                         } else {
@@ -50,13 +50,7 @@ struct EditableVaultListView: View {
                             PassDivider()
                         }
 
-                        ForEach(uiModel.filteredOrderedVaults.filter {
-                            if viewModel.mode.isView {
-                                !$0.hidden
-                            } else {
-                                true
-                            }
-                        }) { vault in
+                        ForEach(viewModel.filteredOrderedVaults) { vault in
                             vaultRow(for: .precise(vault))
                             PassDivider()
                         }
