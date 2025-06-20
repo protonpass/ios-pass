@@ -30,8 +30,10 @@ import SwiftUI
 
 struct SearchResultsView: View {
     @ObservedObject private var viewModel: SearchResultsViewModel
-    @Binding var selectedType: ItemContentType?
-    @Binding var selectedSortType: SortType
+    @Binding private var selectedType: ItemContentType?
+    @Binding private var selectedSortType: SortType
+    @Binding private var vaultSearchSelection: VaultSearchSelection
+
     private let uuid = UUID()
     let safeAreaInsets: EdgeInsets
     let onScroll: () -> Void
@@ -44,19 +46,20 @@ struct SearchResultsView: View {
 
     init(selectedType: Binding<ItemContentType?>,
          selectedSortType: Binding<SortType>,
+         vaultSearchSelection: Binding<VaultSearchSelection>,
          itemContextMenuHandler: ItemContextMenuHandler,
-         itemCount: ItemCount,
-         results: any SearchResults,
+         results: SearchDataDisplayContainer,
          isTrash: Bool,
          safeAreaInsets: EdgeInsets,
          onScroll: @escaping () -> Void,
          onSelectItem: @escaping (ItemSearchResult) -> Void) {
         _viewModel = .init(wrappedValue: .init(itemContextMenuHandler: itemContextMenuHandler,
-                                               itemCount: itemCount,
                                                results: results,
+                                               vaultSearchSelection: vaultSearchSelection.wrappedValue,
                                                isTrash: isTrash))
         _selectedType = selectedType
         _selectedSortType = selectedSortType
+        _vaultSearchSelection = vaultSearchSelection
         self.safeAreaInsets = safeAreaInsets
         self.onScroll = onScroll
         self.onSelectItem = onSelectItem
@@ -64,6 +67,8 @@ struct SearchResultsView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            topVaultSelection
+                .padding(.bottom, 12)
             SearchResultChips(selectedType: $selectedType,
                               itemCount: viewModel.itemCount,
                               customItemEnabled: viewModel.customItemEnabled)
@@ -74,6 +79,7 @@ struct SearchResultsView: View {
                 tableView
             }
         }
+        .animation(.default, value: vaultSearchSelection)
         .modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $aliasToTrash.mappedToBool(),
                                           enabled: aliasToTrash?.aliasEnabled ?? false,
                                           disableAction: {
@@ -117,6 +123,53 @@ struct SearchResultsView: View {
                   itemToBePermanentlyDeleted: $viewModel.itemToBePermanentlyDeleted,
                   onSelect: { onSelectItem(item) },
                   onAliasTrash: { aliasToTrash = item })
+    }
+
+    @ViewBuilder
+    var topVaultSelection: some View {
+        if let current = viewModel.fullResults.current {
+            HStack(spacing: 0) {
+                Button {
+                    vaultSearchSelection = .current
+                } label: {
+                    Text(#localized("Current vault") + "(\(current.itemCount.total))")
+                        .fontWeight(.semibold)
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .padding(.horizontal, 24)
+                        .padding(.top, 12)
+                        .padding(.bottom, 18)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                }
+                .buttonStyle(.plain)
+                .overlay(overlay(show: vaultSearchSelection == .current),
+                         alignment: .bottom)
+
+                Button {
+                    vaultSearchSelection = .all
+                } label: {
+                    Text(#localized("All vaults") + "(\(viewModel.fullResults.all.itemCount.total))")
+                        .fontWeight(.semibold)
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .padding(.horizontal, 24)
+                        .padding(.top, 12)
+                        .padding(.bottom, 18)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                }
+                .buttonStyle(.plain)
+                .overlay(alignment: .bottom) {
+                    overlay(show: vaultSearchSelection == .all)
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    func overlay(show: Bool) -> some View {
+        Divider()
+            .frame(maxWidth: .infinity, maxHeight: show ? 2 : 1)
+            .background(show ? Color(red: 0.47, green: 0.47, blue: 0.97) : PassColor.textWeak.toColor)
     }
 }
 

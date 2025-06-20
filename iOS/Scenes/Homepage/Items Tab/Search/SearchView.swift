@@ -120,11 +120,11 @@ private extension SearchView {
                     NoSearchResultsInAllVaultView(query: query)
                 }
 
-            case let .results(itemCount, results):
+            case let .results(results):
                 SearchResultsView(selectedType: $viewModel.selectedType,
                                   selectedSortType: $viewModel.selectedSortType,
+                                  vaultSearchSelection: $viewModel.vaultSearchSelection,
                                   itemContextMenuHandler: viewModel.itemContextMenuHandler,
-                                  itemCount: itemCount,
                                   results: results,
                                   isTrash: viewModel.isTrash,
                                   safeAreaInsets: safeAreaInsets,
