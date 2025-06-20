@@ -39,7 +39,8 @@ public extension Share {
                         contentFormatVersion: Int64? = nil,
                         expireTime: Int64? = nil,
                         createTime: Int64 = .random(in: 0...100),
-                        canAutoFill: Bool = true) -> Share {
+                        canAutoFill: Bool = true,
+                        hidden: Bool = .random()) -> Share {
         Share(shareID: shareID ?? .random(),
               vaultID: vaultID ?? .random(),
               addressID: addressID ?? .random(),
@@ -58,6 +59,7 @@ public extension Share {
               contentFormatVersion: contentFormatVersion,
               expireTime: expireTime,
               createTime: createTime,
-              canAutoFill: canAutoFill)
+              canAutoFill: canAutoFill,
+              hidden: hidden)
     }
 }

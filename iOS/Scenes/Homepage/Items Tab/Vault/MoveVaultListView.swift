@@ -100,7 +100,7 @@ struct MoveVaultListView: View {
             VaultRow(thumbnail: { VaultThumbnail(vaultContent: vaultContent) },
                      title: vaultContent.name,
                      itemCount: vault.itemCount,
-                     isSelected: viewModel.selectedVault == vault)
+                     mode: .view(isSelected: viewModel.selectedVault == vault, action: nil))
         })
         .buttonStyle(.plain)
         .opacityReduced(!vault.share.canEdit)

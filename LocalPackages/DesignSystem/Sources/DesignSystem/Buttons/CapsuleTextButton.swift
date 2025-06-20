@@ -29,6 +29,7 @@ public struct CapsuleTextButton: View {
     let backgroundColor: UIColor
     let height: CGFloat
     let maxWidth: CGFloat?
+    let horizontalPadding: CGFloat?
     let action: (() -> Void)?
 
     public init(title: String,
@@ -38,6 +39,7 @@ public struct CapsuleTextButton: View {
                 backgroundColor: UIColor,
                 height: CGFloat = 40,
                 maxWidth: CGFloat? = .infinity,
+                horizontalPadding: CGFloat? = DesignConstant.sectionPadding,
                 action: (() -> Void)? = nil) {
         self.title = title
         self.titleColor = titleColor
@@ -46,6 +48,7 @@ public struct CapsuleTextButton: View {
         self.backgroundColor = backgroundColor
         self.height = height
         self.maxWidth = maxWidth
+        self.horizontalPadding = horizontalPadding
         self.action = action
     }
 
@@ -68,7 +71,7 @@ private extension CapsuleTextButton {
             .foregroundStyle(titleColor.toColor)
             .frame(height: height)
             .frame(maxWidth: maxWidth)
-            .padding(.horizontal, 16)
+            .padding(.horizontal, horizontalPadding)
             .background(backgroundColor.toColor)
             .clipShape(Capsule())
     }
