@@ -132,14 +132,9 @@ struct SearchResultsView: View {
                 Button {
                     vaultSearchSelection = .current
                 } label: {
-                    Text(#localized("Current vault") + "(\(viewModel.fullResults.current.itemCount.total))")
-                        .fontWeight(.semibold)
-                        .multilineTextAlignment(.center)
-                        .foregroundStyle(PassColor.textNorm.toColor)
-                        .padding(.horizontal, 24)
-                        .padding(.top, 12)
-                        .padding(.bottom, 18)
-                        .frame(maxWidth: .infinity, alignment: .center)
+                    counterText(label: #localized("Current vault"),
+                                count: viewModel.fullResults.current.itemCount.total)
+                        .frame(maxHeight: .infinity)
                 }
                 .buttonStyle(.plain)
                 .overlay(overlay(show: vaultSearchSelection == .current),
@@ -148,20 +143,15 @@ struct SearchResultsView: View {
                 Button {
                     vaultSearchSelection = .all
                 } label: {
-                    Text(#localized("All vaults") + "(\(all.itemCount.total))")
-                        .fontWeight(.semibold)
-                        .multilineTextAlignment(.center)
-                        .foregroundStyle(PassColor.textNorm.toColor)
-                        .padding(.horizontal, 24)
-                        .padding(.top, 12)
-                        .padding(.bottom, 18)
-                        .frame(maxWidth: .infinity, alignment: .center)
+                    counterText(label: #localized("All vaults"), count: all.itemCount.total)
+                        .frame(maxHeight: .infinity)
                 }
                 .buttonStyle(.plain)
                 .overlay(alignment: .bottom) {
                     overlay(show: vaultSearchSelection == .all)
                 }
             }
+            .fixedSize(horizontal: false, vertical: true)
         }
     }
 
@@ -169,7 +159,20 @@ struct SearchResultsView: View {
     func overlay(show: Bool) -> some View {
         Divider()
             .frame(maxWidth: .infinity, maxHeight: show ? 2 : 1)
-            .background(show ? Color(red: 0.47, green: 0.47, blue: 0.97) : PassColor.textWeak.toColor)
+            .background(show ? Color(red: 0.47, green: 0.47, blue: 0.97) : Color(red: 0.19,
+                                                                                 green: 0.18,
+                                                                                 blue: 0.27))
+    }
+
+    func counterText(label: String, count: Int) -> some View {
+        Text(label + " " + "(\(count))")
+            .fontWeight(.semibold)
+            .multilineTextAlignment(.center)
+            .foregroundStyle(PassColor.textNorm.toColor)
+            .padding(.horizontal, 24)
+            .padding(.top, 12)
+            .padding(.bottom, 18)
+            .frame(maxWidth: .infinity, alignment: .center)
     }
 }
 
