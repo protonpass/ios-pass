@@ -38,8 +38,6 @@ final class SearchResultsViewModel: ObservableObject {
 
     private var vaultSearchSelection: VaultSearchSelection = .current
 
-//    var showVaultSearch: Bool { fullResults.all != nil }
-
     let itemContextMenuHandler: ItemContextMenuHandler
 
     var itemCount: ItemCount {
