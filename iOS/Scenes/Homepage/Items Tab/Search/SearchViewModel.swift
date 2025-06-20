@@ -32,14 +32,14 @@ struct SearchDataDisplay: Equatable {
     let searchResults: any SearchResults
 
     static func== (lhs: Self, rhs: Self) -> Bool {
-        lhs.searchResults.precomputedHash == lhs.searchResults.precomputedHash &&
-            lhs.itemCount == lhs.itemCount
+        lhs.searchResults.precomputedHash == rhs.searchResults.precomputedHash &&
+            lhs.itemCount == rhs.itemCount
     }
 }
 
 struct SearchDataDisplayContainer: Equatable {
-    let current: SearchDataDisplay?
-    let all: SearchDataDisplay
+    let current: SearchDataDisplay
+    let all: SearchDataDisplay?
 }
 
 enum SearchViewState: Sendable {
@@ -122,7 +122,7 @@ private extension SearchViewModel {
             }
             let userId = try await userManager.getActiveUserId()
             searchableItems = try await getSearchableItems(userId: userId, for: searchMode)
-            if allSearchableItems.isEmpty {
+            if allSearchableItems.isEmpty, searchMode.isSpecificSelection {
                 allSearchableItems = try await getSearchableItems(userId: userId, for: .all(.all))
             }
             try await refreshSearchHistory()
@@ -217,8 +217,6 @@ private extension SearchViewModel {
 
     nonisolated func filterAndSortResultsAsync() async {
         let results = await results
-        let selectedType = await selectedType
-        let selectedSortType = await selectedSortType
 
         let updateState: (SearchViewState) async -> Void = { [weak self] newState in
             guard let self else { return }
@@ -236,12 +234,12 @@ private extension SearchViewModel {
         await updateState(.filteringResults)
 
         do {
-            var current: SearchDataDisplay?
-            if let vaultSelection = await searchMode.vaultSelection, vaultSelection != .all {
-                current = try await test(results: results)
-            }
+            let current = try await parse(results: results)
 
-            let all = try await test(results: allResults)
+            var all: SearchDataDisplay?
+            if await searchMode.isSpecificSelection {
+                all = try await parse(results: allResults)
+            }
 
             await updateState(.results(.init(current: current, all: all)))
         } catch {
@@ -253,7 +251,10 @@ private extension SearchViewModel {
         }
     }
 
-    func test(results: [ItemSearchResult]) throws -> SearchDataDisplay {
+    nonisolated func parse(results: [ItemSearchResult]) async throws -> SearchDataDisplay {
+        let selectedType = await selectedType
+        let selectedSortType = await selectedSortType
+
         let filteredResults: [ItemSearchResult] = if let selectedType {
             try results.filter {
                 try Task.checkCancellation()
