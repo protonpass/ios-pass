@@ -26,26 +26,8 @@
   },
   "testTargets" : [
     {
-      "skippedTests" : [
-        "ExternalAccountsTests",
-        "ExternalAccountsTests\/testSignInWithExternalAccountWorks()",
-        "ExternalAccountsTests\/testSignInWithInternalAccountWorks()",
-        "ExternalAccountsTests\/testSignUpWithExternalAccountIsNotAvailable()",
-        "ExternalAccountsTests\/testSignUpWithUsernameAccountIsNotAvailable()",
-        "LoginBaseTestCase",
-        "LoginSignupTests",
-        "LoginWelcomeTests",
-        "LoginWelcomeTests\/testLoginButtonIsPresentedOnWelcomeScreenWhenItShouldBe()",
-        "LoginWelcomeTests\/testLoginButtonLeadsToLoginScreen()",
-        "LoginWelcomeTests\/testLoginButtonLeadsToSignUpLessLoginScreenWhenNeeded()",
-        "LoginWelcomeTests\/testMailWelcomeScreenIsShown()",
-        "LoginWelcomeTests\/testSignUpButtonIsPresentedOnWelcomeScreenWhenItShouldBe()",
-        "LoginWelcomeTests\/testSignUpButtonLeadsToSignUpScreen()",
-        "SettingsTests\/testItemListDisplayed()",
-        "SettingsTests\/testTelemetrySettings()",
-        "SubscriptionTests",
-        "TokenRefreshTests",
-        "TokenRefreshTests\/testSignInWithInternalAccountWorks()"
+      "selectedTests" : [
+        "MockTests\/testMockLoginEmptyUser()"
       ],
       "target" : {
         "containerPath" : "container:ProtonPass.xcodeproj",
