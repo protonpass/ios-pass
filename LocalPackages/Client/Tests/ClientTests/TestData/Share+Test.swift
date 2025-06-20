@@ -43,6 +43,7 @@ extension Share {
               contentFormatVersion: .random(in: 0...10),
               expireTime: .random(in: 0...1_000_000),
               createTime: .random(in: 0...1_000_000),
-              canAutoFill: .random())
+              canAutoFill: .random(),
+              hidden: .random())
     }
 }

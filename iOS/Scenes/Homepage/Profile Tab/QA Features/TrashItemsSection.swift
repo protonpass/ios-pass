@@ -81,7 +81,6 @@ private struct TrashItemsView: View {
                                      },
                                      title: vault.vaultName ?? "Share link to item",
                                      itemCount: uiModel.itemCount,
-                                     isSelected: false,
                                      height: 44)
                         })
                         .buttonStyle(.plain)

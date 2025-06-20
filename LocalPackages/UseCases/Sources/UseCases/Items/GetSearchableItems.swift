@@ -57,9 +57,12 @@ public final class GetSearchableItems: GetSearchableItemsUseCase {
         async let getSymmetricKey = symmetricKeyProvider.getSymmetricKey()
         let (vaults, items, symmetricKey) = try await (getShares, getItems, getSymmetricKey)
 
+        let hiddenShareIds = vaults.hiddenShareIds
+        let filteredItems = items.filter { !hiddenShareIds.contains($0.shareId) }
+
         return try await withThrowingTaskGroup(of: [SearchableItem].self,
                                                returning: [SearchableItem].self) { @Sendable group in
-            let itemBatches = items.chunked(into: Constants.Utils.batchSize)
+            let itemBatches = filteredItems.chunked(into: Constants.Utils.batchSize)
             for batch in itemBatches {
                 group.addTask { @Sendable in
                     try batch.map {

@@ -75,6 +75,8 @@ public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable /* ,
 
     public let canAutoFill: Bool
 
+    public let hidden: Bool
+
     /// Enum representation of `targetType`
     public var shareType: TargetType {
         .init(rawValue: targetType) ?? .unknown
@@ -119,7 +121,8 @@ public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable /* ,
                 contentFormatVersion: Int64?,
                 expireTime: Int64?,
                 createTime: Int64,
-                canAutoFill: Bool) {
+                canAutoFill: Bool,
+                hidden: Bool) {
         self.shareID = shareID
         self.vaultID = vaultID
         self.addressID = addressID
@@ -139,6 +142,7 @@ public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable /* ,
         self.expireTime = expireTime
         self.createTime = createTime
         self.canAutoFill = canAutoFill
+        self.hidden = hidden
     }
 
     /// Custom Decodable implementation
@@ -164,13 +168,14 @@ public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable /* ,
         expireTime = try container.decodeIfPresent(Int64.self, forKey: .expireTime)
         createTime = try container.decode(Int64.self, forKey: .createTime)
         canAutoFill = try container.decode(Bool.self, forKey: .canAutoFill)
+        hidden = try container.decode(Bool.self, forKey: .hidden)
     }
 
     private enum CodingKeys: String, CodingKey {
         case shareID, vaultID, addressID, targetType, targetID, permission, shareRoleID, targetMembers,
              targetMaxMembers
         case pendingInvites, newUserInvitesReady, owner, shared, content, contentKeyRotation, contentFormatVersion
-        case expireTime, createTime, canAutoFill
+        case expireTime, createTime, canAutoFill, hidden
     }
 
     public func copy(with vaultContent: VaultContent?) -> Share {
@@ -219,6 +224,14 @@ public extension Share {
 public extension [Share] {
     var representingVaults: [Share] {
         filter(\.isVaultRepresentation)
+    }
+
+    var hiddenShareIds: [String] {
+        compactMap { $0.hidden ? $0.shareId : nil }
+    }
+
+    var visibleShareIds: [String] {
+        compactMap { $0.hidden ? nil : $0.shareId }
     }
 }
 

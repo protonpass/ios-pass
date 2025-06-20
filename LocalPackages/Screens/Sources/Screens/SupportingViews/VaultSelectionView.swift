@@ -48,7 +48,7 @@ public struct VaultSelectionView: View {
                                          title: vaultContent.name,
                                          itemCount: vault.itemCount,
                                          share: vault.vault,
-                                         isSelected: isSelected,
+                                         mode: .view(isSelected: isSelected, action: nil),
                                          height: 74)
                                     .padding(.horizontal)
                             })
