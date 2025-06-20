@@ -29,31 +29,34 @@ import Macro
 private extension EditableVaultListViewModel {
     struct VaultCount: Sendable {
         let shareId: String
-        let hidden: Bool
         let value: Int
     }
 
     struct Count: Sendable {
+        let all: Int
         let vaultCounts: [VaultCount]
-        let allVisibleTrashed: Int
+        let trashed: Int
 
         init(appContentManager: AppContentManager) {
             guard let sharesData = appContentManager.state.loadedContent else {
+                all = 0
                 vaultCounts = []
-                allVisibleTrashed = 0
+                trashed = 0
                 return
             }
+            var all = 0
             var vaultCounts = [VaultCount]()
             let hiddenShareIds = sharesData.shares.compactMap(\.share).hiddenShareIds
 
             for shareContent in sharesData.shares where shareContent.share.vaultContent != nil {
-                vaultCounts.append(.init(shareId: shareContent.share.shareId,
-                                         hidden: shareContent.share.hidden,
-                                         value: shareContent.itemCount))
+                if !shareContent.share.hidden {
+                    all += shareContent.itemCount
+                }
+                vaultCounts.append(.init(shareId: shareContent.share.shareId, value: shareContent.itemCount))
             }
+            self.all = all
             self.vaultCounts = vaultCounts
-            allVisibleTrashed =
-                sharesData.trashedItems.filter { !hiddenShareIds.contains($0.shareId) }.count
+            trashed = sharesData.trashedItems.filter { !hiddenShareIds.contains($0.shareId) }.count
         }
     }
 }
@@ -94,7 +97,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     }
 
     var hasTrashItems: Bool {
-        count.allVisibleTrashed > 0
+        count.trashed > 0
     }
 
     var trashedAliasesCount: Int {
@@ -284,10 +287,7 @@ extension EditableVaultListViewModel {
 
         return switch selection {
         case .all:
-            count.vaultCounts
-                .filter { !$0.hidden }
-                .map(\.value)
-                .reduce(0, +) + activeItemsSharedWithMeCount
+            count.all + activeItemsSharedWithMeCount
         case let .precise(vault):
             count.vaultCounts.first { $0.shareId == vault.shareId }?.value ?? 0
         case .sharedWithMe:
@@ -295,7 +295,7 @@ extension EditableVaultListViewModel {
         case .sharedByMe:
             appContentManager.state.loadedContent?.itemsSharedByMe.count ?? 0
         case .trash:
-            count.allVisibleTrashed
+            count.trashed
         }
     }
 
