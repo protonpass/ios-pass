@@ -127,12 +127,12 @@ struct SearchResultsView: View {
 
     @ViewBuilder
     var topVaultSelection: some View {
-        if let current = viewModel.fullResults.current {
+        if let all = viewModel.fullResults.all {
             HStack(spacing: 0) {
                 Button {
                     vaultSearchSelection = .current
                 } label: {
-                    Text(#localized("Current vault") + "(\(current.itemCount.total))")
+                    Text(#localized("Current vault") + "(\(viewModel.fullResults.current.itemCount.total))")
                         .fontWeight(.semibold)
                         .multilineTextAlignment(.center)
                         .foregroundStyle(PassColor.textNorm.toColor)
@@ -148,7 +148,7 @@ struct SearchResultsView: View {
                 Button {
                     vaultSearchSelection = .all
                 } label: {
-                    Text(#localized("All vaults") + "(\(viewModel.fullResults.all.itemCount.total))")
+                    Text(#localized("All vaults") + "(\(all.itemCount.total))")
                         .fontWeight(.semibold)
                         .multilineTextAlignment(.center)
                         .foregroundStyle(PassColor.textNorm.toColor)
