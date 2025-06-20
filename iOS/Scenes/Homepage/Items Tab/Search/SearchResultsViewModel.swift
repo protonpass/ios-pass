@@ -38,22 +38,22 @@ final class SearchResultsViewModel: ObservableObject {
 
     private var vaultSearchSelection: VaultSearchSelection = .current
 
-    var showVaultSearch: Bool { fullResults.current != nil }
+//    var showVaultSearch: Bool { fullResults.all != nil }
 
     let itemContextMenuHandler: ItemContextMenuHandler
 
     var itemCount: ItemCount {
-        guard let current = fullResults.current else {
-            return fullResults.all.itemCount
+        guard let all = fullResults.all else {
+            return fullResults.current.itemCount
         }
-        return vaultSearchSelection == .current ? current.itemCount : fullResults.all.itemCount
+        return vaultSearchSelection == .current ? fullResults.current.itemCount : all.itemCount
     }
 
     var results: any SearchResults {
-        guard let current = fullResults.current else {
-            return fullResults.all.searchResults
+        guard let all = fullResults.all else {
+            return fullResults.current.searchResults
         }
-        return vaultSearchSelection == .current ? current.searchResults : fullResults.all.searchResults
+        return vaultSearchSelection == .current ? fullResults.current.searchResults : all.searchResults
     }
 
     let isTrash: Bool
