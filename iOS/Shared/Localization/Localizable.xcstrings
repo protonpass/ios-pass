@@ -56633,6 +56633,16 @@
         }
       }
     },
+    "Current vault" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Current vault"
+          }
+        }
+      }
+    },
     "Current version" : {
       "localizations" : {
         "be" : {
