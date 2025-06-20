@@ -189,8 +189,9 @@ private final class ItemCountViewModel: ObservableObject {
 private extension ItemCountViewModel {
     nonisolated func refreshAsync(_ sharesData: SharesData) async {
         if Task.isCancelled { return }
-        let activeItems = sharesData.shares.flatMap(\.items)
-        let allItems = activeItems + sharesData.trashedItems
+        let hiddenShareIds = sharesData.shares.compactMap(\.share).hiddenShareIds
+        let activeItems = sharesData.shares.flatMap(\.items).filter { !hiddenShareIds.contains($0.shareId) }
+        let allItems = activeItems + sharesData.trashedItems.filter { !hiddenShareIds.contains($0.shareId) }
         let itemCount = ItemCount(items: allItems,
                                   sharedByMe: sharesData.itemsSharedByMe.count,
                                   sharedWithMe: sharesData.itemsSharedWithMe.count)
