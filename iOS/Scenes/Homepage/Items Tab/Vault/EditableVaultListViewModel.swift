@@ -92,6 +92,20 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
     private var cancellables = Set<AnyCancellable>()
 
+    var filteredOrderedVaults: [Share] {
+        if case let .loaded(data) = state {
+            data.filteredOrderedVaults.filter {
+                if mode.isView {
+                    !$0.hidden
+                } else {
+                    true
+                }
+            }
+        } else {
+            []
+        }
+    }
+
     var hideShowVaultSupported: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passHideShowVault)
     }
