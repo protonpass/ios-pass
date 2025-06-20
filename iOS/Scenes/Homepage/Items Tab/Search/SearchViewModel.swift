@@ -31,7 +31,7 @@ struct SearchDataDisplay: Equatable {
     let itemCount: ItemCount
     let searchResults: any SearchResults
 
-    static func== (lhs: Self, rhs: Self) -> Bool {
+    static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.searchResults.precomputedHash == rhs.searchResults.precomputedHash &&
             lhs.itemCount == rhs.itemCount
     }
