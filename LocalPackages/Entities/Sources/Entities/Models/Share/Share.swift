@@ -227,11 +227,11 @@ public extension [Share] {
     }
 
     var hiddenShareIds: [String] {
-        filter(\.hidden).map(\.shareId)
+        compactMap { $0.hidden ? $0.shareId : nil }
     }
 
     var visibleShareIds: [String] {
-        filter { !$0.hidden }.map(\.shareId)
+        compactMap { $0.hidden ? nil : $0.shareId }
     }
 }
 
