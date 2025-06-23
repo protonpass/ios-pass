@@ -195,7 +195,6 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.netShield
         _ = PassIcon.sentinelLogo
         
-        _ = PassIcon.tabAuthenticator
         _ = PassIcon.shield2
         _ = PassIcon.passPlus
         _ = PassIcon.lightning

@@ -53,7 +53,6 @@ public final class RefreshAccessAndMonitorState: @unchecked Sendable, RefreshAcc
     }
 
     public func execute(userId: String) async throws {
-        stream.send(.default)
         async let getAccess = accessRepository.refreshAccess(userId: userId)
         async let refreshUserBreaches = passMonitorRepository.refreshUserBreaches()
         async let refreshSecurityChecks: () = passMonitorRepository.refreshSecurityChecks()
