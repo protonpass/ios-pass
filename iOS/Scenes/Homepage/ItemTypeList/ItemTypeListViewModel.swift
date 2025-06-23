@@ -53,6 +53,7 @@ extension ItemContentType {
 @MainActor
 final class ItemTypeListViewModel: NSObject, ObservableObject {
     @Published private(set) var limitation: AliasLimitation?
+    @Published private(set) var canDisplayFeatureDiscovery = false
     let onSelect: (ItemType) -> Void
 
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
@@ -60,6 +61,10 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
+    @LazyInjected(\SharedRepositoryContainer.accessRepository)
+    private var accessRepository
+    @LazyInjected(\SharedServiceContainer.userManager)
+    private var userManager
 
     enum Mode {
         case hostApp, autoFillExtension
@@ -89,6 +94,15 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
             guard let self else { return }
             do {
                 limitation = try await upgradeChecker.aliasLimitation()
+
+                // Optionally display feature discovery
+                do {
+                    let userId = try await userManager.getActiveUserId()
+                    let passUserInfos = try await accessRepository.getPassUserInformation(userId: userId)
+                    canDisplayFeatureDiscovery = passUserInfos.canDisplayFeatureDiscovery
+                } catch {
+                    logger.error(error)
+                }
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))
@@ -174,7 +188,7 @@ extension ItemType {
         case .identity:
             #localized("Identity")
         case .custom:
-            #localized("More")
+            #localized("Other")
         }
     }
 
@@ -193,7 +207,7 @@ extension ItemType {
         case .identity:
             #localized("Fill in your personal data")
         case .custom:
-            #localized("Save WiFi, passport, SSH, or go custom")
+            #localized("WiFi details, SSH, custom items, and more")
         }
     }
 }
