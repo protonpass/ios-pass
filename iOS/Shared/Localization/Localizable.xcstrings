@@ -148632,172 +148632,6 @@
         }
       }
     },
-    "Save WiFi, passport, SSH, or go custom" : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Захоўвайце Wi-Fi, пашпарт, SSH або карыстальніцкія запісы"
-          }
-        },
-        "ca" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Deseu el wifi, passaport, SSH o personalitzeu-ho"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ukládejte Wi-Fi, hesla, SSH, nebo vlastní položky"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gem WiFi, pas, SSH eller noget brugerdefineret"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "WLAN, Reisepass, SSH oder benutzerdefinierte Einträge speichern"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Αποθηκεύστε WiFi, διαβατήριο, SSH ή προσαρμοσμένες πληροφορίες"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Save WiFi, passport, SSH, or go custom"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Guarda los datos WiFi, contraseña, SSH o personalízalo"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Guarde los datos de Wi-Fi, contraseña, SSH o personalícelo"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tallenna Wi-Fi, passi, SSH tai siirry mukautettuun"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enregistrez le code wifi, votre passeport, SSH ou optez pour une personnalisation"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wi-Fi jelszó, útlevél, SSH mentése, vagy egyéni beállítás"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Simpan WiFi, paspor, SSH, atau item khusus lainnya"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Salva WiFi, passaporto, SSH, oppure personalizza"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "WiFi、パスポート、SSH、またはカスタムを保存"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "WiFi, 여권, SSH를 저장하거나 커스텀으로 설정"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lagre WiFi, pass, SSH eller gå for tilpasset"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wifi, paspoort, SSH opslaan of aangepast instellen"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zapisz sieć Wi-Fi, paszport, klucz SSH lub coś innego"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Guarde uma rede WiFi, passaporte, SSH ou personalize-o"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Salve Wi-Fi, passaporte, SSH ou personalizado"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Salvați Wi-Fi, pașaportul, SSH sau personalizați"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Сохраните WiFi, паспорт, SSH или выберите свой вариант."
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Uložte si WiFi, pas, SSH alebo si vytvorte vlastné"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Spara WiFi, pass, SSH eller anpassad"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wi-Fi, pasaport, SSH veya özel olarak kaydedin"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "保存 WiFi、护照信息、SSH 密钥，或使用自定义"
-          }
-        }
-      }
-    },
     "Scan %@" : {
       "localizations" : {
         "be" : {
@@ -197737,6 +197571,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在保险库之间移动项目时，我们将最多保留对每个项目进行 50 此修改。"
+          }
+        }
+      }
+    },
+    "WiFi details, SSH, custom items, and more" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi details, SSH, custom items, and more"
           }
         }
       }
