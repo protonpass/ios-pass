@@ -186,7 +186,6 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
     private let monitorStateStream = resolve(\DataStreamContainer.monitorStateStream)
     private let itemTypeSelection = resolve(\DataStreamContainer.itemTypeSelection)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let userDefaults: UserDefaults = .standard
     weak var homepageTabBarControllerDelegate: (any HomepageTabBarControllerDelegate)?
 
     private var tabIndexes = [HomepageTab: Int]()
