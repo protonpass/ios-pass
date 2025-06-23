@@ -64,7 +64,7 @@ struct CreateEditLoginView: View {
             ScrollViewReader { proxy in
                 ScrollView {
                     LazyVStack(spacing: DesignConstant.sectionPadding / 2) {
-                        FileAttachmentsBanner(isShown: viewModel.showFileAttachmentsBanner,
+                        FileAttachmentsBanner(isShown: !viewModel.dismissedFileAttachmentsBanner,
                                               onTap: {
                                                   viewModel.dismissFileAttachmentsBanner()
                                                   DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
@@ -107,14 +107,12 @@ struct CreateEditLoginView: View {
                                                 onEditTitle: viewModel.requestEditCustomFieldTitle,
                                                 onUpgrade: { viewModel.upgrade() })
 
-                        if viewModel.fileAttachmentsEnabled {
-                            FileAttachmentsEditSection(files: viewModel.fileUiModels,
-                                                       isFetching: viewModel.isFetchingAttachedFiles,
-                                                       fetchError: viewModel.fetchAttachedFilesError,
-                                                       isUploading: viewModel.isUploadingFile,
-                                                       handler: viewModel)
-                                .id(fileAttachmentsID)
-                        }
+                        FileAttachmentsEditSection(files: viewModel.fileUiModels,
+                                                   isFetching: viewModel.isFetchingAttachedFiles,
+                                                   fetchError: viewModel.fetchAttachedFilesError,
+                                                   isUploading: viewModel.isUploadingFile,
+                                                   handler: viewModel)
+                            .id(fileAttachmentsID)
 
                         Spacer()
                             .id(bottomID)
@@ -125,7 +123,7 @@ struct CreateEditLoginView: View {
                     .animation(.default, value: viewModel.emailUsernameExpanded)
                     .animation(.default, value: viewModel.passkeys.count)
                     .animation(.default, value: viewModel.isAlias)
-                    .animation(.default, value: viewModel.showFileAttachmentsBanner)
+                    .animation(.default, value: viewModel.dismissedFileAttachmentsBanner)
                     .showSpinner(viewModel.loading)
                 }
                 // swiftformat:disable all

@@ -182,14 +182,6 @@ class BaseCreateEditItemViewModel: ObservableObject {
     @LazyInjected(\SharedUseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
     @LazyInjected(\SharedUseCasesContainer.checkCameraPermission) private var checkCameraPermission
 
-    var fileAttachmentsEnabled: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passFileAttachmentsV1)
-    }
-
-    var showFileAttachmentsBanner: Bool {
-        fileAttachmentsEnabled && !dismissedFileAttachmentsBanner
-    }
-
     var isFetchingAttachedFiles: Bool {
         attachedFiles?.isFetching == true
     }
@@ -340,8 +332,7 @@ class BaseCreateEditItemViewModel: ObservableObject {
     }
 
     func fetchAttachedFiles() async {
-        guard fileAttachmentsEnabled,
-              mode.isEditMode, // Do not fetch attachments when cloning items
+        guard mode.isEditMode, // Do not fetch attachments when cloning items
               let itemContent = mode.itemContent,
               itemContent.item.hasFiles else {
             attachedFiles = nil
@@ -756,8 +747,6 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
                 let fileGroup = getFileGroup(mimeType: mimeType)
                 let formattedFileSize = formatFileAttachmentSize(fileSize)
                 let chunkCount = ceil(Float(fileSize) / Float(Constants.Attachment.maxChunkSizeInBytes))
-                let encryptionVersion = getFeatureFlagStatus(for: FeatureFlagType.passFileAttachmentEncryptionV2) ?
-                    2 : 1
                 let file = try PendingFileAttachment(id: fileId,
                                                      key: .random(),
                                                      metadata: .init(url: url,
@@ -766,7 +755,7 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
                                                                      size: fileSize,
                                                                      formattedSize: formattedFileSize),
                                                      chunkCount: Int(chunkCount),
-                                                     encryptionVersion: encryptionVersion)
+                                                     encryptionVersion: Constants.Attachment.version)
                 try await createEncryptAndUpload(file)
             } catch {
                 if let file = files.first(where: { $0.id == fileId }),
