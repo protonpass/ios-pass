@@ -35458,6 +35458,12 @@
             "state" : "translated",
             "value" : "附加"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "附加"
+          }
         }
       }
     },
@@ -43772,7 +43778,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Змінити свій пароль"
+            "value" : "Змінити ваші паролі"
           }
         },
         "vi" : {
@@ -44368,6 +44374,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "类型"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "類別"
           }
         }
       }
@@ -64805,6 +64817,12 @@
             "state" : "translated",
             "value" : "医生"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "醫生"
+          }
         }
       }
     },
@@ -65007,10 +65025,118 @@
     },
     "Done" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Гатова"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fet"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hotovo"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fertig"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Έτοιμο"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Done"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hecho"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hecho"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terminé"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selesai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fatto"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fullført"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klaar"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gotowe"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Concluído"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Concluído"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gata"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klar"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tamam"
           }
         }
       }
@@ -85644,10 +85770,106 @@
     },
     "Hidden vaults won’t be visible during search and autofill." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Схаваныя сховішчы не будуць бачныя падчас пошуку і аўтазапаўнення."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les caixes fortes ocultes no seran visibles durant la cerca i l'emplenament automàtic."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skryté trezory nebudou při hledávání a automatickém vyplňování viditelné."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausgeblendete Tresore werden bei der Suche und beim automatischen Ausfüllen nicht mehr angezeigt."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Οι κρυφές κρύπτες δε θα είναι ορατές κατά την αναζήτηση και την αυτόματη συμπλήρωση."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hidden vaults won’t be visible during search and autofill."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las bóvedas ocultas no serán visibles durante la búsqueda y el completado automático."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les coffres-forts cachés ne seront pas visibles lors de la recherche et du remplissage automatique."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brankas tersembunyi tidak akan terlihat selama cari dan pengisian otomatis."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le casseforti nascoste non saranno visibili durante la ricerca e il riempimento automatico."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skjulte hvelv vil ikke være synlige under søk og autofyll."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verborgen kluizen zullen niet zichtbaar zijn tijdens zoeken en automatisch aanvullen."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ukryte sejfy nie będą widoczne podczas wyszukiwania i autouzupełniania."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cofres ocultos não estarão visíveis durante a pesquisa e o preenchimento automático."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cofres escondidos não serão visíveis durante a pesquisa e o preenchimento automático."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seifurile ascunse nu vor fi vizibile în timpul căutării și autocompletării."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gizli kasalar arama ve otomatik doldurma sırasında görüntülenmez."
           }
         }
       }
@@ -107075,6 +107297,12 @@
             "state" : "translated",
             "value" : "管理"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "管理員"
+          }
         }
       }
     },
@@ -123928,10 +124156,112 @@
     "Organise vaults" : {
       "comment" : "Title of the button to enter edit mode to hide/show vaults",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Упарадкаваць сховішчы"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organitza les caixes fortes"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organizovat trezory"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tresore verwalten"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Οργάνωση κρυπτών"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Organise vaults"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organizar bóvedas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organiser les coffres-forts"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atur brankas"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organizza le casseforti"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organiser hvelv"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kluizen organiseren"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organizuj sejfy"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organizar cofres"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organizar cofres"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organizare seifuri"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organisera valv"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kasaları düzenle"
           }
         }
       }
@@ -165852,6 +166182,12 @@
             "value" : "Niektoré trezory už nie sú prístupné z dôvodu obnovenia hesla. Ak chcete opätovne získať prístup, znovu aktivujte kľúče svojho účtu."
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Några valv är inte längre åtkomliga på grund av en lösenordsåterställning. Återaktivera dina kontonycklar för att få åtkomst igen."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -166820,6 +167156,12 @@
             "state" : "translated",
             "value" : "SSH 密钥"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH 金鑰"
+          }
         }
       }
     },
@@ -167004,6 +167346,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SSH 密钥"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH 金鑰"
           }
         }
       }
@@ -168078,6 +168426,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SSH 密钥"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH 金鑰"
           }
         }
       }
