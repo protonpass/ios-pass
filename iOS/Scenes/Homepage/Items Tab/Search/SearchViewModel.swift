@@ -56,7 +56,7 @@ enum SearchViewState: Sendable {
     /// Filterting search results
     case filteringResults
     /// Results with a given search query
-    case results( /* ItemCount, any SearchResults */ SearchDataDisplayContainer)
+    case results(SearchDataDisplayContainer)
     /// Error
     case error(any Error)
 }
@@ -122,7 +122,7 @@ private extension SearchViewModel {
             }
             let userId = try await userManager.getActiveUserId()
             searchableItems = try await getSearchableItems(userId: userId, for: searchMode)
-            if allSearchableItems.isEmpty, searchMode.isSpecificSelection {
+            if searchMode.isSpecificSelection {
                 allSearchableItems = try await getSearchableItems(userId: userId, for: .all(.all))
             }
             try await refreshSearchHistory()
