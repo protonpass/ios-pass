@@ -33,36 +33,39 @@ struct SearchResultChips: View {
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
-                ItemCountChip(icon: IconProvider.listBullets,
+                ItemCountChip(icon: nil,
                               title: #localized("All"),
                               count: itemCount.total,
                               isSelected: selectedType == nil,
                               action: { selectedType = nil })
 
-                chip(for: .login, count: itemCount.login)
-                chip(for: .alias, count: itemCount.alias)
-                chip(for: .creditCard, count: itemCount.creditCard)
-                chip(for: .note, count: itemCount.note)
-                chip(for: .identity, count: itemCount.identity)
+                chip(for: .login, numberOfEntries: itemCount.login)
+                chip(for: .alias, numberOfEntries: itemCount.alias)
+                chip(for: .creditCard, numberOfEntries: itemCount.creditCard)
+                chip(for: .note, numberOfEntries: itemCount.note)
+                chip(for: .identity, numberOfEntries: itemCount.identity)
                 if customItemEnabled {
-                    chip(for: .custom, count: itemCount.custom)
+                    chip(for: .custom, numberOfEntries: itemCount.custom)
                 }
             }
             .padding(.horizontal)
         }
     }
 
-    private func chip(for type: ItemContentType, count: Int) -> some View {
-        ItemCountChip(icon: type.regularIcon,
-                      title: type.chipTitle,
-                      count: count,
-                      isSelected: selectedType == type,
-                      action: { selectedType = type })
+    @ViewBuilder
+    private func chip(for type: ItemContentType, numberOfEntries: Int) -> some View {
+        if numberOfEntries > 0 {
+            ItemCountChip(icon: type.regularIcon,
+                          title: type.chipTitle,
+                          count: numberOfEntries,
+                          isSelected: selectedType == type,
+                          action: { selectedType = type })
+        }
     }
 }
 
 private struct ItemCountChip: View {
-    let icon: UIImage
+    let icon: UIImage?
     let title: String
     let count: Int
     let isSelected: Bool
@@ -71,26 +74,30 @@ private struct ItemCountChip: View {
     var body: some View {
         Button(action: action) {
             HStack(alignment: .center, spacing: 6) {
-                Image(uiImage: icon)
-                    .resizable()
-                    .scaledToFit()
-                    .foregroundStyle((isSelected ? PassColor.textNorm : PassColor.textWeak).toColor)
-                    .frame(width: 16, height: 16)
+                if let icon {
+                    Image(uiImage: icon)
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundStyle((isSelected ? PassColor.textNorm : PassColor.interactionNormMajor2)
+                            .toColor)
+                        .frame(width: 16, height: 16)
+                }
 
                 HStack(spacing: 4) {
                     Text(title)
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(isSelected ? PassColor.textInvert.toColor : PassColor.textNorm.toColor)
 
-                    Text(verbatim: " \(count)")
-                        .font(.caption)
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                    Text(verbatim: " (\(count))")
+                        .foregroundStyle(isSelected ? PassColor.textInvert.toColor : PassColor.textNorm.toColor)
                 }
             }
             .padding(.vertical, 8)
             .padding(.horizontal, 12)
-            .background((isSelected ?
-                    PassColor.interactionNormMajor1 : PassColor.textDisabled).toColor)
+            .background(isSelected ?
+                PassColor.interactionNormMajor1.toColor : .clear)
             .clipShape(Capsule())
+            .overlay(Capsule()
+                .stroke(PassColor.interactionNormMinor1.toColor, lineWidth: 1))
             .animation(.default, value: isSelected)
         }
         .buttonStyle(.plain)
