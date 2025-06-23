@@ -29,14 +29,12 @@ import SwiftUI
 import UIKit
 
 enum HomepageTab: CaseIterable, Hashable {
-    case items, authenticator, itemCreation, passMonitor, profile
+    case items, itemCreation, passMonitor, profile
 
     var image: UIImage {
         switch self {
         case .items:
             IconProvider.listBullets
-        case .authenticator:
-            PassIcon.tabAuthenticator
         case .itemCreation:
             IconProvider.plus
         case .passMonitor:
@@ -50,8 +48,6 @@ enum HomepageTab: CaseIterable, Hashable {
         switch self {
         case .items:
             "Homepage tab"
-        case .authenticator:
-            "2fa Authenticator tab"
         case .itemCreation:
             "Create new item button"
         case .passMonitor:
@@ -242,15 +238,6 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
         currentIndex += 1
         controllers.append(itemsTabViewController)
 
-        if userDefaults.bool(forKey: Constants.QA.displayAuthenticator) {
-            let authenticator = UIHostingController(rootView: AuthenticatorView())
-            authenticator.tabBarItem.image = HomepageTab.authenticator.image
-            authenticator.tabBarItem.accessibilityHint = HomepageTab.authenticator.hint
-            controllers.append(authenticator)
-            tabIndexes[.authenticator] = currentIndex
-            currentIndex += 1
-        }
-
         let dummyViewController = UIViewController()
         dummyViewController.tabBarItem.image = HomepageTab.itemCreation.image
         dummyViewController.tabBarItem.accessibilityLabel = HomepageTab.itemCreation.hint
@@ -367,8 +354,6 @@ extension HomepageTabBarController: UITabBarControllerDelegate {
             switch tab {
             case .itemCreation:
                 return false
-            case .authenticator:
-                return !UIDevice.current.isIpad
             default:
                 return true
             }
