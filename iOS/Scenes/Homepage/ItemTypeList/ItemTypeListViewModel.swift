@@ -25,6 +25,7 @@ import Entities
 import FactoryKit
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import UIKit
 
 enum ItemType: CaseIterable {
@@ -63,13 +64,12 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
     private var getFeatureFlagStatus
     @LazyInjected(\SharedRepositoryContainer.accessRepository)
     private var accessRepository
-    @LazyInjected(\SharedServiceContainer.userManager)
-    private var userManager
 
     enum Mode {
         case hostApp, autoFillExtension
     }
 
+    let userDefaults: UserDefaults
     let mode: Mode
 
     var supportedTypes: [ItemType] {
@@ -85,8 +85,10 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
         }
     }
 
-    init(mode: Mode,
+    init(userDefaults: UserDefaults = kSharedUserDefaults,
+         mode: Mode,
          onSelect: @escaping (ItemType) -> Void) {
+        self.userDefaults = userDefaults
         self.mode = mode
         self.onSelect = onSelect
         super.init()
@@ -97,8 +99,7 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
 
                 // Optionally display feature discovery
                 do {
-                    let userId = try await userManager.getActiveUserId()
-                    let passUserInfos = try await accessRepository.getPassUserInformation(userId: userId)
+                    let passUserInfos = try await accessRepository.getPassUserInformation(userId: nil)
                     canDisplayFeatureDiscovery = passUserInfos.canDisplayFeatureDiscovery
                 } catch {
                     logger.error(error)
@@ -111,6 +112,9 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
     }
 
     func select(type: ItemType) {
+        if type == .custom {
+            userDefaults.dismissDiscovery(for: .customItems)
+        }
         onSelect(type)
     }
 }
