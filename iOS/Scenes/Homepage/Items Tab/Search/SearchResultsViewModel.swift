@@ -23,6 +23,11 @@ import Entities
 import FactoryKit
 import SwiftUI
 
+enum VaultSearchSelection: Equatable {
+    case current
+    case all
+}
+
 @MainActor
 final class SearchResultsViewModel: ObservableObject {
     @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)?
@@ -31,22 +36,38 @@ final class SearchResultsViewModel: ObservableObject {
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
 
+    private var vaultSearchSelection: VaultSearchSelection = .current
+
     let itemContextMenuHandler: ItemContextMenuHandler
-    let itemCount: ItemCount
-    let results: any SearchResults
+
+    var itemCount: ItemCount {
+        guard let all = fullResults.all else {
+            return fullResults.current.itemCount
+        }
+        return vaultSearchSelection == .current ? fullResults.current.itemCount : all.itemCount
+    }
+
+    var results: any SearchResults {
+        guard let all = fullResults.all else {
+            return fullResults.current.searchResults
+        }
+        return vaultSearchSelection == .current ? fullResults.current.searchResults : all.searchResults
+    }
+
     let isTrash: Bool
+    let fullResults: SearchDataDisplayContainer
 
     var customItemEnabled: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passCustomTypeV1)
     }
 
     init(itemContextMenuHandler: ItemContextMenuHandler,
-         itemCount: ItemCount,
-         results: any SearchResults,
+         results: SearchDataDisplayContainer,
+         vaultSearchSelection: VaultSearchSelection,
          isTrash: Bool) {
         self.itemContextMenuHandler = itemContextMenuHandler
-        self.itemCount = itemCount
-        self.results = results
+        fullResults = results
+        self.vaultSearchSelection = vaultSearchSelection
         self.isTrash = isTrash
     }
 }
