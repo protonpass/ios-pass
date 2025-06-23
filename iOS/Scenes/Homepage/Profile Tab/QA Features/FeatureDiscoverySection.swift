@@ -40,9 +40,9 @@ struct FeatureDiscoveryView: View {
     var body: some View {
         Form {
             Section {
-                StaticToggle(.verbatim("Hide new item sharing feature"),
-                             isOn: viewModel.hideItemSharing,
-                             action: { viewModel.toggle(feature: .itemSharing(canDisplay: true)) })
+                StaticToggle(.verbatim("Hide new custom items feature"),
+                             isOn: viewModel.hideCustomItems,
+                             action: { viewModel.toggle(feature: .customItems) })
             } header: {
                 Text(verbatim: "Reset feature discovery")
             }
@@ -55,8 +55,9 @@ struct FeatureDiscoveryView: View {
 @MainActor
 @Observable
 private final class FeatureDiscoverySectionViewModel {
-    private(set) var hideItemSharing = false
+    private(set) var hideCustomItems = false
 
+    @ObservationIgnored
     private let storage: UserDefaults
 
     init(storage: UserDefaults = kSharedUserDefaults) {
@@ -65,11 +66,11 @@ private final class FeatureDiscoverySectionViewModel {
     }
 
     private func refresh() {
-        hideItemSharing = storage.bool(forKey: NewFeature.itemSharing(canDisplay: true).storageKey)
+        hideCustomItems = storage.bool(forKey: NewFeature.customItems.rawValue)
     }
 
     func toggle(feature: NewFeature) {
-        storage.set(false, forKey: feature.storageKey)
+        storage.set(false, forKey: feature.rawValue)
         refresh()
     }
 }

@@ -29,10 +29,13 @@ private struct FeatureDiscoveryOverlay<Overlay: View>: ViewModifier {
     private let feature: NewFeature
 
     init(feature: NewFeature,
+         canDisplay: Bool,
          config: FeatureDiscoveryConfig,
          storage: UserDefaults,
          @ViewBuilder overlay: @escaping () -> Overlay) {
-        _model = .init(wrappedValue: .init(feature: feature, storage: storage))
+        _model = .init(wrappedValue: .init(feature: feature,
+                                           canDisplay: canDisplay,
+                                           storage: storage))
         self.overlay = overlay
         self.config = config
         self.feature = feature
@@ -61,43 +64,32 @@ private final class FeatureDiscoveryOverlayViewModel: ObservableObject {
     private let storage: UserDefaults
 
     init(feature: NewFeature,
+         canDisplay: Bool,
          storage: UserDefaults) {
         self.storage = storage
-        if feature.canDisplay {
-            shouldOverlayBeInvisible = storage.bool(forKey: feature.storageKey)
+        if canDisplay {
+            shouldOverlayBeInvisible = storage.bool(forKey: feature.rawValue)
         }
     }
 
     func removeOverlay(feature: NewFeature) {
-        storage.set(true, forKey: feature.storageKey)
+        storage.set(true, forKey: feature.rawValue)
         shouldOverlayBeInvisible = true
     }
 }
 
-public enum NewFeature: Sendable {
-    case itemSharing(canDisplay: Bool)
-
-    public var storageKey: String {
-        switch self {
-        case .itemSharing:
-            "itemSharing"
-        }
-    }
-
-    var canDisplay: Bool {
-        switch self {
-        case let .itemSharing(canDisplay):
-            canDisplay
-        }
-    }
+public enum NewFeature: String, Sendable {
+    case customItems
 }
 
 public extension View {
     func featureDiscoveryOverlay(feature: NewFeature,
+                                 canDisplay: Bool,
                                  config: FeatureDiscoveryConfig = .default,
                                  storage: UserDefaults = kSharedUserDefaults,
                                  @ViewBuilder overlay: @escaping () -> some View) -> some View {
         modifier(FeatureDiscoveryOverlay(feature: feature,
+                                         canDisplay: canDisplay,
                                          config: config,
                                          storage: storage,
                                          overlay: overlay))
