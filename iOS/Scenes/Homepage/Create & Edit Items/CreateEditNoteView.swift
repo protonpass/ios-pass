@@ -86,7 +86,7 @@ struct CreateEditNoteView: View {
 private extension CreateEditNoteView {
     func mainContent(size: CGSize, proxy: ScrollViewProxy) -> some View {
         VStack {
-            FileAttachmentsBanner(isShown: viewModel.showFileAttachmentsBanner,
+            FileAttachmentsBanner(isShown: !viewModel.dismissedFileAttachmentsBanner,
                                   onTap: {
                                       viewModel.dismissFileAttachmentsBanner()
                                       DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
@@ -120,14 +120,12 @@ private extension CreateEditNoteView {
                                         onUpgrade: { viewModel.upgrade() })
             }
 
-            if viewModel.fileAttachmentsEnabled {
-                FileAttachmentsEditSection(files: viewModel.fileUiModels,
-                                           isFetching: viewModel.isFetchingAttachedFiles,
-                                           fetchError: viewModel.fetchAttachedFilesError,
-                                           isUploading: viewModel.isUploadingFile,
-                                           handler: viewModel)
-                    .id(fileAttachmentsID)
-            }
+            FileAttachmentsEditSection(files: viewModel.fileUiModels,
+                                       isFetching: viewModel.isFetchingAttachedFiles,
+                                       fetchError: viewModel.fetchAttachedFilesError,
+                                       isUploading: viewModel.isUploadingFile,
+                                       handler: viewModel)
+                .id(fileAttachmentsID)
         }
         .padding()
     }
