@@ -232,20 +232,18 @@ private extension ItemHistoryView {
             }
         }
 
-        if viewModel.fileAttachmentsEnabled {
-            ToolbarItem(placement: .topBarTrailing) {
-                Menu(content: {
-                    Button("Reset history",
-                           systemImage: "arrow.counterclockwise.circle",
-                           role: .destructive,
-                           action: { showResetHistoryAlert.toggle() })
-                }, label: {
-                    CircleButton(icon: IconProvider.threeDotsVertical,
-                                 iconColor: viewModel.item.type.normMajor2Color,
-                                 backgroundColor: viewModel.item.type.normMinor1Color,
-                                 accessibilityLabel: "Item's action Menu")
-                })
-            }
+        ToolbarItem(placement: .topBarTrailing) {
+            Menu(content: {
+                Button("Reset history",
+                       systemImage: "arrow.counterclockwise.circle",
+                       role: .destructive,
+                       action: { showResetHistoryAlert.toggle() })
+            }, label: {
+                CircleButton(icon: IconProvider.threeDotsVertical,
+                             iconColor: viewModel.item.type.normMajor2Color,
+                             backgroundColor: viewModel.item.type.normMinor1Color,
+                             accessibilityLabel: "Item's action Menu")
+            })
         }
     }
 }
