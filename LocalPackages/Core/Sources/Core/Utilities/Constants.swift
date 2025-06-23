@@ -79,7 +79,6 @@ public enum Constants {
     // swiftlint:disable:next type_name
     public enum QA {
         public static let forceDisplayUpgradeAppBanner = "forceDisplayUpgradeAppBanner"
-        public static let displayAuthenticator = "displayAuthenticator"
         public static let resetTipsStateOnLaunch = "resetTipsStateOnLaunch"
         public static let forceShowTips = "forceShowTips"
         public static let searchAndListSecureLink = "searchAndListSecureLink"

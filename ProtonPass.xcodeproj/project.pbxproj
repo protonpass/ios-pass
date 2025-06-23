@@ -614,8 +614,6 @@
 		5B748B1E2BA335CD00A4CAD6 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 5B748B1D2BA335CD00A4CAD6 /* PrivacyInfo.xcprivacy */; };
 		5B7C7FC32C5D25A700E1F646 /* AliasSyncConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7C7FC12C5D25A700E1F646 /* AliasSyncConfigurationView.swift */; };
 		5B7C7FC42C5D25A700E1F646 /* AliasSyncConfigurationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7C7FC22C5D25A700E1F646 /* AliasSyncConfigurationViewModel.swift */; };
-		5B87CC8F2BA4AF5600258D70 /* AuthenticatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B87CC8D2BA4AF5600258D70 /* AuthenticatorView.swift */; };
-		5B87CC902BA4AF5600258D70 /* AuthenticatorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B87CC8E2BA4AF5600258D70 /* AuthenticatorViewModel.swift */; };
 		5B888A252B440E270011D6E0 /* AliasPrefixError+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B888A242B440E270011D6E0 /* AliasPrefixError+Extensions.swift */; };
 		5B8D20642AA7454400457CA3 /* MBProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 5B8D20632AA7454400457CA3 /* MBProgressHUD */; };
 		5B8D209D2AA748ED00457CA3 /* Client in Frameworks */ = {isa = PBXBuildFile; productRef = 5B8D209C2AA748ED00457CA3 /* Client */; };
@@ -1170,8 +1168,6 @@
 		5B748B1D2BA335CD00A4CAD6 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		5B7C7FC12C5D25A700E1F646 /* AliasSyncConfigurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasSyncConfigurationView.swift; sourceTree = "<group>"; };
 		5B7C7FC22C5D25A700E1F646 /* AliasSyncConfigurationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasSyncConfigurationViewModel.swift; sourceTree = "<group>"; };
-		5B87CC8D2BA4AF5600258D70 /* AuthenticatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatorView.swift; sourceTree = "<group>"; };
-		5B87CC8E2BA4AF5600258D70 /* AuthenticatorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatorViewModel.swift; sourceTree = "<group>"; };
 		5B888A242B440E270011D6E0 /* AliasPrefixError+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AliasPrefixError+Extensions.swift"; sourceTree = "<group>"; };
 		5B8D209B2AA748AB00457CA3 /* Client */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Client; path = LocalPackages/Client; sourceTree = "<group>"; };
 		5B8D20A22AA7499400457CA3 /* Core */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Core; path = LocalPackages/Core; sourceTree = "<group>"; };
@@ -2068,7 +2064,6 @@
 				5BA09B7D2CAE947E000001B7 /* Contacts */,
 				5B1453DE2A727EDC0048B022 /* AcceptRejectInviteView */,
 				35E5070C286FB58800A3F6EA /* App */,
-				5B87CC8C2BA4AE6E00258D70 /* Authenticator */,
 				5B5DBF152B68045800F72F6C /* DeepLinks */,
 				35F8CCFE29B617510017DBC6 /* Homepage */,
 				5B66395A2B4D87730029F8DA /* ItemHistory */,
@@ -2553,15 +2548,6 @@
 				5B1F5CEA2A5ED6D000A6C3ED /* CustomFieldTypes.swift */,
 			);
 			path = Protocols;
-			sourceTree = "<group>";
-		};
-		5B87CC8C2BA4AE6E00258D70 /* Authenticator */ = {
-			isa = PBXGroup;
-			children = (
-				5B87CC8D2BA4AF5600258D70 /* AuthenticatorView.swift */,
-				5B87CC8E2BA4AF5600258D70 /* AuthenticatorViewModel.swift */,
-			);
-			path = Authenticator;
 			sourceTree = "<group>";
 		};
 		5B98D6812CEDD886000AE3E1 /* Entities */ = {
@@ -3940,7 +3926,6 @@
 				3570D20329C1F14D00805445 /* SearchResultChips.swift in Sources */,
 				5B39DF7F2B501C020009D53E /* DetailHistoryView.swift in Sources */,
 				3547A01A2A83DC5600C9DAF1 /* SearchResultsViewModel.swift in Sources */,
-				5B87CC8F2BA4AF5600258D70 /* AuthenticatorView.swift in Sources */,
 				35983C982C3691A000A82080 /* HomepageCoordinator+SignOut.swift in Sources */,
 				35E50654286F82DC00A3F6EA /* AppDelegate.swift in Sources */,
 				35AC8E382B6A29CB00B06CF4 /* EditSpotlightSearchableVaultsView.swift in Sources */,
@@ -4063,7 +4048,6 @@
 				3572E5252993D7BF00775FAC /* ItemDetailToolbar.swift in Sources */,
 				5BFFB5122A5D42C300C2D1F9 /* SharedUseCase+DependencyInjections.swift in Sources */,
 				53AEE46B2D7F0E1800CE0CA7 /* CustomSectionsSection.swift in Sources */,
-				5B87CC902BA4AF5600258D70 /* AuthenticatorViewModel.swift in Sources */,
 				35703F282A279B950088C287 /* CustomFieldSections.swift in Sources */,
 				5B1453942A6832780048B022 /* UserEmailView.swift in Sources */,
 				3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */,
