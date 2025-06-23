@@ -95,7 +95,7 @@ struct CreateEditAliasView: View {
                     if viewModel.shouldUpgrade {
                         AliasLimitView(backgroundColor: PassColor.aliasInteractionNormMinor1)
                     } else {
-                        FileAttachmentsBanner(isShown: viewModel.showFileAttachmentsBanner,
+                        FileAttachmentsBanner(isShown: !viewModel.dismissedFileAttachmentsBanner,
                                               onTap: {
                                                   viewModel.dismissFileAttachmentsBanner()
                                                   DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
@@ -171,21 +171,19 @@ struct CreateEditAliasView: View {
                                                 onUpgrade: { viewModel.upgrade() })
                     }
 
-                    if viewModel.fileAttachmentsEnabled {
-                        FileAttachmentsEditSection(files: viewModel.fileUiModels,
-                                                   isFetching: viewModel.isFetchingAttachedFiles,
-                                                   fetchError: viewModel.fetchAttachedFilesError,
-                                                   isUploading: viewModel.isUploadingFile,
-                                                   handler: viewModel)
-                            .id(fileAttachmentsID)
-                    }
+                    FileAttachmentsEditSection(files: viewModel.fileUiModels,
+                                               isFetching: viewModel.isFetchingAttachedFiles,
+                                               fetchError: viewModel.fetchAttachedFilesError,
+                                               isUploading: viewModel.isUploadingFile,
+                                               handler: viewModel)
+                        .id(fileAttachmentsID)
                 }
                 .padding()
                 .animation(.default, value: viewModel.shouldUpgrade)
                 .animation(.default, value: isShowingAdvancedOptions)
                 .animation(.default, value: viewModel.mailboxSelection)
                 .animation(.default, value: viewModel.alias)
-                .animation(.default, value: viewModel.showFileAttachmentsBanner)
+                .animation(.default, value: viewModel.dismissedFileAttachmentsBanner)
                 .animation(.default, value: viewModel.showAdvancedOptionsTipBanner)
             }
             .onChange(of: focusedField) { focusedField in

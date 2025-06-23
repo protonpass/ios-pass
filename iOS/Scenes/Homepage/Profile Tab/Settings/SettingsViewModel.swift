@@ -55,7 +55,6 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     @LazyInjected(\SharedUseCasesContainer.fullContentSync) private var fullContentSync
     @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     @Published private(set) var selectedBrowser: Browser
     @Published private(set) var selectedTheme: Theme
@@ -71,10 +70,6 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
 
     weak var delegate: (any SettingsViewModelDelegate)?
     private var cancellables = Set<AnyCancellable>()
-
-    var fileAttachmentsActive: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passFileAttachmentsV1)
-    }
 
     init(isShownAsSheet: Bool) {
         self.isShownAsSheet = isShownAsSheet

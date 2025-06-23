@@ -50,7 +50,7 @@ struct CreateEditCustomItemView: View {
         ScrollView {
             LazyVStack {
                 UpsellOrAttachmentsBanner(showUpgrade: viewModel.shouldUpgrade,
-                                          showAttachments: viewModel.showFileAttachmentsBanner,
+                                          showAttachments: !viewModel.dismissedFileAttachmentsBanner,
                                           onDismissAttachments: viewModel.dismissFileAttachmentsBanner)
 
                 title
@@ -69,13 +69,11 @@ struct CreateEditCustomItemView: View {
                                                  onAddSection: addCustomSection)
                 }
 
-                if viewModel.fileAttachmentsEnabled {
-                    FileAttachmentsEditSection(files: viewModel.fileUiModels,
-                                               isFetching: viewModel.isFetchingAttachedFiles,
-                                               fetchError: viewModel.fetchAttachedFilesError,
-                                               isUploading: viewModel.isUploadingFile,
-                                               handler: viewModel)
-                }
+                FileAttachmentsEditSection(files: viewModel.fileUiModels,
+                                           isFetching: viewModel.isFetchingAttachedFiles,
+                                           fetchError: viewModel.fetchAttachedFilesError,
+                                           isUploading: viewModel.isUploadingFile,
+                                           handler: viewModel)
             }
             .padding()
             .toolbar {
