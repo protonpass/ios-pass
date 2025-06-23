@@ -182,11 +182,11 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
     public var closureGetPassUserInformation: () -> () = {}
     public var invokedGetPassUserInformationfunction = false
     public var invokedGetPassUserInformationCount = 0
-    public var invokedGetPassUserInformationParameters: (userId: String, Void)?
-    public var invokedGetPassUserInformationParametersList = [(userId: String, Void)]()
+    public var invokedGetPassUserInformationParameters: (userId: String?, Void)?
+    public var invokedGetPassUserInformationParametersList = [(userId: String?, Void)]()
     public var stubbedGetPassUserInformationResult: PassUserInformations!
 
-    public func getPassUserInformation(userId: String) async throws -> PassUserInformations {
+    public func getPassUserInformation(userId: String?) async throws -> PassUserInformations {
         invokedGetPassUserInformationfunction = true
         invokedGetPassUserInformationCount += 1
         invokedGetPassUserInformationParameters = (userId, ())

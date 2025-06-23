@@ -25,6 +25,7 @@ import DesignSystem
 import Entities
 import FactoryKit
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 import UIKit
 
@@ -132,7 +133,8 @@ struct HomepageTabbarView: UIViewControllerRepresentable {
     }
 
     func makeUIViewController(context: Context) -> HomepageTabBarController {
-        let controller = HomepageTabBarController(itemsTabView: .init(viewModel: itemsTabViewModel),
+        let controller = HomepageTabBarController(userDefaults: kSharedUserDefaults,
+                                                  itemsTabView: .init(viewModel: itemsTabViewModel),
                                                   profileTabView: .init(viewModel: profileTabViewModel),
                                                   passMonitorView: .init(viewModel: passMonitorViewModel))
         controller.homepageTabBarControllerDelegate = delegate
@@ -176,7 +178,9 @@ protocol HomepageTabBarControllerDelegate: AnyObject {
 final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGestureRecognizerDelegate {
     deinit { print(deinitMessage) }
 
+    private let userDefaults: UserDefaults
     private let itemsTabView: ItemsTabView
+    private var createItemViewController: UIViewController?
     private let profileTabView: ProfileTabView
     private let passMonitorView: PassMonitorView
     private var passMonitorViewController: UIViewController?
@@ -190,10 +194,13 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
 
     private var tabIndexes = [HomepageTab: Int]()
     private var cancellables = Set<AnyCancellable>()
+    private var canDisplayFeatureDiscovery = false
 
-    init(itemsTabView: ItemsTabView,
+    init(userDefaults: UserDefaults,
+         itemsTabView: ItemsTabView,
          profileTabView: ProfileTabView,
          passMonitorView: PassMonitorView) {
+        self.userDefaults = userDefaults
         self.itemsTabView = itemsTabView
         self.profileTabView = profileTabView
         self.passMonitorView = passMonitorView
@@ -206,6 +213,17 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
                 guard let self else { return }
                 passMonitorViewController?.tabBarItem.image = state.icon(selected: false)
                 passMonitorViewController?.tabBarItem.selectedImage = state.icon(selected: true)
+            }
+            .store(in: &cancellables)
+
+        NotificationCenter.default
+            .publisher(for: UserDefaults.didChangeNotification)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                if !userDefaults.shouldShowDiscovery(for: .customItems) {
+                    setCreateItemTabIcon(showBadge: false)
+                }
             }
             .store(in: &cancellables)
 
@@ -237,10 +255,11 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
         currentIndex += 1
         controllers.append(itemsTabViewController)
 
-        let dummyViewController = UIViewController()
-        dummyViewController.tabBarItem.image = HomepageTab.itemCreation.image
-        dummyViewController.tabBarItem.accessibilityLabel = HomepageTab.itemCreation.hint
-        controllers.append(dummyViewController)
+        let createItemViewController = UIViewController()
+        createItemViewController.tabBarItem.image = HomepageTab.itemCreation.image
+        createItemViewController.tabBarItem.accessibilityLabel = HomepageTab.itemCreation.hint
+        controllers.append(createItemViewController)
+        self.createItemViewController = createItemViewController
         tabIndexes[.itemCreation] = currentIndex
         currentIndex += 1
 
@@ -283,6 +302,13 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
     }
 }
 
+private extension HomepageTabBarController {
+    func setCreateItemTabIcon(showBadge: Bool) {
+        createItemViewController?.tabBarItem.image = showBadge ?
+            PassIcon.tabAddWithBadge : IconProvider.plus
+    }
+}
+
 // MARK: - Public APIs
 
 extension HomepageTabBarController {
@@ -309,6 +335,14 @@ extension HomepageTabBarController {
 
                 profileTabViewController?.tabBarItem.image = image
                 profileTabViewController?.tabBarItem.selectedImage = selectedImage
+
+                let userInfo = try await accessRepository.getPassUserInformation(userId: nil)
+                canDisplayFeatureDiscovery = userInfo.canDisplayFeatureDiscovery
+
+                if canDisplayFeatureDiscovery {
+                    let showBadge = userDefaults.shouldShowDiscovery(for: .customItems)
+                    setCreateItemTabIcon(showBadge: showBadge)
+                }
             } catch {
                 logger.error(error)
             }

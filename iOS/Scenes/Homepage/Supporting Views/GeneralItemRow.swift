@@ -96,7 +96,9 @@ struct GeneralItemRow<ThumbnailView: View>: View {
                 .if(newFeature) { view, newFeature in
                     view.featureDiscoveryOverlay(feature: newFeature,
                                                  canDisplay: canDisplayFeatureDiscovery,
-                                                 displayMode: .trailing(.defaultTrailing),
+                                                 displayMode: .trailing(.init(alignment: .leading,
+                                                                              offset: .zero,
+                                                                              shouldHideAfterAction: false)),
                                                  badgeMode: .newLabel)
                 }
 

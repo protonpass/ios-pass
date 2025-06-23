@@ -109,6 +109,7 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.tabProfileTrialSelected
         _ = PassIcon.tabProfileTrialUnselected
 
+        _ = PassIcon.tabAddWithBadge
         _ = PassIcon.tabMonitorActiveBreachesFoundSelected
         _ = PassIcon.tabMonitorActiveBreachesFoundUnselected
         _ = PassIcon.tabMonitorActiveNoBreachesSelected

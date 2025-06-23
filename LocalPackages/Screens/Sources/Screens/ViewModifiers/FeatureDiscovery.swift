@@ -125,7 +125,7 @@ private final class FeatureDiscoveryOverlayViewModel: ObservableObject {
     }
 
     func removeOverlay(_ feature: NewFeature) {
-        storage.set(true, forKey: feature.rawValue)
+        storage.dismissDiscovery(for: feature)
         shouldBadgeBeInvisible = true
     }
 }
@@ -145,6 +145,16 @@ public extension View {
                                          displayMode: displayMode,
                                          badgeMode: badgeMode,
                                          storage: storage))
+    }
+}
+
+public extension UserDefaults {
+    func dismissDiscovery(for feature: NewFeature) {
+        set(true, forKey: feature.rawValue)
+    }
+
+    func shouldShowDiscovery(for feature: NewFeature) -> Bool {
+        !bool(forKey: feature.rawValue)
     }
 }
 
