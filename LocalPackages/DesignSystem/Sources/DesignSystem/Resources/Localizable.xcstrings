@@ -1989,6 +1989,12 @@
             "value" : "Compartir los registros"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jaa lokit"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
