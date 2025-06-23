@@ -137,14 +137,8 @@ class BaseItemDetailViewModel: ObservableObject {
         }
     }
 
-    var fileAttachmentsEnabled: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passFileAttachmentsV1)
-    }
-
     var showFileAttachmentsSection: Bool {
-        fileAttachmentsEnabled &&
-            itemContent.item.hasFiles &&
-            (!files.isFetched || files.fetchedObject?.isEmpty == false)
+        itemContent.item.hasFiles && (!files.isFetched || files.fetchedObject?.isEmpty == false)
     }
 
     var customTypeEnabled: Bool {
@@ -231,7 +225,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func fetchAttachments() async {
-        guard fileAttachmentsEnabled, itemContent.item.hasFiles, let share = vault?.vault else { return }
+        guard itemContent.item.hasFiles, let share = vault?.vault else { return }
         do {
             if files.isError {
                 files = .fetching
