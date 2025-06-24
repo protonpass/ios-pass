@@ -55,17 +55,18 @@ public final class FeatureDiscoveryManager: FeatureDiscoveryManagerProtocol {
 
     public func refreshState(userId: String) async {
         do {
-            logger.trace("Refreshing discoveries for user \(userId)")
+            logger.trace("Refreshing discoveries state for user \(userId)")
             let userInfo = try await accessRepository.getPassUserInformation(userId: userId)
             if userInfo.canDisplayFeatureDiscovery {
                 refreshEligibleDiscoveries()
             } else {
                 eligibleDiscoveries.send([])
             }
-            logger.info("Refreshed discoveries for user \(userId)")
+            logger.info("Refreshed discoveries state for user \(userId)")
         } catch {
             eligibleDiscoveries.send([])
-            logger.error("Failed to refresh discoveries for user \(userId) \(error.localizedDebugDescription)")
+            logger
+                .error("Failed to refresh discoveries state for user \(userId) \(error.localizedDebugDescription)")
         }
     }
 
