@@ -30,7 +30,6 @@ final class ShareElementViewModel: ObservableObject {
     @Published private(set) var isFreeUser = true
     @Published private(set) var itemSharingAllowed = true
     @Published private(set) var publicLinkAllowed = true
-    @Published private(set) var canDisplayFeatureDiscovery = false
 
     let share: Share
     let itemContent: ItemContent

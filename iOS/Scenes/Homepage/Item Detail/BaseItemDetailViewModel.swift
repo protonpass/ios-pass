@@ -107,13 +107,10 @@ class BaseItemDetailViewModel: ObservableObject {
     @LazyInjected(\UseCasesContainer.leaveShare) var leaveShareUsecase
     @LazyInjected(\SharedServiceContainer.userManager) var userManager
     @LazyInjected(\SharedRepositoryContainer.fileAttachmentRepository) private var fileRepository
-    @LazyInjected(\SharedRepositoryContainer.organizationRepository)
-    private var organizationRepository
     @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
     @LazyInjected(\SharedUseCasesContainer.getFileGroup) private var getFileGroup
     @LazyInjected(\SharedUseCasesContainer.generateFileTempUrl) private var generateFileTempUrl
     @LazyInjected(\SharedUseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
-    @LazyInjected(\SharedRepositoryContainer.accessRepository) private(set) var accessRepository
     @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
 
     var isAllowedToEdit: Bool {
