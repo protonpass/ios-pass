@@ -84,6 +84,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\SharedRepositoryContainer.passwordHistoryRepository)
     private var passwordHistoryRepository
     @LazyInjected(\ServiceContainer.onboardingV2Handler) private var onboardingV2Handler
+    @LazyInjected(\SharedServiceContainer.featureDiscoveryManager)
+    private var featureDiscoveryManager
 
     // Use cases
     private let refreshFeatureFlags = resolve(\SharedUseCasesContainer.refreshFeatureFlags)
@@ -190,6 +192,11 @@ private extension HomepageCoordinator {
                 }
                 removeInAppNotificationDisplay()
                 refreshInAppNotifications()
+
+                Task { [weak self] in
+                    guard let self else { return }
+                    await featureDiscoveryManager.refreshState(userId: userData.user.ID)
+                }
             }
             .store(in: &cancellables)
 

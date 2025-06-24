@@ -40,8 +40,6 @@ struct NewLoginView: View {
                 StaticToggle(.verbatim("Always show new login screen flow"),
                              isOn: viewModel.showNewLogin,
                              action: { viewModel.toggle() })
-            } header: {
-                Text(verbatim: "Reset feature discovery")
             }
         }
         .navigationBarTitleDisplayMode(.inline)

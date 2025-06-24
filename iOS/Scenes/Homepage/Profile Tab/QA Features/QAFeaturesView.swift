@@ -52,10 +52,10 @@ struct QAFeaturesView: View {
                     TrashItemsSection()
                     BannersSection()
                     PasswordPolicySection()
+                    FeatureDiscoverySection()
 
                     if #available(iOS 17, *) {
                         NewLoginSection()
-                        FeatureDiscoverySection()
                         InAppNotificationSection()
                     }
                     Toggle(isOn: $displayUpgradeAppBanner) {
