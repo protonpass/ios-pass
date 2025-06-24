@@ -18,14 +18,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
+@_spi(QA)
+import Client
 import DesignSystem
 import FactoryKit
-import Observation
 import Screens
 import SwiftUI
 
-@available(iOS 17, *)
 struct FeatureDiscoverySection: View {
     var body: some View {
         NavigationLink(destination: { FeatureDiscoveryView() },
@@ -33,44 +32,40 @@ struct FeatureDiscoverySection: View {
     }
 }
 
-@available(iOS 17, *)
+private extension NewFeature {
+    var description: String {
+        switch self {
+        case .customItems:
+            "Hide custom items discovery"
+        }
+    }
+}
+
 struct FeatureDiscoveryView: View {
-    @State private var viewModel = FeatureDiscoverySectionViewModel()
+    @State private var eligibleDiscoveries = Set<NewFeature>()
+    private let manager = resolve(\SharedServiceContainer.featureDiscoveryManager)
 
     var body: some View {
         Form {
             Section {
-                StaticToggle(.verbatim("Hide new custom items feature"),
-                             isOn: viewModel.hideCustomItems,
-                             action: { viewModel.toggle(feature: .customItems) })
+                ForEach(NewFeature.allCases, id: \.self) { feature in
+                    StaticToggle(.verbatim(feature.description),
+                                 isOn: eligibleDiscoveries.contains(feature),
+                                 action: {
+                                     if eligibleDiscoveries.contains(feature) {
+                                         manager.dismissDiscovery(for: feature)
+                                     } else {
+                                         manager.undismissDiscovery(for: feature)
+                                     }
+                                 })
+                }
             } header: {
                 Text(verbatim: "Reset feature discovery")
             }
         }
         .navigationBarTitleDisplayMode(.inline)
-    }
-}
-
-@available(iOS 17, *)
-@MainActor
-@Observable
-private final class FeatureDiscoverySectionViewModel {
-    private(set) var hideCustomItems = false
-
-    @ObservationIgnored
-    private let storage: UserDefaults
-
-    init(storage: UserDefaults = kSharedUserDefaults) {
-        self.storage = storage
-        refresh()
-    }
-
-    private func refresh() {
-        hideCustomItems = storage.bool(forKey: NewFeature.customItems.rawValue)
-    }
-
-    func toggle(feature: NewFeature) {
-        storage.set(false, forKey: feature.rawValue)
-        refresh()
+        .onReceive(manager.eligibleDiscoveries) { discoveries in
+            eligibleDiscoveries = discoveries
+        }
     }
 }
