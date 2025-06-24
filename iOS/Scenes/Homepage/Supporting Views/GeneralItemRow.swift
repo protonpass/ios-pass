@@ -20,6 +20,7 @@
 
 import DesignSystem
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct GeneralItemRow<ThumbnailView: View>: View {
@@ -33,6 +34,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
     let descriptionLineLimit: Int
     let hasTotp: Bool
     let isShared: Bool
+    let showTitleDiscovery: Bool
 
     init(@ViewBuilder thumbnailView: () -> ThumbnailView,
          title: String,
@@ -42,7 +44,8 @@ struct GeneralItemRow<ThumbnailView: View>: View {
          secondaryTitle: String? = nil,
          secondaryTitleColor: UIColor? = nil,
          hasTotp: Bool = false,
-         isShared: Bool = false) {
+         isShared: Bool = false,
+         showTitleDiscovery: Bool = false) {
         self.thumbnailView = thumbnailView()
         self.title = title
         self.titleLineLimit = titleLineLimit
@@ -52,6 +55,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
         self.secondaryTitleColor = secondaryTitleColor
         self.hasTotp = hasTotp
         self.isShared = isShared
+        self.showTitleDiscovery = showTitleDiscovery
     }
 
     var body: some View {
@@ -85,6 +89,10 @@ struct GeneralItemRow<ThumbnailView: View>: View {
                             .frame(width: 16, height: 16)
                             .foregroundStyle(PassColor.textNorm.toColor)
                     }
+                }
+                .if(showTitleDiscovery) { view in
+                    view.featureDiscovery(mode: .trailing(.init(alignment: .leading,
+                                                                badgeMode: .newLabel)))
                 }
 
                 if let description, !description.isEmpty {
