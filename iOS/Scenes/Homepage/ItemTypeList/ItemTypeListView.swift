@@ -67,9 +67,7 @@ struct ItemTypeListView: View {
                            description: type.description,
                            descriptionLineLimit: 2,
                            secondaryTitle: secondaryTitle(for: type),
-                           secondaryTitleColor: secondaryTitleColor(for: type),
-                           canDisplayFeatureDiscovery: viewModel.canDisplayFeatureDiscovery,
-                           newFeature: type == .custom ? .customItems : nil)
+                           secondaryTitleColor: secondaryTitleColor(for: type))
         })
         .buttonStyle(.plain)
     }

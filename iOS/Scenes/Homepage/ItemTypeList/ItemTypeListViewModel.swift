@@ -54,7 +54,6 @@ extension ItemContentType {
 @MainActor
 final class ItemTypeListViewModel: NSObject, ObservableObject {
     @Published private(set) var limitation: AliasLimitation?
-    @Published private(set) var canDisplayFeatureDiscovery = false
     let onSelect: (ItemType) -> Void
 
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
@@ -96,14 +95,6 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
             guard let self else { return }
             do {
                 limitation = try await upgradeChecker.aliasLimitation()
-
-                // Optionally display feature discovery
-                do {
-                    let passUserInfos = try await accessRepository.getPassUserInformation(userId: nil)
-                    canDisplayFeatureDiscovery = passUserInfos.canDisplayFeatureDiscovery
-                } catch {
-                    logger.error(error)
-                }
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))
