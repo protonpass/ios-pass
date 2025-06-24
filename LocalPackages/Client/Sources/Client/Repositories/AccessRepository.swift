@@ -46,7 +46,7 @@ public protocol AccessRepositoryProtocol: AnyObject, Sendable {
 
     func updateProtonAddressesMonitor(userId: String?, monitored: Bool) async throws
     func updateAliasesMonitor(userId: String?, monitored: Bool) async throws
-    func getPassUserInformation(userId: String?) async throws -> PassUserInformations
+    func getPassUserInformation(userId: String) async throws -> PassUserInformations
 }
 
 public extension AccessRepositoryProtocol {
@@ -140,12 +140,7 @@ public extension AccessRepository {
         try await updatePassMonitorState(userId: userId, request: .aliases(monitored))
     }
 
-    func getPassUserInformation(userId: String?) async throws -> PassUserInformations {
-        let userId = if let userId {
-            userId
-        } else {
-            try await userManager.getActiveUserId()
-        }
+    func getPassUserInformation(userId: String) async throws -> PassUserInformations {
         logger.trace("Getting information for user \(userId)")
         if let localInfos = try await localDatasource.getPassUserInformations(userId: userId) {
             logger.trace("Found local infos for user \(userId)")

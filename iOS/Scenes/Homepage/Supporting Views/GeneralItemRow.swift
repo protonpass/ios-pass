@@ -34,8 +34,6 @@ struct GeneralItemRow<ThumbnailView: View>: View {
     let descriptionLineLimit: Int
     let hasTotp: Bool
     let isShared: Bool
-    let canDisplayFeatureDiscovery: Bool
-    let newFeature: NewFeature?
 
     init(@ViewBuilder thumbnailView: () -> ThumbnailView,
          title: String,
@@ -45,9 +43,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
          secondaryTitle: String? = nil,
          secondaryTitleColor: UIColor? = nil,
          hasTotp: Bool = false,
-         isShared: Bool = false,
-         canDisplayFeatureDiscovery: Bool = false,
-         newFeature: NewFeature? = nil) {
+         isShared: Bool = false) {
         self.thumbnailView = thumbnailView()
         self.title = title
         self.titleLineLimit = titleLineLimit
@@ -57,8 +53,6 @@ struct GeneralItemRow<ThumbnailView: View>: View {
         self.secondaryTitleColor = secondaryTitleColor
         self.hasTotp = hasTotp
         self.isShared = isShared
-        self.canDisplayFeatureDiscovery = canDisplayFeatureDiscovery
-        self.newFeature = newFeature
     }
 
     var body: some View {
@@ -92,14 +86,6 @@ struct GeneralItemRow<ThumbnailView: View>: View {
                             .frame(width: 16, height: 16)
                             .foregroundStyle(PassColor.textNorm.toColor)
                     }
-                }
-                .if(newFeature) { view, newFeature in
-                    view.featureDiscoveryOverlay(feature: newFeature,
-                                                 canDisplay: canDisplayFeatureDiscovery,
-                                                 displayMode: .trailing(.init(alignment: .leading,
-                                                                              offset: .zero,
-                                                                              shouldHideAfterAction: false)),
-                                                 badgeMode: .newLabel)
                 }
 
                 if let description, !description.isEmpty {

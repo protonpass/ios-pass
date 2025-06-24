@@ -194,7 +194,6 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
 
     private var tabIndexes = [HomepageTab: Int]()
     private var cancellables = Set<AnyCancellable>()
-    private var canDisplayFeatureDiscovery = false
 
     init(userDefaults: UserDefaults,
          itemsTabView: ItemsTabView,
@@ -335,14 +334,6 @@ extension HomepageTabBarController {
 
                 profileTabViewController?.tabBarItem.image = image
                 profileTabViewController?.tabBarItem.selectedImage = selectedImage
-
-                let userInfo = try await accessRepository.getPassUserInformation(userId: nil)
-                canDisplayFeatureDiscovery = userInfo.canDisplayFeatureDiscovery
-
-                if canDisplayFeatureDiscovery {
-                    let showBadge = userDefaults.shouldShowDiscovery(for: .customItems)
-                    setCreateItemTabIcon(showBadge: showBadge)
-                }
             } catch {
                 logger.error(error)
             }

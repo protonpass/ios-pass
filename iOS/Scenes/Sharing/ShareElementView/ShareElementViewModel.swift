@@ -61,7 +61,6 @@ final class ShareElementViewModel: ObservableObject {
         self.itemCount = itemCount
         applyOrganizationSettings()
         checkIfFreeUser()
-        getPassUserInfos()
     }
 
     func secureLinkSharing() {
@@ -126,19 +125,6 @@ private extension ShareElementViewModel {
                 guard let settings = organization?.settings else { return }
                 itemSharingAllowed = settings.itemShareMode == .enabled
                 publicLinkAllowed = settings.publicLinkMode == .enabled
-            } catch {
-                router.display(element: .displayErrorBanner(error))
-            }
-        }
-    }
-
-    func getPassUserInfos() {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                let userId = try await userManager.getActiveUserId()
-                let passUserInfos = try await accessRepository.getPassUserInformation(userId: userId)
-                canDisplayFeatureDiscovery = passUserInfos.canDisplayFeatureDiscovery
             } catch {
                 router.display(element: .displayErrorBanner(error))
             }
