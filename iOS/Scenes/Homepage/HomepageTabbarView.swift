@@ -177,6 +177,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
     deinit { print(deinitMessage) }
 
     private let itemsTabView: ItemsTabView
+    private var createItemViewController: UIViewController?
     private let profileTabView: ProfileTabView
     private let passMonitorView: PassMonitorView
     private var passMonitorViewController: UIViewController?
@@ -185,6 +186,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let monitorStateStream = resolve(\DataStreamContainer.monitorStateStream)
     private let itemTypeSelection = resolve(\DataStreamContainer.itemTypeSelection)
+    private let featureDiscoveryManager = resolve(\SharedServiceContainer.featureDiscoveryManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     weak var homepageTabBarControllerDelegate: (any HomepageTabBarControllerDelegate)?
 
@@ -216,6 +218,15 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
                 select(tab: .items)
             }
             .store(in: &cancellables)
+
+        featureDiscoveryManager.eligibleDiscoveries
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] discoveries in
+                guard let self else { return }
+                createItemViewController?.tabBarItem.image = discoveries.contains(.customItems) ?
+                    PassIcon.tabAddWithBadge : IconProvider.plus
+            }
+            .store(in: &cancellables)
     }
 
     @available(*, unavailable)
@@ -237,10 +248,11 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
         currentIndex += 1
         controllers.append(itemsTabViewController)
 
-        let dummyViewController = UIViewController()
-        dummyViewController.tabBarItem.image = HomepageTab.itemCreation.image
-        dummyViewController.tabBarItem.accessibilityLabel = HomepageTab.itemCreation.hint
-        controllers.append(dummyViewController)
+        let createItemViewController = UIViewController()
+        createItemViewController.tabBarItem.image = HomepageTab.itemCreation.image
+        createItemViewController.tabBarItem.accessibilityLabel = HomepageTab.itemCreation.hint
+        controllers.append(createItemViewController)
+        self.createItemViewController = createItemViewController
         tabIndexes[.itemCreation] = currentIndex
         currentIndex += 1
 

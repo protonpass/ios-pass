@@ -48,6 +48,10 @@ private extension SharedServiceContainer {
     var itemRepository: any ItemRepositoryProtocol {
         SharedRepositoryContainer.shared.itemRepository()
     }
+
+    var accessRepository: any AccessRepositoryProtocol {
+        SharedRepositoryContainer.shared.accessRepository()
+    }
 }
 
 extension SharedServiceContainer {
@@ -71,7 +75,7 @@ extension SharedServiceContainer {
                                  remoteSyncEventsDatasource: SharedRepositoryContainer.shared
                                      .remoteSyncEventsDatasource(),
                                  aliasRepository: SharedRepositoryContainer.shared.aliasRepository(),
-                                 accessRepository: SharedRepositoryContainer.shared.accessRepository(),
+                                 accessRepository: self.accessRepository,
                                  userManager: self.userManager(),
                                  logManager: self.logManager,
                                  featureFlagsRepository: SharedRepositoryContainer.shared
@@ -144,15 +148,11 @@ extension SharedServiceContainer {
         self { ABTestingManager() }
     }
 
-    // swiftlint:disable:next todo
-    // TODO: transform vault Manager
-//    var appContentManager: Factory<any AppContentManagerServicing> {
-//        self { AppContentManager(userManager: self.userManager(),
-//                                 itemRepository: self.itemRepository,
-//                                 shareRepository: self.shareRepository,
-//                                 logManager: self.logManager)
-//        }
-//    }
+    var featureDiscoveryManager: Factory<any FeatureDiscoveryManagerProtocol> {
+        self { FeatureDiscoveryManager(storage: kSharedUserDefaults,
+                                       accessRepository: self.accessRepository,
+                                       logManager: self.logManager) }
+    }
 }
 
 // MARK: - User
