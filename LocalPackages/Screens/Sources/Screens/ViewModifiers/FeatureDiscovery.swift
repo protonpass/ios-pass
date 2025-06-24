@@ -18,8 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
-import Core
 import DesignSystem
 import SwiftUI
 
@@ -28,37 +26,19 @@ public enum FeatureDiscoveryDisplayMode {
     case trailing(FeatureDiscoveryDisplayConfig)
 }
 
-public enum FeatureDiscoveryBadgeMode {
-    case newLabel, dot
-}
+private struct FeatureDiscoveryModifier: ViewModifier {
+    private let mode: FeatureDiscoveryDisplayMode
 
-private struct FeatureDiscoveryOverlay: ViewModifier {
-    @StateObject private var viewModel: FeatureDiscoveryOverlayViewModel
-    private let displayMode: FeatureDiscoveryDisplayMode
-    private let badgeMode: FeatureDiscoveryBadgeMode
-    private let feature: NewFeature
-
-    init(feature: NewFeature,
-         canDisplay: Bool,
-         displayMode: FeatureDiscoveryDisplayMode,
-         badgeMode: FeatureDiscoveryBadgeMode,
-         storage: UserDefaults) {
-        _viewModel = .init(wrappedValue: .init(feature: feature,
-                                               canDisplay: canDisplay,
-                                               storage: storage))
-        self.displayMode = displayMode
-        self.badgeMode = badgeMode
-        self.feature = feature
+    init(mode: FeatureDiscoveryDisplayMode) {
+        self.mode = mode
     }
 
     func body(content: Content) -> some View {
-        switch displayMode {
+        switch mode {
         case let .overlay(config):
             ZStack(alignment: config.alignment) {
                 content
-                    .simultaneousGesture(for: feature,
-                                         config: config,
-                                         action: viewModel.removeOverlay)
+                    .simultaneousGesture(config: config)
 
                 badge(for: config)
             }
@@ -68,111 +48,64 @@ private struct FeatureDiscoveryOverlay: ViewModifier {
                 content
                 badge(for: config)
             }
-            .simultaneousGesture(for: feature,
-                                 config: config,
-                                 action: viewModel.removeOverlay)
+            .simultaneousGesture(config: config)
         }
     }
 
     @ViewBuilder
     private func badge(for config: FeatureDiscoveryDisplayConfig) -> some View {
-        if !viewModel.shouldBadgeBeInvisible {
-            switch badgeMode {
-            case .newLabel:
-                Text("NEW", bundle: .module)
-                    .font(.caption)
-                    .foregroundStyle(PassColor.textInvert.toColor)
-                    .fontWeight(.medium)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
-                    .background(PassColor.signalInfo.toColor)
-                    .cornerRadius(6)
-                    .offset(config.offset)
+        switch config.badgeMode {
+        case .newLabel:
+            Text("NEW", bundle: .module)
+                .font(.caption)
+                .foregroundStyle(PassColor.textInvert.toColor)
+                .fontWeight(.medium)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(PassColor.signalInfo.toColor)
+                .cornerRadius(6)
+                .offset(config.offset)
 
-            case .dot:
-                Circle()
-                    .fill(PassColor.signalInfo.toColor)
-                    .frame(width: 10, height: 10)
-                    .offset(config.offset)
-            }
+        case .dot:
+            Circle()
+                .fill(PassColor.signalInfo.toColor)
+                .frame(width: 10, height: 10)
+                .offset(config.offset)
         }
     }
 }
 
 private extension View {
-    func simultaneousGesture(for feature: NewFeature,
-                             config: FeatureDiscoveryDisplayConfig,
-                             action: @escaping (NewFeature) -> Void) -> some View {
+    func simultaneousGesture(config: FeatureDiscoveryDisplayConfig) -> some View {
         simultaneousGesture(TapGesture().onEnded {
-            if config.shouldHideAfterAction {
-                action(feature)
-            }
+            config.action?()
         })
     }
 }
 
-@MainActor
-private final class FeatureDiscoveryOverlayViewModel: ObservableObject {
-    @Published private(set) var shouldBadgeBeInvisible = true
-    private let storage: UserDefaults
-
-    init(feature: NewFeature,
-         canDisplay: Bool,
-         storage: UserDefaults) {
-        self.storage = storage
-        if canDisplay {
-            shouldBadgeBeInvisible = storage.bool(forKey: feature.rawValue)
-        }
-    }
-
-    func removeOverlay(_ feature: NewFeature) {
-        storage.dismissDiscovery(for: feature)
-        shouldBadgeBeInvisible = true
-    }
-}
-
 public extension View {
-    func featureDiscoveryOverlay(feature: NewFeature,
-                                 canDisplay: Bool,
-                                 displayMode: FeatureDiscoveryDisplayMode,
-                                 badgeMode: FeatureDiscoveryBadgeMode,
-                                 storage: UserDefaults = kSharedUserDefaults) -> some View {
-        modifier(FeatureDiscoveryOverlay(feature: feature,
-                                         canDisplay: canDisplay,
-                                         displayMode: displayMode,
-                                         badgeMode: badgeMode,
-                                         storage: storage))
-    }
-}
-
-public extension UserDefaults {
-    func dismissDiscovery(for feature: NewFeature) {
-        set(true, forKey: feature.rawValue)
-    }
-
-    func shouldShowDiscovery(for feature: NewFeature) -> Bool {
-        !bool(forKey: feature.rawValue)
+    func featureDiscovery(mode: FeatureDiscoveryDisplayMode) -> some View {
+        modifier(FeatureDiscoveryModifier(mode: mode))
     }
 }
 
 public struct FeatureDiscoveryDisplayConfig {
     public let alignment: Alignment
     public let offset: CGSize
-    public let shouldHideAfterAction: Bool
+    public let badgeMode: BadgeMode
+    public let action: (() -> Void)?
+
+    public enum BadgeMode {
+        case newLabel, dot
+    }
 
     public init(alignment: Alignment,
-                offset: CGSize,
-                shouldHideAfterAction: Bool) {
+                offset: CGSize = .zero,
+                badgeMode: BadgeMode,
+                action: (() -> Void)? = nil) {
         self.alignment = alignment
         self.offset = offset
-        self.shouldHideAfterAction = shouldHideAfterAction
-    }
-
-    public static var defaultOverlay: FeatureDiscoveryDisplayConfig {
-        .init(alignment: .topTrailing, offset: .zero, shouldHideAfterAction: true)
-    }
-
-    public static var defaultTrailing: FeatureDiscoveryDisplayConfig {
-        .init(alignment: .leading, offset: .zero, shouldHideAfterAction: true)
+        self.badgeMode = badgeMode
+        self.action = action
     }
 }
