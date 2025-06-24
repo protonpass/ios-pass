@@ -50,7 +50,7 @@ struct FeatureDiscoveryView: View {
             Section {
                 ForEach(NewFeature.allCases, id: \.self) { feature in
                     StaticToggle(.verbatim(feature.description),
-                                 isOn: eligibleDiscoveries.contains(feature),
+                                 isOn: !eligibleDiscoveries.contains(feature),
                                  action: {
                                      if eligibleDiscoveries.contains(feature) {
                                          manager.dismissDiscovery(for: feature)
