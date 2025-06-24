@@ -25,7 +25,6 @@ import Entities
 import FactoryKit
 import Macro
 import ProtonCoreUIFoundations
-import Screens
 import UIKit
 
 enum ItemType: CaseIterable {

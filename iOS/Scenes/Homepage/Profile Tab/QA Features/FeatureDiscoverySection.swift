@@ -22,7 +22,6 @@
 import Client
 import DesignSystem
 import FactoryKit
-import Screens
 import SwiftUI
 
 struct FeatureDiscoverySection: View {
