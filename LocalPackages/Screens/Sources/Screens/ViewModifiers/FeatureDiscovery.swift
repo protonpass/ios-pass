@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
 import DesignSystem
 import SwiftUI
@@ -128,10 +129,6 @@ private final class FeatureDiscoveryOverlayViewModel: ObservableObject {
         storage.dismissDiscovery(for: feature)
         shouldBadgeBeInvisible = true
     }
-}
-
-public enum NewFeature: String, Sendable {
-    case customItems
 }
 
 public extension View {
