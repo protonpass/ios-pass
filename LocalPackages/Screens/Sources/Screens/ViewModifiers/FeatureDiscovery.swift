@@ -18,104 +18,94 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
+import DesignSystem
 import SwiftUI
 
-// Custom ViewModifier for displaying overlay views
-private struct FeatureDiscoveryOverlay<Overlay: View>: ViewModifier {
-    @StateObject private var model: FeatureDiscoveryOverlayViewModel
-    private let overlay: () -> Overlay
-    private let config: FeatureDiscoveryConfig
-    private let feature: NewFeature
+public enum FeatureDiscoveryDisplayMode {
+    case overlay(FeatureDiscoveryDisplayConfig)
+    case trailing(FeatureDiscoveryDisplayConfig)
+}
 
-    init(feature: NewFeature,
-         config: FeatureDiscoveryConfig,
-         storage: UserDefaults,
-         @ViewBuilder overlay: @escaping () -> Overlay) {
-        _model = .init(wrappedValue: .init(feature: feature, storage: storage))
-        self.overlay = overlay
-        self.config = config
-        self.feature = feature
+private struct FeatureDiscoveryModifier: ViewModifier {
+    private let mode: FeatureDiscoveryDisplayMode
+
+    init(mode: FeatureDiscoveryDisplayMode) {
+        self.mode = mode
     }
 
     func body(content: Content) -> some View {
-        ZStack(alignment: config.alignment) {
-            content
-                .simultaneousGesture(TapGesture().onEnded {
-                    if config.shouldHideAfterAction {
-                        model.removeOverlay(feature: feature)
-                    }
-                })
-            // Conditional overlay view
-            if !model.shouldOverlayBeInvisible {
-                overlay()
-                    .offset(config.offset)
+        switch mode {
+        case let .overlay(config):
+            ZStack(alignment: config.alignment) {
+                content
+                    .simultaneousGesture(config: config)
+
+                badge(for: config)
             }
+
+        case let .trailing(config):
+            HStack {
+                content
+                badge(for: config)
+            }
+            .simultaneousGesture(config: config)
+        }
+    }
+
+    @ViewBuilder
+    private func badge(for config: FeatureDiscoveryDisplayConfig) -> some View {
+        switch config.badgeMode {
+        case .newLabel:
+            Text("NEW", bundle: .module)
+                .font(.caption)
+                .foregroundStyle(PassColor.textInvert.toColor)
+                .fontWeight(.medium)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(PassColor.signalInfo.toColor)
+                .cornerRadius(6)
+                .offset(config.offset)
+
+        case .dot:
+            Circle()
+                .fill(PassColor.signalInfo.toColor)
+                .frame(width: 10, height: 10)
+                .offset(config.offset)
         }
     }
 }
 
-@MainActor
-private final class FeatureDiscoveryOverlayViewModel: ObservableObject {
-    @Published private(set) var shouldOverlayBeInvisible = true
-    private let storage: UserDefaults
-
-    init(feature: NewFeature,
-         storage: UserDefaults) {
-        self.storage = storage
-        if feature.canDisplay {
-            shouldOverlayBeInvisible = storage.bool(forKey: feature.storageKey)
-        }
-    }
-
-    func removeOverlay(feature: NewFeature) {
-        storage.set(true, forKey: feature.storageKey)
-        shouldOverlayBeInvisible = true
-    }
-}
-
-public enum NewFeature: Sendable {
-    case itemSharing(canDisplay: Bool)
-
-    public var storageKey: String {
-        switch self {
-        case .itemSharing:
-            "itemSharing"
-        }
-    }
-
-    var canDisplay: Bool {
-        switch self {
-        case let .itemSharing(canDisplay):
-            canDisplay
-        }
+private extension View {
+    func simultaneousGesture(config: FeatureDiscoveryDisplayConfig) -> some View {
+        simultaneousGesture(TapGesture().onEnded {
+            config.action?()
+        })
     }
 }
 
 public extension View {
-    func featureDiscoveryOverlay(feature: NewFeature,
-                                 config: FeatureDiscoveryConfig = .default,
-                                 storage: UserDefaults = kSharedUserDefaults,
-                                 @ViewBuilder overlay: @escaping () -> some View) -> some View {
-        modifier(FeatureDiscoveryOverlay(feature: feature,
-                                         config: config,
-                                         storage: storage,
-                                         overlay: overlay))
+    func featureDiscovery(mode: FeatureDiscoveryDisplayMode) -> some View {
+        modifier(FeatureDiscoveryModifier(mode: mode))
     }
 }
 
-public struct FeatureDiscoveryConfig {
+public struct FeatureDiscoveryDisplayConfig {
     public let alignment: Alignment
     public let offset: CGSize
-    public let shouldHideAfterAction: Bool
+    public let badgeMode: BadgeMode
+    public let action: (() -> Void)?
 
-    public init(alignment: Alignment = .topTrailing, offset: CGSize = .zero, shouldHideAfterAction: Bool = true) {
-        self.alignment = alignment
-        self.offset = offset
-        self.shouldHideAfterAction = shouldHideAfterAction
+    public enum BadgeMode {
+        case newLabel, dot
     }
 
-    public static var `default`: FeatureDiscoveryConfig {
-        FeatureDiscoveryConfig(alignment: .topTrailing, offset: .zero, shouldHideAfterAction: true)
+    public init(alignment: Alignment,
+                offset: CGSize = .zero,
+                badgeMode: BadgeMode,
+                action: (() -> Void)? = nil) {
+        self.alignment = alignment
+        self.offset = offset
+        self.badgeMode = badgeMode
+        self.action = action
     }
 }

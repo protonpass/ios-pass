@@ -49,8 +49,6 @@ class BaseItemDetailViewModel: ObservableObject {
     @Published var deleteShareItemAlert = false
     @Published var showingVaultMoveAlert = false
 
-    @Published private(set) var displayItemSharingDiscovery = false
-
     private var superBindValuesCalled = false
 
     var fileUiModels: [FileAttachmentUiModel] {
@@ -109,13 +107,10 @@ class BaseItemDetailViewModel: ObservableObject {
     @LazyInjected(\UseCasesContainer.leaveShare) var leaveShareUsecase
     @LazyInjected(\SharedServiceContainer.userManager) var userManager
     @LazyInjected(\SharedRepositoryContainer.fileAttachmentRepository) private var fileRepository
-    @LazyInjected(\SharedRepositoryContainer.organizationRepository)
-    private var organizationRepository
     @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
     @LazyInjected(\SharedUseCasesContainer.getFileGroup) private var getFileGroup
     @LazyInjected(\SharedUseCasesContainer.generateFileTempUrl) private var generateFileTempUrl
     @LazyInjected(\SharedUseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
-    @LazyInjected(\SharedRepositoryContainer.accessRepository) private(set) var accessRepository
     @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
 
     var isAllowedToEdit: Bool {
@@ -182,7 +177,6 @@ class BaseItemDetailViewModel: ObservableObject {
 
         bindValues()
         checkIfFreeUser()
-        checkItemSharingDiscoveryEligibility()
         addItemReadEvent(itemContent)
         assert(superBindValuesCalled, "bindValues must be overridden with call to super")
     }
@@ -406,31 +400,6 @@ private extension BaseItemDetailViewModel {
         Task {
             guard #available(iOS 17, *) else { return }
             await ItemForceTouchTip.didPerformEligibleQuickAction.donate()
-        }
-    }
-
-    func checkItemSharingDiscoveryEligibility() {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                let userId = try await userManager.getActiveUserId()
-
-                // Respect display threshold
-                let passUserInfos = try await accessRepository.getPassUserInformation(userId: userId)
-                guard passUserInfos.canDisplayFeatureDiscovery else { return }
-
-                guard vault?.vault.shareRole == .manager else { return }
-
-                // If user is B2B, make sure the policy allows item sharing
-                if let org = try await organizationRepository.getOrganization(userId: userId),
-                   org.settings?.itemShareMode == .disabled {
-                    return
-                }
-
-                displayItemSharingDiscovery = true
-            } catch {
-                handle(error)
-            }
         }
     }
 }
