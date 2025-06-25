@@ -1,5 +1,5 @@
 //
-// OnboardingV2View.swift
+// OnboardingView.swift
 // Proton Pass - Created on 28/03/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
@@ -25,9 +25,9 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
-public struct OnboardingV2View: View {
+public struct OnboardingView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var viewModel: OnboardingV2ViewModel
+    @StateObject private var viewModel: OnboardingViewModel
     @State private var saveable = false
     @State private var topBar: TopBar = .notNowButton
 
@@ -39,7 +39,7 @@ public struct OnboardingV2View: View {
                               onSave: () -> Void)
     }
 
-    public init(handler: OnboardingV2Handling?) {
+    public init(handler: OnboardingHandling?) {
         _viewModel = .init(wrappedValue: .init(handler: handler))
     }
 
@@ -70,8 +70,8 @@ public struct OnboardingV2View: View {
     }
 }
 
-private extension OnboardingV2View {
-    func mainContainer(for step: OnboardV2Step) -> some View {
+private extension OnboardingView {
+    func mainContainer(for step: OnboardStep) -> some View {
         VStack(spacing: 0) {
             topBarView
                 .animation(.default, value: viewModel.isSaving)
@@ -92,7 +92,7 @@ private extension OnboardingV2View {
         }
     }
 
-    func background(for step: OnboardV2Step) -> some View {
+    func background(for step: OnboardStep) -> some View {
         ZStack(alignment: .topLeading) {
             LinearGradient(stops:
                 [
@@ -162,7 +162,7 @@ private extension OnboardingV2View {
     }
 
     @ViewBuilder
-    func content(for step: OnboardV2Step) -> some View {
+    func content(for step: OnboardStep) -> some View {
         switch step {
         case let .payment(plans):
             OnboardingPaymentStep(plans: plans,
@@ -252,7 +252,7 @@ private extension OnboardingV2View {
     }
 
     @ViewBuilder
-    func ctaButton(for step: OnboardV2Step) -> some View {
+    func ctaButton(for step: OnboardStep) -> some View {
         if let ctaTitle = step.ctaTitle {
             CapsuleTextButton(title: ctaTitle,
                               titleColor: PassColor.textInvert,
@@ -266,7 +266,7 @@ private extension OnboardingV2View {
     }
 
     @ViewBuilder
-    func secondaryCtaButton(for step: OnboardV2Step) -> some View {
+    func secondaryCtaButton(for step: OnboardStep) -> some View {
         if let secondaryCtaTitle = step.secondaryCtaTitle {
             CapsuleTextBorderedButton(title: secondaryCtaTitle,
                                       titleColor: .white,
@@ -280,7 +280,7 @@ private extension OnboardingV2View {
     }
 }
 
-private extension OnboardV2Step {
+private extension OnboardStep {
     var ctaTitle: String? {
         switch self {
         case .payment:

@@ -38,9 +38,9 @@ struct OnboardSection: View {
             .frame(maxWidth: .infinity, alignment: .leading)
 
             Button(action: {
-                viewModel.present(view: OnboardingV2View(handler: viewModel.handler))
+                viewModel.present(view: OnboardingView(handler: viewModel.handler))
             }, label: {
-                Text(verbatim: "Onboard V2")
+                Text(verbatim: "Onboard")
             })
         }, header: {
             Text(verbatim: "👋")
@@ -68,7 +68,7 @@ private final class OnboardSectionViewModel: ObservableObject {
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var router
 
-    @LazyInjected(\ServiceContainer.onboardingV2Handler)
+    @LazyInjected(\ServiceContainer.onboardingHandler)
     var handler
 
     init() {
