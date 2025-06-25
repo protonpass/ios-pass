@@ -104,7 +104,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     var addAndSwitchToNewUserAccount
     @LazyInjected(\ SharedUseCasesContainer.addTelemetryEvent) var addTelemetryEvent
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
 
     private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
     let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
@@ -1314,14 +1313,8 @@ private extension HomepageCoordinator {
 
     func presentOnboardView(forced: Bool) {
         guard forced || !getAppPreferences().onboarded else { return }
-        let vc = if getFeatureFlagStatus(for: FeatureFlagType.passMobileOnboardingV2) {
-            UIHostingController(rootView: OnboardingV2View(handler: onboardingV2Handler))
-        } else {
-            UIHostingController(rootView: OnboardingView { [weak self] in
-                guard let self else { return }
-                openTutorialVideo()
-            })
-        }
+        let view = OnboardingV2View(handler: onboardingV2Handler)
+        let vc = UIHostingController(rootView: view)
         vc.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
         vc.isModalInPresentation = true
         topMostViewController.present(vc, animated: true)

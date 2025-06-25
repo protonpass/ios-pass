@@ -58,9 +58,6 @@
 		354192862AC1CB9F001F2996 /* Macro in Frameworks */ = {isa = PBXBuildFile; productRef = 354192852AC1CB9F001F2996 /* Macro */; };
 		3541C0792B68C337006B35D9 /* Spotlight+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3541C0782B68C337006B35D9 /* Spotlight+Extensions.swift */; };
 		3541C07B2B68CAB2006B35D9 /* EditSpotlightSearchableContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3541C07A2B68CAB2006B35D9 /* EditSpotlightSearchableContentView.swift */; };
-		354361552941D251000CAE12 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354361542941D251000CAE12 /* OnboardingView.swift */; };
-		354361572941D419000CAE12 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354361562941D419000CAE12 /* OnboardingViewModel.swift */; };
-		354361592941DA0C000CAE12 /* OnboardingViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354361582941DA0C000CAE12 /* OnboardingViewState.swift */; };
 		3543615C2941E1A8000CAE12 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3543615B2941E1A8000CAE12 /* UIApplication+Extensions.swift */; };
 		3544F5DB28E2339400834CA4 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3544F5DA28E2339400834CA4 /* AuthenticationServices.framework */; };
 		3544F5E128E2341900834CA4 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3544F5DA28E2339400834CA4 /* AuthenticationServices.framework */; };
@@ -817,9 +814,6 @@
 		353EC0152A05A7EF004AF925 /* TrashItemsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashItemsSection.swift; sourceTree = "<group>"; };
 		3541C0782B68C337006B35D9 /* Spotlight+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Spotlight+Extensions.swift"; sourceTree = "<group>"; };
 		3541C07A2B68CAB2006B35D9 /* EditSpotlightSearchableContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSpotlightSearchableContentView.swift; sourceTree = "<group>"; };
-		354361542941D251000CAE12 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
-		354361562941D419000CAE12 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
-		354361582941DA0C000CAE12 /* OnboardingViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewState.swift; sourceTree = "<group>"; };
 		3543615B2941E1A8000CAE12 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		3544F5DA28E2339400834CA4 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.5.sdk/System/Library/Frameworks/AuthenticationServices.framework; sourceTree = DEVELOPER_DIR; };
 		3544F5E028E2341800834CA4 /* AutoFill.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = AutoFill.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1603,16 +1597,6 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
-		354E19F2293F8EB900A3F853 /* Onboarding */ = {
-			isa = PBXGroup;
-			children = (
-				354361542941D251000CAE12 /* OnboardingView.swift */,
-				354361562941D419000CAE12 /* OnboardingViewModel.swift */,
-				354361582941DA0C000CAE12 /* OnboardingViewState.swift */,
-			);
-			path = Onboarding;
-			sourceTree = "<group>";
-		};
 		354E9A9A2A443CA200AD2B9A /* LocalAuthentication */ = {
 			isa = PBXGroup;
 			children = (
@@ -2068,7 +2052,6 @@
 				35F8CCFE29B617510017DBC6 /* Homepage */,
 				5B66395A2B4D87730029F8DA /* ItemHistory */,
 				354E9A9A2A443CA200AD2B9A /* LocalAuthentication */,
-				354E19F2293F8EB900A3F853 /* Onboarding */,
 				5BECDE452B90EC230040FCA7 /* PassMonitor */,
 				5B1453902A6831C60048B022 /* Sharing */,
 				35E50712286FB5F500A3F6EA /* Welcome */,
@@ -3791,7 +3774,6 @@
 				354F769A28C87CD500EB2383 /* EmptyVaultView.swift in Sources */,
 				5BC03E992C175FE50028516E /* HomepageCoordinator+Sharing.swift in Sources */,
 				5B3AD42B2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift in Sources */,
-				354361592941DA0C000CAE12 /* OnboardingViewState.swift in Sources */,
 				5B14538D2A681B400048B022 /* MainRouter.swift in Sources */,
 				359EB88E2A20CFE0009588A9 /* InfoBannerViewStack.swift in Sources */,
 				5BFE87782AF1003D004ABA1E /* LocalAuthenticationMethodUiModel+Extensions.swift in Sources */,
@@ -3840,7 +3822,6 @@
 				5B0C75022A30776100272CE8 /* SharedTooling+DependencyInjections.swift in Sources */,
 				3590A3392A9F9C2600622F45 /* View+Extensions.swift in Sources */,
 				354FBF5F2A02939600A0B27D /* AliasLimitView.swift in Sources */,
-				354361572941D419000CAE12 /* OnboardingViewModel.swift in Sources */,
 				3541C07B2B68CAB2006B35D9 /* EditSpotlightSearchableContentView.swift in Sources */,
 				5B4E53DF2BD7B8B600E8D54A /* DetailMonitoredItemViewModel.swift in Sources */,
 				356EAF202BD8016100C83AE6 /* ToggleMonitorButton.swift in Sources */,
@@ -3874,7 +3855,6 @@
 				35F0BD592C1853A70062F34B /* ItemReadEventsSection.swift in Sources */,
 				3572E5232993D68800775FAC /* ItemContentType+Extensions.swift in Sources */,
 				5386ACFF2D4276EC00DEEB8B /* HomepageCoordinator+SLSync.swift in Sources */,
-				354361552941D251000CAE12 /* OnboardingView.swift in Sources */,
 				356B697B2949E55600868771 /* ItemDetailPlaceholderView.swift in Sources */,
 				538694A32DB0F10400416368 /* OnboardingV2Handler.swift in Sources */,
 				5BF35D6E2B21FB1800D3E297 /* Pinnable+Extensions.swift in Sources */,

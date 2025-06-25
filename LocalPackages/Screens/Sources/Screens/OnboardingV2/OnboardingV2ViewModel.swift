@@ -202,7 +202,7 @@ extension OnboardingV2ViewModel {
     }
 
     func performCta() async {
-        guard let delegate, let datasource else { return }
+        guard let delegate else { return }
 
         var shouldGoToNextStep = false
         do {
