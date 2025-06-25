@@ -266,7 +266,8 @@ extension CreateEditAliasViewModel {
                     let aliasOptions = try await getAliasOptions(shareId: shareId)
 
                     suffixSelection = .init(suffixes: aliasOptions.suffixes)
-                    mailboxSelection = .init(allUserMailboxes: aliasOptions.mailboxes)
+                    mailboxSelection = .init(allUserMailboxes: aliasOptions.mailboxes,
+                                             selectedMailboxes: mailboxSelection.selectedMailboxes.nilIfEmpty)
                     canCreateAlias = aliasOptions.canCreateAlias
                 }
 
