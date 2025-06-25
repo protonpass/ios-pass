@@ -6,7 +6,7 @@ Improvements:
 - Pass Monitor now retains its last known state upon reload
 
 Others:
-- Core libraries upgraded from 32.3.1 to 32.7.1
+- Core libraries upgraded from 32.3.1 to 32.7.0
 - Removed legacy onboarding flow
 - Support for hiding/showing vaults (behind feature flags)
 - Addressed decoding errors encountered when entering the Pass Monitor tab
