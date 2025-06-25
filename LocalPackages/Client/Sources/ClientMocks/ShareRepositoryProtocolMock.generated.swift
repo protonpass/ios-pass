@@ -356,40 +356,22 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
         closureTransferVaultOwnership()
         return stubbedTransferVaultOwnershipResult
     }
-    // MARK: - hideShare
-    public var hideShareUserIdShareIdThrowableError18: Error?
-    public var closureHideShare: () -> () = {}
-    public var invokedHideSharefunction = false
-    public var invokedHideShareCount = 0
-    public var invokedHideShareParameters: (userId: String, shareId: String)?
-    public var invokedHideShareParametersList = [(userId: String, shareId: String)]()
+    // MARK: - hideUnhideShares
+    public var hideUnhideSharesUserIdSharesToHideSharesToUnhideThrowableError18: Error?
+    public var closureHideUnhideShares: () -> () = {}
+    public var invokedHideUnhideSharesfunction = false
+    public var invokedHideUnhideSharesCount = 0
+    public var invokedHideUnhideSharesParameters: (userId: String, sharesToHide: [String], sharesToUnhide: [String])?
+    public var invokedHideUnhideSharesParametersList = [(userId: String, sharesToHide: [String], sharesToUnhide: [String])]()
 
-    public func hideShare(userId: String, shareId: String) async throws {
-        invokedHideSharefunction = true
-        invokedHideShareCount += 1
-        invokedHideShareParameters = (userId, shareId)
-        invokedHideShareParametersList.append((userId, shareId))
-        if let error = hideShareUserIdShareIdThrowableError18 {
+    public func hideUnhideShares(userId: String, sharesToHide: [String], sharesToUnhide: [String]) async throws {
+        invokedHideUnhideSharesfunction = true
+        invokedHideUnhideSharesCount += 1
+        invokedHideUnhideSharesParameters = (userId, sharesToHide, sharesToUnhide)
+        invokedHideUnhideSharesParametersList.append((userId, sharesToHide, sharesToUnhide))
+        if let error = hideUnhideSharesUserIdSharesToHideSharesToUnhideThrowableError18 {
             throw error
         }
-        closureHideShare()
-    }
-    // MARK: - unhideShare
-    public var unhideShareUserIdShareIdThrowableError19: Error?
-    public var closureUnhideShare: () -> () = {}
-    public var invokedUnhideSharefunction = false
-    public var invokedUnhideShareCount = 0
-    public var invokedUnhideShareParameters: (userId: String, shareId: String)?
-    public var invokedUnhideShareParametersList = [(userId: String, shareId: String)]()
-
-    public func unhideShare(userId: String, shareId: String) async throws {
-        invokedUnhideSharefunction = true
-        invokedUnhideShareCount += 1
-        invokedUnhideShareParameters = (userId, shareId)
-        invokedUnhideShareParametersList.append((userId, shareId))
-        if let error = unhideShareUserIdShareIdThrowableError19 {
-            throw error
-        }
-        closureUnhideShare()
+        closureHideUnhideShares()
     }
 }

@@ -47,19 +47,24 @@ public final class ReorganizeVaults: ReorganizeVaultsUseCase {
     public func execute(currentShares: [Share],
                         hiddenShareIds: Set<String>) async throws -> Bool {
         let userId = try await userManager.getActiveUserId()
-        var updated = false
 
+        var toHide = [String]()
+        var toUnhide = [String]()
         for share in currentShares {
             let shareId = share.shareId
             if share.hidden, !hiddenShareIds.contains(shareId) {
-                try await shareRepository.unhideShare(userId: userId, shareId: shareId)
-                updated = true
+                toUnhide.append(shareId)
             } else if !share.hidden, hiddenShareIds.contains(shareId) {
-                try await shareRepository.hideShare(userId: userId, shareId: shareId)
-                updated = true
+                toHide.append(shareId)
             }
         }
 
-        return updated
+        if !toHide.isEmpty || !toUnhide.isEmpty {
+            try await shareRepository.hideUnhideShares(userId: userId,
+                                                       sharesToHide: toHide,
+                                                       sharesToUnhide: toUnhide)
+            return true
+        }
+        return false
     }
 }
