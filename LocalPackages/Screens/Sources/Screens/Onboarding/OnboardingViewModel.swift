@@ -1,5 +1,5 @@
 //
-// OnboardingV2ViewModel.swift
+// OnboardingViewModel.swift
 // Proton Pass - Created on 28/03/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
@@ -56,7 +56,7 @@ public struct KnownService: Sendable, Decodable, Equatable {
     }
 }
 
-public typealias OnboardingV2Handling = OnboardingV2Datasource & OnboardingV2Delegate
+public typealias OnboardingHandling = OnboardingDatasource & OnboardingDelegate
 
 public struct PassPlans: Sendable, Equatable {
     let plus: PlanUiModel
@@ -68,7 +68,7 @@ public struct PassPlans: Sendable, Equatable {
     }
 }
 
-public protocol OnboardingV2Datasource: Sendable, AnyObject {
+public protocol OnboardingDatasource: Sendable, AnyObject {
     func getCurrentPlan() async throws -> Entities.Plan
     func getPassPlans() async throws -> PassPlans?
     func getBiometryType() async throws -> LABiometryType?
@@ -77,7 +77,7 @@ public protocol OnboardingV2Datasource: Sendable, AnyObject {
     func getFirstLoginSuggestion() async -> OnboardFirstLoginSuggestion
 }
 
-public protocol OnboardingV2Delegate: Sendable, AnyObject {
+public protocol OnboardingDelegate: Sendable, AnyObject {
     func purchase(_ plan: ComposedPlan) async throws
     func enableBiometric() async throws
     func enableAutoFill() async -> Bool
@@ -89,7 +89,7 @@ public protocol OnboardingV2Delegate: Sendable, AnyObject {
     func handle(error: any Error) async
 }
 
-enum OnboardV2Step: Sendable, Equatable {
+enum OnboardStep: Sendable, Equatable {
     case payment(PassPlans)
     case biometric(LABiometryType)
     case autofill
@@ -99,24 +99,24 @@ enum OnboardV2Step: Sendable, Equatable {
 }
 
 @MainActor
-final class OnboardingV2ViewModel: ObservableObject {
-    @Published private(set) var currentStep: FetchableObject<OnboardV2Step> = .fetching
+final class OnboardingViewModel: ObservableObject {
+    @Published private(set) var currentStep: FetchableObject<OnboardStep> = .fetching
     @Published private(set) var isPurchasing = false
     @Published private(set) var isSaving = false
     @Published private(set) var finished = false
     @Published var selectedPlan: PlanUiModel?
     private var availableBiometryType: LABiometryType?
 
-    private weak var datasource: (any OnboardingV2Datasource)?
-    private weak var delegate: (any OnboardingV2Delegate)?
+    private weak var datasource: (any OnboardingDatasource)?
+    private weak var delegate: (any OnboardingDelegate)?
 
-    init(handler: OnboardingV2Handling?) {
+    init(handler: OnboardingHandling?) {
         datasource = handler
         delegate = handler
     }
 }
 
-extension OnboardingV2ViewModel {
+extension OnboardingViewModel {
     func setUp() async {
         do {
             guard let datasource else {
@@ -284,7 +284,7 @@ extension OnboardingV2ViewModel {
     }
 }
 
-private extension OnboardingV2ViewModel {
+private extension OnboardingViewModel {
     // periphery:ignore
     func fetchKnownServices() throws -> [KnownService] {
         guard let url = Bundle.module.url(forResource: "Top100services",

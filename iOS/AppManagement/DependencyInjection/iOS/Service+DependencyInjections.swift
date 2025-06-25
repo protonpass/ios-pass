@@ -54,7 +54,7 @@ extension ServiceContainer {
                                  userManager: SharedServiceContainer.shared.userManager()) }
     }
 
-    var onboardingV2Handler: Factory<any OnboardingV2Handling> {
-        self { OnboardingV2Handler(logManager: SharedToolingContainer.shared.logManager()) }
+    var onboardingHandler: Factory<any OnboardingHandling> {
+        self { OnboardingHandler(logManager: SharedToolingContainer.shared.logManager()) }
     }
 }
