@@ -71,19 +71,8 @@ final class PassIconTests: XCTestCase {
 
         _ = PassIcon.magnifyingGlass
 
-        _ = PassIcon.onboardAliases
         _ = PassIcon.onboardAliasExplanation
-        _ = PassIcon.onboardAuthentication
-        _ = PassIcon.onboardAuthenticationBackground
-        _ = PassIcon.onboardAuthenticationEnabled
         _ = PassIcon.onboardAutoFill
-        _ = PassIcon.onboardAutoFillGradient
-        _ = PassIcon.onboardAutoFillEnabled
-        _ = PassIcon.onboardAutoFillStep1
-        _ = PassIcon.onboardAutoFillStep2
-        _ = PassIcon.onboardAutoFillStep3
-        _ = PassIcon.onboardAutoFillStep4
-        _ = PassIcon.onboardAutoFillStep5
         _ = PassIcon.onboardFaceID
         _ = PassIcon.onboardLoginCreatedSparkle
 
