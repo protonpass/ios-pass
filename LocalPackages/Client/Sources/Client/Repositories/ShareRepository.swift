@@ -79,8 +79,9 @@ public protocol ShareRepositoryProtocol: Sendable {
     @discardableResult
     func transferVaultOwnership(vaultShareId: String, newOwnerShareId: String) async throws -> Bool
 
-    func hideShare(userId: String, shareId: String) async throws
-    func unhideShare(userId: String, shareId: String) async throws
+    func hideUnhideShares(userId: String,
+                          sharesToHide: [String],
+                          sharesToUnhide: [String]) async throws
 }
 
 public extension ShareRepositoryProtocol {
@@ -358,24 +359,23 @@ public extension ShareRepository {
         return updated
     }
 
-    func hideShare(userId: String, shareId: String) async throws {
-        logger.trace("Hidding share \(shareId) for user \(userId)")
-        let updated = try await remoteDatasource.hideShare(userId: userId, shareId: shareId)
-        logger.trace("Saving hidden share \(shareId) locally for user \(userId)")
+    func hideUnhideShares(userId: String,
+                          sharesToHide: [String],
+                          sharesToUnhide: [String]) async throws {
+        logger.trace("Batch hiding \(sharesToHide), unhiding \(sharesToUnhide) for user \(userId)")
+        let updatedShares = try await remoteDatasource.hideUnhideShares(userId: userId,
+                                                                        sharesToHide: sharesToHide,
+                                                                        sharesToUnhide: sharesToUnhide)
+        logger.trace("Saving updated \(updatedShares.count) shares locally for user \(userId)")
         let key = try await getSymmetricKey()
-        let encrypted = try await symmetricallyEncrypt(userId: userId, updated, symmetricKey: key)
-        try await localDatasource.upsertShares([encrypted], userId: userId)
-        logger.info("Finish hidding share \(shareId) for user \(userId)")
-    }
-
-    func unhideShare(userId: String, shareId: String) async throws {
-        logger.trace("Unhidding share \(shareId) for user \(userId)")
-        let updated = try await remoteDatasource.unhideShare(userId: userId, shareId: shareId)
-        logger.trace("Saving unhidden share \(shareId) locally for user \(userId)")
-        let key = try await getSymmetricKey()
-        let encrypted = try await symmetricallyEncrypt(userId: userId, updated, symmetricKey: key)
-        try await localDatasource.upsertShares([encrypted], userId: userId)
-        logger.info("Finish unhidding share \(shareId) for user \(userId)")
+        let encryptedShares = try await updatedShares.parallelMap { [weak self] share in
+            // swiftlint:disable:next discouraged_optional_self
+            try await self?.symmetricallyEncrypt(userId: userId, share, symmetricKey: key)
+        }.compactMap { $0 }
+        assert(updatedShares.count == encryptedShares.count,
+               "Some shares were not correctly symmetrically encrypted")
+        try await localDatasource.upsertShares(encryptedShares, userId: userId)
+        logger.info("Finish batch hiding \(sharesToHide), unhiding \(sharesToUnhide) for user \(userId)")
     }
 }
 
