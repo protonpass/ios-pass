@@ -168,7 +168,8 @@ public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable {
         expireTime = try container.decodeIfPresent(Int64.self, forKey: .expireTime)
         createTime = try container.decode(Int64.self, forKey: .createTime)
         canAutoFill = try container.decode(Bool.self, forKey: .canAutoFill)
-        flags = try container.decode(Int.self, forKey: .flags)
+        // Could be simplified to "decode" later
+        flags = try container.decodeIfPresent(Int.self, forKey: .flags) ?? 0
     }
 
     private enum CodingKeys: String, CodingKey {

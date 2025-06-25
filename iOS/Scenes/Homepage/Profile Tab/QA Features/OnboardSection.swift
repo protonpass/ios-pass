@@ -38,12 +38,6 @@ struct OnboardSection: View {
             .frame(maxWidth: .infinity, alignment: .leading)
 
             Button(action: {
-                viewModel.present(view: OnboardingView(onWatchTutorial: {}))
-            }, label: {
-                Text(verbatim: "Onboard")
-            })
-
-            Button(action: {
                 viewModel.present(view: OnboardingV2View(handler: viewModel.handler))
             }, label: {
                 Text(verbatim: "Onboard V2")
