@@ -22,25 +22,25 @@ import Entities
 
 public extension Share {
     static func random(shareID: String? = nil,
-                        vaultID: String? = nil,
-                        addressID: String? = nil,
-                        targetType: Int64 = 2,
-                        targetID: String? = nil,
-                        permission: Int64 = 0,
-                        shareRoleID: String = "1",
-                        targetMembers: Int64 = .random(in: 0...100),
-                        targetMaxMembers: Int64 = .random(in: 0...100),
-                        pendingInvites: Int64 = .random(in: 0...100),
-                        newUserInvitesReady: Int64 = .random(in: 0...100),
-                        owner: Bool = true,
-                        shared: Bool = false,
-                        content: String? = nil,
-                        contentKeyRotation: Int64? = nil,
-                        contentFormatVersion: Int64? = nil,
-                        expireTime: Int64? = nil,
-                        createTime: Int64 = .random(in: 0...100),
-                        canAutoFill: Bool = true,
-                        hidden: Bool = .random()) -> Share {
+                       vaultID: String? = nil,
+                       addressID: String? = nil,
+                       targetType: Int64 = 2,
+                       targetID: String? = nil,
+                       permission: Int64 = 0,
+                       shareRoleID: String = "1",
+                       targetMembers: Int64 = .random(in: 0...100),
+                       targetMaxMembers: Int64 = .random(in: 0...100),
+                       pendingInvites: Int64 = .random(in: 0...100),
+                       newUserInvitesReady: Int64 = .random(in: 0...100),
+                       owner: Bool = true,
+                       shared: Bool = false,
+                       content: String? = nil,
+                       contentKeyRotation: Int64? = nil,
+                       contentFormatVersion: Int64? = nil,
+                       expireTime: Int64? = nil,
+                       createTime: Int64 = .random(in: 0...100),
+                       canAutoFill: Bool = true,
+                       flags: Int = .random(in: 0...10)) -> Share {
         Share(shareID: shareID ?? .random(),
               vaultID: vaultID ?? .random(),
               addressID: addressID ?? .random(),
@@ -60,6 +60,6 @@ public extension Share {
               expireTime: expireTime,
               createTime: createTime,
               canAutoFill: canAutoFill,
-              hidden: hidden)
+              flags: flags)
     }
 }

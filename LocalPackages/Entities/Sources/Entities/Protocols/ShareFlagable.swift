@@ -1,6 +1,6 @@
 //
-// UnhideShareEndpoint.swift
-// Proton Pass - Created on 12/06/2025.
+// ShareFlagable.swift
+// Proton Pass - Created on 25/06/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,23 +17,31 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Entities
-import ProtonCoreNetworking
+import Foundation
 
-typealias UnhideShareResponse = GetShareResponse
+public protocol ShareFlagable: Sendable {
+    var flags: Int { get }
+}
 
-struct UnhideShareEndpoint: Endpoint {
-    typealias Body = EmptyRequest
-    typealias Response = UnhideShareResponse
+extension ShareFlagable {
+    var shareFlags: ShareFlags {
+        .init(rawValue: flags)
+    }
+}
 
-    let debugDescription: String
-    let path: String
-    let method: HTTPMethod
+public extension ShareFlagable {
+    var hidden: Bool {
+        shareFlags.contains(.hidden)
+    }
+}
 
-    init(shareId: String) {
-        debugDescription = "Unhide share \(shareId)"
-        path = "/pass/v1/share/\(shareId)/unhide"
-        method = .put
+public struct ShareFlags: Sendable, OptionSet {
+    public var rawValue: Int
+    public static let hidden = ShareFlags(rawValue: 1 << 0)
+
+    public init(rawValue: Int) {
+        self.rawValue = rawValue
     }
 }
