@@ -54,7 +54,7 @@ extension ShareEntity {
     @NSManaged var newUserInvitesReady: Int64
     @NSManaged var shared: Bool
     @NSManaged var canAutoFill: Bool
-    @NSManaged var hidden: Bool
+    @NSManaged var flags: Int64
 }
 
 extension ShareEntity {
@@ -79,7 +79,7 @@ extension ShareEntity {
                            expireTime: expireTime == -1 ? nil : expireTime,
                            createTime: createTime,
                            canAutoFill: canAutoFill,
-                           hidden: hidden))
+                           flags: Int(flags)))
     }
 
     func hydrate(from symmetricallyEncryptedShare: SymmetricallyEncryptedShare, userId: String) {
@@ -105,6 +105,6 @@ extension ShareEntity {
         newUserInvitesReady = Int64(share.newUserInvitesReady)
         shared = share.shared
         canAutoFill = share.canAutoFill
-        hidden = share.hidden
+        flags = Int64(share.flags)
     }
 }

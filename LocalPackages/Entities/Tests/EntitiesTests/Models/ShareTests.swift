@@ -48,7 +48,7 @@ struct ShareTests {
         "expireTime": 1699872000,
         "createTime": 1699785600,
         "canAutoFill": true,
-        "hidden": true
+        "flags": 1
     }
     """.data(using: .utf8)!
     
@@ -121,7 +121,7 @@ struct ShareTests {
                 "expireTime": null,
                 "createTime": 1699785600,
                 "canAutoFill": true,
-                "hidden": false
+                "flags": 0
             }
             """.data(using: .utf8)!
         
@@ -157,7 +157,7 @@ struct ShareTests {
                 "expireTime": null,
                 "createTime": 1699785600,
                 "canAutoFill": true,
-                "hidden": false
+                "flags": 0
             }
             """.data(using: .utf8)!
         

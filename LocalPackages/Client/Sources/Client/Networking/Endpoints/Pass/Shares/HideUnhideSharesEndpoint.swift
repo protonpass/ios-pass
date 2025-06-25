@@ -1,5 +1,5 @@
 //
-// HideShareEndpoint.swift
+// HideUnhideSharesEndpoint.swift
 // Proton Pass - Created on 12/06/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
@@ -21,19 +21,33 @@
 import Entities
 import ProtonCoreNetworking
 
-typealias HideShareResponse = GetShareResponse
+struct HideUnhideSharesRequest: Sendable, Encodable {
+    let sharesToHide: [String]
+    let sharesToUnhide: [String]
 
-struct HideShareEndpoint: Endpoint {
-    typealias Body = EmptyRequest
-    typealias Response = HideShareResponse
+    enum CodingKeys: String, CodingKey {
+        case sharesToHide = "SharesToHide"
+        case sharesToUnhide = "SharesToUnhide"
+    }
+}
+
+struct HideUnhideSharesResponse: Sendable, Decodable {
+    let shares: [Share]
+}
+
+struct HideUnhideSharesEndpoint: Endpoint {
+    typealias Body = HideUnhideSharesRequest
+    typealias Response = HideUnhideSharesResponse
 
     let debugDescription: String
     let path: String
     let method: HTTPMethod
+    let body: HideUnhideSharesRequest?
 
-    init(shareId: String) {
-        debugDescription = "Hide share \(shareId)"
-        path = "/pass/v1/share/\(shareId)/hide"
+    init(sharesToHide: [String], sharesToUnhide: [String]) {
+        debugDescription = "Hide/unhide shares"
+        path = "/pass/v1/share/hide"
         method = .put
+        body = .init(sharesToHide: sharesToHide, sharesToUnhide: sharesToUnhide)
     }
 }
