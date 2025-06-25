@@ -1,5 +1,5 @@
 //
-// OnboardingV2Handler.swift
+// OnboardingHandler.swift
 // Proton Pass - Created on 17/04/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
@@ -29,7 +29,7 @@ import Screens
 import StoreKit
 
 @MainActor
-final class OnboardingV2Handler {
+final class OnboardingHandler {
     @LazyInjected(\SharedToolingContainer.preferencesManager)
     private var preferencesManager
 
@@ -77,7 +77,7 @@ final class OnboardingV2Handler {
     }
 }
 
-extension OnboardingV2Handler: OnboardingV2Datasource {
+extension OnboardingHandler: OnboardingDatasource {
     func getCurrentPlan() async throws -> Entities.Plan {
         try await accessRepository.getPlan(userId: nil)
     }
@@ -113,7 +113,7 @@ extension OnboardingV2Handler: OnboardingV2Datasource {
     }
 }
 
-extension OnboardingV2Handler: OnboardingV2Delegate {
+extension OnboardingHandler: OnboardingDelegate {
     func purchase(_ plan: ComposedPlan) async throws {
         guard let manager = try await getPlansManager() else { return }
 
@@ -163,7 +163,7 @@ extension OnboardingV2Handler: OnboardingV2Delegate {
     }
 }
 
-private extension OnboardingV2Handler {
+private extension OnboardingHandler {
     func getPlansManager() async throws -> ProtonPlansManager? {
         if let plansManager {
             return plansManager
