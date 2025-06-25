@@ -24,15 +24,12 @@ public struct EmailBreaches: Decodable, Equatable, Sendable, Hashable {
     public let isEligible: Bool
     public let count: Int
     public let breaches: [Breach]
-    public let samples: [BreachSample]
 
     public init(isEligible: Bool,
                 count: Int,
-                breaches: [Breach],
-                samples: [BreachSample]) {
+                breaches: [Breach]) {
         self.isEligible = isEligible
         self.count = count
         self.breaches = breaches
-        self.samples = samples
     }
 }
