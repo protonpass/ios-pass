@@ -1,3 +1,17 @@
+# Version 1.17.3
+Improvements:
+- Improved search screen layout
+- Resolved alias mailbox reset issue when editing
+- Fixed QR code sign-in failures for certain account types
+- Pass Monitor now retains its last known state upon reload
+
+Others:
+- Core libraries upgraded from 32.3.1 to 32.7.0
+- Removed legacy onboarding flow
+- Support for hiding/showing vaults (behind feature flags)
+- Addressed decoding errors encountered when entering the Pass Monitor tab
+- Removed PassFileAttachmentsV1 & PassFileAttachmentEncryptionV2 flags 
+
 # Version 1.17.2
 New layout for note item
 
