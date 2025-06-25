@@ -28,10 +28,10 @@ struct OnboardingCreateFirstLoginStep: View {
     @StateObject private var viewModel: OnboardingCreateFirstLoginStepViewModel
     @FocusState private var focusedServiceName
     @Binding var saveable: Bool
-    @Binding var topBar: OnboardingV2View.TopBar
+    @Binding var topBar: OnboardingView.TopBar
 
     init(saveable: Binding<Bool>,
-         topBar: Binding<OnboardingV2View.TopBar>,
+         topBar: Binding<OnboardingView.TopBar>,
          shareId: String,
          services: [KnownService],
          onCreate: @escaping (OnboardFirstLoginPayload) -> Void) {
