@@ -83,7 +83,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\SharedRepositoryContainer.aliasRepository) var aliasRepository
     @LazyInjected(\SharedRepositoryContainer.passwordHistoryRepository)
     private var passwordHistoryRepository
-    @LazyInjected(\ServiceContainer.onboardingV2Handler) private var onboardingV2Handler
+    @LazyInjected(\ServiceContainer.onboardingHandler) private var onboardingHandler
     @LazyInjected(\SharedServiceContainer.featureDiscoveryManager)
     private var featureDiscoveryManager
 
@@ -1313,7 +1313,7 @@ private extension HomepageCoordinator {
 
     func presentOnboardView(forced: Bool) {
         guard forced || !getAppPreferences().onboarded else { return }
-        let view = OnboardingV2View(handler: onboardingV2Handler)
+        let view = OnboardingView(handler: onboardingHandler)
         let vc = UIHostingController(rootView: view)
         vc.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
         vc.isModalInPresentation = true

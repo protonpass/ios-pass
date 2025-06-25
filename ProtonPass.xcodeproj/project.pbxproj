@@ -488,7 +488,7 @@
 		537FC0792D59ECB900011AEA /* UpsellingViewConfiguration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71062BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift */; };
 		538548E82D58ACF300AEFB66 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 538548E72D58ACF300AEFB66 /* UniformTypeIdentifiers.framework */; };
 		538548F42D58ACF300AEFB66 /* Action.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 538548E62D58ACF300AEFB66 /* Action.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		538694A32DB0F10400416368 /* OnboardingV2Handler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538694A22DB0F0FB00416368 /* OnboardingV2Handler.swift */; };
+		538694A32DB0F10400416368 /* OnboardingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538694A22DB0F0FB00416368 /* OnboardingHandler.swift */; };
 		5386ACFF2D4276EC00DEEB8B /* HomepageCoordinator+SLSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5386ACFE2D4276E500DEEB8B /* HomepageCoordinator+SLSync.swift */; };
 		539182CA2D7F2C5C00815D7F /* SshDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539182C92D7F2C5800815D7F /* SshDetailView.swift */; };
 		539182CC2D7F2C9100815D7F /* SshDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539182CB2D7F2C8F00815D7F /* SshDetailViewModel.swift */; };
@@ -1082,7 +1082,7 @@
 		536CA2C32CF0BDBA00BA3C69 /* FileAttachmentViewerSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileAttachmentViewerSection.swift; sourceTree = "<group>"; };
 		538548E62D58ACF300AEFB66 /* Action.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Action.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		538548E72D58ACF300AEFB66 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
-		538694A22DB0F0FB00416368 /* OnboardingV2Handler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingV2Handler.swift; sourceTree = "<group>"; };
+		538694A22DB0F0FB00416368 /* OnboardingHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingHandler.swift; sourceTree = "<group>"; };
 		5386ACFE2D4276E500DEEB8B /* HomepageCoordinator+SLSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+SLSync.swift"; sourceTree = "<group>"; };
 		539182C92D7F2C5800815D7F /* SshDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SshDetailView.swift; sourceTree = "<group>"; };
 		539182CB2D7F2C8F00815D7F /* SshDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SshDetailViewModel.swift; sourceTree = "<group>"; };
@@ -2104,7 +2104,7 @@
 				355723C12BF37F5E00C76244 /* HomepageCoordinator+UniqueSheet.swift */,
 				5BEE71E12BFDE63300B3C005 /* HomepageCoordinator+ItemCreateEditDetails.swift */,
 				355C138829DB71D800264CD0 /* HomepageTabbarView.swift */,
-				538694A22DB0F0FB00416368 /* OnboardingV2Handler.swift */,
+				538694A22DB0F0FB00416368 /* OnboardingHandler.swift */,
 				35603A0029B6587C00021BFB /* Create & Edit Items */,
 				356650D72AAF606500BFF4F3 /* Full Sync Progress */,
 				3565622529BA760800C43F72 /* Item Detail */,
@@ -3856,7 +3856,7 @@
 				3572E5232993D68800775FAC /* ItemContentType+Extensions.swift in Sources */,
 				5386ACFF2D4276EC00DEEB8B /* HomepageCoordinator+SLSync.swift in Sources */,
 				356B697B2949E55600868771 /* ItemDetailPlaceholderView.swift in Sources */,
-				538694A32DB0F10400416368 /* OnboardingV2Handler.swift in Sources */,
+				538694A32DB0F10400416368 /* OnboardingHandler.swift in Sources */,
 				5BF35D6E2B21FB1800D3E297 /* Pinnable+Extensions.swift in Sources */,
 				35E152C42A38866900E47E57 /* CreateEditCreditCardViewModel.swift in Sources */,
 				353EC0162A05A7EF004AF925 /* TrashItemsSection.swift in Sources */,
