@@ -163,7 +163,7 @@
         <attribute name="contentKeyRotation" attributeType="Integer 64" defaultValueString="-1" usesScalarValueType="YES"/>
         <attribute name="createTime" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="expireTime" optional="YES" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="hidden" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="flags" attributeType="Integer 64" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="newUserInvitesReady" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="owner" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="pendingInvites" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
