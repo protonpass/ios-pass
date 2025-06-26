@@ -132,8 +132,9 @@ struct SearchResultsView: View {
                 Button {
                     vaultSearchSelection = .current
                 } label: {
-                    counterText(label: #localized("Current vault"),
-                                count: viewModel.fullResults.current.itemCount.total)
+                    counterText(label: viewModel.isTrash ?
+                        #localized("Trash") : #localized("Current vault"),
+                        count: viewModel.fullResults.current.itemCount.total)
                         .frame(maxHeight: .infinity)
                 }
                 .buttonStyle(.plain)
