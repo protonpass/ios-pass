@@ -30,7 +30,7 @@ public protocol FeatureDiscoveryManagerProtocol: Sendable {
     /// Keep track of discoveries that we should show. Update as user dismiss discoveries or switch account.
     var eligibleDiscoveries: CurrentValueSubject<Set<NewFeature>, Never> { get }
 
-    func refreshState(userId: String) async
+    func refreshState(userId: String, disallowedFeatures: Set<NewFeature>) async
 
     func dismissDiscovery(for feature: NewFeature)
 
@@ -42,6 +42,7 @@ public final class FeatureDiscoveryManager: FeatureDiscoveryManagerProtocol {
     private let storage: UserDefaults
     private let accessRepository: any AccessRepositoryProtocol
     private let logger: Logger
+    private nonisolated(unsafe) var disallowedFeatures = Set<NewFeature>()
 
     public let eligibleDiscoveries = CurrentValueSubject<Set<NewFeature>, Never>([])
 
@@ -53,9 +54,11 @@ public final class FeatureDiscoveryManager: FeatureDiscoveryManagerProtocol {
         logger = .init(manager: logManager)
     }
 
-    public func refreshState(userId: String) async {
+    public func refreshState(userId: String,
+                             disallowedFeatures: Set<NewFeature>) async {
         do {
             logger.trace("Refreshing discoveries state for user \(userId)")
+            self.disallowedFeatures = disallowedFeatures
             let userInfo = try await accessRepository.getPassUserInformation(userId: userId)
             if userInfo.canDisplayFeatureDiscovery {
                 refreshEligibleDiscoveries()
@@ -86,7 +89,9 @@ public final class FeatureDiscoveryManager: FeatureDiscoveryManagerProtocol {
 private extension FeatureDiscoveryManager {
     func refreshEligibleDiscoveries() {
         logger.trace("Refreshed eligible discoveries")
-        let features = NewFeature.allCases.filter { !storage.bool(forKey: $0.rawValue) }
+        let features = NewFeature.allCases.filter {
+            !storage.bool(forKey: $0.rawValue) && !disallowedFeatures.contains($0)
+        }
         eligibleDiscoveries.send(Set(features))
     }
 }
