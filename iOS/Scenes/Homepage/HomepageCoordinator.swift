@@ -104,6 +104,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     var addAndSwitchToNewUserAccount
     @LazyInjected(\ SharedUseCasesContainer.addTelemetryEvent) var addTelemetryEvent
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
     let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
@@ -194,7 +195,13 @@ private extension HomepageCoordinator {
 
                 Task { [weak self] in
                     guard let self else { return }
-                    await featureDiscoveryManager.refreshState(userId: userData.user.ID)
+                    let disallowed: [NewFeature] = if getFeatureFlagStatus(for: FeatureFlagType.passCustomTypeV1) {
+                        []
+                    } else {
+                        [NewFeature.customItems]
+                    }
+                    await featureDiscoveryManager.refreshState(userId: userData.user.ID,
+                                                               disallowedFeatures: Set(disallowed))
                 }
             }
             .store(in: &cancellables)
