@@ -72,8 +72,8 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
         type = itemContent.contentData.type
         aliasEmail = itemContent.item.aliasEmail
         aliasEnabled = itemContent.item.isAliasEnabled
-        name = itemContent.name
-        note = itemContent.note
+        name = itemContent.name.trimmingCharacters(in: .whitespacesAndNewlines)
+        note = itemContent.note.trimmingCharacters(in: .whitespacesAndNewlines)
 
         var optionalExtras: [String] = []
         var hasTotpUri = false
