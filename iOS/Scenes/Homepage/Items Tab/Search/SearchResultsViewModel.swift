@@ -21,6 +21,7 @@
 import Client
 import Entities
 import FactoryKit
+import Macro
 import SwiftUI
 
 enum VaultSearchSelection: Equatable {
@@ -54,8 +55,25 @@ final class SearchResultsViewModel: ObservableObject {
         return vaultSearchSelection == .current ? fullResults.current.searchResults : all.searchResults
     }
 
-    let isTrash: Bool
+    let mode: SearchMode?
     let fullResults: SearchDataDisplayContainer
+
+    var isTrash: Bool {
+        mode?.vaultSelection == .trash
+    }
+
+    var currentSelectionTitle: String {
+        switch mode?.vaultSelection {
+        case .sharedWithMe:
+            #localized("Shared with me")
+        case .sharedByMe:
+            #localized("Shared by me")
+        case .trash:
+            #localized("Trash")
+        default:
+            #localized("Current vault")
+        }
+    }
 
     var customItemEnabled: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passCustomTypeV1)
@@ -64,11 +82,11 @@ final class SearchResultsViewModel: ObservableObject {
     init(itemContextMenuHandler: ItemContextMenuHandler,
          results: SearchDataDisplayContainer,
          vaultSearchSelection: VaultSearchSelection,
-         isTrash: Bool) {
+         mode: SearchMode?) {
         self.itemContextMenuHandler = itemContextMenuHandler
         fullResults = results
         self.vaultSearchSelection = vaultSearchSelection
-        self.isTrash = isTrash
+        self.mode = mode
     }
 }
 

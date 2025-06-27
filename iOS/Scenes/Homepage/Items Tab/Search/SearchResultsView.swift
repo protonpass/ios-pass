@@ -49,14 +49,14 @@ struct SearchResultsView: View {
          vaultSearchSelection: Binding<VaultSearchSelection>,
          itemContextMenuHandler: ItemContextMenuHandler,
          results: SearchDataDisplayContainer,
-         isTrash: Bool,
+         mode: SearchMode?,
          safeAreaInsets: EdgeInsets,
          onScroll: @escaping () -> Void,
          onSelectItem: @escaping (ItemSearchResult) -> Void) {
         _viewModel = .init(wrappedValue: .init(itemContextMenuHandler: itemContextMenuHandler,
                                                results: results,
                                                vaultSearchSelection: vaultSearchSelection.wrappedValue,
-                                               isTrash: isTrash))
+                                               mode: mode))
         _selectedType = selectedType
         _selectedSortType = selectedSortType
         _vaultSearchSelection = vaultSearchSelection
@@ -132,9 +132,8 @@ struct SearchResultsView: View {
                 Button {
                     vaultSearchSelection = .current
                 } label: {
-                    counterText(label: viewModel.isTrash ?
-                        #localized("Trash") : #localized("Current vault"),
-                        count: viewModel.fullResults.current.itemCount.total)
+                    counterText(label: viewModel.currentSelectionTitle,
+                                count: viewModel.fullResults.current.itemCount.total)
                         .frame(maxHeight: .infinity)
                 }
                 .buttonStyle(.plain)

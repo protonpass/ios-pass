@@ -22,7 +22,7 @@ import DesignSystem
 import Macro
 import SwiftUI
 
-public struct NoSearchResultsInAllVaultView: View {
+public struct NoSearchResultsView: View {
     let query: String
 
     public init(query: String) {
@@ -42,65 +42,6 @@ public struct NoSearchResultsInAllVaultView: View {
             TrySearchAgainText()
         }
         .padding(.horizontal)
-    }
-}
-
-public struct NoSearchResultsInPreciseVaultView: View {
-    let query: String
-    let vaultName: String
-    let action: () -> Void
-
-    public init(query: String, vaultName: String, action: @escaping () -> Void) {
-        self.query = query
-        self.vaultName = vaultName
-        self.action = action
-    }
-
-    public var body: some View {
-        VStack {
-            Text(#localized("Couldn't find \"%1$@\" in %2$@", bundle: .module, query, vaultName))
-                .fontWeight(.semibold)
-                .multilineTextAlignment(.center)
-                .foregroundStyle(PassColor.textNorm.toColor)
-                .padding(.bottom)
-                .animationsDisabled()
-
-            TrySearchAgainText()
-
-            Button(action: action) {
-                Label(#localized("Search in all vaults", bundle: .module), systemImage: "magnifyingglass")
-                    .foregroundStyle(PassColor.interactionNormMajor2.toColor)
-                    .padding()
-                    .background(PassColor.interactionNormMinor2.toColor)
-                    .clipShape(Capsule())
-            }
-            .padding(.top, 50)
-        }
-        .padding(.horizontal)
-        .padding(.top, 150)
-    }
-}
-
-public struct NoSearchResultsInTrashView: View {
-    let query: String
-
-    public init(query: String) {
-        self.query = query
-    }
-
-    public var body: some View {
-        VStack {
-            Text("Couldn't find \"\(query)\" in Trash", bundle: .module)
-                .fontWeight(.semibold)
-                .multilineTextAlignment(.center)
-                .foregroundStyle(PassColor.textNorm.toColor)
-                .padding(.bottom)
-                .animationsDisabled()
-
-            TrySearchAgainText()
-        }
-        .padding(.horizontal)
-        .padding(.top, 180)
     }
 }
 
