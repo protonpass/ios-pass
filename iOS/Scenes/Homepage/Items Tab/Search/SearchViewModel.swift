@@ -226,7 +226,7 @@ private extension SearchViewModel {
             }
         }
 
-        if results.isEmpty {
+        if await isSearchEmpty(results: results) {
             await updateState(.noResults(lastSearchQuery))
             return
         }
@@ -278,6 +278,14 @@ private extension SearchViewModel {
                       sharedByMe: filteredResults.itemSharedByMeCount,
                       sharedWithMe: filteredResults.itemSharedWithMeCount),
             searchResults: filteredAndSortedResults)
+    }
+
+    func isSearchEmpty(results: [ItemSearchResult]) -> Bool {
+        if searchMode.isSpecificSelection {
+            results.isEmpty && allResults.isEmpty
+        } else {
+            results.isEmpty
+        }
     }
 }
 
