@@ -83,7 +83,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedUseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
 
-    private(set) var searchMode: SearchMode
+    private let searchMode: SearchMode
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
 
     private var lastSearchQuery = ""
@@ -100,10 +100,6 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
 
     var searchBarPlaceholder: String {
         searchMode.searchBarPlacehoder
-    }
-
-    var isTrash: Bool {
-        searchMode.vaultSelection == .trash
     }
 
     init(searchMode: SearchMode) {
@@ -354,14 +350,6 @@ extension SearchViewModel {
                 handle(error)
             }
         }
-    }
-
-    func searchInAllVaults() {
-        guard searchMode != .pinned else {
-            return
-        }
-        searchMode = .all(.all)
-        refreshResults()
     }
 
     func openSettings() {
