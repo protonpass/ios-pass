@@ -144,7 +144,7 @@ private extension ItemsForTextInsertionView {
 
             case let .searchResults(results):
                 if results.isEmpty {
-                    NoSearchResultsInAllVaultView(query: viewModel.query)
+                    NoSearchResultsView(query: viewModel.query)
                 } else {
                     CredentialSearchResultView(results: results,
                                                selectedSortType: $viewModel.selectedSortType,

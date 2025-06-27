@@ -115,7 +115,7 @@ private extension LoginItemsView {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         case let .searchResults(results):
             if results.isEmpty {
-                NoSearchResultsInAllVaultView(query: viewModel.query)
+                NoSearchResultsView(query: viewModel.query)
             } else {
                 searchResults(results)
             }
