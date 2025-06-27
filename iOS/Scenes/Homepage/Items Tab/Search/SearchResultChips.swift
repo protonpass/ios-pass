@@ -78,18 +78,16 @@ private struct ItemCountChip: View {
                     Image(uiImage: icon)
                         .resizable()
                         .scaledToFit()
-                        .foregroundStyle((isSelected ? PassColor.textNorm : PassColor.interactionNormMajor2)
+                        .foregroundStyle((isSelected ? PassColor.textInvert : PassColor.interactionNormMajor2)
                             .toColor)
                         .frame(width: 16, height: 16)
                 }
 
-                HStack(spacing: 4) {
-                    Text(title)
-                        .foregroundStyle(isSelected ? PassColor.textInvert.toColor : PassColor.textNorm.toColor)
+                Text(title)
+                    .foregroundStyle(isSelected ? PassColor.textInvert.toColor : PassColor.textNorm.toColor)
 
-                    Text(verbatim: " (\(count))")
-                        .foregroundStyle(isSelected ? PassColor.textInvert.toColor : PassColor.textNorm.toColor)
-                }
+                Text(verbatim: "(\(count))")
+                    .foregroundStyle(isSelected ? PassColor.textInvert.toColor : PassColor.textNorm.toColor)
             }
             .padding(.vertical, 8)
             .padding(.horizontal, 12)
@@ -101,7 +99,6 @@ private struct ItemCountChip: View {
             .animation(.default, value: isSelected)
         }
         .buttonStyle(.plain)
-        .disabled(count == 0) // swiftlint:disable:this empty_count
         .animationsDisabled()
     }
 }
