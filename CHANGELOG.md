@@ -1,4 +1,4 @@
-# Version 1.17.3
+# Version 1.17.4
 Improvements:
 - Improved search screen layout
 - Resolved alias mailbox reset issue when editing
@@ -11,6 +11,9 @@ Others:
 - Support for hiding/showing vaults (behind feature flags)
 - Addressed decoding errors encountered when entering the Pass Monitor tab
 - Removed PassFileAttachmentsV1 & PassFileAttachmentEncryptionV2 flags 
+
+# Version 1.17.3
+Fixed an issue preventing login via Single Sign-On
 
 # Version 1.17.2
 New layout for note item
