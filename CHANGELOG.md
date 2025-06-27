@@ -1,3 +1,6 @@
+# Version 1.17.3
+Fixed an issue preventing login via Single Sign-On
+
 # Version 1.17.2
 New layout for note item
 
