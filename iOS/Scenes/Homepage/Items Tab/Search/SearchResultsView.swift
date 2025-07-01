@@ -130,6 +130,7 @@ struct SearchResultsView: View {
         if let all = viewModel.fullResults.all {
             HStack(spacing: 0) {
                 Button {
+                    selectedType = nil
                     vaultSearchSelection = .current
                 } label: {
                     counterText(label: viewModel.currentSelectionTitle,
@@ -141,6 +142,7 @@ struct SearchResultsView: View {
                          alignment: .bottom)
 
                 Button {
+                    selectedType = nil
                     vaultSearchSelection = .all
                 } label: {
                     counterText(label: #localized("All vaults"), count: all.itemCount.total)
