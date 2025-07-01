@@ -47,6 +47,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         setUpDefaultValuesForSettingsBundle()
         setCoreLoggerEnvironment()
         configureTipKit()
+        FeatureFlagsRepository.shared.setFlagOverride(CoreFeatureFlagType.dynamicPlan, true)
         return true
     }
 
