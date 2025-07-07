@@ -79,7 +79,8 @@ public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUs
         var allUsersSharesIds = Set<String>()
         for userId in userIds {
             let encryptedShares = try await shareRepository.getShares(userId: userId)
-            for encryptedShare in encryptedShares where encryptedShare.share.canAutoFill {
+            for encryptedShare in encryptedShares
+                where encryptedShare.share.canAutoFill && !encryptedShare.share.hidden {
                 allUsersSharesIds.insert(encryptedShare.share.id)
             }
         }

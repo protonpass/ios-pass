@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable /* , ShareElementProtocol */ {
+public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable {
     /// ID of the share
     public let shareID: String
 
@@ -75,6 +75,8 @@ public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable /* ,
 
     public let canAutoFill: Bool
 
+    public let flags: Int
+
     /// Enum representation of `targetType`
     public var shareType: TargetType {
         .init(rawValue: targetType) ?? .unknown
@@ -119,7 +121,8 @@ public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable /* ,
                 contentFormatVersion: Int64?,
                 expireTime: Int64?,
                 createTime: Int64,
-                canAutoFill: Bool) {
+                canAutoFill: Bool,
+                flags: Int) {
         self.shareID = shareID
         self.vaultID = vaultID
         self.addressID = addressID
@@ -139,6 +142,7 @@ public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable /* ,
         self.expireTime = expireTime
         self.createTime = createTime
         self.canAutoFill = canAutoFill
+        self.flags = flags
     }
 
     /// Custom Decodable implementation
@@ -164,13 +168,15 @@ public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable /* ,
         expireTime = try container.decodeIfPresent(Int64.self, forKey: .expireTime)
         createTime = try container.decode(Int64.self, forKey: .createTime)
         canAutoFill = try container.decode(Bool.self, forKey: .canAutoFill)
+        // Could be simplified to "decode" later
+        flags = try container.decodeIfPresent(Int.self, forKey: .flags) ?? 0
     }
 
     private enum CodingKeys: String, CodingKey {
         case shareID, vaultID, addressID, targetType, targetID, permission, shareRoleID, targetMembers,
              targetMaxMembers
         case pendingInvites, newUserInvitesReady, owner, shared, content, contentKeyRotation, contentFormatVersion
-        case expireTime, createTime, canAutoFill
+        case expireTime, createTime, canAutoFill, flags
     }
 
     public func copy(with vaultContent: VaultContent?) -> Share {
@@ -220,6 +226,14 @@ public extension [Share] {
     var representingVaults: [Share] {
         filter(\.isVaultRepresentation)
     }
+
+    var hiddenShareIds: [String] {
+        compactMap { $0.hidden ? $0.shareId : nil }
+    }
+
+    var visibleShareIds: [String] {
+        compactMap { $0.hidden ? nil : $0.shareId }
+    }
 }
 
 public struct DecryptedRemoteShares: Sendable {
@@ -232,3 +246,5 @@ public struct DecryptedRemoteShares: Sendable {
         self.hasUndecryptableShares = hasUndecryptableShares
     }
 }
+
+extension Share: ShareFlagable {}

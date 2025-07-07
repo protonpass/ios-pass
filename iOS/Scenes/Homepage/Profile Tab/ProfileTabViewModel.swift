@@ -142,9 +142,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     }
 
     var storageUiModel: StorageUiModel? {
-        guard getFeatureFlagStatus(for: FeatureFlagType.passFileAttachmentsV1),
-              let plan,
-              plan.storageAllowed else { return nil }
+        guard let plan, plan.storageAllowed else { return nil }
         return .init(used: plan.storageUsed, total: plan.storageQuota)
     }
 

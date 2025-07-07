@@ -103,30 +103,15 @@ private extension SearchView {
                                         onClearResults: { viewModel.removeAllSearchHistory() })
 
             case let .noResults(query):
-                if case let .all(vaultSelection) = viewModel.searchMode {
-                    switch vaultSelection {
-                    case .all, .sharedByMe, .sharedWithMe:
-                        NoSearchResultsInAllVaultView(query: query)
-                    case let .precise(vault):
-                        if let name = vault.vaultContent?.name {
-                            NoSearchResultsInPreciseVaultView(query: query,
-                                                              vaultName: name,
-                                                              action: { viewModel.searchInAllVaults() })
-                        }
-                    case .trash:
-                        NoSearchResultsInTrashView(query: query)
-                    }
-                } else {
-                    NoSearchResultsInAllVaultView(query: query)
-                }
+                NoSearchResultsView(query: query)
 
-            case let .results(itemCount, results):
+            case let .results(results):
                 SearchResultsView(selectedType: $viewModel.selectedType,
                                   selectedSortType: $viewModel.selectedSortType,
+                                  vaultSearchSelection: $viewModel.vaultSearchSelection,
                                   itemContextMenuHandler: viewModel.itemContextMenuHandler,
-                                  itemCount: itemCount,
                                   results: results,
-                                  isTrash: viewModel.isTrash,
+                                  mode: searchMode,
                                   safeAreaInsets: safeAreaInsets,
                                   onScroll: { isFocusedOnSearchBar = false },
                                   onSelectItem: { viewModel.viewDetail(of: $0) })

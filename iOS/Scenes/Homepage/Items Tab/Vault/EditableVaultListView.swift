@@ -42,41 +42,87 @@ struct EditableVaultListView: View {
                     case .error, .loading:
                         // Should never happen
                         ProgressView()
-                    case let .loaded(uiModel):
-                        vaultRow(for: .all)
+                    case .loaded:
+                        if viewModel.mode.isOrganise {
+                            hiddenVaultsBanner
+                        } else {
+                            vaultRow(for: .all)
+                            PassDivider()
+                        }
 
-                        PassDivider()
-
-                        ForEach(uiModel.filteredOrderedVaults) { vault in
+                        ForEach(viewModel.filteredOrderedVaults) { vault in
                             vaultRow(for: .precise(vault))
                             PassDivider()
                         }
 
-                        if viewModel.canSelectVault(selection: .sharedWithMe) {
-                            vaultRow(for: .sharedWithMe)
-                            PassDivider()
-                        }
-                        if viewModel.canSelectVault(selection: .sharedByMe) {
-                            vaultRow(for: .sharedByMe)
-                            PassDivider()
-                        }
+                        if viewModel.mode.isView {
+                            if viewModel.canSelectVault(selection: .sharedWithMe) {
+                                vaultRow(for: .sharedWithMe)
+                                PassDivider()
+                            }
+                            if viewModel.canSelectVault(selection: .sharedByMe) {
+                                vaultRow(for: .sharedByMe)
+                                PassDivider()
+                            }
 
-                        vaultRow(for: .trash)
+                            vaultRow(for: .trash)
+                        }
                     }
                 }
                 .padding(.horizontal)
             }
             HStack {
-                CapsuleTextButton(title: #localized("Create vault"),
-                                  titleColor: PassColor.interactionNormMajor2,
-                                  backgroundColor: PassColor.interactionNormMinor1,
-                                  action: { viewModel.createNewVault() })
-                    .fixedSize(horizontal: true, vertical: true)
-                    .hidden(viewModel.organization?.settings?.vaultCreateMode == .adminsOnly)
+                switch viewModel.mode {
+                case .view:
+                    CapsuleLabelButton(icon: IconProvider.plus,
+                                       title: #localized("Create vault"),
+                                       titleColor: PassColor.interactionNormMajor2,
+                                       backgroundColor: PassColor.interactionNormMinor1,
+                                       fontWeight: .semibold,
+                                       action: viewModel.createNewVault)
+                        .fixedSize(horizontal: true, vertical: true)
+                        .hidden(viewModel.organization?.settings?.vaultCreateMode == .adminsOnly)
+
+                case .organise:
+                    CapsuleTextButton(title: #localized("Cancel"),
+                                      titleColor: PassColor.interactionNormMajor2,
+                                      fontWeight: .semibold,
+                                      backgroundColor: PassColor.interactionNormMinor1,
+                                      horizontalPadding: DesignConstant.sectionPadding * 2,
+                                      action: {
+                                          viewModel.mode = .view
+                                          viewModel.resetHiddenShareIds()
+                                      })
+                                      .fixedSize(horizontal: true, vertical: true)
+                }
+
                 Spacer()
+
+                if viewModel.hideShowVaultSupported {
+                    switch viewModel.mode {
+                    case .view:
+                        CapsuleLabelButton(icon: IconProvider.listBullets,
+                                           title: #localized("Organise vaults"),
+                                           titleColor: PassColor.interactionNormMajor2,
+                                           backgroundColor: PassColor.interactionNormMinor1,
+                                           fontWeight: .semibold,
+                                           action: { viewModel.mode = .organise })
+                            .fixedSize(horizontal: true, vertical: true)
+
+                    case .organise:
+                        CapsuleTextButton(title: #localized("Done"),
+                                          titleColor: PassColor.interactionNormMajor2,
+                                          fontWeight: .semibold,
+                                          backgroundColor: PassColor.interactionNormMinor1,
+                                          horizontalPadding: DesignConstant.sectionPadding * 2,
+                                          action: viewModel.applyVaultsOrganizations)
+                            .fixedSize(horizontal: true, vertical: true)
+                    }
+                }
             }
             .padding([.bottom, .horizontal])
         }
+        .animation(.default, value: viewModel.mode)
         .background(PassColor.backgroundWeak.toColor)
         .showSpinner(viewModel.loading)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -99,13 +145,48 @@ struct EditableVaultListView: View {
                })
     }
 
+    private var hiddenVaultsBanner: some View {
+        Text("Hidden vaults won’t be visible during search and autofill.")
+            .frame(maxWidth: .infinity, alignment: .center)
+            .multilineTextAlignment(.center)
+            .foregroundStyle(PassColor.textNorm.toColor)
+            .padding()
+            .background(PassColor.interactionNormMinor1.toColor)
+            .clipShape(RoundedRectangle(cornerRadius: DesignConstant.sectionPadding))
+            .padding(.vertical)
+    }
+
     @ViewBuilder
     private func vaultRow(for selection: VaultSelection) -> some View {
         let itemCount = viewModel.itemCount(for: selection)
+
+        let vaultRowMode: VaultRowMode = switch viewModel.mode {
+        case .view:
+            .view(isSelected: viewModel.isSelected(selection),
+                  action: { vault in
+                      if viewModel.canShare(vault: vault) {
+                          viewModel.share(vault: vault)
+                      } else {
+                          viewModel.router.present(for: .manageSharedShare(.vault(vault), .none))
+                      }
+                  })
+
+        case .organise:
+            .organise(isHidden: viewModel.hiddenShareIds.contains(selection.share?.shareId ?? ""))
+        }
+
         HStack {
             Button(action: {
-                dismiss()
-                viewModel.select(selection)
+                switch viewModel.mode {
+                case .view:
+                    dismiss()
+                    viewModel.select(selection)
+
+                case .organise:
+                    if let share = selection.share {
+                        viewModel.hideOrUnhide(share: share)
+                    }
+                }
             }, label: {
                 VaultRow(thumbnail: {
                              CircleButton(icon: selection.icon,
@@ -115,28 +196,22 @@ struct EditableVaultListView: View {
                          title: selection.title,
                          itemCount: itemCount,
                          share: selection.share,
-                         isSelected: viewModel.isSelected(selection),
-                         showBadge: selection.showBadge,
-                         height: 74,
-                         shareAction: { vault in
-                             if viewModel.canShare(vault: vault) {
-                                 viewModel.share(vault: vault)
-                             } else {
-                                 viewModel.router.present(for: .manageSharedShare(.vault(vault), .none))
-                             }
-                         })
+                         mode: vaultRowMode,
+                         height: 74)
             })
             .buttonStyle(.plain)
 
-            Spacer()
+            if viewModel.mode.isView {
+                Spacer()
 
-            switch selection {
-            case .all, .sharedByMe, .sharedWithMe:
-                EmptyView()
-            case let .precise(vault):
-                vaultTrailingView(vault, haveItems: itemCount > 0)
-            case .trash:
-                trashTrailingView
+                switch selection {
+                case .all, .sharedByMe, .sharedWithMe:
+                    EmptyView()
+                case let .precise(vault):
+                    vaultTrailingView(vault, haveItems: itemCount > 0)
+                case .trash:
+                    trashTrailingView
+                }
             }
         }
     }

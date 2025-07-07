@@ -91,19 +91,8 @@ public extension PassIcon {
     static let netShield = Self.icon(named: "Netshield")
     static let sentinelLogo = Self.icon(named: "SentinelLogo")
 
-    static let onboardAliases = Self.icon(named: "OnboardAliases")
     static let onboardAliasExplanation = Self.icon(named: "OnboardAliasExplanation")
-    static let onboardAuthentication = Self.icon(named: "OnboardAuthentication")
-    static let onboardAuthenticationBackground = Self.icon(named: "OnboardAuthenticationBackground")
-    static let onboardAuthenticationEnabled = Self.icon(named: "OnboardAuthenticationEnabled")
     static let onboardAutoFill = Self.icon(named: "OnboardAutoFill")
-    static let onboardAutoFillGradient = Self.icon(named: "OnboardAutoFillGradient")
-    static let onboardAutoFillEnabled = Self.icon(named: "OnboardAutoFillEnabled")
-    static let onboardAutoFillStep1 = Self.icon(named: "OnboardAutoFillStep1")
-    static let onboardAutoFillStep2 = Self.icon(named: "OnboardAutoFillStep2")
-    static let onboardAutoFillStep3 = Self.icon(named: "OnboardAutoFillStep3")
-    static let onboardAutoFillStep4 = Self.icon(named: "OnboardAutoFillStep4")
-    static let onboardAutoFillStep5 = Self.icon(named: "OnboardAutoFillStep5")
     static let onboardFaceID = Self.icon(named: "OnboardFaceID")
     static let onboardLoginCreatedSparkle = Self.icon(named: "OnboardLoginCreatedSparkle")
 
@@ -134,9 +123,9 @@ public extension PassIcon {
     static let tabProfilePaidUnselected = Self.icon(named: "TabProfilePaidUnselected")
     static let tabProfileTrialSelected = Self.icon(named: "TabProfileTrialSelected")
     static let tabProfileTrialUnselected = Self.icon(named: "TabProfileTrialUnselected")
-    static let tabAuthenticator = Self.icon(named: "TabAuthenticator")
 
     // swiftlint:disable identifier_name
+    static let tabAddWithBadge = Self.icon(named: "TabAddWithBadge")
     static let tabMonitorActiveBreachesFoundSelected = Self.icon(named: "TabMonitorActiveBreachesFoundSelected")
     static let tabMonitorActiveBreachesFoundUnselected =
         Self.icon(named: "TabMonitorActiveBreachesFoundUnselected")

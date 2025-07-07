@@ -38,7 +38,7 @@ echo "Creating tmp directory if not exist"
 mkdir -p $TMP_DIR_PATH
 
 echo -e "Downloading artifact\n"
-wget -N -P $TMP_DIR_PATH $URL
+wget -q --progress=bar:force -N -P $TMP_DIR_PATH $URL
 
 ARTIFACT_PATH="${TMP_DIR_PATH}/PassRustCode.swift.zip"
 

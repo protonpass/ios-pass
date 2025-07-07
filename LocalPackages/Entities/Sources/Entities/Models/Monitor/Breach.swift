@@ -33,7 +33,6 @@ public struct Breach: Decodable, Equatable, Sendable, Identifiable, Hashable {
     public let severity: Double
     public let name: String
     public let createdAt, publishedAt: String
-    public let source: BreachSource
     public let size: Int?
     public let exposedData: [BreachExposedData]
     public let passwordLastChars: String?
@@ -46,7 +45,6 @@ public struct Breach: Decodable, Equatable, Sendable, Identifiable, Hashable {
                 name: String,
                 createdAt: String,
                 publishedAt: String,
-                source: BreachSource,
                 size: Int?,
                 exposedData: [BreachExposedData],
                 passwordLastChars: String?,
@@ -58,7 +56,6 @@ public struct Breach: Decodable, Equatable, Sendable, Identifiable, Hashable {
         self.resolvedState = resolvedState
         self.createdAt = createdAt
         self.publishedAt = publishedAt
-        self.source = source
         self.size = size
         self.exposedData = exposedData
         self.passwordLastChars = passwordLastChars
@@ -73,7 +70,6 @@ public struct Breach: Decodable, Equatable, Sendable, Identifiable, Hashable {
         case name
         case createdAt
         case publishedAt
-        case source
         case size
         case exposedData
         case passwordLastChars

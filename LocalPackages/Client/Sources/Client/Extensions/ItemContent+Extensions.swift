@@ -75,12 +75,4 @@ public extension ItemContent {
                      hasUsername: hasUsername,
                      hasPassword: hasPassword)
     }
-
-    func toAuthenticatorItem(totpData: TOTPData) -> AuthenticatorItem? {
-        guard let uri = loginItem?.totpUri, !uri.isEmpty else {
-            return nil
-        }
-        let title = totpData.title ?? name
-        return AuthenticatorItem(itemId: itemId, shareId: shareId, icon: thumbnailData(), title: title, uri: uri)
-    }
 }

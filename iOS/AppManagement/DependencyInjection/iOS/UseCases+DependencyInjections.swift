@@ -325,6 +325,11 @@ extension UseCasesContainer {
         self { CreateVault(appContentManager: self.appContentManager,
                            repository: self.shareRepository) }
     }
+
+    var reorganizeVaults: Factory<any ReorganizeVaultsUseCase> {
+        self { ReorganizeVaults(userManager: self.userManager,
+                                shareRepository: self.shareRepository) }
+    }
 }
 
 // MARK: Spotlight

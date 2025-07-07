@@ -21,7 +21,13 @@
 import Client
 import Entities
 import FactoryKit
+import Macro
 import SwiftUI
+
+enum VaultSearchSelection: Equatable {
+    case current
+    case all
+}
 
 @MainActor
 final class SearchResultsViewModel: ObservableObject {
@@ -31,23 +37,56 @@ final class SearchResultsViewModel: ObservableObject {
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
 
+    private var vaultSearchSelection: VaultSearchSelection = .current
+
     let itemContextMenuHandler: ItemContextMenuHandler
-    let itemCount: ItemCount
-    let results: any SearchResults
-    let isTrash: Bool
+
+    var itemCount: ItemCount {
+        guard let all = fullResults.all else {
+            return fullResults.current.itemCount
+        }
+        return vaultSearchSelection == .current ? fullResults.current.itemCount : all.itemCount
+    }
+
+    var results: any SearchResults {
+        guard let all = fullResults.all else {
+            return fullResults.current.searchResults
+        }
+        return vaultSearchSelection == .current ? fullResults.current.searchResults : all.searchResults
+    }
+
+    let mode: SearchMode?
+    let fullResults: SearchDataDisplayContainer
+
+    var isTrash: Bool {
+        mode?.vaultSelection == .trash
+    }
+
+    var currentSelectionTitle: String {
+        switch mode?.vaultSelection {
+        case .sharedWithMe:
+            #localized("Shared with me")
+        case .sharedByMe:
+            #localized("Shared by me")
+        case .trash:
+            #localized("Trash")
+        default:
+            #localized("Current vault")
+        }
+    }
 
     var customItemEnabled: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passCustomTypeV1)
     }
 
     init(itemContextMenuHandler: ItemContextMenuHandler,
-         itemCount: ItemCount,
-         results: any SearchResults,
-         isTrash: Bool) {
+         results: SearchDataDisplayContainer,
+         vaultSearchSelection: VaultSearchSelection,
+         mode: SearchMode?) {
         self.itemContextMenuHandler = itemContextMenuHandler
-        self.itemCount = itemCount
-        self.results = results
-        self.isTrash = isTrash
+        fullResults = results
+        self.vaultSearchSelection = vaultSearchSelection
+        self.mode = mode
     }
 }
 

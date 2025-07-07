@@ -381,7 +381,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Скасаваць"
+            "value" : "Адхіліць"
           }
         },
         "ca" : {
@@ -577,7 +577,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Скасаваць змены?"
+            "value" : "Адхіліць змены?"
           }
         },
         "ca" : {
@@ -1488,7 +1488,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "As configurações de Privacidade ou Restrições desabilitaram o uso da câmera. Você pode alterar isso em Configurações."
+            "value" : "As configurações de privacidade ou restrições desativaram o uso da câmera. Você pode alterar isso em configurações."
           }
         },
         "ro" : {
@@ -1989,6 +1989,12 @@
             "value" : "Compartir los registros"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jaa lokit"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2011,6 +2017,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Condividi i log"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ログを共有する"
           }
         },
         "ko" : {
@@ -2055,6 +2067,12 @@
             "value" : "Partajare jurnale"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поделиться журналами"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2071,6 +2089,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Günlüğü paylaş"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分享日志"
           }
         }
       }
@@ -2460,7 +2484,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "У вас ёсць незахаваныя змены. Вы сапраўды хочаце скасаваць іх?"
+            "value" : "У вас ёсць незахаваныя змены. Вы сапраўды хочаце адхіліць іх?"
           }
         },
         "ca" : {

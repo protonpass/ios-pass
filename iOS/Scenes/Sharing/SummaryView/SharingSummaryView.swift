@@ -85,7 +85,6 @@ private extension SharingSummaryView {
                      },
                      title: vaultContent.name,
                      itemCount: itemsCount,
-                     isSelected: false,
                      height: 60)
         }
     }

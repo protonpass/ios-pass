@@ -150,7 +150,7 @@ struct CreateEditIdentityView: View {
 private extension CreateEditIdentityView {
     var mainContainer: some View {
         LazyVStack(spacing: DesignConstant.sectionPadding) {
-            FileAttachmentsBanner(isShown: viewModel.showFileAttachmentsBanner,
+            FileAttachmentsBanner(isShown: !viewModel.dismissedFileAttachmentsBanner,
                                   onTap: { viewModel.dismissFileAttachmentsBanner() },
                                   onClose: { viewModel.dismissFileAttachmentsBanner() })
 
@@ -191,13 +191,11 @@ private extension CreateEditIdentityView {
                 .padding(.vertical, DesignConstant.sectionPadding)
             }
 
-            if viewModel.fileAttachmentsEnabled {
-                FileAttachmentsEditSection(files: viewModel.fileUiModels,
-                                           isFetching: viewModel.isFetchingAttachedFiles,
-                                           fetchError: viewModel.fetchAttachedFilesError,
-                                           isUploading: viewModel.isUploadingFile,
-                                           handler: viewModel)
-            }
+            FileAttachmentsEditSection(files: viewModel.fileUiModels,
+                                       isFetching: viewModel.isFetchingAttachedFiles,
+                                       fetchError: viewModel.fetchAttachedFilesError,
+                                       isUploading: viewModel.isUploadingFile,
+                                       handler: viewModel)
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .padding(.bottom, DesignConstant.sectionPadding)
@@ -207,7 +205,7 @@ private extension CreateEditIdentityView {
         .animation(.default, value: viewModel.extraWorkDetails)
         .animation(.default, value: viewModel.extraAddressDetails)
         .animation(.default, value: viewModel.extraContactDetails)
-        .animation(.default, value: viewModel.showFileAttachmentsBanner)
+        .animation(.default, value: viewModel.dismissedFileAttachmentsBanner)
         .scrollViewEmbeded(maxWidth: .infinity)
         .navigationBarBackButtonHidden(true)
         .toolbarBackground(PassColor.backgroundNorm.toColor, for: .navigationBar)

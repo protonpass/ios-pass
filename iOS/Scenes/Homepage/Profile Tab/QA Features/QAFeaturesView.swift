@@ -29,9 +29,6 @@ struct QAFeaturesView: View {
     @AppStorage(Constants.QA.forceDisplayUpgradeAppBanner)
     private var displayUpgradeAppBanner = false
 
-    @AppStorage(Constants.QA.displayAuthenticator)
-    private var displayAuthenticator = false
-
     @AppStorage(Constants.QA.searchAndListSecureLink)
     private var searchAndListSecureLink = false
 
@@ -55,17 +52,14 @@ struct QAFeaturesView: View {
                     TrashItemsSection()
                     BannersSection()
                     PasswordPolicySection()
+                    FeatureDiscoverySection()
 
                     if #available(iOS 17, *) {
                         NewLoginSection()
-                        FeatureDiscoverySection()
                         InAppNotificationSection()
                     }
                     Toggle(isOn: $displayUpgradeAppBanner) {
                         Text(verbatim: "Display upgrade app banner")
-                    }
-                    Toggle(isOn: $displayAuthenticator) {
-                        Text(verbatim: "Display Authenticator")
                     }
 
                     Toggle(isOn: $searchAndListSecureLink) {

@@ -44,15 +44,10 @@ final class ItemHistoryViewModel: ObservableObject {
 
     @LazyInjected(\SharedRepositoryContainer.fileAttachmentRepository)
     private var fileAttachmentRepository
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     private var canLoadMoreItems = true
     private var currentTask: Task<Void, Never>?
     private var lastToken: String?
-
-    var fileAttachmentsEnabled: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passFileAttachmentsV1)
-    }
 
     init(item: ItemContent) {
         self.item = item

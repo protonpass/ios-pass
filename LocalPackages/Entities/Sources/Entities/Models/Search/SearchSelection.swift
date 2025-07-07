@@ -32,4 +32,11 @@ public enum SearchMode: Equatable, Hashable, Sendable {
             nil
         }
     }
+
+    public var isSpecificSelection: Bool {
+        if let selection = vaultSelection, selection != .all {
+            return true
+        }
+        return false
+    }
 }

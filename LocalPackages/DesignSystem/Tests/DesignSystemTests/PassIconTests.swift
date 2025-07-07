@@ -71,19 +71,8 @@ final class PassIconTests: XCTestCase {
 
         _ = PassIcon.magnifyingGlass
 
-        _ = PassIcon.onboardAliases
         _ = PassIcon.onboardAliasExplanation
-        _ = PassIcon.onboardAuthentication
-        _ = PassIcon.onboardAuthenticationBackground
-        _ = PassIcon.onboardAuthenticationEnabled
         _ = PassIcon.onboardAutoFill
-        _ = PassIcon.onboardAutoFillGradient
-        _ = PassIcon.onboardAutoFillEnabled
-        _ = PassIcon.onboardAutoFillStep1
-        _ = PassIcon.onboardAutoFillStep2
-        _ = PassIcon.onboardAutoFillStep3
-        _ = PassIcon.onboardAutoFillStep4
-        _ = PassIcon.onboardAutoFillStep5
         _ = PassIcon.onboardFaceID
         _ = PassIcon.onboardLoginCreatedSparkle
 
@@ -109,6 +98,7 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.tabProfileTrialSelected
         _ = PassIcon.tabProfileTrialUnselected
 
+        _ = PassIcon.tabAddWithBadge
         _ = PassIcon.tabMonitorActiveBreachesFoundSelected
         _ = PassIcon.tabMonitorActiveBreachesFoundUnselected
         _ = PassIcon.tabMonitorActiveNoBreachesSelected
@@ -195,7 +185,6 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.netShield
         _ = PassIcon.sentinelLogo
         
-        _ = PassIcon.tabAuthenticator
         _ = PassIcon.shield2
         _ = PassIcon.passPlus
         _ = PassIcon.lightning

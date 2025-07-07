@@ -48,6 +48,7 @@ public enum Constants {
     }
 
     public enum Attachment {
+        public static let version = 2
         public static let maxFileSizeInBytes = 100 * 1_024 * 1_024 // 100 MB
         public static let maxChunkSizeInBytes = 10 * 1_024 * 1_024 // 10 MB
         public static let rootDirectoryName = "attachment"
@@ -78,7 +79,6 @@ public enum Constants {
     // swiftlint:disable:next type_name
     public enum QA {
         public static let forceDisplayUpgradeAppBanner = "forceDisplayUpgradeAppBanner"
-        public static let displayAuthenticator = "displayAuthenticator"
         public static let resetTipsStateOnLaunch = "resetTipsStateOnLaunch"
         public static let forceShowTips = "forceShowTips"
         public static let searchAndListSecureLink = "searchAndListSecureLink"

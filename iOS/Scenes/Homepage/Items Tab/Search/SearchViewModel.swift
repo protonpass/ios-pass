@@ -27,6 +27,21 @@ import FactoryKit
 import Screens
 import SwiftUI
 
+struct SearchDataDisplay: Equatable {
+    let itemCount: ItemCount
+    let searchResults: any SearchResults
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.searchResults.precomputedHash == rhs.searchResults.precomputedHash &&
+            lhs.itemCount == rhs.itemCount
+    }
+}
+
+struct SearchDataDisplayContainer: Equatable {
+    let current: SearchDataDisplay
+    let all: SearchDataDisplay?
+}
+
 enum SearchViewState: Sendable {
     /// Indexing items
     case initializing
@@ -41,7 +56,7 @@ enum SearchViewState: Sendable {
     /// Filterting search results
     case filteringResults
     /// Results with a given search query
-    case results(ItemCount, any SearchResults)
+    case results(SearchDataDisplayContainer)
     /// Error
     case error(any Error)
 }
@@ -53,6 +68,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var state = SearchViewState.initializing
     @Published var selectedType: ItemContentType?
     @Published var query = ""
+    @Published var vaultSearchSelection: VaultSearchSelection = .current
 
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
     var selectedSortType = SortType.mostRecent { didSet { filterAndSortResults() } }
@@ -67,25 +83,23 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedUseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
 
-    private(set) var searchMode: SearchMode
+    private let searchMode: SearchMode
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
 
     private var lastSearchQuery = ""
     private var searchTask: Task<Void, Never>?
     private var filteringTask: Task<Void, Never>?
     private var searchableItems = [SearchableItem]()
+    private var allSearchableItems = [SearchableItem]()
     private var history = [SearchEntryUiModel]()
     private var results = [ItemSearchResult]()
+    private var allResults = [ItemSearchResult]()
     private var cancellables = Set<AnyCancellable>()
 
     private var refreshResultsTask: Task<Void, Never>?
 
     var searchBarPlaceholder: String {
         searchMode.searchBarPlacehoder
-    }
-
-    var isTrash: Bool {
-        searchMode.vaultSelection == .trash
     }
 
     init(searchMode: SearchMode) {
@@ -104,6 +118,9 @@ private extension SearchViewModel {
             }
             let userId = try await userManager.getActiveUserId()
             searchableItems = try await getSearchableItems(userId: userId, for: searchMode)
+            if searchMode.isSpecificSelection {
+                allSearchableItems = try await getSearchableItems(userId: userId, for: .all(.all))
+            }
             try await refreshSearchHistory()
         } catch {
             state = .error(error)
@@ -173,6 +190,7 @@ private extension SearchViewModel {
             do {
                 state = .searching
                 results = try await searchableItems.result(for: query)
+                allResults = try await allSearchableItems.result(for: query)
                 await filterAndSortResultsAsync()
                 logger.trace("Get \(results.count) result(s) for \"\(hashedQuery)\"")
             } catch {
@@ -195,8 +213,6 @@ private extension SearchViewModel {
 
     nonisolated func filterAndSortResultsAsync() async {
         let results = await results
-        let selectedType = await selectedType
-        let selectedSortType = await selectedSortType
 
         let updateState: (SearchViewState) async -> Void = { [weak self] newState in
             guard let self else { return }
@@ -206,7 +222,7 @@ private extension SearchViewModel {
             }
         }
 
-        if results.isEmpty {
+        if await isSearchEmpty(results: results) {
             await updateState(.noResults(lastSearchQuery))
             return
         }
@@ -214,33 +230,57 @@ private extension SearchViewModel {
         await updateState(.filteringResults)
 
         do {
-            let filteredResults: [ItemSearchResult] = if let selectedType {
-                try results.filter {
-                    try Task.checkCancellation()
-                    return $0.type.isSameType(with: selectedType)
-                }
-            } else {
-                results
+            let current = try await parse(results: results)
+
+            var all: SearchDataDisplay?
+            if await searchMode.isSpecificSelection {
+                all = try await parse(results: allResults)
             }
-            let filteredAndSortedResults: any SearchResults =
-                switch selectedSortType {
-                case .mostRecent:
-                    try filteredResults.mostRecentSortResult()
-                case .alphabeticalAsc, .alphabeticalDesc:
-                    try filteredResults.alphabeticalSortResult(direction: selectedSortType.sortDirection)
-                case .newestToOldest, .oldestToNewest:
-                    try filteredResults.monthYearSortResult(direction: selectedSortType.sortDirection)
-                }
-            await updateState(.results(ItemCount(items: results,
-                                                 sharedByMe: filteredResults.itemSharedByMeCount,
-                                                 sharedWithMe: filteredResults.itemSharedWithMeCount),
-                                       filteredAndSortedResults))
+
+            await updateState(.results(.init(current: current, all: all)))
         } catch {
             if error is CancellationError {
                 print("Cancelled \(#function)")
                 return
             }
             await updateState(.error(error))
+        }
+    }
+
+    nonisolated func parse(results: [ItemSearchResult]) async throws -> SearchDataDisplay {
+        let selectedType = await selectedType
+        let selectedSortType = await selectedSortType
+
+        let filteredResults: [ItemSearchResult] = if let selectedType {
+            try results.filter {
+                try Task.checkCancellation()
+                return $0.type.isSameType(with: selectedType)
+            }
+        } else {
+            results
+        }
+        let filteredAndSortedResults: any SearchResults =
+            switch selectedSortType {
+            case .mostRecent:
+                try filteredResults.mostRecentSortResult()
+            case .alphabeticalAsc, .alphabeticalDesc:
+                try filteredResults.alphabeticalSortResult(direction: selectedSortType.sortDirection)
+            case .newestToOldest, .oldestToNewest:
+                try filteredResults.monthYearSortResult(direction: selectedSortType.sortDirection)
+            }
+
+        return .init(itemCount:
+            ItemCount(items: results,
+                      sharedByMe: filteredResults.itemSharedByMeCount,
+                      sharedWithMe: filteredResults.itemSharedWithMeCount),
+            searchResults: filteredAndSortedResults)
+    }
+
+    func isSearchEmpty(results: [ItemSearchResult]) -> Bool {
+        if searchMode.isSpecificSelection {
+            results.isEmpty && allResults.isEmpty
+        } else {
+            results.isEmpty
         }
     }
 }
@@ -312,14 +352,6 @@ extension SearchViewModel {
         }
     }
 
-    func searchInAllVaults() {
-        guard searchMode != .pinned else {
-            return
-        }
-        searchMode = .all(.all)
-        refreshResults()
-    }
-
     func openSettings() {
         router.present(for: .settingsMenu)
     }
@@ -387,9 +419,8 @@ extension SearchViewState: Equatable {
         case let (.noResults(lhsQuery), .noResults(rhsQuery)):
             lhsQuery == rhsQuery
 
-        case let (.results(lhsItemCount, lhsResults), .results(rhsItemCount, rhsResults)):
-            lhsResults.hashValue == rhsResults.hashValue &&
-                lhsItemCount == rhsItemCount
+        case let (.results(lhsItem), .results(rhsItem)):
+            lhsItem == rhsItem
 
         case let (.error(lhsError), .error(rhsError)):
             lhsError.localizedDescription == rhsError.localizedDescription

@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.2.5 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.2.7 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
@@ -243,5 +243,25 @@ public final class RemoteShareDatasourceProtocolMock: @unchecked Sendable, Remot
         }
         closureTransferVaultOwnership()
         return stubbedTransferVaultOwnershipResult
+    }
+    // MARK: - hideUnhideShares
+    public var hideUnhideSharesUserIdSharesToHideSharesToUnhideThrowableError12: Error?
+    public var closureHideUnhideShares: () -> () = {}
+    public var invokedHideUnhideSharesfunction = false
+    public var invokedHideUnhideSharesCount = 0
+    public var invokedHideUnhideSharesParameters: (userId: String, sharesToHide: [String], sharesToUnhide: [String])?
+    public var invokedHideUnhideSharesParametersList = [(userId: String, sharesToHide: [String], sharesToUnhide: [String])]()
+    public var stubbedHideUnhideSharesResult: [Share]!
+
+    public func hideUnhideShares(userId: String, sharesToHide: [String], sharesToUnhide: [String]) async throws -> [Share] {
+        invokedHideUnhideSharesfunction = true
+        invokedHideUnhideSharesCount += 1
+        invokedHideUnhideSharesParameters = (userId, sharesToHide, sharesToUnhide)
+        invokedHideUnhideSharesParametersList.append((userId, sharesToHide, sharesToUnhide))
+        if let error = hideUnhideSharesUserIdSharesToHideSharesToUnhideThrowableError12 {
+            throw error
+        }
+        closureHideUnhideShares()
+        return stubbedHideUnhideSharesResult
     }
 }

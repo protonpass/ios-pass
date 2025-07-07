@@ -339,9 +339,10 @@ extension AppContentManager {
 
     func getFilteredItems() -> [ItemUiModel] {
         guard let sharesData = state.loadedContent else { return [] }
+        let hiddenShareIds = sharesData.shares.compactMap(\.share).hiddenShareIds
         let items: [ItemUiModel] = switch vaultSelection {
         case .all:
-            sharesData.shares.flatMap(\.items)
+            sharesData.shares.flatMap(\.items).filter { !hiddenShareIds.contains($0.shareId) }
         case let .precise(selectedVault):
             sharesData.shares
                 .filter { $0.share.shareId == selectedVault.shareId }
@@ -351,7 +352,7 @@ extension AppContentManager {
         case .sharedWithMe:
             sharesData.itemsSharedWithMe
         case .trash:
-            sharesData.trashedItems
+            sharesData.trashedItems.filter { !hiddenShareIds.contains($0.shareId) }
         }
 
         switch filterOption {
@@ -524,7 +525,12 @@ private extension AppContentManager {
             } else if lastSelectedShareId == VaultSelection.trash.preferenceKey, vaultSelection != .trash {
                 vaultSelection = .trash
             } else if let vault = shares.first(where: { $0.shareId == lastSelectedShareId }) {
-                vaultSelection = .precise(vault)
+                if vault.hidden {
+                    // Fallback to selecting all vaults when the previous selected vault is hidden
+                    vaultSelection = .all
+                } else {
+                    vaultSelection = .precise(vault)
+                }
             }
         } else {
             vaultSelection = .all

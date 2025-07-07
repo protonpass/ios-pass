@@ -78,6 +78,10 @@ public protocol ShareRepositoryProtocol: Sendable {
 
     @discardableResult
     func transferVaultOwnership(vaultShareId: String, newOwnerShareId: String) async throws -> Bool
+
+    func hideUnhideShares(userId: String,
+                          sharesToHide: [String],
+                          sharesToUnhide: [String]) async throws
 }
 
 public extension ShareRepositoryProtocol {
@@ -353,6 +357,25 @@ public extension ShareRepository {
                                                                         request: request)
         logger.info("Finished transfer of ownership")
         return updated
+    }
+
+    func hideUnhideShares(userId: String,
+                          sharesToHide: [String],
+                          sharesToUnhide: [String]) async throws {
+        logger.trace("Batch hiding \(sharesToHide), unhiding \(sharesToUnhide) for user \(userId)")
+        let updatedShares = try await remoteDatasource.hideUnhideShares(userId: userId,
+                                                                        sharesToHide: sharesToHide,
+                                                                        sharesToUnhide: sharesToUnhide)
+        logger.trace("Saving updated \(updatedShares.count) shares locally for user \(userId)")
+        let key = try await getSymmetricKey()
+        let encryptedShares = try await updatedShares.parallelMap { [weak self] share in
+            // swiftlint:disable:next discouraged_optional_self
+            try await self?.symmetricallyEncrypt(userId: userId, share, symmetricKey: key)
+        }.compactMap { $0 }
+        assert(updatedShares.count == encryptedShares.count,
+               "Some shares were not correctly symmetrically encrypted")
+        try await localDatasource.upsertShares(encryptedShares, userId: userId)
+        logger.info("Finish batch hiding \(sharesToHide), unhiding \(sharesToUnhide) for user \(userId)")
     }
 }
 

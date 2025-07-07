@@ -83,7 +83,9 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\SharedRepositoryContainer.aliasRepository) var aliasRepository
     @LazyInjected(\SharedRepositoryContainer.passwordHistoryRepository)
     private var passwordHistoryRepository
-    @LazyInjected(\ServiceContainer.onboardingV2Handler) private var onboardingV2Handler
+    @LazyInjected(\ServiceContainer.onboardingHandler) private var onboardingHandler
+    @LazyInjected(\SharedServiceContainer.featureDiscoveryManager)
+    private var featureDiscoveryManager
 
     // Use cases
     private let refreshFeatureFlags = resolve(\SharedUseCasesContainer.refreshFeatureFlags)
@@ -102,7 +104,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     var addAndSwitchToNewUserAccount
     @LazyInjected(\ SharedUseCasesContainer.addTelemetryEvent) var addTelemetryEvent
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
     let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
@@ -190,6 +192,17 @@ private extension HomepageCoordinator {
                 }
                 removeInAppNotificationDisplay()
                 refreshInAppNotifications()
+
+                Task { [weak self] in
+                    guard let self else { return }
+                    let disallowed: [NewFeature] = if getFeatureFlagStatus(for: FeatureFlagType.passCustomTypeV1) {
+                        []
+                    } else {
+                        [NewFeature.customItems]
+                    }
+                    await featureDiscoveryManager.refreshState(userId: userData.user.ID,
+                                                               disallowedFeatures: Set(disallowed))
+                }
             }
             .store(in: &cancellables)
 
@@ -1307,14 +1320,8 @@ private extension HomepageCoordinator {
 
     func presentOnboardView(forced: Bool) {
         guard forced || !getAppPreferences().onboarded else { return }
-        let vc = if getFeatureFlagStatus(for: FeatureFlagType.passMobileOnboardingV2) {
-            UIHostingController(rootView: OnboardingV2View(handler: onboardingV2Handler))
-        } else {
-            UIHostingController(rootView: OnboardingView { [weak self] in
-                guard let self else { return }
-                openTutorialVideo()
-            })
-        }
+        let view = OnboardingView(handler: onboardingHandler)
+        let vc = UIHostingController(rootView: view)
         vc.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
         vc.isModalInPresentation = true
         topMostViewController.present(vc, animated: true)

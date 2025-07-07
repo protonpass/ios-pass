@@ -49,6 +49,9 @@ public protocol RemoteShareDatasourceProtocol: Sendable {
     func transferVaultOwnership(userId: String,
                                 vaultShareId: String,
                                 request: TransferOwnershipVaultRequest) async throws -> Bool
+    func hideUnhideShares(userId: String,
+                          sharesToHide: [String],
+                          sharesToUnhide: [String]) async throws -> [Share]
 }
 
 public final class RemoteShareDatasource: RemoteDatasource, RemoteShareDatasourceProtocol, @unchecked Sendable {}
@@ -131,5 +134,14 @@ public extension RemoteShareDatasource {
         let endpoint = TransferOwnershipVaultEndpoint(vaultShareId: vaultShareId, request: request)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.isSuccessful
+    }
+
+    func hideUnhideShares(userId: String,
+                          sharesToHide: [String],
+                          sharesToUnhide: [String]) async throws -> [Share] {
+        let endpoint = HideUnhideSharesEndpoint(sharesToHide: sharesToHide,
+                                                sharesToUnhide: sharesToUnhide)
+        let response = try await exec(userId: userId, endpoint: endpoint)
+        return response.shares
     }
 }
