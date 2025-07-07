@@ -8727,7 +8727,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld elemek"
+                  "value" : "%lld elem"
                 }
               },
               "zero" : {
@@ -24439,7 +24439,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fejlett fiók védelmi program"
+            "value" : "Fejlett fiókvédelmi program"
           }
         },
         "id" : {
@@ -56243,10 +56243,148 @@
     },
     "Current vault" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Цяперашняе сховішча"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caixa forta actual"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktuální trezor"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuværende boks"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktueller Tresor"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Τρέχουσα κρύπτη"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Current vault"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caja fuerte actual"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bóveda actual"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nykyinen holvi"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coffre-fort actuel"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktuális tároló"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cassaforte corrente"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "現在の保管庫"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "현재 금고"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gjeldende hvelv"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Huidige kluis"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obecny sejf"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cofre atual"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cofre atual"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seif actual"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktuálny trezor"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuvarande valv"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mevcut kasa"
           }
         }
       }
@@ -64661,6 +64799,12 @@
             "value" : "Hotovo"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Færdig"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -64691,10 +64835,22 @@
             "value" : "Hecho"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valmis"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Terminé"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kész"
           }
         },
         "id" : {
@@ -64707,6 +64863,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fatto"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完了"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "완료"
           }
         },
         "nb" : {
@@ -64743,6 +64911,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gata"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Готово"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hotovo"
           }
         },
         "sv" : {
@@ -72168,7 +72348,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Minden alkalommal, amikor az e-mail álneve üzenetet kap valakitől, automatikusan létrejön egy új kapcsolat."
+            "value" : "Minden alkalommal, amikor az e-mail álneve üzenetet kap valakitől, automatikusan létrejön egy új névjegy."
           }
         },
         "id" : {
@@ -77009,7 +77189,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Írja be a személyes adatait"
+            "value" : "Személyes adatok tárolása"
           }
         },
         "id" : {
@@ -80821,7 +81001,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hozzon létre egy biztonságos jelszót"
+            "value" : "Egy biztonságos jelszó létrehozása"
           }
         },
         "id" : {
@@ -84421,7 +84601,13 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Skryté trezory nebudou při hledávání a automatickém vyplňování viditelné."
+            "value" : "Skryté trezory nebudou viditelné při vyhledávání a automatickém vyplňování."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skjulte bokse vil ikke være synlige under søgning og autofyld."
           }
         },
         "de" : {
@@ -84442,6 +84628,12 @@
             "value" : "Hidden vaults won’t be visible during search and autofill."
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las cajas fuertes ocultas no serán visibles durante la búsqueda y el relleno automático."
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -84454,6 +84646,12 @@
             "value" : "Les coffres-forts cachés ne seront pas visibles lors de la recherche et du remplissage automatique."
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A rejtett tárolók nem lesznek láthatóak keresés és automatikus kitöltés közben."
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -84464,6 +84662,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Le casseforti nascoste non saranno visibili durante la ricerca e il riempimento automatico."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "非表示の保管庫は、検索時および自動入力時には表示されません。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "숨겨진 금고는 검색 및 자동 완성 시 표시되지 않습니다."
           }
         },
         "nb" : {
@@ -84500,6 +84710,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Seifurile ascunse nu vor fi vizibile în timpul căutării și autocompletării."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skryté trezory nebudú viditeľné počas vyhľadávania a automatického dopĺňania."
           }
         },
         "tr" : {
@@ -90531,7 +90747,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Inaktív linkek"
+            "value" : "Inaktív hivatkozások"
           }
         },
         "id" : {
@@ -97665,7 +97881,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Írjon fel egy PIN kódot vagy jegyzetet magának"
+            "value" : "Egy PIN kód vagy jegyzet tárolása"
           }
         },
         "id" : {
@@ -110010,7 +110226,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Több"
+            "value" : "Továbbiak"
           }
         },
         "id" : {
@@ -121632,6 +121848,12 @@
             "value" : "Organizovat trezory"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organiser bokse"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -121650,6 +121872,12 @@
             "value" : "Organise vaults"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organizar las cajas fuertes"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -121662,6 +121890,12 @@
             "value" : "Organiser les coffres-forts"
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tárolók rendszerezése"
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -121672,6 +121906,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Organizza le casseforti"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保管庫を整理"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "금고 정리"
           }
         },
         "nb" : {
@@ -121708,6 +121954,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Organizare seifuri"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usporiadať trezory"
           }
         },
         "sv" : {
@@ -147047,10 +147299,130 @@
     },
     "Search across all items" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Шукаць сярод усіх элементаў"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerqueu en tots els elements"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hledání ve všech položkách"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Søg på tværs af alle elementer"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In allen Einträgen suchen "
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αναζήτηση σε όλα τα στοιχεία"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Search across all items"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar en todos los elementos"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar en todos los elementos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rechercher dans tous les éléments"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keresés minden elemben"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerca in tutti gli elementi"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すべてのアイテムを検索"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "전체 항목 내에서 검색"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Søk på tvers av alle elementer"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zoeken in alle items"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przeszukaj wszystkie elementy"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pesquisar em todos os itens"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pesquisar em todos os itens"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Căutare în toate articolele"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hľadať vo všetkých položkách"
           }
         }
       }
@@ -149634,7 +150006,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tárolja biztonságban a fizetési információit"
+            "value" : "Fizetési információk biztonságos tárolása"
           }
         },
         "id" : {
@@ -151951,7 +152323,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Válassza ki az elemeket"
+            "value" : "Elemek kiválasztása"
           }
         },
         "id" : {
@@ -155863,6 +156235,12 @@
             "value" : "ID di condivisione"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共有ID"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -155903,6 +156281,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ID partajare"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поделиться ID"
           }
         },
         "sk" : {
@@ -156016,6 +156400,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ID di condivisione copiato"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共有IDがコピーされました"
           }
         },
         "ko" : {
@@ -161138,7 +161528,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Jelentkezzen be egy másik eszközre"
+            "value" : "Bejelentkezés egy másik eszközön"
           }
         },
         "id" : {
@@ -193081,10 +193471,142 @@
     },
     "WiFi details, SSH, custom items, and more" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Падрабязнасці пра Wi-Fi, SSH, карыстальніцкія элементы і іншае"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detalls de la Wi-Fi, SSH, elements personalitzats i més"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detaily Wi-Fi, SSH, vlastní položky a další"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi-detaljer, SSH, brugerdefinerede elementer og mere"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WLAN-Details, SSH, benutzerdefinierte Elemente und mehr"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Λεπτομέρειες WiFi, SSH, προσαρμοσμένα στοιχεία και άλλα"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "WiFi details, SSH, custom items, and more"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detalles de WiFi, SSH, elementos personalizados y más"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detalles de WiFi, SSH, elementos personalizados y más"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informations wifi, SSH, éléments personnalisés et plus encore"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wi-Fi részletek, SSH, egyéni elemek és továbbiak"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dettagli WiFi, SSH, elementi personalizzati e altro"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFiの詳細、SSH、カスタムアイテムなど"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi 상세 정보, SSH, 사용자 지정 항목 등"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi-detaljer, SSH, tilpassede elementer og mer"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "wifi-gegevens, SSH, aangepaste items en meer"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Szczegóły Wi-Fi, SSH, niestandardowe elementy i więcej"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detalhes do WiFi, SSH, itens personalizados e mais"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detalhes de Wi-Fi, SSH, itens personalizados e mais"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detalii Wi-Fi, SSH, elemente personale și altele"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podrobnosti o WiFi, SSH, vlastné položky a ďalšie"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi-detaljer, SSH, anpassade objekt och mer"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi ayrıntıları, SSH, özel öğeler ve daha fazlası"
           }
         }
       }

@@ -381,7 +381,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Скасаваць"
+            "value" : "Адхіліць"
           }
         },
         "ca" : {
@@ -577,7 +577,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Скасаваць змены?"
+            "value" : "Адхіліць змены?"
           }
         },
         "ca" : {
@@ -1488,7 +1488,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "As configurações de Privacidade ou Restrições desabilitaram o uso da câmera. Você pode alterar isso em Configurações."
+            "value" : "As configurações de privacidade ou restrições desativaram o uso da câmera. Você pode alterar isso em configurações."
           }
         },
         "ro" : {
@@ -2019,6 +2019,12 @@
             "value" : "Condividi i log"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ログを共有する"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2059,6 +2065,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Partajare jurnale"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поделиться журналами"
           }
         },
         "sk" : {
@@ -2472,7 +2484,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "У вас ёсць незахаваныя змены. Вы сапраўды хочаце скасаваць іх?"
+            "value" : "У вас ёсць незахаваныя змены. Вы сапраўды хочаце адхіліць іх?"
           }
         },
         "ca" : {

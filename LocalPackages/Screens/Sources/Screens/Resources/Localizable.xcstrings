@@ -1893,7 +1893,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld elemek"
+                  "value" : "%lld elem"
                 }
               },
               "zero" : {
@@ -6473,6 +6473,12 @@
             "value" : "Riempimento automatico Chiave di Accesso"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自動入力 パスキー"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6998,7 +7004,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ao adicionar o seu domínio, pode criar aliases como olá@o-meu-domínio.pt."
+            "value" : "Ao adicionar o seu domínio, pode criar aliases como olá@o-meu-domínio.pt."
           }
         },
         "pt-BR" : {
@@ -7385,7 +7391,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Escolha um arquivo"
+            "value" : "Escolher um arquivo"
           }
         },
         "ro" : {
@@ -7747,7 +7753,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Limpar o histórico"
+            "value" : "Limpar histórico"
           }
         },
         "ro" : {
@@ -15894,6 +15900,12 @@
             "value" : "Come compilare automaticamente i campi con una Password"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フィールドにパスワードを自動入力する方法"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17715,12 +17727,6 @@
             "value" : "Új"
           }
         },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "BARU"
-          }
-        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17731,12 +17737,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "最新"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ახალი"
           }
         },
         "ko" : {
@@ -17766,7 +17766,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "NOVO"
+            "value" : "NOVIDADES"
           }
         },
         "pt-BR" : {
@@ -17793,12 +17793,6 @@
             "value" : "NOVÉ"
           }
         },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NOVO"
-          }
-        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17809,30 +17803,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "YENİ"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "НОВА"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "MỚI"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "新"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "新版本"
           }
         }
       }
@@ -18095,6 +18065,12 @@
             "value" : "Non è stato trovato alcun accesso con Chiave di Accesso"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "パスキーでのログインは見つかりません"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18128,7 +18104,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nenhum login com Chave de acesso encontrado"
+            "value" : "Nenhum início de sessão com chave de acesso encontrado"
           }
         },
         "ro" : {
@@ -28033,7 +28009,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Érintsen ide, hogy létrehozzon egy mezőt a felhasználó névnek."
+            "value" : "Érintse meg, egy felhasználónév mező létrehozásához."
           }
         },
         "id" : {
