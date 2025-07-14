@@ -224,6 +224,12 @@
             "state" : "translated",
             "value" : "扫描 2FA 代码、信用卡、手写笔记和二维码"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "掃描雙重驗證碼、信用或簽帳卡、手寫筆記以及 QR code"
+          }
         }
       }
     },
@@ -419,7 +425,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "限制此設備對您的 Proton Pass 帳號的不受歡迎存取"
+            "value" : "在此裝置上對您 Proton Pass 帳號的不當存取做出限制"
           }
         }
       }
