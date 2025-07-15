@@ -166,6 +166,18 @@
             "value" : "%@/ay"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ / місяць"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@/tháng"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2924,6 +2936,18 @@
             }
           }
         },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld đăng nhập đã được chuyển nhập"
+                }
+              }
+            }
+          }
+        },
         "zh-Hans" : {
           "variations" : {
             "plural" : {
@@ -3103,6 +3127,18 @@
             "value" : "10 GB"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "10 ГБ"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "10 GB"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3277,6 +3313,18 @@
           }
         },
         "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "500 GB"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "500 ГБ"
+          }
+        },
+        "vi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "500 GB"
@@ -3867,7 +3915,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Thêm địa chỉ thư điện tử"
+            "value" : "Thêm địa chỉ email"
           }
         },
         "zh-Hans" : {
@@ -4268,6 +4316,12 @@
             "state" : "translated",
             "value" : "添加邮箱"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新增電郵信箱"
+          }
         }
       }
     },
@@ -4630,6 +4684,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bölüm ekle"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Додати розділ"
           }
         },
         "zh-Hans" : {
@@ -5825,6 +5885,12 @@
             "value" : "Усі ваші паролі."
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tất cả mật khẩu của bạn"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6384,6 +6450,18 @@
             "value" : "Her yıl %@ ile otomatik olarak yenilenir"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Автоподовження за %@ щороку"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tự động gia hạn với giá %@ mỗi năm"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6531,6 +6609,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Geçiş anahtarını otomatik doldur"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Автозаповнення ключа доступу"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tự Điền Chìa Khóa Truy Cập"
           }
         },
         "zh-Hans" : {
@@ -6697,6 +6787,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Parolalarınızı Safari ve diğer uygulamalara gerçekten hızla ve kolayca otomatik olarak yazın."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Автоматично вводьте свої паролі в Safari та інші застосунки дуже швидко та легко."
           }
         },
         "zh-Hans" : {
@@ -6871,6 +6967,18 @@
             "value" : "Hazır iki adımlı doğrulama"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вбудована 2ЕП"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tính hợp sẵn với 2FA"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7010,7 +7118,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adicionando o seu domínio, você pode criar endereços alternativos como ola@meu-dominio.com."
+            "value" : "Adicionando o seu domínio, você pode criar aliases como olá@meu-domínio.br."
           }
         },
         "ro" : {
@@ -7034,7 +7142,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Če dodate svojo domeno, lahko ustvarite vzdevke, kot je npr. zdravo@moja-domena.com."
+            "value" : "Če dodate svojo domeno, lahko ustvarite vzdevke, kot je na primer zdravo@moja-domena.com."
           }
         },
         "sv" : {
@@ -7784,6 +7892,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Geçmişi temizle"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Очистити історію"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dọn lịch sử"
           }
         },
         "zh-Hans" : {
@@ -9149,7 +9269,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tạo một khóa truy cập"
+            "value" : "Tạo một chìa khóa truy cập"
           }
         },
         "zh-Hans" : {
@@ -9328,6 +9448,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İlk oturum açma kaydınızı oluşturun"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Створіть свій перший запис входу"
           }
         },
         "zh-Hans" : {
@@ -9898,6 +10024,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Стандартне сховище SimpleLogin"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Két sắt SimpleLogin mặc định"
           }
         },
         "zh-Hans" : {
@@ -10649,6 +10781,12 @@
             "value" : "Чи знали ви?"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bạn có biết không?"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10822,6 +10960,18 @@
             "value" : "Örnek: LinkedIn"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Наприклад, LinkedIn"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vd. LinkedIn"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10986,6 +11136,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bölüm başlığını düzenle"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Змінити назву розділу"
           }
         },
         "zh-Hans" : {
@@ -11740,6 +11896,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Optic ID kullanılsın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Увімкнути Optic ID"
           }
         },
         "zh-Hans" : {
@@ -12876,6 +13038,12 @@
             "value" : "Ek e-posta adresleri"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Додаткових поштових адрес"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13230,6 +13398,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İlk oturum açma kaydı oluşturuldu"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перший запис входу створено"
           }
         },
         "zh-Hans" : {
@@ -13993,6 +14167,18 @@
             "value" : "Ücretsiz"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Безплатно"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Miễn phí"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14171,6 +14357,18 @@
             "value" : "Oluşturulmuş parolalar"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Згенеровані паролі"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Các mật khẩu đã tạo"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14341,6 +14539,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Oluşturulan parolalar 2 hafta süreyle saklanır."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Згенеровані паролі зберігатимуться протягом 2 тижнів."
           }
         },
         "zh-Hans" : {
@@ -14883,6 +15087,18 @@
             "value" : "Proton Unlimited edinin"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отримати Proton Unlimited"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mua Proton Unlimited"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15053,6 +15269,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Başlayalım"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Розпочнімо"
           }
         },
         "zh-Hans" : {
@@ -15805,6 +16027,18 @@
             "value" : "En yüksek"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Найвища"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cao nhất"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15964,6 +16198,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Parola alanları otomatik olarak nasıl doldurulur"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Як автозаповнювати поля за допомогою пароля"
           }
         },
         "zh-Hans" : {
@@ -16532,6 +16772,12 @@
             "value" : "Імпортування записів входу (%1$lld/%2$lld)"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chuyển nhập các đăng nhập (%1$lld/%2$lld)"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17071,6 +17317,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton Pass nasıl kullanılır"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дізнайтеся, як користуватися Proton Pass"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tìm hiểu cách sử dụng Proton Pass"
           }
         },
         "zh-Hans" : {
@@ -17638,6 +17896,12 @@
             "value" : "Orta"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Середня"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17803,6 +18067,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "YENİ"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "НОВЕ"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MỚI"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新版本"
           }
         }
       }
@@ -17971,6 +18253,18 @@
             "value" : "Geçmiş yok"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Немає історії"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không có lịch sử"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18129,6 +18423,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Geçiş anahtarı kullanan bir oturum açma kaydı yok"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не знайдено записів входів із ключами доступу"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không tìm thấy đăng nhập có Chìa khóa truy cập"
           }
         },
         "zh-Hans" : {
@@ -18664,6 +18970,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yok"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Немає"
           }
         },
         "zh-Hans" : {
@@ -19805,6 +20117,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Відкрити Chrome"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mở Chrome"
           }
         },
         "zh-Hans" : {
@@ -22072,6 +22390,12 @@
             "value" : "Geçmişten kaldır"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Видалити з історії"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22242,6 +22566,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bölümü kaldır"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Видалити розділ"
           }
         },
         "zh-Hans" : {
@@ -23008,6 +23338,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Сканувати документи"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quét tài liệu"
           }
         },
         "zh-Hans" : {
@@ -24127,6 +24463,12 @@
             "value" : "Hizmet"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Служба"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -24297,6 +24639,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yalnızca sizin erişebilmeniz için Proton Pass kilidini yüzünüzle ya da parmak izinizle açılacak şekilde ayarlayın."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Налаштуйте розблокування Proton Pass за допомогою обличчя або відбитка пальця, щоби лише ви мали доступ."
           }
         },
         "zh-Hans" : {
@@ -26383,6 +26731,12 @@
             "value" : "Gerçek e-posta adresinizi paylaşmayın. Proton Pass takma adlarıyla e-posta adresinizi gizleyin."
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Припиніть ділитися своєю справжньою поштовою адресою. Замість цього приховайте її за допомогою псевдонімів пошти — ексклюзивної функції Proton Pass."
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28286,6 +28640,12 @@
             "value" : "Tek abonelikle en iyi Proton paketi."
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Найкраще від Proton з однією передплатою."
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -29222,6 +29582,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ücretli özelliklere erişin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Розблокуйте преміум функції."
           }
         },
         "zh-Hans" : {
@@ -30709,6 +31075,12 @@
             "value" : "Kasa, öge ve bağlantı paylaşımı"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Спільний доступ до сховища, елементів та посилань"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -30882,6 +31254,18 @@
             "value" : "VPN aygıtları"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VPN-пристроїв"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thiết Bị VPN"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -31052,6 +31436,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "VPN hızı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Швидкість VPN"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tốc Độ VPN"
           }
         },
         "zh-Hans" : {
@@ -32008,6 +32404,18 @@
             "value" : "Kapsamı"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Що включено"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bao gồm những gì"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -32174,6 +32582,12 @@
             "value" : "Hangi hizmet için oturum açma kaydı oluşturmak istiyorsunuz?"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Для якого сервісу ви хочете створити запис входу?"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -32332,6 +32746,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton Pass uygulamasından en iyi şekilde yararlanmaya hazırsınız: Otomatik doldurmanın büyüsü, takma adların gizliliği ve pek çok diğer özellik."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ви готові отримати максимум від Proton Pass: магія автозаповнення, приватність псевдонімів та багато іншого."
           }
         },
         "zh-Hans" : {
