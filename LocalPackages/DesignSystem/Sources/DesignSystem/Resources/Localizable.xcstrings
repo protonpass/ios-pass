@@ -2091,6 +2091,12 @@
             "value" : "Günlüğü paylaş"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поділитися журналами"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
