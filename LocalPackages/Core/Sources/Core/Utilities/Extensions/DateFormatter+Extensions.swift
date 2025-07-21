@@ -42,6 +42,10 @@ public extension DateFormatter {
     }
 
     static var timestampCustomField: DateFormatter {
-        fullDateNoTime
+        let formatter = DateFormatter()
+        formatter.timeZone = .init(identifier: "UTC")
+        formatter.dateStyle = .full
+        formatter.timeStyle = .none
+        return formatter
     }
 }
