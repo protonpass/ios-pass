@@ -46,6 +46,12 @@ struct LoginDetailView: View {
             if !viewModel.urls.isEmpty {
                 urlsSection
             }
+
+            if !viewModel.item.content.note.isEmpty {
+                NoteDetailSection(itemContent: viewModel.item.content,
+                                  vault: nil)
+            }
+
             CustomFieldSections(itemContentType: viewModel.type,
                                 fields: viewModel.customFields,
                                 isFreeUser: viewModel.isFreeUser,

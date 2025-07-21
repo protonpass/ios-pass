@@ -59,7 +59,7 @@ struct ItemDetailView: View {
             case .login:
                 LoginDetailView(.init(item: item, selectedTextStream: selectedTextStream))
             case .note:
-                NoteDetailView(note: item.content.note)
+                NoteDetailView(.init(item: item, selectedTextStream: selectedTextStream))
             case .sshKey:
                 SshDetailView(.init(item: item, selectedTextStream: selectedTextStream))
             case .wifi:
