@@ -59,7 +59,7 @@ final class CreateEditWifiViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
 
     override func generateItemContent() async -> ItemContentProtobuf {
         ItemContentProtobuf(name: title,
-                            note: "",
+                            note: note,
                             itemUuid: UUID().uuidString,
                             data: ItemContentData.wifi(.init(ssid: ssid,
                                                              password: password,
