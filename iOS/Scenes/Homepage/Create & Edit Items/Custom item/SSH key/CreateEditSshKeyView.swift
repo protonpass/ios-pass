@@ -32,7 +32,7 @@ struct CreateEditSshKeyView: View {
     @State private var selectedKeyType: SshKeyType?
 
     enum Field: CustomFieldTypes {
-        case title
+        case title, note
         case custom(CustomField?)
 
         var customField: CustomField? {
@@ -71,6 +71,12 @@ struct CreateEditSshKeyView: View {
                     AddCustomFieldAndSectionView(supportAddSection: true,
                                                  onAddSection: addCustomSection)
                 }
+
+                PassSectionDivider()
+
+                NoteEditSection(note: $viewModel.note,
+                                focusedField: $focusedField,
+                                field: .note)
 
                 FileAttachmentsEditSection(files: viewModel.fileUiModels,
                                            isFetching: viewModel.isFetchingAttachedFiles,

@@ -30,7 +30,7 @@ struct CreateEditCustomItemView: View {
     @State private var lastFocusedField: Field?
 
     enum Field: CustomFieldTypes {
-        case title
+        case title, note
         case custom(CustomField?)
 
         var customField: CustomField? {
@@ -68,6 +68,12 @@ struct CreateEditCustomItemView: View {
                     AddCustomFieldAndSectionView(supportAddSection: true,
                                                  onAddSection: addCustomSection)
                 }
+
+                PassSectionDivider()
+
+                NoteEditSection(note: $viewModel.note,
+                                focusedField: $focusedField,
+                                field: .note)
 
                 FileAttachmentsEditSection(files: viewModel.fileUiModels,
                                            isFetching: viewModel.isFetchingAttachedFiles,
