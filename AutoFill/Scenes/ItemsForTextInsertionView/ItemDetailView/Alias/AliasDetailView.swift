@@ -46,6 +46,18 @@ struct AliasDetailView: View {
         .roundedDetailSection()
         .animation(.default, value: viewModel.mailboxes)
         .task { await viewModel.fetchMailboxes() }
+
+        if !viewModel.item.content.note.isEmpty {
+            NoteDetailSection(itemContent: viewModel.item.content,
+                              vault: nil)
+        }
+
+        CustomFieldSections(itemContentType: viewModel.type,
+                            fields: viewModel.customFields,
+                            isFreeUser: viewModel.isFreeUser,
+                            onSelectHiddenText: viewModel.autofill,
+                            onSelectTotpToken: viewModel.autofill,
+                            onUpgrade: viewModel.upgrade)
     }
 }
 

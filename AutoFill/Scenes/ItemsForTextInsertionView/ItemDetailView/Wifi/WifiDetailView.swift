@@ -46,6 +46,10 @@ struct WifiDetailView: View {
                               onCopyHiddenText: viewModel.autofill,
                               onCopyTotpToken: viewModel.autofill,
                               onUpgrade: viewModel.upgrade)
+        if !viewModel.item.content.note.isEmpty {
+            NoteDetailSection(itemContent: viewModel.item.content,
+                              vault: nil)
+        }
     }
 }
 

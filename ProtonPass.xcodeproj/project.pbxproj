@@ -501,6 +501,7 @@
 		53AEE46A2D7F0E1800CE0CA7 /* CustomSectionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AEE4692D7F0E1200CE0CA7 /* CustomSectionsSection.swift */; };
 		53AEE46B2D7F0E1800CE0CA7 /* CustomSectionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AEE4692D7F0E1200CE0CA7 /* CustomSectionsSection.swift */; };
 		53B153882D59EFC100D21AF9 /* ItemUiModel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */; };
+		53B202CA2E2E636400D1261A /* NoteDetailSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD5C298D49B300E2A0EE /* NoteDetailSection.swift */; };
 		53B981792D7ED25D003BD70E /* WifiDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B981782D7ED258003BD70E /* WifiDetailView.swift */; };
 		53B9817B2D7ED28B003BD70E /* WifiDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B9817A2D7ED289003BD70E /* WifiDetailViewModel.swift */; };
 		53BCE8422DF06586002A903D /* CreateEditKeyboardToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BCE8412DF06576002A903D /* CreateEditKeyboardToolbar.swift */; };
@@ -3571,6 +3572,7 @@
 				35F0B4362CDE10F600F75436 /* CredentialItem.swift in Sources */,
 				53AEB2E42DDF68B40088DA4B /* TotpTextFieldToolbar.swift in Sources */,
 				3570E04E2B8E06F5005B8186 /* PasskeyCredentialsView.swift in Sources */,
+				53B202CA2E2E636400D1261A /* NoteDetailSection.swift in Sources */,
 				35706C362CB66CF1009F438E /* LoginDetailViewModel.swift in Sources */,
 				35AC9A5A2A0BD22F00FBCEEC /* CustomFieldTypesView.swift in Sources */,
 				35706C302CB66616009F438E /* CreditCardDetailView.swift in Sources */,

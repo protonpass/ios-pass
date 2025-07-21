@@ -53,6 +53,17 @@ struct CreditCardDetailView: View {
         }
         .padding(.vertical, DesignConstant.sectionPadding)
         .roundedDetailSection()
+
+        if !viewModel.item.content.note.isEmpty {
+            NoteDetailSection(itemContent: viewModel.item.content,
+                              vault: nil)
+        }
+        CustomFieldSections(itemContentType: viewModel.type,
+                            fields: viewModel.customFields,
+                            isFreeUser: viewModel.isFreeUser,
+                            onSelectHiddenText: viewModel.autofill,
+                            onSelectTotpToken: viewModel.autofill,
+                            onUpgrade: viewModel.upgrade)
     }
 }
 
