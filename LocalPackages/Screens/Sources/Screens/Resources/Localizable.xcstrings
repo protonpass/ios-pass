@@ -966,6 +966,18 @@
               }
             }
           }
+        },
+        "zh-Hant" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 個別名存在於 SimpleLogin，但遺失於 Proton Pass。"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -2959,6 +2971,18 @@
               }
             }
           }
+        },
+        "zh-Hant" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 個登入已匯入"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -4641,7 +4665,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adicionar uma seção"
+            "value" : "Adicionar uma secção"
           }
         },
         "pt-BR" : {
@@ -4696,6 +4720,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "新增版块"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "加入區塊"
           }
         }
       }
@@ -5082,6 +5112,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "添加用户名字段"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新增使用者名稱欄位"
           }
         }
       }
@@ -5706,6 +5742,18 @@
               }
             }
           }
+        },
+        "zh-Hant" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "所有帳號 (%lld)"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -5834,7 +5882,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Todas as suas palavras-passe."
+            "value" : "Todas as palavras-passe."
           }
         },
         "pt-BR" : {
@@ -5895,6 +5943,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "您所有的密码。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您的所有密碼字元。"
           }
         }
       }
@@ -6467,6 +6521,12 @@
             "state" : "translated",
             "value" : "每年以 %@ 自动续订"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每年以 %@ 自動續訂"
+          }
         }
       }
     },
@@ -6578,7 +6638,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Autouzupełnianie klucza dostępu"
+            "value" : "Autouzupełnianie kluczy dostępu"
           }
         },
         "pt" : {
@@ -6627,6 +6687,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "自动填充通行密钥"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自動填寫通行密鑰"
           }
         }
       }
@@ -6799,6 +6865,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在 Safari 和其他应用程序中自动输入密码，方便快捷。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在 Safari 和其他應用程式中，以非常快速簡單的方式自動輸入您的密碼字元。"
           }
         }
       }
@@ -6984,6 +7056,12 @@
             "state" : "translated",
             "value" : "内置 2FA"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "內建雙重驗證"
+          }
         }
       }
     },
@@ -7167,6 +7245,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "通过添加域名，您可以创建别名，如 hi@my-domain.com。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "透過新增您的網域，您可以建立別名，例如 hi@my-domain.com。"
           }
         }
       }
@@ -7549,6 +7633,12 @@
             "state" : "translated",
             "value" : "选择文件"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請選擇檔案"
+          }
         }
       }
     },
@@ -7677,7 +7767,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Escolha uma foto ou vídeo"
+            "value" : "Escolher uma foto ou vídeo"
           }
         },
         "pt-BR" : {
@@ -7732,6 +7822,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "选择照片或视频"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選擇相片或影片"
           }
         }
       }
@@ -8695,6 +8791,12 @@
             "state" : "translated",
             "value" : "无法找到 \"%@\""
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "找不到「%@」"
+          }
         }
       }
     },
@@ -9461,6 +9563,12 @@
             "state" : "translated",
             "value" : "创建首个登录凭证"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "建立您的第一個登入"
+          }
         }
       }
     },
@@ -10037,6 +10145,12 @@
             "state" : "translated",
             "value" : "默认的 SimpleLogin 保险库"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "預設 SimpleLogin 保管庫"
+          }
         }
       }
     },
@@ -10607,6 +10721,12 @@
             "state" : "translated",
             "value" : "删除所有附件吗？"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "刪除所有附件？"
+          }
         }
       }
     },
@@ -10977,6 +11097,12 @@
             "state" : "translated",
             "value" : "例如：LinkedIn"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "例如: LinkedIn"
+          }
         }
       }
     },
@@ -11148,6 +11274,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "编辑版块标题"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "編輯區段標題"
           }
         }
       }
@@ -11909,6 +12041,12 @@
             "state" : "translated",
             "value" : "启用 Optic ID"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "啟用 Optic ID"
+          }
         }
       }
     },
@@ -12099,6 +12237,12 @@
             "state" : "translated",
             "value" : "启用 SimpleLogin 同步"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "啟用 SimpleLogin 同步"
+          }
         }
       }
     },
@@ -12288,6 +12432,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "启用 Spotlight 搜索"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "啟用 Spotlight 搜尋"
           }
         }
       }
@@ -13049,6 +13199,12 @@
             "state" : "translated",
             "value" : "额外的邮箱地址"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "額外電子郵件位址"
+          }
         }
       }
     },
@@ -13239,6 +13395,12 @@
             "state" : "translated",
             "value" : "附件文件"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "檔案附件"
+          }
         }
       }
     },
@@ -13411,6 +13573,12 @@
             "state" : "translated",
             "value" : "已创建首个登录凭证"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "第一個登入已建立"
+          }
         }
       }
     },
@@ -13540,7 +13708,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Por motivos de segurança, o seu acesso precisa ser confirmado."
+            "value" : "Por motivos de segurança, o seu acesso precisa de ser confirmado."
           }
         },
         "pt-BR" : {
@@ -14122,7 +14290,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Free"
+            "value" : "Grátis"
           }
         },
         "pt-BR" : {
@@ -14552,6 +14720,12 @@
             "state" : "translated",
             "value" : "生成的密码将被保存 2 周。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "生成的密碼字元將儲存 2 週。"
+          }
         }
       }
     },
@@ -14729,6 +14903,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "当您的电子邮件在暗网上被发现时将获得警报。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "當您的電子郵件在暗網上被找到時，接收警示。"
           }
         }
       }
@@ -15104,6 +15284,12 @@
             "state" : "translated",
             "value" : "开通 Proton Unlimited"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取得 Proton 無限版"
+          }
         }
       }
     },
@@ -15466,6 +15652,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "转到 **密码管理器** 并点击 **设置**"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "前往「**密碼字元管理員**」並輕點「**設定**」"
           }
         }
       }
@@ -16167,7 +16359,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Como realizar o preenchimento automático dos campos em questão com uma palavra-passe"
+            "value" : "Como realizar o preenchimento automático dos campos com uma palavra-passe"
           }
         },
         "pt-BR" : {
@@ -16210,6 +16402,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "如何使用密码自动填充"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "如何以密碼字元自動填寫欄位"
           }
         }
       }
@@ -16598,6 +16796,12 @@
             "state" : "translated",
             "value" : "从 Chrome 导入"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "從 Chrome 匯入"
+          }
         }
       }
     },
@@ -16783,6 +16987,12 @@
             "state" : "translated",
             "value" : "导入登录项目 (%1$lld/%2$lld)"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "匯入登入 (%1$lld/%2$lld)"
+          }
         }
       }
     },
@@ -16961,6 +17171,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "导入成功"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已成功匯入"
           }
         }
       }
@@ -17280,7 +17496,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Saiba como usar o Proton Pass"
+            "value" : "Como utilizar o Proton Pass"
           }
         },
         "pt-BR" : {
@@ -17332,6 +17548,12 @@
           }
         },
         "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "了解如何使用 Proton Pass"
+          }
+        },
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "了解如何使用 Proton Pass"
@@ -17464,7 +17686,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Saiba mais sobre Pass"
+            "value" : "Saiba mais sobre o Pass"
           }
         },
         "pt-BR" : {
@@ -18368,7 +18590,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Passkeys가 있는 로그인을 찾을 수 없습니다."
+            "value" : "패스키가 있는 로그인을 찾을 수 없습니다."
           }
         },
         "nb" : {
@@ -18441,6 +18663,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "没有找到使用通行密钥的登录项"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "找不到包含通行密鑰的登入"
           }
         }
       }
@@ -18626,6 +18854,12 @@
             "state" : "translated",
             "value" : "图像中检测不到文本。请再试一次，确保文本清晰、光线充足并在相机对焦范围内。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "圖像中偵測不到文字。請再試一次，確保文字清晰、光線充足，並在相機的焦點內。"
+          }
         }
       }
     },
@@ -18804,6 +19038,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "没有找到文本"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "找不到文字"
           }
         }
       }
@@ -19565,6 +19805,12 @@
             "state" : "translated",
             "value" : "同步后，在 Pass 中删除别名也会在 SimpleLogin 中删除。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一旦同步，在Pass中刪除別名，也會在SimpleLogin中刪除它們。"
+          }
         }
       }
     },
@@ -19940,6 +20186,12 @@
             "state" : "translated",
             "value" : "打开 **Chrome** 菜单"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開啟 **Chrome** 選單"
+          }
         }
       }
     },
@@ -20129,6 +20381,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "打开 Chrome"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開啟 Chrome"
           }
         }
       }
@@ -20898,6 +21156,12 @@
             "state" : "translated",
             "value" : "请登录以使用 Proton Pass Action 扩展功能"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請登入以使用 Proton Pass 動作擴充功能"
+          }
         }
       }
     },
@@ -21087,6 +21351,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "请登录以使用 Proton Pass AutoFill 扩展程序"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請登入以使用 Proton Pass 自動填寫擴充功能"
           }
         }
       }
@@ -21278,6 +21548,12 @@
             "state" : "translated",
             "value" : "请登录以使用 Proton Pass Share 扩展程序"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請登入以使用 Proton Pass 分享擴充功能"
+          }
         }
       }
     },
@@ -21468,6 +21744,12 @@
             "state" : "translated",
             "value" : "按住某个项目即可显示更多选项。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "按住項目以顯示額外選項。"
+          }
         }
       }
     },
@@ -21645,6 +21927,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "保护您的收件箱。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保護您的收件匣。"
           }
         }
       }
@@ -22032,6 +22320,12 @@
             "state" : "translated",
             "value" : "对项目进行快速操作"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "項目快速動作"
+          }
         }
       }
     },
@@ -22401,6 +22695,12 @@
             "state" : "translated",
             "value" : "从历史记录中移除"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "從歷史記錄中移除"
+          }
         }
       }
     },
@@ -22578,6 +22878,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "移除版块"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移除區段"
           }
         }
       }
@@ -23351,6 +23657,12 @@
             "state" : "translated",
             "value" : "扫描文件"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "掃描文件"
+          }
         }
       }
     },
@@ -23540,6 +23852,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "通过主屏幕无缝搜索项目。打开“设置”→“Spotlight”以启用。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "流暢地透過主畫面搜尋項目。開啟設定值 → Spotlight 以啟用。"
           }
         }
       }
@@ -23921,6 +24239,12 @@
             "state" : "translated",
             "value" : "安全地集中在一处，并受到最值得信赖的隐私保护。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "安全地集中存放，並得到最受信賴的隱私保護。"
+          }
         }
       }
     },
@@ -24099,6 +24423,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "选择 **导入到 Proton Pass**"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選取「**匯入至 Proton Pass**」"
           }
         }
       }
@@ -25032,6 +25362,12 @@
             "state" : "translated",
             "value" : "将他人的收件箱添加为附加邮箱，与他人共享别名。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "透過新增他們的收件匣作為額外的電郵信箱，與他人共享別名。"
+          }
         }
       }
     },
@@ -25215,6 +25551,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "安全、轻松地共享密码和敏感信息。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "安全且輕鬆地共享密碼字元與敏感資訊。"
           }
         }
       }
@@ -26576,6 +26918,12 @@
             "state" : "translated",
             "value" : "随时了解信息。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "隨時掌握資訊。"
+          }
         }
       }
     },
@@ -26741,6 +27089,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "停止共享您的真实邮箱地址，使用 Proton Pass 独家提供的邮箱别名来隐藏它。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "不要再分享您的真電郵位址，使用電郵別稱來隱藏您的真電郵位址 ⏤ 只有在 Proton Pass 裡的功能"
           }
         }
       }
@@ -28289,6 +28643,12 @@
             "state" : "translated",
             "value" : "点击 **导出密码**"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輕點「**匯出密碼字元**」"
+          }
         }
       }
     },
@@ -28479,6 +28839,12 @@
             "state" : "translated",
             "value" : "点击此处添加用户名字段。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輕點此處以新增使用者名稱欄位。"
+          }
         }
       }
     },
@@ -28650,6 +29016,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "只需一次订阅，便可尽享 Proton 的顶级服务。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "以一個訂閱享受 Proton 的最佳服務。"
           }
         }
       }
@@ -28840,6 +29212,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "此操作无法撤消"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此動作無法復原"
           }
         }
       }
@@ -29227,6 +29605,12 @@
             "state" : "translated",
             "value" : "尝试使用不同的拼写或关键字进行搜索"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請嘗試使用不同的拼寫或關鍵字搜尋"
+          }
         }
       }
     },
@@ -29521,7 +29905,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "프리미엄 기능을 잠금해제 하세요."
+            "value" : "프리미엄 기능을 잠금 해제하세요."
           }
         },
         "nb" : {
@@ -29594,6 +29978,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "解锁高级功能。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "解鎖頂級質子版功能。"
           }
         }
       }
@@ -30091,7 +30481,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "저장 공간을 늘리려면 업그레이드 하세요."
+            "value" : "저장 공간을 늘리려면 업그레이드하세요."
           }
         },
         "nb" : {
@@ -30164,6 +30554,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "升级以增加存储容量。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "升級以增加您的儲存容量。"
           }
         }
       }
@@ -30717,6 +31113,12 @@
             "state" : "translated",
             "value" : "使用 Hide-My-Email 别名应对网络钓鱼威胁。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用隱藏電子郵件別名來防範網路釣魚威脅。"
+          }
         }
       }
     },
@@ -31086,6 +31488,12 @@
             "state" : "translated",
             "value" : "保险库、项目以及链接共享"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保管庫、項目與連結共享"
+          }
         }
       }
     },
@@ -31271,6 +31679,12 @@
             "state" : "translated",
             "value" : "VPN 设备"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VPN 裝置"
+          }
         }
       }
     },
@@ -31451,6 +31865,12 @@
           }
         },
         "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VPN 速度"
+          }
+        },
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "VPN 速度"
@@ -31766,7 +32186,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "SimpleLogin에 %lld개의 별칭이 존재하지만 Proton Pass에는 누락된 별칭이 있음이 발견되었어요. 해당 별명을 불러오시겠어요?"
+                  "value" : "SimpleLogin에 %lld개의 별칭이 존재하지만 Proton Pass에는 누락된 별칭이 있어요. 해당 별명을 불러오시겠어요?"
                 }
               }
             }
@@ -32043,6 +32463,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "我们检测到您的百分比%lldlld别名存在于SimpleLogin中，但在Proton Pass中缺少。您想导入吗？"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hant" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "我們偵測到您有 %lld 個別名存在於 SimpleLogin ，但未同步到 Proton Pass。是否要匯入？"
                 }
               }
             }
@@ -32421,6 +32853,12 @@
             "state" : "translated",
             "value" : "包含什么内容"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "包含什麼"
+          }
         }
       }
     },
@@ -32593,6 +33031,12 @@
             "state" : "translated",
             "value" : "您想为哪项服务创建登录凭证？"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您想要為哪個服務建立登入？"
+          }
         }
       }
     },
@@ -32758,6 +33202,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "充分利用 Proton Pass：体验自动填充的魔力、别名隐私保护的魅力等等。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您已準備好充分利用 Proton Pass：「自動填入」的魔力、「別名」的隱私保護以及更多功能。"
           }
         }
       }
@@ -32942,6 +33392,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "您可以将文件附加到项目中以便更好地组织"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你可以附加檔案到項目以便更好地組織機構"
           }
         }
       }
