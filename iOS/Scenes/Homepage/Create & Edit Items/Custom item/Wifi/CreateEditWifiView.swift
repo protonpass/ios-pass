@@ -30,7 +30,7 @@ struct CreateEditWifiView: View {
     @State private var lastFocusedField: Field?
 
     enum Field: CustomFieldTypes {
-        case title, ssid, password
+        case title, ssid, password, note
         case custom(CustomField?)
 
         var customField: CustomField? {
@@ -69,6 +69,12 @@ struct CreateEditWifiView: View {
                     AddCustomFieldAndSectionView(supportAddSection: true,
                                                  onAddSection: addCustomSection)
                 }
+
+                PassSectionDivider()
+
+                NoteEditSection(note: $viewModel.note,
+                                focusedField: $focusedField,
+                                field: .note)
 
                 FileAttachmentsEditSection(files: viewModel.fileUiModels,
                                            isFetching: viewModel.isFetchingAttachedFiles,

@@ -29,6 +29,7 @@ final class CreateEditWifiViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
     @Published var ssid = ""
     @Published var password = ""
     @Published var security: WifiData.Security = .unspecified
+    @Published var note = ""
 
     override var shouldUpgrade: Bool {
         if case .create = mode, isFreeUser {
@@ -49,6 +50,7 @@ final class CreateEditWifiViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
                 password = data.password
                 security = data.security
                 customSections = data.extraSections
+                note = itemContent.note
             }
         }
     }
