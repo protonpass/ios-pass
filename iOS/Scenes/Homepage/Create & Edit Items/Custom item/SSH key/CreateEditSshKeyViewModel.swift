@@ -60,7 +60,7 @@ final class CreateEditSshKeyViewModel: BaseCreateEditItemViewModel, DeinitPrinta
 
     override func generateItemContent() async -> ItemContentProtobuf {
         ItemContentProtobuf(name: title,
-                            note: "",
+                            note: note,
                             itemUuid: UUID().uuidString,
                             data: ItemContentData.sshKey(.init(privateKey: privateKey,
                                                                publicKey: publicKey,
