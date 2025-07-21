@@ -58,6 +58,12 @@ struct SshDetailView: View {
                                       onCopyTotpToken: viewModel.copyTOTPToken,
                                       onUpgrade: viewModel.upgrade)
 
+                if !viewModel.itemContent.note.isEmpty {
+                    NoteDetailSection(itemContent: viewModel.itemContent,
+                                      vault: viewModel.vault?.vault)
+                        .padding(.top, 8)
+                }
+
                 if viewModel.showFileAttachmentsSection {
                     FileAttachmentsViewSection(files: viewModel.fileUiModels,
                                                isFetching: viewModel.files.isFetching,

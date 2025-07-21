@@ -82,7 +82,7 @@ final class CreateEditCustomItemViewModel: BaseCreateEditItemViewModel, DeinitPr
 
     override func generateItemContent() async -> ItemContentProtobuf {
         ItemContentProtobuf(name: title,
-                            note: "",
+                            note: note,
                             itemUuid: UUID().uuidString,
                             data: ItemContentData.custom(.init(sections: customSections)),
                             customFields: customFields)
