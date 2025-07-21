@@ -177,6 +177,12 @@
             "state" : "translated",
             "value" : "Action 扩展日志"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "動作延伸功能日誌"
+          }
         }
       }
     },
@@ -2321,6 +2327,12 @@
             "state" : "translated",
             "value" : "在所有项目中搜索..."
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "搜尋所有項目..."
+          }
         }
       }
     },
@@ -2505,6 +2517,12 @@
             "state" : "translated",
             "value" : "在我的共享中搜索项目"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "搜尋我共享的項目"
+          }
         }
       }
     },
@@ -2688,6 +2706,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在与我共享中搜索项目"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "搜尋與我共享的項目"
           }
         }
       }
@@ -3076,6 +3100,12 @@
             "state" : "translated",
             "value" : "搜索固定项目"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "搜尋已釘選的項目"
+          }
         }
       }
     },
@@ -3265,6 +3295,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "共享扩展日志"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共享延伸功能日誌"
           }
         }
       }
@@ -3835,6 +3871,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "您没有任何具有编辑或管理员权限的保险库。请尝试在主应用程序中创建一个，或向您组织的管理员寻求支持。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您沒有任何具有編輯者或管理員存取的保管庫。嘗試在主要應用程式中建立一個，或詢問您的組織機構管理員以取得支援服務。"
           }
         }
       }
