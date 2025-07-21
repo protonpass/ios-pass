@@ -45305,6 +45305,12 @@
             "state" : "translated",
             "value" : "清除已下载文件"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "清除下載的檔案"
+          }
         }
       }
     },
@@ -47261,6 +47267,12 @@
             "state" : "translated",
             "value" : "确认额外密码"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "確認第二密碼"
+          }
         }
       }
     },
@@ -47647,6 +47659,12 @@
             "state" : "translated",
             "value" : "确认您的 Proton 密码"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "確認您的 Proton 密碼字元"
+          }
         }
       }
     },
@@ -47838,6 +47856,12 @@
             "state" : "translated",
             "value" : "恭喜，\n 您的访问权限已确认"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "恭喜您,\n 您的存取已確認"
+          }
         }
       }
     },
@@ -48027,6 +48051,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "已复制联系人"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "聯絡人已複製"
           }
         }
       }
@@ -50178,6 +50208,12 @@
             "state" : "translated",
             "value" : "复制到期日期"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "複製到期日"
+          }
         }
       }
     },
@@ -50368,6 +50404,12 @@
             "state" : "translated",
             "value" : "复制转发地址"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "複製轉寄位址"
+          }
         }
       }
     },
@@ -50557,6 +50599,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "复制全名"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "複製全名"
           }
         }
       }
@@ -51526,6 +51574,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "复制 SSID"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "複製 SSID"
           }
         }
       }
@@ -53078,6 +53132,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "创建自定义项目"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新增自訂項目"
           }
         }
       }
@@ -55035,6 +55095,12 @@
             "state" : "translated",
             "value" : "已创建 %@"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已建立 %@"
+          }
         }
       }
     },
@@ -56396,6 +56462,12 @@
             "state" : "translated",
             "value" : "加密钱包"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "加密錢包"
+          }
         }
       }
     },
@@ -56586,6 +56658,12 @@
             "state" : "translated",
             "value" : "当前"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "目前"
+          }
         }
       }
     },
@@ -56594,7 +56672,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Цяперашняе сховішча"
+            "value" : "Бягучае сховішча"
           }
         },
         "ca" : {
@@ -56732,7 +56810,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mevcut kasa"
+            "value" : "Geçerli kasa"
           }
         },
         "uk" : {
@@ -56745,6 +56823,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Két sắt hiện tại"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "目前的保管庫"
           }
         }
       }
@@ -57721,6 +57805,12 @@
             "state" : "translated",
             "value" : "自定义字段菜单"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自訂欄位選單"
+          }
         }
       }
     },
@@ -58101,6 +58191,12 @@
             "state" : "translated",
             "value" : "自定义项"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自訂項目"
+          }
         }
       }
     },
@@ -58285,6 +58381,12 @@
             "state" : "translated",
             "value" : "自定义项已创建"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自訂項目已建立"
+          }
         }
       }
     },
@@ -58462,6 +58564,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "自定义项已移至回收站"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自訂項目已移至垃圾桶"
           }
         }
       }
@@ -58641,6 +58749,12 @@
             "state" : "translated",
             "value" : "自定义项已永久删除"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自訂項目已永久刪除"
+          }
         }
       }
     },
@@ -58819,6 +58933,12 @@
             "state" : "translated",
             "value" : "自定义项已恢复"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自訂項目已還原"
+          }
         }
       }
     },
@@ -58996,6 +59116,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "自定义项已更新"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自訂項目已更新"
           }
         }
       }
@@ -59180,6 +59306,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "自定义项"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自訂項目"
           }
         }
       }
@@ -59370,6 +59502,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "自定义选项"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自訂區段"
           }
         }
       }
@@ -59757,6 +59895,12 @@
             "state" : "translated",
             "value" : "Dark Web Monitoring 通过付费计划提供。升级后可立即访问。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "立即升級以使用付費方案提供的黑暗網路監測功能。"
+          }
         }
       }
     },
@@ -59947,6 +60091,12 @@
             "state" : "translated",
             "value" : "数据安全"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "資料安全"
+          }
         }
       }
     },
@@ -60132,6 +60282,12 @@
             "state" : "translated",
             "value" : "数据库"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "資料庫"
+          }
         }
       }
     },
@@ -60316,6 +60472,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "数据库类型"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "資料庫類型"
           }
         }
       }
@@ -60690,6 +60852,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "自定义日期字段"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "日期自訂欄位"
           }
         }
       }
@@ -61463,6 +61631,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "别名的默认域"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "別名的預設網域"
           }
         }
       }
@@ -62243,6 +62417,12 @@
             "state" : "translated",
             "value" : "删除文件？"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "刪除檔案?"
+          }
         }
       }
     },
@@ -62622,6 +62802,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "删除邮箱"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "刪除電郵信箱"
           }
         }
       }
@@ -63204,6 +63390,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "删除此项"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "刪除此項目"
           }
         }
       }
@@ -64179,6 +64371,12 @@
             "state" : "translated",
             "value" : "禁用别名"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "停用別名"
+          }
         }
       }
     },
@@ -64369,6 +64567,12 @@
             "state" : "translated",
             "value" : "改为禁用"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "改為停用"
+          }
         }
       }
     },
@@ -64558,6 +64762,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "禁用 Proton Sentinel"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "停用 Proton Sentinel"
           }
         }
       }
@@ -65510,6 +65720,12 @@
             "state" : "translated",
             "value" : "再次下载所有项目以确保同步"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "再次下載您的所有項目，以確保您已同步"
+          }
         }
       }
     },
@@ -65699,6 +65915,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "下载文件已清除"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已清除下載的檔案"
           }
         }
       }
@@ -66278,6 +66500,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "例如：用户 ID、账号"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "例如，使用者 ID、帳號"
           }
         }
       }
@@ -66862,6 +67090,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "编辑字段名称"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "編輯欄位名稱"
           }
         }
       }
@@ -68035,6 +68269,12 @@
             "state" : "translated",
             "value" : "邮箱地址已复制"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "電子郵件已複製"
+          }
         }
       }
     },
@@ -68414,6 +68654,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "向该地址发送电子邮件，该电子邮件将显示由 %@ 发送。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "將電子郵件傳送至此位址，且將顯示為從%@。"
           }
         }
       }
@@ -68998,6 +69244,12 @@
             "state" : "translated",
             "value" : "空的分组"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "空白區塊"
+          }
         }
       }
     },
@@ -69580,6 +69832,12 @@
             "state" : "translated",
             "value" : "启用别名"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "啟用別名"
+          }
         }
       }
     },
@@ -69769,6 +70027,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "启用别名"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "啟用別名"
           }
         }
       }
@@ -70156,6 +70420,12 @@
             "state" : "translated",
             "value" : "启用监测功能，以便在别名泄露时收到通知。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "啟用監控以在您的H別名外洩時收到通知。"
+          }
         }
       }
     },
@@ -70346,6 +70616,12 @@
             "state" : "translated",
             "value" : "启用监测功能，以便在您的 Proton 地址泄露时收到通知。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "啟用監控以在您的Proton位址外洩時收到通知。"
+          }
         }
       }
     },
@@ -70535,6 +70811,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "启用 Proton Sentinel"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "啟用 Proton Sentinel"
           }
         }
       }
@@ -71119,6 +71401,12 @@
             "state" : "translated",
             "value" : "输入字段名称"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輸入欄位名稱"
+          }
         }
       }
     },
@@ -71308,6 +71596,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "输入新的分组标题"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輸入新區段標題"
           }
         }
       }
@@ -71499,6 +71793,12 @@
             "state" : "translated",
             "value" : "输入分组标题"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輸入區段標題"
+          }
         }
       }
     },
@@ -71689,6 +71989,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "输入 « %@ » 的新名称"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輸入 « %@ » 的新名稱"
           }
         }
       }
@@ -72069,6 +72375,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "输入您要发送电子邮件的地址。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輸入您要傳送電子郵件的位址。"
           }
         }
       }
@@ -72842,6 +73154,12 @@
             "state" : "translated",
             "value" : "每次您的别名收到某人的电子邮件时，就会自动创建一个新的联系人。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您的別名每次收到來自某人的電子郵件時，都會自動建立新的聯絡人。"
+          }
         }
       }
     },
@@ -73227,6 +73545,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "从监视中移除"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "排除於監控之外"
           }
         }
       }
@@ -73614,6 +73938,12 @@
             "state" : "translated",
             "value" : "排除的项目"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "排除的項目"
+          }
         }
       }
     },
@@ -74000,6 +74330,12 @@
             "state" : "translated",
             "value" : "过期日期已复制"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "到期日已複製"
+          }
         }
       }
     },
@@ -74190,6 +74526,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "将于 %@ 过期"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "逾期 %@"
           }
         }
       }
@@ -74382,6 +74724,12 @@
             "state" : "translated",
             "value" : "将于 %@ 过期"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "於 %@ 到期"
+          }
         }
       }
     },
@@ -74572,6 +74920,12 @@
             "state" : "translated",
             "value" : "到期于："
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "於 到期:"
+          }
         }
       }
     },
@@ -74755,6 +75109,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "截止日期"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "到期日"
           }
         }
       }
@@ -75142,6 +75502,12 @@
             "state" : "translated",
             "value" : "额外密码已禁用"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已停用第二密碼"
+          }
         }
       }
     },
@@ -75331,6 +75697,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton Pass 额外密码"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Pass 的第二密碼"
           }
         }
       }
@@ -75920,6 +76292,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "额外密码必须至少有 %lld 个字符"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hant" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "第二密碼必須包含至少 %lld 個字元"
                 }
               }
             }
@@ -77315,6 +77699,12 @@
             "state" : "translated",
             "value" : "附件文件"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "檔案附件"
+          }
         }
       }
     },
@@ -77498,6 +77888,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pass Plus 可提供文件附件。升级后可立即访问。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "檔案附件可透過 Pass Plus 取得。立即升級以存取。"
           }
         }
       }
@@ -77879,6 +78275,12 @@
             "state" : "translated",
             "value" : "通过别名过滤。不显示回收站中的项目。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已依別名篩選。垃圾桶中的項目不會顯示。"
+          }
         }
       }
     },
@@ -78063,6 +78465,12 @@
             "state" : "translated",
             "value" : "通过信用卡过滤。不显示回收站中的项目。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已依信用或簽帳卡篩選。垃圾桶中的項目不會顯示。"
+          }
         }
       }
     },
@@ -78240,6 +78648,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "按自定义项目筛选。回收站中的项目不显示。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已依自訂項目篩選。垃圾桶中的項目不會顯示。"
           }
         }
       }
@@ -78425,6 +78839,12 @@
             "state" : "translated",
             "value" : "按身份过滤。不显示回收站中的项目。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已依身分篩選。垃圾桶中的項目不會顯示。"
+          }
         }
       }
     },
@@ -78609,6 +79029,12 @@
             "state" : "translated",
             "value" : "通过登录过滤。不显示回收站中的项目。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已依登入篩選。垃圾桶中的項目不會顯示。"
+          }
         }
       }
     },
@@ -78792,6 +79218,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "按备注筛选。不显示回收站中的项目。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已依備註篩選。垃圾桶中的項目不會顯示。"
           }
         }
       }
@@ -79761,6 +80193,12 @@
             "state" : "translated",
             "value" : "为提高安全性，请在以下账户中设置双因素身份验证。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "為了加強安全性，請於以下帳號設定雙重身分驗證。"
+          }
         }
       }
     },
@@ -79950,6 +80388,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "用于一次性共享。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用於一次性共享。"
           }
         }
       }
@@ -80722,6 +81166,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "来自您的别名地址 <%@>"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "來自您的別名 <%@>"
           }
         }
       }
@@ -81894,6 +82344,12 @@
             "state" : "translated",
             "value" : "生成安全链接"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "產生安全加密鏈結"
+          }
         }
       }
     },
@@ -82084,6 +82540,12 @@
             "state" : "translated",
             "value" : "生成唯一密码"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "產生獨特密碼字元"
+          }
         }
       }
     },
@@ -82273,6 +82735,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "为每个账户生成唯一的密码，以提高安全性。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "為每個帳號生成獨特的密碼字元，以提升您的安全性。"
           }
         }
       }
@@ -82849,6 +83317,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "如果您的电子邮件、密码或其他个人数据被泄露，您会收到通知。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "當您的電子郵件、密碼字元或其他個人資料外洩時獲得通知。"
           }
         }
       }
@@ -83432,6 +83906,12 @@
             "state" : "translated",
             "value" : "获取 Pass Unlimited"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取得 Pass 無限版"
+          }
         }
       }
     },
@@ -83819,6 +84299,12 @@
             "state" : "translated",
             "value" : "告别垃圾邮件和诈骗"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "告別垃圾郵件與詐騙"
+          }
         }
       }
     },
@@ -84008,6 +84494,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "还没有收到验证码？"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "尚未收到代碼？"
           }
         }
       }
@@ -84388,6 +84880,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "具体操作如下："
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "運作方式如下："
           }
         }
       }
@@ -84985,7 +85483,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Схаваныя сховішчы не будуць бачныя падчас пошуку і аўтазапаўнення."
+            "value" : "Схаваныя сховішчы не будуць бачныя падчас пошуку і аўтазапаўненні."
           }
         },
         "ca" : {
@@ -85130,6 +85628,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Các két sắt ẩn sẽ không hiện thấy khi thực hiện tìm kiếm hoặc dùng tự điền."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "隱藏的保管庫在搜尋和自動填入時將不會顯示。"
           }
         }
       }
@@ -86105,6 +86609,12 @@
             "state" : "translated",
             "value" : "隐藏置顶"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "隱藏個人識別號碼"
+          }
         }
       }
     },
@@ -86484,6 +86994,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "隐藏社会保障号码"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "隱藏社會安全碼"
           }
         }
       }
@@ -86871,6 +87387,12 @@
             "state" : "translated",
             "value" : "Hide-my-email 别名监测已暂停"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide-my-email 電子郵件別名監控已暫停"
+          }
         }
       }
     },
@@ -87060,6 +87582,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hide-my-email 别名监测已恢复"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide-my-email 電子郵件別名監控已繼續"
           }
         }
       }
@@ -87442,6 +87970,12 @@
             "state" : "translated",
             "value" : "文件夹名称"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "持有人姓名"
+          }
         }
       }
     },
@@ -87625,6 +88159,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "医院"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "醫院"
           }
         }
       }
@@ -88001,6 +88541,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "主机名"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "主機名稱"
           }
         }
       }
@@ -89167,6 +89713,12 @@
             "state" : "translated",
             "value" : "身份已创建"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "身分已建立"
+          }
         }
       }
     },
@@ -89553,6 +90105,12 @@
             "state" : "translated",
             "value" : "身份已永久删除"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "身分已永久刪除"
+          }
         }
       }
     },
@@ -89743,6 +90301,12 @@
             "state" : "translated",
             "value" : "身份已恢复"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "身分已還原"
+          }
         }
       }
     },
@@ -89932,6 +90496,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "身份已更新"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "身分已更新"
           }
         }
       }
@@ -90320,6 +90890,12 @@
             "state" : "translated",
             "value" : "从 Chrome 导入"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "從 Chrome 匯入"
+          }
         }
       }
     },
@@ -90504,6 +91080,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "从其他源导入"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "從其他來源匯入"
           }
         }
       }
@@ -90884,6 +91466,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在 Pass 中，项目笔记使用项目加密密钥进行加密，只有有权访问项目的用户才能查看备注。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在 Pass 中，項目筆記會以項目加密金鑰加密，只有擁有該項目存取權的使用者才能查看筆記。"
           }
         }
       }
@@ -91271,6 +91859,12 @@
             "state" : "translated",
             "value" : "非活动链接"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "非作用中連結"
+          }
         }
       }
     },
@@ -91460,6 +92054,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "纳入监测中"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "包含於監控"
           }
         }
       }
@@ -92458,6 +93058,12 @@
             "state" : "translated",
             "value" : "无效前缀"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無效前綴"
+          }
         }
       }
     },
@@ -93035,6 +93641,12 @@
             "state" : "translated",
             "value" : "邀请更多用户加入项目"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "邀請更多使用者到此項目"
+          }
         }
       }
     },
@@ -93218,6 +93830,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "邀请更多用户加入保险库"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "邀請更多使用者到此保管庫"
           }
         }
       }
@@ -93784,6 +94402,12 @@
             "state" : "translated",
             "value" : "签发机构"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "發行機構"
+          }
         }
       }
     },
@@ -93968,6 +94592,12 @@
             "state" : "translated",
             "value" : "签发国家"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "發行國家"
+          }
         }
       }
     },
@@ -94145,6 +94775,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "签发国家/地区"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "發行州/國家"
           }
         }
       }
@@ -94532,6 +95168,12 @@
             "state" : "translated",
             "value" : "不在监测范围内的项目"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "項目已排除於監控之外"
+          }
         }
       }
     },
@@ -94715,6 +95357,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "项目历史记录已成功重置"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "項目歷史已成功重設"
           }
         }
       }
@@ -95102,6 +95750,12 @@
             "state" : "translated",
             "value" : "已复制项目 ID"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "項目 ID 已複製"
+          }
         }
       }
     },
@@ -95291,6 +95945,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "项目已纳入监测中"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "項目已包含於監控"
           }
         }
       }
@@ -96080,6 +96740,18 @@
               }
             }
           }
+        },
+        "zh-Hant" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "項目共享：%lld 位使用者"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -96664,6 +97336,12 @@
             "state" : "translated",
             "value" : "项目操作菜单"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "項目操作選單"
+          }
         }
       }
     },
@@ -97050,6 +97728,12 @@
             "state" : "translated",
             "value" : "项目筛选菜单"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "項目篩選選單"
+          }
         }
       }
     },
@@ -97240,6 +97924,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "项目筛选和排序菜单"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "項目篩選與排序選單"
           }
         }
       }
@@ -97626,6 +98316,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "使用此密码的保险库项目。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "來自您的保管庫的項目使用此密碼字元。"
           }
         }
       }
@@ -100563,6 +101259,12 @@
             "state" : "translated",
             "value" : "最近一次泄露的时间 %@"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最新外露於 %@"
+          }
         }
       }
     },
@@ -101145,6 +101847,12 @@
             "state" : "translated",
             "value" : "离开此项目吗？"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "離開此項目？"
+          }
         }
       }
     },
@@ -101721,6 +102429,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "授权密钥"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "許可證金鑰"
           }
         }
       }
@@ -102303,6 +103017,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "链接过期于"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "連結將於...後到期"
           }
         }
       }
@@ -102910,6 +103630,12 @@
             "state" : "translated",
             "value" : "登录到 %@"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用於 %@ 的登入"
+          }
         }
       }
     },
@@ -103100,6 +103826,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "登录项目"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "登入項目"
           }
         }
       }
@@ -104270,6 +105002,12 @@
             "state" : "translated",
             "value" : "使用 2FA 登录"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "啟用雙重驗證的登入"
+          }
         }
       }
     },
@@ -104847,6 +105585,12 @@
             "state" : "translated",
             "value" : "邮箱操作菜单"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "電郵信箱操作選單"
+          }
         }
       }
     },
@@ -105030,6 +105774,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "邮箱 是转发发送给别名电子邮件的地方。这是您常用的邮箱，如 Gmail、Outlook、Proton Mail 等。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "電郵信箱是將傳送至別名的電子郵件轉寄的目的地。這是您慣用的電郵信箱，例如 Gmail、Outlook、Proton Mail 等。"
           }
         }
       }
@@ -106195,6 +106945,12 @@
             "state" : "translated",
             "value" : "管理您的别名"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "管理您的別名"
+          }
         }
       }
     },
@@ -106765,6 +107521,12 @@
             "state" : "translated",
             "value" : "最大视图数量："
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最大檢視次數："
+          }
         }
       }
     },
@@ -106949,6 +107711,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "医疗状况"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "醫療狀況"
           }
         }
       }
@@ -107135,6 +107903,12 @@
             "state" : "translated",
             "value" : "医疗记录"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "病歷"
+          }
         }
       }
     },
@@ -107320,6 +108094,12 @@
             "state" : "translated",
             "value" : "药品"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "藥物"
+          }
         }
       }
     },
@@ -107503,6 +108283,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "会员 ID"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "成員 ID"
           }
         }
       }
@@ -107884,6 +108670,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "会员名"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "成員名稱"
           }
         }
       }
@@ -108267,6 +109059,12 @@
             "state" : "translated",
             "value" : "会员资格"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "會員資格"
+          }
         }
       }
     },
@@ -108450,6 +109248,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "会员ID"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "會員ID"
           }
         }
       }
@@ -109032,6 +109836,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "缺失用户名。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "缺少使用者名稱"
           }
         }
       }
@@ -109811,6 +110621,12 @@
             "state" : "translated",
             "value" : "修改分组名称"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "修改區段名稱"
+          }
         }
       }
     },
@@ -110000,6 +110816,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "已监测"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已監控"
           }
         }
       }
@@ -110191,6 +111013,12 @@
             "state" : "translated",
             "value" : "监测已暂停"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "監控已暫停"
+          }
         }
       }
     },
@@ -110381,6 +111209,12 @@
             "state" : "translated",
             "value" : "%@ 的监测已暂停"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "針對 %@ 的監控已暫停"
+          }
         }
       }
     },
@@ -110570,6 +111404,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ 的监测已恢复"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "針對 %@ 的監控已繼續"
           }
         }
       }
@@ -111731,6 +112571,12 @@
             "state" : "translated",
             "value" : "移动此项目"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移動此項目"
+          }
         }
       }
     },
@@ -112503,6 +113349,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "名称 (SSID)"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "名稱 (SSID)"
           }
         }
       }
@@ -113474,6 +114326,12 @@
             "state" : "translated",
             "value" : "新验证码已发送"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新驗證碼已傳送"
+          }
         }
       }
     },
@@ -113664,6 +114522,12 @@
             "state" : "translated",
             "value" : "过去 14 天内没有活动。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "過去 14 天內沒有活動。"
+          }
         }
       }
     },
@@ -113853,6 +114717,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "无别名"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "沒有別名"
           }
         }
       }
@@ -114240,6 +115110,12 @@
             "state" : "translated",
             "value" : "未检测到信息泄露"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未偵測到外露"
+          }
         }
       }
     },
@@ -114423,6 +115299,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "没有项目与您共享"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "沒有項目與您共享"
           }
         }
       }
@@ -114614,6 +115496,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "未找到项目"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "找不到項目"
           }
         }
       }
@@ -115000,6 +115888,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ 无日志"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "沒有 %@ 的日誌"
           }
         }
       }
@@ -115780,6 +116674,12 @@
             "state" : "translated",
             "value" : "您的登录项目中没有发现弱的密码"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在您的登入項目中找不到弱密碼字元"
+          }
         }
       }
     },
@@ -115970,6 +116870,12 @@
             "state" : "translated",
             "value" : "您的电子邮件地址或别名不会出现在数据泄露事件中"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您的任何電郵位址或別名都未出現在資料外露中"
+          }
         }
       }
     },
@@ -116155,6 +117061,12 @@
             "state" : "translated",
             "value" : "甚至 Proton 或 SimpleLogin 也无法查看。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "甚至 Proton 或 SimpleLogin 也無法看見。"
+          }
         }
       }
     },
@@ -116339,6 +117251,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "未选中"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未選定"
           }
         }
       }
@@ -116725,6 +117643,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "笔记 • SimpleLogin"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "記事・SimpleLogin"
           }
         }
       }
@@ -117308,6 +118232,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ 的笔记"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 的備註"
           }
         }
       }
@@ -119067,6 +119997,12 @@
             "state" : "translated",
             "value" : "您的一个电子邮件地址或别名出现在数据泄露事件中"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您的其中一個電郵位址或別名出現在資料外露中"
+          }
         }
       }
     },
@@ -119256,6 +120192,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "只需轻轻一按，⏤很快！⏤您的用户名和密码就会立即填写"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輕輕一按，大功告成！您的使用者名稱和密碼就馬上填好。"
           }
         }
       }
@@ -119447,6 +120389,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "只允许使用一个免费 Proton Pass 账户。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "僅允許一個免費的 Proton Pass 帳號"
           }
         }
       }
@@ -119834,6 +120782,12 @@
             "state" : "translated",
             "value" : "打开别名"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開啟別名"
+          }
         }
       }
     },
@@ -120220,6 +121174,12 @@
             "state" : "translated",
             "value" : "打开信用卡"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開啟信用或簽帳卡"
+          }
         }
       }
     },
@@ -120403,6 +121363,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "打开自定义项"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開啟自訂項目"
           }
         }
       }
@@ -120594,6 +121560,12 @@
             "state" : "translated",
             "value" : "打开身份"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開啟身分"
+          }
         }
       }
     },
@@ -120784,6 +121756,12 @@
             "state" : "translated",
             "value" : "打开登录"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開啟登入"
+          }
         }
       }
     },
@@ -120967,6 +121945,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "打开笔记"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開啟筆記"
           }
         }
       }
@@ -121348,6 +122332,12 @@
             "state" : "translated",
             "value" : "打开 SSH 密钥"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開啟 SSH 金鑰"
+          }
         }
       }
     },
@@ -121728,6 +122718,12 @@
             "state" : "translated",
             "value" : "打开 WiFi 网络"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開放無線網路"
+          }
         }
       }
     },
@@ -121917,6 +122913,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "已打开："
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已開啟:"
           }
         }
       }
@@ -122410,6 +123412,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Quản lý két sắt"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "整理保管庫"
           }
         }
       }
@@ -126097,6 +127105,12 @@
             "state" : "translated",
             "value" : "患者姓名"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "患者名稱"
+          }
         }
       }
     },
@@ -126876,6 +127890,12 @@
             "state" : "translated",
             "value" : "永久删除"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "永久刪除"
+          }
         }
       }
     },
@@ -127494,6 +128514,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "永久删除的 %lld 项"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hant" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "已永久刪除 %lld 個項目"
                 }
               }
             }
@@ -128271,6 +129303,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "个人网站"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "個人網站"
           }
         }
       }
@@ -130031,6 +131069,12 @@
             "state" : "translated",
             "value" : "请在垃圾邮件中查找一封题为“请确认您的 Proton Pass 邮箱地址”的邮件。\n\n如果找不到这封邮件，您可以选择[重新发送验证码](https://proton.me)。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請到您的垃圾郵件中查看一封標題為「請確認您的 Proton Pass 電郵位址」的電子郵件。\n\n如果您找不到此電子郵件，您可以[請求新代碼](https://proton.me)。"
+          }
         }
       }
     },
@@ -130222,6 +131266,12 @@
             "state" : "translated",
             "value" : "请在垃圾邮件中查找一封题为“请确认您的邮箱 %@”的邮件。\n\n如果找不到这封邮件，您可以选择[重新发送验证码](https://proton.me)。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請到您的垃圾郵件中查看一封標題為「請確認您的電郵信箱 %@」的電子郵件。\n\n如果您找不到此電子郵件，您可以[請求新代碼](https://proton.me)。"
+          }
         }
       }
     },
@@ -130412,6 +131462,12 @@
             "state" : "translated",
             "value" : "请联系我们调查该问题"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請聯絡我們以調查此問題"
+          }
         }
       }
     },
@@ -130596,6 +131652,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "请联系您所在组织的支持团队。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請聯絡您的組織機構支援服務團隊。"
           }
         }
       }
@@ -131369,6 +132431,12 @@
             "state" : "translated",
             "value" : "请注意，一旦删除，别名将无法恢复。也许您想禁用别名？"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請注意，一旦刪除，別名將無法還原。或許您想改為停用此別名？"
+          }
         }
       }
     },
@@ -131559,6 +132627,12 @@
             "state" : "translated",
             "value" : "请注意，一旦删除，别名将无法恢复。别名已被禁用，不会将邮件转发到您的邮箱。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請注意，一旦刪除，此別名便無法還原。此別名已停用，且不會再轉寄電子郵件至您的電郵信箱。"
+          }
         }
       }
     },
@@ -131743,6 +132817,12 @@
             "state" : "translated",
             "value" : "请注意，一旦删除，别名将无法恢复"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請注意，別名一旦刪除，就無法恢復。"
+          }
         }
       }
     },
@@ -131926,6 +133006,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "请注意，别名一旦删除将无法恢复。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請注意，別名一旦刪除，就無法恢復。"
           }
         }
       }
@@ -132112,6 +133198,12 @@
             "state" : "translated",
             "value" : "请在描述中向我们提供更多详细信息"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請在描述中提供我們更多詳細資料"
+          }
         }
       }
     },
@@ -132297,6 +133389,12 @@
             "state" : "translated",
             "value" : "请选择一个原因"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請選取原因"
+          }
         }
       }
     },
@@ -132481,6 +133579,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "积分余额"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "點數餘額"
           }
         }
       }
@@ -133255,6 +134359,12 @@
             "state" : "translated",
             "value" : "前缀不能包含 2 个连续的点 (..)"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "前綴不得包含 2 個連續點 (..)"
+          }
         }
       }
     },
@@ -133445,6 +134555,12 @@
             "state" : "translated",
             "value" : "前缀只能包含小写字母数字（a-z、0-9）、点（.）、连字符（-）和下划线（_）"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "前綴必須只包含小寫英數字元 (a-z, 0-9)、點 (.)、連字號 (-) 和底線 (_)"
+          }
         }
       }
     },
@@ -133634,6 +134750,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "高级域名"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "頂級質子版網域"
           }
         }
       }
@@ -134212,6 +135334,12 @@
             "state" : "translated",
             "value" : "私钥"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "私有金鑰"
+          }
         }
       }
     },
@@ -134785,6 +135913,12 @@
             "state" : "translated",
             "value" : "应用名称"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "方案名稱"
+          }
         }
       }
     },
@@ -135171,6 +136305,12 @@
             "state" : "translated",
             "value" : "Proton 地址"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton 位址"
+          }
         }
       }
     },
@@ -135360,6 +136500,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "已暂停 Proton 地址监测"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton 位址監控已暫停"
           }
         }
       }
@@ -135551,6 +136697,12 @@
             "state" : "translated",
             "value" : "已恢复 Proton 地址监测"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton 位址監控已繼續"
+          }
         }
       }
     },
@@ -135741,6 +136893,12 @@
             "state" : "translated",
             "value" : "Proton 绝不会与第三方共享您的信息。所有数据均来自在暗网上搜索 Proton 域名的结果。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton 絕不與第三方分享您的資訊。所有資料皆來自於搜尋暗網上出現的 Proton 網域。"
+          }
         }
       }
     },
@@ -135924,6 +137082,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton Pass 将生成一个转发地址（也称为反向别名）。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Pass 將產生一個轉寄位址（也稱為反向別名）。"
           }
         }
       }
@@ -136114,6 +137278,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton 密码"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton 密碼字元"
           }
         }
       }
@@ -136423,6 +137593,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "公共域名"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "公開網域"
           }
         }
       }
@@ -137970,6 +139146,12 @@
             "state" : "translated",
             "value" : "记录数"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "病歷號碼"
+          }
         }
       }
     },
@@ -138181,6 +139363,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "重新生成密码"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重新產生密碼字元"
           }
         }
       }
@@ -138960,6 +140148,12 @@
             "state" : "translated",
             "value" : "移除所有不活动链接"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移除所有非作用中連結"
+          }
         }
       }
     },
@@ -139143,6 +140337,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "从上次下载中删除缓存的附件"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移除來自先前下載的快取附件"
           }
         }
       }
@@ -139334,6 +140534,12 @@
             "state" : "translated",
             "value" : "移除自定义部分"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移除自訂區段"
+          }
         }
       }
     },
@@ -139523,6 +140729,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "移除额外密码"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移除第二密碼"
           }
         }
       }
@@ -139909,6 +141121,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "删除非活动链接"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移除非作用中連結"
           }
         }
       }
@@ -140687,6 +141905,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "再次输入额外密码"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "再次輸入第二密碼"
           }
         }
       }
@@ -142246,6 +143470,12 @@
             "state" : "translated",
             "value" : "重置历史记录"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重設歷史記錄"
+          }
         }
       }
     },
@@ -142430,6 +143660,12 @@
             "state" : "translated",
             "value" : "重置此项目的历史记录？"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重設此項目的歷史？"
+          }
         }
       }
     },
@@ -142613,6 +143849,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "重置历史记录将永久删除所有过去的版本，且无法撤销。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重設歷史記錄將永久刪除所有過往版本且無法復原。"
           }
         }
       }
@@ -143583,6 +144825,12 @@
             "state" : "translated",
             "value" : "恢复购买"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "還原購買"
+          }
         }
       }
     },
@@ -144401,6 +145649,18 @@
               }
             }
           }
+        },
+        "zh-Hant" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "已還原 %lld 個項目"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -144590,6 +145850,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "限制浏览次数"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "限制檢視次數"
           }
         }
       }
@@ -146588,6 +147854,12 @@
             "state" : "translated",
             "value" : "奖励计划"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "獎勵計畫"
+          }
         }
       }
     },
@@ -146766,6 +148038,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "路由编号"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "路由號碼"
           }
         }
       }
@@ -147339,6 +148617,12 @@
             "state" : "translated",
             "value" : "扫描二维码加入"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "掃描 QR code 以加入"
+          }
         }
       }
     },
@@ -147863,10 +149147,22 @@
             "value" : "Hľadať vo všetkých položkách"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tüm ögelerde ara"
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Шукати у всіх елементах"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "搜尋所有項目"
           }
         }
       }
@@ -148461,6 +149757,18 @@
               }
             }
           }
+        },
+        "zh-Hant" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "在 %lld 個帳號中搜尋"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -148848,6 +150156,12 @@
             "state" : "translated",
             "value" : "在最早的 2 个保险库中搜索"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在最舊的 2 個保管庫中搜尋"
+          }
         }
       }
     },
@@ -149037,6 +150351,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "可搜索的内容"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "可搜尋的內容"
           }
         }
       }
@@ -149228,6 +150548,12 @@
             "state" : "translated",
             "value" : "可搜索保险库"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "可搜尋的保管庫"
+          }
         }
       }
     },
@@ -149418,6 +150744,12 @@
             "state" : "translated",
             "value" : "辅助电话号码"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "第二個電話號碼"
+          }
         }
       }
     },
@@ -149602,6 +150934,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "密钥"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "秘密"
           }
         }
       }
@@ -149792,6 +151130,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "安全链接"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "安全加密連結"
           }
         }
       }
@@ -150178,6 +151522,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "安全链接"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "安全加密連結"
           }
         }
       }
@@ -151536,6 +152886,12 @@
             "state" : "translated",
             "value" : "加密类型"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "安全性類型"
+          }
         }
       }
     },
@@ -151916,6 +153272,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "查看成员和权限概述。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "檢視成員與權限總覽"
           }
         }
       }
@@ -152298,6 +153660,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "种子短语"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "種子短語"
           }
         }
       }
@@ -153079,6 +154447,12 @@
             "state" : "translated",
             "value" : "选择密钥"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選取通行密鑰"
+          }
         }
       }
     },
@@ -153465,6 +154839,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "选定的保险库"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已選取保管庫"
           }
         }
       }
@@ -154244,6 +155624,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton Sentinel 是一项高级的账户保护程序，由先进的人工智能系统和专家提供支持，全天候保护您免受不良分子和安全威胁的侵害。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Sentinel 是一種高級帳號保護程序，由最新的 AI 系統和全天候工作的專家提供協助，以保護您免受不良行為者與安全威脅的侵害。"
           }
         }
       }
@@ -155411,6 +156797,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "设置 Proton Pass 额外密码"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "設定 Proton Pass 的第二密碼"
           }
         }
       }
@@ -156768,6 +158160,12 @@
             "state" : "translated",
             "value" : "共享 ID"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分享 ID"
+          }
         }
       }
     },
@@ -156946,6 +158344,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "共享 ID 已复制"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共享 ID 已複製"
           }
         }
       }
@@ -157528,6 +158932,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "分享安全链接"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共享安全加密鏈結"
           }
         }
       }
@@ -158303,6 +159713,12 @@
             "state" : "translated",
             "value" : "共享项目邀请"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共享項目邀請函"
+          }
         }
       }
     },
@@ -158492,6 +159908,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "共享方式"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "透過共享"
           }
         }
       }
@@ -159076,6 +160498,12 @@
             "state" : "translated",
             "value" : "显示 %@ 保险库"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "顯示 %@ 保管庫"
+          }
         }
       }
     },
@@ -159265,6 +160693,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "显示所有保险库"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "顯示所有保管庫"
           }
         }
       }
@@ -159456,6 +160890,12 @@
             "state" : "translated",
             "value" : "显示卡号"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "顯示卡號"
+          }
         }
       }
     },
@@ -159646,6 +161086,12 @@
             "state" : "translated",
             "value" : "在搜索中显示内容"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "顯示搜尋中的內容"
+          }
         }
       }
     },
@@ -159835,6 +161281,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "显示自定义字段"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "顯示自訂欄位"
           }
         }
       }
@@ -160407,6 +161859,12 @@
             "state" : "translated",
             "value" : "显示网络二维码"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "顯示網路 QR Code"
+          }
         }
       }
     },
@@ -160793,6 +162251,12 @@
             "state" : "translated",
             "value" : "显示置顶"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "顯示個人識別號碼"
+          }
         }
       }
     },
@@ -160983,6 +162447,12 @@
             "state" : "translated",
             "value" : "显示安全码"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "顯示安全保護代碼"
+          }
         }
       }
     },
@@ -161166,6 +162636,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "显示我的共享"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "顯示由我共享的"
           }
         }
       }
@@ -161351,6 +162827,12 @@
             "state" : "translated",
             "value" : "显示与我共享的"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "顯示與我共享的"
+          }
         }
       }
     },
@@ -161534,6 +163016,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "显示社会保障号码"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "顯示社會安全碼"
           }
         }
       }
@@ -161724,6 +163212,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "显示回收站"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "顯示垃圾桶"
           }
         }
       }
@@ -162099,6 +163593,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "登录到其他设备"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "登入另一個裝置"
           }
         }
       }
@@ -162683,6 +164183,12 @@
             "state" : "translated",
             "value" : "SimpleLogin 别名将被导入此保险库。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SimpleLogin 別名將會匯入此保管庫。"
+          }
         }
       }
     },
@@ -162866,6 +164372,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SimpleLogin备注与别名地址储存在同一位置，尽管该备注信息已通过静态加密进行保护，但由于未采用端到端加密技术，这意味着任何有权访问SimpleLogin数据库的人员均可读取其内容。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SimpleLogin 備註與別名位址一同已儲存在相同位置，儘管它受靜態加密保護，但它不是端對端加密的，這意味著任何可以存取 SimpleLogin 資料庫的人都可以已讀它。"
           }
         }
       }
@@ -163053,6 +164565,12 @@
           }
         },
         "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SimpleLogin 同步"
+          }
+        },
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "SimpleLogin 同步"
@@ -163432,6 +164950,12 @@
             "state" : "translated",
             "value" : "社会保障号码"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "社會安全碼"
+          }
         }
       }
     },
@@ -163617,6 +165141,12 @@
             "state" : "translated",
             "value" : "软件授权许可"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "軟體授權"
+          }
         }
       }
     },
@@ -163788,6 +165318,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "由于密码重置，有些保险库已无法访问。请重新激活您的账户密钥，以重新获得访问权。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "有些保管庫於密碼重設後無法使用。重新啟用帳號密鑰已重新取得權限。"
           }
         }
       }
@@ -164562,6 +166098,12 @@
             "state" : "translated",
             "value" : "聚光灯"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "聚光燈"
+          }
         }
       }
     },
@@ -165121,6 +166663,12 @@
             "state" : "translated",
             "value" : "SSH 密钥已创建"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH 金鑰已建立"
+          }
         }
       }
     },
@@ -165298,6 +166846,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SSH 密钥已移至回收站"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH 金鑰已移至垃圾桶"
           }
         }
       }
@@ -165477,6 +167031,12 @@
             "state" : "translated",
             "value" : "SSH 密钥已永久删除"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH 金鑰已永久刪除"
+          }
         }
       }
     },
@@ -165655,6 +167215,12 @@
             "state" : "translated",
             "value" : "SSH 密钥已恢复"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH 金鑰已還原"
+          }
         }
       }
     },
@@ -165832,6 +167398,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SSH 密钥已更新"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH 金鑰已更新"
           }
         }
       }
@@ -166207,6 +167779,12 @@
             "state" : "translated",
             "value" : "SSID 已复制"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSID 已複製"
+          }
         }
       }
     },
@@ -166581,6 +168159,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "从头开始"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "從頭開始"
           }
         }
       }
@@ -167359,6 +168943,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "街道地址，邮政编号"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "街道地址，郵政信箱"
           }
         }
       }
@@ -168331,6 +169921,12 @@
             "state" : "translated",
             "value" : "SWIFT/BIC代码"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SWIFT/BIC代碼"
+          }
         }
       }
     },
@@ -168522,6 +170118,12 @@
             "state" : "translated",
             "value" : "转换和管理"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "切換並管理"
+          }
         }
       }
     },
@@ -168712,6 +170314,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "切换到 %@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已切換至 %@"
           }
         }
       }
@@ -169879,6 +171487,12 @@
             "state" : "translated",
             "value" : "点击了解详情。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輕點這裡查看詳細資料"
+          }
         }
       }
     },
@@ -170068,6 +171682,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "点击齿轮图标，按你想要的方式自定义别名。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輕點選項圖示，即可依您所需自訂別名。"
           }
         }
       }
@@ -171039,6 +172659,12 @@
             "state" : "translated",
             "value" : "别名前缀太长"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "別名前綴太長"
+          }
         }
       }
     },
@@ -171419,6 +173045,12 @@
             "state" : "translated",
             "value" : "使用此别名发送电子邮件时的显示名称。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "從此別名傳送電子郵件時的顯示名稱。"
+          }
         }
       }
     },
@@ -171602,6 +173234,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "所选文件超出大小限制。请选择小于 100 MB 的文件。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選取的檔案超出大小限制。請選取小於 100MB 的檔案。"
           }
         }
       }
@@ -171792,6 +173430,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "选中的文件为空。请检查文件，然后重试。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您選取的檔案是空的。請檢查檔案並再試一次。"
           }
         }
       }
@@ -172179,6 +173823,12 @@
             "state" : "translated",
             "value" : "这些项目仍然处于危险中"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "這些項目仍有風險"
+          }
         }
       }
     },
@@ -172368,6 +174018,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "此帐户易受攻击，请访问服务并更改您的密码。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "這個帳號有風險，請造訪該服務並變更您的密碼字元"
           }
         }
       }
@@ -172560,6 +174216,12 @@
             "state" : "translated",
             "value" : "这是你最后的尝试机会。再次验证失败后，您将被注销。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "這是您最後一次嘗試。如果再次驗證失敗，您將被登出。"
+          }
         }
       }
     },
@@ -172664,7 +174326,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "이 아이템은 현재 공유되어있습니다. 이 항목을 삭제하면 다른 모든 사람들의 접근 권한이 제거됩니다."
+            "value" : "이 아이템은 현재 공유되어 있습니다. 이 항목을 삭제하면 다른 모든 사람들의 접근 권한이 제거됩니다."
           }
         },
         "nb" : {
@@ -172743,6 +174405,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "此项目目前是共享的。删除它将取消所有其他用户的访问权限。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此項目目前為共享狀態。刪除它將會移除所有其他使用者的存取權限。"
           }
         }
       }
@@ -172921,6 +174589,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "此项目目前是共享的。将其移动到另一个保险库将取消所有其他用户的访问权限。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此項目目前為共享狀態。將其移至另一個保管庫，將會移除所有其他使用者的存取權限。"
           }
         }
       }
@@ -173112,6 +174786,12 @@
             "state" : "translated",
             "value" : "此项目未被监测"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此項目未受監控"
+          }
         }
       }
     },
@@ -173301,6 +174981,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "这个登录项目已经包含 2FA 密钥"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此登入項目已包含雙重驗證密鑰"
           }
         }
       }
@@ -173688,6 +175374,12 @@
             "state" : "translated",
             "value" : "该服务提供 2FA。启用它可提高账户安全性。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此服務提供雙重驗證。啟用此功能以加強帳號安全。"
+          }
         }
       }
     },
@@ -173877,6 +175569,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "这将永久删除保险库 « %@ » 及其所有内容。输入保险库名称以确认删除。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此將永久刪除保管庫 「 %@ 」 及其所有內容。輸入保管庫名稱以確認刪除。"
           }
         }
       }
@@ -174068,6 +175766,12 @@
             "state" : "translated",
             "value" : "这将永久删除您的 Proton 账户及其所有数据，包括电子邮件、日历和存储在 Drive 中的数据。您将无法重新激活该账户。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "這將會永久刪除您的 Proton 帳號以及所有資料，包含電子郵件、行事曆和儲存在 Drive 中的資料。您將無法重新啟用此帳號。"
+          }
         }
       }
     },
@@ -174240,6 +175944,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "套餐等级"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "等級/級別"
           }
         }
       }
@@ -174419,6 +176129,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "账户状态"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "等級/狀態"
           }
         }
       }
@@ -174805,6 +176521,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "标题和笔记"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "標題與備註"
           }
         }
       }
@@ -175382,6 +177104,12 @@
             "state" : "translated",
             "value" : "要隐藏您的个人电子邮件地址，您可以创建一个别名联系人来掩盖您的地址。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "為了隱藏您的個人電郵位址，您可以建立一個別名聯絡人以遮罩您的位址。"
+          }
         }
       }
     },
@@ -175566,6 +177294,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "转到邮箱"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "至電郵信箱"
           }
         }
       }
@@ -175946,6 +177680,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "过多的错误尝试"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "錯誤嘗試次數過多"
           }
         }
       }
@@ -176529,6 +178269,12 @@
             "state" : "translated",
             "value" : "转移别名"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "轉移別名"
+          }
         }
       }
     },
@@ -176712,6 +178458,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "转移并删除邮箱"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "轉移並刪除電郵信箱"
           }
         }
       }
@@ -178664,6 +180416,12 @@
             "state" : "translated",
             "value" : "取消屏蔽联系人"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "解除封鎖聯絡人"
+          }
         }
       }
     },
@@ -180220,6 +181978,12 @@
             "state" : "translated",
             "value" : "解锁高级安全功能和详细日志，保护您的在线形象。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "解鎖進階安全性功能和詳細日誌以保護您的已連線狀態。"
+          }
         }
       }
     },
@@ -180988,6 +182752,12 @@
             "state" : "translated",
             "value" : "未指定"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未指定"
+          }
         }
       }
     },
@@ -181570,6 +183340,12 @@
             "state" : "translated",
             "value" : "未验证的电子邮件操作菜单"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未驗證的電子郵件操作選單"
+          }
         }
       }
     },
@@ -181754,6 +183530,12 @@
             "state" : "translated",
             "value" : "未验证的邮箱"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未驗證的電郵信箱"
+          }
         }
       }
     },
@@ -181931,6 +183713,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "未经验证的邮箱变更"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未驗證的電郵信箱變更"
           }
         }
       }
@@ -183104,6 +184892,12 @@
             "state" : "translated",
             "value" : "升级以添加自定义分组"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "升級以新增自訂區段"
+          }
         }
       }
     },
@@ -183398,7 +185192,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "사용자 지정 항목 추가하려면 업그레이드하기"
+            "value" : "사용자 지정 항목을 추가하려면 업그레이드하기"
           }
         },
         "nb" : {
@@ -183471,6 +185265,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "升级以创建自定义项目"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "升級以建立自訂項目"
           }
         }
       }
@@ -184249,6 +186049,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Optic ID 失败时使用系统密码"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在 Optic ID 失敗時使用系統密碼數字"
           }
         }
       }
@@ -185260,6 +187066,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "用于 %lld 登录"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hant" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "用於 %lld 個登入"
                 }
               }
             }
@@ -186631,6 +188449,12 @@
             "state" : "translated",
             "value" : "保险库已被转让"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保管庫已轉移"
+          }
         }
       }
     },
@@ -187016,6 +188840,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "保险库 ID 已复制"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保管庫 ID 已複製"
           }
         }
       }
@@ -187600,6 +189430,12 @@
             "state" : "translated",
             "value" : "保险库共享（最多 10 人）"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保管庫共享 (至多 10 人)"
+          }
         }
       }
     },
@@ -188180,6 +190016,18 @@
               }
             }
           }
+        },
+        "zh-Hant" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "保管庫共享：%lld 位成員"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -188567,6 +190415,12 @@
             "state" : "translated",
             "value" : "免费计划的保险库不能容纳超过 3 个用户。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保管庫不能包含超過 3 位免費方案使用者。"
+          }
         }
       }
     },
@@ -188757,6 +190611,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "保险库包含的用户数不能超过 10 位。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保管庫不能包含超過 10 位使用者。"
           }
         }
       }
@@ -189922,6 +191782,12 @@
             "state" : "translated",
             "value" : "查看您所有的安全链接"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "檢視您的所有安全加密鏈結"
+          }
         }
       }
     },
@@ -190111,6 +191977,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在单独的别名页面上查看和编辑此别名的详细信息。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在獨立的別名頁面上查看及編輯此別名的詳細資料。"
           }
         }
       }
@@ -191671,6 +193543,12 @@
             "state" : "translated",
             "value" : "钱包名称"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "錢包名稱"
+          }
         }
       }
     },
@@ -191861,6 +193739,12 @@
             "state" : "translated",
             "value" : "我们正在下载并解密您的项目。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我們正在下載並解密您的項目。"
+          }
         }
       }
     },
@@ -192038,6 +193922,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "我们检测到您的生物识别身份验证设置发生了更改。出于安全原因，您已被注销。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我們偵測到您的生物識別驗證設定值有變更。基於安全考量，您已登出。"
           }
         }
       }
@@ -192228,6 +194118,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "我们向 %@ 发生了验证码，请在下面输入："
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我們已傳送驗證碼至 %@。請在下方輸入："
           }
         }
       }
@@ -192812,6 +194708,12 @@
             "state" : "translated",
             "value" : "弱密码"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "弱密碼字元"
+          }
         }
       }
     },
@@ -193001,6 +194903,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "弱密码更容易被猜中。生成强大的密码，确保账户安全。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "弱密碼字元更容易猜到。產生強度高的密碼字元，以確保您的帳號安全。"
           }
         }
       }
@@ -193970,6 +195878,12 @@
             "state" : "translated",
             "value" : "在保险库之间移动项目时，我们将最多保留对每个项目进行 50 此修改。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在保管庫之間移動項目時，我們將保留對每個項目執行的最近 50 次修改。"
+          }
         }
       }
     },
@@ -193978,7 +195892,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Падрабязнасці пра Wi-Fi, SSH, карыстальніцкія элементы і іншае"
+            "value" : "Падрабязныя звесткі аб Wi-Fi, SSH, карыстальніцкіх элементах і г.д."
           }
         },
         "ca" : {
@@ -194110,13 +196024,19 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "WiFi ayrıntıları, SSH, özel öğeler ve daha fazlası"
+            "value" : "Wi-Fi bilgileri, SSH, özel ögeler ve diğerleri"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Подробиці про Wi-Fi, SSH, власні елементи та інше"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無線網路詳細資料、SSH、自訂項目及更多"
           }
         }
       }
@@ -194301,6 +196221,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "WiFi 网络"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無線網路"
           }
         }
       }
@@ -194487,6 +196413,12 @@
             "state" : "translated",
             "value" : "WiFi 网络"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無線網路"
+          }
         }
       }
     },
@@ -194658,6 +196590,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "WiFi 网络已创建"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無線網路已建立"
           }
         }
       }
@@ -194831,6 +196769,12 @@
             "state" : "translated",
             "value" : "WiFi 网络已移至回收站"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無線網路已移至垃圾桶"
+          }
         }
       }
     },
@@ -195002,6 +196946,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "WiFi网络已永久删除"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無線網路已永久刪除"
           }
         }
       }
@@ -195175,6 +197125,12 @@
             "state" : "translated",
             "value" : "WiFi网络已恢复"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無線網路已還原"
+          }
         }
       }
     },
@@ -195346,6 +197302,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "WiFi网络已更新"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無線網路已更新"
           }
         }
       }
@@ -195525,6 +197487,12 @@
             "state" : "translated",
             "value" : "WiFi 网络"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無線網路"
+          }
         }
       }
     },
@@ -195623,7 +197591,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "WiFi 네트워크 복사됨"
+            "value" : "WiFi 비밀번호 복사됨"
           }
         },
         "nb" : {
@@ -195702,6 +197670,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "WiFi密码已复制"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無線網路密碼字元已複製"
           }
         }
       }
@@ -195892,6 +197866,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "与其他 Proton Pass 用户联系"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "與其他 Proton Pass 使用者"
           }
         }
       }
@@ -196279,6 +198259,12 @@
             "state" : "translated",
             "value" : "工作详情"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "工作詳細資料"
+          }
         }
       }
     },
@@ -196468,6 +198454,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "工作邮箱"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "工作電子郵件"
           }
         }
       }
@@ -196843,6 +198835,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "您想将 “%1$@”与 “%2$@” 关联起来吗？"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您是否要將 \"%1$@\" 與 \"%2$@\" 建立關聯？"
           }
         }
       }
@@ -197420,6 +199418,12 @@
             "state" : "translated",
             "value" : "Proton 密码错误"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "錯誤的 Proton 密碼字元"
+          }
         }
       }
     },
@@ -197609,6 +199613,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "X 用户名"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "X 帳號"
           }
         }
       }
@@ -198801,6 +200811,18 @@
               }
             }
           }
+        },
+        "zh-Hant" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "您即將永久刪除 %lld 個別名"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -199423,6 +201445,18 @@
               }
             }
           }
+        },
+        "zh-Hant" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "您即將刪除 %lld 個項目且無法復原，您確定嗎？"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -199809,6 +201843,12 @@
             "state" : "translated",
             "value" : "您不能邀请组织外的人员，请联系管理员获取更多信息。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您無法邀請您組織機構以外的人員，請聯絡管理員以獲取更多資訊。"
+          }
         }
       }
     },
@@ -199992,6 +202032,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "您目前没有任何安全链接"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您目前沒有任何安全加密鏈結"
           }
         }
       }
@@ -200367,6 +202413,12 @@
             "state" : "translated",
             "value" : "您目前没有带有 2FA 密钥的登录项目 (TOTP)"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您目前沒有含有雙重驗證秘密金鑰 (TOTP) 的登入項目"
+          }
         }
       }
     },
@@ -200557,6 +202609,12 @@
             "state" : "translated",
             "value" : "您没有任何排除在监测之外的登录项目"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您沒有任何已從監控中排除的登入項目"
+          }
         }
       }
     },
@@ -200734,6 +202792,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "您没有任何保险库"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您沒有任何保管庫"
           }
         }
       }
@@ -200925,6 +202989,12 @@
             "state" : "translated",
             "value" : "您的登录项目中没有重用密码"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您的登入項目中沒有重複使用的密碼字元"
+          }
         }
       }
     },
@@ -201102,6 +203172,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "您没有共享任何项目"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您沒有共享任何項目"
           }
         }
       }
@@ -201490,6 +203566,12 @@
             "state" : "translated",
             "value" : "您已达到此保险库的使用人数上限。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您已達到此保管庫的使用者上限。"
+          }
         }
       }
     },
@@ -201679,6 +203761,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "您已达到可创建的保险库上限。升级到付费计划，即可创建多个保险库。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您已達到可建立的保管庫數量上限。升級至付費方案以建立多個保管庫。"
           }
         }
       }
@@ -201870,6 +203958,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "您需要切换到 %@ 才能管理它"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您需要切換至 %@ 才能管理它"
           }
         }
       }
@@ -202441,6 +204535,12 @@
             "state" : "translated",
             "value" : "您将无法访问此项目及其详细信息。是否要继续"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您將會失去存取此項目及其詳細資料。您要繼續嗎？"
+          }
         }
       }
     },
@@ -202829,6 +204929,12 @@
             "state" : "translated",
             "value" : "您已从 %@ 登出"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您已從 %@ 登出"
+          }
         }
       }
     },
@@ -203020,6 +205126,12 @@
             "state" : "translated",
             "value" : "您已从其他免费帐户登出"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您已從其他免費帳號登出"
+          }
         }
       }
     },
@@ -203209,6 +205321,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "您当前的文档将恢复为 %@ 的版本。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您目前的檔案將還原為 %@ 的版本"
           }
         }
       }
@@ -203400,6 +205518,12 @@
             "state" : "translated",
             "value" : "您当前的应用程序版本不再受支持。请更新至最新版本。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您的應用程式目前版本已不再受支援。請更新至最新版本。"
+          }
         }
       }
     },
@@ -203589,6 +205713,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "您的域名"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您的網域"
           }
         }
       }
@@ -204212,6 +206342,18 @@
               }
             }
           }
+        },
+        "zh-Hant" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "您的電郵位址在 %lld 次外露中外洩"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -204401,6 +206543,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "您的电子邮件地址在至少1次数据泄露事件中被泄露。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您的電郵位址至少在 1 次資料外露中外洩。"
           }
         }
       }
@@ -204788,6 +206936,12 @@
             "state" : "translated",
             "value" : "您的信息在一次数据泄露中被发现，并在 **%@** 上被发现"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您的資訊已在外露於資料外洩中，並在 **%@** 上找到"
+          }
         }
       }
     },
@@ -204978,6 +207132,12 @@
             "state" : "translated",
             "value" : "您的个人数据在一次数据泄露事件中被某在线服务泄露。升级以查看全部详情并获取建议操作。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您的個人資料在資料外露事件中遭到已連線服務外洩。升級以檢視完整詳細資料並取得建議動作。"
+          }
         }
       }
     },
@@ -205156,6 +207316,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "您的计划只允许使用前2个保险库中的项目进行自动填充。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您的方案僅允許您使用前2個保管庫中的項目來進行自動填入。"
           }
         }
       }
@@ -205347,6 +207513,12 @@
             "state" : "translated",
             "value" : "您的 Proton 账户信息仍然是安全和加密的。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您的 Proton 帳號資訊保持安全且加密的。"
+          }
         }
       }
     },
@@ -205530,6 +207702,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "您的收件人"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您的收件者"
           }
         }
       }
@@ -205720,6 +207898,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "您的会话已经过期"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您的作業階段已逾期"
           }
         }
       }
@@ -206303,6 +208487,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "邮政编码"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "郵遞區號"
           }
         }
       }

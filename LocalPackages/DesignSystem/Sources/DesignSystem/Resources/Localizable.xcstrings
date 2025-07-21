@@ -177,6 +177,12 @@
             "state" : "translated",
             "value" : "无法使用相机"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "相機無法使用"
+          }
         }
       }
     },
@@ -1538,6 +1544,12 @@
             "state" : "translated",
             "value" : "隐私或限制设置禁用了相机的使用。您可以在设置中进行更改。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "「隱私」或「限制」設定值已停用相機的使用。您可以在「設定值」中變更此項。"
+          }
         }
       }
     },
@@ -2102,6 +2114,12 @@
             "state" : "translated",
             "value" : "分享日志"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分享記錄檔"
+          }
         }
       }
     },
@@ -2292,6 +2310,12 @@
             "state" : "translated",
             "value" : "此项目发生了一些更改，回到上一页。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此項目發生了一些變更，正在返回上一頁。"
+          }
         }
       }
     },
@@ -2481,6 +2505,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "这个项目已经过时了"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此項目已過時"
           }
         }
       }
