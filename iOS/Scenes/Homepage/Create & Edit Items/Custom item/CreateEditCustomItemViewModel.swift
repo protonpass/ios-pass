@@ -105,10 +105,6 @@ private extension DefaultField {
     static var password: Self {
         .init(title: #localized("Password"), type: .hiddenText)
     }
-
-    static var note: Self {
-        .init(title: #localized("Note"))
-    }
 }
 
 private extension CustomItemTemplate {
