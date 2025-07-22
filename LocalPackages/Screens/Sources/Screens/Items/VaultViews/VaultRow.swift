@@ -24,7 +24,7 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 public enum VaultRowMode: Equatable {
-    case view(isSelected: Bool, action: ((Share) -> Void)?)
+    case view(isSelected: Bool, isHidden: Bool, action: ((Share) -> Void)?)
     case organise(isHidden: Bool)
 
     var isView: Bool {
@@ -37,8 +37,8 @@ public enum VaultRowMode: Equatable {
 
     public static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
-        case let (.view(lIsSelected, _), .view(rIsSelected, _)):
-            lIsSelected == rIsSelected
+        case let (.view(lIsSelected, lIsHidden, _), .view(rIsSelected, rIsHidden, _)):
+            lIsSelected == rIsSelected && lIsHidden == rIsHidden
         case let (.organise(lIsHidden), .organise(rIsHidden)):
             lIsHidden == rIsHidden
         default:
@@ -48,6 +48,7 @@ public enum VaultRowMode: Equatable {
 }
 
 public struct VaultRow<Thumbnail: View>: View {
+    @Environment(\.colorScheme) private var colorScheme
     private let thumbnail: () -> Thumbnail
     private let title: String
     private let itemCount: Int
@@ -60,7 +61,7 @@ public struct VaultRow<Thumbnail: View>: View {
                 title: String,
                 itemCount: Int,
                 share: Share? = nil,
-                mode: VaultRowMode = .view(isSelected: false, action: nil),
+                mode: VaultRowMode = .view(isSelected: false, isHidden: false, action: nil),
                 maxWidth: CGFloat? = .infinity,
                 height: CGFloat = 70) {
         self.thumbnail = thumbnail
@@ -84,14 +85,27 @@ public struct VaultRow<Thumbnail: View>: View {
 
             ZStack(alignment: .bottomTrailing) {
                 thumbnail()
-                if case let .view(isSelected, _) = mode, isSelected {
-                    Image(uiImage: IconProvider.checkmarkCircleFilled)
-                        .resizable()
-                        .scaledToFit()
-                        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
-                        .frame(maxHeight: 20)
-                        .clipShape(Circle())
-                        .offset(x: 5, y: 5)
+                if case let .view(isSelected, isHidden, _) = mode, isSelected || isHidden {
+                    let icon: UIImage? = if isSelected {
+                        IconProvider.checkmark
+                    } else if isHidden {
+                        IconProvider.eyeSlash
+                    } else {
+                        nil
+                    }
+
+                    if let icon {
+                        Image(uiImage: icon)
+                            .resizable()
+                            .scaledToFit()
+                            .foregroundStyle(PassColor.textInvert.toColor)
+                            .padding(3)
+                            .background(colorScheme == .dark ?
+                                PassColor.interactionNormMajor2.toColor : PassColor.interactionNorm.toColor)
+                            .frame(height: 20)
+                            .clipShape(Circle())
+                            .offset(x: 5, y: 5)
+                    }
                 }
             }
 
@@ -143,7 +157,7 @@ public struct VaultRow<Thumbnail: View>: View {
                 .background(PassColor.interactionNormMinor1.toColor)
                 .cornerRadius(20)
                 .buttonEmbeded {
-                    if case let .view(_, action) = mode {
+                    if case let .view(_, _, action) = mode {
                         action?(share)
                     }
                 }

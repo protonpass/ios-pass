@@ -35,17 +35,21 @@ struct MoveVaultListView: View {
                     .font(.title3)
                     .fontWeight(.bold)
                     .foregroundStyle(PassColor.textNorm.toColor)
-                // swiftlint:disable:next line_length
-                Label("When moving items between vaults we will preserve up to the last 50 modifications performed to each item",
-                      systemImage: "info.circle.fill")
-                    .font(.callout)
-                    .foregroundStyle(PassColor.textWeak.toColor)
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 12)
-                    .background(PassColor.backgroundNorm.toColor)
-                    .cornerRadius(12)
-                Divider()
-                    .padding(.top, 12)
+
+                if viewModel.showWarning {
+                    // swiftlint:disable:next line_length
+                    Label("When moving items between vaults we will preserve up to the last 50 modifications performed to each item",
+                          systemImage: "info.circle.fill")
+                        .font(.callout)
+                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 12)
+                        .background(PassColor.backgroundNorm.toColor)
+                        .cornerRadius(12)
+
+                    Divider()
+                        .padding(.top, 12)
+                }
             }
             .frame(maxWidth: .infinity)
             .padding(.horizontal)
@@ -100,7 +104,9 @@ struct MoveVaultListView: View {
             VaultRow(thumbnail: { VaultThumbnail(vaultContent: vaultContent) },
                      title: vaultContent.name,
                      itemCount: vault.itemCount,
-                     mode: .view(isSelected: viewModel.selectedVault == vault, action: nil))
+                     mode: .view(isSelected: viewModel.selectedVault == vault,
+                                 isHidden: vault.share.hidden,
+                                 action: nil))
         })
         .buttonStyle(.plain)
         .opacityReduced(!vault.share.canEdit)

@@ -38,16 +38,16 @@ extension GetItemsForPasskeyCreationUseCase {
 final class GetItemsForPasskeyCreation: GetItemsForPasskeyCreationUseCase {
     private let symmetricKeyProvider: any SymmetricKeyProvider
     private let shareRepository: any ShareRepositoryProtocol
-    private let itemRepositiry: any ItemRepositoryProtocol
+    private let itemRepository: any ItemRepositoryProtocol
     private let accessRepository: any AccessRepositoryProtocol
 
     init(symmetricKeyProvider: any SymmetricKeyProvider,
          shareRepository: any ShareRepositoryProtocol,
-         itemRepositiry: any ItemRepositoryProtocol,
+         itemRepository: any ItemRepositoryProtocol,
          accessRepository: any AccessRepositoryProtocol) {
         self.symmetricKeyProvider = symmetricKeyProvider
         self.shareRepository = shareRepository
-        self.itemRepositiry = itemRepositiry
+        self.itemRepository = itemRepository
         self.accessRepository = accessRepository
     }
 
@@ -57,7 +57,7 @@ final class GetItemsForPasskeyCreation: GetItemsForPasskeyCreationUseCase {
                  _ request: PasskeyCredentialRequest) async throws -> CredentialsForPasskeyCreation {
         async let getSymmetricKey = symmetricKeyProvider.getSymmetricKey()
         async let getShares = shareRepository.getDecryptedShares(userId: userId)
-        async let getActiveLogInItems = itemRepositiry.getActiveLogInItems(userId: userId)
+        async let getActiveLogInItems = itemRepository.getActiveLogInItems(userId: userId)
         async let getPlan = accessRepository.getPlan(userId: userId)
 
         let results = try await (symmetricKey: getSymmetricKey,
