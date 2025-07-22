@@ -23,15 +23,26 @@ import Entities
 import SwiftUI
 
 struct NoteDetailView: View {
-    let note: String
+    @StateObject private var viewModel: BaseItemDetailViewModel
+
+    init(_ viewModel: BaseItemDetailViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
+    }
 
     var body: some View {
-        if note.isEmpty {
+        if viewModel.item.content.note.isEmpty {
             Text("Empty note")
                 .placeholderText()
                 .frame(maxWidth: .infinity, alignment: .leading)
         } else {
-            ReadOnlyTextView(note)
+            ReadOnlyTextView(viewModel.item.content.note)
         }
+
+        CustomFieldSections(itemContentType: viewModel.item.content.type,
+                            fields: viewModel.item.content.customFields,
+                            isFreeUser: viewModel.isFreeUser,
+                            onSelectHiddenText: viewModel.autofill,
+                            onSelectTotpToken: viewModel.autofill,
+                            onUpgrade: viewModel.upgrade)
     }
 }
