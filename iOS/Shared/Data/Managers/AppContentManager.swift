@@ -613,3 +613,9 @@ private extension AppContentManager {
         }
     }
 }
+
+extension [ShareContent] {
+    func sortedByHidden() -> Self {
+        sorted(by: { !$0.share.hidden && $1.share.hidden })
+    }
+}
