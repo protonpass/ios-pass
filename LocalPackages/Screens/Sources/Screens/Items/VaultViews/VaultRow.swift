@@ -48,6 +48,7 @@ public enum VaultRowMode: Equatable {
 }
 
 public struct VaultRow<Thumbnail: View>: View {
+    @Environment(\.colorScheme) private var colorScheme
     private let thumbnail: () -> Thumbnail
     private let title: String
     private let itemCount: Int
@@ -98,8 +99,9 @@ public struct VaultRow<Thumbnail: View>: View {
                             .resizable()
                             .scaledToFit()
                             .foregroundStyle(PassColor.textInvert.toColor)
-                            .padding(2)
-                            .background(PassColor.interactionNormMajor2.toColor)
+                            .padding(3)
+                            .background(colorScheme == .dark ?
+                                PassColor.interactionNormMajor2.toColor : PassColor.interactionNorm.toColor)
                             .frame(height: 20)
                             .clipShape(Circle())
                             .offset(x: 5, y: 5)
