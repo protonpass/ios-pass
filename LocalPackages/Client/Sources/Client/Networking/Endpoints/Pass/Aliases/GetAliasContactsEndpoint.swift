@@ -21,10 +21,6 @@
 import Entities
 import ProtonCoreNetworking
 
-struct GetAliasContactsQuery: Sendable {
-    let lastContactId: Int?
-}
-
 public struct PaginatedAliasContacts: Decodable, Sendable, Equatable, Hashable {
     public let contacts: [AliasContact]
     public let total: Int
@@ -39,10 +35,10 @@ struct GetAliasContactsEndpoint: Endpoint, @unchecked Sendable {
     var path: String
     var parameters: [String: Any]?
 
-    init(shareId: String, itemId: String, query: GetAliasContactsQuery) {
+    init(shareId: String, itemId: String, lastContactId: Int?) {
         debugDescription = "Get alias contact details"
         path = "/pass/v1/share/\(shareId)/alias/\(itemId)/contact"
-        if let lastContactId = query.lastContactId {
+        if let lastContactId {
             parameters = ["Since": lastContactId]
         }
     }
