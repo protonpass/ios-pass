@@ -35,7 +35,7 @@ struct VaultSelectorView: View {
     private var vaults: [ShareContent] {
         appContentManager
             .getAllEditableVaultContents()
-            .sorted(by: { !$0.share.hidden && $1.share.hidden })
+            .sortedByHidden()
     }
 
     var body: some View {

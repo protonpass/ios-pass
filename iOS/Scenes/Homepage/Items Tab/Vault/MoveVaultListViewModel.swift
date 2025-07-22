@@ -36,15 +36,17 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
     private let moveItemsBetweenVaults = resolve(\UseCasesContainer.moveItemsBetweenVaults)
     private let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
     @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
+    @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
 
     @Published private(set) var isFreeUser = false
+    @Published private(set) var showWarning = false
     @Published var selectedVault: ShareContent?
 
     let allVaults: [ShareContent]
     private let context: MovingContext
 
     init(allVaults: [ShareContent], context: MovingContext) {
-        self.allVaults = allVaults
+        self.allVaults = allVaults.sortedByHidden()
         self.context = context
         let fromShareId: String? = switch context {
         case let .singleItem(item):
@@ -64,6 +66,13 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
             guard let self else { return }
             do {
                 isFreeUser = try await upgradeChecker.isFreeUser()
+
+                if case let .singleItem(item) = context {
+                    if let item = try await itemRepository.getItem(shareId: item.shareId,
+                                                                   itemId: item.itemId) {
+                        showWarning = item.item.revision > 50
+                    }
+                }
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))
