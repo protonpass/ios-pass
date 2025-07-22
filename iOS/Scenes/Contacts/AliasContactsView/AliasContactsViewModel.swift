@@ -201,7 +201,7 @@ final class AliasContactsViewModel: ObservableObject {
         router.present(for: .upselling(config, .none))
     }
 
-    func loadMore() {
+    func loadMore(lastContactId: Int?) {
         guard canFetchMoreContact else {
             return
         }
@@ -214,7 +214,7 @@ final class AliasContactsViewModel: ObservableObject {
                 loadingMoreContent = false
             }
             do {
-                try await reloadContact()
+                try await reloadContact(lastContactId: lastContactId)
             } catch {
                 handle(error)
             }
@@ -273,7 +273,7 @@ private extension AliasContactsViewModel {
                                                              shareId: infos.shareId,
                                                              itemId: infos.itemId,
                                                              lastContactId: lastContactId)
-        canFetchMoreContact = contacts.lastID != 0
+        canFetchMoreContact = !contacts.contacts.isEmpty
         if lastContactId != nil {
             contactsInfos = contactsInfos.update(with: contacts.contacts)
         } else {

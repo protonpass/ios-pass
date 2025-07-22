@@ -222,8 +222,9 @@ public extension RemoteAliasDatasource {
                           shareId: String,
                           itemId: String,
                           lastContactId: Int?) async throws -> PaginatedAliasContacts {
-        let query = GetAliasContactsQuery(lastContactId: lastContactId)
-        let endpoint = GetAliasContactsEndpoint(shareId: shareId, itemId: itemId, query: query)
+        let endpoint = GetAliasContactsEndpoint(shareId: shareId,
+                                                itemId: itemId,
+                                                lastContactId: lastContactId)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response
     }
