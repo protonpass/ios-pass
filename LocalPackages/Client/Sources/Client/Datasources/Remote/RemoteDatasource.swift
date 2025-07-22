@@ -25,6 +25,8 @@ import ProtonCoreServices
 public class RemoteDatasource: @unchecked Sendable {
     private let apiServicing: any APIManagerProtocol
 
+    // Periphery false negative
+    // periphery:ignore
     public init(apiServicing: some APIManagerProtocol) {
         self.apiServicing = apiServicing
     }

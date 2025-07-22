@@ -49,6 +49,8 @@ private struct DefaultField {
 final class CreateEditCustomItemViewModel: BaseCreateEditItemViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
 
+    @Published var note = ""
+
     override var shouldUpgrade: Bool {
         if case .create = mode, isFreeUser {
             return true
@@ -71,6 +73,7 @@ final class CreateEditCustomItemViewModel: BaseCreateEditItemViewModel, DeinitPr
             if case let .custom(data) = itemContent.contentData {
                 title = itemContent.name
                 customSections = data.sections
+                note = itemContent.note
             }
         }
     }
@@ -79,7 +82,7 @@ final class CreateEditCustomItemViewModel: BaseCreateEditItemViewModel, DeinitPr
 
     override func generateItemContent() async -> ItemContentProtobuf {
         ItemContentProtobuf(name: title,
-                            note: "",
+                            note: note,
                             itemUuid: UUID().uuidString,
                             data: ItemContentData.custom(.init(sections: customSections)),
                             customFields: customFields)
@@ -102,10 +105,6 @@ private extension DefaultField {
     static var password: Self {
         .init(title: #localized("Password"), type: .hiddenText)
     }
-
-    static var note: Self {
-        .init(title: #localized("Note"))
-    }
 }
 
 private extension CustomItemTemplate {
@@ -119,8 +118,7 @@ private extension CustomItemTemplate {
                 .init(title: #localized("API key"), type: .hiddenText),
                 .init(title: #localized("Secret"), type: .hiddenText),
                 .expiryDate,
-                .init(title: #localized("Permissions")),
-                .note
+                .init(title: #localized("Permissions"))
             ]
 
         case .database:
@@ -129,8 +127,7 @@ private extension CustomItemTemplate {
                 .init(title: #localized("Port")),
                 .username,
                 .password,
-                .init(title: #localized("Database type")),
-                .note
+                .init(title: #localized("Database type"))
             ]
 
         case .server:
@@ -139,8 +136,7 @@ private extension CustomItemTemplate {
                 .init(title: #localized("Hostname")),
                 .init(title: #localized("OS")),
                 .username,
-                .password,
-                .note
+                .password
             ]
 
         case .softwareLicense:
@@ -148,8 +144,7 @@ private extension CustomItemTemplate {
                 .init(title: #localized("License key"), type: .hiddenText),
                 .init(title: #localized("Product")),
                 .expiryDate,
-                .init(title: #localized("Owner")),
-                .note
+                .init(title: #localized("Owner"))
             ]
 
         case .sshKey, .wifi:
@@ -164,8 +159,7 @@ private extension CustomItemTemplate {
                 .init(title: #localized("Account type")),
                 .init(title: #localized("IBAN"), type: .hiddenText),
                 .init(title: #localized("SWIFT/BIC")),
-                .init(title: #localized("Holder name")),
-                .note
+                .init(title: #localized("Holder name"))
             ]
 
         case .cryptoWallet:
@@ -174,8 +168,7 @@ private extension CustomItemTemplate {
                 .init(title: #localized("Address")),
                 .init(title: #localized("Private key"), type: .hiddenText),
                 .init(title: #localized("Seed phrase"), type: .hiddenText),
-                .init(title: #localized("Network")),
-                .note
+                .init(title: #localized("Network"))
             ]
 
         case .driverLicense:
@@ -185,8 +178,7 @@ private extension CustomItemTemplate {
                 .init(title: #localized("Issuing State/Country")),
                 .expiryDate,
                 .dateOfBirth,
-                .init(title: #localized("Class")),
-                .note
+                .init(title: #localized("Class"))
             ]
 
         case .medicalRecord:
@@ -196,8 +188,7 @@ private extension CustomItemTemplate {
                 .init(title: #localized("Medical conditions"), type: .hiddenText),
                 .init(title: #localized("Medications"), type: .hiddenText),
                 .init(title: #localized("Doctor")),
-                .init(title: #localized("Hospital")),
-                .note
+                .init(title: #localized("Hospital"))
             ]
 
         case .membership:
@@ -206,8 +197,7 @@ private extension CustomItemTemplate {
                 .init(title: #localized("Membership ID")),
                 .init(title: #localized("Member name")),
                 .expiryDate,
-                .init(title: #localized("Tier/Level")),
-                .note
+                .init(title: #localized("Tier/Level"))
             ]
 
         case .passport:
@@ -217,8 +207,7 @@ private extension CustomItemTemplate {
                 .init(title: #localized("Country")),
                 .expiryDate,
                 .dateOfBirth,
-                .init(title: #localized("Issuing authority")),
-                .note
+                .init(title: #localized("Issuing authority"))
             ]
 
         case .rewardProgram:
@@ -227,16 +216,14 @@ private extension CustomItemTemplate {
                 .init(title: #localized("Member ID")),
                 .init(title: #localized("Points balance")),
                 .expiryDate,
-                .init(title: #localized("Tier/Status")),
-                .note
+                .init(title: #localized("Tier/Status"))
             ]
 
         case .socialSecurityNumber:
             [
                 .init(title: #localized("Full name")),
                 .init(title: #localized("Social security number"), type: .hiddenText),
-                .init(title: #localized("Issuing country")),
-                .note
+                .init(title: #localized("Issuing country"))
             ]
         }
     }

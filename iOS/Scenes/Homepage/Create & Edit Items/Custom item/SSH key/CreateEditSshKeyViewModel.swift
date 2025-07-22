@@ -28,6 +28,7 @@ final class CreateEditSshKeyViewModel: BaseCreateEditItemViewModel, DeinitPrinta
 
     @Published var publicKey = ""
     @Published var privateKey = ""
+    @Published var note = ""
 
     override var shouldUpgrade: Bool {
         if case .create = mode, isFreeUser {
@@ -50,6 +51,7 @@ final class CreateEditSshKeyViewModel: BaseCreateEditItemViewModel, DeinitPrinta
                 title = itemContent.name
                 publicKey = data.publicKey
                 privateKey = data.privateKey
+                note = itemContent.note
             }
         }
     }
@@ -58,7 +60,7 @@ final class CreateEditSshKeyViewModel: BaseCreateEditItemViewModel, DeinitPrinta
 
     override func generateItemContent() async -> ItemContentProtobuf {
         ItemContentProtobuf(name: title,
-                            note: "",
+                            note: note,
                             itemUuid: UUID().uuidString,
                             data: ItemContentData.sshKey(.init(privateKey: privateKey,
                                                                publicKey: publicKey,
