@@ -119,7 +119,7 @@ extension AutoFillUseCaseContainer {
     var getItemsForPasskeyCreation: Factory<any GetItemsForPasskeyCreationUseCase> {
         self { GetItemsForPasskeyCreation(symmetricKeyProvider: self.symmetricKeyProvider,
                                           shareRepository: self.shareRepository,
-                                          itemRepositiry: self.itemRepository,
+                                          itemRepository: self.itemRepository,
                                           accessRepository: self.accessRepository) }
     }
 

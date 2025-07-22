@@ -35,6 +35,7 @@ struct VaultSelectorView: View {
     private var vaults: [ShareContent] {
         appContentManager
             .getAllEditableVaultContents()
+            .sortedByHidden()
     }
 
     var body: some View {
@@ -78,7 +79,9 @@ struct VaultSelectorView: View {
             VaultRow(thumbnail: { VaultThumbnail(vaultContent: vaultContent) },
                      title: vaultContent.name,
                      itemCount: vaultInfos.itemCount,
-                     mode: .view(isSelected: selectedVault == vaultInfos.share, action: nil),
+                     mode: .view(isSelected: selectedVault == vaultInfos.share,
+                                 isHidden: vaultInfos.share.hidden,
+                                 action: nil),
                      height: 74)
                 .padding(.horizontal)
         })

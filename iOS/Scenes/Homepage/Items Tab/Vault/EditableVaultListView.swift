@@ -163,6 +163,7 @@ struct EditableVaultListView: View {
         let vaultRowMode: VaultRowMode = switch viewModel.mode {
         case .view:
             .view(isSelected: viewModel.isSelected(selection),
+                  isHidden: false, // isHidden is not applicable when viewing visible vaults
                   action: { vault in
                       if viewModel.canShare(vault: vault) {
                           viewModel.share(vault: vault)
