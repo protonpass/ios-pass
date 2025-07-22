@@ -128,7 +128,7 @@ private extension AliasContactsView {
                                onDelete: { viewModel.delete(contact: contact) })
                         .onAppear {
                             if contact == viewModel.contactsInfos.activeContacts.last {
-                                viewModel.loadMore()
+                                viewModel.loadMore(lastContactId: contact.ID)
                             }
                         }
                 }
