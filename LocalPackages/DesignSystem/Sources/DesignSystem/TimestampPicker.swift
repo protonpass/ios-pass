@@ -51,6 +51,7 @@ public struct TimestampPicker: View {
                     EmptyView()
                 }
                 .labelsHidden()
+                .environment(\.timeZone, TimeZone(identifier: "UTC") ?? .current)
 
                 Button(action: {
                     value = ""
