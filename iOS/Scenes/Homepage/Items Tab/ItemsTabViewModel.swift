@@ -31,7 +31,6 @@ import SwiftUI
 protocol ItemsTabViewModelDelegate: AnyObject {
     func itemsTabViewModelWantsToCreateNewItem(type: ItemContentType)
     func itemsTabViewModelWantsToPresentVaultList()
-    func itemsTabViewModelWantsToShowTrialDetail()
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent)
 }
 
@@ -60,7 +59,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
-    private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let getPendingUserInvitations = resolve(\UseCasesContainer.getPendingUserInvitations)
@@ -70,10 +68,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let getAllPinnedItems = resolve(\UseCasesContainer.getAllPinnedItems)
     private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
     private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
-    private let enableAutoFill = resolve(\UseCasesContainer.enableAutoFill)
     private let shouldDisplayUpgradeAppBanner = resolve(\UseCasesContainer.shouldDisplayUpgradeAppBanner)
-    private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
-    private let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
     private let pinItems = resolve(\SharedUseCasesContainer.pinItems)
     private let unpinItems = resolve(\SharedUseCasesContainer.unpinItems)
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)

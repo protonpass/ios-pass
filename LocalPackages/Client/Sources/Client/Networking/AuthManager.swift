@@ -293,20 +293,6 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
 }
 
 public extension AuthManager {
-    /// Introduced on July 2024 for multi accounts support. Can be removed later on.
-    func migrate(_ credential: AuthCredential) {
-        assertDidSetUp()
-        serialAccessQueue.sync {
-            for module in PassModule.allCases {
-                let key = CredentialsKey(sessionId: credential.sessionID, module: module)
-                cachedCredentials[key] = .init(credential: .init(credential),
-                                               authCredential: credential,
-                                               module: module)
-            }
-            saveCachedCredentialsToKeychain()
-        }
-    }
-
     /// Introduced on February 2025 for CSV import support. Can be removed later on.
     func initializeCredentialsForActionExtension() {
         assertDidSetUp()
