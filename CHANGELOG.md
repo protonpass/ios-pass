@@ -1,16 +1,21 @@
 # Version 1.17.4
 Improvements:
 - Improved search screen layout
-- Resolved alias mailbox reset issue when editing
-- Fixed QR code sign-in failures for certain account types
 - Pass Monitor now retains its last known state upon reload
+
+Fixes:
+- Fixed timezone handling for custom date fields
+- Fixed alias mailbox reset issue when editing
+- Fixed QR code sign-in failures for certain account types
+- Fixed contacts list pagination loading only the first page
 
 Others:
 - Core libraries upgraded from 32.3.1 to 32.7.0
 - Removed legacy onboarding flow
 - Support for hiding/showing vaults (behind feature flags)
 - Addressed decoding errors encountered when entering the Pass Monitor tab
-- Removed PassFileAttachmentsV1 & PassFileAttachmentEncryptionV2 flags 
+- Removed PassFileAttachmentsV1 & PassFileAttachmentEncryptionV2 flags
+- Use static note field for custom item types
 
 # Version 1.17.3
 Fixed an issue preventing login via Single Sign-On
