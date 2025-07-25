@@ -29,46 +29,8 @@ struct BannersSection: View {
 }
 
 private struct ManageBannersView: View {
-    private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
-    private let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
-
     var body: some View {
         Form {
-            Section {
-                Text(verbatim: "In order for changes to take effect, either move app to background or close app")
-                Button(action: {
-                    Task {
-                        try? await updateAppPreferences(\.dismissedBannerIds, value: [])
-                    }
-                }, label: {
-                    Text(verbatim: "Undismiss all banners")
-                })
-            }
-
-            ForEach(InfoBanner.allCases, id: \.id) { banner in
-                VStack {
-                    InfoBannerView(banner: banner, dismiss: {}, action: {})
-
-                    let binding = Binding<Bool>(get: {
-                        getAppPreferences().dismissedBannerIds.contains(banner.id)
-                    }, set: { newValue in
-                        var ids = getAppPreferences().dismissedBannerIds
-                        if newValue {
-                            ids.append(banner.id)
-                        } else {
-                            ids.removeAll(where: { $0 == banner.id })
-                        }
-                        Task {
-                            try? await updateAppPreferences(\.dismissedBannerIds, value: ids)
-                        }
-                    })
-
-                    Toggle(isOn: binding) {
-                        Text(verbatim: "Dismissed")
-                    }
-                }
-            }
-
             InfoBannerView(banner: .invite([.mocked]), dismiss: {}, action: {})
         }
         .navigationBarTitleDisplayMode(.inline)

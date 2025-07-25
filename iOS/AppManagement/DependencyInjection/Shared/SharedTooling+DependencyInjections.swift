@@ -113,10 +113,6 @@ extension SharedToolingContainer {
 // MARK: User centric tools
 
 extension SharedToolingContainer {
-    var preferences: Factory<Preferences> {
-        self { Preferences() }
-    }
-
     var theme: Factory<Theme> {
         self { self.preferencesManager().sharedPreferences.unwrapped().theme }
             .unique
@@ -133,8 +129,7 @@ extension SharedToolingContainer {
                                       appPreferencesDatasource: cont.appPreferencesDatasource(),
                                       sharedPreferencesDatasource: cont.sharedPreferencesDatasource(),
                                       userPreferencesDatasource: cont.userPreferencesDatasource(),
-                                      logManager: self.logManager(),
-                                      preferencesMigrator: self.preferences())
+                                      logManager: self.logManager())
         }
     }
 }
