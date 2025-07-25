@@ -53,10 +53,6 @@ extension SharedDataContainer {
         self { LoginMethodFlow() }
     }
 
-    var appData: Factory<any AppDataProtocol> {
-        self { AppData() }
-    }
-
     var credentialProvider: Factory<any AuthManagerProtocol> {
         self { SharedToolingContainer.shared.authManager() }
     }

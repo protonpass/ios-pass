@@ -275,44 +275,7 @@ private extension ItemsTabViewModel {
                     banners.append(invites.toInfoBanners)
                 }
             }
-            if banners.isEmpty {
-                await banners.append(contentsOf: localBanners())
-            }
             self.banners = banners
-        }
-    }
-
-    func localBanners() async -> [InfoBanner] {
-        do {
-            let dismissedIds = getAppPreferences().dismissedBannerIds
-            var banners = [InfoBanner]()
-            for banner in InfoBanner.allCases {
-                if dismissedIds.contains(where: { $0 == banner.id }) {
-                    continue
-                }
-
-                var shouldShow = true
-                switch banner {
-                case .trial:
-                    let plan = try await accessRepository.getPlan(userId: nil)
-                    shouldShow = plan.isInTrial
-
-                case .autofill:
-                    shouldShow = await !credentialManager.isAutoFillEnabled
-
-                default:
-                    break
-                }
-
-                if shouldShow {
-                    banners.append(banner)
-                }
-            }
-
-            return banners
-        } catch {
-            handle(error: error)
-            return []
         }
     }
 
@@ -488,22 +451,6 @@ extension ItemsTabViewModel {
 
     func createNewItem(type: ItemContentType) {
         delegate?.itemsTabViewModelWantsToCreateNewItem(type: type)
-    }
-
-    func dismiss(banner: InfoBanner) {
-        if banner.isInvite {
-            return
-        }
-        banners.removeAll(where: { $0 == banner })
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                let newIds = getAppPreferences().dismissedBannerIds.appending(banner.id)
-                try await updateAppPreferences(\.dismissedBannerIds, value: newIds)
-            } catch {
-                handle(error: error)
-            }
-        }
     }
 
     func handleAction(banner: InfoBanner) {
