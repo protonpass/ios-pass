@@ -455,17 +455,6 @@ extension ItemsTabViewModel {
 
     func handleAction(banner: InfoBanner) {
         switch banner {
-        case .trial:
-            delegate?.itemsTabViewModelWantsToShowTrialDetail()
-        case .autofill:
-            Task { [weak self] in
-                guard let self else { return }
-                if await enableAutoFill() {
-                    banners.removeAll(where: { $0 == .autofill })
-                }
-            }
-        case .aliases:
-            router.navigate(to: .urlPage(urlString: "https://proton.me/support/pass-alias-ios"))
         case let .invite(invites: invites):
             if let firstInvite = invites.first {
                 router.present(for: .acceptRejectInvite(firstInvite))
