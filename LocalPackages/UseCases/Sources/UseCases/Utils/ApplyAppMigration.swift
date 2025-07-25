@@ -36,7 +36,6 @@ public extension ApplyAppMigrationUseCase {
 public final class ApplyAppMigration: ApplyAppMigrationUseCase {
     private let dataMigrationManager: any DataMigrationManagerProtocol
     private let userManager: any UserManagerProtocol
-    private let appData: any AppDataProtocol
     private let authManager: any AuthManagerProtocol
     private let itemDatasource: any LocalItemDatasourceProtocol
     private let searchEntryDatasource: any LocalSearchEntryDatasourceProtocol
@@ -45,7 +44,6 @@ public final class ApplyAppMigration: ApplyAppMigrationUseCase {
 
     public init(dataMigrationManager: any DataMigrationManagerProtocol,
                 userManager: any UserManagerProtocol,
-                appData: any AppDataProtocol,
                 authManager: any AuthManagerProtocol,
                 itemDatasource: any LocalItemDatasourceProtocol,
                 searchEntryDatasource: any LocalSearchEntryDatasourceProtocol,
@@ -53,7 +51,6 @@ public final class ApplyAppMigration: ApplyAppMigrationUseCase {
                 logManager: any LogManagerProtocol) {
         self.dataMigrationManager = dataMigrationManager
         self.userManager = userManager
-        self.appData = appData
         self.authManager = authManager
         self.itemDatasource = itemDatasource
         self.searchEntryDatasource = searchEntryDatasource
@@ -67,18 +64,6 @@ public final class ApplyAppMigration: ApplyAppMigrationUseCase {
         let missingMigrations = await dataMigrationManager.missingMigrations(MigrationType.all)
 
         logger.trace("The following migration are missing: \(missingMigrations)")
-
-        if let userData = appData.getUserData(), missingMigrations.contains(.userAppData) {
-            logger
-                .trace("Starting user data migration for app data to user manager for user id : \(userData.user.ID)")
-            try await userManager.upsertAndMarkAsActive(userData: userData)
-            if let credential = appData.getMainCredential() {
-                (authManager as? AuthManager)?.migrate(credential)
-            }
-            appData.resetData()
-            logger.trace("User data migration done for user id : \(userData.user.ID)")
-            await dataMigrationManager.addMigration(.userAppData)
-        }
 
         if missingMigrations.contains(.credentialsForActionExtension) {
             logger.trace("Initializing credentials for action extension")

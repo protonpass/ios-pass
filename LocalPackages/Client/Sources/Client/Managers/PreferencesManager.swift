@@ -114,20 +114,16 @@ public actor PreferencesManager: PreferencesManagerProtocol {
 
     private var didSetUp = false
 
-    private let preferencesMigrator: any PreferencesMigrator
-
     public init(userManager: any UserManagerProtocol,
                 appPreferencesDatasource: any LocalAppPreferencesDatasourceProtocol,
                 sharedPreferencesDatasource: any LocalSharedPreferencesDatasourceProtocol,
                 userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol,
-                logManager: any LogManagerProtocol,
-                preferencesMigrator: any PreferencesMigrator) {
+                logManager: any LogManagerProtocol) {
         self.userManager = userManager
         self.appPreferencesDatasource = appPreferencesDatasource
         self.userPreferencesDatasource = userPreferencesDatasource
         self.sharedPreferencesDatasource = sharedPreferencesDatasource
         logger = .init(manager: logManager)
-        self.preferencesMigrator = preferencesMigrator
     }
 }
 
@@ -167,25 +163,6 @@ public extension PreferencesManager {
         // User's preferences
         if let userId = try? await userManager.getActiveUserId() {
             try await setUserPreferences(userId: userId)
-        }
-
-        // Migrations
-        if !appPreferences.unwrapped().didMigratePreferences {
-            logger.trace("Migrating preferences")
-            let (app, shared, user) = preferencesMigrator.migratePreferences()
-
-            try appPreferencesDatasource.upsertPreferences(app)
-            appPreferences.send(app)
-
-            try await sharedPreferencesDatasource.upsertPreferences(shared)
-            sharedPreferences.send(shared)
-
-            if let userId = try? await userManager.getActiveUserId() {
-                try await userPreferencesDatasource.upsertPreferences(user, for: userId)
-                userPreferences.send(user)
-            }
-
-            logger.trace("Migrated preferences")
         }
 
         logger.info("Set up preferences manager")
