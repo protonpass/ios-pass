@@ -26,13 +26,6 @@ import SwiftUI
 enum InfoBanner: Equatable, Hashable {
     case invite([UserInvite])
 
-    var id: String {
-        switch self {
-        case .invite:
-            "invite"
-        }
-    }
-
     var detail: InfoBannerDetail {
         switch self {
         case let .invite(userInvites):

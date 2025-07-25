@@ -343,7 +343,6 @@
 		359DB2A92A70435800549466 /* Service+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359DB2A82A70435800549466 /* Service+DependencyInjections.swift */; };
 		359EB88C2A20CF74009588A9 /* InfoBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359EB88B2A20CF74009588A9 /* InfoBannerView.swift */; };
 		359EB88E2A20CFE0009588A9 /* InfoBannerViewStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359EB88D2A20CFE0009588A9 /* InfoBannerViewStack.swift */; };
-		359EB8922A213A44009588A9 /* TrialDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359EB8912A213A44009588A9 /* TrialDetailView.swift */; };
 		35A5EEE22958CDBC00A09623 /* UrlOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A5EEE12958CDBC00A09623 /* UrlOpener.swift */; };
 		35AABE1B28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE1A28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift */; };
 		35ABE12A2AA08275001E20F9 /* DocScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 35ABE1292AA08275001E20F9 /* DocScanner */; };
@@ -981,7 +980,6 @@
 		359DB2A82A70435800549466 /* Service+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Service+DependencyInjections.swift"; sourceTree = "<group>"; };
 		359EB88B2A20CF74009588A9 /* InfoBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoBannerView.swift; sourceTree = "<group>"; };
 		359EB88D2A20CFE0009588A9 /* InfoBannerViewStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoBannerViewStack.swift; sourceTree = "<group>"; };
-		359EB8912A213A44009588A9 /* TrialDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrialDetailView.swift; sourceTree = "<group>"; };
 		359F80B42AB48C70007AC0F4 /* UseCases */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = UseCases; path = LocalPackages/UseCases; sourceTree = "<group>"; };
 		35A2F8B52AD6B2D80051C7AF /* PassRustCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PassRustCore; path = LocalPackages/PassRustCore; sourceTree = "<group>"; };
 		35A5EEDF2958B60200A09623 /* Browser+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Browser+Extensions.swift"; sourceTree = "<group>"; };
@@ -1708,7 +1706,6 @@
 				3569B2A329B7BA280070830B /* ItemsTabViewModel.swift */,
 				357ABEAF2B188A08003D05C8 /* ItemsTabTopBar.swift */,
 				357ABEB12B188A30003D05C8 /* ItemsTabTopBarViewModel.swift */,
-				359EB8912A213A44009588A9 /* TrialDetailView.swift */,
 				5BCB2EA42B1F89E80072345F /* PinnedItemsView.swift */,
 				357101ED2CBFAC020073A291 /* LoginsWith2faView.swift */,
 				357101EF2CBFB0A80073A291 /* LoginsWith2faViewModel.swift */,
@@ -3769,7 +3766,6 @@
 				534090592D709856002E42F8 /* CreateEditSshKeyView.swift in Sources */,
 				5B6639612B4D9A4F0029F8DA /* ItemDetailHistorySection.swift in Sources */,
 				358FB6DD2C2C9CAF00D4EEAF /* AccountSwitcherSection.swift in Sources */,
-				359EB8922A213A44009588A9 /* TrialDetailView.swift in Sources */,
 				66CA927A29F9643900F2FC59 /* PaymentsManager.swift in Sources */,
 				5B4459AB2D43B74F00E1F198 /* FeatureDiscoverySection.swift in Sources */,
 				3559BA9D2A5B32550020E172 /* Browser+Extensions.swift in Sources */,
