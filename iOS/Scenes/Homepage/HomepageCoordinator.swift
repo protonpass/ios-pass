@@ -1809,10 +1809,9 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
         logger.info("Skipped sync loop \(reason)")
     }
 
-    func syncEventLoopRequiresFullSync() async throws {
+    func syncEventLoopRequiresFullSync(userId: String) async throws {
         router.present(for: .fullSync)
         logger.info("Full syncing triggered by user events")
-        let userId = try await userManager.getActiveUserId()
         await fullContentSync(userId: userId, shouldStopEventLoop: false)
         logger.info("Done full syncing triggered by user events")
         router.display(element: .successMessage(config: .refresh))

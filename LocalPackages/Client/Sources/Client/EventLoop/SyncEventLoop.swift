@@ -46,7 +46,7 @@ public protocol SyncEventLoopDelegate: AnyObject, Sendable {
     func syncEventLoopDidSkipLoop(reason: SyncEventLoopSkipReason)
 
     /// Triggered by user events system when the users are too outdated and a new full sync is needed
-    func syncEventLoopRequiresFullSync() async throws
+    func syncEventLoopRequiresFullSync(userId: String) async throws
 
     /// Called after every successful sync loop.
     /// - Parameters:
@@ -256,14 +256,15 @@ private extension SyncEventLoop {
             }
 
             for userData in userManager.allUserAccounts.value {
-                if activeTasks[userData.user.ID] != nil {
-                    delegate?.syncEventLoopDidSkipLoop(reason: .previousLoopNotFinished(userId: userData.user.ID))
+                let userId = userData.user.ID
+                if activeTasks[userId] != nil {
+                    delegate?.syncEventLoopDidSkipLoop(reason: .previousLoopNotFinished(userId: userId))
                 } else {
-                    activeTasks[userData.user.ID] = Task { [weak self] in
+                    activeTasks[userId] = Task { [weak self] in
                         guard let self else { return }
 
                         defer {
-                            self.activeTasks[userData.user.ID] = nil
+                            self.activeTasks[userId] = nil
                             self.pullToRefreshDelegate?.pullToRefreshShouldStopRefreshing()
                         }
 
@@ -272,35 +273,35 @@ private extension SyncEventLoop {
                             delegate?.syncEventLoopDidSkipLoop(reason: .backOff)
                             return
                         }
-                        await executeEventSync(currentUserId: userData.user.ID)
+                        await executeEventSync(userId: userId)
                     }
                 }
             }
         }
     }
 
-    func executeEventSync(currentUserId: String) async {
+    func executeEventSync(userId: String) async {
         do {
-            let userEventsEnabled = await delegate?.syncEventLoopDidBeginNewLoop(userId: currentUserId)
+            let userEventsEnabled = await delegate?.syncEventLoopDidBeginNewLoop(userId: userId)
             if Task.isCancelled { return }
 
             let hasNewEvents: Bool
             if userEventsEnabled == true {
-                let result = try await userEventsSynchronizer.sync(userId: currentUserId)
+                let result = try await userEventsSynchronizer.sync(userId: userId)
 
                 if result.fullRefreshNeeded {
-                    try await delegate?.syncEventLoopRequiresFullSync()
+                    try await delegate?.syncEventLoopRequiresFullSync(userId: userId)
                     return
                 }
 
-                let syncedAliases = try await aliasSynchronizer.sync(userId: currentUserId)
+                let syncedAliases = try await aliasSynchronizer.sync(userId: userId)
                 hasNewEvents = result.dataUpdated || syncedAliases
             } else {
-                hasNewEvents = try await synchronizer.sync(userId: currentUserId)
+                hasNewEvents = try await synchronizer.sync(userId: userId)
             }
 
             // We only execute the additionalTasks for the main active account
-            if let userId = userManager.activeUserId, userId == currentUserId {
+            if userManager.activeUserId == userId {
                 for task in additionalTasks {
                     do {
                         delegate?.syncEventLoopDidBeginExecutingAdditionalTask(userId: userId, label: task.label)
@@ -315,11 +316,11 @@ private extension SyncEventLoop {
                 }
             }
 
-            delegate?.syncEventLoopDidFinishLoop(userId: currentUserId, hasNewEvents: hasNewEvents)
+            delegate?.syncEventLoopDidFinishLoop(userId: userId, hasNewEvents: hasNewEvents)
             await backOffManager.recordSuccess()
         } catch {
             logger.error(error)
-            delegate?.syncEventLoopDidFailLoop(userId: currentUserId, error: error)
+            delegate?.syncEventLoopDidFailLoop(userId: userId, error: error)
             if let responseError = error as? ResponseError,
                let httpCode = responseError.httpCode,
                (500...599).contains(httpCode) {
