@@ -23352,7 +23352,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Privater Schlüssel hinzufügen"
+            "value" : "Privaten Schlüssel hinzufügen"
           }
         },
         "el" : {
@@ -23542,7 +23542,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Öffentlicher Schlüssel hinzufügen"
+            "value" : "Öffentlichen Schlüssel hinzufügen"
           }
         },
         "el" : {
@@ -34679,7 +34679,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Associar 2FA?"
+            "value" : "Associar a A2F?"
           }
         },
         "pt-BR" : {
@@ -35463,7 +35463,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pelo menos um dos itens selecionados está atualmente partilhado. Movê-lo para outro cofre removerá o acesso de todos os outros utilizadores."
+            "value" : "Pelo menos um dos itens selecionados é atualmente partilhado. Movê-lo para outro cofre removerá o acesso de todos os outros utilizadores."
           }
         },
         "pt-BR" : {
@@ -36636,7 +36636,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A cópia automática do código 2FA requer a configuração de um bloqueio biométrico ou de um código PIN"
+            "value" : "A cópia automática do código A2F requer que o bloqueio biométrico ou o código PIN esteja configurado."
           }
         },
         "pt-BR" : {
@@ -40155,7 +40155,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pode conceder ou revogar acesso para o item."
+            "value" : "Pode conceder e revogar acesso ao item."
           }
         },
         "pt-BR" : {
@@ -45243,7 +45243,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Borrar os ficheiros transferidos"
+            "value" : "Limpar ficheiros transferidos"
           }
         },
         "pt-BR" : {
@@ -56825,6 +56825,12 @@
             "value" : "Két sắt hiện tại"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "当前保险库"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -65525,6 +65531,12 @@
             "value" : "Xong"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完成"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -68599,7 +68611,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Envie um e-mail para este endereço e ele parecerá ter sido enviado a partir de %@."
+            "value" : "Envie um e-mail para este endereço e ele aparecerá como enviado por %@."
           }
         },
         "pt-BR" : {
@@ -69182,7 +69194,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Seção vazia"
+            "value" : "Secção vazia"
           }
         },
         "pt-BR" : {
@@ -71535,7 +71547,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Introduza um título à secção"
+            "value" : "Insira um novo título à secção"
           }
         },
         "pt-BR" : {
@@ -73098,7 +73110,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cada vez que o seu alias recebe um e-mail de alguém, um contato é criado automaticamente."
+            "value" : "Cada vez que o seu alias recebe um e-mail de alguém, um contacto é criado automaticamente."
           }
         },
         "pt-BR" : {
@@ -76093,7 +76105,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "A palavra-passe adicional deve ter pelo menos %lld caractere."
+                  "value" : "A palavra-passe adicional deve ter pelo menos %lld carácter."
                 }
               },
               "other" : {
@@ -76437,7 +76449,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A palavra-passe adicional está configurada."
+            "value" : "Palavra-passe adicional configurada"
           }
         },
         "pt-BR" : {
@@ -77637,7 +77649,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Anexos de ficheiro"
+            "value" : "Anexos de ficheiros"
           }
         },
         "pt-BR" : {
@@ -77833,7 +77845,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Os anexos de ficheiros estão disponíveis com o Pass Plus. Melhore o seu plano para acesso imediato."
+            "value" : "Os anexos de ficheiros estão disponíveis com o Pass Plus. Atualize o seu plano para acesso imediato."
           }
         },
         "pt-BR" : {
@@ -78219,7 +78231,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A lista foi filtrada por aliases. Os itens eliminados não são exibidos."
+            "value" : "A lista foi filtrada por aliases. Itens eliminados não são mostrados."
           }
         },
         "pt-BR" : {
@@ -78409,7 +78421,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A lista foi filtrada por cartões de crédito. Os itens eliminados não são exibidos."
+            "value" : "A lista foi filtrada por cartões de crédito. Os itens eliminados não são mostrados."
           }
         },
         "pt-BR" : {
@@ -78783,7 +78795,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A lista foi filtrada por identidades. Os itens eliminados não são exibidos."
+            "value" : "A lista foi filtrada por identidades. Os itens eliminados não são mostrados."
           }
         },
         "pt-BR" : {
@@ -78973,7 +78985,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A lista foi filtrada por inícios de sessão. Os itens eliminados não são exibidos."
+            "value" : "A lista foi filtrada por inícios de sessão. Os itens eliminados não são mostrados."
           }
         },
         "pt-BR" : {
@@ -79163,7 +79175,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A lista foi filtrada por notas. Os itens eliminados não são exibidos."
+            "value" : "A lista foi filtrada por notas. Os itens eliminados não são mostrados."
           }
         },
         "pt-BR" : {
@@ -81111,7 +81123,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Do seu alias <%@>"
+            "value" : "A partir do seu alias <%@>"
           }
         },
         "pt-BR" : {
@@ -82478,7 +82490,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gere palavras-passe únicas"
+            "value" : "Gerar palavras-passe únicas"
           }
         },
         "pt-BR" : {
@@ -85591,7 +85603,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cofres ocultos não estarão visíveis durante a pesquisa e o preenchimento automático."
+            "value" : "Cofres ocultos não serão visíveis durante a pesquisa e o preenchimento automático."
           }
         },
         "pt-BR" : {
@@ -85628,6 +85640,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Các két sắt ẩn sẽ không hiện thấy khi thực hiện tìm kiếm hoặc dùng tự điền."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在搜索和自动填充时，隐藏的保险库将不可见。"
           }
         },
         "zh-Hant" : {
@@ -88289,7 +88307,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hospedeiro"
+            "value" : "Host"
           }
         },
         "pt-BR" : {
@@ -88480,7 +88498,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nome do hospedeiro"
+            "value" : "Hostname"
           }
         },
         "pt-BR" : {
@@ -97863,7 +97881,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Menu de filtragem e ordenação dos itens"
+            "value" : "Menu de filtragem e ordenação de itens"
           }
         },
         "pt-BR" : {
@@ -114264,7 +114282,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Um novo código de verificação foi enviado."
+            "value" : "Novo código de verificação enviado"
           }
         },
         "pt-BR" : {
@@ -121212,7 +121230,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Benutzerdefinierter Eintrag öffnen"
+            "value" : "Benutzerdefinierten Eintrag öffnen"
           }
         },
         "el" : {
@@ -123412,6 +123430,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Quản lý két sắt"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "整理保险库"
           }
         },
         "zh-Hant" : {
@@ -133333,7 +133357,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Selecioneum motivo"
+            "value" : "Selecione um motivo"
           }
         },
         "pt-BR" : {
@@ -140282,7 +140306,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Remover os anexos na memória transitória das transferências anteriores"
+            "value" : "Remova anexos armazenados em cache de transferências anteriores"
           }
         },
         "pt-BR" : {
@@ -149147,6 +149171,12 @@
             "value" : "Hľadať vo všetkých položkách"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sök i alla objekt"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -149157,6 +149187,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Шукати у всіх елементах"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在所有项目中搜索"
           }
         },
         "zh-Hant" : {
@@ -196031,6 +196067,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Подробиці про Wi-Fi, SSH, власні елементи та інше"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi 详情、SSH、自定义项目等"
           }
         },
         "zh-Hant" : {
