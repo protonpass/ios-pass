@@ -13333,7 +13333,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Anexos de ficheiro"
+            "value" : "Anexos de ficheiros"
           }
         },
         "pt-BR" : {
@@ -14284,7 +14284,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Free"
+            "value" : "Darmowy"
           }
         },
         "pt" : {
@@ -18301,6 +18301,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "MỚI"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新功能"
           }
         },
         "zh-Hant" : {
