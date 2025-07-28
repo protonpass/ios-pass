@@ -129,13 +129,10 @@ extension UseCasesContainer {
     }
 
     var getLogEntries: Factory<any GetLogEntriesUseCase> {
-        self { GetLogEntries(mainAppLogManager: SharedToolingContainer.shared.specificLogManager(.hostApp),
-                             autofillLogManager: SharedToolingContainer.shared
-                                 .specificLogManager(.autoFillExtension),
-                             shareLogManager: SharedToolingContainer.shared
-                                 .specificLogManager(.shareExtension),
-                             actionLogManager: SharedToolingContainer.shared
-                                 .specificLogManager(.actionExtension)) }
+        self { GetLogEntries(mainAppLogManager: LogManager(module: .hostApp),
+                             autofillLogManager: LogManager(module: .autoFillExtension),
+                             shareLogManager: LogManager(module: .shareExtension),
+                             actionLogManager: LogManager(module: .actionExtension)) }
     }
 
     var createLogsFile: Factory<any CreateLogsFileUseCase> {
