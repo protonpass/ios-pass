@@ -47,11 +47,6 @@ final class SharedToolingContainer: SharedContainer, AutoRegistering {
 // MARK: Shared Logging tools
 
 extension SharedToolingContainer {
-    var specificLogManager: ParameterFactory<PassModule, LogManager> {
-        self { LogManager(module: $0) }
-            .unique
-    }
-
     var logManager: Factory<any LogManagerProtocol> {
         self { LogManager(module: .hostApp) }
             .onArg(PassModule.autoFillExtension) { LogManager(module: .autoFillExtension) }
