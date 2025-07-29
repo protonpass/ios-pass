@@ -179,10 +179,7 @@ extension AppContentManager {
             // 1. Delete all local data
             try await deleteLocalDataBeforeFullSync()
 
-            // 2. Get the lastEventID as a starting point for user events sync loop
-            try await getLastEventIdIfNotExist(userId: userId)
-
-            // 3. Get all remote shares and their items
+            // 2. Get all remote shares and their items
             let remoteShares = try await shareRepository.getDecryptedRemoteShares(userId: userId)
             hasUndecryptableShares = remoteShares.hasUndecryptableShares
             vaultSyncEventStream.send(.downloadedShares(remoteShares.shares.representingVaults))
@@ -207,7 +204,7 @@ extension AppContentManager {
                 _ = try await (upsertSharesTask, taskGroup.waitForAll())
             }
 
-            // 4. Create default vault if no vaults
+            // 3. Create default vault if no vaults
             if remoteShares.shares.isEmpty {
                 do {
                     try await createDefaultVault()
@@ -222,6 +219,9 @@ extension AppContentManager {
             }
 
             try await loadContents(userId: userId, for: remoteShares.shares)
+
+            // 4. Get the lastEventID as a starting point for user events sync loop
+            try await getLastEventIdIfNotExist(userId: userId)
         } catch {
             vaultSyncEventStream.send(.error(userId: userId, error: error))
             return
