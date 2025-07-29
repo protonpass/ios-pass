@@ -78,11 +78,11 @@ public extension UserEventsSynchronizer {
         var dataUpdated = false
         var planChanged = false
         var fullRefreshNeeded = false
-        try await sync(userId: userId,
-                       lastEventId: lastEventId,
-                       dataUpdated: &dataUpdated,
-                       planChanged: &planChanged,
-                       fullRefreshNeeded: &fullRefreshNeeded)
+        try await recursivelySync(userId: userId,
+                                  lastEventId: lastEventId,
+                                  dataUpdated: &dataUpdated,
+                                  planChanged: &planChanged,
+                                  fullRefreshNeeded: &fullRefreshNeeded)
         logger.info("Finished syncing with user events for user \(userId)")
         return .init(dataUpdated: dataUpdated,
                      planChanged: planChanged,
@@ -91,11 +91,11 @@ public extension UserEventsSynchronizer {
 }
 
 private extension UserEventsSynchronizer {
-    func sync(userId: String,
-              lastEventId: String,
-              dataUpdated: inout Bool,
-              planChanged: inout Bool,
-              fullRefreshNeeded: inout Bool) async throws {
+    func recursivelySync(userId: String,
+                         lastEventId: String,
+                         dataUpdated: inout Bool,
+                         planChanged: inout Bool,
+                         fullRefreshNeeded: inout Bool) async throws {
         logger.trace("Getting user events for user \(userId)")
         let events = try await remoteUserEventsDatasource.getUserEvents(userId: userId,
                                                                         lastEventId: lastEventId)
@@ -113,75 +113,107 @@ private extension UserEventsSynchronizer {
 
         if events.eventsPending {
             logger.trace("Continue syncing because events are still pending for user \(userId)")
-            return try await sync(userId: userId,
-                                  lastEventId: events.lastEventID,
-                                  dataUpdated: &dataUpdated,
-                                  planChanged: &planChanged,
-                                  fullRefreshNeeded: &fullRefreshNeeded)
+            return try await recursivelySync(userId: userId,
+                                             lastEventId: events.lastEventID,
+                                             dataUpdated: &dataUpdated,
+                                             planChanged: &planChanged,
+                                             fullRefreshNeeded: &fullRefreshNeeded)
         }
     }
 
     func process(events: UserEvents, for userId: String) async throws {
-        if events.itemsUpdated.isEmpty {
+        try await withThrowingTaskGroup(of: Void.self) { taskGroup in
+            taskGroup.addTask { [weak self] in
+                guard let self else { return }
+                try await processUpdatedItems(events.itemsUpdated, userId: userId)
+            }
+
+            taskGroup.addTask { [weak self] in
+                guard let self else { return }
+                try await processDeletedItems(events.itemsDeleted, userId: userId)
+            }
+
+            taskGroup.addTask { [weak self] in
+                guard let self else { return }
+                try await processUpdatedShares(events.sharesUpdated, userId: userId)
+            }
+
+            taskGroup.addTask { [weak self] in
+                guard let self else { return }
+                try await processDeletedShares(events.sharesDeleted, userId: userId)
+            }
+
+            try await taskGroup.waitForAll()
+        }
+    }
+
+    func processUpdatedItems(_ updatedItems: [UserEventItem], userId: String) async throws {
+        guard !updatedItems.isEmpty else {
             logger.trace("No updated items for user \(userId)")
-        } else {
-            logger.trace("Refreshing \(events.itemsUpdated.count) updated items for user \(userId)")
-            try await withThrowingTaskGroup(of: Void.self) { taskGroup in
-                for updatedItem in events.itemsUpdated {
-                    taskGroup.addTask { [weak self] in
-                        guard let self else { return }
-                        try await itemRepository.refreshItem(userId: userId,
-                                                             shareId: updatedItem.shareID,
-                                                             itemId: updatedItem.itemID,
-                                                             eventToken: updatedItem.eventToken)
-                    }
-                }
-
-                try await taskGroup.waitForAll()
-            }
+            return
         }
+        logger.trace("Refreshing \(updatedItems.count) updated items for user \(userId)")
+        try await withThrowingTaskGroup(of: Void.self) { taskGroup in
+            for updatedItem in updatedItems {
+                taskGroup.addTask { [weak self] in
+                    guard let self else { return }
+                    try await itemRepository.refreshItem(userId: userId,
+                                                         shareId: updatedItem.shareID,
+                                                         itemId: updatedItem.itemID,
+                                                         eventToken: updatedItem.eventToken)
+                }
+            }
 
-        if events.itemsDeleted.isEmpty {
+            try await taskGroup.waitForAll()
+        }
+    }
+
+    func processDeletedItems(_ deletedItems: [UserEventItem], userId: String) async throws {
+        guard !deletedItems.isEmpty else {
             logger.trace("No deleted items for user \(userId)")
-        } else {
-            logger.trace("Deleting \(events.itemsDeleted.count) items for user \(userId)")
-            try await itemRepository.delete(userId: userId, items: events.itemsDeleted)
+            return
         }
+        logger.trace("Deleting \(deletedItems.count) items for user \(userId)")
+        try await itemRepository.delete(userId: userId, items: deletedItems)
+    }
 
-        if events.sharesUpdated.isEmpty {
+    func processUpdatedShares(_ updatedShares: [UserEventShare], userId: String) async throws {
+        guard !updatedShares.isEmpty else {
             logger.trace("No updated shares for user \(userId)")
-        } else {
-            logger.trace("Refreshing \(events.sharesUpdated.count) shares for user \(userId)")
-            try await withThrowingTaskGroup(of: Void.self) { taskGroup in
-                for updatedShare in events.sharesUpdated {
-                    taskGroup.addTask { [weak self] in
-                        guard let self else { return }
-                        try await shareRepository.refreshShare(userId: userId,
-                                                               shareId: updatedShare.shareID,
-                                                               eventToken: updatedShare.eventToken)
-                    }
-                }
-
-                try await taskGroup.waitForAll()
-            }
+            return
         }
-
-        if events.sharesDeleted.isEmpty {
-            logger.trace("No deleted shares for user \(userId)")
-        } else {
-            logger.trace("Deleting \(events.sharesDeleted.count) shares for user \(userId)")
-            try await withThrowingTaskGroup(of: Void.self) { taskGroup in
-                for deletedShare in events.sharesDeleted {
-                    taskGroup.addTask { [weak self] in
-                        guard let self else { return }
-                        try await shareRepository.deleteShareLocally(userId: userId,
-                                                                     shareId: deletedShare.shareID)
-                        try await itemRepository.deleteAllItemsLocally(shareId: deletedShare.shareID)
-                    }
+        logger.trace("Refreshing \(updatedShares.count) shares for user \(userId)")
+        try await withThrowingTaskGroup(of: Void.self) { taskGroup in
+            for updatedShare in updatedShares {
+                taskGroup.addTask { [weak self] in
+                    guard let self else { return }
+                    try await shareRepository.refreshShare(userId: userId,
+                                                           shareId: updatedShare.shareID,
+                                                           eventToken: updatedShare.eventToken)
                 }
-
-                try await taskGroup.waitForAll()
             }
+
+            try await taskGroup.waitForAll()
+        }
+    }
+
+    func processDeletedShares(_ deletedShares: [UserEventShare], userId: String) async throws {
+        guard !deletedShares.isEmpty else {
+            logger.trace("No deleted shares for user \(userId)")
+            return
+        }
+        logger.trace("Deleting \(deletedShares.count) shares for user \(userId)")
+        try await withThrowingTaskGroup(of: Void.self) { taskGroup in
+            for deletedShare in deletedShares {
+                taskGroup.addTask { [weak self] in
+                    guard let self else { return }
+                    try await shareRepository.deleteShareLocally(userId: userId,
+                                                                 shareId: deletedShare.shareID)
+                    try await itemRepository.deleteAllItemsLocally(shareId: deletedShare.shareID)
+                }
+            }
+
+            try await taskGroup.waitForAll()
         }
     }
 }
