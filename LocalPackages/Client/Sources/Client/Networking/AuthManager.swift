@@ -42,6 +42,10 @@ public protocol AuthManagerProtocol: Sendable, AuthDelegate {
     func getAllCurrentCredentials() -> [Credential]
     func removeCredentials(userId: String)
     func removeAllCredentials()
+    func updateEncryptionDetailsForSession(sessionUID: String,
+                                           mailboxpassword: String,
+                                           salt: String?,
+                                           privateKey: String?)
 }
 
 public extension AuthManagerProtocol {
@@ -146,6 +150,16 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
             let key = CredentialsKey(sessionId: sessionUID, module: module)
             return cachedCredentials[key]?.authCredential
         }
+    }
+
+    public func updateEncryptionDetailsForSession(sessionUID: String,
+                                                  mailboxpassword: String,
+                                                  salt: String?,
+                                                  privateKey: String?) {
+        onAdditionalCredentialsInfoObtained(sessionUID: sessionUID,
+                                            password: mailboxpassword,
+                                            salt: salt,
+                                            privateKey: privateKey)
     }
 
     public func onUpdate(credential: Credential, sessionUID: String) {
