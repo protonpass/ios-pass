@@ -50,6 +50,9 @@ public protocol ShareRepositoryProtocol: Sendable {
                       shares: [Share],
                       eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws
 
+    /// Go fetch and store the latest data of a share because we know it's updated (e.g via user events system)
+    func refreshShare(userId: String, shareId: String, eventToken: String?) async throws
+
     func getUsersLinkedToVaultShare(to shareId: String, lastToken: String?) async throws
         -> PaginatedUsersLinkedToShare
     func getUsersLinkedToItemShare(to shareId: String, itemId: String, lastToken: String?) async throws
@@ -221,6 +224,19 @@ public extension ShareRepository {
         try await localDatasource.upsertShares(encryptedShares, userId: userId)
 
         logger.trace("Upserted \(shares.count) shares for user \(userId), shares \(shareIds)")
+    }
+
+    func refreshShare(userId: String, shareId: String, eventToken: String?) async throws {
+        logger.trace("Refreshing share \(shareId) for user \(userId)")
+        let share = try await remoteDatasource.getShare(shareId: shareId,
+                                                        userId: userId,
+                                                        eventToken: eventToken)
+        let key = try await getSymmetricKey()
+        let encryptedShare = try await symmetricallyEncrypt(userId: userId,
+                                                            share,
+                                                            symmetricKey: key)
+        try await localDatasource.upsertShares([encryptedShare], userId: userId)
+        logger.trace("Refreshed share \(shareId) for user \(userId)")
     }
 
     func getUsersLinkedToVaultShare(to shareId: String,

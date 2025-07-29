@@ -87,6 +87,9 @@ final class AppContentManager: ObservableObject, @unchecked Sendable, DeinitPrin
     private let indexItemsForSpotlight = resolve(\SharedUseCasesContainer.indexItemsForSpotlight)
     private let deleteLocalDataBeforeFullSync = resolve(\SharedUseCasesContainer.deleteLocalDataBeforeFullSync)
 
+    @LazyInjected(\SharedUseCasesContainer.getLastEventIdIfNotExist)
+    private var getLastEventIdIfNotExist
+
     private var cancellables = Set<AnyCancellable>()
 
     @Published private(set) var state = AppContentState.loading
@@ -216,6 +219,9 @@ extension AppContentManager {
             }
 
             try await loadContents(userId: userId, for: remoteShares.shares)
+
+            // 4. Get the lastEventID as a starting point for user events sync loop
+            try await getLastEventIdIfNotExist(userId: userId)
         } catch {
             vaultSyncEventStream.send(.error(userId: userId, error: error))
             return

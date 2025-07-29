@@ -104,7 +104,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     var addAndSwitchToNewUserAccount
     @LazyInjected(\ SharedUseCasesContainer.addTelemetryEvent) var addTelemetryEvent
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
+    @LazyInjected(\SharedUseCasesContainer.fullContentSync) var fullContentSync
 
     private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
     let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
@@ -1803,8 +1804,20 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
         logger.info("Began new sync loop for userId \(userId)")
     }
 
+    func syncEventLoopShouldUseUserEvents() async -> Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1)
+    }
+
     nonisolated func syncEventLoopDidSkipLoop(reason: SyncEventLoopSkipReason) {
         logger.info("Skipped sync loop \(reason)")
+    }
+
+    func syncEventLoopRequiresFullSync(userId: String) async throws {
+        router.present(for: .fullSync)
+        logger.info("Full syncing triggered by user events")
+        await fullContentSync(userId: userId, shouldStopEventLoop: false)
+        logger.info("Done full syncing triggered by user events")
+        router.display(element: .successMessage(config: .refresh))
     }
 
     nonisolated func syncEventLoopDidFinishLoop(userId: String, hasNewEvents: Bool) {

@@ -68,6 +68,8 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
                       shareId: String,
                       eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws
 
+    func refreshItem(userId: String, shareId: String, itemId: String, eventToken: String) async throws
+
     @discardableResult
     func createItem(userId: String,
                     itemContent: any ProtobufableItemContentProtocol,
@@ -307,6 +309,21 @@ public extension ItemRepository {
                                                         shareId: shareId)
         try await refreshPinnedItemDataStream()
         logger.trace("Refreshed last event ID for share \(shareId)")
+    }
+
+    func refreshItem(userId: String, shareId: String, itemId: String, eventToken: String) async throws {
+        logger.trace("Refreshing item \(itemId) share \(shareId) eventToken \(eventToken)")
+        let item = try await remoteDatasource.getItem(userId: userId,
+                                                      shareId: shareId,
+                                                      itemId: itemId,
+                                                      eventToken: eventToken)
+        let symmetricKey = try await getSymmetricKey()
+        let encryptedItem = try await symmetricallyEncrypt(itemRevision: item,
+                                                           shareId: shareId,
+                                                           userId: userId,
+                                                           symmetricKey: symmetricKey)
+        try await localDatasource.upsertItems([encryptedItem])
+        logger.trace("Refreshed item \(itemId) share \(shareId) eventToken \(eventToken)")
     }
 
     func createItem(userId: String,
