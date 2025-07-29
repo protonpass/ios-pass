@@ -34,17 +34,14 @@ struct PreferencesTests {
     func decodeAppPrerencesFromLegacyJson() throws {
         let json = """
 {
-    "createdItemsCount": 100,
-    "dismissedBannerIds": ["a", "b", "c"]
+    "createdItemsCount": 100
 }
 """
         let expectation = AppPreferences(onboarded: AppPreferences.default.onboarded,
                                          telemetryThreshold: AppPreferences.default.telemetryThreshold,
                                          createdItemsCount: 100,
-                                         dismissedBannerIds: ["a", "b", "c"], 
                                          dismissedCustomDomainExplanation:
                                             AppPreferences.default.dismissedCustomDomainExplanation,
-                                         didMigratePreferences: AppPreferences.default.didMigratePreferences,
                                          hasVisitedContactPage: AppPreferences.default.hasVisitedContactPage,
                                          dismissedFileAttachmentsBanner: AppPreferences.default.dismissedFileAttachmentsBanner)
         try decodeAndAssert(AppPreferences.self, json: json, expectation: expectation)

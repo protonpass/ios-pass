@@ -91,7 +91,6 @@ public enum Constants {
 
 /// Links to KB articles or useful pages
 public enum ProtonLink {
-    public static let trialPeriod = "https://proton.me/support/pass-trial"
     public static let howToImport = "https://proton.me/support/pass-import"
     public static let privacyPolicy = "https://proton.me/legal/privacy"
     public static let termsOfService = "https://proton.me/legal/terms"

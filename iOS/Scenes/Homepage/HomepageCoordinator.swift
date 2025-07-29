@@ -1431,30 +1431,6 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         present(viewController)
     }
 
-    func itemsTabViewModelWantsToShowTrialDetail() {
-        Task { [weak self] in
-            guard let self else { return }
-            defer { self.hideLoadingHud() }
-            do {
-                showLoadingHud()
-
-                let plan = try await accessRepository.getPlan(userId: nil)
-                guard let trialEnd = plan.trialEnd else { return }
-                let trialEndDate = Date(timeIntervalSince1970: TimeInterval(trialEnd))
-                let daysLeft = Calendar.current.numberOfDaysBetween(trialEndDate, and: .now)
-
-                hideLoadingHud()
-
-                let view = TrialDetailView(daysLeft: abs(daysLeft),
-                                           onUpgrade: { self.startUpgradeFlow() },
-                                           onLearnMore: { self.urlOpener.open(urlString: ProtonLink.trialPeriod) })
-                present(view)
-            } catch {
-                handle(error: error)
-            }
-        }
-    }
-
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent) {
         presentItemDetailView(for: itemContent, asSheet: shouldShowAsSheet())
     }
