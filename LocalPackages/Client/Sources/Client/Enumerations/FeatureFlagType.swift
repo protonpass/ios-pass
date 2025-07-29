@@ -29,4 +29,5 @@ public enum FeatureFlagType: String, CaseIterable, FeatureFlagTypeProtocol {
     case passCustomTypeV1 = "PassCustomTypeV1"
     case passRenameAdminToManager = "PassRenameAdminToManager"
     case passHideShowVault = "PassHideShowVault"
+    case passUserEventsV1 = "PassUserEventsV1"
 }

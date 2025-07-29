@@ -25,15 +25,19 @@ struct GetShareResponse: Decodable, Sendable {
     let share: Share
 }
 
-struct GetShareEndpoint: Endpoint {
+struct GetShareEndpoint: Endpoint, @unchecked Sendable {
     typealias Body = EmptyRequest
     typealias Response = GetShareResponse
 
     let debugDescription: String
     let path: String
+    var queries: [String: Any]?
 
-    init(for shareId: String) {
+    init(for shareId: String, eventToken: String?) {
         debugDescription = "Get share for id \(shareId)"
         path = "/pass/v1/share/\(shareId)"
+        if let eventToken {
+            queries = ["EventToken": eventToken]
+        }
     }
 }

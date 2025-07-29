@@ -47,20 +47,20 @@ public final class RemoteShareDatasourceProtocolMock: @unchecked Sendable, Remot
         return stubbedGetSharesResult
     }
     // MARK: - getShare
-    public var getShareShareIdUserIdThrowableError2: Error?
+    public var getShareShareIdUserIdEventTokenThrowableError2: Error?
     public var closureGetShare: () -> () = {}
     public var invokedGetSharefunction = false
     public var invokedGetShareCount = 0
-    public var invokedGetShareParameters: (shareId: String, userId: String)?
-    public var invokedGetShareParametersList = [(shareId: String, userId: String)]()
+    public var invokedGetShareParameters: (shareId: String, userId: String, eventToken: String?)?
+    public var invokedGetShareParametersList = [(shareId: String, userId: String, eventToken: String?)]()
     public var stubbedGetShareResult: Share!
 
-    public func getShare(shareId: String, userId: String) async throws -> Share {
+    public func getShare(shareId: String, userId: String, eventToken: String?) async throws -> Share {
         invokedGetSharefunction = true
         invokedGetShareCount += 1
-        invokedGetShareParameters = (shareId, userId)
-        invokedGetShareParametersList.append((shareId, userId))
-        if let error = getShareShareIdUserIdThrowableError2 {
+        invokedGetShareParameters = (shareId, userId, eventToken)
+        invokedGetShareParametersList.append((shareId, userId, eventToken))
+        if let error = getShareShareIdUserIdEventTokenThrowableError2 {
             throw error
         }
         closureGetShare()

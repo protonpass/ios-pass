@@ -72,7 +72,7 @@ public final class AddAndSwitchToNewUserAccount: AddAndSwitchToNewUserAccountUse
             try await preferencesManager.updateUserPreferences(\.extraPasswordEnabled,
                                                                value: true)
         }
-        await fullContentSync(userId: userData.user.ID)
+        await fullContentSync(userId: userData.user.ID, shouldStopEventLoop: true)
         await inviteRepository.refreshInvites()
         syncEventLoop.start()
     }
