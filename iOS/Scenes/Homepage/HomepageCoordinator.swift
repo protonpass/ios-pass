@@ -1800,9 +1800,12 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
         logger.info("Stopped looping")
     }
 
-    func syncEventLoopDidBeginNewLoop(userId: String) -> Bool {
+    nonisolated func syncEventLoopDidBeginNewLoop(userId: String) {
         logger.info("Began new sync loop for userId \(userId)")
-        return getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1)
+    }
+
+    func syncEventLoopShouldUseUserEvents() async -> Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1)
     }
 
     nonisolated func syncEventLoopDidSkipLoop(reason: SyncEventLoopSkipReason) {

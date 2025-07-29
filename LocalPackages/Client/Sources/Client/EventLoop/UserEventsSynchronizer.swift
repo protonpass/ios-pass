@@ -70,7 +70,7 @@ public actor UserEventsSynchronizer: UserEventsSynchronizerProtocol {
 
 public extension UserEventsSynchronizer {
     func sync(userId: String) async throws -> UserEventsSyncResult {
-        logger.trace("Syncing with user events for user \(userId)")
+        logger.trace("Syncing user events for user \(userId)")
         guard let lastEventId = try await localUserEventIdDatasource.getLastEventId(userId: userId) else {
             logger.warning("No local user event ID for user \(userId). Force full refresh.")
             return .init(dataUpdated: false, planChanged: false, fullRefreshNeeded: true)
@@ -126,11 +126,18 @@ private extension UserEventsSynchronizer {
             logger.trace("No updated items for user \(userId)")
         } else {
             logger.trace("Refreshing \(events.itemsUpdated.count) updated items for user \(userId)")
-            for updatedItem in events.itemsUpdated {
-                try await itemRepository.refreshItem(userId: userId,
-                                                     shareId: updatedItem.shareID,
-                                                     itemId: updatedItem.itemID,
-                                                     eventToken: updatedItem.eventToken)
+            try await withThrowingTaskGroup(of: Void.self) { taskGroup in
+                for updatedItem in events.itemsUpdated {
+                    taskGroup.addTask { [weak self] in
+                        guard let self else { return }
+                        try await itemRepository.refreshItem(userId: userId,
+                                                             shareId: updatedItem.shareID,
+                                                             itemId: updatedItem.itemID,
+                                                             eventToken: updatedItem.eventToken)
+                    }
+                }
+
+                try await taskGroup.waitForAll()
             }
         }
 
@@ -145,10 +152,17 @@ private extension UserEventsSynchronizer {
             logger.trace("No updated shares for user \(userId)")
         } else {
             logger.trace("Refreshing \(events.sharesUpdated.count) shares for user \(userId)")
-            for updatedShare in events.sharesUpdated {
-                try await shareRepository.refreshShare(userId: userId,
-                                                       shareId: updatedShare.shareID,
-                                                       eventToken: updatedShare.eventToken)
+            try await withThrowingTaskGroup(of: Void.self) { taskGroup in
+                for updatedShare in events.sharesUpdated {
+                    taskGroup.addTask { [weak self] in
+                        guard let self else { return }
+                        try await shareRepository.refreshShare(userId: userId,
+                                                               shareId: updatedShare.shareID,
+                                                               eventToken: updatedShare.eventToken)
+                    }
+                }
+
+                try await taskGroup.waitForAll()
             }
         }
 
@@ -156,10 +170,17 @@ private extension UserEventsSynchronizer {
             logger.trace("No deleted shares for user \(userId)")
         } else {
             logger.trace("Deleting \(events.sharesDeleted.count) shares for user \(userId)")
-            for deletedShare in events.sharesDeleted {
-                try await shareRepository.deleteShareLocally(userId: userId,
-                                                             shareId: deletedShare.shareID)
-                try await itemRepository.deleteAllItemsLocally(shareId: deletedShare.shareID)
+            try await withThrowingTaskGroup(of: Void.self) { taskGroup in
+                for deletedShare in events.sharesDeleted {
+                    taskGroup.addTask { [weak self] in
+                        guard let self else { return }
+                        try await shareRepository.deleteShareLocally(userId: userId,
+                                                                     shareId: deletedShare.shareID)
+                        try await itemRepository.deleteAllItemsLocally(shareId: deletedShare.shareID)
+                    }
+                }
+
+                try await taskGroup.waitForAll()
             }
         }
     }
