@@ -37,8 +37,10 @@ public protocol SyncEventLoopDelegate: AnyObject, Sendable {
     func syncEventLoopDidStopLooping()
 
     /// Called at the beginning of every sync loop.
+    func syncEventLoopDidBeginNewLoop(userId: String)
+
     /// Return `true` if user events is enabled
-    func syncEventLoopDidBeginNewLoop(userId: String) async -> Bool
+    func syncEventLoopShouldUseUserEvents() async -> Bool
 
     /// Called when a loop is skipped
     /// - Parameters:
@@ -282,7 +284,8 @@ private extension SyncEventLoop {
 
     func executeEventSync(userId: String) async {
         do {
-            let userEventsEnabled = await delegate?.syncEventLoopDidBeginNewLoop(userId: userId)
+            delegate?.syncEventLoopDidBeginNewLoop(userId: userId)
+            let userEventsEnabled = await delegate?.syncEventLoopShouldUseUserEvents()
             if Task.isCancelled { return }
 
             let hasNewEvents: Bool
