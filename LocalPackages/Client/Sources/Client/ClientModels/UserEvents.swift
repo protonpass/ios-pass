@@ -31,7 +31,7 @@ public struct UserEvents: Sendable, Decodable {
     public let eventsPending: Bool
     public let fullRefresh: Bool
 
-    /// Reflect the least changes in user's data in order to locally reload everything
+    /// Reflect the fact that some changes occurred to user's data and that we need to reload it locally
     public var dataUpdated: Bool {
         !itemsUpdated.isEmpty ||
             !itemsDeleted.isEmpty ||
