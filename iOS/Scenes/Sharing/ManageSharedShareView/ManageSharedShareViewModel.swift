@@ -173,8 +173,7 @@ final class ManageSharedShareViewModel: ObservableObject, @unchecked Sendable {
         return canUserTransferVaultOwnership(for: share, to: invitee)
     }
 
-    // swiftformat:disable all
-    // swiftformat is confused when an async function takes an async autoclosure
+    // swiftformat:disable hoistAwait
     func handle(option: ShareInviteeOption) {
         Task { [weak self] in
             guard let self else { return }
@@ -212,13 +211,11 @@ final class ManageSharedShareViewModel: ObservableObject, @unchecked Sendable {
                     self.newOwner = newOwner
 
                 case let .transferOwnership(newOwner):
-                    let element = UIElementDisplay.successMessage(
-                        #localized("Vault has been transferred"),
-                        config: nil)
-                    try await execute(
-                        await transferVaultOwnership(newOwnerID: newOwner.shareId,
-                                                     shareId: share.shareId),
-                        elementDisplay: element)
+                    let element = UIElementDisplay.successMessage(#localized("Vault has been transferred"),
+                                                                  config: nil)
+                    try await execute(await transferVaultOwnership(newOwnerID: newOwner.shareId,
+                                                                   shareId: share.shareId),
+                                      elementDisplay: element)
                 }
             } catch {
                 logger.error(error)
@@ -226,7 +223,8 @@ final class ManageSharedShareViewModel: ObservableObject, @unchecked Sendable {
             }
         }
     }
-    // swiftformat:enable all
+
+    // swiftformat:enable hoistAwait
 
     func upgrade() {
         router.present(for: .upgradeFlow)

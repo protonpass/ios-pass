@@ -226,6 +226,14 @@ extension SharedRepositoryContainer {
     var localPasswordDatasource: Factory<any LocalPasswordDatasourceProtocol> {
         self { LocalPasswordDatasource(databaseService: self.databaseService) }
     }
+
+    var localUserEventIdDatasource: Factory<any LocalUserEventIdDatasourceProtocol> {
+        self { LocalUserEventIdDatasource(databaseService: self.databaseService) }
+    }
+
+    var remoteUserEventsDatasource: Factory<any RemoteUserEventsDatasourceProtocol> {
+        self { RemoteUserEventsDatasource(apiServicing: self.apiManager) }
+    }
 }
 
 // MARK: Repositories

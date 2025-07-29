@@ -48,6 +48,7 @@ public final class RemoveUserLocalData: Sendable, RemoveUserLocalDataUseCase {
     private let userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol
     private let inAppNotificationDatasource: any LocalInAppNotificationDatasourceProtocol
     private let passwordDatasource: any LocalPasswordDatasourceProtocol
+    private let userEventIdDatasource: any LocalUserEventIdDatasourceProtocol
 
     public init(accessDatasource: any LocalAccessDatasourceProtocol,
                 itemDatasource: any LocalItemDatasourceProtocol,
@@ -62,7 +63,8 @@ public final class RemoveUserLocalData: Sendable, RemoveUserLocalDataUseCase {
                 userDataDatasource: any LocalUserDataDatasourceProtocol,
                 userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol,
                 inAppNotificationDatasource: any LocalInAppNotificationDatasourceProtocol,
-                passwordDatasource: any LocalPasswordDatasourceProtocol) {
+                passwordDatasource: any LocalPasswordDatasourceProtocol,
+                userEventIdDatasource: any LocalUserEventIdDatasourceProtocol) {
         self.accessDatasource = accessDatasource
         self.itemDatasource = itemDatasource
         self.itemReadEventDatasource = itemReadEventDatasource
@@ -77,6 +79,7 @@ public final class RemoveUserLocalData: Sendable, RemoveUserLocalDataUseCase {
         self.userPreferencesDatasource = userPreferencesDatasource
         self.inAppNotificationDatasource = inAppNotificationDatasource
         self.passwordDatasource = passwordDatasource
+        self.userEventIdDatasource = userEventIdDatasource
     }
 }
 
@@ -97,6 +100,7 @@ public extension RemoveUserLocalData {
         async let removeInAppNotifications: () = inAppNotificationDatasource
             .removeAllNotifications(userId: userId)
         async let removePasswords: () = passwordDatasource.deleteAllPasswords(userId: userId)
+        async let removeLastEventId: () = userEventIdDatasource.removeLastEventId(userId: userId)
 
         _ = try await (removeAccess,
                        removeItems,
@@ -111,6 +115,7 @@ public extension RemoveUserLocalData {
                        removeUserData,
                        removeUserPrefs,
                        removeInAppNotifications,
-                       removePasswords)
+                       removePasswords,
+                       removeLastEventId)
     }
 }

@@ -77,14 +77,35 @@ extension SharedServiceContainer {
                                  aliasRepository: SharedRepositoryContainer.shared.aliasRepository(),
                                  accessRepository: self.accessRepository,
                                  userManager: self.userManager(),
-                                 logManager: self.logManager,
-                                 featureFlagsRepository: SharedRepositoryContainer.shared
-                                     .featureFlagsRepository()) }
+                                 logManager: self.logManager) }
+    }
+
+    var userEventsSynchronizer: Factory<any UserEventsSynchronizerProtocol> {
+        self {
+            let container = SharedRepositoryContainer.shared
+            return UserEventsSynchronizer(localUserEventIdDatasource: container.localUserEventIdDatasource(),
+                                          remoteUserEventsDatasource: container.remoteUserEventsDatasource(),
+                                          itemRepository: container.itemRepository(),
+                                          shareRepository: container.shareRepository(),
+                                          accessRepository: container.accessRepository(),
+                                          logManager: self.logManager)
+        }
+    }
+
+    var aliasSynchronizer: Factory<any AliasSynchronizerProtocol> {
+        self {
+            let container = SharedRepositoryContainer.shared
+            return AliasSynchronizer(accessRepository: container.accessRepository(),
+                                     aliasRepository: container.aliasRepository(),
+                                     itemRepository: container.itemRepository())
+        }
     }
 
     var syncEventLoop: Factory<SyncEventLoop> {
         self { SyncEventLoop(currentDateProvider: self.currentDateProvider,
                              synchronizer: self.eventSynchronizer(),
+                             userEventsSynchronizer: self.userEventsSynchronizer(),
+                             aliasSynchronizer: self.aliasSynchronizer(),
                              userManager: self.userManager(),
                              logManager: self.logManager,
                              reachability: SharedServiceContainer.shared.reachabilityService()) }

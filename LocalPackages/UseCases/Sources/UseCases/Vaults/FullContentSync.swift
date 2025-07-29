@@ -23,12 +23,18 @@
 import Client
 
 public protocol FullContentSyncUseCase: Sendable {
-    func execute(userId: String) async
+    /// We should always stop the event loop before triggering a full sync to avoid data race
+    /// in case the full sync happens in the middle of a sync loop
+    ///
+    /// However, user events system could also trigger a force full refresh,
+    /// this is the only case where we shouldn't stop the event loop because user events happen inside
+    /// event loop, so if we stop the loop, the full sync will be cancelled.
+    func execute(userId: String, shouldStopEventLoop: Bool) async
 }
 
 public extension FullContentSyncUseCase {
-    func callAsFunction(userId: String) async {
-        await execute(userId: userId)
+    func callAsFunction(userId: String, shouldStopEventLoop: Bool) async {
+        await execute(userId: userId, shouldStopEventLoop: shouldStopEventLoop)
     }
 }
 
@@ -42,9 +48,13 @@ public final class FullContentSync: FullContentSyncUseCase {
         self.appContentManager = appContentManager
     }
 
-    public func execute(userId: String) async {
-        syncEventLoop.stop()
+    public func execute(userId: String, shouldStopEventLoop: Bool) async {
+        if shouldStopEventLoop {
+            syncEventLoop.stop()
+        }
         await appContentManager.fullSync(userId: userId)
-        syncEventLoop.start()
+        if shouldStopEventLoop {
+            syncEventLoop.start()
+        }
     }
 }
