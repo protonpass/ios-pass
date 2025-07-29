@@ -140,7 +140,7 @@ struct ItemsTabView: View {
                    !viewModel.banners.isEmpty,
                    !viewModel.isEditMode {
                     InfoBannerViewStack(banners: viewModel.banners,
-                                        dismiss: { viewModel.dismiss(banner: $0) },
+                                        dismiss: { _ in },
                                         action: { viewModel.handleAction(banner: $0) })
                         .padding()
                 }

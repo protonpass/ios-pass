@@ -128,9 +128,3 @@ private extension InfoBannerView {
         }
     }
 }
-
-#Preview("InfoBannerView Preview") {
-    InfoBannerView(banner: InfoBanner.autofill,
-                   dismiss: {},
-                   action: {})
-}

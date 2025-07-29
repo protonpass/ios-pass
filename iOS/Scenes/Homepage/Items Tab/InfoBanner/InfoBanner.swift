@@ -23,50 +23,11 @@ import Entities
 import Macro
 import SwiftUI
 
-// swiftlint:disable line_length
-enum InfoBanner: CaseIterable, Equatable, Hashable {
-    static var allCases: [InfoBanner] {
-        [.trial, .autofill, .aliases]
-    }
-
-    case trial, autofill, aliases, invite([UserInvite])
-
-    var id: String {
-        switch self {
-        case .trial:
-            "trial"
-        case .autofill:
-            "autofill"
-        case .aliases:
-            "aliases"
-        case .invite:
-            "invite"
-        }
-    }
+enum InfoBanner: Equatable, Hashable {
+    case invite([UserInvite])
 
     var detail: InfoBannerDetail {
         switch self {
-        case .trial:
-            return .init(title: #localized("Our welcome gift to you"),
-                         description: #localized("7 days to try premium features for free. Only during your first week of Proton Pass."),
-                         icon: nil,
-                         ctaTitle: #localized("Learn more"),
-                         backgroundColor: PassColor.noteInteractionNormMajor1.toColor,
-                         foregroundColor: PassColor.textInvert.toColor)
-        case .autofill:
-            return .init(title: #localized("Enjoy the magic of AutoFill"),
-                         description: #localized("One tap and⏤presto!⏤your username and password are filled in instantly"),
-                         icon: PassIcon.infoBannerAutoFill,
-                         ctaTitle: #localized("Turn on AutoFill"),
-                         backgroundColor: PassColor.aliasInteractionNormMajor1.toColor,
-                         foregroundColor: PassColor.textInvert.toColor)
-        case .aliases:
-            return .init(title: #localized("Goodbye spam and scams"),
-                         description: #localized("Use email aliases to protect your inbox and identity"),
-                         icon: PassIcon.infoBannerAliases,
-                         ctaTitle: #localized("Learn more"),
-                         backgroundColor: PassColor.signalSuccess.toColor,
-                         foregroundColor: PassColor.textInvert.toColor)
         case let .invite(userInvites):
             var title = #localized("Vault shared with you")
             var description = #localized("You're invited to a shared vault. Tap for details.")
@@ -89,8 +50,6 @@ enum InfoBanner: CaseIterable, Equatable, Hashable {
         return false
     }
 }
-
-// swiftlint:enable line_length
 
 enum CtaButtonType {
     case text

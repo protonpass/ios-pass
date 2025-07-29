@@ -66,7 +66,6 @@ final class AppCoordinator {
 
     private var cancellables = Set<AnyCancellable>()
 
-    private let appData = resolve(\SharedDataContainer.appData)
     private let userManager = resolve(\SharedServiceContainer.userManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
@@ -120,7 +119,6 @@ final class AppCoordinator {
     private func clearUserDataInKeychainIfFirstRun() {
         guard firstRunDetector.isFirstRun() else { return }
         firstRunDetector.completeFirstRun()
-        appData.resetData()
         try? keychain.removeOrError(forKey: AuthManager.storageKey)
         Task { [weak self] in
             guard let self else { return }

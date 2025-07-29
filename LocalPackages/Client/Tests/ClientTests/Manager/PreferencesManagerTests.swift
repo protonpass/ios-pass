@@ -35,7 +35,6 @@ final class PreferencesManagerTest: XCTestCase {
     var lastAppPreferences: AppPreferences!
     var sharedPreferencesDatasource: LocalSharedPreferencesDatasourceProtocol!
     var userPreferencesDatasource: LocalUserPreferencesDatasourceProtocol!
-    var preferencesMigrator: PreferencesMigratorMock!
     var sut: PreferencesManagerProtocol!
     var cancellables: Set<AnyCancellable>!
 
@@ -69,17 +68,13 @@ final class PreferencesManagerTest: XCTestCase {
         LocalUserPreferencesDatasource(symmetricKeyProvider: symmetricKeyProviderMockFactory.getProvider(),
                                        databaseService: DatabaseService(inMemory: true))
 
-        preferencesMigrator = .init()
-        preferencesMigrator.stubbedMigratePreferencesResult = (.default, .default, .default)
-
         cancellables = .init()
 
         sut = PreferencesManager(userManager: userManager,
                                  appPreferencesDatasource: appPreferencesDatasource,
                                  sharedPreferencesDatasource: sharedPreferencesDatasource,
                                  userPreferencesDatasource: userPreferencesDatasource, 
-                                 logManager: LogManagerProtocolMock(), 
-                                 preferencesMigrator: preferencesMigrator)
+                                 logManager: LogManagerProtocolMock())
     }
 
     override func tearDown() {
@@ -219,39 +214,6 @@ extension PreferencesManagerTest {
             XCTAssertNil(preferences)
         }
         XCTAssertNil(sut.userPreferences.value)
-    }
-}
-
-// MARK: Migration
-extension PreferencesManagerTest {
-    func testMigration() async throws {
-        // Given
-        var expectedAppPrefs = AppPreferences.random()
-        expectedAppPrefs.didMigratePreferences = true
-        let expectedSharedPrefs = SharedPreferences.random()
-        let expectedUserPrefs = UserPreferences.random()
-        preferencesMigrator.stubbedMigratePreferencesResult =
-        (expectedAppPrefs, expectedSharedPrefs, expectedUserPrefs)
-
-        appPreferencesDatasource.closureGetPreferences = {
-            if self.preferencesMigrator.invokedMigratePreferencesfunction {
-                self.appPreferencesDatasource.stubbedGetPreferencesResult = expectedAppPrefs
-            }
-        }
-
-        // When
-        for _ in 0..<5 {
-            // Simulate different app launches
-            try await sut.setUp()
-        }
-
-        // Then
-        XCTAssertTrue(preferencesMigrator.invokedMigratePreferencesfunction)
-        // Only migrate once
-        XCTAssertEqual(preferencesMigrator.invokedMigratePreferencesCount, 1)
-        XCTAssertEqual(sut.appPreferences.value, expectedAppPrefs)
-        XCTAssertEqual(sut.sharedPreferences.value, expectedSharedPrefs)
-        XCTAssertEqual(sut.userPreferences.value, expectedUserPrefs)
     }
 }
 

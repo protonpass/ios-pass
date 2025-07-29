@@ -31,7 +31,6 @@ import SwiftUI
 protocol ItemsTabViewModelDelegate: AnyObject {
     func itemsTabViewModelWantsToCreateNewItem(type: ItemContentType)
     func itemsTabViewModelWantsToPresentVaultList()
-    func itemsTabViewModelWantsToShowTrialDetail()
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent)
 }
 
@@ -60,7 +59,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
-    private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let getPendingUserInvitations = resolve(\UseCasesContainer.getPendingUserInvitations)
@@ -70,10 +68,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let getAllPinnedItems = resolve(\UseCasesContainer.getAllPinnedItems)
     private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
     private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
-    private let enableAutoFill = resolve(\UseCasesContainer.enableAutoFill)
     private let shouldDisplayUpgradeAppBanner = resolve(\UseCasesContainer.shouldDisplayUpgradeAppBanner)
-    private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
-    private let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
     private let pinItems = resolve(\SharedUseCasesContainer.pinItems)
     private let unpinItems = resolve(\SharedUseCasesContainer.unpinItems)
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
@@ -275,44 +270,7 @@ private extension ItemsTabViewModel {
                     banners.append(invites.toInfoBanners)
                 }
             }
-            if banners.isEmpty {
-                await banners.append(contentsOf: localBanners())
-            }
             self.banners = banners
-        }
-    }
-
-    func localBanners() async -> [InfoBanner] {
-        do {
-            let dismissedIds = getAppPreferences().dismissedBannerIds
-            var banners = [InfoBanner]()
-            for banner in InfoBanner.allCases {
-                if dismissedIds.contains(where: { $0 == banner.id }) {
-                    continue
-                }
-
-                var shouldShow = true
-                switch banner {
-                case .trial:
-                    let plan = try await accessRepository.getPlan(userId: nil)
-                    shouldShow = plan.isInTrial
-
-                case .autofill:
-                    shouldShow = await !credentialManager.isAutoFillEnabled
-
-                default:
-                    break
-                }
-
-                if shouldShow {
-                    banners.append(banner)
-                }
-            }
-
-            return banners
-        } catch {
-            handle(error: error)
-            return []
         }
     }
 
@@ -490,35 +448,8 @@ extension ItemsTabViewModel {
         delegate?.itemsTabViewModelWantsToCreateNewItem(type: type)
     }
 
-    func dismiss(banner: InfoBanner) {
-        if banner.isInvite {
-            return
-        }
-        banners.removeAll(where: { $0 == banner })
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                let newIds = getAppPreferences().dismissedBannerIds.appending(banner.id)
-                try await updateAppPreferences(\.dismissedBannerIds, value: newIds)
-            } catch {
-                handle(error: error)
-            }
-        }
-    }
-
     func handleAction(banner: InfoBanner) {
         switch banner {
-        case .trial:
-            delegate?.itemsTabViewModelWantsToShowTrialDetail()
-        case .autofill:
-            Task { [weak self] in
-                guard let self else { return }
-                if await enableAutoFill() {
-                    banners.removeAll(where: { $0 == .autofill })
-                }
-            }
-        case .aliases:
-            router.navigate(to: .urlPage(urlString: "https://proton.me/support/pass-alias-ios"))
         case let .invite(invites: invites):
             if let firstInvite = invites.first {
                 router.present(for: .acceptRejectInvite(firstInvite))
