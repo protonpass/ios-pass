@@ -22,6 +22,8 @@ import Entities
 
 public protocol RemoteInviteDatasourceProtocol: Sendable {
     func getPendingInvitesForUser(userId: String) async throws -> [UserInvite]
+    func getPendingGroupInvitesForUser(lastToken: String?, userId: String) async throws -> PaginatedGroupInvites
+
     func acceptInvite(userId: String, inviteToken: String, request: AcceptInviteRequest) async throws -> Share
     func acceptGroupInvite(userId: String, inviteToken: String, request: AcceptInviteRequest) async throws
     func rejectInvite(userId: String, inviteToken: String) async throws -> Bool
@@ -53,12 +55,16 @@ public extension RemoteInviteDatasource {
 // MARK: - Group
 
 public extension RemoteInviteDatasource {
-    func acceptGroupInvite(
-        userId: String,
-        inviteToken: String,
-        request: AcceptInviteRequest
-    ) async throws {
-        let endpoint = AcceptGroupInviteEndpoint(with: inviteToken, and: request)
+    func getPendingGroupInvitesForUser(lastToken: String?, userId: String) async throws -> PaginatedGroupInvites {
+        let endpoint = GetPendingGroupInvitesEndpoint(sinceToken: lastToken)
         let response = try await exec(userId: userId, endpoint: endpoint)
+        return response.invites
+    }
+
+    func acceptGroupInvite(userId: String,
+                           inviteToken: String,
+                           request: AcceptInviteRequest) async throws {
+        let endpoint = AcceptGroupInviteEndpoint(with: inviteToken, and: request)
+        try await exec(userId: userId, endpoint: endpoint)
     }
 }
