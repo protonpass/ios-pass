@@ -28,7 +28,7 @@ extension InviteKeyEntity: Identifiable {}
 
 extension InviteKeyEntity {
     @nonobjc
-    public class func fetchRequest() -> NSFetchRequest<InviteKeyEntity> {
+    class func fetchRequest() -> NSFetchRequest<InviteKeyEntity> {
         NSFetchRequest<InviteKeyEntity>(entityName: "InviteKeyEntity")
     }
 

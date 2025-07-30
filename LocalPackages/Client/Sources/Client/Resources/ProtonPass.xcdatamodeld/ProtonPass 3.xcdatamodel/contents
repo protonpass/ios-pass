@@ -282,8 +282,8 @@
         <attribute name="vaultDataContent" attributeType="String"/>
         <attribute name="vaultDataContentFormatVersion" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="vaultDataContentKeyRotation" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="vaultDataItemCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="vaultDataMemberCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="vaultDatatemCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
     <entity name="UserPreferencesEntity" representedClassName="UserPreferencesEntity" syncable="YES">
         <attribute name="encryptedContent" attributeType="Binary"/>
