@@ -1,4 +1,4 @@
-//  
+//
 // GroupInvite.swift
 // Proton Pass - Created on 30/07/2025.
 // Copyright (c) 2025 Proton Technologies AG
@@ -37,7 +37,7 @@ public struct GroupInvite: Decodable, Hashable, Equatable, Identifiable, Sendabl
     public var id: String {
         inviteID
     }
-    
+
     public init(inviteID: String,
                 inviterUserID: String,
                 inviterEmail: String,

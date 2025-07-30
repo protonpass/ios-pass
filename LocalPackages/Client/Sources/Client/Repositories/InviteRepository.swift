@@ -24,6 +24,9 @@ import Entities
 import Foundation
 import ProtonCoreLogin
 
+// TODO: User and group invite should have the protocol
+protocol InviteProtocol: Sendable {}
+
 public protocol InviteRepositoryProtocol: Sendable {
     var currentPendingInvites: CurrentValueSubject<[UserInvite], Never> { get }
 

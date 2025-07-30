@@ -21,19 +21,19 @@
 import Entities
 import ProtonCoreNetworking
 
-struct PaginatedGroupInvites: Decodable {
-    let invites: [GroupInvite]
-    let total: Int
-    let lastID: String?
+public struct PaginatedGroupInvites: Decodable, Sendable {
+    public let invites: [GroupInvite]
+    public let total: Int
+    public let lastID: String?
 }
 
-struct GetPendingGroupInvitesResponse: Decodable, Sendable {
-    let invites: PaginatedGroupInvites
+public struct GetPendingGroupInvitesResponse: Decodable, Sendable {
+    public let invites: PaginatedGroupInvites
 }
 
 struct GetPendingGroupInvitesEndpoint: Endpoint, @unchecked Sendable {
     typealias Body = EmptyRequest
-    typealias Response = GetListOfGroupsResponse
+    typealias Response = GetPendingGroupInvitesResponse
 
     let debugDescription: String
     let path: String
