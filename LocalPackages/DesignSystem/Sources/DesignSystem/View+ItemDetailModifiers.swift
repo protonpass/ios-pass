@@ -46,7 +46,7 @@ public extension Text {
             .adaptiveForegroundStyle(isValid ?
                 (text?.isEmpty == true ? PassColor.textNorm : PassColor.textWeak).toColor :
                 PassColor.signalDanger.toColor)
-        // swiftformat:enable all
+            // swiftformat:enable all
             .animation(.default, value: isValid)
             .animation(.default, value: text?.isEmpty)
     }

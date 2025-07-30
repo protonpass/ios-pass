@@ -284,17 +284,17 @@ open class Coordinator: CoordinatorProtocol {
 final class PPNavigationController: UINavigationController, UIGestureRecognizerDelegate {
     private var statusBarStyle = UIStatusBarStyle.default
 
-    override public var preferredStatusBarStyle: UIStatusBarStyle {
+    override var preferredStatusBarStyle: UIStatusBarStyle {
         statusBarStyle
     }
 
-    override public func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         navigationBar.isHidden = true
         interactivePopGestureRecognizer?.delegate = self
     }
 
-    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         viewControllers.count > 1
     }
 }
@@ -302,16 +302,16 @@ final class PPNavigationController: UINavigationController, UIGestureRecognizerD
 final class PPSplitViewController: UISplitViewController {
     private var statusBarStyle = UIStatusBarStyle.default
 
-    override public var preferredStatusBarStyle: UIStatusBarStyle {
+    override var preferredStatusBarStyle: UIStatusBarStyle {
         statusBarStyle
     }
 
-    override public func viewDidAppear(_ animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         show(.primary)
     }
 
-    override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         show(.primary)
     }
