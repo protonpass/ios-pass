@@ -1,3 +1,7 @@
+# Version 1.17.5
+- Fixed an issue preventing login with a QR code after a password update
+- Core libraries upgraded from 32.7.0 to 32.8.0
+
 # Version 1.17.4
 Improvements:
 - Improved search screen layout
