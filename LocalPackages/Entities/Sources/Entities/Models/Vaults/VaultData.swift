@@ -26,6 +26,18 @@ public struct VaultData: Decodable, Equatable, Hashable, Sendable {
     public let contentFormatVersion: Int
     public let memberCount: Int
     public let itemCount: Int
+
+    public init(content: String,
+                contentKeyRotation: Int,
+                contentFormatVersion: Int,
+                memberCount: Int,
+                itemCount: Int) {
+        self.content = content
+        self.contentKeyRotation = contentKeyRotation
+        self.contentFormatVersion = contentFormatVersion
+        self.memberCount = memberCount
+        self.itemCount = itemCount
+    }
 }
 
 public extension VaultData {
