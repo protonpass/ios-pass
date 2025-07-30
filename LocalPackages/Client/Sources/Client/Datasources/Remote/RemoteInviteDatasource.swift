@@ -23,6 +23,7 @@ import Entities
 public protocol RemoteInviteDatasourceProtocol: Sendable {
     func getPendingInvitesForUser(userId: String) async throws -> [UserInvite]
     func acceptInvite(userId: String, inviteToken: String, request: AcceptInviteRequest) async throws -> Share
+    func acceptGroupInvite(userId: String, inviteToken: String, request: AcceptInviteRequest) async throws
     func rejectInvite(userId: String, inviteToken: String) async throws -> Bool
 }
 
@@ -46,5 +47,18 @@ public extension RemoteInviteDatasource {
         let endpoint = RejectInviteEndpoint(with: inviteToken)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.isSuccessful
+    }
+}
+
+// MARK: - Group
+
+public extension RemoteInviteDatasource {
+    func acceptGroupInvite(
+        userId: String,
+        inviteToken: String,
+        request: AcceptInviteRequest
+    ) async throws {
+        let endpoint = AcceptGroupInviteEndpoint(with: inviteToken, and: request)
+        let response = try await exec(userId: userId, endpoint: endpoint)
     }
 }

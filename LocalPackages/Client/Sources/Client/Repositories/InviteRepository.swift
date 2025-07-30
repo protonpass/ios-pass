@@ -28,6 +28,7 @@ public protocol InviteRepositoryProtocol: Sendable {
     var currentPendingInvites: CurrentValueSubject<[UserInvite], Never> { get }
 
     func acceptInvite(with inviteToken: String, and keys: [ItemKey]) async throws -> Share
+    func acceptGroupInvite(with inviteToken: String, and keys: [ItemKey]) async throws
 
     @discardableResult
     func rejectInvite(with inviteToken: String) async throws -> Bool
@@ -115,5 +116,19 @@ public extension InviteRepository {
         logger.trace("Removing current cached invite containing inviteToken \(inviteToken)")
         let newInvites = currentPendingInvites.value.filter { $0.inviteToken != inviteToken }
         currentPendingInvites.send(newInvites)
+    }
+}
+
+// MARK: - Group
+
+public extension InviteRepository {
+    func acceptGroupInvite(with inviteToken: String, and keys: [ItemKey]) async throws {
+        logger.trace("Accepting group invite \(inviteToken)")
+        let request = AcceptInviteRequest(keys: keys)
+        let userId = try await userManager.getActiveUserId()
+        try await remoteInviteDatasource.acceptGroupInvite(userId: userId,
+                                                           inviteToken: inviteToken,
+                                                           request: request)
+        logger.trace("Accepted the group invite with token \(inviteToken)")
     }
 }

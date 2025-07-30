@@ -1,7 +1,7 @@
 //
-// NotificationTimeEntity.swift
-// Proton Pass - Created on 04/12/2024.
-// Copyright (c) 2024 Proton Technologies AG
+// GetListOfGroupMembersEndpoint.swift
+// Proton Pass - Created on 30/07/2025.
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,26 +18,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import CoreData
+import Foundation
 
-@objc(NotificationTimeEntity)
-final class NotificationTimeEntity: NSManagedObject {}
+import Entities
+import ProtonCoreNetworking
 
-extension NotificationTimeEntity: Identifiable {}
-
-extension NotificationTimeEntity {
-    @nonobjc
-    class func fetchRequest() -> NSFetchRequest<NotificationTimeEntity> {
-        NSFetchRequest<NotificationTimeEntity>(entityName: "NotificationTimeEntity")
-    }
-
-    @NSManaged var time: Double
-    @NSManaged var userID: String
+struct GetListOfGroupMembersResponse: Decodable, Sendable {
+    let members: [GroupMember]
+    let total: Int
 }
 
-extension NotificationTimeEntity {
-    func hydrate(userId: String, timestamp: TimeInterval) {
-        time = timestamp
-        userID = userId
+struct GetListOfGroupMembersEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = GetListOfGroupsResponse
+
+    let debugDescription: String
+    let path: String
+
+    init(groupId: String) {
+        debugDescription = "Get a members list of a group."
+        path = "/core/v4/groups/\(groupId)/members"
     }
 }

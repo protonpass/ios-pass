@@ -1,7 +1,7 @@
 //
-// NotificationTimeEntity.swift
-// Proton Pass - Created on 04/12/2024.
-// Copyright (c) 2024 Proton Technologies AG
+// AcceptGroupInviteEndpoint.swift
+// Proton Pass - Created on 30/07/2025.
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,26 +18,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import CoreData
+import Entities
+import ProtonCoreNetworking
 
-@objc(NotificationTimeEntity)
-final class NotificationTimeEntity: NSManagedObject {}
+struct AcceptGroupInviteEndpoint: Endpoint {
+    typealias Body = AcceptInviteRequest
+    typealias Response = CodeOnlyResponse
 
-extension NotificationTimeEntity: Identifiable {}
+    let debugDescription: String
+    let path: String
+    let method: HTTPMethod
+    let body: AcceptInviteRequest?
 
-extension NotificationTimeEntity {
-    @nonobjc
-    class func fetchRequest() -> NSFetchRequest<NotificationTimeEntity> {
-        NSFetchRequest<NotificationTimeEntity>(entityName: "NotificationTimeEntity")
-    }
-
-    @NSManaged var time: Double
-    @NSManaged var userID: String
-}
-
-extension NotificationTimeEntity {
-    func hydrate(userId: String, timestamp: TimeInterval) {
-        time = timestamp
-        userID = userId
+    init(with groupInviteToken: String, and request: AcceptInviteRequest) {
+        debugDescription = "Accept a group invite"
+        path = "/pass/v1/invite/group/\(groupInviteToken)"
+        method = .post
+        body = request
     }
 }
