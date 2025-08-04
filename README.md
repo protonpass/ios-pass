@@ -88,6 +88,22 @@ brew install swiftformat
 If you don't have this tool installed please refer to the following link to set it up: [SwiftFormat](https://github.com/nicklockwood/SwiftFormat)
 The configuration for this tool can be found in the `.swiftformat` file
 
+## Pre-commit
+
+Make sure codes are properly linted and formatted before committing.
+
+First install pre-commit
+```bash
+brew install pre-commit
+```
+
+Then create a pre-commit hook
+```bash
+pre-commit install --hook-type pre-commit
+```
+
+After initializing pre-commit for the repo, the next first commit will take a bit of time because pre-commit needs to download and compile necessary tools configured in `.pre-commit-config.yaml` (swiftlint, swiftformat...)
+
 ## Sourcery
 
 This is a tool to easily generate mocks for unit testing. 
@@ -99,7 +115,7 @@ brew install sourcery
 
 If you don't have this tool installed please refer to the following link to set it up: [Sourcery](https://github.com/krzysztofzablocki/Sourcery)
 The configuration for this tool can be found in the `.sourcery.yml` file.
-At the moment the configuration only take into account iOSTests but it could be extended to take into account dependencies in the near futur.
+At the moment the configuration only take into account iOSTests but it could be extended to take into account dependencies in the near future.
 
 **To Generate the mocks** please follow these instructions:
 - First you need to annotate your protocol like following:
