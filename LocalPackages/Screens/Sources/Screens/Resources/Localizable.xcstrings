@@ -3559,7 +3559,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "加入帳號"
+            "value" : "新增帳戶"
           }
         }
       }
@@ -3755,7 +3755,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "加入網域"
+            "value" : "新增網域"
           }
         }
       }
@@ -5749,7 +5749,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "所有帳號 (%lld)"
+                  "value" : "所有帳戶 (%lld)"
                 }
               }
             }
@@ -8991,7 +8991,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "創建帳號"
+            "value" : "建立帳戶"
           }
         }
       }
@@ -9567,7 +9567,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "建立您的第一個登入"
+            "value" : "建立您的首個登入項目"
           }
         }
       }
@@ -14356,7 +14356,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Free"
+            "value" : "免費"
           }
         }
       }
@@ -18216,7 +18216,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "NOVITA'"
+            "value" : "NOVITÀ"
           }
         },
         "ja" : {
