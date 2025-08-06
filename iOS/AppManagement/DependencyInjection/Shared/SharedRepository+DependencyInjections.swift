@@ -340,7 +340,7 @@ extension SharedRepositoryContainer {
 
     var featureFlagsRepository: Factory<any FeatureFlagsRepositoryProtocol> {
         self {
-            FeatureFlagsRepository.makeFeatureFlagsRepository(userDefaults: kSharedUserDefaults)
+            FeatureFlagsRepository.makeFeatureFlagsRepository(userDefaults: .standard)
         }
     }
 
