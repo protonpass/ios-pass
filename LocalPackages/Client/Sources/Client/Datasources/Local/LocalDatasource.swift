@@ -34,7 +34,7 @@ enum LocalDatasourceError: Error, CustomDebugStringConvertible {
     case databaseOperationsOnMainThread
     case corruptedShareKeys(shareId: String, itemKeyCount: Int, vaultKeyCount: Int)
 
-    public var debugDescription: String {
+    var debugDescription: String {
         switch self {
         case let .batchInsertError(request):
             return "Failed to batch insert entity \(request.entityName)"
