@@ -32,7 +32,7 @@ extension AuthCredentialEntity: Identifiable {}
 
 extension AuthCredentialEntity {
     @nonobjc
-    public class func fetchRequest() -> NSFetchRequest<AuthCredentialEntity> {
+    class func fetchRequest() -> NSFetchRequest<AuthCredentialEntity> {
         NSFetchRequest<AuthCredentialEntity>(entityName: "AuthCredentialEntity")
     }
 
