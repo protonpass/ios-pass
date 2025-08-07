@@ -33,7 +33,7 @@ extension UserProfileEntity: Identifiable {}
 
 extension UserProfileEntity {
     @nonobjc
-    public class func fetchRequest() -> NSFetchRequest<UserProfileEntity> {
+    class func fetchRequest() -> NSFetchRequest<UserProfileEntity> {
         NSFetchRequest<UserProfileEntity>(entityName: "UserProfileEntity")
     }
 
