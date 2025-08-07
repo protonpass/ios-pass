@@ -28,7 +28,7 @@ extension PasswordEntity: Identifiable {}
 
 extension PasswordEntity {
     @nonobjc
-    public class func fetchRequest() -> NSFetchRequest<PasswordEntity> {
+    class func fetchRequest() -> NSFetchRequest<PasswordEntity> {
         NSFetchRequest<PasswordEntity>(entityName: "PasswordEntity")
     }
 

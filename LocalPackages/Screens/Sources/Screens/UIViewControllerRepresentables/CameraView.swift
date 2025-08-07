@@ -52,7 +52,7 @@ struct CameraView: UIViewControllerRepresentable {
             self.parent = parent
         }
 
-        public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [
             UIImagePickerController
                 .InfoKey: Any
         ]) {

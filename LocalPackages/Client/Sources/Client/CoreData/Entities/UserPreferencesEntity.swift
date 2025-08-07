@@ -31,7 +31,7 @@ extension UserPreferencesEntity: Identifiable {}
 
 extension UserPreferencesEntity {
     @nonobjc
-    public class func fetchRequest() -> NSFetchRequest<UserPreferencesEntity> {
+    class func fetchRequest() -> NSFetchRequest<UserPreferencesEntity> {
         NSFetchRequest<UserPreferencesEntity>(entityName: "UserPreferencesEntity")
     }
 

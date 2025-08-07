@@ -27,7 +27,7 @@ extension NotificationTimeEntity: Identifiable {}
 
 extension NotificationTimeEntity {
     @nonobjc
-    public class func fetchRequest() -> NSFetchRequest<NotificationTimeEntity> {
+    class func fetchRequest() -> NSFetchRequest<NotificationTimeEntity> {
         NSFetchRequest<NotificationTimeEntity>(entityName: "NotificationTimeEntity")
     }
 
