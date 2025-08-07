@@ -28,7 +28,7 @@ extension SearchEntryEntity: Identifiable {}
 
 extension SearchEntryEntity {
     @nonobjc
-    public class func fetchRequest() -> NSFetchRequest<SearchEntryEntity> {
+    class func fetchRequest() -> NSFetchRequest<SearchEntryEntity> {
         NSFetchRequest<SearchEntryEntity>(entityName: "SearchEntryEntity")
     }
 

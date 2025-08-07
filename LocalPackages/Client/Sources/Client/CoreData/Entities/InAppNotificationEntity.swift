@@ -28,7 +28,7 @@ extension InAppNotificationEntity: Identifiable {}
 
 extension InAppNotificationEntity {
     @nonobjc
-    public class func fetchRequest() -> NSFetchRequest<InAppNotificationEntity> {
+    class func fetchRequest() -> NSFetchRequest<InAppNotificationEntity> {
         NSFetchRequest<InAppNotificationEntity>(entityName: "InAppNotificationEntity")
     }
 
