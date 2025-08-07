@@ -46,12 +46,12 @@ final class PassDiffableDataSource<Section: Hashable, Item: Hashable>:
     var sectionIndexTitles: (() -> [String]?)?
     var titleForHeader: ((Int) -> String?)?
 
-    override public func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+    override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         sectionIndexTitles?()
     }
 
-    override public func tableView(_ tableView: UITableView,
-                                   titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView,
+                            titleForHeaderInSection section: Int) -> String? {
         titleForHeader?(section)
     }
 }
