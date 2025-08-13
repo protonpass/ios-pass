@@ -28,7 +28,7 @@ extension AccessEntity: Identifiable {}
 
 extension AccessEntity {
     @nonobjc
-    public class func fetchRequest() -> NSFetchRequest<AccessEntity> {
+    class func fetchRequest() -> NSFetchRequest<AccessEntity> {
         NSFetchRequest<AccessEntity>(entityName: "AccessEntity")
     }
 

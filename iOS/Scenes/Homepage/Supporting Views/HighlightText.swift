@@ -59,7 +59,7 @@ struct HighlightText: View {
         self.texts = texts
     }
 
-    public var body: some View {
+    var body: some View {
         Text(texts)
             .lineLimit(lineLimit)
             .truncationMode(hasAdditionalTexts ? .middle : .tail)
