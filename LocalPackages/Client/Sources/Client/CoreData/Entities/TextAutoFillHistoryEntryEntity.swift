@@ -29,7 +29,7 @@ extension TextAutoFillHistoryEntryEntity: Identifiable {}
 
 extension TextAutoFillHistoryEntryEntity {
     @nonobjc
-    public class func fetchRequest() -> NSFetchRequest<TextAutoFillHistoryEntryEntity> {
+    class func fetchRequest() -> NSFetchRequest<TextAutoFillHistoryEntryEntity> {
         NSFetchRequest<TextAutoFillHistoryEntryEntity>(entityName: "TextAutoFillHistoryEntryEntity")
     }
 

@@ -294,15 +294,15 @@ private extension CredentialProviderCoordinator {
 }
 
 extension CredentialProviderCoordinator: ExtensionCoordinator {
-    public func getRootViewController() -> UIViewController? {
+    func getRootViewController() -> UIViewController? {
         rootViewController
     }
 
-    public func getLastChildViewController() -> UIViewController? {
+    func getLastChildViewController() -> UIViewController? {
         lastChildViewController
     }
 
-    public func setLastChildViewController(_ viewController: UIViewController) {
+    func setLastChildViewController(_ viewController: UIViewController) {
         lastChildViewController = viewController
     }
 }

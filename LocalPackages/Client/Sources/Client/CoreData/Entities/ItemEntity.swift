@@ -28,7 +28,7 @@ extension ItemEntity: Identifiable {}
 
 extension ItemEntity {
     @nonobjc
-    public class func fetchRequest() -> NSFetchRequest<ItemEntity> {
+    class func fetchRequest() -> NSFetchRequest<ItemEntity> {
         NSFetchRequest<ItemEntity>(entityName: "ItemEntity")
     }
 

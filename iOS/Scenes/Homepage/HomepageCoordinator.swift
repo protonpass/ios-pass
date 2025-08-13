@@ -1138,13 +1138,33 @@ extension HomepageCoordinator {
             guard let self, let userData = try? await userManager.getActiveUserData() else { return }
             var updatedUser = userData.user
             updatedUser.setNewKeys(userInfo.userKeys)
+            /*
+             Passphrases need to be updated. To find the key of the passphrase that needs to be updated with the new passphrase we need to take a little detour, because core returns crap and does not tell us which one is the primary key. We need to find it ourselves.
+             First we get the salt from the authCredential. With that we then find the corresponding salt in userData.salts. From there we extract the id of the user key for which that salt is used.
+             This user key is the primary key.
+             Since we now have the id of the primary key, we can go in the passphrases.
+             Passprases store the user key id -> passphrase.
+             We can now replace the passphrase for the primary key with confidence.
+             */
+            var passphrases = userData.passphrases
+            if let passphraseSalt = authCredential.passwordKeySalt,
+               let keyId = userData.salts.first(where: { $0.keySalt == passphraseSalt })?.ID {
+                passphrases[keyId] = authCredential.mailboxpassword
+            }
+
+            // Also update the session encryption details in the auth manager so that the passphrase used by other
+            // features like QR login, use the correct passphrase after a password reset.
+            authManager.updateEncryptionDetailsForSession(sessionUID: authCredential.sessionID,
+                                                          mailboxpassword: authCredential.mailboxpassword,
+                                                          salt: authCredential.passwordKeySalt,
+                                                          privateKey: authCredential.passwordKeySalt)
+
             try? await userManager.upsertAndMarkAsActive(userData: .init(credential: authCredential,
                                                                          user: updatedUser,
                                                                          salts: userData.salts,
-                                                                         passphrases: userData.passphrases,
+                                                                         passphrases: passphrases,
                                                                          addresses: userInfo.userAddresses,
                                                                          scopes: userData.scopes))
-
             dismissTopMostViewController { [weak self] in
                 guard let self else { return }
                 bannerManager.displayBottomInfoMessage(#localized("Password changed successfully"))
