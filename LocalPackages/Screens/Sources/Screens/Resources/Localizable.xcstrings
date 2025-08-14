@@ -2420,13 +2420,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld inici de sessió importat"
+                  "value" : "S'ha importat l'inici de sessió %lld"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld inicis de sessió importats"
+                  "value" : "S'han importat els inicis de sessió %lld"
                 }
               }
             }
@@ -6585,6 +6585,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Completado automático de clave de acceso"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pääsyavaimen automaattitäyttö"
           }
         },
         "fr" : {
@@ -16302,6 +16308,12 @@
             "value" : "Cómo usar el completado automático de campos con una contraseña"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kuinka täyttää kentät automaattisesti salasanalla"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16620,7 +16632,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Importa des de Chrome"
+            "value" : "Importa des del Chrome"
           }
         },
         "cs" : {
@@ -17008,7 +17020,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ha finalitzat la importació."
+            "value" : "S'ha importat correctament"
           }
         },
         "cs" : {
@@ -18561,6 +18573,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No se encontraron inicios de sesión con Passkeys"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passkey-kirjautumistietoja ei löytynyt"
           }
         },
         "fr" : {
