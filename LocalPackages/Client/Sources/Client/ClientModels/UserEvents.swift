@@ -25,6 +25,7 @@ public struct UserEvents: Sendable, Decodable {
     public let lastEventID: String
     public let itemsUpdated: [UserEventItem]
     public let itemsDeleted: [UserEventItem]
+    public let invitesChanged: UserEventInviteChange?
     public let sharesUpdated: [UserEventShare]
     public let sharesDeleted: [UserEventShare]
     public let planChanged: Bool
@@ -58,5 +59,9 @@ public struct UserEventItem: Sendable, Decodable, Equatable, ItemIdentifiable {
 
 public struct UserEventShare: Sendable, Decodable, Equatable {
     public let shareID: String
+    public let eventToken: String
+}
+
+public struct UserEventInviteChange: Sendable, Decodable, Equatable {
     public let eventToken: String
 }
