@@ -234,6 +234,15 @@ extension SharedRepositoryContainer {
     var remoteUserEventsDatasource: Factory<any RemoteUserEventsDatasourceProtocol> {
         self { RemoteUserEventsDatasource(apiServicing: self.apiManager) }
     }
+
+    var localInviteKeyDatasource: Factory<any LocalInviteKeyDatasourceProtocol> {
+        self { LocalInviteKeyDatasource(databaseService: self.databaseService) }
+    }
+
+    var localUserInviteDatasource: Factory<any LocalUserInviteDatasourceProtocol> {
+        self { LocalUserInviteDatasource(inviteKeyDatasource: self.localInviteKeyDatasource(),
+                                         databaseService: self.databaseService) }
+    }
 }
 
 // MARK: Repositories

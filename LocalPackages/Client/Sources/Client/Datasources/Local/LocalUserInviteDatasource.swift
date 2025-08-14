@@ -42,8 +42,8 @@ public final class LocalUserInviteDatasource: LocalDatasource, LocalUserInviteDa
     @unchecked Sendable {
     private let inviteKeyDatasource: any LocalInviteKeyDatasourceProtocol
 
-    init(inviteKeyDatasource: any LocalInviteKeyDatasourceProtocol,
-         databaseService: any DatabaseServiceProtocol) {
+    public init(inviteKeyDatasource: any LocalInviteKeyDatasourceProtocol,
+                databaseService: any DatabaseServiceProtocol) {
         self.inviteKeyDatasource = inviteKeyDatasource
         super.init(databaseService: databaseService)
     }
