@@ -83735,6 +83735,12 @@
             "value" : "Las bóvedas ocultas no serán visibles durante la búsqueda y el completado automático."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Piilotetut holvit eivät näy haun ja automaattitäytön aikana."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -88921,7 +88927,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Importa des de Chrome"
+            "value" : "Importa des del Chrome"
           }
         },
         "cs" : {
@@ -89308,7 +89314,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Importa a Proton Pass"
+            "value" : "Importa al Proton Pass"
           }
         },
         "cs" : {
@@ -121323,6 +121329,12 @@
             "value" : "Organizar bóvedas"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Järjestä holvit"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -132540,7 +132552,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Premium domena"
+            "value" : "Premijska domena"
           }
         },
         "sv" : {
@@ -146894,6 +146906,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Buscar en todos los elementos"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Etsi kaikista kohteista"
           }
         },
         "fr" : {
@@ -193186,6 +193204,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Detalles de Wi-Fi, SSH, elementos personalizados y más"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wi-Fi-tiedot, SSH, mukautetut kohteet ja muuta"
           }
         },
         "fr" : {
