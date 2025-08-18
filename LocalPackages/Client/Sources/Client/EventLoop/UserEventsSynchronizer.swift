@@ -56,8 +56,7 @@ public actor UserEventsSynchronizer: UserEventsSynchronizerProtocol {
     private let itemRepository: any ItemRepositoryProtocol
     private let shareRepository: any ShareRepositoryProtocol
     private let accessRepository: any AccessRepositoryProtocol
-    private let remoteInviteDatasource: any RemoteInviteDatasourceProtocol
-    private let localUserInviteDatasource: any LocalUserInviteDatasourceProtocol
+    private let inviteRepository: any InviteRepositoryProtocol
     private let logger: Logger
 
     public init(localUserEventIdDatasource: any LocalUserEventIdDatasourceProtocol,
@@ -65,16 +64,14 @@ public actor UserEventsSynchronizer: UserEventsSynchronizerProtocol {
                 itemRepository: any ItemRepositoryProtocol,
                 shareRepository: any ShareRepositoryProtocol,
                 accessRepository: any AccessRepositoryProtocol,
-                remoteInviteDatasource: any RemoteInviteDatasourceProtocol,
-                localUserInviteDatasource: any LocalUserInviteDatasourceProtocol,
+                inviteRepository: any InviteRepositoryProtocol,
                 logManager: any LogManagerProtocol) {
         self.localUserEventIdDatasource = localUserEventIdDatasource
         self.remoteUserEventsDatasource = remoteUserEventsDatasource
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
         self.accessRepository = accessRepository
-        self.remoteInviteDatasource = remoteInviteDatasource
-        self.localUserInviteDatasource = localUserInviteDatasource
+        self.inviteRepository = inviteRepository
         logger = .init(manager: logManager)
     }
 }
@@ -250,12 +247,6 @@ private extension UserEventsSynchronizer {
             logger.trace("No invite changes for user \(userId)")
             return
         }
-        logger.trace("Refreshing invites for user \(userId)")
-        let invites = try await remoteInviteDatasource.getPendingInvitesForUser(userId: userId)
-        logger.trace("Fetched \(invites.count) invites for user \(userId)")
-        try await localUserInviteDatasource.removeInvites(userId: userId)
-        logger.trace("Removed old local invites for user \(userId)")
-        try await localUserInviteDatasource.upsertInvites(userId: userId, invites: invites)
-        logger.trace("Upserted \(invites.count) updated invites for user \(userId)")
+        try await inviteRepository.refreshInvites(userId: userId)
     }
 }
