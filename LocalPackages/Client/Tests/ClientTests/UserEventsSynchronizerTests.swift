@@ -33,6 +33,7 @@ struct UserEventsSynchronizerTests {
     let itemRepository = ItemRepositoryProtocolMock()
     let shareRepository = ShareRepositoryProtocolMock()
     let accessRespository = AccessRepositoryProtocolMock()
+    let inviteRepository = InviteRepositoryProtocolMock()
     var sut: (any UserEventsSynchronizerProtocol)!
 
     init() {
@@ -41,6 +42,7 @@ struct UserEventsSynchronizerTests {
                                      itemRepository: itemRepository,
                                      shareRepository: shareRepository,
                                      accessRepository: accessRespository,
+                                     inviteRepository: inviteRepository,
                                      logManager: LogManagerProtocolMock())
     }
 }
@@ -54,10 +56,12 @@ private struct Args {
     var deleteItemsInvokeCount: Int?
     var refreshShareInvokeCount: Int?
     var deleteShareInvokeCount: Int?
+    var refreshInviteInvokeCount: Int?
     var storedLastEventId: String?
 
     static var noLocalLastEventIdTriggerFullRefresh: Self {
         .init(result: .init(dataUpdated: false,
+                            invitesChanged: false,
                             planChanged: false,
                             fullRefreshNeeded: true),
               getUserEventsRouteCalled: false)
@@ -69,6 +73,7 @@ private struct Args {
                 .init(lastEventID: .random(),
                       itemsUpdated: [],
                       itemsDeleted: [],
+                      invitesChanged: nil,
                       sharesUpdated: [],
                       sharesDeleted: [],
                       planChanged: false,
@@ -76,6 +81,7 @@ private struct Args {
                       fullRefresh: true)
               ],
               result: .init(dataUpdated: false,
+                            invitesChanged: false,
                             planChanged: false,
                             fullRefreshNeeded: true),
               getUserEventsRouteCalled: true)
@@ -87,6 +93,7 @@ private struct Args {
                 .init(lastEventID: "TestID",
                       itemsUpdated: .random(count: 5),
                       itemsDeleted: .random(count: 8),
+                      invitesChanged: nil,
                       sharesUpdated: .random(count: 19),
                       sharesDeleted: .random(count: 21),
                       planChanged: false,
@@ -94,6 +101,7 @@ private struct Args {
                       fullRefresh: false)
               ],
               result: .init(dataUpdated: true,
+                            invitesChanged: false,
                             planChanged: false,
                             fullRefreshNeeded: false),
               getUserEventsRouteCalled: true,
@@ -110,6 +118,7 @@ private struct Args {
                 .init(lastEventID: "TestID1",
                       itemsUpdated: .random(count: 7),
                       itemsDeleted: .random(count: 16),
+                      invitesChanged: nil,
                       sharesUpdated: .random(count: 3),
                       sharesDeleted: .random(count: 8),
                       planChanged: true,
@@ -118,6 +127,7 @@ private struct Args {
                 .init(lastEventID: "TestID2",
                       itemsUpdated: .random(count: 10),
                       itemsDeleted: .random(count: 3),
+                      invitesChanged: .init(eventToken: .random()),
                       sharesUpdated: .random(count: 27),
                       sharesDeleted: .random(count: 14),
                       planChanged: false,
@@ -125,6 +135,7 @@ private struct Args {
                       fullRefresh: false)
               ],
               result: .init(dataUpdated: true,
+                            invitesChanged: true,
                             planChanged: true,
                             fullRefreshNeeded: false),
               getUserEventsRouteCalled: true,
@@ -132,6 +143,7 @@ private struct Args {
               deleteItemsInvokeCount: 2,
               refreshShareInvokeCount: 30,
               deleteShareInvokeCount: 22,
+              refreshInviteInvokeCount: 1,
               storedLastEventId: "TestID2")
     }
 }
@@ -173,6 +185,10 @@ private extension UserEventsSynchronizerTests {
 
         if let deleteShareInvokeCount = args.deleteShareInvokeCount {
             await #expect(shareRepository.invokedDeleteShareLocallyCount == deleteShareInvokeCount)
+        }
+
+        if let refreshInviteInvokeCount = args.refreshInviteInvokeCount {
+            #expect(inviteRepository.invokedRefreshInvitesUserIdAsyncCount5 == refreshInviteInvokeCount)
         }
 
         if let storedLastEventId = args.storedLastEventId {

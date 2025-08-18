@@ -24,6 +24,7 @@ import Entities
 import Foundation
 import ProtonCoreLogin
 
+// sourcery: AutoMockable
 public protocol InviteRepositoryProtocol: Sendable {
     var currentPendingInvites: CurrentValueSubject<[UserInvite], Never> { get }
 
