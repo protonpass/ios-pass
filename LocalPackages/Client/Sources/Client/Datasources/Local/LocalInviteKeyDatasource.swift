@@ -39,10 +39,7 @@ public extension LocalInviteKeyDatasource {
     func getKeys(userId: String, inviteToken: String) async throws -> [InviteKey] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = InviteKeyEntity.fetchRequest()
-        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-            .init(format: "userID = %@", userId),
-            .init(format: "inviteToken = %@", inviteToken)
-        ])
+        fetchRequest.predicate = predicate(userId: userId, inviteToken: inviteToken)
         let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return entities.map(\.toInviteKey)
     }
@@ -54,8 +51,10 @@ public extension LocalInviteKeyDatasource {
         try await upsert(keys,
                          entityType: InviteKeyEntity.self,
                          fetchPredicate: predicate(userId: userId, inviteToken: inviteToken),
-                         isEqual: { _, entity in
-                             entity.userID == userId && entity.inviteToken == inviteToken
+                         isEqual: { key, entity in
+                             entity.userID == userId &&
+                                 entity.inviteToken == inviteToken &&
+                                 entity.keyRotation == key.keyRotation
                          },
                          hydrate: { item, entity in
                              entity.hydrate(userID: userId, inviteToken: inviteToken, key: item)
