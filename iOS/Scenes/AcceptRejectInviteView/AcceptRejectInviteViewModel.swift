@@ -59,7 +59,7 @@ final class AcceptRejectInviteViewModel: ObservableObject {
 
             do {
                 executingAction = true
-                try await rejectInvitation(for: userInvite.inviteToken)
+                try await rejectInvitation(userInvite)
                 await updateCachedInvitations(for: userInvite.inviteToken)
                 shouldCloseSheet = true
             } catch {
