@@ -14462,7 +14462,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "비밀번호가 생성됨"
+            "value" : "생성된 비밀번호"
           }
         },
         "nb" : {
@@ -16263,7 +16263,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Com omplir automàticament els camps amb una contrasenya?"
+            "value" : "Com emplenar automàticament els camps amb una contrasenya?"
           }
         },
         "cs" : {
@@ -33337,7 +33337,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "더 나은 조직을 위해 항목에 파일 첨부가 가능합니다."
+            "value" : "더 나은 구성을 위해 항목에 파일을 첨부할 수 있어요."
           }
         },
         "nb" : {
