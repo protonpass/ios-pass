@@ -177,7 +177,8 @@ private extension UserEventsSynchronizer {
             return
         }
         logger.trace("Refreshing \(updatedItems.count) updated items for user \(userId)")
-        try await withThrowingTaskGroup(of: Void.self) { taskGroup in
+        try await withThrowingTaskGroup(of: Void.self) { [weak self] taskGroup in
+            guard let self else { return }
             for updatedItem in updatedItems {
                 taskGroup.addTask { [weak self] in
                     guard let self else { return }
@@ -207,7 +208,8 @@ private extension UserEventsSynchronizer {
             return
         }
         logger.trace("Refreshing \(updatedShares.count) shares for user \(userId)")
-        try await withThrowingTaskGroup(of: Void.self) { taskGroup in
+        try await withThrowingTaskGroup(of: Void.self) { [weak self] taskGroup in
+            guard let self else { return }
             for updatedShare in updatedShares {
                 taskGroup.addTask { [weak self] in
                     guard let self else { return }
@@ -227,7 +229,8 @@ private extension UserEventsSynchronizer {
             return
         }
         logger.trace("Deleting \(deletedShares.count) shares for user \(userId)")
-        try await withThrowingTaskGroup(of: Void.self) { taskGroup in
+        try await withThrowingTaskGroup(of: Void.self) { [weak self] taskGroup in
+            guard let self else { return }
             for deletedShare in deletedShares {
                 taskGroup.addTask { [weak self] in
                     guard let self else { return }
