@@ -6257,7 +6257,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld 전달됨"
+                  "value" : "%lld개 전달됨"
                 }
               }
             }
@@ -6861,7 +6861,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld 전달"
+                  "value" : "%lld개 전달"
                 }
               }
             }
@@ -13830,7 +13830,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld 답장"
+                  "value" : "%lld개 답장"
                 }
               }
             }
@@ -32076,7 +32076,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "검색에 항목이 나타나도록 허용하세요."
+            "value" : "검색에 항목이 나타나도록 허용합니다"
           }
         },
         "nb" : {
@@ -35390,7 +35390,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proton Pass 자동 완성을 활성화 하여 앱과 웹사이트에서 사용"
+            "value" : "Proton Pass 자동완성을 활성화하여 앱 및 웹사이트에서 자동으로 입력란을 완성할 수 있습니다."
           }
         },
         "nb" : {
@@ -64424,7 +64424,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "동기화를 위해 모든 항목을 다운로드 하세요."
+            "value" : "동기화를 위해 모든 항목을 다운로드합니다"
           }
         },
         "nb" : {
@@ -80262,7 +80262,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "보안 비밀번호 생성"
+            "value" : "안전한 비밀번호 생성하기"
           }
         },
         "nb" : {
@@ -81237,7 +81237,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "비밀번호가 생성됨"
+            "value" : "생성된 비밀번호"
           }
         },
         "nb" : {
@@ -138091,7 +138091,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "이전 다운로드에서 캐싱된 첨부파일 삭제"
+            "value" : "이전 다운로드에서 캐싱된 첨부파일을 삭제합니다"
           }
         },
         "nb" : {
@@ -146863,7 +146863,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cerqueu en tots els elements"
+            "value" : "Cerca en tots els elements"
           }
         },
         "cs" : {
@@ -163012,7 +163012,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alguns dipòsits ja no són accessibles a causa d'un restabliment de contrasenya. Reactiveu les claus del vostre compte per recuperar l'accés."
+            "value" : "Algunes caixes fortes ja no són accessibles a causa d'un restabliment de contrasenya. Reactiveu les claus del compte per a recuperar l'accés."
           }
         },
         "cs" : {
@@ -193161,7 +193161,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Detalls de la Wi-Fi, SSH, elements personalitzats i més"
+            "value" : "Detalls WiFi, SSH, elements personalitzats i més"
           }
         },
         "cs" : {
@@ -199228,7 +199228,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "현재 안전한 링크를 소유하고 있지 않습니다."
+            "value" : "등록된 안전한 링크가 없습니다"
           }
         },
         "nb" : {
