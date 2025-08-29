@@ -33076,7 +33076,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sigur doriți să adăugați o cheie de A2F la „%@”?"
+            "value" : "Adăugați o cheie de A2F la „%@”?"
           }
         },
         "ru" : {
@@ -33272,7 +33272,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sigur doriți să ștergeți următoarea secțiune „%@”?"
+            "value" : "Ștergeți următoarea secțiune „%@”?"
           }
         },
         "ru" : {
@@ -33469,7 +33469,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sigur doriți să vă deconectați din %@?"
+            "value" : "Vă deconectați din %@?"
           }
         },
         "ru" : {
@@ -55713,6 +55713,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aktuális tároló"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brankas saat ini"
           }
         },
         "it" : {
@@ -83756,7 +83762,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Brankas tersembunyi tidak akan terlihat selama cari dan pengisian otomatis."
+            "value" : "Brankas tersembunyi tidak akan terlihat pada saat melangsungkan pencarian dan pengisian otomatis."
           }
         },
         "it" : {
@@ -121350,7 +121356,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Atur brankas"
+            "value" : "Organisir brankas"
           }
         },
         "it" : {
@@ -146926,6 +146932,12 @@
             "value" : "Keresés minden elemben"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cari pada seluruh item"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -163078,7 +163090,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Beberapa brankas tidak lagi dapat diakses karena kata sandi diatur ulang. Aktifkan kembali kunci akun Anda agar dapat mengakses kembali."
+            "value" : "Beberapa brankas tidak lagi dapat diakses karena kata pengaturan ulang kata sandi. Aktifkan kembali kunci akun Anda untuk dapat kembali mengakses brankas ini."
           }
         },
         "it" : {
@@ -193222,6 +193234,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wi-Fi részletek, SSH, egyéni elemek és továbbiak"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rincian WiFi, SSH, item khusus, dan lainnya"
           }
         },
         "it" : {
