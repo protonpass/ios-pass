@@ -2022,7 +2022,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "bagikan log"
+            "value" : "Bagikan log"
           }
         },
         "it" : {
@@ -2652,7 +2652,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aveți modificări nesalvate, sigur doriți să nu le salvați?"
+            "value" : "Aveți modificări nesalvate. Sigur nu le salvați?"
           }
         },
         "ru" : {
