@@ -16329,7 +16329,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cara mengisi otomatis kolom dengan Kata Sandi"
+            "value" : "Cara mengisi kolom secara otomatis dengan Kata Sandi"
           }
         },
         "it" : {
@@ -18596,7 +18596,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tidak ada Passkeys untuk masuk yang ditemukan"
+            "value" : "Tidak ada entri masuk dengan Passkey yang ditemukan"
           }
         },
         "it" : {
