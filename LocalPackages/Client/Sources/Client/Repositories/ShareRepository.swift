@@ -26,7 +26,7 @@ import Foundation
 @preconcurrency import ProtonCoreLogin
 
 // sourcery: AutoMockable
-public protocol ShareRepositoryProtocol: Sendable {
+public protocol ShareRepositoryProtocol: Sendable, Actor {
     // MARK: - Shares
 
     /// Get all local shares
