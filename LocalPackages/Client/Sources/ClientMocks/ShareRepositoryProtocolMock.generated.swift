@@ -26,7 +26,8 @@ import Entities
 import Foundation
 import ProtonCoreLogin
 
-public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareRepositoryProtocol {
+ // Check if the protocol inherits from Actor
+public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
 
     public init() {}
 
@@ -375,7 +376,7 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
         return stubbedTransferVaultOwnershipResult
     }
     // MARK: - hideUnhideShares
-    public var hideUnhideSharesUserIdSharesToHideSharesToUnhideThrowableError18: Error?
+    public var hideUnhideSharesUserIdSharesToHideSharesToUnhideThrowableError19: Error?
     public var closureHideUnhideShares: () -> () = {}
     public var invokedHideUnhideSharesfunction = false
     public var invokedHideUnhideSharesCount = 0
@@ -387,7 +388,7 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
         invokedHideUnhideSharesCount += 1
         invokedHideUnhideSharesParameters = (userId, sharesToHide, sharesToUnhide)
         invokedHideUnhideSharesParametersList.append((userId, sharesToHide, sharesToUnhide))
-        if let error = hideUnhideSharesUserIdSharesToHideSharesToUnhideThrowableError18 {
+        if let error = hideUnhideSharesUserIdSharesToHideSharesToUnhideThrowableError19 {
             throw error
         }
         closureHideUnhideShares()

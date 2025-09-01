@@ -168,11 +168,11 @@ private extension UserEventsSynchronizerTests {
         }
 
         if let refreshShareInvokeCount = args.refreshShareInvokeCount {
-            #expect(shareRepository.invokedRefreshShareCount == refreshShareInvokeCount)
+            await #expect(shareRepository.invokedRefreshShareCount == refreshShareInvokeCount)
         }
 
         if let deleteShareInvokeCount = args.deleteShareInvokeCount {
-            #expect(shareRepository.invokedDeleteShareLocallyCount == deleteShareInvokeCount)
+            await #expect(shareRepository.invokedDeleteShareLocallyCount == deleteShareInvokeCount)
         }
 
         if let storedLastEventId = args.storedLastEventId {
