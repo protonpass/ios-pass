@@ -835,7 +835,8 @@ private extension ItemRepository {
                      userId: userId,
                      item: itemRevision,
                      encryptedContent: encryptedContent,
-                     isLogInItem: isLogInItem)
+                     isLogInItem: isLogInItem,
+                     encryptedSimpleLoginNote: nil)
     }
 
     func createItemRequest(itemContent: any ProtobufableItemContentProtocol,

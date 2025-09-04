@@ -36,6 +36,7 @@ extension ItemEntity {
     @NSManaged var content: String?
     @NSManaged var contentFormatVersion: Int64
     @NSManaged var createTime: Int64
+    @NSManaged var encryptedSimpleLoginNote: String? // Custom field
     @NSManaged var isLogInItem: Bool // Custom field
     @NSManaged var itemID: String
     @NSManaged var itemKey: String?
@@ -86,10 +87,14 @@ extension ItemEntity {
                      userId: userID,
                      item: item,
                      encryptedContent: symmetricallyEncryptedContent,
-                     isLogInItem: isLogInItem)
+                     isLogInItem: isLogInItem,
+                     encryptedSimpleLoginNote: encryptedSimpleLoginNote)
     }
 
     func hydrate(from symmetricallyEncryptedItem: SymmetricallyEncryptedItem) {
+        // We don't overwrite `encryptedSimpleLoginNote` here because
+        // we don't want alias updates (e.g note update) to invalidate cached SimpleLogin note.
+        // SimpleLogin notes are updated independently (when full syncing or via user events system)
         let item = symmetricallyEncryptedItem.item
         aliasEmail = item.aliasEmail
         content = item.content
