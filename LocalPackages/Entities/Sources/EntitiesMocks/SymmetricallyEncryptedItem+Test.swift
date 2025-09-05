@@ -32,6 +32,6 @@ public extension SymmetricallyEncryptedItem {
               item: item ?? .random(),
               encryptedContent: encryptedContent ?? .random(),
               isLogInItem: isLogInItem,
-              encryptedSimpleLoginNote: encryptedSimpleLoginNote ?? .random())
+              encryptedSimpleLoginNote: encryptedSimpleLoginNote)
     }
 }
