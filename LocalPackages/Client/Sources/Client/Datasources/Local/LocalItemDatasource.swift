@@ -184,6 +184,7 @@ public extension LocalItemDatasource {
                          hydrate: { item, entity in
                              if let alias = aliases.first(where: { $0.email == item.item.aliasEmail }) {
                                  entity.encryptedSimpleLoginNote = alias.encryptedNote
+                                 entity.simpleLoginNoteSynced = true
                              } else {
                                  assertionFailure("No matched encrypted alias for \(item.item.aliasEmail ?? "")")
                              }
@@ -229,7 +230,8 @@ public extension LocalItemDatasource {
                                              item: modifiedItem,
                                              encryptedContent: item.encryptedContent,
                                              isLogInItem: item.isLogInItem,
-                                             encryptedSimpleLoginNote: nil)])
+                                             encryptedSimpleLoginNote: nil,
+                                             simpleLoginNoteSynced: false)])
             }
         }
     }

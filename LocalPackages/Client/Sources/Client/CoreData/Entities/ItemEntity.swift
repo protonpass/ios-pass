@@ -46,6 +46,12 @@ extension ItemEntity {
     @NSManaged var revision: Int64
     @NSManaged var revisionTime: Int64
     @NSManaged var shareID: String // Custom field
+
+    // Doesn't mean if SL note is in synced but simply mean the app already pulled
+    // note for this alias and further relies on user events system
+    // to update cached encryptedSimpleLoginNote
+    // This field is only applicable to alias items
+    @NSManaged var simpleLoginNoteSynced: Bool // Custom field
     @NSManaged var state: Int64
     @NSManaged var pinned: Bool
     @NSManaged var pinTime: Int64
@@ -88,11 +94,12 @@ extension ItemEntity {
                      item: item,
                      encryptedContent: symmetricallyEncryptedContent,
                      isLogInItem: isLogInItem,
-                     encryptedSimpleLoginNote: encryptedSimpleLoginNote)
+                     encryptedSimpleLoginNote: encryptedSimpleLoginNote,
+                     simpleLoginNoteSynced: simpleLoginNoteSynced)
     }
 
     func hydrate(from symmetricallyEncryptedItem: SymmetricallyEncryptedItem) {
-        // We don't overwrite `encryptedSimpleLoginNote` here because
+        // We don't overwrite `encryptedSimpleLoginNote` & `simpleLoginNoteSynced` here because
         // we don't want alias updates (e.g note update) to invalidate cached SimpleLogin note.
         // SimpleLogin notes are updated independently (when full syncing or via user events system)
         let item = symmetricallyEncryptedItem.item

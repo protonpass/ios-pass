@@ -87,6 +87,7 @@
         <attribute name="revisionTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="shareCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="shareID" attributeType="String"/>
+        <attribute name="simpleLoginNoteSynced" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="state" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="symmetricallyEncryptedContent" attributeType="String"/>
         <attribute name="userID" attributeType="String" defaultValueString=""/>
