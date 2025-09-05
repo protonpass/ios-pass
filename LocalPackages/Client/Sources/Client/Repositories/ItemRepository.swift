@@ -120,6 +120,10 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
 
     func updateLastUseTime(userId: String, item: any ItemIdentifiable, date: Date) async throws
 
+    func updateCachedAliasInfo(userId: String,
+                               items: [SymmetricallyEncryptedItem],
+                               aliases: [Alias]) async throws
+
     func move(items: [any ItemIdentifiable], toShareId: String) async throws
 
     @discardableResult
@@ -631,7 +635,7 @@ public extension ItemRepository {
     func updateLastUseTime(userId: String,
                            item: any ItemIdentifiable,
                            date: Date) async throws {
-        logger.trace("Updating last use time \(item.debugDescription)")
+        logger.trace("Updating last use time \(item.debugDescription) for user \(userId)")
 
         let updatedItem = try await remoteDatasource.updateLastUseTime(userId: userId,
                                                                        shareId: item.shareId,
@@ -639,7 +643,26 @@ public extension ItemRepository {
                                                                        lastUseTime: date.timeIntervalSince1970)
         try await upsertItems(userId: userId, items: [updatedItem], shareId: item.shareId)
         itemsWereUpdated.send()
-        logger.trace("Updated last use time \(item.debugDescription)")
+        logger.info("Updated last use time \(item.debugDescription) for user \(userId)")
+    }
+
+    func updateCachedAliasInfo(userId: String,
+                               items: [SymmetricallyEncryptedItem],
+                               aliases: [Alias]) async throws {
+        logger.trace("Updating cached alias info for \(items.count) aliases for user \(userId)")
+        let symmetricKey = try await getSymmetricKey()
+        let encryptedAliases = try aliases.map { alias in
+            if let note = alias.note {
+                let encryptedNote = try symmetricKey.encrypt(note)
+                return SymmetricallyEncryptedAlias(email: alias.email,
+                                                   encryptedNote: encryptedNote)
+            } else {
+                return SymmetricallyEncryptedAlias(email: alias.email, encryptedNote: nil)
+            }
+        }
+        try await localDatasource.updateCachedAliasInfo(items: items, aliases: encryptedAliases)
+        logger.info("Updated cached alias info for \(items.count) aliases for user \(userId)")
+
     }
 
     func move(items: [any ItemIdentifiable], toShareId: String) async throws {

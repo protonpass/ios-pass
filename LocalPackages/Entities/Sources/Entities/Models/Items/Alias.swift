@@ -47,4 +47,9 @@ public struct SymmetricallyEncryptedAlias: Sendable {
     /// Email is deliberately not encrypted
     public let email: String
     public let encryptedNote: String?
+
+    public init(email: String, encryptedNote: String?) {
+        self.email = email
+        self.encryptedNote = encryptedNote
+    }
 }
