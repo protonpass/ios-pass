@@ -469,9 +469,11 @@ extension LocalItemDatasourceTests {
 
         let alias1 = try #require(aliases.first(where: { $0.item.aliasEmail == givenAlias1.item.aliasEmail }))
         #expect(alias1.encryptedSimpleLoginNote == alias1Info.encryptedNote)
+        #expect(alias1.simpleLoginNoteSynced)
 
         let alias2 = try #require(aliases.first(where: { $0.item.aliasEmail == givenAlias2.item.aliasEmail }))
         #expect(alias2.encryptedSimpleLoginNote == alias2Info.encryptedNote)
+        #expect(alias2.simpleLoginNoteSynced)
     }
 }
 
@@ -497,7 +499,8 @@ private extension LocalItemDatasource {
                                               item: itemRevision,
                                               encryptedContent: encryptedContent,
                                               isLogInItem: isLogInItem,
-                                              encryptedSimpleLoginNote: nil)
+                                              encryptedSimpleLoginNote: nil,
+                                              simpleLoginNoteSynced: false)
         try await upsertItems([item])
         return item
     }

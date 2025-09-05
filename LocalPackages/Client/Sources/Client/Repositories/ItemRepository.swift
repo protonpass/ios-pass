@@ -662,7 +662,6 @@ public extension ItemRepository {
         }
         try await localDatasource.updateCachedAliasInfo(items: items, aliases: encryptedAliases)
         logger.info("Updated cached alias info for \(items.count) aliases for user \(userId)")
-
     }
 
     func move(items: [any ItemIdentifiable], toShareId: String) async throws {
@@ -859,7 +858,8 @@ private extension ItemRepository {
                      item: itemRevision,
                      encryptedContent: encryptedContent,
                      isLogInItem: isLogInItem,
-                     encryptedSimpleLoginNote: nil)
+                     encryptedSimpleLoginNote: nil,
+                     simpleLoginNoteSynced: false)
     }
 
     func createItemRequest(itemContent: any ProtobufableItemContentProtocol,
