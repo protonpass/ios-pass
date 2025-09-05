@@ -46,6 +46,9 @@ public protocol LocalItemDatasourceProtocol: Sendable {
 
     func getAliasCount(userId: String) async throws -> Int
 
+    func updateCachedAliasInfo(items: [SymmetricallyEncryptedItem],
+                               aliases: [SymmetricallyEncryptedAlias]) async throws
+
     /// Insert or update a list of items
     func upsertItems(_ items: [SymmetricallyEncryptedItem]) async throws
 
@@ -168,11 +171,30 @@ public extension LocalItemDatasource {
         return try await count(fetchRequest: fetchRequest, context: taskContext)
     }
 
+    func updateCachedAliasInfo(items: [SymmetricallyEncryptedItem],
+                               aliases: [SymmetricallyEncryptedAlias]) async throws {
+        try await upsert(items,
+                         entityType: ItemEntity.self,
+                         fetchPredicate: NSPredicate(format: "itemID IN %@ AND shareID IN %@",
+                                                     items.map(\.itemId),
+                                                     items.map(\.shareId)),
+                         isEqual: { item, entity in
+                             item.shareId == entity.shareID && item.itemId == entity.itemID
+                         },
+                         hydrate: { item, entity in
+                             if let alias = aliases.first(where: { $0.email == item.item.aliasEmail }) {
+                                 entity.encryptedSimpleLoginNote = alias.encryptedNote
+                             } else {
+                                 assertionFailure("No matched encrypted alias for \(item.item.aliasEmail ?? "")")
+                             }
+                         })
+    }
+
     func upsertItems(_ items: [SymmetricallyEncryptedItem]) async throws {
         try await upsert(items,
                          entityType: ItemEntity.self,
                          fetchPredicate: NSPredicate(format: "itemID IN %@ AND shareID IN %@",
-                                                     items.map(\.item.itemID),
+                                                     items.map(\.itemId),
                                                      items.map(\.shareId)),
                          isEqual: { item, entity in
                              item.shareId == entity.shareID && item.itemId == entity.itemID
