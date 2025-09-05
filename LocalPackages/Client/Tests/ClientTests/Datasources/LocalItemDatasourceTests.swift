@@ -19,7 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Client
-@testable import Entities
+import Entities
 import Foundation
 import Testing
 
