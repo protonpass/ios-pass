@@ -1018,7 +1018,11 @@ private extension ItemRepository {
                                                             shareId: shareId,
                                                             keyRotation: item.keyRotation)
         let contentProtobuf = try item.getContentProtobuf(shareKey: shareKey)
-        return ItemContent(userId: userId, shareId: shareId, item: item, contentProtobuf: contentProtobuf)
+        return ItemContent(userId: userId,
+                           shareId: shareId,
+                           item: item,
+                           contentProtobuf: contentProtobuf,
+                           simpleLoginNote: nil)
     }
 }
 

@@ -39,6 +39,7 @@ extension ItemContent {
                            name: name,
                            note: note,
                            contentData: .login(updatedData),
-                           customFields: customFields)
+                           customFields: customFields,
+                           simpleLoginNote: simpleLoginNote)
     }
 }
