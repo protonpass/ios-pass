@@ -112,6 +112,15 @@ extension SharedServiceContainer {
                              reachability: SharedServiceContainer.shared.reachabilityService()) }
     }
 
+    var simpleLoginNoteSynchronizer: Factory<any SimpleLoginNoteSynchronizerProtocol> {
+        self {
+            SimpleLoginNoteSynchronizer(userManager: self.userManager(),
+                                        remoteDatasource: SharedRepositoryContainer.shared.remoteAliasDatasource(),
+                                        localDatasource: SharedRepositoryContainer.shared.localItemDatasource(),
+                                        itemRepository: self.itemRepository)
+        }
+    }
+
     var itemContextMenuHandler: Factory<ItemContextMenuHandler> {
         self { ItemContextMenuHandler() }
     }
