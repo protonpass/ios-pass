@@ -328,69 +328,69 @@ extension LocalItemDatasourceTests {
         // Given
         let givenShareId = String.random()
         // 2 trashed log in items
-        _ = try await sut.givenInsertedItem(shareId: givenShareId,
-                                            userId: currentUserId,
-                                            state: .trashed,
-                                            isLogInItem: true)
-        
-        _ = try await sut.givenInsertedItem(shareId: givenShareId,
-                                            userId: currentUserId,
-                                            state: .trashed,
-                                            isLogInItem: true)
-        
+        try await sut.givenInsertedItem(shareId: givenShareId,
+                                        userId: currentUserId,
+                                        state: .trashed,
+                                        isLogInItem: true)
+
+        try await sut.givenInsertedItem(shareId: givenShareId,
+                                        userId: currentUserId,
+                                        state: .trashed,
+                                        isLogInItem: true)
+
         // 3 trashed other items
-        _ = try await sut.givenInsertedItem(shareId: givenShareId,
-                                            userId: currentUserId,
-                                            state: .trashed,
-                                            isLogInItem: false)
-        
-        _ = try await sut.givenInsertedItem(shareId: givenShareId,
-                                            userId: currentUserId,
-                                            state: .trashed,
-                                            isLogInItem: false)
-        
-        _ = try await sut.givenInsertedItem(shareId: givenShareId,
-                                            userId: currentUserId,
-                                            state: .trashed,
-                                            isLogInItem: false)
-        
+        try await sut.givenInsertedItem(shareId: givenShareId,
+                                        userId: currentUserId,
+                                        state: .trashed,
+                                        isLogInItem: false)
+
+        try await sut.givenInsertedItem(shareId: givenShareId,
+                                        userId: currentUserId,
+                                        state: .trashed,
+                                        isLogInItem: false)
+
+        try await sut.givenInsertedItem(shareId: givenShareId,
+                                        userId: currentUserId,
+                                        state: .trashed,
+                                        isLogInItem: false)
+
         // 4 active log in items
-        _ = try await sut.givenInsertedItem(shareId: givenShareId,
-                                            userId: currentUserId,
-                                            state: .active,
-                                            isLogInItem: true)
-        
-        _ = try await sut.givenInsertedItem(shareId: givenShareId,
-                                            userId: currentUserId,
-                                            state: .active,
-                                            isLogInItem: true)
-        
-        _ = try await sut.givenInsertedItem(shareId: givenShareId,
-                                            userId: currentUserId,
-                                            state: .active,
-                                            isLogInItem: true)
-        
-        _ = try await sut.givenInsertedItem(shareId: givenShareId,
-                                            userId: currentUserId,
-                                            state: .active,
-                                            isLogInItem: true)
-        
+        try await sut.givenInsertedItem(shareId: givenShareId,
+                                        userId: currentUserId,
+                                        state: .active,
+                                        isLogInItem: true)
+
+        try await sut.givenInsertedItem(shareId: givenShareId,
+                                        userId: currentUserId,
+                                        state: .active,
+                                        isLogInItem: true)
+
+        try await sut.givenInsertedItem(shareId: givenShareId,
+                                        userId: currentUserId,
+                                        state: .active,
+                                        isLogInItem: true)
+
+        try await sut.givenInsertedItem(shareId: givenShareId,
+                                        userId: currentUserId,
+                                        state: .active,
+                                        isLogInItem: true)
+
         // 4 active other items
-        _ = try await sut.givenInsertedItem(shareId: givenShareId,
-                                            userId: currentUserId,
-                                            state: .active,
-                                            isLogInItem: false)
-        
-        _ = try await sut.givenInsertedItem(shareId: givenShareId,
-                                            userId: currentUserId,
-                                            state: .active,
-                                            isLogInItem: false)
-        
-        _ = try await sut.givenInsertedItem(shareId: givenShareId,
-                                            userId: currentUserId,
-                                            state: .active,
-                                            isLogInItem: false)
-        
+        try await sut.givenInsertedItem(shareId: givenShareId,
+                                        userId: currentUserId,
+                                        state: .active,
+                                        isLogInItem: false)
+
+        try await sut.givenInsertedItem(shareId: givenShareId,
+                                        userId: currentUserId,
+                                        state: .active,
+                                        isLogInItem: false)
+
+        try await sut.givenInsertedItem(shareId: givenShareId,
+                                        userId: currentUserId,
+                                        state: .active,
+                                        isLogInItem: false)
+
         // When
         let activeLogInItems = try await sut.getActiveLogInItems(userId: currentUserId)
         
@@ -428,14 +428,14 @@ extension LocalItemDatasourceTests {
     func getAliasCount() async throws {
         // Given
         let user1 = String.random()
-        _ = try await sut.givenInsertedItem(userId: user1, aliasEmail: .random())
-        _ = try await sut.givenInsertedItem(userId: user1)
-        _ = try await sut.givenInsertedItem(userId: user1, aliasEmail: .random())
-        _ = try await sut.givenInsertedItem(userId: user1)
+        try await sut.givenInsertedItem(userId: user1, aliasEmail: .random())
+        try await sut.givenInsertedItem(userId: user1)
+        try await sut.givenInsertedItem(userId: user1, aliasEmail: .random())
+        try await sut.givenInsertedItem(userId: user1)
 
         let user2 = String.random()
-        _ = try await sut.givenInsertedItem(userId: user2)
-        _ = try await sut.givenInsertedItem(userId: user2)
+        try await sut.givenInsertedItem(userId: user2)
+        try await sut.givenInsertedItem(userId: user2)
 
         // When
         let aliasCount1 = try await sut.getAliasCount(userId: user1)
@@ -444,6 +444,45 @@ extension LocalItemDatasourceTests {
         // Then
         #expect(aliasCount1 == 2)
         #expect(aliasCount2 == 0)
+    }
+
+    @Test("Get unsynced SimpleLogin note aliases")
+    func getUnsyncedSimpleLoginNoteAliases() async throws {
+        // Given
+        let userId = String.random()
+        try await sut.givenInsertedItem(userId: userId)
+        let givenAlias1 = try await sut.givenInsertedItem(userId: userId,
+                                                          aliasEmail: .random(),
+                                                          modifyTime: 12)
+        try await sut.givenInsertedItem(userId: userId)
+        let givenAlias2 = try await sut.givenInsertedItem(userId: userId,
+                                                          aliasEmail: .random(),
+                                                          modifyTime: 8)
+        try await sut.givenInsertedItem(userId: userId)
+        try await sut.givenInsertedItem(userId: userId)
+        let givenAlias3 = try await sut.givenInsertedItem(userId: userId,
+                                                          aliasEmail: .random(),
+                                                          modifyTime: 30)
+        let givenAlias4 = try await sut.givenInsertedItem(userId: userId,
+                                                          aliasEmail: .random(),
+                                                          modifyTime: 46)
+
+        // When
+        let aliasCount = try await sut.getAliasCount(userId: userId)
+
+        // Then
+        #expect(aliasCount == 4)
+
+        // When
+        let unsyncedAliases = try await sut.getUnsyncedSimpleLoginNoteAliases(userId: userId,
+                                                                              pageSize: 3)
+
+        // Then
+        #expect(unsyncedAliases.count == 3)
+        #expect(unsyncedAliases[0] == givenAlias4)
+        #expect(unsyncedAliases[1] == givenAlias3)
+        #expect(unsyncedAliases[2] == givenAlias1)
+        #expect(!unsyncedAliases.contains(givenAlias2))
     }
 
     @Test("Update cached alias info")
@@ -478,6 +517,7 @@ extension LocalItemDatasourceTests {
 }
 
 private extension LocalItemDatasource {
+    @discardableResult
     func givenInsertedItem(itemId: String? = nil,
                            shareId: String? = nil,
                            userId: String? = nil,
