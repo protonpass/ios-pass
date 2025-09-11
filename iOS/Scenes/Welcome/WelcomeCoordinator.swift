@@ -33,7 +33,7 @@ import SwiftUI
 
 @MainActor
 protocol WelcomeCoordinatorDelegate: AnyObject {
-    func welcomeCoordinator(didFinishWith loginData: LoginData)
+    func welcomeCoordinator(didFinishWith loginData: LoginData, isSignUp: Bool)
 }
 
 @MainActor
@@ -163,20 +163,64 @@ private extension WelcomeCoordinator {
     }
 }
 
-private extension WelcomeCoordinator {
-    func handle(logInData: LoginData) {
+// MARK: - WelcomeViewControllerDelegate
+extension WelcomeCoordinator: WelcomeViewControllerDelegate {
+    nonisolated func userWantsToLogIn(username: String?) {
+        let customization: LoginCustomizationOptions = .init(inAppTheme: { [weak self] in
+            guard let self else { return .default }
+            return theme.inAppTheme
+        })
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            logInAndSignUp.presentLoginFlow(over: welcomeViewController,
+                                            customization: customization) { [weak self] result in
+                guard let self else { return }
+                handle(result)
+            }
+        }
+    }
+
+    nonisolated func userWantsToSignUp() {
+        let customization: LoginCustomizationOptions = .init(inAppTheme: { [weak self] in
+            guard let self else { return .default }
+            return theme.inAppTheme
+        })
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            logInAndSignUp.presentSignupFlow(over: welcomeViewController,
+                                             customization: customization) { [weak self] result in
+                guard let self else { return }
+                switch result {
+                case .dismissed:
+                    break
+                case let .loggedIn(logInData):
+                    handle(logInData: logInData, isSignUp: false)
+                case let .signedUp(logInData):
+                    handle(logInData: logInData, isSignUp: true)
+                }
+            }
+        }
+    }
+
+    private func handle(logInData: LoginData, isSignUp: Bool) {
         // Have to refresh `logInAndSignUp` in case `logInData` is ignored and user has to authenticate again.
         logInAndSignUp = makeLoginAndSignUp()
-        delegate?.welcomeCoordinator(didFinishWith: logInData)
+        delegate?.welcomeCoordinator(didFinishWith: logInData,
+                                     isSignUp: isSignUp)
     }
 
     func handle(_ result: LoginResult) {
         switch result {
         case .dismissed:
             return
-        case let .loggedIn(logInData), let .signedUp(logInData):
-            logInAndSignUp = makeLoginAndSignUp()
-            handle(logInData: logInData)
+        case let .loggedIn(logInData):
+            handle(logInData: logInData, isSignUp: false)
+        case let .signedUp(logInData):
+            handle(logInData: logInData, isSignUp: true)
         }
     }
 }
