@@ -169,6 +169,10 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
             }
         }
 
+        if let simpleLoginNote = itemContent.simpleLoginNote {
+            optionalExtras.append(simpleLoginNote)
+        }
+
         lastUseTime = itemContent.item.lastUseTime ?? 0
         modifyTime = itemContent.item.modifyTime
         pinned = itemContent.item.pinned

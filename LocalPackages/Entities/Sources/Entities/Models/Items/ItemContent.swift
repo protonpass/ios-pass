@@ -36,8 +36,8 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
     public let name: String
     public let note: String
     public let contentData: ItemContentData
-
     public let customFields: [CustomField]
+    public let simpleLoginNote: String?
 
     /// Applicable to identities, ssh keys, wifis and custom items
     public var customSections: [CustomSection] {
@@ -66,7 +66,8 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
                 name: String,
                 note: String,
                 contentData: ItemContentData,
-                customFields: [CustomField]) {
+                customFields: [CustomField],
+                simpleLoginNote: String?) {
         self.shareId = shareId
         self.itemUuid = itemUuid
         self.userId = userId
@@ -75,12 +76,14 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
         self.note = note
         self.contentData = contentData
         self.customFields = customFields
+        self.simpleLoginNote = simpleLoginNote
     }
 
     public init(userId: String,
                 shareId: String,
                 item: Item,
-                contentProtobuf: ItemContentProtobuf) {
+                contentProtobuf: ItemContentProtobuf,
+                simpleLoginNote: String?) {
         self.shareId = shareId
         self.item = item
         self.userId = userId
@@ -89,6 +92,7 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
         note = contentProtobuf.note
         contentData = contentProtobuf.contentData
         customFields = contentProtobuf.customFields
+        self.simpleLoginNote = simpleLoginNote
     }
 
     public var protobuf: ItemContentProtobuf {
