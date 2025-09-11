@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import AdAttributionKit
 import Client
 import Combine
 import Core
@@ -107,7 +108,7 @@ final class AppCoordinator {
         appStateObserver = .init()
 
         isUITest = false
-        clearUserDataInKeychainIfFirstRun()
+        firstRunCheckUp()
         bindAppState()
 
         // if ui test reset everything
@@ -116,14 +117,18 @@ final class AppCoordinator {
         }
     }
 
-    // swiftlint:disable:next todo
-    // TODO: Remove preferences and this function once session migration is done
-    private func clearUserDataInKeychainIfFirstRun() {
+    private func firstRunCheckUp() {
         guard firstRunDetector.isFirstRun() else { return }
         firstRunDetector.completeFirstRun()
         try? keychain.removeOrError(forKey: AuthManager.storageKey)
         Task { [weak self] in
             guard let self else { return }
+            if #available(iOS 17.4, *) {
+                try? await Postback.updateConversionValue(1,
+                                                          coarseConversionValue: .low,
+                                                          lockPostback: false)
+            }
+
             try? await localUserDataDatasource.removeAll()
         }
     }
@@ -448,11 +453,19 @@ private extension AppCoordinator {
 // MARK: - WelcomeCoordinatorDelegate
 
 extension AppCoordinator: WelcomeCoordinatorDelegate {
-    func welcomeCoordinator(didFinishWith userData: LoginData) {
+    func welcomeCoordinator(didFinishWith userData: LoginData, isSignUp: Bool) {
         if userData.scopes.contains(where: { $0 == "pass" }) {
             appStateObserver.updateAppState(.manuallyLoggedIn(userData, extraPassword: false))
         } else {
             showExtraPasswordLockScreen(userData)
+        }
+
+        Task {
+            if #available(iOS 17.4, *) {
+                try? await Postback.updateConversionValue(isSignUp ? 2 : 1,
+                                                          coarseConversionValue: .medium,
+                                                          lockPostback: false)
+            }
         }
     }
 }
