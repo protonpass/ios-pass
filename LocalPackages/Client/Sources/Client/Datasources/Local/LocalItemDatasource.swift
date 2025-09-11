@@ -46,6 +46,9 @@ public protocol LocalItemDatasourceProtocol: Sendable {
 
     func getAliasCount(userId: String) async throws -> Int
 
+    func getUnsyncedSimpleLoginNoteAliases(userId: String,
+                                           pageSize: Int) async throws -> [SymmetricallyEncryptedItem]
+
     func updateCachedAliasInfo(items: [SymmetricallyEncryptedItem],
                                aliases: [SymmetricallyEncryptedAlias]) async throws
 
@@ -169,6 +172,21 @@ public extension LocalItemDatasource {
             .init(format: "aliasEmail != ''")
         ])
         return try await count(fetchRequest: fetchRequest, context: taskContext)
+    }
+
+    func getUnsyncedSimpleLoginNoteAliases(userId: String,
+                                           pageSize: Int) async throws -> [SymmetricallyEncryptedItem] {
+        let context = newTaskContext(type: .fetch)
+        let request = ItemEntity.fetchRequest()
+        request.fetchLimit = pageSize
+        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            .init(format: "userID = %@", userId),
+            .init(format: "aliasEmail != ''"),
+            .init(format: "simpleLoginNoteSynced == false")
+        ])
+        request.sortDescriptors = [.init(key: "modifyTime", ascending: false)]
+        let entities = try await execute(fetchRequest: request, context: context)
+        return try entities.map { try $0.toEncryptedItem() }
     }
 
     func updateCachedAliasInfo(items: [SymmetricallyEncryptedItem],
