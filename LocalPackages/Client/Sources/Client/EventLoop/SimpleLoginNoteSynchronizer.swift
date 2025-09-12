@@ -18,15 +18,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-/// In order to sync SimpleLogin note for aliases, we need to sync in batch and jitter to not overloading the BE
-/// This synchronizer takes into account current active user and sync the first page of unsynced aliases for this
-/// user
-/// It doesn't automatically schedule next sync
-public protocol SimpleLoginNoteSynchronizerProtocol: Sendable, Actor {
-    /// Report `true` if a sync is still in progress in order to not fire another one
-    var isSyncing: Bool { get }
+import Entities
 
-    /// Return `true` if some note were synced to refresh items on memory
+/// In order to sync SimpleLogin note for aliases, we need to sync in batch and jitter to not overloading the BE
+/// This synchronizer takes into account current active user and sync the first page of unsynced aliases
+public protocol SimpleLoginNoteSynchronizerProtocol: Sendable, Actor {
+    /// Return `true` if some note were synced to act accordingly (refresh items on memory)
     func sync() async throws -> Bool
 }
 
@@ -36,8 +33,6 @@ public actor SimpleLoginNoteSynchronizer: SimpleLoginNoteSynchronizerProtocol {
     private let localDatasource: any LocalItemDatasourceProtocol
     private let itemRepository: any ItemRepositoryProtocol
     private let pageSize: Int
-
-    public private(set) var isSyncing = false
 
     public init(userManager: any UserManagerProtocol,
                 remoteDatasource: any RemoteAliasDatasourceProtocol,
@@ -54,8 +49,6 @@ public actor SimpleLoginNoteSynchronizer: SimpleLoginNoteSynchronizerProtocol {
 
 public extension SimpleLoginNoteSynchronizer {
     func sync() async throws -> Bool {
-        defer { isSyncing = false }
-        isSyncing = true
         let userId = try await userManager.getActiveUserId()
         let unsyncedAliases =
             try await localDatasource.getUnsyncedSimpleLoginNoteAliases(userId: userId,
@@ -64,11 +57,19 @@ public extension SimpleLoginNoteSynchronizer {
         guard !unsyncedAliases.isEmpty else {
             return false
         }
-        let details = try await remoteDatasource.getAliasDetails(userId: userId,
-                                                                 items: unsyncedAliases)
-        try await itemRepository.updateCachedAliasInfo(userId: userId,
-                                                       items: unsyncedAliases,
-                                                       aliases: details)
+        let action: @Sendable ([SymmetricallyEncryptedItem], String) async throws
+            -> Void = { [weak self] aliases, _ in
+                guard let self else { return }
+                let details = try await remoteDatasource.getAliasDetails(userId: userId,
+                                                                         items: aliases)
+                try await itemRepository.updateCachedAliasInfo(userId: userId,
+                                                               items: aliases,
+                                                               aliases: details)
+            }
+
+        try await unsyncedAliases.groupAndBulkAction(by: \.shareId,
+                                                     shouldInclude: { _ in true },
+                                                     action: action)
         return true
     }
 }
