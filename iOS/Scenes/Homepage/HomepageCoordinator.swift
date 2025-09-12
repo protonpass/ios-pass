@@ -41,6 +41,7 @@ import StoreKit
 import SwiftUI
 
 private let kRefreshInvitationsTaskLabel = "RefreshInvitationsTask"
+private let kSyncSimpleLoginNotesTaskLabel = "SyncSimpleLoginNotesTask"
 
 @MainActor
 protocol HomepageCoordinatorDelegate: AnyObject {
@@ -107,6 +108,9 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
     @LazyInjected(\SharedUseCasesContainer.fullContentSync) var fullContentSync
 
+    @LazyInjected(\SharedServiceContainer.simpleLoginNoteSynchronizer)
+    private var simpleLoginNoteSynchronizer
+
     private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
     let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
     let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
@@ -161,8 +165,15 @@ private extension HomepageCoordinator {
         eventLoop.delegate = self
         urlOpener.rootViewController = rootViewController
 
-        // User event caches invites locally so no need to fetch invites as part of event loop
-        if !getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1) {
+        if getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1) {
+            eventLoop.addAdditionalTask(.init(label: kSyncSimpleLoginNotesTaskLabel) { [weak self] in
+                guard let self else { return }
+                if try await simpleLoginNoteSynchronizer.sync() {
+                    await refresh(exitEditMode: false)
+                }
+            })
+        } else {
+            // User event caches invites locally so no need to fetch invites as part of event loop
             eventLoop.addAdditionalTask(.init(label: kRefreshInvitationsTaskLabel,
                                               task: refreshInvitations.callAsFunction))
         }
