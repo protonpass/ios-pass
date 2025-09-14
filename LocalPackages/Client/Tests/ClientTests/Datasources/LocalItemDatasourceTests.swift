@@ -485,7 +485,7 @@ extension LocalItemDatasourceTests {
         #expect(!unsyncedAliases.contains(givenAlias2))
     }
 
-    @Test("Update cached alias info")
+    @Test("Update cached alias info and unsync note")
     func updateCachedAliasInfo() async throws {
         // Given
         let userId = String.random()
@@ -506,13 +506,28 @@ extension LocalItemDatasourceTests {
         let aliases = try await sut.getAllItems(userId: userId)
         #expect(aliases.count == 2)
 
-        let alias1 = try #require(aliases.first(where: { $0.item.aliasEmail == givenAlias1.item.aliasEmail }))
+        let alias1 = try #require(aliases.first(where: { $0.itemId == givenAlias1.itemId }))
         #expect(alias1.encryptedSimpleLoginNote == alias1Info.encryptedNote)
         #expect(alias1.simpleLoginNoteSynced)
 
-        let alias2 = try #require(aliases.first(where: { $0.item.aliasEmail == givenAlias2.item.aliasEmail }))
+        let alias2 = try #require(aliases.first(where: { $0.itemId == givenAlias2.itemId }))
         #expect(alias2.encryptedSimpleLoginNote == alias2Info.encryptedNote)
         #expect(alias2.simpleLoginNoteSynced)
+
+        // When
+        try await sut.unsyncSimpleLoginNotes(items: [alias1])
+
+        // Then
+        let updatedAliases = try await sut.getAllItems(userId: userId)
+        #expect(updatedAliases.count == 2)
+
+        let updatedAlias1 = try #require(updatedAliases.first(where: { $0.itemId == givenAlias1.itemId }))
+
+        #expect(!updatedAlias1.simpleLoginNoteSynced)
+
+        let updatedAlias2 = try #require(updatedAliases.first(where: { $0.itemId == givenAlias2.itemId }))
+
+        #expect(updatedAlias2.simpleLoginNoteSynced)
     }
 }
 

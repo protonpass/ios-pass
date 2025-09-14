@@ -25,6 +25,7 @@ public struct UserEvents: Sendable, Decodable {
     public let lastEventID: String
     public let itemsUpdated: [UserEventItem]
     public let itemsDeleted: [UserEventItem]
+    public let aliasNoteChanged: [UserEventItem]
     public let invitesChanged: UserEventInviteChange?
     public let sharesUpdated: [UserEventShare]
     public let sharesDeleted: [UserEventShare]

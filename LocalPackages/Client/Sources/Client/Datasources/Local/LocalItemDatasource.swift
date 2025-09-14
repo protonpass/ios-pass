@@ -49,6 +49,10 @@ public protocol LocalItemDatasourceProtocol: Sendable {
     func getUnsyncedSimpleLoginNoteAliases(userId: String,
                                            pageSize: Int) async throws -> [SymmetricallyEncryptedItem]
 
+    /// Flip SL note sync status back to false in order to resync during next event loop because notes were updated
+    /// on SL
+    func unsyncSimpleLoginNotes(items: [any ItemIdentifiable]) async throws
+
     func updateCachedAliasInfo(items: [SymmetricallyEncryptedItem],
                                aliases: [SymmetricallyEncryptedAlias]) async throws
 
@@ -187,6 +191,19 @@ public extension LocalItemDatasource {
         request.sortDescriptors = [.init(key: "modifyTime", ascending: false)]
         let entities = try await execute(fetchRequest: request, context: context)
         return try entities.map { try $0.toEncryptedItem() }
+    }
+
+    func unsyncSimpleLoginNotes(items: [any ItemIdentifiable]) async throws {
+        let context = newTaskContext(type: .fetch)
+        let request = ItemEntity.fetchRequest()
+        request.predicate = .init(format: "itemID IN %@ AND shareID IN %@",
+                                  items.map(\.itemId),
+                                  items.map(\.shareId))
+        let aliases = try await execute(fetchRequest: request, context: context)
+        for alias in aliases {
+            alias.simpleLoginNoteSynced = false
+        }
+        try context.save()
     }
 
     func updateCachedAliasInfo(items: [SymmetricallyEncryptedItem],
