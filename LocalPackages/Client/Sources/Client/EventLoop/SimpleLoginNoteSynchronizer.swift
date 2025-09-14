@@ -20,26 +20,22 @@
 
 import Entities
 
-/// In order to sync SimpleLogin note for aliases, we need to sync in batch and jitter to not overloading the BE
-/// This synchronizer takes into account current active user and sync the first page of unsynced aliases
 public protocol SimpleLoginNoteSynchronizerProtocol: Sendable, Actor {
+    /// Sync the first page of unsynced aliases
     /// Return `true` if some note were synced to act accordingly (refresh items on memory)
-    func sync() async throws -> Bool
+    func sync(userId: String) async throws -> Bool
 }
 
 public actor SimpleLoginNoteSynchronizer: SimpleLoginNoteSynchronizerProtocol {
-    private let userManager: any UserManagerProtocol
     private let remoteDatasource: any RemoteAliasDatasourceProtocol
     private let localDatasource: any LocalItemDatasourceProtocol
     private let itemRepository: any ItemRepositoryProtocol
     private let pageSize: Int
 
-    public init(userManager: any UserManagerProtocol,
-                remoteDatasource: any RemoteAliasDatasourceProtocol,
+    public init(remoteDatasource: any RemoteAliasDatasourceProtocol,
                 localDatasource: any LocalItemDatasourceProtocol,
                 itemRepository: any ItemRepositoryProtocol,
                 pageSize: Int = 100) {
-        self.userManager = userManager
         self.remoteDatasource = remoteDatasource
         self.localDatasource = localDatasource
         self.itemRepository = itemRepository
@@ -48,8 +44,7 @@ public actor SimpleLoginNoteSynchronizer: SimpleLoginNoteSynchronizerProtocol {
 }
 
 public extension SimpleLoginNoteSynchronizer {
-    func sync() async throws -> Bool {
-        let userId = try await userManager.getActiveUserId()
+    func sync(userId: String) async throws -> Bool {
         let unsyncedAliases =
             try await localDatasource.getUnsyncedSimpleLoginNoteAliases(userId: userId,
                                                                         pageSize: pageSize)

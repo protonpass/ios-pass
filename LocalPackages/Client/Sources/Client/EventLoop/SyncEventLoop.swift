@@ -134,6 +134,7 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, @unche
     private let synchronizer: any EventSynchronizerProtocol
     private let userEventsSynchronizer: any UserEventsSynchronizerProtocol
     private let aliasSynchronizer: any AliasSynchronizerProtocol
+    private let simpleLoginNoteSynchronizer: any SimpleLoginNoteSynchronizerProtocol
     private let logger: Logger
 
     public weak var delegate: (any SyncEventLoopDelegate)?
@@ -145,6 +146,7 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, @unche
                 synchronizer: any EventSynchronizerProtocol,
                 userEventsSynchronizer: any UserEventsSynchronizerProtocol,
                 aliasSynchronizer: any AliasSynchronizerProtocol,
+                simpleLoginNoteSynchronizer: any SimpleLoginNoteSynchronizerProtocol,
                 userManager: any UserManagerProtocol,
                 logManager: any LogManagerProtocol,
                 reachability: any ReachabilityServicing) {
@@ -152,6 +154,7 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, @unche
         self.synchronizer = synchronizer
         self.userEventsSynchronizer = userEventsSynchronizer
         self.aliasSynchronizer = aliasSynchronizer
+        self.simpleLoginNoteSynchronizer = simpleLoginNoteSynchronizer
         logger = .init(manager: logManager)
         self.reachability = reachability
         self.userManager = userManager
@@ -298,7 +301,10 @@ private extension SyncEventLoop {
                 }
 
                 let syncedAliases = try await aliasSynchronizer.sync(userId: userId)
-                hasNewEvents = result.dataUpdated || syncedAliases
+
+                let syncedSimpleLoginNotes = try await simpleLoginNoteSynchronizer.sync(userId: userId)
+
+                hasNewEvents = result.dataUpdated || syncedAliases || syncedSimpleLoginNotes
             } else {
                 hasNewEvents = try await synchronizer.sync(userId: userId)
             }
