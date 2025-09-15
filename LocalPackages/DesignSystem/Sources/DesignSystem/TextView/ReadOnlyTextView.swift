@@ -29,6 +29,7 @@ public struct ReadOnlyTextView: UIViewRepresentable {
     let minWidth: CGFloat
     let maxHeight: CGFloat
     let dataDetectorTypes: UIDataDetectorTypes
+    let hyphensDisabled: Bool
     let onRenderCompletion: ((_ isTrimmed: Bool) -> Void)?
 
     public init(_ text: String,
@@ -37,6 +38,7 @@ public struct ReadOnlyTextView: UIViewRepresentable {
                 minWidth: CGFloat = 300,
                 maxHeight: CGFloat = .greatestFiniteMagnitude,
                 dataDetectorTypes: UIDataDetectorTypes = .all,
+                hyphensDisabled: Bool = true,
                 onRenderCompletion: ((_ isTrimmed: Bool) -> Void)? = nil) {
         self.text = text
         self.textColor = textColor
@@ -44,6 +46,7 @@ public struct ReadOnlyTextView: UIViewRepresentable {
         self.minWidth = minWidth
         self.maxHeight = maxHeight
         self.dataDetectorTypes = dataDetectorTypes
+        self.hyphensDisabled = hyphensDisabled
         self.onRenderCompletion = onRenderCompletion
     }
 
@@ -61,7 +64,15 @@ public struct ReadOnlyTextView: UIViewRepresentable {
     }
 
     public func updateUIView(_ textView: UITextView, context: Context) {
-        textView.text = text
+        var attrs: [NSAttributedString.Key: Any] = [
+            .font: font,
+            .foregroundColor: textColor
+        ]
+        if hyphensDisabled {
+            // Force Vietnamese to trick UITextView into not rendering hyphens as line breaks
+            attrs[.languageIdentifier] = "vi"
+        }
+        textView.attributedText = .init(string: text, attributes: attrs)
     }
 
     public func sizeThatFits(_ proposal: ProposedViewSize,

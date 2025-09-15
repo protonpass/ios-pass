@@ -167,7 +167,7 @@ struct AliasDetailView: View {
                 Text(viewModel.aliasEnabled ? "Alias address" : "Alias address (disabled)")
                     .sectionTitleText()
 
-                Text(viewModel.aliasEmail)
+                Text(AttributedString(viewModel.aliasEmail, attributes: .lineBreakHyphenErasing))
                     .sectionContentText()
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -175,17 +175,16 @@ struct AliasDetailView: View {
             .onTapGesture { viewModel.copyAliasEmail() }
             .layoutPriority(1)
 
-            if viewModel.isAliasOwner {
-                Group {
-                    if viewModel.togglingAliasStatus {
-                        ProgressView()
-                    } else {
-                        StaticToggle(isOn: viewModel.aliasEnabled,
-                                     tintColor: iconTintColor,
-                                     action: { viewModel.toggleAliasState() })
-                    }
-                }.frame(width: 42)
+            Group {
+                if viewModel.togglingAliasStatus || viewModel.aliasInfos == nil {
+                    ProgressView()
+                } else if viewModel.isAliasOwner {
+                    StaticToggle(isOn: viewModel.aliasEnabled,
+                                 tintColor: iconTintColor,
+                                 action: { viewModel.toggleAliasState() })
+                }
             }
+            .frame(width: 42)
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .animation(.default, value: viewModel.togglingAliasStatus)
