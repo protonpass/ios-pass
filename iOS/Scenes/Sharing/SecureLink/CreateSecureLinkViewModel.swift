@@ -98,7 +98,7 @@ final class CreateSecureLinkViewModel: ObservableObject {
                 guard let self else { return }
                 if link != nil {
                     state.send(.created)
-                } else if count == 0 { // swiftlint:disable:this empty_count
+                } else if count == 0 {
                     state.send(.creationWithoutRestriction)
                 } else {
                     state.send(.creationWithRestriction)
