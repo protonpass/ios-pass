@@ -282,7 +282,7 @@ struct CreateEditAliasView: View {
                             .shimmering()
                     }
                 default:
-                    Text(viewModel.aliasEmail)
+                    Text(AttributedString(viewModel.aliasEmail, attributes: .lineBreakHyphenErasing))
                         .sectionContentText()
                 }
             }
