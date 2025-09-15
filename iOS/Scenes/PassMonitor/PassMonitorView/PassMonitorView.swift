@@ -513,7 +513,7 @@ private extension PassMonitorView {
                         badge: Bool = false,
                         action: @escaping () -> Void) -> some View {
         let loading = if let count {
-            count < 0 // swiftlint:disable:this empty_count
+            count < 0
         } else {
             false
         }
