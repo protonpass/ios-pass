@@ -6656,7 +6656,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preenchimento automático de Chave de acesso"
+            "value" : "Preenchimento automático de chave de acesso"
           }
         },
         "ro" : {
@@ -15240,7 +15240,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Obtenha o Proton Unlimited"
+            "value" : "Obter o Proton Unlimited"
           }
         },
         "ro" : {
@@ -25342,7 +25342,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Compartilhe endereços alternativos com outros adicionando sua caixa de entrada como uma caixa de correio adicional."
+            "value" : "Compartilhe aliases com outros adicionando sua caixa de entrada como uma caixa de correio adicional."
           }
         },
         "ro" : {
@@ -31093,7 +31093,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Use endereços alternativos Hide-My-Email contra ameaças de phishing."
+            "value" : "Use aliases hide-my-email contra ameaças de phishing."
           }
         },
         "ro" : {

@@ -17363,7 +17363,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Токен 2ФА (TOTP)"
+            "value" : "Токен 2FA (TOTP)"
           }
         },
         "sk" : {
@@ -18726,7 +18726,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Номер счета"
+            "value" : "Номер счёта"
           }
         },
         "sk" : {
@@ -18917,7 +18917,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Тип счета"
+            "value" : "Тип счёта"
           }
         },
         "sk" : {
@@ -19701,7 +19701,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Добавить секрет 2ФА"
+            "value" : "Добавить секрет 2FA"
           }
         },
         "sk" : {
@@ -26633,7 +26633,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Адрес псевдонима (отключен)"
+            "value" : "Адрес псевдонима (отключён)"
           }
         },
         "sk" : {
@@ -28006,7 +28006,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Псевдоним отключен"
+            "value" : "Псевдоним отключён"
           }
         },
         "sk" : {
@@ -28202,7 +28202,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Псевдоним включен"
+            "value" : "Псевдоним включён"
           }
         },
         "sk" : {
@@ -29182,7 +29182,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Псевдоним обновлен"
+            "value" : "Псевдоним обновлён"
           }
         },
         "sk" : {
@@ -36211,7 +36211,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Банковский счет"
+            "value" : "Банковский счёт"
           }
         },
         "sk" : {
@@ -50314,7 +50314,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Скопировать код безопасности"
+            "value" : "Копировать код безопасности"
           }
         },
         "sk" : {
@@ -50505,7 +50505,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Скопировать SSID"
+            "value" : "Копировать SSID"
           }
         },
         "sk" : {
@@ -50702,7 +50702,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Скопировать имя пользователя"
+            "value" : "Копировать имя пользователя"
           }
         },
         "sk" : {
@@ -83823,6 +83823,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Skryté trezory nebudú viditeľné počas vyhľadávania a automatického dopĺňania."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dolda valv kommer inte vara synliga under sökning och automatisk ifyllning"
           }
         },
         "tr" : {
