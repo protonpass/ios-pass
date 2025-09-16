@@ -142,7 +142,7 @@ public struct ProtonPassItemV1_PasskeyCreationData: Sendable {
   public init() {}
 }
 
-public struct ProtonPassItemV1_Passkey: @unchecked Sendable {
+public struct ProtonPassItemV1_Passkey: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -827,23 +827,11 @@ public struct ProtonPassItemV1_Item: Sendable {
 fileprivate let _protobuf_package = "proton_pass_item_v1"
 
 extension ProtonPassItemV1_WifiSecurity: SwiftProtobuf._ProtoNameProviding {
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    0: .same(proto: "UnspecifiedWifiSecurity"),
-    1: .same(proto: "WPA"),
-    2: .same(proto: "WPA2"),
-    3: .same(proto: "WPA3"),
-    4: .same(proto: "WEP"),
-  ]
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{2}\0UnspecifiedWifiSecurity\0\u{1}WPA\0\u{1}WPA2\0\u{1}WPA3\0\u{1}WEP\0")
 }
 
 extension ProtonPassItemV1_CardType: SwiftProtobuf._ProtoNameProviding {
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    0: .same(proto: "Unspecified"),
-    1: .same(proto: "Other"),
-    2: .same(proto: "Visa"),
-    3: .same(proto: "Mastercard"),
-    4: .same(proto: "AmericanExpress"),
-  ]
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{2}\0Unspecified\0\u{1}Other\0\u{1}Visa\0\u{1}Mastercard\0\u{1}AmericanExpress\0")
 }
 
 extension ProtonPassItemV1_ItemNote: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
@@ -867,12 +855,7 @@ extension ProtonPassItemV1_ItemNote: SwiftProtobuf.Message, SwiftProtobuf._Messa
 
 extension ProtonPassItemV1_PasskeyCreationData: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".PasskeyCreationData"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .standard(proto: "os_name"),
-    2: .standard(proto: "os_version"),
-    3: .standard(proto: "device_name"),
-    4: .standard(proto: "app_version"),
-  ]
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}os_name\0\u{3}os_version\0\u{3}device_name\0\u{3}app_version\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -917,21 +900,7 @@ extension ProtonPassItemV1_PasskeyCreationData: SwiftProtobuf.Message, SwiftProt
 
 extension ProtonPassItemV1_Passkey: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".Passkey"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .standard(proto: "key_id"),
-    2: .same(proto: "content"),
-    3: .same(proto: "domain"),
-    4: .standard(proto: "rp_id"),
-    5: .standard(proto: "rp_name"),
-    6: .standard(proto: "user_name"),
-    7: .standard(proto: "user_display_name"),
-    8: .standard(proto: "user_id"),
-    9: .standard(proto: "create_time"),
-    10: .same(proto: "note"),
-    11: .standard(proto: "credential_id"),
-    12: .standard(proto: "user_handle"),
-    13: .standard(proto: "creation_data"),
-  ]
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}key_id\0\u{1}content\0\u{1}domain\0\u{3}rp_id\0\u{3}rp_name\0\u{3}user_name\0\u{3}user_display_name\0\u{3}user_id\0\u{3}create_time\0\u{1}note\0\u{3}credential_id\0\u{3}user_handle\0\u{3}creation_data\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -1025,14 +994,7 @@ extension ProtonPassItemV1_Passkey: SwiftProtobuf.Message, SwiftProtobuf._Messag
 
 extension ProtonPassItemV1_ItemLogin: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ItemLogin"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .standard(proto: "item_email"),
-    2: .same(proto: "password"),
-    3: .same(proto: "urls"),
-    4: .standard(proto: "totp_uri"),
-    5: .same(proto: "passkeys"),
-    6: .standard(proto: "item_username"),
-  ]
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}item_email\0\u{1}password\0\u{1}urls\0\u{3}totp_uri\0\u{1}passkeys\0\u{3}item_username\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -1106,10 +1068,7 @@ extension ProtonPassItemV1_ItemAlias: SwiftProtobuf.Message, SwiftProtobuf._Mess
 
 extension ProtonPassItemV1_CustomSection: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".CustomSection"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .standard(proto: "section_name"),
-    2: .standard(proto: "section_fields"),
-  ]
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}section_name\0\u{3}section_fields\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -1144,9 +1103,7 @@ extension ProtonPassItemV1_CustomSection: SwiftProtobuf.Message, SwiftProtobuf._
 
 extension ProtonPassItemV1_ItemCustom: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ItemCustom"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "sections"),
-  ]
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}sections\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -1176,11 +1133,7 @@ extension ProtonPassItemV1_ItemCustom: SwiftProtobuf.Message, SwiftProtobuf._Mes
 
 extension ProtonPassItemV1_ItemSSHKey: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ItemSSHKey"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .standard(proto: "private_key"),
-    2: .standard(proto: "public_key"),
-    3: .same(proto: "sections"),
-  ]
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}private_key\0\u{3}public_key\0\u{1}sections\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -1220,12 +1173,7 @@ extension ProtonPassItemV1_ItemSSHKey: SwiftProtobuf.Message, SwiftProtobuf._Mes
 
 extension ProtonPassItemV1_ItemWifi: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ItemWifi"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "ssid"),
-    2: .same(proto: "password"),
-    3: .same(proto: "security"),
-    4: .same(proto: "sections"),
-  ]
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}ssid\0\u{1}password\0\u{1}security\0\u{1}sections\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -1270,14 +1218,7 @@ extension ProtonPassItemV1_ItemWifi: SwiftProtobuf.Message, SwiftProtobuf._Messa
 
 extension ProtonPassItemV1_ItemCreditCard: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ItemCreditCard"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .standard(proto: "cardholder_name"),
-    2: .standard(proto: "card_type"),
-    3: .same(proto: "number"),
-    4: .standard(proto: "verification_number"),
-    5: .standard(proto: "expiration_date"),
-    6: .same(proto: "pin"),
-  ]
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}cardholder_name\0\u{3}card_type\0\u{1}number\0\u{3}verification_number\0\u{3}expiration_date\0\u{1}pin\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -1332,45 +1273,7 @@ extension ProtonPassItemV1_ItemCreditCard: SwiftProtobuf.Message, SwiftProtobuf.
 
 extension ProtonPassItemV1_ItemIdentity: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ItemIdentity"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .standard(proto: "full_name"),
-    2: .same(proto: "email"),
-    3: .standard(proto: "phone_number"),
-    4: .standard(proto: "first_name"),
-    5: .standard(proto: "middle_name"),
-    6: .standard(proto: "last_name"),
-    7: .same(proto: "birthdate"),
-    8: .same(proto: "gender"),
-    9: .standard(proto: "extra_personal_details"),
-    10: .same(proto: "organization"),
-    11: .standard(proto: "street_address"),
-    12: .standard(proto: "zip_or_postal_code"),
-    13: .same(proto: "city"),
-    14: .standard(proto: "state_or_province"),
-    15: .standard(proto: "country_or_region"),
-    16: .same(proto: "floor"),
-    17: .same(proto: "county"),
-    18: .standard(proto: "extra_address_details"),
-    19: .standard(proto: "social_security_number"),
-    20: .standard(proto: "passport_number"),
-    21: .standard(proto: "license_number"),
-    22: .same(proto: "website"),
-    23: .standard(proto: "x_handle"),
-    24: .standard(proto: "second_phone_number"),
-    25: .same(proto: "linkedin"),
-    26: .same(proto: "reddit"),
-    27: .same(proto: "facebook"),
-    28: .same(proto: "yahoo"),
-    29: .same(proto: "instagram"),
-    30: .standard(proto: "extra_contact_details"),
-    31: .same(proto: "company"),
-    32: .standard(proto: "job_title"),
-    33: .standard(proto: "personal_website"),
-    34: .standard(proto: "work_phone_number"),
-    35: .standard(proto: "work_email"),
-    36: .standard(proto: "extra_work_details"),
-    37: .standard(proto: "extra_sections"),
-  ]
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}full_name\0\u{1}email\0\u{3}phone_number\0\u{3}first_name\0\u{3}middle_name\0\u{3}last_name\0\u{1}birthdate\0\u{1}gender\0\u{3}extra_personal_details\0\u{1}organization\0\u{3}street_address\0\u{3}zip_or_postal_code\0\u{1}city\0\u{3}state_or_province\0\u{3}country_or_region\0\u{1}floor\0\u{1}county\0\u{3}extra_address_details\0\u{3}social_security_number\0\u{3}passport_number\0\u{3}license_number\0\u{1}website\0\u{3}x_handle\0\u{3}second_phone_number\0\u{1}linkedin\0\u{1}reddit\0\u{1}facebook\0\u{1}yahoo\0\u{1}instagram\0\u{3}extra_contact_details\0\u{1}company\0\u{3}job_title\0\u{3}personal_website\0\u{3}work_phone_number\0\u{3}work_email\0\u{3}extra_work_details\0\u{3}extra_sections\0")
 
   fileprivate class _StorageClass {
     var _fullName: String = String()
@@ -1411,15 +1314,11 @@ extension ProtonPassItemV1_ItemIdentity: SwiftProtobuf.Message, SwiftProtobuf._M
     var _extraWorkDetails: [ProtonPassItemV1_ExtraField] = []
     var _extraSections: [ProtonPassItemV1_CustomSection] = []
 
-    #if swift(>=5.10)
       // This property is used as the initial default value for new instances of the type.
       // The type itself is protecting the reference to its storage via CoW semantics.
       // This will force a copy to be made of this reference when the first mutation occurs;
       // hence, it is safe to mark this as `nonisolated(unsafe)`.
       static nonisolated(unsafe) let defaultInstance = _StorageClass()
-    #else
-      static let defaultInstance = _StorageClass()
-    #endif
 
     private init() {}
 
@@ -1692,11 +1591,7 @@ extension ProtonPassItemV1_ItemIdentity: SwiftProtobuf.Message, SwiftProtobuf._M
 
 extension ProtonPassItemV1_AllowedAndroidApp: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".AllowedAndroidApp"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .standard(proto: "package_name"),
-    2: .same(proto: "hashes"),
-    3: .standard(proto: "app_name"),
-  ]
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}package_name\0\u{1}hashes\0\u{3}app_name\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -1736,9 +1631,7 @@ extension ProtonPassItemV1_AllowedAndroidApp: SwiftProtobuf.Message, SwiftProtob
 
 extension ProtonPassItemV1_AndroidSpecific: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".AndroidSpecific"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .standard(proto: "allowed_apps"),
-  ]
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}allowed_apps\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -1768,9 +1661,7 @@ extension ProtonPassItemV1_AndroidSpecific: SwiftProtobuf.Message, SwiftProtobuf
 
 extension ProtonPassItemV1_PlatformSpecific: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".PlatformSpecific"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "android"),
-  ]
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}android\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -1804,9 +1695,7 @@ extension ProtonPassItemV1_PlatformSpecific: SwiftProtobuf.Message, SwiftProtobu
 
 extension ProtonPassItemV1_ExtraTotp: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ExtraTotp"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .standard(proto: "totp_uri"),
-  ]
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}totp_uri\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -1836,9 +1725,7 @@ extension ProtonPassItemV1_ExtraTotp: SwiftProtobuf.Message, SwiftProtobuf._Mess
 
 extension ProtonPassItemV1_ExtraTextField: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ExtraTextField"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "content"),
-  ]
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}content\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -1868,9 +1755,7 @@ extension ProtonPassItemV1_ExtraTextField: SwiftProtobuf.Message, SwiftProtobuf.
 
 extension ProtonPassItemV1_ExtraHiddenField: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ExtraHiddenField"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "content"),
-  ]
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}content\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -1900,9 +1785,7 @@ extension ProtonPassItemV1_ExtraHiddenField: SwiftProtobuf.Message, SwiftProtobu
 
 extension ProtonPassItemV1_ExtraTimestampField: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ExtraTimestampField"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "timestamp"),
-  ]
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}timestamp\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -1936,13 +1819,7 @@ extension ProtonPassItemV1_ExtraTimestampField: SwiftProtobuf.Message, SwiftProt
 
 extension ProtonPassItemV1_ExtraField: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ExtraField"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .standard(proto: "field_name"),
-    2: .same(proto: "totp"),
-    3: .same(proto: "text"),
-    4: .same(proto: "hidden"),
-    5: .same(proto: "timestamp"),
-  ]
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}field_name\0\u{1}totp\0\u{1}text\0\u{1}hidden\0\u{1}timestamp\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -2048,11 +1925,7 @@ extension ProtonPassItemV1_ExtraField: SwiftProtobuf.Message, SwiftProtobuf._Mes
 
 extension ProtonPassItemV1_Metadata: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".Metadata"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "name"),
-    2: .same(proto: "note"),
-    3: .standard(proto: "item_uuid"),
-  ]
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}name\0\u{1}note\0\u{3}item_uuid\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -2092,16 +1965,7 @@ extension ProtonPassItemV1_Metadata: SwiftProtobuf.Message, SwiftProtobuf._Messa
 
 extension ProtonPassItemV1_Content: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".Content"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    2: .same(proto: "note"),
-    3: .same(proto: "login"),
-    4: .same(proto: "alias"),
-    5: .standard(proto: "credit_card"),
-    6: .same(proto: "identity"),
-    7: .standard(proto: "ssh_key"),
-    8: .same(proto: "wifi"),
-    9: .same(proto: "custom"),
-  ]
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{2}\u{2}note\0\u{1}login\0\u{1}alias\0\u{3}credit_card\0\u{1}identity\0\u{3}ssh_key\0\u{1}wifi\0\u{1}custom\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -2270,12 +2134,7 @@ extension ProtonPassItemV1_Content: SwiftProtobuf.Message, SwiftProtobuf._Messag
 
 extension ProtonPassItemV1_Item: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".Item"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "metadata"),
-    2: .same(proto: "content"),
-    3: .standard(proto: "platform_specific"),
-    4: .standard(proto: "extra_fields"),
-  ]
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}metadata\0\u{1}content\0\u{3}platform_specific\0\u{3}extra_fields\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
