@@ -37,6 +37,7 @@ public struct UserEvents: Sendable, Decodable {
     public var dataUpdated: Bool {
         !itemsUpdated.isEmpty ||
             !itemsDeleted.isEmpty ||
+            !aliasNoteChanged.isEmpty ||
             !sharesUpdated.isEmpty ||
             !sharesDeleted.isEmpty
     }
