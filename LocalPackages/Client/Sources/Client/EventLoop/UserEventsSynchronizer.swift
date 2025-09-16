@@ -58,6 +58,7 @@ public actor UserEventsSynchronizer: UserEventsSynchronizerProtocol {
     private let shareRepository: any ShareRepositoryProtocol
     private let accessRepository: any AccessRepositoryProtocol
     private let inviteRepository: any InviteRepositoryProtocol
+    private let simpleLoginNoteSynchronizer: any SimpleLoginNoteSynchronizerProtocol
     private let logger: Logger
 
     public init(localUserEventIdDatasource: any LocalUserEventIdDatasourceProtocol,
@@ -67,6 +68,7 @@ public actor UserEventsSynchronizer: UserEventsSynchronizerProtocol {
                 shareRepository: any ShareRepositoryProtocol,
                 accessRepository: any AccessRepositoryProtocol,
                 inviteRepository: any InviteRepositoryProtocol,
+                simpleLoginNoteSynchronizer: any SimpleLoginNoteSynchronizerProtocol,
                 logManager: any LogManagerProtocol) {
         self.localUserEventIdDatasource = localUserEventIdDatasource
         self.remoteUserEventsDatasource = remoteUserEventsDatasource
@@ -75,6 +77,7 @@ public actor UserEventsSynchronizer: UserEventsSynchronizerProtocol {
         self.shareRepository = shareRepository
         self.accessRepository = accessRepository
         self.inviteRepository = inviteRepository
+        self.simpleLoginNoteSynchronizer = simpleLoginNoteSynchronizer
         logger = .init(manager: logManager)
     }
 }
@@ -218,6 +221,7 @@ private extension UserEventsSynchronizer {
         }
         logger.trace("Unsyncing SL note for \(aliasNoteChangedItems.count) items for user \(userId)")
         try await localItemDatasource.unsyncSimpleLoginNotes(items: aliasNoteChangedItems)
+        _ = try await simpleLoginNoteSynchronizer.sync(userId: userId)
     }
 
     func processUpdatedShares(_ updatedShares: [UserEventShare], userId: String) async throws {
