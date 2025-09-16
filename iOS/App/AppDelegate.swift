@@ -47,7 +47,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         setUpDefaultValuesForSettingsBundle()
         setCoreLoggerEnvironment()
         configureTipKit()
-        FeatureFlagsRepository.shared.setFlagOverride(CoreFeatureFlagType.dynamicPlan, true)
+        FeatureFlagsRepository.shared.setFlagOverride(CoreFeatureFlagType.externalSSO, true)
         return true
     }
 
