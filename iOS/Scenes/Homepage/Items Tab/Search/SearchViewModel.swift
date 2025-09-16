@@ -233,7 +233,7 @@ private extension SearchViewModel {
             let current = try await parse(results: results)
 
             var all: SearchDataDisplay?
-            if await searchMode.isSpecificSelection {
+            if searchMode.isSpecificSelection {
                 all = try await parse(results: allResults)
             }
 

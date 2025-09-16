@@ -22,7 +22,7 @@ import Core
 import Entities
 import Macro
 @preconcurrency import ProtonCoreUIFoundations
-import SwiftUICore
+import SwiftUI
 import UIKit
 
 public protocol BannerDisplayProtocol: Sendable {

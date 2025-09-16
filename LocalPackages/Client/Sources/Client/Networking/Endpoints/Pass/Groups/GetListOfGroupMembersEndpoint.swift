@@ -30,7 +30,7 @@ struct GetListOfGroupMembersResponse: Decodable, Sendable {
 
 struct GetListOfGroupMembersEndpoint: Endpoint {
     typealias Body = EmptyRequest
-    typealias Response = GetListOfGroupsResponse
+    typealias Response = GetListOfGroupMembersResponse
 
     let debugDescription: String
     let path: String

@@ -22,7 +22,7 @@ import Core
 import Entities
 import Foundation
 import Macro
-import SwiftUICore
+import SwiftUI
 
 private struct DefaultField {
     let title: String

@@ -31,7 +31,7 @@ public struct Group: Decodable, Sendable, Equatable, Hashable, Identifiable {
     private let ID: String
     public let permissions: GroupPermissions
     public let name: String
-    public let address: [String?]
+    public let address: [GroupAddress?]
     public let createTime: Int
     public let flags: Int
     public let description: String?
@@ -44,7 +44,7 @@ public struct Group: Decodable, Sendable, Equatable, Hashable, Identifiable {
     public init(ID: String,
                 permissions: GroupPermissions,
                 name: String,
-                address: [String?],
+                address: [GroupAddress?],
                 createTime: Int,
                 flags: Int,
                 description: String?) {
@@ -56,4 +56,8 @@ public struct Group: Decodable, Sendable, Equatable, Hashable, Identifiable {
         self.flags = flags
         self.description = description
     }
+}
+
+public struct GroupAddress: Decodable, Sendable, Equatable, Hashable {
+    public let email: String
 }
