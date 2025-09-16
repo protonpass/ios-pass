@@ -25,8 +25,6 @@ let package = Package(name: "Entities",
                                    targets: ["EntitiesMocks"])
                       ],
                       dependencies: [
-                          // Dependencies declare other packages that this package depends on.
-                          // .package(url: /* package url */, from: "1.0.0"),
                         .package(url: "https://github.com/apple/swift-protobuf.git", from: "1.31.1")
                       ],
                       targets: [
