@@ -394,7 +394,7 @@ private struct CredentialsKey: Hashable, Codable {
     let module: PassModule
 }
 
-extension Credential: Codable, @retroactive Hashable {
+extension Credential: @retroactive Codable, @retroactive Hashable {
     private enum CodingKeys: String, CodingKey {
         case UID
         case accessToken

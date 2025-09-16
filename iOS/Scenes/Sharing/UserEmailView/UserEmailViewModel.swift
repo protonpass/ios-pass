@@ -56,7 +56,7 @@ final class UserEmailViewModel: ObservableObject {
     @Published private(set) var isFetchingMore = false
 
     private var cancellables = Set<AnyCancellable>()
-    private let shareInviteRepository = resolve(\SharedRepositoryContainer.shareInviteRepository)
+    private let inviteRepository = resolve(\SharedRepositoryContainer.inviteRepository)
     private let checkAddressesForInvite = resolve(\UseCasesContainer.checkAddressesForInvite)
     private let shareInviteService = resolve(\ServiceContainer.shareInviteService)
     private let setShareInvitesUserEmailsAndKeys = resolve(\UseCasesContainer.setShareInvitesUserEmailsAndKeys)
@@ -172,7 +172,7 @@ final class UserEmailViewModel: ObservableObject {
                     .planRecommendedEmailsNextToken,
                     pageSize: Constants.Utils.defaultPageSize,
                     email: email)
-                let recommendations = try await shareInviteRepository
+                let recommendations = try await inviteRepository
                     .getInviteRecommendations(shareId: shareId, query: query)
                 canFetchMoreEmails = recommendations.planRecommendedEmailsNextToken != nil
                 if let currentRecommendations, !removingCurrentRecommendations {
