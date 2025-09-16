@@ -45,9 +45,6 @@ public extension LocalInviteKeyDatasource {
     }
 
     func upsertKeys(userId: String, inviteToken: String, keys: [InviteKey]) async throws {
-        // Remove before upserting because keys could be rotated so if we don't remove before
-        // we could end up having legacy/removed keys associated to an inviteToken
-        try await removeKeys(userId: userId, inviteToken: inviteToken)
         try await upsert(keys,
                          entityType: InviteKeyEntity.self,
                          fetchPredicate: predicate(userId: userId, inviteToken: inviteToken),
