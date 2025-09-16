@@ -86,7 +86,9 @@ struct LocalInviteKeyDatasourceTests {
         let keys2 = try await sut.getKeys(userId: userId, inviteToken: inviteToken)
 
         // Then
-        #expect(keys2.count == 2)
+        #expect(keys2.count == 4)
+        #expect(keys2.contains(key1))
+        #expect(keys2.contains(key2))
         #expect(keys2.contains(key3))
         #expect(keys2.contains(key4))
     }

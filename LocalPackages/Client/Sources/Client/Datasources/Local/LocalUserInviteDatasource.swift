@@ -79,6 +79,9 @@ public extension LocalUserInviteDatasource {
                              entity.hydrate(userID: userId, invite: invite)
                          })
         for invite in invites {
+            // Remove before upserting to make sure no old keys related to old invite is left
+            try await inviteKeyDatasource.removeKeys(userId: userId,
+                                                     inviteToken: invite.inviteToken)
             try await inviteKeyDatasource.upsertKeys(userId: userId,
                                                      inviteToken: invite.inviteToken,
                                                      keys: invite.keys)
