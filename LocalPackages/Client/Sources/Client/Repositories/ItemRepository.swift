@@ -167,6 +167,18 @@ public extension ItemRepositoryProtocol {
     func refreshItems(userId: String, shareId: String) async throws {
         try await refreshItems(userId: userId, shareId: shareId, eventStream: nil)
     }
+
+    func updateCachedAliasInfo(userId: String,
+                               item: any ItemIdentifiable,
+                               alias: Alias) async throws {
+        guard let encryptedItem = try await getItem(shareId: item.shareId,
+                                                    itemId: item.itemId) else {
+            throw PassError.itemNotFound(item)
+        }
+        try await updateCachedAliasInfo(userId: userId,
+                                        items: [encryptedItem],
+                                        aliases: [alias])
+    }
 }
 
 // swiftlint: disable discouraged_optional_self file_length
