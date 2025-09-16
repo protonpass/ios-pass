@@ -6257,7 +6257,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld 전달됨"
+                  "value" : "%lld개 전달됨"
                 }
               }
             }
@@ -6861,7 +6861,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld 전달"
+                  "value" : "%lld개 전달"
                 }
               }
             }
@@ -13830,7 +13830,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld 답장"
+                  "value" : "%lld개 답장"
                 }
               }
             }
@@ -17363,7 +17363,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Токен 2ФА (TOTP)"
+            "value" : "Токен 2FA (TOTP)"
           }
         },
         "sk" : {
@@ -18726,7 +18726,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Номер счета"
+            "value" : "Номер счёта"
           }
         },
         "sk" : {
@@ -18917,7 +18917,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Тип счета"
+            "value" : "Тип счёта"
           }
         },
         "sk" : {
@@ -19701,7 +19701,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Добавить секрет 2ФА"
+            "value" : "Добавить секрет 2FA"
           }
         },
         "sk" : {
@@ -26633,7 +26633,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Адрес псевдонима (отключен)"
+            "value" : "Адрес псевдонима (отключён)"
           }
         },
         "sk" : {
@@ -28006,7 +28006,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Псевдоним отключен"
+            "value" : "Псевдоним отключён"
           }
         },
         "sk" : {
@@ -28202,7 +28202,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Псевдоним включен"
+            "value" : "Псевдоним включён"
           }
         },
         "sk" : {
@@ -29182,7 +29182,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Псевдоним обновлен"
+            "value" : "Псевдоним обновлён"
           }
         },
         "sk" : {
@@ -32076,7 +32076,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "검색에 항목이 나타나도록 허용하세요."
+            "value" : "검색에 항목이 나타나도록 허용합니다"
           }
         },
         "nb" : {
@@ -33076,7 +33076,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sigur doriți să adăugați o cheie de A2F la „%@”?"
+            "value" : "Adăugați o cheie de A2F la „%@”?"
           }
         },
         "ru" : {
@@ -33272,7 +33272,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sigur doriți să ștergeți următoarea secțiune „%@”?"
+            "value" : "Ștergeți următoarea secțiune „%@”?"
           }
         },
         "ru" : {
@@ -33469,7 +33469,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sigur doriți să vă deconectați din %@?"
+            "value" : "Vă deconectați din %@?"
           }
         },
         "ru" : {
@@ -35390,7 +35390,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proton Pass 자동 완성을 활성화 하여 앱과 웹사이트에서 사용"
+            "value" : "Proton Pass 자동완성을 활성화하여 앱 및 웹사이트에서 자동으로 입력란을 완성할 수 있습니다."
           }
         },
         "nb" : {
@@ -36211,7 +36211,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Банковский счет"
+            "value" : "Банковский счёт"
           }
         },
         "sk" : {
@@ -50314,7 +50314,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Скопировать код безопасности"
+            "value" : "Копировать код безопасности"
           }
         },
         "sk" : {
@@ -50505,7 +50505,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Скопировать SSID"
+            "value" : "Копировать SSID"
           }
         },
         "sk" : {
@@ -50702,7 +50702,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Скопировать имя пользователя"
+            "value" : "Копировать имя пользователя"
           }
         },
         "sk" : {
@@ -55713,6 +55713,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aktuális tároló"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brankas saat ini"
           }
         },
         "it" : {
@@ -64424,7 +64430,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "동기화를 위해 모든 항목을 다운로드 하세요."
+            "value" : "동기화를 위해 모든 항목을 다운로드합니다"
           }
         },
         "nb" : {
@@ -80262,7 +80268,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "보안 비밀번호 생성"
+            "value" : "안전한 비밀번호 생성하기"
           }
         },
         "nb" : {
@@ -81237,7 +81243,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "비밀번호가 생성됨"
+            "value" : "생성된 비밀번호"
           }
         },
         "nb" : {
@@ -83735,6 +83741,12 @@
             "value" : "Las bóvedas ocultas no serán visibles durante la búsqueda y el completado automático."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Piilotetut holvit eivät näy haun ja automaattitäytön aikana."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -83750,7 +83762,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Brankas tersembunyi tidak akan terlihat selama cari dan pengisian otomatis."
+            "value" : "Brankas tersembunyi tidak akan terlihat pada saat melangsungkan pencarian dan pengisian otomatis."
           }
         },
         "it" : {
@@ -83811,6 +83823,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Skryté trezory nebudú viditeľné počas vyhľadávania a automatického dopĺňania."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dolda valv kommer inte vara synliga under sökning och automatisk ifyllning"
           }
         },
         "tr" : {
@@ -88921,7 +88939,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Importa des de Chrome"
+            "value" : "Importa des del Chrome"
           }
         },
         "cs" : {
@@ -89308,7 +89326,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Importa a Proton Pass"
+            "value" : "Importa al Proton Pass"
           }
         },
         "cs" : {
@@ -121323,6 +121341,12 @@
             "value" : "Organizar bóvedas"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Järjestä holvit"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -121338,7 +121362,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Atur brankas"
+            "value" : "Organisir brankas"
           }
         },
         "it" : {
@@ -132540,7 +132564,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Premium domena"
+            "value" : "Premijska domena"
           }
         },
         "sv" : {
@@ -138079,7 +138103,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "이전 다운로드에서 캐싱된 첨부파일 삭제"
+            "value" : "이전 다운로드에서 캐싱된 첨부파일을 삭제합니다"
           }
         },
         "nb" : {
@@ -146851,7 +146875,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cerqueu en tots els elements"
+            "value" : "Cerca en tots els elements"
           }
         },
         "cs" : {
@@ -146896,6 +146920,12 @@
             "value" : "Buscar en todos los elementos"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Etsi kaikista kohteista"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -146906,6 +146936,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Keresés minden elemben"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cari pada seluruh item"
           }
         },
         "it" : {
@@ -162994,7 +163030,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alguns dipòsits ja no són accessibles a causa d'un restabliment de contrasenya. Reactiveu les claus del vostre compte per recuperar l'accés."
+            "value" : "Algunes caixes fortes ja no són accessibles a causa d'un restabliment de contrasenya. Reactiveu les claus del compte per a recuperar l'accés."
           }
         },
         "cs" : {
@@ -163060,7 +163096,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Beberapa brankas tidak lagi dapat diakses karena kata sandi diatur ulang. Aktifkan kembali kunci akun Anda agar dapat mengakses kembali."
+            "value" : "Beberapa brankas tidak lagi dapat diakses karena kata pengaturan ulang kata sandi. Aktifkan kembali kunci akun Anda untuk dapat kembali mengakses brankas ini."
           }
         },
         "it" : {
@@ -193143,7 +193179,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Detalls de la Wi-Fi, SSH, elements personalitzats i més"
+            "value" : "Detalls WiFi, SSH, elements personalitzats i més"
           }
         },
         "cs" : {
@@ -193188,6 +193224,12 @@
             "value" : "Detalles de Wi-Fi, SSH, elementos personalizados y más"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wi-Fi-tiedot, SSH, mukautetut kohteet ja muuta"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -193198,6 +193240,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wi-Fi részletek, SSH, egyéni elemek és továbbiak"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rincian WiFi, SSH, item khusus, dan lainnya"
           }
         },
         "it" : {
@@ -199204,7 +199252,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "현재 안전한 링크를 소유하고 있지 않습니다."
+            "value" : "등록된 안전한 링크가 없습니다"
           }
         },
         "nb" : {

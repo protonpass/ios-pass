@@ -2420,13 +2420,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld inici de sessió importat"
+                  "value" : "S'ha importat l'inici de sessió %lld"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld inicis de sessió importats"
+                  "value" : "S'han importat els inicis de sessió %lld"
                 }
               }
             }
@@ -3559,7 +3559,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "加入帳號"
+            "value" : "新增帳戶"
           }
         }
       }
@@ -3755,7 +3755,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "加入網域"
+            "value" : "新增網域"
           }
         }
       }
@@ -5749,7 +5749,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "所有帳號 (%lld)"
+                  "value" : "所有帳戶 (%lld)"
                 }
               }
             }
@@ -6587,6 +6587,12 @@
             "value" : "Completado automático de clave de acceso"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pääsyavaimen automaattitäyttö"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6650,7 +6656,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preenchimento automático de Chave de acesso"
+            "value" : "Preenchimento automático de chave de acesso"
           }
         },
         "ro" : {
@@ -8991,7 +8997,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "創建帳號"
+            "value" : "建立帳戶"
           }
         }
       }
@@ -9567,7 +9573,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "建立您的第一個登入"
+            "value" : "建立您的首個登入項目"
           }
         }
       }
@@ -14356,7 +14362,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Free"
+            "value" : "免費"
           }
         }
       }
@@ -14456,7 +14462,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "비밀번호가 생성됨"
+            "value" : "생성된 비밀번호"
           }
         },
         "nb" : {
@@ -15234,7 +15240,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Obtenha o Proton Unlimited"
+            "value" : "Obter o Proton Unlimited"
           }
         },
         "ro" : {
@@ -16257,7 +16263,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Com omplir automàticament els camps amb una contrasenya?"
+            "value" : "Com emplenar automàticament els camps amb una contrasenya?"
           }
         },
         "cs" : {
@@ -16302,6 +16308,12 @@
             "value" : "Cómo usar el completado automático de campos con una contraseña"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kuinka täyttää kentät automaattisesti salasanalla"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16317,7 +16329,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cara mengisi otomatis kolom dengan Kata Sandi"
+            "value" : "Cara mengisi kolom secara otomatis dengan Kata Sandi"
           }
         },
         "it" : {
@@ -16620,7 +16632,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Importa des de Chrome"
+            "value" : "Importa des del Chrome"
           }
         },
         "cs" : {
@@ -17008,7 +17020,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ha finalitzat la importació."
+            "value" : "S'ha importat correctament"
           }
         },
         "cs" : {
@@ -18216,7 +18228,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "NOVITA'"
+            "value" : "NOVITÀ"
           }
         },
         "ja" : {
@@ -18563,6 +18575,12 @@
             "value" : "No se encontraron inicios de sesión con Passkeys"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passkey-kirjautumistietoja ei löytynyt"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18578,7 +18596,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tidak ada Passkeys untuk masuk yang ditemukan"
+            "value" : "Tidak ada entri masuk dengan Passkey yang ditemukan"
           }
         },
         "it" : {
@@ -25324,7 +25342,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Compartilhe endereços alternativos com outros adicionando sua caixa de entrada como uma caixa de correio adicional."
+            "value" : "Compartilhe aliases com outros adicionando sua caixa de entrada como uma caixa de correio adicional."
           }
         },
         "ro" : {
@@ -31075,7 +31093,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Use endereços alternativos Hide-My-Email contra ameaças de phishing."
+            "value" : "Use aliases hide-my-email contra ameaças de phishing."
           }
         },
         "ro" : {
@@ -33319,7 +33337,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "더 나은 조직을 위해 항목에 파일 첨부가 가능합니다."
+            "value" : "더 나은 구성을 위해 항목에 파일을 첨부할 수 있어요."
           }
         },
         "nb" : {
