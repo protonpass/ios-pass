@@ -62,17 +62,7 @@ public extension LocalUserInviteDatasource {
         for invite in partialInvites {
             let keys = try await inviteKeyDatasource.getKeys(userId: userId,
                                                              inviteToken: invite.inviteToken)
-            fullInvites.append(.init(inviteToken: invite.inviteToken,
-                                     remindersSent: invite.remindersSent,
-                                     targetType: invite.targetType,
-                                     targetID: invite.targetID,
-                                     inviterEmail: invite.inviterEmail,
-                                     invitedEmail: invite.invitedEmail,
-                                     invitedAddressID: invite.invitedAddressID,
-                                     keys: keys,
-                                     vaultData: invite.vaultData,
-                                     fromNewUser: invite.fromNewUser,
-                                     createTime: invite.createTime))
+            fullInvites.append(invite.copy(keys: keys))
         }
         assert(partialInvites.count == fullInvites.count, "Not fully got all invites")
         return fullInvites
