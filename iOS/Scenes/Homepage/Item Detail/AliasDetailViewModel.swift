@@ -117,16 +117,11 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
                 aliasInfos = alias
                 aliasEnabled = itemContent.item.isAliasEnabled
 
-                if let encryptedItem = try await itemRepository.getItem(shareId: shareId,
-                                                                        itemId: itemId) {
-                    let userId = try await userManager.getActiveUserId()
-                    try await itemRepository.updateCachedAliasInfo(userId: userId,
-                                                                   items: [encryptedItem],
-                                                                   aliases: [alias])
-                    logger.trace("Updated cached alias info for \(itemContent.debugDescription)")
-                }
-
-                logger.info("Get alias detail successfully \(itemContent.debugDescription)")
+                let userId = try await userManager.getActiveUserId()
+                try await itemRepository.updateCachedAliasInfo(userId: userId,
+                                                               item: itemContent,
+                                                               alias: alias)
+                logger.info("Got and cached alias detail \(itemContent.debugDescription)")
             } catch {
                 logger.error(error)
                 self.error = error
