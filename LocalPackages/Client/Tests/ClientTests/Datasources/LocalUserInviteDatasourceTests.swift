@@ -28,10 +28,7 @@ struct LocalUserInviteDatasourceTests {
     let sut: any LocalUserInviteDatasourceProtocol
 
     init() {
-        let databaseService = DatabaseService(inMemory: true)
-        let inviteKeyDatasource = LocalInviteKeyDatasource(databaseService: databaseService)
-        sut = LocalUserInviteDatasource(inviteKeyDatasource: inviteKeyDatasource,
-                                        databaseService: databaseService)
+        sut = LocalUserInviteDatasource(databaseService: DatabaseService(inMemory: true))
     }
 
     @Test("Insert and get user invites")
