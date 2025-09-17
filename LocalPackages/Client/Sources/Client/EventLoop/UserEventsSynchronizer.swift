@@ -26,6 +26,9 @@ public struct UserEventsSyncResult: Sendable, Equatable {
     /// Items or shares were updated, a UI refresh is needed to reflect updated data
     public let dataUpdated: Bool
 
+    /// Invites were updated, go update the invite banner
+    public let invitesChanged: Bool
+
     /// User's plan has changed (e.g free -> paid), go fetch the updated plan
     public let planChanged: Bool
 
@@ -33,9 +36,11 @@ public struct UserEventsSyncResult: Sendable, Equatable {
     public let fullRefreshNeeded: Bool
 
     public init(dataUpdated: Bool,
+                invitesChanged: Bool,
                 planChanged: Bool,
                 fullRefreshNeeded: Bool) {
         self.dataUpdated = dataUpdated
+        self.invitesChanged = invitesChanged
         self.planChanged = planChanged
         self.fullRefreshNeeded = fullRefreshNeeded
     }
@@ -51,6 +56,7 @@ public actor UserEventsSynchronizer: UserEventsSynchronizerProtocol {
     private let itemRepository: any ItemRepositoryProtocol
     private let shareRepository: any ShareRepositoryProtocol
     private let accessRepository: any AccessRepositoryProtocol
+    private let inviteRepository: any InviteRepositoryProtocol
     private let logger: Logger
 
     public init(localUserEventIdDatasource: any LocalUserEventIdDatasourceProtocol,
@@ -58,12 +64,14 @@ public actor UserEventsSynchronizer: UserEventsSynchronizerProtocol {
                 itemRepository: any ItemRepositoryProtocol,
                 shareRepository: any ShareRepositoryProtocol,
                 accessRepository: any AccessRepositoryProtocol,
+                inviteRepository: any InviteRepositoryProtocol,
                 logManager: any LogManagerProtocol) {
         self.localUserEventIdDatasource = localUserEventIdDatasource
         self.remoteUserEventsDatasource = remoteUserEventsDatasource
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
         self.accessRepository = accessRepository
+        self.inviteRepository = inviteRepository
         logger = .init(manager: logManager)
     }
 }
@@ -73,27 +81,35 @@ public extension UserEventsSynchronizer {
         logger.trace("Syncing user events for user \(userId)")
         guard let lastEventId = try await localUserEventIdDatasource.getLastEventId(userId: userId) else {
             logger.warning("No local user event ID for user \(userId). Force full refresh.")
-            return .init(dataUpdated: false, planChanged: false, fullRefreshNeeded: true)
+            return .init(dataUpdated: false,
+                         invitesChanged: false,
+                         planChanged: false,
+                         fullRefreshNeeded: true)
         }
         var dataUpdated = false
+        var invitesChanged = false
         var planChanged = false
         var fullRefreshNeeded = false
         try await recursivelySync(userId: userId,
                                   lastEventId: lastEventId,
                                   dataUpdated: &dataUpdated,
+                                  invitesChanged: &invitesChanged,
                                   planChanged: &planChanged,
                                   fullRefreshNeeded: &fullRefreshNeeded)
         logger.info("Finished syncing with user events for user \(userId)")
         return .init(dataUpdated: dataUpdated,
+                     invitesChanged: invitesChanged,
                      planChanged: planChanged,
                      fullRefreshNeeded: fullRefreshNeeded)
     }
 }
 
 private extension UserEventsSynchronizer {
+    // swiftlint:disable:next function_parameter_count
     func recursivelySync(userId: String,
                          lastEventId: String,
                          dataUpdated: inout Bool,
+                         invitesChanged: inout Bool,
                          planChanged: inout Bool,
                          fullRefreshNeeded: inout Bool) async throws {
         logger.trace("Getting user events for user \(userId)")
@@ -104,6 +120,7 @@ private extension UserEventsSynchronizer {
         logger.trace("Processed events for user \(userId)")
 
         dataUpdated = dataUpdated || events.dataUpdated
+        invitesChanged = invitesChanged || events.invitesChanged != nil
         planChanged = planChanged || events.planChanged
         fullRefreshNeeded = fullRefreshNeeded || events.fullRefresh
 
@@ -116,6 +133,7 @@ private extension UserEventsSynchronizer {
             return try await recursivelySync(userId: userId,
                                              lastEventId: events.lastEventID,
                                              dataUpdated: &dataUpdated,
+                                             invitesChanged: &invitesChanged,
                                              planChanged: &planChanged,
                                              fullRefreshNeeded: &fullRefreshNeeded)
         }
@@ -143,6 +161,12 @@ private extension UserEventsSynchronizer {
                 try await processDeletedShares(events.sharesDeleted, userId: userId)
             }
 
+            taskGroup.addTask { [weak self] in
+                guard let self else { return }
+                try await processInviteChanges(inviteChanges: events.invitesChanged,
+                                               userId: userId)
+            }
+
             try await taskGroup.waitForAll()
         }
     }
@@ -153,7 +177,8 @@ private extension UserEventsSynchronizer {
             return
         }
         logger.trace("Refreshing \(updatedItems.count) updated items for user \(userId)")
-        try await withThrowingTaskGroup(of: Void.self) { taskGroup in
+        try await withThrowingTaskGroup(of: Void.self) { [weak self] taskGroup in
+            guard let self else { return }
             for updatedItem in updatedItems {
                 taskGroup.addTask { [weak self] in
                     guard let self else { return }
@@ -183,7 +208,8 @@ private extension UserEventsSynchronizer {
             return
         }
         logger.trace("Refreshing \(updatedShares.count) shares for user \(userId)")
-        try await withThrowingTaskGroup(of: Void.self) { taskGroup in
+        try await withThrowingTaskGroup(of: Void.self) { [weak self] taskGroup in
+            guard let self else { return }
             for updatedShare in updatedShares {
                 taskGroup.addTask { [weak self] in
                     guard let self else { return }
@@ -203,7 +229,8 @@ private extension UserEventsSynchronizer {
             return
         }
         logger.trace("Deleting \(deletedShares.count) shares for user \(userId)")
-        try await withThrowingTaskGroup(of: Void.self) { taskGroup in
+        try await withThrowingTaskGroup(of: Void.self) { [weak self] taskGroup in
+            guard let self else { return }
             for deletedShare in deletedShares {
                 taskGroup.addTask { [weak self] in
                     guard let self else { return }
@@ -215,5 +242,14 @@ private extension UserEventsSynchronizer {
 
             try await taskGroup.waitForAll()
         }
+    }
+
+    func processInviteChanges(inviteChanges: UserEventInviteChange?,
+                              userId: String) async throws {
+        guard inviteChanges != nil else {
+            logger.trace("No invite changes for user \(userId)")
+            return
+        }
+        try await inviteRepository.refreshInvites(userId: userId)
     }
 }

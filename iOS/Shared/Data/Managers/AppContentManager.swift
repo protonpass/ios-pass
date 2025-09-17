@@ -66,6 +66,8 @@ final class AppContentManager: ObservableObject, @unchecked Sendable, DeinitPrin
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
     @LazyInjected(\SharedToolingContainer.preferencesManager) private var preferencesManager
+    @LazyInjected(\SharedRepositoryContainer.inviteRepository)
+    private var inviteRepository
 
     private let queue = DispatchQueue(label: "me.proton.pass.vaultsManager")
     private var safeIsRefreshing = false
@@ -89,6 +91,8 @@ final class AppContentManager: ObservableObject, @unchecked Sendable, DeinitPrin
 
     @LazyInjected(\SharedUseCasesContainer.getLastEventIdIfNotExist)
     private var getLastEventIdIfNotExist
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private var getFeatureFlagStatus
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -218,9 +222,14 @@ extension AppContentManager {
                 }
             }
 
+            // 4. Refresh invites
+            if getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1) {
+                try await inviteRepository.refreshInvites(userId: userId)
+            }
+
             try await loadContents(userId: userId, for: remoteShares.shares)
 
-            // 4. Get the lastEventID as a starting point for user events sync loop
+            // 5. Get the lastEventID as a starting point for user events sync loop
             try await getLastEventIdIfNotExist(userId: userId)
         } catch {
             vaultSyncEventStream.send(.error(userId: userId, error: error))
@@ -540,6 +549,10 @@ private extension AppContentManager {
             }
         } else {
             vaultSelection = .all
+        }
+
+        if getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1) {
+            try await inviteRepository.loadLocalInvites(userId: userId)
         }
 
         indexContent(userPreferences: userPreferences)

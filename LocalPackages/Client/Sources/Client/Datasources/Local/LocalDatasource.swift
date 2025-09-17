@@ -164,6 +164,84 @@ public extension LocalDatasource {
             }
         }
     }
+
+    func upsertWithRelationships<Item, Entity>(_ items: [Item],
+                                               entityType: Entity.Type,
+                                               fetchPredicate: NSPredicate,
+                                               isEqual: @escaping (Item, Entity) -> Bool,
+                                               hydrate: @escaping (Item, Entity, NSManagedObjectContext) throws
+                                                   -> Void) async throws
+        where Entity: NSManagedObject {
+        guard !items.isEmpty else {
+            return
+        }
+
+        let context = newTaskContext(type: .insert)
+
+        // Fetch existing entities and create a mapping of items to object IDs
+        let fetchRequest = NSFetchRequest<Entity>(entityName: String(describing: Entity.self))
+        fetchRequest.predicate = fetchPredicate
+
+        let (existingEntities, itemToObjectIDMap) = try await context.perform {
+            let entities = try context.fetch(fetchRequest)
+
+            // Create mapping of items to existing entity object IDs
+            var mapping: [(Item, NSManagedObjectID)] = []
+            var itemsToInsert: [Item] = []
+
+            for item in items {
+                if let matchingEntity = entities.first(where: { isEqual(item, $0) }) {
+                    mapping.append((item, matchingEntity.objectID))
+                } else {
+                    itemsToInsert.append(item)
+                }
+            }
+
+            return (entities, (updates: mapping, inserts: itemsToInsert))
+        }
+
+        if existingEntities.isEmpty {
+            // Nothing exists yet => use regular insert for entities with relationships
+            try await insertIndividually(items, entityType: entityType, context: context, hydrate: hydrate)
+        } else {
+            // Handle updates and new inserts using object IDs
+            try await context.perform {
+                // Update existing entities using object IDs
+                for (item, objectID) in itemToObjectIDMap.updates {
+                    if let entity = context.object(with: objectID) as? Entity {
+                        try hydrate(item, entity, context)
+                    }
+                }
+
+                // Insert new entities
+                for item in itemToObjectIDMap.inserts {
+                    let newEntity = Entity(context: context)
+                    try hydrate(item, newEntity, context)
+                }
+
+                if context.hasChanges {
+                    try context.save()
+                }
+            }
+        }
+    }
+
+    private func insertIndividually<Item, Entity>(_ items: [Item],
+                                                  entityType: Entity.Type,
+                                                  context: NSManagedObjectContext,
+                                                  hydrate: @escaping (Item, Entity, NSManagedObjectContext) throws
+                                                      -> Void) async throws where Entity: NSManagedObject {
+        try await context.perform {
+            for item in items {
+                let entity = Entity(context: context)
+                try hydrate(item, entity, context)
+            }
+
+            if context.hasChanges {
+                try context.save()
+            }
+        }
+    }
 }
 
 // MARK: - Covenience core data methods
