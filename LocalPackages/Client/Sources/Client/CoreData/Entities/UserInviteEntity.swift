@@ -82,6 +82,7 @@ extension UserInviteEntity {
         if let vaultData = invite.vaultData {
             let entity = VaultDataEntity(context: context)
             entity.hydrate(with: vaultData)
+            entity.invite = self
             self.vaultData = entity
         }
 
@@ -94,6 +95,7 @@ extension UserInviteEntity {
         for key in invite.keys {
             let entity = InviteKeyEntity(context: context)
             entity.hydrate(with: key)
+            entity.invite = self
             newKeys.insert(entity)
         }
         keys = newKeys
