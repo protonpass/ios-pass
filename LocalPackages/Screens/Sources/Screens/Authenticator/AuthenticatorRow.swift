@@ -22,7 +22,6 @@ import Client
 import Combine
 import DesignSystem
 import Entities
-import FactoryKit
 import Foundation
 import ProtonCoreUIFoundations
 import SwiftUI
