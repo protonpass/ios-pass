@@ -42,44 +42,27 @@ extension UserInviteEntity {
     @NSManaged var remindersSent: Int64
     @NSManaged var targetID: String
     @NSManaged var targetType: Int64
-    @NSManaged var vaultDataContent: String
-    @NSManaged var vaultDataContentFormatVersion: Int64
-    @NSManaged var vaultDataContentKeyRotation: Int64
-    @NSManaged var vaultDataMemberCount: Int64
-    @NSManaged var vaultDataItemCount: Int64
+    @NSManaged var vaultData: VaultDataEntity?
+    @NSManaged var keys: Set<InviteKeyEntity>
 }
 
 extension UserInviteEntity {
-    /// We could only retrieve a part of `UserInvite` because keys are stored in another table
-    var toPartialUserInvite: UserInvite {
-        let vaultData: VaultData? = if !vaultDataContent.isEmpty,
-                                       vaultDataContentFormatVersion != -1,
-                                       vaultDataContentKeyRotation != -1,
-                                       vaultDataMemberCount != -1,
-                                       vaultDataItemCount != -1 {
-            .init(content: vaultDataContent,
-                  contentKeyRotation: Int(vaultDataContentKeyRotation),
-                  contentFormatVersion: Int(vaultDataContentFormatVersion),
-                  memberCount: Int(vaultDataMemberCount),
-                  itemCount: Int(vaultDataItemCount))
-        } else {
-            nil
-        }
-
-        return .init(inviteToken: inviteToken,
-                     remindersSent: Int(remindersSent),
-                     targetType: Int(targetType),
-                     targetID: targetID,
-                     inviterEmail: inviterEmail,
-                     invitedEmail: invitedEmail,
-                     invitedAddressID: invitedAddressID.nilIfEmpty,
-                     keys: [], // stored in InviteKeyEntity
-                     vaultData: vaultData,
-                     fromNewUser: fromNewUser,
-                     createTime: Int(createTime))
+    var toUserInvite: UserInvite {
+        .init(inviteToken: inviteToken,
+              remindersSent: Int(remindersSent),
+              targetType: Int(targetType),
+              targetID: targetID,
+              inviterEmail: inviterEmail,
+              invitedEmail: invitedEmail,
+              invitedAddressID: invitedAddressID.nilIfEmpty,
+              keys: keys.map(\.toInviteKey),
+              vaultData: vaultData?.toVaultData,
+              fromNewUser: fromNewUser,
+              createTime: Int(createTime))
     }
 
-    func hydrate(userID: String, invite: UserInvite) {
+    func hydrate(userID: String, invite: UserInvite, context: NSManagedObjectContext) {
+        let context = managedObjectContext ?? context
         self.userID = userID
         createTime = Int64(invite.createTime)
         fromNewUser = invite.fromNewUser
@@ -91,11 +74,28 @@ extension UserInviteEntity {
         targetID = invite.targetID
         targetType = Int64(invite.targetType)
 
-        let vaultData = invite.vaultData
-        vaultDataContent = vaultData?.content ?? ""
-        vaultDataContentFormatVersion = Int64(vaultData?.contentFormatVersion ?? -1)
-        vaultDataContentKeyRotation = Int64(vaultData?.contentKeyRotation ?? -1)
-        vaultDataMemberCount = Int64(vaultData?.memberCount ?? -1)
-        vaultDataItemCount = Int64(vaultData?.itemCount ?? -1)
+        // Create "vaultData" relationship
+        if let vaultData {
+            context.delete(vaultData)
+        }
+
+        if let vaultData = invite.vaultData {
+            let entity = VaultDataEntity(context: context)
+            entity.hydrate(with: vaultData)
+            self.vaultData = entity
+        }
+
+        // Create "keys" relationship
+        for key in keys {
+            context.delete(key)
+        }
+
+        var newKeys = Set<InviteKeyEntity>()
+        for key in invite.keys {
+            let entity = InviteKeyEntity(context: context)
+            entity.hydrate(with: key)
+            newKeys.insert(entity)
+        }
+        keys = newKeys
     }
 }

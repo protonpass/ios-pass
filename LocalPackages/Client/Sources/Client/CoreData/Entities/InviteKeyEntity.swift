@@ -32,10 +32,9 @@ extension InviteKeyEntity {
         NSFetchRequest<InviteKeyEntity>(entityName: "InviteKeyEntity")
     }
 
-    @NSManaged var userID: String
-    @NSManaged var inviteToken: String
     @NSManaged var key: String
     @NSManaged var keyRotation: Int64
+    @NSManaged var invite: UserInviteEntity
 }
 
 extension InviteKeyEntity {
@@ -43,11 +42,7 @@ extension InviteKeyEntity {
         .init(key: key, keyRotation: keyRotation)
     }
 
-    func hydrate(userID: String,
-                 inviteToken: String,
-                 key: InviteKey) {
-        self.userID = userID
-        self.inviteToken = inviteToken
+    func hydrate(with key: InviteKey) {
         self.key = key.key
         keyRotation = key.keyRotation
     }

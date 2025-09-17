@@ -39,15 +39,7 @@ public extension LocalUserInviteDatasourceProtocol {
 }
 
 public final class LocalUserInviteDatasource: LocalDatasource, LocalUserInviteDatasourceProtocol,
-    @unchecked Sendable {
-    private let inviteKeyDatasource: any LocalInviteKeyDatasourceProtocol
-
-    public init(inviteKeyDatasource: any LocalInviteKeyDatasourceProtocol,
-                databaseService: any DatabaseServiceProtocol) {
-        self.inviteKeyDatasource = inviteKeyDatasource
-        super.init(databaseService: databaseService)
-    }
-}
+    @unchecked Sendable {}
 
 public extension LocalUserInviteDatasource {
     func getInvites(userId: String) async throws -> [UserInvite] {
@@ -55,37 +47,21 @@ public extension LocalUserInviteDatasource {
         let fetchRequest = UserInviteEntity.fetchRequest()
         fetchRequest.predicate = .init(format: "userID = %@", userId)
         let entities = try await execute(fetchRequest: fetchRequest, context: fetchContext)
-
-        let partialInvites = entities.map(\.toPartialUserInvite)
-        var fullInvites = [UserInvite]()
-
-        for invite in partialInvites {
-            let keys = try await inviteKeyDatasource.getKeys(userId: userId,
-                                                             inviteToken: invite.inviteToken)
-            fullInvites.append(invite.copy(keys: keys))
-        }
-        assert(partialInvites.count == fullInvites.count, "Not fully got all invites")
-        return fullInvites
+        return entities.map(\.toUserInvite)
     }
 
     func upsertInvites(userId: String, invites: [UserInvite]) async throws {
-        try await upsert(invites,
-                         entityType: UserInviteEntity.self,
-                         fetchPredicate: .init(format: "userID = %@", userId),
-                         isEqual: { invite, entity in
-                             entity.inviteToken == invite.inviteToken
-                         },
-                         hydrate: { invite, entity in
-                             entity.hydrate(userID: userId, invite: invite)
-                         })
-        for invite in invites {
-            // Remove before upserting to make sure no old keys related to old invite is left
-            try await inviteKeyDatasource.removeKeys(userId: userId,
-                                                     inviteToken: invite.inviteToken)
-            try await inviteKeyDatasource.upsertKeys(userId: userId,
-                                                     inviteToken: invite.inviteToken,
-                                                     keys: invite.keys)
-        }
+        try await upsertWithRelationships(invites,
+                                          entityType: UserInviteEntity.self,
+                                          fetchPredicate: .init(format: "userID = %@", userId),
+                                          isEqual: { invite, entity in
+                                              entity.inviteToken == invite.inviteToken
+                                          },
+                                          hydrate: { invite, entity, context in
+                                              entity.hydrate(userID: userId,
+                                                             invite: invite,
+                                                             context: context)
+                                          })
     }
 
     func removeInvites(userId: String, invites: [UserInvite]) async throws {
@@ -97,11 +73,6 @@ public extension LocalUserInviteDatasource {
         ])
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: deleteContext)
-
-        for invite in invites {
-            try await inviteKeyDatasource.removeKeys(userId: userId,
-                                                     inviteToken: invite.inviteToken)
-        }
     }
 
     func removeInvites(userId: String) async throws {
@@ -110,6 +81,5 @@ public extension LocalUserInviteDatasource {
         fetchRequest.predicate = .init(format: "userID = %@", userId)
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: deleteContext)
-        try await inviteKeyDatasource.removeKeys(userId: userId)
     }
 }
