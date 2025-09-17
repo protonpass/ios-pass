@@ -82,7 +82,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let itemTypeSelection = resolve(\DataStreamContainer.itemTypeSelection)
 
     weak var delegate: (any ItemsTabViewModelDelegate)?
-    private var inviteRefreshTask: Task<Void, Never>?
     private var sortTask: Task<Void, Never>?
 
     private var cancellables = Set<AnyCancellable>()
@@ -259,19 +258,15 @@ private extension ItemsTabViewModel {
     }
 
     func refreshBanners(_ invites: [UserInvite]? = nil) {
-        inviteRefreshTask?.cancel()
-        inviteRefreshTask = Task { [weak self] in
-            guard let self else { return }
-            var banners = [InfoBanner]()
-            if let invites, !invites.isEmpty {
-                if let newUserInvite = invites.first(where: { $0.fromNewUser }) {
-                    router.present(for: .acceptRejectInvite(newUserInvite))
-                } else {
-                    banners.append(invites.toInfoBanners)
-                }
+        var banners = [InfoBanner]()
+        if let invites, !invites.isEmpty {
+            if let newUserInvite = invites.first(where: { $0.fromNewUser }) {
+                router.present(for: .acceptRejectInvite(newUserInvite))
+            } else {
+                banners.append(invites.toInfoBanners)
             }
-            self.banners = banners
         }
+        self.banners = banners
     }
 
     func selectOrDeselect(_ item: ItemUiModel) {

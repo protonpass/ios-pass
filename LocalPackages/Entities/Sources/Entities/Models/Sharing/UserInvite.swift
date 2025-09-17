@@ -55,7 +55,7 @@ public struct UserInvite: Decodable, Hashable, Equatable, Identifiable, Sendable
                 inviterEmail: String,
                 invitedEmail: String,
                 invitedAddressID: String?,
-                keys: [ItemKey],
+                keys: [InviteKey],
                 vaultData: VaultData?,
                 fromNewUser: Bool,
                 createTime: Int) {
@@ -86,5 +86,19 @@ public extension UserInvite {
                    vaultData: VaultData.mocked,
                    fromNewUser: false,
                    createTime: 1)
+    }
+
+    func copy(keys: [InviteKey]) -> UserInvite {
+        .init(inviteToken: inviteToken,
+              remindersSent: remindersSent,
+              targetType: targetType,
+              targetID: targetID,
+              inviterEmail: inviterEmail,
+              invitedEmail: invitedEmail,
+              invitedAddressID: invitedAddressID,
+              keys: keys,
+              vaultData: vaultData,
+              fromNewUser: fromNewUser,
+              createTime: createTime)
     }
 }

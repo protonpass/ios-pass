@@ -24,40 +24,55 @@ import Entities
 import Foundation
 import ProtonCoreLogin
 
+// sourcery: AutoMockable
 public protocol InviteRepositoryProtocol: Sendable {
     var currentPendingInvites: CurrentValueSubject<[UserInvite], Never> { get }
 
-    func acceptInvite(with inviteToken: String, and keys: [ItemKey]) async throws -> Share
+    func loadLocalInvites(userId: String) async throws
+    func acceptInvite(_ invite: UserInvite, and keys: [ItemKey]) async throws -> Share
 
     @discardableResult
-    func rejectInvite(with inviteToken: String) async throws -> Bool
+    func rejectInvite(_ invite: UserInvite) async throws -> Bool
+    // swiftlint:disable:next todo
+    // TODO: Could be removed once migrated to user event
     func refreshInvites() async
+    func refreshInvites(userId: String) async throws
     func removeCachedInvite(containing inviteToken: String) async
 }
 
 public actor InviteRepository: InviteRepositoryProtocol {
-    private let remoteInviteDatasource: any RemoteInviteDatasourceProtocol
+    private let remoteDatasource: any RemoteInviteDatasourceProtocol
+    private let localDatasource: any LocalUserInviteDatasourceProtocol
     private let logger: Logger
     private var refreshInviteTask: Task<Void, Never>?
     private let userManager: any UserManagerProtocol
 
     public nonisolated let currentPendingInvites: CurrentValueSubject<[UserInvite], Never> = .init([])
 
-    public init(remoteInviteDatasource: any RemoteInviteDatasourceProtocol,
+    public init(remoteDatasource: any RemoteInviteDatasourceProtocol,
+                localDatasource: any LocalUserInviteDatasourceProtocol,
                 userManager: any UserManagerProtocol,
                 logManager: any LogManagerProtocol) {
-        self.remoteInviteDatasource = remoteInviteDatasource
+        self.remoteDatasource = remoteDatasource
+        self.localDatasource = localDatasource
         self.userManager = userManager
         logger = .init(manager: logManager)
     }
 }
 
 public extension InviteRepository {
+    func loadLocalInvites(userId: String) async throws {
+        let invites = try await localDatasource.getInvites(userId: userId)
+        currentPendingInvites.send(invites)
+    }
+
+    // swiftlint:disable:next todo
+    // TODO: Could be removed once migrated to user event
     func getPendingInvitesForUser() async throws -> [UserInvite] {
         logger.trace("Getting all pending invites for user")
         do {
             let userId = try await userManager.getActiveUserId()
-            let invites = try await remoteInviteDatasource.getPendingInvitesForUser(userId: userId)
+            let invites = try await remoteDatasource.getPendingInvitesForUser(userId: userId)
             logger.trace("Got \(invites.count) pending invites")
             return invites
         } catch {
@@ -66,24 +81,57 @@ public extension InviteRepository {
         }
     }
 
-    func acceptInvite(with inviteToken: String, and keys: [ItemKey]) async throws -> Share {
+    func acceptInvite(_ invite: UserInvite, and keys: [ItemKey]) async throws -> Share {
+        let inviteToken = invite.inviteToken
         logger.trace("Accepting invite \(inviteToken)")
         let request = AcceptInviteRequest(keys: keys)
         let userId = try await userManager.getActiveUserId()
-        let share = try await remoteInviteDatasource.acceptInvite(userId: userId,
-                                                                  inviteToken: inviteToken,
-                                                                  request: request)
-        logger.trace("Accepted the invite with token \(inviteToken)")
-        return share
+        do {
+            let share = try await remoteDatasource.acceptInvite(userId: userId,
+                                                                inviteToken: inviteToken,
+                                                                request: request)
+            logger.trace("Accepted the invite with token \(inviteToken)")
+            return share
+        } catch {
+            if error.asPassApiError == .invalidValidation {
+                logger.warning("Failed to accept non-existing invite \(inviteToken)")
+                // Invite doesn't exist anymore (stale cache or race condition)
+                try await localDatasource.removeInvite(userId: userId, invite: invite)
+                try await loadLocalInvites(userId: userId)
+            }
+            throw error
+        }
     }
 
-    func rejectInvite(with inviteToken: String) async throws -> Bool {
+    func rejectInvite(_ invite: UserInvite) async throws -> Bool {
+        let inviteToken = invite.inviteToken
         logger.trace("Reject invite \(inviteToken)")
         let userId = try await userManager.getActiveUserId()
-        let rejectedStatus = try await remoteInviteDatasource.rejectInvite(userId: userId,
-                                                                           inviteToken: inviteToken)
-        logger.trace("Invite rejection status \(rejectedStatus)")
-        return rejectedStatus
+        do {
+            let rejectedStatus = try await remoteDatasource.rejectInvite(userId: userId,
+                                                                         inviteToken: inviteToken)
+            logger.trace("Invite rejection status \(rejectedStatus)")
+            return rejectedStatus
+        } catch {
+            if error.asPassApiError == .invalidValidation {
+                logger.warning("Failed to reject non-existing invite \(inviteToken)")
+                // Invite doesn't exist anymore (stale cache or race condition)
+                try await localDatasource.removeInvite(userId: userId, invite: invite)
+                try await loadLocalInvites(userId: userId)
+            }
+            throw error
+        }
+    }
+
+    func refreshInvites(userId: String) async throws {
+        logger.trace("Refreshing invites for user \(userId)")
+        let invites = try await remoteDatasource.getPendingInvitesForUser(userId: userId)
+        logger.trace("Fetched \(invites.count) invites for user \(userId)")
+        try await localDatasource.removeInvites(userId: userId)
+        logger.trace("Removed old local invites for user \(userId)")
+        try await localDatasource.upsertInvites(userId: userId, invites: invites)
+        logger.trace("Upserted \(invites.count) updated invites for user \(userId)")
+        currentPendingInvites.send(invites)
     }
 
     func refreshInvites() async {
