@@ -292,65 +292,16 @@ public struct ProtonPassVaultV1_Vault: Sendable {
 fileprivate let _protobuf_package = "proton_pass_vault_v1"
 
 extension ProtonPassVaultV1_VaultIcon: SwiftProtobuf._ProtoNameProviding {
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    0: .same(proto: "ICON_UNSPECIFIED"),
-    1: .same(proto: "ICON_CUSTOM"),
-    2: .same(proto: "ICON1"),
-    3: .same(proto: "ICON2"),
-    4: .same(proto: "ICON3"),
-    5: .same(proto: "ICON4"),
-    6: .same(proto: "ICON5"),
-    7: .same(proto: "ICON6"),
-    8: .same(proto: "ICON7"),
-    9: .same(proto: "ICON8"),
-    10: .same(proto: "ICON9"),
-    11: .same(proto: "ICON10"),
-    12: .same(proto: "ICON11"),
-    13: .same(proto: "ICON12"),
-    14: .same(proto: "ICON13"),
-    15: .same(proto: "ICON14"),
-    16: .same(proto: "ICON15"),
-    17: .same(proto: "ICON16"),
-    18: .same(proto: "ICON17"),
-    19: .same(proto: "ICON18"),
-    20: .same(proto: "ICON19"),
-    21: .same(proto: "ICON20"),
-    22: .same(proto: "ICON21"),
-    23: .same(proto: "ICON22"),
-    24: .same(proto: "ICON23"),
-    25: .same(proto: "ICON24"),
-    26: .same(proto: "ICON25"),
-    27: .same(proto: "ICON26"),
-    28: .same(proto: "ICON27"),
-    29: .same(proto: "ICON28"),
-    30: .same(proto: "ICON29"),
-    31: .same(proto: "ICON30"),
-  ]
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{2}\0ICON_UNSPECIFIED\0\u{1}ICON_CUSTOM\0\u{1}ICON1\0\u{1}ICON2\0\u{1}ICON3\0\u{1}ICON4\0\u{1}ICON5\0\u{1}ICON6\0\u{1}ICON7\0\u{1}ICON8\0\u{1}ICON9\0\u{1}ICON10\0\u{1}ICON11\0\u{1}ICON12\0\u{1}ICON13\0\u{1}ICON14\0\u{1}ICON15\0\u{1}ICON16\0\u{1}ICON17\0\u{1}ICON18\0\u{1}ICON19\0\u{1}ICON20\0\u{1}ICON21\0\u{1}ICON22\0\u{1}ICON23\0\u{1}ICON24\0\u{1}ICON25\0\u{1}ICON26\0\u{1}ICON27\0\u{1}ICON28\0\u{1}ICON29\0\u{1}ICON30\0")
 }
 
 extension ProtonPassVaultV1_VaultColor: SwiftProtobuf._ProtoNameProviding {
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    0: .same(proto: "COLOR_UNSPECIFIED"),
-    1: .same(proto: "COLOR_CUSTOM"),
-    2: .same(proto: "COLOR1"),
-    3: .same(proto: "COLOR2"),
-    4: .same(proto: "COLOR3"),
-    5: .same(proto: "COLOR4"),
-    6: .same(proto: "COLOR5"),
-    7: .same(proto: "COLOR6"),
-    8: .same(proto: "COLOR7"),
-    9: .same(proto: "COLOR8"),
-    10: .same(proto: "COLOR9"),
-    11: .same(proto: "COLOR10"),
-  ]
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{2}\0COLOR_UNSPECIFIED\0\u{1}COLOR_CUSTOM\0\u{1}COLOR1\0\u{1}COLOR2\0\u{1}COLOR3\0\u{1}COLOR4\0\u{1}COLOR5\0\u{1}COLOR6\0\u{1}COLOR7\0\u{1}COLOR8\0\u{1}COLOR9\0\u{1}COLOR10\0")
 }
 
 extension ProtonPassVaultV1_VaultDisplayPreferences: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".VaultDisplayPreferences"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "icon"),
-    2: .same(proto: "color"),
-  ]
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}icon\0\u{1}color\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -385,11 +336,7 @@ extension ProtonPassVaultV1_VaultDisplayPreferences: SwiftProtobuf.Message, Swif
 
 extension ProtonPassVaultV1_Vault: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".Vault"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "name"),
-    2: .same(proto: "description"),
-    3: .same(proto: "display"),
-  ]
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}name\0\u{1}description\0\u{1}display\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
