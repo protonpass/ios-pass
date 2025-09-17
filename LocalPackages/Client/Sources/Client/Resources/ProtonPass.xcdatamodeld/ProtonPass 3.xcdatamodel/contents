@@ -66,7 +66,7 @@
     <entity name="InviteKeyEntity" representedClassName="InviteKeyEntity" syncable="YES">
         <attribute name="key" attributeType="String"/>
         <attribute name="keyRotation" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="invite" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="UserInviteEntity" inverseName="keys" inverseEntity="UserInviteEntity"/>
+        <relationship name="invite" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="UserInviteEntity" inverseName="keys" inverseEntity="UserInviteEntity"/>
     </entity>
     <entity name="ItemEntity" representedClassName="ItemEntity" syncable="YES">
         <attribute name="aliasEmail" optional="YES" attributeType="String"/>
@@ -306,6 +306,6 @@
         <attribute name="contentKeyRotation" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="itemCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="memberCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="invite" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="UserInviteEntity" inverseName="vaultData" inverseEntity="UserInviteEntity"/>
+        <relationship name="invite" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="UserInviteEntity" inverseName="vaultData" inverseEntity="UserInviteEntity"/>
     </entity>
 </model>
