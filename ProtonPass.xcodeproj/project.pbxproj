@@ -3403,6 +3403,7 @@
 		};
 		53968A9B2DBF86FD00924EDF /* Symlink common bundles */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -6119,8 +6120,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/protonpass/DocScanner";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.2.3;
+				kind = exactVersion;
+				version = 0.2.3;
 			};
 		};
 		57459FC02AE5A72100280A10 /* XCRemoteSwiftPackageReference "protoncore_ios" */ = {

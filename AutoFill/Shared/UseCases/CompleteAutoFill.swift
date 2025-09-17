@@ -100,7 +100,7 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
             }
             await logManager.saveAllLogs()
             try await copyTotpTokenAndNotify(itemContent: itemContent)
-            let completion: (Bool) -> Void = { [weak self] _ in
+            let completion: @Sendable (Bool) -> Void = { [weak self] _ in
                 guard let self else { return }
                 update(item: itemContent, identifiers: identifiers)
             }
