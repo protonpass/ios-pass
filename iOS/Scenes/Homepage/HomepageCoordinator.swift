@@ -161,8 +161,11 @@ private extension HomepageCoordinator {
         eventLoop.delegate = self
         urlOpener.rootViewController = rootViewController
 
-        eventLoop.addAdditionalTask(.init(label: kRefreshInvitationsTaskLabel,
-                                          task: refreshInvitations.callAsFunction))
+        // User event caches invites locally so no need to fetch invites as part of event loop
+        if !getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1) {
+            eventLoop.addAdditionalTask(.init(label: kRefreshInvitationsTaskLabel,
+                                              task: refreshInvitations.callAsFunction))
+        }
 
         authenticated = getSharedPreferences().localAuthenticationMethod == .none
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788.4" systemVersion="24E263" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788.4" systemVersion="24G90" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
     <entity name="AccessEntity" representedClassName="AccessEntity" syncable="YES">
         <attribute name="aliasLimit" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="aliasSyncEnabled" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
@@ -62,6 +62,11 @@
                 <constraint value="userId"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
+    </entity>
+    <entity name="InviteKeyEntity" representedClassName="InviteKeyEntity" syncable="YES">
+        <attribute name="key" attributeType="String"/>
+        <attribute name="keyRotation" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="invite" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="UserInviteEntity" inverseName="keys" inverseEntity="UserInviteEntity"/>
     </entity>
     <entity name="ItemEntity" representedClassName="ItemEntity" syncable="YES">
         <attribute name="aliasEmail" optional="YES" attributeType="String"/>
@@ -255,6 +260,26 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
+    <entity name="UserInviteEntity" representedClassName="UserInviteEntity" syncable="YES">
+        <attribute name="createTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="fromNewUser" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="invitedAddressID" attributeType="String"/>
+        <attribute name="invitedEmail" attributeType="String"/>
+        <attribute name="inviterEmail" attributeType="String"/>
+        <attribute name="inviteToken" attributeType="String"/>
+        <attribute name="remindersSent" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="targetID" attributeType="String"/>
+        <attribute name="targetType" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="userID" attributeType="String"/>
+        <relationship name="keys" toMany="YES" deletionRule="Cascade" destinationEntity="InviteKeyEntity" inverseName="invite" inverseEntity="InviteKeyEntity"/>
+        <relationship name="vaultData" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="VaultDataEntity" inverseName="invite" inverseEntity="VaultDataEntity"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="userID"/>
+                <constraint value="inviteToken"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
     <entity name="UserPreferencesEntity" representedClassName="UserPreferencesEntity" syncable="YES">
         <attribute name="encryptedContent" attributeType="Binary"/>
         <attribute name="userID" attributeType="String"/>
@@ -274,5 +299,13 @@
                 <constraint value="userID"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
+    </entity>
+    <entity name="VaultDataEntity" representedClassName="VaultDataEntity" syncable="YES">
+        <attribute name="content" attributeType="String"/>
+        <attribute name="contentFormatVersion" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="contentKeyRotation" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="itemCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="memberCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="invite" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="UserInviteEntity" inverseName="vaultData" inverseEntity="UserInviteEntity"/>
     </entity>
 </model>
