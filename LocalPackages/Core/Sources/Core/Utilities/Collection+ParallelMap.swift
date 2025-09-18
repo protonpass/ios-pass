@@ -55,7 +55,7 @@ public extension Collection where Element: Sendable {
                 try Task.checkCancellation()
             }
 
-            return results.compactMap { $0 }
+            return results.compactMap(\.self)
         }
     }
 

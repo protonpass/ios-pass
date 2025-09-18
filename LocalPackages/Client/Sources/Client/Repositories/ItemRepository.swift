@@ -630,7 +630,7 @@ public extension ItemRepository {
                                                  shareId: shareId,
                                                  userId: userId,
                                                  symmetricKey: symmetricKey)
-        }.compactMap { $0 }
+        }.compactMap(\.self)
 
         try await localDatasource.upsertItems(encryptedItems)
         itemsWereUpdated.send()
@@ -990,7 +990,7 @@ private extension ItemRepository {
                                                      shareId: toShareId,
                                                      userId: userId,
                                                      symmetricKey: symmetricKey)
-            }.compactMap { $0 }
+            }.compactMap(\.self)
         try await localDatasource.deleteItems(itemIds: items.map(\.itemId),
                                               shareId: fromSharedId)
         try await localDatasource.upsertItems(newEncryptedItems)

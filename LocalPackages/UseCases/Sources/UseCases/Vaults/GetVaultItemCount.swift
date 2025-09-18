@@ -42,7 +42,7 @@ public final class GetVaultItemCount: @unchecked Sendable, GetVaultItemCountUseC
 
     public func execute(for vault: Share, and type: ItemContentType?) -> Int {
         if let type {
-            return appContentManager.getItems(for: vault).filter { $0.type == type }.count
+            return appContentManager.getItems(for: vault).count(where: { $0.type == type })
         }
         return appContentManager.getItems(for: vault).count
     }

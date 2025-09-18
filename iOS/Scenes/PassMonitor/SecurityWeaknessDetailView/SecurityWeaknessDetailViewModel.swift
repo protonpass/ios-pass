@@ -31,7 +31,7 @@ typealias SecuritySectionedData = [SecuritySectionHeaderKey: [ItemUiModel]]
 
 extension SecuritySectionedData {
     var isEmpty: Bool {
-        values.flatMap { $0 }.isEmpty
+        values.flatMap(\.self).isEmpty
     }
 }
 
