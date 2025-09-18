@@ -49,7 +49,7 @@ public struct CapsuleStepper<V: Strideable>: View where V.Stride: Numeric {
         HStack(spacing: 24) {
             Button { value = value.advanced(by: -step) } label: { Text(verbatim: "-") }
                 .disabled(reachedMinValue)
-            Text("\(value)")
+            Text(verbatim: "\(value)")
                 .fontWeight(.bold)
                 .monospacedDigit()
             Button { value = value.advanced(by: step) } label: { Text(verbatim: "+") }

@@ -193,9 +193,8 @@ private extension ShareCoordinator {
             return .unknown
         }
 
-        let parseUrl: (URL, SharedContent) -> SharedContent = { [weak self] url, fallback in
-            guard let self,
-                  url.absoluteString.hasPrefix("file://"),
+        let parseUrl: (URL, SharedContent) -> SharedContent = { url, fallback in
+            guard url.absoluteString.hasPrefix("file://"),
                   url.absoluteString.hasSuffix(".csv"),
                   let data = try? Data(contentsOf: url) else { return fallback }
             return .csv(data)

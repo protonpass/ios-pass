@@ -22,7 +22,7 @@ import ProtonCoreDataModel
 import ProtonCoreLogin
 import ProtonCoreNetworking
 
-extension UserData: Codable {
+extension UserData: @retroactive Codable {
     private enum CodingKeys: String, CodingKey {
         case credential
         case user
