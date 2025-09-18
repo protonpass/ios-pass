@@ -220,7 +220,7 @@ public extension ShareRepository {
                 // swiftlint:disable:next discouraged_optional_self
                 return try await self?.symmetricallyEncryptNullable(userId: userId, $0, symmetricKey: key)
             }
-            .compactMap { $0 }
+            .compactMap(\.self)
         try await localDatasource.upsertShares(encryptedShares, userId: userId)
 
         logger.trace("Upserted \(shares.count) shares for user \(userId), shares \(shareIds)")
@@ -387,7 +387,7 @@ public extension ShareRepository {
         let encryptedShares = try await updatedShares.parallelMap { [weak self] share in
             // swiftlint:disable:next discouraged_optional_self
             try await self?.symmetricallyEncrypt(userId: userId, share, symmetricKey: key)
-        }.compactMap { $0 }
+        }.compactMap(\.self)
         assert(updatedShares.count == encryptedShares.count,
                "Some shares were not correctly symmetrically encrypted")
         try await localDatasource.upsertShares(encryptedShares, userId: userId)

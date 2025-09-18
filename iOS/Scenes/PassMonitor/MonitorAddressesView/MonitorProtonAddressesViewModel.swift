@@ -89,7 +89,7 @@ private extension MonitorProtonAddressesViewModel {
         accessRepository.access
             .receive(on: DispatchQueue.main)
             .removeDuplicates()
-            .compactMap { $0 }
+            .compactMap(\.self)
             .sink { [weak self] newValue in
                 guard let self else { return }
                 access = newValue.access
@@ -110,7 +110,7 @@ private extension MonitorProtonAddressesViewModel {
         passMonitorRepository.userBreaches
             .receive(on: DispatchQueue.main)
             .removeDuplicates()
-            .compactMap { $0 }
+            .compactMap(\.self)
             .sink { [weak self] userBreaches in
                 guard let self else { return }
                 allAddresses = userBreaches.addresses

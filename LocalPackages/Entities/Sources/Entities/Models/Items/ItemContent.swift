@@ -291,7 +291,7 @@ public extension ItemContent {
             contents.append(contentsOf: customFieldValues)
         }
 
-        attributeSet.contentDescription = contents.compactMap { $0 }.joined(separator: "\n")
+        attributeSet.contentDescription = contents.compactMap(\.self).joined(separator: "\n")
         let id = try ids.serializeBase64()
         return .init(uniqueIdentifier: id,
                      domainIdentifier: spotlightDomainId,

@@ -65,7 +65,7 @@ public extension String {
 
     // periphery:ignore
     func characterCount(_ character: Character) -> Int {
-        filter { $0 == character }.count
+        count(where: { $0 == character })
     }
 
     func toCreditCardNumber() -> String {
