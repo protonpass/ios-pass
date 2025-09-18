@@ -45,7 +45,8 @@ let package = Package(
                 .product(name: "Macro", package: "Macro"),
                 .product(name: "ProtonCoreLoginUI", package: "protoncore_ios"),
                 .product(name: "ProtonCoreUIFoundations", package: "protoncore_ios"),
-                .product(name: "ProtonCorePaymentsV2", package: "protoncore_ios")
+                .product(name: "ProtonCorePaymentsV2", package: "protoncore_ios"),
+                .product(name: "DocScanner", package: "DocScanner"),
             ],
             resources: [.process("Resources")])
     ],
