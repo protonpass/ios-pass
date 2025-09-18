@@ -41,7 +41,6 @@ struct UserEventsSynchronizerTests {
     init() {
         sut = UserEventsSynchronizer(localUserEventIdDatasource: localUserEventIdDatasource,
                                      remoteUserEventsDatasource: remoteUserEventsDatasource,
-                                     localItemDatasource: localItemDatasource,
                                      itemRepository: itemRepository,
                                      shareRepository: shareRepository,
                                      accessRepository: accessRespository,

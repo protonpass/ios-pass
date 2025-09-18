@@ -170,8 +170,28 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         closureGetItem()
         return stubbedGetItemResult
     }
+    // MARK: - getItemsIds
+    public var getItemsThrowableError6: Error?
+    public var closureGetItemsIdsAsync6: () -> () = {}
+    public var invokedGetItemsIdsAsync6 = false
+    public var invokedGetItemsIdsAsyncCount6 = 0
+    public var invokedGetItemsIdsAsyncParameters6: (ids: [any ItemIdentifiable], Void)?
+    public var invokedGetItemsIdsAsyncParametersList6 = [(ids: [any ItemIdentifiable], Void)]()
+    public var stubbedGetItemsIdsAsyncResult6: [SymmetricallyEncryptedItem]!
+
+    public func getItems(_ ids: [any ItemIdentifiable]) async throws -> [SymmetricallyEncryptedItem] {
+        invokedGetItemsIdsAsync6 = true
+        invokedGetItemsIdsAsyncCount6 += 1
+        invokedGetItemsIdsAsyncParameters6 = (ids, ())
+        invokedGetItemsIdsAsyncParametersList6.append((ids, ()))
+        if let error = getItemsThrowableError6 {
+            throw error
+        }
+        closureGetItemsIdsAsync6()
+        return stubbedGetItemsIdsAsyncResult6
+    }
     // MARK: - getAliasItem
-    public var getAliasItemEmailShareIdThrowableError6: Error?
+    public var getAliasItemEmailShareIdThrowableError7: Error?
     public var closureGetAliasItem: () -> () = {}
     public var invokedGetAliasItemfunction = false
     public var invokedGetAliasItemCount = 0
@@ -184,14 +204,14 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedGetAliasItemCount += 1
         invokedGetAliasItemParameters = (email, shareId)
         invokedGetAliasItemParametersList.append((email, shareId))
-        if let error = getAliasItemEmailShareIdThrowableError6 {
+        if let error = getAliasItemEmailShareIdThrowableError7 {
             throw error
         }
         closureGetAliasItem()
         return stubbedGetAliasItemResult
     }
     // MARK: - changeAliasStatus
-    public var changeAliasStatusUserIdItemsEnabledThrowableError7: Error?
+    public var changeAliasStatusUserIdItemsEnabledThrowableError8: Error?
     public var closureChangeAliasStatus: () -> () = {}
     public var invokedChangeAliasStatusfunction = false
     public var invokedChangeAliasStatusCount = 0
@@ -203,13 +223,33 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedChangeAliasStatusCount += 1
         invokedChangeAliasStatusParameters = (userId, items, enabled)
         invokedChangeAliasStatusParametersList.append((userId, items, enabled))
-        if let error = changeAliasStatusUserIdItemsEnabledThrowableError7 {
+        if let error = changeAliasStatusUserIdItemsEnabledThrowableError8 {
             throw error
         }
         closureChangeAliasStatus()
     }
+    // MARK: - getUnsyncedSimpleLoginNoteAliases
+    public var getUnsyncedSimpleLoginNoteAliasesUserIdThrowableError9: Error?
+    public var closureGetUnsyncedSimpleLoginNoteAliases: () -> () = {}
+    public var invokedGetUnsyncedSimpleLoginNoteAliasesfunction = false
+    public var invokedGetUnsyncedSimpleLoginNoteAliasesCount = 0
+    public var invokedGetUnsyncedSimpleLoginNoteAliasesParameters: (userId: String, Void)?
+    public var invokedGetUnsyncedSimpleLoginNoteAliasesParametersList = [(userId: String, Void)]()
+    public var stubbedGetUnsyncedSimpleLoginNoteAliasesResult: [SymmetricallyEncryptedItem]!
+
+    public func getUnsyncedSimpleLoginNoteAliases(userId: String) async throws -> [SymmetricallyEncryptedItem] {
+        invokedGetUnsyncedSimpleLoginNoteAliasesfunction = true
+        invokedGetUnsyncedSimpleLoginNoteAliasesCount += 1
+        invokedGetUnsyncedSimpleLoginNoteAliasesParameters = (userId, ())
+        invokedGetUnsyncedSimpleLoginNoteAliasesParametersList.append((userId, ()))
+        if let error = getUnsyncedSimpleLoginNoteAliasesUserIdThrowableError9 {
+            throw error
+        }
+        closureGetUnsyncedSimpleLoginNoteAliases()
+        return stubbedGetUnsyncedSimpleLoginNoteAliasesResult
+    }
     // MARK: - getItemContent
-    public var getItemContentShareIdItemIdThrowableError8: Error?
+    public var getItemContentShareIdItemIdThrowableError10: Error?
     public var closureGetItemContent: () -> () = {}
     public var invokedGetItemContentfunction = false
     public var invokedGetItemContentCount = 0
@@ -222,14 +262,14 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedGetItemContentCount += 1
         invokedGetItemContentParameters = (shareId, itemId)
         invokedGetItemContentParametersList.append((shareId, itemId))
-        if let error = getItemContentShareIdItemIdThrowableError8 {
+        if let error = getItemContentShareIdItemIdThrowableError10 {
             throw error
         }
         closureGetItemContent()
         return stubbedGetItemContentResult
     }
     // MARK: - getItemRevisions
-    public var getItemRevisionsUserIdShareIdItemIdLastTokenThrowableError9: Error?
+    public var getItemRevisionsUserIdShareIdItemIdLastTokenThrowableError11: Error?
     public var closureGetItemRevisions: () -> () = {}
     public var invokedGetItemRevisionsfunction = false
     public var invokedGetItemRevisionsCount = 0
@@ -242,14 +282,14 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedGetItemRevisionsCount += 1
         invokedGetItemRevisionsParameters = (userId, shareId, itemId, lastToken)
         invokedGetItemRevisionsParametersList.append((userId, shareId, itemId, lastToken))
-        if let error = getItemRevisionsUserIdShareIdItemIdLastTokenThrowableError9 {
+        if let error = getItemRevisionsUserIdShareIdItemIdLastTokenThrowableError11 {
             throw error
         }
         closureGetItemRevisions()
         return stubbedGetItemRevisionsResult
     }
     // MARK: - refreshItems
-    public var refreshItemsUserIdShareIdEventStreamThrowableError10: Error?
+    public var refreshItemsUserIdShareIdEventStreamThrowableError12: Error?
     public var closureRefreshItems: () -> () = {}
     public var invokedRefreshItemsfunction = false
     public var invokedRefreshItemsCount = 0
@@ -261,13 +301,13 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedRefreshItemsCount += 1
         invokedRefreshItemsParameters = (userId, shareId, eventStream)
         invokedRefreshItemsParametersList.append((userId, shareId, eventStream))
-        if let error = refreshItemsUserIdShareIdEventStreamThrowableError10 {
+        if let error = refreshItemsUserIdShareIdEventStreamThrowableError12 {
             throw error
         }
         closureRefreshItems()
     }
     // MARK: - refreshItem
-    public var refreshItemUserIdShareIdItemIdEventTokenThrowableError11: Error?
+    public var refreshItemUserIdShareIdItemIdEventTokenThrowableError13: Error?
     public var closureRefreshItem: () -> () = {}
     public var invokedRefreshItemfunction = false
     public var invokedRefreshItemCount = 0
@@ -279,13 +319,13 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedRefreshItemCount += 1
         invokedRefreshItemParameters = (userId, shareId, itemId, eventToken)
         invokedRefreshItemParametersList.append((userId, shareId, itemId, eventToken))
-        if let error = refreshItemUserIdShareIdItemIdEventTokenThrowableError11 {
+        if let error = refreshItemUserIdShareIdItemIdEventTokenThrowableError13 {
             throw error
         }
         closureRefreshItem()
     }
     // MARK: - createItem
-    public var createItemUserIdItemContentShareIdThrowableError12: Error?
+    public var createItemUserIdItemContentShareIdThrowableError14: Error?
     public var closureCreateItem: () -> () = {}
     public var invokedCreateItemfunction = false
     public var invokedCreateItemCount = 0
@@ -298,14 +338,14 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedCreateItemCount += 1
         invokedCreateItemParameters = (userId, itemContent, shareId)
         invokedCreateItemParametersList.append((userId, itemContent, shareId))
-        if let error = createItemUserIdItemContentShareIdThrowableError12 {
+        if let error = createItemUserIdItemContentShareIdThrowableError14 {
             throw error
         }
         closureCreateItem()
         return stubbedCreateItemResult
     }
     // MARK: - createAlias
-    public var createAliasUserIdInfoItemContentShareIdThrowableError13: Error?
+    public var createAliasUserIdInfoItemContentShareIdThrowableError15: Error?
     public var closureCreateAlias: () -> () = {}
     public var invokedCreateAliasfunction = false
     public var invokedCreateAliasCount = 0
@@ -318,14 +358,14 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedCreateAliasCount += 1
         invokedCreateAliasParameters = (userId, info, itemContent, shareId)
         invokedCreateAliasParametersList.append((userId, info, itemContent, shareId))
-        if let error = createAliasUserIdInfoItemContentShareIdThrowableError13 {
+        if let error = createAliasUserIdInfoItemContentShareIdThrowableError15 {
             throw error
         }
         closureCreateAlias()
         return stubbedCreateAliasResult
     }
     // MARK: - createPendingAliasesItem
-    public var createPendingAliasesItemUserIdShareIdItemsContentThrowableError14: Error?
+    public var createPendingAliasesItemUserIdShareIdItemsContentThrowableError16: Error?
     public var closureCreatePendingAliasesItem: () -> () = {}
     public var invokedCreatePendingAliasesItemfunction = false
     public var invokedCreatePendingAliasesItemCount = 0
@@ -338,14 +378,14 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedCreatePendingAliasesItemCount += 1
         invokedCreatePendingAliasesItemParameters = (userId, shareId, itemsContent)
         invokedCreatePendingAliasesItemParametersList.append((userId, shareId, itemsContent))
-        if let error = createPendingAliasesItemUserIdShareIdItemsContentThrowableError14 {
+        if let error = createPendingAliasesItemUserIdShareIdItemsContentThrowableError16 {
             throw error
         }
         closureCreatePendingAliasesItem()
         return stubbedCreatePendingAliasesItemResult
     }
     // MARK: - createAliasAndOtherItem
-    public var createAliasAndOtherItemUserIdInfoAliasItemContentOtherItemContentShareIdThrowableError15: Error?
+    public var createAliasAndOtherItemUserIdInfoAliasItemContentOtherItemContentShareIdThrowableError17: Error?
     public var closureCreateAliasAndOtherItem: () -> () = {}
     public var invokedCreateAliasAndOtherItemfunction = false
     public var invokedCreateAliasAndOtherItemCount = 0
@@ -358,86 +398,86 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedCreateAliasAndOtherItemCount += 1
         invokedCreateAliasAndOtherItemParameters = (userId, info, aliasItemContent, otherItemContent, shareId)
         invokedCreateAliasAndOtherItemParametersList.append((userId, info, aliasItemContent, otherItemContent, shareId))
-        if let error = createAliasAndOtherItemUserIdInfoAliasItemContentOtherItemContentShareIdThrowableError15 {
+        if let error = createAliasAndOtherItemUserIdInfoAliasItemContentOtherItemContentShareIdThrowableError17 {
             throw error
         }
         closureCreateAliasAndOtherItem()
         return stubbedCreateAliasAndOtherItemResult
     }
     // MARK: - trashItemsItems
-    public var trashItemsThrowableError16: Error?
-    public var closureTrashItemsItemsAsync16: () -> () = {}
-    public var invokedTrashItemsItemsAsync16 = false
-    public var invokedTrashItemsItemsAsyncCount16 = 0
-    public var invokedTrashItemsItemsAsyncParameters16: (items: [SymmetricallyEncryptedItem], Void)?
-    public var invokedTrashItemsItemsAsyncParametersList16 = [(items: [SymmetricallyEncryptedItem], Void)]()
+    public var trashItemsThrowableError18: Error?
+    public var closureTrashItemsItemsAsync18: () -> () = {}
+    public var invokedTrashItemsItemsAsync18 = false
+    public var invokedTrashItemsItemsAsyncCount18 = 0
+    public var invokedTrashItemsItemsAsyncParameters18: (items: [SymmetricallyEncryptedItem], Void)?
+    public var invokedTrashItemsItemsAsyncParametersList18 = [(items: [SymmetricallyEncryptedItem], Void)]()
 
     public func trashItems(_ items: [SymmetricallyEncryptedItem]) async throws {
-        invokedTrashItemsItemsAsync16 = true
-        invokedTrashItemsItemsAsyncCount16 += 1
-        invokedTrashItemsItemsAsyncParameters16 = (items, ())
-        invokedTrashItemsItemsAsyncParametersList16.append((items, ()))
-        if let error = trashItemsThrowableError16 {
+        invokedTrashItemsItemsAsync18 = true
+        invokedTrashItemsItemsAsyncCount18 += 1
+        invokedTrashItemsItemsAsyncParameters18 = (items, ())
+        invokedTrashItemsItemsAsyncParametersList18.append((items, ()))
+        if let error = trashItemsThrowableError18 {
             throw error
         }
-        closureTrashItemsItemsAsync16()
+        closureTrashItemsItemsAsync18()
     }
     // MARK: - trashItemsItems
-    public var trashItemsThrowableError17: Error?
-    public var closureTrashItemsItemsAsync17: () -> () = {}
-    public var invokedTrashItemsItemsAsync17 = false
-    public var invokedTrashItemsItemsAsyncCount17 = 0
-    public var invokedTrashItemsItemsAsyncParameters17: (items: [any ItemIdentifiable], Void)?
-    public var invokedTrashItemsItemsAsyncParametersList17 = [(items: [any ItemIdentifiable], Void)]()
+    public var trashItemsThrowableError19: Error?
+    public var closureTrashItemsItemsAsync19: () -> () = {}
+    public var invokedTrashItemsItemsAsync19 = false
+    public var invokedTrashItemsItemsAsyncCount19 = 0
+    public var invokedTrashItemsItemsAsyncParameters19: (items: [any ItemIdentifiable], Void)?
+    public var invokedTrashItemsItemsAsyncParametersList19 = [(items: [any ItemIdentifiable], Void)]()
 
     public func trashItems(_ items: [any ItemIdentifiable]) async throws {
-        invokedTrashItemsItemsAsync17 = true
-        invokedTrashItemsItemsAsyncCount17 += 1
-        invokedTrashItemsItemsAsyncParameters17 = (items, ())
-        invokedTrashItemsItemsAsyncParametersList17.append((items, ()))
-        if let error = trashItemsThrowableError17 {
+        invokedTrashItemsItemsAsync19 = true
+        invokedTrashItemsItemsAsyncCount19 += 1
+        invokedTrashItemsItemsAsyncParameters19 = (items, ())
+        invokedTrashItemsItemsAsyncParametersList19.append((items, ()))
+        if let error = trashItemsThrowableError19 {
             throw error
         }
-        closureTrashItemsItemsAsync17()
+        closureTrashItemsItemsAsync19()
     }
     // MARK: - untrashItemsItems
-    public var untrashItemsThrowableError18: Error?
-    public var closureUntrashItemsItemsAsync18: () -> () = {}
-    public var invokedUntrashItemsItemsAsync18 = false
-    public var invokedUntrashItemsItemsAsyncCount18 = 0
-    public var invokedUntrashItemsItemsAsyncParameters18: (items: [SymmetricallyEncryptedItem], Void)?
-    public var invokedUntrashItemsItemsAsyncParametersList18 = [(items: [SymmetricallyEncryptedItem], Void)]()
+    public var untrashItemsThrowableError20: Error?
+    public var closureUntrashItemsItemsAsync20: () -> () = {}
+    public var invokedUntrashItemsItemsAsync20 = false
+    public var invokedUntrashItemsItemsAsyncCount20 = 0
+    public var invokedUntrashItemsItemsAsyncParameters20: (items: [SymmetricallyEncryptedItem], Void)?
+    public var invokedUntrashItemsItemsAsyncParametersList20 = [(items: [SymmetricallyEncryptedItem], Void)]()
 
     public func untrashItems(_ items: [SymmetricallyEncryptedItem]) async throws {
-        invokedUntrashItemsItemsAsync18 = true
-        invokedUntrashItemsItemsAsyncCount18 += 1
-        invokedUntrashItemsItemsAsyncParameters18 = (items, ())
-        invokedUntrashItemsItemsAsyncParametersList18.append((items, ()))
-        if let error = untrashItemsThrowableError18 {
+        invokedUntrashItemsItemsAsync20 = true
+        invokedUntrashItemsItemsAsyncCount20 += 1
+        invokedUntrashItemsItemsAsyncParameters20 = (items, ())
+        invokedUntrashItemsItemsAsyncParametersList20.append((items, ()))
+        if let error = untrashItemsThrowableError20 {
             throw error
         }
-        closureUntrashItemsItemsAsync18()
+        closureUntrashItemsItemsAsync20()
     }
     // MARK: - untrashItemsItems
-    public var untrashItemsThrowableError19: Error?
-    public var closureUntrashItemsItemsAsync19: () -> () = {}
-    public var invokedUntrashItemsItemsAsync19 = false
-    public var invokedUntrashItemsItemsAsyncCount19 = 0
-    public var invokedUntrashItemsItemsAsyncParameters19: (items: [any ItemIdentifiable], Void)?
-    public var invokedUntrashItemsItemsAsyncParametersList19 = [(items: [any ItemIdentifiable], Void)]()
+    public var untrashItemsThrowableError21: Error?
+    public var closureUntrashItemsItemsAsync21: () -> () = {}
+    public var invokedUntrashItemsItemsAsync21 = false
+    public var invokedUntrashItemsItemsAsyncCount21 = 0
+    public var invokedUntrashItemsItemsAsyncParameters21: (items: [any ItemIdentifiable], Void)?
+    public var invokedUntrashItemsItemsAsyncParametersList21 = [(items: [any ItemIdentifiable], Void)]()
 
     public func untrashItems(_ items: [any ItemIdentifiable]) async throws {
-        invokedUntrashItemsItemsAsync19 = true
-        invokedUntrashItemsItemsAsyncCount19 += 1
-        invokedUntrashItemsItemsAsyncParameters19 = (items, ())
-        invokedUntrashItemsItemsAsyncParametersList19.append((items, ()))
-        if let error = untrashItemsThrowableError19 {
+        invokedUntrashItemsItemsAsync21 = true
+        invokedUntrashItemsItemsAsyncCount21 += 1
+        invokedUntrashItemsItemsAsyncParameters21 = (items, ())
+        invokedUntrashItemsItemsAsyncParametersList21.append((items, ()))
+        if let error = untrashItemsThrowableError21 {
             throw error
         }
-        closureUntrashItemsItemsAsync19()
+        closureUntrashItemsItemsAsync21()
     }
     // MARK: - deleteItems
-    public var deleteItemsUserIdSkipTrashThrowableError20: Error?
+    public var deleteItemsUserIdSkipTrashThrowableError22: Error?
     public var closureDeleteItems: () -> () = {}
     public var invokedDeleteItemsfunction = false
     public var invokedDeleteItemsCount = 0
@@ -449,13 +489,13 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedDeleteItemsCount += 1
         invokedDeleteItemsParameters = (userId, items, skipTrash)
         invokedDeleteItemsParametersList.append((userId, items, skipTrash))
-        if let error = deleteItemsUserIdSkipTrashThrowableError20 {
+        if let error = deleteItemsUserIdSkipTrashThrowableError22 {
             throw error
         }
         closureDeleteItems()
     }
     // MARK: - delete
-    public var deleteUserIdItemsThrowableError21: Error?
+    public var deleteUserIdItemsThrowableError23: Error?
     public var closureDelete: () -> () = {}
     public var invokedDeletefunction = false
     public var invokedDeleteCount = 0
@@ -467,13 +507,13 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedDeleteCount += 1
         invokedDeleteParameters = (userId, items)
         invokedDeleteParametersList.append((userId, items))
-        if let error = deleteUserIdItemsThrowableError21 {
+        if let error = deleteUserIdItemsThrowableError23 {
             throw error
         }
         closureDelete()
     }
     // MARK: - updateItem
-    public var updateItemUserIdOldItemNewItemContentShareIdThrowableError22: Error?
+    public var updateItemUserIdOldItemNewItemContentShareIdThrowableError24: Error?
     public var closureUpdateItem: () -> () = {}
     public var invokedUpdateItemfunction = false
     public var invokedUpdateItemCount = 0
@@ -486,14 +526,14 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedUpdateItemCount += 1
         invokedUpdateItemParameters = (userId, oldItem, newItemContent, shareId)
         invokedUpdateItemParametersList.append((userId, oldItem, newItemContent, shareId))
-        if let error = updateItemUserIdOldItemNewItemContentShareIdThrowableError22 {
+        if let error = updateItemUserIdOldItemNewItemContentShareIdThrowableError24 {
             throw error
         }
         closureUpdateItem()
         return stubbedUpdateItemResult
     }
     // MARK: - upsertItems
-    public var upsertItemsUserIdItemsShareIdThrowableError23: Error?
+    public var upsertItemsUserIdItemsShareIdThrowableError25: Error?
     public var closureUpsertItems: () -> () = {}
     public var invokedUpsertItemsfunction = false
     public var invokedUpsertItemsCount = 0
@@ -505,13 +545,13 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedUpsertItemsCount += 1
         invokedUpsertItemsParameters = (userId, items, shareId)
         invokedUpsertItemsParametersList.append((userId, items, shareId))
-        if let error = upsertItemsUserIdItemsShareIdThrowableError23 {
+        if let error = upsertItemsUserIdItemsShareIdThrowableError25 {
             throw error
         }
         closureUpsertItems()
     }
     // MARK: - update
-    public var updateLastUseItemsShareIdThrowableError24: Error?
+    public var updateLastUseItemsShareIdThrowableError26: Error?
     public var closureUpdate: () -> () = {}
     public var invokedUpdatefunction = false
     public var invokedUpdateCount = 0
@@ -523,13 +563,13 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedUpdateCount += 1
         invokedUpdateParameters = (lastUseItems, shareId)
         invokedUpdateParametersList.append((lastUseItems, shareId))
-        if let error = updateLastUseItemsShareIdThrowableError24 {
+        if let error = updateLastUseItemsShareIdThrowableError26 {
             throw error
         }
         closureUpdate()
     }
     // MARK: - updateLastUseTime
-    public var updateLastUseTimeUserIdItemDateThrowableError25: Error?
+    public var updateLastUseTimeUserIdItemDateThrowableError27: Error?
     public var closureUpdateLastUseTime: () -> () = {}
     public var invokedUpdateLastUseTimefunction = false
     public var invokedUpdateLastUseTimeCount = 0
@@ -541,13 +581,13 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedUpdateLastUseTimeCount += 1
         invokedUpdateLastUseTimeParameters = (userId, item, date)
         invokedUpdateLastUseTimeParametersList.append((userId, item, date))
-        if let error = updateLastUseTimeUserIdItemDateThrowableError25 {
+        if let error = updateLastUseTimeUserIdItemDateThrowableError27 {
             throw error
         }
         closureUpdateLastUseTime()
     }
     // MARK: - updateCachedAliasInfo
-    public var updateCachedAliasInfoUserIdItemsAliasesThrowableError26: Error?
+    public var updateCachedAliasInfoUserIdItemsAliasesThrowableError28: Error?
     public var closureUpdateCachedAliasInfo: () -> () = {}
     public var invokedUpdateCachedAliasInfofunction = false
     public var invokedUpdateCachedAliasInfoCount = 0
@@ -559,65 +599,65 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedUpdateCachedAliasInfoCount += 1
         invokedUpdateCachedAliasInfoParameters = (userId, items, aliases)
         invokedUpdateCachedAliasInfoParametersList.append((userId, items, aliases))
-        if let error = updateCachedAliasInfoUserIdItemsAliasesThrowableError26 {
+        if let error = updateCachedAliasInfoUserIdItemsAliasesThrowableError28 {
             throw error
         }
         closureUpdateCachedAliasInfo()
     }
     // MARK: - moveItemsToShareId
-    public var moveItemsToShareIdThrowableError27: Error?
-    public var closureMoveItemsToShareIdAsync27: () -> () = {}
-    public var invokedMoveItemsToShareIdAsync27 = false
-    public var invokedMoveItemsToShareIdAsyncCount27 = 0
-    public var invokedMoveItemsToShareIdAsyncParameters27: (items: [any ItemIdentifiable], toShareId: String)?
-    public var invokedMoveItemsToShareIdAsyncParametersList27 = [(items: [any ItemIdentifiable], toShareId: String)]()
+    public var moveItemsToShareIdThrowableError29: Error?
+    public var closureMoveItemsToShareIdAsync29: () -> () = {}
+    public var invokedMoveItemsToShareIdAsync29 = false
+    public var invokedMoveItemsToShareIdAsyncCount29 = 0
+    public var invokedMoveItemsToShareIdAsyncParameters29: (items: [any ItemIdentifiable], toShareId: String)?
+    public var invokedMoveItemsToShareIdAsyncParametersList29 = [(items: [any ItemIdentifiable], toShareId: String)]()
 
     public func move(items: [any ItemIdentifiable], toShareId: String) async throws {
-        invokedMoveItemsToShareIdAsync27 = true
-        invokedMoveItemsToShareIdAsyncCount27 += 1
-        invokedMoveItemsToShareIdAsyncParameters27 = (items, toShareId)
-        invokedMoveItemsToShareIdAsyncParametersList27.append((items, toShareId))
-        if let error = moveItemsToShareIdThrowableError27 {
+        invokedMoveItemsToShareIdAsync29 = true
+        invokedMoveItemsToShareIdAsyncCount29 += 1
+        invokedMoveItemsToShareIdAsyncParameters29 = (items, toShareId)
+        invokedMoveItemsToShareIdAsyncParametersList29.append((items, toShareId))
+        if let error = moveItemsToShareIdThrowableError29 {
             throw error
         }
-        closureMoveItemsToShareIdAsync27()
+        closureMoveItemsToShareIdAsync29()
     }
     // MARK: - moveCurrentShareIdToShareId
-    public var moveCurrentShareIdToShareIdThrowableError28: Error?
-    public var closureMoveCurrentShareIdToShareIdAsync28: () -> () = {}
-    public var invokedMoveCurrentShareIdToShareIdAsync28 = false
-    public var invokedMoveCurrentShareIdToShareIdAsyncCount28 = 0
-    public var invokedMoveCurrentShareIdToShareIdAsyncParameters28: (currentShareId: String, toShareId: String)?
-    public var invokedMoveCurrentShareIdToShareIdAsyncParametersList28 = [(currentShareId: String, toShareId: String)]()
-    public var stubbedMoveCurrentShareIdToShareIdAsyncResult28: [SymmetricallyEncryptedItem]!
+    public var moveCurrentShareIdToShareIdThrowableError30: Error?
+    public var closureMoveCurrentShareIdToShareIdAsync30: () -> () = {}
+    public var invokedMoveCurrentShareIdToShareIdAsync30 = false
+    public var invokedMoveCurrentShareIdToShareIdAsyncCount30 = 0
+    public var invokedMoveCurrentShareIdToShareIdAsyncParameters30: (currentShareId: String, toShareId: String)?
+    public var invokedMoveCurrentShareIdToShareIdAsyncParametersList30 = [(currentShareId: String, toShareId: String)]()
+    public var stubbedMoveCurrentShareIdToShareIdAsyncResult30: [SymmetricallyEncryptedItem]!
 
     public func move(currentShareId: String, toShareId: String) async throws -> [SymmetricallyEncryptedItem] {
-        invokedMoveCurrentShareIdToShareIdAsync28 = true
-        invokedMoveCurrentShareIdToShareIdAsyncCount28 += 1
-        invokedMoveCurrentShareIdToShareIdAsyncParameters28 = (currentShareId, toShareId)
-        invokedMoveCurrentShareIdToShareIdAsyncParametersList28.append((currentShareId, toShareId))
-        if let error = moveCurrentShareIdToShareIdThrowableError28 {
+        invokedMoveCurrentShareIdToShareIdAsync30 = true
+        invokedMoveCurrentShareIdToShareIdAsyncCount30 += 1
+        invokedMoveCurrentShareIdToShareIdAsyncParameters30 = (currentShareId, toShareId)
+        invokedMoveCurrentShareIdToShareIdAsyncParametersList30.append((currentShareId, toShareId))
+        if let error = moveCurrentShareIdToShareIdThrowableError30 {
             throw error
         }
-        closureMoveCurrentShareIdToShareIdAsync28()
-        return stubbedMoveCurrentShareIdToShareIdAsyncResult28
+        closureMoveCurrentShareIdToShareIdAsync30()
+        return stubbedMoveCurrentShareIdToShareIdAsyncResult30
     }
     // MARK: - deleteAllItemsLocally
-    public var deleteAllItemsLocallyThrowableError29: Error?
-    public var closureDeleteAllItemsLocallyAsync29: () -> () = {}
-    public var invokedDeleteAllItemsLocallyAsync29 = false
-    public var invokedDeleteAllItemsLocallyAsyncCount29 = 0
+    public var deleteAllItemsLocallyThrowableError31: Error?
+    public var closureDeleteAllItemsLocallyAsync31: () -> () = {}
+    public var invokedDeleteAllItemsLocallyAsync31 = false
+    public var invokedDeleteAllItemsLocallyAsyncCount31 = 0
 
     public func deleteAllItemsLocally() async throws {
-        invokedDeleteAllItemsLocallyAsync29 = true
-        invokedDeleteAllItemsLocallyAsyncCount29 += 1
-        if let error = deleteAllItemsLocallyThrowableError29 {
+        invokedDeleteAllItemsLocallyAsync31 = true
+        invokedDeleteAllItemsLocallyAsyncCount31 += 1
+        if let error = deleteAllItemsLocallyThrowableError31 {
             throw error
         }
-        closureDeleteAllItemsLocallyAsync29()
+        closureDeleteAllItemsLocallyAsync31()
     }
     // MARK: - deleteAllCurrentUserItemsLocally
-    public var deleteAllCurrentUserItemsLocallyThrowableError30: Error?
+    public var deleteAllCurrentUserItemsLocallyThrowableError32: Error?
     public var closureDeleteAllCurrentUserItemsLocally: () -> () = {}
     public var invokedDeleteAllCurrentUserItemsLocallyfunction = false
     public var invokedDeleteAllCurrentUserItemsLocallyCount = 0
@@ -625,31 +665,31 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public func deleteAllCurrentUserItemsLocally() async throws {
         invokedDeleteAllCurrentUserItemsLocallyfunction = true
         invokedDeleteAllCurrentUserItemsLocallyCount += 1
-        if let error = deleteAllCurrentUserItemsLocallyThrowableError30 {
+        if let error = deleteAllCurrentUserItemsLocallyThrowableError32 {
             throw error
         }
         closureDeleteAllCurrentUserItemsLocally()
     }
     // MARK: - deleteAllItemsLocallyShareId
-    public var deleteAllItemsLocallyShareIdThrowableError31: Error?
-    public var closureDeleteAllItemsLocallyShareIdAsync31: () -> () = {}
-    public var invokedDeleteAllItemsLocallyShareIdAsync31 = false
-    public var invokedDeleteAllItemsLocallyShareIdAsyncCount31 = 0
-    public var invokedDeleteAllItemsLocallyShareIdAsyncParameters31: (shareId: String, Void)?
-    public var invokedDeleteAllItemsLocallyShareIdAsyncParametersList31 = [(shareId: String, Void)]()
+    public var deleteAllItemsLocallyShareIdThrowableError33: Error?
+    public var closureDeleteAllItemsLocallyShareIdAsync33: () -> () = {}
+    public var invokedDeleteAllItemsLocallyShareIdAsync33 = false
+    public var invokedDeleteAllItemsLocallyShareIdAsyncCount33 = 0
+    public var invokedDeleteAllItemsLocallyShareIdAsyncParameters33: (shareId: String, Void)?
+    public var invokedDeleteAllItemsLocallyShareIdAsyncParametersList33 = [(shareId: String, Void)]()
 
     public func deleteAllItemsLocally(shareId: String) async throws {
-        invokedDeleteAllItemsLocallyShareIdAsync31 = true
-        invokedDeleteAllItemsLocallyShareIdAsyncCount31 += 1
-        invokedDeleteAllItemsLocallyShareIdAsyncParameters31 = (shareId, ())
-        invokedDeleteAllItemsLocallyShareIdAsyncParametersList31.append((shareId, ()))
-        if let error = deleteAllItemsLocallyShareIdThrowableError31 {
+        invokedDeleteAllItemsLocallyShareIdAsync33 = true
+        invokedDeleteAllItemsLocallyShareIdAsyncCount33 += 1
+        invokedDeleteAllItemsLocallyShareIdAsyncParameters33 = (shareId, ())
+        invokedDeleteAllItemsLocallyShareIdAsyncParametersList33.append((shareId, ()))
+        if let error = deleteAllItemsLocallyShareIdThrowableError33 {
             throw error
         }
-        closureDeleteAllItemsLocallyShareIdAsync31()
+        closureDeleteAllItemsLocallyShareIdAsync33()
     }
     // MARK: - deleteItemsLocally
-    public var deleteItemsLocallyItemIdsShareIdThrowableError32: Error?
+    public var deleteItemsLocallyItemIdsShareIdThrowableError34: Error?
     public var closureDeleteItemsLocally: () -> () = {}
     public var invokedDeleteItemsLocallyfunction = false
     public var invokedDeleteItemsLocallyCount = 0
@@ -661,13 +701,13 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedDeleteItemsLocallyCount += 1
         invokedDeleteItemsLocallyParameters = (itemIds, shareId)
         invokedDeleteItemsLocallyParametersList.append((itemIds, shareId))
-        if let error = deleteItemsLocallyItemIdsShareIdThrowableError32 {
+        if let error = deleteItemsLocallyItemIdsShareIdThrowableError34 {
             throw error
         }
         closureDeleteItemsLocally()
     }
     // MARK: - getActiveLogInItems
-    public var getActiveLogInItemsUserIdThrowableError33: Error?
+    public var getActiveLogInItemsUserIdThrowableError35: Error?
     public var closureGetActiveLogInItems: () -> () = {}
     public var invokedGetActiveLogInItemsfunction = false
     public var invokedGetActiveLogInItemsCount = 0
@@ -680,14 +720,14 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedGetActiveLogInItemsCount += 1
         invokedGetActiveLogInItemsParameters = (userId, ())
         invokedGetActiveLogInItemsParametersList.append((userId, ()))
-        if let error = getActiveLogInItemsUserIdThrowableError33 {
+        if let error = getActiveLogInItemsUserIdThrowableError35 {
             throw error
         }
         closureGetActiveLogInItems()
         return stubbedGetActiveLogInItemsResult
     }
     // MARK: - pinItems
-    public var pinItemsThrowableError34: Error?
+    public var pinItemsThrowableError36: Error?
     public var closurePinItems: () -> () = {}
     public var invokedPinItemsfunction = false
     public var invokedPinItemsCount = 0
@@ -699,13 +739,13 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedPinItemsCount += 1
         invokedPinItemsParameters = (items, ())
         invokedPinItemsParametersList.append((items, ()))
-        if let error = pinItemsThrowableError34 {
+        if let error = pinItemsThrowableError36 {
             throw error
         }
         closurePinItems()
     }
     // MARK: - unpinItems
-    public var unpinItemsThrowableError35: Error?
+    public var unpinItemsThrowableError37: Error?
     public var closureUnpinItems: () -> () = {}
     public var invokedUnpinItemsfunction = false
     public var invokedUnpinItemsCount = 0
@@ -717,13 +757,13 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedUnpinItemsCount += 1
         invokedUnpinItemsParameters = (items, ())
         invokedUnpinItemsParametersList.append((items, ()))
-        if let error = unpinItemsThrowableError35 {
+        if let error = unpinItemsThrowableError37 {
             throw error
         }
         closureUnpinItems()
     }
     // MARK: - getAllPinnedItems
-    public var getAllPinnedItemsThrowableError36: Error?
+    public var getAllPinnedItemsThrowableError38: Error?
     public var closureGetAllPinnedItems: () -> () = {}
     public var invokedGetAllPinnedItemsfunction = false
     public var invokedGetAllPinnedItemsCount = 0
@@ -732,14 +772,14 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public func getAllPinnedItems() async throws -> [SymmetricallyEncryptedItem] {
         invokedGetAllPinnedItemsfunction = true
         invokedGetAllPinnedItemsCount += 1
-        if let error = getAllPinnedItemsThrowableError36 {
+        if let error = getAllPinnedItemsThrowableError38 {
             throw error
         }
         closureGetAllPinnedItems()
         return stubbedGetAllPinnedItemsResult
     }
     // MARK: - updateItemFlags
-    public var updateItemFlagsFlagsShareIdItemIdThrowableError37: Error?
+    public var updateItemFlagsFlagsShareIdItemIdThrowableError39: Error?
     public var closureUpdateItemFlags: () -> () = {}
     public var invokedUpdateItemFlagsfunction = false
     public var invokedUpdateItemFlagsCount = 0
@@ -751,13 +791,13 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedUpdateItemFlagsCount += 1
         invokedUpdateItemFlagsParameters = (flags, shareId, itemId)
         invokedUpdateItemFlagsParametersList.append((flags, shareId, itemId))
-        if let error = updateItemFlagsFlagsShareIdItemIdThrowableError37 {
+        if let error = updateItemFlagsFlagsShareIdItemIdThrowableError39 {
             throw error
         }
         closureUpdateItemFlags()
     }
     // MARK: - getAllItemsContent
-    public var getAllItemsContentItemsThrowableError38: Error?
+    public var getAllItemsContentItemsThrowableError40: Error?
     public var closureGetAllItemsContent: () -> () = {}
     public var invokedGetAllItemsContentfunction = false
     public var invokedGetAllItemsContentCount = 0
@@ -770,14 +810,14 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedGetAllItemsContentCount += 1
         invokedGetAllItemsContentParameters = (items, ())
         invokedGetAllItemsContentParametersList.append((items, ()))
-        if let error = getAllItemsContentItemsThrowableError38 {
+        if let error = getAllItemsContentItemsThrowableError40 {
             throw error
         }
         closureGetAllItemsContent()
         return stubbedGetAllItemsContentResult
     }
     // MARK: - resetHistory
-    public var resetHistoryThrowableError39: Error?
+    public var resetHistoryThrowableError41: Error?
     public var closureResetHistory: () -> () = {}
     public var invokedResetHistoryfunction = false
     public var invokedResetHistoryCount = 0
@@ -789,13 +829,13 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedResetHistoryCount += 1
         invokedResetHistoryParameters = (item, ())
         invokedResetHistoryParametersList.append((item, ()))
-        if let error = resetHistoryThrowableError39 {
+        if let error = resetHistoryThrowableError41 {
             throw error
         }
         closureResetHistory()
     }
     // MARK: - importLogins
-    public var importLoginsUserIdShareIdLoginsThrowableError40: Error?
+    public var importLoginsUserIdShareIdLoginsThrowableError42: Error?
     public var closureImportLogins: () -> () = {}
     public var invokedImportLoginsfunction = false
     public var invokedImportLoginsCount = 0
@@ -807,13 +847,13 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedImportLoginsCount += 1
         invokedImportLoginsParameters = (userId, shareId, logins)
         invokedImportLoginsParametersList.append((userId, shareId, logins))
-        if let error = importLoginsUserIdShareIdLoginsThrowableError40 {
+        if let error = importLoginsUserIdShareIdLoginsThrowableError42 {
             throw error
         }
         closureImportLogins()
     }
     // MARK: - totpCreationDateThreshold
-    public var totpCreationDateThresholdNumberOfTotpThrowableError41: Error?
+    public var totpCreationDateThresholdNumberOfTotpThrowableError43: Error?
     public var closureTotpCreationDateThreshold: () -> () = {}
     public var invokedTotpCreationDateThresholdfunction = false
     public var invokedTotpCreationDateThresholdCount = 0
@@ -826,7 +866,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedTotpCreationDateThresholdCount += 1
         invokedTotpCreationDateThresholdParameters = (numberOfTotp, ())
         invokedTotpCreationDateThresholdParametersList.append((numberOfTotp, ()))
-        if let error = totpCreationDateThresholdNumberOfTotpThrowableError41 {
+        if let error = totpCreationDateThresholdNumberOfTotpThrowableError43 {
             throw error
         }
         closureTotpCreationDateThreshold()
