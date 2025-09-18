@@ -53,7 +53,6 @@ public protocol UserEventsSynchronizerProtocol: Sendable {
 public actor UserEventsSynchronizer: UserEventsSynchronizerProtocol {
     private let localUserEventIdDatasource: any LocalUserEventIdDatasourceProtocol
     private let remoteUserEventsDatasource: any RemoteUserEventsDatasourceProtocol
-    private let localItemDatasource: any LocalItemDatasourceProtocol
     private let itemRepository: any ItemRepositoryProtocol
     private let shareRepository: any ShareRepositoryProtocol
     private let accessRepository: any AccessRepositoryProtocol
@@ -63,7 +62,6 @@ public actor UserEventsSynchronizer: UserEventsSynchronizerProtocol {
 
     public init(localUserEventIdDatasource: any LocalUserEventIdDatasourceProtocol,
                 remoteUserEventsDatasource: any RemoteUserEventsDatasourceProtocol,
-                localItemDatasource: any LocalItemDatasourceProtocol,
                 itemRepository: any ItemRepositoryProtocol,
                 shareRepository: any ShareRepositoryProtocol,
                 accessRepository: any AccessRepositoryProtocol,
@@ -72,7 +70,6 @@ public actor UserEventsSynchronizer: UserEventsSynchronizerProtocol {
                 logManager: any LogManagerProtocol) {
         self.localUserEventIdDatasource = localUserEventIdDatasource
         self.remoteUserEventsDatasource = remoteUserEventsDatasource
-        self.localItemDatasource = localItemDatasource
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
         self.accessRepository = accessRepository
