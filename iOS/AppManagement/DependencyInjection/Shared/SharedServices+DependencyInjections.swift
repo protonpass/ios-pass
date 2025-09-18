@@ -85,7 +85,6 @@ extension SharedServiceContainer {
             let container = SharedRepositoryContainer.shared
             return UserEventsSynchronizer(localUserEventIdDatasource: container.localUserEventIdDatasource(),
                                           remoteUserEventsDatasource: container.remoteUserEventsDatasource(),
-                                          localItemDatasource: container.localItemDatasource(),
                                           itemRepository: container.itemRepository(),
                                           shareRepository: container.shareRepository(),
                                           accessRepository: container.accessRepository(),
@@ -118,7 +117,6 @@ extension SharedServiceContainer {
     var simpleLoginNoteSynchronizer: Factory<any SimpleLoginNoteSynchronizerProtocol> {
         self {
             SimpleLoginNoteSynchronizer(remoteDatasource: SharedRepositoryContainer.shared.remoteAliasDatasource(),
-                                        localDatasource: SharedRepositoryContainer.shared.localItemDatasource(),
                                         itemRepository: self.itemRepository)
         }
     }

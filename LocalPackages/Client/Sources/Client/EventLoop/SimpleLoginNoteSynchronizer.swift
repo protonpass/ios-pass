@@ -33,16 +33,13 @@ public protocol SimpleLoginNoteSynchronizerProtocol: Sendable, Actor {
 
 public actor SimpleLoginNoteSynchronizer: SimpleLoginNoteSynchronizerProtocol {
     private let remoteDatasource: any RemoteAliasDatasourceProtocol
-    private let localDatasource: any LocalItemDatasourceProtocol
     private let itemRepository: any ItemRepositoryProtocol
     private let pageSize: Int
 
     public init(remoteDatasource: any RemoteAliasDatasourceProtocol,
-                localDatasource: any LocalItemDatasourceProtocol,
                 itemRepository: any ItemRepositoryProtocol,
                 pageSize: Int = 100) {
         self.remoteDatasource = remoteDatasource
-        self.localDatasource = localDatasource
         self.itemRepository = itemRepository
         self.pageSize = pageSize
     }
@@ -50,7 +47,7 @@ public actor SimpleLoginNoteSynchronizer: SimpleLoginNoteSynchronizerProtocol {
 
 public extension SimpleLoginNoteSynchronizer {
     func syncAllAliases(userId: String) async throws -> Bool {
-        let aliases = try await localDatasource.getUnsyncedSimpleLoginNoteAliases(userId: userId)
+        let aliases = try await itemRepository.getUnsyncedSimpleLoginNoteAliases(userId: userId)
         guard !aliases.isEmpty else { return false }
         try await groupByShareIdAndSyncInBatch(userId: userId, aliases: aliases)
         return true
@@ -58,7 +55,7 @@ public extension SimpleLoginNoteSynchronizer {
 
     func syncAliases(userId: String, aliases: [any ItemIdentifiable]) async throws -> Bool {
         guard !aliases.isEmpty else { return false }
-        let items = try await localDatasource.getItems(aliases)
+        let items = try await itemRepository.getItems(aliases)
         assert(aliases.count == items.count, "Can not fully get all local aliases to sync notes")
         try await groupByShareIdAndSyncInBatch(userId: userId, aliases: items)
         return true

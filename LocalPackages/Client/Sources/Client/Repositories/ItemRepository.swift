@@ -52,10 +52,15 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     /// Get a specific Item
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem?
 
+    /// Get items by IDs
+    func getItems(_ ids: [any ItemIdentifiable]) async throws -> [SymmetricallyEncryptedItem]
+
     /// Get alias item by alias email
     func getAliasItem(email: String, shareId: String) async throws -> SymmetricallyEncryptedItem?
 
     func changeAliasStatus(userId: String, items: [any ItemIdentifiable], enabled: Bool) async throws
+
+    func getUnsyncedSimpleLoginNoteAliases(userId: String) async throws -> [SymmetricallyEncryptedItem]
 
     /// Get decrypted item content
     func getItemContent(shareId: String, itemId: String) async throws -> ItemContent?
@@ -243,6 +248,10 @@ public extension ItemRepository {
 
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem? {
         try await localDatasource.getItem(shareId: shareId, itemId: itemId)
+    }
+
+    func getItems(_ ids: [any ItemIdentifiable]) async throws -> [SymmetricallyEncryptedItem] {
+        try await localDatasource.getItems(ids)
     }
 
     func getAllPinnedItems() async throws -> [SymmetricallyEncryptedItem] {
@@ -728,6 +737,10 @@ public extension ItemRepository {
             try await localDatasource.upsertItems([encryptedItem])
             logger.trace("Saved item \(updatedAlias.itemID) to local database")
         }
+    }
+
+    func getUnsyncedSimpleLoginNoteAliases(userId: String) async throws -> [SymmetricallyEncryptedItem] {
+        try await localDatasource.getUnsyncedSimpleLoginNoteAliases(userId: userId)
     }
 
     func resetHistory(_ item: any ItemIdentifiable) async throws {
