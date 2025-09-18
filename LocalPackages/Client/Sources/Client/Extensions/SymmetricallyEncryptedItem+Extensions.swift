@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import CryptoKit
 import Entities
 
@@ -27,7 +28,8 @@ public extension SymmetricallyEncryptedItem {
         let contentProtobuf = try ItemContentProtobuf(base64: encryptedContent, symmetricKey: symmetricKey)
         var simpleLoginNote: String?
 
-        if let encryptedSimpleLoginNote {
+        if let encryptedSimpleLoginNote,
+           encryptedSimpleLoginNote != Constants.Database.encryptedSlNotePlaceholder {
             simpleLoginNote = try symmetricKey.decrypt(encryptedSimpleLoginNote)
         }
 

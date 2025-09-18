@@ -446,46 +446,36 @@ extension LocalItemDatasourceTests {
         #expect(aliasCount2 == 0)
     }
 
-    @Test("Get unsynced SimpleLogin note aliases")
-    func getUnsyncedSimpleLoginNoteAliases() async throws {
+    @Test("Get aliases with no SimpleLogin note")
+    func getAliasesWithNoSlNote() async throws {
         // Given
         let userId = String.random()
-        try await sut.givenInsertedItem(userId: userId)
-        let givenAlias1 = try await sut.givenInsertedItem(userId: userId,
-                                                          aliasEmail: .random(),
-                                                          modifyTime: 12)
-        try await sut.givenInsertedItem(userId: userId)
-        let givenAlias2 = try await sut.givenInsertedItem(userId: userId,
-                                                          aliasEmail: .random(),
-                                                          modifyTime: 8)
-        try await sut.givenInsertedItem(userId: userId)
-        try await sut.givenInsertedItem(userId: userId)
-        let givenAlias3 = try await sut.givenInsertedItem(userId: userId,
-                                                          aliasEmail: .random(),
-                                                          modifyTime: 30)
-        let givenAlias4 = try await sut.givenInsertedItem(userId: userId,
-                                                          aliasEmail: .random(),
-                                                          modifyTime: 46)
+        let alias1 = try await sut.givenInsertedItem(userId: userId,
+                                                     aliasEmail: .random())
+        let alias2 = try await sut.givenInsertedItem(userId: userId,
+                                                     aliasEmail: .random(),
+                                                     encryptedSimpleLoginNote: .random())
+        let alias3 = try await sut.givenInsertedItem(userId: userId,
+                                                     aliasEmail: .random())
+        let alias4 = try await sut.givenInsertedItem(userId: userId,
+                                                     aliasEmail: .random())
+        let alias5 = try await sut.givenInsertedItem(userId: userId,
+                                                     aliasEmail: .random(),
+                                                     encryptedSimpleLoginNote: .random())
 
         // When
-        let aliasCount = try await sut.getAliasCount(userId: userId)
+        let unsyncedSlNoteAliases = try await sut.getUnsyncedSimpleLoginNoteAliases(userId: userId)
 
         // Then
-        #expect(aliasCount == 4)
-
-        // When
-        let unsyncedAliases = try await sut.getUnsyncedSimpleLoginNoteAliases(userId: userId,
-                                                                              pageSize: 3)
-
-        // Then
-        #expect(unsyncedAliases.count == 3)
-        #expect(unsyncedAliases[0] == givenAlias4)
-        #expect(unsyncedAliases[1] == givenAlias3)
-        #expect(unsyncedAliases[2] == givenAlias1)
-        #expect(!unsyncedAliases.contains(givenAlias2))
+        #expect(unsyncedSlNoteAliases.count == 3)
+        #expect(unsyncedSlNoteAliases.contains(alias1))
+        #expect(!unsyncedSlNoteAliases.contains(alias2))
+        #expect(unsyncedSlNoteAliases.contains(alias3))
+        #expect(unsyncedSlNoteAliases.contains(alias4))
+        #expect(!unsyncedSlNoteAliases.contains(alias5))
     }
 
-    @Test("Update cached alias info and unsync note")
+    @Test("Update cached alias info")
     func updateCachedAliasInfo() async throws {
         // Given
         let userId = String.random()
@@ -508,26 +498,28 @@ extension LocalItemDatasourceTests {
 
         let alias1 = try #require(aliases.first(where: { $0.itemId == givenAlias1.itemId }))
         #expect(alias1.encryptedSimpleLoginNote == alias1Info.encryptedNote)
-        #expect(alias1.simpleLoginNoteSynced)
 
         let alias2 = try #require(aliases.first(where: { $0.itemId == givenAlias2.itemId }))
         #expect(alias2.encryptedSimpleLoginNote == alias2Info.encryptedNote)
-        #expect(alias2.simpleLoginNoteSynced)
+    }
+
+    @Test("Get items by IDs")
+    func getItemsByIds() async throws {
+        // Given
+        let givenItem1 = try await sut.givenInsertedItem()
+        let givenItem2 = try await sut.givenInsertedItem()
+        let givenItem3 = try await sut.givenInsertedItem()
+        let givenItem4 = try await sut.givenInsertedItem()
+        let givenItem5 = try await sut.givenInsertedItem()
 
         // When
-        try await sut.unsyncSimpleLoginNotes(items: [alias1])
+        let items = try await sut.getItems([givenItem1, givenItem3, givenItem4])
 
         // Then
-        let updatedAliases = try await sut.getAllItems(userId: userId)
-        #expect(updatedAliases.count == 2)
-
-        let updatedAlias1 = try #require(updatedAliases.first(where: { $0.itemId == givenAlias1.itemId }))
-
-        #expect(!updatedAlias1.simpleLoginNoteSynced)
-
-        let updatedAlias2 = try #require(updatedAliases.first(where: { $0.itemId == givenAlias2.itemId }))
-
-        #expect(updatedAlias2.simpleLoginNoteSynced)
+        #expect(items.count == 3)
+        #expect(items.contains(givenItem1))
+        #expect(items.contains(givenItem3))
+        #expect(items.contains(givenItem4))
     }
 }
 
@@ -541,7 +533,8 @@ private extension LocalItemDatasource {
                            aliasEmail: String? = nil,
                            modifyTime: Int64 = .random(in: 1_234_567...1_987_654),
                            lastUsedItem: Int64 = .random(in: 1_234_567...1_987_654),
-                           isLogInItem: Bool = .random())
+                           isLogInItem: Bool = .random(),
+                           encryptedSimpleLoginNote: String? = nil)
     async throws -> SymmetricallyEncryptedItem {
         let shareId = shareId ?? .random()
         let itemRevision = Item.random(itemId: itemId ?? .random(),
@@ -554,8 +547,7 @@ private extension LocalItemDatasource {
                                               item: itemRevision,
                                               encryptedContent: encryptedContent,
                                               isLogInItem: isLogInItem,
-                                              encryptedSimpleLoginNote: nil,
-                                              simpleLoginNoteSynced: false)
+                                              encryptedSimpleLoginNote: encryptedSimpleLoginNote)
         try await upsertItems([item])
         return item
     }

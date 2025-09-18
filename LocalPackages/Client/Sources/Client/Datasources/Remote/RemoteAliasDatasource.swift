@@ -24,6 +24,8 @@ import Foundation
 public protocol RemoteAliasDatasourceProtocol: Sendable {
     func getAliasOptions(userId: String, shareId: String) async throws -> AliasOptions
     func getAliasDetails(userId: String, shareId: String, itemId: String) async throws -> Alias
+
+    /// Get alias details in bulk, all aliases must be in the same vault (share the same ShareID)
     func getAliasDetails(userId: String, items: [any ItemIdentifiable]) async throws -> [Alias]
     func changeMailboxes(userId: String, shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias
 

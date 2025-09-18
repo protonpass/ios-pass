@@ -28,21 +28,25 @@ import TestingToolkit
 
 @Suite(.tags(.synchronizer))
 struct UserEventsSynchronizerTests {
+    let localItemDatasource = LocalItemDatasourceProtocolMock()
     let localUserEventIdDatasource = LocalUserEventIdDatasourceProtocolMock()
     let remoteUserEventsDatasource = RemoteUserEventsDatasourceProtocolMock()
     let itemRepository = ItemRepositoryProtocolMock()
     let shareRepository = ShareRepositoryProtocolMock()
     let accessRespository = AccessRepositoryProtocolMock()
     let inviteRepository = InviteRepositoryProtocolMock()
+    let slNoteSynchronizer = SimpleLoginNoteSynchronizerProtocolMock()
     var sut: (any UserEventsSynchronizerProtocol)!
 
     init() {
         sut = UserEventsSynchronizer(localUserEventIdDatasource: localUserEventIdDatasource,
                                      remoteUserEventsDatasource: remoteUserEventsDatasource,
+                                     localItemDatasource: localItemDatasource,
                                      itemRepository: itemRepository,
                                      shareRepository: shareRepository,
                                      accessRepository: accessRespository,
                                      inviteRepository: inviteRepository,
+                                     simpleLoginNoteSynchronizer: slNoteSynchronizer,
                                      logManager: LogManagerProtocolMock())
     }
 }
@@ -57,6 +61,7 @@ private struct Args {
     var refreshShareInvokeCount: Int?
     var deleteShareInvokeCount: Int?
     var refreshInviteInvokeCount: Int?
+    var syncSimpleLoginNoteInvokeCount: Int?
     var storedLastEventId: String?
 
     static var noLocalLastEventIdTriggerFullRefresh: Self {
@@ -73,6 +78,7 @@ private struct Args {
                 .init(lastEventID: .random(),
                       itemsUpdated: [],
                       itemsDeleted: [],
+                      aliasNoteChanged: [],
                       invitesChanged: nil,
                       sharesUpdated: [],
                       sharesDeleted: [],
@@ -93,6 +99,7 @@ private struct Args {
                 .init(lastEventID: "TestID",
                       itemsUpdated: .random(count: 5),
                       itemsDeleted: .random(count: 8),
+                      aliasNoteChanged: .random(count: 14),
                       invitesChanged: nil,
                       sharesUpdated: .random(count: 19),
                       sharesDeleted: .random(count: 21),
@@ -109,6 +116,7 @@ private struct Args {
               deleteItemsInvokeCount: 1,
               refreshShareInvokeCount: 19,
               deleteShareInvokeCount: 21,
+              syncSimpleLoginNoteInvokeCount: 1,
               storedLastEventId: "TestID")
     }
 
@@ -118,6 +126,7 @@ private struct Args {
                 .init(lastEventID: "TestID1",
                       itemsUpdated: .random(count: 7),
                       itemsDeleted: .random(count: 16),
+                      aliasNoteChanged: .random(count: 90),
                       invitesChanged: nil,
                       sharesUpdated: .random(count: 3),
                       sharesDeleted: .random(count: 8),
@@ -127,6 +136,7 @@ private struct Args {
                 .init(lastEventID: "TestID2",
                       itemsUpdated: .random(count: 10),
                       itemsDeleted: .random(count: 3),
+                      aliasNoteChanged: .random(count: 3),
                       invitesChanged: .init(eventToken: .random()),
                       sharesUpdated: .random(count: 27),
                       sharesDeleted: .random(count: 14),
@@ -144,6 +154,7 @@ private struct Args {
               refreshShareInvokeCount: 30,
               deleteShareInvokeCount: 22,
               refreshInviteInvokeCount: 1,
+              syncSimpleLoginNoteInvokeCount: 2,
               storedLastEventId: "TestID2")
     }
 }
@@ -157,6 +168,7 @@ private extension UserEventsSynchronizerTests {
             Args.twoEventBatches
           ])
     func sync(args: Args) async throws {
+        await slNoteSynchronizer.stubResults()
         localUserEventIdDatasource.stubbedGetLastEventIdResult = args.lastEventId
 
         if var events = args.events {
@@ -191,6 +203,10 @@ private extension UserEventsSynchronizerTests {
             #expect(inviteRepository.invokedRefreshInvitesUserIdAsyncCount5 == refreshInviteInvokeCount)
         }
 
+        if let syncSimpleLoginNoteInvokeCount = args.syncSimpleLoginNoteInvokeCount {
+            await #expect(slNoteSynchronizer.invokedSyncAliasesCount == syncSimpleLoginNoteInvokeCount)
+        }
+
         if let storedLastEventId = args.storedLastEventId {
             #expect(localUserEventIdDatasource.invokedUpsertLastEventIdParameters?.lastEventId ==
                     storedLastEventId)
@@ -207,5 +223,12 @@ extension UserEventItem: Randomable {
 extension UserEventShare: Randomable {
     public static func random() -> Self {
         .init(shareID: .random(),  eventToken: .random())
+    }
+}
+
+private extension SimpleLoginNoteSynchronizerProtocolMock {
+    func stubResults() async {
+        stubbedSyncAllAliasesIfApplicableResult = true
+        stubbedSyncAliasesResult = true
     }
 }

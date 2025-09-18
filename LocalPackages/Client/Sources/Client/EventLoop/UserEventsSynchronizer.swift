@@ -220,8 +220,8 @@ private extension UserEventsSynchronizer {
             return
         }
         logger.trace("Unsyncing SL note for \(aliasNoteChangedItems.count) items for user \(userId)")
-        try await localItemDatasource.unsyncSimpleLoginNotes(items: aliasNoteChangedItems)
-        _ = try await simpleLoginNoteSynchronizer.sync(userId: userId)
+        _ = try await simpleLoginNoteSynchronizer.syncAliases(userId: userId,
+                                                              aliases: aliasNoteChangedItems)
     }
 
     func processUpdatedShares(_ updatedShares: [UserEventShare], userId: String) async throws {
