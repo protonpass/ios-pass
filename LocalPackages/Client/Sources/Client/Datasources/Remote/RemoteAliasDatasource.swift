@@ -24,6 +24,9 @@ import Foundation
 public protocol RemoteAliasDatasourceProtocol: Sendable {
     func getAliasOptions(userId: String, shareId: String) async throws -> AliasOptions
     func getAliasDetails(userId: String, shareId: String, itemId: String) async throws -> Alias
+
+    /// Get alias details in bulk, all aliases must be in the same vault (share the same ShareID)
+    func getAliasDetails(userId: String, items: [any ItemIdentifiable]) async throws -> [Alias]
     func changeMailboxes(userId: String, shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias
 
     // MARK: - SimpleLogin alias Sync
@@ -95,6 +98,18 @@ public extension RemoteAliasDatasource {
         let endpoint = GetAliasDetailsEndpoint(shareId: shareId, itemId: itemId)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.alias
+    }
+
+    func getAliasDetails(userId: String, items: [any ItemIdentifiable]) async throws -> [Alias] {
+        guard let shareId = items.first?.shareId else { return [] }
+        guard items.allSatisfy({ $0.shareId == shareId }) else {
+            assertionFailure("Items do not belong to the same vault")
+            throw PassError.itemsNotBelongToSameVault
+        }
+        let itemIds = items.map(\.itemId)
+        let endpoint = GetAliasDetailsInBulkEndpoint(shareId: shareId, itemIds: itemIds)
+        let response = try await exec(userId: userId, endpoint: endpoint)
+        return response.aliases
     }
 
     func changeMailboxes(userId: String,

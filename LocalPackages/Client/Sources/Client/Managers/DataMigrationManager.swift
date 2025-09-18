@@ -30,12 +30,14 @@ public struct MigrationType: OptionSet, Sendable {
 
     public static let userAppData = MigrationType(rawValue: 1 << 0)
     public static let credentialsAppData = MigrationType(rawValue: 1 << 1)
+
+    // Obsolete and removed in September 2025 but we keep it for the record
     public static let userIdInItemsSearchEntriesAndShareKeys = MigrationType(rawValue: 1 << 2)
+
     public static let credentialsForActionExtension = MigrationType(rawValue: 1 << 3)
     public static let all: [MigrationType] = [
         .userAppData,
         .credentialsAppData,
-        .userIdInItemsSearchEntriesAndShareKeys,
         .credentialsForActionExtension
     ]
 }

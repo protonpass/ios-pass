@@ -71,23 +71,5 @@ public final class ApplyAppMigration: ApplyAppMigrationUseCase {
             logger.trace("Initialized credentials for action extension")
             await dataMigrationManager.addMigration(.credentialsForActionExtension)
         }
-
-        if missingMigrations.contains(.userIdInItemsSearchEntriesAndShareKeys) {
-            guard let userId = try? await userManager.getActiveUserId() else {
-                logger.debug("Skip user ID migrations. No active user ID found.")
-                await dataMigrationManager.addMigration(.userIdInItemsSearchEntriesAndShareKeys)
-                return
-            }
-
-            logger.trace("Start adding user id to items, search entries & share keys")
-            async let items: ()? = (itemDatasource as? LocalItemDatasource)?.updateLocalItems(with: userId)
-            async let searchEntries: ()? = (searchEntryDatasource as? LocalSearchEntryDatasource)?
-                .updateSearchEntries(with: userId)
-            async let shareKeys: ()? = (shareKeyDatasource as? LocalShareKeyDatasource)?.updateKeys(with: userId)
-            _ = try await (items, searchEntries, shareKeys)
-            logger.trace("Finish adding user id to items, search entries & share keys")
-
-            await dataMigrationManager.addMigration(.userIdInItemsSearchEntriesAndShareKeys)
-        }
     }
 }

@@ -578,7 +578,7 @@ private extension DarkWebMonitorHomeView {
 
 private extension [AliasMonitorInfo] {
     var breachCount: Int {
-        filter { !$0.alias.item.monitoringDisabled && $0.alias.item.isBreached }.count
+        count(where: { !$0.alias.item.monitoringDisabled && $0.alias.item.isBreached })
     }
 
     var topBreaches: [AliasMonitorInfo] {
@@ -593,7 +593,7 @@ private extension [AliasMonitorInfo] {
 
 private extension [CustomEmail] {
     var breachCount: Int {
-        filter { $0.breachCounter > 0 }.count
+        count(where: { $0.breachCounter > 0 })
     }
 }
 

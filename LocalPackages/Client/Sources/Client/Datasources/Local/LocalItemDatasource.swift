@@ -34,6 +34,9 @@ public protocol LocalItemDatasourceProtocol: Sendable {
     /// Get items by state
     func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem]
 
+    /// Get items by ShareID and ItemID
+    func getItems(_ ids: [any ItemIdentifiable]) async throws -> [SymmetricallyEncryptedItem]
+
     /// Get a specific item
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem?
 
@@ -45,6 +48,11 @@ public protocol LocalItemDatasourceProtocol: Sendable {
     func getItemCount(shareId: String) async throws -> Int
 
     func getAliasCount(userId: String) async throws -> Int
+
+    func getUnsyncedSimpleLoginNoteAliases(userId: String) async throws -> [SymmetricallyEncryptedItem]
+
+    func updateCachedAliasInfo(items: [SymmetricallyEncryptedItem],
+                               aliases: [SymmetricallyEncryptedAlias]) async throws
 
     /// Insert or update a list of items
     func upsertItems(_ items: [SymmetricallyEncryptedItem]) async throws
@@ -127,6 +135,17 @@ public extension LocalItemDatasource {
         return try itemEntities.map { try $0.toEncryptedItem() }
     }
 
+    func getItems(_ ids: [any ItemIdentifiable]) async throws -> [SymmetricallyEncryptedItem] {
+        let context = newTaskContext(type: .fetch)
+        let request = ItemEntity.fetchRequest()
+        request.predicate = .init(format: "itemID IN %@ AND shareID IN %@",
+                                  ids.map(\.itemId),
+                                  ids.map(\.shareId))
+        request.sortDescriptors = [.init(key: "modifyTime", ascending: false)]
+        let entities = try await execute(fetchRequest: request, context: context)
+        return try entities.map { try $0.toEncryptedItem() }
+    }
+
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem? {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ItemEntity.fetchRequest()
@@ -168,11 +187,43 @@ public extension LocalItemDatasource {
         return try await count(fetchRequest: fetchRequest, context: taskContext)
     }
 
+    func getUnsyncedSimpleLoginNoteAliases(userId: String) async throws -> [SymmetricallyEncryptedItem] {
+        let context = newTaskContext(type: .fetch)
+        let request = ItemEntity.fetchRequest()
+        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            .init(format: "userID = %@", userId),
+            .init(format: "aliasEmail != ''"),
+            .init(format: "encryptedSimpleLoginNote == nil OR encryptedSimpleLoginNote == ''")
+        ])
+        request.sortDescriptors = [.init(key: "modifyTime", ascending: false)]
+        let entities = try await execute(fetchRequest: request, context: context)
+        return try entities.map { try $0.toEncryptedItem() }
+    }
+
+    func updateCachedAliasInfo(items: [SymmetricallyEncryptedItem],
+                               aliases: [SymmetricallyEncryptedAlias]) async throws {
+        try await upsert(items,
+                         entityType: ItemEntity.self,
+                         fetchPredicate: NSPredicate(format: "itemID IN %@ AND shareID IN %@",
+                                                     items.map(\.itemId),
+                                                     items.map(\.shareId)),
+                         isEqual: { item, entity in
+                             item.shareId == entity.shareID && item.itemId == entity.itemID
+                         },
+                         hydrate: { item, entity in
+                             if let alias = aliases.first(where: { $0.email == item.item.aliasEmail }) {
+                                 entity.encryptedSimpleLoginNote = alias.encryptedNote
+                             } else {
+                                 assertionFailure("No matched encrypted alias for \(item.item.aliasEmail ?? "")")
+                             }
+                         })
+    }
+
     func upsertItems(_ items: [SymmetricallyEncryptedItem]) async throws {
         try await upsert(items,
                          entityType: ItemEntity.self,
                          fetchPredicate: NSPredicate(format: "itemID IN %@ AND shareID IN %@",
-                                                     items.map(\.item.itemID),
+                                                     items.map(\.itemId),
                                                      items.map(\.shareId)),
                          isEqual: { item, entity in
                              item.shareId == entity.shareID && item.itemId == entity.itemID
@@ -206,7 +257,8 @@ public extension LocalItemDatasource {
                                              userId: item.userId,
                                              item: modifiedItem,
                                              encryptedContent: item.encryptedContent,
-                                             isLogInItem: item.isLogInItem)])
+                                             isLogInItem: item.isLogInItem,
+                                             encryptedSimpleLoginNote: item.encryptedSimpleLoginNote)])
             }
         }
     }
@@ -305,25 +357,5 @@ public extension LocalItemDatasource {
         // Set the batch size to optimize fetching
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return try itemEntities.map { try $0.toEncryptedItem() }
-    }
-}
-
-public extension LocalItemDatasource {
-    /// Temporary migration, can be removed after july 2025
-    func updateLocalItems(with userId: String) async throws {
-        let allItems = try await getAllItems(userId: "")
-        let updatedItems = allItems.map { $0.copy(newUserId: userId) }
-        try await removeAllItems(userId: "")
-        try await upsertItems(updatedItems)
-    }
-}
-
-private extension SymmetricallyEncryptedItem {
-    func copy(newUserId: String) -> SymmetricallyEncryptedItem {
-        SymmetricallyEncryptedItem(shareId: shareId,
-                                   userId: newUserId,
-                                   item: item,
-                                   encryptedContent: encryptedContent,
-                                   isLogInItem: isLogInItem)
     }
 }

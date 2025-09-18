@@ -5,7 +5,7 @@
 # format options
 
 --symlinks ignore
---swiftversion 5.9
+--swiftversion 6.2
 
 # format options
 

@@ -76,6 +76,10 @@ public enum Constants {
         public static let userId = "userID"
     }
 
+    public enum Database {
+        public static let encryptedSlNotePlaceholder = "NULL"
+    }
+
     // swiftlint:disable:next type_name
     public enum QA {
         public static let forceDisplayUpgradeAppBanner = "forceDisplayUpgradeAppBanner"

@@ -165,7 +165,7 @@ extension LogFormatter {
             subsystemString,
             categoryString,
             fileFunctionLineColumnString
-        ].compactMap { $0 }
+        ].compactMap(\.self)
 
         let everythingExceptMessage = strings.joined(separator: " | ")
 
@@ -209,7 +209,7 @@ extension LogFormatter {
             subsystemString,
             categoryString,
             fileFunctionLineColumnString
-        ].compactMap { $0 }
+        ].compactMap(\.self)
 
         let everythingExceptMessage = strings.joined(separator: " | ")
 

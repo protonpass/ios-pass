@@ -52,10 +52,15 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     /// Get a specific Item
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem?
 
+    /// Get items by IDs
+    func getItems(_ ids: [any ItemIdentifiable]) async throws -> [SymmetricallyEncryptedItem]
+
     /// Get alias item by alias email
     func getAliasItem(email: String, shareId: String) async throws -> SymmetricallyEncryptedItem?
 
     func changeAliasStatus(userId: String, items: [any ItemIdentifiable], enabled: Bool) async throws
+
+    func getUnsyncedSimpleLoginNoteAliases(userId: String) async throws -> [SymmetricallyEncryptedItem]
 
     /// Get decrypted item content
     func getItemContent(shareId: String, itemId: String) async throws -> ItemContent?
@@ -120,6 +125,10 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
 
     func updateLastUseTime(userId: String, item: any ItemIdentifiable, date: Date) async throws
 
+    func updateCachedAliasInfo(userId: String,
+                               items: [SymmetricallyEncryptedItem],
+                               aliases: [Alias]) async throws
+
     func move(items: [any ItemIdentifiable], toShareId: String) async throws
 
     @discardableResult
@@ -162,6 +171,18 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
 public extension ItemRepositoryProtocol {
     func refreshItems(userId: String, shareId: String) async throws {
         try await refreshItems(userId: userId, shareId: shareId, eventStream: nil)
+    }
+
+    func updateCachedAliasInfo(userId: String,
+                               item: any ItemIdentifiable,
+                               alias: Alias) async throws {
+        guard let encryptedItem = try await getItem(shareId: item.shareId,
+                                                    itemId: item.itemId) else {
+            throw PassError.itemNotFound(item)
+        }
+        try await updateCachedAliasInfo(userId: userId,
+                                        items: [encryptedItem],
+                                        aliases: [alias])
     }
 }
 
@@ -227,6 +248,10 @@ public extension ItemRepository {
 
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem? {
         try await localDatasource.getItem(shareId: shareId, itemId: itemId)
+    }
+
+    func getItems(_ ids: [any ItemIdentifiable]) async throws -> [SymmetricallyEncryptedItem] {
+        try await localDatasource.getItems(ids)
     }
 
     func getAllPinnedItems() async throws -> [SymmetricallyEncryptedItem] {
@@ -614,7 +639,7 @@ public extension ItemRepository {
                                                  shareId: shareId,
                                                  userId: userId,
                                                  symmetricKey: symmetricKey)
-        }.compactMap { $0 }
+        }.compactMap(\.self)
 
         try await localDatasource.upsertItems(encryptedItems)
         itemsWereUpdated.send()
@@ -631,7 +656,7 @@ public extension ItemRepository {
     func updateLastUseTime(userId: String,
                            item: any ItemIdentifiable,
                            date: Date) async throws {
-        logger.trace("Updating last use time \(item.debugDescription)")
+        logger.trace("Updating last use time \(item.debugDescription) for user \(userId)")
 
         let updatedItem = try await remoteDatasource.updateLastUseTime(userId: userId,
                                                                        shareId: item.shareId,
@@ -639,7 +664,29 @@ public extension ItemRepository {
                                                                        lastUseTime: date.timeIntervalSince1970)
         try await upsertItems(userId: userId, items: [updatedItem], shareId: item.shareId)
         itemsWereUpdated.send()
-        logger.trace("Updated last use time \(item.debugDescription)")
+        logger.info("Updated last use time \(item.debugDescription) for user \(userId)")
+    }
+
+    func updateCachedAliasInfo(userId: String,
+                               items: [SymmetricallyEncryptedItem],
+                               aliases: [Alias]) async throws {
+        logger.trace("Updating cached alias info for \(items.count) aliases for user \(userId)")
+        let symmetricKey = try await getSymmetricKey()
+        let encryptedAliases = try aliases.map { alias in
+            if let note = alias.note, !note.isEmpty {
+                let encryptedNote = try symmetricKey.encrypt(note)
+                return SymmetricallyEncryptedAlias(email: alias.email,
+                                                   encryptedNote: encryptedNote)
+            } else {
+                // We store a placeholder instead of a null or empty string
+                // in order to mark an alias as synced
+                // So then we could query out only unsynced aliases
+                return SymmetricallyEncryptedAlias(email: alias.email,
+                                                   encryptedNote: Constants.Database.encryptedSlNotePlaceholder)
+            }
+        }
+        try await localDatasource.updateCachedAliasInfo(items: items, aliases: encryptedAliases)
+        logger.info("Updated cached alias info for \(items.count) aliases for user \(userId)")
     }
 
     func move(items: [any ItemIdentifiable], toShareId: String) async throws {
@@ -690,6 +737,10 @@ public extension ItemRepository {
             try await localDatasource.upsertItems([encryptedItem])
             logger.trace("Saved item \(updatedAlias.itemID) to local database")
         }
+    }
+
+    func getUnsyncedSimpleLoginNoteAliases(userId: String) async throws -> [SymmetricallyEncryptedItem] {
+        try await localDatasource.getUnsyncedSimpleLoginNoteAliases(userId: userId)
     }
 
     func resetHistory(_ item: any ItemIdentifiable) async throws {
@@ -835,7 +886,8 @@ private extension ItemRepository {
                      userId: userId,
                      item: itemRevision,
                      encryptedContent: encryptedContent,
-                     isLogInItem: isLogInItem)
+                     isLogInItem: isLogInItem,
+                     encryptedSimpleLoginNote: nil)
     }
 
     func createItemRequest(itemContent: any ProtobufableItemContentProtocol,
@@ -951,7 +1003,7 @@ private extension ItemRepository {
                                                      shareId: toShareId,
                                                      userId: userId,
                                                      symmetricKey: symmetricKey)
-            }.compactMap { $0 }
+            }.compactMap(\.self)
         try await localDatasource.deleteItems(itemIds: items.map(\.itemId),
                                               shareId: fromSharedId)
         try await localDatasource.upsertItems(newEncryptedItems)
@@ -994,7 +1046,11 @@ private extension ItemRepository {
                                                             shareId: shareId,
                                                             keyRotation: item.keyRotation)
         let contentProtobuf = try item.getContentProtobuf(shareKey: shareKey)
-        return ItemContent(userId: userId, shareId: shareId, item: item, contentProtobuf: contentProtobuf)
+        return ItemContent(userId: userId,
+                           shareId: shareId,
+                           item: item,
+                           contentProtobuf: contentProtobuf,
+                           simpleLoginNote: nil)
     }
 }
 

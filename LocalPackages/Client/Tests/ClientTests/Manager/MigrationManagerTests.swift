@@ -53,7 +53,6 @@ final class MigrationManagerTests: XCTestCase {
         XCTAssertTrue(userAppDataMigrationDone)
         XCTAssertEqual(missingMigration,
                        [MigrationType.credentialsAppData,
-                        MigrationType.userIdInItemsSearchEntriesAndShareKeys,
                         MigrationType.credentialsForActionExtension])
     }
 
