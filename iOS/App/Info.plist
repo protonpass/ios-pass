@@ -33,10 +33,6 @@
 	<string>$(IS_BETA_BUILD)</string>
 	<key>IS_QA_BUILD</key>
 	<string>$(IS_QA_BUILD)</string>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
-	<key>ITSEncryptionExportComplianceCode</key>
-	<string>72e333d0-d159-45e3-ad41-39acb89134e8</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>googlechrome</string>
@@ -65,6 +61,8 @@
 			</array>
 		</dict>
 	</dict>
+	<key>UIDesignRequiresCompatibility</key>
+	<true/>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 </dict>

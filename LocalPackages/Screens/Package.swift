@@ -27,7 +27,9 @@ let package = Package(
         .package(name: "UseCases", path: "../UseCases"),
         .package(name: "DesignSystem", path: "../DesignSystem"),
         .package(name: "Macro", path: "../Macro"),
-        .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "32.8.0")
+        .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "32.8.0"),
+        .package(url: "https://github.com/protonpass/DocScanner", .upToNextMajor(from: "0.2.3"))
+
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -42,7 +44,8 @@ let package = Package(
                 .product(name: "DesignSystem", package: "DesignSystem"),
                 .product(name: "Macro", package: "Macro"),
                 .product(name: "ProtonCoreLoginUI", package: "protoncore_ios"),
-                .product(name: "ProtonCoreUIFoundations", package: "protoncore_ios")
+                .product(name: "ProtonCoreUIFoundations", package: "protoncore_ios"),
+                .product(name: "ProtonCorePaymentsV2", package: "protoncore_ios")
             ],
             resources: [.process("Resources")])
     ],

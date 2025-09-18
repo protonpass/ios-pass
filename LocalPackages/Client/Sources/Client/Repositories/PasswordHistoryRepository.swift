@@ -23,8 +23,6 @@ import CryptoKit
 import Entities
 import Foundation
 
-extension SymmetricKey: @unchecked @retroactive Sendable {}
-
 public protocol PasswordHistoryRepositoryProtocol: Sendable {
     func insertPassword(_ clearPassword: String) async throws
     func getAllPasswords() async throws -> [GeneratedPasswordUiModel]
