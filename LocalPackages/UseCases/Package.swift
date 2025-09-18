@@ -1,4 +1,4 @@
-// swift-tools-version: 6.0
+// swift-tools-version: 6.2
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -59,7 +59,6 @@ let package = Package(name: "UseCases",
                                                      .product(name: "ClientMocks", package: "Client"),
                                                      .product(name: "CoreMocks", package: "Core"),
                                                      .product(name: "EntitiesMocks", package: "Entities"),
-                                                     .product(name: "ProtonCoreForceUpgrade", package: "protoncore_ios")
                                                     ],
                                       path: "Tests")
                       ],

@@ -1,4 +1,4 @@
-// swift-tools-version: 6.0
+// swift-tools-version: 6.2
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -28,7 +28,8 @@ let package = Package(
         .package(name: "DesignSystem", path: "../DesignSystem"),
         .package(name: "Macro", path: "../Macro"),
         .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "32.8.0"),
-        .package(url: "https://github.com/protonpass/DocScanner", .upToNextMajor(from:"0.2.3"))
+        .package(url: "https://github.com/protonpass/DocScanner", .upToNextMajor(from: "0.2.3"))
+
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.

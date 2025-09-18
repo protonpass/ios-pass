@@ -40,6 +40,10 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var togglingAliasStatus = false
     @Published private(set) var showContactsTip = false
 
+    var simpleLoginNote: String? {
+        aliasInfos?.note ?? itemContent.simpleLoginNote
+    }
+
     @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
     @LazyInjected(\SharedRepositoryContainer.localItemDatasource) private var localItemDatasource
 
@@ -105,13 +109,19 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
         Task { [weak self] in
             guard let self else { return }
             do {
-                let alias =
-                    try await aliasRepository.getAliasDetails(shareId: itemContent.shareId,
-                                                              itemId: itemContent.item.itemID)
+                let shareId = itemContent.shareId
+                let itemId = itemContent.itemId
+                let alias = try await aliasRepository.getAliasDetails(shareId: shareId,
+                                                                      itemId: itemId)
                 aliasEmail = alias.email
                 aliasInfos = alias
                 aliasEnabled = itemContent.item.isAliasEnabled
-                logger.info("Get alias detail successfully \(itemContent.debugDescription)")
+
+                let userId = try await userManager.getActiveUserId()
+                try await itemRepository.updateCachedAliasInfo(userId: userId,
+                                                               item: itemContent,
+                                                               alias: alias)
+                logger.info("Got and cached alias detail \(itemContent.debugDescription)")
             } catch {
                 logger.error(error)
                 self.error = error

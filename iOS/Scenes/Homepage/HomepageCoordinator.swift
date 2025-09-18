@@ -180,7 +180,7 @@ private extension HomepageCoordinator {
         var isFirstLaunched = true
         userManager.currentActiveUser
             .receive(on: DispatchQueue.main)
-            .compactMap { $0 }
+            .compactMap(\.self)
             .removeDuplicates(by: { $0.user.ID == $1.user.ID })
             .sink { [weak self] userData in
                 guard let self else { return }

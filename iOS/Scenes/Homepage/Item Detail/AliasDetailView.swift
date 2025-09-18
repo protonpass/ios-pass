@@ -63,7 +63,7 @@ struct AliasDetailView: View {
                             .padding(.bottom, 8)
                     }
 
-                    if let note = viewModel.aliasInfos?.note, !note.isEmpty {
+                    if let note = viewModel.simpleLoginNote, !note.isEmpty {
                         NoteDetailSection(itemContent: viewModel.itemContent,
                                           vault: viewModel.vault?.vault,
                                           title: "Note • SimpleLogin",
