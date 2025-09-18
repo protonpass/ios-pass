@@ -228,7 +228,7 @@ extension UserEventShare: Randomable {
 
 private extension SimpleLoginNoteSynchronizerProtocolMock {
     func stubResults() async {
-        stubbedSyncAllAliasesIfApplicableResult = true
+        stubbedSyncAllAliasesResult = true
         stubbedSyncAliasesResult = true
     }
 }
