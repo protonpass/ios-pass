@@ -59,7 +59,6 @@ let package = Package(name: "UseCases",
                                                      .product(name: "ClientMocks", package: "Client"),
                                                      .product(name: "CoreMocks", package: "Core"),
                                                      .product(name: "EntitiesMocks", package: "Entities"),
-                                                     .product(name: "ProtonCoreForceUpgrade", package: "protoncore_ios")
                                                     ],
                                       path: "Tests")
                       ],

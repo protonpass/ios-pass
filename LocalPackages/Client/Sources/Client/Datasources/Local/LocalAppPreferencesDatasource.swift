@@ -34,8 +34,6 @@ public protocol LocalAppPreferencesDatasourceProtocol: Sendable {
     func removePreferences()
 }
 
-extension UserDefaults: @unchecked Sendable {}
-
 public final class LocalAppPreferencesDatasource: LocalAppPreferencesDatasourceProtocol {
     private let userDefault: UserDefaults
 
