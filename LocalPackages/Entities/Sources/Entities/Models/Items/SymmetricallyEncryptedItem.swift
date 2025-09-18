@@ -36,11 +36,20 @@ public struct SymmetricallyEncryptedItem: Equatable, ItemIdentifiable, Sendable,
     /// Whether the item is type log in or not
     public let isLogInItem: Bool
 
-    public init(shareId: String, userId: String, item: Item, encryptedContent: String, isLogInItem: Bool) {
+    /// Only applicable to aliases
+    public let encryptedSimpleLoginNote: String?
+
+    public init(shareId: String,
+                userId: String,
+                item: Item,
+                encryptedContent: String,
+                isLogInItem: Bool,
+                encryptedSimpleLoginNote: String?) {
         self.shareId = shareId
         self.item = item
         self.userId = userId
         self.encryptedContent = encryptedContent
         self.isLogInItem = isLogInItem
+        self.encryptedSimpleLoginNote = encryptedSimpleLoginNote
     }
 }

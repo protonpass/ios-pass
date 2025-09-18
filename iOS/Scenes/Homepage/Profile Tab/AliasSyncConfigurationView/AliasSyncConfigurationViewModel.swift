@@ -208,7 +208,7 @@ private extension AliasSyncConfigurationViewModel {
         $selectedVault
             .receive(on: DispatchQueue.main)
             .dropFirst()
-            .compactMap { $0 }
+            .compactMap(\.self)
             .removeDuplicates()
             .sink { [weak self] vault in
                 guard let self,

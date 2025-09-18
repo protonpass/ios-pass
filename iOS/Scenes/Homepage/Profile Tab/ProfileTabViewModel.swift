@@ -456,7 +456,7 @@ private extension ProfileTabViewModel {
 
         accessRepository.access
             .receive(on: DispatchQueue.main)
-            .compactMap { $0 }
+            .compactMap(\.self)
             .removeDuplicates()
             .sink { [weak self] userAccess in
                 guard let self,

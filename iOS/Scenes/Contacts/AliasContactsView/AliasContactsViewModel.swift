@@ -257,7 +257,7 @@ private extension AliasContactsViewModel {
         accessRepository.access
             .receive(on: DispatchQueue.main)
             .dropFirst()
-            .compactMap { $0 }
+            .compactMap(\.self)
             .sink { [weak self] updatedAccess in
                 guard let self else {
                     return

@@ -89,6 +89,7 @@ extension SharedServiceContainer {
                                           shareRepository: container.shareRepository(),
                                           accessRepository: container.accessRepository(),
                                           inviteRepository: container.inviteRepository(),
+                                          simpleLoginNoteSynchronizer: self.simpleLoginNoteSynchronizer(),
                                           logManager: self.logManager)
         }
     }
@@ -107,9 +108,17 @@ extension SharedServiceContainer {
                              synchronizer: self.eventSynchronizer(),
                              userEventsSynchronizer: self.userEventsSynchronizer(),
                              aliasSynchronizer: self.aliasSynchronizer(),
+                             slNoteSynchronizer: self.simpleLoginNoteSynchronizer(),
                              userManager: self.userManager(),
                              logManager: self.logManager,
                              reachability: SharedServiceContainer.shared.reachabilityService()) }
+    }
+
+    var simpleLoginNoteSynchronizer: Factory<any SimpleLoginNoteSynchronizerProtocol> {
+        self {
+            SimpleLoginNoteSynchronizer(remoteDatasource: SharedRepositoryContainer.shared.remoteAliasDatasource(),
+                                        itemRepository: self.itemRepository)
+        }
     }
 
     var itemContextMenuHandler: Factory<ItemContextMenuHandler> {
