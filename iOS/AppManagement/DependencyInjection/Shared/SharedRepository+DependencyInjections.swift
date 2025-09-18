@@ -234,6 +234,10 @@ extension SharedRepositoryContainer {
     var remoteUserEventsDatasource: Factory<any RemoteUserEventsDatasourceProtocol> {
         self { RemoteUserEventsDatasource(apiServicing: self.apiManager) }
     }
+
+    var localUserInviteDatasource: Factory<any LocalUserInviteDatasourceProtocol> {
+        self { LocalUserInviteDatasource(databaseService: self.databaseService) }
+    }
 }
 
 // MARK: Repositories
@@ -321,14 +325,9 @@ extension SharedRepositoryContainer {
         }
     }
 
-//    var shareInviteRepository: Factory<any ShareInviteRepositoryProtocol> {
-//        self { ShareInviteRepository(remoteDataSource: self.remoteInviteDatasource(),
-//                                     userManager: self.userManager,
-//                                     logManager: self.logManager) }
-//    }
-
     var inviteRepository: Factory<any FullInviteRepositoryProtocol> {
-        self { InviteRepository(remoteDataSource: self.remoteInviteDatasource(),
+        self { InviteRepository(remoteDatasource: self.remoteInviteDatasource(),
+                                localDatasource: self.localUserInviteDatasource(),
                                 userManager: self.userManager,
                                 logManager: self.logManager) }
     }

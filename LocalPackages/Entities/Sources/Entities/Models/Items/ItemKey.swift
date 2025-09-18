@@ -20,6 +20,8 @@
 
 import Foundation
 
+public typealias InviteKey = ItemKey
+
 public struct ItemKey: Codable, Equatable, Hashable, Sendable {
     /// Encrypted key encoded in base64
     public let key: String
