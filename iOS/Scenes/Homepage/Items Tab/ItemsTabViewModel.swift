@@ -231,7 +231,7 @@ private extension ItemsTabViewModel {
         getAllPinnedItems()
             .receive(on: DispatchQueue.main)
             .removeDuplicates()
-            .compactMap { $0 }
+            .compactMap(\.self)
             .sink { [weak self] pinnedItems in
                 guard let self else { return }
                 Task { [weak self] in

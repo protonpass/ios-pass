@@ -56,7 +56,7 @@ private extension EditableVaultListViewModel {
             }
             self.all = all
             self.vaultCounts = vaultCounts
-            trashed = sharesData.trashedItems.filter { !hiddenShareIds.contains($0.shareId) }.count
+            trashed = sharesData.trashedItems.count(where: { !hiddenShareIds.contains($0.shareId) })
         }
     }
 }
@@ -297,7 +297,7 @@ extension EditableVaultListViewModel {
 
     func itemCount(for selection: VaultSelection) -> Int {
         let itemsSharedWithMe = appContentManager.state.loadedContent?.itemsSharedWithMe ?? []
-        let activeItemsSharedWithMeCount = itemsSharedWithMe.filter { $0.state == .active }.count
+        let activeItemsSharedWithMeCount = itemsSharedWithMe.count(where: { $0.state == .active })
 
         return switch selection {
         case .all:

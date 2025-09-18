@@ -128,7 +128,7 @@ private extension WelcomeCoordinator {
                 async let getHostAppLogs = try createLogsFile(for: PassModule.hostApp)
                 async let getAutofillLogs = try createLogsFile(for: PassModule.autoFillExtension)
                 let (hostAppLogs, autofillLogs) = try await (getHostAppLogs, getAutofillLogs)
-                let urls = [hostAppLogs, autofillLogs].compactMap { $0 }
+                let urls = [hostAppLogs, autofillLogs].compactMap(\.self)
 
                 guard !urls.isEmpty else { return }
                 let activityController = UIActivityViewController(activityItems: urls, applicationActivities: nil)

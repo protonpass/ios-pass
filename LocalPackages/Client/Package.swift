@@ -1,4 +1,4 @@
-// swift-tools-version: 6.0
+// swift-tools-version: 6.2
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -52,7 +52,7 @@ let package = Package(name: "Client",
                                       .product(name: "Core", package: "Core"),
                                       .product(name: "Entities", package: "Entities"),
                                       .product(name: "PassRustCore", package: "PassRustCore"),
-                                      .product(name: "Macro", package: "Macro")
+                                      .product(name: "Macro", package: "Macro"),
                                   ],
                                   resources: [.process("Resources")],
                                   swiftSettings: swiftSettings

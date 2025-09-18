@@ -40,3 +40,16 @@ public struct AliasStats: Decodable, Sendable, Equatable, Hashable {
     // Count of emails blocked in the last 14 days
     public let blockedEmails: Int
 }
+
+/// Intermediate structure to interface with the database because we want to encrypt all information before storing
+/// We start with storing note only
+public struct SymmetricallyEncryptedAlias: Sendable {
+    /// Email is deliberately not encrypted
+    public let email: String
+    public let encryptedNote: String?
+
+    public init(email: String, encryptedNote: String?) {
+        self.email = email
+        self.encryptedNote = encryptedNote
+    }
+}
