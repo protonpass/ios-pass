@@ -20,10 +20,15 @@
 
 import Entities
 
+// sourcery:AutoMockable
 public protocol SimpleLoginNoteSynchronizerProtocol: Sendable, Actor {
-    /// Sync the first page of unsynced aliases
+    /// Sync notes for all aliases of a given user if aliases are not in synced
     /// Return `true` if some note were synced to act accordingly (refresh items on memory)
-    func sync(userId: String) async throws -> Bool
+    func syncAllAliases(userId: String) async throws -> Bool
+
+    /// Sync notes for specific aliases of a given user (told by user events system)
+    /// Return `true` if some note were synced to act accordingly (refresh items on memory)
+    func syncAliases(userId: String, aliases: [any ItemIdentifiable]) async throws -> Bool
 }
 
 public actor SimpleLoginNoteSynchronizer: SimpleLoginNoteSynchronizerProtocol {
@@ -44,27 +49,40 @@ public actor SimpleLoginNoteSynchronizer: SimpleLoginNoteSynchronizerProtocol {
 }
 
 public extension SimpleLoginNoteSynchronizer {
-    func sync(userId: String) async throws -> Bool {
-        let unsyncedAliases =
-            try await localDatasource.getUnsyncedSimpleLoginNoteAliases(userId: userId,
-                                                                        pageSize: pageSize)
+    func syncAllAliases(userId: String) async throws -> Bool {
+        let aliases = try await localDatasource.getUnsyncedSimpleLoginNoteAliases(userId: userId)
+        guard !aliases.isEmpty else { return false }
+        try await groupByShareIdAndSyncInBatch(userId: userId, aliases: aliases)
+        return true
+    }
 
-        guard !unsyncedAliases.isEmpty else {
-            return false
-        }
-        let action: @Sendable ([SymmetricallyEncryptedItem], String) async throws
+    func syncAliases(userId: String, aliases: [any ItemIdentifiable]) async throws -> Bool {
+        guard !aliases.isEmpty else { return false }
+        let items = try await localDatasource.getItems(aliases)
+        assert(aliases.count == items.count, "Can not fully get all local aliases to sync notes")
+        try await groupByShareIdAndSyncInBatch(userId: userId, aliases: items)
+        return true
+    }
+}
+
+private extension SimpleLoginNoteSynchronizer {
+    func groupByShareIdAndSyncInBatch(userId: String,
+                                      aliases: [SymmetricallyEncryptedItem]) async throws {
+        let batchSync: @Sendable ([SymmetricallyEncryptedItem], String) async throws
             -> Void = { [weak self] aliases, _ in
                 guard let self else { return }
-                let details = try await remoteDatasource.getAliasDetails(userId: userId,
-                                                                         items: aliases)
-                try await itemRepository.updateCachedAliasInfo(userId: userId,
-                                                               items: aliases,
-                                                               aliases: details)
+
+                for chunk in aliases.chunked(into: pageSize) {
+                    let details = try await remoteDatasource.getAliasDetails(userId: userId,
+                                                                             items: chunk)
+                    try await itemRepository.updateCachedAliasInfo(userId: userId,
+                                                                   items: chunk,
+                                                                   aliases: details)
+                }
             }
 
-        try await unsyncedAliases.groupAndBulkAction(by: \.shareId,
-                                                     shouldInclude: { _ in true },
-                                                     action: action)
-        return true
+        try await aliases.groupAndBulkAction(by: \.shareId,
+                                             shouldInclude: { _ in true },
+                                             action: batchSync)
     }
 }

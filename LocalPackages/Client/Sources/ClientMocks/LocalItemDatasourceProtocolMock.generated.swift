@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Core
 import CoreData
 import Entities
 
@@ -106,8 +107,28 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
         closureGetItemsShareIdStateAsync4()
         return stubbedGetItemsShareIdStateAsyncResult4
     }
+    // MARK: - getItemsIds
+    public var getItemsThrowableError5: Error?
+    public var closureGetItemsIdsAsync5: () -> () = {}
+    public var invokedGetItemsIdsAsync5 = false
+    public var invokedGetItemsIdsAsyncCount5 = 0
+    public var invokedGetItemsIdsAsyncParameters5: (ids: [any ItemIdentifiable], Void)?
+    public var invokedGetItemsIdsAsyncParametersList5 = [(ids: [any ItemIdentifiable], Void)]()
+    public var stubbedGetItemsIdsAsyncResult5: [SymmetricallyEncryptedItem]!
+
+    public func getItems(_ ids: [any ItemIdentifiable]) async throws -> [SymmetricallyEncryptedItem] {
+        invokedGetItemsIdsAsync5 = true
+        invokedGetItemsIdsAsyncCount5 += 1
+        invokedGetItemsIdsAsyncParameters5 = (ids, ())
+        invokedGetItemsIdsAsyncParametersList5.append((ids, ()))
+        if let error = getItemsThrowableError5 {
+            throw error
+        }
+        closureGetItemsIdsAsync5()
+        return stubbedGetItemsIdsAsyncResult5
+    }
     // MARK: - getItem
-    public var getItemShareIdItemIdThrowableError5: Error?
+    public var getItemShareIdItemIdThrowableError6: Error?
     public var closureGetItem: () -> () = {}
     public var invokedGetItemfunction = false
     public var invokedGetItemCount = 0
@@ -120,14 +141,14 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
         invokedGetItemCount += 1
         invokedGetItemParameters = (shareId, itemId)
         invokedGetItemParametersList.append((shareId, itemId))
-        if let error = getItemShareIdItemIdThrowableError5 {
+        if let error = getItemShareIdItemIdThrowableError6 {
             throw error
         }
         closureGetItem()
         return stubbedGetItemResult
     }
     // MARK: - getAliasItem
-    public var getAliasItemEmailShareIdThrowableError6: Error?
+    public var getAliasItemEmailShareIdThrowableError7: Error?
     public var closureGetAliasItem: () -> () = {}
     public var invokedGetAliasItemfunction = false
     public var invokedGetAliasItemCount = 0
@@ -140,14 +161,14 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
         invokedGetAliasItemCount += 1
         invokedGetAliasItemParameters = (email, shareId)
         invokedGetAliasItemParametersList.append((email, shareId))
-        if let error = getAliasItemEmailShareIdThrowableError6 {
+        if let error = getAliasItemEmailShareIdThrowableError7 {
             throw error
         }
         closureGetAliasItem()
         return stubbedGetAliasItemResult
     }
     // MARK: - getItemCount
-    public var getItemCountShareIdThrowableError7: Error?
+    public var getItemCountShareIdThrowableError8: Error?
     public var closureGetItemCount: () -> () = {}
     public var invokedGetItemCountfunction = false
     public var invokedGetItemCountCount = 0
@@ -160,14 +181,14 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
         invokedGetItemCountCount += 1
         invokedGetItemCountParameters = (shareId, ())
         invokedGetItemCountParametersList.append((shareId, ()))
-        if let error = getItemCountShareIdThrowableError7 {
+        if let error = getItemCountShareIdThrowableError8 {
             throw error
         }
         closureGetItemCount()
         return stubbedGetItemCountResult
     }
     // MARK: - getAliasCount
-    public var getAliasCountUserIdThrowableError8: Error?
+    public var getAliasCountUserIdThrowableError9: Error?
     public var closureGetAliasCount: () -> () = {}
     public var invokedGetAliasCountfunction = false
     public var invokedGetAliasCountCount = 0
@@ -180,49 +201,31 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
         invokedGetAliasCountCount += 1
         invokedGetAliasCountParameters = (userId, ())
         invokedGetAliasCountParametersList.append((userId, ()))
-        if let error = getAliasCountUserIdThrowableError8 {
+        if let error = getAliasCountUserIdThrowableError9 {
             throw error
         }
         closureGetAliasCount()
         return stubbedGetAliasCountResult
     }
     // MARK: - getUnsyncedSimpleLoginNoteAliases
-    public var getUnsyncedSimpleLoginNoteAliasesUserIdPageSizeThrowableError9: Error?
+    public var getUnsyncedSimpleLoginNoteAliasesUserIdThrowableError10: Error?
     public var closureGetUnsyncedSimpleLoginNoteAliases: () -> () = {}
     public var invokedGetUnsyncedSimpleLoginNoteAliasesfunction = false
     public var invokedGetUnsyncedSimpleLoginNoteAliasesCount = 0
-    public var invokedGetUnsyncedSimpleLoginNoteAliasesParameters: (userId: String, pageSize: Int)?
-    public var invokedGetUnsyncedSimpleLoginNoteAliasesParametersList = [(userId: String, pageSize: Int)]()
+    public var invokedGetUnsyncedSimpleLoginNoteAliasesParameters: (userId: String, Void)?
+    public var invokedGetUnsyncedSimpleLoginNoteAliasesParametersList = [(userId: String, Void)]()
     public var stubbedGetUnsyncedSimpleLoginNoteAliasesResult: [SymmetricallyEncryptedItem]!
 
-    public func getUnsyncedSimpleLoginNoteAliases(userId: String, pageSize: Int) async throws -> [SymmetricallyEncryptedItem] {
+    public func getUnsyncedSimpleLoginNoteAliases(userId: String) async throws -> [SymmetricallyEncryptedItem] {
         invokedGetUnsyncedSimpleLoginNoteAliasesfunction = true
         invokedGetUnsyncedSimpleLoginNoteAliasesCount += 1
-        invokedGetUnsyncedSimpleLoginNoteAliasesParameters = (userId, pageSize)
-        invokedGetUnsyncedSimpleLoginNoteAliasesParametersList.append((userId, pageSize))
-        if let error = getUnsyncedSimpleLoginNoteAliasesUserIdPageSizeThrowableError9 {
+        invokedGetUnsyncedSimpleLoginNoteAliasesParameters = (userId, ())
+        invokedGetUnsyncedSimpleLoginNoteAliasesParametersList.append((userId, ()))
+        if let error = getUnsyncedSimpleLoginNoteAliasesUserIdThrowableError10 {
             throw error
         }
         closureGetUnsyncedSimpleLoginNoteAliases()
         return stubbedGetUnsyncedSimpleLoginNoteAliasesResult
-    }
-    // MARK: - unsyncSimpleLoginNotes
-    public var unsyncSimpleLoginNotesItemsThrowableError10: Error?
-    public var closureUnsyncSimpleLoginNotes: () -> () = {}
-    public var invokedUnsyncSimpleLoginNotesfunction = false
-    public var invokedUnsyncSimpleLoginNotesCount = 0
-    public var invokedUnsyncSimpleLoginNotesParameters: (items: [any ItemIdentifiable], Void)?
-    public var invokedUnsyncSimpleLoginNotesParametersList = [(items: [any ItemIdentifiable], Void)]()
-
-    public func unsyncSimpleLoginNotes(items: [any ItemIdentifiable]) async throws {
-        invokedUnsyncSimpleLoginNotesfunction = true
-        invokedUnsyncSimpleLoginNotesCount += 1
-        invokedUnsyncSimpleLoginNotesParameters = (items, ())
-        invokedUnsyncSimpleLoginNotesParametersList.append((items, ()))
-        if let error = unsyncSimpleLoginNotesItemsThrowableError10 {
-            throw error
-        }
-        closureUnsyncSimpleLoginNotes()
     }
     // MARK: - updateCachedAliasInfo
     public var updateCachedAliasInfoItemsAliasesThrowableError11: Error?
