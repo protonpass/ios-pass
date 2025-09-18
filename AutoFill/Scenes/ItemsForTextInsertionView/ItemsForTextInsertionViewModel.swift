@@ -372,10 +372,10 @@ extension ItemsForTextInsertionViewModel {
 
 private extension [SearchableItem] {
     var itemSharedByMeCount: Int {
-        self.filter { $0.shared && $0.owner }.count
+        self.count(where: { $0.shared && $0.owner })
     }
 
     var itemSharedWithMeCount: Int {
-        self.filter { $0.shared && !$0.owner }.count
+        self.count(where: { $0.shared && !$0.owner })
     }
 }

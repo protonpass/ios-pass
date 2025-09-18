@@ -64,19 +64,4 @@ public extension LocalShareKeyDatasource {
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
     }
-
-    /// Temporary migration, can be removed after july 2025
-    func updateKeys(with userId: String) async throws {
-        let taskContext = newTaskContext(type: .fetch)
-        let fetchRequest = ShareKeyEntity.fetchRequest()
-        let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
-        let keys = entities.map { $0.toSymmetricallyEncryptedShareKey() }
-
-        try await removeAllKeys(userId: "")
-        let updatedKeys = keys.map { SymmetricallyEncryptedShareKey(encryptedKey: $0.encryptedKey,
-                                                                    shareId: $0.shareId,
-                                                                    userId: userId,
-                                                                    shareKey: $0.shareKey) }
-        try await upsertKeys(updatedKeys)
-    }
 }

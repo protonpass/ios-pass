@@ -50,6 +50,13 @@ struct GetUserEventsResponseTests {
                     "EventToken": "Token3"
                   }
                 ],
+                "AliasNoteChanged": [
+                  {
+                    "ShareID": "ShareID7",
+                    "ItemID": "ItemID7",
+                    "EventToken": "Token7"
+                  }
+                ],
                 "SharesUpdated": [
                   {
                     "ShareID": "ShareID4",
@@ -87,6 +94,10 @@ struct GetUserEventsResponseTests {
         #expect(events.itemsDeleted.last == UserEventItem(shareID: "ShareID3",
                                                           itemID: "ItemID3",
                                                           eventToken: "Token3"))
+        #expect(events.aliasNoteChanged.count == 1)
+        #expect(events.aliasNoteChanged.last == UserEventItem(shareID: "ShareID7",
+                                                              itemID: "ItemID7",
+                                                              eventToken: "Token7"))
         #expect(events.sharesUpdated.count == 2)
         #expect(events.sharesUpdated.first == UserEventShare(shareID: "ShareID4",
                                                              eventToken: "Token4"))
