@@ -103,7 +103,7 @@ public extension RemoteAliasDatasource {
     func getAliasDetails(userId: String, items: [any ItemIdentifiable]) async throws -> [Alias] {
         guard let shareId = items.first?.shareId else { return [] }
         guard items.allSatisfy({ $0.shareId == shareId }) else {
-            assertionFailure("Items not belong to same vault")
+            assertionFailure("Items do not belong to the same vault")
             throw PassError.itemsNotBelongToSameVault
         }
         let itemIds = items.map(\.itemId)
