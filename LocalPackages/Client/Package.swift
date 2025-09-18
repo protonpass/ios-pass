@@ -51,7 +51,8 @@ let package = Package(name: "Client",
                                       .product(name: "Core", package: "Core"),
                                       .product(name: "Entities", package: "Entities"),
                                       .product(name: "PassRustCore", package: "PassRustCore"),
-                                      .product(name: "Macro", package: "Macro")
+                                      .product(name: "Macro", package: "Macro"),
+                                      .product(name: "ProtonCoreForceUpgrade", package: "protoncore_ios"),
                                   ],
                                   resources: [.process("Resources")],
                                   swiftSettings: swiftSettings
@@ -66,7 +67,6 @@ let package = Package(name: "Client",
                                                      .product(name: "EntitiesMocks", package: "Entities"),
                                                      "ClientMocks",
                                                      .product(name: "ProtonCoreCryptoGoImplementation", package: "protoncore_ios"),
-                                                     .product(name: "ProtonCoreForceUpgrade", package: "protoncore_ios"),
                                                      .product(name: "ProtonCoreTestingToolkitUnitTestsCore", package: "protoncore_ios"),
                                                     ])
                       ],

@@ -23,7 +23,7 @@ import Client
 import Entities
 @preconcurrency import ProtonCorePasswordChange
 import Screens
-import SwiftUI
+@preconcurrency import SwiftUI
 
 struct NavigationConfiguration {
     var dismissBeforeShowing = false
