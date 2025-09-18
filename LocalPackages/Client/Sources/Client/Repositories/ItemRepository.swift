@@ -664,12 +664,16 @@ public extension ItemRepository {
         logger.trace("Updating cached alias info for \(items.count) aliases for user \(userId)")
         let symmetricKey = try await getSymmetricKey()
         let encryptedAliases = try aliases.map { alias in
-            if let note = alias.note {
+            if let note = alias.note, !note.isEmpty {
                 let encryptedNote = try symmetricKey.encrypt(note)
                 return SymmetricallyEncryptedAlias(email: alias.email,
                                                    encryptedNote: encryptedNote)
             } else {
-                return SymmetricallyEncryptedAlias(email: alias.email, encryptedNote: nil)
+                // We store a placeholder instead of a null or empty string
+                // in order to mark an alias as synced
+                // So then we could query out only unsynced aliases
+                return SymmetricallyEncryptedAlias(email: alias.email,
+                                                   encryptedNote: Constants.Database.encryptedSlNotePlaceholder)
             }
         }
         try await localDatasource.updateCachedAliasInfo(items: items, aliases: encryptedAliases)
@@ -870,8 +874,7 @@ private extension ItemRepository {
                      item: itemRevision,
                      encryptedContent: encryptedContent,
                      isLogInItem: isLogInItem,
-                     encryptedSimpleLoginNote: nil,
-                     simpleLoginNoteSynced: false)
+                     encryptedSimpleLoginNote: nil)
     }
 
     func createItemRequest(itemContent: any ProtobufableItemContentProtocol,

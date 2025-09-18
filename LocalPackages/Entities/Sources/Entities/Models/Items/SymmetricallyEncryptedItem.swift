@@ -39,22 +39,17 @@ public struct SymmetricallyEncryptedItem: Equatable, ItemIdentifiable, Sendable,
     /// Only applicable to aliases
     public let encryptedSimpleLoginNote: String?
 
-    // Only applicable to aliases
-    public let simpleLoginNoteSynced: Bool
-
     public init(shareId: String,
                 userId: String,
                 item: Item,
                 encryptedContent: String,
                 isLogInItem: Bool,
-                encryptedSimpleLoginNote: String?,
-                simpleLoginNoteSynced: Bool) {
+                encryptedSimpleLoginNote: String?) {
         self.shareId = shareId
         self.item = item
         self.userId = userId
         self.encryptedContent = encryptedContent
         self.isLogInItem = isLogInItem
         self.encryptedSimpleLoginNote = encryptedSimpleLoginNote
-        self.simpleLoginNoteSynced = simpleLoginNoteSynced
     }
 }

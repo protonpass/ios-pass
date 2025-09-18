@@ -26,14 +26,12 @@ public extension SymmetricallyEncryptedItem {
                        item: Item? = nil,
                        encryptedContent: String? = nil,
                        isLogInItem: Bool = .random(),
-                       encryptedSimpleLoginNote: String? = nil,
-                       simpleLoginNoteSynced: Bool = false) -> SymmetricallyEncryptedItem {
+                       encryptedSimpleLoginNote: String? = nil) -> SymmetricallyEncryptedItem {
         .init(shareId: shareId ?? .random(),
               userId: userId ?? .random(),
               item: item ?? .random(),
               encryptedContent: encryptedContent ?? .random(),
               isLogInItem: isLogInItem,
-              encryptedSimpleLoginNote: encryptedSimpleLoginNote,
-              simpleLoginNoteSynced: simpleLoginNoteSynced)
+              encryptedSimpleLoginNote: encryptedSimpleLoginNote)
     }
 }

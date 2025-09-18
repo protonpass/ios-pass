@@ -109,7 +109,7 @@ extension SharedServiceContainer {
                              synchronizer: self.eventSynchronizer(),
                              userEventsSynchronizer: self.userEventsSynchronizer(),
                              aliasSynchronizer: self.aliasSynchronizer(),
-                             simpleLoginNoteSynchronizer: self.simpleLoginNoteSynchronizer(),
+                             slNoteSynchronizer: self.simpleLoginNoteSynchronizer(),
                              userManager: self.userManager(),
                              logManager: self.logManager,
                              reachability: SharedServiceContainer.shared.reachabilityService()) }

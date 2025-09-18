@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import CoreData
 import Entities
 
@@ -34,6 +35,9 @@ public protocol LocalItemDatasourceProtocol: Sendable {
     /// Get items by state
     func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem]
 
+    /// Get items by ShareID and ItemID
+    func getItems(_ ids: [any ItemIdentifiable]) async throws -> [SymmetricallyEncryptedItem]
+
     /// Get a specific item
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem?
 
@@ -46,12 +50,7 @@ public protocol LocalItemDatasourceProtocol: Sendable {
 
     func getAliasCount(userId: String) async throws -> Int
 
-    func getUnsyncedSimpleLoginNoteAliases(userId: String,
-                                           pageSize: Int) async throws -> [SymmetricallyEncryptedItem]
-
-    /// Flip SL note sync status back to false in order to resync during next event loop because notes were updated
-    /// on SL
-    func unsyncSimpleLoginNotes(items: [any ItemIdentifiable]) async throws
+    func getUnsyncedSimpleLoginNoteAliases(userId: String) async throws -> [SymmetricallyEncryptedItem]
 
     func updateCachedAliasInfo(items: [SymmetricallyEncryptedItem],
                                aliases: [SymmetricallyEncryptedAlias]) async throws
@@ -137,6 +136,17 @@ public extension LocalItemDatasource {
         return try itemEntities.map { try $0.toEncryptedItem() }
     }
 
+    func getItems(_ ids: [any ItemIdentifiable]) async throws -> [SymmetricallyEncryptedItem] {
+        let context = newTaskContext(type: .fetch)
+        let request = ItemEntity.fetchRequest()
+        request.predicate = .init(format: "itemID IN %@ AND shareID IN %@",
+                                  ids.map(\.itemId),
+                                  ids.map(\.shareId))
+        request.sortDescriptors = [.init(key: "modifyTime", ascending: false)]
+        let entities = try await execute(fetchRequest: request, context: context)
+        return try entities.map { try $0.toEncryptedItem() }
+    }
+
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem? {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ItemEntity.fetchRequest()
@@ -178,32 +188,17 @@ public extension LocalItemDatasource {
         return try await count(fetchRequest: fetchRequest, context: taskContext)
     }
 
-    func getUnsyncedSimpleLoginNoteAliases(userId: String,
-                                           pageSize: Int) async throws -> [SymmetricallyEncryptedItem] {
+    func getUnsyncedSimpleLoginNoteAliases(userId: String) async throws -> [SymmetricallyEncryptedItem] {
         let context = newTaskContext(type: .fetch)
         let request = ItemEntity.fetchRequest()
-        request.fetchLimit = pageSize
         request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
             .init(format: "userID = %@", userId),
             .init(format: "aliasEmail != ''"),
-            .init(format: "simpleLoginNoteSynced == false")
+            .init(format: "encryptedSimpleLoginNote == nil OR encryptedSimpleLoginNote == ''")
         ])
         request.sortDescriptors = [.init(key: "modifyTime", ascending: false)]
         let entities = try await execute(fetchRequest: request, context: context)
         return try entities.map { try $0.toEncryptedItem() }
-    }
-
-    func unsyncSimpleLoginNotes(items: [any ItemIdentifiable]) async throws {
-        let context = newTaskContext(type: .fetch)
-        let request = ItemEntity.fetchRequest()
-        request.predicate = .init(format: "itemID IN %@ AND shareID IN %@",
-                                  items.map(\.itemId),
-                                  items.map(\.shareId))
-        let aliases = try await execute(fetchRequest: request, context: context)
-        for alias in aliases {
-            alias.simpleLoginNoteSynced = false
-        }
-        try context.save()
     }
 
     func updateCachedAliasInfo(items: [SymmetricallyEncryptedItem],
@@ -219,7 +214,6 @@ public extension LocalItemDatasource {
                          hydrate: { item, entity in
                              if let alias = aliases.first(where: { $0.email == item.item.aliasEmail }) {
                                  entity.encryptedSimpleLoginNote = alias.encryptedNote
-                                 entity.simpleLoginNoteSynced = true
                              } else {
                                  assertionFailure("No matched encrypted alias for \(item.item.aliasEmail ?? "")")
                              }
@@ -265,8 +259,7 @@ public extension LocalItemDatasource {
                                              item: modifiedItem,
                                              encryptedContent: item.encryptedContent,
                                              isLogInItem: item.isLogInItem,
-                                             encryptedSimpleLoginNote: nil,
-                                             simpleLoginNoteSynced: false)])
+                                             encryptedSimpleLoginNote: item.encryptedSimpleLoginNote)])
             }
         }
     }
