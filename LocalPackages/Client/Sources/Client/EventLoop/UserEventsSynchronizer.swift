@@ -219,7 +219,7 @@ private extension UserEventsSynchronizer {
             logger.trace("No alias note changed for user \(userId)")
             return
         }
-        logger.trace("Unsyncing SL note for \(aliasNoteChangedItems.count) items for user \(userId)")
+        logger.trace("Syncing SL note for \(aliasNoteChangedItems.count) items for user \(userId)")
         _ = try await simpleLoginNoteSynchronizer.syncAliases(userId: userId,
                                                               aliases: aliasNoteChangedItems)
     }
