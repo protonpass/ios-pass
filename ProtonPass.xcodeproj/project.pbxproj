@@ -3403,6 +3403,7 @@
 		};
 		53968A9B2DBF86FD00924EDF /* Symlink common bundles */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -4524,6 +4525,8 @@
 				EXCLUDED_SOURCE_FILE_NAMES = "${SRCROOT}/iOS/AppManagement/Configurations/Pass-Constant-Black.plist";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/App/Info.plist;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_ITSEncryptionExportComplianceCode = "72e333d0-d159-45e3-ad41-39acb89134e8";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan 2FA code, credit card, hand-written note and QR code";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Restrict unwelcome access to your Proton Pass account on this device";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -4884,6 +4887,8 @@
 				EXCLUDED_SOURCE_FILE_NAMES = "${SRCROOT}/iOS/AppManagement/Configurations/Pass-Constant-Black.plist";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/App/Info.plist;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_ITSEncryptionExportComplianceCode = "72e333d0-d159-45e3-ad41-39acb89134e8";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan 2FA code, credit card, hand-written note and QR code";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Restrict unwelcome access to your Proton Pass account on this device";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -5464,6 +5469,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/App/Info.plist;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_ITSEncryptionExportComplianceCode = "72e333d0-d159-45e3-ad41-39acb89134e8";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan 2FA code, credit card, hand-written note and QR code";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Restrict unwelcome access to your Proton Pass account on this device";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -5601,6 +5608,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/App/Info.plist;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_ITSEncryptionExportComplianceCode = "72e333d0-d159-45e3-ad41-39acb89134e8";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan 2FA code, credit card, hand-written note and QR code";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Restrict unwelcome access to your Proton Pass account on this device";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -6119,8 +6128,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/protonpass/DocScanner";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.2.3;
+				kind = exactVersion;
+				version = 0.2.3;
 			};
 		};
 		57459FC02AE5A72100280A10 /* XCRemoteSwiftPackageReference "protoncore_ios" */ = {
