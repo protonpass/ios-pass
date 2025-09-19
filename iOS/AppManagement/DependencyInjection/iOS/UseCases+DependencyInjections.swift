@@ -67,10 +67,6 @@ private extension UseCasesContainer {
         SharedRepositoryContainer.shared.accessRepository()
     }
 
-//    var shareInviteRepository: any ShareInviteRepositoryProtocol {
-//        SharedRepositoryContainer.shared.shareInviteRepository()
-//    }
-
     var inviteRepository: any FullInviteRepositoryProtocol {
         SharedRepositoryContainer.shared.inviteRepository()
     }

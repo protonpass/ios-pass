@@ -28,6 +28,7 @@ import FactoryKit
 import Foundation
 import Macro
 import ProtonCoreHumanVerification
+import Screens
 
 enum RecommendationsState: Equatable {
     case loading
@@ -42,11 +43,31 @@ enum RecommendationsState: Equatable {
     }
 }
 
+// public enum InviteRecommendationType: Sendable, Equatable, Hashable {
+//    case email(String)
+//    case group(GroupInfo)
+//
+//    var currentEmail: String? {
+//        switch self {
+//        case let .email(email):
+//            email
+//        case let .group(groupInfo):
+//            groupInfo.group.address?.email
+//        }
+//    }
+// }
+//
+// extension [InviteRecommendationType] {
+//    var emails: [String] {
+//        compactMap(\.currentEmail)
+//    }
+// }
+
 @MainActor
 final class UserEmailViewModel: ObservableObject {
     @Published var email = ""
-    @Published var selectedEmails: [String] = []
-    @Published var highlightedEmail: String?
+    @Published var selectedRecommendations: [InviteRecommendationType] = []
+    @Published var highlightedRecommendation: InviteRecommendationType?
     @Published private(set) var invalidEmails: [String] = []
     @Published private(set) var canContinue = false
     @Published var goToNextStep = false
@@ -54,12 +75,16 @@ final class UserEmailViewModel: ObservableObject {
     @Published private(set) var recommendationsState: RecommendationsState = .loaded(nil)
     @Published private(set) var isChecking = false
     @Published private(set) var isFetchingMore = false
+    @Published var groupInfos: [GroupInfo]?
 
     private var cancellables = Set<AnyCancellable>()
     private let inviteRepository = resolve(\SharedRepositoryContainer.inviteRepository)
     private let checkAddressesForInvite = resolve(\UseCasesContainer.checkAddressesForInvite)
     private let shareInviteService = resolve(\ServiceContainer.shareInviteService)
     private let setShareInvitesUserEmailsAndKeys = resolve(\UseCasesContainer.setShareInvitesUserEmailsAndKeys)
+    private let userManager = resolve(\SharedServiceContainer.userManager)
+    @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
+    @LazyInjected(\SharedRepositoryContainer.groupRepository) private var groupRepository
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var currentTask: Task<Void, Never>?
     private var canFetchMoreEmails = true
@@ -69,8 +94,8 @@ final class UserEmailViewModel: ObservableObject {
         updateRecommendations(removingCurrentRecommendations: true)
     }
 
-    func highlightLastEmail() {
-        highlightedEmail = selectedEmails.last
+    func highlightLast() {
+        highlightedRecommendation = selectedRecommendations.last
     }
 
     func appendCurrentEmail() -> Bool {
@@ -80,31 +105,31 @@ final class UserEmailViewModel: ObservableObject {
             router.display(element: .errorMessage(#localized("Invalid email address")))
             return false
         }
-        if !selectedEmails.contains(email) {
-            selectedEmails.append(email)
+        if !selectedRecommendations.contains(.email(email)) {
+            selectedRecommendations.append(.email(email))
         }
         self.email = ""
         return true
     }
 
-    func toggleHighlight(_ email: String) {
-        if highlightedEmail == email {
-            highlightedEmail = nil
+    func toggleHighlight(_ recommendation: InviteRecommendationType) {
+        if highlightedRecommendation == recommendation {
+            highlightedRecommendation = nil
         } else {
-            highlightedEmail = email
+            highlightedRecommendation = recommendation
         }
     }
 
-    func deselect(_ email: String) {
-        selectedEmails.removeAll { $0 == email }
+    func deselect(_ recommendation: InviteRecommendationType) {
+        selectedRecommendations.removeAll { $0 == recommendation }
     }
 
-    func handleSelection(suggestedEmail: String) {
-        if selectedEmails.contains(suggestedEmail) {
-            deselect(suggestedEmail)
+    func handleSelection(_ recommendation: InviteRecommendationType) {
+        if selectedRecommendations.contains(recommendation) {
+            deselect(recommendation)
         } else {
             email = ""
-            selectedEmails.append(suggestedEmail)
+            selectedRecommendations.append(recommendation)
         }
     }
 
@@ -119,7 +144,7 @@ final class UserEmailViewModel: ObservableObject {
             }
 
             let result = try await checkAddressesForInvite(shareId: element.shareId,
-                                                           emails: selectedEmails)
+                                                           emails: selectedRecommendations.emails)
             if case let .invalid(invalidEmails) = result {
                 self.invalidEmails = invalidEmails
                 let message =
@@ -128,8 +153,10 @@ final class UserEmailViewModel: ObservableObject {
                 return false
             }
 
-            try await setShareInvitesUserEmailsAndKeys(with: selectedEmails)
-            highlightedEmail = nil
+            // TODO: need to pass more complete object to distinguish between group and email
+
+//            try await setShareInvitesUserEmailsAndKeys(with: selectedEmails)
+            highlightedRecommendation = nil
             goToNextStep = true
             return true
         } catch {
@@ -167,6 +194,7 @@ final class UserEmailViewModel: ObservableObject {
                 if removingCurrentRecommendations {
                     recommendationsState = .loading
                 }
+
                 let currentRecommendations = recommendationsState.recommendations
                 let query = InviteRecommendationsQuery(lastToken: currentRecommendations?
                     .planRecommendedEmailsNextToken,
@@ -186,6 +214,16 @@ final class UserEmailViewModel: ObservableObject {
             }
         }
     }
+
+    func fetchGroupsInfos() async {
+        guard let userAccess = accessRepository.access.value,
+              userAccess.access.plan.isBusinessUser,
+              let userId = try? await userManager.getActiveUserId() else {
+            return
+        }
+
+        groupInfos = try? await groupRepository.getGroupsInfos(userId: userId)
+    }
 }
 
 private extension UserEmailViewModel {
@@ -202,12 +240,12 @@ private extension UserEmailViewModel {
             }
             .store(in: &cancellables)
 
-        Publishers.CombineLatest($email, $selectedEmails)
+        Publishers.CombineLatest($email, $selectedRecommendations)
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] email, selectedEmails in
+            .sink { [weak self] email, _ in
                 guard let self else { return }
-                highlightedEmail = nil
-                canContinue = !email.isEmpty || !selectedEmails.isEmpty
+                highlightedRecommendation = nil
+                canContinue = !email.isEmpty || !selectedRecommendations.isEmpty
             }
             .store(in: &cancellables)
 

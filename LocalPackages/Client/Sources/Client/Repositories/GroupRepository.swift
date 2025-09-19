@@ -27,9 +27,10 @@ public protocol GroupRepositoryProtocol: Sendable {
     /// Could be nil if the user is not in business plan
     func getGroups(userId: String) async throws -> [Group]
     func getMembers(groupId: String, userId: String) async throws -> [GroupMember]
+    func getGroupsInfos(userId: String) async throws -> [GroupInfo]
 }
 
-public actor GroupRepository: GroupRepositoryProtocol {
+public final class GroupRepository: GroupRepositoryProtocol {
     private let remoteDatasource: any RemoteGroupDatasourceProtocol
     private let logger: Logger
 
@@ -53,6 +54,31 @@ public extension GroupRepository {
         let members = try await remoteDatasource.getMembers(groupId: groupId, userId: userId)
         logger.info("Found \(members.count) members for groupId \(groupId)")
         return members
+    }
+
+    func getGroupsInfos(userId: String) async throws -> [GroupInfo] {
+        logger.trace("Getting all group infos for userId \(userId)")
+
+        let groups = try await getGroups(userId: userId)
+        return try await withThrowingTaskGroup(of: GroupInfo?.self,
+                                               returning: [GroupInfo].self) { taskGroup in
+            for group in groups {
+                taskGroup.addTask { [weak self] in
+                    guard let self else { return nil }
+                    let members = try await getMembers(groupId: group.id, userId: userId)
+                    return GroupInfo(group: group, members: members)
+                }
+            }
+
+            var groupInfos = [GroupInfo]()
+
+            for try await groupInfo in taskGroup {
+                if let groupInfo {
+                    groupInfos.append(groupInfo)
+                }
+            }
+            return groupInfos
+        }
     }
 
 //    func refreshOrganization(userId: String) async throws -> Organization? {
