@@ -60,6 +60,15 @@ public enum InviteRecommendationType: Sendable, Equatable, Hashable, Identifiabl
         }
     }
 
+    public var isEmail: Bool {
+        switch self {
+        case .email:
+            true
+        case .group:
+            false
+        }
+    }
+
     public var id: Self { self }
 }
 
@@ -138,23 +147,16 @@ public struct InviteSuggestionsSection: View {
             let groups = fullInviteSuggestions.groupInfos.toRecommendationTypes ?? [InviteRecommendationType]()
             let emails = fullInviteSuggestions.recommendations.recommendedEmails.toInviteRecommendationTypes
             return groups + emails
-//            (fullInviteSuggestions.groupInfos?.toInviteRecommendationTypes ?? []) +
-//            fullInviteSuggestions.recommendations.recommendedEmails.toInviteRecommendationTypes
         } else {
             return fullInviteSuggestions.recommendations.planRecommendedEmails.toInviteRecommendationTypes
         }
-//
-//        fullInviteSuggestions.recentRecommandation() : fullInviteSuggestions.recommendations
-//        .planRecommendedEmails
-//
-//        (groupInfos?.map { "\($0.group.name) (\($0.memberCounts))" } ?? []) + recommendations.recommendedEmails
     }
 }
 
 private extension InviteSuggestionsSection {
     func emailList(_ recommendations: [InviteRecommendationType]) -> some View {
         ForEach(recommendations, id: \.self) { recommendation in
-            SuggestedEmailView(email: recommendation.name,
+            SuggestedEmailView(recommendation: recommendation,
                                isSelected: selectedRecommendations.contains(recommendation),
                                onSelect: { onSelect(recommendation) })
                 .onAppear {

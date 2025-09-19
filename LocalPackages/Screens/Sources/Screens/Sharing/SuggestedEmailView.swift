@@ -20,28 +20,31 @@
 //
 
 import DesignSystem
+import ProtonCoreUIFoundations
 import SwiftUI
 
 struct SuggestedEmailView: View {
-    private let email: String
+    private let recommendation: InviteRecommendationType
     private let isSelected: Bool
     private let onSelect: () -> Void
 
-    init(email: String, isSelected: Bool, onSelect: @escaping () -> Void) {
-        self.email = email
+    init(recommendation: InviteRecommendationType, isSelected: Bool, onSelect: @escaping () -> Void) {
+        self.recommendation = recommendation
         self.isSelected = isSelected
         self.onSelect = onSelect
     }
 
     var body: some View {
         HStack {
-            SquircleThumbnail(data: .initials(String(email.prefix(2).uppercased())),
-                              tintColor: PassColor.interactionNormMajor2,
-                              backgroundColor: PassColor.interactionNormMinor1)
+            SquircleThumbnail(data: recommendation
+                .isEmail ? .initials(String(recommendation.name.prefix(2).uppercased())) :
+                .icon(IconProvider.users),
+                tintColor: PassColor.interactionNormMajor2,
+                backgroundColor: PassColor.interactionNormMinor1)
 
             Spacer()
 
-            Text(email)
+            Text(recommendation.name)
                 .foregroundStyle(PassColor.textNorm.toColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
