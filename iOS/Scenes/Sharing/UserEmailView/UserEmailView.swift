@@ -48,7 +48,7 @@ struct UserEmailView: View {
                 }
 
                 AnyLayout(FlowLayout(spacing: 8)) {
-                    ForEach(viewModel.selectedEmails + [""], id: \.self) { item in
+                    ForEach(viewModel.selectedRecommendations + [.email("")]) { item in
                         token(for: item)
                     }
                 }
@@ -67,11 +67,13 @@ struct UserEmailView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
                 } else if let recommendations = viewModel.recommendationsState.recommendations,
                           !recommendations.isEmpty {
-                    InviteSuggestionsSection(selectedEmails: viewModel.selectedEmails,
-                                             recommendations: recommendations,
+                    InviteSuggestionsSection(selectedRecommendations: viewModel.selectedRecommendations,
+                                             fullInviteSuggestions:
+                                             FullInviteSuggestions(recommendations: recommendations,
+                                                                   groupInfos: viewModel.groupInfos),
                                              isFetchingMore: viewModel.isFetchingMore,
                                              displayCounts: Bundle.main.isQaBuild,
-                                             onSelect: { viewModel.handleSelection(suggestedEmail: $0) },
+                                             onSelect: { viewModel.handleSelection($0) },
                                              onLoadMore: {
                                                  viewModel
                                                      .updateRecommendations(removingCurrentRecommendations: false)
@@ -87,10 +89,13 @@ struct UserEmailView: View {
         .onAppear {
             isFocused = true
         }
-        .onChange(of: viewModel.highlightedEmail) { highlightedEmail in
-            isFocused = highlightedEmail == nil
+        .task {
+            await viewModel.fetchGroupsInfos()
         }
-        .animation(.default, value: viewModel.selectedEmails)
+        .onChange(of: viewModel.highlightedRecommendation) { highlightedRecommendation in
+            isFocused = highlightedRecommendation == nil
+        }
+        .animation(.default, value: viewModel.selectedRecommendations)
         .animation(.default, value: viewModel.recommendationsState)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .navigationBarTitleDisplayMode(.inline)
@@ -105,11 +110,11 @@ struct UserEmailView: View {
 
 private extension UserEmailView {
     @ViewBuilder
-    func token(for email: String) -> some View {
-        if email.isEmpty {
+    func token(for recommendation: InviteRecommendationType) -> some View {
+        if recommendation.name.isEmpty {
             emailTextField
         } else {
-            emailCell(for: email)
+            recommendationCell(for: recommendation)
         }
     }
 
@@ -127,16 +132,16 @@ private extension UserEmailView {
                                               returnKeyType: .default,
                                               textColor: PassColor.textNorm,
                                               tintColor: PassColor.interactionNorm),
-                                onBackspace: { viewModel.highlightLastEmail() },
+                                onBackspace: { viewModel.highlightLast() },
                                 onReturn: { _ = viewModel.appendCurrentEmail() })
             .frame(width: max(150, CGFloat(maxCharCount) * 10), height: 32)
             .clipped()
     }
 
     @ViewBuilder
-    func emailCell(for email: String) -> some View {
-        let highlighted = viewModel.highlightedEmail == email
-        let invalid = viewModel.invalidEmails.contains(email)
+    func recommendationCell(for reco: InviteRecommendationType) -> some View {
+        let highlighted = viewModel.highlightedRecommendation == reco
+        let invalid = viewModel.invalidEmails.contains(reco.name)
 
         let textColor: () -> UIColor = {
             switch (highlighted, invalid) {
@@ -166,12 +171,12 @@ private extension UserEmailView {
             highlighted
         }, set: { newValue in
             if !newValue {
-                viewModel.highlightedEmail = nil
+                viewModel.highlightedRecommendation = nil
             }
         })
 
         HStack(alignment: .center, spacing: 10) {
-            Text(email)
+            Text(reco.name)
                 .lineLimit(1)
         }
         .font(.callout)
@@ -183,7 +188,7 @@ private extension UserEmailView {
         .animation(.default, value: highlighted)
         .animation(.default, value: invalid)
         .contentShape(.rect)
-        .onTapGesture { viewModel.toggleHighlight(email) }
+        .onTapGesture { viewModel.toggleHighlight(reco) }
         .overlay {
             // Dummy invisible text field to allow removing a token with backspace
             BackspaceAwareTextField(text: .constant(""),
@@ -196,8 +201,8 @@ private extension UserEmailView {
                                                   returnKeyType: .default,
                                                   textColor: .clear,
                                                   tintColor: .clear),
-                                    onBackspace: { viewModel.deselect(email) },
-                                    onReturn: { viewModel.toggleHighlight(email) })
+                                    onBackspace: { viewModel.deselect(reco) },
+                                    onReturn: { viewModel.toggleHighlight(reco) })
                 .opacity(0)
         }
     }

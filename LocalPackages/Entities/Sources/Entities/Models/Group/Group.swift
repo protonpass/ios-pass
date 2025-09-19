@@ -27,11 +27,25 @@ public enum GroupPermissions: Int, Decodable, Sendable {
     case everyoneCanSend = 3
 }
 
+public struct GroupInfo: Sendable, Equatable, Hashable {
+    public let group: Group
+    public let members: [GroupMember]
+
+    public init(group: Group, members: [GroupMember]) {
+        self.group = group
+        self.members = members
+    }
+
+    public var memberCounts: Int {
+        members.count
+    }
+}
+
 public struct Group: Decodable, Sendable, Equatable, Hashable, Identifiable {
     private let ID: String
     public let permissions: GroupPermissions
     public let name: String
-    public let address: [GroupAddress?]
+    public let address: GroupAddress?
     public let createTime: Int
     public let flags: Int
     public let description: String?
@@ -44,7 +58,7 @@ public struct Group: Decodable, Sendable, Equatable, Hashable, Identifiable {
     public init(ID: String,
                 permissions: GroupPermissions,
                 name: String,
-                address: [GroupAddress?],
+                address: GroupAddress?,
                 createTime: Int,
                 flags: Int,
                 description: String?) {
@@ -58,6 +72,86 @@ public struct Group: Decodable, Sendable, Equatable, Hashable, Identifiable {
     }
 }
 
-public struct GroupAddress: Decodable, Sendable, Equatable, Hashable {
+//
+// public struct GroupAddress: Decodable, Sendable, Equatable, Hashable {
+//    public let email: String
+// }
+
+// struct NetworkResponse: Codable {
+//    let code: Int
+//    let groups: [Group]
+//    let total: Int
+//
+//    enum CodingKeys: String, CodingKey {
+//        case code = "Code"
+//        case groups = "Groups"
+//        case total = "Total"
+//    }
+// }
+
+// struct Group: Codable {
+//    let id: String
+//    let name: String
+//    let address: Address
+//    let permissions: Int
+//    let createTime: Int
+//    let flags: Int
+//    let groupVisibility: Int
+//    let memberVisibility: Int
+//    let description: String
+//
+//    enum CodingKeys: String, CodingKey {
+//        case id = "ID"
+//        case name = "Name"
+//        case address = "Address"
+//        case permissions = "Permissions"
+//        case createTime = "CreateTime"
+//        case flags = "Flags"
+//        case groupVisibility = "GroupVisibility"
+//        case memberVisibility = "MemberVisibility"
+//        case description = "Description"
+//    }
+// }
+// ']
+
+public struct GroupAddress: Codable, Sendable, Equatable, Hashable {
+    let ID: String
+    public let domainID: String
     public let email: String
+    public let status: Int
+    public let type: Int
+    public let receive: Int
+    public let send: Int
+    public let displayName: String
+    public let signature: String
+    public let order: Int
+    public let priority: Int
+    public let catchAll: Bool
+    public let protonMX: Bool
+    public let confirmationState: Int
+    public let hasKeys: Int
+    public let keys: [GroupAddressKey]
+    public let signedKeyList: SignedKeyList?
+}
+
+public struct GroupAddressKey: Codable, Sendable, Equatable, Hashable {
+    let ID: String
+    public let primary: Int
+    public let flags: Int
+    public let fingerprint: String
+    public let fingerprints: [String]
+    public let privateKey: String
+    public let token: String
+    public let signature: String
+    public let active: Int
+}
+
+public struct SignedKeyList: Codable, Sendable, Equatable, Hashable {
+    public let minEpochID: Int?
+    public let maxEpochID: Int?
+    public let expectedMinEpochID: Int
+    public let data: String
+    public let obsolescenceToken: String?
+    public let revision: Int
+    public let signature: String
 }

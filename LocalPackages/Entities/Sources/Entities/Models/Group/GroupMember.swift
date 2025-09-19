@@ -43,7 +43,7 @@ public enum GroupMemberState: Int, Decodable, Sendable {
 
 public struct GroupMember: Decodable, Sendable, Equatable, Hashable, Identifiable {
     private let ID: String
-    public let createTime: String
+    public let createTime: Int
     public let groupID: String
     public let state: GroupMemberState
     public let type: GroupMemberType
@@ -57,7 +57,7 @@ public struct GroupMember: Decodable, Sendable, Equatable, Hashable, Identifiabl
     }
 
     public init(ID: String,
-                createTime: String,
+                createTime: Int,
                 groupID: String,
                 state: GroupMemberState,
                 type: GroupMemberType,
