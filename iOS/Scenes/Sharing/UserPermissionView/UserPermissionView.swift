@@ -182,8 +182,6 @@ private extension UserPermissionView {
             icon(invite: email)
             VStack(alignment: .leading, spacing: 4) {
                 rowName(invite: email)
-//                Text(email.name)
-//                    .foregroundStyle(PassColor.textNorm.toColor)
             }
         }
         .frame(height: 60)
@@ -245,7 +243,7 @@ private extension UserPermissionView {
                 Text(invite.name)
                 Text(verbatim: " (")
                 Button { showMember = infos } label: {
-                    Text("\(infos.members.count) members")
+                    Text(#localized("%lld member(s)", infos.members.count))
                         .foregroundStyle(PassColor.interactionNormMajor2.toColor)
                 }.buttonStyle(.plain)
                 Text(verbatim: ")")

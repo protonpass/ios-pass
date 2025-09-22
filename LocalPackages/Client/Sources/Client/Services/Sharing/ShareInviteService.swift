@@ -26,15 +26,13 @@ public protocol ShareInviteServiceProtocol: Sendable {
     var currentSelectedElement: CurrentValueSubject<SharingElementData?, Never> { get }
 
     func setCurrentSelectedVaultItem(with itemNum: Int)
-    func setEmailsAndKeys(with data: [String: [PublicKey]?])
-    func setEmailsAndRoles(with data: [String: ShareRole])
+    func setInvitesAndKeys(with data: [InviteRecommendationType: [PublicKey]?])
+    func setInvitesAndRoles(with data: [InviteRecommendationType: ShareRole])
 
-    func getAllEmails() -> [String]
+    func getAllInvites() -> [InviteRecommendationType]
     func getSharingInfos() -> [SharingInfos]
     func resetShareInviteInformations()
 }
-
-// TODO: need to take new group share
 
 public final class ShareInviteService: @unchecked Sendable, ShareInviteServiceProtocol {
     public nonisolated let currentSelectedElement: CurrentValueSubject<SharingElementData?, Never> = .init(nil)
@@ -54,8 +52,8 @@ public final class ShareInviteService: @unchecked Sendable, ShareInviteServicePr
         }
     }
 
-    private var emailsAndKeys = [String: [PublicKey]?]()
-    private var emailsAndRole = [String: ShareRole]()
+    private var emailsAndKeys = [InviteRecommendationType: [PublicKey]?]()
+    private var emailsAndRole = [InviteRecommendationType: ShareRole]()
 
     public init() {}
 }
@@ -65,15 +63,15 @@ public extension ShareInviteService {
         currentSelectedVaultItems = itemNum
     }
 
-    func setEmailsAndKeys(with data: [String: [PublicKey]?]) {
+    func setInvitesAndKeys(with data: [InviteRecommendationType: [PublicKey]?]) {
         emailsAndKeys = data
     }
 
-    func setEmailsAndRoles(with data: [String: ShareRole]) {
+    func setInvitesAndRoles(with data: [InviteRecommendationType: ShareRole]) {
         emailsAndRole = data
     }
 
-    func getAllEmails() -> [String] {
+    func getAllInvites() -> [InviteRecommendationType] {
         Array(emailsAndKeys.keys)
     }
 
@@ -82,8 +80,8 @@ public extension ShareInviteService {
             return []
         }
         var result = [SharingInfos]()
-        for (email, keys) in emailsAndKeys {
-            if let role = emailsAndRole[email] {
+        for (destination, keys) in emailsAndKeys {
+            if let role = emailsAndRole[destination], let email = destination.currentEmail {
                 let info = SharingInfos(shareElement: element,
                                         email: email,
                                         role: role,

@@ -41,6 +41,6 @@ public final class SetShareInviteRole: SetShareInviteRoleUseCase {
     }
 
     public func execute(with roles: [InviteRecommendationType: ShareRole]) {
-        shareInviteService.setEmailsAndRoles(with: roles)
+        shareInviteService.setInvitesAndRoles(with: roles)
     }
 }

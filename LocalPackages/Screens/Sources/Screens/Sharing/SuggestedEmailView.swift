@@ -20,6 +20,8 @@
 //
 
 import DesignSystem
+import Entities
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -37,14 +39,14 @@ struct SuggestedEmailView: View {
     var body: some View {
         HStack {
             SquircleThumbnail(data: recommendation
-                .isEmail ? .initials(String(recommendation.name().prefix(2).uppercased())) :
+                .isEmail ? .initials(String(recommendation.name.prefix(2).uppercased())) :
                 .icon(IconProvider.users),
                 tintColor: PassColor.interactionNormMajor2,
                 backgroundColor: PassColor.interactionNormMinor1)
 
             Spacer()
 
-            Text(recommendation.name(shorten: false))
+            Text(name)
                 .foregroundStyle(PassColor.textNorm.toColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -54,5 +56,17 @@ struct SuggestedEmailView: View {
         }
         .contentShape(.rect)
         .onTapGesture(perform: onSelect)
+    }
+
+    private var name: String {
+        switch recommendation {
+        case let .email(email):
+            return email
+        case .group:
+            guard let numberOfMembers = recommendation.numberOfMembers else {
+                return recommendation.name
+            }
+            return recommendation.name + " " + #localized("(%lld members)", numberOfMembers)
+        }
     }
 }

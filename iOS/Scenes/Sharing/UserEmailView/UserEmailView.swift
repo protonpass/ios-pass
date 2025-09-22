@@ -301,7 +301,7 @@ struct GroupUsersInformationView: View {
 
     var body: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
-            Text("\(groupInfo.group.name)")
+            Text(verbatim: "\(groupInfo.group.name)")
                 .foregroundStyle(PassColor.textNorm.toColor)
                 .fontWeight(.bold)
                 .frame(maxWidth: .infinity, alignment: .center)
