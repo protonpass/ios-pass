@@ -33,99 +33,26 @@ struct EditableVaultListView: View {
     @State private var vaultNameConfirmation = ""
     @State private var vaultToDelete: Share?
     @State private var isShowingEmptyTrashAlert = false
+    private let onChangeMode: (EditableVaultListViewModel.Mode) -> Void
+
+    init(onChangeMode: @escaping (EditableVaultListViewModel.Mode) -> Void) {
+        self.onChangeMode = onChangeMode
+    }
 
     var body: some View {
         VStack(alignment: .leading) {
-            ScrollView {
-                LazyVStack(spacing: 0) {
-                    switch viewModel.state {
-                    case .error, .loading:
-                        // Should never happen
-                        ProgressView()
-                    case .loaded:
-                        if viewModel.mode.isOrganise {
-                            hiddenVaultsBanner
-                        } else {
-                            vaultRow(for: .all)
-                            PassDivider()
-                        }
-
-                        ForEach(viewModel.filteredOrderedVaults) { vault in
-                            vaultRow(for: .precise(vault))
-                            PassDivider()
-                        }
-
-                        if viewModel.mode.isView {
-                            if viewModel.canSelectVault(selection: .sharedWithMe) {
-                                vaultRow(for: .sharedWithMe)
-                                PassDivider()
-                            }
-                            if viewModel.canSelectVault(selection: .sharedByMe) {
-                                vaultRow(for: .sharedByMe)
-                                PassDivider()
-                            }
-
-                            vaultRow(for: .trash)
-                        }
-                    }
-                }
-                .padding(.horizontal)
-            }
-            HStack {
-                switch viewModel.mode {
-                case .view:
-                    CapsuleLabelButton(icon: IconProvider.plus,
-                                       title: #localized("Create vault"),
-                                       titleColor: PassColor.interactionNormMajor2,
-                                       backgroundColor: PassColor.interactionNormMinor1,
-                                       fontWeight: .semibold,
-                                       action: viewModel.createNewVault)
-                        .fixedSize(horizontal: true, vertical: true)
-                        .hidden(viewModel.organization?.settings?.vaultCreateMode == .adminsOnly)
-
-                case .organise:
-                    CapsuleTextButton(title: #localized("Cancel"),
-                                      titleColor: PassColor.interactionNormMajor2,
-                                      fontWeight: .semibold,
-                                      backgroundColor: PassColor.interactionNormMinor1,
-                                      horizontalPadding: DesignConstant.sectionPadding * 2,
-                                      action: {
-                                          viewModel.mode = .view
-                                          viewModel.resetHiddenShareIds()
-                                      })
-                                      .fixedSize(horizontal: true, vertical: true)
-                }
-
-                Spacer()
-
-                if viewModel.hideShowVaultSupported {
-                    switch viewModel.mode {
-                    case .view:
-                        CapsuleLabelButton(icon: IconProvider.listBullets,
-                                           title: #localized("Organise vaults"),
-                                           titleColor: PassColor.interactionNormMajor2,
-                                           backgroundColor: PassColor.interactionNormMinor1,
-                                           fontWeight: .semibold,
-                                           action: { viewModel.mode = .organise })
-                            .fixedSize(horizontal: true, vertical: true)
-
-                    case .organise:
-                        CapsuleTextButton(title: #localized("Done"),
-                                          titleColor: PassColor.interactionNormMajor2,
-                                          fontWeight: .semibold,
-                                          backgroundColor: PassColor.interactionNormMinor1,
-                                          horizontalPadding: DesignConstant.sectionPadding * 2,
-                                          action: viewModel.applyVaultsOrganizations)
-                            .fixedSize(horizontal: true, vertical: true)
-                    }
-                }
-            }
-            .padding([.bottom, .horizontal])
+            topView
+            vaultsScrollView
+            bottomView
         }
         .animation(.default, value: viewModel.mode)
+        .animation(.default, value: viewModel.hiddenShareIds)
         .background(PassColor.backgroundWeak.toColor)
         .showSpinner(viewModel.loading)
         .frame(maxWidth: .infinity, alignment: .leading)
+        .onChange(of: viewModel.mode) { newMode in
+            onChangeMode(newMode)
+        }
         .alert("Delete vault?",
                isPresented: $vaultToDelete.mappedToBool(),
                presenting: vaultToDelete,
@@ -144,20 +71,153 @@ struct EditableVaultListView: View {
                    Text("This will permanently delete the vault « \(vault.vaultName ?? "") » and all its contents. Enter the vault name to confirm deletion.")
                })
     }
+}
 
-    private var hiddenVaultsBanner: some View {
-        Text("Hidden vaults won’t be visible during search and autofill.")
-            .frame(maxWidth: .infinity, alignment: .center)
-            .multilineTextAlignment(.center)
-            .foregroundStyle(PassColor.textNorm.toColor)
+private extension EditableVaultListView {
+    @ViewBuilder
+    var topView: some View {
+        if viewModel.mode.isOrganise {
+            HStack {
+                Button(action: {
+                    viewModel.updateMode(.view)
+                }, label: {
+                    Text("Cancel")
+                        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                })
+
+                Spacer()
+
+                Text("Organize vaults")
+                    .fontWeight(.bold)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+
+                Spacer()
+
+                Button(action: {
+                    viewModel.applyVaultsOrganizations()
+                }, label: {
+                    Text("Done")
+                        .fontWeight(.semibold)
+                        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                })
+            }
             .padding()
-            .background(PassColor.interactionNormMinor1.toColor)
-            .clipShape(RoundedRectangle(cornerRadius: DesignConstant.sectionPadding))
-            .padding(.vertical)
+        }
     }
 
     @ViewBuilder
-    private func vaultRow(for selection: VaultSelection) -> some View {
+    var bottomView: some View {
+        if viewModel.mode.isView {
+            HStack {
+                CapsuleLabelButton(icon: IconProvider.plus,
+                                   title: #localized("Create vault"),
+                                   titleColor: PassColor.interactionNormMajor2,
+                                   backgroundColor: PassColor.interactionNormMinor1,
+                                   fontWeight: .semibold,
+                                   action: viewModel.createNewVault)
+                    .fixedSize(horizontal: true, vertical: true)
+                    .hidden(viewModel.organization?.settings?.vaultCreateMode == .adminsOnly)
+
+                Spacer()
+
+                if viewModel.hideShowVaultSupported {
+                    CapsuleLabelButton(icon: IconProvider.listBullets,
+                                       title: #localized("Organize vaults"),
+                                       titleColor: PassColor.interactionNormMajor2,
+                                       backgroundColor: PassColor.interactionNormMinor1,
+                                       fontWeight: .semibold,
+                                       action: { viewModel.updateMode(.organise) })
+                        .fixedSize(horizontal: true, vertical: true)
+                }
+            }
+            .padding([.bottom, .horizontal])
+        }
+    }
+
+    var vaultsScrollView: some View {
+        LazyVStack(spacing: 0) {
+            switch viewModel.state {
+            case .error, .loading:
+                // Should never happen because we don't allow showing list of vaults
+                // when vaults are being loaded or error occured
+                ProgressView()
+
+            case .loaded:
+                if viewModel.mode.isView {
+                    vaultRow(for: .all)
+                    PassDivider()
+                } else {
+                    if viewModel.filteredOrderedVaults.count != viewModel.hiddenShareIds.count {
+                        Text("Visible vaults")
+                            .fontWeight(.semibold)
+                            .foregroundStyle(PassColor.textNorm.toColor)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.bottom)
+                    }
+                }
+
+                ForEach(viewModel.filteredOrderedVaults) { vault in
+                    let shouldShow = if viewModel.mode.isView {
+                        !vault.hidden
+                    } else {
+                        !viewModel.hiddenShareIds.contains(vault.shareId)
+                    }
+
+                    if shouldShow {
+                        vaultRow(for: .precise(vault))
+                        if viewModel.mode.isView ||
+                            (viewModel.mode.isOrganise && !viewModel.isLastVisibleVault(vault)) {
+                            PassDivider()
+                        }
+                    }
+                }
+
+                if viewModel.mode.isOrganise {
+                    if !viewModel.hiddenShareIds.isEmpty {
+                        Text("Hidden vaults")
+                            .fontWeight(.semibold)
+                            .foregroundStyle(PassColor.textNorm.toColor)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.top)
+                            .padding(.bottom, 4)
+                        // swiftlint:disable:next line_length
+                        Text("These vaults will not be accessible and their content won't be available to Search or Autofill.")
+                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.bottom)
+                    }
+
+                    ForEach(viewModel.filteredOrderedVaults) { vault in
+                        if viewModel.hiddenShareIds.contains(vault.shareId) {
+                            vaultRow(for: .precise(vault))
+                            if !viewModel.isLastHiddenVault(vault) {
+                                PassDivider()
+                            }
+                        }
+                    }
+                }
+
+                if viewModel.mode.isView {
+                    if viewModel.canSelectVault(selection: .sharedWithMe) {
+                        vaultRow(for: .sharedWithMe)
+                        PassDivider()
+                    }
+
+                    if viewModel.canSelectVault(selection: .sharedByMe) {
+                        vaultRow(for: .sharedByMe)
+                        PassDivider()
+                    }
+
+                    vaultRow(for: .trash)
+                }
+            }
+        }
+        .padding(.horizontal)
+        .scrollViewEmbeded()
+    }
+
+    @ViewBuilder
+    func vaultRow(for selection: VaultSelection) -> some View {
         let itemCount = viewModel.itemCount(for: selection)
 
         let vaultRowMode: VaultRowMode = switch viewModel.mode {
@@ -217,7 +277,7 @@ struct EditableVaultListView: View {
         }
     }
 
-    private func threeDotsIcon() -> some View {
+    func threeDotsIcon() -> some View {
         Image(uiImage: IconProvider.threeDotsVertical)
             .resizable()
             .scaledToFit()
@@ -226,7 +286,7 @@ struct EditableVaultListView: View {
     }
 
     @ViewBuilder
-    private func vaultTrailingView(_ vault: Share, haveItems: Bool) -> some View {
+    func vaultTrailingView(_ vault: Share, haveItems: Bool) -> some View {
         Menu(content: {
             if viewModel.canEdit(vault: vault) {
                 Button(action: {
@@ -296,7 +356,7 @@ struct EditableVaultListView: View {
     }
 
     @ViewBuilder
-    private var trashTrailingView: some View {
+    var trashTrailingView: some View {
         let trashedAliasesCount = viewModel.trashedAliasesCount
         let showAliasWarning = trashedAliasesCount > 0
         if viewModel.hasTrashItems {
