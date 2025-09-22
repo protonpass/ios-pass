@@ -41,61 +41,9 @@ struct EditableVaultListView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            if viewModel.mode.isOrganise {
-                HStack {
-                    Button(action: {
-                        viewModel.updateMode(.view)
-                    }, label: {
-                        Text("Cancel")
-                            .foregroundStyle(PassColor.interactionNormMajor2.toColor)
-                    })
-
-                    Spacer()
-
-                    Text("Organize vaults")
-                        .fontWeight(.bold)
-                        .foregroundStyle(PassColor.textNorm.toColor)
-
-                    Spacer()
-
-                    Button(action: {
-                        viewModel.applyVaultsOrganizations()
-                    }, label: {
-                        Text("Done")
-                            .fontWeight(.semibold)
-                            .foregroundStyle(PassColor.interactionNormMajor2.toColor)
-                    })
-                }
-                .padding()
-            }
-
+            topView
             vaultsScrollView
-
-            if viewModel.mode.isView {
-                HStack {
-                    CapsuleLabelButton(icon: IconProvider.plus,
-                                       title: #localized("Create vault"),
-                                       titleColor: PassColor.interactionNormMajor2,
-                                       backgroundColor: PassColor.interactionNormMinor1,
-                                       fontWeight: .semibold,
-                                       action: viewModel.createNewVault)
-                        .fixedSize(horizontal: true, vertical: true)
-                        .hidden(viewModel.organization?.settings?.vaultCreateMode == .adminsOnly)
-
-                    Spacer()
-
-                    if viewModel.hideShowVaultSupported {
-                        CapsuleLabelButton(icon: IconProvider.listBullets,
-                                           title: #localized("Organize vaults"),
-                                           titleColor: PassColor.interactionNormMajor2,
-                                           backgroundColor: PassColor.interactionNormMinor1,
-                                           fontWeight: .semibold,
-                                           action: { viewModel.updateMode(.organise) })
-                            .fixedSize(horizontal: true, vertical: true)
-                    }
-                }
-                .padding([.bottom, .horizontal])
-            }
+            bottomView
         }
         .animation(.default, value: viewModel.mode)
         .animation(.default, value: viewModel.hiddenShareIds)
@@ -126,6 +74,66 @@ struct EditableVaultListView: View {
 }
 
 private extension EditableVaultListView {
+    @ViewBuilder
+    var topView: some View {
+        if viewModel.mode.isOrganise {
+            HStack {
+                Button(action: {
+                    viewModel.updateMode(.view)
+                }, label: {
+                    Text("Cancel")
+                        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                })
+
+                Spacer()
+
+                Text("Organize vaults")
+                    .fontWeight(.bold)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+
+                Spacer()
+
+                Button(action: {
+                    viewModel.applyVaultsOrganizations()
+                }, label: {
+                    Text("Done")
+                        .fontWeight(.semibold)
+                        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                })
+            }
+            .padding()
+        }
+    }
+
+    @ViewBuilder
+    var bottomView: some View {
+        if viewModel.mode.isView {
+            HStack {
+                CapsuleLabelButton(icon: IconProvider.plus,
+                                   title: #localized("Create vault"),
+                                   titleColor: PassColor.interactionNormMajor2,
+                                   backgroundColor: PassColor.interactionNormMinor1,
+                                   fontWeight: .semibold,
+                                   action: viewModel.createNewVault)
+                    .fixedSize(horizontal: true, vertical: true)
+                    .hidden(viewModel.organization?.settings?.vaultCreateMode == .adminsOnly)
+
+                Spacer()
+
+                if viewModel.hideShowVaultSupported {
+                    CapsuleLabelButton(icon: IconProvider.listBullets,
+                                       title: #localized("Organize vaults"),
+                                       titleColor: PassColor.interactionNormMajor2,
+                                       backgroundColor: PassColor.interactionNormMinor1,
+                                       fontWeight: .semibold,
+                                       action: { viewModel.updateMode(.organise) })
+                        .fixedSize(horizontal: true, vertical: true)
+                }
+            }
+            .padding([.bottom, .horizontal])
+        }
+    }
+
     var vaultsScrollView: some View {
         LazyVStack(spacing: 0) {
             switch viewModel.state {
