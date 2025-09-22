@@ -28,7 +28,7 @@ import Foundation
 @MainActor
 final class UserPermissionViewModel: ObservableObject {
     @Published private(set) var selectedUserRole: ShareRole = .read
-    @Published private(set) var emails = [String: ShareRole]()
+    @Published private(set) var emails = [InviteRecommendationType: ShareRole]()
     @Published private(set) var canContinue = false
 
     private let setShareInviteRole = resolve(\UseCasesContainer.setShareInviteRole)
@@ -53,7 +53,7 @@ final class UserPermissionViewModel: ObservableObject {
         setUp()
     }
 
-    func updateRole(for email: String, with newRole: ShareRole) {
+    func updateRole(for email: InviteRecommendationType, with newRole: ShareRole) {
         emails[email] = newRole
         setShareInviteRole(with: emails)
         if hasOnlyOneInvite {
@@ -71,7 +71,7 @@ final class UserPermissionViewModel: ObservableObject {
 
 private extension UserPermissionViewModel {
     func setUp() {
-        for email in shareInviteService.getAllEmails() {
+        for email in shareInviteService.getAllInvites() {
             emails[email] = .read
             setShareInviteRole(with: emails)
         }

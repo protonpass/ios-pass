@@ -31,6 +31,7 @@ struct UserPermissionView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var router: PathRouter
     @StateObject private var viewModel = UserPermissionViewModel()
+    @State private var showMember: GroupInfo?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -53,6 +54,11 @@ struct UserPermissionView: View {
         .navigationBarTitleDisplayMode(.inline)
         .background(PassColor.backgroundNorm.toColor)
         .toolbar { toolbarContent }
+        .sheet(item: $showMember) { infos in
+            GroupUsersInformationView(groupInfo: infos, rights: nil)
+                .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.visible)
+        }
     }
 
     @ViewBuilder
@@ -115,17 +121,15 @@ private extension UserPermissionView {
         }
     }
 
-    func inviteeList(for emails: [String: ShareRole]) -> some View {
+    func inviteeList(for emails: [InviteRecommendationType: ShareRole]) -> some View {
         LazyVStack {
-            ForEach(Array(emails.keys), id: \.self) { email in
+            ForEach(Array(emails.keys)) { invite in
                 HStack(spacing: DesignConstant.sectionPadding) {
-                    SquircleThumbnail(data: .initials(email.initials()),
-                                      tintColor: PassColor.interactionNormMajor2,
-                                      backgroundColor: PassColor.interactionNormMinor1)
+                    icon(invite: invite)
                     VStack(alignment: .leading, spacing: 4) {
-                        Text(email)
-                            .foregroundStyle(PassColor.textNorm.toColor)
-                        if let currentRole = viewModel.emails[email] {
+                        rowName(invite: invite)
+
+                        if let currentRole = viewModel.emails[invite] {
                             HStack {
                                 Text(currentRole.title(managerAsAdmin: viewModel.managerAsAdmin))
                                     .foregroundStyle(PassColor.textWeak.toColor)
@@ -134,8 +138,8 @@ private extension UserPermissionView {
                     }
 
                     Spacer()
-                    if let currentRole = viewModel.emails[email] {
-                        trailingView(email: email, currentRole: currentRole)
+                    if let currentRole = viewModel.emails[invite] {
+                        trailingView(email: invite, currentRole: currentRole)
                     }
                 }
             }
@@ -145,7 +149,7 @@ private extension UserPermissionView {
     }
 
     @ViewBuilder
-    func trailingView(email: String, currentRole: ShareRole) -> some View {
+    func trailingView(email: InviteRecommendationType, currentRole: ShareRole) -> some View {
         Menu(content: {
             ForEach(ShareRole.allCases, id: \.self) { role in
                 Label(title: {
@@ -173,14 +177,13 @@ private extension UserPermissionView {
 // MARK: - Single Email
 
 private extension UserPermissionView {
-    func emailDisplayView(email: String) -> some View {
+    func emailDisplayView(email: InviteRecommendationType) -> some View {
         HStack(spacing: DesignConstant.sectionPadding) {
-            SquircleThumbnail(data: .initials(email.initials()),
-                              tintColor: PassColor.interactionNormMajor2,
-                              backgroundColor: PassColor.interactionNormMinor1)
+            icon(invite: email)
             VStack(alignment: .leading, spacing: 4) {
-                Text(email)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                rowName(invite: email)
+//                Text(email.name)
+//                    .foregroundStyle(PassColor.textNorm.toColor)
             }
         }
         .frame(height: 60)
@@ -188,7 +191,7 @@ private extension UserPermissionView {
 }
 
 private extension UserPermissionView {
-    func roleList(email: String) -> some View {
+    func roleList(email: InviteRecommendationType) -> some View {
         VStack(spacing: 12) {
             ForEach(ShareRole.allCases.reversed(), id: \.self) { role in
                 Button {
@@ -226,6 +229,32 @@ private extension UserPermissionView {
             }
         }
         .animation(.default, value: viewModel.selectedUserRole)
+    }
+
+    func icon(invite: InviteRecommendationType) -> some View {
+        SquircleThumbnail(data: invite
+            .isEmail ? .initials(invite.name.initials()) : .icon(IconProvider.users),
+            tintColor: PassColor.interactionNormMajor2,
+            backgroundColor: PassColor.interactionNormMinor1)
+    }
+
+    @ViewBuilder
+    func rowName(invite: InviteRecommendationType) -> some View {
+        if case let .group(infos) = invite {
+            HStack(spacing: 0) {
+                Text(invite.name)
+                Text(verbatim: " (")
+                Button { showMember = infos } label: {
+                    Text("\(infos.members.count) members")
+                        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                }.buttonStyle(.plain)
+                Text(verbatim: ")")
+            }
+            .foregroundStyle(PassColor.textNorm.toColor)
+        } else {
+            Text(invite.name)
+                .foregroundStyle(PassColor.textNorm.toColor)
+        }
     }
 }
 
