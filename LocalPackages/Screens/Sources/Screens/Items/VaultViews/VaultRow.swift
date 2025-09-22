@@ -76,7 +76,7 @@ public struct VaultRow<Thumbnail: View>: View {
     public var body: some View {
         HStack(spacing: 16) {
             if case let .organise(isHidden) = mode {
-                Image(systemName: isHidden ? "checkmark.square.fill" : "square")
+                Image(systemName: isHidden ? "square" : "checkmark.square.fill")
                     .resizable()
                     .scaledToFit()
                     .frame(maxHeight: 20)
