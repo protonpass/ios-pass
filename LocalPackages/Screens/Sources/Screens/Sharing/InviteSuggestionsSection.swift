@@ -56,7 +56,7 @@ public enum InviteRecommendationType: Sendable, Equatable, Hashable, Identifiabl
         case let .email(email):
             return email
         case let .group(groupInfo):
-            let membersCount = shorten ? "\(groupInfo.memberCounts)" : #localized("%@ members",
+            let membersCount = shorten ? "\(groupInfo.memberCounts)" : #localized("%lld members",
                                                                                   groupInfo.memberCounts)
             return groupInfo.group.name + membersCount
         }

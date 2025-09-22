@@ -35,6 +35,42 @@ struct UserEmailView: View {
     @State private var isFocused = false
 
     var body: some View {
+        mainContent
+            .onAppear {
+                isFocused = true
+            }
+            .task {
+                await viewModel.fetchGroupsInfos()
+            }
+            .onChange(of: viewModel.highlightedRecommendation) { highlightedRecommendation in
+                isFocused = highlightedRecommendation == nil
+            }
+            .animation(.default, value: viewModel.selectedRecommendations)
+            .animation(.default, value: viewModel.recommendationsState)
+            .padding(.horizontal, DesignConstant.sectionPadding)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .navigationBarTitleDisplayMode(.inline)
+            .background(PassColor.backgroundNorm.toColor)
+            .toolbar { toolbarContent }
+            .routingProvided
+            .navigationStackEmbeded($router.path)
+            .environmentObject(router)
+            .ignoresSafeArea(.keyboard)
+            .sheet(isPresented: $viewModel.showGroupMembers) {
+                if let reco = viewModel.highlightedRecommendation,
+                   case let .group(infos) = reco {
+                    GroupUsersInformationView(groupInfo: infos, rights: nil)
+                        .presentationDetents([.medium])
+                        .presentationDragIndicator(.visible)
+                }
+            }
+    }
+}
+
+// MARK: - Internal views
+
+private extension UserEmailView {
+    var mainContent: some View {
         VStack(alignment: .leading) {
             title
 
@@ -46,6 +82,7 @@ struct UserEmailView: View {
                 AnyLayout(FlowLayout(spacing: 8)) {
                     ForEach(viewModel.selectedRecommendations + [.email("")]) { item in
                         token(for: item)
+                            .fixedSize()
                     }
                 }
 
@@ -54,70 +91,50 @@ struct UserEmailView: View {
                     .padding(.top, 16)
                     .padding(.bottom, 24)
 
-                if viewModel.recommendationsState == .loading {
-                    VStack {
-                        Spacer(minLength: 150)
-                        ProgressView()
-                    }
-                    .frame(maxWidth: .infinity, alignment: .center)
-                } else if let recommendations = viewModel.recommendationsState.recommendations,
-                          !recommendations.isEmpty {
-                    InviteSuggestionsSection(selectedRecommendations: viewModel.selectedRecommendations,
-                                             fullInviteSuggestions:
-                                             FullInviteSuggestions(recommendations: recommendations,
-                                                                   groupInfos: viewModel.groupInfos),
-                                             isFetchingMore: viewModel.isFetchingMore,
-                                             displayCounts: Bundle.main.isQaBuild,
-                                             onSelect: { viewModel.handleSelection($0) },
-                                             onLoadMore: {
-                                                 viewModel
-                                                     .updateRecommendations(removingCurrentRecommendations: false)
-                                             })
-                }
+                suggestions
 
                 Spacer()
             }
             .scrollViewEmbeded(maxWidth: .infinity)
         }
-        .onAppear {
-            isFocused = true
-        }
-        .task {
-            await viewModel.fetchGroupsInfos()
-        }
-        .onChange(of: viewModel.highlightedRecommendation) { highlightedRecommendation in
-            isFocused = highlightedRecommendation == nil
-        }
-        .animation(.default, value: viewModel.selectedRecommendations)
-        .animation(.default, value: viewModel.recommendationsState)
-        .padding(.horizontal, DesignConstant.sectionPadding)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .navigationBarTitleDisplayMode(.inline)
-        .background(PassColor.backgroundNorm.toColor)
-        .toolbar { toolbarContent }
-        .routingProvided
-        .navigationStackEmbeded($router.path)
-        .environmentObject(router)
-        .ignoresSafeArea(.keyboard)
     }
-}
 
-// MARK: - Internal views
-
-private extension UserEmailView {
     var title: some View {
         Text("Share with")
             .font(.largeTitle)
             .fontWeight(.bold)
             .foregroundStyle(PassColor.textNorm.toColor)
-//            .padding(.horizontal, DesignConstant.sectionPadding)
+    }
+
+    @ViewBuilder
+    var suggestions: some View {
+        if viewModel.recommendationsState == .loading {
+            VStack {
+                Spacer(minLength: 150)
+                ProgressView()
+            }
+            .frame(maxWidth: .infinity, alignment: .center)
+        } else if let recommendations = viewModel.recommendationsState.recommendations,
+                  !recommendations.isEmpty {
+            InviteSuggestionsSection(selectedRecommendations: viewModel.selectedRecommendations,
+                                     fullInviteSuggestions:
+                                     FullInviteSuggestions(recommendations: recommendations,
+                                                           groupInfos: viewModel.groupInfos),
+                                     isFetchingMore: viewModel.isFetchingMore,
+                                     displayCounts: Bundle.main.isQaBuild,
+                                     onSelect: { viewModel.handleSelection($0) },
+                                     onLoadMore: {
+                                         viewModel
+                                             .updateRecommendations(removingCurrentRecommendations: false)
+                                     })
+        }
     }
 }
 
 private extension UserEmailView {
     @ViewBuilder
     func token(for recommendation: InviteRecommendationType) -> some View {
-        if recommendation.name.isEmpty {
+        if recommendation.name(shorten: true).isEmpty {
             emailTextField
         } else {
             recommendationCell(for: recommendation)
@@ -147,7 +164,7 @@ private extension UserEmailView {
     @ViewBuilder
     func recommendationCell(for reco: InviteRecommendationType) -> some View {
         let highlighted = viewModel.highlightedRecommendation == reco
-        let invalid = viewModel.invalidEmails.contains(reco.name)
+        let invalid = viewModel.invalidEmails.contains(reco.name())
 
         let textColor: () -> UIColor = {
             switch (highlighted, invalid) {
@@ -182,8 +199,10 @@ private extension UserEmailView {
         })
 
         HStack(alignment: .center, spacing: 10) {
-            Text(reco.name)
+            Text(reco.name(shorten: true))
                 .lineLimit(1)
+                .truncationMode(.tail) // ellipsis if too long
+                .fixedSize(horizontal: true, vertical: false)
         }
         .font(.callout)
         .foregroundStyle(textColor().toColor)
@@ -273,6 +292,104 @@ private extension UserEmailView {
         }
     }
 }
+
+// MARK: - Subviews
+
+struct GroupUsersInformationView: View {
+    let groupInfo: GroupInfo
+    let rights: String?
+
+    var body: some View {
+        VStack {
+            Text("\(groupInfo.group.name)")
+                .foregroundStyle(PassColor.textNorm.toColor)
+                .fontWeight(.bold)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.top, 23)
+
+            ScrollView {
+                LazyVStack(spacing: 8) {
+                    ForEach(groupInfo.members) { member in
+                        if let email = member.email {
+                            HStack {
+                                ZStack {
+                                    PassColor.interactionNormMinor1.toColor
+                                        .clipShape(RoundedRectangle(cornerRadius: 40 / 2.5, style: .continuous))
+                                    Text(String(email.prefix(2).uppercased()))
+                                        .font(.system(size: 40 / 3))
+                                        .fontWeight(.medium)
+                                        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                                }
+                                .frame(width: 40, height: 40)
+
+                                Spacer()
+
+                                VStack {
+                                    Text(email)
+                                        .foregroundStyle(PassColor.textNorm.toColor)
+                                        .lineLimit(1)
+                                    if let rights {
+                                        Text(rights)
+                                            .foregroundStyle(PassColor.textWeak.toColor)
+                                    }
+                                }.frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                            .contentShape(.rect)
+                            .padding(.vertical, 8)
+                        }
+                    }
+                }
+                .padding(.horizontal, DesignConstant.sectionPadding)
+            }
+        }
+    }
+}
+
+// public enum SquircleThumbnailData {
+//    case icon(UIImage)
+//    case initials(String)
+// }
+//
+// public struct SquircleThumbnail: View {
+//    let data: SquircleThumbnailData
+//    let tintColor: UIColor
+//    let backgroundColor: UIColor
+//    let height: CGFloat
+//
+//    public init(data: SquircleThumbnailData,
+//                tintColor: UIColor,
+//                backgroundColor: UIColor,
+//                height: CGFloat = 40) {
+//        self.data = data
+//        self.tintColor = tintColor
+//        self.backgroundColor = backgroundColor
+//        self.height = height
+//    }
+//
+//    public var body: some View {
+//        ZStack {
+//            backgroundColor.toColor
+//                .clipShape(RoundedRectangle(cornerRadius: height / 2.5, style: .continuous))
+//
+//            switch data {
+//            case let .icon(image):
+//                Image(uiImage: image)
+//                    .resizable()
+//                    .renderingMode(.template)
+//                    .scaledToFit()
+//                    .foregroundStyle(tintColor.toColor)
+//                    .padding(.vertical, height / 3.5)
+//
+//            case let .initials(string):
+//                Text(string)
+//                    .font(.system(size: height / 3))
+//                    .fontWeight(.medium)
+//                    .foregroundStyle(tintColor.toColor)
+//            }
+//        }
+//        .frame(width: height, height: height)
+//    }
+// }
 
 #Preview("UserEmailView Preview") {
     UserEmailView()
