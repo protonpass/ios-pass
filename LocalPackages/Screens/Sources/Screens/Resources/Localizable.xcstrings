@@ -1,6 +1,16 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "(%lld members)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(%lld members)"
+          }
+        }
+      }
+    },
     "%@/month" : {
       "comment" : "Placeholder is the subscription price",
       "localizations" : {
@@ -2985,9 +2995,6 @@
           }
         }
       }
-    },
-    "%lld members" : {
-
     },
     "10 GB" : {
       "comment" : "Storage of Pass Plus plan",
