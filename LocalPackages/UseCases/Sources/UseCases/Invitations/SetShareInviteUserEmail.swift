@@ -33,6 +33,7 @@ public extension SetShareInvitesUserEmailsAndKeysUseCase {
     }
 }
 
+// TODO: need to get keys for groups
 public final class SetShareInvitesUserEmailsAndKeys: SetShareInvitesUserEmailsAndKeysUseCase {
     private let shareInviteService: any ShareInviteServiceProtocol
     private let getEmailPublicKeyUseCase: any GetEmailPublicKeyUseCase
@@ -43,6 +44,7 @@ public final class SetShareInvitesUserEmailsAndKeys: SetShareInvitesUserEmailsAn
         self.getEmailPublicKeyUseCase = getEmailPublicKeyUseCase
     }
 
+    // TODO: need to take into account group (need to get public keys ?) or already have the keys.
     public func execute(with emails: [String]) async throws {
         var emailsAndKeys = [String: [PublicKey]?]()
         for email in emails {

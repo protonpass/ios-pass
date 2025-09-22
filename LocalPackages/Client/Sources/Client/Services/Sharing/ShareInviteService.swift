@@ -34,6 +34,8 @@ public protocol ShareInviteServiceProtocol: Sendable {
     func resetShareInviteInformations()
 }
 
+// TODO: need to take new group share
+
 public final class ShareInviteService: @unchecked Sendable, ShareInviteServiceProtocol {
     public nonisolated let currentSelectedElement: CurrentValueSubject<SharingElementData?, Never> = .init(nil)
 

@@ -72,48 +72,6 @@ public struct Group: Decodable, Sendable, Equatable, Hashable, Identifiable {
     }
 }
 
-//
-// public struct GroupAddress: Decodable, Sendable, Equatable, Hashable {
-//    public let email: String
-// }
-
-// struct NetworkResponse: Codable {
-//    let code: Int
-//    let groups: [Group]
-//    let total: Int
-//
-//    enum CodingKeys: String, CodingKey {
-//        case code = "Code"
-//        case groups = "Groups"
-//        case total = "Total"
-//    }
-// }
-
-// struct Group: Codable {
-//    let id: String
-//    let name: String
-//    let address: Address
-//    let permissions: Int
-//    let createTime: Int
-//    let flags: Int
-//    let groupVisibility: Int
-//    let memberVisibility: Int
-//    let description: String
-//
-//    enum CodingKeys: String, CodingKey {
-//        case id = "ID"
-//        case name = "Name"
-//        case address = "Address"
-//        case permissions = "Permissions"
-//        case createTime = "CreateTime"
-//        case flags = "Flags"
-//        case groupVisibility = "GroupVisibility"
-//        case memberVisibility = "MemberVisibility"
-//        case description = "Description"
-//    }
-// }
-// ']
-
 public struct GroupAddress: Codable, Sendable, Equatable, Hashable {
     let ID: String
     public let domainID: String

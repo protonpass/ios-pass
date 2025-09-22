@@ -43,26 +43,6 @@ enum RecommendationsState: Equatable {
     }
 }
 
-// public enum InviteRecommendationType: Sendable, Equatable, Hashable {
-//    case email(String)
-//    case group(GroupInfo)
-//
-//    var currentEmail: String? {
-//        switch self {
-//        case let .email(email):
-//            email
-//        case let .group(groupInfo):
-//            groupInfo.group.address?.email
-//        }
-//    }
-// }
-//
-// extension [InviteRecommendationType] {
-//    var emails: [String] {
-//        compactMap(\.currentEmail)
-//    }
-// }
-
 @MainActor
 final class UserEmailViewModel: ObservableObject {
     @Published var email = ""
@@ -75,6 +55,7 @@ final class UserEmailViewModel: ObservableObject {
     @Published private(set) var recommendationsState: RecommendationsState = .loaded(nil)
     @Published private(set) var isChecking = false
     @Published private(set) var isFetchingMore = false
+    @Published var showGroupMembers = false
     @Published var groupInfos: [GroupInfo]?
 
     private var cancellables = Set<AnyCancellable>()
@@ -117,6 +98,7 @@ final class UserEmailViewModel: ObservableObject {
             highlightedRecommendation = nil
         } else {
             highlightedRecommendation = recommendation
+            showGroupMembers = !recommendation.isEmail
         }
     }
 
@@ -155,7 +137,7 @@ final class UserEmailViewModel: ObservableObject {
 
             // TODO: need to pass more complete object to distinguish between group and email
 
-//            try await setShareInvitesUserEmailsAndKeys(with: selectedEmails)
+//            try await setShareInvitesUserEmailsAndKeys(with: selectedRecommendations)
             highlightedRecommendation = nil
             goToNextStep = true
             return true

@@ -36,11 +36,7 @@ struct UserEmailView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Share with")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .foregroundStyle(PassColor.textNorm.toColor)
-                .padding(.horizontal, DesignConstant.sectionPadding)
+            title
 
             VStack(alignment: .leading) {
                 if case let .new(vault, _) = viewModel.element {
@@ -52,7 +48,6 @@ struct UserEmailView: View {
                         token(for: item)
                     }
                 }
-                .padding(.leading, -4)
 
                 PassDivider()
                     .padding(.horizontal, -DesignConstant.sectionPadding)
@@ -82,8 +77,6 @@ struct UserEmailView: View {
 
                 Spacer()
             }
-            .frame(maxWidth: .infinity)
-            .padding(.horizontal, DesignConstant.sectionPadding)
             .scrollViewEmbeded(maxWidth: .infinity)
         }
         .onAppear {
@@ -97,6 +90,7 @@ struct UserEmailView: View {
         }
         .animation(.default, value: viewModel.selectedRecommendations)
         .animation(.default, value: viewModel.recommendationsState)
+        .padding(.horizontal, DesignConstant.sectionPadding)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .navigationBarTitleDisplayMode(.inline)
         .background(PassColor.backgroundNorm.toColor)
@@ -105,6 +99,18 @@ struct UserEmailView: View {
         .navigationStackEmbeded($router.path)
         .environmentObject(router)
         .ignoresSafeArea(.keyboard)
+    }
+}
+
+// MARK: - Internal views
+
+private extension UserEmailView {
+    var title: some View {
+        Text("Share with")
+            .font(.largeTitle)
+            .fontWeight(.bold)
+            .foregroundStyle(PassColor.textNorm.toColor)
+//            .padding(.horizontal, DesignConstant.sectionPadding)
     }
 }
 

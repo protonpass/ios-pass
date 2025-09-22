@@ -37,14 +37,14 @@ struct SuggestedEmailView: View {
     var body: some View {
         HStack {
             SquircleThumbnail(data: recommendation
-                .isEmail ? .initials(String(recommendation.name.prefix(2).uppercased())) :
+                .isEmail ? .initials(String(recommendation.name().prefix(2).uppercased())) :
                 .icon(IconProvider.users),
                 tintColor: PassColor.interactionNormMajor2,
                 backgroundColor: PassColor.interactionNormMinor1)
 
             Spacer()
 
-            Text(recommendation.name)
+            Text(recommendation.name(shorten: false))
                 .foregroundStyle(PassColor.textNorm.toColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
 

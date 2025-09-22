@@ -51,12 +51,14 @@ public enum InviteRecommendationType: Sendable, Equatable, Hashable, Identifiabl
         }
     }
 
-    public var name: String {
+    public func name(shorten: Bool = true) -> String {
         switch self {
         case let .email(email):
-            email
+            return email
         case let .group(groupInfo):
-            groupInfo.group.name + " (\(groupInfo.memberCounts))"
+            let membersCount = shorten ? "\(groupInfo.memberCounts)" : #localized("%@ members",
+                                                                                  groupInfo.memberCounts)
+            return groupInfo.group.name + membersCount
         }
     }
 
