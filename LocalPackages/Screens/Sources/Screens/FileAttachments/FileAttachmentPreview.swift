@@ -23,6 +23,7 @@ import DesignSystem
 import Entities
 import ProtonCoreUIFoundations
 import SwiftUI
+import WebKit
 
 public struct FileAttachmentPreview: View {
     @Environment(\.dismiss) private var dismiss
@@ -67,9 +68,15 @@ public struct FileAttachmentPreview: View {
                              .padding()
 
             case let .fetched(url):
-                QuickLookPreview(url: url)
-                    .padding(.top, 8)
-                    .ignoresSafeArea(edges: .bottom)
+                if #available(iOS 26, *) {
+                    WebView(url: url)
+                        .padding(.top, 8)
+                        .ignoresSafeArea(edges: .bottom)
+                } else {
+                    QuickLookPreview(url: url)
+                        .padding(.top, 8)
+                        .ignoresSafeArea(edges: .bottom)
+                }
 
             case let .error(error):
                 RetryableErrorView(tintColor: primaryTintColor,
