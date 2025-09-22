@@ -60,7 +60,7 @@ struct UserEmailView: View {
                 if let reco = viewModel.highlightedRecommendation,
                    case let .group(infos) = reco {
                     GroupUsersInformationView(groupInfo: infos, rights: nil)
-                        .presentationDetents([.medium])
+                        .presentationDetents([.medium, .large])
                         .presentationDragIndicator(.visible)
                 }
             }
@@ -134,7 +134,7 @@ private extension UserEmailView {
 private extension UserEmailView {
     @ViewBuilder
     func token(for recommendation: InviteRecommendationType) -> some View {
-        if recommendation.name(shorten: true).isEmpty {
+        if recommendation.name.isEmpty {
             emailTextField
         } else {
             recommendationCell(for: recommendation)
@@ -164,7 +164,7 @@ private extension UserEmailView {
     @ViewBuilder
     func recommendationCell(for reco: InviteRecommendationType) -> some View {
         let highlighted = viewModel.highlightedRecommendation == reco
-        let invalid = viewModel.invalidEmails.contains(reco.name())
+        let invalid = viewModel.invalidEmails.contains(reco.name)
 
         let textColor: () -> UIColor = {
             switch (highlighted, invalid) {
@@ -199,7 +199,7 @@ private extension UserEmailView {
         })
 
         HStack(alignment: .center, spacing: 10) {
-            Text(reco.name(shorten: true))
+            Text(reco.isEmail ? reco.name : "\(reco.name) \(reco.numberOfMembers ?? 0)")
                 .lineLimit(1)
                 .truncationMode(.tail) // ellipsis if too long
                 .fixedSize(horizontal: true, vertical: false)
@@ -300,18 +300,17 @@ struct GroupUsersInformationView: View {
     let rights: String?
 
     var body: some View {
-        VStack {
+        VStack(spacing: DesignConstant.sectionPadding) {
             Text("\(groupInfo.group.name)")
                 .foregroundStyle(PassColor.textNorm.toColor)
                 .fontWeight(.bold)
                 .frame(maxWidth: .infinity, alignment: .center)
-                .padding(.top, 23)
 
             ScrollView {
-                LazyVStack(spacing: 8) {
+                LazyVStack(spacing: 24) {
                     ForEach(groupInfo.members) { member in
                         if let email = member.email {
-                            HStack {
+                            HStack(spacing: DesignConstant.sectionPadding) {
                                 ZStack {
                                     PassColor.interactionNormMinor1.toColor
                                         .clipShape(RoundedRectangle(cornerRadius: 40 / 2.5, style: .continuous))
@@ -321,8 +320,6 @@ struct GroupUsersInformationView: View {
                                         .foregroundStyle(PassColor.interactionNormMajor2.toColor)
                                 }
                                 .frame(width: 40, height: 40)
-
-                                Spacer()
 
                                 VStack {
                                     Text(email)
@@ -335,61 +332,16 @@ struct GroupUsersInformationView: View {
                                 }.frame(maxWidth: .infinity, alignment: .leading)
                             }
                             .contentShape(.rect)
-                            .padding(.vertical, 8)
                         }
                     }
                 }
-                .padding(.horizontal, DesignConstant.sectionPadding)
             }
         }
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .padding(.top, 32)
+        .background(PassColor.backgroundNorm.toColor)
     }
 }
-
-// public enum SquircleThumbnailData {
-//    case icon(UIImage)
-//    case initials(String)
-// }
-//
-// public struct SquircleThumbnail: View {
-//    let data: SquircleThumbnailData
-//    let tintColor: UIColor
-//    let backgroundColor: UIColor
-//    let height: CGFloat
-//
-//    public init(data: SquircleThumbnailData,
-//                tintColor: UIColor,
-//                backgroundColor: UIColor,
-//                height: CGFloat = 40) {
-//        self.data = data
-//        self.tintColor = tintColor
-//        self.backgroundColor = backgroundColor
-//        self.height = height
-//    }
-//
-//    public var body: some View {
-//        ZStack {
-//            backgroundColor.toColor
-//                .clipShape(RoundedRectangle(cornerRadius: height / 2.5, style: .continuous))
-//
-//            switch data {
-//            case let .icon(image):
-//                Image(uiImage: image)
-//                    .resizable()
-//                    .renderingMode(.template)
-//                    .scaledToFit()
-//                    .foregroundStyle(tintColor.toColor)
-//                    .padding(.vertical, height / 3.5)
-//
-//            case let .initials(string):
-//                Text(string)
-//                    .font(.system(size: height / 3))
-//                    .fontWeight(.medium)
-//                    .foregroundStyle(tintColor.toColor)
-//            }
-//        }
-//        .frame(width: height, height: height)
-//    }
-// }
 
 #Preview("UserEmailView Preview") {
     UserEmailView()

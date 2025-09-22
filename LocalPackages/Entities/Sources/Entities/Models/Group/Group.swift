@@ -27,7 +27,7 @@ public enum GroupPermissions: Int, Decodable, Sendable {
     case everyoneCanSend = 3
 }
 
-public struct GroupInfo: Sendable, Equatable, Hashable {
+public struct GroupInfo: Sendable, Equatable, Hashable, Identifiable {
     public let group: Group
     public let members: [GroupMember]
 
@@ -39,6 +39,8 @@ public struct GroupInfo: Sendable, Equatable, Hashable {
     public var memberCounts: Int {
         members.count
     }
+
+    public var id: Self { self }
 }
 
 public struct Group: Decodable, Sendable, Equatable, Hashable, Identifiable {

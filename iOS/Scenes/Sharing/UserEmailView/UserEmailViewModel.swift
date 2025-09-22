@@ -62,7 +62,7 @@ final class UserEmailViewModel: ObservableObject {
     private let inviteRepository = resolve(\SharedRepositoryContainer.inviteRepository)
     private let checkAddressesForInvite = resolve(\UseCasesContainer.checkAddressesForInvite)
     private let shareInviteService = resolve(\ServiceContainer.shareInviteService)
-    private let setShareInvitesUserEmailsAndKeys = resolve(\UseCasesContainer.setShareInvitesUserEmailsAndKeys)
+    private let setShareInvitesAndKeys = resolve(\UseCasesContainer.setShareInvitesUserEmailsAndKeys)
     private let userManager = resolve(\SharedServiceContainer.userManager)
     @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\SharedRepositoryContainer.groupRepository) private var groupRepository
@@ -137,7 +137,7 @@ final class UserEmailViewModel: ObservableObject {
 
             // TODO: need to pass more complete object to distinguish between group and email
 
-//            try await setShareInvitesUserEmailsAndKeys(with: selectedRecommendations)
+            try await setShareInvitesAndKeys(with: selectedRecommendations)
             highlightedRecommendation = nil
             goToNextStep = true
             return true

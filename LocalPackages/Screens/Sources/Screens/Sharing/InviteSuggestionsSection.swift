@@ -38,42 +38,6 @@ public struct FullInviteSuggestions {
     }
 }
 
-public enum InviteRecommendationType: Sendable, Equatable, Hashable, Identifiable {
-    case email(String)
-    case group(GroupInfo)
-
-    public var currentEmail: String? {
-        switch self {
-        case let .email(email):
-            email
-        case let .group(groupInfo):
-            groupInfo.group.address?.email
-        }
-    }
-
-    public func name(shorten: Bool = true) -> String {
-        switch self {
-        case let .email(email):
-            return email
-        case let .group(groupInfo):
-            let membersCount = shorten ? "\(groupInfo.memberCounts)" : #localized("%lld members",
-                                                                                  groupInfo.memberCounts)
-            return groupInfo.group.name + membersCount
-        }
-    }
-
-    public var isEmail: Bool {
-        switch self {
-        case .email:
-            true
-        case .group:
-            false
-        }
-    }
-
-    public var id: Self { self }
-}
-
 public extension [InviteRecommendationType] {
     var emails: [String] {
         compactMap(\.currentEmail)

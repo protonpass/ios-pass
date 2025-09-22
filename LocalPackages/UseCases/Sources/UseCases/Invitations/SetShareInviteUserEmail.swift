@@ -24,12 +24,12 @@ import Client
 import Entities
 
 public protocol SetShareInvitesUserEmailsAndKeysUseCase: Sendable {
-    func execute(with emails: [String]) async throws
+    func execute(with inviteDestinations: [InviteRecommendationType]) async throws
 }
 
 public extension SetShareInvitesUserEmailsAndKeysUseCase {
-    func callAsFunction(with emails: [String]) async throws {
-        try await execute(with: emails)
+    func callAsFunction(with inviteDestinations: [InviteRecommendationType]) async throws {
+        try await execute(with: inviteDestinations)
     }
 }
 
@@ -44,25 +44,25 @@ public final class SetShareInvitesUserEmailsAndKeys: SetShareInvitesUserEmailsAn
         self.getEmailPublicKeyUseCase = getEmailPublicKeyUseCase
     }
 
-    // TODO: need to take into account group (need to get public keys ?) or already have the keys.
-    public func execute(with emails: [String]) async throws {
-        var emailsAndKeys = [String: [PublicKey]?]()
-        for email in emails {
+    public func execute(with inviteDestinations: [InviteRecommendationType]) async throws {
+        var emailsAndKeys = [InviteRecommendationType: [PublicKey]?]()
+        for destination in inviteDestinations {
+            guard let email = destination.currentEmail else { continue }
             do {
                 let receiverPublicKeys = try await getEmailPublicKeyUseCase(with: email)
-                emailsAndKeys[email] = receiverPublicKeys
+                emailsAndKeys[destination] = receiverPublicKeys
             } catch {
                 if let passError = error as? PassError,
                    case let .sharing(reason) = passError,
                    reason == .notProtonAddress {
                     /// Subcript will not work because it won't create the key with nil value
                     /// if the key doesn't exist before. Have to use `updateValue`.
-                    emailsAndKeys.updateValue(nil, forKey: email)
+                    emailsAndKeys.updateValue(nil, forKey: destination)
                 } else {
                     throw error
                 }
             }
         }
-        shareInviteService.setEmailsAndKeys(with: emailsAndKeys)
+        shareInviteService.setInvitesAndKeys(with: emailsAndKeys)
     }
 }
