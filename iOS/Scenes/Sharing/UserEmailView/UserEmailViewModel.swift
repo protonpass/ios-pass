@@ -32,11 +32,11 @@ import Screens
 
 enum RecommendationsState: Equatable {
     case loading
-    case loaded(InviteRecommendations?)
+    case loaded(FullInviteSuggestions?)
 
-    var recommendations: InviteRecommendations? {
-        if case let .loaded(data) = self {
-            return data
+    var suggestions: FullInviteSuggestions? {
+        if case let .loaded(suggestions) = self {
+            return suggestions
         }
 
         return nil
@@ -56,7 +56,7 @@ final class UserEmailViewModel: ObservableObject {
     @Published private(set) var isChecking = false
     @Published private(set) var isFetchingMore = false
     @Published var showGroupMembers = false
-    @Published var groupInfos: [GroupInfo]?
+    @Published var groupInfos: [InviteRecommendationType]?
 
     private var cancellables = Set<AnyCancellable>()
     private let inviteRepository = resolve(\SharedRepositoryContainer.inviteRepository)
@@ -66,6 +66,8 @@ final class UserEmailViewModel: ObservableObject {
     private let userManager = resolve(\SharedServiceContainer.userManager)
     @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\SharedRepositoryContainer.groupRepository) private var groupRepository
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
+
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var currentTask: Task<Void, Never>?
     private var canFetchMoreEmails = true
@@ -135,8 +137,6 @@ final class UserEmailViewModel: ObservableObject {
                 return false
             }
 
-            // TODO: need to pass more complete object to distinguish between group and email
-
             try await setShareInvitesAndKeys(with: selectedRecommendations)
             highlightedRecommendation = nil
             goToNextStep = true
@@ -177,18 +177,19 @@ final class UserEmailViewModel: ObservableObject {
                     recommendationsState = .loading
                 }
 
-                let currentRecommendations = recommendationsState.recommendations
-                let query = InviteRecommendationsQuery(lastToken: currentRecommendations?
+                let currentRecommendations = recommendationsState.suggestions
+                let query = InviteRecommendationsQuery(lastToken: currentRecommendations?.recommendations
                     .planRecommendedEmailsNextToken,
                     pageSize: Constants.Utils.defaultPageSize,
                     email: email)
                 let recommendations = try await inviteRepository
                     .getInviteRecommendations(shareId: shareId, query: query)
                 canFetchMoreEmails = recommendations.planRecommendedEmailsNextToken != nil
-                if let currentRecommendations, !removingCurrentRecommendations {
-                    recommendationsState = .loaded(currentRecommendations.merging(with: recommendations))
+                if var currentRecommendations, !removingCurrentRecommendations {
+                    currentRecommendations.recommendations = currentRecommendations.recommendations.merging(with: recommendations)
+                    recommendationsState = .loaded(currentRecommendations)
                 } else {
-                    recommendationsState = .loaded(recommendations)
+                    recommendationsState = .loaded(FullInviteSuggestions(recommendations: recommendations) )
                 }
             } catch {
                 recommendationsState = .loaded(nil)
@@ -198,13 +199,23 @@ final class UserEmailViewModel: ObservableObject {
     }
 
     func fetchGroupsInfos() async {
+        guard getFeatureFlagStatus(for: FeatureFlagType.passGroupSharingV1) else {
+            return
+        }
+
         guard let userAccess = accessRepository.access.value,
               userAccess.access.plan.isBusinessUser,
               let userId = try? await userManager.getActiveUserId() else {
             return
         }
 
-        groupInfos = try? await groupRepository.getGroupsInfos(userId: userId)
+        let groupInfos: [InviteRecommendationType]? = try? await groupRepository.getGroupsInfos(userId: userId).map { .group($0) }
+        if var currentRecommendations = recommendationsState.suggestions {
+            currentRecommendations.groupInfos = groupInfos
+            recommendationsState = .loaded(currentRecommendations)
+        } else {
+            recommendationsState = .loaded(FullInviteSuggestions(groupInfos: groupInfos))
+        }
     }
 }
 

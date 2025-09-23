@@ -24,55 +24,49 @@ import Entities
 import Macro
 import SwiftUI
 
-public struct FullInviteSuggestions {
-    let recommendations: InviteRecommendations
-    let groupInfos: [GroupInfo]?
-
-    public init(recommendations: InviteRecommendations, groupInfos: [GroupInfo]?) {
-        self.recommendations = recommendations
-        self.groupInfos = groupInfos
-    }
-
+extension FullInviteSuggestions {
     func recentRecommandation() -> [String] {
-        (groupInfos?.map { "\($0.group.name) (\($0.memberCounts))" } ?? []) + recommendations.recommendedEmails
+        (groupInfos?.map { "\($0.name) (\($0.memberCounts ?? 0))" } ?? []) + recommendations.recommendedEmails
+    }
+    
+    var recentCount: Int {
+        recommendations.recommendedEmails.count + (groupInfos?.count ?? 0)
+    }
+    
+    func recommendations(_ selectedIndex: Int) -> [InviteRecommendationType] {
+        if selectedIndex == 0 {
+            let groups = groupInfos ?? [InviteRecommendationType]()
+            let emails = recommendations.recommendedEmails.toInviteRecommendationTypes
+            return groups + emails
+        } else {
+            return recommendations.planRecommendedEmails.toInviteRecommendationTypes
+        }
     }
 }
 
-public extension [InviteRecommendationType] {
-    var emails: [String] {
-        compactMap(\.currentEmail)
-    }
-}
-
-public extension [String] {
+extension [String] {
     var toInviteRecommendationTypes: [InviteRecommendationType] {
         map { .email($0) }
-    }
-}
-
-public extension [GroupInfo]? {
-    var toRecommendationTypes: [InviteRecommendationType]? {
-        self?.map { .group($0) }
     }
 }
 
 public struct InviteSuggestionsSection: View {
     @State private var selectedIndex = 0
     private let selectedRecommendations: [InviteRecommendationType]
-    private let fullInviteSuggestions: FullInviteSuggestions
+    private let suggestions: FullInviteSuggestions
     private let isFetchingMore: Bool
     private let displayCounts: Bool
     private let onSelect: (InviteRecommendationType) -> Void
     private let onLoadMore: () -> Void
 
     public init(selectedRecommendations: [InviteRecommendationType],
-                fullInviteSuggestions: FullInviteSuggestions,
+                suggestions: FullInviteSuggestions,
                 isFetchingMore: Bool,
                 displayCounts: Bool,
                 onSelect: @escaping (InviteRecommendationType) -> Void,
                 onLoadMore: @escaping () -> Void) {
         self.selectedRecommendations = selectedRecommendations
-        self.fullInviteSuggestions = fullInviteSuggestions
+        self.suggestions = suggestions
         self.isFetchingMore = isFetchingMore
         self.displayCounts = displayCounts
         self.onSelect = onSelect
@@ -86,36 +80,25 @@ public struct InviteSuggestionsSection: View {
                 .font(.body.weight(.medium))
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            if let planName = fullInviteSuggestions.recommendations.groupDisplayName ?? fullInviteSuggestions
+            if let planName = suggestions.recommendations.groupDisplayName ?? suggestions
                 .recommendations.planInternalName {
                 let recentTabTitle = #localized("Recents", bundle: .module) +
                     (displayCounts ?
-                        " (\(fullInviteSuggestions.recommendations.recommendedEmails.count + (fullInviteSuggestions.groupInfos?.count ?? 0)))" :
-                        "")
+                        " (\(suggestions.recentCount))" : "")
                 let planTabTitle = planName +
-                    (displayCounts ? " (\(fullInviteSuggestions.recommendations.planRecommendedEmails.count))" :
+                    (displayCounts ? " (\(suggestions.recommendations.planRecommendedEmails.count))" :
                         "")
                 SegmentedPicker(selectedIndex: $selectedIndex,
                                 options: [recentTabTitle, planTabTitle])
             }
 
-            emailList(recommendations(selectedIndex))
+            emailList(suggestions.recommendations(selectedIndex))
 
             if isFetchingMore {
                 emailSkeleton
             }
         }
         .animation(.default, value: isFetchingMore)
-    }
-
-    func recommendations(_ selectedIndex: Int) -> [InviteRecommendationType] {
-        if selectedIndex == 0 {
-            let groups = fullInviteSuggestions.groupInfos.toRecommendationTypes ?? [InviteRecommendationType]()
-            let emails = fullInviteSuggestions.recommendations.recommendedEmails.toInviteRecommendationTypes
-            return groups + emails
-        } else {
-            return fullInviteSuggestions.recommendations.planRecommendedEmails.toInviteRecommendationTypes
-        }
     }
 }
 
@@ -127,7 +110,7 @@ private extension InviteSuggestionsSection {
                                onSelect: { onSelect(recommendation) })
                 .onAppear {
                     if selectedIndex == 1,
-                       recommendation == fullInviteSuggestions.recommendations.planRecommendedEmails
+                       recommendation == suggestions.recommendations.planRecommendedEmails
                        .toInviteRecommendationTypes.last {
                         onLoadMore()
                     }

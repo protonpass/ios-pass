@@ -33,7 +33,6 @@ public extension SetShareInvitesUserEmailsAndKeysUseCase {
     }
 }
 
-// TODO: need to get keys for groups
 public final class SetShareInvitesUserEmailsAndKeys: SetShareInvitesUserEmailsAndKeysUseCase {
     private let shareInviteService: any ShareInviteServiceProtocol
     private let getEmailPublicKeyUseCase: any GetEmailPublicKeyUseCase
