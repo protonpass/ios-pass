@@ -186,10 +186,11 @@ final class UserEmailViewModel: ObservableObject {
                     .getInviteRecommendations(shareId: shareId, query: query)
                 canFetchMoreEmails = recommendations.planRecommendedEmailsNextToken != nil
                 if var currentRecommendations, !removingCurrentRecommendations {
-                    currentRecommendations.recommendations = currentRecommendations.recommendations.merging(with: recommendations)
+                    currentRecommendations.recommendations = currentRecommendations.recommendations
+                        .merging(with: recommendations)
                     recommendationsState = .loaded(currentRecommendations)
                 } else {
-                    recommendationsState = .loaded(FullInviteSuggestions(recommendations: recommendations) )
+                    recommendationsState = .loaded(FullInviteSuggestions(recommendations: recommendations))
                 }
             } catch {
                 recommendationsState = .loaded(nil)
@@ -209,7 +210,8 @@ final class UserEmailViewModel: ObservableObject {
             return
         }
 
-        let groupInfos: [InviteRecommendationType]? = try? await groupRepository.getGroupsInfos(userId: userId).map { .group($0) }
+        let groupInfos: [InviteRecommendationType]? = try? await groupRepository.getGroupsInfos(userId: userId)
+            .map { .group($0) }
         if var currentRecommendations = recommendationsState.suggestions {
             currentRecommendations.groupInfos = groupInfos
             recommendationsState = .loaded(currentRecommendations)
@@ -251,5 +253,11 @@ private extension UserEmailViewModel {
             .store(in: &cancellables)
 
         element = shareInviteService.currentSelectedElement.value
+    }
+}
+
+private extension [InviteRecommendationType] {
+    var emails: [String] {
+        compactMap(\.currentEmail)
     }
 }

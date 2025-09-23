@@ -26,13 +26,13 @@ import SwiftUI
 
 extension FullInviteSuggestions {
     func recentRecommandation() -> [String] {
-        (groupInfos?.map { "\($0.name) (\($0.memberCounts ?? 0))" } ?? []) + recommendations.recommendedEmails
+        (groupInfos?.map { "\($0.name) (\($0.memberCounts))" } ?? []) + recommendations.recommendedEmails
     }
-    
+
     var recentCount: Int {
         recommendations.recommendedEmails.count + (groupInfos?.count ?? 0)
     }
-    
+
     func recommendations(_ selectedIndex: Int) -> [InviteRecommendationType] {
         if selectedIndex == 0 {
             let groups = groupInfos ?? [InviteRecommendationType]()

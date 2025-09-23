@@ -44,12 +44,12 @@ public enum InviteRecommendationType: Sendable, Equatable, Hashable, Identifiabl
         }
     }
 
-    public var memberCounts: Int? {
+    public var memberCounts: Int {
         switch self {
         case let .group(groupInfo):
             groupInfo.memberCounts
         default:
-            nil
+            0
         }
     }
 

@@ -1,4 +1,4 @@
-//  
+//
 // FullInviteSuggestions.swift
 // Proton Pass - Created on 23/09/2025.
 // Copyright (c) 2025 Proton Technologies AG
@@ -23,7 +23,7 @@ import Foundation
 public struct FullInviteSuggestions: Equatable {
     public var recommendations: InviteRecommendations
     public var groupInfos: [InviteRecommendationType]?
-    
+
     public init(recommendations: InviteRecommendations = .empty, groupInfos: [InviteRecommendationType]? = nil) {
         self.recommendations = recommendations
         self.groupInfos = groupInfos
