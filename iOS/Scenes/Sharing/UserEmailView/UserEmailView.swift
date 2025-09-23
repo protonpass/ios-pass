@@ -197,7 +197,7 @@ private extension UserEmailView {
         })
 
         HStack(alignment: .center, spacing: 10) {
-            Text(reco.isEmail ? reco.name : "\(reco.name) \(reco.numberOfMembers ?? 0)")
+            Text(reco.isEmail ? reco.name : "\(reco.name) \(reco.memberCounts)")
                 .lineLimit(1)
                 .truncationMode(.tail) // ellipsis if too long
                 .fixedSize(horizontal: true, vertical: false)
@@ -343,10 +343,4 @@ struct GroupUsersInformationView: View {
 
 #Preview("UserEmailView Preview") {
     UserEmailView()
-}
-
-private extension [InviteRecommendationType] {
-    var emails: [String] {
-        compactMap(\.currentEmail)
-    }
 }
