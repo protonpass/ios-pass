@@ -114,12 +114,10 @@ private extension UserEmailView {
                 ProgressView()
             }
             .frame(maxWidth: .infinity, alignment: .center)
-        } else if let recommendations = viewModel.recommendationsState.recommendations,
-                  !recommendations.isEmpty {
+        } else if let suggestions = viewModel.recommendationsState.suggestions,
+                  !suggestions.isEmpty {
             InviteSuggestionsSection(selectedRecommendations: viewModel.selectedRecommendations,
-                                     fullInviteSuggestions:
-                                     FullInviteSuggestions(recommendations: recommendations,
-                                                           groupInfos: viewModel.groupInfos),
+                                     suggestions: suggestions,
                                      isFetchingMore: viewModel.isFetchingMore,
                                      displayCounts: Bundle.main.isQaBuild,
                                      onSelect: { viewModel.handleSelection($0) },
@@ -345,4 +343,10 @@ struct GroupUsersInformationView: View {
 
 #Preview("UserEmailView Preview") {
     UserEmailView()
+}
+
+private extension [InviteRecommendationType] {
+    var emails: [String] {
+        compactMap(\.currentEmail)
+    }
 }
