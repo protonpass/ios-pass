@@ -52,8 +52,8 @@ public final class ShareInviteService: @unchecked Sendable, ShareInviteServicePr
         }
     }
 
-    private var emailsAndKeys = [InviteRecommendationType: [PublicKey]?]()
-    private var emailsAndRole = [InviteRecommendationType: ShareRole]()
+    private var invitesAndKeys = [InviteRecommendationType: [PublicKey]?]()
+    private var invitesAndRole = [InviteRecommendationType: ShareRole]()
 
     public init() {}
 }
@@ -64,15 +64,15 @@ public extension ShareInviteService {
     }
 
     func setInvitesAndKeys(with data: [InviteRecommendationType: [PublicKey]?]) {
-        emailsAndKeys = data
+        invitesAndKeys = data
     }
 
     func setInvitesAndRoles(with data: [InviteRecommendationType: ShareRole]) {
-        emailsAndRole = data
+        invitesAndRole = data
     }
 
     func getAllInvites() -> [InviteRecommendationType] {
-        Array(emailsAndKeys.keys)
+        Array(invitesAndKeys.keys)
     }
 
     func getSharingInfos() -> [SharingInfos] {
@@ -80,8 +80,8 @@ public extension ShareInviteService {
             return []
         }
         var result = [SharingInfos]()
-        for (destination, keys) in emailsAndKeys {
-            if let role = emailsAndRole[destination], let email = destination.currentEmail {
+        for (invite, keys) in invitesAndKeys {
+            if let role = invitesAndRole[invite], let email = invite.currentEmail {
                 let info = SharingInfos(shareElement: element,
                                         email: email,
                                         role: role,
@@ -96,7 +96,7 @@ public extension ShareInviteService {
     func resetShareInviteInformations() {
         currentSelectedElement.send(nil)
         currentSelectedVaultItems = nil
-        emailsAndKeys.removeAll()
-        emailsAndRole.removeAll()
+        invitesAndKeys.removeAll()
+        invitesAndRole.removeAll()
     }
 }

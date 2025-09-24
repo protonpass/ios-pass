@@ -1,6 +1,6 @@
 //
 //
-// SetShareInviteUserEmail.swift
+// SetShareInvitesAndKeys.swift
 // Proton Pass - Created on 20/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -23,17 +23,17 @@
 import Client
 import Entities
 
-public protocol SetShareInvitesUserEmailsAndKeysUseCase: Sendable {
+public protocol SetShareInvitesAndKeysUseCase: Sendable {
     func execute(with inviteDestinations: [InviteRecommendationType]) async throws
 }
 
-public extension SetShareInvitesUserEmailsAndKeysUseCase {
+public extension SetShareInvitesAndKeysUseCase {
     func callAsFunction(with inviteDestinations: [InviteRecommendationType]) async throws {
         try await execute(with: inviteDestinations)
     }
 }
 
-public final class SetShareInvitesUserEmailsAndKeys: SetShareInvitesUserEmailsAndKeysUseCase {
+public final class SetShareInvitesAndKeys: SetShareInvitesAndKeysUseCase {
     private let shareInviteService: any ShareInviteServiceProtocol
     private let getEmailPublicKeyUseCase: any GetEmailPublicKeyUseCase
 
@@ -44,24 +44,24 @@ public final class SetShareInvitesUserEmailsAndKeys: SetShareInvitesUserEmailsAn
     }
 
     public func execute(with inviteDestinations: [InviteRecommendationType]) async throws {
-        var emailsAndKeys = [InviteRecommendationType: [PublicKey]?]()
+        var inviteDestinationsAndKeys = [InviteRecommendationType: [PublicKey]?]()
         for destination in inviteDestinations {
             guard let email = destination.currentEmail else { continue }
             do {
                 let receiverPublicKeys = try await getEmailPublicKeyUseCase(with: email)
-                emailsAndKeys[destination] = receiverPublicKeys
+                inviteDestinationsAndKeys[destination] = receiverPublicKeys
             } catch {
                 if let passError = error as? PassError,
                    case let .sharing(reason) = passError,
                    reason == .notProtonAddress {
                     /// Subcript will not work because it won't create the key with nil value
                     /// if the key doesn't exist before. Have to use `updateValue`.
-                    emailsAndKeys.updateValue(nil, forKey: destination)
+                    inviteDestinationsAndKeys.updateValue(nil, forKey: destination)
                 } else {
                     throw error
                 }
             }
         }
-        shareInviteService.setInvitesAndKeys(with: emailsAndKeys)
+        shareInviteService.setInvitesAndKeys(with: inviteDestinationsAndKeys)
     }
 }

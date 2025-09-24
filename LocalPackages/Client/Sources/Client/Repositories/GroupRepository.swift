@@ -23,8 +23,6 @@ import Entities
 import Foundation
 
 public protocol GroupRepositoryProtocol: Sendable {
-    /// Get from local, refresh if not exist
-    /// Could be nil if the user is not in business plan
     func getGroups(userId: String) async throws -> [Group]
     func getMembers(groupId: String, userId: String) async throws -> [GroupMember]
     func getGroupsInfos(userId: String) async throws -> [GroupInfo]
@@ -80,16 +78,4 @@ public extension GroupRepository {
             return groupInfos
         }
     }
-
-//    func refreshOrganization(userId: String) async throws -> Organization? {
-//        logger.trace("Refreshing organization for userId \(userId)")
-//        if let organization = try await remoteDatasource.getOrganization(userId: userId) {
-//            logger.trace("Refreshed organization for userId \(userId). Upserting to local database.")
-//            try await localDatasource.upsertOrganization(organization, userId: userId)
-//            logger.trace("Refreshed organization for userId \(userId). Upserted to local database.")
-//            return organization
-//        }
-//        logger.info("Refreshed and found no organization for suserId \(userId)")
-//        return nil
-//    }
 }
