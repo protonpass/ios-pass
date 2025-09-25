@@ -28,7 +28,7 @@ import Foundation
 
 @MainActor
 final class AcceptRejectInviteViewModel: ObservableObject {
-    @Published private(set) var userInvite: UserInvite
+    @Published private(set) var invite: InviteType
     @Published private(set) var vaultInfos: VaultContent?
     @Published private(set) var executingAction = false
     @Published private(set) var shouldCloseSheet = false
@@ -43,12 +43,17 @@ final class AcceptRejectInviteViewModel: ObservableObject {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var cancellables = Set<AnyCancellable>()
 
-    init(invite: UserInvite) {
-        userInvite = invite
+    init(invite: InviteType) {
+        self.invite = invite
         setUp()
     }
 
     func reject() {
+        // TODO: update to get the different type of invite
+        guard case let .user(userInvite) = invite else {
+            return
+        }
+
         Task { [weak self] in
             guard let self else {
                 return
@@ -70,15 +75,18 @@ final class AcceptRejectInviteViewModel: ObservableObject {
     }
 
     func accept() {
+        // TODO: update to get the different type of invite
+        guard case let .user(userInvite) = invite else {
+            return
+        }
         Task { [weak self] in
             guard let self else {
                 return
             }
-
             do {
                 executingAction = true
                 _ = try await acceptInvitation(with: userInvite)
-                await updateCachedInvitations(for: userInvite.inviteToken)
+                await updateCachedInvitations(for: invite.inviteToken)
                 syncEventLoop.forceSync()
             } catch {
                 logger.error(message: "Could not accept invitation \(userInvite)", error: error)
@@ -91,7 +99,7 @@ final class AcceptRejectInviteViewModel: ObservableObject {
 
 private extension AcceptRejectInviteViewModel {
     func setUp() {
-        if userInvite.isVault, userInvite.vaultData != nil {
+        if invite.isVault, invite.vaultData != nil {
             decodeVaultData()
         }
 
@@ -101,7 +109,7 @@ private extension AcceptRejectInviteViewModel {
                 guard let self,
                       let sharesData = state.loadedContent,
                       let shareContent = sharesData.shares
-                      .first(where: { $0.share.targetID == self.userInvite.targetID })
+                      .first(where: { $0.share.targetID == self.invite.targetID })
                 else {
                     return
                 }
@@ -113,6 +121,10 @@ private extension AcceptRejectInviteViewModel {
     }
 
     func decodeVaultData() {
+        // TODO: update to get the different type of invite
+        guard case let .user(userInvite) = invite else {
+            return
+        }
         Task { [weak self] in
             guard let self else {
                 return
@@ -131,7 +143,7 @@ private extension AcceptRejectInviteViewModel {
     }
 
     func displayItemPage(shareContent: ShareContent) {
-        guard !userInvite.isVault,
+        guard !invite.isVault,
               let item = shareContent.items.first else {
             cleanup()
             return

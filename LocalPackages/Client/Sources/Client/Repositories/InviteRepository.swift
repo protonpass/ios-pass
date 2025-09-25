@@ -24,12 +24,9 @@ import Entities
 import Foundation
 import ProtonCoreLogin
 
-// TODO: User and group invite should have the protocol
-protocol InviteProtocol: Sendable {}
-
 // sourcery: AutoMockable
 public protocol InviteRepositoryProtocol: Sendable {
-    var currentPendingInvites: CurrentValueSubject<[UserInvite], Never> { get }
+    var currentPendingInvites: CurrentValueSubject<[InviteType], Never> { get }
 
     func loadLocalInvites(userId: String) async throws
     func acceptInvite(_ invite: UserInvite, and keys: [ItemKey]) async throws -> Share
@@ -37,9 +34,6 @@ public protocol InviteRepositoryProtocol: Sendable {
 
     @discardableResult
     func rejectInvite(_ invite: UserInvite) async throws -> Bool
-    // swiftlint:disable:next todo
-    // TODO: Could be removed once migrated to user event
-    func refreshInvites() async
     func refreshInvites(userId: String) async throws
     func removeCachedInvite(containing inviteToken: String) async
 
@@ -78,15 +72,15 @@ public typealias FullInviteRepositoryProtocol = InviteRepositoryProtocol & Share
 
 public actor InviteRepository: FullInviteRepositoryProtocol {
     private let remoteDatasource: any RemoteInviteDatasourceProtocol
-    private let localDatasource: any LocalUserInviteDatasourceProtocol
+    private let localDatasource: any LocalInviteDatasourceProtocol
     private let logger: Logger
     private var refreshInviteTask: Task<Void, Never>?
     private let userManager: any UserManagerProtocol
 
-    public nonisolated let currentPendingInvites: CurrentValueSubject<[UserInvite], Never> = .init([])
+    public nonisolated let currentPendingInvites: CurrentValueSubject<[InviteType], Never> = .init([])
 
     public init(remoteDatasource: any RemoteInviteDatasourceProtocol,
-                localDatasource: any LocalUserInviteDatasourceProtocol,
+                localDatasource: any LocalInviteDatasourceProtocol,
                 userManager: any UserManagerProtocol,
                 logManager: any LogManagerProtocol) {
         self.remoteDatasource = remoteDatasource
@@ -98,12 +92,19 @@ public actor InviteRepository: FullInviteRepositoryProtocol {
 
 public extension InviteRepository {
     func loadLocalInvites(userId: String) async throws {
-        let invites = try await localDatasource.getInvites(userId: userId)
-        currentPendingInvites.send(invites)
+        async let getUserInvites = try localDatasource.getUserInvites(userId: userId)
+        async let getGroupInvites = try localDatasource.getGroupInvites(userId: userId)
+
+        let (groupInvites, userInvites) = try await (getGroupInvites, getUserInvites)
+        mergeInvites(groupInvites: groupInvites, userInvites: userInvites)
+//        let invites: [InviteType] = getGroupInvites.map { .group($0) } + userInvites.map { .user($0) }
+//
+//        currentPendingInvites.send(invites)
     }
 
     // swiftlint:disable:next todo
     // TODO: Could be removed once migrated to user event
+    // TODO: CHekc if group need the same
     func getPendingInvitesForUser() async throws -> [UserInvite] {
         logger.trace("Getting all pending invites for user")
         do {
@@ -132,7 +133,7 @@ public extension InviteRepository {
             if error.asPassApiError == .invalidValidation {
                 logger.warning("Failed to accept non-existing invite \(inviteToken)")
                 // Invite doesn't exist anymore (stale cache or race condition)
-                try await localDatasource.removeInvite(userId: userId, invite: invite)
+                try await localDatasource.removeUserInvites(userId: userId, invite: invite)
                 try await loadLocalInvites(userId: userId)
             }
             throw error
@@ -152,7 +153,7 @@ public extension InviteRepository {
             if error.asPassApiError == .invalidValidation {
                 logger.warning("Failed to reject non-existing invite \(inviteToken)")
                 // Invite doesn't exist anymore (stale cache or race condition)
-                try await localDatasource.removeInvite(userId: userId, invite: invite)
+                try await localDatasource.removeUserInvites(userId: userId, invite: invite)
                 try await loadLocalInvites(userId: userId)
             }
             throw error
@@ -160,40 +161,66 @@ public extension InviteRepository {
     }
 
     func refreshInvites(userId: String) async throws {
-        logger.trace("Refreshing invites for user \(userId)")
-        let invites = try await remoteDatasource.getPendingInvitesForUser(userId: userId)
-        logger.trace("Fetched \(invites.count) invites for user \(userId)")
-        try await localDatasource.removeInvites(userId: userId)
-        logger.trace("Removed old local invites for user \(userId)")
-        try await localDatasource.upsertInvites(userId: userId, invites: invites)
-        logger.trace("Upserted \(invites.count) updated invites for user \(userId)")
-        currentPendingInvites.send(invites)
+        async let updateUserInvite = try updateUserInvite(userId)
+        async let updateGroupInvites = try updateGroupInvite(userId)
+
+        let (groupInvites, userInvites) = try await (updateGroupInvites, updateUserInvite)
+        mergeInvites(groupInvites: groupInvites, userInvites: userInvites)
+        //        logger.trace("Refreshing invites for user \(userId)")
+        //        let invites = try await remoteDatasource.getPendingInvitesForUser(userId: userId)
+        //        logger.trace("Fetched \(invites.count) invites for user \(userId)")
+        //        try await localDatasource.removeInvites(userId: userId)
+        //        logger.trace("Removed old local invites for user \(userId)")
+        //        try await localDatasource.upsertInvites(userId: userId, invites: invites)
+        //        logger.trace("Upserted \(invites.count) updated invites for user \(userId)")
+        //        currentPendingInvites.send(invites)
     }
 
-    func refreshInvites() async {
-        refreshInviteTask?.cancel()
-        refreshInviteTask = Task { [weak self] in
-            guard let self else {
-                return
-            }
-            logger.trace("Refreshing all user invitations")
-            do {
-                if Task.isCancelled {
-                    return
-                }
-                let invites = try await getPendingInvitesForUser()
-                if Task.isCancelled {
-                    return
-                }
-                if invites != currentPendingInvites.value {
-                    currentPendingInvites.send(invites)
-                }
-                logger.trace("Invites refreshed with \(invites)")
-            } catch {
-                logger.error(message: "Could not refresh all the user's invitations", error: error)
-            }
-        }
-    }
+    // TODO: add group invite refresh
+
+//    func refreshFullInvites(userId: String, lastID: String?) async throws {
+//        logger.trace("Refreshing invites for user \(userId)")
+//        if lastID == nil {
+//            async let refreshing = try refreshUserInvites(userId: userId)
+//
+//        async let userInvites = try remoteDatasource.getPendingInvitesForUser(userId: userId)
+//
+//        let userInvites = try await remoteDatasource.getPendingInvitesForUser(userId: userId)
+//
+//        func getPendingGroupInvitesForUser(lastToken: String?, userId: String) async throws ->
+//        PaginatedGroupInvites
+//        logger.trace("Fetched \(invites.count) invites for user \(userId)")
+//        try await localDatasource.removeInvites(userId: userId)
+//        logger.trace("Removed old local invites for user \(userId)")
+//        try await localDatasource.upsertInvites(userId: userId, invites: invites)
+//        logger.trace("Upserted \(invites.count) updated invites for user \(userId)")
+//        currentPendingInvites.send(invites)
+//    }
+
+//    func refreshInvites() async {
+//        refreshInviteTask?.cancel()
+//        refreshInviteTask = Task { [weak self] in
+//            guard let self else {
+//                return
+//            }
+//            logger.trace("Refreshing all user invitations")
+//            do {
+//                if Task.isCancelled {
+//                    return
+//                }
+//                let invites = try await getPendingInvitesForUser()
+//                if Task.isCancelled {
+//                    return
+//                }
+//                if invites != currentPendingInvites.value {
+//                    currentPendingInvites.send(invites)
+//                }
+//                logger.trace("Invites refreshed with \(invites)")
+//            } catch {
+//                logger.error(message: "Could not refresh all the user's invitations", error: error)
+//            }
+//        }
+//    }
 
     func removeCachedInvite(containing inviteToken: String) async {
         logger.trace("Removing current cached invite containing inviteToken \(inviteToken)")
@@ -398,4 +425,61 @@ private extension InviteRepository {
             throw error
         }
     }
+
+    func updateUserInvite(_ userId: String) async throws -> [UserInvite] {
+        logger.trace("Refreshing user invites for user \(userId)")
+        let invites = try await remoteDatasource.getPendingInvitesForUser(userId: userId)
+        logger.trace("Fetched \(invites.count) user invites for user \(userId)")
+        try await localDatasource.removeUserInvites(userId: userId)
+        logger.trace("Removed old local user invites for user \(userId)")
+        try await localDatasource.upsertUserInvites(userId: userId, invites: invites)
+        logger.trace("Upserted \(invites.count) user invites for user \(userId)")
+        return invites
+    }
+
+    func updateGroupInvite(_ userId: String) async throws -> [GroupInvite] {
+        logger.trace("Refreshing group invites for user \(userId)")
+        var invites = [GroupInvite]()
+        var lastToken: String?
+        while true {
+            let results = try await remoteDatasource.getPendingGroupInvitesForUser(lastToken: lastToken,
+                                                                                   userId: userId)
+            invites.append(contentsOf: results.invites)
+            if results.invites.isEmpty || results.lastID == nil {
+                break
+            }
+            lastToken = results.lastID
+        }
+
+        logger.trace("Fetched \(invites.count) group invites for user \(userId)")
+        try await localDatasource.removeGroupInvites(userId: userId)
+        logger.trace("Removed old local group invites for user \(userId)")
+        try await localDatasource.upsertGroupInvites(userId: userId, invites: invites)
+        logger.trace("Upserted \(invites.count) group invites for user \(userId)")
+        return invites
+    }
+
+    func mergeInvites(groupInvites: [GroupInvite], userInvites: [UserInvite]) {
+        let invites: [InviteType] = groupInvites.map { .group($0) } + userInvites.map { .user($0) }
+
+        currentPendingInvites.send(invites)
+    }
 }
+
+//
+// async let updateUserInvite = try updateUserInvite()
+//
+// public protocol LocalInviteDatasourceProtocol: Sendable {
+//    // MARK: - User invites
+//    func getUserInvites(userId: String) async throws -> [UserInvite]
+//    func upsertUserInvites(userId: String, invites: [UserInvite]) async throws
+//    // Remove specific invites (e.g after accepting or rejecting an invite)
+//    func removeUserInvites(userId: String, invites: [UserInvite]) async throws
+//
+//    // MARK: - Group invites
+//
+//    func getGroupInvites(userId: String) async throws -> [GroupInvite]
+//    func upsertGroupInvites(userId: String, invites: [GroupInvite]) async throws
+//    func removeGroupInvites(userId: String, invites: [GroupInvite]) async throws
+//
+//    // Re

@@ -1,7 +1,7 @@
-//
-// BannersSection.swift
-// Proton Pass - Created on 27/05/2023.
-// Copyright (c) 2023 Proton Technologies AG
+//  
+// GroupInviteEntity 2.swift
+// Proton Pass - Created on 25/09/2025.
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,21 +18,4 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import FactoryKit
-import SwiftUI
-
-struct BannersSection: View {
-    var body: some View {
-        NavigationLink(destination: { ManageBannersView() },
-                       label: { Text(verbatim: "Banners") })
-    }
-}
-
-private struct ManageBannersView: View {
-    var body: some View {
-        Form {
-            InfoBannerView(banner: .invite([.user(.mocked)]), dismiss: {}, action: {})
-        }
-        .navigationBarTitleDisplayMode(.inline)
-    }
-}
+import Foundation

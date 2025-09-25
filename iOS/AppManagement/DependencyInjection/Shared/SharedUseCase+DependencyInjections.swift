@@ -417,7 +417,7 @@ extension SharedUseCasesContainer {
                                        userPreferencesDatasource: container.userPreferencesDatasource(),
                                        inAppNotificationDatasource: container.localInAppNotificationDatasource(),
                                        passwordDatasource: container.localPasswordDatasource(),
-                                       userInviteDatasource: container.localUserInviteDatasource(),
+                                       userInviteDatasource: container.localInviteDatasource(),
                                        userEventIdDatasource: container.localUserEventIdDatasource())
         }
     }

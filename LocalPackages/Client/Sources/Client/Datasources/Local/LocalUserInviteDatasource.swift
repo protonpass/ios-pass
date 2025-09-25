@@ -21,36 +21,49 @@
 import CoreData
 import Entities
 
-public protocol LocalUserInviteDatasourceProtocol: Sendable {
-    func getInvites(userId: String) async throws -> [UserInvite]
-    func upsertInvites(userId: String, invites: [UserInvite]) async throws
+public protocol LocalInviteDatasourceProtocol: Sendable {
+    // MARK: - User invites
 
+    func getUserInvites(userId: String) async throws -> [UserInvite]
+    func upsertUserInvites(userId: String, invites: [UserInvite]) async throws
     // Remove specific invites (e.g after accepting or rejecting an invite)
-    func removeInvites(userId: String, invites: [UserInvite]) async throws
+    func removeUserInvites(userId: String, invites: [UserInvite]) async throws
+    func removeUserInvites(userId: String) async throws
+
+    // MARK: - Group invites
+
+    func getGroupInvites(userId: String) async throws -> [GroupInvite]
+    func upsertGroupInvites(userId: String, invites: [GroupInvite]) async throws
+    func removeGroupInvites(userId: String, invites: [GroupInvite]) async throws
+    func removeGroupInvites(userId: String) async throws
 
     // Remove invites related to a user (e.g after logging from an account)
-    func removeInvites(userId: String) async throws
+    func removeAllInvites(userId: String) async throws
 }
 
-public extension LocalUserInviteDatasourceProtocol {
-    func removeInvite(userId: String, invite: UserInvite) async throws {
-        try await removeInvites(userId: userId, invites: [invite])
+public extension LocalInviteDatasourceProtocol {
+    func removeUserInvites(userId: String, invite: UserInvite) async throws {
+        try await removeUserInvites(userId: userId, invites: [invite])
     }
 }
 
-public final class LocalUserInviteDatasource: LocalDatasource, LocalUserInviteDatasourceProtocol,
+public final class LocalInviteDatasource: LocalDatasource, LocalInviteDatasourceProtocol,
     @unchecked Sendable {}
 
-public extension LocalUserInviteDatasource {
-    func getInvites(userId: String) async throws -> [UserInvite] {
-        let fetchContext = newTaskContext(type: .fetch)
-        let fetchRequest = UserInviteEntity.fetchRequest()
-        fetchRequest.predicate = .init(format: "userID = %@", userId)
-        let entities = try await execute(fetchRequest: fetchRequest, context: fetchContext)
-        return entities.map(\.toUserInvite)
+// MARK: - User
+
+public extension LocalInviteDatasource {
+    func getUserInvites(userId: String) async throws -> [UserInvite] {
+        try await getInvites(userId: userId, entity: UserInviteEntity.self, map: \.toUserInvite)
+
+//        let fetchContext = newTaskContext(type: .fetch)
+//        let fetchRequest = UserInviteEntity.fetchRequest()
+//        fetchRequest.predicate = .init(format: "userID = %@", userId)
+//        let entities = try await execute(fetchRequest: fetchRequest, context: fetchContext)
+//        return entities.map(\.toUserInvite)
     }
 
-    func upsertInvites(userId: String, invites: [UserInvite]) async throws {
+    func upsertUserInvites(userId: String, invites: [UserInvite]) async throws {
         try await upsertWithRelationships(invites,
                                           entityType: UserInviteEntity.self,
                                           fetchPredicate: .init(format: "userID = %@", userId),
@@ -64,22 +77,160 @@ public extension LocalUserInviteDatasource {
                                           })
     }
 
-    func removeInvites(userId: String, invites: [UserInvite]) async throws {
-        let deleteContext = newTaskContext(type: .delete)
-        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "UserInviteEntity")
-        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-            .init(format: "userID = %@", userId),
-            .init(format: "inviteToken IN %@", invites.map(\.inviteToken))
-        ])
-        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
-                          context: deleteContext)
+    func removeUserInvites(userId: String, invites: [UserInvite]) async throws {
+        try await removeInvites(userId: userId, invites: invites, entity: UserInviteEntity.self,
+                                tokenKeyPath: \.inviteToken)
+
+//        let deleteContext = newTaskContext(type: .delete)
+//        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "UserInviteEntity")
+//        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+//            .init(format: "userID = %@", userId),
+//            .init(format: "inviteToken IN %@", invites.map(\.inviteToken))
+//        ])
+//        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+//                          context: deleteContext)
     }
 
-    func removeInvites(userId: String) async throws {
+    func removeUserInvites(userId: String) async throws {
+        try await removeAllInvites(userId: userId, entity: UserInviteEntity.self)
+
+//        let deleteContext = newTaskContext(type: .delete)
+//        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "UserInviteEntity")
+//        fetchRequest.predicate = .init(format: "userID = %@", userId)
+//        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+//                          context: deleteContext)
+    }
+
+    func removeAllInvites(userId: String) async throws {
         let deleteContext = newTaskContext(type: .delete)
-        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "UserInviteEntity")
-        fetchRequest.predicate = .init(format: "userID = %@", userId)
-        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
-                          context: deleteContext)
+
+        try await deleteEntities(["UserInviteEntity", "GroupInviteEntity"],
+                                 userId: userId,
+                                 context: deleteContext)
+    }
+}
+
+// MARK: - Group
+
+public extension LocalInviteDatasource {
+    // Group
+    func getGroupInvites(userId: String) async throws -> [GroupInvite] {
+        try await getInvites(userId: userId, entity: GroupInviteEntity.self, map: \.toGroupInvite)
+    }
+
+    func upsertGroupInvites(userId: String, invites: [GroupInvite]) async throws {
+        try await upsertInvites(userId: userId,
+                                invites: invites,
+                                entity: GroupInviteEntity.self,
+                                isEqual: { $0.inviteToken == $1.inviteToken },
+                                hydrate: { invite, entity, context in
+                                    entity.hydrate(userID: userId, invite: invite, context: context)
+                                })
+    }
+
+    func removeGroupInvites(userId: String, invites: [GroupInvite]) async throws {
+        try await removeInvites(userId: userId, invites: invites, entity: GroupInviteEntity.self,
+                                tokenKeyPath: \.inviteToken)
+    }
+
+    func removeGroupInvites(userId: String) async throws {
+        try await removeAllInvites(userId: userId, entity: GroupInviteEntity.self)
+    }
+//    func getGroupInvites(userId: String) async throws -> [GroupInvite] {
+//        let fetchContext = newTaskContext(type: .fetch)
+//        let fetchRequest = GroupInviteEntity.fetchRequest()
+//        fetchRequest.predicate = .init(format: "userID = %@", userId)
+//        let entities = try await execute(fetchRequest: fetchRequest, context: fetchContext)
+//        return entities.map(\.toGoupInvite)
+//    }
+//
+//    func upsertGroupInvites(userId: String, invites: [GroupInvite]) async throws {
+//        try await upsertWithRelationships(invites,
+//                                          entityType: GroupInviteEntity.self,
+//                                          fetchPredicate: .init(format: "userID = %@", userId),
+//                                          isEqual: { invite, entity in
+//                                              entity.inviteToken == invite.inviteToken
+//                                          },
+//                                          hydrate: { invite, entity, context in
+//                                              entity.hydrate(userID: userId,
+//                                                             invite: invite,
+//                                                             context: context)
+//                                          })
+//    }
+//
+//    func removeGroupInvites(userId: String, invites: [GroupInvite]) async throws {
+//        let deleteContext = newTaskContext(type: .delete)
+//        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "GroupInviteEntity")
+//        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+//            .init(format: "userID = %@", userId),
+//            .init(format: "inviteToken IN %@", invites.map(\.inviteToken))
+//        ])
+//        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+//                          context: deleteContext)
+//    }
+}
+
+// MARK: - Utils
+
+private extension LocalInviteDatasource {
+    func deleteEntities(_ entityNames: [String],
+                        userId: String,
+                        context: NSManagedObjectContext) async throws {
+        for entityName in entityNames {
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+            fetchRequest.predicate = NSPredicate(format: "userID == %@", userId)
+            try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+                              context: context)
+        }
+    }
+}
+
+// MARK: - Generic Helpers
+
+private extension LocalInviteDatasource {
+    func getInvites<T: Sendable, E>(userId: String,
+                                    entity: E.Type,
+                                    map: (E) -> T) async throws -> [T] where E: NSManagedObject {
+        let fetchContext = newTaskContext(type: .fetch)
+        let fetchRequest = NSFetchRequest<E>(entityName: String(describing: entity))
+        fetchRequest.predicate = NSPredicate(format: "userID = %@", userId)
+        let entities = try await execute(fetchRequest: fetchRequest, context: fetchContext)
+        return entities.map(map)
+    }
+
+    func upsertInvites<T: Sendable, E>(userId: String,
+                                       invites: [T],
+                                       entity: E.Type,
+                                       isEqual: @escaping @Sendable (T, E) -> Bool,
+                                       hydrate: @escaping @Sendable (T, E, NSManagedObjectContext)
+                                           -> Void) async throws where E: NSManagedObject {
+        try await upsertWithRelationships(invites,
+                                          entityType: entity,
+                                          fetchPredicate: NSPredicate(format: "userID = %@", userId),
+                                          isEqual: isEqual,
+                                          hydrate: { invite, entity, context in
+                                              hydrate(invite, entity, context)
+                                          })
+    }
+
+    func removeInvites<T>(userId: String,
+                          invites: [T],
+                          entity: (some NSManagedObject).Type,
+                          tokenKeyPath: KeyPath<T, String>) async throws {
+        let deleteContext = newTaskContext(type: .delete)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: entity))
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            NSPredicate(format: "userID = %@", userId),
+            NSPredicate(format: "inviteToken IN %@", invites.map { $0[keyPath: tokenKeyPath] })
+        ])
+        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest), context: deleteContext)
+    }
+
+    func removeAllInvites(userId: String,
+                          entity: (some NSManagedObject).Type) async throws {
+        let deleteContext = newTaskContext(type: .delete)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: entity))
+        fetchRequest.predicate = NSPredicate(format: "userID = %@", userId)
+        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest), context: deleteContext)
     }
 }
