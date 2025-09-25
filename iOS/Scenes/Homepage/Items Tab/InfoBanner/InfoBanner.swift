@@ -24,7 +24,7 @@ import Macro
 import SwiftUI
 
 enum InfoBanner: Equatable, Hashable {
-    case invite([UserInvite])
+    case invite([InviteType])
 
     var detail: InfoBannerDetail {
         switch self {

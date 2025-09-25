@@ -62,7 +62,7 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case alert(UIAlertController)
     case sharingFlow(SheetDismissal)
     case manageSharedShare(ManageSharedDisplay, SheetDismissal)
-    case acceptRejectInvite(UserInvite)
+    case acceptRejectInvite(InviteType)
     case vaultCreateEdit(vault: Share?)
     case upgradeFlow
     case upselling(UpsellingViewConfiguration, SheetDismissal = .all)

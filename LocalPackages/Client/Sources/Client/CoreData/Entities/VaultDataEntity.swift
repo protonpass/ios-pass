@@ -37,7 +37,8 @@ extension VaultDataEntity {
     @NSManaged var contentFormatVersion: Int64
     @NSManaged var memberCount: Int64
     @NSManaged var itemCount: Int64
-    @NSManaged var invite: UserInviteEntity
+    @NSManaged var userInvite: UserInviteEntity?
+    @NSManaged var groupInvite: GroupInviteEntity?
 }
 
 extension VaultDataEntity {

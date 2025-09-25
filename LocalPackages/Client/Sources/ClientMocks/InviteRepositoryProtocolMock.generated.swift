@@ -32,12 +32,12 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
     // MARK: - currentPendingInvites
     public var invokedCurrentPendingInvitesSetter = false
     public var invokedCurrentPendingInvitesSetterCount = 0
-    public var invokedCurrentPendingInvites: CurrentValueSubject<[UserInvite], Never>?
-    public var invokedCurrentPendingInvitesList = [CurrentValueSubject<[UserInvite], Never>?]()
+    public var invokedCurrentPendingInvites: CurrentValueSubject<[InviteType], Never>?
+    public var invokedCurrentPendingInvitesList = [CurrentValueSubject<[InviteType], Never>?]()
     public var invokedCurrentPendingInvitesGetter = false
     public var invokedCurrentPendingInvitesGetterCount = 0
-    public var stubbedCurrentPendingInvites: CurrentValueSubject<[UserInvite], Never>!
-    public var currentPendingInvites: CurrentValueSubject<[UserInvite], Never> {
+    public var stubbedCurrentPendingInvites: CurrentValueSubject<[InviteType], Never>!
+    public var currentPendingInvites: CurrentValueSubject<[InviteType], Never> {
         set {
             invokedCurrentPendingInvitesSetter = true
             invokedCurrentPendingInvitesSetterCount += 1
@@ -126,32 +126,22 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
         return stubbedRejectInviteResult
     }
     // MARK: - refreshInvites
-    public var closureRefreshInvitesAsync5: () -> () = {}
-    public var invokedRefreshInvitesAsync5 = false
-    public var invokedRefreshInvitesAsyncCount5 = 0
-
-    public func refreshInvites() async {
-        invokedRefreshInvitesAsync5 = true
-        invokedRefreshInvitesAsyncCount5 += 1
-        closureRefreshInvitesAsync5()
-    }
-    // MARK: - refreshInvitesUserId
-    public var refreshInvitesUserIdThrowableError6: Error?
-    public var closureRefreshInvitesUserIdAsync6: () -> () = {}
-    public var invokedRefreshInvitesUserIdAsync6 = false
-    public var invokedRefreshInvitesUserIdAsyncCount6 = 0
-    public var invokedRefreshInvitesUserIdAsyncParameters6: (userId: String, Void)?
-    public var invokedRefreshInvitesUserIdAsyncParametersList6 = [(userId: String, Void)]()
+    public var refreshInvitesUserIdThrowableError5: Error?
+    public var closureRefreshInvites: () -> () = {}
+    public var invokedRefreshInvitesfunction = false
+    public var invokedRefreshInvitesCount = 0
+    public var invokedRefreshInvitesParameters: (userId: String, Void)?
+    public var invokedRefreshInvitesParametersList = [(userId: String, Void)]()
 
     public func refreshInvites(userId: String) async throws {
-        invokedRefreshInvitesUserIdAsync6 = true
-        invokedRefreshInvitesUserIdAsyncCount6 += 1
-        invokedRefreshInvitesUserIdAsyncParameters6 = (userId, ())
-        invokedRefreshInvitesUserIdAsyncParametersList6.append((userId, ()))
-        if let error = refreshInvitesUserIdThrowableError6 {
+        invokedRefreshInvitesfunction = true
+        invokedRefreshInvitesCount += 1
+        invokedRefreshInvitesParameters = (userId, ())
+        invokedRefreshInvitesParametersList.append((userId, ()))
+        if let error = refreshInvitesUserIdThrowableError5 {
             throw error
         }
-        closureRefreshInvitesUserIdAsync6()
+        closureRefreshInvites()
     }
     // MARK: - removeCachedInvite
     public var closureRemoveCachedInvite: () -> () = {}

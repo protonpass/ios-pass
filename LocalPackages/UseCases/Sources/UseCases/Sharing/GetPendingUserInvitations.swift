@@ -25,11 +25,11 @@ import Combine
 import Entities
 
 public protocol GetPendingUserInvitationsUseCase: Sendable {
-    func execute() -> CurrentValueSubject<[UserInvite], Never>
+    func execute() -> CurrentValueSubject<[InviteType], Never>
 }
 
 public extension GetPendingUserInvitationsUseCase {
-    func callAsFunction() -> CurrentValueSubject<[UserInvite], Never> {
+    func callAsFunction() -> CurrentValueSubject<[InviteType], Never> {
         execute()
     }
 }
@@ -41,7 +41,7 @@ public final class GetPendingUserInvitations: GetPendingUserInvitationsUseCase {
         self.repository = repository
     }
 
-    public func execute() -> CurrentValueSubject<[UserInvite], Never> {
+    public func execute() -> CurrentValueSubject<[InviteType], Never> {
         repository.currentPendingInvites
     }
 }

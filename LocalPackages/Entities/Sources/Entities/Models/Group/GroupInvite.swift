@@ -27,10 +27,12 @@ public struct GroupInvite: Decodable, Hashable, Equatable, Identifiable, Sendabl
     public let invitedGroupID: String
     public let invitedEmail: String
     public let targetType: Int
+    public let targetID: String
     public let remindersSent: Int
     public let inviteToken: String
     public let invitedAddressID: String
     public let keys: [ItemKey]
+    public let vaultData: VaultData
     public let data: String?
     public let createTime: Int
 
@@ -44,10 +46,12 @@ public struct GroupInvite: Decodable, Hashable, Equatable, Identifiable, Sendabl
                 invitedGroupID: String,
                 invitedEmail: String,
                 targetType: Int,
+                targetID: String,
                 remindersSent: Int,
                 inviteToken: String,
                 invitedAddressID: String,
                 keys: [ItemKey],
+                vaultData: VaultData,
                 data: String?,
                 createTime: Int) {
         self.inviteID = inviteID
@@ -56,10 +60,12 @@ public struct GroupInvite: Decodable, Hashable, Equatable, Identifiable, Sendabl
         self.invitedGroupID = invitedGroupID
         self.invitedEmail = invitedEmail
         self.targetType = targetType
+        self.targetID = targetID
         self.remindersSent = remindersSent
         self.inviteToken = inviteToken
         self.invitedAddressID = invitedAddressID
         self.keys = keys
+        self.vaultData = vaultData
         self.data = data
         self.createTime = createTime
     }
