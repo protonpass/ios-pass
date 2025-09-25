@@ -486,6 +486,8 @@
 		539182CF2D7F3EB500815D7F /* CustomDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539182CE2D7F3EAF00815D7F /* CustomDetailView.swift */; };
 		539182D12D7F3ED100815D7F /* CustomDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539182D02D7F3ECF00815D7F /* CustomDetailViewModel.swift */; };
 		53A2EB092D6F538A008A4A0C /* CustomItemTemplatesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53A2EB072D6F5381008A4A0C /* CustomItemTemplatesList.swift */; };
+		53ABE2D62E842FD500C7355B /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 53ABE2D52E842FD500C7355B /* AppIcon.icon */; };
+		53ABE2D72E842FD500C7355B /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 53ABE2D52E842FD500C7355B /* AppIcon.icon */; };
 		53AEB2E32DDF68B40088DA4B /* TotpTextFieldToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AEB2E22DDF68B00088DA4B /* TotpTextFieldToolbar.swift */; };
 		53AEB2E42DDF68B40088DA4B /* TotpTextFieldToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AEB2E22DDF68B00088DA4B /* TotpTextFieldToolbar.swift */; };
 		53AEB2E52DDF68B40088DA4B /* TotpTextFieldToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AEB2E22DDF68B00088DA4B /* TotpTextFieldToolbar.swift */; };
@@ -1078,6 +1080,7 @@
 		539182CE2D7F3EAF00815D7F /* CustomDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDetailView.swift; sourceTree = "<group>"; };
 		539182D02D7F3ECF00815D7F /* CustomDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDetailViewModel.swift; sourceTree = "<group>"; };
 		53A2EB072D6F5381008A4A0C /* CustomItemTemplatesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomItemTemplatesList.swift; sourceTree = "<group>"; };
+		53ABE2D52E842FD500C7355B /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 		53AEB2E22DDF68B00088DA4B /* TotpTextFieldToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotpTextFieldToolbar.swift; sourceTree = "<group>"; };
 		53AEE4692D7F0E1200CE0CA7 /* CustomSectionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSectionsSection.swift; sourceTree = "<group>"; };
 		53B981782D7ED258003BD70E /* WifiDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiDetailView.swift; sourceTree = "<group>"; };
@@ -1960,6 +1963,7 @@
 		35E50633286F819F00A3F6EA /* iOS & macOS */ = {
 			isa = PBXGroup;
 			children = (
+				53ABE2D52E842FD500C7355B /* AppIcon.icon */,
 				35E50636286F819F00A3F6EA /* Assets.xcassets */,
 			);
 			path = "iOS & macOS";
@@ -3289,6 +3293,7 @@
 				5BB2B6ED2A445422005E831C /* Pass-Constant-Prod.plist in Resources */,
 				35C2ED8F2BA0507200E94BAA /* InfoPlist.xcstrings in Resources */,
 				5BCF619F2ABB1171002AD351 /* Localizable.xcstrings in Resources */,
+				53ABE2D72E842FD500C7355B /* AppIcon.icon in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3298,6 +3303,7 @@
 			files = (
 				35ECCEE32BA48E1F00202613 /* PrivacyInfo.xcprivacy in Resources */,
 				35E50649286F819F00A3F6EA /* Assets.xcassets in Resources */,
+				53ABE2D62E842FD500C7355B /* AppIcon.icon in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
