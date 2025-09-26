@@ -29,11 +29,11 @@ public protocol InviteRepositoryProtocol: Sendable {
     var currentPendingInvites: CurrentValueSubject<[InviteType], Never> { get }
 
     func loadLocalInvites(userId: String) async throws
-    func acceptInvite(_ invite: UserInvite, and keys: [ItemKey]) async throws -> Share
+    func acceptInvite(_ invite: InviteType, and keys: [ItemKey]) async throws -> Share?
     func acceptGroupInvite(with inviteToken: String, and keys: [ItemKey]) async throws
 
     @discardableResult
-    func rejectInvite(_ invite: UserInvite) async throws -> Bool
+    func rejectInvite(_ invite: InviteType) async throws -> Bool
     func refreshInvites(userId: String) async throws
     func removeCachedInvite(containing inviteToken: String) async
 
@@ -104,7 +104,7 @@ public extension InviteRepository {
 
     // swiftlint:disable:next todo
     // TODO: Could be removed once migrated to user event
-    // TODO: CHekc if group need the same
+    // TODO: Check if group need the same
     func getPendingInvitesForUser() async throws -> [UserInvite] {
         logger.trace("Getting all pending invites for user")
         do {
@@ -118,45 +118,78 @@ public extension InviteRepository {
         }
     }
 
-    func acceptInvite(_ invite: UserInvite, and keys: [ItemKey]) async throws -> Share {
-        let inviteToken = invite.inviteToken
-        logger.trace("Accepting invite \(inviteToken)")
-        let request = AcceptInviteRequest(keys: keys)
-        let userId = try await userManager.getActiveUserId()
-        do {
-            let share = try await remoteDatasource.acceptInvite(userId: userId,
-                                                                inviteToken: inviteToken,
-                                                                request: request)
-            logger.trace("Accepted the invite with token \(inviteToken)")
-            return share
-        } catch {
-            if error.asPassApiError == .invalidValidation {
-                logger.warning("Failed to accept non-existing invite \(inviteToken)")
-                // Invite doesn't exist anymore (stale cache or race condition)
-                try await localDatasource.removeUserInvites(userId: userId, invite: invite)
-                try await loadLocalInvites(userId: userId)
+    func acceptInvite(_ invite: InviteType, and keys: [ItemKey]) async throws -> Share? {
+        switch invite {
+        case let .user(invite):
+            let inviteToken = invite.inviteToken
+            logger.trace("Accepting invite \(inviteToken)")
+            let request = AcceptInviteRequest(keys: keys)
+            let userId = try await userManager.getActiveUserId()
+            do {
+                let share = try await remoteDatasource.acceptInvite(userId: userId,
+                                                                    inviteToken: inviteToken,
+                                                                    request: request)
+                logger.trace("Accepted the invite with token \(inviteToken)")
+                return share
+            } catch {
+                if error.asPassApiError == .invalidValidation {
+                    logger.warning("Failed to accept non-existing invite \(inviteToken)")
+                    // Invite doesn't exist anymore (stale cache or race condition)
+                    try await localDatasource.removeUserInvites(userId: userId, invite: invite)
+                    try await loadLocalInvites(userId: userId)
+                }
+                throw error
             }
-            throw error
+        case let .group(invite):
+            // TODO: change logic for group invite
+
+            let inviteToken = invite.inviteToken
+            logger.trace("Accepting invite \(inviteToken)")
+            let request = AcceptInviteRequest(keys: keys)
+            let userId = try await userManager.getActiveUserId()
+            do {
+                _ = try await remoteDatasource.acceptGroupInvite(userId: userId,
+                                                                 inviteToken: inviteToken,
+                                                                 request: request)
+                logger.trace("Accepted the invite with token \(inviteToken)")
+                return nil /* share */
+            } catch {
+                if error.asPassApiError == .invalidValidation {
+                    logger.warning("Failed to accept non-existing invite \(inviteToken)")
+                    // Invite doesn't exist anymore (stale cache or race condition)
+                    try await localDatasource.removeGroupInvites(userId: userId, invite: invite)
+                    try await loadLocalInvites(userId: userId)
+                }
+                throw error
+            }
         }
     }
 
-    func rejectInvite(_ invite: UserInvite) async throws -> Bool {
-        let inviteToken = invite.inviteToken
-        logger.trace("Reject invite \(inviteToken)")
-        let userId = try await userManager.getActiveUserId()
-        do {
-            let rejectedStatus = try await remoteDatasource.rejectInvite(userId: userId,
-                                                                         inviteToken: inviteToken)
-            logger.trace("Invite rejection status \(rejectedStatus)")
-            return rejectedStatus
-        } catch {
-            if error.asPassApiError == .invalidValidation {
-                logger.warning("Failed to reject non-existing invite \(inviteToken)")
-                // Invite doesn't exist anymore (stale cache or race condition)
-                try await localDatasource.removeUserInvites(userId: userId, invite: invite)
-                try await loadLocalInvites(userId: userId)
+    func rejectInvite(_ invite: InviteType) async throws -> Bool {
+        switch invite {
+        case let .user(invite):
+            let inviteToken = invite.inviteToken
+            logger.trace("Reject invite \(inviteToken)")
+            let userId = try await userManager.getActiveUserId()
+            do {
+                let rejectedStatus = try await remoteDatasource.rejectInvite(userId: userId,
+                                                                             inviteToken: inviteToken)
+                logger.trace("Invite rejection status \(rejectedStatus)")
+                return rejectedStatus
+            } catch {
+                if error.asPassApiError == .invalidValidation {
+                    logger.warning("Failed to reject non-existing invite \(inviteToken)")
+                    // Invite doesn't exist anymore (stale cache or race condition)
+                    try await localDatasource.removeUserInvites(userId: userId, invite: invite)
+                    try await loadLocalInvites(userId: userId)
+                }
+                throw error
             }
-            throw error
+        // TODO: implement group reject
+        case let .group(invite):
+            let inviteToken = invite.inviteToken
+            logger.trace("Reject invite \(inviteToken)")
+            return false
         }
     }
 

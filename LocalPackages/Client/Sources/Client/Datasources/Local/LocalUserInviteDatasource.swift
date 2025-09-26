@@ -45,6 +45,10 @@ public extension LocalInviteDatasourceProtocol {
     func removeUserInvites(userId: String, invite: UserInvite) async throws {
         try await removeUserInvites(userId: userId, invites: [invite])
     }
+
+    func removeGroupInvites(userId: String, invite: GroupInvite) async throws {
+        try await removeGroupInvites(userId: userId, invites: [invite])
+    }
 }
 
 public final class LocalInviteDatasource: LocalDatasource, LocalInviteDatasourceProtocol,
@@ -78,7 +82,8 @@ public extension LocalInviteDatasource {
     }
 
     func removeUserInvites(userId: String, invites: [UserInvite]) async throws {
-        try await removeInvites(userId: userId, invites: invites, entity: UserInviteEntity.self,
+        try await removeInvites(userId: userId, invites: invites,
+                                entity: UserInviteEntity.self,
                                 tokenKeyPath: \.inviteToken)
 
 //        let deleteContext = newTaskContext(type: .delete)
@@ -129,7 +134,9 @@ public extension LocalInviteDatasource {
     }
 
     func removeGroupInvites(userId: String, invites: [GroupInvite]) async throws {
-        try await removeInvites(userId: userId, invites: invites, entity: GroupInviteEntity.self,
+        try await removeInvites(userId: userId,
+                                invites: invites,
+                                entity: GroupInviteEntity.self,
                                 tokenKeyPath: \.inviteToken)
     }
 

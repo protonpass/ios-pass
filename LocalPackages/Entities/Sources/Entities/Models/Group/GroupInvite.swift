@@ -32,7 +32,7 @@ public struct GroupInvite: Decodable, Hashable, Equatable, Identifiable, Sendabl
     public let inviteToken: String
     public let invitedAddressID: String
     public let keys: [ItemKey]
-    public let vaultData: VaultData
+    public let vaultData: VaultData?
     public let data: String?
     public let createTime: Int
 
@@ -51,7 +51,7 @@ public struct GroupInvite: Decodable, Hashable, Equatable, Identifiable, Sendabl
                 inviteToken: String,
                 invitedAddressID: String,
                 keys: [ItemKey],
-                vaultData: VaultData,
+                vaultData: VaultData?,
                 data: String?,
                 createTime: Int) {
         self.inviteID = inviteID

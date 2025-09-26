@@ -45,7 +45,7 @@ extension GroupInviteEntity {
     @NSManaged var invitedAddressID: String
     @NSManaged var data: String?
     @NSManaged var createTime: Int64
-    @NSManaged var vaultData: VaultDataEntity
+    @NSManaged var vaultData: VaultDataEntity?
     @NSManaged var keys: Set<InviteKeyEntity>
 }
 
@@ -62,7 +62,7 @@ extension GroupInviteEntity {
                     inviteToken: inviteToken,
                     invitedAddressID: invitedAddressID,
                     keys: keys.map(\.toInviteKey),
-                    vaultData: vaultData.toVaultData,
+                    vaultData: vaultData?.toVaultData,
                     data: data,
                     createTime: Int(createTime))
     }
@@ -79,17 +79,29 @@ extension GroupInviteEntity {
         targetID = invite.targetID
         remindersSent = Int64(invite.remindersSent)
         inviteToken = invite.inviteToken
-        invitedAddressID = invite.invitedAddressID ?? ""
+        invitedAddressID = invite.invitedAddressID
         data = invite.data
         createTime = Int64(invite.createTime)
 
-        // Create "vaultData" relationship
-        context.delete(vaultData)
-
-        let entity = VaultDataEntity(context: context)
-        entity.hydrate(with: invite.vaultData)
-        entity.groupInvite = self
-        vaultData = entity
+//        // Create "vaultData" relationship
+//
+//        context.delete(vaultData)
+//
+//        let entity = VaultDataEntity(context: context)
+//        entity.hydrate(with: invite.vaultData)
+//        entity.groupInvite = self
+//        vaultData = entity
+//
+        if let existingVaultData = vaultData, let newVaultData = invite.vaultData {
+            // Update existing
+            existingVaultData.hydrate(with: newVaultData)
+        } else if let newVaultData = invite.vaultData {
+            // Create new
+            let entity = VaultDataEntity(context: context)
+            entity.hydrate(with: newVaultData)
+            entity.groupInvite = self
+            vaultData = entity
+        }
 
         // Create "keys" relationship
         for key in keys {
