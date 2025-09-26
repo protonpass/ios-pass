@@ -51,6 +51,15 @@ public enum InviteType: Equatable, Hashable, Sendable {
         }
     }
 
+    public var invitedEmail: String {
+        switch self {
+        case let .user(invite):
+            invite.invitedEmail
+        case let .group(invite):
+            invite.invitedEmail
+        }
+    }
+
     public var isVault: Bool {
         inviteType == .vault
     }
@@ -61,6 +70,15 @@ public enum InviteType: Equatable, Hashable, Sendable {
             invite.vaultData
         case let .group(invite):
             invite.vaultData
+        }
+    }
+
+    public var keys: [ItemKey] {
+        switch self {
+        case let .user(invite):
+            invite.keys
+        case let .group(invite):
+            invite.keys
         }
     }
 

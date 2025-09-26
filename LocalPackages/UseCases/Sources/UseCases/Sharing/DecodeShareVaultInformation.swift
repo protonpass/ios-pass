@@ -29,12 +29,12 @@ import ProtonCoreDataModel
 import ProtonCoreLogin
 
 public protocol DecodeShareVaultInformationUseCase: Sendable {
-    func execute(with userInvite: UserInvite) async throws -> VaultContent
+    func execute(with invite: InviteType) async throws -> VaultContent
 }
 
 public extension DecodeShareVaultInformationUseCase {
-    func callAsFunction(with userInvite: UserInvite) async throws -> VaultContent {
-        try await execute(with: userInvite)
+    func callAsFunction(with invite: InviteType) async throws -> VaultContent {
+        try await execute(with: invite)
     }
 }
 
@@ -54,18 +54,18 @@ public final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShare
         logger = .init(manager: logManager)
     }
 
-    public func execute(with userInvite: UserInvite) async throws -> VaultContent {
-        logger.trace("Start decoding invitation share information for invitee user \(userInvite.invitedEmail)")
+    public func execute(with invite: InviteType) async throws -> VaultContent {
+        logger.trace("Start decoding invitation share information for invitee user \(invite.invitedEmail)")
 
         do {
             let userData = try await userManager.getUnwrappedActiveUserData()
-            guard let vaultData = userInvite.vaultData,
-                  let intermediateVaultKey = userInvite.keys
+            guard let vaultData = invite.vaultData,
+                  let intermediateVaultKey = invite.keys
                   .first(where: { $0.keyRotation == vaultData.contentKeyRotation }) else {
                 throw PassError.sharing(.invalidKey)
             }
-            guard let invitedAddress = try await address(for: userInvite, userData: userData) else {
-                throw PassError.sharing(.invalidAddress(userInvite.invitedEmail))
+            guard let invitedAddress = try await address(for: invite, userData: userData) else {
+                throw PassError.sharing(.invalidAddress(invite.invitedEmail))
             }
 
             let invitedAddressKeys = try CryptoUtils.unlockAddressKeys(address: invitedAddress,
@@ -75,7 +75,7 @@ public final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShare
                 throw PassError.sharing(.cannotDecode)
             }
 
-            let inviterPublicKeys = try await getEmailPublicKey(with: userInvite.inviterEmail)
+            let inviterPublicKeys = try await getEmailPublicKey(with: invite.inviterEmail)
             let armoredEncryptedVaultKeyData = try CryptoUtils.armorMessage(decodedIntermediateVaultKey)
 
             let vaultKeyArmorMessage = ArmoredMessage(value: armoredEncryptedVaultKeyData)
@@ -106,10 +106,10 @@ public final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShare
 }
 
 private extension DecodeShareVaultInformation {
-    func address(for userInvite: UserInvite, userData: UserData) async throws -> Address? {
-        guard let invitedAddress = userData.address(for: userInvite.invitedEmail) else {
+    func address(for invite: InviteType, userData: UserData) async throws -> Address? {
+        guard let invitedAddress = userData.address(for: invite.invitedEmail) else {
             return try await updateUserAddresses()?
-                .first(where: { $0.email == userInvite.invitedEmail })
+                .first(where: { $0.email == invite.invitedEmail })
         }
         return invitedAddress
     }

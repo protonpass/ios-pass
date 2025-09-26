@@ -30,12 +30,12 @@ import ProtonCoreLogin
 import ProtonCoreNetworking
 
 public protocol AcceptInvitationUseCase: Sendable {
-    func execute(with userInvite: UserInvite) async throws -> Share
+    func execute(with invite: InviteType) async throws -> Share?
 }
 
 public extension AcceptInvitationUseCase {
-    func callAsFunction(with userInvite: UserInvite) async throws -> Share {
-        try await execute(with: userInvite)
+    func callAsFunction(with invite: InviteType) async throws -> Share? {
+        try await execute(with: invite)
     }
 }
 
@@ -58,27 +58,27 @@ public final class AcceptInvitation: AcceptInvitationUseCase {
         logger = .init(manager: logManager)
     }
 
-    public func execute(with userInvite: UserInvite) async throws -> Share {
-        logger.trace("Start accepting share invite for invitee email \(userInvite.invitedEmail)")
-        let encrytedKeys = try await encryptKeys(userInvite: userInvite)
+    public func execute(with invite: InviteType) async throws -> Share? {
+        logger.trace("Start accepting share invite for invitee email \(invite.invitedEmail)")
+        let encrytedKeys = try await encryptKeys(invite: invite)
         logger.trace("Finished encrypting keys")
-        return try await repository.acceptInvite(userInvite, and: encrytedKeys)
+        return try await repository.acceptInvite(invite, and: encrytedKeys)
     }
 }
 
 private extension AcceptInvitation {
-    func encryptKeys(userInvite: UserInvite) async throws -> [ItemKey] {
+    func encryptKeys(invite: InviteType) async throws -> [ItemKey] {
         do {
             let userData = try await userManager.getUnwrappedActiveUserData()
-            guard let address = try await fetchInvitedAddress(with: userInvite, userData: userData) else {
-                throw PassError.sharing(.invalidAddress(userInvite.invitedEmail))
+            guard let address = try await fetchInvitedAddress(with: invite, userData: userData) else {
+                throw PassError.sharing(.invalidAddress(invite.invitedEmail))
             }
             let addressKeys = try CryptoUtils.unlockAddressKeys(address: address,
                                                                 userData: userData)
-            let inviterPublicKeys = try await getEmailPublicKey(with: userInvite.inviterEmail)
+            let inviterPublicKeys = try await getEmailPublicKey(with: invite.inviterEmail)
             let armoredInviterPublicKeys = inviterPublicKeys.map { ArmoredKey(value: $0.value) }
 
-            let reencrytedKeys: [ItemKey] = try userInvite.keys.map { key in
+            let reencrytedKeys: [ItemKey] = try invite.keys.map { key in
                 try transformKey(key: key,
                                  addressKeys: addressKeys,
                                  armoredInviterPublicKeys: armoredInviterPublicKeys,
@@ -134,10 +134,10 @@ private extension AcceptInvitation {
 }
 
 private extension AcceptInvitation {
-    func fetchInvitedAddress(with userInvite: UserInvite, userData: UserData) async throws -> Address? {
-        guard let invitedAddress = userData.address(for: userInvite.invitedEmail) else {
+    func fetchInvitedAddress(with invite: InviteType, userData: UserData) async throws -> Address? {
+        guard let invitedAddress = userData.address(for: invite.invitedEmail) else {
             return try await updateUserAddresses()?
-                .first(where: { $0.email.lowercased() == userInvite.invitedEmail.lowercased() })
+                .first(where: { $0.email.lowercased() == invite.invitedEmail.lowercased() })
         }
         return invitedAddress
     }

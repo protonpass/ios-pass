@@ -37,6 +37,7 @@ extension ShareEntity {
     @NSManaged var content: String?
     @NSManaged var contentFormatVersion: Int64
     @NSManaged var contentKeyRotation: Int64
+    @NSManaged var groupID: String?
     @NSManaged var createTime: Int64
     @NSManaged var expireTime: Int64
     @NSManaged var owner: Bool
@@ -76,6 +77,7 @@ extension ShareEntity {
                            content: content,
                            contentKeyRotation: contentKeyRotation == -1 ? nil : contentKeyRotation,
                            contentFormatVersion: contentFormatVersion == -1 ? nil : contentFormatVersion,
+                           groupID: groupID,
                            expireTime: expireTime == -1 ? nil : expireTime,
                            createTime: createTime,
                            canAutoFill: canAutoFill,
@@ -87,6 +89,7 @@ extension ShareEntity {
         content = share.content
         contentFormatVersion = share.contentFormatVersion ?? -1
         contentKeyRotation = share.contentKeyRotation ?? -1
+        groupID = share.groupID
         createTime = share.createTime
         expireTime = share.expireTime ?? -1
         owner = share.owner
