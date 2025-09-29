@@ -194,7 +194,7 @@ private extension LogInDetailView {
                     Text("Empty")
                         .placeholderText()
                 } else {
-                    Text(viewModel.email)
+                    Text(AttributedString(viewModel.email, attributes: .lineBreakHyphenErasing))
                         .sectionContentText()
 
                     if viewModel.isAlias {
