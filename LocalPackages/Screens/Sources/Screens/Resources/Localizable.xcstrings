@@ -6608,7 +6608,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Isi Otomatis Kunci Sandi"
+            "value" : "Passkey Isi Otomatis"
           }
         },
         "it" : {
@@ -18223,6 +18223,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Új"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "BARU"
           }
         },
         "it" : {
