@@ -35064,7 +35064,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Otomatik Doldurma"
+            "value" : "Otomatik doldurma"
           }
         },
         "uk" : {
@@ -35260,7 +35260,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Otomatik Doldurma kapalı"
+            "value" : "Otomatik doldurma kapalı"
           }
         },
         "uk" : {
@@ -49322,7 +49322,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Copiar o endereço de encaminhamento"
+            "value" : "Copiar endereço de encaminhamento"
           }
         },
         "ro" : {
@@ -83687,10 +83687,118 @@
     },
     "Hidden vaults" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Схаваныя сховішчы"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caixes fortes ocultes"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skryté trezory"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skjulte bokse"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausgeblendete Tresore"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Κρυφές κρύπτες"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hidden vaults"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cajas fuertes ocultas"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bóvedas ocultas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coffres-forts cachés"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brankas tersembunyi"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Casseforti nascoste"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skjulte hvelv"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verborgen kluizen"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cofres ocultos"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seifuri ascunse"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skryté trezory"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dolda valv"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gizli kasalar"
           }
         }
       }
@@ -118587,7 +118695,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Abrir endereço alternativo"
+            "value" : "Abrir alias"
           }
         },
         "ro" : {
@@ -121514,7 +121622,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Organitza les caixes fortes"
+            "value" : "Organitzeu les caixes fortes"
           }
         },
         "cs" : {
@@ -121550,7 +121658,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Organizar las cajas fuertes"
+            "value" : "Organizar cajas fuertes"
           }
         },
         "es-419" : {
@@ -121559,22 +121667,10 @@
             "value" : "Organizar bóvedas"
           }
         },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Järjestä holvit"
-          }
-        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Organiser les coffres-forts"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tárolók rendszerezése"
           }
         },
         "id" : {
@@ -121586,19 +121682,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Organizza le casseforti"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "保管庫を整理"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "금고 정리"
+            "value" : "Gestisci le casseforti"
           }
         },
         "nb" : {
@@ -121611,18 +121695,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kluizen organiseren"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Organizuj sejfy"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Organizar cofres"
           }
         },
         "pt-BR" : {
@@ -121653,30 +121725,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kasaları düzenle"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Упорядкувати сховища"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Quản lý két sắt"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "整理保险库"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "整理保管庫"
           }
         }
       }
@@ -171535,10 +171583,112 @@
     },
     "These vaults will not be accessible and their content won't be available to Search or Autofill." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Гэтыя сховішчы не будуць даступны, а іх змесціва не будзе даступна для пошуку або аўтазапаўнення."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aquestes caixes fortes no seran accessibles i el seu contingut no estarà disponible per a la cerca ni per a l'emplenament automàtic."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tyto trezory nebudou přístupné a jejich obsah nebude k dispozici pro vyhledávání ani automatické vyplňování."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disse bokse vil ikke være tilgængelige, og deres indhold vil ikke være tilgængeligt for søgning eller autofyld."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Tresore sind nicht zugänglich und ihr Inhalt steht weder für die Suche noch für das automatische Ausfüllen zur Verfügung."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αυτές οι κρύπτες δε θα είναι προσβάσιμες και το περιεχόμενό τους δε θα είναι διαθέσιμο για Αναζήτηση ή Αυτόματη Συμπλήρωση."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "These vaults will not be accessible and their content won't be available to Search or Autofill."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se podrá acceder a estas cajas fuertes y su contenido no estará disponible para la búsqueda ni el autocompletado."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se podrá acceder a estas bóvedas y su contenido no estará disponible para la búsqueda y completado automático."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ces coffres-forts ne seront pas accessibles et leur contenu ne sera pas disponible pour la recherche ou le remplissage automatique."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brankas ini tidak akan dapat diakses dan konten yang terkandung di dalamnya tidak akan tersedia bagi fitur Cari atau Isi Otomatis."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Queste casseforti non saranno accessibili e il loro contenuto non sarà disponibile per le funzioni di ricerca o di compilazione automatica."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disse hvelvene vil ikke være tilgjengelige, og innholdet i dem vil ikke være tilgjengelig for søk eller automatisk utfylling."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deze kluizen zullen niet toegankelijk zijn en hun inhoud zal niet beschikbaar zijn voor zoeken of automatisch aanvullen."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esses cofres não serão acessíveis e o conteúdo deles não estará disponível para Pesquisa ou Preenchimento Automático."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceste seifuri nu vor fi accesibile, iar conținutul lor nu va fi disponibil pentru căutare sau autocompletare."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tieto trezory nebudú prístupné a ich obsah nebude dostupný pre Hľadanie alebo Automatické dopĺňanie."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu kasalara erişilemeyecek ve içerikleri arama veya otomatik doldurma için kullanılmayacak."
           }
         }
       }
@@ -190093,10 +190243,118 @@
     },
     "Visible vaults" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Бачныя сховішчы"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caixes fortes visibles"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viditelné trezory"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synlige bokse"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sichtbare Tresore"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ορατές κρύπτες"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visible vaults"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cajas fuertes visibles"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bóvedas visibles"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coffres-forts visibles"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brankas yang Terlihat"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Casseforti visibili"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synlige hvelv"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zichtbare kluizen"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cofres visíveis"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seifuri vizibile"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viditeľné trezory"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synliga valv"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Görünür kasalar"
           }
         }
       }
@@ -200803,7 +201061,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Anda telah mencapai batas jumlah berkas yang dapat Anda buat. Tingkatkan ke paket berbayar untuk membuat banyak brankas."
+            "value" : "Anda telah mencapai batas jumlah brankas yang dapat Anda buat. Tingkatkan ke paket berbayar untuk membuat banyak brankas."
           }
         },
         "it" : {
