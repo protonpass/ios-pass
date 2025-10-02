@@ -43,18 +43,21 @@ public protocol ShareKeyRepositoryProtocol: Sendable {
 public actor ShareKeyRepository: ShareKeyRepositoryProtocol {
     private let localDatasource: any LocalShareKeyDatasourceProtocol
     private let remoteDatasource: any RemoteShareKeyDatasourceProtocol
+    private let cryptoService: any CryptoServiceProtocol
     private let logger: Logger
     private let symmetricKeyProvider: any SymmetricKeyProvider
     private let userManager: any UserManagerProtocol
 
     public init(localDatasource: any LocalShareKeyDatasourceProtocol,
                 remoteDatasource: any RemoteShareKeyDatasourceProtocol,
+                cryptoService: any CryptoServiceProtocol,
                 logManager: any LogManagerProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider,
                 userManager: any UserManagerProtocol) {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         logger = .init(manager: logManager)
+        self.cryptoService = cryptoService
         self.symmetricKeyProvider = symmetricKeyProvider
         self.userManager = userManager
     }
@@ -86,7 +89,7 @@ public extension ShareKeyRepository {
         }
 
         let encryptedKeys = try await keys.asyncCompactMap { key in
-            let decryptedKey = try await decrypt(key, userData: userData, shareId: shareId)
+            let decryptedKey = try await cryptoService.decryptShareKey(key, userData: userData, shareId: shareId)
             let encryptedKeyBase64 = decryptedKey.encodeBase64()
             let symmetricallyEncryptedKey = try await getSymmetricKey().encrypt(encryptedKeyBase64)
             return SymmetricallyEncryptedShareKey(encryptedKey: symmetricallyEncryptedKey,
@@ -113,35 +116,5 @@ public extension ShareKeyRepository {
 private extension ShareKeyRepository {
     func getSymmetricKey() async throws -> CryptoKit.SymmetricKey {
         try await symmetricKeyProvider.getSymmetricKey()
-    }
-
-    func decrypt(_ encryptedKey: ShareKey, userData: UserData, shareId: String) async throws -> Data {
-        let keyDescription = "shareId \"\(shareId)\", keyRotation: \"\(encryptedKey.keyRotation)\""
-        logger.trace("Decrypting share key \(keyDescription)")
-
-        guard let userKey = userData.user.keys.first(where: { $0.keyID == encryptedKey.userKeyID }),
-              userKey.active == 1 else {
-            throw PassError.crypto(.inactiveUserKey(userKeyId: encryptedKey.userKeyID))
-        }
-
-        guard let encryptedKeyData = try encryptedKey.key.base64Decode() else {
-            logger.trace("Failed to base 64 decode share key \(keyDescription)")
-            throw PassError.crypto(.failedToBase64Decode)
-        }
-
-        let armoredEncryptedKeyData = try CryptoUtils.armorMessage(encryptedKeyData)
-
-        let decryptionKeys = userData.user.keys.map {
-            DecryptionKey(privateKey: .init(value: $0.privateKey),
-                          passphrase: .init(value: userData.passphrases[$0.keyID] ?? ""))
-        }
-
-        let verificationKeys = userData.user.keys.map(\.publicKey).map { ArmoredKey(value: $0) }
-        let decryptedKey: VerifiedData = try Decryptor.decryptAndVerify(decryptionKeys: decryptionKeys,
-                                                                        value: .init(value: armoredEncryptedKeyData),
-                                                                        verificationKeys: verificationKeys)
-
-        logger.trace("Decrypted share key \(keyDescription)")
-        return decryptedKey.content
     }
 }

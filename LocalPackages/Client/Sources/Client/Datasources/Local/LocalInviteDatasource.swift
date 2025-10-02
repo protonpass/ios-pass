@@ -1,5 +1,5 @@
 //
-// LocalUserInviteDatasource.swift
+// LocalInviteDatasource.swift
 // Proton Pass - Created on 30/07/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
@@ -28,14 +28,14 @@ public protocol LocalInviteDatasourceProtocol: Sendable {
     func upsertUserInvites(userId: String, invites: [UserInvite]) async throws
     // Remove specific invites (e.g after accepting or rejecting an invite)
     func removeUserInvites(userId: String, invites: [UserInvite]) async throws
-    func removeUserInvites(userId: String) async throws
+    func removeAllUserInvites(userId: String) async throws
 
     // MARK: - Group invites
 
     func getGroupInvites(userId: String) async throws -> [GroupInvite]
     func upsertGroupInvites(userId: String, invites: [GroupInvite]) async throws
     func removeGroupInvites(userId: String, invites: [GroupInvite]) async throws
-    func removeGroupInvites(userId: String) async throws
+    func removeAllGroupInvites(userId: String) async throws
 
     // Remove invites related to a user (e.g after logging from an account)
     func removeAllInvites(userId: String) async throws
@@ -59,12 +59,6 @@ public final class LocalInviteDatasource: LocalDatasource, LocalInviteDatasource
 public extension LocalInviteDatasource {
     func getUserInvites(userId: String) async throws -> [UserInvite] {
         try await getInvites(userId: userId, entity: UserInviteEntity.self, map: \.toUserInvite)
-
-//        let fetchContext = newTaskContext(type: .fetch)
-//        let fetchRequest = UserInviteEntity.fetchRequest()
-//        fetchRequest.predicate = .init(format: "userID = %@", userId)
-//        let entities = try await execute(fetchRequest: fetchRequest, context: fetchContext)
-//        return entities.map(\.toUserInvite)
     }
 
     func upsertUserInvites(userId: String, invites: [UserInvite]) async throws {
@@ -85,25 +79,10 @@ public extension LocalInviteDatasource {
         try await removeInvites(userId: userId, invites: invites,
                                 entity: UserInviteEntity.self,
                                 tokenKeyPath: \.inviteToken)
-
-//        let deleteContext = newTaskContext(type: .delete)
-//        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "UserInviteEntity")
-//        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-//            .init(format: "userID = %@", userId),
-//            .init(format: "inviteToken IN %@", invites.map(\.inviteToken))
-//        ])
-//        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
-//                          context: deleteContext)
     }
 
-    func removeUserInvites(userId: String) async throws {
+    func removeAllUserInvites(userId: String) async throws {
         try await removeAllInvites(userId: userId, entity: UserInviteEntity.self)
-
-//        let deleteContext = newTaskContext(type: .delete)
-//        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "UserInviteEntity")
-//        fetchRequest.predicate = .init(format: "userID = %@", userId)
-//        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
-//                          context: deleteContext)
     }
 
     func removeAllInvites(userId: String) async throws {
@@ -124,13 +103,13 @@ public extension LocalInviteDatasource {
     }
 
     func upsertGroupInvites(userId: String, invites: [GroupInvite]) async throws {
-        try await upsertInvites(userId: userId,
-                                invites: invites,
-                                entity: GroupInviteEntity.self,
-                                isEqual: { $0.inviteToken == $1.inviteToken },
-                                hydrate: { invite, entity, context in
-                                    entity.hydrate(userID: userId, invite: invite, context: context)
-                                })
+        try await upsertWithRelationships(invites,
+                                          entityType: GroupInviteEntity.self,
+                                          fetchPredicate: NSPredicate(format: "userID = %@", userId),
+                                          isEqual: { $0.inviteToken == $1.inviteToken },
+                                          hydrate: { invite, entity, context in
+                                              entity.hydrate(userID: userId, invite: invite, context: context)
+                                          })
     }
 
     func removeGroupInvites(userId: String, invites: [GroupInvite]) async throws {
@@ -140,41 +119,9 @@ public extension LocalInviteDatasource {
                                 tokenKeyPath: \.inviteToken)
     }
 
-    func removeGroupInvites(userId: String) async throws {
+    func removeAllGroupInvites(userId: String) async throws {
         try await removeAllInvites(userId: userId, entity: GroupInviteEntity.self)
     }
-//    func getGroupInvites(userId: String) async throws -> [GroupInvite] {
-//        let fetchContext = newTaskContext(type: .fetch)
-//        let fetchRequest = GroupInviteEntity.fetchRequest()
-//        fetchRequest.predicate = .init(format: "userID = %@", userId)
-//        let entities = try await execute(fetchRequest: fetchRequest, context: fetchContext)
-//        return entities.map(\.toGoupInvite)
-//    }
-//
-//    func upsertGroupInvites(userId: String, invites: [GroupInvite]) async throws {
-//        try await upsertWithRelationships(invites,
-//                                          entityType: GroupInviteEntity.self,
-//                                          fetchPredicate: .init(format: "userID = %@", userId),
-//                                          isEqual: { invite, entity in
-//                                              entity.inviteToken == invite.inviteToken
-//                                          },
-//                                          hydrate: { invite, entity, context in
-//                                              entity.hydrate(userID: userId,
-//                                                             invite: invite,
-//                                                             context: context)
-//                                          })
-//    }
-//
-//    func removeGroupInvites(userId: String, invites: [GroupInvite]) async throws {
-//        let deleteContext = newTaskContext(type: .delete)
-//        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "GroupInviteEntity")
-//        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-//            .init(format: "userID = %@", userId),
-//            .init(format: "inviteToken IN %@", invites.map(\.inviteToken))
-//        ])
-//        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
-//                          context: deleteContext)
-//    }
 }
 
 // MARK: - Utils
@@ -203,21 +150,6 @@ private extension LocalInviteDatasource {
         fetchRequest.predicate = NSPredicate(format: "userID = %@", userId)
         let entities = try await execute(fetchRequest: fetchRequest, context: fetchContext)
         return entities.map(map)
-    }
-
-    func upsertInvites<T: Sendable, E>(userId: String,
-                                       invites: [T],
-                                       entity: E.Type,
-                                       isEqual: @escaping @Sendable (T, E) -> Bool,
-                                       hydrate: @escaping @Sendable (T, E, NSManagedObjectContext)
-                                           -> Void) async throws where E: NSManagedObject {
-        try await upsertWithRelationships(invites,
-                                          entityType: entity,
-                                          fetchPredicate: NSPredicate(format: "userID = %@", userId),
-                                          isEqual: isEqual,
-                                          hydrate: { invite, entity, context in
-                                              hydrate(invite, entity, context)
-                                          })
     }
 
     func removeInvites<T>(userId: String,

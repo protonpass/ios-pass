@@ -29,15 +29,15 @@ public enum GroupPermissions: Int, Decodable, Sendable {
 
 public struct GroupInfo: Sendable, Equatable, Hashable, Identifiable {
     public let group: Group
-    public let members: [GroupMember]
+    public let members: [GroupMember]?
 
-    public init(group: Group, members: [GroupMember]) {
+    public init(group: Group, members: [GroupMember]?) {
         self.group = group
         self.members = members
     }
 
-    public var memberCounts: Int {
-        members.count
+    public var memberCounts: Int? {
+        members?.count
     }
 
     public var id: Self { self }
