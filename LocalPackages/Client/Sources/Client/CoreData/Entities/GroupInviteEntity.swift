@@ -83,15 +83,6 @@ extension GroupInviteEntity {
         data = invite.data
         createTime = Int64(invite.createTime)
 
-//        // Create "vaultData" relationship
-//
-//        context.delete(vaultData)
-//
-//        let entity = VaultDataEntity(context: context)
-//        entity.hydrate(with: invite.vaultData)
-//        entity.groupInvite = self
-//        vaultData = entity
-//
         if let existingVaultData = vaultData, let newVaultData = invite.vaultData {
             // Update existing
             existingVaultData.hydrate(with: newVaultData)

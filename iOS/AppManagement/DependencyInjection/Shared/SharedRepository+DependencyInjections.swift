@@ -256,6 +256,7 @@ extension SharedRepositoryContainer {
         self {
             ShareKeyRepository(localDatasource: self.localShareKeyDatasource(),
                                remoteDatasource: self.remoteShareKeyDatasource(),
+                               cryptoService: SharedServiceContainer.shared.cryptoService(),
                                logManager: self.logManager,
                                symmetricKeyProvider: self.symmetricKeyProvider,
                                userManager: self.userManager)

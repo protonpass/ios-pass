@@ -63,7 +63,8 @@ public extension GroupRepository {
             for group in groups {
                 taskGroup.addTask { [weak self] in
                     guard let self else { return nil }
-                    let members = try await getMembers(groupId: group.id, userId: userId)
+                    // This should fail silently as some people do not have the rights to see group members
+                    let members = try? await getMembers(groupId: group.id, userId: userId)
                     return GroupInfo(group: group, members: members)
                 }
             }

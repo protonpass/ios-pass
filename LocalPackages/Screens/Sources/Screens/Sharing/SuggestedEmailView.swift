@@ -61,9 +61,12 @@ struct SuggestedEmailView: View {
     private var name: String {
         switch recommendation {
         case let .email(email):
-            email
+            return email
         case .group:
-            recommendation.name + " " + #localized("(%lld members)", recommendation.memberCounts)
+            guard let memberCounts = recommendation.memberCounts else {
+                return recommendation.name
+            }
+            return recommendation.name + " " + #localized("(%lld members)", memberCounts)
         }
     }
 }

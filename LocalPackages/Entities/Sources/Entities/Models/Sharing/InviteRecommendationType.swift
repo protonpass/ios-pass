@@ -44,12 +44,12 @@ public enum InviteRecommendationType: Sendable, Equatable, Hashable, Identifiabl
         }
     }
 
-    public var memberCounts: Int {
+    public var memberCounts: Int? {
         switch self {
         case let .group(groupInfo):
             groupInfo.memberCounts
         default:
-            0
+            nil
         }
     }
 
@@ -58,6 +58,15 @@ public enum InviteRecommendationType: Sendable, Equatable, Hashable, Identifiabl
         case .email:
             true
         case .group:
+            false
+        }
+    }
+
+    public var hasMembers: Bool {
+        switch self {
+        case let .group(groupInfo):
+            groupInfo.memberCounts != nil
+        default:
             false
         }
     }
