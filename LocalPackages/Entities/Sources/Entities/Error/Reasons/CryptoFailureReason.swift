@@ -45,6 +45,8 @@ public extension PassError {
         case missingKeys
         case unmatchedKeyRotation(lhsKey: Int64, rhsKey: Int64)
         case missingItemKeyRotation(Int)
+        case missingGroupId
+        case missingGroupAddress
 
         public var debugDescription: String {
             switch self {
@@ -92,6 +94,10 @@ public extension PassError {
                 "Unmatch key rotation \(lhsKey) - \(rhsKey)"
             case let .missingItemKeyRotation(rotation):
                 "Missing item key rotation \(rotation)"
+            case .missingGroupId:
+                "Missing group ID"
+            case .missingGroupAddress:
+                "Missing group address"
             }
         }
     }

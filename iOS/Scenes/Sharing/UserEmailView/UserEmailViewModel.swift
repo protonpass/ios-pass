@@ -50,7 +50,7 @@ final class UserEmailViewModel: ObservableObject {
     @Published var highlightedRecommendation: InviteRecommendationType?
     @Published private(set) var invalidEmails: [String] = []
     @Published private(set) var canContinue = false
-    @Published var goToNextStep = false
+//    @Published var goToNextStep = false
     @Published private(set) var element: SharingElementData?
     @Published private(set) var recommendationsState: RecommendationsState = .loaded(nil)
     @Published private(set) var isChecking = false
@@ -139,7 +139,7 @@ final class UserEmailViewModel: ObservableObject {
 
             try await setShareInvitesAndKeys(with: selectedRecommendations)
             highlightedRecommendation = nil
-            goToNextStep = true
+//            goToNextStep = true
             return true
         } catch {
             router.display(element: .displayErrorBanner(error))

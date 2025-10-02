@@ -170923,6 +170923,16 @@
         }
       }
     },
+    "The group is invited to a vault. Tap for details." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The group is invited to a vault. Tap for details."
+          }
+        }
+      }
+    },
     "The selected file exceeds the size limit. Please choose a file smaller than 100 MB." : {
       "localizations" : {
         "be" : {
@@ -186323,6 +186333,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "保管庫名稱"
+          }
+        }
+      }
+    },
+    "Vault shared with a group you administer" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vault shared with a group you administer"
           }
         }
       }

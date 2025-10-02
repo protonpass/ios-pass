@@ -28,14 +28,49 @@ enum InfoBanner: Equatable, Hashable {
 
     var detail: InfoBannerDetail {
         switch self {
-        case let .invite(userInvites):
+        case let .invite(invite):
+            invite.first?.infoBannerDetail ?? .default
+        }
+    }
+
+    var isInvite: Bool {
+        if case .invite = self { return true }
+        return false
+    }
+}
+
+private extension InfoBannerDetail {
+    static var `default`: InfoBannerDetail {
+        .init(title: "",
+              description: "",
+              icon: nil,
+              ctaTitle: nil,
+              backgroundColor: .clear,
+              foregroundColor: .clear)
+    }
+}
+
+private extension InviteType {
+    var infoBannerDetail: InfoBannerDetail {
+        switch self {
+        case let .user(invite):
             var title = #localized("Vault shared with you")
             var description = #localized("You're invited to a shared vault. Tap for details.")
-
-            if let invite = userInvites.first, invite.inviteType == .item {
+            if invite.inviteType == .item {
                 title = #localized("%@ wants to share an item with you.", invite.inviterEmail)
                 description = #localized("Tap here for details")
             }
+
+            return .init(title: title,
+                         description: description,
+                         icon: PassIcon.inviteBannerIcon,
+                         ctaTitle: nil,
+                         backgroundColor: PassColor.backgroundMedium.toColor,
+                         foregroundColor: PassColor.textNorm.toColor)
+        case .group:
+            let title = #localized("Vault shared with a group you administer")
+            let description = #localized("The group is invited to a vault. Tap for details.")
+
             return .init(title: title,
                          description: description,
                          icon: PassIcon.inviteBannerIcon,
@@ -43,11 +78,6 @@ enum InfoBanner: Equatable, Hashable {
                          backgroundColor: PassColor.backgroundMedium.toColor,
                          foregroundColor: PassColor.textNorm.toColor)
         }
-    }
-
-    var isInvite: Bool {
-        if case .invite = self { return true }
-        return false
     }
 }
 
