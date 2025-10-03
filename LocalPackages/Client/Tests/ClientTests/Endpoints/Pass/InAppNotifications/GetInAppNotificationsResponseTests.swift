@@ -50,6 +50,21 @@ struct GetInAppNotificationsResponseTests {
             "Text": "Upgrade now",
             "Type": "internal_navigation",
             "Ref": "https://some.kb.article"
+          },
+          "PromoContents": {
+            "StartMinimized": true,
+            "ClosePromoText": "Close promo text",
+            "MinimizedPromoText": "Minimize promo text",
+            "LightThemeContents": {
+                "BackgroundImageUrl": "https://light.background.example.jpg",
+                "ContentImageUrl": "https://light.content.example.jpg",
+                "ClosePromoTextColor": "FFFFFF"
+            },
+            "DarkThemeContents": {
+                "BackgroundImageUrl": "https://dark.background.example.jpg",
+                "ContentImageUrl": "https://dark.content.example.jpg",
+                "ClosePromoTextColor": "000000"
+            }
           }
         }
       }
@@ -60,21 +75,36 @@ struct GetInAppNotificationsResponseTests {
 }
 """
 
-        let cta = InAppNotificationCTA(text: "Upgrade now", type: "internal_navigation", ref: "https://some.kb.article")
+        let cta = InAppNotificationCTA(text: "Upgrade now",
+                                       type: "internal_navigation",
+                                       ref: "https://some.kb.article")
+        let promoContents = InAppNotificationPromoContents(
+            startMinimized: true,
+            closePromoText: "Close promo text",
+            minimizedPromoText: "Minimize promo text",
+            lightThemeContents: .init(backgroundImageUrl: "https://light.background.example.jpg",
+                                      contentImageUrl: "https://light.content.example.jpg",
+                                      closePromoTextColor: "FFFFFF"),
+            darkThemeContents: .init(backgroundImageUrl: "https://dark.background.example.jpg",
+                                     contentImageUrl: "https://dark.content.example.jpg",
+                                     closePromoTextColor: "000000"))
         let content = InAppNotificationContent(imageUrl: "https://example.com/image.jpg",
                                                displayType: 0,
                                                title: "Some title",
                                                message: "Some message",
                                                theme: "light",
-                                               cta: cta)
+                                               cta: cta,
+                                               promoContents: promoContents)
         let notification = InAppNotification(ID: "a1b2c3d4==",
                                              notificationKey: "pass_bf_2024",
                                              startTime: 123456789,
                                              endTime: 123456789,
                                              state: 0,
                                              priority: 1, content: content)
-        let paginatedNotification = PaginatedInAppNotifications(notifications: [notification], total: 1, lastID: "a1b2c3d4==")
-        
+        let paginatedNotification = PaginatedInAppNotifications(notifications: [notification],
+                                                                total: 1,
+                                                                lastID: "a1b2c3d4==")
+
         let expectedResult = GetInAppNotificationsResponse(notifications: paginatedNotification)
 
         // When

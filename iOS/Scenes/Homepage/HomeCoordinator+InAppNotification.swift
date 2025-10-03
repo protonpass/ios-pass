@@ -89,6 +89,7 @@ private extension HomepageCoordinator {
             if let view = viewController.view {
                 updateFloatingView(floatingView: view, viewTag: UniqueSheet.inAppNotificationDisplay)
             }
+
         case .modal:
             let viewModel = InAppModalViewModel()
             let view = InAppModalView(notification: notification,
@@ -107,6 +108,10 @@ private extension HomepageCoordinator {
                                          parentViewController: rootViewController)
             viewModel.sheetPresentation = viewController.sheetPresentationController
             present(viewController, uniquenessTag: UniqueSheet.inAppNotificationDisplay)
+
+        case .promo:
+            // TODO: show as fullscreen for iPhone, sheet for iPad
+            break
         }
     }
 
@@ -140,9 +145,9 @@ private extension HomepageCoordinator {
                 try await inAppNotificationManager.updateNotificationState(notificationId: notification.id,
                                                                            newState: notification.removedState)
                 try await inAppNotificationManager.updateNotificationTime(.now)
-                if case let .externalNavigation(url) = notification.cta {
+                if case let .externalNavigation(url) = notification.ctaType {
                     urlOpener.open(urlString: url)
-                } else if case let .internalNavigation(url) = notification.cta {
+                } else if case let .internalNavigation(url) = notification.ctaType {
                     let destination = InternalNavigationDestination.parse(urlString: url)
                     navigate(to: destination)
                 }

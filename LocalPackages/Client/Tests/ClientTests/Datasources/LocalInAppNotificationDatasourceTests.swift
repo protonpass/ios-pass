@@ -71,7 +71,6 @@ struct LocalInAppNotificationDatasourceTests {
         let items = try await sut.getAllNotificationsByPriority(userId: userId)
         let updatedNotification = try #require(items.first)
 
-
         // Then
         #expect(items.count == 1)
         #expect(defaultNotification == updatedNotification)
