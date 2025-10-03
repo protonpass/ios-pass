@@ -323,6 +323,15 @@ extension SharedUseCasesContainer {
         self { GetUserUiModels(userManager: self.userManager,
                                localAccessDatasource: SharedRepositoryContainer.shared.localAccessDatasource()) }
     }
+
+    var decryptOrganizationKey: Factory<any DecryptOrganizationKeyUseCase> {
+        self { DecryptOrganizationKey(userManager: self.userManager,
+                                      repository: SharedRepositoryContainer.shared.organizationRepository()) }
+    }
+
+    var decryptGroupKey: Factory<any DecryptGroupKeyUseCase> {
+        self { DecryptGroupKey(decryptOrganizationKeyUseCase: self.decryptOrganizationKey()) }
+    }
 }
 
 // MARK: - Items

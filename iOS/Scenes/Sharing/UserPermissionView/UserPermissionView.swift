@@ -241,12 +241,14 @@ private extension UserPermissionView {
         if case let .group(infos) = invite {
             HStack(spacing: 0) {
                 Text(invite.name)
-                Text(verbatim: " (")
-                Button { showMember = infos } label: {
-                    Text(#localized("%lld member(s)", infos.members.count))
-                        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
-                }.buttonStyle(.plain)
-                Text(verbatim: ")")
+                if let members = invite.memberCounts {
+                    Text(verbatim: " (")
+                    Button { showMember = infos } label: {
+                        Text(#localized("%lld member(s)", members))
+                            .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                    }.buttonStyle(.plain)
+                    Text(verbatim: ")")
+                }
             }
             .foregroundStyle(PassColor.textNorm.toColor)
         } else {

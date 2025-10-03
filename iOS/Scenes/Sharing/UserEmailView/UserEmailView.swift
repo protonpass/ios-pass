@@ -306,7 +306,7 @@ struct GroupUsersInformationView: View {
 
             ScrollView {
                 LazyVStack(spacing: 24) {
-                    ForEach(groupInfo.members) { member in
+                    ForEach(groupInfo.members ?? []) { member in
                         if let email = member.email {
                             HStack(spacing: DesignConstant.sectionPadding) {
                                 ZStack {

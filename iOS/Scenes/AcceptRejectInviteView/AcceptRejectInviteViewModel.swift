@@ -49,11 +49,6 @@ final class AcceptRejectInviteViewModel: ObservableObject {
     }
 
     func reject() {
-        // TODO: update to get the different type of invite
-        guard case let .user(userInvite) = invite else {
-            return
-        }
-
         Task { [weak self] in
             guard let self else {
                 return
@@ -64,32 +59,28 @@ final class AcceptRejectInviteViewModel: ObservableObject {
 
             do {
                 executingAction = true
-                try await rejectInvitation(userInvite)
-                await updateCachedInvitations(for: userInvite.inviteToken)
+                try await rejectInvitation(invite)
+                await updateCachedInvitations(for: invite.inviteToken)
                 shouldCloseSheet = true
             } catch {
-                logger.error(message: "Could not reject invitation \(userInvite)", error: error)
+                logger.error(message: "Could not reject invitation \(invite)", error: error)
                 display(error: error)
             }
         }
     }
 
     func accept() {
-        // TODO: update to get the different type of invite
-        guard case let .user(userInvite) = invite else {
-            return
-        }
         Task { [weak self] in
             guard let self else {
                 return
             }
             do {
                 executingAction = true
-                _ = try await acceptInvitation(with: userInvite)
+                _ = try await acceptInvitation(with: invite)
                 await updateCachedInvitations(for: invite.inviteToken)
                 syncEventLoop.forceSync()
             } catch {
-                logger.error(message: "Could not accept invitation \(userInvite)", error: error)
+                logger.error(message: "Could not accept invitation \(invite)", error: error)
                 display(error: error)
                 executingAction = false
             }
@@ -121,16 +112,12 @@ private extension AcceptRejectInviteViewModel {
     }
 
     func decodeVaultData() {
-        // TODO: update to get the different type of invite
-        guard case let .user(userInvite) = invite else {
-            return
-        }
         Task { [weak self] in
             guard let self else {
                 return
             }
             do {
-                vaultInfos = try await decodeShareVaultInformation(with: userInvite)
+                vaultInfos = try await decodeShareVaultInformation(with: invite)
             } catch {
                 logger.error(message: "Could not decode vault content from invitation", error: error)
                 display(error: error)
