@@ -25,7 +25,7 @@ public struct InAppNotification: Decodable, Sendable, Equatable, Hashable, Ident
     public let notificationKey: String
     public let startTime: Int
     public let endTime: Int?
-    // Notification state. 0 = Unread, 1 = Read, 2 = Dismissed
+    /// Prefer using `safeState` for clearer semantic
     public var state: Int
     public let priority: Int
     public let content: InAppNotificationContent
@@ -52,18 +52,18 @@ public struct InAppNotification: Decodable, Sendable, Equatable, Hashable, Ident
     }
 
     public var displayType: InAppNotificationDisplayType {
-        if content.displayType == 0 {
-            .banner
-        } else {
-            .modal
-        }
+        content.safeDisplayType
+    }
+
+    public var safeState: InAppNotificationState {
+        .init(rawValue: state) ?? .unread
     }
 
     public var hasBeenRead: Bool {
-        state != InAppNotificationState.unread.rawValue
+        safeState != InAppNotificationState.unread
     }
 
-    public var cta: InAppNotificationCtaType? {
+    public var ctaType: InAppNotificationCtaType? {
         guard let cta = content.cta else { return nil }
         if cta.type == "internal_navigation" {
             return .internalNavigation(cta.ref)
@@ -83,15 +83,14 @@ public struct InAppNotification: Decodable, Sendable, Equatable, Hashable, Ident
 
 public struct InAppNotificationContent: Decodable, Sendable, Equatable, Hashable {
     public let imageUrl: String?
-    //    0 = Banner, 1 = Modal.
-    //    Banner -> The small bar on the bottom
-    //    Modal -> Full screen in your face
-    public let displayType: Int
+    /// Prefer using `safeDisplayType` for clearer semantic
+    private let displayType: Int
     public let title: String
     public let message: String
     // Can be light or dark
     public let theme: String?
     public let cta: InAppNotificationCTA?
+    public let promoContents: InAppNotificationPromoContents?
 
     public var safeImageUrl: URL? {
         if let imageUrl, let url = URL(string: imageUrl) {
@@ -100,18 +99,24 @@ public struct InAppNotificationContent: Decodable, Sendable, Equatable, Hashable
         return nil
     }
 
+    public var safeDisplayType: InAppNotificationDisplayType {
+        .init(rawValue: displayType) ?? .banner
+    }
+
     public init(imageUrl: String?,
                 displayType: Int,
                 title: String,
                 message: String,
                 theme: String?,
-                cta: InAppNotificationCTA?) {
+                cta: InAppNotificationCTA?,
+                promoContents: InAppNotificationPromoContents?) {
         self.imageUrl = imageUrl
         self.displayType = displayType
         self.title = title
         self.message = message
         self.theme = theme
         self.cta = cta
+        self.promoContents = promoContents
     }
 }
 
@@ -134,9 +139,13 @@ public enum InAppNotificationCtaType: Sendable {
     case externalNavigation(String)
 }
 
-public enum InAppNotificationDisplayType: Sendable {
-    case banner
-    case modal
+public enum InAppNotificationDisplayType: Int, Sendable {
+    /// Floating bottom banner
+    case banner = 0
+    /// Bottom sheet with dynamic height fitting its content
+    case modal = 1
+    /// Customized for promos (full screen cover on iPhone, full height sheet on iPad)
+    case promo = 2
 }
 
 public enum InAppNotificationState: Int, Sendable {
@@ -144,4 +153,43 @@ public enum InAppNotificationState: Int, Sendable {
     case read = 1
     // Dismissed is the equivalent of delete for the back end should be used with modal
     case dismissed = 2
+}
+
+public struct InAppNotificationPromoContents: Decodable, Sendable, Equatable, Hashable {
+    /// Whether the promo should start minimized.
+    /// `true` means the image should be minimized from the start.
+    /// `false` means that the promo should initially be displayed and the user can minimize.
+    public let startMinimized: Bool
+    /// Text to show on the close promo link
+    public let closePromoText: String
+    /// Text to show when the promo is minimized
+    public let minimizedPromoText: String
+    public let lightThemeContents: InAppNotificationPromoThemedContents
+    public let darkThemeContents: InAppNotificationPromoThemedContents
+
+    public init(startMinimized: Bool,
+                closePromoText: String,
+                minimizedPromoText: String,
+                lightThemeContents: InAppNotificationPromoThemedContents,
+                darkThemeContents: InAppNotificationPromoThemedContents) {
+        self.startMinimized = startMinimized
+        self.closePromoText = closePromoText
+        self.minimizedPromoText = minimizedPromoText
+        self.lightThemeContents = lightThemeContents
+        self.darkThemeContents = darkThemeContents
+    }
+}
+
+public struct InAppNotificationPromoThemedContents: Decodable, Sendable, Equatable, Hashable {
+    public let backgroundImageUrl: String
+    public let contentImageUrl: String
+    public let closePromoTextColor: String
+
+    public init(backgroundImageUrl: String,
+                contentImageUrl: String,
+                closePromoTextColor: String) {
+        self.backgroundImageUrl = backgroundImageUrl
+        self.contentImageUrl = contentImageUrl
+        self.closePromoTextColor = closePromoTextColor
+    }
 }

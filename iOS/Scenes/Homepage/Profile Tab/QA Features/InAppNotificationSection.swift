@@ -274,7 +274,8 @@ private final class InAppNotificationViewModel {
                                                    title: title,
                                                    message: message,
                                                    theme: theme,
-                                                   cta: cta)
+                                                   cta: cta,
+                                                   promoContents: nil)
             let notification = InAppNotification(ID: UUID().uuidString,
                                                  notificationKey: notificationKey,
                                                  startTime: startDate.timeIntervalSince1970.toInt,
