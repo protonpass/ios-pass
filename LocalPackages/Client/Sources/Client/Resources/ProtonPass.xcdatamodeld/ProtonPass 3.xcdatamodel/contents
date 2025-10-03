@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788.4" systemVersion="24G90" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24299" systemVersion="24G222" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
     <entity name="AccessEntity" representedClassName="AccessEntity" syncable="YES">
         <attribute name="aliasLimit" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="aliasSyncEnabled" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
@@ -46,11 +46,21 @@
         <attribute name="displayType" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="endTime" attributeType="Integer 64" defaultValueString="-1" usesScalarValueType="YES"/>
         <attribute name="hasCta" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="hasPromoContents" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="String"/>
         <attribute name="imageUrl" optional="YES" attributeType="String"/>
         <attribute name="message" attributeType="String"/>
         <attribute name="notificationKey" attributeType="String"/>
         <attribute name="priority" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="promoContentsClosePromoText" optional="YES" attributeType="String"/>
+        <attribute name="promoContentsDarkBackgroundImageUrl" optional="YES" attributeType="String"/>
+        <attribute name="promoContentsDarkContentClosePromoTextColor" optional="YES" attributeType="String"/>
+        <attribute name="promoContentsDarkContentImageUrl" optional="YES" attributeType="String"/>
+        <attribute name="promoContentsLightBackgroundImageUrl" optional="YES" attributeType="String"/>
+        <attribute name="promoContentsLightContentClosePromoTextColor" optional="YES" attributeType="String"/>
+        <attribute name="promoContentsLightContentImageUrl" optional="YES" attributeType="String"/>
+        <attribute name="promoContentsMinimizedPromoText" optional="YES" attributeType="String"/>
+        <attribute name="promoContentsStartMinimized" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="startTime" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="state" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="theme" optional="YES" attributeType="String"/>
