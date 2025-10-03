@@ -257,6 +257,7 @@ extension UseCasesContainer {
         self { DecodeShareVaultInformation(userManager: self.userManager,
                                            getEmailPublicKey: self.getEmailPublicKey(),
                                            updateUserAddresses: self.updateUserAddresses(),
+                                           decryptGroupKeys: SharedUseCasesContainer.shared.decryptGroupKey(),
                                            groupRepository: SharedRepositoryContainer.shared.groupRepository(),
                                            logManager: self.logManager) }
     }

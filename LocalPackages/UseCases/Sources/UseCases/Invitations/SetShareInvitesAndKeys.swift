@@ -48,6 +48,7 @@ public final class SetShareInvitesAndKeys: SetShareInvitesAndKeysUseCase {
         for destination in inviteDestinations {
             guard let email = destination.currentEmail else { continue }
             do {
+                // TODO:
                 let receiverPublicKeys = try await getEmailPublicKeyUseCase(with: email)
                 inviteDestinationsAndKeys[destination] = receiverPublicKeys
             } catch {
