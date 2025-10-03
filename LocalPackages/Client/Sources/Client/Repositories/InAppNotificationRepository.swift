@@ -21,6 +21,7 @@
 @preconcurrency import Combine
 import Core
 import Entities
+import StoreKit
 
 public protocol InAppNotificationRepositoryProtocol: AnyObject, Sendable {
     func getPaginatedNotifications(lastNotificationId: String?, userId: String) async throws
@@ -49,8 +50,10 @@ public actor InAppNotificationRepository: InAppNotificationRepositoryProtocol {
     public func getPaginatedNotifications(lastNotificationId: String?,
                                           userId: String) async throws -> PaginatedInAppNotifications {
         logger.trace("Fetching all user remote in app notification for user id: \(userId)")
-        let notifs = try await remoteDatasource.getNotifications(lastNotificationId: lastNotificationId,
-                                                                 userId: userId)
+        let storeFront = await Storefront.current
+        let notifs = try await remoteDatasource.getNotifications(userId: userId,
+                                                                 countryCode: storeFront?.countryCode,
+                                                                 lastNotificationId: lastNotificationId)
         return notifs
     }
 
