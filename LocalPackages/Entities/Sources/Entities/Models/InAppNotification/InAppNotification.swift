@@ -64,12 +64,7 @@ public struct InAppNotification: Decodable, Sendable, Equatable, Hashable, Ident
     }
 
     public var ctaType: InAppNotificationCtaType? {
-        guard let cta = content.cta else { return nil }
-        if cta.type == "internal_navigation" {
-            return .internalNavigation(cta.ref)
-        } else {
-            return .externalNavigation(cta.ref)
-        }
+        content.cta?.safeType
     }
 
     public var removedState: InAppNotificationState {
@@ -122,10 +117,23 @@ public struct InAppNotificationContent: Decodable, Sendable, Equatable, Hashable
 
 public struct InAppNotificationCTA: Decodable, Sendable, Equatable, Hashable {
     public let text: String
-    // Action of the CTA. Can be either external_link | internal_navigation
+    /// Prefer using `safeType` for clearer semantic
     public let type: String
-    // Destination of the CTA. If type=external_link, it's a URL. If type=internal_navigation, it's a deeplink
     public let ref: String
+
+    public var safeType: InAppNotificationCtaType {
+        switch type {
+        case "external_link":
+            return .externalNavigation(urlString: ref)
+
+        case "internal_navigation":
+            return .internalNavigation(deeplink: ref)
+
+        default:
+            assertionFailure("Unknown CTA type \(type)")
+            return .externalNavigation(urlString: ref)
+        }
+    }
 
     public init(text: String, type: String, ref: String) {
         self.text = text
@@ -135,11 +143,11 @@ public struct InAppNotificationCTA: Decodable, Sendable, Equatable, Hashable {
 }
 
 public enum InAppNotificationCtaType: Sendable {
-    case internalNavigation(String)
-    case externalNavigation(String)
+    case internalNavigation(deeplink: String)
+    case externalNavigation(urlString: String)
 }
 
-public enum InAppNotificationDisplayType: Int, Sendable {
+public enum InAppNotificationDisplayType: Int, Sendable, CaseIterable {
     /// Floating bottom banner
     case banner = 0
     /// Bottom sheet with dynamic height fitting its content
@@ -148,7 +156,7 @@ public enum InAppNotificationDisplayType: Int, Sendable {
     case promo = 2
 }
 
-public enum InAppNotificationState: Int, Sendable {
+public enum InAppNotificationState: Int, Sendable, CaseIterable {
     case unread = 0
     case read = 1
     // Dismissed is the equivalent of delete for the back end should be used with modal
