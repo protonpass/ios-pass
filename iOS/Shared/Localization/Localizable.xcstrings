@@ -57,13 +57,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "«%1$@» s'ha copiat al porta-retalls. Caduca d'aquí a %2$lld segon."
+                  "value" : "S'ha copiat «%1$@» al porta-retalls. Caduca d'aquí a %2$lld segon."
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "«%1$@» s'ha copiat al porta-retalls. Caduca d'aquí a %2$lld segons."
+                  "value" : "S'ha copiat «%1$@» al porta-retalls. Caduca d'aquí a %2$lld segons."
                 }
               }
             }
@@ -3509,13 +3509,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld blocat"
+                  "value" : "Se n'ha bloquejat %lld"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld blocats"
+                  "value" : "Se n'han bloquejat %lld"
                 }
               }
             }
@@ -5987,13 +5987,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld reenviat"
+                  "value" : "Se n'ha reenviat %lld"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld reenviats"
+                  "value" : "Se n'han reenviat %lld"
                 }
               }
             }
@@ -6591,13 +6591,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld reenvio"
+                  "value" : "%lld reenviament"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld reenvios"
+                  "value" : "%lld reenviaments"
                 }
               }
             }
@@ -9863,13 +9863,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%1$lld element mogut a la caixa forta « %2$@ »"
+                  "value" : "S'ha mogut %1$lld element a la caixa forta « %2$@ »"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%1$lld elements moguts a la caixa forta « %2$@ »"
+                  "value" : "S'han mogut %1$lld elements a la caixa forta « %2$@ »"
                 }
               }
             }
@@ -12925,13 +12925,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld intent restant"
+                  "value" : "queda %lld intent"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld intents restants"
+                  "value" : "queden %lld intents"
                 }
               }
             }
@@ -15438,7 +15438,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld vistas"
+                  "value" : "%lld vistes"
                 }
               }
             }
@@ -17427,7 +17427,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Es crea un contacte per a cada adreça de correu electrònic que enviï correus electrònics a o rebi correus electrònics de %@."
+            "value" : "Es crea un contacte per a cada adreça de correu electrònic que enviï correus electrònics a o en rebi de %@."
           }
         },
         "cs" : {
@@ -20157,7 +20157,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Afegiu una adreça de correu electrònic personalitzada"
+            "value" : "Afegeix una adreça de correu electrònic personalitzada"
           }
         },
         "cs" : {
@@ -73659,7 +73659,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Parola suplimentară"
+            "value" : "Parolă suplimentară"
           }
         },
         "ru" : {
@@ -83741,6 +83741,12 @@
             "value" : "Bóvedas ocultas"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Piilotetut holvit"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -83757,6 +83763,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Casseforti nascoste"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "非公開の保管庫"
           }
         },
         "nb" : {
@@ -85258,7 +85270,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "非ide-my-email表示メールアドレスエイリアス"
+            "value" : "Hide-my-email エイリアス"
           }
         },
         "ka" : {
@@ -121667,6 +121679,12 @@
             "value" : "Organizar bóvedas"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Järjestä holvit"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -121683,6 +121701,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gestisci le casseforti"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保管庫を整理する"
           }
         },
         "nb" : {
@@ -171637,6 +171661,12 @@
             "value" : "No se podrá acceder a estas bóvedas y su contenido no estará disponible para la búsqueda y completado automático."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nämä holvit eivät ole käytettävissä, eikä niiden sisältöä voi hakea tai käyttää automaattitäyttöön."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -171653,6 +171683,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Queste casseforti non saranno accessibili e il loro contenuto non sarà disponibile per le funzioni di ricerca o di compilazione automatica."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "これらの保管庫にはアクセスできなくなり、そのコンテンツは検索や自動入力で利用できなくなります。"
           }
         },
         "nb" : {
@@ -178957,7 +178993,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "無制限のメール非表示ide-my-emailエイリアス"
+            "value" : "無制限のhide-my-emailエイリアス"
           }
         },
         "ka" : {
@@ -190297,6 +190333,12 @@
             "value" : "Bóvedas visibles"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Näkyvät holvit"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -190313,6 +190355,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Casseforti visibili"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "公開の保管庫"
           }
         },
         "nb" : {
