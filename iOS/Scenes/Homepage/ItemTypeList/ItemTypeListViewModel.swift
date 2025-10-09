@@ -60,15 +60,9 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
-    @LazyInjected(\SharedServiceContainer.featureDiscoveryManager)
-    private var featureDiscoveryManager
 
     enum Mode {
         case hostApp, autoFillExtension
-    }
-
-    var showCustomItemsDiscovery: Bool {
-        featureDiscoveryManager.eligibleDiscoveries.value.contains(.customItems)
     }
 
     let mode: Mode
@@ -103,9 +97,6 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
     }
 
     func select(type: ItemType) {
-        if type == .custom {
-            featureDiscoveryManager.dismissDiscovery(for: .customItems)
-        }
         onSelect(type)
     }
 }
