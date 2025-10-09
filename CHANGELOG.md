@@ -1,3 +1,7 @@
+# Version x.x.x
+Others:
+- Removed feature discovery for custom items
+
 # Version 1.17.8
 Fixed un-tappable create item button in the AutoFill extension on iOS 26
 

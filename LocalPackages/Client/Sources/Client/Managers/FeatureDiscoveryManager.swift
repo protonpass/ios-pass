@@ -22,8 +22,16 @@ import Combine
 import Core
 import Foundation
 
+/// Some cases are deprecated but kept for the record
 public enum NewFeature: String, Sendable, CaseIterable {
+    @available(*, deprecated)
     case customItems
+
+    /// Manually implement `allCases` because the compiler doesn't automatically
+    /// generate it when there's deprecated casess
+    public static var allCases: [NewFeature] {
+        []
+    }
 }
 
 public protocol FeatureDiscoveryManagerProtocol: Sendable {
