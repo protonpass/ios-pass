@@ -110,8 +110,22 @@ private extension HomepageCoordinator {
             present(viewController, uniquenessTag: UniqueSheet.inAppNotificationDisplay)
 
         case .promo:
-            // TODO: show as fullscreen for iPhone, sheet for iPad
-            break
+            guard let promoContents = notification.content.promoContents else {
+                assertionFailure("Promo contents not exist")
+                return
+            }
+            let view = InAppPromoView(notification: notification,
+                                      promoContents: promoContents,
+                                      onAppear: onAppear,
+                                      onMinimize: {
+                                          onDisappear()
+                                      },
+                                      onDismiss: {
+                                          onDisappear()
+                                      })
+            let viewController = UIHostingController(rootView: view)
+            viewController.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
+            present(viewController, uniquenessTag: UniqueSheet.inAppNotificationDisplay)
         }
     }
 
