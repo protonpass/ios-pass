@@ -247,7 +247,15 @@ private extension CreateEditLoginView {
             ToolbarButton("Generate password",
                           titleBundle: .main,
                           image: IconProvider.arrowsRotate,
-                          action: { viewModel.generatePassword() })
+                          action: {
+                              if #available(iOS 26, *) {
+                                  // On several devices on iOS 26, keyboard would stay visible which
+                                  // partially hides the password generator.
+                                  // So we dismiss the keyboard beforehand
+                                  focusedField = nil
+                              }
+                              viewModel.generatePassword()
+                          })
 
             PassDivider()
 
