@@ -198328,7 +198328,6 @@
       }
     },
     "You are creating an item in a shared vault and %lld users will immediately gain access to it." : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "variations" : {
