@@ -81,6 +81,10 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                                                      update: .title(customFieldTitle))
                                            customFieldTitle = ""
                                        })
+            .sharedCreationAlert(showItemShareAlert: $viewModel.showItemShareAlert,
+                                 members: viewModel.selectedVault.members) { action in
+                viewModel.alertAction(action: action)
+            }
             .sheet(isPresented: $viewModel.isShowingNoCameraPermissionView) {
                 NoCameraPermissionView { viewModel.openSettings() }
             }
@@ -299,6 +303,25 @@ private extension View {
                       Text(#localized("Enter new name for « %@ »", field.title))
                   }
               })
+    }
+
+    func sharedCreationAlert(showItemShareAlert: Binding<Bool>,
+                             members: Int,
+                             action: @escaping (AlertActions) -> Void) -> some View {
+        alert("Item in a shared vault",
+              isPresented: showItemShareAlert) {
+            Button { action(.dismissAndSave) } label: {
+                Text("Ok")
+            }
+            Button { action(.dismissSaveAndUpdateSettings) } label: {
+                Text("Don't remind me again")
+            }
+            Button(role: .cancel) {
+                Text("Cancel")
+            }
+        } message: {
+            Text("You are creating an item in a shared vault and \(members) users will immediately gain access to it.")
+        }
     }
 }
 
