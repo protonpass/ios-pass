@@ -83753,6 +83753,12 @@
             "value" : "Coffres-forts cachés"
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rejtett tárolók"
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -121689,6 +121695,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Organiser les coffres-forts"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tárolók rendszerezése"
           }
         },
         "id" : {
@@ -171673,6 +171685,12 @@
             "value" : "Ces coffres-forts ne seront pas accessibles et leur contenu ne sera pas disponible pour la recherche ou le remplissage automatique."
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ezek a tárolók nem lesznek hozzáférhetők, és a tartalmuk nem lesz elérhető kereséshez vagy automatikus kitöltéshez."
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -190343,6 +190361,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Coffres-forts visibles"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Látható tárolók"
           }
         },
         "id" : {
