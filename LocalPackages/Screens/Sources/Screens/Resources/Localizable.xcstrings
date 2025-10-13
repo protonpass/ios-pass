@@ -6618,7 +6618,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Isi Otomatis Kunci Sandi"
+            "value" : "Passkey Isi Otomatis"
           }
         },
         "it" : {
@@ -15963,7 +15963,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "非ide-my-email表示メールアドレスエイリアス"
+            "value" : "Hide-my-email エイリアス"
           }
         },
         "ka" : {
@@ -18233,6 +18233,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Új"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "BARU"
           }
         },
         "it" : {

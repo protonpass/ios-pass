@@ -38,10 +38,10 @@ private struct FeatureFlagRequest: Request {
 }
 
 private struct FeatureFlagResponse: Decodable {
-    public let code: Int
-    public let toggles: [FeatureFlag]
+    let code: Int
+    let toggles: [FeatureFlag]
 
-    public init(code: Int, toggles: [FeatureFlag]) {
+    init(code: Int, toggles: [FeatureFlag]) {
         self.code = code
         self.toggles = toggles
     }

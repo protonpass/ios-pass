@@ -486,6 +486,8 @@
 		539182CF2D7F3EB500815D7F /* CustomDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539182CE2D7F3EAF00815D7F /* CustomDetailView.swift */; };
 		539182D12D7F3ED100815D7F /* CustomDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539182D02D7F3ECF00815D7F /* CustomDetailViewModel.swift */; };
 		53A2EB092D6F538A008A4A0C /* CustomItemTemplatesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53A2EB072D6F5381008A4A0C /* CustomItemTemplatesList.swift */; };
+		53ABE2D62E842FD500C7355B /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 53ABE2D52E842FD500C7355B /* AppIcon.icon */; };
+		53ABE2D72E842FD500C7355B /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 53ABE2D52E842FD500C7355B /* AppIcon.icon */; };
 		53AEB2E32DDF68B40088DA4B /* TotpTextFieldToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AEB2E22DDF68B00088DA4B /* TotpTextFieldToolbar.swift */; };
 		53AEB2E42DDF68B40088DA4B /* TotpTextFieldToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AEB2E22DDF68B00088DA4B /* TotpTextFieldToolbar.swift */; };
 		53AEB2E52DDF68B40088DA4B /* TotpTextFieldToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AEB2E22DDF68B00088DA4B /* TotpTextFieldToolbar.swift */; };
@@ -633,6 +635,7 @@
 		5BBE1CA72C6109A7009F5DDC /* SimpleLoginAliasActivationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBE1CA52C6109A7009F5DDC /* SimpleLoginAliasActivationView.swift */; };
 		5BBE1CA82C6109A7009F5DDC /* SimpleLoginAliasActivationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBE1CA62C6109A7009F5DDC /* SimpleLoginAliasActivationViewModel.swift */; };
 		5BC03E992C175FE50028516E /* HomepageCoordinator+Sharing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC03E982C175FE50028516E /* HomepageCoordinator+Sharing.swift */; };
+		5BC20BB52E9CED1E0094388C /* DismissibleUIElementsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC20BB42E9CED1E0094388C /* DismissibleUIElementsSection.swift */; };
 		5BC4F6782CE639F6005D49FC /* InAppNotificationSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4F6772CE639E9005D49FC /* InAppNotificationSection.swift */; };
 		5BCB2EA52B1F89E80072345F /* PinnedItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCB2EA42B1F89E80072345F /* PinnedItemsView.swift */; };
 		5BCF619F2ABB1171002AD351 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5BCF619E2ABB1171002AD351 /* Localizable.xcstrings */; };
@@ -1078,6 +1081,7 @@
 		539182CE2D7F3EAF00815D7F /* CustomDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDetailView.swift; sourceTree = "<group>"; };
 		539182D02D7F3ECF00815D7F /* CustomDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDetailViewModel.swift; sourceTree = "<group>"; };
 		53A2EB072D6F5381008A4A0C /* CustomItemTemplatesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomItemTemplatesList.swift; sourceTree = "<group>"; };
+		53ABE2D52E842FD500C7355B /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 		53AEB2E22DDF68B00088DA4B /* TotpTextFieldToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotpTextFieldToolbar.swift; sourceTree = "<group>"; };
 		53AEE4692D7F0E1200CE0CA7 /* CustomSectionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSectionsSection.swift; sourceTree = "<group>"; };
 		53B981782D7ED258003BD70E /* WifiDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiDetailView.swift; sourceTree = "<group>"; };
@@ -1172,6 +1176,7 @@
 		5BBE1CA52C6109A7009F5DDC /* SimpleLoginAliasActivationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleLoginAliasActivationView.swift; sourceTree = "<group>"; };
 		5BBE1CA62C6109A7009F5DDC /* SimpleLoginAliasActivationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleLoginAliasActivationViewModel.swift; sourceTree = "<group>"; };
 		5BC03E982C175FE50028516E /* HomepageCoordinator+Sharing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+Sharing.swift"; sourceTree = "<group>"; };
+		5BC20BB42E9CED1E0094388C /* DismissibleUIElementsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissibleUIElementsSection.swift; sourceTree = "<group>"; };
 		5BC4F6772CE639E9005D49FC /* InAppNotificationSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppNotificationSection.swift; sourceTree = "<group>"; };
 		5BCB2EA42B1F89E80072345F /* PinnedItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItemsView.swift; sourceTree = "<group>"; };
 		5BCF619E2ABB1171002AD351 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
@@ -1482,6 +1487,7 @@
 				356CE7722A2289C80043DC62 /* BannersSection.swift */,
 				3552A28929EC29BF00ABDB6E /* CachedFavIconsSection.swift */,
 				358152022C57C3EB0054F755 /* CredentialsSection.swift */,
+				5BC20BB42E9CED1E0094388C /* DismissibleUIElementsSection.swift */,
 				357C1D282CD8F18400703891 /* FeatureFlagsSection.swift */,
 				536CA2C32CF0BDBA00BA3C69 /* FileAttachmentViewerSection.swift */,
 				353739E029EAE8C000A3255E /* HapticFeedbacksSection.swift */,
@@ -1971,6 +1977,7 @@
 		35E50633286F819F00A3F6EA /* iOS & macOS */ = {
 			isa = PBXGroup;
 			children = (
+				53ABE2D52E842FD500C7355B /* AppIcon.icon */,
 				35E50636286F819F00A3F6EA /* Assets.xcassets */,
 			);
 			path = "iOS & macOS";
@@ -3300,6 +3307,7 @@
 				5BB2B6ED2A445422005E831C /* Pass-Constant-Prod.plist in Resources */,
 				35C2ED8F2BA0507200E94BAA /* InfoPlist.xcstrings in Resources */,
 				5BCF619F2ABB1171002AD351 /* Localizable.xcstrings in Resources */,
+				53ABE2D72E842FD500C7355B /* AppIcon.icon in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3309,6 +3317,7 @@
 			files = (
 				35ECCEE32BA48E1F00202613 /* PrivacyInfo.xcprivacy in Resources */,
 				35E50649286F819F00A3F6EA /* Assets.xcassets in Resources */,
+				53ABE2D62E842FD500C7355B /* AppIcon.icon in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3806,6 +3815,7 @@
 				5BA09B812CAE94D0000001B7 /* AliasContactsView.swift in Sources */,
 				5B0C75022A30776100272CE8 /* SharedTooling+DependencyInjections.swift in Sources */,
 				3590A3392A9F9C2600622F45 /* View+Extensions.swift in Sources */,
+				5BC20BB52E9CED1E0094388C /* DismissibleUIElementsSection.swift in Sources */,
 				354FBF5F2A02939600A0B27D /* AliasLimitView.swift in Sources */,
 				3541C07B2B68CAB2006B35D9 /* EditSpotlightSearchableContentView.swift in Sources */,
 				5B4E53DF2BD7B8B600E8D54A /* DetailMonitoredItemViewModel.swift in Sources */,
@@ -4207,7 +4217,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.17.6;
+				MARKETING_VERSION = 1.17.8;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -4290,7 +4300,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.17.6;
+				MARKETING_VERSION = 1.17.8;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -4371,7 +4381,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.17.6;
+				MARKETING_VERSION = 1.17.8;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -4444,7 +4454,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.17.6;
+				MARKETING_VERSION = 1.17.8;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -4550,7 +4560,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.17.6;
+				MARKETING_VERSION = 1.17.8;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
@@ -4623,7 +4633,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.17.6;
+				MARKETING_VERSION = 1.17.8;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -4692,7 +4702,7 @@
 				INFOPLIST_FILE = iOSUITests/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.17.6;
+				MARKETING_VERSION = 1.17.8;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -4771,7 +4781,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.17.6;
+				MARKETING_VERSION = 1.17.8;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -4815,7 +4825,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.17.6;
+				MARKETING_VERSION = 1.17.8;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.macos;
 				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = macosx;
@@ -4912,7 +4922,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.17.6;
+				MARKETING_VERSION = 1.17.8;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
@@ -4985,7 +4995,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.17.6;
+				MARKETING_VERSION = 1.17.8;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -5054,7 +5064,7 @@
 				INFOPLIST_FILE = iOSUITests/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.17.6;
+				MARKETING_VERSION = 1.17.8;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -5133,7 +5143,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.17.6;
+				MARKETING_VERSION = 1.17.8;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -5177,7 +5187,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.17.6;
+				MARKETING_VERSION = 1.17.8;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.macos;
 				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = macosx;
@@ -5257,7 +5267,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.17.6;
+				MARKETING_VERSION = 1.17.8;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -5301,7 +5311,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.17.6;
+				MARKETING_VERSION = 1.17.8;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5343,7 +5353,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.17.6;
+				MARKETING_VERSION = 1.17.8;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5385,7 +5395,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.17.6;
+				MARKETING_VERSION = 1.17.8;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5494,7 +5504,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.17.6;
+				MARKETING_VERSION = 1.17.8;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
@@ -5536,7 +5546,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.17.6;
+				MARKETING_VERSION = 1.17.8;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.macos;
 				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = macosx;
@@ -5633,7 +5643,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.17.6;
+				MARKETING_VERSION = 1.17.8;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
@@ -5674,7 +5684,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.17.6;
+				MARKETING_VERSION = 1.17.8;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.macos;
 				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = macosx;
@@ -5752,7 +5762,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.17.6;
+				MARKETING_VERSION = 1.17.8;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -5794,7 +5804,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.17.6;
+				MARKETING_VERSION = 1.17.8;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.action;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5834,7 +5844,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.17.6;
+				MARKETING_VERSION = 1.17.8;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.action;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5874,7 +5884,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.17.6;
+				MARKETING_VERSION = 1.17.8;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.action;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5946,7 +5956,7 @@
 				INFOPLIST_FILE = iOSUITests/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.17.6;
+				MARKETING_VERSION = 1.17.8;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -6015,7 +6025,7 @@
 				INFOPLIST_FILE = iOSUITests/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.17.6;
+				MARKETING_VERSION = 1.17.8;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
