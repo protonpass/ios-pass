@@ -44,7 +44,7 @@ struct PreferencesTests {
                                             AppPreferences.default.dismissedCustomDomainExplanation,
                                          hasVisitedContactPage: AppPreferences.default.hasVisitedContactPage,
                                          dismissedFileAttachmentsBanner: AppPreferences.default.dismissedFileAttachmentsBanner,
-                                         dismissedElements: DismissibleUIElements(dismissedElements: [.itemCreationInSharedVaultAlert: false]))
+                                         dismissedUIElements: AppPreferences.default.dismissedUIElements)
         try decodeAndAssert(AppPreferences.self, json: json, expectation: expectation)
     }
 
