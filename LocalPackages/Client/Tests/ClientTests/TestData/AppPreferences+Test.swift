@@ -29,6 +29,6 @@ extension AppPreferences {
               dismissedCustomDomainExplanation: .random(),
               hasVisitedContactPage: false,
               dismissedFileAttachmentsBanner: false,
-              dismissedElements: DismissibleUIElements.default)
+              dismissedUIElements: .init())
     }
 }
