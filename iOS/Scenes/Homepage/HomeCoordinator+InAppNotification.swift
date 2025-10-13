@@ -32,15 +32,8 @@ extension HomepageCoordinator {
             do {
                 _ = try await inAppNotificationManager.fetchNotifications()
                 if let notification = try await inAppNotificationManager.getNotificationToDisplay() {
-                    display(notification,
-                            onAppear: { [weak self] in
-                                guard let self else { return }
-                                updateDisplayState(.active)
-                            },
-                            onDisappear: { [weak self] in
-                                guard let self else { return }
-                                updateDisplayState(.inactive)
-                            })
+                    itemsTabViewModel?.displayedNotification = notification
+                    display(notification)
                 }
             } catch {
                 handle(error: error)
@@ -59,6 +52,18 @@ extension HomepageCoordinator {
     func removeInAppNotificationDisplay() {
         updateFloatingView(floatingView: nil, viewTag: UniqueSheet.inAppNotificationDisplay)
         dismissViewControllerWithTag(tag: UniqueSheet.inAppNotificationDisplay)
+    }
+
+    func display(_ notification: InAppNotification) {
+        display(notification,
+                onAppear: { [weak self] in
+                    guard let self else { return }
+                    updateDisplayState(.active)
+                },
+                onDisappear: { [weak self] in
+                    guard let self else { return }
+                    updateDisplayState(.inactive)
+                })
     }
 }
 
