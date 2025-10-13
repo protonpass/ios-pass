@@ -28,14 +28,17 @@ import SwiftUI
 
 @available(iOS 17, *)
 struct InAppNotificationSection: View {
+    var onDismiss: () -> Void
+
     var body: some View {
-        NavigationLink(destination: { InAppNotificationView() },
+        NavigationLink(destination: { InAppNotificationView(onDismiss: onDismiss) },
                        label: { Text(verbatim: "Mock in-app notification") })
     }
 }
 
 @available(iOS 17, *)
 private struct InAppNotificationView: View {
+    var onDismiss: () -> Void
     @State private var viewModel = InAppNotificationViewModel()
 
     var body: some View {
@@ -192,6 +195,16 @@ private struct InAppNotificationView: View {
         .animation(.default, value: viewModel.addCta)
         .animation(.default, value: viewModel.addPromoContents)
         .navigationTitle(Text(verbatim: "Password Policy Settings"))
+        .alert("Done",
+               isPresented: $viewModel.addedMockedNotification,
+               actions: { Button(action: onDismiss,
+                                 label: { Text("Close") }) },
+               message: { Text(verbatim: "Put the app to background and open it again.") })
+        .alert("Done",
+               isPresented: $viewModel.removedMockedNotification,
+               actions: { Button(action: {},
+                                 label: { Text("OK") }) },
+               message: { Text(verbatim: "Mocked notification is removed") })
     }
 }
 
@@ -204,6 +217,9 @@ private enum QACTAType: String, CaseIterable {
 @MainActor
 @Observable
 private final class InAppNotificationViewModel {
+    var addedMockedNotification = false
+    var removedMockedNotification = false
+
     @ObservationIgnored
     @LazyInjected(\SharedServiceContainer.inAppNotificationManager)
     private var inAppNotificationManager
@@ -330,12 +346,14 @@ private final class InAppNotificationViewModel {
                                                  priority: priority,
                                                  content: content)
             await inAppNotificationManager.addMockNotification(notification: notification)
+            addedMockedNotification = true
         }
     }
 
     func removeNotification() {
         Task {
             await inAppNotificationManager.removeMockNotification()
+            removedMockedNotification = true
         }
     }
 }

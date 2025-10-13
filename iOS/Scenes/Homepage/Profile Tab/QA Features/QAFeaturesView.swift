@@ -57,7 +57,7 @@ struct QAFeaturesView: View {
 
                     if #available(iOS 17, *) {
                         NewLoginSection()
-                        InAppNotificationSection()
+                        InAppNotificationSection(onDismiss: dismiss.callAsFunction)
                     }
                     Toggle(isOn: $displayUpgradeAppBanner) {
                         Text(verbatim: "Display upgrade app banner")
