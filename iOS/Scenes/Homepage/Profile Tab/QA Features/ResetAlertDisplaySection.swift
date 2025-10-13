@@ -40,9 +40,6 @@ struct ResetAlertDisplaySection: View {
 private struct ResetAlertDisplayView: View {
     @StateObject private var viewModel = ResetAlertDisplayViewModel()
 
-    @AppStorage(Constants.QA.forcePasswordPolicy)
-    private var forcePasswordPolicy = false
-
     var body: some View {
         List {
             Section(header: Text(verbatim: "Alert dismissed state settings").font(.headline.bold())) {
