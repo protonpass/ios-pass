@@ -635,6 +635,7 @@
 		5BBE1CA72C6109A7009F5DDC /* SimpleLoginAliasActivationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBE1CA52C6109A7009F5DDC /* SimpleLoginAliasActivationView.swift */; };
 		5BBE1CA82C6109A7009F5DDC /* SimpleLoginAliasActivationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBE1CA62C6109A7009F5DDC /* SimpleLoginAliasActivationViewModel.swift */; };
 		5BC03E992C175FE50028516E /* HomepageCoordinator+Sharing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC03E982C175FE50028516E /* HomepageCoordinator+Sharing.swift */; };
+		5BC20BB52E9CED1E0094388C /* ResetAlertDisplaySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC20BB42E9CED1E0094388C /* ResetAlertDisplaySection.swift */; };
 		5BC4F6782CE639F6005D49FC /* InAppNotificationSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4F6772CE639E9005D49FC /* InAppNotificationSection.swift */; };
 		5BCB2EA52B1F89E80072345F /* PinnedItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCB2EA42B1F89E80072345F /* PinnedItemsView.swift */; };
 		5BCF619F2ABB1171002AD351 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5BCF619E2ABB1171002AD351 /* Localizable.xcstrings */; };
@@ -1175,6 +1176,7 @@
 		5BBE1CA52C6109A7009F5DDC /* SimpleLoginAliasActivationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleLoginAliasActivationView.swift; sourceTree = "<group>"; };
 		5BBE1CA62C6109A7009F5DDC /* SimpleLoginAliasActivationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleLoginAliasActivationViewModel.swift; sourceTree = "<group>"; };
 		5BC03E982C175FE50028516E /* HomepageCoordinator+Sharing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+Sharing.swift"; sourceTree = "<group>"; };
+		5BC20BB42E9CED1E0094388C /* ResetAlertDisplaySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetAlertDisplaySection.swift; sourceTree = "<group>"; };
 		5BC4F6772CE639E9005D49FC /* InAppNotificationSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppNotificationSection.swift; sourceTree = "<group>"; };
 		5BCB2EA42B1F89E80072345F /* PinnedItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItemsView.swift; sourceTree = "<group>"; };
 		5BCF619E2ABB1171002AD351 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
@@ -1484,6 +1486,7 @@
 				3586478129F825E0003487B1 /* TelemetryEventsSection.swift */,
 				351A96002BAC7E8700D599BB /* TipKitSection.swift */,
 				353EC0152A05A7EF004AF925 /* TrashItemsSection.swift */,
+				5BC20BB42E9CED1E0094388C /* ResetAlertDisplaySection.swift */,
 			);
 			path = "QA Features";
 			sourceTree = "<group>";
@@ -3801,6 +3804,7 @@
 				5BA09B812CAE94D0000001B7 /* AliasContactsView.swift in Sources */,
 				5B0C75022A30776100272CE8 /* SharedTooling+DependencyInjections.swift in Sources */,
 				3590A3392A9F9C2600622F45 /* View+Extensions.swift in Sources */,
+				5BC20BB52E9CED1E0094388C /* ResetAlertDisplaySection.swift in Sources */,
 				354FBF5F2A02939600A0B27D /* AliasLimitView.swift in Sources */,
 				3541C07B2B68CAB2006B35D9 /* EditSpotlightSearchableContentView.swift in Sources */,
 				5B4E53DF2BD7B8B600E8D54A /* DetailMonitoredItemViewModel.swift in Sources */,

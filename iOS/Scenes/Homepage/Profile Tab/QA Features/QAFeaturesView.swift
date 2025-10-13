@@ -53,6 +53,7 @@ struct QAFeaturesView: View {
                     BannersSection()
                     PasswordPolicySection()
                     FeatureDiscoverySection()
+                    ResetAlertDisplaySection()
 
                     if #available(iOS 17, *) {
                         NewLoginSection()

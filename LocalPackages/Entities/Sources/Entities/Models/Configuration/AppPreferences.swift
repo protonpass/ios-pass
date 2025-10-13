@@ -21,6 +21,26 @@
 
 import Foundation
 
+public enum DismissibleUIElementId: String, Codable, Equatable, Sendable, Hashable, CaseIterable {
+    case itemCreationInSharedVaultAlert
+}
+
+public struct DismissibleUIElements: Codable, Equatable, Sendable, Hashable {
+    public var dismissedElements = [DismissibleUIElementId: Bool]()
+
+    public init(dismissedElements: [DismissibleUIElementId: Bool]) {
+        self.dismissedElements = dismissedElements
+    }
+
+    static var `default`: DismissibleUIElements {
+        var dictionary: [DismissibleUIElementId: Bool] = [:]
+        for element in DismissibleUIElementId.allCases {
+            dictionary[element] = false
+        }
+        return .init(dismissedElements: dictionary)
+    }
+}
+
 /// Application-wide preferences
 public struct AppPreferences: Codable, Equatable, Sendable {
     /// The user is onboarded or not
@@ -39,18 +59,22 @@ public struct AppPreferences: Codable, Equatable, Sendable {
 
     public var dismissedFileAttachmentsBanner: Bool
 
+    public var dismissedElements: DismissibleUIElements
+
     public init(onboarded: Bool,
                 telemetryThreshold: TimeInterval?,
                 createdItemsCount: Int,
                 dismissedCustomDomainExplanation: Bool,
                 hasVisitedContactPage: Bool,
-                dismissedFileAttachmentsBanner: Bool) {
+                dismissedFileAttachmentsBanner: Bool,
+                dismissedElements: DismissibleUIElements) {
         self.onboarded = onboarded
         self.telemetryThreshold = telemetryThreshold
         self.createdItemsCount = createdItemsCount
         self.dismissedCustomDomainExplanation = dismissedCustomDomainExplanation
         self.hasVisitedContactPage = hasVisitedContactPage
         self.dismissedFileAttachmentsBanner = dismissedFileAttachmentsBanner
+        self.dismissedElements = dismissedElements
     }
 }
 
@@ -62,6 +86,7 @@ private extension AppPreferences {
         static let dismissedCustomDomainExplanation = false
         static let hasVisitedContactPage = false
         static let dismissedFileAttachmentsBanner = false
+        static let dismissibleUIElements = DismissibleUIElements.default
     }
 
     enum CodingKeys: String, CodingKey {
@@ -71,6 +96,7 @@ private extension AppPreferences {
         case dismissedCustomDomainExplanation
         case hasVisitedContactPage
         case dismissedFileAttachmentsBanner
+        case dismissedElements
     }
 }
 
@@ -88,6 +114,8 @@ public extension AppPreferences {
                                                                   forKey: .hasVisitedContactPage)
         let dismissedFileAttachmentsBanner =
             try container.decodeIfPresent(Bool.self, forKey: .dismissedFileAttachmentsBanner)
+        let dismissibleUIElements = try container.decodeIfPresent(DismissibleUIElements.self,
+                                                                  forKey: .dismissedElements)
         self.init(onboarded: onboarded ?? Default.onboarded,
                   telemetryThreshold: telemetryThreshold ?? Default.telemetryThreshold,
                   createdItemsCount: createdItemsCount ?? Default.createdItemsCount,
@@ -95,7 +123,8 @@ public extension AppPreferences {
                       .dismissedCustomDomainExplanation,
                   hasVisitedContactPage: hasVisitedContactPage ?? Default.hasVisitedContactPage,
                   dismissedFileAttachmentsBanner: dismissedFileAttachmentsBanner ?? Default
-                      .dismissedFileAttachmentsBanner)
+                      .dismissedFileAttachmentsBanner,
+                  dismissedElements: dismissibleUIElements ?? Default.dismissibleUIElements)
     }
 }
 
@@ -106,6 +135,7 @@ extension AppPreferences: Defaultable {
               createdItemsCount: Default.createdItemsCount,
               dismissedCustomDomainExplanation: Default.dismissedCustomDomainExplanation,
               hasVisitedContactPage: Default.hasVisitedContactPage,
-              dismissedFileAttachmentsBanner: Default.dismissedFileAttachmentsBanner)
+              dismissedFileAttachmentsBanner: Default.dismissedFileAttachmentsBanner,
+              dismissedElements: Default.dismissibleUIElements)
     }
 }
