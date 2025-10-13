@@ -67,11 +67,6 @@ enum ItemMode: Equatable, Hashable {
     }
 }
 
-enum AlertActions {
-    case dismissAndSave
-    case dismissSaveAndUpdateSettings
-}
-
 enum ItemCreationType: Equatable, Hashable {
     case note(title: String, note: String)
     case alias
@@ -158,7 +153,7 @@ class BaseCreateEditItemViewModel: ObservableObject {
     @Published var isShowingCodeScanner = false
 
     @Published var isShowingScanner = false
-    @Published var showItemShareAlert = false
+    @Published var showSharedItemCreationAlert = false
 
     let scanResponsePublisher = ScanResponsePublisher()
 
@@ -611,37 +606,35 @@ extension BaseCreateEditItemViewModel {
     }
 
     @objc
-    func save() {
-        let dismissedUIElements = preferencesManager.appPreferences.unwrapped().dismissedElements
-        let shouldShowAlert = !(dismissedUIElements.dismissedElements[.itemCreationInSharedVaultAlert] ?? false)
-        if selectedVault.members > 0, shouldShowAlert {
-            showItemShareAlert = true
+    func checkAndSave() {
+        let dismissedUIElements = preferencesManager.appPreferences.unwrapped().dismissedUIElements
+        let shouldShowSharedItemAlert = !dismissedUIElements.contains(.itemCreationInSharedVaultAlert)
+        if selectedVault.members > 0, shouldShowSharedItemAlert {
+            showSharedItemCreationAlert = true
         } else {
-            saveElement()
+            save()
         }
     }
 
-    func alertAction(action: AlertActions) {
-        switch action {
-        case .dismissAndSave:
-            saveElement()
-        case .dismissSaveAndUpdateSettings:
-            Task {
-                do {
-                    var dismissedUIElements = preferencesManager.appPreferences.unwrapped().dismissedElements
-                    dismissedUIElements.dismissedElements[.itemCreationInSharedVaultAlert] = true
-                    try await preferencesManager.updateAppPreferences(\.dismissedElements,
+    func dismissSharedItemAlertAndSave(doNotShowAgain: Bool) {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                if doNotShowAgain {
+                    var dismissedUIElements = preferencesManager.appPreferences.unwrapped().dismissedUIElements
+                    dismissedUIElements.insert(.itemCreationInSharedVaultAlert)
+                    try await preferencesManager.updateAppPreferences(\.dismissedUIElements,
                                                                       value: dismissedUIElements)
-                    saveElement()
-                } catch {
-                    logger.error(error)
-                    router.display(element: .displayErrorBanner(error))
                 }
+                save()
+            } catch {
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
 
-    private func saveElement() {
+    private func save() {
         Task { [weak self] in
             guard let self else { return }
 

@@ -1,5 +1,5 @@
 //
-// ResetAlertDisplaySection.swift
+// DismissibleUIElementsSection.swift
 // Proton Pass - Created on 13/10/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
@@ -30,38 +30,38 @@ import Entities
 import FactoryKit
 import SwiftUI
 
-struct ResetAlertDisplaySection: View {
+private let kNavTitle = "Dismissable UI elements"
+
+struct DismissibleUIElementsSection: View {
     var body: some View {
-        NavigationLink(destination: { ResetAlertDisplayView() },
-                       label: { Text(verbatim: "Password Policy") })
+        NavigationLink(destination: { DismissibleUIElementsView() },
+                       label: { Text(verbatim: kNavTitle) })
     }
 }
 
-private struct ResetAlertDisplayView: View {
-    @StateObject private var viewModel = ResetAlertDisplayViewModel()
+private struct DismissibleUIElementsView: View {
+    @StateObject private var viewModel = DismissibleUIElementViewModel()
 
     var body: some View {
         List {
-            Section(header: Text(verbatim: "Alert dismissed state settings").font(.headline.bold())) {
-                ForEach(DismissibleUIElementId.allCases, id: \.self) { dismissibleUIElementId in
-                    switch dismissibleUIElementId {
-                    case .itemCreationInSharedVaultAlert:
-                        Toggle(isOn: $viewModel.sharedVaultItemCreationDismissed,
-                               label: { Text(verbatim: "Item creation in shared vault alert dismissed") })
-                    }
+            ForEach(DismissibleUIElement.allCases, id: \.self) { dismissibleUIElement in
+                switch dismissibleUIElement {
+                case .itemCreationInSharedVaultAlert:
+                    Toggle(isOn: $viewModel.sharedVaultItemCreationDismissed,
+                           label: { Text(verbatim: "Item creation in shared vault alert dismissed") })
                 }
             }
         }
         .padding(DesignConstant.sectionPadding)
-        .navigationTitle(Text(verbatim: "Password Policy Settings"))
+        .navigationTitle(Text(verbatim: kNavTitle))
     }
 }
 
 @MainActor
-private final class ResetAlertDisplayViewModel: ObservableObject {
+private final class DismissibleUIElementViewModel: ObservableObject {
     @Published var sharedVaultItemCreationDismissed = false {
         didSet {
-            updateAlert()
+            save()
         }
     }
 
@@ -72,17 +72,20 @@ private final class ResetAlertDisplayViewModel: ObservableObject {
     }
 
     private func updateValues() {
-        let dismissedUIElements = preferencesManager.appPreferences.unwrapped().dismissedElements
+        let dismissedUIElements = preferencesManager.appPreferences.unwrapped().dismissedUIElements
 
-        sharedVaultItemCreationDismissed = dismissedUIElements
-            .dismissedElements[.itemCreationInSharedVaultAlert] ?? false
+        sharedVaultItemCreationDismissed = dismissedUIElements.contains(.itemCreationInSharedVaultAlert)
     }
 
-    func updateAlert() {
-        var dismissedUIElements = preferencesManager.appPreferences.unwrapped().dismissedElements
-        dismissedUIElements.dismissedElements[.itemCreationInSharedVaultAlert] = sharedVaultItemCreationDismissed
+    func save() {
+        var dismissedUIElements = preferencesManager.appPreferences.unwrapped().dismissedUIElements
+        if sharedVaultItemCreationDismissed {
+            dismissedUIElements.insert(.itemCreationInSharedVaultAlert)
+        } else {
+            dismissedUIElements.remove(.itemCreationInSharedVaultAlert)
+        }
         Task {
-            try? await preferencesManager.updateAppPreferences(\.dismissedElements,
+            try? await preferencesManager.updateAppPreferences(\.dismissedUIElements,
                                                                value: dismissedUIElements)
         }
     }
