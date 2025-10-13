@@ -125,7 +125,6 @@ public extension PassIcon {
     static let tabProfileTrialUnselected = Self.icon(named: "TabProfileTrialUnselected")
 
     // swiftlint:disable identifier_name
-    static let tabAddWithBadge = Self.icon(named: "TabAddWithBadge")
     static let tabMonitorActiveBreachesFoundSelected = Self.icon(named: "TabMonitorActiveBreachesFoundSelected")
     static let tabMonitorActiveBreachesFoundUnselected =
         Self.icon(named: "TabMonitorActiveBreachesFoundUnselected")

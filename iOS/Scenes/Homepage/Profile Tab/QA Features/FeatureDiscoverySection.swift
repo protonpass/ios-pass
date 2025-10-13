@@ -46,25 +46,36 @@ struct FeatureDiscoveryView: View {
 
     var body: some View {
         Form {
-            Section {
-                ForEach(NewFeature.allCases, id: \.self) { feature in
-                    StaticToggle(.verbatim(feature.description),
-                                 isOn: !eligibleDiscoveries.contains(feature),
-                                 action: {
-                                     if eligibleDiscoveries.contains(feature) {
-                                         manager.dismissDiscovery(for: feature)
-                                     } else {
-                                         manager.undismissDiscovery(for: feature)
-                                     }
-                                 })
-                }
-            } header: {
-                Text(verbatim: "Reset feature discovery")
+            if NewFeature.allCases.isEmpty {
+                Text(verbatim: "No new features")
+                    .foregroundStyle(PassColor.textWeak.toColor)
+            } else {
+                content
             }
         }
         .navigationBarTitleDisplayMode(.inline)
         .onReceive(manager.eligibleDiscoveries) { discoveries in
             eligibleDiscoveries = discoveries
+        }
+    }
+}
+
+private extension FeatureDiscoveryView {
+    var content: some View {
+        Section {
+            ForEach(NewFeature.allCases, id: \.self) { feature in
+                StaticToggle(.verbatim(feature.description),
+                             isOn: !eligibleDiscoveries.contains(feature),
+                             action: {
+                                 if eligibleDiscoveries.contains(feature) {
+                                     manager.dismissDiscovery(for: feature)
+                                 } else {
+                                     manager.undismissDiscovery(for: feature)
+                                 }
+                             })
+            }
+        } header: {
+            Text(verbatim: "Reset feature discovery")
         }
     }
 }
