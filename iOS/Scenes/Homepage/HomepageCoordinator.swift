@@ -113,7 +113,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
 
     // References
-    private weak var itemsTabViewModel: ItemsTabViewModel?
+    private(set) weak var itemsTabViewModel: ItemsTabViewModel?
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
     private var cancellables = Set<AnyCancellable>()
@@ -1457,6 +1457,10 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent) {
         presentItemDetailView(for: itemContent, asSheet: shouldShowAsSheet())
+    }
+
+    func itemsTabViewModelWantsToShow(notification: InAppNotification) {
+        display(notification)
     }
 }
 
