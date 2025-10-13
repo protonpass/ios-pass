@@ -117817,16 +117817,6 @@
         }
       }
     },
-    "Ok" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ok"
-          }
-        }
-      }
-    },
     "OK" : {
       "localizations" : {
         "be" : {
@@ -198338,11 +198328,24 @@
       }
     },
     "You are creating an item in a shared vault and %lld users will immediately gain access to it." : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You are creating an item in a shared vault and %lld users will immediately gain access to it."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You are creating an item in a shared vault and %lld user will immediately gain access to it."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You are creating an item in a shared vault and %lld users will immediately gain access to it."
+                }
+              }
+            }
           }
         }
       }

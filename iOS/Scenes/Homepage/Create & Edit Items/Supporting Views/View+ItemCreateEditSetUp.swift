@@ -311,7 +311,7 @@ private extension View {
         alert("Item in a shared vault",
               isPresented: showItemShareAlert) {
             Button { action(.dismissAndSave) } label: {
-                Text("Ok")
+                Text("OK")
             }
             Button { action(.dismissSaveAndUpdateSettings) } label: {
                 Text("Don't remind me again")
