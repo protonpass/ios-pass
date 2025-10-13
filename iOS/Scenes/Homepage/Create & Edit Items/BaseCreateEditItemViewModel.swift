@@ -67,6 +67,11 @@ enum ItemMode: Equatable, Hashable {
     }
 }
 
+enum AlertActions {
+    case dismissAndSave
+    case dismissSaveAndUpdateSettings
+}
+
 enum ItemCreationType: Equatable, Hashable {
     case note(title: String, note: String)
     case alias
@@ -153,6 +158,8 @@ class BaseCreateEditItemViewModel: ObservableObject {
     @Published var isShowingCodeScanner = false
 
     @Published var isShowingScanner = false
+    @Published var showItemShareAlert = false
+
     let scanResponsePublisher = ScanResponsePublisher()
 
     private var pendingFileNameUpdates = [PendingFileNameUpdate]()
@@ -605,6 +612,36 @@ extension BaseCreateEditItemViewModel {
 
     @objc
     func save() {
+        let dismissedUIElements = preferencesManager.appPreferences.unwrapped().dismissedElements
+        let shouldShowAlert = !(dismissedUIElements.dismissedElements[.itemCreationInSharedVaultAlert] ?? false)
+        if selectedVault.members > 0, shouldShowAlert {
+            showItemShareAlert = true
+        } else {
+            saveElement()
+        }
+    }
+
+    func alertAction(action: AlertActions) {
+        switch action {
+        case .dismissAndSave:
+            saveElement()
+        case .dismissSaveAndUpdateSettings:
+            Task {
+                do {
+                    var dismissedUIElements = preferencesManager.appPreferences.unwrapped().dismissedElements
+                    dismissedUIElements.dismissedElements[.itemCreationInSharedVaultAlert] = true
+                    try await preferencesManager.updateAppPreferences(\.dismissedElements,
+                                                                      value: dismissedUIElements)
+                    saveElement()
+                } catch {
+                    logger.error(error)
+                    router.display(element: .displayErrorBanner(error))
+                }
+            }
+        }
+    }
+
+    private func saveElement() {
         Task { [weak self] in
             guard let self else { return }
 
