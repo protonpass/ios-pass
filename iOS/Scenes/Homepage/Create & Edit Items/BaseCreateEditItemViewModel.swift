@@ -173,7 +173,6 @@ class BaseCreateEditItemViewModel: ObservableObject {
     @LazyInjected(\SharedServiceContainer.userManager) var userManager
     @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
     @LazyInjected(\SharedRepositoryContainer.fileAttachmentRepository) private var fileRepository
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
     @LazyInjected(\SharedUseCasesContainer.generateDatedFileName) private var generateDatedFileName
     @LazyInjected(\SharedUseCasesContainer.writeToUrl) private var writeToUrl
     @LazyInjected(\SharedUseCasesContainer.getFileSize) private var getFileSize
@@ -193,15 +192,7 @@ class BaseCreateEditItemViewModel: ObservableObject {
     }
 
     var supportedCustomFieldTypes: [CustomFieldType] {
-        var allCases = CustomFieldType.allCases
-        if !customTypeEnabled {
-            allCases.removeAll { $0 == .timestamp }
-        }
-        return allCases
-    }
-
-    var customTypeEnabled: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passCustomTypeV1)
+        CustomFieldType.allCases
     }
 
     var fileUiModels: [FileAttachmentUiModel] {

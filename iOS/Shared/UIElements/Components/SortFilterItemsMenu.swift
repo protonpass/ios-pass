@@ -38,7 +38,6 @@ enum SortFilterItemsMenuOption: Identifiable {
 
 struct SortFilterItemsMenu: View {
     let options: [SortFilterItemsMenuOption]
-    let customItemEnabled: Bool
     let highlighted: Bool
     let selectable: Bool
 
@@ -126,32 +125,17 @@ private extension SortFilterItemsMenu {
     }
 
     var filterOptions: [ItemTypeFilterOption] {
-        // We want to control the order of appearance so we construct the array manually
-        // instead of looping through "ItemContentType.allCases"
-        if customItemEnabled {
-            [
-                .all,
-                .precise(.login),
-                .precise(.alias),
-                .precise(.creditCard),
-                .precise(.note),
-                .precise(.identity),
-                .precise(.custom),
-                .itemSharedWithMe,
-                .itemSharedByMe
-            ]
-        } else {
-            [
-                .all,
-                .precise(.login),
-                .precise(.alias),
-                .precise(.creditCard),
-                .precise(.note),
-                .precise(.identity),
-                .itemSharedWithMe,
-                .itemSharedByMe
-            ]
-        }
+        [
+            .all,
+            .precise(.login),
+            .precise(.alias),
+            .precise(.creditCard),
+            .precise(.note),
+            .precise(.identity),
+            .precise(.custom),
+            .itemSharedWithMe,
+            .itemSharedByMe
+        ]
     }
 
     func text(for uiModel: ItemTypeFilterOptionUiModel) -> some View {
