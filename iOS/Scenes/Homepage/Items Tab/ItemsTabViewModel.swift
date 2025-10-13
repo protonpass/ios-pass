@@ -75,8 +75,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedRepositoryContainer.organizationRepository)
     private var organizationRepository
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
-    private var getFeatureFlagStatus
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let itemTypeSelection = resolve(\DataStreamContainer.itemTypeSelection)
@@ -89,10 +87,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     /// `PullToRefreshable` conformance
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
     let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
-
-    var customItemEnabled: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passCustomTypeV1)
-    }
 
     var noVaults: Bool {
         if case let .loaded(data) = appContentManager.state,

@@ -34,8 +34,6 @@ final class SearchResultsViewModel: ObservableObject {
     @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)?
     private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
-    private var getFeatureFlagStatus
 
     private var vaultSearchSelection: VaultSearchSelection = .current
 
@@ -73,10 +71,6 @@ final class SearchResultsViewModel: ObservableObject {
         default:
             #localized("Current vault")
         }
-    }
-
-    var customItemEnabled: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passCustomTypeV1)
     }
 
     init(itemContextMenuHandler: ItemContextMenuHandler,
