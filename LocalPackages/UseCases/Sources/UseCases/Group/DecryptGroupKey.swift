@@ -1,4 +1,4 @@
-//  
+//
 // DecryptGroupKey.swift
 // Proton Pass - Created on 03/10/2025.
 // Copyright (c) 2025 Proton Technologies AG

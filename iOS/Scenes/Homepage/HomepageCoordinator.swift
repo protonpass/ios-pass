@@ -1443,7 +1443,12 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     }
 
     func itemsTabViewModelWantsToPresentVaultList() {
-        let viewController = UIHostingController(rootView: EditableVaultListView())
+        var sheetPresentationController: UISheetPresentationController?
+        let view = EditableVaultListView(onChangeMode: { mode in
+            sheetPresentationController?.prefersGrabberVisible = mode.isView
+        })
+        let viewController = UIHostingController(rootView: view)
+        sheetPresentationController = viewController.sheetPresentationController
 
         // Num of vaults + all items + trash + create vault button
         let rowHeight = 74

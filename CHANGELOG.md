@@ -1,3 +1,21 @@
+# Version x.x.x
+- Fixed password generator partially hidden behind the keyboard on iOS 26
+
+Others:
+- Removed feature discovery for custom items
+
+# Version 1.17.8
+Fixed un-tappable create item button in the AutoFill extension on iOS 26
+
+# Version 1.17.7
+- Fixed file preview not showing on iOS 26
+- Removed hyphens as line-breaking mode
+
+Others:
+- Remove spotlight banners
+- Added user events to sync data (behind feature flag)
+- Enabled searching for SimpleLogin notes (behind same flag as user events)
+
 # Version 1.17.6
 Resolved SSO login issue
 
