@@ -153,6 +153,8 @@ class BaseCreateEditItemViewModel: ObservableObject {
     @Published var isShowingCodeScanner = false
 
     @Published var isShowingScanner = false
+    @Published var showSharedItemCreationAlert = false
+
     let scanResponsePublisher = ScanResponsePublisher()
 
     private var pendingFileNameUpdates = [PendingFileNameUpdate]()
@@ -604,7 +606,35 @@ extension BaseCreateEditItemViewModel {
     }
 
     @objc
-    func save() {
+    func checkAndSave() {
+        let dismissedUIElements = preferencesManager.appPreferences.unwrapped().dismissedUIElements
+        let shouldShowSharedItemAlert = !dismissedUIElements.contains(.itemCreationInSharedVaultAlert)
+        if selectedVault.members > 0, shouldShowSharedItemAlert {
+            showSharedItemCreationAlert = true
+        } else {
+            save()
+        }
+    }
+
+    func dismissSharedItemAlertAndSave(doNotShowAgain: Bool) {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                if doNotShowAgain {
+                    var dismissedUIElements = preferencesManager.appPreferences.unwrapped().dismissedUIElements
+                    dismissedUIElements.insert(.itemCreationInSharedVaultAlert)
+                    try await preferencesManager.updateAppPreferences(\.dismissedUIElements,
+                                                                      value: dismissedUIElements)
+                }
+                save()
+            } catch {
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
+    }
+
+    private func save() {
         Task { [weak self] in
             guard let self else { return }
 
