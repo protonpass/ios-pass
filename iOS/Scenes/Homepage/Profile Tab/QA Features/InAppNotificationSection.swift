@@ -60,6 +60,9 @@ private struct InAppNotificationView: View {
                 Button(action: viewModel.clearThreshold) {
                     Text(verbatim: "Clear last threshold")
                 }
+                Toggle(isOn: $viewModel.forceUsStore) {
+                    Text(verbatim: "Force US store")
+                }
             }
 
             Section(header: Text(verbatim: "In-app notification settings").font(.headline.bold())) {
@@ -217,6 +220,12 @@ private enum QACTAType: String, CaseIterable {
 @MainActor
 @Observable
 private final class InAppNotificationViewModel {
+    var forceUsStore = false {
+        didSet {
+            kSharedUserDefaults.set(forceUsStore, forKey: Constants.QA.forceUsStore)
+        }
+    }
+
     var addedMockedNotification = false
     var removedMockedNotification = false
 
@@ -286,6 +295,7 @@ private final class InAppNotificationViewModel {
             guard let self else { return }
             do {
                 let userId = try await userManager.getActiveUserId()
+                forceUsStore = kSharedUserDefaults.bool(forKey: Constants.QA.forceUsStore)
                 lastThreshold = try await localNotificationTimeDatasource.getNotificationTime(for: userId)
             } catch {
                 router.display(element: .errorMessage(error.localizedDescription))
