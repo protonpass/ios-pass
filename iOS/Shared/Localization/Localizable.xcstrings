@@ -64145,6 +64145,16 @@
         }
       }
     },
+    "Don't remind me again" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Don't remind me again"
+          }
+        }
+      }
+    },
     "Done" : {
       "localizations" : {
         "be" : {
@@ -93938,6 +93948,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "項目 ID 已複製"
+          }
+        }
+      }
+    },
+    "Item in a shared vault" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item in a shared vault"
           }
         }
       }
@@ -198300,6 +198320,28 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "您即將永久刪除 %lld 個別名"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "You are creating an item in a shared vault and %lld users will immediately gain access to it." : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You are creating an item in a shared vault and %lld user will immediately gain access to it."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You are creating an item in a shared vault and %lld users will immediately gain access to it."
                 }
               }
             }

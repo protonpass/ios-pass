@@ -81,6 +81,9 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                                                      update: .title(customFieldTitle))
                                            customFieldTitle = ""
                                        })
+            .sharedCreationAlert(showItemShareAlert: $viewModel.showSharedItemCreationAlert,
+                                 members: viewModel.selectedVault.members,
+                                 onSave: viewModel.dismissSharedItemAlertAndSave(doNotShowAgain:))
             .sheet(isPresented: $viewModel.isShowingNoCameraPermissionView) {
                 NoCameraPermissionView { viewModel.openSettings() }
             }
@@ -116,7 +119,7 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                           }
                                       },
                                       onScan: { viewModel.openScanner() },
-                                      onSave: { viewModel.save() })
+                                      onSave: { viewModel.checkAndSave() })
             }
             .task {
                 await viewModel.fetchAttachedFiles()
@@ -299,6 +302,25 @@ private extension View {
                       Text(#localized("Enter new name for « %@ »", field.title))
                   }
               })
+    }
+
+    func sharedCreationAlert(showItemShareAlert: Binding<Bool>,
+                             members: Int,
+                             onSave: @escaping (_ doNotShowAgain: Bool) -> Void) -> some View {
+        alert("Item in a shared vault",
+              isPresented: showItemShareAlert) {
+            Button { onSave(false) } label: {
+                Text("OK")
+            }
+            Button { onSave(true) } label: {
+                Text("Don't remind me again")
+            }
+            Button(role: .cancel) {
+                Text("Cancel")
+            }
+        } message: {
+            Text("You are creating an item in a shared vault and \(members) users will immediately gain access to it.")
+        }
     }
 }
 
