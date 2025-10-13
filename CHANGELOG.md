@@ -1,4 +1,6 @@
 # Version x.x.x
+- Fixed password generator partially hidden behind the keyboard on iOS 26
+
 Others:
 - Removed feature discovery for custom items
 
