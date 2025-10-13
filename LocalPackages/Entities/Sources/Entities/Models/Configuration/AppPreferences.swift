@@ -22,7 +22,7 @@
 import Foundation
 
 public enum DismissibleUIElementId: String, Codable, Equatable, Sendable, Hashable, CaseIterable {
-    case itemCreationInSharedVaultAlert
+    case itemCreationInSharedVaultAlert = "item_creation_in_shared_vault_alert"
 }
 
 public struct DismissibleUIElements: Codable, Equatable, Sendable, Hashable {
