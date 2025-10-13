@@ -32,7 +32,7 @@ public struct DismissibleUIElements: Codable, Equatable, Sendable, Hashable {
         self.dismissedElements = dismissedElements
     }
 
-    static var `default`: DismissibleUIElements {
+    public static var `default`: DismissibleUIElements {
         var dictionary: [DismissibleUIElementId: Bool] = [:]
         for element in DismissibleUIElementId.allCases {
             dictionary[element] = false

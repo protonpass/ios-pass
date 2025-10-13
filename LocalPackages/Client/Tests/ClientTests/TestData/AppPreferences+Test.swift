@@ -28,6 +28,7 @@ extension AppPreferences {
               createdItemsCount: .random(in: 1...100),
               dismissedCustomDomainExplanation: .random(),
               hasVisitedContactPage: false,
-              dismissedFileAttachmentsBanner: false)
+              dismissedFileAttachmentsBanner: false,
+              dismissedElements: DismissibleUIElements.default)
     }
 }
