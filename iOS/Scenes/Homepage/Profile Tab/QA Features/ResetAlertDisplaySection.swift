@@ -30,7 +30,6 @@ import Entities
 import FactoryKit
 import SwiftUI
 
-// swiftlint:disable identifier_name line_length
 struct ResetAlertDisplaySection: View {
     var body: some View {
         NavigationLink(destination: { ResetAlertDisplayView() },
@@ -91,5 +90,3 @@ private final class ResetAlertDisplayViewModel: ObservableObject {
         }
     }
 }
-
-// swiftlint:enable identifier_name line_length
