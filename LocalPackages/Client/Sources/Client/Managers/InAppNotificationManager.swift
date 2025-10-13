@@ -100,19 +100,25 @@ public extension InAppNotificationManager {
         if let mockNotification {
             return mockNotification.canBeDisplayed(timestampDate: timestampDate.toInt) ? mockNotification : nil
         }
-        guard try await shouldDisplayNotification() else {
-            return nil
-        }
-        return notifications.filter { notification in
+
+        guard let notification = notifications.filter({ notification in
             notification.canBeDisplayed(timestampDate: timestampDate.toInt)
-        }.max(by: { lhs, rhs in
+        }).max(by: { lhs, rhs in
             // Priority descending
             if lhs.priority != rhs.priority {
                 return lhs.priority < rhs.priority
             }
             // StartTime ascending
             return lhs.startTime > rhs.startTime
-        })
+        }) else {
+            return nil
+        }
+
+        let shouldDisplay = try await shouldDisplayNotification()
+        guard notification.displayType == .promo || shouldDisplay else {
+            return nil
+        }
+        return notification
     }
 
     func updateNotificationState(notificationId: String, newState: InAppNotificationState) async throws {

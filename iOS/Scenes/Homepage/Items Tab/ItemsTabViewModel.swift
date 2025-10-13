@@ -32,6 +32,7 @@ protocol ItemsTabViewModelDelegate: AnyObject {
     func itemsTabViewModelWantsToCreateNewItem(type: ItemContentType)
     func itemsTabViewModelWantsToPresentVaultList()
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent)
+    func itemsTabViewModelWantsToShow(notification: InAppNotification)
 }
 
 @MainActor
@@ -53,6 +54,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published private(set) var sectionedItems: FetchableObject<[SectionedItemUiModel]> = .fetching
     @Published private var organization: Organization?
     @Published private(set) var refreshSearchResult = false
+    @Published var displayedNotification: InAppNotification?
 
     let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
     @LazyInjected(\SharedServiceContainer.appContentManager) var appContentManager
@@ -94,6 +96,10 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
             return true
         }
         return false
+    }
+
+    var showPromoBadge: Bool {
+        displayedNotification?.displayType == .promo
     }
 
     init() {
@@ -417,6 +423,12 @@ extension ItemsTabViewModel {
             } successMessage: { items in
                 #localized("%lld aliases enabled", items.count)
             }
+        }
+    }
+
+    func showNotification() {
+        if let displayedNotification {
+            delegate?.itemsTabViewModelWantsToShow(notification: displayedNotification)
         }
     }
 
