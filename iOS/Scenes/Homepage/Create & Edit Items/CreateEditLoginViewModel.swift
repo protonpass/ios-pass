@@ -253,9 +253,9 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         }
     }
 
-    override func save() {
+    override func checkAndSave() {
         if validateURLs() {
-            super.save()
+            super.checkAndSave()
         }
     }
 

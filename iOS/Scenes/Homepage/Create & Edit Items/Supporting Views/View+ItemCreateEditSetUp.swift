@@ -81,10 +81,9 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                                                      update: .title(customFieldTitle))
                                            customFieldTitle = ""
                                        })
-            .sharedCreationAlert(showItemShareAlert: $viewModel.showItemShareAlert,
-                                 members: viewModel.selectedVault.members) { action in
-                viewModel.alertAction(action: action)
-            }
+            .sharedCreationAlert(showItemShareAlert: $viewModel.showSharedItemCreationAlert,
+                                 members: viewModel.selectedVault.members,
+                                 onSave: viewModel.dismissSharedItemAlertAndSave(doNotShowAgain:))
             .sheet(isPresented: $viewModel.isShowingNoCameraPermissionView) {
                 NoCameraPermissionView { viewModel.openSettings() }
             }
@@ -120,7 +119,7 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                           }
                                       },
                                       onScan: { viewModel.openScanner() },
-                                      onSave: { viewModel.save() })
+                                      onSave: { viewModel.checkAndSave() })
             }
             .task {
                 await viewModel.fetchAttachedFiles()
@@ -307,13 +306,13 @@ private extension View {
 
     func sharedCreationAlert(showItemShareAlert: Binding<Bool>,
                              members: Int,
-                             action: @escaping (AlertActions) -> Void) -> some View {
+                             onSave: @escaping (_ doNotShowAgain: Bool) -> Void) -> some View {
         alert("Item in a shared vault",
               isPresented: showItemShareAlert) {
-            Button { action(.dismissAndSave) } label: {
+            Button { onSave(false) } label: {
                 Text("OK")
             }
-            Button { action(.dismissSaveAndUpdateSettings) } label: {
+            Button { onSave(true) } label: {
                 Text("Don't remind me again")
             }
             Button(role: .cancel) {
