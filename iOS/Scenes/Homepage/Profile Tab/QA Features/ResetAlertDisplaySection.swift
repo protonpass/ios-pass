@@ -47,10 +47,10 @@ private struct ResetAlertDisplayView: View {
     var body: some View {
         List {
             Section(header: Text(verbatim: "Alert dismissed state settings").font(.headline.bold())) {
-                ForEach(DismissibleUIElementId.allCases) { dismissibleUIElementId in
+                ForEach(DismissibleUIElementId.allCases, id: \.self) { dismissibleUIElementId in
                     switch dismissibleUIElementId {
                     case .itemCreationInSharedVaultAlert:
-                        Toggle(isOn: $sharedVaultItemCreationDismissed,
+                        Toggle(isOn: $viewModel.sharedVaultItemCreationDismissed,
                                label: { Text(verbatim: "Item creation in shared vault alert dismissed") })
                     }
                 }
@@ -76,7 +76,7 @@ private final class ResetAlertDisplayViewModel: ObservableObject {
     }
 
     private func updateValues() {
-        var dismissedUIElements = preferencesManager.appPreferences.unwrapped().dismissedElements
+        let dismissedUIElements = preferencesManager.appPreferences.unwrapped().dismissedElements
 
         sharedVaultItemCreationDismissed = dismissedUIElements
             .dismissedElements[.itemCreationInSharedVaultAlert] ?? false
