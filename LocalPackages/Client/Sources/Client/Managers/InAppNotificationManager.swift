@@ -28,11 +28,15 @@ public enum InAppNotificationDisplayState: Sendable {
 }
 
 public protocol InAppNotificationManagerProtocol: Sendable {
+    var notificationToDisplayPublisher: CurrentValueSubject<InAppNotification?, Never> { get }
+
+    func refreshNotifications()
     func fetchNotifications(offsetId: String?, reset: Bool) async throws -> [InAppNotification]
     func getNotificationToDisplay() async throws -> InAppNotification?
     func updateNotificationState(notificationId: String, newState: InAppNotificationState) async throws
     func updateNotificationTime(_ date: Date) async throws
     func updateDisplayState(_ state: InAppNotificationDisplayState) async
+    func updatePromoMinimizationState(shouldBeMinimized: Bool)
 
     // MARK: - Qa only accessible function to test mock notifications
 
@@ -62,6 +66,10 @@ public actor InAppNotificationManager: InAppNotificationManagerProtocol {
 
     private var mockNotification: InAppNotification?
 
+    public nonisolated let notificationToDisplayPublisher: CurrentValueSubject<Entities.InAppNotification?,
+        Never> =
+        .init(nil)
+
     public init(repository: any InAppNotificationRepositoryProtocol,
                 timeDatasource: any LocalNotificationTimeDatasourceProtocol,
                 userManager: any UserManagerProtocol,
@@ -76,6 +84,27 @@ public actor InAppNotificationManager: InAppNotificationManagerProtocol {
 }
 
 public extension InAppNotificationManager {
+    nonisolated func refreshNotifications() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                _ = try await fetchNotifications()
+                let notification = try await getNotificationToDisplay()
+                notificationToDisplayPublisher.send(notification)
+            } catch {
+                logger.error(error)
+            }
+        }
+    }
+
+    nonisolated func updatePromoMinimizationState(shouldBeMinimized: Bool) {
+        guard let notificationToDisplay = notificationToDisplayPublisher.value else {
+            return
+        }
+        let updatedNotification = notificationToDisplay.updateMinimizeState(shouldBeMinimized)
+        notificationToDisplayPublisher.send(updatedNotification)
+    }
+
     func fetchNotifications(offsetId: String?,
                             reset: Bool) async throws -> [InAppNotification] {
         let userId = try await userManager.getActiveUserId()
@@ -132,6 +161,7 @@ public extension InAppNotificationManager {
                                                       userId: userId)
         if newState == .dismissed {
             try await repository.remove(notificationId: notificationId, userId: userId)
+            notificationToDisplayPublisher.send(nil)
         }
         if let index = notifications.firstIndex(where: { $0.id == notificationId }) {
             notifications[index].state = newState
