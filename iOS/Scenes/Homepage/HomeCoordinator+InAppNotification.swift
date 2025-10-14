@@ -25,20 +25,29 @@ import Screens
 import SwiftUI
 
 extension HomepageCoordinator {
+    func setupInAppNotify() {
+        inAppNotificationManager.notificationToDisplayPublisher
+            .receive(on: DispatchQueue.main)
+            .compactMap(\.self)
+            .filter { !$0.isMinimized }
+            .sink { [weak self] notification in
+                guard let self else { return }
+                display(notification,
+                        onAppear: { [weak self] in
+                            guard let self else { return }
+                            updateDisplayState(.active)
+                        },
+                        onDisappear: { [weak self] in
+                            guard let self else { return }
+                            updateDisplayState(.inactive)
+                        })
+            }
+            .store(in: &cancellables)
+    }
+
     func refreshInAppNotifications() {
         guard authenticated else { return }
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                _ = try await inAppNotificationManager.fetchNotifications()
-                if let notification = try await inAppNotificationManager.getNotificationToDisplay() {
-                    itemsTabViewModel?.displayedNotification = notification
-                    checkAndDisplay(notification, ignoreMinimization: false)
-                }
-            } catch {
-                handle(error: error)
-            }
-        }
+        inAppNotificationManager.refreshNotifications()
     }
 
     func presentBreachDetail(breach: Breach) {
@@ -52,22 +61,6 @@ extension HomepageCoordinator {
     func removeInAppNotificationDisplay() {
         updateFloatingView(floatingView: nil, viewTag: UniqueSheet.inAppNotificationDisplay)
         dismissViewControllerWithTag(tag: UniqueSheet.inAppNotificationDisplay)
-    }
-
-    func checkAndDisplay(_ notification: InAppNotification, ignoreMinimization: Bool) {
-        let startMinimized = notification.content.promoContents?.startMinimized == true
-        if !ignoreMinimization, startMinimized {
-            return
-        }
-        display(notification,
-                onAppear: { [weak self] in
-                    guard let self else { return }
-                    updateDisplayState(.active)
-                },
-                onDisappear: { [weak self] in
-                    guard let self else { return }
-                    updateDisplayState(.inactive)
-                })
     }
 }
 
@@ -181,15 +174,13 @@ private extension HomepageCoordinator {
                 switch notification.displayType {
                 case .banner:
                     updateFloatingView(floatingView: nil, viewTag: UniqueSheet.inAppNotificationDisplay)
-                case .promo:
-                    itemsTabViewModel?.displayedNotification = nil
-                case .modal:
+                case .modal, .promo:
                     break
                 }
                 try await inAppNotificationManager.updateNotificationState(notificationId: notification.id,
                                                                            newState: newState)
                 try await inAppNotificationManager.updateNotificationTime(.now)
-                try await block()
+                block()
             } catch {
                 handle(error: error)
             }

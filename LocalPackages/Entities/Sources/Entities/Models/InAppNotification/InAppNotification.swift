@@ -27,7 +27,7 @@ public struct InAppNotification: Decodable, Sendable, Equatable, Hashable, Ident
     public let endTime: Int?
     public var state: InAppNotificationState
     public let priority: Int
-    public let content: InAppNotificationContent
+    public var content: InAppNotificationContent
 
     public init(ID: String,
                 notificationKey: String,
@@ -61,6 +61,16 @@ public struct InAppNotification: Decodable, Sendable, Equatable, Hashable, Ident
     public var ctaType: InAppNotificationCtaType? {
         content.cta?.safeType
     }
+
+    public var isMinimized: Bool {
+        content.promoContents?.startMinimized == true
+    }
+
+    public func updateMinimizeState(_ isMinimized: Bool) -> Self {
+        var result = self
+        result.content.promoContents?.startMinimized = isMinimized
+        return result
+    }
 }
 
 public struct InAppNotificationContent: Decodable, Sendable, Equatable, Hashable {
@@ -71,7 +81,7 @@ public struct InAppNotificationContent: Decodable, Sendable, Equatable, Hashable
     // Can be light or dark
     public let theme: String?
     public let cta: InAppNotificationCTA?
-    public let promoContents: InAppNotificationPromoContents?
+    public var promoContents: InAppNotificationPromoContents?
 
     public var safeImageUrl: URL? {
         if let imageUrl, let url = URL(string: imageUrl) {
@@ -149,7 +159,7 @@ public struct InAppNotificationPromoContents: Decodable, Sendable, Equatable, Ha
     /// Whether the promo should start minimized.
     /// `true` means the image should be minimized from the start.
     /// `false` means that the promo should initially be displayed and the user can minimize.
-    public let startMinimized: Bool
+    public var startMinimized: Bool
     /// Text to show on the close promo link
     public let closePromoText: String
     /// Text to show when the promo is minimized

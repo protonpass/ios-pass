@@ -116,7 +116,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private(set) weak var itemsTabViewModel: ItemsTabViewModel?
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
-    private var cancellables = Set<AnyCancellable>()
+    var cancellables = Set<AnyCancellable>()
 
     lazy var logInAndSignUp = makeLoginAndSignUp()
 
@@ -292,6 +292,8 @@ private extension HomepageCoordinator {
                 }
             }
             .store(in: &cancellables)
+
+        setupInAppNotify()
     }
 
     func start() {
@@ -1457,10 +1459,6 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent) {
         presentItemDetailView(for: itemContent, asSheet: shouldShowAsSheet())
-    }
-
-    func itemsTabViewModelWantsToShow(notification: InAppNotification) {
-        checkAndDisplay(notification, ignoreMinimization: true)
     }
 }
 
