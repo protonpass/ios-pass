@@ -26,5 +26,5 @@ struct GetOrganizationKeysEndpoint: Endpoint {
     typealias Response = OrganizationKey
 
     let debugDescription = "Get the information about the organization key"
-    let path = "core/v4/organizations/keys"
+    let path = "/core/v4/organizations/keys"
 }
