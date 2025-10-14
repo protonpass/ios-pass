@@ -123,7 +123,7 @@ public extension InAppNotificationManager {
 
     func updateNotificationState(notificationId: String, newState: InAppNotificationState) async throws {
         guard mockNotification == nil else {
-            mockNotification?.state = newState.rawValue
+            mockNotification?.state = newState
             return
         }
         let userId = try await userManager.getActiveUserId()
@@ -134,7 +134,7 @@ public extension InAppNotificationManager {
             try await repository.remove(notificationId: notificationId, userId: userId)
         }
         if let index = notifications.firstIndex(where: { $0.id == notificationId }) {
-            notifications[index].state = newState.rawValue
+            notifications[index].state = newState
         }
     }
 

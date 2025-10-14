@@ -119,7 +119,7 @@ extension InAppNotificationEntity {
         notificationKey = notification.notificationKey
         startTime = Int64(notification.startTime)
         endTime = Int64(notification.endTime ?? -1)
-        state = Int64(notification.state)
+        state = Int64(notification.state.rawValue)
         imageUrl = notification.content.imageUrl
         displayType = Int64(notification.displayType.rawValue)
         title = notification.content.title
