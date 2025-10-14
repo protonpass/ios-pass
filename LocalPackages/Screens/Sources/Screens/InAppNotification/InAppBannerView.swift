@@ -28,14 +28,14 @@ public struct InAppBannerView: View {
     private let borderColor: UIColor = PassColor.inputBorderNorm
     private let onAppear: () -> Void
     private let onDisappear: () -> Void
-    private let onTap: (InAppNotification) -> Void
-    private let onClose: (InAppNotification) -> Void
+    private let onTap: () -> Void
+    private let onClose: () -> Void
 
     public init(notification: InAppNotification,
                 onAppear: @escaping () -> Void,
                 onDisappear: @escaping () -> Void,
-                onTap: @escaping (InAppNotification) -> Void,
-                onClose: @escaping (InAppNotification) -> Void) {
+                onTap: @escaping () -> Void,
+                onClose: @escaping () -> Void) {
         self.notification = notification
         self.onAppear = onAppear
         self.onDisappear = onDisappear
@@ -85,7 +85,7 @@ public struct InAppBannerView: View {
             .contentShape(.rect)
             .onTapGesture {
                 if notification.content.cta != nil {
-                    onTap(notification)
+                    onTap()
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -95,7 +95,7 @@ public struct InAppBannerView: View {
                          backgroundColor: PassColor.backgroundNorm,
                          accessibilityLabel: "Close",
                          type: .custom(buttonSize: 25, iconSize: 16),
-                         action: { onClose(notification) })
+                         action: onClose)
                 .overlay(Circle()
                     .stroke(borderColor.toColor, lineWidth: 2))
                 .padding(4)

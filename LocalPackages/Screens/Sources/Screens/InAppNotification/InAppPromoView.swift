@@ -29,7 +29,10 @@ public struct InAppPromoView: View {
     private let notification: InAppNotification
     private let promoContents: InAppNotificationPromoContents
     private let onAppear: () -> Void
-    private let onClose: (InAppNotification) -> Void
+    private let onDisappear: () -> Void
+    private let onTap: () -> Void
+    private let onClose: () -> Void
+    private let onNotShowAgain: () -> Void
 
     private var themedContents: InAppNotificationPromoThemedContents {
         colorScheme == .dark ?
@@ -39,11 +42,17 @@ public struct InAppPromoView: View {
     public init(notification: InAppNotification,
                 promoContents: InAppNotificationPromoContents,
                 onAppear: @escaping () -> Void,
-                onClose: @escaping (InAppNotification) -> Void) {
+                onDisappear: @escaping () -> Void,
+                onTap: @escaping () -> Void,
+                onClose: @escaping () -> Void,
+                onNotShowAgain: @escaping () -> Void) {
         self.notification = notification
         self.promoContents = promoContents
         self.onAppear = onAppear
+        self.onDisappear = onDisappear
+        self.onTap = onTap
         self.onClose = onClose
+        self.onNotShowAgain = onNotShowAgain
     }
 
     public var body: some View {
@@ -57,7 +66,7 @@ public struct InAppPromoView: View {
                 Spacer()
                 Button(action: {
                     dismiss()
-                    onClose(notification)
+                    onNotShowAgain()
                 }, label: {
                     Text(verbatim: promoContents.closePromoText)
                         .foregroundStyle(foregroundColor)
@@ -66,9 +75,10 @@ public struct InAppPromoView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding()
 
-            dismissButton
+            closeButton
         }
         .onAppear(perform: onAppear)
+        .onDisappear(perform: onDisappear)
         .interactiveDismissDisabled()
     }
 }
@@ -82,6 +92,7 @@ private extension InAppPromoView {
                    }, placeholder: {
                        EmptyView()
                    })
+                   .onTapGesture(perform: ctaAction)
     }
 
     var contentImage: some View {
@@ -93,14 +104,16 @@ private extension InAppPromoView {
                    }, placeholder: {
                        ProgressView()
                    })
+                   .onTapGesture(perform: ctaAction)
     }
 
-    var dismissButton: some View {
+    var closeButton: some View {
         VStack {
             HStack {
                 Spacer()
                 Button(action: {
                     dismiss()
+                    onClose()
                 }, label: {
                     Image(uiImage: IconProvider.crossCircleFilled)
                         .resizable()
@@ -118,5 +131,12 @@ private extension InAppPromoView {
 
     var foregroundColor: Color {
         Color(hex: themedContents.closePromoTextColor)
+    }
+
+    func ctaAction() {
+        dismiss()
+        if notification.content.cta != nil {
+            onTap()
+        }
     }
 }

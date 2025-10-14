@@ -66,14 +66,6 @@ public struct InAppNotification: Decodable, Sendable, Equatable, Hashable, Ident
     public var ctaType: InAppNotificationCtaType? {
         content.cta?.safeType
     }
-
-    public var removedState: InAppNotificationState {
-        if displayType == .banner {
-            .read
-        } else {
-            .dismissed
-        }
-    }
 }
 
 public struct InAppNotificationContent: Decodable, Sendable, Equatable, Hashable {
