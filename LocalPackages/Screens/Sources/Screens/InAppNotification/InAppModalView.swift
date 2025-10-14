@@ -31,15 +31,15 @@ public struct InAppModalView: View {
     private let notification: InAppNotification
     private let onAppear: () -> Void
     private let onDisappear: () -> Void
-    private let onTap: (InAppNotification) -> Void
-    private let onClose: (InAppNotification) -> Void
+    private let onTap: () -> Void
+    private let onClose: () -> Void
 
     public init(notification: InAppNotification,
                 viewModel: InAppModalViewModel,
                 onAppear: @escaping () -> Void,
                 onDisappear: @escaping () -> Void,
-                onTap: @escaping (InAppNotification) -> Void,
-                onClose: @escaping (InAppNotification) -> Void) {
+                onTap: @escaping () -> Void,
+                onClose: @escaping () -> Void) {
         _viewModel = .init(wrappedValue: viewModel)
         self.notification = notification
         self.onAppear = onAppear
@@ -96,7 +96,7 @@ public struct InAppModalView: View {
                                       height: 48,
                                       action: {
                                           dismiss()
-                                          onTap(notification)
+                                          onTap()
                                       })
                                       .padding(.horizontal, DesignConstant.sectionPadding)
                 }
@@ -118,7 +118,7 @@ public struct InAppModalView: View {
                          type: .custom(buttonSize: 30, iconSize: 25),
                          action: {
                              dismiss()
-                             onClose(notification)
+                             onClose()
                          })
                          .padding()
         }

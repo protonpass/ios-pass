@@ -372,7 +372,7 @@ private extension InAppNotificationDisplayType {
     var title: String {
         switch self {
         case .banner: "Banner"
-        case .modal: "Model"
+        case .modal: "Modal"
         case .promo: "Promo"
         }
     }
