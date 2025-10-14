@@ -33,7 +33,7 @@ extension HomepageCoordinator {
                 _ = try await inAppNotificationManager.fetchNotifications()
                 if let notification = try await inAppNotificationManager.getNotificationToDisplay() {
                     itemsTabViewModel?.displayedNotification = notification
-                    display(notification, ignoreMinimization: false)
+                    checkAndDisplay(notification, ignoreMinimization: false)
                 }
             } catch {
                 handle(error: error)
@@ -54,7 +54,7 @@ extension HomepageCoordinator {
         dismissViewControllerWithTag(tag: UniqueSheet.inAppNotificationDisplay)
     }
 
-    func display(_ notification: InAppNotification, ignoreMinimization: Bool) {
+    func checkAndDisplay(_ notification: InAppNotification, ignoreMinimization: Bool) {
         let startMinimized = notification.content.promoContents?.startMinimized == true
         if !ignoreMinimization, startMinimized {
             return
