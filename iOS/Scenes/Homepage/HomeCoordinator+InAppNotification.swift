@@ -174,7 +174,7 @@ private extension HomepageCoordinator {
 
     func updateStateAndPerform(_ notification: InAppNotification,
                                newState: InAppNotificationState,
-                               block: @escaping () async throws -> Void) {
+                               block: @escaping () -> Void) {
         Task { [weak self] in
             guard let self else { return }
             do {
