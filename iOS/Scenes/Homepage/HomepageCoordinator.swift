@@ -199,13 +199,8 @@ private extension HomepageCoordinator {
 
                 Task { [weak self] in
                     guard let self else { return }
-                    let disallowed: [NewFeature] = if getFeatureFlagStatus(for: FeatureFlagType.passCustomTypeV1) {
-                        []
-                    } else {
-                        [NewFeature.customItems]
-                    }
                     await featureDiscoveryManager.refreshState(userId: userData.user.ID,
-                                                               disallowedFeatures: Set(disallowed))
+                                                               disallowedFeatures: .init())
                 }
             }
             .store(in: &cancellables)

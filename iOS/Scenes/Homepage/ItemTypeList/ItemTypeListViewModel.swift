@@ -58,8 +58,6 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedToolingContainer.logger) private var logger
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
-    private var getFeatureFlagStatus
 
     enum Mode {
         case hostApp, autoFillExtension
@@ -70,11 +68,7 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
     var supportedTypes: [ItemType] {
         switch mode {
         case .hostApp:
-            if getFeatureFlagStatus(for: FeatureFlagType.passCustomTypeV1) {
-                ItemType.allCases
-            } else {
-                ItemType.allCases.filter { $0 != .custom }
-            }
+            ItemType.allCases
         case .autoFillExtension:
             [.login, .alias]
         }
