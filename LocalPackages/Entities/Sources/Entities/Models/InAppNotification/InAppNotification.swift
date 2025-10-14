@@ -25,8 +25,7 @@ public struct InAppNotification: Decodable, Sendable, Equatable, Hashable, Ident
     public let notificationKey: String
     public let startTime: Int
     public let endTime: Int?
-    /// Prefer using `safeState` for clearer semantic
-    public var state: Int
+    public var state: InAppNotificationState
     public let priority: Int
     public let content: InAppNotificationContent
 
@@ -41,7 +40,7 @@ public struct InAppNotification: Decodable, Sendable, Equatable, Hashable, Ident
         self.notificationKey = notificationKey
         self.startTime = startTime
         self.endTime = endTime
-        self.state = state
+        self.state = .init(rawValue: state) ?? .unread
         self.priority = priority
         self.content = content
     }
@@ -52,15 +51,11 @@ public struct InAppNotification: Decodable, Sendable, Equatable, Hashable, Ident
     }
 
     public var displayType: InAppNotificationDisplayType {
-        content.safeDisplayType
-    }
-
-    public var safeState: InAppNotificationState {
-        .init(rawValue: state) ?? .unread
+        content.displayType
     }
 
     public var hasBeenRead: Bool {
-        safeState != InAppNotificationState.unread
+        state != InAppNotificationState.unread
     }
 
     public var ctaType: InAppNotificationCtaType? {
@@ -70,8 +65,7 @@ public struct InAppNotification: Decodable, Sendable, Equatable, Hashable, Ident
 
 public struct InAppNotificationContent: Decodable, Sendable, Equatable, Hashable {
     public let imageUrl: String?
-    /// Prefer using `safeDisplayType` for clearer semantic
-    private let displayType: Int
+    public let displayType: InAppNotificationDisplayType
     public let title: String
     public let message: String
     // Can be light or dark
@@ -86,10 +80,6 @@ public struct InAppNotificationContent: Decodable, Sendable, Equatable, Hashable
         return nil
     }
 
-    public var safeDisplayType: InAppNotificationDisplayType {
-        .init(rawValue: displayType) ?? .banner
-    }
-
     public init(imageUrl: String?,
                 displayType: Int,
                 title: String,
@@ -98,7 +88,7 @@ public struct InAppNotificationContent: Decodable, Sendable, Equatable, Hashable
                 cta: InAppNotificationCTA?,
                 promoContents: InAppNotificationPromoContents?) {
         self.imageUrl = imageUrl
-        self.displayType = displayType
+        self.displayType = .init(rawValue: displayType) ?? .banner
         self.title = title
         self.message = message
         self.theme = theme
@@ -139,7 +129,7 @@ public enum InAppNotificationCtaType: Sendable {
     case externalNavigation(urlString: String)
 }
 
-public enum InAppNotificationDisplayType: Int, Sendable, CaseIterable {
+public enum InAppNotificationDisplayType: Int, Decodable, Sendable, CaseIterable {
     /// Floating bottom banner
     case banner = 0
     /// Bottom sheet with dynamic height fitting its content
@@ -148,7 +138,7 @@ public enum InAppNotificationDisplayType: Int, Sendable, CaseIterable {
     case promo = 2
 }
 
-public enum InAppNotificationState: Int, Sendable, CaseIterable {
+public enum InAppNotificationState: Int, Decodable, Sendable, CaseIterable {
     case unread = 0
     case read = 1
     // Dismissed is the equivalent of delete for the back end should be used with modal
