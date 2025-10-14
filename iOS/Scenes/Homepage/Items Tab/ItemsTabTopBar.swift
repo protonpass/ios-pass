@@ -148,6 +148,7 @@ private extension ItemsTabTopBar {
             selectable: viewModel.selectable)
         }
         .padding(.horizontal)
+        .animation(.default, value: showPromoBadge)
     }
 }
 
