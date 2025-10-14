@@ -2,7 +2,7 @@
 - Fixed password generator partially hidden behind the keyboard on iOS 26
 
 Others:
-- Removed feature discovery for custom items
+- Removed feature discovery & flag for custom items
 
 # Version 1.17.8
 Fixed un-tappable create item button in the AutoFill extension on iOS 26
