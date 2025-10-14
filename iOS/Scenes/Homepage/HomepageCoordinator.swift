@@ -1460,7 +1460,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     }
 
     func itemsTabViewModelWantsToShow(notification: InAppNotification) {
-        display(notification)
+        display(notification, ignoreMinimization: true)
     }
 }
 

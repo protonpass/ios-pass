@@ -29,8 +29,7 @@ public struct InAppPromoView: View {
     private let notification: InAppNotification
     private let promoContents: InAppNotificationPromoContents
     private let onAppear: () -> Void
-    private let onMinimize: () -> Void
-    private let onDismiss: () -> Void
+    private let onClose: (InAppNotification) -> Void
 
     private var themedContents: InAppNotificationPromoThemedContents {
         colorScheme == .dark ?
@@ -40,13 +39,11 @@ public struct InAppPromoView: View {
     public init(notification: InAppNotification,
                 promoContents: InAppNotificationPromoContents,
                 onAppear: @escaping () -> Void,
-                onMinimize: @escaping () -> Void,
-                onDismiss: @escaping () -> Void) {
+                onClose: @escaping (InAppNotification) -> Void) {
         self.notification = notification
         self.promoContents = promoContents
         self.onAppear = onAppear
-        self.onMinimize = onMinimize
-        self.onDismiss = onDismiss
+        self.onClose = onClose
     }
 
     public var body: some View {
@@ -60,7 +57,7 @@ public struct InAppPromoView: View {
                 Spacer()
                 Button(action: {
                     dismiss()
-                    onMinimize()
+                    onClose(notification)
                 }, label: {
                     Text(verbatim: promoContents.closePromoText)
                         .foregroundStyle(foregroundColor)
@@ -104,7 +101,6 @@ private extension InAppPromoView {
                 Spacer()
                 Button(action: {
                     dismiss()
-                    onDismiss()
                 }, label: {
                     Image(uiImage: IconProvider.crossCircleFilled)
                         .resizable()
