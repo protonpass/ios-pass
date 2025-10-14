@@ -33,7 +33,7 @@ extension HomepageCoordinator {
                 _ = try await inAppNotificationManager.fetchNotifications()
                 if let notification = try await inAppNotificationManager.getNotificationToDisplay() {
                     itemsTabViewModel?.displayedNotification = notification
-                    display(notification)
+                    display(notification, ignoreMinimization: false)
                 }
             } catch {
                 handle(error: error)
@@ -54,7 +54,10 @@ extension HomepageCoordinator {
         dismissViewControllerWithTag(tag: UniqueSheet.inAppNotificationDisplay)
     }
 
-    func display(_ notification: InAppNotification) {
+    func display(_ notification: InAppNotification, ignoreMinimization: Bool) {
+        if !ignoreMinimization, notification.content.promoContents?.startMinimized == true {
+            return
+        }
         display(notification,
                 onAppear: { [weak self] in
                     guard let self else { return }
@@ -70,6 +73,7 @@ extension HomepageCoordinator {
 // MARK: - Notification actions
 
 private extension HomepageCoordinator {
+    // swiftlint:disable:next cyclomatic_complexity
     func display(_ notification: InAppNotification,
                  onAppear: @escaping () -> Void,
                  onDisappear: @escaping () -> Void) {
@@ -104,7 +108,8 @@ private extension HomepageCoordinator {
                                       onTap: { [weak self] notification in
                                           guard let self else { return }
                                           ctaFlow(notification)
-                                      }, onClose: { [weak self] notification in
+                                      },
+                                      onClose: { [weak self] notification in
                                           guard let self else { return }
                                           close(notification)
                                       })
@@ -122,11 +127,9 @@ private extension HomepageCoordinator {
             let view = InAppPromoView(notification: notification,
                                       promoContents: promoContents,
                                       onAppear: onAppear,
-                                      onMinimize: {
-                                          onDisappear()
-                                      },
-                                      onDismiss: {
-                                          onDisappear()
+                                      onClose: { [weak self] notification in
+                                          guard let self else { return }
+                                          close(notification)
                                       })
             let viewController = UIHostingController(rootView: view)
             viewController.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
@@ -137,9 +140,16 @@ private extension HomepageCoordinator {
     func close(_ notification: InAppNotification) {
         Task { [weak self] in
             guard let self else { return }
-            if notification.displayType == .banner {
+
+            switch notification.displayType {
+            case .banner:
                 updateFloatingView(floatingView: nil, viewTag: UniqueSheet.inAppNotificationDisplay)
+            case .promo:
+                itemsTabViewModel?.displayedNotification = nil
+            case .modal:
+                break
             }
+
             do {
                 try await inAppNotificationManager.updateNotificationState(notificationId: notification.id,
                                                                            newState: notification.removedState)
