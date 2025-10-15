@@ -29,6 +29,7 @@ struct ItemsTabTopBar: View {
     let animationNamespace: Namespace.ID
     @StateObject private var viewModel = ItemsTabTopBarViewModel()
     @Binding var isEditMode: Bool
+    let showPromoBadge: Bool
     let onSearch: () -> Void
     let onShowVaultList: () -> Void
     let onPin: () -> Void
@@ -39,6 +40,7 @@ struct ItemsTabTopBar: View {
     let onPermanentlyDelete: () -> Void
     let onDisableAliases: () -> Void
     let onEnableAliases: () -> Void
+    let onPromoBadgeTapped: () -> Void
 
     var body: some View {
         ZStack {
@@ -128,6 +130,14 @@ private extension ItemsTabTopBar {
                     .frame(maxWidth: .infinity)
             }
 
+            if showPromoBadge {
+                Image(uiImage: PassIcon.promoBadge)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: 46)
+                    .buttonEmbeded(action: onPromoBadgeTapped)
+            }
+
             SortFilterItemsMenu(options: [
                 .selectItems { isEditMode.toggle() },
                 .filter(viewModel.selectedFilterOption, viewModel.itemCount, viewModel.update(_:)),
@@ -138,6 +148,7 @@ private extension ItemsTabTopBar {
             selectable: viewModel.selectable)
         }
         .padding(.horizontal)
+        .animation(.default, value: showPromoBadge)
     }
 }
 

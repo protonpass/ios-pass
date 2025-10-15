@@ -25,27 +25,29 @@ import Screens
 import SwiftUI
 
 extension HomepageCoordinator {
+    func setUpInAppNotification() {
+        inAppNotificationManager.notificationToDisplay
+            .receive(on: DispatchQueue.main)
+            .compactMap(\.self)
+            .filter { !$0.isMinimized }
+            .sink { [weak self] notification in
+                guard let self else { return }
+                display(notification,
+                        onAppear: { [weak self] in
+                            guard let self else { return }
+                            updateDisplayState(.active)
+                        },
+                        onDisappear: { [weak self] in
+                            guard let self else { return }
+                            updateDisplayState(.inactive)
+                        })
+            }
+            .store(in: &cancellables)
+    }
+
     func refreshInAppNotifications() {
         guard authenticated else { return }
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                _ = try await inAppNotificationManager.fetchNotifications()
-                if let notification = try await inAppNotificationManager.getNotificationToDisplay() {
-                    display(notification,
-                            onAppear: { [weak self] in
-                                guard let self else { return }
-                                updateDisplayState(.active)
-                            },
-                            onDisappear: { [weak self] in
-                                guard let self else { return }
-                                updateDisplayState(.inactive)
-                            })
-                }
-            } catch {
-                handle(error: error)
-            }
-        }
+        inAppNotificationManager.refreshNotifications()
     }
 
     func presentBreachDetail(breach: Breach) {
@@ -65,6 +67,7 @@ extension HomepageCoordinator {
 // MARK: - Notification actions
 
 private extension HomepageCoordinator {
+    // swiftlint:disable:next cyclomatic_complexity
     func display(_ notification: InAppNotification,
                  onAppear: @escaping () -> Void,
                  onDisappear: @escaping () -> Void) {
@@ -77,75 +80,107 @@ private extension HomepageCoordinator {
             let view = InAppBannerView(notification: notification,
                                        onAppear: onAppear,
                                        onDisappear: onDisappear,
-                                       onTap: { [weak self] notification in
+                                       onTap: { [weak self] in
                                            guard let self else { return }
-                                           ctaFlow(notification)
+                                           ctaFlow(notification, newState: .read)
                                        },
-                                       onClose: { [weak self] notification in
+                                       onClose: { [weak self] in
                                            guard let self else { return }
-                                           close(notification)
+                                           close(notification, newState: .read)
                                        })
             let viewController = UIHostingController(rootView: view)
             if let view = viewController.view {
                 updateFloatingView(floatingView: view, viewTag: UniqueSheet.inAppNotificationDisplay)
             }
+
         case .modal:
             let viewModel = InAppModalViewModel()
             let view = InAppModalView(notification: notification,
                                       viewModel: viewModel,
                                       onAppear: onAppear,
                                       onDisappear: onDisappear,
-                                      onTap: { [weak self] notification in
+                                      onTap: { [weak self] in
                                           guard let self else { return }
-                                          ctaFlow(notification)
-                                      }, onClose: { [weak self] notification in
+                                          ctaFlow(notification, newState: .dismissed)
+                                      },
+                                      onClose: { [weak self] in
                                           guard let self else { return }
-                                          close(notification)
+                                          close(notification, newState: .dismissed)
                                       })
             let viewController = UIHostingController(rootView: view)
             viewController.setDetentType(.medium,
                                          parentViewController: rootViewController)
             viewModel.sheetPresentation = viewController.sheetPresentationController
             present(viewController, uniquenessTag: UniqueSheet.inAppNotificationDisplay)
+
+        case .promo:
+            guard let promoContents = notification.content.promoContents else {
+                assertionFailure("Promo contents not exist")
+                return
+            }
+            let view = InAppPromoView(notification: notification,
+                                      promoContents: promoContents,
+                                      onAppear: onAppear,
+                                      onDisappear: onDisappear,
+                                      onTap: { [weak self] in
+                                          guard let self else { return }
+                                          ctaFlow(notification, newState: .dismissed)
+                                      },
+                                      onClose: { [weak self] in
+                                          guard let self else { return }
+                                          close(notification, newState: .read)
+                                      },
+                                      onNotShowAgain: { [weak self] in
+                                          guard let self else { return }
+                                          close(notification, newState: .dismissed)
+                                      })
+            let viewController = UIHostingController(rootView: view)
+            viewController.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
+            present(viewController, uniquenessTag: UniqueSheet.inAppNotificationDisplay)
         }
     }
 
-    func close(_ notification: InAppNotification) {
-        Task { [weak self] in
+    func close(_ notification: InAppNotification, newState: InAppNotificationState) {
+        updateStateAndPerform(notification, newState: newState) { [weak self] in
             guard let self else { return }
-            if notification.displayType == .banner {
-                updateFloatingView(floatingView: nil, viewTag: UniqueSheet.inAppNotificationDisplay)
-            }
-            do {
-                try await inAppNotificationManager.updateNotificationState(notificationId: notification.id,
-                                                                           newState: notification.removedState)
-                try await inAppNotificationManager.updateNotificationTime(.now)
-                let key = notification.notificationKey
-                let status = notification.removedState.rawValue
-                addTelemetryEvent(with: .notificationChangeStatus(key: key, status: status))
-            } catch {
-                logger.error(error)
+            addTelemetryEvent(with: .notificationChangeStatus(key: notification.notificationKey,
+                                                              status: newState.rawValue))
+        }
+    }
+
+    func ctaFlow(_ notification: InAppNotification, newState: InAppNotificationState) {
+        updateStateAndPerform(notification, newState: newState) { [weak self] in
+            guard let self else { return }
+            addTelemetryEvent(with: .notificationCtaClick(key: notification.notificationKey))
+
+            switch notification.ctaType {
+            case let .externalNavigation(urlString):
+                urlOpener.open(urlString: urlString)
+            case let .internalNavigation(deeplink):
+                let destination = InternalNavigationDestination.parse(urlString: deeplink)
+                navigate(to: destination)
+            case .none:
+                break
             }
         }
     }
 
-    func ctaFlow(_ notification: InAppNotification) {
+    func updateStateAndPerform(_ notification: InAppNotification,
+                               newState: InAppNotificationState,
+                               block: @escaping () -> Void) {
         Task { [weak self] in
             guard let self else { return }
             do {
-                if notification.displayType == .banner {
+                switch notification.displayType {
+                case .banner:
                     updateFloatingView(floatingView: nil, viewTag: UniqueSheet.inAppNotificationDisplay)
+                case .modal, .promo:
+                    break
                 }
-                addTelemetryEvent(with: .notificationCtaClick(key: notification.notificationKey))
                 try await inAppNotificationManager.updateNotificationState(notificationId: notification.id,
-                                                                           newState: notification.removedState)
+                                                                           newState: newState)
                 try await inAppNotificationManager.updateNotificationTime(.now)
-                if case let .externalNavigation(url) = notification.cta {
-                    urlOpener.open(urlString: url)
-                } else if case let .internalNavigation(url) = notification.cta {
-                    let destination = InternalNavigationDestination.parse(urlString: url)
-                    navigate(to: destination)
-                }
+                block()
             } catch {
                 handle(error: error)
             }

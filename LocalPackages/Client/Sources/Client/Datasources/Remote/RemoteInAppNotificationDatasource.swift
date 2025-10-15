@@ -21,8 +21,9 @@
 import Entities
 
 public protocol RemoteInAppNotificationDatasourceProtocol: Sendable {
-    func getNotifications(lastNotificationId: String?, userId: String) async throws -> PaginatedInAppNotifications
-    // Notification state. 0 = Unread, 1 = Read, 2 = Dismissed
+    func getNotifications(userId: String,
+                          countryCode: String?,
+                          lastNotificationId: String?) async throws -> PaginatedInAppNotifications
     func changeNotificationStatus(notificationId: String,
                                   newStatus: InAppNotificationState,
                                   userId: String) async throws
@@ -30,9 +31,11 @@ public protocol RemoteInAppNotificationDatasourceProtocol: Sendable {
 
 public final class RemoteInAppNotificationDatasource: RemoteDatasource, RemoteInAppNotificationDatasourceProtocol,
     @unchecked Sendable {
-    public func getNotifications(lastNotificationId: String?,
-                                 userId: String) async throws -> PaginatedInAppNotifications {
-        let endpoint = GetInAppNotificationsEndpoint(lastNotificationId: lastNotificationId)
+    public func getNotifications(userId: String,
+                                 countryCode: String?,
+                                 lastNotificationId: String?) async throws -> PaginatedInAppNotifications {
+        let endpoint = GetInAppNotificationsEndpoint(countryCode: countryCode,
+                                                     lastNotificationId: lastNotificationId)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.notifications
     }

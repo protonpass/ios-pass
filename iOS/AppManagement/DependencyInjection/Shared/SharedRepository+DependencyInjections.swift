@@ -397,7 +397,9 @@ extension SharedRepositoryContainer {
     var inAppNotificationRepository: Factory<any InAppNotificationRepositoryProtocol> {
         self { InAppNotificationRepository(localDatasource: self.localInAppNotificationDatasource(),
                                            remoteDatasource: self.remoteInAppNotificationDatasource(),
-                                           logManager: self.logManager) }
+                                           logManager: self.logManager,
+                                           bundle: .main,
+                                           userDefaults: kSharedUserDefaults) }
     }
 
     var fileAttachmentRepository: Factory<any FileAttachmentRepositoryProtocol> {
