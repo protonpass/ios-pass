@@ -176,8 +176,8 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                      mailboxIds: mailboxSelection.selectedMailboxes.map(\.ID))
     }
 
-    override func additionalEdit() async throws -> Bool {
-        guard let alias, isAliasOwner, case let .edit(itemContent) = mode else { return false }
+    override func additionalEdit() async throws -> AdditionalItemEditResult {
+        guard let alias, isAliasOwner, case let .edit(itemContent) = mode else { return .default }
 
         var edited = false
         if Set(alias.mailboxes) != Set(mailboxSelection.selectedMailboxes) {
@@ -207,7 +207,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             edited = true
         }
 
-        return edited
+        return .init(edited: edited, slNote: simpleLoginNote)
     }
 
     private func validatePrefix() {
