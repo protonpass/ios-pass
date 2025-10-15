@@ -78,7 +78,7 @@ public extension InAppNotificationManager {
         Task { [weak self] in
             guard let self else { return }
             do {
-                _ = try await fetchNotifications(offsetId: nil, reset: true)
+                _ = try await fetchNotifications()
                 let notification = try await getNotificationToDisplay()
                 notificationToDisplay.send(notification)
             } catch {
@@ -95,7 +95,7 @@ public extension InAppNotificationManager {
         notificationToDisplay.send(notification)
     }
 
-    func fetchNotifications(offsetId: String?, reset: Bool) async throws -> [InAppNotification] {
+    func fetchNotifications(offsetId: String? = nil, reset: Bool = true) async throws -> [InAppNotification] {
         let userId = try await userManager.getActiveUserId()
         let paginatedNotifications = try await repository
             .getPaginatedNotifications(lastNotificationId: offsetId,
