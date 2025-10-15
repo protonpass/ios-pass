@@ -163,7 +163,7 @@ private extension LogOutUser {
         apiManager.removeApiService(for: userId)
         authManager.removeCredentials(userId: userId)
         try await accessRepository.loadAccesses()
-        DispatchQueue.main.async {
+        await MainActor.run {
             UIPasteboard.general.items = []
         }
     }
