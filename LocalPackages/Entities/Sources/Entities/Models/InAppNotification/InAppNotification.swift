@@ -54,10 +54,6 @@ public struct InAppNotification: Decodable, Sendable, Equatable, Hashable, Ident
         content.displayType
     }
 
-    public var hasBeenRead: Bool {
-        state != InAppNotificationState.unread
-    }
-
     public var ctaType: InAppNotificationCtaType? {
         content.cta?.safeType
     }
