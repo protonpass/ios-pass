@@ -66,10 +66,8 @@ public struct InAppNotification: Decodable, Sendable, Equatable, Hashable, Ident
         content.promoContents?.startMinimized == true
     }
 
-    public func updateMinimizeState(_ isMinimized: Bool) -> Self {
-        var result = self
-        result.content.promoContents?.startMinimized = isMinimized
-        return result
+    public mutating func updateMinimizeState(_ isMinimized: Bool) {
+        content.promoContents?.startMinimized = isMinimized
     }
 }
 
