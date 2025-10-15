@@ -34,7 +34,7 @@ public protocol InAppNotificationManagerProtocol: Sendable {
     func updateNotificationState(notificationId: String, newState: InAppNotificationState) async throws
     func updateNotificationTime(_ date: Date) async throws
     func updateDisplayState(_ state: InAppNotificationDisplayState) async
-    func updatePromoMinimizationState(shouldBeMinimized: Bool)
+    func updateCurrentPromoState(_ state: InAppNotificationState)
 
     // MARK: - Qa only accessible function to test mock notifications
 
@@ -85,14 +85,6 @@ public extension InAppNotificationManager {
                 logger.error(error)
             }
         }
-    }
-
-    nonisolated func updatePromoMinimizationState(shouldBeMinimized: Bool) {
-        guard var notification = notificationToDisplay.value else {
-            return
-        }
-        notification.updateMinimizeState(shouldBeMinimized)
-        notificationToDisplay.send(notification)
     }
 
     func fetchNotifications(offsetId: String? = nil, reset: Bool = true) async throws -> [InAppNotification] {
@@ -165,6 +157,15 @@ public extension InAppNotificationManager {
     func updateDisplayState(_ state: InAppNotificationDisplayState) async {
         displayState = state
     }
+
+    nonisolated func updateCurrentPromoState(_ state: InAppNotificationState) {
+        guard var notification = notificationToDisplay.value,
+              notification.displayType == .promo else {
+            return
+        }
+        notification.state = state
+        notificationToDisplay.send(notification)
+    }
 }
 
 // MARK: - QA features
@@ -204,7 +205,6 @@ private extension InAppNotification {
         let validStartTime = startTime <= timestampDate
         let validEndTime = (endTime ?? .max) >= timestampDate
         let validTime = validStartTime && validEndTime
-        let isUnread = state == .unread
 
         return switch displayType {
         case .promo:

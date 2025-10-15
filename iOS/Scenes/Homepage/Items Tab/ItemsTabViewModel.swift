@@ -432,7 +432,7 @@ extension ItemsTabViewModel {
     }
 
     func showNotification() {
-        inAppNotificationManager.updatePromoMinimizationState(shouldBeMinimized: false)
+        inAppNotificationManager.updateCurrentPromoState(.unread)
     }
 
     // swiftlint:enable unhandled_throwing_task
