@@ -28,11 +28,9 @@ public enum InAppNotificationDisplayState: Sendable {
 }
 
 public protocol InAppNotificationManagerProtocol: Sendable {
-    var notificationToDisplayPublisher: CurrentValueSubject<InAppNotification?, Never> { get }
+    var notificationToDisplay: CurrentValueSubject<InAppNotification?, Never> { get }
 
     func refreshNotifications()
-    func fetchNotifications(offsetId: String?, reset: Bool) async throws -> [InAppNotification]
-    func getNotificationToDisplay() async throws -> InAppNotification?
     func updateNotificationState(notificationId: String, newState: InAppNotificationState) async throws
     func updateNotificationTime(_ date: Date) async throws
     func updateDisplayState(_ state: InAppNotificationDisplayState) async
@@ -45,12 +43,6 @@ public protocol InAppNotificationManagerProtocol: Sendable {
 
     // periphery:ignore
     @_spi(Test) func getCurrentNofications() async -> [InAppNotification]
-}
-
-public extension InAppNotificationManagerProtocol {
-    func fetchNotifications(offsetId: String? = nil, reset: Bool = true) async throws -> [InAppNotification] {
-        try await fetchNotifications(offsetId: offsetId, reset: reset)
-    }
 }
 
 public actor InAppNotificationManager: InAppNotificationManagerProtocol {
@@ -66,9 +58,7 @@ public actor InAppNotificationManager: InAppNotificationManagerProtocol {
 
     private var mockNotification: InAppNotification?
 
-    public nonisolated let notificationToDisplayPublisher: CurrentValueSubject<Entities.InAppNotification?,
-        Never> =
-        .init(nil)
+    public nonisolated let notificationToDisplay: CurrentValueSubject<InAppNotification?, Never> = .init(nil)
 
     public init(repository: any InAppNotificationRepositoryProtocol,
                 timeDatasource: any LocalNotificationTimeDatasourceProtocol,
@@ -88,9 +78,9 @@ public extension InAppNotificationManager {
         Task { [weak self] in
             guard let self else { return }
             do {
-                _ = try await fetchNotifications()
+                _ = try await fetchNotifications(offsetId: nil, reset: true)
                 let notification = try await getNotificationToDisplay()
-                notificationToDisplayPublisher.send(notification)
+                notificationToDisplay.send(notification)
             } catch {
                 logger.error(error)
             }
@@ -98,15 +88,14 @@ public extension InAppNotificationManager {
     }
 
     nonisolated func updatePromoMinimizationState(shouldBeMinimized: Bool) {
-        guard let notificationToDisplay = notificationToDisplayPublisher.value else {
+        guard var notification = notificationToDisplay.value else {
             return
         }
-        let updatedNotification = notificationToDisplay.updateMinimizeState(shouldBeMinimized)
-        notificationToDisplayPublisher.send(updatedNotification)
+        notification.updateMinimizeState(shouldBeMinimized)
+        notificationToDisplay.send(notification)
     }
 
-    func fetchNotifications(offsetId: String?,
-                            reset: Bool) async throws -> [InAppNotification] {
+    func fetchNotifications(offsetId: String?, reset: Bool) async throws -> [InAppNotification] {
         let userId = try await userManager.getActiveUserId()
         let paginatedNotifications = try await repository
             .getPaginatedNotifications(lastNotificationId: offsetId,
@@ -161,7 +150,7 @@ public extension InAppNotificationManager {
                                                       userId: userId)
         if newState == .dismissed {
             try await repository.remove(notificationId: notificationId, userId: userId)
-            notificationToDisplayPublisher.send(nil)
+            notificationToDisplay.send(nil)
         }
         if let index = notifications.firstIndex(where: { $0.id == notificationId }) {
             notifications[index].state = newState

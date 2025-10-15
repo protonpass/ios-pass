@@ -25,8 +25,8 @@ import Screens
 import SwiftUI
 
 extension HomepageCoordinator {
-    func setupInAppNotify() {
-        inAppNotificationManager.notificationToDisplayPublisher
+    func setUpInAppNotification() {
+        inAppNotificationManager.notificationToDisplay
             .receive(on: DispatchQueue.main)
             .compactMap(\.self)
             .filter { !$0.isMinimized }

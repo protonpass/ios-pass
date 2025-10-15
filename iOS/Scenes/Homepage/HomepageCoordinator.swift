@@ -293,7 +293,7 @@ private extension HomepageCoordinator {
             }
             .store(in: &cancellables)
 
-        setupInAppNotify()
+        setUpInAppNotification()
     }
 
     func start() {

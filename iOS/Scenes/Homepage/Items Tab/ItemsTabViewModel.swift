@@ -144,7 +144,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 // MARK: - Private APIs
 
 private extension ItemsTabViewModel {
-    // swiftlint:disable:next cyclomatic_complexity
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     func setUp() {
         appContentManager.$state
             .receive(on: DispatchQueue.main)
@@ -253,7 +253,7 @@ private extension ItemsTabViewModel {
             }
             .store(in: &cancellables)
 
-        inAppNotificationManager.notificationToDisplayPublisher
+        inAppNotificationManager.notificationToDisplay
             .receive(on: DispatchQueue.main)
             .sink { [weak self] notification in
                 guard let self else { return }
