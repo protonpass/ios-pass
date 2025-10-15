@@ -600,7 +600,7 @@ extension BaseCreateEditItemViewModel {
     func checkAndSave() {
         let dismissedUIElements = preferencesManager.appPreferences.unwrapped().dismissedUIElements
         let shouldShowSharedItemAlert = !dismissedUIElements.contains(.itemCreationInSharedVaultAlert)
-        if selectedVault.members > 0, shouldShowSharedItemAlert {
+        if selectedVault.shared, selectedVault.members > 0, shouldShowSharedItemAlert {
             showSharedItemCreationAlert = true
         } else {
             save()
