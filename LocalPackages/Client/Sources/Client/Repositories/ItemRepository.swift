@@ -117,7 +117,8 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     func updateItem(userId: String,
                     oldItem: Item,
                     newItemContent: any ProtobufableItemContentProtocol,
-                    shareId: String) async throws -> SymmetricallyEncryptedItem
+                    shareId: String,
+                    slNote: String?) async throws -> SymmetricallyEncryptedItem
 
     func upsertItems(userId: String, items: [Item], shareId: String) async throws
 
@@ -183,6 +184,19 @@ public extension ItemRepositoryProtocol {
         try await updateCachedAliasInfo(userId: userId,
                                         items: [encryptedItem],
                                         aliases: [alias])
+    }
+
+    // An overload to provide nil slNote
+    @discardableResult
+    func updateItem(userId: String,
+                    oldItem: Item,
+                    newItemContent: any ProtobufableItemContentProtocol,
+                    shareId: String) async throws -> SymmetricallyEncryptedItem {
+        try await updateItem(userId: userId,
+                             oldItem: oldItem,
+                             newItemContent: newItemContent,
+                             shareId: shareId,
+                             slNote: nil)
     }
 }
 
@@ -597,7 +611,8 @@ public extension ItemRepository {
     func updateItem(userId: String,
                     oldItem: Item,
                     newItemContent: any ProtobufableItemContentProtocol,
-                    shareId: String) async throws -> SymmetricallyEncryptedItem {
+                    shareId: String,
+                    slNote: String?) async throws -> SymmetricallyEncryptedItem {
         let itemId = oldItem.itemID
         logger.trace("Updating item \(itemId) for share \(shareId)")
 
@@ -624,7 +639,8 @@ public extension ItemRepository {
         let encryptedItem = try await symmetricallyEncrypt(itemRevision: updatedItemRevision,
                                                            shareId: shareId,
                                                            userId: userId,
-                                                           symmetricKey: symmetricKey)
+                                                           symmetricKey: symmetricKey,
+                                                           slNote: slNote)
         try await localDatasource.upsertItems([encryptedItem])
         itemsWereUpdated.send()
         try await refreshPinnedItemDataStream()
@@ -867,7 +883,8 @@ private extension ItemRepository {
     func symmetricallyEncrypt(itemRevision: Item,
                               shareId: String,
                               userId: String,
-                              symmetricKey: SymmetricKey) async throws -> SymmetricallyEncryptedItem {
+                              symmetricKey: SymmetricKey,
+                              slNote: String? = nil) async throws -> SymmetricallyEncryptedItem {
         let shareKey = try await passKeyManager.getShareKey(userId: userId,
                                                             shareId: shareId,
                                                             keyRotation: itemRevision.keyRotation)
@@ -882,12 +899,18 @@ private extension ItemRepository {
             false
         }
 
+        let encryptedSlNote: String? = if let slNote {
+            try symmetricKey.encrypt(slNote)
+        } else {
+            nil
+        }
+
         return .init(shareId: shareId,
                      userId: userId,
                      item: itemRevision,
                      encryptedContent: encryptedContent,
                      isLogInItem: isLogInItem,
-                     encryptedSimpleLoginNote: nil)
+                     encryptedSimpleLoginNote: encryptedSlNote)
     }
 
     func createItemRequest(itemContent: any ProtobufableItemContentProtocol,

@@ -513,20 +513,20 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         closureDelete()
     }
     // MARK: - updateItem
-    public var updateItemUserIdOldItemNewItemContentShareIdThrowableError24: Error?
+    public var updateItemUserIdOldItemNewItemContentShareIdSlNoteThrowableError24: Error?
     public var closureUpdateItem: () -> () = {}
     public var invokedUpdateItemfunction = false
     public var invokedUpdateItemCount = 0
-    public var invokedUpdateItemParameters: (userId: String, oldItem: Item, newItemContent: any ProtobufableItemContentProtocol, shareId: String)?
-    public var invokedUpdateItemParametersList = [(userId: String, oldItem: Item, newItemContent: any ProtobufableItemContentProtocol, shareId: String)]()
+    public var invokedUpdateItemParameters: (userId: String, oldItem: Item, newItemContent: any ProtobufableItemContentProtocol, shareId: String, slNote: String?)?
+    public var invokedUpdateItemParametersList = [(userId: String, oldItem: Item, newItemContent: any ProtobufableItemContentProtocol, shareId: String, slNote: String?)]()
     public var stubbedUpdateItemResult: SymmetricallyEncryptedItem!
 
-    public func updateItem(userId: String, oldItem: Item, newItemContent: any ProtobufableItemContentProtocol, shareId: String) async throws -> SymmetricallyEncryptedItem {
+    public func updateItem(userId: String, oldItem: Item, newItemContent: any ProtobufableItemContentProtocol, shareId: String, slNote: String?) async throws -> SymmetricallyEncryptedItem {
         invokedUpdateItemfunction = true
         invokedUpdateItemCount += 1
-        invokedUpdateItemParameters = (userId, oldItem, newItemContent, shareId)
-        invokedUpdateItemParametersList.append((userId, oldItem, newItemContent, shareId))
-        if let error = updateItemUserIdOldItemNewItemContentShareIdThrowableError24 {
+        invokedUpdateItemParameters = (userId, oldItem, newItemContent, shareId, slNote)
+        invokedUpdateItemParametersList.append((userId, oldItem, newItemContent, shareId, slNote))
+        if let error = updateItemUserIdOldItemNewItemContentShareIdSlNoteThrowableError24 {
             throw error
         }
         closureUpdateItem()
