@@ -111,6 +111,7 @@ public extension PassIcon {
     static let pinAngled = Self.icon(named: "PinAngled")
     static let pinAngledFilled = Self.icon(named: "PinAngledFilled")
     static let pinAngledSlash = Self.icon(named: "PinAngledSlash")
+    static let promoBadge = Self.icon(named: "PromoBadge")
     static let protonStamp = Self.icon(named: "ProtonStamp")
     static let scanner = Self.icon(named: "Scanner")
     static let shieldCheck = Self.icon(named: "ShieldCheck")

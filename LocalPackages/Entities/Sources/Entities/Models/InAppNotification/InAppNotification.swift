@@ -25,10 +25,9 @@ public struct InAppNotification: Decodable, Sendable, Equatable, Hashable, Ident
     public let notificationKey: String
     public let startTime: Int
     public let endTime: Int?
-    // Notification state. 0 = Unread, 1 = Read, 2 = Dismissed
-    public var state: Int
+    public var state: InAppNotificationState
     public let priority: Int
-    public let content: InAppNotificationContent
+    public var content: InAppNotificationContent
 
     public init(ID: String,
                 notificationKey: String,
@@ -41,7 +40,7 @@ public struct InAppNotification: Decodable, Sendable, Equatable, Hashable, Ident
         self.notificationKey = notificationKey
         self.startTime = startTime
         self.endTime = endTime
-        self.state = state
+        self.state = .init(rawValue: state) ?? .unread
         self.priority = priority
         self.content = content
     }
@@ -52,46 +51,35 @@ public struct InAppNotification: Decodable, Sendable, Equatable, Hashable, Ident
     }
 
     public var displayType: InAppNotificationDisplayType {
-        if content.displayType == 0 {
-            .banner
-        } else {
-            .modal
-        }
+        content.displayType
     }
 
     public var hasBeenRead: Bool {
-        state != InAppNotificationState.unread.rawValue
+        state != InAppNotificationState.unread
     }
 
-    public var cta: InAppNotificationCtaType? {
-        guard let cta = content.cta else { return nil }
-        if cta.type == "internal_navigation" {
-            return .internalNavigation(cta.ref)
-        } else {
-            return .externalNavigation(cta.ref)
-        }
+    public var ctaType: InAppNotificationCtaType? {
+        content.cta?.safeType
     }
 
-    public var removedState: InAppNotificationState {
-        if displayType == .banner {
-            .read
-        } else {
-            .dismissed
-        }
+    public var isMinimized: Bool {
+        content.promoContents?.startMinimized == true
+    }
+
+    public mutating func updateMinimizeState(_ isMinimized: Bool) {
+        content.promoContents?.startMinimized = isMinimized
     }
 }
 
 public struct InAppNotificationContent: Decodable, Sendable, Equatable, Hashable {
     public let imageUrl: String?
-    //    0 = Banner, 1 = Modal.
-    //    Banner -> The small bar on the bottom
-    //    Modal -> Full screen in your face
-    public let displayType: Int
+    public let displayType: InAppNotificationDisplayType
     public let title: String
     public let message: String
     // Can be light or dark
     public let theme: String?
     public let cta: InAppNotificationCTA?
+    public var promoContents: InAppNotificationPromoContents?
 
     public var safeImageUrl: URL? {
         if let imageUrl, let url = URL(string: imageUrl) {
@@ -105,22 +93,37 @@ public struct InAppNotificationContent: Decodable, Sendable, Equatable, Hashable
                 title: String,
                 message: String,
                 theme: String?,
-                cta: InAppNotificationCTA?) {
+                cta: InAppNotificationCTA?,
+                promoContents: InAppNotificationPromoContents?) {
         self.imageUrl = imageUrl
-        self.displayType = displayType
+        self.displayType = .init(rawValue: displayType) ?? .banner
         self.title = title
         self.message = message
         self.theme = theme
         self.cta = cta
+        self.promoContents = promoContents
     }
 }
 
 public struct InAppNotificationCTA: Decodable, Sendable, Equatable, Hashable {
     public let text: String
-    // Action of the CTA. Can be either external_link | internal_navigation
+    /// Prefer using `safeType` for clearer semantic
     public let type: String
-    // Destination of the CTA. If type=external_link, it's a URL. If type=internal_navigation, it's a deeplink
     public let ref: String
+
+    public var safeType: InAppNotificationCtaType {
+        switch type {
+        case "external_link":
+            return .externalNavigation(urlString: ref)
+
+        case "internal_navigation":
+            return .internalNavigation(deeplink: ref)
+
+        default:
+            assertionFailure("Unknown CTA type \(type)")
+            return .externalNavigation(urlString: ref)
+        }
+    }
 
     public init(text: String, type: String, ref: String) {
         self.text = text
@@ -130,18 +133,61 @@ public struct InAppNotificationCTA: Decodable, Sendable, Equatable, Hashable {
 }
 
 public enum InAppNotificationCtaType: Sendable {
-    case internalNavigation(String)
-    case externalNavigation(String)
+    case internalNavigation(deeplink: String)
+    case externalNavigation(urlString: String)
 }
 
-public enum InAppNotificationDisplayType: Sendable {
-    case banner
-    case modal
+public enum InAppNotificationDisplayType: Int, Decodable, Sendable, CaseIterable {
+    /// Floating bottom banner
+    case banner = 0
+    /// Bottom sheet with dynamic height fitting its content
+    case modal = 1
+    /// Customized for promos (full screen cover on iPhone, full height sheet on iPad)
+    case promo = 2
 }
 
-public enum InAppNotificationState: Int, Sendable {
+public enum InAppNotificationState: Int, Decodable, Sendable, CaseIterable {
     case unread = 0
     case read = 1
     // Dismissed is the equivalent of delete for the back end should be used with modal
     case dismissed = 2
+}
+
+public struct InAppNotificationPromoContents: Decodable, Sendable, Equatable, Hashable {
+    /// Whether the promo should start minimized.
+    /// `true` means the image should be minimized from the start.
+    /// `false` means that the promo should initially be displayed and the user can minimize.
+    public var startMinimized: Bool
+    /// Text to show on the close promo link
+    public let closePromoText: String
+    /// Text to show when the promo is minimized
+    public let minimizedPromoText: String
+    public let lightThemeContents: InAppNotificationPromoThemedContents
+    public let darkThemeContents: InAppNotificationPromoThemedContents
+
+    public init(startMinimized: Bool,
+                closePromoText: String,
+                minimizedPromoText: String,
+                lightThemeContents: InAppNotificationPromoThemedContents,
+                darkThemeContents: InAppNotificationPromoThemedContents) {
+        self.startMinimized = startMinimized
+        self.closePromoText = closePromoText
+        self.minimizedPromoText = minimizedPromoText
+        self.lightThemeContents = lightThemeContents
+        self.darkThemeContents = darkThemeContents
+    }
+}
+
+public struct InAppNotificationPromoThemedContents: Decodable, Sendable, Equatable, Hashable {
+    public let backgroundImageUrl: String
+    public let contentImageUrl: String
+    public let closePromoTextColor: String
+
+    public init(backgroundImageUrl: String,
+                contentImageUrl: String,
+                closePromoTextColor: String) {
+        self.backgroundImageUrl = backgroundImageUrl
+        self.contentImageUrl = contentImageUrl
+        self.closePromoTextColor = closePromoTextColor
+    }
 }

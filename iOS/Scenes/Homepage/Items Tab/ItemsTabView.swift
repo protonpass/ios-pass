@@ -109,6 +109,7 @@ struct ItemsTabView: View {
                 ItemsTabTopBar(searchMode: $searchMode,
                                animationNamespace: animationNamespace,
                                isEditMode: $viewModel.isEditMode,
+                               showPromoBadge: viewModel.showPromoBadge,
                                onSearch: { searchMode = .all(viewModel.appContentManager.vaultSelection) },
                                onShowVaultList: { viewModel.presentVaultList() },
                                onPin: { viewModel.pinSelectedItems() },
@@ -124,7 +125,8 @@ struct ItemsTabView: View {
                                onRestore: { viewModel.restoreSelectedItems() },
                                onPermanentlyDelete: { viewModel.askForBulkPermanentDeleteConfirmation() },
                                onDisableAliases: { viewModel.disableSelectedAliases() },
-                               onEnableAliases: { viewModel.enableSelectedAliases() })
+                               onEnableAliases: { viewModel.enableSelectedAliases() },
+                               onPromoBadgeTapped: { viewModel.showNotification() })
                     .hidden(viewModel.noVaults)
 
                 if viewModel.showingUpgradeAppBanner {
