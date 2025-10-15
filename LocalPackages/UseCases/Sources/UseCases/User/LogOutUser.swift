@@ -158,14 +158,12 @@ private extension LogOutUser {
         async let removeUserData: Void = removeUserLocalData(userId: userId)
         _ = try await (removeUser, removeUserData)
 
-        try? await preferencesManager.updateAppPreferences(\.dismissedUIElements,
-                                                           value: Set<DismissibleUIElement>())
         // Removes all flags linked to user account
         featureFlagsRepository.resetFlags(for: userId)
         apiManager.removeApiService(for: userId)
         authManager.removeCredentials(userId: userId)
         try await accessRepository.loadAccesses()
-        DispatchQueue.main.async {
+        await MainActor.run {
             UIPasteboard.general.items = []
         }
     }
