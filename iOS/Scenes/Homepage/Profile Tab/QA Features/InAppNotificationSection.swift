@@ -28,14 +28,17 @@ import SwiftUI
 
 @available(iOS 17, *)
 struct InAppNotificationSection: View {
+    var onDismiss: () -> Void
+
     var body: some View {
-        NavigationLink(destination: { InAppNotificationView() },
+        NavigationLink(destination: { InAppNotificationView(onDismiss: onDismiss) },
                        label: { Text(verbatim: "Mock in-app notification") })
     }
 }
 
 @available(iOS 17, *)
 private struct InAppNotificationView: View {
+    var onDismiss: () -> Void
     @State private var viewModel = InAppNotificationViewModel()
 
     var body: some View {
@@ -56,6 +59,9 @@ private struct InAppNotificationView: View {
                 }
                 Button(action: viewModel.clearThreshold) {
                     Text(verbatim: "Clear last threshold")
+                }
+                Toggle(isOn: $viewModel.forceUsStore) {
+                    Text(verbatim: "Force US store")
                 }
             }
 
@@ -78,8 +84,9 @@ private struct InAppNotificationView: View {
 
                 Picker(selection: $viewModel.state,
                        content: {
-                           ForEach(QANotificationState.allCases, id: \.self) { state in
-                               Text(verbatim: state.rawValue).tag(state)
+                           ForEach(InAppNotificationState.allCases, id: \.self) { state in
+                               Text(verbatim: state.title)
+                                   .tag(state)
                            }
                        }, label: { Text(verbatim: "Notification State") })
 
@@ -111,8 +118,9 @@ private struct InAppNotificationView: View {
 
                 Picker(selection: $viewModel.displayType,
                        content: {
-                           ForEach(QADisplayType.allCases, id: \.self) { type in
-                               Text(verbatim: type.rawValue).tag(type)
+                           ForEach(InAppNotificationDisplayType.allCases, id: \.self) { type in
+                               Text(verbatim: type.title)
+                                   .tag(type)
                            }
                        }, label: { Text(verbatim: "Notification display type") })
             }
@@ -137,6 +145,45 @@ private struct InAppNotificationView: View {
                 }
             }
 
+            Section(content: {
+                Toggle(isOn: $viewModel.addPromoContents,
+                       label: { Text(verbatim: "Add promo content") })
+
+                if viewModel.addPromoContents {
+                    Toggle(isOn: $viewModel.promoContentsStartMinimized,
+                           label: { Text(verbatim: "Start minimized") })
+
+                    TextField(text: $viewModel.promoContentsClosePromoText,
+                              label: { Text(verbatim: "Close promo text") })
+
+                    TextField(text: $viewModel.promoContentsMinimizedPromoText,
+                              label: { Text(verbatim: "Minimize promo text") })
+
+                    TextField(text: $viewModel.promoContentsLightBackgroundImageUrl,
+                              label: { Text(verbatim: "Ligh background image URL") })
+
+                    TextField(text: $viewModel.promoContentsLightContentImageUrl,
+                              label: { Text(verbatim: "Ligh content image URL") })
+
+                    TextField(text: $viewModel.promoContentsLightContentClosePromoTextColor,
+                              label: { Text(verbatim: "Ligh content close promo text color") })
+
+                    TextField(text: $viewModel.promoContentsDarkBackgroundImageUrl,
+                              label: { Text(verbatim: "Dark background image URL") })
+
+                    TextField(text: $viewModel.promoContentsDarkContentImageUrl,
+                              label: { Text(verbatim: "Dark content image URL") })
+
+                    TextField(text: $viewModel.promoContentsDarkContentClosePromoTextColor,
+                              label: { Text(verbatim: "Dark content close promo text color") })
+                }
+            }, header: {
+                Text(verbatim: "Promo contents")
+                    .font(.headline.bold())
+            }, footer: {
+                Text(verbatim: "Only applicable to promo notification type")
+            })
+
             // swiftlint:disable:next line_length
             Text(verbatim: "Adding a mock notification will override the real ones. Don't forget to either kill the app or remove it if you want to test the real ones. To make the mock notification appear just send the app in background and come back to foreground")
 
@@ -149,7 +196,18 @@ private struct InAppNotificationView: View {
             }
         }
         .animation(.default, value: viewModel.addCta)
+        .animation(.default, value: viewModel.addPromoContents)
         .navigationTitle(Text(verbatim: "Password Policy Settings"))
+        .alert("Done",
+               isPresented: $viewModel.addedMockedNotification,
+               actions: { Button(action: onDismiss,
+                                 label: { Text("Close") }) },
+               message: { Text(verbatim: "Put the app to background and open it again.") })
+        .alert("Done",
+               isPresented: $viewModel.removedMockedNotification,
+               actions: { Button(action: {},
+                                 label: { Text("OK") }) },
+               message: { Text(verbatim: "Mocked notification is removed") })
     }
 }
 
@@ -158,36 +216,19 @@ private enum QACTAType: String, CaseIterable {
     case internalNavigation = "internal_navigation"
 }
 
-private enum QANotificationState: String, CaseIterable {
-    case unread
-    case read
-    case dismissed
-
-    var value: Int {
-        switch self {
-        case .unread: 0
-        case .read: 1
-        case .dismissed: 2
-        }
-    }
-}
-
-private enum QADisplayType: String, CaseIterable {
-    case modal
-    case banner
-
-    var value: Int {
-        switch self {
-        case .banner: 0
-        case .modal: 1
-        }
-    }
-}
-
 @available(iOS 17, *)
 @MainActor
 @Observable
 private final class InAppNotificationViewModel {
+    var forceUsStore = false {
+        didSet {
+            kSharedUserDefaults.set(forceUsStore, forKey: Constants.QA.forceUsStore)
+        }
+    }
+
+    var addedMockedNotification = false
+    var removedMockedNotification = false
+
     @ObservationIgnored
     @LazyInjected(\SharedServiceContainer.inAppNotificationManager)
     private var inAppNotificationManager
@@ -210,17 +251,15 @@ private final class InAppNotificationViewModel {
     var addEndTime = false
     var endDate = Date.now
     // Notification state. 0 = Unread, 1 = Read, 2 = Dismissed
-    var state: QANotificationState = .unread
+    var state: InAppNotificationState = .unread
     var priority: Int = 1
 
     // MARK: - InAppNotificationContent content
 
     var imageUrl: String =
         "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Wikipedia-logo-v2.svg/300px-Wikipedia-logo-v2.svg.png"
-    //    0 = Banner, 1 = Modal.
-    //    Banner -> The small bar on the bottom
-    //    Modal -> Full screen in your face
-    var displayType: QADisplayType = .banner
+
+    var displayType: InAppNotificationDisplayType = .banner
     var title: String = "Test notification"
     var message: String = "Message of the test notification"
     var addTheme = false
@@ -238,11 +277,25 @@ private final class InAppNotificationViewModel {
     // Destination of the CTA. If type=external_link, it's a URL. If type=internal_navigation, it's a deeplink
     var ref: String = "https://en.wikipedia.org/wiki/Wikipedia"
 
+    var addPromoContents = false
+    var promoContentsStartMinimized = false
+    var promoContentsClosePromoText = "Don't show this again"
+    var promoContentsMinimizedPromoText = "BF promo"
+    var promoContentsLightBackgroundImageUrl = "https://picsum.photos/seed/picsum/200/300"
+    var promoContentsLightContentImageUrl = "https://picsum.photos/seed/picsum/200/300"
+    // swiftlint:disable:next identifier_name
+    var promoContentsLightContentClosePromoTextColor = "#000000"
+    var promoContentsDarkBackgroundImageUrl = "https://picsum.photos/seed/picsum/200/300"
+    var promoContentsDarkContentImageUrl = "https://picsum.photos/seed/picsum/200/300"
+    // swiftlint:disable:next identifier_name
+    var promoContentsDarkContentClosePromoTextColor = "#FFFFFF"
+
     init() {
         Task { [weak self] in
             guard let self else { return }
             do {
                 let userId = try await userManager.getActiveUserId()
+                forceUsStore = kSharedUserDefaults.bool(forKey: Constants.QA.forceUsStore)
                 lastThreshold = try await localNotificationTimeDatasource.getNotificationTime(for: userId)
             } catch {
                 router.display(element: .errorMessage(error.localizedDescription))
@@ -269,26 +322,68 @@ private final class InAppNotificationViewModel {
             if addCta {
                 cta = InAppNotificationCTA(text: text, type: type.rawValue, ref: ref)
             }
+
+            let lightThemeContents =
+                InAppNotificationPromoThemedContents(backgroundImageUrl: promoContentsLightBackgroundImageUrl,
+                                                     contentImageUrl: promoContentsLightContentImageUrl,
+                                                     closePromoTextColor: promoContentsLightContentClosePromoTextColor)
+
+            let darkThemeContents =
+                InAppNotificationPromoThemedContents(backgroundImageUrl: promoContentsDarkBackgroundImageUrl,
+                                                     contentImageUrl: promoContentsDarkContentImageUrl,
+                                                     closePromoTextColor: promoContentsDarkContentClosePromoTextColor)
+
+            let promoContents =
+                InAppNotificationPromoContents(startMinimized: promoContentsStartMinimized,
+                                               closePromoText: promoContentsClosePromoText,
+                                               minimizedPromoText: promoContentsMinimizedPromoText,
+                                               lightThemeContents: lightThemeContents,
+                                               darkThemeContents: darkThemeContents)
+
             let content = InAppNotificationContent(imageUrl: imageUrl,
-                                                   displayType: displayType.value,
+                                                   displayType: displayType.rawValue,
                                                    title: title,
                                                    message: message,
                                                    theme: theme,
-                                                   cta: cta)
+                                                   cta: cta,
+                                                   promoContents: promoContents)
+
             let notification = InAppNotification(ID: UUID().uuidString,
                                                  notificationKey: notificationKey,
                                                  startTime: startDate.timeIntervalSince1970.toInt,
                                                  endTime: addEndTime ? endDate.timeIntervalSince1970.toInt : nil,
-                                                 state: state.value,
+                                                 state: state.rawValue,
                                                  priority: priority,
                                                  content: content)
             await inAppNotificationManager.addMockNotification(notification: notification)
+            addedMockedNotification = true
         }
     }
 
     func removeNotification() {
         Task {
             await inAppNotificationManager.removeMockNotification()
+            removedMockedNotification = true
+        }
+    }
+}
+
+private extension InAppNotificationDisplayType {
+    var title: String {
+        switch self {
+        case .banner: "Banner"
+        case .modal: "Modal"
+        case .promo: "Promo"
+        }
+    }
+}
+
+private extension InAppNotificationState {
+    var title: String {
+        switch self {
+        case .unread: "Unread"
+        case .read: "Read"
+        case .dismissed: "Dismissed"
         }
     }
 }

@@ -45,18 +45,46 @@ public extension InAppNotificationContent {
                      title: String = "Sample Notification",
                      message: String = "This is a sample in-app notification message.",
                      theme: String? = "light",
-                     cta: InAppNotificationCTA? = InAppNotificationCTA.mock()) -> InAppNotificationContent {
+                     cta: InAppNotificationCTA? = .mock(),
+                     promoContents: InAppNotificationPromoContents? = .mock()) -> Self {
         InAppNotificationContent(imageUrl: imageUrl,
-                                 displayType: 0,
+                                 displayType: displayType,
                                  title:  title,
                                  message: message,
                                  theme: theme,
-                                 cta: cta)
+                                 cta: cta,
+                                 promoContents: promoContents)
     }
 }
 
 public extension InAppNotificationCTA {
-    static func mock(text: String = "Learn More", type: String = "external_link", ref: String = "https://example.com") -> InAppNotificationCTA {
+    static func mock(text: String = "Learn More",
+                     type: String = "external_link",
+                     ref: String = "https://example.com") -> InAppNotificationCTA {
         InAppNotificationCTA(text: text, type: type, ref: ref)
+    }
+}
+
+public extension InAppNotificationPromoContents {
+    static func mock(startMinimized: Bool = false,
+                     closePromoText: String = "Close promo text",
+                     minimizedPromoText: String = "Minimize promo text",
+                     lightThemeContents: InAppNotificationPromoThemedContents = .mock(),
+                     darkThemeContents: InAppNotificationPromoThemedContents = .mock()) -> Self {
+        .init(startMinimized: startMinimized,
+              closePromoText: closePromoText,
+              minimizedPromoText: minimizedPromoText,
+              lightThemeContents: lightThemeContents,
+              darkThemeContents: darkThemeContents)
+    }
+}
+
+public extension InAppNotificationPromoThemedContents {
+    static func mock(backgroundImageUrl: String = "https://example.com/image.png",
+                     contentImageUrl: String = "https://example.com/image.png",
+                     closePromoTextColor: String = "FFFFFF") -> Self {
+        .init(backgroundImageUrl: backgroundImageUrl,
+              contentImageUrl: contentImageUrl,
+              closePromoTextColor: closePromoTextColor)
     }
 }

@@ -48,6 +48,20 @@ extension InAppNotificationEntity {
     @NSManaged var ctaType: String?
     @NSManaged var ctaRef: String?
     @NSManaged var priority: Int64
+
+    // Promo contents
+    @NSManaged var hasPromoContents: Bool
+    @NSManaged var promoContentsStartMinimized: Bool
+    @NSManaged var promoContentsClosePromoText: String?
+    @NSManaged var promoContentsMinimizedPromoText: String?
+    @NSManaged var promoContentsLightBackgroundImageUrl: String?
+    @NSManaged var promoContentsLightContentImageUrl: String?
+    // swiftlint:disable:next identifier_name
+    @NSManaged var promoContentsLightContentClosePromoTextColor: String?
+    @NSManaged var promoContentsDarkBackgroundImageUrl: String?
+    @NSManaged var promoContentsDarkContentImageUrl: String?
+    // swiftlint:disable:next identifier_name
+    @NSManaged var promoContentsDarkContentClosePromoTextColor: String?
 }
 
 extension InAppNotificationEntity {
@@ -58,12 +72,38 @@ extension InAppNotificationEntity {
             nil
         }
 
+        let promoContents: InAppNotificationPromoContents?
+            = if hasPromoContents,
+            let promoContentsClosePromoText,
+            let promoContentsMinimizedPromoText,
+            let promoContentsLightBackgroundImageUrl,
+            let promoContentsLightContentImageUrl,
+            // swiftlint:disable:next identifier_name
+            let promoContentsLightContentClosePromoTextColor,
+            let promoContentsDarkBackgroundImageUrl,
+            let promoContentsDarkContentImageUrl,
+            // swiftlint:disable:next identifier_name
+            let promoContentsDarkContentClosePromoTextColor {
+            .init(startMinimized: promoContentsStartMinimized,
+                  closePromoText: promoContentsClosePromoText,
+                  minimizedPromoText: promoContentsMinimizedPromoText,
+                  lightThemeContents: .init(backgroundImageUrl: promoContentsLightBackgroundImageUrl,
+                                            contentImageUrl: promoContentsLightContentImageUrl,
+                                            closePromoTextColor: promoContentsLightContentClosePromoTextColor),
+                  darkThemeContents: .init(backgroundImageUrl: promoContentsDarkBackgroundImageUrl,
+                                           contentImageUrl: promoContentsDarkContentImageUrl,
+                                           closePromoTextColor: promoContentsDarkContentClosePromoTextColor))
+        } else {
+            nil
+        }
+
         let content = InAppNotificationContent(imageUrl: imageUrl,
                                                displayType: Int(displayType),
                                                title: title,
                                                message: message,
                                                theme: theme,
-                                               cta: cta)
+                                               cta: cta,
+                                               promoContents: promoContents)
         return InAppNotification(ID: id,
                                  notificationKey: notificationKey,
                                  startTime: Int(startTime),
@@ -79,9 +119,9 @@ extension InAppNotificationEntity {
         notificationKey = notification.notificationKey
         startTime = Int64(notification.startTime)
         endTime = Int64(notification.endTime ?? -1)
-        state = Int64(notification.state)
+        state = Int64(notification.state.rawValue)
         imageUrl = notification.content.imageUrl
-        displayType = Int64(notification.content.displayType)
+        displayType = Int64(notification.displayType.rawValue)
         title = notification.content.title
         message = notification.content.message
         theme = notification.content.theme
@@ -90,5 +130,17 @@ extension InAppNotificationEntity {
         ctaText = notification.content.cta?.text
         ctaType = notification.content.cta?.type
         priority = Int64(notification.priority)
+
+        let promo = notification.content.promoContents
+        hasPromoContents = promo != nil
+        promoContentsStartMinimized = promo?.startMinimized ?? false
+        promoContentsClosePromoText = promo?.closePromoText
+        promoContentsMinimizedPromoText = promo?.minimizedPromoText
+        promoContentsLightBackgroundImageUrl = promo?.lightThemeContents.backgroundImageUrl
+        promoContentsLightContentImageUrl = promo?.lightThemeContents.contentImageUrl
+        promoContentsLightContentClosePromoTextColor = promo?.lightThemeContents.closePromoTextColor
+        promoContentsDarkBackgroundImageUrl = promo?.darkThemeContents.backgroundImageUrl
+        promoContentsDarkContentImageUrl = promo?.darkThemeContents.contentImageUrl
+        promoContentsDarkContentClosePromoTextColor = promo?.darkThemeContents.closePromoTextColor
     }
 }
