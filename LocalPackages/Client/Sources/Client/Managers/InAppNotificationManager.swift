@@ -201,8 +201,16 @@ private extension InAppNotificationManager {
 
 private extension InAppNotification {
     func canBeDisplayed(timestampDate: Int) -> Bool {
-        !hasBeenRead &&
-            startTime <= timestampDate &&
-            (endTime ?? .max) >= timestampDate
+        let validStartTime = startTime <= timestampDate
+        let validEndTime = (endTime ?? .max) >= timestampDate
+        let validTime = validStartTime && validEndTime
+        let isUnread = state == .unread
+
+        return switch displayType {
+        case .promo:
+            validTime
+        case .banner, .modal:
+            isUnread && validTime
+        }
     }
 }
