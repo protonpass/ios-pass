@@ -1,8 +1,10 @@
-# Version x.x.x
+# Version 1.17.9
 - Fixed password generator partially hidden behind the keyboard on iOS 26
+- Show a warning when creating or editing items in shared vaults
 
 Others:
 - Removed feature discovery & flag for custom items
+- Added support for promo in-app notifications
 
 # Version 1.17.8
 Fixed un-tappable create item button in the AutoFill extension on iOS 26
