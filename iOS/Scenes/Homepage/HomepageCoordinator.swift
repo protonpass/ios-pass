@@ -898,19 +898,20 @@ extension HomepageCoordinator {
     func startUpgradeFlow() {
         dismissAllViewControllers(animated: true) { [weak self] in
             guard let self else { return }
-            paymentsManager.manageSubscription(isUpgrading: true) { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case let .success(result):
-                    if result {
-                        refreshAccessAndMonitorStateSync()
-                    } else {
-                        logger.debug("Payment is done but no plan is purchased")
-                    }
-                case let .failure(error):
-                    handle(error: error)
-                }
-            }
+            presentOnboardView(forced: true, mode: .upsell)
+//            paymentsManager.manageSubscription(isUpgrading: true) { [weak self] result in
+//                guard let self else { return }
+//                switch result {
+//                case let .success(result):
+//                    if result {
+//                        refreshAccessAndMonitorStateSync()
+//                    } else {
+//                        logger.debug("Payment is done but no plan is purchased")
+//                    }
+//                case let .failure(error):
+//                    handle(error: error)
+//                }
+//            }
         }
     }
 
@@ -1316,7 +1317,7 @@ extension HomepageCoordinator {
                 // New user just registered after an invitation
                 presentAwaitAccessConfirmationView()
             } else {
-                presentOnboardView(forced: false)
+                presentOnboardView(forced: false, mode: .onboarding)
             }
         }
     }
@@ -1330,7 +1331,7 @@ private extension HomepageCoordinator {
             guard let self else { return }
             dismissAllViewControllers(animated: true) { [weak self] in
                 guard let self else { return }
-                presentOnboardView(forced: true)
+                presentOnboardView(forced: true, mode: .onboarding)
             }
         }
         let vc = UIHostingController(rootView: view)
@@ -1339,9 +1340,9 @@ private extension HomepageCoordinator {
         topMostViewController.present(vc, animated: true)
     }
 
-    func presentOnboardView(forced: Bool) {
+    func presentOnboardView(forced: Bool, mode: OnboardingDisplay) {
         guard forced || !getAppPreferences().onboarded else { return }
-        let view = OnboardingView(handler: onboardingHandler)
+        let view = OnboardingView(handler: onboardingHandler, mode: mode)
         let vc = UIHostingController(rootView: view)
         vc.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
         vc.isModalInPresentation = true
