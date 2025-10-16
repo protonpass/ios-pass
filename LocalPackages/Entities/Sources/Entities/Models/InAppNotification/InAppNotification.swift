@@ -27,7 +27,7 @@ public struct InAppNotification: Decodable, Sendable, Equatable, Hashable, Ident
     public let endTime: Int?
     public var state: InAppNotificationState
     public let priority: Int
-    public var content: InAppNotificationContent
+    public let content: InAppNotificationContent
 
     public init(ID: String,
                 notificationKey: String,
@@ -62,8 +62,8 @@ public struct InAppNotification: Decodable, Sendable, Equatable, Hashable, Ident
         content.promoContents?.startMinimized == true
     }
 
-    public mutating func updateMinimizeState(_ isMinimized: Bool) {
-        content.promoContents?.startMinimized = isMinimized
+    public var isUnread: Bool {
+        state == .unread
     }
 }
 
@@ -75,7 +75,7 @@ public struct InAppNotificationContent: Decodable, Sendable, Equatable, Hashable
     // Can be light or dark
     public let theme: String?
     public let cta: InAppNotificationCTA?
-    public var promoContents: InAppNotificationPromoContents?
+    public let promoContents: InAppNotificationPromoContents?
 
     public var safeImageUrl: URL? {
         if let imageUrl, let url = URL(string: imageUrl) {

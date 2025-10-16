@@ -29,7 +29,7 @@ extension HomepageCoordinator {
         inAppNotificationManager.notificationToDisplay
             .receive(on: DispatchQueue.main)
             .compactMap(\.self)
-            .filter { !$0.isMinimized }
+            .filter(\.isUnread)
             .sink { [weak self] notification in
                 guard let self else { return }
                 display(notification,
