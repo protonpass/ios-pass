@@ -98,7 +98,7 @@ enum OnboardStep: Sendable, Equatable {
     case firstLoginCreated(OnboardFirstLoginPayload)
 }
 
-public enum OnboardingDisplay: Equatable {
+public enum OnboardingDisplayMode: Equatable {
     case onboarding
     case upsell
 }
@@ -115,10 +115,10 @@ final class OnboardingViewModel: ObservableObject {
     private weak var datasource: (any OnboardingDatasource)?
     private weak var delegate: (any OnboardingDelegate)?
 
-    let mode: OnboardingDisplay
+    let mode: OnboardingDisplayMode
 
     init(handler: OnboardingHandling?,
-         mode: OnboardingDisplay) {
+         mode: OnboardingDisplayMode) {
         datasource = handler
         delegate = handler
         self.mode = mode
