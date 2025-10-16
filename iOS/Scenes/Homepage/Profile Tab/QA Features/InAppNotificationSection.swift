@@ -197,7 +197,7 @@ private struct InAppNotificationView: View {
         }
         .animation(.default, value: viewModel.addCta)
         .animation(.default, value: viewModel.addPromoContents)
-        .navigationTitle(Text(verbatim: "Password Policy Settings"))
+        .navigationTitle(Text(verbatim: "In-App Notification Settings"))
         .alert("Done",
                isPresented: $viewModel.addedMockedNotification,
                actions: { Button(action: onDismiss,
