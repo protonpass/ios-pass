@@ -53,7 +53,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     // Injected & self-initialized properties
     let logger = resolve(\SharedToolingContainer.logger)
-    private let paymentsManager = resolve(\ServiceContainer.paymentManager)
     let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
     let urlOpener = UrlOpener()
@@ -902,6 +901,7 @@ extension HomepageCoordinator {
         }
     }
 
+    // periphery:ignore
     func startUpsellingFlow(configuration: UpsellingViewConfiguration, dismissal: SheetDismissal) {
         // We are skipping the intermediate feature explanation screens in upsell flow
         // This is temporary until we have the new designs for these steps
