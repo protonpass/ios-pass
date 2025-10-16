@@ -98,6 +98,11 @@ enum OnboardStep: Sendable, Equatable {
     case firstLoginCreated(OnboardFirstLoginPayload)
 }
 
+public enum OnboardingDisplay: Equatable {
+    case onboarding
+    case upsell
+}
+
 @MainActor
 final class OnboardingViewModel: ObservableObject {
     @Published private(set) var currentStep: FetchableObject<OnboardStep> = .fetching
@@ -110,9 +115,13 @@ final class OnboardingViewModel: ObservableObject {
     private weak var datasource: (any OnboardingDatasource)?
     private weak var delegate: (any OnboardingDelegate)?
 
-    init(handler: OnboardingHandling?) {
+    let mode: OnboardingDisplay
+
+    init(handler: OnboardingHandling?,
+         mode: OnboardingDisplay) {
         datasource = handler
         delegate = handler
+        self.mode = mode
     }
 }
 
@@ -128,9 +137,9 @@ extension OnboardingViewModel {
 
             if let plans = try await datasource.getPassPlans() {
                 currentStep = .fetched(.payment(plans))
-            } else if let availableBiometryType, availableBiometryType != .none {
+            } else if let availableBiometryType, availableBiometryType != .none, mode == .onboarding {
                 currentStep = .fetched(.biometric(availableBiometryType))
-            } else {
+            } else if mode == .onboarding {
                 currentStep = .fetched(.autofill)
             }
         } catch {
@@ -142,7 +151,7 @@ extension OnboardingViewModel {
     /// `false` if no more steps so the onboarding process could be ended
     /// `isManual` means triggered by user (manually skip the step)
     func goNext(isManual: Bool = false) async -> Bool {
-        guard let delegate, let datasource else { return false }
+        guard let delegate, let datasource, mode == .onboarding else { return false }
 
         guard let step = currentStep.fetchedObject else {
             assertionFailure("Current step is not initialized")
