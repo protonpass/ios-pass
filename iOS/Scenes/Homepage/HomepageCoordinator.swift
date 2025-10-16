@@ -899,48 +899,39 @@ extension HomepageCoordinator {
         dismissAllViewControllers(animated: true) { [weak self] in
             guard let self else { return }
             presentOnboardView(forced: true, mode: .upsell)
-//            paymentsManager.manageSubscription(isUpgrading: true) { [weak self] result in
-//                guard let self else { return }
-//                switch result {
-//                case let .success(result):
-//                    if result {
-//                        refreshAccessAndMonitorStateSync()
-//                    } else {
-//                        logger.debug("Payment is done but no plan is purchased")
-//                    }
-//                case let .failure(error):
-//                    handle(error: error)
-//                }
-//            }
         }
     }
 
     func startUpsellingFlow(configuration: UpsellingViewConfiguration, dismissal: SheetDismissal) {
-        let view = UpsellingView(configuration: configuration) { [weak self] in
-            guard let self else {
-                return
-            }
-            startUpgradeFlow()
-        }
-
-        let completion: () -> Void = { [weak self] in
-            guard let self else {
-                return
-            }
-            let viewController = UIHostingController(rootView: view)
-
-            viewController.sheetPresentationController?.prefersGrabberVisible = false
-            present(viewController)
-        }
-
-        switch dismissal {
-        case .none:
-            present(view)
-        case .topMost:
-            dismissTopMostViewController(animated: true, completion: completion)
-        case .all:
-            dismissAllViewControllers(animated: true, completion: completion)
-        }
+        // We are skipping the intermediate feature explanation screens in upsell flow
+        // This is temporary until we have the new designs for these steps
+        // We are redirecting the user directly to the payment screen.
+        startUpgradeFlow()
+//        let view = UpsellingView(configuration: configuration) { [weak self] in
+//            guard let self else {
+//                return
+//            }
+//            startUpgradeFlow()
+//        }
+//
+//        let completion: () -> Void = { [weak self] in
+//            guard let self else {
+//                return
+//            }
+//            let viewController = UIHostingController(rootView: view)
+//
+//            viewController.sheetPresentationController?.prefersGrabberVisible = false
+//            present(viewController)
+//        }
+//
+//        switch dismissal {
+//        case .none:
+//            present(view)
+//        case .topMost:
+//            dismissTopMostViewController(animated: true, completion: completion)
+//        case .all:
+//            dismissAllViewControllers(animated: true, completion: completion)
+//        }
     }
 
     func displaySuccessBanner(with message: String?, and config: NavigationConfiguration?) {
@@ -1340,7 +1331,7 @@ private extension HomepageCoordinator {
         topMostViewController.present(vc, animated: true)
     }
 
-    func presentOnboardView(forced: Bool, mode: OnboardingDisplay) {
+    func presentOnboardView(forced: Bool, mode: OnboardingDisplayMode) {
         guard forced || !getAppPreferences().onboarded else { return }
         let view = OnboardingView(handler: onboardingHandler, mode: mode)
         let vc = UIHostingController(rootView: view)

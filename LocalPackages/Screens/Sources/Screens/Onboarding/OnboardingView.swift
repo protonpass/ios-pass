@@ -39,7 +39,7 @@ public struct OnboardingView: View {
                               onSave: () -> Void)
     }
 
-    public init(handler: OnboardingHandling?, mode: OnboardingDisplay) {
+    public init(handler: OnboardingHandling?, mode: OnboardingDisplayMode) {
         _viewModel = .init(wrappedValue: .init(handler: handler, mode: mode))
     }
 
