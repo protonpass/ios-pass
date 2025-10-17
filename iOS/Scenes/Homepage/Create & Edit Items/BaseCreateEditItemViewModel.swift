@@ -116,6 +116,13 @@ struct AddCustomFieldPayload: Sendable {
     let sectionId: String?
 }
 
+struct AdditionalItemEditResult: Sendable {
+    let edited: Bool
+    let slNote: String?
+
+    static var `default`: Self { .init(edited: false, slNote: nil) }
+}
+
 @MainActor
 class BaseCreateEditItemViewModel: ObservableObject {
     @Published var title = ""
@@ -173,7 +180,6 @@ class BaseCreateEditItemViewModel: ObservableObject {
     @LazyInjected(\SharedServiceContainer.userManager) var userManager
     @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
     @LazyInjected(\SharedRepositoryContainer.fileAttachmentRepository) private var fileRepository
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
     @LazyInjected(\SharedUseCasesContainer.generateDatedFileName) private var generateDatedFileName
     @LazyInjected(\SharedUseCasesContainer.writeToUrl) private var writeToUrl
     @LazyInjected(\SharedUseCasesContainer.getFileSize) private var getFileSize
@@ -193,15 +199,7 @@ class BaseCreateEditItemViewModel: ObservableObject {
     }
 
     var supportedCustomFieldTypes: [CustomFieldType] {
-        var allCases = CustomFieldType.allCases
-        if !customTypeEnabled {
-            allCases.removeAll { $0 == .timestamp }
-        }
-        return allCases
-    }
-
-    var customTypeEnabled: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passCustomTypeV1)
+        CustomFieldType.allCases
     }
 
     var fileUiModels: [FileAttachmentUiModel] {
@@ -311,7 +309,7 @@ class BaseCreateEditItemViewModel: ObservableObject {
         }
     }
 
-    func additionalEdit() async throws -> Bool { false }
+    func additionalEdit() async throws -> AdditionalItemEditResult { .default }
 
     func generateAliasCreationInfo() -> AliasCreationInfo? { nil }
     func generateAliasItemContent() -> ItemContentProtobuf? { nil }
@@ -504,7 +502,8 @@ private extension BaseCreateEditItemViewModel {
 
     /// Return `true` if item is edited, `false` otherwise
     func editItem(oldItemContent: ItemContent) async throws -> Bool {
-        var edited = try await additionalEdit()
+        var editResult = try await additionalEdit()
+        var edited = editResult.edited
         let itemId = oldItemContent.itemId
         let shareId = oldItemContent.shareId
         guard let oldItem = try await itemRepository.getItem(shareId: shareId,
@@ -525,7 +524,8 @@ private extension BaseCreateEditItemViewModel {
             updatedItem = try await itemRepository.updateItem(userId: oldItem.userId,
                                                               oldItem: oldItem.item,
                                                               newItemContent: newItemContent,
-                                                              shareId: oldItem.shareId)
+                                                              shareId: oldItem.shareId,
+                                                              slNote: editResult.slNote)
             edited = true
         }
 
@@ -609,7 +609,7 @@ extension BaseCreateEditItemViewModel {
     func checkAndSave() {
         let dismissedUIElements = preferencesManager.appPreferences.unwrapped().dismissedUIElements
         let shouldShowSharedItemAlert = !dismissedUIElements.contains(.itemCreationInSharedVaultAlert)
-        if selectedVault.members > 0, shouldShowSharedItemAlert {
+        if selectedVault.shared, selectedVault.members > 0, shouldShowSharedItemAlert {
             showSharedItemCreationAlert = true
         } else {
             save()

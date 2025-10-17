@@ -21,6 +21,7 @@
 @preconcurrency import Combine
 import Core
 import Entities
+import StoreKit
 
 public protocol InAppNotificationRepositoryProtocol: AnyObject, Sendable {
     func getPaginatedNotifications(lastNotificationId: String?, userId: String) async throws
@@ -37,20 +38,33 @@ public actor InAppNotificationRepository: InAppNotificationRepositoryProtocol {
     private let localDatasource: any LocalInAppNotificationDatasourceProtocol
     private let remoteDatasource: any RemoteInAppNotificationDatasourceProtocol
     private let logger: Logger
+    private let bundle: Bundle
+    private let userDefaults: UserDefaults
 
     public init(localDatasource: any LocalInAppNotificationDatasourceProtocol,
                 remoteDatasource: any RemoteInAppNotificationDatasourceProtocol,
-                logManager: any LogManagerProtocol) {
+                logManager: any LogManagerProtocol,
+                bundle: Bundle,
+                userDefaults: UserDefaults) {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         logger = .init(manager: logManager)
+        self.bundle = bundle
+        self.userDefaults = userDefaults
     }
 
     public func getPaginatedNotifications(lastNotificationId: String?,
                                           userId: String) async throws -> PaginatedInAppNotifications {
         logger.trace("Fetching all user remote in app notification for user id: \(userId)")
-        let notifs = try await remoteDatasource.getNotifications(lastNotificationId: lastNotificationId,
-                                                                 userId: userId)
+        let storeFront = await Storefront.current
+        let countryCode = if bundle.isQaBuild, userDefaults.bool(forKey: Constants.QA.forceUsStore) {
+            "USA"
+        } else {
+            storeFront?.countryCode
+        }
+        let notifs = try await remoteDatasource.getNotifications(userId: userId,
+                                                                 countryCode: countryCode,
+                                                                 lastNotificationId: lastNotificationId)
         return notifs
     }
 

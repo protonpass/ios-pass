@@ -70,8 +70,7 @@ struct SearchResultsView: View {
             topVaultSelection
                 .padding(.bottom, 12)
             SearchResultChips(selectedType: $selectedType,
-                              itemCount: viewModel.itemCount,
-                              customItemEnabled: viewModel.customItemEnabled)
+                              itemCount: viewModel.itemCount)
             topBarSearchInformations
             if useSwiftUIList {
                 searchListItems

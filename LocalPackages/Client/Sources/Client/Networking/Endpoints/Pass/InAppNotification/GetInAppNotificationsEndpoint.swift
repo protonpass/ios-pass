@@ -33,11 +33,16 @@ struct GetInAppNotificationsEndpoint: Endpoint, @unchecked Sendable {
     var path: String
     var parameters: [String: Any]?
 
-    init(lastNotificationId: String? = nil) {
+    init(countryCode: String?, lastNotificationId: String? = nil) {
         debugDescription = "Get in app notifications"
         path = "/pass/v1/notification"
-        if let lastNotificationId {
-            parameters = ["Since": lastNotificationId]
+        var parameters: [String: String] = [:]
+        if let countryCode {
+            parameters["CountryCode"] = countryCode
         }
+        if let lastNotificationId {
+            parameters["Since"] = lastNotificationId
+        }
+        self.parameters = parameters
     }
 }

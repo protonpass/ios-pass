@@ -85,6 +85,7 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.pinAngled
         _ = PassIcon.pinAngledFilled
         _ = PassIcon.pinAngledSlash
+        _ = PassIcon.promoBadge
         _ = PassIcon.protonStamp
         _ = PassIcon.scanner
         _ = PassIcon.shieldCheck
