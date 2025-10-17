@@ -101,7 +101,6 @@ public extension InviteRepository {
 
     // swiftlint:disable:next todo
     // TODO: Could be removed once migrated to user event
-    // TODO: Check if group need the same
     func getPendingInvitesForUser() async throws -> [UserInvite] {
         logger.trace("Getting all pending invites for user")
         do {
@@ -116,12 +115,13 @@ public extension InviteRepository {
     }
 
     func acceptInvite(_ invite: InviteType, and keys: [ItemKey]) async throws -> Share? {
+        let userId = try await userManager.getActiveUserId()
+        let inviteToken = invite.inviteToken
+        logger.trace("Accepting invite \(inviteToken)")
+        let request = AcceptInviteRequest(keys: keys)
+
         switch invite {
         case let .user(invite):
-            let inviteToken = invite.inviteToken
-            logger.trace("Accepting invite \(inviteToken)")
-            let request = AcceptInviteRequest(keys: keys)
-            let userId = try await userManager.getActiveUserId()
             do {
                 let share = try await remoteDatasource.acceptInvite(userId: userId,
                                                                     inviteToken: inviteToken,
@@ -138,12 +138,6 @@ public extension InviteRepository {
                 throw error
             }
         case let .group(invite):
-            // TODO: change logic for group invite
-
-            let inviteToken = invite.inviteToken
-            logger.trace("Accepting invite \(inviteToken)")
-            let request = AcceptInviteRequest(keys: keys)
-            let userId = try await userManager.getActiveUserId()
             do {
                 _ = try await remoteDatasource.acceptGroupInvite(userId: userId,
                                                                  inviteToken: inviteToken,
@@ -163,11 +157,12 @@ public extension InviteRepository {
     }
 
     func rejectInvite(_ invite: InviteType) async throws -> Bool {
+        let userId = try await userManager.getActiveUserId()
+        let inviteToken = invite.inviteToken
+        logger.trace("Reject invite \(inviteToken)")
+
         switch invite {
         case let .user(invite):
-            let inviteToken = invite.inviteToken
-            logger.trace("Reject invite \(inviteToken)")
-            let userId = try await userManager.getActiveUserId()
             do {
                 let rejectedStatus = try await remoteDatasource.rejectInvite(userId: userId,
                                                                              inviteToken: inviteToken)
@@ -182,11 +177,21 @@ public extension InviteRepository {
                 }
                 throw error
             }
-        // TODO: implement group reject
         case let .group(invite):
-            let inviteToken = invite.inviteToken
-            logger.trace("Reject invite \(inviteToken)")
-            return false
+            do {
+                let rejectedStatus = try await remoteDatasource.rejectGroupInvite(userId: userId,
+                                                                                  inviteToken: inviteToken)
+                logger.trace("Group Invite rejection status \(rejectedStatus)")
+                return rejectedStatus
+            } catch {
+                if error.asPassApiError == .invalidValidation {
+                    logger.warning("Failed to reject non-existing invite \(inviteToken)")
+                    // Invite doesn't exist anymore (stale cache or race condition)
+                    try await localDatasource.removeGroupInvites(userId: userId, invite: invite)
+                    try await loadLocalInvites(userId: userId)
+                }
+                throw error
+            }
         }
     }
 

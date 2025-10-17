@@ -40,11 +40,6 @@ private struct FeatureFlagRequest: Request {
 private struct FeatureFlagResponse: Decodable {
     let code: Int
     let toggles: [FeatureFlag]
-
-    init(code: Int, toggles: [FeatureFlag]) {
-        self.code = code
-        self.toggles = toggles
-    }
 }
 
 /// Return `true` if at least 1 of the user has the flag enabled
