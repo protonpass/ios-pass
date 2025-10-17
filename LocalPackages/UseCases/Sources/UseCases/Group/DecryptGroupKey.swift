@@ -56,7 +56,6 @@ public final class DecryptGroupKey: DecryptGroupKeyUseCase {
         }
         let orgKey = try await decryptOrganizationKeyUseCase()
 
-        // TODO: maybe not the private key for verification key
         let decryptedToken = try Decryptor.decryptAndVerify(decryptionKey: orgKey.privateKey,
                                                             addrToken: ArmoredMessage(value: primaryKey.token),
                                                             detachedSign: ArmoredSignature(value: primaryKey

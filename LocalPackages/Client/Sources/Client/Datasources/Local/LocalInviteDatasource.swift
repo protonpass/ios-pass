@@ -76,7 +76,8 @@ public extension LocalInviteDatasource {
     }
 
     func removeUserInvites(userId: String, invites: [UserInvite]) async throws {
-        try await removeInvites(userId: userId, invites: invites,
+        try await removeInvites(userId: userId,
+                                invites: invites,
                                 entity: UserInviteEntity.self,
                                 tokenKeyPath: \.inviteToken)
     }

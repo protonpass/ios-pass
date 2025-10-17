@@ -79,6 +79,9 @@ final class AcceptRejectInviteViewModel: ObservableObject {
                 _ = try await acceptInvitation(with: invite)
                 await updateCachedInvitations(for: invite.inviteToken)
                 syncEventLoop.forceSync()
+                if case .group = invite {
+                    shouldCloseSheet = true
+                }
             } catch {
                 logger.error(message: "Could not accept invitation \(invite)", error: error)
                 display(error: error)
@@ -105,6 +108,9 @@ private extension AcceptRejectInviteViewModel {
                     return
                 }
                 if !shareContent.share.isVaultRepresentation, shareContent.items.isEmpty {
+                    return
+                }
+                guard case .user = invite else {
                     return
                 }
                 displayItemPage(shareContent: shareContent)
