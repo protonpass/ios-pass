@@ -26,6 +26,7 @@ import SwiftUI
 public struct InAppPromoView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) private var colorScheme
+    @State private var backgroundLoaded = false
     private let notification: InAppNotification
     private let promoContents: InAppNotificationPromoContents
     private let onAppear: () -> Void
@@ -74,6 +75,7 @@ public struct InAppPromoView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding()
+            .opacity(backgroundLoaded ? 1 : 0)
 
             closeButton
         }
@@ -89,6 +91,9 @@ private extension InAppPromoView {
                    content: { image in
                        image
                            .resizable()
+                           .onAppear {
+                               backgroundLoaded = true
+                           }
                    }, placeholder: {
                        EmptyView()
                    })
