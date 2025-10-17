@@ -109,16 +109,14 @@ private extension CreateEditNoteView {
                 .roundedEditableSection()
                 .focused($focusedField, equals: .note)
 
-            if viewModel.customTypeEnabled {
-                EditCustomFieldSections(focusedField: $focusedField,
-                                        focusedCustomField: viewModel.recentlyAddedOrEditedField,
-                                        contentType: .note,
-                                        fields: $viewModel.customFields,
-                                        canAddMore: viewModel.canAddMoreCustomFields,
-                                        onAddMore: { viewModel.requestAddCustomField(to: nil) },
-                                        onEditTitle: viewModel.requestEditCustomFieldTitle,
-                                        onUpgrade: { viewModel.upgrade() })
-            }
+            EditCustomFieldSections(focusedField: $focusedField,
+                                    focusedCustomField: viewModel.recentlyAddedOrEditedField,
+                                    contentType: .note,
+                                    fields: $viewModel.customFields,
+                                    canAddMore: viewModel.canAddMoreCustomFields,
+                                    onAddMore: { viewModel.requestAddCustomField(to: nil) },
+                                    onEditTitle: viewModel.requestEditCustomFieldTitle,
+                                    onUpgrade: { viewModel.upgrade() })
 
             FileAttachmentsEditSection(files: viewModel.fileUiModels,
                                        isFetching: viewModel.isFetchingAttachedFiles,

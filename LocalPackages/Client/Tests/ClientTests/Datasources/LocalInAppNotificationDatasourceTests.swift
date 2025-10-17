@@ -64,13 +64,12 @@ struct LocalInAppNotificationDatasourceTests {
         var defaultNotification = InAppNotification.mock()
         try await sut.upsertNotifications([defaultNotification], userId: userId)
 
-        defaultNotification.state = 1
+        defaultNotification.state = .read
 
         // When
         try await sut.upsertNotifications([defaultNotification], userId: userId)
         let items = try await sut.getAllNotificationsByPriority(userId: userId)
         let updatedNotification = try #require(items.first)
-
 
         // Then
         #expect(items.count == 1)

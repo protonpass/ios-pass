@@ -109,6 +109,7 @@ struct ItemsTabView: View {
                 ItemsTabTopBar(searchMode: $searchMode,
                                animationNamespace: animationNamespace,
                                isEditMode: $viewModel.isEditMode,
+                               showPromoBadge: viewModel.showPromoBadge,
                                onSearch: { searchMode = .all(viewModel.appContentManager.vaultSelection) },
                                onShowVaultList: { viewModel.presentVaultList() },
                                onPin: { viewModel.pinSelectedItems() },
@@ -124,7 +125,8 @@ struct ItemsTabView: View {
                                onRestore: { viewModel.restoreSelectedItems() },
                                onPermanentlyDelete: { viewModel.askForBulkPermanentDeleteConfirmation() },
                                onDisableAliases: { viewModel.disableSelectedAliases() },
-                               onEnableAliases: { viewModel.enableSelectedAliases() })
+                               onEnableAliases: { viewModel.enableSelectedAliases() },
+                               onPromoBadgeTapped: { viewModel.showNotification() })
                     .hidden(viewModel.noVaults)
 
                 if viewModel.showingUpgradeAppBanner {
@@ -206,12 +208,10 @@ private extension ItemsTabView {
         switch viewModel.appContentManager.vaultSelection {
         case .all:
             EmptyVaultView(canCreateItems: !viewModel.appContentManager.getAllEditableVaultContents().isEmpty,
-                           customItemEnabled: viewModel.customItemEnabled,
                            onCreate: { viewModel.createNewItem(type: $0) })
                 .padding(.bottom, safeAreaInsets.bottom)
         case let .precise(vault):
             EmptyVaultView(canCreateItems: vault.canEdit,
-                           customItemEnabled: viewModel.customItemEnabled,
                            onCreate: { viewModel.createNewItem(type: $0) })
                 .padding(.bottom, safeAreaInsets.bottom)
         case .trash:

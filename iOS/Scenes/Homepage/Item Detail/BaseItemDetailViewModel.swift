@@ -101,7 +101,6 @@ class BaseItemDetailViewModel: ObservableObject {
     private let addItemReadEvent = resolve(\UseCasesContainer.addItemReadEvent)
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private(set) var itemRepository
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private(set) var router
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
     @LazyInjected(\SharedServiceContainer.itemContextMenuHandler) var itemContextMenuHandler
     @LazyInjected(\SharedServiceContainer.syncEventLoop) var syncEventLoop
     @LazyInjected(\UseCasesContainer.leaveShare) var leaveShareUsecase
@@ -134,10 +133,6 @@ class BaseItemDetailViewModel: ObservableObject {
 
     var showFileAttachmentsSection: Bool {
         itemContent.item.hasFiles && (!files.isFetched || files.fetchedObject?.isEmpty == false)
-    }
-
-    var customTypeEnabled: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passCustomTypeV1)
     }
 
     var canShareItem: Bool {

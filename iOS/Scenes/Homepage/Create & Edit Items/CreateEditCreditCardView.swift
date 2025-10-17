@@ -88,16 +88,14 @@ private extension CreateEditCreditCardView {
                                     focusedField: $focusedField,
                                     field: .note)
 
-                    if viewModel.customTypeEnabled {
-                        EditCustomFieldSections(focusedField: $focusedField,
-                                                focusedCustomField: viewModel.recentlyAddedOrEditedField,
-                                                contentType: .creditCard,
-                                                fields: $viewModel.customFields,
-                                                canAddMore: viewModel.canAddMoreCustomFields,
-                                                onAddMore: { viewModel.requestAddCustomField(to: nil) },
-                                                onEditTitle: viewModel.requestEditCustomFieldTitle,
-                                                onUpgrade: { viewModel.upgrade() })
-                    }
+                    EditCustomFieldSections(focusedField: $focusedField,
+                                            focusedCustomField: viewModel.recentlyAddedOrEditedField,
+                                            contentType: .creditCard,
+                                            fields: $viewModel.customFields,
+                                            canAddMore: viewModel.canAddMoreCustomFields,
+                                            onAddMore: { viewModel.requestAddCustomField(to: nil) },
+                                            onEditTitle: viewModel.requestEditCustomFieldTitle,
+                                            onUpgrade: { viewModel.upgrade() })
 
                     FileAttachmentsEditSection(files: viewModel.fileUiModels,
                                                isFetching: viewModel.isFetchingAttachedFiles,

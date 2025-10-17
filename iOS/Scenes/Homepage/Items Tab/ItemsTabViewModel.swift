@@ -53,6 +53,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published private(set) var sectionedItems: FetchableObject<[SectionedItemUiModel]> = .fetching
     @Published private var organization: Organization?
     @Published private(set) var refreshSearchResult = false
+    @Published private(set) var showPromoBadge = false
 
     let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
     @LazyInjected(\SharedServiceContainer.appContentManager) var appContentManager
@@ -71,12 +72,12 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let shouldDisplayUpgradeAppBanner = resolve(\UseCasesContainer.shouldDisplayUpgradeAppBanner)
     private let pinItems = resolve(\SharedUseCasesContainer.pinItems)
     private let unpinItems = resolve(\SharedUseCasesContainer.unpinItems)
+    @LazyInjected(\SharedServiceContainer.inAppNotificationManager) var inAppNotificationManager
+
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedRepositoryContainer.organizationRepository)
     private var organizationRepository
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
-    private var getFeatureFlagStatus
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let itemTypeSelection = resolve(\DataStreamContainer.itemTypeSelection)
@@ -89,10 +90,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     /// `PullToRefreshable` conformance
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
     let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
-
-    var customItemEnabled: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passCustomTypeV1)
-    }
 
     var noVaults: Bool {
         if case let .loaded(data) = appContentManager.state,
@@ -147,7 +144,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 // MARK: - Private APIs
 
 private extension ItemsTabViewModel {
-    // swiftlint:disable:next cyclomatic_complexity
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     func setUp() {
         appContentManager.$state
             .receive(on: DispatchQueue.main)
@@ -253,6 +250,14 @@ private extension ItemsTabViewModel {
                 guard let self else { return }
                 appContentManager.select(.all, filterOption: .precise(type))
                 router.display(element: .infosMessage(type.filterMessage))
+            }
+            .store(in: &cancellables)
+
+        inAppNotificationManager.notificationToDisplay
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] notification in
+                guard let self else { return }
+                showPromoBadge = notification?.displayType == .promo
             }
             .store(in: &cancellables)
     }
@@ -424,6 +429,10 @@ extension ItemsTabViewModel {
                 #localized("%lld aliases enabled", items.count)
             }
         }
+    }
+
+    func showNotification() {
+        inAppNotificationManager.updateCurrentPromoState(.unread)
     }
 
     // swiftlint:enable unhandled_throwing_task

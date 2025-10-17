@@ -113,10 +113,10 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
 
     // References
-    private weak var itemsTabViewModel: ItemsTabViewModel?
+    private(set) weak var itemsTabViewModel: ItemsTabViewModel?
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
-    private var cancellables = Set<AnyCancellable>()
+    var cancellables = Set<AnyCancellable>()
 
     lazy var logInAndSignUp = makeLoginAndSignUp()
 
@@ -199,13 +199,8 @@ private extension HomepageCoordinator {
 
                 Task { [weak self] in
                     guard let self else { return }
-                    let disallowed: [NewFeature] = if getFeatureFlagStatus(for: FeatureFlagType.passCustomTypeV1) {
-                        []
-                    } else {
-                        [NewFeature.customItems]
-                    }
                     await featureDiscoveryManager.refreshState(userId: userData.user.ID,
-                                                               disallowedFeatures: Set(disallowed))
+                                                               disallowedFeatures: .init())
                 }
             }
             .store(in: &cancellables)
@@ -297,6 +292,8 @@ private extension HomepageCoordinator {
                 }
             }
             .store(in: &cancellables)
+
+        setUpInAppNotification()
     }
 
     func start() {

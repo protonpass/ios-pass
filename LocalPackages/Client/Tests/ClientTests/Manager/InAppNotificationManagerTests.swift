@@ -181,7 +181,7 @@ struct InAppNotificationManagerTests {
         // Assert
         #expect(mockRepository.changeNotificationStatusCalled == true)
         let notifications = await manager.getCurrentNofications()
-        #expect(notifications.first?.state == InAppNotificationState.read.rawValue)
+        #expect(notifications.first?.state == InAppNotificationState.read)
     }
 
     @Test("Dismissed notifications are removed locally")
@@ -198,7 +198,7 @@ struct InAppNotificationManagerTests {
         // Assert
         #expect(mockRepository.removeCalled == true)
         let notifications = await manager.getCurrentNofications()
-        #expect(notifications.first?.state == InAppNotificationState.dismissed.rawValue)
+        #expect(notifications.first?.state == InAppNotificationState.dismissed)
     }
 
     @Test("Showing notifications only after a certain delay that we set")
