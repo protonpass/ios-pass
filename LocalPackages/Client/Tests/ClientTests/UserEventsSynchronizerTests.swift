@@ -199,7 +199,7 @@ private extension UserEventsSynchronizerTests {
         }
 
         if let refreshInviteInvokeCount = args.refreshInviteInvokeCount {
-            #expect(inviteRepository.invokedRefreshInvitesUserIdAsyncCount5 == refreshInviteInvokeCount)
+            #expect(inviteRepository.invokedRefreshInvitesCount == refreshInviteInvokeCount)
         }
 
         if let syncSimpleLoginNoteInvokeCount = args.syncSimpleLoginNoteInvokeCount {
