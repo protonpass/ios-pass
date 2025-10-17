@@ -18,8 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
-import Core
 @preconcurrency import CryptoKit
 import Entities
 import ProtonCoreCrypto

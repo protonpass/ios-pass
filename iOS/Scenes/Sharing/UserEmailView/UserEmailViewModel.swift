@@ -28,7 +28,6 @@ import FactoryKit
 import Foundation
 import Macro
 import ProtonCoreHumanVerification
-import Screens
 
 enum RecommendationsState: Equatable {
     case loading
@@ -55,7 +54,6 @@ final class UserEmailViewModel: ObservableObject {
     @Published private(set) var isChecking = false
     @Published private(set) var isFetchingMore = false
     @Published var showGroupMembers = false
-    @Published var groupInfos: [InviteRecommendationType]?
 
     private var cancellables = Set<AnyCancellable>()
     private let inviteRepository = resolve(\SharedRepositoryContainer.inviteRepository)

@@ -24,6 +24,7 @@ import Foundation
 
 public protocol GroupRepositoryProtocol: Sendable {
     func getGroups(userId: String) async throws -> [Group]
+    // periphery:ignore
     func getMembers(groupId: String, userId: String) async throws -> [GroupMember]
     func getGroupsInfos(userId: String) async throws -> [GroupInfo]
 }
