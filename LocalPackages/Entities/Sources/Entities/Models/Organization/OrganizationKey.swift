@@ -44,7 +44,7 @@ public struct OrganizationKey: Sendable, Decodable, Equatable {
         if passwordless {
             return true
         }
-        guard let signature, let token, let privateKey else { return false }
+        guard signature != nil, token != nil, privateKey != nil else { return false }
         return true
     }
 }

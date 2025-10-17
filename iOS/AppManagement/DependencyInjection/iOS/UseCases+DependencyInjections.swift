@@ -249,16 +249,13 @@ extension UseCasesContainer {
         self { AcceptInvitation(repository: self.inviteRepository,
                                 userManager: self.userManager,
                                 getEmailPublicKey: self.getEmailPublicKey(),
-                                updateUserAddresses: self.updateUserAddresses(),
+                                getInviteDecryptionKeys: self.getInviteDecryptionKeys(),
                                 logManager: self.logManager) }
     }
 
     var decodeShareVaultInformation: Factory<any DecodeShareVaultInformationUseCase> {
-        self { DecodeShareVaultInformation(userManager: self.userManager,
-                                           getEmailPublicKey: self.getEmailPublicKey(),
-                                           updateUserAddresses: self.updateUserAddresses(),
-                                           decryptGroupKeys: SharedUseCasesContainer.shared.decryptGroupKey(),
-                                           groupRepository: SharedRepositoryContainer.shared.groupRepository(),
+        self { DecodeShareVaultInformation(getEmailPublicKey: self.getEmailPublicKey(),
+                                           getInviteDecryptionKeys: self.getInviteDecryptionKeys(),
                                            logManager: self.logManager) }
     }
 
@@ -287,6 +284,13 @@ extension UseCasesContainer {
 
     var makeUnsignedSignatureForVaultSharing: Factory<any MakeUnsignedSignatureForVaultSharingUseCase> {
         self { MakeUnsignedSignatureForVaultSharing() }
+    }
+
+    var getInviteDecryptionKeys: Factory<any GetInviteDecryptionKeysUseCase> {
+        self { GetInviteDecryptionKeys(userManager: self.userManager,
+                                       groupRepository: SharedRepositoryContainer.shared.groupRepository(),
+                                       decryptGroupKeys: SharedUseCasesContainer.shared.decryptGroupKey(),
+                                       updateUserAddresses: self.updateUserAddresses()) }
     }
 }
 
