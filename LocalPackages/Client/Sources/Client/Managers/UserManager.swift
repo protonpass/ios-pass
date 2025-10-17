@@ -34,6 +34,10 @@ public protocol UserManagerProtocol: Sendable, UserManagerProvider {
     func getActiveUserData() async throws -> UserData?
     func upsertAndMarkAsActive(userData: UserData) async throws
 
+    /// When a UserData is updated (e.g new account keys)
+    /// Cache updated UserData locally and refresh on memory UserDatas
+    func upsertAndSetUpAgain(userData: UserData) async throws
+
     /// When `onMemory` is `true`, we don't save the active user ID to the database
     /// This is to let extensions dynamically switch between accounts when creating items
     /// as we don't want extensions to affect the current active user.
@@ -52,6 +56,13 @@ public extension UserManagerProtocol {
     func getUnwrappedActiveUserData() async throws -> UserData {
         guard let userData = try await getActiveUserData() else {
             throw PassError.userManager(.activeUserDataNotFound)
+        }
+        return userData
+    }
+
+    func getUnwrappedUserData(_ userId: String) async throws -> UserData {
+        guard let userData = try await getUserData(userId) else {
+            throw PassError.userManager(.userNotFound(userId: userId))
         }
         return userData
     }
@@ -116,6 +127,16 @@ public extension UserManager {
 
         try await userDataDatasource.upsert(userData)
         try await switchActiveUser(with: userData.user.ID, onMemory: false)
+    }
+
+    func upsertAndSetUpAgain(userData: UserData) async throws {
+        assertDidSetUp()
+        let activeUserId = try await getActiveUserId()
+        try await userDataDatasource.upsert(userData)
+        if userData.user.ID == activeUserId {
+            try await switchActiveUser(with: activeUserId, onMemory: false)
+        }
+        try await setUp()
     }
 
     /// Remove user profile from database and memory. If the user being removed if the current active user it sets
