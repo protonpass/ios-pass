@@ -77,6 +77,8 @@ public extension InAppNotificationManager {
     nonisolated func refreshNotifications() {
         Task { [weak self] in
             guard let self else { return }
+            let displayState = await displayState
+            guard displayState == .inactive else { return }
             do {
                 _ = try await fetchNotifications()
                 let notification = try await getNotificationToDisplay()
