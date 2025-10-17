@@ -53,6 +53,8 @@ public protocol RemoteInviteDatasourceProtocol: Sendable {
 
     func getPendingGroupInvitesForUser(lastToken: String?, userId: String) async throws -> PaginatedGroupInvites
     func acceptGroupInvite(userId: String, inviteToken: String, request: AcceptInviteRequest) async throws
+    func rejectGroupInvite(userId: String, inviteToken: String) async throws -> Bool
+
     func getGroupInviteRecommendations(userId: String) async throws -> [Group]
 }
 
@@ -101,6 +103,12 @@ public extension RemoteInviteDatasource {
         let endpoint = GetListOfGroupsEndpoint()
         let results = try await exec(userId: userId, endpoint: endpoint)
         return results.groups
+    }
+
+    func rejectGroupInvite(userId: String, inviteToken: String) async throws -> Bool {
+        let endpoint = RejectGroupInviteEndpoint(with: inviteToken)
+        let response = try await exec(userId: userId, endpoint: endpoint)
+        return response.isSuccessful
     }
 }
 
