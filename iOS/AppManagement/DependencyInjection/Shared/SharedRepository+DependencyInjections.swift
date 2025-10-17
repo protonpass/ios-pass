@@ -195,6 +195,10 @@ extension SharedRepositoryContainer {
                                        databaseService: self.databaseService) }
     }
 
+    var remoteUserDataDatasource: Factory<any RemoteUserDataDatasourceProtocol> {
+        self { RemoteUserDataDatasource(apiServicing: self.apiManager) }
+    }
+
     var remoteInviteDatasource: Factory<any RemoteInviteDatasourceProtocol> {
         self { RemoteInviteDatasource(apiServicing: self.apiManager) }
     }
@@ -257,6 +261,7 @@ extension SharedRepositoryContainer {
             ShareKeyRepository(localDatasource: self.localShareKeyDatasource(),
                                remoteDatasource: self.remoteShareKeyDatasource(),
                                cryptoService: SharedServiceContainer.shared.cryptoService(),
+                               remoteUserDataDatasource: self.remoteUserDataDatasource(),
                                logManager: self.logManager,
                                symmetricKeyProvider: self.symmetricKeyProvider,
                                userManager: self.userManager)
