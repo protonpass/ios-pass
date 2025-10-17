@@ -35,6 +35,7 @@ public protocol InAppNotificationManagerProtocol: Sendable {
     func updateNotificationTime(_ date: Date) async throws
     func updateDisplayState(_ state: InAppNotificationDisplayState) async
     func updateCurrentPromoState(_ state: InAppNotificationState)
+    nonisolated func removeCurrentNotification()
 
     // MARK: - Qa only accessible function to test mock notifications
 
@@ -167,6 +168,10 @@ public extension InAppNotificationManager {
         }
         notification.state = state
         notificationToDisplay.send(notification)
+    }
+
+    nonisolated func removeCurrentNotification() {
+        notificationToDisplay.send(nil)
     }
 }
 
