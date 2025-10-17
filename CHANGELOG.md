@@ -5,6 +5,7 @@
 Others:
 - Removed feature discovery & flag for custom items
 - Added support for promo in-app notifications
+- Updated Rust library from 0.19.0 to 0.26.0
 
 # Version 1.17.8
 Fixed un-tappable create item button in the AutoFill extension on iOS 26
