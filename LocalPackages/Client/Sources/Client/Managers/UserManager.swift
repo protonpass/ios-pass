@@ -60,13 +60,6 @@ public extension UserManagerProtocol {
         return userData
     }
 
-    func getUnwrappedUserData(_ userId: String) async throws -> UserData {
-        guard let userData = try await getUserData(userId) else {
-            throw PassError.userManager(.userNotFound(userId: userId))
-        }
-        return userData
-    }
-
     func getUserData(_ userId: String) async throws -> UserData? {
         try await getAllUsers().first(where: { $0.user.ID == userId })
     }
