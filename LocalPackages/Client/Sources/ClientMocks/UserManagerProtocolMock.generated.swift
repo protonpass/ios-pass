@@ -128,7 +128,6 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
         invokedUpsertAndSetUpAgainfunction = true
         invokedUpsertAndSetUpAgainCount += 1
         invokedUpsertAndSetUpAgainParameters = (userData, ())
-        invokedUpsertAndSetUpAgainParametersList.append((userData, ()))
         if let error = upsertAndSetUpAgainUserDataThrowableError4 {
             throw error
         }
@@ -146,8 +145,6 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
         invokedSwitchActiveUserfunction = true
         invokedSwitchActiveUserCount += 1
         invokedSwitchActiveUserParameters = (userId, onMemory)
-        if let error = switchActiveUserWithOnMemoryThrowableError4 {
-        invokedSwitchActiveUserParametersList.append((userId, onMemory))
         if let error = switchActiveUserWithOnMemoryThrowableError5 {
             throw error
         }
@@ -181,8 +178,6 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
         invokedRemovefunction = true
         invokedRemoveCount += 1
         invokedRemoveParameters = (userId, ())
-        if let error = removeUserIdThrowableError6 {
-        invokedRemoveParametersList.append((userId, ()))
         if let error = removeUserIdThrowableError7 {
             throw error
         }
@@ -201,18 +196,5 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
             throw error
         }
         closureCleanAllUsers()
-    }
-    // MARK: - setUserData
-    public var closureSetUserData: () -> () = {}
-    public var invokedSetUserDatafunction = false
-    public var invokedSetUserDataCount = 0
-    public var invokedSetUserDataParameters: (userData: UserData, Void)?
-    public var invokedSetUserDataParametersList = [(userData: UserData, Void)]()
-
-    public func setUserData(_ userData: UserData) {
-        invokedSetUserDatafunction = true
-        invokedSetUserDataCount += 1
-        invokedSetUserDataParameters = (userData, ())
-        closureSetUserData()
     }
 }

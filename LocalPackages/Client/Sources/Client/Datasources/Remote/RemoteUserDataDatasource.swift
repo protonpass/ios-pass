@@ -34,23 +34,32 @@ public extension RemoteUserDataDatasource {
     func getUpdatedUserData(_ oldUserData: UserData) async throws -> UserData {
         let apiService = try getApiService(userId: oldUserData.user.ID)
         let authenticator = Authenticator(api: apiService)
-        let user = try await authenticator.getUserInfo()
-        let addresses = try await authenticator.getAddresses()
-        let keySalts = try await authenticator.getKeySalts()
+        let updatedUser = try await authenticator.getUserInfo()
+        let updatedAddresses = try await authenticator.getAddresses()
+        let updatedKeySalts = try await authenticator.getKeySalts()
 
+        var updatedPassphrases: [String: String] = [:]
+
+        let uniqueOldPassphrases = Set(oldUserData.passphrases.map(\.value))
         let builder = BuildAndValidatePassphrases()
-        guard let passphrase = oldUserData.passphrases.first?.value,
-              let passphrases = try builder.buildAndValidatePassphrases(passphrase: passphrase,
-                                                                        salts: keySalts,
-                                                                        userKeys: user.keys) else {
+
+        for oldPassphrase in uniqueOldPassphrases {
+            if let passphrases = try builder.buildAndValidatePassphrases(passphrase: oldPassphrase,
+                                                                         salts: updatedKeySalts,
+                                                                         userKeys: updatedUser.keys) {
+                updatedPassphrases.merge(passphrases, uniquingKeysWith: { $1 })
+            }
+        }
+
+        if updatedPassphrases.isEmpty {
             throw PassError.crypto(.failedToBuildPassphrases)
         }
 
         return .init(credential: oldUserData.credential,
-                     user: user,
-                     salts: keySalts,
-                     passphrases: passphrases,
-                     addresses: addresses,
+                     user: updatedUser,
+                     salts: updatedKeySalts,
+                     passphrases: updatedPassphrases,
+                     addresses: updatedAddresses,
                      scopes: oldUserData.scopes)
     }
 }

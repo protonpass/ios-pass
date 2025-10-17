@@ -23,7 +23,6 @@ import CoreData
 @preconcurrency import CryptoKit
 import Entities
 import ProtonCoreCrypto
-import ProtonCoreDataModel
 @preconcurrency import ProtonCoreLogin
 
 typealias DecryptionKey = ProtonCoreCrypto.DecryptionKey
@@ -45,7 +44,6 @@ public actor ShareKeyRepository: ShareKeyRepositoryProtocol {
     private let localDatasource: any LocalShareKeyDatasourceProtocol
     private let remoteDatasource: any RemoteShareKeyDatasourceProtocol
     private let cryptoService: any CryptoServiceProtocol
-    private let remoteUserDataDatasource: any RemoteUserDataDatasourceProtocol
     private let logger: Logger
     private let symmetricKeyProvider: any SymmetricKeyProvider
     private let userManager: any UserManagerProtocol
@@ -53,13 +51,11 @@ public actor ShareKeyRepository: ShareKeyRepositoryProtocol {
     public init(localDatasource: any LocalShareKeyDatasourceProtocol,
                 remoteDatasource: any RemoteShareKeyDatasourceProtocol,
                 cryptoService: any CryptoServiceProtocol,
-                remoteUserDataDatasource: any RemoteUserDataDatasourceProtocol,
                 logManager: any LogManagerProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider,
                 userManager: any UserManagerProtocol) {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
-        self.remoteUserDataDatasource = remoteUserDataDatasource
         logger = .init(manager: logManager)
         self.cryptoService = cryptoService
         self.symmetricKeyProvider = symmetricKeyProvider
@@ -120,70 +116,5 @@ public extension ShareKeyRepository {
 private extension ShareKeyRepository {
     func getSymmetricKey() async throws -> CryptoKit.SymmetricKey {
         try await symmetricKeyProvider.getSymmetricKey()
-    }
-
-    func decrypt(_ encryptedKey: ShareKey, userData: UserData, shareId: String) async throws -> Data {
-        let keyDescription = "shareId \"\(shareId)\", keyRotation: \"\(encryptedKey.keyRotation)\""
-        logger.trace("Decrypting share key \(keyDescription)")
-
-        let decryptionKeys = try await getDecryptionKeys(userData: userData,
-                                                         shareKey: encryptedKey)
-
-        guard let encryptedKeyData = try encryptedKey.key.base64Decode() else {
-            logger.trace("Failed to base 64 decode share key \(keyDescription)")
-            throw PassError.crypto(.failedToBase64Decode)
-        }
-
-        let armoredEncryptedKeyData = try CryptoUtils.armorMessage(encryptedKeyData)
-
-        let verificationKeys = userData.user.keys.map(\.publicKey).map { ArmoredKey(value: $0) }
-        let decryptedKey: VerifiedData = try Decryptor.decryptAndVerify(decryptionKeys: decryptionKeys,
-                                                                        value: .init(value: armoredEncryptedKeyData),
-                                                                        verificationKeys: verificationKeys)
-
-        logger.trace("Decrypted share key \(keyDescription)")
-        return decryptedKey.content
-    }
-
-    func getDecryptionKeys(userData: UserData, shareKey: ShareKey) async throws -> [DecryptionKey] {
-        let userId = userData.user.ID
-        let userKeyId = shareKey.userKeyID
-        var key = userData.getKey(id: userKeyId)
-
-        if key == nil {
-            // First attempt failed, key is not found among local cached keys
-            // => a new account key was added so we go fetch and cache it
-            logger.info("No key found for id \(userId). Updating user data.")
-            let updatedUserData = try await remoteUserDataDatasource.getUpdatedUserData(userData)
-            try await userManager.upsertAndSetUpAgain(userData: updatedUserData)
-
-            // Second attempt to get the key once again after fetching
-            let userData = try await userManager.getUnwrappedUserData(userId)
-            key = userData.getKey(id: userKeyId)
-        }
-
-        guard let key else {
-            throw PassError.crypto(.userKeyNotFound(userKeyId: userKeyId))
-        }
-
-        guard key.active == 1 else {
-            throw PassError.crypto(.inactiveUserKey(userKeyId: userKeyId))
-        }
-
-        let latestUserData = try await userManager.getUnwrappedUserData(userId)
-
-        return try latestUserData.user.keys.map { key in
-            guard let passphrase = latestUserData.passphrases[key.keyID] else {
-                throw PassError.crypto(.missingPassphrase(keyID: key.keyID))
-            }
-            return DecryptionKey(privateKey: .init(value: key.privateKey),
-                                 passphrase: .init(value: passphrase))
-        }
-    }
-}
-
-private extension UserData {
-    func getKey(id: String) -> Key? {
-        user.keys.first(where: { $0.keyID == id })
     }
 }
