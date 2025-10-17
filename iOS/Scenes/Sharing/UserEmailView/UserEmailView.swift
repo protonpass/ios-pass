@@ -197,7 +197,16 @@ private extension UserEmailView {
         })
 
         HStack(alignment: .center, spacing: 10) {
-            Text(reco.isEmail ? reco.name : "\(reco.name) \(reco.memberCounts)")
+            let name = if reco.isEmail {
+                reco.name
+            } else {
+                if let memberCount = reco.memberCounts {
+                    "\(reco.name) (\(memberCount))"
+                } else {
+                    reco.name
+                }
+            }
+            Text(name)
                 .lineLimit(1)
                 .truncationMode(.tail) // ellipsis if too long
                 .fixedSize(horizontal: true, vertical: false)
