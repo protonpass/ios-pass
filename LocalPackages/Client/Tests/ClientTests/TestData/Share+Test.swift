@@ -41,6 +41,7 @@ extension Share {
               content: .random(),
               contentKeyRotation: contentKeyRotation ?? .random(in: 0...10),
               contentFormatVersion: .random(in: 0...10),
+              groupID: nil,
               expireTime: .random(in: 0...1_000_000),
               createTime: .random(in: 0...1_000_000),
               canAutoFill: .random(),

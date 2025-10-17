@@ -25,10 +25,10 @@ import Testing
 
 @Suite(.tags(.localDatasource))
 struct LocalUserInviteDatasourceTests {
-    let sut: any LocalUserInviteDatasourceProtocol
+    let sut: any LocalInviteDatasourceProtocol
 
     init() {
-        sut = LocalUserInviteDatasource(databaseService: DatabaseService(inMemory: true))
+        sut = LocalInviteDatasource(databaseService: DatabaseService(inMemory: true))
     }
 
     @Test("Insert and get user invites")
@@ -43,11 +43,11 @@ struct LocalUserInviteDatasourceTests {
         let invite4 = UserInvite.random()
 
         // When
-        try await sut.upsertInvites(userId: userId1, invites: [invite1, invite2])
-        try await sut.upsertInvites(userId: userId2, invites: [invite3, invite4])
+        try await sut.upsertUserInvites(userId: userId1, invites: [invite1, invite2])
+        try await sut.upsertUserInvites(userId: userId2, invites: [invite3, invite4])
 
-        let invites1 = try await sut.getInvites(userId: userId1)
-        let invites2 = try await sut.getInvites(userId: userId2)
+        let invites1 = try await sut.getUserInvites(userId: userId1)
+        let invites2 = try await sut.getUserInvites(userId: userId2)
 
         // Then
         #expect(invites1.count == 2)
@@ -67,9 +67,9 @@ struct LocalUserInviteDatasourceTests {
         let updatedInvite = UserInvite.random(inviteToken: invite.inviteToken)
 
         // When
-        try await sut.upsertInvites(userId: userId, invites: [invite])
-        try await sut.upsertInvites(userId: userId, invites: [updatedInvite])
-        let finalInvites = try await sut.getInvites(userId: userId)
+        try await sut.upsertUserInvites(userId: userId, invites: [invite])
+        try await sut.upsertUserInvites(userId: userId, invites: [updatedInvite])
+        let finalInvites = try await sut.getUserInvites(userId: userId)
 
         // Then
         #expect(finalInvites.count == 1)
@@ -83,9 +83,9 @@ struct LocalUserInviteDatasourceTests {
         let invite = UserInvite.random()
 
         // When
-        try await sut.upsertInvites(userId: userId, invites: [invite])
-        try await sut.removeInvites(userId: userId, invites: [invite])
-        let finalInvites = try await sut.getInvites(userId: userId)
+        try await sut.upsertUserInvites(userId: userId, invites: [invite])
+        try await sut.removeUserInvites(userId: userId, invites: [invite])
+        let finalInvites = try await sut.getUserInvites(userId: userId)
 
         // Then
         #expect(finalInvites.isEmpty)
@@ -97,13 +97,13 @@ struct LocalUserInviteDatasourceTests {
         let userId1 = String.random()
         let userId2 = String.random()
 
-        try await sut.upsertInvites(userId: userId1, invites: [.random(), .random()])
-        try await sut.upsertInvites(userId: userId2, invites: [.random(), .random(), .random()])
+        try await sut.upsertUserInvites(userId: userId1, invites: [.random(), .random()])
+        try await sut.upsertUserInvites(userId: userId2, invites: [.random(), .random(), .random()])
 
         // When
-        try await sut.removeInvites(userId: userId1)
-        let invites1 = try await sut.getInvites(userId: userId1)
-        let invites2 = try await sut.getInvites(userId: userId2)
+        try await sut.removeAllUserInvites(userId: userId1)
+        let invites1 = try await sut.getUserInvites(userId: userId1)
+        let invites2 = try await sut.getUserInvites(userId: userId2)
 
         // Then
         #expect(invites1.isEmpty)
