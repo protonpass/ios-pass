@@ -23,6 +23,7 @@ import Entities
 import Foundation
 
 public protocol GroupRepositoryProtocol: Sendable {
+    // periphery:ignore
     func getGroups(userId: String) async throws -> [Group]
     func getGroup(userId: String, groupId: String) async throws -> Group
     // periphery:ignore
