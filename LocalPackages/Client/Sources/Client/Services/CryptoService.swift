@@ -63,43 +63,11 @@ public final class CryptoService: CryptoServiceProtocol {
 
         let armoredEncryptedKeyData = try CryptoUtils.armorMessage(encryptedKeyData)
 
-        var decryptionKeys = [DecryptionKey]()
-        var verificationKeys = [ArmoredKey]()
+        let keys = try await getDecryptingKeys(encryptedKey: encryptedKey, userData: userData, share: share)
 
-        if let groupID = share.groupID {
-            let addressKeys = try CryptoUtils.unlockAddressKeys(addressID: share.addressId,
-                                                                userData: userData)
-
-            guard let group = try await groupRepository.getGroups(userId: userData.user.ID)
-                .first(where: { $0.id == groupID }),
-                let groupAddressEmail = group.address?.email else {
-                logger.trace("No group address found for group with ID \(groupID)")
-                throw PassError.crypto(.missingGroupAddress)
-            }
-            let publickey = try await publicKeyRepository.getPublicKeys(email: groupAddressEmail)
-            guard !publickey.isEmpty else {
-                logger.trace("No group public key found for group with ID \(groupID)")
-                throw PassError.sharing(.noPublicKeyAssociatedWithEmail(groupAddressEmail))
-            }
-            decryptionKeys = addressKeys
-            verificationKeys = publickey.map { ArmoredKey(value: $0.value) }
-        } else {
-            guard let userKey = userData.user.keys.first(where: { $0.keyID == encryptedKey.userKeyID }),
-                  userKey.active == 1 else {
-                throw PassError.crypto(.inactiveUserKey(userKeyId: encryptedKey.userKeyID))
-            }
-
-            decryptionKeys = userData.user.keys.map {
-                DecryptionKey(privateKey: .init(value: $0.privateKey),
-                              passphrase: .init(value: userData.passphrases[$0.keyID] ?? ""))
-            }
-
-            verificationKeys = userData.user.keys.map(\.publicKey).map { ArmoredKey(value: $0) }
-        }
-
-        let decryptedKey: VerifiedData = try Decryptor.decryptAndVerify(decryptionKeys: decryptionKeys,
+        let decryptedKey: VerifiedData = try Decryptor.decryptAndVerify(decryptionKeys: keys.decryptionKeys,
                                                                         value: .init(value: armoredEncryptedKeyData),
-                                                                        verificationKeys: verificationKeys)
+                                                                        verificationKeys: keys.verificationKeys)
         logger.trace("Decrypted share key \(keyDescription)")
         return decryptedKey.content
     }
@@ -111,5 +79,56 @@ private extension CryptoService {
             return encryptedShare.share
         }
         return try await remoteDatasource.getShare(shareId: shareId, userId: userData.user.ID, eventToken: nil)
+    }
+
+    func getDecryptingKeys(encryptedKey: ShareKey,
+                           userData: UserData,
+                           share: Share) async throws -> (decryptionKeys: [DecryptionKey],
+                                                          verificationKeys: [ArmoredKey]) {
+        if let groupId = share.groupID {
+            try await shareGroupDecryptionKeys(userData: userData, addressId: share.addressId, groupId: groupId)
+        } else {
+            try shareDecryptionKeys(encryptedKey: encryptedKey, userData: userData)
+        }
+    }
+
+    func shareGroupDecryptionKeys(userData: UserData,
+                                  addressId: String,
+                                  groupId: String) async throws
+        -> (decryptionKeys: [DecryptionKey], verificationKeys: [
+            ArmoredKey
+        ]) {
+        let addressKeys = try CryptoUtils.unlockAddressKeys(addressID: addressId,
+                                                            userData: userData)
+        let group = try await groupRepository.getGroup(userId: userData.user.ID, groupId: groupId)
+        guard let groupAddressEmail = group.address?.email else {
+            logger.trace("No group address found for group with ID \(groupId)")
+            throw PassError.crypto(.missingGroupAddress)
+        }
+        let publickey = try await publicKeyRepository.getPublicKeys(email: groupAddressEmail)
+        guard !publickey.isEmpty else {
+            logger.trace("No group public key found for group with ID \(groupId)")
+            throw PassError.sharing(.noPublicKeyAssociatedWithEmail(groupAddressEmail))
+        }
+        let verificationKeys = publickey.map { ArmoredKey(value: $0.value) }
+
+        return (addressKeys, verificationKeys)
+    }
+
+    func shareDecryptionKeys(encryptedKey: ShareKey,
+                             userData: UserData) throws -> (decryptionKeys: [DecryptionKey],
+                                                            verificationKeys: [ArmoredKey]) {
+        guard let userKey = userData.user.keys.first(where: { $0.keyID == encryptedKey.userKeyID }),
+              userKey.active == 1 else {
+            throw PassError.crypto(.inactiveUserKey(userKeyId: encryptedKey.userKeyID))
+        }
+
+        let decryptionKeys = userData.user.keys.map {
+            DecryptionKey(privateKey: .init(value: $0.privateKey),
+                          passphrase: .init(value: userData.passphrases[$0.keyID] ?? ""))
+        }
+
+        let verificationKeys = userData.user.keys.map(\.publicKey).map { ArmoredKey(value: $0) }
+        return (decryptionKeys, verificationKeys)
     }
 }
