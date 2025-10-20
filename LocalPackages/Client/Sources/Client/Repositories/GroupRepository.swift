@@ -24,14 +24,16 @@ import Foundation
 
 public protocol GroupRepositoryProtocol: Sendable {
     func getGroups(userId: String) async throws -> [Group]
+    func getGroup(userId: String, groupId: String) async throws -> Group
     // periphery:ignore
     func getMembers(groupId: String, userId: String) async throws -> [GroupMember]
     func getGroupsInfos(userId: String) async throws -> [GroupInfo]
 }
 
-public final class GroupRepository: GroupRepositoryProtocol {
+public actor GroupRepository: GroupRepositoryProtocol {
     private let remoteDatasource: any RemoteGroupDatasourceProtocol
     private let logger: Logger
+    private var cache: [String: Set<Group>] = [:]
 
     public init(remoteDatasource: any RemoteGroupDatasourceProtocol,
                 logManager: any LogManagerProtocol) {
@@ -45,7 +47,20 @@ public extension GroupRepository {
         logger.trace("Getting all groups for userId \(userId)")
         let groups = try await remoteDatasource.getGroups(userId: userId)
         logger.info("Found \(groups.count) groups for userId \(userId)")
+        cache[userId] = Set(groups)
         return groups
+    }
+
+    func getGroup(userId: String, groupId: String) async throws -> Group {
+        if let group = cache[userId]?.first(where: { $0.id == groupId }) {
+            return group
+        }
+
+        guard let group = try await getGroups(userId: userId)
+            .first(where: { $0.id == groupId }) else {
+            throw PassError.group(.noMatchingGroup)
+        }
+        return group
     }
 
     func getMembers(groupId: String, userId: String) async throws -> [GroupMember] {

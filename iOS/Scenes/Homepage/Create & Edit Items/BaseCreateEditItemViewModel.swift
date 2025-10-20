@@ -502,7 +502,7 @@ private extension BaseCreateEditItemViewModel {
 
     /// Return `true` if item is edited, `false` otherwise
     func editItem(oldItemContent: ItemContent) async throws -> Bool {
-        var editResult = try await additionalEdit()
+        let editResult = try await additionalEdit()
         var edited = editResult.edited
         let itemId = oldItemContent.itemId
         let shareId = oldItemContent.shareId
