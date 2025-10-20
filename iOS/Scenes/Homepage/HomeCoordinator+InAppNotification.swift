@@ -59,7 +59,6 @@ extension HomepageCoordinator {
     }
 
     func removeInAppNotificationDisplay() {
-        inAppNotificationManager.removeCurrentNotification()
         updateDisplayState(.inactive)
         updateFloatingView(floatingView: nil, viewTag: UniqueSheet.inAppNotificationDisplay)
         dismissViewControllerWithTag(tag: UniqueSheet.inAppNotificationDisplay)
