@@ -28462,7 +28462,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Àlies de l'element d'inic de sessió \"%@\""
+            "value" : "Àlies de l'element d'inici de sessió \"%@\""
           }
         },
         "cs" : {
@@ -30417,7 +30417,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tot excepte les dades les sensibles"
+            "value" : "Tot excepte les dades sensibles"
           }
         },
         "cs" : {
@@ -33146,7 +33146,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esteu segur que voleu suprimir la següent secció \"%@\"?"
+            "value" : "Segur que voleu eliminar la secció següent \"%@\"?"
           }
         },
         "cs" : {
@@ -33539,7 +33539,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Associa l'A2F?"
+            "value" : "Voleu associar l'autenticació de doble factor (2FA)?"
           }
         },
         "cs" : {
@@ -34323,7 +34323,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Almenys un dels elements seleccionats està compartit actualment. Si el mou a una altra volta, se suprimirà l'accés a la resta d'usuaris."
+            "value" : "Almenys un dels elements seleccionats està compartit actualment. Si el moveu a una altra caixa forta, se suprimirà l'accés per a la resta d'usuaris."
           }
         },
         "cs" : {
@@ -35300,7 +35300,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Emplenament automàtic en aplicacions i llocs web activant l'emplenament automàtic de Proton Pass"
+            "value" : "Activeu l'emplenament automàtic de Proton Pass per a utilitzar-lo en aplicacions i llocs web."
           }
         },
         "cs" : {
@@ -37054,7 +37054,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Menú d'acció de detall d'infraccions"
+            "value" : "Menú d'accions detallades de filtracions de dades"
           }
         },
         "cs" : {
@@ -38623,7 +38623,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Permet crear, editar, suprimir i exportar elements en aquesta caixa forta"
+            "value" : "Permet crear, editar, eliminar i exportar elements en aquesta caixa forta"
           }
         },
         "cs" : {
@@ -64147,10 +64147,124 @@
     },
     "Don't remind me again" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Больш не нагадваць"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No m'ho torneu a recordar"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Znovu nepřipomínat"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Påmind mig ikke igen"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nicht erneut erinnern"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Μην μου υπενθυμίσεις ξανά"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Don't remind me again"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No volver a recordarme"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No volver a recordarme"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ne plus me le rappeler"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jangan ingatkan saya lagi"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non ricordarmelo di nuovo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次回から通知しない"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikke minn meg på det igjen"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niet opnieuw herinneren"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não lembrar novamente"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nu-mi mai reaminti"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Už nepripomínať"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Påminn mig inte igen"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bir daha hatırlatma"
           }
         }
       }
@@ -83787,6 +83901,12 @@
             "value" : "非公開の保管庫"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "숨겨진 보관함"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -93954,10 +94074,124 @@
     },
     "Item in a shared vault" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Элемент у абагуленым сховішчы"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Element en una caixa forta compartida"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Položka ve sdíleném trezoru"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Element i en delt boks"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eintrag in einem gemeinsamen Tresor"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Στοιχείο σε κοινόχρηστη κρύπτη"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Item in a shared vault"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elemento en una caja fuerte compartida"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elemento en una bóveda compartida"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Élément dans un coffre-fort partagé"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item pada brankas yang dibagikan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elemento in una cassaforte condivisa"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共有保管庫内のアイテム"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Element i et delt hvelv"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item in een gedeelde kluis"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item em um cofre compartilhado"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Articol într-un seif partajat"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Položka v zdieľanom terzore"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Objekt i ett delat valv"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öge paylaşılan bir kasada"
           }
         }
       }
@@ -96998,7 +97232,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bergabung ke brankas terbagi"
+            "value" : "Gabung ke brankas yang dibagikan"
           }
         },
         "it" : {
@@ -121739,6 +121973,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "保管庫を整理する"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "보관함 정리"
           }
         },
         "nb" : {
@@ -171729,6 +171969,12 @@
             "value" : "これらの保管庫にはアクセスできなくなり、そのコンテンツは検索や自動入力で利用できなくなります。"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 보관함들은 접근할 수 없으며, 해당 콘텐츠는 검색 또는 자동완성에서 사용할 수 없습니다."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -172427,7 +172673,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Item ini saat ini dibagikan. Memindahkannya ke brankas yang lain akan menghilangkan akses untuk semua pengguna lain."
+            "value" : "Item ini saat ini sedang dibagikan. Dengan memindahkan item ini ke brankas lain, izin akses bagi seluruh pengguna lainnya akan dihapus."
           }
         },
         "it" : {
@@ -198329,6 +198575,138 @@
     },
     "You are creating an item in a shared vault and %lld users will immediately gain access to it." : {
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Вы ствараеце элемент у абагуленым сховішчы, і %lld карыстальнікі неадкладна атрымае да яго доступ."
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Вы ствараеце элемент у абагуленым сховішчы, і %lld карыстальнікаў неадкладна атрымае да яго доступ."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Вы ствараеце элемент у абагуленым сховішчы, і %lld карыстальнік неадкладна атрымае да яго доступ."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Вы ствараеце элемент у абагуленым сховішчы, і %lld карыстальнікаў неадкладна атрымае да яго доступ."
+                }
+              }
+            }
+          }
+        },
+        "ca" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Esteu creant un element en una caixa forta compartida i %lld usuari hi tindrà accés immediatament."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Esteu creant un element en una caixa forta compartida i %lld usuaris hi tindrà accés immediatament."
+                }
+              }
+            }
+          }
+        },
+        "cs" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Vytváříte položku ve sdíleném úložišti a %lld uživatelé k ní okamžitě získají přístup."
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Vytváříte položku ve sdíleném úložišti a %lld uživatelů k ní okamžitě získá přístup."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Vytváříte položku ve sdíleném úložišti a %lld uživatel k ní okamžitě získá přístup."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Vytváříte položku ve sdíleném úložišti a %lld uživatelů k ní okamžitě získá přístup."
+                }
+              }
+            }
+          }
+        },
+        "da" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Du opretter et element i en delt boks, og %lld bruger får straks adgang til det."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Du opretter et element i en delt boks, og %lld brugere får straks adgang til det."
+                }
+              }
+            }
+          }
+        },
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Du erstellst einen Eintrag in einem gemeinsam genutzten Tresor, und %lld Benutzer erhalten sofort Zugriff darauf."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Du erstellst einen Eintrag in einem gemeinsam genutzten Tresor, und %lld Benutzer erhalten sofort Zugriff darauf."
+                }
+              }
+            }
+          }
+        },
+        "el" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Δημιουργείτε ένα στοιχείο σε κοινόχρηστη κρύπτη και %lld χρήστης θα αποκτήσει αμέσως πρόσβαση σε αυτό."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Δημιουργείτε ένα στοιχείο σε κοινόχρηστη κρύπτη και %lld χρήστες θα αποκτήσουν αμέσως πρόσβαση σε αυτό."
+                }
+              }
+            }
+          }
+        },
         "en" : {
           "variations" : {
             "plural" : {
@@ -198342,6 +198720,228 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "You are creating an item in a shared vault and %lld users will immediately gain access to it."
+                }
+              }
+            }
+          }
+        },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Estás creando un elemento en una caja fuerte compartida y %lld usuario obtendrá acceso inmediatamente a él."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Estás creando un elemento en una caja fuerte compartida y %lld usuarios obtendrán acceso inmediatamente a él."
+                }
+              }
+            }
+          }
+        },
+        "es-419" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Está creando un elemento en una bóveda compartida y %lld usuario obtendrá acceso inmediatamente a él."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Está creando un elemento en una bóveda compartida y %lld usuarios obtendrán acceso inmediatamente a él."
+                }
+              }
+            }
+          }
+        },
+        "fr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Vous créez un élément dans un coffre-fort partagé et %lld utilisateur y aura immédiatement accès."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Vous créez un élément dans un coffre-fort partagé et %lld utilisateurs y auront immédiatement accès."
+                }
+              }
+            }
+          }
+        },
+        "id" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Anda akan membuat item pada brankas yang dibagikan, dan %lld pengguna akan memperoleh akses ke item ini dengan segera."
+                }
+              }
+            }
+          }
+        },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Stai creando un elemento in una cassaforte condivisa e %lld utente avrà immediatamente accesso ad essa."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Stai creando un elemento in una cassaforte condivisa e %lld utenti avranno immediatamente accesso ad essa."
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "お客様は共有保管庫にアイテムを作成しており、%lld人のユーザーが直ちにそれにアクセスできるようになります。"
+                }
+              }
+            }
+          }
+        },
+        "nb" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Du oppretter et element i et delt hvelv, og %lld bruker vil umiddelbart få tilgang til det."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Du oppretter et element i et delt hvelv, og %lld brukere vil umiddelbart få tilgang til det."
+                }
+              }
+            }
+          }
+        },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "U maakt een item aan in een gedeelde kluis en %lld gebruiker krijgt er onmiddellijk toegang toe."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "U maakt een item aan in een gedeelde kluis en %lld gebruikers krijgen er direct toegang toe."
+                }
+              }
+            }
+          }
+        },
+        "pt-BR" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Você está criando um item em um cofre compartilhado e %lld usuário terá acesso imediato a ele."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Você está criando um item em um cofre compartilhado e %lld usuários terão acesso imediato a ele."
+                }
+              }
+            }
+          }
+        },
+        "ro" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Creați un element într-un seif partajat și %lld utilizatori vor obține acces imediat la acesta."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Creați un element într-un seif partajat și %lld utilizator va obține acces imediat la acesta."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Creați un element într-un seif partajat și %lld de utilizatori vor obține acces imediat la acesta."
+                }
+              }
+            }
+          }
+        },
+        "sk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Vytvárate položku v zdieľanom trezore a %lld používatelia k nej okamžite získajú prístup."
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Vytvárate položku v zdieľanom trezore a %lld používateľov k nej okamžite získa prístup."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Vytvárate položku v zdieľanom trezore a %lld používateľ k nej okamžite získa prístup."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Vytvárate položku v zdieľanom trezore a %lld používateľov k nej okamžite získa prístup."
+                }
+              }
+            }
+          }
+        },
+        "tr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Paylaşılan bir kasada bir öge oluşturuyorsunuz ve %lld kullanıcı ona hemen erişebilecek."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Paylaşılan bir kasada bir öge oluşturuyorsunuz ve %lld kullanıcı ona hemen erişebilecek."
                 }
               }
             }
@@ -202145,7 +202745,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Anda telah diundang ke brankas bersama. Klik di sini untuk rincian lebih lanjut."
+            "value" : "Anda telah diundang ke brankas yang dibagikan. Klik di sini untuk rincian lebih lanjut."
           }
         },
         "it" : {
