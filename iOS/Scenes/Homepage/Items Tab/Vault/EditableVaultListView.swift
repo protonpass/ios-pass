@@ -108,7 +108,7 @@ private extension EditableVaultListView {
 
     @ViewBuilder
     var upsellRow: some View {
-        if !viewModel.mode.isOrganise, viewModel.isFreeUser {
+        if !viewModel.mode.isOrganise, viewModel.shouldUpsell {
             HStack(alignment: .center, spacing: 16) {
                 Image(uiImage: PassIcon.diamond)
                     .resizable()
@@ -117,7 +117,7 @@ private extension EditableVaultListView {
                 Text("Upgrade to Pass Plus")
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                Image(uiImage: IconProvider.chevronRight)
+                Image(uiImage: PassIcon.chevronTinyRight)
                     .resizable()
                     .frame(width: 16, height: 16)
             }
@@ -127,7 +127,7 @@ private extension EditableVaultListView {
             .cornerRadius(16)
             .overlay(RoundedRectangle(cornerRadius: 16)
                 .inset(by: 0.5)
-                .stroke(.white.opacity(0.1), lineWidth: 1))
+                .stroke(PassColor.inputBorderNorm.toColor, lineWidth: 1))
             .padding(.horizontal)
             .padding(.top, 25)
             .buttonEmbeded(action: viewModel.upgradeSubscription)

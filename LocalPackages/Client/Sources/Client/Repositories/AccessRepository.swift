@@ -79,16 +79,20 @@ public actor AccessRepository: AccessRepositoryProtocol {
 
 public extension AccessRepository {
     func getAccess(userId: String?) async throws -> UserAccess {
+        let currentUserId = try await userManager.getActiveUserId()
+
         let userId = if let userId {
             userId
         } else {
-            try await userManager.getActiveUserId()
+            currentUserId
         }
         logger.trace("Getting access for user \(userId)")
         if let localAccess = try await localDatasource.getAccess(userId: userId) {
             logger.trace("Found local access for user \(userId)")
-            await MainActor.run {
-                access.send(localAccess)
+            if userId == currentUserId, access.value != localAccess {
+                await MainActor.run {
+                    access.send(localAccess)
+                }
             }
             return localAccess
         }
@@ -99,16 +103,19 @@ public extension AccessRepository {
 
     @discardableResult
     func refreshAccess(userId: String?) async throws -> UserAccess {
+        let currentUserId = try await userManager.getActiveUserId()
         let userId = if let userId {
             userId
         } else {
-            try await userManager.getActiveUserId()
+            currentUserId
         }
         logger.trace("Refreshing access for user \(userId)")
         let remoteAccess = try await remoteDatasource.getAccess(userId: userId)
         let userAccess = UserAccess(userId: userId, access: remoteAccess)
-        await MainActor.run {
-            access.send(userAccess)
+        if userId == currentUserId, access.value != userAccess {
+            await MainActor.run {
+                access.send(userAccess)
+            }
         }
 
         if let localAccess = try await localDatasource.getAccess(userId: userId),

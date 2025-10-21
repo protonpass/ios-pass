@@ -101,7 +101,7 @@ private extension ItemsTabTopBar {
                     .scaledToFit()
                     .frame(maxWidth: 46)
                     .buttonEmbeded(action: onPromoBadgeTapped)
-            } else if !showPromoBadge, viewModel.isFreeUser {
+            } else if !showPromoBadge, viewModel.shouldUpsell {
                 Image(uiImage: PassIcon.diamond)
                     .resizable()
                     .frame(width: 20, height: 20)
@@ -127,7 +127,7 @@ private extension ItemsTabTopBar {
         }
         .padding(.horizontal, showButtonShapes ? 0 : nil)
         .animation(.default, value: showPromoBadge)
-        .animation(.default, value: viewModel.isFreeUser)
+        .animation(.default, value: viewModel.shouldUpsell)
     }
 }
 

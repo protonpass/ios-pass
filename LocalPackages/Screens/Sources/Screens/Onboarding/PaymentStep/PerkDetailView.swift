@@ -19,11 +19,13 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import DesignSystem
 import ProtonCoreUIFoundations
 import SwiftUI
 
 struct PerkDetailView: View {
     let perk: PerkDetail
+    let isOnboarding: Bool
 
     var body: some View {
         Group {
@@ -49,6 +51,6 @@ struct PerkDetailView: View {
                 Text(value)
             }
         }
-        .foregroundStyle(.white)
+        .foregroundStyle(isOnboarding ? .white : PassColor.textNorm.toColor)
     }
 }

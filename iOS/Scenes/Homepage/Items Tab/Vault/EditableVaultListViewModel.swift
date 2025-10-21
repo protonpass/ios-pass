@@ -111,8 +111,8 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
         count.trashed > 0
     }
 
-    var isFreeUser: Bool {
-        plan?.isFreeUser ?? true
+    var shouldUpsell: Bool {
+        plan?.shouldUpsell ?? true
     }
 
     var trashedAliasesCount: Int {
@@ -185,9 +185,6 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
 private extension EditableVaultListViewModel {
     func setUp() {
-        let access = accessRepository.access.value?.access
-        plan = access?.plan
-
         appContentManager.$state
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newState in
@@ -212,13 +209,11 @@ private extension EditableVaultListViewModel {
 
         accessRepository.access
             .receive(on: DispatchQueue.main)
-            .dropFirst()
-            .compactMap(\.self)
             .sink { [weak self] updatedAccess in
                 guard let self else {
                     return
                 }
-                plan = updatedAccess.access.plan
+                plan = updatedAccess?.access.plan
             }
             .store(in: &cancellables)
     }

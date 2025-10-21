@@ -25,6 +25,7 @@ import ProtonCorePaymentsV2
 import SwiftUI
 
 struct OnboardingPaymentStep: View {
+    @Environment(\.colorScheme) private var colorScheme
     @State private var selection: Selection = .plus
     let isOnboarding: Bool
     let plans: PassPlans
@@ -65,7 +66,7 @@ struct OnboardingPaymentStep: View {
                 case .plus:
                     OnboardingPassPlusView(isOnboarding: isOnboarding)
                 case .unlimited:
-                    OnboardingProtonUnlimitedView()
+                    OnboardingProtonUnlimitedView(isOnboarding: isOnboarding)
                 }
             }
             .padding(.horizontal, DesignConstant.onboardingPadding)
@@ -115,7 +116,11 @@ private extension OnboardingPaymentStep {
             }
         })
         .padding(4)
-        .background(Color.black.opacity(0.3).clipShape(.capsule))
+        .background(planSelectorBackground.opacity(0.3).clipShape(.capsule))
+    }
+
+    var planSelectorBackground: Color {
+        isOnboarding || colorScheme == .dark ? Color.black : Color.white
     }
 
     func planDetail(name: String,
@@ -139,10 +144,11 @@ private extension OnboardingPaymentStep {
     var ctaButton: some View {
         VStack(alignment: .center, spacing: 0) {
             CapsuleTextButton(title: selection.ctaTitle,
-                              titleColor: PassColor.textInvert,
+                              titleColor: isOnboarding || colorScheme == .dark ? PassColor.textInvert : PassColor
+                                  .interactionNormMinor2,
                               font: .body,
                               fontWeight: .medium,
-                              backgroundColor: .white,
+                              backgroundColor: isOnboarding || colorScheme == .dark ? .white : .black,
                               height: 52,
                               action: onPurchase)
                 .padding(DesignConstant.onboardingPadding)
@@ -151,7 +157,7 @@ private extension OnboardingPaymentStep {
                 Text("Auto renews at \(selectedPlan.displayYearlyPrice) every year",
                      bundle: .module)
                     .font(.callout)
-                    .foregroundStyle(.white)
+                    .foregroundStyle(isOnboarding ? .white : PassColor.textNorm.toColor)
                     .padding([.bottom, .horizontal], DesignConstant.onboardingPadding)
             }
         }
