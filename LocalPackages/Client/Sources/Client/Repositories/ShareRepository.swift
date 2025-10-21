@@ -170,6 +170,7 @@ public extension ShareRepository {
         do {
             let hasUndecryptableShares = StateHolder(initialValue: false)
             let shares = try await remoteDatasource.getShares(userId: userId)
+            logger.trace("Decrypting \(shares.count) remote shares for user \(userId)")
             let decryptedShares: [Share] = try await shares
                 .compactParallelMap(parallelism: 5) { [weak self] in
                     guard let self else { return nil }

@@ -82,7 +82,6 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                            customFieldTitle = ""
                                        })
             .sharedCreationAlert(showItemShareAlert: $viewModel.showSharedItemCreationAlert,
-                                 members: viewModel.selectedVault.members,
                                  onSave: viewModel.dismissSharedItemAlertAndSave(doNotShowAgain:))
             .sheet(isPresented: $viewModel.isShowingNoCameraPermissionView) {
                 NoCameraPermissionView { viewModel.openSettings() }
@@ -305,7 +304,6 @@ private extension View {
     }
 
     func sharedCreationAlert(showItemShareAlert: Binding<Bool>,
-                             members: Int,
                              onSave: @escaping (_ doNotShowAgain: Bool) -> Void) -> some View {
         alert("Item in a shared vault",
               isPresented: showItemShareAlert) {
