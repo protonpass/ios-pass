@@ -106,8 +106,8 @@ final class ItemsTabTopBarViewModel: ObservableObject {
         !appContentManager.filterOption.isDefault || !selectedSortType.isDefault
     }
 
-    var isFreeUser: Bool {
-        plan?.isFreeUser ?? true
+    var shouldUpsell: Bool {
+        plan?.shouldUpsell ?? true
     }
 
     var selectable: Bool {
