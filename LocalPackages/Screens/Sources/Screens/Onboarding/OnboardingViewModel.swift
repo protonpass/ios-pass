@@ -291,7 +291,6 @@ extension OnboardingViewModel {
                 await delegate.add(event: .onboardingUpsellCtaClicked(planName: plan.internalName))
                 try await delegate.purchase(selectedPlan.plan)
                 await delegate.add(event: .onboardingUpsellSubscribed)
-                // TODO: dismiss if upsell
                 _ = await goNext()
             } catch {
                 await delegate.handle(error: error)
