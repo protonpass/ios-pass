@@ -109,11 +109,14 @@ final class OnboardingViewModel: ObservableObject {
     @Published private(set) var isPurchasing = false
     @Published private(set) var isSaving = false
     @Published private(set) var finished = false
+    @Published private(set) var shouldDismiss = false
     @Published var selectedPlan: PlanUiModel?
     private var availableBiometryType: LABiometryType?
 
     private weak var datasource: (any OnboardingDatasource)?
     private weak var delegate: (any OnboardingDelegate)?
+
+    var isOnboarding: Bool { mode == .onboarding }
 
     let mode: OnboardingDisplayMode
 
@@ -151,7 +154,10 @@ extension OnboardingViewModel {
     /// `false` if no more steps so the onboarding process could be ended
     /// `isManual` means triggered by user (manually skip the step)
     func goNext(isManual: Bool = false) async -> Bool {
-        guard let delegate, let datasource, mode == .onboarding else { return false }
+        guard let delegate, let datasource, mode == .onboarding else {
+            shouldDismiss = true
+            return false
+        }
 
         guard let step = currentStep.fetchedObject else {
             assertionFailure("Current step is not initialized")
@@ -285,6 +291,7 @@ extension OnboardingViewModel {
                 await delegate.add(event: .onboardingUpsellCtaClicked(planName: plan.internalName))
                 try await delegate.purchase(selectedPlan.plan)
                 await delegate.add(event: .onboardingUpsellSubscribed)
+                // TODO: dismiss if upsell
                 _ = await goNext()
             } catch {
                 await delegate.handle(error: error)

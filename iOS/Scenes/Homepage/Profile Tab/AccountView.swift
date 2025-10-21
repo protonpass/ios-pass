@@ -244,15 +244,13 @@ struct AccountView: View {
                          accessibilityLabel: viewModel.isShownAsSheet ? "Close" : "Go back",
                          action: { viewModel.goBack() })
         }
-        ToolbarItem(placement: .topBarTrailing) {
-            if viewModel.plan?.hideUpgrade == false, !viewModel.isSSOUser {
+        if viewModel.plan?.hideUpgrade == false, !viewModel.isSSOUser {
+            ToolbarItem(placement: .topBarTrailing) {
                 CapsuleLabelButton(icon: PassIcon.brandPass,
                                    title: #localized("Upgrade"),
                                    titleColor: ColorProvider.TextInverted,
                                    backgroundColor: PassColor.interactionNormMajor2,
                                    action: { viewModel.upgradeSubscription() })
-            } else {
-                EmptyView()
             }
         }
     }

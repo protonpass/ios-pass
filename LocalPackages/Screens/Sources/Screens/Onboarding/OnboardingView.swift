@@ -67,6 +67,12 @@ public struct OnboardingView: View {
         }
         .showSpinner(viewModel.isPurchasing)
         .task { await viewModel.setUp() }
+        .onChange(of: viewModel.shouldDismiss) { value in
+            guard value else {
+                return
+            }
+            dismiss()
+        }
     }
 }
 
@@ -112,8 +118,10 @@ private extension OnboardingView {
                         .resizable()
                         .scaledToFit()
                         .frame(width: imageWidth)
-                        .offset(x: -imageWidth * 0.3, y: -imageWidth * 0.65)
+                        .offset(x: -imageWidth * 0.3, y: -imageWidth * 0.55)
                 }
+                .clipped()
+                .ignoresSafeArea(edges: [.top, .leading, .trailing])
             }
         }
     }
@@ -165,7 +173,8 @@ private extension OnboardingView {
     func content(for step: OnboardStep) -> some View {
         switch step {
         case let .payment(plans):
-            OnboardingPaymentStep(plans: plans,
+            OnboardingPaymentStep(isOnboarding: viewModel.isOnboarding,
+                                  plans: plans,
                                   selectedPlan: $viewModel.selectedPlan,
                                   onPurchase: viewModel.purchaseSelectedPlan)
 

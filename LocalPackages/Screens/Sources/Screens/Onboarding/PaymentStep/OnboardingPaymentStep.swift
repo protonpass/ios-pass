@@ -26,6 +26,7 @@ import SwiftUI
 
 struct OnboardingPaymentStep: View {
     @State private var selection: Selection = .plus
+    let isOnboarding: Bool
     let plans: PassPlans
     @Binding var selectedPlan: PlanUiModel?
     let onPurchase: () -> Void
@@ -51,7 +52,7 @@ struct OnboardingPaymentStep: View {
             Text("Unlock premium features.", bundle: .module)
                 .font(.title3)
                 .fontWeight(.bold)
-                .foregroundStyle(.white)
+                .foregroundStyle(isOnboarding ? .white : PassColor.textNorm.toColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, DesignConstant.onboardingPadding)
 
@@ -62,7 +63,7 @@ struct OnboardingPaymentStep: View {
             ScrollView(showsIndicators: false) {
                 switch selection {
                 case .plus:
-                    OnboardingPassPlusView()
+                    OnboardingPassPlusView(isOnboarding: isOnboarding)
                 case .unlimited:
                     OnboardingProtonUnlimitedView()
                 }
@@ -129,7 +130,8 @@ private extension OnboardingPaymentStep {
                 .font(.caption)
         }
         .frame(maxWidth: .infinity, alignment: .center)
-        .foregroundStyle(selected ? PassColor.textInvert.toColor : .white)
+        .foregroundStyle(selected ? PassColor.textInvert.toColor : isOnboarding ? .white : PassColor.textNorm
+            .toColor)
         .contentShape(.rect)
         .onTapGesture(perform: onSelect)
     }
