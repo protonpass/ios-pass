@@ -319,7 +319,7 @@ private extension View {
                 Text("Cancel")
             }
         } message: {
-            Text("You are creating an item in a shared vault and \(members) users will immediately gain access to it.")
+            Text("You are creating an item in a shared vault and members will immediately gain access to this item.")
         }
     }
 }
