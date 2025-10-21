@@ -66,7 +66,7 @@ struct OnboardingPassPlusView: View {
         if isOnboarding || colorScheme == .dark {
             PassColor.backgroundMedium.toColor
         } else {
-            PassColor.backgroundStrong.toColor
+            PassColor.newBackgroundStrong.toColor
         }
     }
 }
@@ -88,14 +88,16 @@ private extension OnboardingPassPlusView {
                 Text("Free", bundle: .module)
                     .fontWeight(.bold)
 
-                PassPlusTitle()
+                PassPlusTitle(isOnboarding: isOnboarding)
 
                 ForEach(features) { feature in
                     Text(feature.description)
                         .font(.callout)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                    PerkDetailView(perk: feature.lowerPerk)
-                    PerkDetailView(perk: feature.higherPerk)
+                    PerkDetailView(perk: feature.lowerPerk,
+                                   isOnboarding: isOnboarding)
+                    PerkDetailView(perk: feature.higherPerk,
+                                   isOnboarding: isOnboarding)
                 }
             }
             .foregroundStyle(isOnboarding ? .white : PassColor.textNorm.toColor)
@@ -104,12 +106,20 @@ private extension OnboardingPassPlusView {
 }
 
 struct PassPlusTitle: View {
+    @Environment(\.colorScheme) private var colorScheme
+    let isOnboarding: Bool
+
     var body: some View {
         Text(verbatim: "Plus")
             .fontWeight(.bold)
             .padding(.vertical, 4)
             .padding(.horizontal)
-            .background(Color(red: 0.05, green: 0.05, blue: 0.05).opacity(0.6))
+            .background(backgroundColor)
             .clipShape(.capsule)
+    }
+
+    private var backgroundColor: Color {
+        isOnboarding || colorScheme == .dark ? Color(red: 0.05, green: 0.05, blue: 0.05).opacity(0.6) : PassColor
+            .newBackgroundStrong.toColor
     }
 }

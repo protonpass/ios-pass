@@ -74,6 +74,8 @@ public struct Plan: Decodable, Hashable, Sendable {
 
     public var isInTrial: Bool { planType == .trial }
 
+    public var shouldUpsell: Bool { isFreeUser && !hideUpgrade }
+
     public init(type: String,
                 internalName: String,
                 displayName: String,

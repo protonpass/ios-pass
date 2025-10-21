@@ -26,6 +26,7 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 public struct OnboardingView: View {
+    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: OnboardingViewModel
     @State private var saveable = false
@@ -100,14 +101,9 @@ private extension OnboardingView {
 
     func background(for step: OnboardStep) -> some View {
         ZStack(alignment: .topLeading) {
-            LinearGradient(stops:
-                [
-                    Gradient.Stop(color: Color(red: 0.81, green: 0.51, blue: 0.53), location: 0.00),
-                    Gradient.Stop(color: Color(red: 0.29, green: 0.2, blue: 0.47), location: 0.59),
-                    Gradient.Stop(color: Color(red: 0.12, green: 0.12, blue: 0.19), location: 1.00)
-                ],
-                startPoint: UnitPoint(x: 0, y: 0),
-                endPoint: UnitPoint(x: 0.66, y: 0.36))
+            LinearGradient(stops: backgroundGradients,
+                           startPoint: UnitPoint(x: 0, y: 0),
+                           endPoint: UnitPoint(x: 0.66, y: 0.36))
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .ignoresSafeArea()
 
@@ -123,6 +119,22 @@ private extension OnboardingView {
                 .clipped()
                 .ignoresSafeArea(edges: [.top, .leading, .trailing])
             }
+        }
+    }
+
+    var backgroundGradients: [Gradient.Stop] {
+        if viewModel.isOnboarding || colorScheme == .dark {
+            [
+                Gradient.Stop(color: Color(red: 0.81, green: 0.51, blue: 0.53), location: 0.00),
+                Gradient.Stop(color: Color(red: 0.29, green: 0.2, blue: 0.47), location: 0.59),
+                Gradient.Stop(color: Color(red: 0.12, green: 0.12, blue: 0.19), location: 1.00)
+            ]
+        } else {
+            [
+                Gradient.Stop(color: Color(red: 0.81, green: 0.51, blue: 0.53), location: 0.00),
+                Gradient.Stop(color: Color(red: 0.94, green: 0.82, blue: 0.85), location: 0.59),
+                Gradient.Stop(color: Color(red: 0.98, green: 0.98, blue: 1), location: 1.00)
+            ]
         }
     }
 
@@ -256,7 +268,7 @@ private extension OnboardingView {
         }, label: {
             Text("Not now", bundle: .module)
                 .font(.callout)
-                .foregroundStyle(.white)
+                .foregroundStyle(PassColor.textNorm.toColor)
         })
     }
 
