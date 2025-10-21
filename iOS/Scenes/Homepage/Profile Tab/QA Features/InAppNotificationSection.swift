@@ -24,6 +24,7 @@ import Combine
 import Core
 import Entities
 import FactoryKit
+import StoreKit
 import SwiftUI
 
 @available(iOS 17, *)
@@ -40,6 +41,7 @@ struct InAppNotificationSection: View {
 private struct InAppNotificationView: View {
     var onDismiss: () -> Void
     @State private var viewModel = InAppNotificationViewModel()
+    @State private var storefront: Storefront?
 
     var body: some View {
         List {
@@ -57,9 +59,18 @@ private struct InAppNotificationView: View {
                             .foregroundStyle(.secondary)
                     }
                 }
+
                 Button(action: viewModel.clearThreshold) {
                     Text(verbatim: "Clear last threshold")
                 }
+
+                HStack {
+                    Text(verbatim: "Storefront's country code")
+                    Spacer()
+                    Text(verbatim: storefront?.countryCode ?? "null")
+                        .foregroundStyle(.secondary)
+                }
+
                 Toggle(isOn: $viewModel.forceUsStore) {
                     Text(verbatim: "Force US store")
                 }
@@ -208,6 +219,9 @@ private struct InAppNotificationView: View {
                actions: { Button(action: {},
                                  label: { Text("OK") }) },
                message: { Text(verbatim: "Mocked notification is removed") })
+        .task {
+            storefront = await Storefront.current
+        }
     }
 }
 
