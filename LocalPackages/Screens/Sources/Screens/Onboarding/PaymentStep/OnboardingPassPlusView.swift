@@ -23,6 +23,8 @@ import DesignSystem
 import SwiftUI
 
 struct OnboardingPassPlusView: View {
+    @Environment(\.colorScheme) private var colorScheme
+
     let detailColumnWidth: CGFloat = 86
     let features: [FeatureUiModel] =
         [
@@ -46,15 +48,25 @@ struct OnboardingPassPlusView: View {
                   higherPerk: .available)
         ]
 
+    let isOnboarding: Bool
+
     var body: some View {
         ZStack {
             HStack {
                 Spacer()
-                PassColor.backgroundMedium.toColor
+                columColor
                     .frame(width: detailColumnWidth)
                     .clipShape(RoundedRectangle(cornerRadius: 24))
             }
             table
+        }
+    }
+
+    var columColor: Color {
+        if isOnboarding || colorScheme == .dark {
+            PassColor.backgroundMedium.toColor
+        } else {
+            PassColor.backgroundStrong.toColor
         }
     }
 }
@@ -86,7 +98,7 @@ private extension OnboardingPassPlusView {
                     PerkDetailView(perk: feature.higherPerk)
                 }
             }
-            .foregroundStyle(.white)
+            .foregroundStyle(isOnboarding ? .white : PassColor.textNorm.toColor)
             .padding(.vertical)
     }
 }

@@ -42,6 +42,7 @@ struct EditableVaultListView: View {
     var body: some View {
         VStack(alignment: .leading) {
             topView
+            upsellRow
             vaultsScrollView
             bottomView
         }
@@ -102,6 +103,34 @@ private extension EditableVaultListView {
                 })
             }
             .padding()
+        }
+    }
+
+    @ViewBuilder
+    var upsellRow: some View {
+        if !viewModel.mode.isOrganise, viewModel.isFreeUser {
+            HStack(alignment: .center, spacing: 16) {
+                Image(uiImage: PassIcon.diamond)
+                    .resizable()
+                    .frame(width: 20, height: 20)
+                    .scaledToFit()
+                Text("Upgrade to Pass Plus")
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                Image(uiImage: IconProvider.chevronRight)
+                    .resizable()
+                    .frame(width: 16, height: 16)
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 15)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .cornerRadius(16)
+            .overlay(RoundedRectangle(cornerRadius: 16)
+                .inset(by: 0.5)
+                .stroke(.white.opacity(0.1), lineWidth: 1))
+            .padding(.horizontal)
+            .padding(.top, 25)
+            .buttonEmbeded(action: viewModel.upgradeSubscription)
         }
     }
 
