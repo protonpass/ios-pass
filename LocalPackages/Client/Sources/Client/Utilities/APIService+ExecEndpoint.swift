@@ -192,8 +192,17 @@ private enum NetworkDebugger {
         print("\n[\(endpoint.debugDescription)]")
         print("<== \(response.statusCode) \(endpoint.method.rawValue) \(urlString)")
 
+        if let request = task?.originalRequest,
+           let headers = request.allHTTPHeaderFields,
+           !headers.isEmpty {
+            print("Request headers:")
+            for (key, value) in headers {
+                print("   \(key): \(value)")
+            }
+        }
+
         if !response.allHeaderFields.isEmpty {
-            print("Headers:")
+            print("Response headers:")
             for (key, value) in response.allHeaderFields {
                 print("   \(key): \(value)")
             }
