@@ -65,6 +65,13 @@ private struct InAppNotificationView: View {
                 }
 
                 HStack {
+                    Text(verbatim: "Locale")
+                    Spacer()
+                    Text(verbatim: Locale.autoupdatingCurrent.identifier)
+                        .foregroundStyle(.secondary)
+                }
+
+                HStack {
                     Text(verbatim: "Storefront's country code")
                     Spacer()
                     Text(verbatim: storefront?.countryCode ?? "null")
