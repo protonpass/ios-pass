@@ -123,6 +123,11 @@ struct AdditionalItemEditResult: Sendable {
     static var `default`: Self { .init(edited: false, slNote: nil) }
 }
 
+struct SharedItemEditionAlertContent: Equatable, Hashable {
+    let title: String
+    let message: String
+}
+
 @MainActor
 class BaseCreateEditItemViewModel: ObservableObject {
     @Published var title = ""
@@ -160,12 +165,12 @@ class BaseCreateEditItemViewModel: ObservableObject {
     @Published var isShowingCodeScanner = false
 
     @Published var isShowingScanner = false
-    @Published var showSharedItemCreationAlert = false
+    @Published var showSharedItemEditionAlert: SharedItemEditionAlertContent?
 
     let scanResponsePublisher = ScanResponsePublisher()
 
     private var pendingFileNameUpdates = [PendingFileNameUpdate]()
-
+    private let isSharedElement: Bool
     private lazy var renameAttachmentDelegate = RenameAttachmentDelegate()
 
     let mode: ItemMode
@@ -254,12 +259,14 @@ class BaseCreateEditItemViewModel: ObservableObject {
          upgradeChecker: any UpgradeCheckerProtocol,
          vaults: [Share]) throws {
         let vaultShareId: String?
+        var sharedItem = false
         switch mode {
         case let .create(shareId, _):
             vaultShareId = shareId
         case let .clone(itemContent), let .edit(itemContent):
             vaultShareId = itemContent.shareId
             customFields = itemContent.customFields
+            sharedItem = itemContent.item.shareCount > 0
         }
 
         let lastCreatedItemVault: Share? = if let shareId = getUserPreferences().lastCreatedItemShareId {
@@ -279,6 +286,7 @@ class BaseCreateEditItemViewModel: ObservableObject {
         }
 
         selectedVault = vault
+        isSharedElement = vault.shared || sharedItem
         self.mode = mode
         self.upgradeChecker = upgradeChecker
         self.vaults = vaults
@@ -609,8 +617,15 @@ extension BaseCreateEditItemViewModel {
     func checkAndSave() {
         let dismissedUIElements = preferencesManager.appPreferences.unwrapped().dismissedUIElements
         let shouldShowSharedItemAlert = !dismissedUIElements.contains(.itemCreationInSharedVaultAlert)
-        if selectedVault.shared, selectedVault.members > 0, shouldShowSharedItemAlert {
-            showSharedItemCreationAlert = true
+
+        if isSharedElement, shouldShowSharedItemAlert {
+            let title = selectedVault.shared ? #localized("Item in a shared vault") : #localized("Shared item")
+            let message = mode
+                .isEditMode ?
+                #localized("You are editing a shared item. Changes will be visible to everyone it's shared with immediately.") :
+                #localized("You are creating an item in a shared vault and members will immediately gain access to this item.")
+
+            showSharedItemEditionAlert = .init(title: title, message: message)
         } else {
             save()
         }
