@@ -81,7 +81,7 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                                                      update: .title(customFieldTitle))
                                            customFieldTitle = ""
                                        })
-            .sharedCreationAlert(showItemShareAlert: $viewModel.showSharedItemEditionAlert)
+            .sharedCreationAlert(content: $viewModel.itemEditionAlertContent)
             .sheet(isPresented: $viewModel.isShowingNoCameraPermissionView) {
                 NoCameraPermissionView { viewModel.openSettings() }
             }
@@ -302,10 +302,10 @@ private extension View {
               })
     }
 
-    func sharedCreationAlert(showItemShareAlert: Binding<ItemEditionAlertContent?>) -> some View {
-        alert(showItemShareAlert.wrappedValue?.title ?? "Unkown",
-              isPresented: showItemShareAlert.mappedToBool()) {
-            if let buttons = showItemShareAlert.wrappedValue?.buttons, !buttons.isEmpty {
+    func sharedCreationAlert(content: Binding<ItemEditionAlertContent?>) -> some View {
+        alert(content.wrappedValue?.title ?? "Unkown",
+              isPresented: content.mappedToBool()) {
+            if let buttons = content.wrappedValue?.buttons, !buttons.isEmpty {
                 ForEach(buttons, id: \.id) { button in
                     Button(role: button.role, action: button.action) {
                         Text(button.title)
@@ -317,7 +317,7 @@ private extension View {
                 }
             }
         } message: {
-            Text(verbatim: showItemShareAlert.wrappedValue?.message ?? "")
+            Text(verbatim: content.wrappedValue?.message ?? "")
         }
     }
 }
