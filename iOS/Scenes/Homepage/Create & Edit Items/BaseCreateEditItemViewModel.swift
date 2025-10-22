@@ -123,20 +123,12 @@ struct AdditionalItemEditResult: Sendable {
     static var `default`: Self { .init(edited: false, slNote: nil) }
 }
 
-struct ItemEditionAlertContent: Equatable, Hashable {
-    struct ButtonAction: Equatable, Hashable {
+struct ItemEditionAlertContent {
+    struct ButtonAction {
         let id = UUID()
         let title: String
-        let role: ButtonRole?
+        var role: ButtonRole?
         let action: () -> Void
-
-        static func == (lhs: ButtonAction, rhs: ButtonAction) -> Bool {
-            lhs.id == rhs.id
-        }
-
-        func hash(into hasher: inout Hasher) {
-            hasher.combine(id)
-        }
     }
 
     let title: String
@@ -181,13 +173,11 @@ class BaseCreateEditItemViewModel: ObservableObject {
     @Published var isShowingCodeScanner = false
 
     @Published var isShowingScanner = false
-    @Published var showSharedItemEditionAlert: ItemEditionAlertContent?
+    @Published var itemEditionAlertContent: ItemEditionAlertContent?
 
     let scanResponsePublisher = ScanResponsePublisher()
 
     private var pendingFileNameUpdates = [PendingFileNameUpdate]()
-    private var isSharedElement: Bool
-    private var isSharedItem = false
     private lazy var renameAttachmentDelegate = RenameAttachmentDelegate()
 
     let mode: ItemMode
@@ -282,7 +272,6 @@ class BaseCreateEditItemViewModel: ObservableObject {
         case let .clone(itemContent), let .edit(itemContent):
             vaultShareId = itemContent.shareId
             customFields = itemContent.customFields
-            isSharedItem = itemContent.item.shareCount > 0
         }
 
         let lastCreatedItemVault: Share? = if let shareId = getUserPreferences().lastCreatedItemShareId {
@@ -302,7 +291,6 @@ class BaseCreateEditItemViewModel: ObservableObject {
         }
 
         selectedVault = vault
-        isSharedElement = vault.shared || isSharedItem
         self.mode = mode
         self.upgradeChecker = upgradeChecker
         self.vaults = vaults
@@ -483,15 +471,6 @@ private extension BaseCreateEditItemViewModel {
                 dismissedFileAttachmentsBanner = newValue
             }
             .store(in: &cancellables)
-
-        $selectedVault
-            .receive(on: DispatchQueue.main)
-            .removeDuplicates()
-            .sink { [weak self] newVault in
-                guard let self else { return }
-                isSharedElement = newVault.shared || isSharedItem
-            }
-            .store(in: &cancellables)
     }
 
     func createItem(for type: ItemContentType) async throws -> SymmetricallyEncryptedItem? {
@@ -535,7 +514,7 @@ private extension BaseCreateEditItemViewModel {
 
     /// Return `true` if item is edited, `false` otherwise
     func editItem(oldItemContent: ItemContent) async throws -> Bool {
-        var editResult = try await additionalEdit()
+        let editResult = try await additionalEdit()
         var edited = editResult.edited
         let itemId = oldItemContent.itemId
         let shareId = oldItemContent.shareId
@@ -643,20 +622,25 @@ extension BaseCreateEditItemViewModel {
     func checkAndSave() {
         let dismissedUIElements = preferencesManager.appPreferences.unwrapped().dismissedUIElements
         let shouldShowSharedItemAlert = !dismissedUIElements.contains(.itemCreationInSharedVaultAlert)
+        let isSharedItem = if let content = mode.itemContent {
+            content.item.shareCount > 0
+        } else {
+            false
+        }
+        let isSharedVault = selectedVault.shared
 
-        if isSharedElement, shouldShowSharedItemAlert {
-            let title = selectedVault.shared ? #localized("Item in a shared vault") : #localized("Shared item")
-            let message = mode
-                .isEditMode ?
+        if shouldShowSharedItemAlert, isSharedItem || isSharedVault {
+            let title = isSharedVault ? #localized("Item in a shared vault") : #localized("Shared item")
+            let message = mode.isEditMode ?
                 #localized("You are editing a shared item. Changes will be visible to everyone it's shared with immediately.") :
                 #localized("You are creating an item in a shared vault and members will immediately gain access to this item.")
 
-            showSharedItemEditionAlert = .init(title: title, message: message, buttons: [
-                .init(title: #localized("OK"), role: .none) { [weak self] in
+            itemEditionAlertContent = .init(title: title, message: message, buttons: [
+                .init(title: #localized("OK")) { [weak self] in
                     guard let self else { return }
                     dismissSharedItemAlertAndSave(doNotShowAgain: false)
                 },
-                .init(title: #localized("Don't remind me again"), role: .none) { [weak self] in
+                .init(title: #localized("Don't remind me again")) { [weak self] in
                     guard let self else { return }
                     dismissSharedItemAlertAndSave(doNotShowAgain: true)
                 },
