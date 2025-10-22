@@ -187,7 +187,7 @@ class BaseCreateEditItemViewModel: ObservableObject {
 
     private var pendingFileNameUpdates = [PendingFileNameUpdate]()
     private var isSharedElement: Bool
-    private var isSharedItem: Bool?
+    private var isSharedItem = false
     private lazy var renameAttachmentDelegate = RenameAttachmentDelegate()
 
     let mode: ItemMode
@@ -302,7 +302,7 @@ class BaseCreateEditItemViewModel: ObservableObject {
         }
 
         selectedVault = vault
-        isSharedElement = vault.shared || (isSharedItem ?? false)
+        isSharedElement = vault.shared || isSharedItem
         self.mode = mode
         self.upgradeChecker = upgradeChecker
         self.vaults = vaults
@@ -489,7 +489,7 @@ private extension BaseCreateEditItemViewModel {
             .removeDuplicates()
             .sink { [weak self] newVault in
                 guard let self else { return }
-                isSharedElement = newVault.shared || (isSharedItem ?? false)
+                isSharedElement = newVault.shared || isSharedItem
             }
             .store(in: &cancellables)
     }
@@ -638,7 +638,7 @@ extension BaseCreateEditItemViewModel {
         isShowingScanner = true
     }
 
-    // swiftlint:disable:line_length
+    // swiftlint:disable line_length
     @objc
     func checkAndSave() {
         let dismissedUIElements = preferencesManager.appPreferences.unwrapped().dismissedUIElements
@@ -667,7 +667,7 @@ extension BaseCreateEditItemViewModel {
         }
     }
 
-    // swiftlint:enable:line_length
+    // swiftlint:enable line_length
 
     func dismissSharedItemAlertAndSave(doNotShowAgain: Bool) {
         Task { [weak self] in
