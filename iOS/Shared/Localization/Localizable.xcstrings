@@ -157391,6 +157391,16 @@
         }
       }
     },
+    "Shared item" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shared item"
+          }
+        }
+      }
+    },
     "Shared item invitation" : {
       "localizations" : {
         "be" : {
@@ -198393,6 +198403,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "You are creating an item in a shared vault and members will immediately gain access to this item."
+          }
+        }
+      }
+    },
+    "You are editing a shared item. Changes will be visible to everyone it's shared with immediately." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You are editing a shared item. Changes will be visible to everyone it's shared with immediately."
           }
         }
       }

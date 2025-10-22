@@ -81,7 +81,7 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                                                      update: .title(customFieldTitle))
                                            customFieldTitle = ""
                                        })
-            .sharedCreationAlert(showItemShareAlert: $viewModel.showSharedItemCreationAlert,
+            .sharedCreationAlert(showItemShareAlert: $viewModel.showSharedItemEditionAlert,
                                  onSave: viewModel.dismissSharedItemAlertAndSave(doNotShowAgain:))
             .sheet(isPresented: $viewModel.isShowingNoCameraPermissionView) {
                 NoCameraPermissionView { viewModel.openSettings() }
@@ -303,10 +303,10 @@ private extension View {
               })
     }
 
-    func sharedCreationAlert(showItemShareAlert: Binding<Bool>,
+    func sharedCreationAlert(showItemShareAlert: Binding<SharedItemEditionAlertContent?>,
                              onSave: @escaping (_ doNotShowAgain: Bool) -> Void) -> some View {
-        alert("Item in a shared vault",
-              isPresented: showItemShareAlert) {
+        alert(showItemShareAlert.wrappedValue?.title ?? "Unkown",
+              isPresented: showItemShareAlert.mappedToBool()) {
             Button { onSave(false) } label: {
                 Text("OK")
             }
@@ -317,7 +317,7 @@ private extension View {
                 Text("Cancel")
             }
         } message: {
-            Text("You are creating an item in a shared vault and members will immediately gain access to this item.")
+            Text(verbatim: showItemShareAlert.wrappedValue?.message ?? "")
         }
     }
 }
