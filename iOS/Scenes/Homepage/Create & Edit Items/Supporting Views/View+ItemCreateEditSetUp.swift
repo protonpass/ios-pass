@@ -303,18 +303,20 @@ private extension View {
               })
     }
 
-    func sharedCreationAlert(showItemShareAlert: Binding<SharedItemEditionAlertContent?>,
+    func sharedCreationAlert(showItemShareAlert: Binding<ItemEditionAlertContent?>,
                              onSave: @escaping (_ doNotShowAgain: Bool) -> Void) -> some View {
         alert(showItemShareAlert.wrappedValue?.title ?? "Unkown",
               isPresented: showItemShareAlert.mappedToBool()) {
-            Button { onSave(false) } label: {
-                Text("OK")
-            }
-            Button { onSave(true) } label: {
-                Text("Don't remind me again")
-            }
-            Button(role: .cancel) {
-                Text("Cancel")
+            if let buttons = showItemShareAlert.wrappedValue?.buttons, !buttons.isEmpty {
+                ForEach(buttons, id: \.id) { button in
+                    Button(role: button.role, action: button.action) {
+                        Text(button.title)
+                    }
+                }
+            } else {
+                Button(role: .cancel) {
+                    Text("Cancel")
+                }
             }
         } message: {
             Text(verbatim: showItemShareAlert.wrappedValue?.message ?? "")

@@ -123,9 +123,25 @@ struct AdditionalItemEditResult: Sendable {
     static var `default`: Self { .init(edited: false, slNote: nil) }
 }
 
-struct SharedItemEditionAlertContent: Equatable, Hashable {
+struct ItemEditionAlertContent: Equatable, Hashable {
+    struct ButtonAction: Equatable, Hashable {
+        let id = UUID()
+        let title: String
+        let role: ButtonRole?
+        let action: () -> Void
+
+        static func == (lhs: ButtonAction, rhs: ButtonAction) -> Bool {
+            lhs.id == rhs.id
+        }
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
+    }
+
     let title: String
     let message: String
+    let buttons: [ButtonAction]
 }
 
 @MainActor
@@ -165,12 +181,13 @@ class BaseCreateEditItemViewModel: ObservableObject {
     @Published var isShowingCodeScanner = false
 
     @Published var isShowingScanner = false
-    @Published var showSharedItemEditionAlert: SharedItemEditionAlertContent?
+    @Published var showSharedItemEditionAlert: ItemEditionAlertContent?
 
     let scanResponsePublisher = ScanResponsePublisher()
 
     private var pendingFileNameUpdates = [PendingFileNameUpdate]()
-    private let isSharedElement: Bool
+    private var isSharedElement: Bool
+    private var isSharedItem: Bool?
     private lazy var renameAttachmentDelegate = RenameAttachmentDelegate()
 
     let mode: ItemMode
@@ -259,14 +276,13 @@ class BaseCreateEditItemViewModel: ObservableObject {
          upgradeChecker: any UpgradeCheckerProtocol,
          vaults: [Share]) throws {
         let vaultShareId: String?
-        var sharedItem = false
         switch mode {
         case let .create(shareId, _):
             vaultShareId = shareId
         case let .clone(itemContent), let .edit(itemContent):
             vaultShareId = itemContent.shareId
             customFields = itemContent.customFields
-            sharedItem = itemContent.item.shareCount > 0
+            isSharedItem = itemContent.item.shareCount > 0
         }
 
         let lastCreatedItemVault: Share? = if let shareId = getUserPreferences().lastCreatedItemShareId {
@@ -286,7 +302,7 @@ class BaseCreateEditItemViewModel: ObservableObject {
         }
 
         selectedVault = vault
-        isSharedElement = vault.shared || sharedItem
+        isSharedElement = vault.shared || (isSharedItem ?? false)
         self.mode = mode
         self.upgradeChecker = upgradeChecker
         self.vaults = vaults
@@ -467,6 +483,15 @@ private extension BaseCreateEditItemViewModel {
                 dismissedFileAttachmentsBanner = newValue
             }
             .store(in: &cancellables)
+
+        $selectedVault
+            .receive(on: DispatchQueue.main)
+            .removeDuplicates()
+            .sink { [weak self] newVault in
+                guard let self else { return }
+                isSharedElement = newVault.shared || (isSharedItem ?? false)
+            }
+            .store(in: &cancellables)
     }
 
     func createItem(for type: ItemContentType) async throws -> SymmetricallyEncryptedItem? {
@@ -613,6 +638,7 @@ extension BaseCreateEditItemViewModel {
         isShowingScanner = true
     }
 
+    // swiftlint:disable:line_length
     @objc
     func checkAndSave() {
         let dismissedUIElements = preferencesManager.appPreferences.unwrapped().dismissedUIElements
@@ -625,11 +651,23 @@ extension BaseCreateEditItemViewModel {
                 #localized("You are editing a shared item. Changes will be visible to everyone it's shared with immediately.") :
                 #localized("You are creating an item in a shared vault and members will immediately gain access to this item.")
 
-            showSharedItemEditionAlert = .init(title: title, message: message)
+            showSharedItemEditionAlert = .init(title: title, message: message, buttons: [
+                .init(title: #localized("OK"), role: .none) { [weak self] in
+                    guard let self else { return }
+                    dismissSharedItemAlertAndSave(doNotShowAgain: false)
+                },
+                .init(title: #localized("Don't remind me again"), role: .none) { [weak self] in
+                    guard let self else { return }
+                    dismissSharedItemAlertAndSave(doNotShowAgain: true)
+                },
+                .init(title: "Cancel", role: .cancel) {}
+            ])
         } else {
             save()
         }
     }
+
+    // swiftlint:enable:line_length
 
     func dismissSharedItemAlertAndSave(doNotShowAgain: Bool) {
         Task { [weak self] in
