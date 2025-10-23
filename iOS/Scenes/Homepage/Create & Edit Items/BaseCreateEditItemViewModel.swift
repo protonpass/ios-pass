@@ -123,6 +123,19 @@ struct AdditionalItemEditResult: Sendable {
     static var `default`: Self { .init(edited: false, slNote: nil) }
 }
 
+struct ItemEditionAlertContent {
+    struct ButtonAction {
+        let id = UUID()
+        let title: String
+        var role: ButtonRole?
+        let action: () -> Void
+    }
+
+    let title: String
+    let message: String
+    let buttons: [ButtonAction]
+}
+
 @MainActor
 class BaseCreateEditItemViewModel: ObservableObject {
     @Published var title = ""
@@ -160,12 +173,11 @@ class BaseCreateEditItemViewModel: ObservableObject {
     @Published var isShowingCodeScanner = false
 
     @Published var isShowingScanner = false
-    @Published var showSharedItemCreationAlert = false
+    @Published var itemEditionAlertContent: ItemEditionAlertContent?
 
     let scanResponsePublisher = ScanResponsePublisher()
 
     private var pendingFileNameUpdates = [PendingFileNameUpdate]()
-
     private lazy var renameAttachmentDelegate = RenameAttachmentDelegate()
 
     let mode: ItemMode
@@ -502,7 +514,7 @@ private extension BaseCreateEditItemViewModel {
 
     /// Return `true` if item is edited, `false` otherwise
     func editItem(oldItemContent: ItemContent) async throws -> Bool {
-        var editResult = try await additionalEdit()
+        let editResult = try await additionalEdit()
         var edited = editResult.edited
         let itemId = oldItemContent.itemId
         let shareId = oldItemContent.shareId
@@ -605,16 +617,41 @@ extension BaseCreateEditItemViewModel {
         isShowingScanner = true
     }
 
+    // swiftlint:disable line_length
     @objc
     func checkAndSave() {
         let dismissedUIElements = preferencesManager.appPreferences.unwrapped().dismissedUIElements
         let shouldShowSharedItemAlert = !dismissedUIElements.contains(.itemCreationInSharedVaultAlert)
-        if selectedVault.shared, selectedVault.members > 0, shouldShowSharedItemAlert {
-            showSharedItemCreationAlert = true
+        let isSharedItem = if let content = mode.itemContent {
+            content.item.shareCount > 0
+        } else {
+            false
+        }
+        let isSharedVault = selectedVault.shared
+
+        if shouldShowSharedItemAlert, isSharedItem || isSharedVault {
+            let title = isSharedVault ? #localized("Item in a shared vault") : #localized("Shared item")
+            let message = mode.isEditMode ?
+                #localized("You are editing a shared item. Changes will be visible to everyone it's shared with immediately.") :
+                #localized("You are creating an item in a shared vault and members will immediately gain access to this item.")
+
+            itemEditionAlertContent = .init(title: title, message: message, buttons: [
+                .init(title: #localized("OK")) { [weak self] in
+                    guard let self else { return }
+                    dismissSharedItemAlertAndSave(doNotShowAgain: false)
+                },
+                .init(title: #localized("Don't remind me again")) { [weak self] in
+                    guard let self else { return }
+                    dismissSharedItemAlertAndSave(doNotShowAgain: true)
+                },
+                .init(title: "Cancel", role: .cancel) {}
+            ])
         } else {
             save()
         }
     }
+
+    // swiftlint:enable line_length
 
     func dismissSharedItemAlertAndSave(doNotShowAgain: Bool) {
         Task { [weak self] in
