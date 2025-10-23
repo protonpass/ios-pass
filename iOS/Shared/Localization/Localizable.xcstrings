@@ -25902,10 +25902,112 @@
     },
     "Alias \"%@\" moved to trash" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Псеўданім \"%@\" перамешчаны ў сметніцу"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'àlies\"%@\" s'ha mogut a la paperera"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias \"%@\" přesunut do koše"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias \"%@\" flyttet til papirkurv"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliasnamen „%@“ in Papierkorb verschoben"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το ψευδώνυμο \"%@\" μεταφέρθηκε στον κάδο απορριμμάτων"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alias \"%@\" moved to trash"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El alias \"%@\" se ha movido a la papelera"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias «%@» movido a la papelera"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'alias « %@ » a été déplacé dans la corbeille."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias \"%@\" spostato nel Cestino"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias \"%@\" verplaatst naar prullenbak"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias \"%@\" para a lixeira"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliasul „%@” a fost mutat în gunoi."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias \"%@\" presunutý do koša"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias “%@“ flyttad till papperskorg"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Takma ad \"%@\" çöpe taşındı"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "别名 \"%@\" 已移动到废件箱"
           }
         }
       }
@@ -198399,10 +198501,106 @@
     },
     "You are creating an item in a shared vault and members will immediately gain access to this item." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы ствараеце элемент у абагуленым сховішчы, і ўдзельнікі неадкладна атрымаюць доступ да гэтага элемента."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esteu creant un element en una caixa forta compartida. Els membres hi tindran accés immediatament."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vytváříte položku ve sdíleném trezoru a členové k ní okamžitě získají přístup."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du opretter et element i en delt boks, og medlemmer får straks adgang til dette element."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du erstellst einen Eintrag in einem freigegebenen Tresor, und die Mitglieder erhalten sofort Zugriff auf diesen Eintrag"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Δημιουργείτε ένα στοιχείο σε κοινόχρηστη κρύπτη και τα μέλη θα αποκτήσουν αμέσως πρόσβαση σε αυτό."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "You are creating an item in a shared vault and members will immediately gain access to this item."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estás creando un elemento en una caja fuerte compartida y los miembros obtendrán acceso inmediatamente a este elemento."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Está creando un elemento en una bóveda compartida y los miembros obtendrán acceso inmediatamente a él."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous créez un élément dans un coffre-fort partagé et les membres auront immédiatement accès à cet élément."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stai creando un elemento in una cassaforte condivisa e i membri avranno immediatamente accesso a questo elemento."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "U maakt een item aan in een gedeelde kluis en gebruikers krijgen er direct toegang toe."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Você está criando um item em um cofre compartilhado e membros terão acesso imediato a esse item."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creați un articol într-un seif partajat, iar membrii vor obține imediat acces la acesta."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vytvárate položku v zdieľanom trezore a členovia získajú k tejto položke okamžitý prístup."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paylaşılan bir kasada bir öğe oluşturuyorsunuz ve üyeler bu öğeye hemen erişebilecekler."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您正在共享保险库中创建项目，成员将立即获得此项目的访问权限。"
           }
         }
       }
