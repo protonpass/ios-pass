@@ -23,8 +23,6 @@ import DesignSystem
 import SwiftUI
 
 struct OnboardingPassPlusView: View {
-    @Environment(\.colorScheme) private var colorScheme
-
     let detailColumnWidth: CGFloat = 86
     let features: [FeatureUiModel] =
         [
@@ -48,25 +46,16 @@ struct OnboardingPassPlusView: View {
                   higherPerk: .available)
         ]
 
-    let isOnboarding: Bool
-
     var body: some View {
         ZStack {
             HStack {
                 Spacer()
-                columColor
+                ThemedColor(dark: PassColor.backgroundMedium,
+                            light: PassColor.newBackgroundStrong)
                     .frame(width: detailColumnWidth)
                     .clipShape(RoundedRectangle(cornerRadius: 24))
             }
             table
-        }
-    }
-
-    var columColor: Color {
-        if isOnboarding || colorScheme == .dark {
-            PassColor.backgroundMedium.toColor
-        } else {
-            PassColor.newBackgroundStrong.toColor
         }
     }
 }
@@ -88,38 +77,29 @@ private extension OnboardingPassPlusView {
                 Text("Free", bundle: .module)
                     .fontWeight(.bold)
 
-                PassPlusTitle(isOnboarding: isOnboarding)
+                PassPlusTitle()
 
                 ForEach(features) { feature in
                     Text(feature.description)
                         .font(.callout)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                    PerkDetailView(perk: feature.lowerPerk,
-                                   isOnboarding: isOnboarding)
-                    PerkDetailView(perk: feature.higherPerk,
-                                   isOnboarding: isOnboarding)
+                    PerkDetailView(perk: feature.lowerPerk)
+                    PerkDetailView(perk: feature.higherPerk)
                 }
             }
-            .foregroundStyle(isOnboarding ? .white : PassColor.textNorm.toColor)
+            .themedForegroundStyle(dark: Color.white, light: PassColor.textNorm)
             .padding(.vertical)
     }
 }
 
 struct PassPlusTitle: View {
-    @Environment(\.colorScheme) private var colorScheme
-    let isOnboarding: Bool
-
     var body: some View {
         Text(verbatim: "Plus")
             .fontWeight(.bold)
             .padding(.vertical, 4)
             .padding(.horizontal)
-            .background(backgroundColor)
+            .background(ThemedColor(dark: Color(red: 0.05, green: 0.05, blue: 0.05, opacity: 0.6),
+                                    light: PassColor.newBackgroundStrong))
             .clipShape(.capsule)
-    }
-
-    private var backgroundColor: Color {
-        isOnboarding || colorScheme == .dark ? Color(red: 0.05, green: 0.05, blue: 0.05).opacity(0.6) : PassColor
-            .newBackgroundStrong.toColor
     }
 }

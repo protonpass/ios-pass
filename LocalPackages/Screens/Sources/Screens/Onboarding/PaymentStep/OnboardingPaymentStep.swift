@@ -64,9 +64,9 @@ struct OnboardingPaymentStep: View {
             ScrollView(showsIndicators: false) {
                 switch selection {
                 case .plus:
-                    OnboardingPassPlusView(isOnboarding: isOnboarding)
+                    OnboardingPassPlusView()
                 case .unlimited:
-                    OnboardingProtonUnlimitedView(isOnboarding: isOnboarding)
+                    OnboardingProtonUnlimitedView()
                 }
             }
             .padding(.horizontal, DesignConstant.onboardingPadding)
