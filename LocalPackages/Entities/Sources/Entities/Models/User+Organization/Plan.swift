@@ -33,6 +33,7 @@ public struct Plan: Decodable, Hashable, Sendable {
     public let displayName: String
 
     /// Force hide the upgrade button independently of plan
+    /// E.g premium SimpleLogin users
     public let hideUpgrade: Bool
 
     public let trialEnd: Int?

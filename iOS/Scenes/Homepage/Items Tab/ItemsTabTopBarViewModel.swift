@@ -107,7 +107,7 @@ final class ItemsTabTopBarViewModel: ObservableObject {
     }
 
     var shouldUpsell: Bool {
-        plan?.shouldUpsell ?? true
+        plan?.shouldUpsell ?? false
     }
 
     var selectable: Bool {

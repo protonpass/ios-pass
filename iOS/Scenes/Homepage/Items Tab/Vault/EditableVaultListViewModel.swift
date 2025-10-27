@@ -112,7 +112,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     }
 
     var shouldUpsell: Bool {
-        plan?.shouldUpsell ?? true
+        plan?.shouldUpsell ?? false
     }
 
     var trashedAliasesCount: Int {

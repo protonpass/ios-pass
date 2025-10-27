@@ -101,7 +101,7 @@ private extension ItemsTabTopBar {
                     .scaledToFit()
                     .frame(maxWidth: 46)
                     .buttonEmbeded(action: onPromoBadgeTapped)
-            } else if !showPromoBadge, viewModel.shouldUpsell {
+            } else if viewModel.shouldUpsell {
                 Image(uiImage: PassIcon.diamond)
                     .resizable()
                     .frame(width: 20, height: 20)
@@ -110,6 +110,7 @@ private extension ItemsTabTopBar {
                     .padding(.vertical, 6)
                     .frame(height: 44, alignment: .leading)
                     .cornerRadius(10)
+                    .foregroundStyle(PassColor.interactionNormMajor2.toColor)
                     .overlay(RoundedRectangle(cornerRadius: 10)
                         .inset(by: 0.5)
                         .stroke(PassColor.interactionNormMinor1.toColor, lineWidth: 1))
