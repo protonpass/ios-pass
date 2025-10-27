@@ -27,7 +27,7 @@ let package = Package(
         .package(name: "UseCases", path: "../UseCases"),
         .package(name: "DesignSystem", path: "../DesignSystem"),
         .package(name: "Macro", path: "../Macro"),
-        .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "33.5.0"),
+        .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "33.5.1"),
         .package(url: "https://github.com/protonpass/DocScanner", .upToNextMajor(from: "0.2.3"))
 
     ],
