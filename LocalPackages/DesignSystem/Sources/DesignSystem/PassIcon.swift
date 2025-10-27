@@ -155,7 +155,6 @@ public extension PassIcon {
     static let trialVaults = Self.icon(named: "TrialVaults")
     static let youtube = Self.icon(named: "Youtube")
     static let diamond = Self.icon(named: "Diamond")
-    static let chevronTinyRight = Self.icon(named: "ChevronTinyRight")
 
     static let vaultIcon1Big = Self.icon(named: "VaultIcon1Big")
     static let vaultIcon1Small = Self.icon(named: "VaultIcon1Small")
