@@ -25,6 +25,7 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct ItemsTabTopBar: View {
+    @Environment(\.accessibilityShowButtonShapes) private var showButtonShapes
     @Binding var searchMode: SearchMode?
     let animationNamespace: Namespace.ID
     @StateObject private var viewModel = ItemsTabTopBarViewModel()
@@ -59,48 +60,12 @@ private extension ItemsTabTopBar {
     var viewModeView: some View {
         HStack {
             // Vault selector button
-            switch viewModel.vaultSelection {
-            case .all:
-                CircleButton(icon: PassIcon.brandPass,
-                             iconColor: VaultSelection.all.color,
-                             backgroundColor: VaultSelection.all.color.withAlphaComponent(0.16),
-                             type: .big,
-                             action: onShowVaultList)
-                    .frame(width: DesignConstant.searchBarHeight)
-                    .accessibilityLabel(viewModel.vaultSelection.accessibilityLabel)
-            case .sharedByMe:
-                CircleButton(icon: IconProvider.userArrowRight,
-                             iconColor: VaultSelection.all.color,
-                             backgroundColor: VaultSelection.all.color.withAlphaComponent(0.16),
-                             type: .big,
-                             action: onShowVaultList)
-                    .frame(width: DesignConstant.searchBarHeight)
-                    .accessibilityLabel(viewModel.vaultSelection.accessibilityLabel)
-            case .sharedWithMe:
-                CircleButton(icon: IconProvider.userArrowLeft,
-                             iconColor: VaultSelection.all.color,
-                             backgroundColor: VaultSelection.all.color.withAlphaComponent(0.16),
-                             type: .big,
-                             action: onShowVaultList)
-                    .frame(width: DesignConstant.searchBarHeight)
-                    .accessibilityLabel(viewModel.vaultSelection.accessibilityLabel)
-            case let .precise(vault):
-                if let vaultContent = vault.vaultContent {
-                    CircleButton(icon: vaultContent.vaultBigIcon,
-                                 iconColor: vaultContent.mainColor,
-                                 backgroundColor: vaultContent.backgroundColor,
-                                 action: onShowVaultList)
-                        .frame(width: DesignConstant.searchBarHeight)
-                        .accessibilityLabel(viewModel.vaultSelection.accessibilityLabel)
-                }
-            case .trash:
-                CircleButton(icon: IconProvider.trash,
-                             iconColor: VaultSelection.trash.color,
-                             backgroundColor: VaultSelection.trash.color.withAlphaComponent(0.16),
-                             action: onShowVaultList)
-                    .frame(width: DesignConstant.searchBarHeight)
-                    .accessibilityLabel(viewModel.vaultSelection.accessibilityLabel)
-            }
+            let uiModel = viewModel.vaultSelection.uiModel
+            CircleButton(icon: uiModel.icon,
+                         iconColor: uiModel.iconColor,
+                         backgroundColor: uiModel.backgroundColor,
+                         action: onShowVaultList)
+                .accessibilityLabel(viewModel.vaultSelection.accessibilityLabel)
 
             if searchMode == nil {
                 // Search bar
@@ -147,7 +112,7 @@ private extension ItemsTabTopBar {
             highlighted: viewModel.highlighted,
             selectable: viewModel.selectable)
         }
-        .padding(.horizontal)
+        .padding(.horizontal, showButtonShapes ? 0 : nil)
         .animation(.default, value: showPromoBadge)
     }
 }
@@ -240,6 +205,49 @@ private extension ItemsTabTopBar {
             onDisableAliases()
         case .enableAliases:
             onEnableAliases()
+        }
+    }
+}
+
+private struct VautlSelectionUiModel: Sendable {
+    let icon: UIImage
+    let iconColor: UIColor
+    let backgroundColor: UIColor
+}
+
+private extension VaultSelection {
+    var uiModel: VautlSelectionUiModel {
+        switch self {
+        case .all:
+            .init(icon: PassIcon.brandPass,
+                  iconColor: VaultSelection.all.color,
+                  backgroundColor: VaultSelection.all.color.withAlphaComponent(0.16))
+
+        case .sharedByMe:
+            .init(icon: IconProvider.userArrowRight,
+                  iconColor: VaultSelection.all.color,
+                  backgroundColor: VaultSelection.all.color.withAlphaComponent(0.16))
+
+        case .sharedWithMe:
+            .init(icon: IconProvider.userArrowLeft,
+                  iconColor: VaultSelection.all.color,
+                  backgroundColor: VaultSelection.all.color.withAlphaComponent(0.16))
+
+        case let .precise(vault):
+            if let vaultContent = vault.vaultContent {
+                .init(icon: vaultContent.vaultBigIcon,
+                      iconColor: vaultContent.mainColor,
+                      backgroundColor: vaultContent.backgroundColor)
+            } else {
+                .init(icon: PassIcon.brandPass,
+                      iconColor: VaultSelection.all.color,
+                      backgroundColor: VaultSelection.all.color.withAlphaComponent(0.16))
+            }
+
+        case .trash:
+            .init(icon: IconProvider.trash,
+                  iconColor: VaultSelection.trash.color,
+                  backgroundColor: VaultSelection.trash.color.withAlphaComponent(0.16))
         }
     }
 }
