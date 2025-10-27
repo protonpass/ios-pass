@@ -18,11 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// periphery:ignore:all
 import SwiftUI
-#if canImport(UIKit)
-import UIKit
-#endif
 
 private struct ThemedForegroundStyleModifier: ViewModifier {
     @Environment(\.colorScheme) private var colorScheme
@@ -39,18 +35,4 @@ public extension View {
     func themedForegroundStyle(dark: Color, light: Color) -> some View {
         modifier(ThemedForegroundStyleModifier(dark: dark, light: light))
     }
-
-    #if canImport(UIKit)
-    func themedForegroundStyle(dark: Color, light: UIColor) -> some View {
-        modifier(ThemedForegroundStyleModifier(dark: dark, light: light.toColor))
-    }
-
-    func themedForegroundStyle(dark: UIColor, light: Color) -> some View {
-        modifier(ThemedForegroundStyleModifier(dark: dark.toColor, light: light))
-    }
-
-    func themedForegroundStyle(dark: UIColor, light: UIColor) -> some View {
-        modifier(ThemedForegroundStyleModifier(dark: dark.toColor, light: light.toColor))
-    }
-    #endif
 }

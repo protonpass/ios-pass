@@ -50,6 +50,6 @@ struct PerkDetailView: View {
                 Text(value)
             }
         }
-        .themedForegroundStyle(dark: Color.white, light: PassColor.textNorm)
+        .themedForegroundStyle(dark: .white, light: PassColor.textNorm.toColor)
     }
 }
