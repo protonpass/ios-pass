@@ -25,6 +25,7 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct ItemsTabTopBar: View {
+    @Environment(\.accessibilityShowButtonShapes) private var showButtonShapes
     @Binding var searchMode: SearchMode?
     let animationNamespace: Namespace.ID
     @StateObject private var viewModel = ItemsTabTopBarViewModel()
@@ -111,6 +112,7 @@ private extension ItemsTabTopBar {
             highlighted: viewModel.highlighted,
             selectable: viewModel.selectable)
         }
+        .padding(.horizontal, showButtonShapes ? 0 : nil)
         .animation(.default, value: showPromoBadge)
     }
 }
