@@ -18,11 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// periphery:ignore:all
 import SwiftUI
-#if canImport(UIKit)
-import UIKit
-#endif
 
 public struct ThemedColor: View {
     @Environment(\.colorScheme) private var colorScheme
@@ -33,23 +29,6 @@ public struct ThemedColor: View {
         self.dark = dark
         self.light = light
     }
-
-    #if canImport(UIKit)
-    public init(dark: Color, light: UIColor) {
-        self.dark = dark
-        self.light = light.toColor
-    }
-
-    public init(dark: UIColor, light: Color) {
-        self.dark = dark.toColor
-        self.light = light
-    }
-
-    public init(dark: UIColor, light: UIColor) {
-        self.dark = dark.toColor
-        self.light = light.toColor
-    }
-    #endif
 
     public var body: some View {
         colorScheme == .dark ? dark : light
