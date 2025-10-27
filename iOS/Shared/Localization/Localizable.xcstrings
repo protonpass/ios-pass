@@ -25968,10 +25968,22 @@
             "value" : "Alias \"%@\" spostato nel Cestino"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias \"%@\" flyttet til papirkurven"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alias \"%@\" verplaatst naar prullenbak"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias \"%@\" movido para o lixo"
           }
         },
         "pt-BR" : {
@@ -26001,7 +26013,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Takma ad \"%@\" çöpe taşındı"
+            "value" : "Takma ad \"%@\" çöpe atıldı"
           }
         },
         "zh-Hans" : {
@@ -64182,6 +64194,12 @@
             "state" : "translated",
             "value" : "Bir daha hatırlatma"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "不再提示"
+          }
         }
       }
     },
@@ -83864,6 +83882,12 @@
             "state" : "translated",
             "value" : "Gizli kasalar"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "隐藏的保险库"
+          }
         }
       }
     },
@@ -94108,6 +94132,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Öge paylaşılan bir kasada"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共享保险库中的项目"
           }
         }
       }
@@ -121937,6 +121967,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kasaları düzenle"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "整理保险库"
           }
         }
       }
@@ -157495,10 +157531,106 @@
     },
     "Shared item" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Абагулены элемент"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Element compartit"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sdílená položka"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delt element"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geteiltes Element"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Shared item"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elemento compartido"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Élément partagé"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elemento condiviso"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delt element"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gedeeld item"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item compartilhado"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Articol partajat"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zdieľaná položka"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delat objekt"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paylaşılmış öge"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已共享的项目"
           }
         }
       }
@@ -171935,6 +172067,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu kasalara erişilemeyecek ve içerikleri arama veya otomatik doldurma için kullanılmayacak."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "这些保险库将无法访问，且其内容无法用于搜索或自动填充。"
           }
         }
       }
@@ -190620,6 +190758,12 @@
             "state" : "translated",
             "value" : "Görünür kasalar"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "可见的保险库"
+          }
         }
       }
     },
@@ -198567,6 +198711,12 @@
             "value" : "Stai creando un elemento in una cassaforte condivisa e i membri avranno immediatamente accesso a questo elemento."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du oppretter et element i et delt hvelv, og medlemmer vil umiddelbart få tilgang til dette elementet."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -198576,7 +198726,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Você está criando um item em um cofre compartilhado e membros terão acesso imediato a esse item."
+            "value" : "Você está criando um item em um cofre compartilhado e os membros terão acesso imediato a ele."
           }
         },
         "ro" : {
@@ -198594,7 +198744,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Paylaşılan bir kasada bir öğe oluşturuyorsunuz ve üyeler bu öğeye hemen erişebilecekler."
+            "value" : "Paylaşılmış bir kasada bir öge oluşturuyorsunuz ve üyeler bu ögeye hemen erişebilecekler."
           }
         },
         "zh-Hans" : {
@@ -198607,10 +198757,100 @@
     },
     "You are editing a shared item. Changes will be visible to everyone it's shared with immediately." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы рэдагуеце абагулены элемент. Змены будуць адразу будуць бачныя ўсім тым, з кім гэты элемент абагулены."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esteu editant un element compartit. Els canvis seran visibles immediatament per a tothom amb qui s'hagi compartit."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upravujete sdílenou položku. Změny budou okamžitě viditelné pro všechny, s nimiž je položka sdílena."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du redigerer et delt element. Ændringer vil øjeblikkeligt være synlige for alle, det er delt med."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du bearbeitest gerade ein freigegebenes Element. Änderungen werden sofort für alle sichtbar, mit denen es geteilt wurde."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "You are editing a shared item. Changes will be visible to everyone it's shared with immediately."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estás editando un elemento compartido. Los cambios serán visibles de inmediato para todos los que tengan acceso compartido."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous êtes en train de modifier un élément partagé. Les modifications seront visibles immédiatement par toutes les personnes avec lesquelles il est partagé."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stai modificando un elemento condiviso. Le modifiche saranno immediatamente visibili a tutti con cui è condiviso."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du redigerer et delt element. Endringer vil være synlige for alle det er delt med umiddelbart."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "U bent een gedeeld item aan het bewerken. Wijzigingen zullen onmiddellijk zichtbaar zijn voor iedereen waarmee het gedeeld is."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Você está editando um item compartilhado. As alterações ficarão visíveis imediatamente para todas as pessoas com acesso a ele."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editați un articol partajat. Modificările vor fi vizibile imediat pentru toți cei cu care este partajat."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upravujete zdieľanú položku. Zmeny budú okamžite viditeľné pre všetkých, s ktorými je zdieľaná."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paylaşılmış bir ögeyi düzenliyorsunuz. Yapılan değişiliklikler paylaşılan kişilere anınında görünecek."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您正在编辑一个分享的项目。更改将立即对所有共享者可见。"
           }
         }
       }
