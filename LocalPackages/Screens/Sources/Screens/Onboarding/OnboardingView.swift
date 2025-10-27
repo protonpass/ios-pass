@@ -114,7 +114,8 @@ private extension OnboardingView {
                         .resizable()
                         .scaledToFit()
                         .frame(width: imageWidth)
-                        .offset(x: -imageWidth * 0.3, y: -imageWidth * 0.55)
+                        .offset(x: -imageWidth * 0.3,
+                                y: -imageWidth * (UIDevice.current.isIpad ? 0.62 : 0.55))
                 }
                 .clipped()
                 .ignoresSafeArea(edges: [.top, .leading, .trailing])
@@ -123,7 +124,7 @@ private extension OnboardingView {
     }
 
     var backgroundGradients: [Gradient.Stop] {
-        if viewModel.isOnboarding || colorScheme == .dark {
+        if colorScheme == .dark {
             [
                 Gradient.Stop(color: Color(red: 0.81, green: 0.51, blue: 0.53), location: 0.00),
                 Gradient.Stop(color: Color(red: 0.29, green: 0.2, blue: 0.47), location: 0.59),
@@ -185,8 +186,7 @@ private extension OnboardingView {
     func content(for step: OnboardStep) -> some View {
         switch step {
         case let .payment(plans):
-            OnboardingPaymentStep(isOnboarding: viewModel.isOnboarding,
-                                  plans: plans,
+            OnboardingPaymentStep(plans: plans,
                                   selectedPlan: $viewModel.selectedPlan,
                                   onPurchase: viewModel.purchaseSelectedPlan)
 
