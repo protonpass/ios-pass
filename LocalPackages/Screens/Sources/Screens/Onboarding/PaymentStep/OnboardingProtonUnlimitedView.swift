@@ -24,8 +24,6 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct OnboardingProtonUnlimitedView: View {
-    @Environment(\.colorScheme) private var colorScheme
-
     let detailColumnWidth: CGFloat = 125
     let features: [FeatureUiModel] =
         [
@@ -43,13 +41,11 @@ struct OnboardingProtonUnlimitedView: View {
                   higherPerk: .text("Highest"))
         ]
 
-    let isOnboarding: Bool
-
     var body: some View {
         VStack {
             Text("The best of Proton with one subscription.", bundle: .module)
                 .font(.callout)
-                .foregroundStyle(isOnboarding ? .white : PassColor.textNorm.toColor)
+                .themedForegroundStyle(dark: Color.white, light: PassColor.textNorm)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.top)
             protonApps
@@ -57,20 +53,13 @@ struct OnboardingProtonUnlimitedView: View {
             ZStack {
                 HStack {
                     Spacer()
-                    columColor
+                    ThemedColor(dark: PassColor.backgroundMedium,
+                                light: PassColor.newBackgroundStrong)
                         .frame(width: detailColumnWidth)
                         .clipShape(RoundedRectangle(cornerRadius: 24))
                 }
                 table
             }
-        }
-    }
-
-    var columColor: Color {
-        if isOnboarding || colorScheme == .dark {
-            PassColor.backgroundMedium.toColor
-        } else {
-            PassColor.newBackgroundStrong.toColor
         }
     }
 }
@@ -95,7 +84,7 @@ private extension OnboardingProtonUnlimitedView {
                 .frame(width: 32)
             Text(verbatim: name)
                 .font(.caption)
-                .foregroundStyle(isOnboarding ? .white : PassColor.textNorm.toColor)
+                .themedForegroundStyle(dark: Color.white, light: PassColor.textNorm)
                 .frame(maxWidth: .infinity)
         }
         .frame(maxWidth: .infinity, alignment: .center)
@@ -114,7 +103,7 @@ private extension OnboardingProtonUnlimitedView {
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                PassPlusTitle(isOnboarding: isOnboarding)
+                PassPlusTitle()
 
                 Text(verbatim: "Unlimited")
                     .fontWeight(.bold)
@@ -128,13 +117,11 @@ private extension OnboardingProtonUnlimitedView {
                     Text(feature.description)
                         .font(.callout)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                    PerkDetailView(perk: feature.lowerPerk,
-                                   isOnboarding: isOnboarding)
-                    PerkDetailView(perk: feature.higherPerk,
-                                   isOnboarding: isOnboarding)
+                    PerkDetailView(perk: feature.lowerPerk)
+                    PerkDetailView(perk: feature.higherPerk)
                 }
             }
-            .foregroundStyle(isOnboarding ? .white : PassColor.textNorm.toColor)
+            .themedForegroundStyle(dark: Color.white, light: PassColor.textNorm)
             .padding(.vertical)
     }
 }

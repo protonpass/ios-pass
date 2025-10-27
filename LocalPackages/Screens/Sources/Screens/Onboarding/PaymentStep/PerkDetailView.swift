@@ -25,7 +25,6 @@ import SwiftUI
 
 struct PerkDetailView: View {
     let perk: PerkDetail
-    let isOnboarding: Bool
 
     var body: some View {
         Group {
@@ -51,6 +50,6 @@ struct PerkDetailView: View {
                 Text(value)
             }
         }
-        .foregroundStyle(isOnboarding ? .white : PassColor.textNorm.toColor)
+        .themedForegroundStyle(dark: Color.white, light: PassColor.textNorm)
     }
 }
