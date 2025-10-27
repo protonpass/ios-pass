@@ -1,3 +1,6 @@
+# Version 1.17.10
+- Core libraries upgraded from 32.8.0 to 33.5.0
+
 # Version 1.17.9
 - Fixed password generator partially hidden behind the keyboard on iOS 26
 - Show a warning when creating or editing items in shared vaults
