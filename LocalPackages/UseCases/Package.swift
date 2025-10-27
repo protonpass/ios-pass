@@ -30,7 +30,7 @@ let package = Package(name: "UseCases",
                           .package(name: "Client", path: "../Client"),
                           .package(name: "PassRustCore", path: "../PassRustCore"),
                           .package(url: "https://github.com/getsentry/sentry-cocoa.git", exact: "8.57.0"),
-                          .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "33.5.0")
+                          .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "33.5.1")
                       ],
                       targets: [
                           // Targets are the basic building blocks of a package. A target can define a module or a
