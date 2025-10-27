@@ -23,6 +23,7 @@ import Entities
 import SwiftUI
 
 struct PinnedItemsView: View {
+    @Environment(\.accessibilityShowButtonShapes) private var showButtonShapes
     let pinnedItems: [ItemUiModel]
     let onSearch: () -> Void
     let action: (ItemUiModel) -> Void
@@ -61,8 +62,8 @@ struct PinnedItemsView: View {
                     }
                 }
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 12)
+            .padding(.horizontal, showButtonShapes ? 0 : nil)
+            .padding(.vertical, showButtonShapes ? 4 : 12)
             .shadow(color: .black.opacity(0.2), radius: 6, x: 0, y: 4)
         }
     }

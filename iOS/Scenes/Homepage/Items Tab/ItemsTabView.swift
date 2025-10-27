@@ -304,6 +304,7 @@ private extension ItemsTabView {
 }
 
 private struct ItemRow: View {
+    @Environment(\.accessibilityShowButtonShapes) private var showButtonShapes
     let item: ItemUiModel
     let isEditMode: Bool
     let isEditable: Bool
@@ -348,7 +349,6 @@ private struct ItemRow: View {
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .animation(.default, value: isSelected)
         }
-        .frame(height: 64)
         .if(isSwipeEnabled) { view in
             view.modifier(ItemSwipeModifier(itemToBePermanentlyDeleted: itemToBePermanentlyDeleted,
                                             item: item,
@@ -361,6 +361,7 @@ private struct ItemRow: View {
         .listRowSeparator(.hidden)
         .listRowInsets(.init(top: 4, leading: 0, bottom: 4, trailing: 0))
         .listRowBackground(Color.clear)
+        .padding(.horizontal, showButtonShapes ? -16 : 0)
     }
 }
 

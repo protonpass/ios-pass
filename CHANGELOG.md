@@ -1,4 +1,5 @@
 # Version 1.17.10
+- Improved homepage layout when “Button Shapes” accessibility setting is enabled
 - Core libraries upgraded from 32.8.0 to 33.5.0
 
 # Version 1.17.9
