@@ -116,8 +116,6 @@ final class OnboardingViewModel: ObservableObject {
     private weak var datasource: (any OnboardingDatasource)?
     private weak var delegate: (any OnboardingDelegate)?
 
-    var isOnboarding: Bool { mode == .onboarding }
-
     let mode: OnboardingDisplayMode
 
     init(handler: OnboardingHandling?,
