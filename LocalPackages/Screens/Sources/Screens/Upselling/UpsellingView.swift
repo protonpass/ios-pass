@@ -20,6 +20,9 @@
 
 // periphery:ignore:all
 
+// swiftlint:disable:next todo
+// TODO: Either refactor or delete as no more used by new upsell flow
+
 import DesignSystem
 import Macro
 import ProtonCoreUIFoundations

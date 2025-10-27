@@ -27,7 +27,6 @@ import SwiftUI
 struct OnboardingPaymentStep: View {
     @Environment(\.colorScheme) private var colorScheme
     @State private var selection: Selection = .plus
-    let isOnboarding: Bool
     let plans: PassPlans
     @Binding var selectedPlan: PlanUiModel?
     let onPurchase: () -> Void
@@ -53,7 +52,7 @@ struct OnboardingPaymentStep: View {
             Text("Unlock premium features.", bundle: .module)
                 .font(.title3)
                 .fontWeight(.bold)
-                .foregroundStyle(isOnboarding ? .white : PassColor.textNorm.toColor)
+                .themedForegroundStyle(dark: Color.white, light: PassColor.textNorm)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, DesignConstant.onboardingPadding)
 
@@ -116,11 +115,8 @@ private extension OnboardingPaymentStep {
             }
         })
         .padding(4)
-        .background(planSelectorBackground.opacity(0.3).clipShape(.capsule))
-    }
-
-    var planSelectorBackground: Color {
-        isOnboarding || colorScheme == .dark ? Color.black : Color.white
+        .background(ThemedColor(dark: Color.black,
+                                light: Color.white).opacity(0.3).clipShape(.capsule))
     }
 
     func planDetail(name: String,
@@ -135,7 +131,8 @@ private extension OnboardingPaymentStep {
                 .font(.caption)
         }
         .frame(maxWidth: .infinity, alignment: .center)
-        .foregroundStyle(selected ? PassColor.textInvert.toColor : isOnboarding ? .white : PassColor.textNorm
+        .foregroundStyle(selected ? PassColor.textInvert.toColor : colorScheme == .dark ? .white : PassColor
+            .textNorm
             .toColor)
         .contentShape(.rect)
         .onTapGesture(perform: onSelect)
@@ -144,11 +141,11 @@ private extension OnboardingPaymentStep {
     var ctaButton: some View {
         VStack(alignment: .center, spacing: 0) {
             CapsuleTextButton(title: selection.ctaTitle,
-                              titleColor: isOnboarding || colorScheme == .dark ? PassColor.textInvert : PassColor
+                              titleColor: colorScheme == .dark ? PassColor.textInvert : PassColor
                                   .interactionNormMinor2,
                               font: .body,
                               fontWeight: .medium,
-                              backgroundColor: isOnboarding || colorScheme == .dark ? .white : .black,
+                              backgroundColor: colorScheme == .dark ? .white : .black,
                               height: 52,
                               action: onPurchase)
                 .padding(DesignConstant.onboardingPadding)
@@ -157,7 +154,7 @@ private extension OnboardingPaymentStep {
                 Text("Auto renews at \(selectedPlan.displayYearlyPrice) every year",
                      bundle: .module)
                     .font(.callout)
-                    .foregroundStyle(isOnboarding ? .white : PassColor.textNorm.toColor)
+                    .themedForegroundStyle(dark: Color.white, light: PassColor.textNorm)
                     .padding([.bottom, .horizontal], DesignConstant.onboardingPadding)
             }
         }
