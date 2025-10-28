@@ -45,7 +45,7 @@ struct OnboardingProtonUnlimitedView: View {
         VStack {
             Text("The best of Proton with one subscription.", bundle: .module)
                 .font(.callout)
-                .foregroundStyle(.white)
+                .themedForegroundStyle(dark: .white, light: PassColor.textNorm.toColor)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.top)
             protonApps
@@ -53,7 +53,8 @@ struct OnboardingProtonUnlimitedView: View {
             ZStack {
                 HStack {
                     Spacer()
-                    PassColor.backgroundMedium.toColor
+                    ThemedColor(dark: PassColor.backgroundMedium.toColor,
+                                light: PassColor.newBackgroundStrong.toColor)
                         .frame(width: detailColumnWidth)
                         .clipShape(RoundedRectangle(cornerRadius: 24))
                 }
@@ -83,7 +84,7 @@ private extension OnboardingProtonUnlimitedView {
                 .frame(width: 32)
             Text(verbatim: name)
                 .font(.caption)
-                .foregroundStyle(.white)
+                .themedForegroundStyle(dark: .white, light: PassColor.textNorm.toColor)
                 .frame(maxWidth: .infinity)
         }
         .frame(maxWidth: .infinity, alignment: .center)
@@ -120,7 +121,7 @@ private extension OnboardingProtonUnlimitedView {
                     PerkDetailView(perk: feature.higherPerk)
                 }
             }
-            .foregroundStyle(.white)
+            .themedForegroundStyle(dark: .white, light: PassColor.textNorm.toColor)
             .padding(.vertical)
     }
 }

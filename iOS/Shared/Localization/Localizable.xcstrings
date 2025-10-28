@@ -182932,6 +182932,16 @@
         }
       }
     },
+    "Upgrade to Pass Plus" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgrade to Pass Plus"
+          }
+        }
+      }
+    },
     "Use %@" : {
       "localizations" : {
         "be" : {

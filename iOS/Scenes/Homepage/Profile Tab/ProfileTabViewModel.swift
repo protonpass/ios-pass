@@ -137,10 +137,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         #endif
     }
 
-    var isSSOUser: Bool {
-        (userManager.currentActiveUser.value?.user.isSSOAccount ?? false)
-    }
-
     var storageUiModel: StorageUiModel? {
         guard let plan, plan.storageAllowed else { return nil }
         return .init(used: plan.storageUsed, total: plan.storageQuota)
