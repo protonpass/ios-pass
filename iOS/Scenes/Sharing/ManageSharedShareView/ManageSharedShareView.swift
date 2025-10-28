@@ -51,7 +51,7 @@ struct ManageSharedShareView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .navigationTitle("Shared via")
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
         .toolbar { toolbarContent }
         .showSpinner(viewModel.loading)
         .alert(item: $viewModel.newOwner) { newOwner in
@@ -117,7 +117,7 @@ private extension ManageSharedShareView {
             Text(title)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .font(.callout)
-                .foregroundStyle(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak)
 
             LazyVStack(spacing: 0) {
                 if isVaultSection, let vaultContent = viewModel.share.vaultContent {
@@ -126,16 +126,16 @@ private extension ManageSharedShareView {
                             .resizable()
                             .renderingMode(.template)
                             .scaledToFit()
-                            .foregroundStyle(vaultContent.mainColor.toColor)
+                            .foregroundStyle(vaultContent.mainColor)
                             .frame(width: 18, height: 18)
                             .padding(12)
-                            .background(vaultContent.backgroundColor.toColor)
+                            .background(vaultContent.backgroundColor)
                             .clipShape(Circle())
                         VStack(alignment: .leading) {
                             Text(vaultContent.name)
-                                .foregroundStyle(PassColor.textNorm.toColor)
+                                .foregroundStyle(PassColor.textNorm)
                             Text("\(viewModel.itemsNumber) item(s)")
-                                .foregroundStyle(PassColor.textWeak.toColor)
+                                .foregroundStyle(PassColor.textWeak)
                         }
                         Spacer()
                     }.padding(16)
@@ -158,7 +158,7 @@ private extension ManageSharedShareView {
                                         .scaledToFit()
                                         .frame(width: 16)
                                 }
-                                .foregroundStyle(PassColor.textWeak.toColor)
+                                .foregroundStyle(PassColor.textWeak)
                             }
                             .buttonStyle(.plain)
                         }
@@ -195,7 +195,7 @@ private extension ManageSharedShareView {
             } label: {
                 Label(isVaultSharing ? "Invite more users to the vault" : "Invite more users to the item",
                       image: Image(uiImage: IconProvider.userPlus))
-                    .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                    .foregroundStyle(PassColor.interactionNormMajor2)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             .disabled(isVaultSharing && viewModel.reachedLimit && !viewModel.isBusinessUser)
@@ -211,14 +211,14 @@ private extension ManageSharedShareView {
     var vaultLimitReachedMessage: some View {
         ZStack {
             Text("You have reached the limit of users in this vault.")
-                .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
+                .adaptiveForegroundStyle(PassColor.textNorm) +
                 Text(verbatim: " ") +
                 Text("Upgrade now to share with more people")
-                .underline(color: PassColor.interactionNormMajor1.toColor)
-                .adaptiveForegroundStyle(PassColor.interactionNormMajor1.toColor)
+                .underline(color: PassColor.interactionNormMajor1)
+                .adaptiveForegroundStyle(PassColor.interactionNormMajor1)
         }
         .padding()
-        .background(PassColor.interactionNormMinor1.toColor)
+        .background(PassColor.interactionNormMinor1)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .frame(maxWidth: .infinity)
         .onTapGesture(perform: viewModel.upgrade)

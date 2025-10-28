@@ -39,7 +39,7 @@ struct UserEmailView: View {
             Text("Share with")
                 .font(.largeTitle)
                 .fontWeight(.bold)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
                 .padding(.horizontal, DesignConstant.sectionPadding)
 
             VStack(alignment: .leading) {
@@ -94,7 +94,7 @@ struct UserEmailView: View {
         .animation(.default, value: viewModel.recommendationsState)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .navigationBarTitleDisplayMode(.inline)
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
         .toolbar { toolbarContent }
         .routingProvided
         .navigationStackEmbeded($router.path)
@@ -138,7 +138,7 @@ private extension UserEmailView {
         let highlighted = viewModel.highlightedEmail == email
         let invalid = viewModel.invalidEmails.contains(email)
 
-        let textColor: () -> UIColor = {
+        let textColor: () -> Color = {
             switch (highlighted, invalid) {
             case (false, true):
                 PassColor.passwordInteractionNormMajor1
@@ -149,7 +149,7 @@ private extension UserEmailView {
             }
         }
 
-        let backgroundColor: () -> UIColor = {
+        let backgroundColor: () -> Color = {
             switch (highlighted, invalid) {
             case (true, true):
                 PassColor.passwordInteractionNormMajor1
@@ -175,10 +175,10 @@ private extension UserEmailView {
                 .lineLimit(1)
         }
         .font(.callout)
-        .foregroundStyle(textColor().toColor)
+        .foregroundStyle(textColor())
         .padding(.horizontal, 10)
         .padding(.vertical, 8)
-        .background(backgroundColor().toColor)
+        .background(backgroundColor())
         .cornerRadius(9)
         .animation(.default, value: highlighted)
         .animation(.default, value: invalid)
@@ -209,8 +209,7 @@ private extension UserEmailView {
             VaultRow(thumbnail: {
                          CircleButton(icon: vault.display.icon.icon.bigImage,
                                       iconColor: vault.display.color.color.color,
-                                      backgroundColor: vault.display.color.color.color
-                                          .withAlphaComponent(0.16))
+                                      backgroundColor: vault.display.color.color.color.opacity(0.16))
                      },
                      title: vault.name,
                      itemCount: 1,

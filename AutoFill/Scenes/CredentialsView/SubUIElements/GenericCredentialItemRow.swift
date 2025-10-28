@@ -57,7 +57,7 @@ struct GenericCredentialItemRow: View {
                     VStack(alignment: .leading, spacing: 4) {
                         HighlightText(highlightableText: result.highlightableTitle,
                                       additionalTexts: additionalSearchResultTitles)
-                            .foregroundStyle(PassColor.textNorm.toColor)
+                            .foregroundStyle(PassColor.textNorm)
                             .fixedSize(horizontal: false, vertical: true)
 
                         VStack(alignment: .leading, spacing: 2) {
@@ -66,7 +66,7 @@ struct GenericCredentialItemRow: View {
                                 if !eachDetail.fullText.isEmpty {
                                     HighlightText(highlightableText: eachDetail)
                                         .font(.callout)
-                                        .foregroundStyle(PassColor.textWeak.toColor)
+                                        .foregroundStyle(PassColor.textWeak)
                                         .lineLimit(1)
                                 }
                             }
@@ -92,7 +92,7 @@ private extension GenericCredentialItemRow {
         if let secondaryTitle {
             [
                 Text(verbatim: " "),
-                Text(secondaryTitle).adaptiveForegroundStyle(PassColor.textWeak.toColor)
+                Text(secondaryTitle).adaptiveForegroundStyle(PassColor.textWeak)
             ]
         } else {
             []

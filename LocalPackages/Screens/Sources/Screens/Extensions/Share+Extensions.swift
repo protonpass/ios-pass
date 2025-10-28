@@ -19,10 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Entities
-import UIKit
+import SwiftUI
 
 public extension Share {
-    var mainColor: UIColor? {
+    var mainColor: Color? {
         vaultContent?.display.color.color.color
     }
 
@@ -32,12 +32,12 @@ public extension Share {
 }
 
 public extension VaultContent {
-    var mainColor: UIColor {
+    var mainColor: Color {
         display.color.color.color
     }
 
-    var backgroundColor: UIColor {
-        mainColor.withAlphaComponent(0.16)
+    var backgroundColor: Color {
+        mainColor.opacity(0.16)
     }
 
     var vaultBigIcon: UIImage {

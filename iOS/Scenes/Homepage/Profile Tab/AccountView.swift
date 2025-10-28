@@ -43,7 +43,7 @@ struct AccountView: View {
                               height: .tall,
                               content: {
                                   Text(viewModel.username)
-                                      .foregroundStyle(PassColor.textNorm.toColor)
+                                      .foregroundStyle(PassColor.textNorm)
                               })
 
                     if let plan = viewModel.plan {
@@ -53,7 +53,7 @@ struct AccountView: View {
                                   height: .tall,
                                   content: {
                                       Text(plan.displayName)
-                                          .foregroundStyle(PassColor.textNorm.toColor)
+                                          .foregroundStyle(PassColor.textNorm)
                                   })
                     }
                 }
@@ -65,7 +65,7 @@ struct AccountView: View {
                                   height: .tall,
                                   content: {
                                       Text("Restore purchases")
-                                          .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                                          .foregroundStyle(PassColor.interactionNormMajor2)
                                   })
                     }
                     .roundedEditableSection()
@@ -78,7 +78,7 @@ struct AccountView: View {
                                   height: .tall,
                                   content: {
                                       Text("Security keys")
-                                          .foregroundStyle(PassColor.textNorm.toColor)
+                                          .foregroundStyle(PassColor.textNorm)
                                   },
                                   trailing: { ChevronRight() })
                     }
@@ -92,7 +92,7 @@ struct AccountView: View {
                                   height: .tall,
                                   content: {
                                       Text("Change password")
-                                          .foregroundStyle(PassColor.textNorm.toColor)
+                                          .foregroundStyle(PassColor.textNorm)
                                   },
                                   trailing: { ChevronRight() })
 
@@ -103,7 +103,7 @@ struct AccountView: View {
                                       height: .tall,
                                       content: {
                                           Text("Change mailbox password")
-                                              .foregroundStyle(PassColor.textNorm.toColor)
+                                              .foregroundStyle(PassColor.textNorm)
                                       },
                                       trailing: { ChevronRight() })
                         }
@@ -117,7 +117,7 @@ struct AccountView: View {
                               height: .tall,
                               content: {
                                   Text("Manage account")
-                                      .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                                      .foregroundStyle(PassColor.interactionNormMajor2)
                               },
                               trailing: {
                                   CircleButton(icon: IconProvider.arrowOutSquare,
@@ -132,7 +132,7 @@ struct AccountView: View {
                                   height: .tall,
                                   content: {
                                       Text("Manage subscription")
-                                          .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                                          .foregroundStyle(PassColor.interactionNormMajor2)
                                   },
                                   trailing: {
                                       CircleButton(icon: IconProvider.arrowOutSquare,
@@ -152,7 +152,7 @@ struct AccountView: View {
                                       Text(AccountRecoveryModule.settingsItem)
                                       Spacer()
                                       Text(accountRecovery.valueForSettingsItem)
-                                  }.foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                                  }.foregroundStyle(PassColor.interactionNormMajor2)
                               },
                               trailing: {
                                   if let image = accountRecovery.imageForSettingsItem {
@@ -180,7 +180,7 @@ struct AccountView: View {
                           height: .tall,
                           content: {
                               Text("Sign out")
-                                  .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                                  .foregroundStyle(PassColor.interactionNormMajor2)
                           },
                           trailing: {
                               CircleButton(icon: IconProvider.arrowOutFromRectangle,
@@ -194,7 +194,7 @@ struct AccountView: View {
                           height: .tall,
                           content: {
                               Text("Delete account")
-                                  .foregroundStyle(PassColor.signalDanger.toColor)
+                                  .foregroundStyle(PassColor.signalDanger)
                           },
                           trailing: {
                               CircleButton(icon: IconProvider.trash,
@@ -219,7 +219,7 @@ struct AccountView: View {
         .navigationBarBackButtonHidden()
         .navigationBarHidden(false)
         .navigationBarTitleDisplayMode(.large)
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
         .toolbar { toolbarContent }
         .showSpinner(viewModel.isLoading)
         .alert("Enter your extra password",
@@ -262,7 +262,7 @@ private extension AccountView {
                   height: .tall,
                   content: {
                       Text("Set extra password for Proton Pass")
-                          .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                          .foregroundStyle(PassColor.interactionNormMajor2)
                   })
                   .roundedEditableSection()
                   .padding(.top)
@@ -273,10 +273,10 @@ private extension AccountView {
                   content: {
                       VStack(alignment: .leading) {
                           Text("Extra password for Proton Pass")
-                              .foregroundStyle(PassColor.textNorm.toColor)
+                              .foregroundStyle(PassColor.textNorm)
                           Text("Active")
                               .font(.callout)
-                              .foregroundStyle(PassColor.cardInteractionNormMajor1.toColor)
+                              .foregroundStyle(PassColor.cardInteractionNormMajor1)
                       }
                   },
                   trailing: {
@@ -288,7 +288,7 @@ private extension AccountView {
                           Image(uiImage: IconProvider.threeDotsVertical)
                               .resizable()
                               .scaledToFit()
-                              .foregroundStyle(PassColor.textWeak.toColor)
+                              .foregroundStyle(PassColor.textWeak)
                               .frame(width: 24)
                       })
                   })

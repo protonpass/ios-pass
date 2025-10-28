@@ -66,12 +66,12 @@ public struct NotLoggedInView: View {
                 Text(variant.message)
             }
             .multilineTextAlignment(.center)
-            .foregroundStyle(PassColor.textNorm.toColor)
+            .foregroundStyle(PassColor.textNorm)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()
         .padding(.bottom, 100)
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {

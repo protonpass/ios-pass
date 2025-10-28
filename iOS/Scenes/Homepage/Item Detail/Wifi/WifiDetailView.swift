@@ -215,7 +215,7 @@ private extension WifiDetailView {
                   height: .medium,
                   content: {
                       Text("Show Network QR Code")
-                          .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                          .foregroundStyle(PassColor.interactionNormMajor2)
                   })
                   .roundedDetailSection()
                   .padding(.top, DesignConstant.sectionPadding / 2)
@@ -236,7 +236,7 @@ private struct WifiQrCodeView: View {
 
     var body: some View {
         ZStack {
-            PassColor.backgroundNorm.toColor
+            PassColor.backgroundNorm
                 .ignoresSafeArea()
             VStack(alignment: .center) {
                 Text("Scan the QR code to join")
@@ -245,7 +245,7 @@ private struct WifiQrCodeView: View {
             }
             .font(.title2)
             .fontWeight(.bold)
-            .foregroundStyle(PassColor.textNorm.toColor)
+            .foregroundStyle(PassColor.textNorm)
             .frame(maxWidth: .infinity, alignment: .center)
             .padding(.top)
 

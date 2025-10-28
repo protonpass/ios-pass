@@ -35,7 +35,7 @@ struct DetailMonitoredItemView: View {
 
     var body: some View {
         ZStack {
-            PassColor.backgroundNorm.toColor
+            PassColor.backgroundNorm
                 .ignoresSafeArea()
             switch viewModel.state {
             case .fetching:
@@ -49,7 +49,7 @@ struct DetailMonitoredItemView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .navigationBarBackButtonHidden(true)
-        .toolbarBackground(PassColor.backgroundNorm.toColor, for: .navigationBar)
+        .toolbarBackground(PassColor.backgroundNorm, for: .navigationBar)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { toolbarContent }
         .task {
@@ -104,30 +104,30 @@ private extension DetailMonitoredItemView {
             let isNotBreached = breachCount == 0
             Text(verbatim: "\(breachCount)")
                 .font(.title)
-                .foregroundStyle((isNotBreached ? PassColor.textNorm : PassColor
-                        .passwordInteractionNormMajor2).toColor)
+                .foregroundStyle(isNotBreached ? PassColor.textNorm : PassColor
+                    .passwordInteractionNormMajor2)
                 .frame(height: 41)
                 .padding(16)
-                .background((isNotBreached ? PassColor.backgroundMedium : PassColor
-                        .passwordInteractionNormMinor2).toColor)
+                .background(isNotBreached ? PassColor.backgroundMedium : PassColor
+                    .passwordInteractionNormMinor2)
                 .clipShape(Circle())
             VStack(alignment: .center, spacing: 5) {
                 Text(isNotBreached ? "No breaches detected for" : "Breach detected for")
                     .fontWeight(.medium)
-                    .foregroundStyle((isNotBreached ? PassColor.cardInteractionNormMajor1 : PassColor
-                            .passwordInteractionNormMajor2).toColor)
+                    .foregroundStyle(isNotBreached ? PassColor.cardInteractionNormMajor1 : PassColor
+                        .passwordInteractionNormMajor2)
                 Text(email)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .multilineTextAlignment(.center)
             }
 
             if !viewModel.isMonitored {
                 Text("Excluded from monitoring")
                     .font(.caption2)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 6)
-                    .background(PassColor.textDisabled.toColor)
+                    .background(PassColor.textDisabled)
                     .clipShape(RoundedRectangle(cornerRadius: 6))
             }
 
@@ -179,11 +179,11 @@ private extension DetailMonitoredItemView {
 
                 VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                     Text(breach.name)
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm)
 
                     Text(breach.breachDate)
                         .font(.callout)
-                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .foregroundStyle(PassColor.textWeak)
                 }
                 .frame(maxWidth: .infinity, minHeight: 50, alignment: .leading)
                 .contentShape(.rect)

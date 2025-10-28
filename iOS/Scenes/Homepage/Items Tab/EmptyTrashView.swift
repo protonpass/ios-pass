@@ -38,9 +38,9 @@ struct EmptyTrashView: View {
                     .font(.title2)
                     .fontWeight(.bold)
                     .padding(.vertical)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                 Text("Items moved to trash appear here")
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
                     .multilineTextAlignment(.center)
                 Spacer()
             }

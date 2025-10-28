@@ -37,7 +37,7 @@ struct CredentialsView: View {
 
     var body: some View {
         ZStack {
-            PassColor.backgroundNorm.toColor
+            PassColor.backgroundNorm
                 .ignoresSafeArea()
 
             if viewModel.showNoPasskeys {
@@ -121,7 +121,7 @@ private extension CredentialsView {
                             Spacer()
                             Text(viewModel.mode.emptyMessage)
                                 .multilineTextAlignment(.center)
-                                .foregroundStyle(PassColor.textNorm.toColor)
+                                .foregroundStyle(PassColor.textNorm)
                                 .padding()
                             Spacer()
                         }
@@ -194,14 +194,14 @@ private extension CredentialsView {
                         Text("No suggestions")
                             .font(.callout.italic())
                             .padding(.horizontal)
-                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .foregroundStyle(PassColor.textWeak)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .plainListRow()
                     }, header: {
                         Text(sectionTitle)
                             .font(.callout)
                             .fontWeight(.bold)
-                            .foregroundStyle(PassColor.textNorm.toColor)
+                            .foregroundStyle(PassColor.textNorm)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.horizontal)
                     })
@@ -224,10 +224,10 @@ private extension CredentialsView {
                             Text("Other items")
                                 .font(.callout)
                                 .fontWeight(.bold)
-                                .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
+                                .adaptiveForegroundStyle(PassColor.textNorm) +
                                 Text(verbatim: " (\(itemCount))")
                                 .font(.callout)
-                                .adaptiveForegroundStyle(PassColor.textWeak.toColor)
+                                .adaptiveForegroundStyle(PassColor.textWeak)
 
                             Spacer()
 
@@ -274,7 +274,7 @@ private extension CredentialsView {
     @ViewBuilder
     func section(for items: [ItemUiModel],
                  headerTitle: String,
-                 headerColor: UIColor = PassColor.textWeak,
+                 headerColor: Color = PassColor.textWeak,
                  headerFontWeight: Font.Weight = .regular) -> some View {
         if items.isEmpty {
             EmptyView()
@@ -290,7 +290,7 @@ private extension CredentialsView {
                 Text(headerTitle)
                     .font(.callout)
                     .fontWeight(headerFontWeight)
-                    .foregroundStyle(headerColor.toColor)
+                    .foregroundStyle(headerColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 20)
                     .padding(.vertical, 4)
@@ -344,14 +344,14 @@ struct MainVaultsOnlyBanner: View {
     var body: some View {
         ZStack {
             Text("Your plan only allows to use items from your first 2 vaults for autofill purposes.")
-                .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
+                .adaptiveForegroundStyle(PassColor.textNorm) +
                 Text(verbatim: " ") +
                 Text("Upgrade now")
-                .underline(color: PassColor.interactionNormMajor1.toColor)
-                .adaptiveForegroundStyle(PassColor.interactionNormMajor1.toColor)
+                .underline(color: PassColor.interactionNormMajor1)
+                .adaptiveForegroundStyle(PassColor.interactionNormMajor1)
         }
         .padding()
-        .background(PassColor.interactionNormMinor1.toColor)
+        .background(PassColor.interactionNormMinor1)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .onTapGesture(perform: onTap)
     }

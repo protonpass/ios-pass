@@ -49,15 +49,15 @@ private extension MonitorExcludedEmailView {
     var leadingView: some View {
         VStack(alignment: .leading) {
             Text(address.email)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
             if let lastBreachDate = address.lastBreachDate {
                 Text("Latest breach on \(lastBreachDate)")
                     .font(.callout)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
             } else {
                 Text("No breaches detected")
                     .font(.callout)
-                    .foregroundStyle(PassColor.cardInteractionNormMajor1.toColor)
+                    .foregroundStyle(PassColor.cardInteractionNormMajor1)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

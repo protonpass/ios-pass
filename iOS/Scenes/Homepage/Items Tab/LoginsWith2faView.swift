@@ -29,7 +29,7 @@ struct LoginsWith2faView: View {
 
     var body: some View {
         ZStack {
-            PassColor.backgroundNorm.toColor
+            PassColor.backgroundNorm
                 .ignoresSafeArea()
             LazyVStack(spacing: 0) {
                 ForEach(viewModel.items) { item in

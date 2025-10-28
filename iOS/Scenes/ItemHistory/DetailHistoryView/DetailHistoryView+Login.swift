@@ -99,7 +99,7 @@ private extension DetailHistoryView {
                     .sectionTitleText()
 
                 Text(logItem.email)
-                    .foregroundStyle(textColor(for: \.loginItem?.email).toColor)
+                    .foregroundStyle(textColor(for: \.loginItem?.email))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
@@ -118,7 +118,7 @@ private extension DetailHistoryView {
                     .sectionTitleText()
 
                 Text(logItem.username)
-                    .foregroundStyle(textColor(for: \.loginItem?.username).toColor)
+                    .foregroundStyle(textColor(for: \.loginItem?.username))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
@@ -137,10 +137,10 @@ private extension DetailHistoryView {
 
                 if isShowingPassword {
                     Text(AttributedString(logItem.password, attributes: .lineBreakHyphenErasing))
-                        .foregroundStyle(textColor(for: \.loginItem?.password).toColor)
+                        .foregroundStyle(textColor(for: \.loginItem?.password))
                 } else {
                     Text(String(repeating: "•", count: 12))
-                        .foregroundStyle(textColor(for: \.loginItem?.password).toColor)
+                        .foregroundStyle(textColor(for: \.loginItem?.password))
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -170,7 +170,7 @@ private extension DetailHistoryView {
                 VStack(alignment: .leading, spacing: 12) {
                     ForEach(logItem.urls, id: \.self) { url in
                         Text(url)
-                            .foregroundStyle(viewModel.currentRevision.type.normMajor2Color.toColor)
+                            .foregroundStyle(viewModel.currentRevision.type.normMajor2Color)
                             .multilineTextAlignment(.leading)
                             .lineLimit(2)
                     }
@@ -199,15 +199,15 @@ extension DetailHistoryView {
 
                         if field.content.isEmpty {
                             Text("Empty")
-                                .foregroundStyle(PassColor.textWeak.toColor)
+                                .foregroundStyle(PassColor.textWeak)
                         } else if field.type == .timestamp,
                                   let timeInterval = TimeInterval(field.content) {
                             let date = Date(timeIntervalSince1970: timeInterval)
                             Text(verbatim: DateFormatter.timestampCustomField.string(from: date))
-                                .foregroundStyle(PassColor.textNorm.toColor)
+                                .foregroundStyle(PassColor.textNorm)
                         } else {
                             Text(field.content)
-                                .foregroundStyle(PassColor.textNorm.toColor)
+                                .foregroundStyle(PassColor.textNorm)
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)

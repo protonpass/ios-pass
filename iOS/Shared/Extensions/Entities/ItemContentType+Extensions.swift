@@ -22,6 +22,7 @@ import DesignSystem
 import Entities
 import Macro
 import ProtonCoreUIFoundations
+import SwiftUI
 import UIKit
 
 // MARK: - Colors & icons
@@ -53,7 +54,7 @@ extension ItemContentType {
         }
     }
 
-    var normColor: UIColor {
+    var normColor: Color {
         switch self {
         case .alias:
             PassColor.aliasInteractionNorm
@@ -68,7 +69,7 @@ extension ItemContentType {
         }
     }
 
-    var normMajor1Color: UIColor {
+    var normMajor1Color: Color {
         switch self {
         case .alias:
             PassColor.aliasInteractionNormMajor1
@@ -83,7 +84,7 @@ extension ItemContentType {
         }
     }
 
-    var normMajor2Color: UIColor {
+    var normMajor2Color: Color {
         switch self {
         case .alias:
             PassColor.aliasInteractionNormMajor2
@@ -98,7 +99,7 @@ extension ItemContentType {
         }
     }
 
-    var normMinor1Color: UIColor {
+    var normMinor1Color: Color {
         switch self {
         case .alias:
             PassColor.aliasInteractionNormMinor1
@@ -113,7 +114,7 @@ extension ItemContentType {
         }
     }
 
-    var normMinor2Color: UIColor {
+    var normMinor2Color: Color {
         switch self {
         case .alias:
             PassColor.aliasInteractionNormMinor2
@@ -132,7 +133,7 @@ extension ItemContentType {
 // MARK: Thumbnail colors
 
 extension ItemContentType {
-    var thumbnailTintColor: UIColor {
+    var thumbnailTintColor: Color {
         switch self {
         case .custom, .sshKey, .wifi:
             PassColor.textNorm
@@ -141,7 +142,7 @@ extension ItemContentType {
         }
     }
 
-    var thumbnailBackgroundColor: UIColor {
+    var thumbnailBackgroundColor: Color {
         switch self {
         case .custom, .sshKey, .wifi:
             PassColor.customItemBackground
@@ -150,7 +151,7 @@ extension ItemContentType {
         }
     }
 
-    var thumbnailAlternativeBackgroundColor: UIColor {
+    var thumbnailAlternativeBackgroundColor: Color {
         switch self {
         case .custom, .sshKey, .wifi:
             PassColor.customItemBackground

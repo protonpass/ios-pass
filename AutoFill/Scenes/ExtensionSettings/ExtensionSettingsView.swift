@@ -69,7 +69,7 @@ struct ExtensionSettingsView: View {
                 }
                 .padding(.horizontal)
             }
-            .background(PassColor.backgroundNorm.toColor)
+            .background(PassColor.backgroundNorm)
             .animation(.default, value: viewModel.showAutomaticCopyTotpCodeExplication)
             .navigationTitle("AutoFill")
             .toolbar {

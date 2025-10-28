@@ -268,9 +268,9 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
         let tabBarAppearance = UITabBarAppearance()
         tabBarAppearance.configureWithTransparentBackground()
         tabBarAppearance.backgroundEffect = UIBlurEffect(style: .regular)
-        tabBarAppearance.backgroundColor = PassColor.tabBarBackground
-        tabBarAppearance.stackedLayoutAppearance.normal.iconColor = PassColor.textNorm
-        tabBarAppearance.stackedLayoutAppearance.selected.iconColor = PassColor.interactionNormMajor2
+        tabBarAppearance.backgroundColor = PassColor.tabBarBackground.uiColor
+        tabBarAppearance.stackedLayoutAppearance.normal.iconColor = PassColor.textNorm.uiColor
+        tabBarAppearance.stackedLayoutAppearance.selected.iconColor = PassColor.interactionNormMajor2.uiColor
         UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
         UITabBar.appearance().standardAppearance = tabBarAppearance
 

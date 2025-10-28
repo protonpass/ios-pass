@@ -63,9 +63,9 @@ private extension BreachDetailView {
         .toolbar { toolbarContent }
         .navigationBarTitleDisplayMode(.inline)
         .scrollViewEmbeded(maxWidth: .infinity)
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
         .navigationBarBackButtonHidden(true)
-        .toolbarBackground(PassColor.backgroundNorm.toColor,
+        .toolbarBackground(PassColor.backgroundNorm,
                            for: .navigationBar)
     }
 }
@@ -81,10 +81,10 @@ private extension BreachDetailView {
             VStack {
                 Text(breach.name)
                     .font(.title3)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 Text("Your info was in a data breach and found on **\(breach.breachDate)**")
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
@@ -99,10 +99,10 @@ private extension BreachDetailView {
                     ForEach(breach.exposedData, id: \.self) { item in
                         Text(item.name)
                             .font(.caption)
-                            .foregroundStyle(PassColor.textInvert.toColor)
+                            .foregroundStyle(PassColor.textInvert)
                             .padding(.vertical, 7)
                             .padding(.horizontal, 15)
-                            .background(PassColor.signalDanger.toColor)
+                            .background(PassColor.signalDanger)
                             .clipShape(Capsule())
                     }
                     Spacer()
@@ -121,20 +121,20 @@ private extension BreachDetailView {
                 VStack {
                     Text("Email address")
                         .fontWeight(.thin)
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     Text(breach.email)
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 if let passwordLastChars = breach.passwordLastChars {
                     VStack {
                         Text("Password")
                             .fontWeight(.thin)
-                            .foregroundStyle(PassColor.textNorm.toColor)
+                            .foregroundStyle(PassColor.textNorm)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         Text(passwordLastChars)
-                            .foregroundStyle(PassColor.textNorm.toColor)
+                            .foregroundStyle(PassColor.textNorm)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
@@ -157,15 +157,15 @@ private extension BreachDetailView {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 20)
-                                .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                                .foregroundStyle(PassColor.interactionNormMajor2)
                             Spacer()
                         }
                         Text(item.name)
-                            .foregroundStyle(PassColor.textNorm.toColor)
+                            .foregroundStyle(PassColor.textNorm)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
                     .padding(DesignConstant.sectionPadding)
-                    .background(PassColor.inputBackgroundNorm.toColor)
+                    .background(PassColor.inputBackgroundNorm)
                     .clipShape(RoundedRectangle(cornerRadius: 16))
                 }
             }
@@ -179,10 +179,10 @@ private extension BreachDetailView {
     var footer: some View {
         Text("Your Proton Account information remains secure and encrypted.")
             .font(.callout)
-            .adaptiveForegroundStyle(PassColor.textWeak.toColor) +
+            .adaptiveForegroundStyle(PassColor.textWeak) +
             Text(verbatim: " ") +
             Text("Learn more")
-            .adaptiveForegroundStyle(PassColor.interactionNormMajor2.toColor)
+            .adaptiveForegroundStyle(PassColor.interactionNormMajor2)
             .underline()
     }
 }

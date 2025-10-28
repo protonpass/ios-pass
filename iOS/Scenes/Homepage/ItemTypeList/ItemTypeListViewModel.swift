@@ -25,6 +25,7 @@ import Entities
 import FactoryKit
 import Macro
 import ProtonCoreUIFoundations
+import SwiftUI
 import UIKit
 
 enum ItemType: CaseIterable {
@@ -115,7 +116,7 @@ extension ItemType {
         }
     }
 
-    var tintColor: UIColor {
+    var tintColor: Color {
         switch self {
         case .login:
             ItemContentType.login.normMajor2Color
@@ -134,7 +135,7 @@ extension ItemType {
         }
     }
 
-    var backgroundColor: UIColor {
+    var backgroundColor: Color {
         switch self {
         case .login:
             ItemContentType.login.normMinor1Color

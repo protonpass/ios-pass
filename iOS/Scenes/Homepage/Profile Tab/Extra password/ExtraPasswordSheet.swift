@@ -34,7 +34,7 @@ struct ExtraPasswordSheet: View {
                     .resizable()
                     .padding(4)
                     .frame(width: 30, height: 30)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
                     .buttonEmbeded(action: dismiss.callAsFunction)
             }
 
@@ -45,10 +45,10 @@ struct ExtraPasswordSheet: View {
 
             Text("Extra password")
                 .font(.title.bold())
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
 
             Text("Protect Proton Pass with an extra password.")
-                .foregroundStyle(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak)
                 .padding(.vertical, 16)
                 .multilineTextAlignment(.center)
 
@@ -60,6 +60,6 @@ struct ExtraPasswordSheet: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
     }
 }

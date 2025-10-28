@@ -50,7 +50,7 @@ struct ItemDetailMoreInfoSection: View {
                         Text("More info")
                             .font(.caption)
                             .fontWeight(.semibold)
-                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .foregroundStyle(PassColor.textWeak)
                     }, icon: {
                         icon(from: IconProvider.infoCircle)
                     })
@@ -95,7 +95,7 @@ struct ItemDetailMoreInfoSection: View {
                     }
                 }
                 .font(.caption)
-                .foregroundStyle(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak)
                 .frame(maxWidth: .infinity)
             }
         }
@@ -130,6 +130,6 @@ private extension ItemDetailMoreInfoSection {
             .resizable()
             .scaledToFit()
             .frame(width: 16)
-            .foregroundStyle(PassColor.textWeak.toColor)
+            .foregroundStyle(PassColor.textWeak)
     }
 }

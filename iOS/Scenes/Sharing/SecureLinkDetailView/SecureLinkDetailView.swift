@@ -60,13 +60,13 @@ struct SecureLinkDetailView: View {
             .padding(.bottom, 10)
 
             Text(verbatim: uiModel.url)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
                 .lineLimit(1)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding()
                 .contentShape(.rect)
                 .onTapGesture { viewModel.copyLink() }
-                .background(PassColor.interactionNormMinor1.toColor)
+                .background(PassColor.interactionNormMinor1)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
 
             CapsuleTextButton(title: #localized("Copy link"),
@@ -91,8 +91,8 @@ struct SecureLinkDetailView: View {
                 }
             } label: {
                 Text(uiModel.linkActionTitle)
-                    .foregroundStyle((uiModel.mode == .create ? PassColor.interactionNormMajor2 : PassColor
-                            .passwordInteractionNormMajor2).toColor)
+                    .foregroundStyle(uiModel.mode == .create ? PassColor.interactionNormMajor2 : PassColor
+                        .passwordInteractionNormMajor2)
             }.frame(height: 48)
             Spacer()
         }
@@ -100,7 +100,7 @@ struct SecureLinkDetailView: View {
         .padding(.bottom, DesignConstant.sectionPadding)
         .showSpinner(viewModel.loading)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
         .onChange(of: viewModel.finishedDeleting) { _ in
             dismiss()
         }
@@ -115,21 +115,21 @@ private extension SecureLinkDetailView {
                 Image(uiImage: icon)
                     .scaledToFit()
                     .frame(width: 14)
-                    .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                    .foregroundStyle(PassColor.interactionNormMajor2)
                 Spacer()
             }
             VStack(alignment: .leading) {
                 Text(title)
                     .font(.callout)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
                 Text(description)
                     .fontWeight(.bold)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding()
-        .background(PassColor.interactionNormMinor1.toColor)
+        .background(PassColor.interactionNormMinor1)
         .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 }

@@ -53,22 +53,22 @@ public struct SelectedSyncVaultRow: View {
             VStack(alignment: .leading) {
                 Text("Default SimpleLogin vault", bundle: .module)
                     .font(.callout)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
 
                 Text(vault?.vaultContent?.name ?? #localized("None", bundle: .module))
                     .if(vault?.vaultContent?.name == nil) { view in
                         view
                             .italic()
-                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .foregroundStyle(PassColor.textWeak)
                     }
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
             }
             Spacer()
 
             Image(uiImage: IconProvider.chevronRight)
                 .resizable()
                 .scaledToFit()
-                .foregroundStyle(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak)
                 .frame(maxHeight: 20)
         }
         .frame(maxWidth: .infinity)

@@ -23,11 +23,11 @@ import SwiftUI
 
 public struct ItemDetailSectionIcon: View {
     let icon: UIImage
-    let color: UIColor
+    let color: Color
     let width: CGFloat
 
     public init(icon: UIImage,
-                color: UIColor = PassColor.textWeak,
+                color: Color = PassColor.textWeak,
                 width: CGFloat = 20) {
         self.icon = icon
         self.color = color
@@ -39,7 +39,7 @@ public struct ItemDetailSectionIcon: View {
             .resizable()
             .renderingMode(.template)
             .scaledToFit()
-            .foregroundStyle(color.toColor)
+            .foregroundStyle(color)
             .frame(width: width)
             .fixedSize(horizontal: false, vertical: true)
     }

@@ -68,7 +68,7 @@ struct EditCustomFieldView<Field: Hashable>: View {
                                            focusedField: focusedField,
                                            field: field,
                                            font: .body.monospacedFont(for: value.content))
-                            .foregroundStyle(PassColor.textNorm.toColor)
+                            .foregroundStyle(PassColor.textNorm)
                             .keyboardType(.URL)
                             .textInputAutocapitalization(.never)
                             .autocorrectionDisabled()
@@ -78,7 +78,7 @@ struct EditCustomFieldView<Field: Hashable>: View {
                                            placeholder: placeholder,
                                            focusedField: focusedField,
                                            field: field)
-                            .foregroundStyle(PassColor.textNorm.toColor)
+                            .foregroundStyle(PassColor.textNorm)
 
                     case .timestamp:
                         TimestampPicker(value: $value.content)

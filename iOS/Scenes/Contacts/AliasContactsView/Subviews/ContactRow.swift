@@ -35,14 +35,14 @@ struct ContactRow: View {
         VStack(alignment: .leading, spacing: DesignConstant.sectionPadding) {
             HStack {
                 Text(verbatim: contact.email)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
 
                 Spacer()
 
                 if !contact.blocked {
                     Button(action: onSend) {
                         Image(uiImage: IconProvider.paperPlane)
-                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .foregroundStyle(PassColor.textWeak)
                     }
                     .padding(.trailing, DesignConstant.sectionPadding)
                 }
@@ -69,7 +69,7 @@ struct ContactRow: View {
                            action: onDelete)
                 }, label: {
                     IconProvider.threeDotsVertical
-                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .foregroundStyle(PassColor.textWeak)
                 })
             }
 
@@ -78,24 +78,24 @@ struct ContactRow: View {
                 Text(contact.activityText)
             }
             .font(.footnote)
-            .foregroundStyle(PassColor.textWeak.toColor)
+            .foregroundStyle(PassColor.textWeak)
 
             Text(contact.actionTitle)
                 .font(.callout)
-                .foregroundStyle(PassColor.aliasInteractionNormMajor2.toColor)
+                .foregroundStyle(PassColor.aliasInteractionNormMajor2)
                 .frame(height: 40)
                 .padding(.horizontal, 16)
-                .background(contact.blocked ? .clear : PassColor.aliasInteractionNormMinor1.toColor)
+                .background(contact.blocked ? .clear : PassColor.aliasInteractionNormMinor1)
                 .clipShape(Capsule())
                 .buttonEmbeded(action: onToggleState)
                 .overlay(Capsule()
-                    .stroke(PassColor.aliasInteractionNormMinor1.toColor, lineWidth: 1))
+                    .stroke(PassColor.aliasInteractionNormMinor1, lineWidth: 1))
         }
         .frame(maxWidth: .infinity)
         .padding(DesignConstant.sectionPadding)
-        .background(PassColor.inputBackgroundNorm.toColor)
+        .background(PassColor.inputBackgroundNorm)
         .cornerRadius(16)
-        .overlay(RoundedRectangle(cornerRadius: 16).stroke(PassColor.inputBorderNorm.toColor, lineWidth: 1))
+        .overlay(RoundedRectangle(cornerRadius: 16).stroke(PassColor.inputBorderNorm, lineWidth: 1))
     }
 
     func button(title: LocalizedStringKey,

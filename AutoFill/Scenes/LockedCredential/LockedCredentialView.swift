@@ -32,7 +32,7 @@ struct LockedCredentialView: View {
     }
 
     var body: some View {
-        PassColor.backgroundNorm.toColor
+        PassColor.backgroundNorm
             .localAuthentication(delayed: true,
                                  logOutButtonMode: .topBarTrailing { viewModel.handleCancellation() },
                                  onSuccess: { _ in viewModel.getAndReturnCredential() },

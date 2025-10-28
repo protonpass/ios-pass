@@ -110,7 +110,7 @@ public struct TextOptionRow: View {
         OptionRow(action: action,
                   content: {
                       Text(title)
-                          .foregroundStyle(PassColor.textNorm.toColor)
+                          .foregroundStyle(PassColor.textNorm)
                   },
                   trailing: { ChevronRight() })
     }
@@ -141,7 +141,7 @@ public struct SelectableOptionRow<Content: View>: View {
                       if isSelected {
                           Label(title: { Text(verbatim: "") },
                                 icon: { Image(systemName: "checkmark") })
-                              .foregroundStyle(PassColor.interactionNorm.toColor)
+                              .foregroundStyle(PassColor.interactionNorm)
                       }
                   })
     }
@@ -155,6 +155,6 @@ public struct ChevronRight: View {
             .resizable()
             .scaledToFit()
             .frame(height: 12)
-            .foregroundStyle(PassColor.textHint.toColor)
+            .foregroundStyle(PassColor.textHint)
     }
 }

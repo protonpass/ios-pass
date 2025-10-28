@@ -23,7 +23,7 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct UpgradeButton: View {
-    let backgroundColor: UIColor
+    let backgroundColor: Color
     var height: CGFloat = 40
     var maxWidth: CGFloat? = .infinity
     let action: () -> Void
@@ -41,8 +41,8 @@ struct UpgradeButton: View {
             .frame(height: height)
             .frame(maxWidth: maxWidth)
             .padding(.horizontal, 16)
-            .foregroundStyle(PassColor.textInvert.toColor)
-            .background(backgroundColor.toColor)
+            .foregroundStyle(PassColor.textInvert)
+            .background(backgroundColor)
             .clipShape(Capsule())
         }
     }
@@ -50,7 +50,7 @@ struct UpgradeButton: View {
 
 /// Text button without background color
 struct UpgradeButtonLite: View {
-    let foregroundColor: UIColor
+    let foregroundColor: Color
     let action: () -> Void
 
     var body: some View {
@@ -62,7 +62,7 @@ struct UpgradeButtonLite: View {
                     .scaledToFit()
                     .frame(maxWidth: 16)
             }
-            .foregroundStyle(foregroundColor.toColor)
+            .foregroundStyle(foregroundColor)
             .contentShape(.rect)
         }
     }

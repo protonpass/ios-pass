@@ -32,7 +32,7 @@ struct CreditCardDetailView: View {
     @State private var isShowingPIN = false
     @Namespace private var bottomID
 
-    private var tintColor: UIColor { viewModel.itemContent.type.normColor }
+    private var tintColor: Color { viewModel.itemContent.type.normColor }
 
     init(viewModel: CreditCardDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)

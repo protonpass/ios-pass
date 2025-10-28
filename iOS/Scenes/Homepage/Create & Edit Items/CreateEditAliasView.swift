@@ -37,7 +37,7 @@ struct CreateEditAliasView: View {
     @State private var isShowingSlNoteExplanation = false
     @State private var sheetState: AliasOptionsSheetState?
 
-    private var tintColor: UIColor { viewModel.itemContentType.normMajor1Color }
+    private var tintColor: Color { viewModel.itemContentType.normMajor1Color }
 
     init(viewModel: CreateEditAliasViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -69,7 +69,7 @@ struct CreateEditAliasView: View {
                         .toolbar { closeButtonToolbar }
                 }
             }
-            .background(PassColor.backgroundNorm.toColor)
+            .background(PassColor.backgroundNorm)
             .navigationBarTitleDisplayMode(.inline)
         }
         .alert("What is a SimpleLogin note?",
@@ -249,7 +249,7 @@ struct CreateEditAliasView: View {
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .focused($focusedField, equals: .senderName)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .submitLabel(.next)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -301,7 +301,7 @@ struct CreateEditAliasView: View {
 
                     if viewModel.prefixError != nil {
                         Text(viewModel.prefix + viewModel.suffix)
-                            .foregroundStyle(PassColor.signalDanger.toColor)
+                            .foregroundStyle(PassColor.signalDanger)
                     } else {
                         switch viewModel.state {
                         case .loading:
@@ -316,9 +316,9 @@ struct CreateEditAliasView: View {
 
                         default:
                             Text(viewModel.prefix)
-                                .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
+                                .adaptiveForegroundStyle(PassColor.textNorm) +
                                 Text(viewModel.suffix)
-                                .adaptiveForegroundStyle(viewModel.itemContentType.normMajor2Color.toColor)
+                                .adaptiveForegroundStyle(viewModel.itemContentType.normMajor2Color)
                         }
                     }
                 }
@@ -359,7 +359,7 @@ private extension CreateEditAliasView {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 16)
-                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .foregroundStyle(PassColor.textWeak)
                         .onTapGesture {
                             isShowingSlNoteExplanation.toggle()
                         }

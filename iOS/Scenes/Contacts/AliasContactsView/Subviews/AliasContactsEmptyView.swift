@@ -32,14 +32,14 @@ struct AliasContactsEmptyView: View {
             VStack(spacing: DesignConstant.sectionPadding) {
                 Text("Alias contacts")
                     .font(.title2.bold())
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
 
                 // swiftlint:disable:next line_length
                 Text("To keep your personal email address hidden, you can create an alias contact that masks your address.")
                     .frame(maxWidth: .infinity, alignment: .center)
                     .multilineTextAlignment(.center)
                     .font(.callout)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
             }
             .padding(.horizontal, 40)
 

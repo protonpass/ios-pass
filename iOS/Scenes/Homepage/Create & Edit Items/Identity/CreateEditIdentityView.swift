@@ -185,7 +185,7 @@ private extension CreateEditIdentityView {
                             .scaledToFit()
                             .frame(maxWidth: 16)
                     })
-                    .foregroundStyle(ItemContentType.identity.normMajor2Color.toColor)
+                    .foregroundStyle(ItemContentType.identity.normMajor2Color)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical, DesignConstant.sectionPadding)
@@ -208,7 +208,7 @@ private extension CreateEditIdentityView {
         .animation(.default, value: viewModel.dismissedFileAttachmentsBanner)
         .scrollViewEmbeded(maxWidth: .infinity)
         .navigationBarBackButtonHidden(true)
-        .toolbarBackground(PassColor.backgroundNorm.toColor, for: .navigationBar)
+        .toolbarBackground(PassColor.backgroundNorm, for: .navigationBar)
         .itemCreateEditSetUp(viewModel)
         .toolbar {
             CreateEditKeyboardToolbar(lastFocusedField: $lastFocusedField,
@@ -581,14 +581,14 @@ private extension CreateEditIdentityView {
                         .keyboardType(keyboardType)
                         .textInputAutocapitalization(inputAutocapitalization)
                         .autocorrectionDisabled()
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm)
                 } else {
                     TextField(subtitle ?? title, text: value)
                         .textInputAutocapitalization(inputAutocapitalization)
                         .keyboardType(keyboardType)
                         .autocorrectionDisabled()
                         .focused($focusedField, equals: focusedField)
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm)
                         .submitLabel(.next)
                         // swiftlint:disable:next todo
                         // TODO: set next focus
@@ -608,12 +608,12 @@ private extension CreateEditIdentityView {
             Text("Add field")
                 .font(.footnote)
                 .fontWeight(.medium)
-                .foregroundStyle(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak)
                 .frame(maxWidth: .infinity)
                 .padding(.top, DesignConstant.sectionPadding)
 
             Text(state.title)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
                 .frame(maxWidth: .infinity)
 
             switch state {
@@ -668,7 +668,7 @@ private extension CreateEditIdentityView {
             }
             if viewModel.canAddMoreCustomFields {
                 Text("Custom field")
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.vertical, DesignConstant.sectionPadding)
                     .buttonEmbeded {
@@ -688,7 +688,7 @@ private extension CreateEditIdentityView {
                             .scaledToFit()
                             .frame(maxWidth: 16)
                     })
-                    .foregroundStyle(ItemContentType.identity.normMajor2Color.toColor)
+                    .foregroundStyle(ItemContentType.identity.normMajor2Color)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical, DesignConstant.sectionPadding)
@@ -697,13 +697,13 @@ private extension CreateEditIdentityView {
         }
         .frame(maxHeight: .infinity)
         .padding(.horizontal, DesignConstant.sectionPadding)
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
     }
 
     func sheetOption(_ title: LocalizedStringKey,
                      value: Binding<HiddenStringValue>) -> some View {
         Text(title)
-            .foregroundStyle(PassColor.textNorm.toColor)
+            .foregroundStyle(PassColor.textNorm)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.vertical, DesignConstant.sectionPadding)
             .buttonEmbeded {

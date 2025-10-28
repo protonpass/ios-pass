@@ -23,8 +23,8 @@ import SwiftUI
 public struct StaticToggle: View {
     private let title: Title?
     private let isOn: Bool
-    private let titleColor: UIColor
-    private let tintColor: UIColor
+    private let titleColor: Color
+    private let tintColor: Color
     private let action: (() -> Void)?
 
     public enum Title {
@@ -34,8 +34,8 @@ public struct StaticToggle: View {
 
     public init(_ title: Title? = nil,
                 isOn: Bool,
-                titleColor: UIColor = PassColor.textNorm,
-                tintColor: UIColor = PassColor.interactionNorm,
+                titleColor: Color = PassColor.textNorm,
+                tintColor: Color = PassColor.interactionNorm,
                 action: (() -> Void)? = nil) {
         self.title = title
         self.isOn = isOn
@@ -50,14 +50,14 @@ public struct StaticToggle: View {
                 switch title {
                 case let .localized(localizedStringKey):
                     Text(localizedStringKey)
-                        .foregroundStyle(titleColor.toColor)
+                        .foregroundStyle(titleColor)
                 case let .verbatim(string):
                     Text(verbatim: string)
-                        .foregroundStyle(titleColor.toColor)
+                        .foregroundStyle(titleColor)
                 }
             }
         })
-        .tint(tintColor.toColor)
+        .tint(tintColor)
         .simultaneousGesture(TapGesture().onEnded {
             action?()
         })

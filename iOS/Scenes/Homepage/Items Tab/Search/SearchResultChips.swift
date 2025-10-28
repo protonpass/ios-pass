@@ -75,24 +75,23 @@ private struct ItemCountChip: View {
                     Image(uiImage: icon)
                         .resizable()
                         .scaledToFit()
-                        .foregroundStyle((isSelected ? PassColor.textInvert : PassColor.interactionNormMajor2)
-                            .toColor)
+                        .foregroundStyle(isSelected ? PassColor.textInvert : PassColor.interactionNormMajor2)
                         .frame(width: 16, height: 16)
                 }
 
                 Text(title)
-                    .foregroundStyle(isSelected ? PassColor.textInvert.toColor : PassColor.textNorm.toColor)
+                    .foregroundStyle(isSelected ? PassColor.textInvert : PassColor.textNorm)
 
                 Text(verbatim: "(\(count))")
-                    .foregroundStyle(isSelected ? PassColor.textInvert.toColor : PassColor.textNorm.toColor)
+                    .foregroundStyle(isSelected ? PassColor.textInvert : PassColor.textNorm)
             }
             .padding(.vertical, 8)
             .padding(.horizontal, 12)
             .background(isSelected ?
-                PassColor.interactionNormMajor1.toColor : .clear)
+                PassColor.interactionNormMajor1 : .clear)
             .clipShape(Capsule())
             .overlay(Capsule()
-                .stroke(PassColor.interactionNormMinor1.toColor, lineWidth: 1))
+                .stroke(PassColor.interactionNormMinor1, lineWidth: 1))
             .animation(.default, value: isSelected)
         }
         .buttonStyle(.plain)

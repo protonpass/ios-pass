@@ -57,7 +57,7 @@ public struct TextEditorWithPlaceholder<Field: Hashable>: View {
             .focused(focusedField, equals: field)
             .scrollContentBackground(.hidden)
             .submitLabel(onSubmit != nil ? .next : .return)
-            .foregroundStyle(PassColor.textNorm.toColor)
+            .foregroundStyle(PassColor.textNorm)
             .font(Font(font.weight(fontWeight)))
             .frame(minHeight: minHeight, alignment: .topLeading)
             .onChange(of: text) { text in

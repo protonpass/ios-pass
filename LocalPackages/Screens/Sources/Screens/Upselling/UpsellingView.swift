@@ -32,9 +32,9 @@ public struct UpsellElement: Sendable, Hashable, Identifiable {
     public let id = UUID().uuidString
     let icon: UIImage
     let title: String
-    let color: UIColor?
+    let color: Color?
 
-    public init(icon: UIImage, title: String, color: UIColor? = nil) {
+    public init(icon: UIImage, title: String, color: Color? = nil) {
         self.icon = icon
         self.title = title
         self.color = color
@@ -75,8 +75,8 @@ public struct UpsellingView: View {
         mainContainer
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .padding()
-            .foregroundStyle(PassColor.textNorm.toColor)
-            .background(PassColor.backgroundNorm.toColor)
+            .foregroundStyle(PassColor.textNorm)
+            .background(PassColor.backgroundNorm)
             .edgesIgnoringSafeArea(.top)
     }
 }
@@ -94,12 +94,12 @@ private extension UpsellingView {
                 Text(configuration.title)
                     .font(.title.bold())
                     .multilineTextAlignment(.center)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
 
                 Text(configuration.description)
                     .padding(.bottom)
                     .multilineTextAlignment(.center)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
 
                 VStack(spacing: 16) {
                     ForEach(configuration.upsellElements) { element in
@@ -137,7 +137,7 @@ private extension UpsellingView {
                 .resizable()
                 .scaledToFit()
                 .frame(maxWidth: 20)
-                .foregroundStyle((element.color ?? PassColor.interactionNormMajor2).toColor)
+                .foregroundStyle(element.color ?? PassColor.interactionNormMajor2)
         })
         .frame(maxWidth: .infinity, alignment: .leading)
     }

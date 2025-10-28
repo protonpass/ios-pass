@@ -25,13 +25,13 @@ public struct TextViewConfiguration: Sendable {
     public let minWidth: CGFloat
     public let minHeight: CGFloat
     public let font: UIFont
-    public let textColor: UIColor
+    public let textColor: Color
 
     public init(minWidth: CGFloat = 300,
                 // 0 means taking the minimal height for displaying the text view
                 minHeight: CGFloat = 0,
                 font: UIFont = .body,
-                textColor: UIColor = PassColor.textNorm) {
+                textColor: Color = PassColor.textNorm) {
         self.minWidth = minWidth
         self.minHeight = minHeight
         self.font = font
@@ -58,7 +58,7 @@ struct EditableTextView: UIViewRepresentable {
         view.text = text
         view.font = config.font
         view.backgroundColor = .clear
-        view.textColor = config.textColor
+        view.textColor = config.textColor.uiColor
         view.isEditable = true
         view.isScrollEnabled = false
         view.textContainerInset = .zero
@@ -75,7 +75,7 @@ struct EditableTextView: UIViewRepresentable {
         // Update text and properties
         textView.text = text
         textView.font = config.font
-        textView.textColor = config.textColor
+        textView.textColor = config.textColor.uiColor
 
         // Restore cursor position and scroll offset
         textView.selectedRange = selectedRange
@@ -118,12 +118,12 @@ public struct EditableTextViewWithPlaceholder: View {
     @Binding var text: String
     private let config: TextViewConfiguration
     private let placeholder: String
-    private let placerholderColor: UIColor
+    private let placerholderColor: Color
 
     public init(text: Binding<String>,
                 config: TextViewConfiguration = .init(),
                 placeholder: String,
-                placerholderColor: UIColor = PassColor.textWeak) {
+                placerholderColor: Color = PassColor.textWeak) {
         _showPlaceholder = .init(initialValue: text.wrappedValue.isEmpty)
         _text = text
         self.config = config
@@ -136,7 +136,7 @@ public struct EditableTextViewWithPlaceholder: View {
                          config: config,
                          textViewDidChange: { showPlaceholder = $0.isEmpty })
             .background(Text(verbatim: placeholder)
-                .foregroundStyle(placerholderColor.toColor)
+                .foregroundStyle(placerholderColor)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 .opacity(showPlaceholder ? 1 : 0))
     }
