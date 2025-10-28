@@ -33,7 +33,7 @@ struct MonitorAliasesView: View {
         LazyVStack {
             if viewModel.infos.isEmpty {
                 Spacer()
-                Image(uiImage: PassIcon.securityEmptyState)
+                PassIcon.securityEmptyState
                     .resizable()
                     .scaledToFit()
                     .frame(width: 195)

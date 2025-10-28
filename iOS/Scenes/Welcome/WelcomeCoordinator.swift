@@ -30,7 +30,6 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 import Screens
 import SwiftUI
-import UIKit
 
 @MainActor
 protocol WelcomeCoordinatorDelegate: AnyObject {

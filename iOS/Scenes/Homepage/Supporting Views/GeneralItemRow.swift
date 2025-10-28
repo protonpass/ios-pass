@@ -77,7 +77,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
                         .fixedSize(horizontal: false, vertical: true)
 
                     if hasTotp {
-                        Image(uiImage: PassIcon.shieldLock)
+                        PassIcon.shieldLock
                             .resizable()
                             .frame(width: 16, height: 16)
                             .foregroundStyle(PassColor.loginInteractionNormMajor1)

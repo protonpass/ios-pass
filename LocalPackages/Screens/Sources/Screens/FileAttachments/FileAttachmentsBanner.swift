@@ -66,7 +66,7 @@ private extension FileAttachmentsBanner {
             .padding()
 
             ZStack(alignment: .topTrailing) {
-                Image(uiImage: PassIcon.fileAttachments)
+                PassIcon.fileAttachments
                     .resizable()
                     .scaledToFit()
 

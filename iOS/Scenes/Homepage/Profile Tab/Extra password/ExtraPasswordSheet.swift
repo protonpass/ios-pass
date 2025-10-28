@@ -38,7 +38,7 @@ struct ExtraPasswordSheet: View {
                     .buttonEmbeded(action: dismiss.callAsFunction)
             }
 
-            Image(uiImage: PassIcon.extraPassword)
+            PassIcon.extraPassword
                 .resizable()
                 .scaledToFit()
                 .frame(maxHeight: 200)

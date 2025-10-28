@@ -253,7 +253,7 @@ private extension PassMonitorView {
     }
 
     var passPlusBadge: some View {
-        Image(uiImage: PassIcon.passSubscriptionBadge)
+        PassIcon.passSubscriptionBadge
             .resizable()
             .scaledToFit()
             .frame(height: 24)
@@ -319,7 +319,7 @@ private extension PassMonitorView {
 
                 if isBreached, let latestBreach = viewModel.latestBreachInfo {
                     HStack {
-                        Image(uiImage: PassIcon.lightning)
+                        PassIcon.lightning
                             .resizable()
                             .scaledToFit()
                             .frame(height: 24)
@@ -425,7 +425,7 @@ private extension PassMonitorView {
 
                 if let latestBreach = viewModel.latestBreachInfo, viewModel.numberOfBreaches == 1 {
                     HStack {
-                        Image(uiImage: PassIcon.lightning)
+                        PassIcon.lightning
                             .resizable()
                             .scaledToFit()
                             .frame(height: 24)

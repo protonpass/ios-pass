@@ -83,7 +83,7 @@ private extension ShareElementView {
             }
 
             if viewModel.isFreeUser {
-                Image(uiImage: PassIcon.passSubscriptionBadge)
+                PassIcon.passSubscriptionBadge
                     .resizable()
                     .scaledToFit()
                     .frame(height: 24)
@@ -120,7 +120,7 @@ private extension ShareElementView {
             }
 
             if viewModel.isFreeUser {
-                Image(uiImage: PassIcon.passSubscriptionBadge)
+                PassIcon.passSubscriptionBadge
                     .resizable()
                     .scaledToFit()
                     .frame(height: 24)

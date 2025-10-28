@@ -223,7 +223,7 @@ struct AliasSyncConfigurationView: View {
     }
 
     var passPlusBadge: some View {
-        Image(uiImage: PassIcon.passSubscriptionBadge)
+        PassIcon.passSubscriptionBadge
             .resizable()
             .scaledToFit()
             .frame(height: 24)
@@ -502,7 +502,7 @@ private struct GenericSelectionView<Selection: Identifiable & Equatable & TitleR
             }
 
             if shouldUpsell {
-                Image(uiImage: PassIcon.passSubscriptionUnlimited)
+                PassIcon.passSubscriptionUnlimited
                     .resizable()
                     .scaledToFit()
                     .frame(height: 24)

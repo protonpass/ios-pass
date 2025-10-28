@@ -35,7 +35,7 @@ public struct PinCircleView: View {
             tintColor
                 .clipShape(Circle())
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-            Image(uiImage: PassIcon.pinAngledFilled)
+            PassIcon.pinAngledFilled
                 .resizable()
                 .scaledToFit()
                 .frame(height: height * 3 / 5)

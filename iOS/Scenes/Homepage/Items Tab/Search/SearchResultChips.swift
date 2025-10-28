@@ -62,7 +62,7 @@ struct SearchResultChips: View {
 }
 
 private struct ItemCountChip: View {
-    let icon: UIImage?
+    let icon: Image?
     let title: String
     let count: Int
     let isSelected: Bool
@@ -72,7 +72,7 @@ private struct ItemCountChip: View {
         Button(action: action) {
             HStack(alignment: .center, spacing: 6) {
                 if let icon {
-                    Image(uiImage: icon)
+                    icon
                         .resizable()
                         .scaledToFit()
                         .foregroundStyle(isSelected ? PassColor.textInvert : PassColor.interactionNormMajor2)

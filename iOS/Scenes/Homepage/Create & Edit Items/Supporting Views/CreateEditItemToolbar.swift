@@ -102,7 +102,7 @@ private extension CreateEditItemToolbar {
 
     func vaultButton(vaultContent: VaultContent) -> some View {
         HStack {
-            Image(uiImage: vaultContent.vaultBigIcon)
+            vaultContent.vaultBigIcon
                 .resizable()
                 .scaledToFit()
                 .frame(width: 18)

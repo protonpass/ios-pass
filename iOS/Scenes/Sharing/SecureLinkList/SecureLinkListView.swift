@@ -87,7 +87,7 @@ private extension SecureLinkListView {
         if viewModel.secureLinks.isEmpty {
             VStack {
                 Spacer()
-                Image(uiImage: PassIcon.securityEmptyState)
+                PassIcon.securityEmptyState
                     .resizable()
                     .scaledToFit()
                     .frame(width: 195)

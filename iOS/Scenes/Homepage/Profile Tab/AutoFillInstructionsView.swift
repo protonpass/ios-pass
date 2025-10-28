@@ -37,7 +37,7 @@ struct AutoFillInstructionsView: View {
 private extension AutoFillInstructionsView {
     var realBody: some View {
         VStack(alignment: .leading) {
-            Image(uiImage: PassIcon.autoFillOnWebPreview)
+            PassIcon.autoFillOnWebPreview
                 .resizable()
                 .scaledToFit()
                 .frame(maxWidth: .infinity, alignment: .center)
@@ -77,7 +77,7 @@ private extension AutoFillInstructionsView {
         }
     }
 
-    func step(number: Int, title: String, images: [UIImage]? = nil) -> some View {
+    func step(number: Int, title: String, images: [Image]? = nil) -> some View {
         Label(title: {
             VStack(alignment: .leading) {
                 Text(title)
@@ -86,7 +86,7 @@ private extension AutoFillInstructionsView {
                 if let images {
                     ForEach(0..<images.count, id: \.self) { index in
                         if let image = images[safeIndex: index] {
-                            Image(uiImage: image)
+                            image
                                 .resizable()
                                 .scaledToFit()
                         }

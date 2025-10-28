@@ -93,7 +93,7 @@ struct ItemDetailHistorySection: View {
 private extension ItemDetailHistorySection {
     func infoRow(title: LocalizedStringKey, infos: String, icon: UIImage) -> some View {
         HStack(spacing: DesignConstant.sectionPadding) {
-            ItemDetailSectionIcon(icon: icon,
+            ItemDetailSectionIcon(icon: icon.toImage,
                                   color: PassColor.textWeak)
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {

@@ -27,7 +27,7 @@ struct AliasContactsEmptyView: View {
 
     var body: some View {
         VStack(spacing: 25) {
-            Image(uiImage: PassIcon.stamp)
+            PassIcon.stamp
 
             VStack(spacing: DesignConstant.sectionPadding) {
                 Text("Alias contacts")

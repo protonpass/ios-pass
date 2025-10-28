@@ -23,7 +23,6 @@ import Entities
 import FactoryKit
 import ProtonCoreLogin
 import SwiftUI
-import UIKit
 
 typealias CreateEditItemDelegates =
     CreateEditLoginViewModelDelegate &

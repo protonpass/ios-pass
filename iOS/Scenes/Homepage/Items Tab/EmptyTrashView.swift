@@ -27,7 +27,7 @@ struct EmptyTrashView: View {
         VStack {
             VStack {
                 Spacer()
-                Image(uiImage: PassIcon.trash)
+                PassIcon.trash
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: 160)

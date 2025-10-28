@@ -59,7 +59,7 @@ private extension SecurityWeaknessDetailView {
 
                 if data.isEmpty {
                     Spacer()
-                    Image(uiImage: PassIcon.securityEmptyState)
+                    PassIcon.securityEmptyState
                         .resizable()
                         .scaledToFit()
                         .frame(width: 195)

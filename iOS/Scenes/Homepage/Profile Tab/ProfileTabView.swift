@@ -375,7 +375,7 @@ struct ProfileTabView: View {
                       },
                       trailing: {
                           if let isFreeUser, isFreeUser {
-                              Image(uiImage: PassIcon.passSubscriptionBadge)
+                              PassIcon.passSubscriptionBadge
                                   .resizable()
                                   .scaledToFit()
                                   .frame(height: 24)
@@ -533,7 +533,7 @@ struct SentinelSheetView: View {
             if isIpad {
                 Spacer()
             }
-            Image(uiImage: PassIcon.netShield)
+            PassIcon.netShield
                 .resizable()
                 .scaledToFit()
             if isIpad {

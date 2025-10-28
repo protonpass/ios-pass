@@ -56,7 +56,7 @@ struct SelectPasskeyView: View {
 private extension SelectPasskeyView {
     func row(for passkey: Passkey) -> some View {
         HStack(spacing: DesignConstant.sectionPadding) {
-            Image(uiImage: PassIcon.passkey)
+            PassIcon.passkey
                 .resizable()
                 .scaledToFit()
                 .frame(width: 20)

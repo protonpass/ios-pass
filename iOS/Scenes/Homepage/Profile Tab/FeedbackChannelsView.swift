@@ -48,7 +48,7 @@ struct FeedbackChannelsView: View {
                                       Label(title: {
                                           Text(channel.description)
                                       }, icon: {
-                                          Image(uiImage: channel.icon)
+                                          channel.icon
                                               .resizable()
                                               .scaledToFit()
                                               .frame(maxWidth: 20, maxHeight: 20)
@@ -75,10 +75,10 @@ struct FeedbackChannelsView: View {
 }
 
 extension FeedbackChannel {
-    var icon: UIImage {
+    var icon: Image {
         switch self {
         case .bugReport:
-            IconProvider.bug
+            IconProvider.bug.toImage
         case .reddit:
             PassIcon.brandReddit
         case .uservoice:

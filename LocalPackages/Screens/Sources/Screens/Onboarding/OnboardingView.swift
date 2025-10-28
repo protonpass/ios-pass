@@ -110,7 +110,7 @@ private extension OnboardingView {
             if case .payment = step {
                 GeometryReader { proxy in
                     let imageWidth = proxy.size.width
-                    Image(uiImage: PassIcon.passIcon)
+                    PassIcon.passIcon
                         .resizable()
                         .scaledToFit()
                         .frame(width: imageWidth)
@@ -226,14 +226,14 @@ private extension OnboardingView {
         }
     }
 
-    func descriptiveIllustration(illustration: UIImage,
+    func descriptiveIllustration(illustration: Image,
                                  illustrationMaxHeight: CGFloat,
                                  title: LocalizedStringKey,
                                  description: LocalizedStringKey) -> some View {
         VStack(alignment: .center, spacing: DesignConstant.sectionPadding) {
             Spacer()
 
-            Image(uiImage: illustration)
+            illustration
                 .resizable()
                 .scaledToFit()
                 .frame(maxHeight: illustrationMaxHeight)

@@ -109,7 +109,7 @@ private enum ContactCreationSteps: Hashable {
                         }.foregroundStyle(PassColor.textInvert)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    Image(uiImage: PassIcon.halfButtons)
+                    PassIcon.halfButtons
                         .padding(.top, 16)
                 }
                 .padding(.leading, 18)
@@ -137,7 +137,7 @@ struct AliasExplanationView: View {
         ScrollView {
             VStack {
                 ZStack(alignment: .topTrailing) {
-                    Image(uiImage: PassIcon.envelope)
+                    PassIcon.envelope
                         .resizable()
                         .scaledToFill()
                         .frame(maxWidth: .infinity)
