@@ -740,11 +740,11 @@ extension BaseCreateEditItemViewModel {
 // MARK: - FileAttachmentsEditHandler
 
 extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
-    var fileAttachmentsSectionPrimaryColor: UIColor {
+    var fileAttachmentsSectionPrimaryColor: Color {
         itemContentType.normMajor2Color
     }
 
-    var fileAttachmentsSectionSecondaryColor: UIColor {
+    var fileAttachmentsSectionSecondaryColor: Color {
         itemContentType.normMinor1Color
     }
 

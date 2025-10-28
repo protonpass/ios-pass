@@ -38,7 +38,7 @@ struct AdvancedOptionsSection: View {
                     .scaledToFit()
                     .frame(width: 16)
             })
-            .foregroundStyle(PassColor.textWeak.toColor)
+            .foregroundStyle(PassColor.textWeak)
             .frame(maxWidth: .infinity, alignment: .trailing)
         })
     }

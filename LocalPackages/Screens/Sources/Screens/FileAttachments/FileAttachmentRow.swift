@@ -29,8 +29,8 @@ struct FileAttachmentRow: View {
 
     private let mode: Mode
     private let uiModel: FileAttachmentUiModel
-    private let primaryTintColor: UIColor
-    private let secondaryTintColor: UIColor
+    private let primaryTintColor: Color
+    private let secondaryTintColor: Color
 
     enum Mode: Sendable {
         case view(onOpen: @MainActor () -> Void,
@@ -44,8 +44,8 @@ struct FileAttachmentRow: View {
 
     init(mode: Mode,
          uiModel: FileAttachmentUiModel,
-         primaryTintColor: UIColor,
-         secondaryTintColor: UIColor) {
+         primaryTintColor: Color,
+         secondaryTintColor: Color) {
         self.mode = mode
         _name = .init(initialValue: uiModel.name)
         self.uiModel = uiModel
@@ -77,16 +77,16 @@ private extension FileAttachmentRow {
                 Text(uiModel.name)
                     .lineLimit(2)
                     .truncationMode(.middle)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                 if uiModel.state.isError {
                     HStack(spacing: 4) {
                         Text("Upload failed", bundle: .module)
-                            .foregroundStyle(ColorProvider.NotificationError.toColor)
+                            .foregroundStyle(ColorProvider.NotificationError)
                         if case let .edit(_, _, _, onRetryUpload) = mode {
                             Text(verbatim: "•")
-                                .foregroundStyle(PassColor.textWeak.toColor)
+                                .foregroundStyle(PassColor.textWeak)
                             Text("Retry", bundle: .module)
-                                .foregroundStyle(primaryTintColor.toColor)
+                                .foregroundStyle(primaryTintColor)
                                 .buttonEmbeded(action: onRetryUpload)
                         }
                     }
@@ -94,7 +94,7 @@ private extension FileAttachmentRow {
                 } else if let formattedSize = uiModel.formattedSize {
                     Text(verbatim: formattedSize)
                         .font(.callout)
-                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .foregroundStyle(PassColor.textWeak)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)

@@ -25,7 +25,7 @@ import SwiftUI
 
 public struct InAppBannerView: View {
     private let notification: InAppNotification
-    private let borderColor: UIColor = PassColor.inputBorderNorm
+    private let borderColor: Color = PassColor.inputBorderNorm
     private let onAppear: () -> Void
     private let onDisappear: () -> Void
     private let onTap: () -> Void
@@ -60,11 +60,11 @@ public struct InAppBannerView: View {
 
                 VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                     Text(verbatim: notification.content.title)
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm)
                         .fontWeight(.medium)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     Text(verbatim: notification.content.message)
-                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .foregroundStyle(PassColor.textWeak)
                         .minimumScaleFactor(0.8)
                         .lineLimit(3)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -78,10 +78,10 @@ public struct InAppBannerView: View {
                 }
             }
             .padding(12)
-            .background(PassColor.backgroundWeak.toColor)
+            .background(PassColor.backgroundWeak)
             .clipShape(RoundedRectangle(cornerRadius: 8))
             .overlay(RoundedRectangle(cornerRadius: 8)
-                .stroke(borderColor.toColor, lineWidth: 1))
+                .stroke(borderColor, lineWidth: 1))
             .contentShape(.rect)
             .onTapGesture {
                 if notification.content.cta != nil {
@@ -97,9 +97,9 @@ public struct InAppBannerView: View {
                          type: .custom(buttonSize: 25, iconSize: 16),
                          action: onClose)
                 .overlay(Circle()
-                    .stroke(borderColor.toColor, lineWidth: 2))
+                    .stroke(borderColor, lineWidth: 2))
                 .padding(4)
-                .background(PassColor.backgroundNorm.toColor)
+                .background(PassColor.backgroundNorm)
                 .clipShape(.circle)
                 .offset(x: 13, y: -13)
         }

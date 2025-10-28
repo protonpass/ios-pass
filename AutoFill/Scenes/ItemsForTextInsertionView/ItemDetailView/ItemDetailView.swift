@@ -35,7 +35,7 @@ struct ItemDetailView: View {
                 if case .note = item.content.type {
                     Text(item.content.title)
                         .font(.title.bold())
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm)
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                         .padding(.bottom, DesignConstant.sectionPadding)
                 } else {
@@ -88,7 +88,7 @@ struct ItemDetailView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .scrollViewEmbeded()
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
         .navigationStackEmbeded()
     }
 }

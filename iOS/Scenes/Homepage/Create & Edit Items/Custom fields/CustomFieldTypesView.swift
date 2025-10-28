@@ -30,7 +30,7 @@ struct CustomFieldTypesView: View {
 
     var body: some View {
         ZStack {
-            PassColor.backgroundWeak.toColor
+            PassColor.backgroundWeak
                 .ignoresSafeArea()
             VStack(spacing: 0) {
                 ForEach(supportedTypes, id: \.self) { type in
@@ -42,7 +42,7 @@ struct CustomFieldTypesView: View {
             }
         }
         .padding()
-        .background(PassColor.backgroundWeak.toColor, ignoresSafeAreaEdges: .all)
+        .background(PassColor.backgroundWeak, ignoresSafeAreaEdges: .all)
     }
 
     private func row(for type: CustomFieldType) -> some View {
@@ -53,11 +53,11 @@ struct CustomFieldTypesView: View {
                 Image(uiImage: type.icon)
                     .resizable()
                     .scaledToFit()
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
                     .frame(maxWidth: 20)
 
                 Text(type.title)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .multilineTextAlignment(.leading)
 
                 Spacer()

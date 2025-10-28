@@ -28,7 +28,7 @@ struct AliasDetailView: View {
     @StateObject private var viewModel: AliasDetailViewModel
     @State private var animate = false
 
-    var tintColor: UIColor {
+    var tintColor: Color {
         viewModel.type.normColor
     }
 

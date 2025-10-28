@@ -53,7 +53,7 @@ public struct CustomSectionHeader: View {
                           .scaledToFit()
                           .frame(width: 12)
                   })
-                  .foregroundStyle(PassColor.textWeak.toColor)
+                  .foregroundStyle(PassColor.textWeak)
                   .frame(maxWidth: .infinity, alignment: .leading)
                   .padding(.top, DesignConstant.sectionPadding)
                   .buttonEmbeded(action: onToggle)
@@ -71,7 +71,7 @@ public struct CustomSectionHeader: View {
                         .buttonEmbeded(action: onRemove)
                 }, label: {
                     IconProvider.threeDotsVertical
-                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .foregroundStyle(PassColor.textWeak)
                         .padding(.top, DesignConstant.sectionPadding)
                 })
             }

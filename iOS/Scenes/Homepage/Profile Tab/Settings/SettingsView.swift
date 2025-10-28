@@ -53,7 +53,7 @@ private extension SettingsView {
         .navigationBarBackButtonHidden()
         .navigationBarHidden(false)
         .navigationBarTitleDisplayMode(.large)
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
         .toolbar { toolbarContent }
         .animation(.default, value: viewModel.spotlightEnabled)
         .animation(.default, value: viewModel.spotlightSearchableVaults)
@@ -80,7 +80,7 @@ private extension SettingsView {
                           height: .tall,
                           content: {
                               Text(viewModel.selectedBrowser.description)
-                                  .foregroundStyle(PassColor.textNorm.toColor)
+                                  .foregroundStyle(PassColor.textNorm)
                           },
                           trailing: { ChevronRight() })
 
@@ -99,7 +99,7 @@ private extension SettingsView {
                                   .scaledToFit()
                                   .frame(width: 14, height: 14)
                           })
-                          .foregroundStyle(PassColor.textNorm.toColor)
+                          .foregroundStyle(PassColor.textNorm)
                       },
                       trailing: { ChevronRight() })
 
@@ -136,7 +136,7 @@ private extension SettingsView {
                           height: .tall,
                           content: {
                               Text(viewModel.selectedClipboardExpiration.description)
-                                  .foregroundStyle(PassColor.textNorm.toColor)
+                                  .foregroundStyle(PassColor.textNorm)
                           },
                           trailing: { ChevronRight() })
 
@@ -179,7 +179,7 @@ private extension SettingsView {
                                           .sectionTitleText()
 
                                       Text(viewModel.spotlightSearchableContent.title)
-                                          .foregroundStyle(PassColor.textNorm.toColor)
+                                          .foregroundStyle(PassColor.textNorm)
                                   }
                               },
                               trailing: { ChevronRight() })
@@ -194,7 +194,7 @@ private extension SettingsView {
                                           .sectionTitleText()
 
                                       Text(viewModel.spotlightSearchableVaults.title)
-                                          .foregroundStyle(PassColor.textNorm.toColor)
+                                          .foregroundStyle(PassColor.textNorm)
                                   }
                               },
                               trailing: { ChevronRight() })
@@ -243,11 +243,11 @@ private extension SettingsView {
         if let vaults = viewModel.spotlightVaults {
             if vaults.isEmpty {
                 Text("No vaults")
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
                     .frame(maxWidth: .infinity, alignment: .leading)
             } else {
                 Text(verbatim: vaults.compactMap(\.vaultContent?.name).joined(separator: ", "))
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .lineLimit(1)
             }
@@ -288,7 +288,7 @@ private extension SettingsView {
                       height: .medium,
                       content: {
                           Text("Clear all logs")
-                              .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                              .foregroundStyle(PassColor.interactionNormMajor2)
                       },
                       trailing: {
                           CircleButton(icon: IconProvider.trash,
@@ -313,7 +313,7 @@ private extension SettingsView {
                       height: .medium,
                       content: {
                           Text("Force synchronization")
-                              .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                              .foregroundStyle(PassColor.interactionNormMajor2)
                       },
                       trailing: {
                           CircleButton(icon: IconProvider.arrowRotateRight,
@@ -331,7 +331,7 @@ private extension SettingsView {
                       height: .medium,
                       content: {
                           Text("Clear downloaded files")
-                              .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                              .foregroundStyle(PassColor.interactionNormMajor2)
                       },
                       trailing: {
                           CircleButton(icon: IconProvider.trash,

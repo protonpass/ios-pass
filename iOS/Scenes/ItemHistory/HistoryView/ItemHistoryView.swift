@@ -60,7 +60,7 @@ struct ItemHistoryView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .toolbar { toolbarContent }
         .scrollViewEmbeded(maxWidth: .infinity)
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
         .showSpinner(viewModel.loading)
         .routingProvided
         .navigationStackEmbeded($path)
@@ -88,10 +88,10 @@ private extension ItemHistoryView {
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Last autofill")
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                 Text(lastUsed)
                     .font(.footnote)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
             }
             .contentShape(.rect)
         }
@@ -99,7 +99,7 @@ private extension ItemHistoryView {
         .frame(maxWidth: .infinity, alignment: .leading)
 
         Text("Changelog")
-            .foregroundStyle(PassColor.textNorm.toColor)
+            .foregroundStyle(PassColor.textNorm)
             .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
@@ -129,7 +129,7 @@ private extension ItemHistoryView {
                 verticalLine
 
                 Circle()
-                    .background(Circle().foregroundStyle(PassColor.textWeak.toColor))
+                    .background(Circle().foregroundStyle(PassColor.textWeak))
                     .frame(width: ElementSizes.circleSize, height: ElementSizes.circleSize)
 
                 Spacer(minLength: ElementSizes.minSpacerSize)
@@ -145,7 +145,7 @@ private extension ItemHistoryView {
                 Spacer(minLength: ElementSizes.minSpacerSize)
 
                 Circle()
-                    .strokeBorder(PassColor.textWeak.toColor, lineWidth: 1)
+                    .strokeBorder(PassColor.textWeak, lineWidth: 1)
                     .frame(width: ElementSizes.circleSize, height: ElementSizes.circleSize)
 
                 if viewModel.history.count > 1 {
@@ -167,7 +167,7 @@ private extension ItemHistoryView {
                 verticalLine
 
                 Circle()
-                    .background(Circle().foregroundStyle(PassColor.textWeak.toColor))
+                    .background(Circle().foregroundStyle(PassColor.textWeak))
                     .frame(width: ElementSizes.circleSize, height: ElementSizes.circleSize)
 
                 verticalLine
@@ -201,11 +201,11 @@ private extension ItemHistoryView {
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(title)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                 if let infos {
                     Text(infos)
                         .font(.footnote)
-                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .foregroundStyle(PassColor.textWeak)
                 }
             }
             .frame(maxWidth: .infinity, minHeight: ElementSizes.cellHeight, alignment: .leading)
@@ -255,6 +255,6 @@ private extension ItemHistoryView {
         Rectangle()
             .foregroundStyle(.clear)
             .frame(maxWidth: ElementSizes.line, maxHeight: .infinity)
-            .background(PassColor.textWeak.toColor)
+            .background(PassColor.textWeak)
     }
 }

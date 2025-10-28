@@ -26,7 +26,7 @@ import Entities
 import FactoryKit
 import Macro
 import Screens
-import UIKit
+import SwiftUI
 
 @MainActor
 protocol ItemDetailViewModelDelegate: AnyObject {
@@ -400,11 +400,11 @@ private extension BaseItemDetailViewModel {
 }
 
 extension BaseItemDetailViewModel: FileAttachmentsViewHandler {
-    var fileAttachmentsSectionPrimaryColor: UIColor {
+    var fileAttachmentsSectionPrimaryColor: Color {
         itemContent.type.normMajor2Color
     }
 
-    var fileAttachmentsSectionSecondaryColor: UIColor {
+    var fileAttachmentsSectionSecondaryColor: Color {
         itemContent.type.normMinor1Color
     }
 

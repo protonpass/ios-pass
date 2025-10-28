@@ -27,7 +27,7 @@ struct EmptySearchView: View {
             Image(uiImage: PassIcon.magnifyingGlass)
             Text("Search across all items")
                 .fontWeight(.semibold)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
             Spacer()
         }
         .padding()

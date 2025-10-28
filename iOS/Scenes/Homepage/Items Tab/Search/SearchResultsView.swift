@@ -109,7 +109,7 @@ struct SearchResultsView: View {
             } header: {
                 Text(headerTitle)
                     .font(.callout)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
             }
         }
     }
@@ -169,7 +169,7 @@ struct SearchResultsView: View {
         Text(label + " " + "(\(count))")
             .fontWeight(.semibold)
             .multilineTextAlignment(.center)
-            .foregroundStyle(PassColor.textNorm.toColor)
+            .foregroundStyle(PassColor.textNorm)
             .padding(.horizontal, 24)
             .padding(.top, 12)
             .padding(.bottom, 18)
@@ -185,12 +185,12 @@ private extension SearchResultsView {
         // Apply bold to the dynamic part of the string
         if let range = attributedString.range(of: String(viewModel.results.numberOfItems)) {
             attributedString[range].font = .callout.bold()
-            attributedString[range].foregroundColor = PassColor.textNorm.toColor
+            attributedString[range].foregroundColor = PassColor.textNorm
         }
         return HStack {
             Text(attributedString)
                 .font(.callout)
-                .foregroundStyle(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak)
 
             Spacer()
 

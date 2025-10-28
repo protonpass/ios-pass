@@ -34,17 +34,17 @@ public struct RoundedCircleCheckbox: View {
     public var body: some View {
         ZStack {
             if isChecked {
-                PassColor.interactionNormMajor1.toColor
+                PassColor.interactionNormMajor1
                     .clipShape(RoundedRectangle(cornerRadius: width / 4))
                 Image(uiImage: IconProvider.checkmark)
                     .resizable()
                     .scaledToFit()
                     .frame(width: width * 3 / 4)
-                    .foregroundStyle(PassColor.textInvert.toColor)
+                    .foregroundStyle(PassColor.textInvert)
             } else {
                 Color.clear
                     .overlay(RoundedRectangle(cornerRadius: width / 4)
-                        .stroke(PassColor.inputBorderNorm.toColor, lineWidth: width / 12))
+                        .stroke(PassColor.inputBorderNorm, lineWidth: width / 12))
             }
         }
         .animation(.default, value: isChecked)

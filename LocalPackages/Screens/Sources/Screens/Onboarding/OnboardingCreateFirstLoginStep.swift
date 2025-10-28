@@ -58,7 +58,7 @@ struct OnboardingCreateFirstLoginStep: View {
             }
         }
         .animation(.default, value: viewModel.selectedService)
-        .tint(PassColor.interactionNorm.toColor)
+        .tint(PassColor.interactionNorm)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.bottom, DesignConstant.onboardingPadding)
         .onChange(of: viewModel.selectedService) { _ in
@@ -93,25 +93,25 @@ private struct ServiceSelectionView: View {
             Text("Create your first login", bundle: .module)
                 .font(.title)
                 .fontWeight(.bold)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .multilineTextAlignment(.center)
 
             Text("Which service do you want to create the login for?", bundle: .module)
                 .font(.headline)
-                .foregroundStyle(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .multilineTextAlignment(.center)
                 .padding(.vertical, DesignConstant.onboardingPadding)
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Service", bundle: .module)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
 
                 TextField("E.g. LinkedIn", text: $serviceName)
                     .autocorrectionDisabled()
                     .focused(focused)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(DesignConstant.sectionPadding)
@@ -140,7 +140,7 @@ private struct ServiceSelectionView: View {
     private func row(for service: KnownService) -> some View {
         Label(title: {
             name(for: service)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
         }, icon: {
             KnownServiceThumbnail(service: service)
         })
@@ -235,7 +235,7 @@ private extension CreateFirstLoginView {
                 TextField("Untitled", text: $title)
                     .font(.title)
                     .fontWeight(.bold)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -280,7 +280,7 @@ private extension CreateFirstLoginView {
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .focused($focusedField, equals: .email)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .keyboardType(.emailAddress)
                     .submitLabel(.next)
                     .onSubmit {
@@ -311,7 +311,7 @@ private extension CreateFirstLoginView {
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .focused($focusedField, equals: .username)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .keyboardType(.emailAddress)
                     .submitLabel(.next)
                     .onSubmit {
@@ -343,7 +343,7 @@ private extension CreateFirstLoginView {
                     .keyboardType(.asciiCapable)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .submitLabel(.next)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -369,7 +369,7 @@ private extension CreateFirstLoginView {
                 .autocorrectionDisabled()
                 .keyboardType(.URL)
                 .textInputAutocapitalization(.never)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 

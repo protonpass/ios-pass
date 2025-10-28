@@ -26,7 +26,7 @@ import SwiftUI
 
 struct PasskeyDetailRow: View {
     let passkey: Passkey
-    var borderColor: UIColor = PassColor.inputBorderNorm
+    var borderColor: Color = PassColor.inputBorderNorm
     var onTapUsername: ((String) -> Void)?
     let onTap: () -> Void
 

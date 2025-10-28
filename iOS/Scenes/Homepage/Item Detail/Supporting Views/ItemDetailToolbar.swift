@@ -56,8 +56,8 @@ struct ItemDetailToolbar: ToolbarContent {
                     }
 
                     if viewModel.canShareItem {
-                        ShareCounterButton(iconColor: itemContentType.normMajor2Color.toColor,
-                                           backgroundColor: itemContentType.normMinor1Color.toColor,
+                        ShareCounterButton(iconColor: itemContentType.normMajor2Color,
+                                           backgroundColor: itemContentType.normMinor1Color,
                                            numberOfSharedMembers: viewModel.numberOfSharedMembers,
                                            action: {
                                                viewModel.share()

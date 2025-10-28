@@ -41,12 +41,12 @@ struct PinnedItemsView: View {
                                                   alternativeBackground: true)
                             Text(item.title)
                                 .lineLimit(1)
-                                .foregroundStyle(PassColor.textNorm.toColor)
+                                .foregroundStyle(PassColor.textNorm)
                                 .padding(.trailing, 8)
                         }
                         .padding(8)
                         .frame(maxWidth: 165, alignment: .leading)
-                        .background(item.type.normMinor1Color.toColor)
+                        .background(item.type.normMinor1Color)
                         .cornerRadius(16)
                     }
                 }
@@ -57,7 +57,7 @@ struct PinnedItemsView: View {
                     } label: {
                         Text("See all")
                             .font(.callout.weight(.medium))
-                            .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                            .foregroundStyle(PassColor.interactionNormMajor2)
                             .padding(.trailing, 8)
                     }
                 }

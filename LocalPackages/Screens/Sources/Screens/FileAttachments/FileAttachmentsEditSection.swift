@@ -26,8 +26,8 @@ import SwiftUI
 
 @MainActor
 public protocol FileAttachmentsEditHandler: AnyObject {
-    var fileAttachmentsSectionPrimaryColor: UIColor { get }
-    var fileAttachmentsSectionSecondaryColor: UIColor { get }
+    var fileAttachmentsSectionPrimaryColor: Color { get }
+    var fileAttachmentsSectionSecondaryColor: Color { get }
     var isFreeUser: Bool { get }
 
     func generateDatedFileName(prefix: String, extension: String) -> String
@@ -81,7 +81,7 @@ public struct FileAttachmentsEditSection: View {
 
                 VStack(alignment: .leading) {
                     Text("Attachments")
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm)
 
                     if let fetchError {
                         RetryableErrorView(mode: .defaultHorizontal,
@@ -93,10 +93,10 @@ public struct FileAttachmentsEditSection: View {
                     if !files.isEmpty {
                         Text("\(files.count) files")
                             .font(.callout)
-                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .foregroundStyle(PassColor.textWeak)
                     } else if !isUploading, fetchError == nil {
                         Text("Upload files from your device", bundle: .module)
-                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .foregroundStyle(PassColor.textWeak)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .if(isFetching) { view in
                                 view.redacted(reason: .placeholder)
@@ -149,7 +149,7 @@ public struct FileAttachmentsEditSection: View {
         .animation(.default, value: fetchError.debugDescription)
         .animation(.default, value: isUploading)
         .padding(DesignConstant.sectionPadding)
-        .tint(handler.fileAttachmentsSectionPrimaryColor.toColor)
+        .tint(handler.fileAttachmentsSectionPrimaryColor)
         .roundedEditableSection()
         .alert(Text("Delete all attachments?", bundle: .module),
                isPresented: $showDeleteAllAlert,

@@ -101,7 +101,7 @@ private extension IdentityDetailView {
             .roundedDetailSection()
         } header: {
             Text(section.title)
-                .foregroundStyle(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical, DesignConstant.sectionPadding)
         }

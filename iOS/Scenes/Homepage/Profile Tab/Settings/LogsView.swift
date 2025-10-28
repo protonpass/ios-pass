@@ -31,7 +31,7 @@ struct LogsView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                PassColor.backgroundNorm.toColor
+                PassColor.backgroundNorm
                     .ignoresSafeArea()
 
                 if viewModel.isLoading {
@@ -59,7 +59,7 @@ struct LogsView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .background(PassColor.backgroundNorm.toColor)
+            .background(PassColor.backgroundNorm)
         }
     }
 
@@ -144,7 +144,7 @@ private extension LogsView {
         })
         .animationsDisabled()
         .buttonStyle(.plain)
-        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+        .foregroundStyle(PassColor.interactionNormMajor2)
     }
 
     var noFilteredLogsMessage: some View {

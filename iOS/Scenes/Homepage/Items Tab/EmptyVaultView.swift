@@ -46,7 +46,7 @@ struct EmptyVaultView: View {
             VStack {
                 Spacer()
                 Text("No items found")
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                 Spacer()
             }
         }
@@ -60,11 +60,11 @@ private extension EmptyVaultView {
                 Text("Your vault is empty")
                     .font(.title2)
                     .fontWeight(.bold)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .padding(.bottom, 8)
 
                 Text("Let's get started by creating your first item")
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
                     .multilineTextAlignment(.center)
                     .padding(.bottom, 32)
 
@@ -101,14 +101,14 @@ private struct CreateItemButton: View {
     let action: () -> Void
 
     var body: some View {
-        let foregroundColor: UIColor = switch type {
+        let foregroundColor: Color = switch type {
         case .custom:
             PassColor.textNorm
         default:
             type.normColor
         }
 
-        let backgroundColor: UIColor = switch type {
+        let backgroundColor: Color = switch type {
         case .custom:
             PassColor.customItemBackground
         default:
@@ -132,8 +132,8 @@ private struct CreateItemButton: View {
             .frame(height: 122)
             .frame(maxWidth: .infinity, alignment: .top)
             .padding(.horizontal)
-            .foregroundStyle(foregroundColor.toColor)
-            .background(backgroundColor.toColor)
+            .foregroundStyle(foregroundColor)
+            .background(backgroundColor)
             .clipShape(RoundedRectangle(cornerRadius: 32))
         }
     }

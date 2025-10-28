@@ -59,7 +59,7 @@ struct LocalAuthenticationView: View {
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            PassColor.backgroundNorm.toColor
+            PassColor.backgroundNorm
                 .ignoresSafeArea()
 
             switch viewModel.mode {
@@ -102,7 +102,7 @@ private extension LocalAuthenticationView {
     var logOutButton: some View {
         Button { viewModel.logOut() } label: {
             Image(uiImage: IconProvider.arrowOutFromRectangle)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
                 .padding()
         }
     }

@@ -63,7 +63,7 @@ private extension AutoFillInstructionsView {
         .padding(64)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         .toolbar { toolbarContent }
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
     }
 
     @ToolbarContentBuilder
@@ -81,7 +81,7 @@ private extension AutoFillInstructionsView {
         Label(title: {
             VStack(alignment: .leading) {
                 Text(title)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .fontWeight(.bold)
                 if let images {
                     ForEach(0..<images.count, id: \.self) { index in
@@ -97,7 +97,7 @@ private extension AutoFillInstructionsView {
             Text(verbatim: "\(number)")
                 .fontWeight(.medium)
                 .padding(10)
-                .background(PassColor.interactionNorm.toColor)
+                .background(PassColor.interactionNorm)
                 .clipShape(Circle())
         })
     }

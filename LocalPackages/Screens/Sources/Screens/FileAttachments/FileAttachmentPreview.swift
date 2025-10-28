@@ -28,12 +28,12 @@ import WebKit
 public struct FileAttachmentPreview: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: FileAttachmentPreviewModel
-    let primaryTintColor: UIColor
-    let secondaryTintColor: UIColor
+    let primaryTintColor: Color
+    let secondaryTintColor: Color
 
     public init(mode: FileAttachmentPreviewMode,
-                primaryTintColor: UIColor,
-                secondaryTintColor: UIColor) {
+                primaryTintColor: Color,
+                secondaryTintColor: Color) {
         _viewModel = .init(wrappedValue: .init(mode: mode))
         self.primaryTintColor = primaryTintColor
         self.secondaryTintColor = secondaryTintColor
@@ -41,7 +41,7 @@ public struct FileAttachmentPreview: View {
 
     public var body: some View {
         ZStack {
-            PassColor.backgroundNorm.toColor
+            PassColor.backgroundNorm
                 .ignoresSafeArea()
 
             switch viewModel.url {
@@ -51,7 +51,7 @@ public struct FileAttachmentPreview: View {
                                  Label(title: {
                                      if let fileName = viewModel.fileName {
                                          Text(verbatim: fileName)
-                                             .foregroundStyle(PassColor.textNorm.toColor)
+                                             .foregroundStyle(PassColor.textNorm)
                                      }
                                  }, icon: {
                                      ProgressView()
@@ -61,10 +61,10 @@ public struct FileAttachmentPreview: View {
                              currentValueLabel: {
                                  if let detail = viewModel.progressDetail {
                                      Text(verbatim: detail)
-                                         .foregroundStyle(PassColor.textWeak.toColor)
+                                         .foregroundStyle(PassColor.textWeak)
                                  }
                              })
-                             .tint(primaryTintColor.toColor)
+                             .tint(primaryTintColor)
                              .padding()
 
             case let .fetched(url):
@@ -85,7 +85,7 @@ public struct FileAttachmentPreview: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .tint(primaryTintColor.toColor)
+        .tint(primaryTintColor)
         .toolbar { toolbarContent }
         .navigationBarTitleDisplayMode(.inline)
         .animation(.default, value: viewModel.url)
@@ -125,7 +125,7 @@ private extension FileAttachmentPreview {
             if let fileName = viewModel.fileName {
                 Text(verbatim: fileName)
                     .lineLimit(1)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .fontWeight(.medium)
             }
         }

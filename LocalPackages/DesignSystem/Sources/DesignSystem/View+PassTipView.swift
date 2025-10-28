@@ -26,7 +26,7 @@ public extension View {
     /// `tint` modifier only affects the icon
     /// `accentColor` though deprecated but needed for tinting buttons. Thanks SwiftUI.
     func passTipView() -> some View {
-        tint(PassColor.interactionNormMajor2.toColor)
-            .accentColor(PassColor.interactionNormMajor2.toColor)
+        tint(PassColor.interactionNormMajor2)
+            .accentColor(PassColor.interactionNormMajor2)
     }
 }

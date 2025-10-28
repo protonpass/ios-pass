@@ -35,7 +35,7 @@ struct FullSyncProgressView: View {
         case .fullSync:
             NavigationStack {
                 realBody
-                    .background(PassColor.backgroundNorm.toColor)
+                    .background(PassColor.backgroundNorm)
             }
         case .logIn:
             realBody
@@ -47,7 +47,7 @@ private extension FullSyncProgressView {
     @ViewBuilder
     var realBody: some View {
         ZStack {
-            PassColor.backgroundNorm.toColor
+            PassColor.backgroundNorm
                 .ignoresSafeArea()
 
             if let error = viewModel.error {
@@ -90,20 +90,20 @@ private extension FullSyncProgressView {
             Text("Syncing items...")
                 .font(.title3.bold())
                 .multilineTextAlignment(.center)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
                 .padding(.bottom, 8)
 
             Text("We are downloading and decrypting your items.")
                 .multilineTextAlignment(.center)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
 
             Text("This might take a few minutes.")
                 .multilineTextAlignment(.center)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
 
             Text("Please keep the app open.")
                 .multilineTextAlignment(.center)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
                 .padding(.top, 8)
                 .padding(.bottom, 16)
 
@@ -133,7 +133,7 @@ private extension FullSyncProgressView {
                 Label(title: { Text(verbatim: "") },
                       icon: { Image(systemName: "chevron.down") })
             }
-            .foregroundStyle(PassColor.textWeak.toColor)
+            .foregroundStyle(PassColor.textWeak)
         })
         .buttonStyle(.plain)
         .disabled(viewModel.progresses.isEmpty)

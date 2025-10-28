@@ -41,9 +41,9 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .background(PassColor.backgroundNorm.toColor)
+            .background(PassColor.backgroundNorm)
             .navigationBarTitleDisplayMode(.inline)
-            .tint(viewModel.itemContentType.normMajor1Color.toColor)
+            .tint(viewModel.itemContentType.normMajor1Color)
             .disabled(viewModel.isSaving)
             .animation(.default, value: viewModel.customFields)
             .animation(.default, value: viewModel.customSections)

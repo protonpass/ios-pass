@@ -21,13 +21,13 @@
 import SwiftUI
 
 public struct SkeletonBlock: View {
-    let tintColor: UIColor
+    let tintColor: Color
 
-    public init(tintColor: UIColor = PassColor.interactionNorm) {
+    public init(tintColor: Color = PassColor.interactionNorm) {
         self.tintColor = tintColor
     }
 
     public var body: some View {
-        Color(tintColor.withAlphaComponent(0.2))
+        tintColor.opacity(0.2)
     }
 }

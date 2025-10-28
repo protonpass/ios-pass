@@ -108,7 +108,7 @@ private struct TelemetryEventsView: View {
                 if viewModel.uiModels.isEmpty {
                     Form {
                         Text(verbatim: "No events")
-                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .foregroundStyle(PassColor.textWeak)
                     }
                 } else {
                     eventsList
@@ -144,11 +144,11 @@ private struct EventView: View {
         Label(title: {
             VStack(alignment: .leading) {
                 Text(uiModel.event.type.emoji)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
 
                 Text(uiModel.relativeDate)
                     .font(.footnote)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }, icon: {
@@ -205,7 +205,7 @@ private extension TelemetryEventType {
         }
     }
 
-    var iconColor: UIColor {
+    var iconColor: Color {
         switch self {
         case let .create(type), let .delete(type), let .read(type), let .update(type):
             type.normMajor1Color
@@ -252,7 +252,7 @@ private extension TelemetryEventType {
         }
     }
 
-    var backgroundColor: UIColor {
+    var backgroundColor: Color {
         switch self {
         case let .create(type), let .delete(type), let .read(type), let .update(type):
             type.normMinor1Color
@@ -262,9 +262,9 @@ private extension TelemetryEventType {
              .passkeyAuth,
              .passkeyCreate,
              .passkeyDisplay:
-            PassColor.signalInfo.withAlphaComponent(0.16)
+            PassColor.signalInfo.opacity(0.16)
         case .searchClick, .searchTriggered:
-            PassColor.signalDanger.withAlphaComponent(0.16)
+            PassColor.signalDanger.opacity(0.16)
         case .twoFaCreation, .twoFaUpdate:
             ItemContentType.login.normMinor1Color
         case .monitorAddCustomEmailFromSuggestion,

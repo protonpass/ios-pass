@@ -291,7 +291,7 @@ private extension CreateEditLoginView {
                     .sectionTitleText()
 
                 Text(passkey.userName)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -316,7 +316,7 @@ private extension CreateEditLoginView {
                         .sectionTitleText()
 
                     Text(request.userName)
-                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .foregroundStyle(PassColor.textWeak)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
@@ -380,9 +380,9 @@ private extension CreateEditLoginView {
                 .resizable()
                 .renderingMode(.template)
                 .frame(width: 9, height: 9)
-                .foregroundStyle(PassColor.loginInteractionNormMajor2.toColor)
+                .foregroundStyle(PassColor.loginInteractionNormMajor2)
                 .padding(2)
-                .background(PassColor.loginInteractionNormMinor1.toColor)
+                .background(PassColor.loginInteractionNormMinor1)
                 .clipShape(.circle)
                 .overlay(Circle()
                     .stroke(UIColor.secondarySystemGroupedBackground.toColor, lineWidth: 2))
@@ -402,7 +402,7 @@ private extension CreateEditLoginView {
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .focused($focusedField, equals: .emailOrUsername)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .keyboardType(.emailAddress)
                     .submitLabel(.next)
                     .onSubmit { focusedField = .password }
@@ -433,7 +433,7 @@ private extension CreateEditLoginView {
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .focused($focusedField, equals: .email)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .keyboardType(.emailAddress)
                     .submitLabel(.next)
                     .onSubmit { focusedField = .username }
@@ -460,7 +460,7 @@ private extension CreateEditLoginView {
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .focused($focusedField, equals: .username)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .submitLabel(.next)
                     .onSubmit { focusedField = .password }
             }
@@ -486,7 +486,7 @@ private extension CreateEditLoginView {
                 Text("Email address")
                     .editableSectionTitleText(for: expanded ? viewModel.email : viewModel.emailOrUsername)
                 Text(expanded ? viewModel.email : viewModel.emailOrUsername)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -523,7 +523,7 @@ private extension CreateEditLoginView {
                 Text(viewModel.passwordStrength.sectionTitle(reuseCount: nil))
                     .font(.footnote)
                     .foregroundStyle(viewModel.password.isEmpty ?
-                        PassColor.textNorm.toColor : viewModel.passwordStrength.sectionTitleColor)
+                        PassColor.textNorm : viewModel.passwordStrength.sectionTitleColor)
 
                 SensitiveTextField(text: $viewModel.password,
                                    placeholder: #localized("Add password"),
@@ -534,7 +534,7 @@ private extension CreateEditLoginView {
                     .keyboardType(.asciiCapable)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .submitLabel(.done)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -582,7 +582,7 @@ private extension CreateEditLoginView {
                     .keyboardType(.URL)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
 
                 if !viewModel.totpUriErrorMessage.isEmpty {
                     InvalidInputLabel(viewModel.totpUriErrorMessage)
@@ -627,8 +627,8 @@ private struct WebsiteSection<Field: Hashable>: View {
                             .keyboardType(.URL)
                             .textInputAutocapitalization(.never)
                             .autocorrectionDisabled()
-                            .foregroundStyle((isValid(url) ?
-                                    PassColor.textNorm : PassColor.signalDanger).toColor)
+                            .foregroundStyle(isValid(url) ?
+                                PassColor.textNorm : PassColor.signalDanger)
                             .onSubmit(onSubmit)
 
                             if !url.value.isEmpty {

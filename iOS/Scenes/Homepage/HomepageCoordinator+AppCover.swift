@@ -126,7 +126,7 @@ private struct AppCoverView: View {
 
     var body: some View {
         ZStack {
-            PassColor.newBackgroundStrong.toColor
+            PassColor.newBackgroundStrong
                 .ignoresSafeArea()
             Image(uiImage: PassIcon.coverScreenLogo)
                 .resizable()

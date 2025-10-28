@@ -43,14 +43,14 @@ struct PinAuthenticationView: View {
                 .frame(maxWidth: 160)
 
             Text("Enter your PIN code")
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
                 .font(.title.bold())
 
             Spacer()
 
             SecureField("PIN Code", text: $pinCode)
                 .labelsHidden()
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
                 .font(.title.bold())
                 .focused($isFocused)
                 .multilineTextAlignment(.center)
@@ -64,14 +64,14 @@ struct PinAuthenticationView: View {
 
             case let .remainingAttempts(count):
                 Text("Incorrect PIN code.")
-                    .adaptiveForegroundStyle(PassColor.signalDanger.toColor) +
+                    .adaptiveForegroundStyle(PassColor.signalDanger) +
                     Text(verbatim: " ") +
                     Text("\(count) remaining attempt(s)")
-                    .adaptiveForegroundStyle(PassColor.signalDanger.toColor)
+                    .adaptiveForegroundStyle(PassColor.signalDanger)
 
             case .lastAttempt:
                 Text("This is your last attempt. You will be logged out after failing to authenticate again.")
-                    .foregroundStyle(PassColor.signalDanger.toColor)
+                    .foregroundStyle(PassColor.signalDanger)
                     .multilineTextAlignment(.center)
             }
 
@@ -81,8 +81,7 @@ struct PinAuthenticationView: View {
                                         titleColor: PassColor.textInvert,
                                         disableTitleColor: PassColor.textInvert,
                                         backgroundColor: PassColor.interactionNormMajor1,
-                                        disableBackgroundColor: PassColor.interactionNormMajor1
-                                            .withAlphaComponent(0.3),
+                                        disableBackgroundColor: PassColor.interactionNormMajor1.opacity(0.3),
                                         disabled: pinCode.count < Constants.PINCode.minLength,
                                         height: 60,
                                         action: {
@@ -97,8 +96,8 @@ struct PinAuthenticationView: View {
             view
                 .keyboardAwarePadding()
         }
-        .accentColor(PassColor.interactionNorm.toColor)
-        .tint(PassColor.interactionNorm.toColor)
+        .accentColor(PassColor.interactionNorm)
+        .tint(PassColor.interactionNorm)
         .animation(.default, value: viewModel.state)
         .onAppear {
             let notifyAuthProcessAndFocus: () -> Void = {
