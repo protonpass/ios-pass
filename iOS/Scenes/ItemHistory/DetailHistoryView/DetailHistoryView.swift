@@ -43,8 +43,8 @@ struct DetailHistoryView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(DesignConstant.sectionPadding)
             .navigationBarTitleDisplayMode(.inline)
-            .tint(viewModel.currentRevision.type.normMajor2Color.toColor)
-            .background(PassColor.backgroundNorm.toColor)
+            .tint(viewModel.currentRevision.type.normMajor2Color)
+            .background(PassColor.backgroundNorm)
             .toolbar { toolbarContent }
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("Restore this version?"),
@@ -86,11 +86,11 @@ struct DetailHistoryView: View {
 // MARK: - Utils {
 
 extension DetailHistoryView {
-    func borderColor(for element: KeyPath<ItemContent, some Hashable>) -> UIColor {
+    func borderColor(for element: KeyPath<ItemContent, some Hashable>) -> Color {
         viewModel.isDifferent(for: element) ? PassColor.signalWarning : PassColor.inputBorderNorm
     }
 
-    func textColor(for element: KeyPath<ItemContent, some Hashable>) -> UIColor {
+    func textColor(for element: KeyPath<ItemContent, some Hashable>) -> Color {
         viewModel.isDifferent(for: element) ? PassColor.signalWarning : PassColor.textNorm
     }
 
@@ -118,7 +118,7 @@ extension DetailHistoryView {
                     .fontWeight(.bold)
                     .textSelection(.enabled)
                     .lineLimit(1)
-                    .foregroundStyle(textColor(for: \.name).toColor)
+                    .foregroundStyle(textColor(for: \.name))
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

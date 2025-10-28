@@ -44,11 +44,11 @@ public struct AwaitAccessConfirmationView: View {
             Text("Pending access to the shared data", bundle: .module)
                 .font(.title.bold())
                 .multilineTextAlignment(.center)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
                 .padding(.top, 32)
 
             Text("For security reasons, your access needs to be confirmed", bundle: .module)
-                .foregroundStyle(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak)
                 .multilineTextAlignment(.center)
                 .padding(.top, 2)
 
@@ -63,6 +63,6 @@ public struct AwaitAccessConfirmationView: View {
         }
         .padding(32)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
     }
 }

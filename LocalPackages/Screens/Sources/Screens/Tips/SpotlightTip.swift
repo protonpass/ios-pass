@@ -38,13 +38,13 @@ public struct SpotlightTip: Tip {
 
     public var title: Text {
         Text("Enable Spotlight search", bundle: .module)
-            .foregroundStyle(PassColor.textNorm.toColor)
+            .foregroundStyle(PassColor.textNorm)
     }
 
     public var message: Text? {
         Text("Seamlessly search for items via your home screen. Open Settings → Spotlight to enable.",
              bundle: .module)
-            .foregroundStyle(PassColor.textWeak.toColor)
+            .foregroundStyle(PassColor.textWeak)
     }
 
     public var image: Image? {

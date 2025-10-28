@@ -50,7 +50,7 @@ public struct InviteSuggestionsSection: View {
     public var body: some View {
         LazyVStack {
             Text("Suggestions", bundle: .module)
-                .foregroundStyle(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak)
                 .font(.body.weight(.medium))
                 .frame(maxWidth: .infinity, alignment: .leading)
 

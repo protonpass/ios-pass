@@ -70,7 +70,7 @@ private extension ItemsTabTopBar {
             if searchMode == nil {
                 // Search bar
                 ZStack {
-                    PassColor.backgroundStrong.toColor
+                    PassColor.backgroundStrong
                     HStack {
                         Image(uiImage: IconProvider.magnifier)
                             .resizable()
@@ -80,7 +80,7 @@ private extension ItemsTabTopBar {
                             .lineLimit(1)
                             .minimumScaleFactor(0.75)
                     }
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
                     .padding(.horizontal)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
@@ -110,10 +110,10 @@ private extension ItemsTabTopBar {
                     .padding(.vertical, 6)
                     .frame(height: 44, alignment: .leading)
                     .cornerRadius(10)
-                    .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                    .foregroundStyle(PassColor.interactionNormMajor2)
                     .overlay(RoundedRectangle(cornerRadius: 10)
                         .inset(by: 0.5)
-                        .stroke(PassColor.interactionNormMinor1.toColor, lineWidth: 1))
+                        .stroke(PassColor.interactionNormMinor1, lineWidth: 1))
                     .buttonEmbeded(action: viewModel.upgradeSubscription)
             }
 
@@ -143,13 +143,13 @@ private extension ItemsTabTopBar {
                     viewModel.deselectAllItems()
                 }, label: {
                     Image(systemName: "chevron.left")
-                        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                        .foregroundStyle(PassColor.interactionNormMajor2)
                 })
 
                 if viewModel.selectedItemsCount > 0 {
                     Text(verbatim: "\(viewModel.selectedItemsCount)")
                         .font(.title3.bold())
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm)
                         .monospacedDigit()
                 }
 
@@ -201,10 +201,10 @@ private extension ItemsTabTopBar {
 
     func button(action: @escaping () -> Void,
                 icon: UIImage,
-                color: UIColor = PassColor.textNorm) -> some View {
+                color: Color = PassColor.textNorm) -> some View {
         Button(action: action) {
             Image(uiImage: icon)
-                .foregroundStyle(viewModel.actionsDisabled ? PassColor.textHint.toColor : color.toColor)
+                .foregroundStyle(viewModel.actionsDisabled ? PassColor.textHint : color)
         }
         .disabled(viewModel.actionsDisabled)
         .animation(.default, value: viewModel.actionsDisabled)
@@ -226,8 +226,8 @@ private extension ItemsTabTopBar {
 
 private struct VautlSelectionUiModel: Sendable {
     let icon: UIImage
-    let iconColor: UIColor
-    let backgroundColor: UIColor
+    let iconColor: Color
+    let backgroundColor: Color
 }
 
 private extension VaultSelection {
@@ -236,17 +236,17 @@ private extension VaultSelection {
         case .all:
             .init(icon: PassIcon.brandPass,
                   iconColor: VaultSelection.all.color,
-                  backgroundColor: VaultSelection.all.color.withAlphaComponent(0.16))
+                  backgroundColor: VaultSelection.all.color.opacity(0.16))
 
         case .sharedByMe:
             .init(icon: IconProvider.userArrowRight,
                   iconColor: VaultSelection.all.color,
-                  backgroundColor: VaultSelection.all.color.withAlphaComponent(0.16))
+                  backgroundColor: VaultSelection.all.color.opacity(0.16))
 
         case .sharedWithMe:
             .init(icon: IconProvider.userArrowLeft,
                   iconColor: VaultSelection.all.color,
-                  backgroundColor: VaultSelection.all.color.withAlphaComponent(0.16))
+                  backgroundColor: VaultSelection.all.color.opacity(0.16))
 
         case let .precise(vault):
             if let vaultContent = vault.vaultContent {
@@ -256,13 +256,13 @@ private extension VaultSelection {
             } else {
                 .init(icon: PassIcon.brandPass,
                       iconColor: VaultSelection.all.color,
-                      backgroundColor: VaultSelection.all.color.withAlphaComponent(0.16))
+                      backgroundColor: VaultSelection.all.color.opacity(0.16))
             }
 
         case .trash:
             .init(icon: IconProvider.trash,
                   iconColor: VaultSelection.trash.color,
-                  backgroundColor: VaultSelection.trash.color.withAlphaComponent(0.16))
+                  backgroundColor: VaultSelection.trash.color.opacity(0.16))
         }
     }
 }

@@ -43,7 +43,7 @@ struct ItemDetailTitleView: View {
                     .textSelection(.enabled)
                     .lineLimit(2)
                     .minimumScaleFactor(0.5)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
 
                 if let vaultContent = vault?.vaultContent {
                     HStack {

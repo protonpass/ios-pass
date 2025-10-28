@@ -79,7 +79,7 @@ struct EditCustomFieldSections<Field: CustomFieldTypes>: View {
                     .scaledToFit()
                     .frame(maxWidth: 16)
             })
-            .foregroundStyle(contentType.normMajor2Color.toColor)
+            .foregroundStyle(contentType.normMajor2Color)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, DesignConstant.sectionPadding)

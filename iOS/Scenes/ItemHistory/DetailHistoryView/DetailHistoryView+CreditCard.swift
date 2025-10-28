@@ -74,7 +74,7 @@ private extension DetailHistoryView {
                 Text("Cardholder name")
                     .sectionTitleText()
                 Text(creditCardItem.cardholderName)
-                    .foregroundStyle(textColor(for: \.creditCardItem?.cardholderName).toColor)
+                    .foregroundStyle(textColor(for: \.creditCardItem?.cardholderName))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
@@ -94,7 +94,7 @@ private extension DetailHistoryView {
 
                 Text(isShowingCardNumber ? creditCardItem.number.toCreditCardNumber() :
                     creditCardItem.number.toMaskedCreditCardNumber())
-                    .foregroundStyle(textColor(for: \.creditCardItem?.number).toColor)
+                    .foregroundStyle(textColor(for: \.creditCardItem?.number))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
@@ -123,7 +123,7 @@ private extension DetailHistoryView {
 
                 Text(isShowingVerificationNumber ? creditCardItem.verificationNumber :
                     String(repeating: "•", count: creditCardItem.verificationNumber.count))
-                    .foregroundStyle(textColor(for: \.creditCardItem?.verificationNumber).toColor)
+                    .foregroundStyle(textColor(for: \.creditCardItem?.verificationNumber))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
@@ -154,7 +154,7 @@ private extension DetailHistoryView {
 
                 Text(isShowingPIN ? creditCardItem.pin :
                     String(repeating: "•", count: creditCardItem.pin.count))
-                    .foregroundStyle(textColor(for: \.creditCardItem?.verificationNumber).toColor)
+                    .foregroundStyle(textColor(for: \.creditCardItem?.verificationNumber))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
@@ -181,7 +181,7 @@ private extension DetailHistoryView {
                     .sectionTitleText()
 
                 Text(creditCardItem.displayedExpirationDate)
-                    .foregroundStyle(textColor(for: \.creditCardItem?.expirationDate).toColor)
+                    .foregroundStyle(textColor(for: \.creditCardItem?.expirationDate))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)

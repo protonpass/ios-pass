@@ -45,9 +45,9 @@ struct LocalAuthenticationMethodsView: View {
                                         height: .compact,
                                         content: {
                                             Text(uiModel.title)
-                                                .foregroundStyle((isSelected ?
-                                                        PassColor.interactionNormMajor2 : PassColor
-                                                        .textNorm).toColor)
+                                                .foregroundStyle(isSelected ?
+                                                    PassColor.interactionNormMajor2 : PassColor
+                                                    .textNorm)
                                         },
                                         isSelected: isSelected)
                     PassSectionDivider()
@@ -57,7 +57,7 @@ struct LocalAuthenticationMethodsView: View {
             }
             .padding(.horizontal)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(PassColor.backgroundWeak.toColor)
+            .background(PassColor.backgroundWeak)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {

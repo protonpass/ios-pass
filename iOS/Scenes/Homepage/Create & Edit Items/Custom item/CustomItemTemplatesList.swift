@@ -95,8 +95,8 @@ struct CustomItemTemplatesList: View {
 private extension CustomItemTemplatesList {
     func section(_ title: LocalizedStringKey,
                  templates: [CustomItemTemplate],
-                 primaryColor: UIColor,
-                 secondaryColor: UIColor) -> some View {
+                 primaryColor: Color,
+                 secondaryColor: Color) -> some View {
         Section(content: {
             ForEach(templates, id: \.self) { template in
                 row(for: template,
@@ -107,7 +107,7 @@ private extension CustomItemTemplatesList {
         }, header: {
             Text(title)
                 .font(.callout)
-                .foregroundStyle(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.top)
         })
@@ -115,23 +115,23 @@ private extension CustomItemTemplatesList {
 
     func row(for template: CustomItemTemplate,
              alignment: Alignment,
-             primaryColor: UIColor,
-             secondaryColor: UIColor) -> some View {
+             primaryColor: Color,
+             secondaryColor: Color) -> some View {
         HStack {
             Image(uiImage: template.uiModel.icon)
                 .renderingMode(.template)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 18)
-                .foregroundStyle(primaryColor.toColor)
+                .foregroundStyle(primaryColor)
             Text(template.uiModel.title)
                 .fontWeight(.medium)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: alignment)
         .frame(height: 56)
         .padding(.horizontal)
-        .background(secondaryColor.toColor)
+        .background(secondaryColor)
         .clipShape(.capsule)
         .buttonEmbeded {
             dismiss()

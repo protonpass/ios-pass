@@ -33,7 +33,7 @@ struct AliasDetailView: View {
     @StateObject var router = resolve(\RouterContainer.darkWebRouter)
     @Environment(\.dismiss) private var dismiss
 
-    private var iconTintColor: UIColor { viewModel.itemContent.type.normColor }
+    private var iconTintColor: Color { viewModel.itemContent.type.normColor }
 
     init(viewModel: AliasDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -290,8 +290,8 @@ struct AliasDetailView: View {
                         .fontWeight(.medium)
                         .padding(.vertical, 4)
                         .padding(.horizontal, 11)
-                        .foregroundStyle(PassColor.textNorm.toColor)
-                        .background(PassColor.backgroundMedium.toColor)
+                        .foregroundStyle(PassColor.textNorm)
+                        .background(PassColor.backgroundMedium)
                         .clipShape(Capsule())
                 }
 
@@ -338,7 +338,7 @@ struct AliasDetailView: View {
         Text("The display name when sending an email from this alias.")
             .frame(maxWidth: .infinity, alignment: .leading)
             .font(.footnote)
-            .foregroundStyle(PassColor.textWeak.toColor)
+            .foregroundStyle(PassColor.textWeak)
             .padding(.bottom, DesignConstant.sectionPadding)
     }
 }

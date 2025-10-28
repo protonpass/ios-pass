@@ -62,12 +62,12 @@ public struct SearchBar: View {
     public var body: some View {
         HStack(spacing: 16) {
             ZStack {
-                PassColor.backgroundStrong.toColor
+                PassColor.backgroundStrong
                 HStack(spacing: 12) {
                     Image(uiImage: IconProvider.magnifier)
                         .resizable()
                         .scaledToFit()
-                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .foregroundStyle(PassColor.textWeak)
                         .frame(width: 20, height: 20)
                         .if(!canEdit) { view in
                             view.redacted(reason: .placeholder)
@@ -75,8 +75,8 @@ public struct SearchBar: View {
 
                     if canEdit {
                         TextField(placeholder, text: $query)
-                            .tint(PassColor.interactionNorm.toColor)
-                            .foregroundStyle(PassColor.textNorm.toColor)
+                            .tint(PassColor.interactionNorm)
+                            .foregroundStyle(PassColor.textNorm)
                             .autocorrectionDisabled()
                             .focused(isFocused)
                             .minimumScaleFactor(0.75)
@@ -87,14 +87,14 @@ public struct SearchBar: View {
                             Image(uiImage: IconProvider.cross)
                                 .resizable()
                                 .scaledToFit()
-                                .foregroundStyle(PassColor.textWeak.toColor)
+                                .foregroundStyle(PassColor.textWeak)
                                 .frame(width: 24, height: 24)
                         })
                         .buttonStyle(.plain)
                         .opacity(query.isEmpty ? 0 : 1)
                     } else {
                         Text(verbatim: "A long redacted placeholder text")
-                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .foregroundStyle(PassColor.textWeak)
                             .redacted(reason: .placeholder)
                     }
                 }
@@ -108,7 +108,7 @@ public struct SearchBar: View {
                 Button(action: onCancel) {
                     Text("Cancel", bundle: .module)
                         .fontWeight(.semibold)
-                        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                        .foregroundStyle(PassColor.interactionNormMajor2)
                 }
             }
         }

@@ -71,7 +71,7 @@ struct ItemCountView: View {
             }
         case let .error(error):
             Text(error.localizedDescription)
-                .foregroundStyle(PassColor.signalDanger.toColor)
+                .foregroundStyle(PassColor.signalDanger)
         }
     }
 
@@ -99,8 +99,8 @@ private struct CounterChip: View {
 
     struct Configuration {
         let icon: UIImage
-        let iconTint: UIColor
-        let iconBackground: UIColor
+        let iconTint: Color
+        let iconBackground: Color
     }
 
     var body: some View {
@@ -115,14 +115,14 @@ private struct CounterChip: View {
             if let maxValue {
                 Text(verbatim: "\(value)")
                     .fontWeight(.bold)
-                    .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
+                    .adaptiveForegroundStyle(PassColor.textNorm) +
                     Text(verbatim: "/\(maxValue)")
                     .fontWeight(.bold)
-                    .adaptiveForegroundStyle(PassColor.textWeak.toColor)
+                    .adaptiveForegroundStyle(PassColor.textWeak)
             } else {
                 Text(verbatim: "\(value)")
                     .fontWeight(.bold)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
             }
 
             Spacer()
@@ -130,7 +130,7 @@ private struct CounterChip: View {
         .padding(10)
         .frame(height: kChipHeight)
         .frame(minWidth: 103)
-        .overlay(Capsule().strokeBorder(PassColor.inputBorderNorm.toColor, lineWidth: 1))
+        .overlay(Capsule().strokeBorder(PassColor.inputBorderNorm, lineWidth: 1))
         .contentShape(.rect)
         .onTapGesture {
             if value > 0 {

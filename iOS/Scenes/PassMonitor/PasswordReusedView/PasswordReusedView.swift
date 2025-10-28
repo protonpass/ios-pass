@@ -36,7 +36,7 @@ struct PasswordReusedView: View {
     var body: some View {
         VStack {
             Text("Items from your vaults that use this password.")
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical)
 
@@ -46,7 +46,7 @@ struct PasswordReusedView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .toolbar { toolbarContent }
         .scrollViewEmbeded(maxWidth: .infinity)
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
         .showSpinner(viewModel.loading)
         .navigationTitle(viewModel.title)
         .navigationStackEmbeded()

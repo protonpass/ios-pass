@@ -27,7 +27,7 @@ struct ItemDetailPlaceholderView: View {
 
     var body: some View {
         ZStack {
-            PassColor.backgroundNorm.toColor
+            PassColor.backgroundNorm
                 .ignoresSafeArea()
             Image(uiImage: PassIcon.passIcon)
                 .resizable()

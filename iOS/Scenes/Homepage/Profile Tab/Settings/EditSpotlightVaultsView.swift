@@ -39,7 +39,7 @@ struct EditSpotlightVaultsView: View {
         }
         .scrollViewEmbeded()
         .navigationBarTitleDisplayMode(.inline)
-        .background(PassColor.backgroundWeak.toColor)
+        .background(PassColor.backgroundWeak)
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text("Selected vaults")

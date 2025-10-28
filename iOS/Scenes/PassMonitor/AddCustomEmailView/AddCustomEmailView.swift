@@ -38,7 +38,7 @@ struct AddCustomEmailView: View {
         VStack(spacing: DesignConstant.sectionPadding * 2) {
             if viewModel.isVerificationMode {
                 Text("We sent a verification code to \(viewModel.email). Enter it below:")
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.top, 8)
 
@@ -48,8 +48,8 @@ struct AddCustomEmailView: View {
                     .autocorrectionDisabled()
                     // Trick iOS into not suggesting one-time code autofill
                     .textContentType(.jobTitle)
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .tint(PassColor.interactionNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
+                    .tint(PassColor.interactionNorm)
                     .frame(height: 64)
             } else {
                 TextField("Email address", text: $viewModel.email)
@@ -57,8 +57,8 @@ struct AddCustomEmailView: View {
                     .keyboardType(.emailAddress)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .tint(PassColor.interactionNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
+                    .tint(PassColor.interactionNorm)
                     .frame(height: 64)
             }
 
@@ -74,7 +74,7 @@ struct AddCustomEmailView: View {
             if viewModel.isVerificationMode {
                 Label("Haven't received the code?",
                       systemImage: showResendCodeButton ? "chevron.up" : "chevron.down")
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
                     .labelStyle(.rightIcon)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .buttonEmbeded {
@@ -84,8 +84,8 @@ struct AddCustomEmailView: View {
 
                 if showResendCodeButton {
                     Text(viewModel.type.resendCodeMessage)
-                        .foregroundStyle(PassColor.textWeak.toColor)
-                        .tint(PassColor.interactionNormMajor1.toColor)
+                        .foregroundStyle(PassColor.textWeak)
+                        .tint(PassColor.interactionNormMajor1)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .fixedSize(horizontal: false, vertical: true)
                         .environment(\.openURL, OpenURLAction(handler: handleURL))
@@ -100,7 +100,7 @@ struct AddCustomEmailView: View {
         .animation(.default, value: viewModel.isVerificationMode)
         .animation(.default, value: showResendCodeButton)
         .toolbar { toolbarContent }
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
         .onChange(of: viewModel.finishedVerification) { isVerificationFinished in
             guard isVerificationFinished else {
                 return

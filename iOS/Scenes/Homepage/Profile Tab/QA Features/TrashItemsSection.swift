@@ -77,7 +77,7 @@ private struct TrashItemsView: View {
                             VaultRow(thumbnail: {
                                          CircleButton(icon: icon,
                                                       iconColor: color,
-                                                      backgroundColor: color.withAlphaComponent(0.16))
+                                                      backgroundColor: color.opacity(0.16))
                                      },
                                      title: vault.vaultName ?? "Share link to item",
                                      itemCount: uiModel.itemCount,
@@ -86,7 +86,7 @@ private struct TrashItemsView: View {
                         .buttonStyle(.plain)
 
                         Text(vault.shareId)
-                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .foregroundStyle(PassColor.textWeak)
                             .font(.caption)
                             .textSelection(.enabled)
                             .frame(maxWidth: .infinity, alignment: .leading)

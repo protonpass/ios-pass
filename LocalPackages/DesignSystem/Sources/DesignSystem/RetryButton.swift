@@ -22,10 +22,10 @@
 import SwiftUI
 
 public struct RetryButton: View {
-    let tintColor: UIColor
+    let tintColor: Color
     let onRetry: () -> Void
 
-    public init(tintColor: UIColor = PassColor.interactionNormMajor2,
+    public init(tintColor: Color = PassColor.interactionNormMajor2,
                 onRetry: @escaping () -> Void) {
         self.tintColor = tintColor
         self.onRetry = onRetry
@@ -33,7 +33,7 @@ public struct RetryButton: View {
 
     public var body: some View {
         Label("Retry", systemImage: "arrow.counterclockwise")
-            .foregroundStyle(tintColor.toColor)
+            .foregroundStyle(tintColor)
             .labelStyle(.rightIcon)
             .buttonEmbeded(action: onRetry)
     }

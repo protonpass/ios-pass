@@ -44,7 +44,7 @@ private extension CustomSectionsSection {
             if section.content.isEmpty {
                 Text("Empty section")
                     .font(.callout.italic())
-                    .adaptiveForegroundStyle(PassColor.textWeak.toColor)
+                    .adaptiveForegroundStyle(PassColor.textWeak)
                     .frame(maxWidth: .infinity, alignment: .leading)
             } else {
                 CustomFieldSections(itemContentType: contentType,
@@ -57,7 +57,7 @@ private extension CustomSectionsSection {
             }
         } header: {
             Text(verbatim: section.title)
-                .foregroundStyle(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.top, DesignConstant.sectionPadding)
                 .padding(.vertical, DesignConstant.sectionPadding)

@@ -68,7 +68,7 @@ struct ItemsTabView: View {
         }
         .animation(.default, value: viewModel.sectionedItems)
         .animation(.default, value: viewModel.shouldShowSyncProgress)
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
         .navigationBarHidden(true)
         .onChange(of: viewModel.filterOption) { _ in
             viewModel.filterAndSortItems()
@@ -95,9 +95,9 @@ struct ItemsTabView: View {
         VStack {
             Text("You don't have any vault")
                 .font(.title3.bold())
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
             Text("Please contact your organization support team.")
-                .foregroundStyle(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
     }
@@ -226,7 +226,7 @@ private extension ItemsTabView {
                     .font(.title2)
                     .fontWeight(.bold)
                     .padding(.vertical)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                 Spacer()
             }
             .padding(.horizontal)
@@ -248,7 +248,7 @@ private extension ItemsTabView {
                                      }, header: {
                                          Text(section.sectionTitle)
                                              .font(.callout)
-                                             .foregroundStyle(PassColor.textWeak.toColor)
+                                             .foregroundStyle(PassColor.textWeak)
                                              .frame(maxWidth: .infinity, alignment: .leading)
                                      })
                                      .id(section.id)
@@ -345,7 +345,7 @@ private struct ItemRow: View {
                                          handler: itemContextMenuHandler)
                 }
                 .padding(.horizontal)
-                .background(isSelected ? PassColor.interactionNormMinor1.toColor : .clear)
+                .background(isSelected ? PassColor.interactionNormMinor1 : .clear)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .animation(.default, value: isSelected)
         }

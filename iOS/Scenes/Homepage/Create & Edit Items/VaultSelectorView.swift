@@ -61,7 +61,7 @@ struct VaultSelectorView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .background(PassColor.backgroundWeak.toColor)
+            .background(PassColor.backgroundWeak)
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Select a vault")

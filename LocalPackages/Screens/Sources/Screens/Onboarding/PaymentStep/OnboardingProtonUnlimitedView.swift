@@ -45,7 +45,7 @@ struct OnboardingProtonUnlimitedView: View {
         VStack {
             Text("The best of Proton with one subscription.", bundle: .module)
                 .font(.callout)
-                .themedForegroundStyle(dark: .white, light: PassColor.textNorm.toColor)
+                .themedForegroundStyle(dark: .white, light: PassColor.textNorm)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.top)
             protonApps
@@ -53,8 +53,8 @@ struct OnboardingProtonUnlimitedView: View {
             ZStack {
                 HStack {
                     Spacer()
-                    ThemedColor(dark: PassColor.backgroundMedium.toColor,
-                                light: PassColor.newBackgroundStrong.toColor)
+                    ThemedColor(dark: PassColor.backgroundMedium,
+                                light: PassColor.newBackgroundStrong)
                         .frame(width: detailColumnWidth)
                         .clipShape(RoundedRectangle(cornerRadius: 24))
                 }
@@ -84,7 +84,7 @@ private extension OnboardingProtonUnlimitedView {
                 .frame(width: 32)
             Text(verbatim: name)
                 .font(.caption)
-                .themedForegroundStyle(dark: .white, light: PassColor.textNorm.toColor)
+                .themedForegroundStyle(dark: .white, light: PassColor.textNorm)
                 .frame(maxWidth: .infinity)
         }
         .frame(maxWidth: .infinity, alignment: .center)
@@ -110,7 +110,7 @@ private extension OnboardingProtonUnlimitedView {
                     .padding(.vertical, 4)
                     .padding(.horizontal)
                     .background(.white)
-                    .foregroundStyle(PassColor.textInvert.toColor)
+                    .foregroundStyle(PassColor.textInvert)
                     .clipShape(.capsule)
 
                 ForEach(features) { feature in
@@ -121,7 +121,7 @@ private extension OnboardingProtonUnlimitedView {
                     PerkDetailView(perk: feature.higherPerk)
                 }
             }
-            .themedForegroundStyle(dark: .white, light: PassColor.textNorm.toColor)
+            .themedForegroundStyle(dark: .white, light: PassColor.textNorm)
             .padding(.vertical)
     }
 }

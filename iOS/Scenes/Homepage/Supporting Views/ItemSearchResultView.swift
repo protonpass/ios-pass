@@ -39,11 +39,11 @@ struct ItemSearchResultView: View, Equatable {
                         Image(uiImage: vaultContent.vaultSmallIcon)
                             .resizable()
                             .scaledToFit()
-                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .foregroundStyle(PassColor.textWeak)
                             .frame(width: 12, height: 12)
                     }
                     HighlightText(highlightableText: result.highlightableTitle)
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm)
                         .animationsDisabled()
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -54,7 +54,7 @@ struct ItemSearchResultView: View, Equatable {
                         if !eachDetail.fullText.isEmpty {
                             HighlightText(highlightableText: eachDetail)
                                 .font(.callout)
-                                .foregroundStyle(PassColor.textWeak.toColor)
+                                .foregroundStyle(PassColor.textWeak)
                                 .lineLimit(1)
                                 .animationsDisabled()
                         }

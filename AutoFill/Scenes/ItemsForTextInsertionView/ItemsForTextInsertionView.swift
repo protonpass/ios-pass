@@ -37,7 +37,7 @@ struct ItemsForTextInsertionView: View {
 
     var body: some View {
         ZStack {
-            PassColor.backgroundNorm.toColor
+            PassColor.backgroundNorm
                 .ignoresSafeArea()
             stateViews
         }
@@ -118,7 +118,7 @@ private extension ItemsForTextInsertionView {
                             Spacer()
                             Text("Empty")
                                 .multilineTextAlignment(.center)
-                                .foregroundStyle(PassColor.textNorm.toColor)
+                                .foregroundStyle(PassColor.textNorm)
                                 .padding()
                             Spacer()
                         }
@@ -199,14 +199,14 @@ struct TextInsertionHistoryHeaderView: View {
         HStack {
             Text("Recents")
                 .font(.callout.bold())
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
             Spacer()
             Button(action: onClear) {
                 Text("Clear")
                     .font(.callout)
                     .fontWeight(.semibold)
-                    .foregroundStyle(PassColor.textWeak.toColor)
-                    .underline(color: PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
+                    .underline(color: PassColor.textWeak)
             }
         }
     }

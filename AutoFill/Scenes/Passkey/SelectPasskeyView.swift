@@ -33,7 +33,7 @@ struct SelectPasskeyView: View {
 
     var body: some View {
         ZStack {
-            PassColor.backgroundWeak.toColor
+            PassColor.backgroundWeak
                 .ignoresSafeArea()
             LazyVStack(spacing: 0) {
                 ForEach(viewModel.info.passkeys, id: \.keyID) { passkey in
@@ -60,11 +60,11 @@ private extension SelectPasskeyView {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 20)
-                .foregroundStyle(ItemContentType.login.normColor.toColor)
+                .foregroundStyle(ItemContentType.login.normColor)
 
             VStack(alignment: .leading) {
                 Text(passkey.userName)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                 Text(passkey.domain)
                     .sectionTitleText() +
                     Text(verbatim: " • ")

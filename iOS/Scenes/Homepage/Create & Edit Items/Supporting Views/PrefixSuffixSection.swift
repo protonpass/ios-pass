@@ -40,7 +40,7 @@ struct PrefixSuffixSection<Field: Hashable>: View {
     let focusedField: FocusState<Field?>.Binding
     let field: Field
     let isLoading: Bool
-    let tintColor: UIColor
+    let tintColor: Color
     let suffixSelection: SuffixSelection
     let prefixError: AliasPrefixError?
     var onSubmitPrefix: (() -> Void)?
@@ -54,8 +54,8 @@ struct PrefixSuffixSection<Field: Hashable>: View {
         }
         .padding(.vertical, DesignConstant.sectionPadding)
         .roundedEditableSection()
-        .accentColor(PassColor.interactionNorm.toColor)
-        .tint(PassColor.interactionNorm.toColor)
+        .accentColor(PassColor.interactionNorm)
+        .tint(PassColor.interactionNorm)
     }
 
     private var prefixRow: some View {
@@ -70,13 +70,13 @@ struct PrefixSuffixSection<Field: Hashable>: View {
                     .keyboardType(.emailAddress)
                     .textInputAutocapitalization(.never)
                     .focused(focusedField, equals: field)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .submitLabel(.done)
                     .onSubmit { onSubmitPrefix?() }
                     if let prefixError {
                         Text(prefixError.localizedDescription)
                             .font(.callout)
-                            .foregroundStyle(PassColor.signalDanger.toColor)
+                            .foregroundStyle(PassColor.signalDanger)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }

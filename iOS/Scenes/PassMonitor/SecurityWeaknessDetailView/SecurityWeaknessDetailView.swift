@@ -52,7 +52,7 @@ private extension SecurityWeaknessDetailView {
             case let .fetched(data):
                 if let subtitleInfo = viewModel.type.subtitleInfo {
                     Text(subtitleInfo)
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding()
                 }
@@ -64,7 +64,7 @@ private extension SecurityWeaknessDetailView {
                         .scaledToFit()
                         .frame(width: 195)
                     Text(viewModel.nothingWrongMessage)
-                        .foregroundStyle(PassColor.textHint.toColor)
+                        .foregroundStyle(PassColor.textHint)
                         .fontWeight(.medium)
                         .multilineTextAlignment(.center)
                     Spacer()
@@ -79,7 +79,7 @@ private extension SecurityWeaknessDetailView {
 
             case let .error(error):
                 Text(error.localizedDescription)
-                    .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                    .foregroundStyle(PassColor.passwordInteractionNormMajor2)
                     .frame(maxWidth: .infinity, alignment: .center)
             }
         }
@@ -91,7 +91,7 @@ private extension SecurityWeaknessDetailView {
         .if(viewModel.state.fetchedObject?.isEmpty == false && useSwiftUIList) { view in
             view.scrollViewEmbeded(maxWidth: .infinity)
         }
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle(viewModel.type.title)
     }
@@ -127,7 +127,7 @@ private extension SecurityWeaknessDetailView {
                                   .frame(width: 12)
                           }
                       })
-                      .foregroundStyle(PassColor.textWeak.toColor)
+                      .foregroundStyle(PassColor.textWeak)
                       .frame(maxWidth: .infinity, alignment: .leading)
                       .if(viewModel.type.collapsible) { view in
                           view

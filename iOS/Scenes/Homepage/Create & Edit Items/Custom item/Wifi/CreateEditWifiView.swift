@@ -135,7 +135,7 @@ private extension CreateEditWifiView {
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .focused($focusedField, equals: .ssid)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .onSubmit {
                         focusedField = .password
                     }
@@ -162,7 +162,7 @@ private extension CreateEditWifiView {
                     .keyboardType(.asciiCapable)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .submitLabel(.done)
             }
 

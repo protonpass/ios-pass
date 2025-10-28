@@ -61,7 +61,7 @@ private extension AliasContactsView {
                     .padding(.top)
                 // swiftlint:disable:next line_length
                 Text("A contact is created for every email address that sends emails to or receives emails from \(viewModel.alias.email)")
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .padding(.bottom, viewModel.aliasName.isEmpty ? DesignConstant.sectionPadding : 0)
             }
             .listRowInsets(EdgeInsets())
@@ -87,9 +87,9 @@ private extension AliasContactsView {
         .animation(.default, value: viewModel.contactsInfos)
         .toolbar { toolbarContent }
         .showSpinner(viewModel.loading)
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
         .navigationBarBackButtonHidden(true)
-        .toolbarBackground(PassColor.backgroundNorm.toColor, for: .navigationBar)
+        .toolbarBackground(PassColor.backgroundNorm, for: .navigationBar)
         .navigationBarTitleDisplayMode(.inline)
     }
 
@@ -97,15 +97,15 @@ private extension AliasContactsView {
         Label(title: {
             Text("Contacts")
                 .font(.title.bold())
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
         }, icon: {
             Button(action: { sheetState = .explanation }, label: {
                 Text("?")
                     .fontWeight(.medium)
                     .padding(.vertical, 4)
                     .padding(.horizontal, 11)
-                    .foregroundStyle(PassColor.aliasInteractionNormMajor2.toColor)
-                    .background(PassColor.aliasInteractionNormMinor1.toColor)
+                    .foregroundStyle(PassColor.aliasInteractionNormMajor2)
+                    .background(PassColor.aliasInteractionNormMinor1)
                     .clipShape(Capsule())
             })
             .buttonStyle(.plain)
@@ -166,7 +166,7 @@ private extension AliasContactsView {
             } header: {
                 Text("Blocked addresses")
                     .font(.callout)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             .listRowInsets(EdgeInsets())

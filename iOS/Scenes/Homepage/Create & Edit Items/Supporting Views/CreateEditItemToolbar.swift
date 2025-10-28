@@ -113,9 +113,9 @@ private extension CreateEditItemToolbar {
                 .frame(width: 12)
         }
         .frame(height: 40)
-        .foregroundStyle(vaultContent.mainColor.toColor)
+        .foregroundStyle(vaultContent.mainColor)
         .padding(.horizontal, DesignConstant.sectionPadding)
-        .background(vaultContent.backgroundColor.toColor)
+        .background(vaultContent.backgroundColor)
         .clipShape(Capsule())
         .if(isPhone) { view in
             view.frame(maxWidth: 150, alignment: .trailing)

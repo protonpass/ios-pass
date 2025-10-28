@@ -32,7 +32,7 @@ struct ShareElementView: View {
         VStack(alignment: .center, spacing: 12) {
             Text("Share")
                 .font(.body.bold())
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
 
             if viewModel.itemSharingAllowed,
                viewModel.share.canShareWithMorePeople,
@@ -73,12 +73,12 @@ private extension ShareElementView {
                               backgroundColor: PassColor.interactionNormMinor1)
             VStack(alignment: .leading) {
                 Text("With other Proton Pass users")
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 Text("Useful for permanent sharing.")
                     .font(.callout)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
 
@@ -110,12 +110,12 @@ private extension ShareElementView {
                               backgroundColor: PassColor.interactionNormMinor1)
             VStack(alignment: .leading) {
                 Text("Via secure link")
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 Text("For one-off sharing.")
                     .font(.callout)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
 
@@ -147,12 +147,12 @@ private extension ShareElementView {
                               backgroundColor: PassColor.interactionNormMinor1)
             VStack(alignment: .leading) {
                 Text(viewModel.share.canEdit ? "Manage access" : "View members")
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 Text("See members and permission overview")
                     .font(.callout)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
                     .lineLimit(2)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .fixedSize(horizontal: false, vertical: true)

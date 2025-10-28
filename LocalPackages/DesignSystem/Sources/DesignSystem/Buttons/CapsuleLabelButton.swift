@@ -24,8 +24,8 @@ import SwiftUI
 public struct CapsuleLabelButton: View {
     let icon: UIImage
     let title: String
-    let titleColor: UIColor
-    let backgroundColor: UIColor
+    let titleColor: Color
+    let backgroundColor: Color
     let border: Border?
     let fontWeight: Font.Weight
     let height: CGFloat
@@ -36,9 +36,9 @@ public struct CapsuleLabelButton: View {
 
     public struct Border {
         public let width: CGFloat
-        public let color: UIColor
+        public let color: Color
 
-        public init(width: CGFloat, color: UIColor) {
+        public init(width: CGFloat, color: Color) {
             self.width = width
             self.color = color
         }
@@ -46,8 +46,8 @@ public struct CapsuleLabelButton: View {
 
     public init(icon: UIImage,
                 title: String,
-                titleColor: UIColor,
-                backgroundColor: UIColor,
+                titleColor: Color,
+                backgroundColor: Color,
                 border: Border? = nil,
                 fontWeight: Font.Weight = .regular,
                 height: CGFloat = 40,
@@ -88,18 +88,18 @@ public struct CapsuleLabelButton: View {
                 }
             }
             .padding(.horizontal)
-            .foregroundStyle(titleColor.toColor)
+            .foregroundStyle(titleColor)
             .fontWeight(fontWeight)
             .frame(height: height)
             .frame(maxWidth: maxWidth)
-            .background(backgroundColor.toColor.opacity(isDisabled ? 0.4 : 1.0))
+            .background(backgroundColor.opacity(isDisabled ? 0.4 : 1.0))
             .clipShape(Capsule())
             .contentShape(.rect)
             .if(border) { view, border in
                 view
                     .overlay {
                         Capsule()
-                            .stroke(border.color.toColor, lineWidth: border.width)
+                            .stroke(border.color, lineWidth: border.width)
                     }
             }
         }

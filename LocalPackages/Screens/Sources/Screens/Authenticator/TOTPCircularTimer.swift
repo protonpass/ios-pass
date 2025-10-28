@@ -75,7 +75,7 @@ public struct TOTPCircularTimer: View {
     public var body: some View {
         ZStack {
             Circle()
-                .stroke(PassColor.textHint.toColor, style: StrokeStyle(lineWidth: 3))
+                .stroke(PassColor.textHint, style: StrokeStyle(lineWidth: 3))
 
             Circle()
                 .trim(from: 0, to: viewModel.percentage)
@@ -86,7 +86,7 @@ public struct TOTPCircularTimer: View {
             Text(verbatim: "\(Int(viewModel.remainingSeconds))")
                 .font(.caption)
                 .fontWeight(.light)
-                .foregroundStyle(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak)
                 .animationsDisabled()
         }
         .frame(width: 32, height: 32)
@@ -98,9 +98,9 @@ public struct TOTPCircularTimer: View {
     private var color: Color {
         switch viewModel.remainingSeconds {
         case 0...10:
-            PassColor.signalDanger.toColor
+            PassColor.signalDanger
         default:
-            PassColor.signalSuccess.toColor
+            PassColor.signalSuccess
         }
     }
 }

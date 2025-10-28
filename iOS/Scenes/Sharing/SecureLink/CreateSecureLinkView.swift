@@ -59,7 +59,7 @@ private extension CreateSecureLinkView {
                 .padding(.horizontal, DesignConstant.sectionPadding)
                 .padding(.bottom, DesignConstant.sectionPadding)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(PassColor.backgroundNorm.toColor)
+                .background(PassColor.backgroundNorm)
         }
     }
 }
@@ -74,7 +74,7 @@ private extension CreateSecureLinkView {
 
             HStack {
                 Text("Link expires after")
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
 
                 Spacer()
 
@@ -87,8 +87,8 @@ private extension CreateSecureLinkView {
                 }
                 .labelsHidden()
                 .padding(4)
-                .tint(PassColor.textNorm.toColor)
-                .background(PassColor.interactionNormMinor1.toColor)
+                .tint(PassColor.textNorm)
+                .background(PassColor.interactionNormMinor1)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
             }
 
@@ -96,7 +96,7 @@ private extension CreateSecureLinkView {
 
             Toggle("Restrict number of views", isOn: viewCountBinding)
                 .toggleStyle(SwitchToggleStyle.pass)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
 
             if viewModel.readCount != 0 {
                 HStack {
@@ -105,11 +105,11 @@ private extension CreateSecureLinkView {
                     CapsuleStepper(value: $viewModel.readCount,
                                    step: 1,
                                    minValue: 1,
-                                   textColor: PassColor.textNorm.toColor,
-                                   backgroundColor: PassColor.interactionNormMinor1.toColor)
+                                   textColor: PassColor.textNorm,
+                                   backgroundColor: PassColor.interactionNormMinor1)
                         .frame(minWidth: 145)
                 }
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
                 .padding(.vertical, 5)
             } else {
                 Spacer()

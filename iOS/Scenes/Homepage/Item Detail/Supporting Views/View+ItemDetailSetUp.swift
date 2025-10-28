@@ -28,19 +28,19 @@ struct ItemDetailSetUpModifier: ViewModifier {
     @ObservedObject var viewModel: BaseItemDetailViewModel
     @Environment(\.dismiss) private var dismiss
 
-    private var tintColor: UIColor {
+    private var tintColor: Color {
         viewModel.itemContent.type.normMajor2Color
     }
 
     func body(content: Content) -> some View {
         content
-            .tint(tintColor.toColor)
+            .tint(tintColor)
             .frame(maxWidth: .infinity, alignment: .leading)
             .navigationBarBackButtonHidden()
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarHidden(false)
             .animation(.default, value: viewModel.files)
-            .background(PassColor.backgroundNorm.toColor)
+            .background(PassColor.backgroundNorm)
             .toolbar { ItemDetailToolbar(viewModel: viewModel) }
             .modifier(PermenentlyDeleteItemModifier(item: $viewModel.itemToBeDeleted,
                                                     onDisableAlias: { viewModel.disableAlias() },

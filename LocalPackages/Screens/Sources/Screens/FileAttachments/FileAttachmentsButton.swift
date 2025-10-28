@@ -171,8 +171,8 @@ private struct ScannedTextEditor: View {
     @FocusState private var isFocused: Bool
     @State private var showDiscardChangesAlert = false
     @Binding var text: String
-    let primaryTintColor: UIColor
-    let secondaryTintColor: UIColor
+    let primaryTintColor: Color
+    let secondaryTintColor: Color
     let onSave: () -> Void
 
     var body: some View {
@@ -206,15 +206,15 @@ private struct CapturedPhotoEditor: View {
     @State private var showDiscardChangesAlert = false
     private let capturedImage: UIImage
     private let formatter: ByteCountFormatter
-    private let primaryTintColor: UIColor
-    private let secondaryTintColor: UIColor
+    private let primaryTintColor: Color
+    private let secondaryTintColor: Color
     private let onSave: (CapturedPhoto) -> Void
 
     init(capturedImage: UIImage,
          defaultQuality: Float = 50.0,
          formatter: ByteCountFormatter = Constants.Attachment.formatter,
-         primaryTintColor: UIColor,
-         secondaryTintColor: UIColor,
+         primaryTintColor: Color,
+         secondaryTintColor: Color,
          onSave: @escaping (CapturedPhoto) -> Void) {
         _image = .init(initialValue: capturedImage)
         _quality = .init(initialValue: defaultQuality)
@@ -243,11 +243,11 @@ private struct CapturedPhotoEditor: View {
                    },
                    minimumValueLabel: {
                        Text(verbatim: "10%")
-                           .foregroundStyle(PassColor.textNorm.toColor)
+                           .foregroundStyle(PassColor.textNorm)
                    },
                    maximumValueLabel: {
                        Text(verbatim: "100%")
-                           .foregroundStyle(PassColor.textNorm.toColor)
+                           .foregroundStyle(PassColor.textNorm)
                    },
                    onEditingChanged: { editing in
                        self.editing = editing
@@ -271,11 +271,11 @@ private struct CapturedPhotoEditor: View {
                 }
                 Text(verbatim: "(\("\(String(format: "%.0f", quality))%"))")
             }
-            .foregroundStyle(PassColor.textNorm.toColor)
+            .foregroundStyle(PassColor.textNorm)
             .frame(maxWidth: .infinity, alignment: .center)
         }
         .padding(.bottom)
-        .tint(primaryTintColor.toColor)
+        .tint(primaryTintColor)
         .animation(.default, value: quality)
         .animation(.default, value: editing)
         .fullSheetBackground()
@@ -304,8 +304,8 @@ private struct CapturedPhotoEditor: View {
 }
 
 private struct EditorToolbar: ToolbarContent {
-    let primaryTintColor: UIColor
-    let secondaryTintColor: UIColor
+    let primaryTintColor: Color
+    let secondaryTintColor: Color
     let saveable: Bool
     let onClose: () -> Void
     let onSave: () -> Void

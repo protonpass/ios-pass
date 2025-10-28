@@ -62,7 +62,7 @@ public struct SortTypeButton: View {
     private func sortTypeLabel() -> some View {
         Label(selectedSortType.title, systemImage: "arrow.up.arrow.down")
             .font(.callout.weight(.medium))
-            .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+            .foregroundStyle(PassColor.interactionNormMajor2)
             .animationsDisabled()
     }
 }

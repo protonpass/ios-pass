@@ -26,9 +26,14 @@ public extension UIColor {
     }
 }
 
+public extension Color {
+    var uiColor: UIColor {
+        UIColor(self)
+    }
+}
+
 // Helper extension for hex color
 public extension Color {
-    // periphery:ignore
     init(hex: String) {
         let scanner = Scanner(string: hex)
         _ = scanner.scanString("#")
