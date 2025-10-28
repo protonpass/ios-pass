@@ -53,7 +53,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     // Injected & self-initialized properties
     let logger = resolve(\SharedToolingContainer.logger)
-    private let paymentsManager = resolve(\ServiceContainer.paymentManager)
     let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
     let urlOpener = UrlOpener()
@@ -898,48 +897,41 @@ extension HomepageCoordinator {
     func startUpgradeFlow() {
         dismissAllViewControllers(animated: true) { [weak self] in
             guard let self else { return }
-            paymentsManager.manageSubscription(isUpgrading: true) { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case let .success(result):
-                    if result {
-                        refreshAccessAndMonitorStateSync()
-                    } else {
-                        logger.debug("Payment is done but no plan is purchased")
-                    }
-                case let .failure(error):
-                    handle(error: error)
-                }
-            }
+            presentOnboardView(forced: true, mode: .upsell)
         }
     }
 
+    // periphery:ignore
     func startUpsellingFlow(configuration: UpsellingViewConfiguration, dismissal: SheetDismissal) {
-        let view = UpsellingView(configuration: configuration) { [weak self] in
-            guard let self else {
-                return
-            }
-            startUpgradeFlow()
-        }
-
-        let completion: () -> Void = { [weak self] in
-            guard let self else {
-                return
-            }
-            let viewController = UIHostingController(rootView: view)
-
-            viewController.sheetPresentationController?.prefersGrabberVisible = false
-            present(viewController)
-        }
-
-        switch dismissal {
-        case .none:
-            present(view)
-        case .topMost:
-            dismissTopMostViewController(animated: true, completion: completion)
-        case .all:
-            dismissAllViewControllers(animated: true, completion: completion)
-        }
+        // We are skipping the intermediate feature explanation screens in upsell flow
+        // This is temporary until we have the new designs for these steps
+        // We are redirecting the user directly to the payment screen.
+        startUpgradeFlow()
+//        let view = UpsellingView(configuration: configuration) { [weak self] in
+//            guard let self else {
+//                return
+//            }
+//            startUpgradeFlow()
+//        }
+//
+//        let completion: () -> Void = { [weak self] in
+//            guard let self else {
+//                return
+//            }
+//            let viewController = UIHostingController(rootView: view)
+//
+//            viewController.sheetPresentationController?.prefersGrabberVisible = false
+//            present(viewController)
+//        }
+//
+//        switch dismissal {
+//        case .none:
+//            present(view)
+//        case .topMost:
+//            dismissTopMostViewController(animated: true, completion: completion)
+//        case .all:
+//            dismissAllViewControllers(animated: true, completion: completion)
+//        }
     }
 
     func displaySuccessBanner(with message: String?, and config: NavigationConfiguration?) {
@@ -1316,7 +1308,7 @@ extension HomepageCoordinator {
                 // New user just registered after an invitation
                 presentAwaitAccessConfirmationView()
             } else {
-                presentOnboardView(forced: false)
+                presentOnboardView(forced: false, mode: .onboarding)
             }
         }
     }
@@ -1330,7 +1322,7 @@ private extension HomepageCoordinator {
             guard let self else { return }
             dismissAllViewControllers(animated: true) { [weak self] in
                 guard let self else { return }
-                presentOnboardView(forced: true)
+                presentOnboardView(forced: true, mode: .onboarding)
             }
         }
         let vc = UIHostingController(rootView: view)
@@ -1339,9 +1331,9 @@ private extension HomepageCoordinator {
         topMostViewController.present(vc, animated: true)
     }
 
-    func presentOnboardView(forced: Bool) {
+    func presentOnboardView(forced: Bool, mode: OnboardingDisplayMode) {
         guard forced || !getAppPreferences().onboarded else { return }
-        let view = OnboardingView(handler: onboardingHandler)
+        let view = OnboardingView(handler: onboardingHandler, mode: mode)
         let vc = UIHostingController(rootView: view)
         vc.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
         vc.isModalInPresentation = true

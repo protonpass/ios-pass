@@ -38,7 +38,7 @@ struct OnboardSection: View {
             .frame(maxWidth: .infinity, alignment: .leading)
 
             Button(action: {
-                viewModel.present(view: OnboardingView(handler: viewModel.handler))
+                viewModel.present(view: OnboardingView(handler: viewModel.handler, mode: .onboarding))
             }, label: {
                 Text(verbatim: "Onboard")
             })

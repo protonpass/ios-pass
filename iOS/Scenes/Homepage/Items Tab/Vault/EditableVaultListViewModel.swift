@@ -68,6 +68,8 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var organization: Organization?
     @Published private(set) var hiddenShareIds = Set<String>()
     @Published private(set) var mode: Mode = .view
+    @Published private var plan: Plan?
+
     private var count: Count
 
     let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -107,6 +109,10 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
     var hasTrashItems: Bool {
         count.trashed > 0
+    }
+
+    var shouldUpsell: Bool {
+        plan?.shouldUpsell ?? false
     }
 
     var trashedAliasesCount: Int {
@@ -169,6 +175,10 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
         }
         return itemCount(for: selection) > 0
     }
+
+    func upgradeSubscription() {
+        router.present(for: .upgradeFlow)
+    }
 }
 
 // MARK: - Private APIs
@@ -196,6 +206,16 @@ private extension EditableVaultListViewModel {
                 handle(error)
             }
         }
+
+        accessRepository.access
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] updatedAccess in
+                guard let self else {
+                    return
+                }
+                plan = updatedAccess?.access.plan
+            }
+            .store(in: &cancellables)
     }
 
     func handle(_ error: any Error) {

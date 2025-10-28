@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import DesignSystem
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -49,6 +50,6 @@ struct PerkDetailView: View {
                 Text(value)
             }
         }
-        .foregroundStyle(.white)
+        .themedForegroundStyle(dark: .white, light: PassColor.textNorm.toColor)
     }
 }

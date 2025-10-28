@@ -26,6 +26,7 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 public struct OnboardingView: View {
+    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: OnboardingViewModel
     @State private var saveable = false
@@ -39,8 +40,8 @@ public struct OnboardingView: View {
                               onSave: () -> Void)
     }
 
-    public init(handler: OnboardingHandling?) {
-        _viewModel = .init(wrappedValue: .init(handler: handler))
+    public init(handler: OnboardingHandling?, mode: OnboardingDisplayMode) {
+        _viewModel = .init(wrappedValue: .init(handler: handler, mode: mode))
     }
 
     public var body: some View {
@@ -67,6 +68,12 @@ public struct OnboardingView: View {
         }
         .showSpinner(viewModel.isPurchasing)
         .task { await viewModel.setUp() }
+        .onChange(of: viewModel.shouldDismiss) { value in
+            guard value else {
+                return
+            }
+            dismiss()
+        }
     }
 }
 
@@ -94,14 +101,9 @@ private extension OnboardingView {
 
     func background(for step: OnboardStep) -> some View {
         ZStack(alignment: .topLeading) {
-            LinearGradient(stops:
-                [
-                    Gradient.Stop(color: Color(red: 0.81, green: 0.51, blue: 0.53), location: 0.00),
-                    Gradient.Stop(color: Color(red: 0.29, green: 0.2, blue: 0.47), location: 0.59),
-                    Gradient.Stop(color: Color(red: 0.12, green: 0.12, blue: 0.19), location: 1.00)
-                ],
-                startPoint: UnitPoint(x: 0, y: 0),
-                endPoint: UnitPoint(x: 0.66, y: 0.36))
+            LinearGradient(stops: backgroundGradients,
+                           startPoint: UnitPoint(x: 0, y: 0),
+                           endPoint: UnitPoint(x: 0.66, y: 0.36))
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .ignoresSafeArea()
 
@@ -112,9 +114,28 @@ private extension OnboardingView {
                         .resizable()
                         .scaledToFit()
                         .frame(width: imageWidth)
-                        .offset(x: -imageWidth * 0.3, y: -imageWidth * 0.65)
+                        .offset(x: -imageWidth * 0.3,
+                                y: -imageWidth * (UIDevice.current.isIpad ? 0.62 : 0.55))
                 }
+                .clipped()
+                .ignoresSafeArea(edges: [.top, .leading, .trailing])
             }
+        }
+    }
+
+    var backgroundGradients: [Gradient.Stop] {
+        if colorScheme == .dark {
+            [
+                Gradient.Stop(color: Color(red: 0.81, green: 0.51, blue: 0.53), location: 0.00),
+                Gradient.Stop(color: Color(red: 0.29, green: 0.2, blue: 0.47), location: 0.59),
+                Gradient.Stop(color: Color(red: 0.12, green: 0.12, blue: 0.19), location: 1.00)
+            ]
+        } else {
+            [
+                Gradient.Stop(color: Color(red: 0.81, green: 0.51, blue: 0.53), location: 0.00),
+                Gradient.Stop(color: Color(red: 0.94, green: 0.82, blue: 0.85), location: 0.59),
+                Gradient.Stop(color: Color(red: 0.98, green: 0.98, blue: 1), location: 1.00)
+            ]
         }
     }
 
@@ -247,7 +268,7 @@ private extension OnboardingView {
         }, label: {
             Text("Not now", bundle: .module)
                 .font(.callout)
-                .foregroundStyle(.white)
+                .foregroundStyle(PassColor.textNorm.toColor)
         })
     }
 
