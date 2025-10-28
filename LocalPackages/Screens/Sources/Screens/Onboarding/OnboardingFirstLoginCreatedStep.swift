@@ -50,7 +50,7 @@ struct OnboardingFirstLoginCreatedStep: View {
 private extension OnboardingFirstLoginCreatedStep {
     var sparkledLogin: some View {
         ZStack(alignment: .trailing) {
-            Image(uiImage: PassIcon.onboardLoginCreatedSparkle)
+            PassIcon.onboardLoginCreatedSparkle
                 .resizable()
                 .scaledToFit()
                 .frame(width: 67)

@@ -24,7 +24,7 @@ import SwiftUI
 struct EmptySearchView: View {
     var body: some View {
         VStack(spacing: 40) {
-            Image(uiImage: PassIcon.magnifyingGlass)
+            PassIcon.magnifyingGlass
             Text("Search across all items")
                 .fontWeight(.semibold)
                 .foregroundStyle(PassColor.textNorm)

@@ -37,7 +37,7 @@ struct PinAuthenticationView: View {
         VStack(alignment: .center) {
             Spacer()
 
-            Image(uiImage: PassIcon.passIcon)
+            PassIcon.passIcon
                 .resizable()
                 .scaledToFit()
                 .frame(maxWidth: 160)

@@ -85,7 +85,7 @@ private extension PasswordHistoryView {
                            action: viewModel.clearHistory,
                            label: {
                                Label(title: { Text("Clear history", bundle: .module) },
-                                     icon: { Image(uiImage: PassIcon.clearHistory) })
+                                     icon: { PassIcon.clearHistory })
                            })
                 }, label: {
                     CircleButton(icon: IconProvider.threeDotsVertical,

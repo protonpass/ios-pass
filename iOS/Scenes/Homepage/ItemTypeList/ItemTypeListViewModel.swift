@@ -26,7 +26,6 @@ import FactoryKit
 import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
-import UIKit
 
 enum ItemType: CaseIterable {
     case login, alias, note, password, creditCard, identity, custom
@@ -97,22 +96,22 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
 }
 
 extension ItemType {
-    var icon: UIImage {
+    var icon: Image {
         switch self {
         case .login:
-            IconProvider.user
+            IconProvider.user.toImage
         case .alias:
-            IconProvider.alias
+            IconProvider.alias.toImage
         case .creditCard:
             PassIcon.passCreditCardOneStripe
         case .note:
-            IconProvider.fileLines
+            IconProvider.fileLines.toImage
         case .password:
-            IconProvider.key
+            IconProvider.key.toImage
         case .identity:
-            IconProvider.cardIdentity
+            IconProvider.cardIdentity.toImage
         case .custom:
-            IconProvider.wrench
+            IconProvider.wrench.toImage
         }
     }
 

@@ -117,7 +117,7 @@ private struct CreateItemButton: View {
 
         Button(action: action) {
             VStack {
-                Image(uiImage: type.regularIcon)
+                type.regularIcon
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: 20, maxHeight: 20)

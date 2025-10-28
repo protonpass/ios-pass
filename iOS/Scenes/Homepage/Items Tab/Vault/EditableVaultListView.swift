@@ -110,7 +110,7 @@ private extension EditableVaultListView {
     var upsellRow: some View {
         if !viewModel.mode.isOrganise, viewModel.shouldUpsell {
             HStack(alignment: .center, spacing: 16) {
-                Image(uiImage: PassIcon.diamond)
+                PassIcon.diamond
                     .resizable()
                     .frame(width: 20, height: 20)
                     .scaledToFit()
@@ -452,18 +452,18 @@ extension VaultSelection {
         }
     }
 
-    var icon: UIImage {
+    var icon: Image {
         switch self {
         case .all:
             PassIcon.brandPass
         case let .precise(vault):
             vault.vaultBigIcon ?? PassIcon.vaultIcon1Big
         case .trash:
-            IconProvider.trash
+            IconProvider.trash.toImage
         case .sharedByMe:
-            IconProvider.userArrowRight
+            IconProvider.userArrowRight.toImage
         case .sharedWithMe:
-            IconProvider.userArrowLeft
+            IconProvider.userArrowLeft.toImage
         }
     }
 

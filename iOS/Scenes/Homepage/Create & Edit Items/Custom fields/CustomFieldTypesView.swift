@@ -50,7 +50,7 @@ struct CustomFieldTypesView: View {
             onSelect(type)
         }, label: {
             HStack(spacing: 18) {
-                Image(uiImage: type.icon)
+                type.icon
                     .resizable()
                     .scaledToFit()
                     .foregroundStyle(PassColor.textWeak)
@@ -81,16 +81,16 @@ extension CustomFieldType {
         }
     }
 
-    var icon: UIImage {
+    var icon: Image {
         switch self {
         case .text:
-            IconProvider.textAlignLeft
+            IconProvider.textAlignLeft.toImage
         case .totp:
-            IconProvider.lock
+            IconProvider.lock.toImage
         case .hidden:
-            IconProvider.eyeSlash
+            IconProvider.eyeSlash.toImage
         case .timestamp:
-            IconProvider.calendarDay
+            IconProvider.calendarDay.toImage
         }
     }
 }

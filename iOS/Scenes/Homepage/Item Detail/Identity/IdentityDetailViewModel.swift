@@ -25,7 +25,6 @@ import Entities
 import FactoryKit
 import Macro
 import SwiftUI
-import UIKit
 
 @MainActor
 final class IdentityDetailViewModel: BaseItemDetailViewModel {

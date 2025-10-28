@@ -59,7 +59,7 @@ enum CtaButtonType {
 struct InfoBannerDetail {
     let title: String
     let description: String
-    let icon: UIImage?
+    let icon: Image?
     /// Call-to-action button title
     let ctaTitle: String?
     let backgroundColor: Color
@@ -69,7 +69,7 @@ struct InfoBannerDetail {
 
     init(title: String,
          description: String,
-         icon: UIImage?,
+         icon: Image?,
          ctaTitle: String?,
          backgroundColor: Color,
          foregroundColor: Color,

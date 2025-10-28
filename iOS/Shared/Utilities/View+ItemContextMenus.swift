@@ -167,17 +167,17 @@ enum ItemContextMenu {
             var firstOptions = [ItemContextMenuOption]()
 
             firstOptions.append(.init(title: "Copy alias address",
-                                      icon: IconProvider.squares,
+                                      icon: IconProvider.squares.toImage,
                                       action: onCopyAlias))
 
             if isEditable {
                 if item.aliasEnabled {
                     firstOptions.append(.init(title: "Disable alias",
-                                              icon: PassIcon.aliasSlash.toImage,
+                                              icon: PassIcon.aliasSlash,
                                               action: { onToggleAliasStatus(false) }))
                 } else {
                     firstOptions.append(.init(title: "Enable alias",
-                                              icon: IconProvider.alias,
+                                              icon: IconProvider.alias.toImage,
                                               action: { onToggleAliasStatus(true) }))
                 }
             }
@@ -208,16 +208,16 @@ enum ItemContextMenu {
 
             sections.append(.init(options: [
                 .init(title: "Copy cardholder name",
-                      icon: IconProvider.user,
+                      icon: IconProvider.user.toImage,
                       action: onCopyCardholderName),
                 .init(title: "Copy card number",
-                      icon: IconProvider.creditCard,
+                      icon: IconProvider.creditCard.toImage,
                       action: onCopyCardNumber),
                 .init(title: "Copy expiration date",
-                      icon: IconProvider.calendarDay,
+                      icon: IconProvider.calendarDay.toImage,
                       action: onCopyExpirationDate),
                 .init(title: "Copy security code",
-                      icon: Image(uiImage: PassIcon.shieldCheck),
+                      icon: PassIcon.shieldCheck,
                       action: onCopySecurityCode)
             ]))
 
@@ -402,21 +402,21 @@ struct ItemContextMenuOption: Identifiable {
     }
 
     static func editOption(action: @escaping () -> Void) -> ItemContextMenuOption {
-        .init(title: "Edit", icon: IconProvider.pencil, action: action)
+        .init(title: "Edit", icon: IconProvider.pencil.toImage, action: action)
     }
 
     static func pinToggleOption(item: any PinnableItemTypeIdentifiable,
                                 action: @escaping () -> Void) -> ItemContextMenuOption {
-        .init(title: item.pinTitle, icon: Image(uiImage: item.pinIcon), action: action)
+        .init(title: item.pinTitle, icon: item.pinIcon, action: action)
     }
 
     static func viewHistoryOption(action: @escaping () -> Void) -> ItemContextMenuOption {
-        .init(title: "View history", icon: IconProvider.clock, action: action)
+        .init(title: "View history", icon: IconProvider.clock.toImage, action: action)
     }
 
     static func trashOption(action: @escaping () -> Void) -> ItemContextMenuOption {
         .init(title: "Move to Trash",
-              icon: IconProvider.trash,
+              icon: IconProvider.trash.toImage,
               action: action,
               isDestructive: true)
     }

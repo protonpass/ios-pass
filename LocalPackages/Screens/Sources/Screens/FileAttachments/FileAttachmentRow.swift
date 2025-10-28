@@ -68,7 +68,7 @@ private extension FileAttachmentRow {
     @ViewBuilder
     var content: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
-            Image(uiImage: uiModel.group.icon)
+            uiModel.group.icon
                 .resizable()
                 .scaledToFit()
                 .frame(maxWidth: 20)
@@ -115,7 +115,7 @@ private extension FileAttachmentRow {
                     switch mode {
                     case let .edit(onOpen, onRename, onDelete, _):
                         LabelButton(title: "Open",
-                                    icon: IconProvider.eye,
+                                    icon: IconProvider.eye.toImage,
                                     action: onOpen)
                         LabelButton(title: "Rename",
                                     icon: PassIcon.rename,
@@ -127,14 +127,14 @@ private extension FileAttachmentRow {
 
                     case let .view(onOpen, onSave, onShare):
                         LabelButton(title: "Open",
-                                    icon: IconProvider.eye,
+                                    icon: IconProvider.eye.toImage,
                                     action: onOpen)
                         LabelButton(title: "Save",
-                                    icon: IconProvider.arrowDownCircle,
+                                    icon: IconProvider.arrowDownCircle.toImage,
                                     action: onSave)
 
                         LabelButton(title: "Share",
-                                    icon: IconProvider.arrowUpFromSquare,
+                                    icon: IconProvider.arrowUpFromSquare.toImage,
                                     action: onShare)
                     }
                 }, label: {

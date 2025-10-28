@@ -60,7 +60,7 @@ struct ItemCountView: View {
                     CounterChip(configuration: ItemContentType.custom.toConfiguration,
                                 value: itemCount.custom,
                                 onSelect: { onSelectItemType(.custom) })
-                    CounterChip(configuration: .init(icon: IconProvider.lock,
+                    CounterChip(configuration: .init(icon: IconProvider.lock.toImage,
                                                      iconTint: PassColor.passwordInteractionNorm,
                                                      iconBackground: PassColor.passwordInteractionNormMinor1),
                                 value: itemCount.loginWith2fa,
@@ -98,7 +98,7 @@ private struct CounterChip: View {
     let onSelect: () -> Void
 
     struct Configuration {
-        let icon: UIImage
+        let icon: Image
         let iconTint: Color
         let iconBackground: Color
     }

@@ -26,7 +26,7 @@ public extension Share {
         vaultContent?.display.color.color.color
     }
 
-    var vaultBigIcon: UIImage? {
+    var vaultBigIcon: Image? {
         vaultContent?.display.icon.icon.bigImage
     }
 }
@@ -40,11 +40,11 @@ public extension VaultContent {
         mainColor.opacity(0.16)
     }
 
-    var vaultBigIcon: UIImage {
+    var vaultBigIcon: Image {
         display.icon.icon.bigImage
     }
 
-    var vaultSmallIcon: UIImage {
+    var vaultSmallIcon: Image {
         display.icon.icon.smallImage
     }
 }

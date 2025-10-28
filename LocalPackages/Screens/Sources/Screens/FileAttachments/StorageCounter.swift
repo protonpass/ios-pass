@@ -147,7 +147,7 @@ private struct StorageUpsell: View {
                 .ignoresSafeArea()
 
             VStack(spacing: DesignConstant.sectionPadding) {
-                Image(uiImage: PassIcon.storageFull)
+                PassIcon.storageFull
                     .resizable()
                     .scaledToFit()
                     .padding(.top)

@@ -57,7 +57,7 @@ struct EditCustomFieldSections<Field: CustomFieldTypes>: View {
 
     private var addMoreButton: some View {
         HStack {
-            CapsuleLabelButton(icon: UIImage(systemName: "plus") ?? .init(),
+            CapsuleLabelButton(icon: Image(systemName: "plus"),
                                title: #localized("Add more"),
                                titleColor: contentType.normMajor2Color,
                                backgroundColor: contentType.normMinor1Color,

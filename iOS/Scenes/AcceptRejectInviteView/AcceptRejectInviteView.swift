@@ -97,7 +97,7 @@ private extension AcceptRejectInviteView {
                 infos.display.color.color.color.opacity(0.16)
                     .clipShape(Circle())
 
-                Image(uiImage: infos.display.icon.icon.bigImage)
+                infos.display.icon.icon.bigImage
                     .resizable()
                     .renderingMode(.template)
                     .scaledToFit()

@@ -44,8 +44,6 @@ private struct TelemetryEventUiModel: Identifiable {
     }
 }
 
-// swiftlint:disable force_unwrapping
-
 @MainActor
 private final class TelemetryEventsViewModel: ObservableObject {
     private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
@@ -160,16 +158,16 @@ private struct EventView: View {
 }
 
 private extension TelemetryEventType {
-    var icon: UIImage {
+    var icon: Image {
         switch self {
         case let .create(type), let .delete(type), let .read(type), let .update(type):
             type.regularIcon
         case .autofillDisplay, .autofillTriggeredFromApp, .autofillTriggeredFromSource:
-            UIImage(systemName: "rectangle.and.pencil.and.ellipsis")!
+            Image(systemName: "rectangle.and.pencil.and.ellipsis")
         case .searchClick, .searchTriggered:
-            UIImage(systemName: "magnifyingglass")!
+            Image(systemName: "magnifyingglass")
         case .twoFaCreation, .twoFaUpdate:
-            UIImage(systemName: "2.circle")!
+            Image(systemName: "2.circle")
         case .passkeyAuth, .passkeyCreate, .passkeyDisplay:
             PassIcon.passkey
         case .monitorAddCustomEmailFromSuggestion,
@@ -184,15 +182,15 @@ private extension TelemetryEventType {
              .monitorItemDetailFromMissing2FA,
              .monitorItemDetailFromReusedPassword,
              .monitorItemDetailFromWeakPassword:
-            UIImage(systemName: "person.badge.shield.checkmark.fill")!
+            Image(systemName: "person.badge.shield.checkmark.fill")
         case .multiAccountAddAccount, .multiAccountRemoveAccount:
-            UIImage(systemName: "person.3.fill")!
+            Image(systemName: "person.3.fill")
         case .notificationChangeStatus, .notificationCtaClick, .notificationDisplay:
-            UIImage(systemName: "envelope.fill")!
+            Image(systemName: "envelope.fill")
         case .fileUploaded:
-            UIImage(systemName: "icloud.and.arrow.up.fill")!
+            Image(systemName: "icloud.and.arrow.up.fill")
         case .newLoginFlow:
-            UIImage(systemName: "house")!
+            Image(systemName: "house")
         case .onboardingAliasVideoOpened,
              .onboardingBiometricsEnabled,
              .onboardingBiometricsSkipped,
@@ -201,7 +199,7 @@ private extension TelemetryEventType {
              .onboardingUpsellCtaClicked,
              .onboardingUpsellSkipped,
              .onboardingUpsellSubscribed:
-            UIImage(systemName: "hand.wave.fill")!
+            Image(systemName: "hand.wave.fill")
         }
     }
 
@@ -386,5 +384,3 @@ private extension TelemetryEventType {
         }
     }
 }
-
-// swiftlint:enable force_unwrapping

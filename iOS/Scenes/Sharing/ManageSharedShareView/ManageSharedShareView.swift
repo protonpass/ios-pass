@@ -122,7 +122,7 @@ private extension ManageSharedShareView {
             LazyVStack(spacing: 0) {
                 if isVaultSection, let vaultContent = viewModel.share.vaultContent {
                     HStack(spacing: 16) {
-                        Image(uiImage: vaultContent.vaultBigIcon)
+                        vaultContent.vaultBigIcon
                             .resizable()
                             .renderingMode(.template)
                             .scaledToFit()

@@ -28,27 +28,33 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
-public struct UpsellElement: Sendable, Hashable, Identifiable {
+public struct UpsellElement: @unchecked Sendable, Hashable, Identifiable {
     public let id = UUID().uuidString
-    let icon: UIImage
+    let icon: Image
     let title: String
     let color: Color?
 
-    public init(icon: UIImage, title: String, color: Color? = nil) {
+    public init(icon: Image, title: String, color: Color? = nil) {
         self.icon = icon
         self.title = title
         self.color = color
     }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(title)
+        hasher.combine(color)
+    }
 }
 
-public struct UpsellingViewConfiguration: Sendable, Hashable {
-    let icon: UIImage
+public struct UpsellingViewConfiguration: @unchecked Sendable, Hashable {
+    let icon: Image
     let title: String
     let description: String
     let upsellElements: [UpsellElement]
     let ctaTitle: String
 
-    public init(icon: UIImage,
+    public init(icon: Image,
                 title: String,
                 description: String,
                 upsellElements: [UpsellElement],
@@ -58,6 +64,13 @@ public struct UpsellingViewConfiguration: Sendable, Hashable {
         self.description = description
         self.upsellElements = upsellElements
         self.ctaTitle = ctaTitle
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(title)
+        hasher.combine(description)
+        hasher.combine(upsellElements)
+        hasher.combine(ctaTitle)
     }
 }
 
@@ -86,7 +99,7 @@ private extension UpsellingView {
         GeometryReader { proxy in
             VStack(alignment: .center) {
                 Spacer()
-                Image(uiImage: configuration.icon)
+                configuration.icon
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: proxy.size.width * 0.75)
@@ -132,7 +145,7 @@ private extension UpsellingView {
         Label(title: {
             Text(element.title)
         }, icon: {
-            Image(uiImage: element.icon)
+            element.icon
                 .renderingMode(element.color != nil ? .template : .original)
                 .resizable()
                 .scaledToFit()

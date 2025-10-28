@@ -23,29 +23,28 @@ import Entities
 import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
-import UIKit
 
 // MARK: - Colors & icons
 
 extension ItemContentType {
-    var regularIcon: UIImage {
+    var regularIcon: Image {
         switch self {
         case .alias:
-            IconProvider.alias
+            IconProvider.alias.toImage
         case .login:
-            IconProvider.user
+            IconProvider.user.toImage
         case .note:
-            IconProvider.fileLines
+            IconProvider.fileLines.toImage
         case .creditCard:
             PassIcon.passCreditCardOneStripe
         case .identity:
             IconProvider.cardIdentity
         case .custom, .sshKey, .wifi:
-            IconProvider.wrench
+            IconProvider.wrench.toImage
         }
     }
 
-    var largeIcon: UIImage {
+    var largeIcon: Image {
         switch self {
         case .creditCard:
             PassIcon.passCreditCardTwoStripes

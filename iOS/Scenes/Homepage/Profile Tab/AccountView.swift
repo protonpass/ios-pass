@@ -156,7 +156,7 @@ struct AccountView: View {
                               },
                               trailing: {
                                   if let image = accountRecovery.imageForSettingsItem {
-                                      CircleButton(icon: image,
+                                      CircleButton(icon: image.toImage,
                                                    iconColor: PassColor.interactionNormMajor2,
                                                    backgroundColor: PassColor.interactionNormMinor1)
                                   }

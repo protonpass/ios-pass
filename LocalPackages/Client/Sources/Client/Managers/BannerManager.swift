@@ -23,7 +23,6 @@ import Entities
 import Macro
 @preconcurrency import ProtonCoreUIFoundations
 import SwiftUI
-import UIKit
 
 public protocol BannerDisplayProtocol: Sendable {
     func displayBottomSuccessMessage(_ message: String)
