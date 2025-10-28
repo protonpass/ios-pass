@@ -77,7 +77,7 @@ struct ItemDetailToolbar: ToolbarContent {
                         }
 
                         Label(viewModel.itemContent.item.pinTitle,
-                              uiImage: viewModel.itemContent.item.pinIcon)
+                              image: viewModel.itemContent.item.pinIcon)
                             .buttonEmbeded { viewModel.toggleItemPinning() }
 
                         if viewModel.itemContent.type == .note {

@@ -172,7 +172,7 @@ private extension DetailMonitoredItemView {
     func breachRow(breach: Breach, resolved: Bool) -> some View {
         Button { router.present(sheet: .breachDetail(breach)) } label: {
             HStack(spacing: DesignConstant.sectionPadding) {
-                Image(uiImage: resolved ? PassIcon.breachShieldResolved : PassIcon.breachShieldUnresolved)
+                (resolved ? PassIcon.breachShieldResolved : PassIcon.breachShieldUnresolved)
                     .resizable()
                     .scaledToFit()
                     .frame(height: 43)

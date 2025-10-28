@@ -41,7 +41,7 @@ public struct AliasSyncView: View {
                 .ignoresSafeArea()
 
             VStack {
-                Image(uiImage: PassIcon.aliasSync)
+                PassIcon.aliasSync
                     .resizable()
                     .scaledToFit()
                     .frame(maxHeight: 80)

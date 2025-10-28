@@ -564,7 +564,7 @@ private extension DarkWebMonitorHomeView {
             let backgroundColor = noBreaches ? PassColor.cardInteractionNormMinor2 : PassColor
                 .passwordInteractionNormMinor2
             ToolbarItem(placement: .topBarTrailing) {
-                CircleButton(icon: icon, iconColor: iconColor, backgroundColor: backgroundColor) {
+                CircleButton(icon: icon.toImage, iconColor: iconColor, backgroundColor: backgroundColor) {
                     if noBreaches {
                         showNoBreachesAlert.toggle()
                     } else {

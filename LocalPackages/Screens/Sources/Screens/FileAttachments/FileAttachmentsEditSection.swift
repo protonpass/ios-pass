@@ -117,7 +117,7 @@ public struct FileAttachmentsEditSection: View {
                 }
 
                 if handler.isFreeUser {
-                    Image(uiImage: PassIcon.passSubscriptionBadge)
+                    PassIcon.passSubscriptionBadge
                         .resizable()
                         .scaledToFit()
                         .frame(height: 24)

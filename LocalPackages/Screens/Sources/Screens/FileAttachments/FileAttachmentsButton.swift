@@ -60,7 +60,7 @@ struct FileAttachmentsButton: View {
                 Label(title: {
                     Text(method.title, bundle: .module)
                 }, icon: {
-                    Image(uiImage: method.icon)
+                    method.icon
                         .resizable()
                 })
                 .buttonEmbeded {

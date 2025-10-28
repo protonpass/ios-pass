@@ -96,13 +96,13 @@ private extension ItemsTabTopBar {
             }
 
             if showPromoBadge {
-                Image(uiImage: PassIcon.promoBadge)
+                PassIcon.promoBadge
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: 46)
                     .buttonEmbeded(action: onPromoBadgeTapped)
             } else if viewModel.shouldUpsell {
-                Image(uiImage: PassIcon.diamond)
+                PassIcon.diamond
                     .resizable()
                     .frame(width: 20, height: 20)
                     .scaledToFit()
@@ -178,7 +178,7 @@ private extension ItemsTabTopBar {
                             Section {
                                 Button(action: { handle(extraOption: option) },
                                        label: {
-                                           Label(option.title, uiImage: option.icon)
+                                           Label(option.title, image: option.icon)
                                        })
                             }
                         }
@@ -225,7 +225,7 @@ private extension ItemsTabTopBar {
 }
 
 private struct VautlSelectionUiModel: Sendable {
-    let icon: UIImage
+    let icon: Image
     let iconColor: Color
     let backgroundColor: Color
 }
@@ -244,7 +244,7 @@ private extension VaultSelection {
                   backgroundColor: VaultSelection.all.color.opacity(0.16))
 
         case .sharedWithMe:
-            .init(icon: IconProvider.userArrowLeft,
+            .init(icon: IconProvider.userArrowLeft.toImage,
                   iconColor: VaultSelection.all.color,
                   backgroundColor: VaultSelection.all.color.opacity(0.16))
 
@@ -260,7 +260,7 @@ private extension VaultSelection {
             }
 
         case .trash:
-            .init(icon: IconProvider.trash,
+            .init(icon: IconProvider.trash.toImage,
                   iconColor: VaultSelection.trash.color,
                   backgroundColor: VaultSelection.trash.color.opacity(0.16))
         }

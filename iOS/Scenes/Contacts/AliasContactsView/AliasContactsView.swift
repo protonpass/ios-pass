@@ -229,7 +229,7 @@ private extension AliasContactsView {
     }
 
     var passPlusBadge: some View {
-        Image(uiImage: PassIcon.passSubscriptionBadge)
+        PassIcon.passSubscriptionBadge
             .resizable()
             .scaledToFit()
             .frame(height: 24)

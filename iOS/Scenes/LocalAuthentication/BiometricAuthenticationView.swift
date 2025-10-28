@@ -76,7 +76,7 @@ struct BiometricAuthenticationView: View {
 
 private extension BiometricAuthenticationView {
     var passLogo: some View {
-        Image(uiImage: PassIcon.passIcon)
+        PassIcon.passIcon
             .resizable()
             .scaledToFit()
             .frame(maxWidth: 160)

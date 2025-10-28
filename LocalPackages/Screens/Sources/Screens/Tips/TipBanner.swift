@@ -52,10 +52,10 @@ public extension TipBanner {
         }
 
         public struct TrailingBackground {
-            let image: UIImage
+            let image: Image
             let offset: CGSize
 
-            public init(image: UIImage, offset: CGSize) {
+            public init(image: Image, offset: CGSize) {
                 self.image = image
                 self.offset = offset
             }
@@ -176,7 +176,7 @@ private extension TipBanner {
             if let background = configuration.trailingBackground {
                 HStack {
                     Spacer()
-                    Image(uiImage: background.image)
+                    background.image
                         .resizable()
                         .scaledToFit()
                         .frame(maxWidth: proxy.size.width / 2, maxHeight: proxy.size.height)

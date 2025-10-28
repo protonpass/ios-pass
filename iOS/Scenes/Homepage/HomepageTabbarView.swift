@@ -26,7 +26,6 @@ import Entities
 import FactoryKit
 import ProtonCoreUIFoundations
 import SwiftUI
-import UIKit
 
 enum HomepageTab: CaseIterable, Hashable {
     case items, itemCreation, passMonitor, profile

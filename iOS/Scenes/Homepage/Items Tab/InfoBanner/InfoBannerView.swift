@@ -74,7 +74,7 @@ private extension InfoBannerView {
             Spacer()
 
             if let icon = banner.detail.icon {
-                Image(uiImage: icon)
+                icon
                     .resizable()
                     .scaledToFit()
                     .frame(maxHeight: 64)

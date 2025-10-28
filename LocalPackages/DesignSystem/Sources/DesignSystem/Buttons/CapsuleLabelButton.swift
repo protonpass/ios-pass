@@ -22,7 +22,7 @@ import SwiftUI
 
 /// A capsule button with an icon on the left & title on the right.
 public struct CapsuleLabelButton: View {
-    let icon: UIImage
+    let icon: Image
     let title: String
     let titleColor: Color
     let backgroundColor: Color
@@ -44,7 +44,7 @@ public struct CapsuleLabelButton: View {
         }
     }
 
-    public init(icon: UIImage,
+    public init(icon: Image,
                 title: String,
                 titleColor: Color,
                 backgroundColor: Color,
@@ -109,7 +109,7 @@ public struct CapsuleLabelButton: View {
 
 private extension CapsuleLabelButton {
     var iconView: some View {
-        Image(uiImage: icon)
+        icon
             .resizable()
             .renderingMode(.template)
             .scaledToFit()

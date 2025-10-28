@@ -21,7 +21,6 @@
 import Combine
 import DesignSystem
 import SwiftUI
-import UIKit
 
 @MainActor
 public protocol CoordinatorProtocol: AnyObject {

@@ -196,7 +196,7 @@ private extension ItemHistoryView {
                  icon: UIImage,
                  shouldDisplay: Bool = true) -> some View {
         HStack(spacing: DesignConstant.sectionPadding) {
-            ItemDetailSectionIcon(icon: icon,
+            ItemDetailSectionIcon(icon: icon.toImage,
                                   color: PassColor.textWeak)
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {

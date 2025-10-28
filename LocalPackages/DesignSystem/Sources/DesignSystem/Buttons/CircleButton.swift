@@ -51,7 +51,7 @@ public enum CircleButtonType {
 /// A cirle button with an icon inside.
 public struct CircleButton: View {
     @Environment(\.isEnabled) private var isEnabled
-    let icon: UIImage
+    let icon: Image
     let iconColor: Color
     let iconDisabledColor: Color
     let backgroundColor: Color
@@ -60,7 +60,7 @@ public struct CircleButton: View {
     let accessibilityLabel: LocalizedStringKey?
     let action: (() -> Void)?
 
-    public init(icon: UIImage,
+    public init(icon: Image,
                 iconColor: Color,
                 iconDisabledColor: Color = PassColor.textDisabled,
                 backgroundColor: Color,
@@ -93,7 +93,7 @@ public struct CircleButton: View {
             (isEnabled ? backgroundColor : backgroundDisabledColor)
                 .clipShape(Circle())
 
-            Image(uiImage: icon)
+            icon
                 .resizable()
                 .renderingMode(.template)
                 .scaledToFit()

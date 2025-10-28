@@ -73,8 +73,7 @@ private extension BreachDetailView {
 private extension BreachDetailView {
     var headerInfo: some View {
         HStack(spacing: 12) {
-            Image(uiImage: breach.isResolved ? PassIcon.breachShieldResolved : PassIcon
-                .breachShieldUnresolved)
+            (breach.isResolved ? PassIcon.breachShieldResolved : PassIcon.breachShieldUnresolved)
                 .resizable()
                 .scaledToFit()
                 .frame(height: 50)

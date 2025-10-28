@@ -99,10 +99,10 @@ struct ContactRow: View {
     }
 
     func button(title: LocalizedStringKey,
-                icon: UIImage,
+                icon: Image,
                 action: @escaping () -> Void) -> some View {
         Button { action() } label: {
-            Label(title: { Text(title) }, icon: { Image(uiImage: icon) })
+            Label(title: { Text(title) }, icon: { icon })
         }
     }
 }
@@ -112,8 +112,8 @@ private extension AliasContact {
         blocked ? "Unblock contact" : "Block contact"
     }
 
-    var actionIcon: UIImage {
-        blocked ? IconProvider.envelopeOpenText : IconProvider.circleSlash
+    var actionIcon: Image {
+        blocked ? IconProvider.envelopeOpenText.toImage : IconProvider.circleSlash.toImage
     }
 
     var activityText: String {

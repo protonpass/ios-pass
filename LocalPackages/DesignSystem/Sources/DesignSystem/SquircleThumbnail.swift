@@ -21,7 +21,7 @@
 import SwiftUI
 
 public enum SquircleThumbnailData {
-    case icon(UIImage)
+    case icon(Image)
     case initials(String)
 }
 
@@ -48,7 +48,7 @@ public struct SquircleThumbnail: View {
 
             switch data {
             case let .icon(image):
-                Image(uiImage: image)
+                image
                     .resizable()
                     .renderingMode(.template)
                     .scaledToFit()
