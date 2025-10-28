@@ -180,6 +180,7 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.vaultIcon29Small
         _ = PassIcon.vaultIcon30Big
         _ = PassIcon.vaultIcon30Small
+        _ = PassIcon.diamond
 
         _ = PassIcon.inviteBannerIcon
         _ = PassIcon.netShield

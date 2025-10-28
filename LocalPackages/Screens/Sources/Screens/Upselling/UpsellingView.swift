@@ -18,6 +18,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+// periphery:ignore:all
+
+// swiftlint:disable:next todo
+// TODO: Either refactor or delete as no more used by new upsell flow
+
 import DesignSystem
 import Macro
 import ProtonCoreUIFoundations

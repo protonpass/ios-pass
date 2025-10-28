@@ -118,10 +118,7 @@ extension AccountViewModel {
     }
 
     func upgradeSubscription() {
-        paymentsManager.manageSubscription(isUpgrading: true) { [weak self] result in
-            guard let self else { return }
-            handlePaymentsResult(result: result)
-        }
+        router.present(for: .upgradeFlow)
     }
 
     func restorePurchases() {

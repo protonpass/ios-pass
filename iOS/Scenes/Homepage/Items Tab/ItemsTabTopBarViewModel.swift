@@ -82,10 +82,14 @@ enum ExtraBulkActionOption {
 final class ItemsTabTopBarViewModel: ObservableObject {
     private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
+    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+
     private var cancellables = Set<AnyCancellable>()
 
     @Published private(set) var actionsDisabled = true
     @Published private(set) var extraOptions: [ExtraBulkActionOption] = []
+    @Published private(set) var plan: Plan?
 
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
     var selectedSortType = SortType.mostRecent
@@ -100,6 +104,10 @@ final class ItemsTabTopBarViewModel: ObservableObject {
 
     var highlighted: Bool {
         !appContentManager.filterOption.isDefault || !selectedSortType.isDefault
+    }
+
+    var shouldUpsell: Bool {
+        plan?.shouldUpsell ?? false
     }
 
     var selectable: Bool {
@@ -120,6 +128,7 @@ final class ItemsTabTopBarViewModel: ObservableObject {
     }
 
     init() {
+        plan = accessRepository.access.value?.access.plan
         appContentManager.attach(to: self, storeIn: &cancellables)
         actionsDisabled = currentSelectedItems.value.isEmpty
         currentSelectedItems
@@ -146,6 +155,20 @@ final class ItemsTabTopBarViewModel: ObservableObject {
                 }
             }
             .store(in: &cancellables)
+
+        accessRepository
+            .access
+            .receive(on: DispatchQueue.main)
+            .dropFirst()
+            .sink { [weak self] access in
+                guard let self else { return }
+                plan = access?.access.plan
+            }
+            .store(in: &cancellables)
+    }
+
+    func upgradeSubscription() {
+        router.present(for: .upgradeFlow)
     }
 }
 
