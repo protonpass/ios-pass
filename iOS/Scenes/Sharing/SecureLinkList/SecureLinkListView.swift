@@ -140,11 +140,11 @@ private extension SecureLinkListView {
                                    Label(title: {
                                        Text("Remove all inactive links")
                                    }, icon: {
-                                       Image(uiImage: IconProvider.crossCircle)
+                                       IconProvider.crossCircle
                                    })
                                })
                     } label: {
-                        Image(uiImage: IconProvider.threeDotsVertical)
+                        IconProvider.threeDotsVertical
                             .resizable()
                             .scaledToFit()
                             .frame(width: 20, height: 20)
@@ -286,7 +286,7 @@ private extension SecureLinkListView {
                     Label(title: {
                         Text("Copy link")
                     }, icon: {
-                        Image(uiImage: IconProvider.squares)
+                        IconProvider.squares
                             .renderingMode(.template)
                             .foregroundStyle(PassColor.textWeak)
                     })
@@ -299,11 +299,11 @@ private extension SecureLinkListView {
                        Label(title: {
                            Text(isInactive ? "Remove inactive link" : "Remove link")
                        }, icon: {
-                           Image(uiImage: IconProvider.crossCircle)
+                           IconProvider.crossCircle
                        })
                    })
         } label: {
-            Image(uiImage: IconProvider.threeDotsVertical)
+            IconProvider.threeDotsVertical
                 .resizable()
                 .scaledToFit()
                 .frame(width: 20, height: 20)

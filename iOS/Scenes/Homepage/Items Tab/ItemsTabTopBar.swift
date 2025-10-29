@@ -72,7 +72,7 @@ private extension ItemsTabTopBar {
                 ZStack {
                     PassColor.backgroundStrong
                     HStack {
-                        Image(uiImage: IconProvider.magnifier)
+                        IconProvider.magnifier
                             .resizable()
                             .scaledToFit()
                             .frame(width: 20, height: 20)
@@ -200,10 +200,10 @@ private extension ItemsTabTopBar {
     }
 
     func button(action: @escaping () -> Void,
-                icon: UIImage,
+                icon: Image,
                 color: Color = PassColor.textNorm) -> some View {
         Button(action: action) {
-            Image(uiImage: icon)
+            icon
                 .foregroundStyle(viewModel.actionsDisabled ? PassColor.textHint : color)
         }
         .disabled(viewModel.actionsDisabled)
@@ -244,7 +244,7 @@ private extension VaultSelection {
                   backgroundColor: VaultSelection.all.color.opacity(0.16))
 
         case .sharedWithMe:
-            .init(icon: IconProvider.userArrowLeft.toImage,
+            .init(icon: IconProvider.userArrowLeft,
                   iconColor: VaultSelection.all.color,
                   backgroundColor: VaultSelection.all.color.opacity(0.16))
 
@@ -260,7 +260,7 @@ private extension VaultSelection {
             }
 
         case .trash:
-            .init(icon: IconProvider.trash.toImage,
+            .init(icon: IconProvider.trash,
                   iconColor: VaultSelection.trash.color,
                   backgroundColor: VaultSelection.trash.color.opacity(0.16))
         }

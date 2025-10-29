@@ -86,7 +86,7 @@ private struct SearchEntryView: View {
 
             Button(action: onRemove) {
                 ZStack {
-                    Image(uiImage: IconProvider.cross)
+                    IconProvider.cross
                         .resizable()
                         .scaledToFill()
                         .foregroundStyle(PassColor.textWeak)

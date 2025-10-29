@@ -355,7 +355,7 @@ private extension CreateEditAliasView {
                     Text("Note • SimpleLogin")
                         .sectionTitleText()
                 }, icon: {
-                    Image(uiImage: IconProvider.questionCircle)
+                    IconProvider.questionCircle
                         .resizable()
                         .scaledToFit()
                         .frame(width: 16)

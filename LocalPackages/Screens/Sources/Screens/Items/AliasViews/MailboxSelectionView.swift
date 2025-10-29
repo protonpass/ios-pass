@@ -47,7 +47,7 @@ struct MailboxSelectionView: View {
                                 Spacer()
 
                                 if isSelected {
-                                    Image(uiImage: IconProvider.checkmark)
+                                    IconProvider.checkmark
                                         .foregroundStyle(tint)
                                 }
                             }

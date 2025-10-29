@@ -65,7 +65,7 @@ public struct SelectedSyncVaultRow: View {
             }
             Spacer()
 
-            Image(uiImage: IconProvider.chevronRight)
+            IconProvider.chevronRight
                 .resizable()
                 .scaledToFit()
                 .foregroundStyle(PassColor.textWeak)

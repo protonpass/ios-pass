@@ -136,7 +136,7 @@ public struct TipBanner: View {
             .padding([.horizontal, .bottom], configuration.contentPadding)
 
             Button(action: onDismiss) {
-                Image(uiImage: IconProvider.cross)
+                IconProvider.cross
                     .resizable()
                     .scaledToFit()
                     .foregroundStyle(PassColor.textNorm)

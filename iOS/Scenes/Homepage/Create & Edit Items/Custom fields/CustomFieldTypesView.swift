@@ -84,13 +84,13 @@ extension CustomFieldType {
     var icon: Image {
         switch self {
         case .text:
-            IconProvider.textAlignLeft.toImage
+            IconProvider.textAlignLeft
         case .totp:
-            IconProvider.lock.toImage
+            IconProvider.lock
         case .hidden:
-            IconProvider.eyeSlash.toImage
+            IconProvider.eyeSlash
         case .timestamp:
-            IconProvider.calendarDay.toImage
+            IconProvider.calendarDay
         }
     }
 }

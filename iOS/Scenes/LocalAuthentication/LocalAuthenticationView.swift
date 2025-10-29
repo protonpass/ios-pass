@@ -101,7 +101,7 @@ struct LocalAuthenticationView: View {
 private extension LocalAuthenticationView {
     var logOutButton: some View {
         Button { viewModel.logOut() } label: {
-            Image(uiImage: IconProvider.arrowOutFromRectangle)
+            IconProvider.arrowOutFromRectangle
                 .foregroundStyle(PassColor.textNorm)
                 .padding()
         }

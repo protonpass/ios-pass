@@ -86,7 +86,7 @@ public struct VaultRow<Thumbnail: View>: View {
             ZStack(alignment: .bottomTrailing) {
                 thumbnail()
                 if case let .view(isSelected, isHidden, _) = mode, isSelected || isHidden {
-                    let icon: UIImage? = if isSelected {
+                    let icon: Image? = if isSelected {
                         IconProvider.checkmark
                     } else if isHidden {
                         IconProvider.eyeSlash
@@ -95,7 +95,7 @@ public struct VaultRow<Thumbnail: View>: View {
                     }
 
                     if let icon {
-                        Image(uiImage: icon)
+                        icon
                             .resizable()
                             .scaledToFit()
                             .foregroundStyle(PassColor.textInvert)
@@ -129,13 +129,13 @@ public struct VaultRow<Thumbnail: View>: View {
 
             if mode.isView, let share {
                 HStack(spacing: 4) {
-                    Image(uiImage: IconProvider.usersPlus)
+                    IconProvider.usersPlus
                         .resizable()
                         .scaledToFit()
                         .foregroundStyle(PassColor.interactionNormMajor2)
                         .frame(maxHeight: 20)
                     if share.newUserInvitesReady > 0 {
-                        Image(uiImage: IconProvider.exclamationCircleFilled)
+                        IconProvider.exclamationCircleFilled
                             .resizable()
                             .scaledToFit()
                             .foregroundStyle(PassColor.signalDanger)

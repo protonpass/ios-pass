@@ -91,7 +91,7 @@ struct EditCustomFieldView<Field: Hashable>: View {
             Menu(content: {
                 Button(action: onEditTitle) {
                     Label(title: { Text("Edit name") },
-                          icon: { Image(uiImage: IconProvider.pencil) })
+                          icon: { IconProvider.pencil })
                 }
 
                 Button(action: {
@@ -99,7 +99,7 @@ struct EditCustomFieldView<Field: Hashable>: View {
                     onRemove()
                 }, label: {
                     Label(title: { Text("Remove field") },
-                          icon: { Image(uiImage: IconProvider.crossCircle) })
+                          icon: { IconProvider.crossCircle })
                 })
             }, label: {
                 CircleButton(icon: IconProvider.threeDotsVertical,

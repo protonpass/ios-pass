@@ -376,7 +376,7 @@ private extension CreateEditLoginView {
                     }
             }
 
-            Image(uiImage: IconProvider.plus)
+            IconProvider.plus
                 .resizable()
                 .renderingMode(.template)
                 .frame(width: 9, height: 9)
@@ -492,13 +492,13 @@ private extension CreateEditLoginView {
 
             Menu(content: {
                 Button { viewModel.generateAlias() } label: {
-                    Label(title: { Text("Edit alias") }, icon: { Image(uiImage: IconProvider.pencil) })
+                    Label(title: { Text("Edit alias") }, icon: { IconProvider.pencil })
                 }
 
                 Button { viewModel.removeAlias() }
                     label: {
                         Label(title: { Text("Remove alias") },
-                              icon: { Image(uiImage: IconProvider.crossCircle) })
+                              icon: { IconProvider.crossCircle })
                     }
             }, label: {
                 CircleButton(icon: IconProvider.threeDotsVertical,

@@ -153,7 +153,7 @@ private extension ManageSharedShareView {
                                         .font(.caption)
                                         .fontWeight(.semibold)
                                 } icon: {
-                                    IconProvider.questionCircle.toImage
+                                    IconProvider.questionCircle
                                         .resizable()
                                         .scaledToFit()
                                         .frame(width: 16)
@@ -194,7 +194,7 @@ private extension ManageSharedShareView {
                 viewModel.shareWithMorePeople(iSharingVault: isVaultSharing)
             } label: {
                 Label(isVaultSharing ? "Invite more users to the vault" : "Invite more users to the item",
-                      image: Image(uiImage: IconProvider.userPlus))
+                      image: IconProvider.userPlus)
                     .foregroundStyle(PassColor.interactionNormMajor2)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }

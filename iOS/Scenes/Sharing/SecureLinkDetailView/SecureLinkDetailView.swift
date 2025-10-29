@@ -108,11 +108,11 @@ struct SecureLinkDetailView: View {
 }
 
 private extension SecureLinkDetailView {
-    func infoCell(title: String, description: String, icon: UIImage) -> some View {
+    func infoCell(title: String, description: String, icon: Image) -> some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             VStack {
                 Spacer()
-                Image(uiImage: icon)
+                icon
                     .scaledToFit()
                     .frame(width: 14)
                     .foregroundStyle(PassColor.interactionNormMajor2)

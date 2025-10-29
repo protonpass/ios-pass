@@ -74,7 +74,7 @@ struct EditCustomFieldSections<Field: CustomFieldTypes>: View {
                     .font(.callout)
                     .fontWeight(.medium)
             }, icon: {
-                Image(uiImage: IconProvider.arrowOutSquare)
+                IconProvider.arrowOutSquare
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: 16)
