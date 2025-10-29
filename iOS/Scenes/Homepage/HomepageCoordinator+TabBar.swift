@@ -21,7 +21,6 @@
 // MARK: - HomepageTabBarControllerDelegate
 
 import SwiftUI
-import UIKit
 
 extension HomepageCoordinator: HomepageTabBarControllerDelegate {
     func selected(tab: HomepageTab) {

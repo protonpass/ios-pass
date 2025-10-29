@@ -28,27 +28,33 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
-public struct UpsellElement: Sendable, Hashable, Identifiable {
+public struct UpsellElement: @unchecked Sendable, Hashable, Identifiable {
     public let id = UUID().uuidString
-    let icon: UIImage
+    let icon: Image
     let title: String
-    let color: UIColor?
+    let color: Color?
 
-    public init(icon: UIImage, title: String, color: UIColor? = nil) {
+    public init(icon: Image, title: String, color: Color? = nil) {
         self.icon = icon
         self.title = title
         self.color = color
     }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(title)
+        hasher.combine(color)
+    }
 }
 
-public struct UpsellingViewConfiguration: Sendable, Hashable {
-    let icon: UIImage
+public struct UpsellingViewConfiguration: @unchecked Sendable, Hashable {
+    let icon: Image
     let title: String
     let description: String
     let upsellElements: [UpsellElement]
     let ctaTitle: String
 
-    public init(icon: UIImage,
+    public init(icon: Image,
                 title: String,
                 description: String,
                 upsellElements: [UpsellElement],
@@ -58,6 +64,13 @@ public struct UpsellingViewConfiguration: Sendable, Hashable {
         self.description = description
         self.upsellElements = upsellElements
         self.ctaTitle = ctaTitle
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(title)
+        hasher.combine(description)
+        hasher.combine(upsellElements)
+        hasher.combine(ctaTitle)
     }
 }
 
@@ -75,8 +88,8 @@ public struct UpsellingView: View {
         mainContainer
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .padding()
-            .foregroundStyle(PassColor.textNorm.toColor)
-            .background(PassColor.backgroundNorm.toColor)
+            .foregroundStyle(PassColor.textNorm)
+            .background(PassColor.backgroundNorm)
             .edgesIgnoringSafeArea(.top)
     }
 }
@@ -86,7 +99,7 @@ private extension UpsellingView {
         GeometryReader { proxy in
             VStack(alignment: .center) {
                 Spacer()
-                Image(uiImage: configuration.icon)
+                configuration.icon
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: proxy.size.width * 0.75)
@@ -94,12 +107,12 @@ private extension UpsellingView {
                 Text(configuration.title)
                     .font(.title.bold())
                     .multilineTextAlignment(.center)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
 
                 Text(configuration.description)
                     .padding(.bottom)
                     .multilineTextAlignment(.center)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
 
                 VStack(spacing: 16) {
                     ForEach(configuration.upsellElements) { element in
@@ -132,12 +145,12 @@ private extension UpsellingView {
         Label(title: {
             Text(element.title)
         }, icon: {
-            Image(uiImage: element.icon)
+            element.icon
                 .renderingMode(element.color != nil ? .template : .original)
                 .resizable()
                 .scaledToFit()
                 .frame(maxWidth: 20)
-                .foregroundStyle((element.color ?? PassColor.interactionNormMajor2).toColor)
+                .foregroundStyle(element.color ?? PassColor.interactionNormMajor2)
         })
         .frame(maxWidth: .infinity, alignment: .leading)
     }

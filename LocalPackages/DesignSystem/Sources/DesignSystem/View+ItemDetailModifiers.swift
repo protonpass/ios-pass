@@ -21,20 +21,20 @@
 import SwiftUI
 
 public extension View {
-    func roundedDetailSection(backgroundColor: UIColor = .clear,
-                              borderColor: UIColor = PassColor.inputBorderNorm) -> some View {
-        background(backgroundColor.toColor)
+    func roundedDetailSection(backgroundColor: Color = .clear,
+                              borderColor: Color = PassColor.inputBorderNorm) -> some View {
+        background(backgroundColor)
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .overlay(RoundedRectangle(cornerRadius: 16)
-                .stroke(borderColor.toColor, lineWidth: 1))
+                .stroke(borderColor, lineWidth: 1))
     }
 
-    func roundedEditableSection(backgroundColor: UIColor = PassColor.inputBackgroundNorm,
-                                borderColor: UIColor = PassColor.inputBorderNorm) -> some View {
-        background(backgroundColor.toColor)
+    func roundedEditableSection(backgroundColor: Color = PassColor.inputBackgroundNorm,
+                                borderColor: Color = PassColor.inputBorderNorm) -> some View {
+        background(backgroundColor)
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .overlay(RoundedRectangle(cornerRadius: 16)
-                .stroke(borderColor.toColor, lineWidth: 1))
+                .stroke(borderColor, lineWidth: 1))
     }
 }
 
@@ -44,8 +44,8 @@ public extension Text {
         font(.footnote)
             // swiftformat:disable all
             .adaptiveForegroundStyle(isValid ?
-                (text?.isEmpty == true ? PassColor.textNorm : PassColor.textWeak).toColor :
-                PassColor.signalDanger.toColor)
+                (text?.isEmpty == true ? PassColor.textNorm : PassColor.textWeak) :
+                PassColor.signalDanger)
             // swiftformat:enable all
             .animation(.default, value: isValid)
             .animation(.default, value: text?.isEmpty)
@@ -53,30 +53,30 @@ public extension Text {
 
     func sectionTitleText() -> Text {
         font(.footnote)
-            .adaptiveForegroundStyle(PassColor.textWeak.toColor)
+            .adaptiveForegroundStyle(PassColor.textWeak)
     }
 
     func sectionContentText() -> Text {
-        adaptiveForegroundStyle(PassColor.textNorm.toColor)
+        adaptiveForegroundStyle(PassColor.textNorm)
     }
 
     func sectionHeaderText() -> Text {
-        adaptiveForegroundStyle(PassColor.textWeak.toColor)
+        adaptiveForegroundStyle(PassColor.textWeak)
     }
 
     /// Used for placeholder `Text`s like `Empty notes`, `No items`...
     func placeholderText() -> Text {
-        font(.body.italic()).adaptiveForegroundStyle(PassColor.textWeak.toColor)
+        font(.body.italic()).adaptiveForegroundStyle(PassColor.textWeak)
     }
 
     func navigationTitleText() -> Text {
         font(.callout.bold())
-            .adaptiveForegroundStyle(PassColor.textNorm.toColor)
+            .adaptiveForegroundStyle(PassColor.textNorm)
     }
 
     func monitorSectionTitleText(maxWidth: CGFloat? = .infinity) -> some View {
         font(.callout.bold())
-            .adaptiveForegroundStyle(PassColor.textNorm.toColor)
+            .adaptiveForegroundStyle(PassColor.textNorm)
             .frame(maxWidth: maxWidth, alignment: .leading)
     }
 }

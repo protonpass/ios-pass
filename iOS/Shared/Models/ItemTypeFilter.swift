@@ -23,7 +23,7 @@ import Entities
 import FactoryKit
 import Macro
 import ProtonCoreUIFoundations
-import UIKit
+import SwiftUI
 
 enum ItemTypeFilterOption: Equatable, Hashable {
     case all
@@ -55,7 +55,7 @@ enum ItemTypeFilterOption: Equatable, Hashable {
 
 struct ItemTypeFilterOptionUiModel {
     // periphery:ignore
-    let icon: UIImage
+    let icon: Image
     let title: String
     let count: Int
 }

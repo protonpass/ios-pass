@@ -27,7 +27,7 @@ import FactoryKit
 import Foundation
 import Macro
 import Screens
-import UIKit
+import SwiftUI
 
 enum SelectedRevision {
     case current, past
@@ -242,11 +242,11 @@ private extension DetailHistoryViewModel {
 }
 
 extension DetailHistoryViewModel: FileAttachmentsViewHandler {
-    var fileAttachmentsSectionPrimaryColor: UIColor {
+    var fileAttachmentsSectionPrimaryColor: Color {
         itemContentType.normMajor2Color
     }
 
-    var fileAttachmentsSectionSecondaryColor: UIColor {
+    var fileAttachmentsSectionSecondaryColor: Color {
         itemContentType.normMinor1Color
     }
 

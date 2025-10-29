@@ -50,7 +50,7 @@ struct ItemSwipeModifier: ViewModifier {
                             IconProvider.clockRotateLeft
                         })
                     })
-                    .tint(PassColor.signalSuccess.toColor)
+                    .tint(PassColor.signalSuccess)
                 }
             }
             .swipeActions(edge: .trailing) {
@@ -66,7 +66,7 @@ struct ItemSwipeModifier: ViewModifier {
                             IconProvider.trashCross
                         })
                     })
-                    .tint(PassColor.signalDanger.toColor)
+                    .tint(PassColor.signalDanger)
                 } else {
                     Button(action: {
                         if item.type == .alias {
@@ -81,7 +81,7 @@ struct ItemSwipeModifier: ViewModifier {
                             IconProvider.trash
                         })
                     })
-                    .tint(PassColor.signalDanger.toColor)
+                    .tint(PassColor.signalDanger)
                 }
             }
             .modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $showingTrashAliasAlert,

@@ -147,7 +147,7 @@ private extension CreateEditSshKeyView {
                           .constant(value) :
                           .constant(String(repeating: "•", count: value.count)))
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
                 .disabled(true)
                 .if(!value.isEmpty) { view in
                     view.monospaced()
@@ -212,7 +212,7 @@ private struct SshKeyEditor: View {
             .textInputAutocapitalization(.never)
             .autocorrectionDisabled()
             .monospaced()
-            .foregroundStyle(PassColor.textNorm.toColor)
+            .foregroundStyle(PassColor.textNorm)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .scrollContentBackground(.hidden)
             .padding([.horizontal, .bottom])
@@ -261,7 +261,7 @@ private struct SshKeyEditor: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .tint(PassColor.interactionNormMajor2.toColor)
+            .tint(PassColor.interactionNormMajor2)
             .navigationStackEmbeded()
             .onAppear {
                 isFocused = true

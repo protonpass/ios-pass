@@ -37,13 +37,13 @@ public struct LoginOnboardingView: View {
     private struct CarouselItem {
         let title: LocalizedStringKey
         let subtitle: LocalizedStringKey
-        let image: UIImage
-        let secondaryImage: UIImage?
+        let image: Image
+        let secondaryImage: Image?
 
         init(title: LocalizedStringKey,
              subtitle: LocalizedStringKey,
-             image: UIImage,
-             secondaryImage: UIImage? = nil) {
+             image: Image,
+             secondaryImage: Image? = nil) {
             self.title = title
             self.subtitle = subtitle
             self.image = image
@@ -80,7 +80,7 @@ public struct LoginOnboardingView: View {
                     bottomActionButton(signUp: true)
                     bottomActionButton(signUp: false)
                         .padding(.vertical, 8)
-                    Image(uiImage: IconProvider.footer)
+                    IconProvider.footer
                         .resizable()
                         .renderingMode(.template)
                         .scaledToFit()
@@ -132,7 +132,7 @@ private extension LoginOnboardingView {
                     }
                     .padding(.horizontal, 36)
                     Spacer()
-                    Image(uiImage: items[index].image)
+                    items[index].image
                         .resizable()
                         .scaledToFit()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -144,7 +144,7 @@ private extension LoginOnboardingView {
                                     Spacer()
                                     Spacer()
                                     Spacer()
-                                    Image(uiImage: secondaryImage)
+                                    secondaryImage
                                         .resizable()
                                         .scaledToFit()
                                         .frame(width: 177)
@@ -167,7 +167,7 @@ private extension LoginOnboardingView {
         if signUp {
             CapsuleTextButton(title: #localized("Create an account", bundle: .module),
                               titleColor: .white,
-                              backgroundColor: signUp ? UIColor(red: 110, green: 74, blue: 255) : .clear,
+                              backgroundColor: signUp ? Color(red: 110, green: 74, blue: 255) : .clear,
                               action: { onAction(signUp) })
         } else {
             CapsuleTextBorderedButton(title: #localized("Sign in", bundle: .module),

@@ -44,7 +44,7 @@ struct AccountList: View {
                     if isActive, details.count > 1 {
                         Text("Switch to", bundle: .module)
                             .font(.callout.bold())
-                            .foregroundStyle(PassColor.textNorm.toColor)
+                            .foregroundStyle(PassColor.textNorm)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.vertical, DesignConstant.sectionPadding)
                     }
@@ -65,7 +65,7 @@ struct AccountList: View {
             }
         }
         .padding(DesignConstant.sectionPadding)
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
         .roundedEditableSection()
         .animation(.default, value: animated)
         .onFirstAppear {
@@ -91,13 +91,13 @@ private extension AccountList {
             Menu(content: {
                 Button(action: { onManage(detail) },
                        label: { Label(title: { Text("Manage account", bundle: .module) },
-                                      icon: { Image(uiImage: IconProvider.cogWheel) }) })
+                                      icon: { IconProvider.cogWheel }) })
 
                 Divider()
 
                 Button(action: { onSignOut(detail) },
                        label: { Label(title: { Text("Sign out", bundle: .module) },
-                                      icon: { Image(uiImage: IconProvider.arrowOutFromRectangle) }) })
+                                      icon: { IconProvider.arrowOutFromRectangle }) })
             }, label: {
                 icon(with: IconProvider.threeDotsVertical,
                      foregroundColor: PassColor.textWeak)
@@ -110,14 +110,14 @@ private extension AccountList {
             icon(with: IconProvider.userPlus,
                  foregroundColor: PassColor.textNorm)
             Text("Add account", bundle: .module)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
             Spacer()
         }
         .contentShape(.rect)
         .onTapGesture(perform: onAddAccount)
     }
 
-    func icon(with uiImage: UIImage, foregroundColor: UIColor) -> some View {
+    func icon(with uiImage: UIImage, foregroundColor: Color) -> some View {
         SwiftUIImage(image: uiImage, width: 24, tintColor: foregroundColor)
     }
 }

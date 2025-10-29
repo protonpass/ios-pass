@@ -57,7 +57,7 @@ private struct ItemReadEventsView: View {
                 if viewModel.uiModels.isEmpty {
                     Form {
                         Text(verbatim: "No events")
-                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .foregroundStyle(PassColor.textWeak)
                     }
                 } else {
                     eventsList

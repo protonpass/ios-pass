@@ -56,12 +56,12 @@ public struct CapsuleStepper<V: Strideable>: View where V.Stride: Numeric {
                 .disabled(reachedMaxValue)
         }
         .font(.title3)
-        .foregroundStyle(PassColor.textNorm.toColor)
+        .foregroundStyle(PassColor.textNorm)
         .buttonStyle(.plain)
         .padding(.vertical, 8)
         .padding(.horizontal, 16)
         .frame(height: height)
-        .foregroundStyle(PassColor.textNorm.toColor)
+        .foregroundStyle(PassColor.textNorm)
         .background {
             Capsule()
                 .fill(backgroundColor)

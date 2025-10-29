@@ -52,10 +52,10 @@ public extension TipBanner {
         }
 
         public struct TrailingBackground {
-            let image: UIImage
+            let image: Image
             let offset: CGSize
 
-            public init(image: UIImage, offset: CGSize) {
+            public init(image: Image, offset: CGSize) {
                 self.image = image
                 self.offset = offset
             }
@@ -117,8 +117,8 @@ public struct TipBanner: View {
                     Text(configuration.description)
                 }
                 .environment(\.colorScheme, .dark)
-                .foregroundStyle(PassColor.textNorm.toColor)
-                .tint(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
+                .tint(PassColor.textNorm)
                 .font(.callout)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -136,17 +136,17 @@ public struct TipBanner: View {
             .padding([.horizontal, .bottom], configuration.contentPadding)
 
             Button(action: onDismiss) {
-                Image(uiImage: IconProvider.cross)
+                IconProvider.cross
                     .resizable()
                     .scaledToFit()
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .frame(width: 18, height: 18)
                     .padding(.top, configuration.topPadding * 2 / 3)
                     .padding(.trailing, configuration.contentPadding * 2 / 3)
             }
             .environment(\.colorScheme, .dark)
         }
-        .foregroundStyle(PassColor.textNorm.toColor)
+        .foregroundStyle(PassColor.textNorm)
         .clipShape(shape)
         .overlay(shape.stroke(.white.opacity(0.1), lineWidth: 1))
     }
@@ -176,7 +176,7 @@ private extension TipBanner {
             if let background = configuration.trailingBackground {
                 HStack {
                     Spacer()
-                    Image(uiImage: background.image)
+                    background.image
                         .resizable()
                         .scaledToFit()
                         .frame(maxWidth: proxy.size.width / 2, maxHeight: proxy.size.height)

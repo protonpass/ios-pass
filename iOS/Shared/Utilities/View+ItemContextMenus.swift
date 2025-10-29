@@ -173,7 +173,7 @@ enum ItemContextMenu {
             if isEditable {
                 if item.aliasEnabled {
                     firstOptions.append(.init(title: "Disable alias",
-                                              icon: PassIcon.aliasSlash.toImage,
+                                              icon: PassIcon.aliasSlash,
                                               action: { onToggleAliasStatus(false) }))
                 } else {
                     firstOptions.append(.init(title: "Enable alias",
@@ -217,7 +217,7 @@ enum ItemContextMenu {
                       icon: IconProvider.calendarDay,
                       action: onCopyExpirationDate),
                 .init(title: "Copy security code",
-                      icon: Image(uiImage: PassIcon.shieldCheck),
+                      icon: PassIcon.shieldCheck,
                       action: onCopySecurityCode)
             ]))
 
@@ -407,7 +407,7 @@ struct ItemContextMenuOption: Identifiable {
 
     static func pinToggleOption(item: any PinnableItemTypeIdentifiable,
                                 action: @escaping () -> Void) -> ItemContextMenuOption {
-        .init(title: item.pinTitle, icon: Image(uiImage: item.pinIcon), action: action)
+        .init(title: item.pinTitle, icon: item.pinIcon, action: action)
     }
 
     static func viewHistoryOption(action: @escaping () -> Void) -> ItemContextMenuOption {

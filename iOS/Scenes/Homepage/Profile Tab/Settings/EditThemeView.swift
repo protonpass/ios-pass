@@ -43,7 +43,7 @@ struct EditThemeView: View {
                                                         .scaledToFit()
                                                         .frame(maxWidth: 20, maxHeight: 20)
                                                 })
-                                                .foregroundStyle(PassColor.textNorm.toColor)
+                                                .foregroundStyle(PassColor.textNorm)
                                             },
                                             isSelected: theme == currentTheme)
 
@@ -53,7 +53,7 @@ struct EditThemeView: View {
                 .padding(.horizontal)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(PassColor.backgroundWeak.toColor)
+            .background(PassColor.backgroundWeak)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {

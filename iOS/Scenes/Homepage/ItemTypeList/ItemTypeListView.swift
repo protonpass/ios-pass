@@ -43,7 +43,7 @@ struct ItemTypeListView: View {
                     }
                 }
             }
-            .fullSheetBackground(PassColor.backgroundWeak.toColor)
+            .fullSheetBackground(PassColor.backgroundWeak)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -79,7 +79,7 @@ struct ItemTypeListView: View {
         return "(\(limitation.count)/\(limitation.limit))"
     }
 
-    private func secondaryTitleColor(for type: ItemType) -> UIColor? {
+    private func secondaryTitleColor(for type: ItemType) -> Color? {
         guard case .alias = type, let limitation = viewModel.limitation else {
             return nil
         }

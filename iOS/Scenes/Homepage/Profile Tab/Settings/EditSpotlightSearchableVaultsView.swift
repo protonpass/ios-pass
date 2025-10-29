@@ -44,7 +44,7 @@ struct EditSpotlightSearchableVaultsView: View {
             }
         }
         .scrollViewEmbeded(maxWidth: .infinity)
-        .background(PassColor.backgroundWeak.toColor)
+        .background(PassColor.backgroundWeak)
         .navigationStackEmbeded()
     }
 }
@@ -55,7 +55,7 @@ private extension EditSpotlightSearchableVaultsView {
                             height: .compact,
                             content: {
                                 Text(vaults.title)
-                                    .foregroundStyle(PassColor.textNorm.toColor)
+                                    .foregroundStyle(PassColor.textNorm)
                             },
                             isSelected: vaults == selection)
     }

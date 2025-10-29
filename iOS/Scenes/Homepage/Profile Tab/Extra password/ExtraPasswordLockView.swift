@@ -61,13 +61,13 @@ struct ExtraPasswordLockView: View {
 
             Text("Enter your extra password")
                 .font(.title.bold())
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
                 .multilineTextAlignment(.center)
 
             Text(email)
                 .multilineTextAlignment(.center)
                 .font(.callout)
-                .foregroundStyle(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak)
 
             SecureField("Extra password", text: $viewModel.extraPassword)
                 .font(.title2)
@@ -76,7 +76,7 @@ struct ExtraPasswordLockView: View {
                 .multilineTextAlignment(.center)
 
             Text("Wrong extra password")
-                .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                .foregroundStyle(PassColor.passwordInteractionNormMajor2)
                 .opacity(showWrongPasswordError ? 1 : 0)
 
             Spacer()
@@ -90,9 +90,9 @@ struct ExtraPasswordLockView: View {
                                         height: 60,
                                         action: { viewModel.unlock(username) })
         }
-        .tint(PassColor.interactionNormMajor1.toColor)
+        .tint(PassColor.interactionNormMajor1)
         .padding()
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
         .animation(.default, value: showWrongPasswordError)
         .onAppear { focused = true }
         .onChange(of: viewModel.result) { result in

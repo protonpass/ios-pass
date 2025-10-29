@@ -51,20 +51,20 @@ public enum CircleButtonType {
 /// A cirle button with an icon inside.
 public struct CircleButton: View {
     @Environment(\.isEnabled) private var isEnabled
-    let icon: UIImage
-    let iconColor: UIColor
-    let iconDisabledColor: UIColor
-    let backgroundColor: UIColor
-    let backgroundDisabledColor: UIColor
+    let icon: Image
+    let iconColor: Color
+    let iconDisabledColor: Color
+    let backgroundColor: Color
+    let backgroundDisabledColor: Color
     let type: CircleButtonType
     let accessibilityLabel: LocalizedStringKey?
     let action: (() -> Void)?
 
-    public init(icon: UIImage,
-                iconColor: UIColor,
-                iconDisabledColor: UIColor = PassColor.textDisabled,
-                backgroundColor: UIColor,
-                backgroundDisabledColor: UIColor = PassColor.backgroundWeak,
+    public init(icon: Image,
+                iconColor: Color,
+                iconDisabledColor: Color = PassColor.textDisabled,
+                backgroundColor: Color,
+                backgroundDisabledColor: Color = PassColor.backgroundWeak,
                 accessibilityLabel: LocalizedStringKey? = nil,
                 type: CircleButtonType = .regular,
                 action: (() -> Void)? = nil) {
@@ -90,14 +90,14 @@ public struct CircleButton: View {
 
     private var realBody: some View {
         ZStack {
-            (isEnabled ? backgroundColor : backgroundDisabledColor).toColor
+            (isEnabled ? backgroundColor : backgroundDisabledColor)
                 .clipShape(Circle())
 
-            Image(uiImage: icon)
+            icon
                 .resizable()
                 .renderingMode(.template)
                 .scaledToFit()
-                .foregroundStyle((isEnabled ? iconColor : iconDisabledColor).toColor)
+                .foregroundStyle(isEnabled ? iconColor : iconDisabledColor)
                 .frame(width: type.iconWidth, height: type.iconWidth)
         }
         .frame(width: type.width, height: type.width)

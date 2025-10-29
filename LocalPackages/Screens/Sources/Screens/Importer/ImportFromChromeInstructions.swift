@@ -95,13 +95,13 @@ public struct ImportFromChromeInstructions: View {
     private func row(for step: ImportFromChromeStep) -> some View {
         HStack(spacing: 10) {
             Text(step.number)
-                .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                .foregroundStyle(PassColor.interactionNormMajor2)
                 .fontWeight(.medium)
                 .padding(10)
-                .background(Circle().stroke(PassColor.interactionNormMinor1.toColor,
+                .background(Circle().stroke(PassColor.interactionNormMinor1,
                                             lineWidth: 1))
             Text(step.description, bundle: .module)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }

@@ -74,7 +74,7 @@ private extension DetailHistoryView {
                     .placeholderText()
             } else {
                 Text(data.ssid)
-                    .foregroundStyle(textColor(for: \.wifi?.ssid).toColor)
+                    .foregroundStyle(textColor(for: \.wifi?.ssid))
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -94,10 +94,10 @@ private extension DetailHistoryView {
                         .placeholderText()
                 } else if isShowingPassword {
                     Text(data.password)
-                        .foregroundStyle(textColor(for: \.wifi?.password).toColor)
+                        .foregroundStyle(textColor(for: \.wifi?.password))
                 } else {
                     Text(String(repeating: "•", count: 12))
-                        .foregroundStyle(textColor(for: \.wifi?.password).toColor)
+                        .foregroundStyle(textColor(for: \.wifi?.password))
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -122,7 +122,7 @@ private extension DetailHistoryView {
                 .sectionTitleText()
 
             Text(data.security.displayName)
-                .foregroundStyle(textColor(for: \.wifi?.security).toColor)
+                .foregroundStyle(textColor(for: \.wifi?.security))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .contentShape(.rect)

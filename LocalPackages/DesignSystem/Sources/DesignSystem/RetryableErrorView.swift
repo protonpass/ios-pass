@@ -23,16 +23,16 @@ import SwiftUI
 
 public struct RetryableErrorView: View {
     let mode: Mode
-    let tintColor: UIColor
+    let tintColor: Color
     let error: any Error
     let onShareLogs: (() -> Void)?
     let onRetry: () -> Void
 
     public enum Mode: Sendable {
         /// Full-page error view, error message displayed  with retry button below
-        case vertical(textColor: UIColor)
+        case vertical(textColor: Color)
         /// Inlined error view, error message displayed with retry button on the right
-        case horizontal(textColor: UIColor)
+        case horizontal(textColor: Color)
 
         var isVertical: Bool {
             if case .vertical = self {
@@ -52,7 +52,7 @@ public struct RetryableErrorView: View {
     }
 
     public init(mode: Mode = .defaultVertical,
-                tintColor: UIColor = PassColor.interactionNorm,
+                tintColor: Color = PassColor.interactionNorm,
                 error: any Error,
                 onShareLogs: (() -> Void)? = nil,
                 onRetry: @escaping () -> Void) {
@@ -72,7 +72,7 @@ public struct RetryableErrorView: View {
             VStack(spacing: DesignConstant.sectionPadding) {
                 Text(verbatim: error.localizedDebugDescription)
                     .multilineTextAlignment(.center)
-                    .foregroundStyle(textColor.toColor)
+                    .foregroundStyle(textColor)
                 retryButton
                 shareLogsButton
             }
@@ -83,7 +83,7 @@ public struct RetryableErrorView: View {
                 Text(verbatim: error.localizedDebugDescription)
                     .font(.callout)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .foregroundStyle(textColor.toColor)
+                    .foregroundStyle(textColor)
                 Spacer()
                 retryButton
             }
@@ -95,7 +95,7 @@ public struct RetryableErrorView: View {
 private extension RetryableErrorView {
     var retryButton: some View {
         Label(#localized("Retry", bundle: .module), systemImage: "arrow.counterclockwise")
-            .foregroundStyle(tintColor.toColor)
+            .foregroundStyle(tintColor)
             .labelStyle(.rightIcon)
             .buttonEmbeded(action: onRetry)
     }
@@ -105,7 +105,7 @@ private extension RetryableErrorView {
         if let onShareLogs {
             Button(action: onShareLogs) {
                 Text("Share logs", bundle: .module)
-                    .foregroundStyle(tintColor.toColor)
+                    .foregroundStyle(tintColor)
             }
         }
     }

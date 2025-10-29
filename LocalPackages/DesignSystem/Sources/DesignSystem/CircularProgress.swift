@@ -25,11 +25,11 @@ public struct CircularProgress: View {
     /// 0.0 -> 1.0
     private let progress: CGFloat
     private let lineWidth: CGFloat
-    private let color: UIColor
+    private let color: Color
 
     public init(progress: CGFloat,
                 lineWidth: CGFloat,
-                color: UIColor) {
+                color: Color) {
         self.progress = progress
         self.lineWidth = lineWidth
         self.color = color
@@ -38,11 +38,10 @@ public struct CircularProgress: View {
     public var body: some View {
         ZStack {
             Circle()
-                .stroke(color.toColor.opacity(0.2), lineWidth: lineWidth)
+                .stroke(color.opacity(0.2), lineWidth: lineWidth)
             Circle()
                 .trim(from: 0, to: progress)
-                .stroke(color.toColor, style: StrokeStyle(lineWidth: lineWidth,
-                                                          lineCap: .round))
+                .stroke(color, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
                 .rotationEffect(.degrees(-90))
         }
     }

@@ -25,7 +25,7 @@ import SwiftUI
 public struct VaultThumbnail: View {
     private let vaultContent: VaultContent
 
-    private var iconColor: UIColor {
+    private var iconColor: Color {
         vaultContent.mainColor
     }
 
@@ -36,9 +36,9 @@ public struct VaultThumbnail: View {
     public var body: some View {
         CircleButton(icon: vaultContent.vaultBigIcon,
                      iconColor: iconColor,
-                     iconDisabledColor: iconColor.withAlphaComponent(0.75),
-                     backgroundColor: iconColor.withAlphaComponent(0.16),
-                     backgroundDisabledColor: iconColor.withAlphaComponent(0.08))
+                     iconDisabledColor: iconColor.opacity(0.75),
+                     backgroundColor: iconColor.opacity(0.16),
+                     backgroundDisabledColor: iconColor.opacity(0.08))
             .animation(.default, value: vaultContent)
     }
 }

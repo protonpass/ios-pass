@@ -25,7 +25,7 @@ public struct TOTPText: View {
     private let texts: [Text]
 
     public init(code: String,
-                textColor: UIColor = PassColor.textNorm,
+                textColor: Color = PassColor.textNorm,
                 font: Font = .callout) {
         let segments = Array(code).chunked(into: 3).map { String($0) }
         var texts = [Text]()
@@ -34,11 +34,11 @@ public struct TOTPText: View {
             texts.append(Text(segment)
                 .font(font)
                 .fontWeight(.medium)
-                .adaptiveForegroundStyle(textColor.toColor))
+                .adaptiveForegroundStyle(textColor))
             if index != segments.count - 1 {
                 texts.append(Text(verbatim: " • ")
                     .font(font)
-                    .adaptiveForegroundStyle(PassColor.textHint.toColor))
+                    .adaptiveForegroundStyle(PassColor.textHint))
             }
         }
         self.texts = texts

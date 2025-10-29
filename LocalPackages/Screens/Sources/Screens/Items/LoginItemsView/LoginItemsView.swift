@@ -80,7 +80,7 @@ public struct LoginItemsView<ItemRow: View, SearchResultRow: View>: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
         .animation(.default, value: viewModel.state)
         .animation(.default, value: searchableItems)
         .animation(.default, value: uiModels)
@@ -175,14 +175,14 @@ private extension LoginItemsView {
 private extension LoginItemsView {
     var title: some View {
         Text(mode.title)
-            .foregroundStyle(PassColor.textNorm.toColor)
+            .foregroundStyle(PassColor.textNorm)
             .font(.title.bold())
             .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     var description: some View {
         Text(mode.description)
-            .foregroundStyle(PassColor.textNorm.toColor)
+            .foregroundStyle(PassColor.textNorm)
             .font(.headline)
             .frame(maxWidth: .infinity, alignment: .leading)
     }
