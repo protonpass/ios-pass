@@ -22,12 +22,12 @@ import DesignSystem
 import Entities
 import Macro
 import ProtonCoreUIFoundations
-import UIKit
+import SwiftUI
 
 // MARK: - Colors & icons
 
 extension ItemContentType {
-    var regularIcon: UIImage {
+    var regularIcon: Image {
         switch self {
         case .alias:
             IconProvider.alias
@@ -44,7 +44,7 @@ extension ItemContentType {
         }
     }
 
-    var largeIcon: UIImage {
+    var largeIcon: Image {
         switch self {
         case .creditCard:
             PassIcon.passCreditCardTwoStripes
@@ -53,7 +53,7 @@ extension ItemContentType {
         }
     }
 
-    var normColor: UIColor {
+    var normColor: Color {
         switch self {
         case .alias:
             PassColor.aliasInteractionNorm
@@ -68,7 +68,7 @@ extension ItemContentType {
         }
     }
 
-    var normMajor1Color: UIColor {
+    var normMajor1Color: Color {
         switch self {
         case .alias:
             PassColor.aliasInteractionNormMajor1
@@ -83,7 +83,22 @@ extension ItemContentType {
         }
     }
 
-    var normMajor2Color: UIColor {
+    var normMajor1UIColor: UIColor {
+        switch self {
+        case .alias:
+            PassUIColor.aliasInteractionNormMajor1
+        case .login:
+            PassUIColor.loginInteractionNormMajor1
+        case .note:
+            PassUIColor.noteInteractionNormMajor1
+        case .creditCard:
+            PassUIColor.cardInteractionNormMajor1
+        case .custom, .identity, .sshKey, .wifi:
+            PassUIColor.interactionNormMajor1
+        }
+    }
+
+    var normMajor2Color: Color {
         switch self {
         case .alias:
             PassColor.aliasInteractionNormMajor2
@@ -98,7 +113,7 @@ extension ItemContentType {
         }
     }
 
-    var normMinor1Color: UIColor {
+    var normMinor1Color: Color {
         switch self {
         case .alias:
             PassColor.aliasInteractionNormMinor1
@@ -113,7 +128,7 @@ extension ItemContentType {
         }
     }
 
-    var normMinor2Color: UIColor {
+    var normMinor2Color: Color {
         switch self {
         case .alias:
             PassColor.aliasInteractionNormMinor2
@@ -132,7 +147,7 @@ extension ItemContentType {
 // MARK: Thumbnail colors
 
 extension ItemContentType {
-    var thumbnailTintColor: UIColor {
+    var thumbnailTintColor: Color {
         switch self {
         case .custom, .sshKey, .wifi:
             PassColor.textNorm
@@ -141,7 +156,7 @@ extension ItemContentType {
         }
     }
 
-    var thumbnailBackgroundColor: UIColor {
+    var thumbnailBackgroundColor: Color {
         switch self {
         case .custom, .sshKey, .wifi:
             PassColor.customItemBackground
@@ -150,7 +165,7 @@ extension ItemContentType {
         }
     }
 
-    var thumbnailAlternativeBackgroundColor: UIColor {
+    var thumbnailAlternativeBackgroundColor: Color {
         switch self {
         case .custom, .sshKey, .wifi:
             PassColor.customItemBackground

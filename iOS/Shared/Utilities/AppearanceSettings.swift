@@ -29,13 +29,13 @@ enum AppearanceSettings {
             Brand.currentBrand = .pass
 
             UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor =
-                PassColor.interactionNorm
+                PassUIColor.interactionNorm
             UIView.appearance(whenContainedInInstancesOf: [QLPreviewController.self]).backgroundColor =
-                PassColor.backgroundNorm
+                PassUIColor.backgroundNorm
             UILabel.appearance(whenContainedInInstancesOf: [UINavigationBar.self]).adjustsFontSizeToFitWidth = true
 
-            UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: PassColor.textNorm]
-            UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: PassColor.textNorm]
+            UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: PassUIColor.textNorm]
+            UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: PassUIColor.textNorm]
         }
     }
 }

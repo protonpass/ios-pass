@@ -33,12 +33,12 @@ struct AdvancedOptionsSection: View {
                 Text("Advanced options")
                     .font(.callout)
             }, icon: {
-                Image(uiImage: IconProvider.cogWheel)
+                IconProvider.cogWheel
                     .resizable()
                     .scaledToFit()
                     .frame(width: 16)
             })
-            .foregroundStyle(PassColor.textWeak.toColor)
+            .foregroundStyle(PassColor.textWeak)
             .frame(maxWidth: .infinity, alignment: .trailing)
         })
     }

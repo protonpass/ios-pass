@@ -43,15 +43,15 @@ private extension MonitorIncludedEmailView {
         VStack(alignment: .leading) {
             Text(address.email)
                 .foregroundStyle(address.isBreached ?
-                    PassColor.passwordInteractionNormMajor2.toColor : PassColor.textNorm.toColor)
+                    PassColor.passwordInteractionNormMajor2 : PassColor.textNorm)
             if let lastBreachDate = address.lastBreachDate {
                 Text("Latest breach on \(lastBreachDate)")
                     .font(.callout)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
             } else {
                 Text("No breaches detected")
                     .font(.callout)
-                    .foregroundStyle(PassColor.cardInteractionNormMajor1.toColor)
+                    .foregroundStyle(PassColor.cardInteractionNormMajor1)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -61,8 +61,8 @@ private extension MonitorIncludedEmailView {
     var trailingView: some View {
         if address.isBreached {
             CapsuleCounter(count: address.breachCounter,
-                           foregroundStyle: SecureRowType.danger.iconColor.toColor,
-                           background: SecureRowType.danger.background.toColor)
+                           foregroundStyle: SecureRowType.danger.iconColor,
+                           background: SecureRowType.danger.background)
         }
         ItemDetailSectionIcon(icon: IconProvider.chevronRight,
                               color: address.isBreached ?

@@ -65,7 +65,7 @@ public struct TableViewConfiguration {
 
     public init(showSectionIndexTitles: Bool = false,
                 rowSpacing: CGFloat = 0,
-                sectionIndexColor: UIColor = PassColor.interactionNorm,
+                sectionIndexColor: UIColor = PassUIColor.interactionNorm,
                 backgroundColor: UIColor = .clear,
                 separatorColor: UIColor = .clear) {
         self.showSectionIndexTitles = showSectionIndexTitles

@@ -148,9 +148,9 @@ struct UpsellOrAttachmentsBanner: View {
         if showUpgrade {
             Text("Upgrade to create custom items")
                 .padding()
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .background(PassColor.interactionNormMinor1.toColor)
+                .background(PassColor.interactionNormMinor1)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
         } else {
             FileAttachmentsBanner(isShown: showAttachments,

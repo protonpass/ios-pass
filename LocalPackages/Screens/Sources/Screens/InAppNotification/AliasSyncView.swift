@@ -37,11 +37,11 @@ public struct AliasSyncView: View {
 
     public var body: some View {
         ZStack(alignment: .topTrailing) {
-            PassColor.backgroundWeak.toColor
+            PassColor.backgroundWeak
                 .ignoresSafeArea()
 
             VStack {
-                Image(uiImage: PassIcon.aliasSync)
+                PassIcon.aliasSync
                     .resizable()
                     .scaledToFit()
                     .frame(maxHeight: 80)
@@ -50,19 +50,19 @@ public struct AliasSyncView: View {
                 Spacer()
 
                 Text("Sync your aliases from SimpleLogin", bundle: .module)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .font(.title.bold())
 
                 Text(#localized("%lld aliases present in SimpleLogin but missing in Proton Pass.", bundle: .module,
                                 count))
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
                     .padding(.vertical, 8)
 
                 Text("Once synced, deleting aliases in Pass will also delete them in SimpleLogin.",
                      bundle: .module)
                     .padding()
-                    .foregroundStyle(PassColor.noteInteractionNormMajor2.toColor)
-                    .background(PassColor.noteInteractionNormMinor1.toColor)
+                    .foregroundStyle(PassColor.noteInteractionNormMajor2)
+                    .background(PassColor.noteInteractionNormMinor1)
                     .clipShape(RoundedRectangle(cornerRadius: 16))
 
                 Spacer()
@@ -81,7 +81,7 @@ public struct AliasSyncView: View {
                 Image(systemName: "xmark.circle.fill")
                     .resizable()
                     .frame(width: 30, height: 30)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
             }
             .buttonStyle(.plain)
             .padding()

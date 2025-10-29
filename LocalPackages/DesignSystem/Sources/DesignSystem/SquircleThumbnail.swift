@@ -21,19 +21,19 @@
 import SwiftUI
 
 public enum SquircleThumbnailData {
-    case icon(UIImage)
+    case icon(Image)
     case initials(String)
 }
 
 public struct SquircleThumbnail: View {
     let data: SquircleThumbnailData
-    let tintColor: UIColor
-    let backgroundColor: UIColor
+    let tintColor: Color
+    let backgroundColor: Color
     let height: CGFloat
 
     public init(data: SquircleThumbnailData,
-                tintColor: UIColor,
-                backgroundColor: UIColor,
+                tintColor: Color,
+                backgroundColor: Color,
                 height: CGFloat = 40) {
         self.data = data
         self.tintColor = tintColor
@@ -43,23 +43,23 @@ public struct SquircleThumbnail: View {
 
     public var body: some View {
         ZStack {
-            backgroundColor.toColor
+            backgroundColor
                 .clipShape(RoundedRectangle(cornerRadius: height / 2.5, style: .continuous))
 
             switch data {
             case let .icon(image):
-                Image(uiImage: image)
+                image
                     .resizable()
                     .renderingMode(.template)
                     .scaledToFit()
-                    .foregroundStyle(tintColor.toColor)
+                    .foregroundStyle(tintColor)
                     .padding(.vertical, height / 3.5)
 
             case let .initials(string):
                 Text(string)
                     .font(.system(size: height / 3))
                     .fontWeight(.medium)
-                    .foregroundStyle(tintColor.toColor)
+                    .foregroundStyle(tintColor)
             }
         }
         .frame(width: height, height: height)

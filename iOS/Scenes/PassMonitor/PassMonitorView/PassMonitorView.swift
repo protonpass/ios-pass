@@ -44,7 +44,7 @@ enum SecureRowType {
         }
     }
 
-    var iconColor: UIColor {
+    var iconColor: Color {
         switch self {
         case .danger:
             PassColor.passwordInteractionNormMajor1
@@ -67,7 +67,7 @@ enum SecureRowType {
         }
     }
 
-    var background: UIColor {
+    var background: Color {
         switch self {
         case .danger:
             PassColor.passwordInteractionNormMinor2
@@ -83,7 +83,7 @@ enum SecureRowType {
     }
 
     /// Background used in item detail pages
-    var detailBackground: UIColor {
+    var detailBackground: Color {
         switch self {
         case .info:
             PassColor.loginInteractionNormMinor2
@@ -92,7 +92,7 @@ enum SecureRowType {
         }
     }
 
-    var border: UIColor {
+    var border: Color {
         switch self {
         case .danger:
             PassColor.passwordInteractionNormMinor1
@@ -107,7 +107,7 @@ enum SecureRowType {
         }
     }
 
-    var infoForeground: UIColor {
+    var infoForeground: Color {
         switch self {
         case .danger:
             PassColor.passwordInteractionNormMajor2
@@ -118,7 +118,7 @@ enum SecureRowType {
         }
     }
 
-    var infoBackground: UIColor {
+    var infoBackground: Color {
         switch self {
         case .danger:
             PassColor.passwordInteractionNormMinor1
@@ -131,7 +131,7 @@ enum SecureRowType {
         }
     }
 
-    var titleColor: UIColor {
+    var titleColor: Color {
         switch self {
         case .danger:
             PassColor.passwordInteractionNormMajor2
@@ -140,7 +140,7 @@ enum SecureRowType {
         }
     }
 
-    var subtitleColor: UIColor {
+    var subtitleColor: Color {
         switch self {
         case .success:
             PassColor.cardInteractionNormMajor2
@@ -166,7 +166,7 @@ struct PassMonitorView: View {
             .navigationTitle("Pass Monitor")
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .scrollViewEmbeded(maxWidth: .infinity)
-            .background(PassColor.backgroundNorm.toColor)
+            .background(PassColor.backgroundNorm)
             .animation(.default, value: viewModel.breaches)
             .animation(.default, value: viewModel.weaknessStats)
             .showSpinner(viewModel.updatingSentinel)
@@ -234,7 +234,7 @@ private extension PassMonitorView {
                     HStack {
                         Text("Passwords Health")
                             .fontWeight(.bold)
-                            .foregroundStyle(PassColor.textNorm.toColor)
+                            .foregroundStyle(PassColor.textNorm)
                         Spacer()
                     }.padding(.top, DesignConstant.sectionPadding)
                 }
@@ -253,7 +253,7 @@ private extension PassMonitorView {
     }
 
     var passPlusBadge: some View {
-        Image(uiImage: PassIcon.passSubscriptionBadge)
+        PassIcon.passSubscriptionBadge
             .resizable()
             .scaledToFit()
             .frame(height: 24)
@@ -278,11 +278,11 @@ private extension PassMonitorView {
             HStack(spacing: 0) {
                 VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                     Text(title)
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm)
                     if let subTitle {
                         Text(subTitle)
                             .font(.footnote)
-                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .foregroundStyle(PassColor.textWeak)
                     }
                 }
                 .contentShape(.rect)
@@ -307,19 +307,19 @@ private extension PassMonitorView {
                     .font(.title)
                     .fontWeight(.medium)
                     .foregroundStyle(isBreached ? PassColor.passwordInteractionNormMajor2
-                        .toColor : PassColor.textNorm.toColor)
+                        : PassColor.textNorm)
                     .padding(.top, DesignConstant.sectionPadding + 15)
                     .multilineTextAlignment(isBreached ? .leading : .center)
 
                 Text(isBreached ? "Your email address was leaked in at least 1 data breach." :
                     "Get notified if your email, password or other personal data was leaked.")
                     .foregroundStyle(isBreached ? PassColor.passwordInteractionNormMajor2
-                        .toColor : PassColor.textNorm.toColor)
+                        : PassColor.textNorm)
                     .multilineTextAlignment(isBreached ? .leading : .center)
 
                 if isBreached, let latestBreach = viewModel.latestBreachInfo {
                     HStack {
-                        Image(uiImage: PassIcon.lightning)
+                        PassIcon.lightning
                             .resizable()
                             .scaledToFit()
                             .frame(height: 24)
@@ -330,10 +330,10 @@ private extension PassMonitorView {
 
                         VStack(alignment: .leading) {
                             Text(latestBreach.domain)
-                                .foregroundStyle(PassColor.textNorm.toColor)
+                                .foregroundStyle(PassColor.textNorm)
                             Text(latestBreach.date)
                                 .font(.footnote)
-                                .foregroundStyle(PassColor.textWeak.toColor)
+                                .foregroundStyle(PassColor.textWeak)
                         }
                     }
 
@@ -341,11 +341,11 @@ private extension PassMonitorView {
                         VStack(alignment: .leading) {
                             Text("Email address")
                                 .fontWeight(.bold)
-                                .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                                .foregroundStyle(PassColor.passwordInteractionNormMajor2)
                                 .frame(maxWidth: .infinity, alignment: .leading)
 
                             Text(verbatim: "Thisisafakeemail@proton.me")
-                                .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                                .foregroundStyle(PassColor.passwordInteractionNormMajor2)
                                 .blur(radius: 5)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                         }
@@ -355,11 +355,11 @@ private extension PassMonitorView {
                         VStack(alignment: .leading) {
                             Text("Password")
                                 .fontWeight(.bold)
-                                .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                                .foregroundStyle(PassColor.passwordInteractionNormMajor2)
                                 .frame(maxWidth: .infinity, alignment: .leading)
 
                             Text(verbatim: "Thisisafakepassword")
-                                .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                                .foregroundStyle(PassColor.passwordInteractionNormMajor2)
                                 .blur(radius: 5)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                         }
@@ -406,7 +406,7 @@ private extension PassMonitorView {
                     Text("Breaches detected")
                         .font(.title3)
                         .fontWeight(.bold)
-                        .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                        .foregroundStyle(PassColor.passwordInteractionNormMajor2)
                         .multilineTextAlignment(.leading)
                     Spacer()
 
@@ -414,18 +414,18 @@ private extension PassMonitorView {
                         .fontWeight(.medium)
                         .padding(.vertical, 4)
                         .padding(.horizontal, 11)
-                        .foregroundStyle(SecureRowType.danger.infoForeground.toColor)
-                        .background(SecureRowType.danger.infoBackground.toColor)
+                        .foregroundStyle(SecureRowType.danger.infoForeground)
+                        .background(SecureRowType.danger.infoBackground)
                         .clipShape(Capsule())
                 }
 
                 Text("Your email address was leaked in \(viewModel.numberOfBreaches) breaches")
-                    .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                    .foregroundStyle(PassColor.passwordInteractionNormMajor2)
                     .multilineTextAlignment(.leading)
 
                 if let latestBreach = viewModel.latestBreachInfo, viewModel.numberOfBreaches == 1 {
                     HStack {
-                        Image(uiImage: PassIcon.lightning)
+                        PassIcon.lightning
                             .resizable()
                             .scaledToFit()
                             .frame(height: 24)
@@ -436,10 +436,10 @@ private extension PassMonitorView {
 
                         VStack(alignment: .leading) {
                             Text(latestBreach.domain)
-                                .foregroundStyle(PassColor.textNorm.toColor)
+                                .foregroundStyle(PassColor.textNorm)
                             Text(latestBreach.date)
                                 .font(.footnote)
-                                .foregroundStyle(PassColor.textWeak.toColor)
+                                .foregroundStyle(PassColor.textWeak)
                         }
                     }
                 }
@@ -524,7 +524,7 @@ private extension PassMonitorView {
                         .resizable()
                         .renderingMode(.template)
                         .scaledToFit()
-                        .foregroundStyle(loading ? Color.secondary : rowType.iconColor.toColor)
+                        .foregroundStyle(loading ? Color.secondary : rowType.iconColor)
                         .frame(width: DesignConstant.Icons.defaultIconSize)
                         .clipShape(RoundedRectangle(cornerRadius: 6))
                         .if(loading) { view in
@@ -534,12 +534,12 @@ private extension PassMonitorView {
 
                 VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                     Text(title)
-                        .foregroundStyle(rowType.titleColor.toColor)
+                        .foregroundStyle(rowType.titleColor)
 
                     if let subTitle {
                         Text(subTitle)
                             .font(.callout)
-                            .foregroundStyle(loading ? Color.secondary : rowType.subtitleColor.toColor)
+                            .foregroundStyle(loading ? Color.secondary : rowType.subtitleColor)
                             .if(loading) { view in
                                 view.redacted(reason: .placeholder)
                             }
@@ -555,8 +555,8 @@ private extension PassMonitorView {
                         .fontWeight(.medium)
                         .padding(.vertical, 4)
                         .padding(.horizontal, 11)
-                        .foregroundStyle(rowType.infoForeground.toColor)
-                        .background(rowType.infoBackground.toColor)
+                        .foregroundStyle(rowType.infoForeground)
+                        .background(rowType.infoBackground)
                         .clipShape(Capsule())
                 }
 

@@ -57,7 +57,7 @@ struct EditCustomFieldSections<Field: CustomFieldTypes>: View {
 
     private var addMoreButton: some View {
         HStack {
-            CapsuleLabelButton(icon: UIImage(systemName: "plus") ?? .init(),
+            CapsuleLabelButton(icon: Image(systemName: "plus"),
                                title: #localized("Add more"),
                                titleColor: contentType.normMajor2Color,
                                backgroundColor: contentType.normMinor1Color,
@@ -74,12 +74,12 @@ struct EditCustomFieldSections<Field: CustomFieldTypes>: View {
                     .font(.callout)
                     .fontWeight(.medium)
             }, icon: {
-                Image(uiImage: IconProvider.arrowOutSquare)
+                IconProvider.arrowOutSquare
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: 16)
             })
-            .foregroundStyle(contentType.normMajor2Color.toColor)
+            .foregroundStyle(contentType.normMajor2Color)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, DesignConstant.sectionPadding)

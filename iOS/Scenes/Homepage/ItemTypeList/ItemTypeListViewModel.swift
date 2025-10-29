@@ -25,7 +25,7 @@ import Entities
 import FactoryKit
 import Macro
 import ProtonCoreUIFoundations
-import UIKit
+import SwiftUI
 
 enum ItemType: CaseIterable {
     case login, alias, note, password, creditCard, identity, custom
@@ -96,7 +96,7 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
 }
 
 extension ItemType {
-    var icon: UIImage {
+    var icon: Image {
         switch self {
         case .login:
             IconProvider.user
@@ -115,7 +115,7 @@ extension ItemType {
         }
     }
 
-    var tintColor: UIColor {
+    var tintColor: Color {
         switch self {
         case .login:
             ItemContentType.login.normMajor2Color
@@ -134,7 +134,7 @@ extension ItemType {
         }
     }
 
-    var backgroundColor: UIColor {
+    var backgroundColor: Color {
         switch self {
         case .login:
             ItemContentType.login.normMinor1Color

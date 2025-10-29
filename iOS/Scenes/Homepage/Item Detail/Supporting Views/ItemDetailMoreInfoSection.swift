@@ -50,18 +50,14 @@ struct ItemDetailMoreInfoSection: View {
                         Text("More info")
                             .font(.caption)
                             .fontWeight(.semibold)
-                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .foregroundStyle(PassColor.textWeak)
                     }, icon: {
                         icon(from: IconProvider.infoCircle)
                     })
 
                     Spacer()
 
-                    if isExpanded {
-                        icon(from: IconProvider.chevronUp)
-                    } else {
-                        icon(from: IconProvider.chevronDown)
-                    }
+                    icon(from: isExpanded ? IconProvider.chevronUp : IconProvider.chevronDown)
                 }
             }
 
@@ -95,7 +91,7 @@ struct ItemDetailMoreInfoSection: View {
                     }
                 }
                 .font(.caption)
-                .foregroundStyle(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak)
                 .frame(maxWidth: .infinity)
             }
         }
@@ -125,11 +121,11 @@ private extension ItemDetailMoreInfoSection {
         }
     }
 
-    func icon(from image: UIImage) -> some View {
-        Image(uiImage: image)
+    func icon(from image: Image) -> some View {
+        image
             .resizable()
             .scaledToFit()
             .frame(width: 16)
-            .foregroundStyle(PassColor.textWeak.toColor)
+            .foregroundStyle(PassColor.textWeak)
     }
 }

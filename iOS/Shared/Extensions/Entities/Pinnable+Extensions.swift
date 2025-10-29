@@ -27,7 +27,7 @@ extension Pinnable {
         pinned ? "Unpin" : "Pin"
     }
 
-    var pinIcon: UIImage {
+    var pinIcon: Image {
         pinned ? PassIcon.pinAngledSlash : PassIcon.pinAngled
     }
 }

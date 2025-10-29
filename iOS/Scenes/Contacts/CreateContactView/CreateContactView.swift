@@ -40,15 +40,15 @@ struct CreateContactView: View {
                 .keyboardType(.emailAddress)
                 .autocorrectionDisabled()
                 .textInputAutocapitalization(.never)
-                .foregroundStyle(PassColor.textNorm.toColor)
-                .tint(ItemContentType.alias.normColor.toColor)
+                .foregroundStyle(PassColor.textNorm)
+                .tint(ItemContentType.alias.normColor)
                 .frame(height: 64)
 
             Spacer()
         }
         .padding(.horizontal)
         .toolbar { toolbarContent }
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
         .onChange(of: viewModel.finishedSaving) { saved in
             guard saved else {
                 return

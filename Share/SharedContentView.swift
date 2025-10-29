@@ -31,11 +31,11 @@ struct SharedContentView: View {
 
     var body: some View {
         ZStack {
-            PassColor.backgroundNorm.toColor
+            PassColor.backgroundNorm
                 .ignoresSafeArea()
             VStack(spacing: DesignConstant.sectionPadding) {
                 Text(content.text)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(DesignConstant.sectionPadding)
                     .roundedEditableSection()

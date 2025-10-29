@@ -36,10 +36,10 @@ struct SearchRecentResultsView: View {
                 Text("Recent searches")
                     .font(.callout)
                     .fontWeight(.bold)
-                    .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
+                    .adaptiveForegroundStyle(PassColor.textNorm) +
                     Text(verbatim: " (\(results.count))")
                     .font(.callout)
-                    .adaptiveForegroundStyle(PassColor.textWeak.toColor)
+                    .adaptiveForegroundStyle(PassColor.textWeak)
 
                 Spacer()
 
@@ -47,8 +47,8 @@ struct SearchRecentResultsView: View {
                     Text("Clear")
                         .font(.callout)
                         .fontWeight(.semibold)
-                        .foregroundStyle(PassColor.textWeak.toColor)
-                        .underline(color: PassColor.textWeak.toColor)
+                        .foregroundStyle(PassColor.textWeak)
+                        .underline(color: PassColor.textWeak)
                 }
             }
             .padding(.horizontal)
@@ -86,10 +86,10 @@ private struct SearchEntryView: View {
 
             Button(action: onRemove) {
                 ZStack {
-                    Image(uiImage: IconProvider.cross)
+                    IconProvider.cross
                         .resizable()
                         .scaledToFill()
-                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .foregroundStyle(PassColor.textWeak)
                         .frame(width: 24, height: 24)
                 }
                 .frame(width: 48, height: 48)

@@ -41,7 +41,7 @@ struct ProfileTabView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.large)
-            .background(PassColor.backgroundNorm.toColor)
+            .background(PassColor.backgroundNorm)
             .toolbar { toolbarContent }
             .if(viewModel.activeAccountDetail) { view, activeAccount in
                 view
@@ -223,7 +223,7 @@ struct ProfileTabView: View {
                                       .sectionTitleText()
 
                                   Text(viewModel.localAuthenticationMethod.title)
-                                      .foregroundStyle(PassColor.textNorm.toColor)
+                                      .foregroundStyle(PassColor.textNorm)
                               }
                           },
                           trailing: { ChevronRight() })
@@ -239,7 +239,7 @@ struct ProfileTabView: View {
                                           .sectionTitleText()
 
                                       Text(viewModel.appLockTime.description)
-                                          .foregroundStyle(PassColor.textNorm.toColor)
+                                          .foregroundStyle(PassColor.textNorm)
                                   }
                               },
                               trailing: {
@@ -279,7 +279,7 @@ struct ProfileTabView: View {
                                                    backgroundColor: PassColor.interactionNormMinor1,
                                                    action: nil)
                                   }
-                                  .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                                  .foregroundStyle(PassColor.interactionNormMajor2)
                               })
                 }
             }
@@ -293,7 +293,7 @@ struct ProfileTabView: View {
             OptionRow(height: .medium) {
                 HStack {
                     Text("AutoFill disabled")
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm)
 
                     Spacer()
 
@@ -306,7 +306,7 @@ struct ProfileTabView: View {
                         }
                     }
                     .font(.callout.weight(.semibold))
-                    .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                    .foregroundStyle(PassColor.interactionNormMajor2)
                 }
             }
             .roundedEditableSection()
@@ -362,20 +362,20 @@ struct ProfileTabView: View {
                       content: {
                           HStack(spacing: DesignConstant.sectionPadding / 2) {
                               Text("Secure link")
-                                  .foregroundStyle(PassColor.textNorm.toColor)
+                                  .foregroundStyle(PassColor.textNorm)
 
                               Spacer()
 
                               if let isFreeUser, !isFreeUser, let secureLinks = viewModel.secureLinks {
                                   CapsuleCounter(count: secureLinks.count,
-                                                 foregroundStyle: PassColor.textNorm.toColor,
-                                                 background: PassColor.backgroundMedium.toColor)
+                                                 foregroundStyle: PassColor.textNorm,
+                                                 background: PassColor.backgroundMedium)
                               }
                           }
                       },
                       trailing: {
                           if let isFreeUser, isFreeUser {
-                              Image(uiImage: PassIcon.passSubscriptionBadge)
+                              PassIcon.passSubscriptionBadge
                                   .resizable()
                                   .scaledToFit()
                                   .frame(height: 24)
@@ -446,14 +446,14 @@ struct ProfileTabView: View {
                 OptionRow(action: { viewModel.showTutorial() },
                           content: {
                               Text("How to use Proton Pass")
-                                  .foregroundStyle(PassColor.textNorm.toColor)
+                                  .foregroundStyle(PassColor.textNorm)
                           },
                           trailing: {
-                              Image(uiImage: IconProvider.arrowOutSquare)
+                              IconProvider.arrowOutSquare
                                   .resizable()
                                   .scaledToFit()
                                   .frame(height: 16)
-                                  .foregroundStyle(PassColor.textHint.toColor)
+                                  .foregroundStyle(PassColor.textHint)
                           })
             }
             .roundedEditableSection()
@@ -465,11 +465,11 @@ struct ProfileTabView: View {
         OptionRow(action: { viewModel.showSignInToAnotherDevice() },
                   content: {
                       Text(#localized("Sign in to another device"))
-                          .foregroundStyle(PassColor.textNorm.toColor)
+                          .foregroundStyle(PassColor.textNorm)
                           .frame(maxWidth: .infinity, alignment: .leading)
                   },
                   leading: {
-                      Image(uiImage: ProtonCoreUIFoundations.IconProvider.qrCode)
+                      IconProvider.qrCode
                           .resizable()
                           .scaledToFit()
                           .frame(width: 24, height: 24)
@@ -483,7 +483,7 @@ struct ProfileTabView: View {
 
 private extension View {
     func profileSectionTitle(maxWidth: CGFloat? = .infinity) -> some View {
-        foregroundStyle(PassColor.textNorm.toColor)
+        foregroundStyle(PassColor.textNorm)
             .font(.callout.weight(.bold))
             .frame(maxWidth: maxWidth, alignment: .leading)
     }
@@ -533,7 +533,7 @@ struct SentinelSheetView: View {
             if isIpad {
                 Spacer()
             }
-            Image(uiImage: PassIcon.netShield)
+            PassIcon.netShield
                 .resizable()
                 .scaledToFit()
             if isIpad {
@@ -543,11 +543,11 @@ struct SentinelSheetView: View {
                 Text("Proton Sentinel")
                     .font(.title)
                     .fontWeight(.bold)
-                    .foregroundStyle(PassColor.textInvert.toColor)
+                    .foregroundStyle(PassColor.textInvert)
 
                 Text("Sentinel description")
                     .multilineTextAlignment(.center)
-                    .foregroundStyle(PassColor.textInvert.toColor)
+                    .foregroundStyle(PassColor.textInvert)
                     .frame(maxWidth: .infinity, alignment: .top)
                     .padding(.bottom, 8)
             }

@@ -49,11 +49,11 @@ extension PasswordStrength {
     var color: Color {
         switch self {
         case .vulnerable:
-            PassColor.signalDanger.toColor
+            PassColor.signalDanger
         case .weak:
-            PassColor.signalWarning.toColor
+            PassColor.signalWarning
         case .strong:
-            PassColor.signalSuccess.toColor
+            PassColor.signalSuccess
         }
     }
 }
@@ -72,10 +72,7 @@ extension PasswordStrength? {
     }
 
     var sectionTitleColor: Color {
-        if let self {
-            self.color
-        } else {
-            PassColor.textWeak.toColor
-        }
+        // swiftlint:disable:next discouraged_optional_self
+        self?.color ?? PassColor.textWeak
     }
 }

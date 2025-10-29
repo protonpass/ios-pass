@@ -131,11 +131,11 @@ private struct LoginRow: View {
             VStack(alignment: .leading) {
                 Text(login.name)
                     .lineLimit(2)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                 Text(login.emailOrUsername)
                     .lineLimit(2)
                     .font(.callout)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -146,7 +146,7 @@ private struct LoginRow: View {
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: 16)
-                    .foregroundStyle(PassColor.loginInteractionNormMajor2.toColor)
+                    .foregroundStyle(PassColor.loginInteractionNormMajor2)
             }
         }
         .frame(maxWidth: .infinity)

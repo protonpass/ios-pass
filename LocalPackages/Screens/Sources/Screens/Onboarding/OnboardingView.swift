@@ -60,7 +60,7 @@ public struct OnboardingView: View {
                                        onRetry: { Task { await viewModel.setUp() } })
                     Button(action: dismiss.callAsFunction) {
                         Text("Cancel", bundle: .module)
-                            .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                            .foregroundStyle(PassColor.interactionNormMajor2)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
@@ -110,7 +110,7 @@ private extension OnboardingView {
             if case .payment = step {
                 GeometryReader { proxy in
                     let imageWidth = proxy.size.width
-                    Image(uiImage: PassIcon.passIcon)
+                    PassIcon.passIcon
                         .resizable()
                         .scaledToFit()
                         .frame(width: imageWidth)
@@ -154,7 +154,7 @@ private extension OnboardingView {
                     HStack {
                         CircleButton(icon: IconProvider.cross,
                                      iconColor: PassColor.interactionNormMajor2,
-                                     backgroundColor: .black.withAlphaComponent(0.15),
+                                     backgroundColor: .black.opacity(0.15),
                                      accessibilityLabel: "Close",
                                      action: onClose)
 
@@ -226,14 +226,14 @@ private extension OnboardingView {
         }
     }
 
-    func descriptiveIllustration(illustration: UIImage,
+    func descriptiveIllustration(illustration: Image,
                                  illustrationMaxHeight: CGFloat,
                                  title: LocalizedStringKey,
                                  description: LocalizedStringKey) -> some View {
         VStack(alignment: .center, spacing: DesignConstant.sectionPadding) {
             Spacer()
 
-            Image(uiImage: illustration)
+            illustration
                 .resizable()
                 .scaledToFit()
                 .frame(maxHeight: illustrationMaxHeight)
@@ -244,12 +244,12 @@ private extension OnboardingView {
             Text(title, bundle: .module)
                 .font(.title)
                 .fontWeight(.bold)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
                 .padding(.horizontal, DesignConstant.onboardingPadding)
 
             Text(description, bundle: .module)
                 .font(.title3)
-                .foregroundStyle(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak)
                 .padding(.horizontal, DesignConstant.onboardingPadding)
 
             Spacer()
@@ -268,7 +268,7 @@ private extension OnboardingView {
         }, label: {
             Text("Not now", bundle: .module)
                 .font(.callout)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
         })
     }
 

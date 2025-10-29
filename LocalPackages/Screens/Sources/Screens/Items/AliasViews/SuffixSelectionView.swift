@@ -31,7 +31,7 @@ struct SuffixSelectionView: View {
     let onDismissTip: () -> Void
     let onDismiss: () -> Void
 
-    private var tintColor: UIColor { PassColor.aliasInteractionNormMajor2 }
+    private var tintColor: Color { PassColor.aliasInteractionNormMajor2 }
 
     var body: some View {
         NavigationStack {
@@ -43,13 +43,13 @@ struct SuffixSelectionView: View {
                         ForEach(selection.suffixes, id: \.suffix) { suffix in
                             HStack {
                                 Text(suffix.suffix)
-                                    .foregroundStyle((isSelected(suffix) ?
-                                            tintColor : PassColor.textNorm).toColor)
+                                    .foregroundStyle(isSelected(suffix) ?
+                                        tintColor : PassColor.textNorm)
                                 Spacer()
 
                                 if isSelected(suffix) {
-                                    Image(uiImage: IconProvider.checkmark)
-                                        .foregroundStyle(tintColor.toColor)
+                                    IconProvider.checkmark
+                                        .foregroundStyle(tintColor)
                                 }
                             }
                             .contentShape(.rect)
@@ -75,7 +75,7 @@ struct SuffixSelectionView: View {
                 }
             }
             .animation(.default, value: showTip)
-            .background(PassColor.backgroundWeak.toColor)
+            .background(PassColor.backgroundWeak)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {

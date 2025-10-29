@@ -20,14 +20,14 @@
 
 import DesignSystem
 import Entities
-import UIKit
+import SwiftUI
 
 public enum VaultIcon: CaseIterable {
     case icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, icon9, icon10
     case icon11, icon12, icon13, icon14, icon15, icon16, icon17, icon18, icon19, icon20
     case icon21, icon22, icon23, icon24, icon25, icon26, icon27, icon28, icon29, icon30
 
-    public var bigImage: UIImage {
+    public var bigImage: Image {
         switch self {
         case .icon1: PassIcon.vaultIcon1Big
         case .icon2: PassIcon.vaultIcon2Big
@@ -62,7 +62,7 @@ public enum VaultIcon: CaseIterable {
         }
     }
 
-    public var smallImage: UIImage {
+    public var smallImage: Image {
         switch self {
         case .icon1: PassIcon.vaultIcon1Small
         case .icon2: PassIcon.vaultIcon2Small

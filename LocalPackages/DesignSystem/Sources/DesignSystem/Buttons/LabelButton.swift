@@ -22,11 +22,11 @@ import SwiftUI
 
 public struct LabelButton: View {
     let title: LocalizedStringKey
-    let icon: UIImage
+    let icon: Image
     let action: () -> Void
 
     public init(title: LocalizedStringKey,
-                icon: UIImage,
+                icon: Image,
                 action: @escaping () -> Void) {
         self.title = title
         self.icon = icon
@@ -35,7 +35,7 @@ public struct LabelButton: View {
 
     public var body: some View {
         Button(action: action) {
-            Label(title, uiImage: icon)
+            Label(title, image: icon)
         }
     }
 }

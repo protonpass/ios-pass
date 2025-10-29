@@ -56,8 +56,8 @@ struct ItemDetailToolbar: ToolbarContent {
                     }
 
                     if viewModel.canShareItem {
-                        ShareCounterButton(iconColor: itemContentType.normMajor2Color.toColor,
-                                           backgroundColor: itemContentType.normMinor1Color.toColor,
+                        ShareCounterButton(iconColor: itemContentType.normMajor2Color,
+                                           backgroundColor: itemContentType.normMinor1Color,
                                            numberOfSharedMembers: viewModel.numberOfSharedMembers,
                                            action: {
                                                viewModel.share()
@@ -77,7 +77,7 @@ struct ItemDetailToolbar: ToolbarContent {
                         }
 
                         Label(viewModel.itemContent.item.pinTitle,
-                              uiImage: viewModel.itemContent.item.pinIcon)
+                              image: viewModel.itemContent.item.pinIcon)
                             .buttonEmbeded { viewModel.toggleItemPinning() }
 
                         if viewModel.itemContent.type == .note {
@@ -182,7 +182,7 @@ private struct ShareCounterButton: View {
     var body: some View {
         Button(action: action) {
             HStack(spacing: 4) {
-                Image(uiImage: IconProvider.usersPlus)
+                IconProvider.usersPlus
                     .resizable()
                     .scaledToFit()
                     .foregroundStyle(iconColor)

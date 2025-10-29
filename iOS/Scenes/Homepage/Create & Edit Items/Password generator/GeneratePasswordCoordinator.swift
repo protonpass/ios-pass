@@ -22,7 +22,6 @@ import Core
 import Entities
 import Macro
 import SwiftUI
-import UIKit
 
 enum GeneratePasswordViewMode {
     /// View is shown as part of create login process

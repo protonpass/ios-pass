@@ -48,7 +48,7 @@ struct FeatureDiscoveryView: View {
         Form {
             if NewFeature.allCases.isEmpty {
                 Text(verbatim: "No new features")
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
             } else {
                 content
             }

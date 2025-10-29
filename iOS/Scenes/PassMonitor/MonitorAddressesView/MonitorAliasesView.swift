@@ -33,7 +33,7 @@ struct MonitorAliasesView: View {
         LazyVStack {
             if viewModel.infos.isEmpty {
                 Spacer()
-                Image(uiImage: PassIcon.securityEmptyState)
+                PassIcon.securityEmptyState
                     .resizable()
                     .scaledToFit()
                     .frame(width: 195)
@@ -53,7 +53,7 @@ struct MonitorAliasesView: View {
         }
         .animation(.default, value: viewModel.access)
         .animation(.default, value: viewModel.dismissedCustomDomainExplanation)
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
         .toolbar { toolbarContent }
         .navigationBarTitleDisplayMode(.large)
         .navigationTitle("Hide-my-email aliases")
@@ -120,7 +120,7 @@ private extension MonitorAliasesView {
     @ViewBuilder
     var disabledView: some View {
         Text("Enable monitoring to get notified if your aliases were leaked.")
-            .foregroundStyle(PassColor.textNorm.toColor)
+            .foregroundStyle(PassColor.textNorm)
             .padding(.vertical)
         ForEach(viewModel.infos) { info in
             MonitorExcludedEmailView(address: info)
@@ -131,10 +131,10 @@ private extension MonitorAliasesView {
     func seeAllText(count: Int) -> some View {
         Text("See all")
             .font(.callout)
-            .adaptiveForegroundStyle(PassColor.interactionNormMajor2.toColor) +
+            .adaptiveForegroundStyle(PassColor.interactionNormMajor2) +
             Text(verbatim: " (\(count))")
             .font(.callout)
-            .adaptiveForegroundStyle(PassColor.interactionNormMajor2.toColor)
+            .adaptiveForegroundStyle(PassColor.interactionNormMajor2)
     }
 
     func select(_ info: AliasMonitorInfo) {
@@ -179,13 +179,13 @@ private extension MonitorAliasesView {
         HStack {
             Text("Aliases with custom domains are not monitored, please add them as a custom email for monitoring.")
                 .font(.callout)
-                .foregroundStyle(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak)
             VStack {
                 Image(systemName: "xmark.circle.fill")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 20, height: 20)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
                     .buttonEmbeded { viewModel.dismissCustomDomainExplanation() }
                 Spacer()
             }

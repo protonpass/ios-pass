@@ -31,7 +31,7 @@ public struct TextViewConfiguration: Sendable {
                 // 0 means taking the minimal height for displaying the text view
                 minHeight: CGFloat = 0,
                 font: UIFont = .body,
-                textColor: UIColor = PassColor.textNorm) {
+                textColor: UIColor = PassUIColor.textNorm) {
         self.minWidth = minWidth
         self.minHeight = minHeight
         self.font = font
@@ -118,12 +118,12 @@ public struct EditableTextViewWithPlaceholder: View {
     @Binding var text: String
     private let config: TextViewConfiguration
     private let placeholder: String
-    private let placerholderColor: UIColor
+    private let placerholderColor: Color
 
     public init(text: Binding<String>,
                 config: TextViewConfiguration = .init(),
                 placeholder: String,
-                placerholderColor: UIColor = PassColor.textWeak) {
+                placerholderColor: Color = PassColor.textWeak) {
         _showPlaceholder = .init(initialValue: text.wrappedValue.isEmpty)
         _text = text
         self.config = config
@@ -136,7 +136,7 @@ public struct EditableTextViewWithPlaceholder: View {
                          config: config,
                          textViewDidChange: { showPlaceholder = $0.isEmpty })
             .background(Text(verbatim: placeholder)
-                .foregroundStyle(placerholderColor.toColor)
+                .foregroundStyle(placerholderColor)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 .opacity(showPlaceholder ? 1 : 0))
     }

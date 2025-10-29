@@ -35,39 +35,39 @@ struct SetPINCodeView: View {
             VStack(alignment: .leading, spacing: 12) {
                 Text(viewModel.state.title)
                     .font(.largeTitle.bold())
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
 
                 Text(viewModel.state.description)
                     .font(.callout)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
 
                 SecureField(viewModel.state.placeholder,
                             text: viewModel.state == .definition ?
                                 $viewModel.definedPIN : $viewModel.confirmedPIN)
                     .keyboardType(.numberPad)
                     .font(.title)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .padding(.top, 50)
                     .focused($isFocused)
 
                 if let error = viewModel.error {
                     Text(error.description)
-                        .foregroundStyle(PassColor.signalDanger.toColor)
+                        .foregroundStyle(PassColor.signalDanger)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
 
                 Spacer()
             }
             .padding()
-            .background(PassColor.backgroundNorm.toColor)
+            .background(PassColor.backgroundNorm)
             .animation(.default, value: viewModel.error)
             .toolbar { toolbarContent }
             .onAppear {
                 isFocused = true
             }
         }
-        .accentColor(PassColor.interactionNormMajor1.toColor)
-        .tint(PassColor.interactionNormMajor1.toColor)
+        .accentColor(PassColor.interactionNormMajor1)
+        .tint(PassColor.interactionNormMajor1)
     }
 }
 

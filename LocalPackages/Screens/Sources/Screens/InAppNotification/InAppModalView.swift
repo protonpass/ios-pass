@@ -50,7 +50,7 @@ public struct InAppModalView: View {
 
     public var body: some View {
         ZStack(alignment: .topTrailing) {
-            PassColor.backgroundWeak.toColor
+            PassColor.backgroundWeak
             VStack(spacing: 24) {
                 if let imageUrl = notification.content.safeImageUrl {
                     AsyncImage(url: imageUrl,
@@ -72,7 +72,7 @@ public struct InAppModalView: View {
 
                 Text(verbatim: notification.content.title)
                     .font(.title.weight(.medium))
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .minimumScaleFactor(0.8)
                     .multilineTextAlignment(.center)
@@ -83,7 +83,7 @@ public struct InAppModalView: View {
                     }
 
                 Text(verbatim: notification.content.message)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
                     .frame(maxWidth: .infinity,
                            alignment: notification.content.safeImageUrl == nil ? .center : .top)
                     .minimumScaleFactor(0.8)
@@ -102,7 +102,7 @@ public struct InAppModalView: View {
                 }
             }
             .padding(DesignConstant.sectionPadding)
-            .background(PassColor.backgroundWeak.toColor)
+            .background(PassColor.backgroundWeak)
             .frame(maxWidth: .infinity)
             .background(GeometryReader { proxy in
                 Color.clear

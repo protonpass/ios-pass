@@ -53,7 +53,7 @@ public struct CustomSectionHeader: View {
                           .scaledToFit()
                           .frame(width: 12)
                   })
-                  .foregroundStyle(PassColor.textWeak.toColor)
+                  .foregroundStyle(PassColor.textWeak)
                   .frame(maxWidth: .infinity, alignment: .leading)
                   .padding(.top, DesignConstant.sectionPadding)
                   .buttonEmbeded(action: onToggle)
@@ -63,15 +63,15 @@ public struct CustomSectionHeader: View {
             if editable {
                 Menu(content: {
                     Label(title: { Text("Edit section's title", bundle: .module) },
-                          icon: { Image(uiImage: IconProvider.pencil) })
+                          icon: { IconProvider.pencil })
                         .buttonEmbeded(action: onEditTitle)
 
                     Label(title: { Text("Remove section", bundle: .module) },
-                          icon: { Image(uiImage: IconProvider.crossCircle) })
+                          icon: { IconProvider.crossCircle })
                         .buttonEmbeded(action: onRemove)
                 }, label: {
                     IconProvider.threeDotsVertical
-                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .foregroundStyle(PassColor.textWeak)
                         .padding(.top, DesignConstant.sectionPadding)
                 })
             }

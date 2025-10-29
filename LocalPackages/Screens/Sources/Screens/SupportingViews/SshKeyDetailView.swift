@@ -38,7 +38,7 @@ public struct SshKeyDetailView: View {
                 .textSelection(.enabled)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 .monospaced()
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
                 .padding()
         }
         .navigationBarTitleDisplayMode(.inline)

@@ -57,7 +57,7 @@ private extension ShareInviteeView {
                               backgroundColor: ItemType.login.backgroundColor)
             VStack(alignment: .leading, spacing: 4) {
                 Text(invitee.email)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .lineLimit(isExpanded ? nil : 1)
                     .onTapGesture {
                         isExpanded = true
@@ -67,17 +67,17 @@ private extension ShareInviteeView {
                 HStack {
                     if isCurrentUser {
                         Text("You")
-                            .foregroundStyle(PassColor.textNorm.toColor)
+                            .foregroundStyle(PassColor.textNorm)
                             .padding(.vertical, 2)
                             .padding(.horizontal, 8)
-                            .background(Capsule().fill(PassColor.interactionNorm.toColor))
+                            .background(Capsule().fill(PassColor.interactionNorm))
                     }
                     if canSeeAccessLevel {
                         Text(invitee.subtitle(managerAsAdmin: managerAsAdmin))
-                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .foregroundStyle(PassColor.textWeak)
                     } else {
                         Text(invitee.owner ? "Owner" : "Viewer")
-                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .foregroundStyle(PassColor.textWeak)
                     }
                 }
             }
@@ -142,24 +142,24 @@ private extension ShareInviteeView {
                     EmptyView()
                 }
             }
-        }, label: { Image(uiImage: IconProvider.threeDotsVertical)
+        }, label: { IconProvider.threeDotsVertical
             .resizable()
             .scaledToFit()
             .frame(width: 24, height: 24)
-            .foregroundStyle(PassColor.textWeak.toColor)
+            .foregroundStyle(PassColor.textWeak)
         })
     }
 
-    func button(option: ShareInviteeOption, title: LocalizedStringKey, image: UIImage) -> some View {
+    func button(option: ShareInviteeOption, title: LocalizedStringKey, image: Image) -> some View {
         Button(action: {
             onSelect(option)
         }, label: {
             Label(title: {
                 Text(title)
             }, icon: {
-                Image(uiImage: image)
+                image
                     .renderingMode(.template)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
             })
         })
     }

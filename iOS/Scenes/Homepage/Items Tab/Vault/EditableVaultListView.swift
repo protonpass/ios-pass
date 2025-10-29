@@ -48,7 +48,7 @@ struct EditableVaultListView: View {
         }
         .animation(.default, value: viewModel.mode)
         .animation(.default, value: viewModel.hiddenShareIds)
-        .background(PassColor.backgroundWeak.toColor)
+        .background(PassColor.backgroundWeak)
         .showSpinner(viewModel.loading)
         .frame(maxWidth: .infinity, alignment: .leading)
         .onChange(of: viewModel.mode) { newMode in
@@ -83,14 +83,14 @@ private extension EditableVaultListView {
                     viewModel.updateMode(.view)
                 }, label: {
                     Text("Cancel")
-                        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                        .foregroundStyle(PassColor.interactionNormMajor2)
                 })
 
                 Spacer()
 
                 Text("Organize vaults")
                     .fontWeight(.bold)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
 
                 Spacer()
 
@@ -99,7 +99,7 @@ private extension EditableVaultListView {
                 }, label: {
                     Text("Done")
                         .fontWeight(.semibold)
-                        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                        .foregroundStyle(PassColor.interactionNormMajor2)
                 })
             }
             .padding()
@@ -110,18 +110,18 @@ private extension EditableVaultListView {
     var upsellRow: some View {
         if !viewModel.mode.isOrganise, viewModel.shouldUpsell {
             HStack(alignment: .center, spacing: 16) {
-                Image(uiImage: PassIcon.diamond)
+                PassIcon.diamond
                     .resizable()
                     .frame(width: 20, height: 20)
                     .scaledToFit()
-                    .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                    .foregroundStyle(PassColor.interactionNormMajor2)
                 Text("Upgrade to Pass Plus")
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                Image(uiImage: IconProvider.chevronRight)
+                IconProvider.chevronRight
                     .resizable()
                     .frame(width: 16, height: 16)
-                    .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                    .foregroundStyle(PassColor.interactionNormMajor2)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 15)
@@ -129,7 +129,7 @@ private extension EditableVaultListView {
             .cornerRadius(16)
             .overlay(RoundedRectangle(cornerRadius: 16)
                 .inset(by: 0.5)
-                .stroke(PassColor.inputBorderNorm.toColor, lineWidth: 1))
+                .stroke(PassColor.inputBorderNorm, lineWidth: 1))
             .padding(.horizontal)
             .padding(.top, 25)
             .buttonEmbeded(action: viewModel.upgradeSubscription)
@@ -181,7 +181,7 @@ private extension EditableVaultListView {
                     if viewModel.filteredOrderedVaults.count != viewModel.hiddenShareIds.count {
                         Text("Visible vaults")
                             .fontWeight(.semibold)
-                            .foregroundStyle(PassColor.textNorm.toColor)
+                            .foregroundStyle(PassColor.textNorm)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.bottom)
                     }
@@ -207,13 +207,13 @@ private extension EditableVaultListView {
                     if !viewModel.hiddenShareIds.isEmpty {
                         Text("Hidden vaults")
                             .fontWeight(.semibold)
-                            .foregroundStyle(PassColor.textNorm.toColor)
+                            .foregroundStyle(PassColor.textNorm)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.top)
                             .padding(.bottom, 4)
                         // swiftlint:disable:next line_length
                         Text("These vaults will not be accessible and their content won't be available to Search or Autofill.")
-                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .foregroundStyle(PassColor.textWeak)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.bottom)
                     }
@@ -283,7 +283,7 @@ private extension EditableVaultListView {
                 VaultRow(thumbnail: {
                              CircleButton(icon: selection.icon,
                                           iconColor: selection.color,
-                                          backgroundColor: selection.color.withAlphaComponent(0.16))
+                                          backgroundColor: selection.color.opacity(0.16))
                          },
                          title: selection.title,
                          itemCount: itemCount,
@@ -309,11 +309,11 @@ private extension EditableVaultListView {
     }
 
     func threeDotsIcon() -> some View {
-        Image(uiImage: IconProvider.threeDotsVertical)
+        IconProvider.threeDotsVertical
             .resizable()
             .scaledToFit()
             .frame(width: 24, height: 24)
-            .foregroundStyle(PassColor.textWeak.toColor)
+            .foregroundStyle(PassColor.textWeak)
     }
 
     @ViewBuilder
@@ -326,9 +326,9 @@ private extension EditableVaultListView {
                     Label(title: {
                         Text("Edit")
                     }, icon: {
-                        Image(uiImage: IconProvider.pencil)
+                        IconProvider.pencil
                             .renderingMode(.template)
-                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .foregroundStyle(PassColor.textWeak)
                     })
                 })
             }
@@ -396,7 +396,7 @@ private extension EditableVaultListView {
                     Label(title: {
                         Text("Restore all items")
                     }, icon: {
-                        Image(uiImage: IconProvider.clockRotateLeft)
+                        IconProvider.clockRotateLeft
                     })
                 }
 
@@ -410,7 +410,7 @@ private extension EditableVaultListView {
                            Label(title: {
                                Text("Empty trash")
                            }, icon: {
-                               Image(uiImage: IconProvider.trashCross)
+                               IconProvider.trashCross
                            })
                        })
             }, label: threeDotsIcon)
@@ -452,7 +452,7 @@ extension VaultSelection {
         }
     }
 
-    var icon: UIImage {
+    var icon: Image {
         switch self {
         case .all:
             PassIcon.brandPass
@@ -467,7 +467,7 @@ extension VaultSelection {
         }
     }
 
-    var color: UIColor {
+    var color: Color {
         switch self {
         case .all, .sharedByMe, .sharedWithMe:
             PassColor.interactionNormMajor2

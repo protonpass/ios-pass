@@ -33,7 +33,7 @@ struct EnableExtraPasswordView: View {
 
     var body: some View {
         ZStack {
-            PassColor.backgroundNorm.toColor
+            PassColor.backgroundNorm
                 .ignoresSafeArea()
             VStack(alignment: .leading) {
                 HStack {
@@ -62,11 +62,11 @@ struct EnableExtraPasswordView: View {
 
                 // swiftlint:disable:next line_length
                 Text("You will be asked for this password during login and when switching from another Proton app to Proton Pass on web.")
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
                     .padding(.bottom)
 
                 Text("Caution: You won’t be able to access your Pass account if you lose this password.")
-                    .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                    .foregroundStyle(PassColor.passwordInteractionNormMajor2)
 
                 Spacer()
             }
@@ -78,7 +78,7 @@ struct EnableExtraPasswordView: View {
         .toolbar { toolbarContent }
         .animation(.default, value: viewModel.canSetExtraPassword)
         .animation(.default, value: viewModel.state)
-        .tint(PassColor.interactionNormMajor1.toColor)
+        .tint(PassColor.interactionNormMajor1)
         .onChange(of: viewModel.canSetExtraPassword) { _ in
             focused = true
         }

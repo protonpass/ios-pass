@@ -85,7 +85,7 @@ public struct AuthenticatorRow<ThumbnailView: View>: View {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(title)
                     .lineLimit(1)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
                 switch viewModel.state {
                 case .empty:
                     TOTPText(code: "", textColor: PassColor.textNorm, font: .title)
@@ -98,7 +98,7 @@ public struct AuthenticatorRow<ThumbnailView: View>: View {
                 case .invalid:
                     Text("Invalid TOTP URI", bundle: .module)
                         .font(.caption)
-                        .foregroundStyle(PassColor.signalDanger.toColor)
+                        .foregroundStyle(PassColor.signalDanger)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)

@@ -30,7 +30,7 @@ struct UpsellableDetailText: View {
     let text: String
     let placeholder: String?
     let shouldUpgrade: Bool
-    let upgradeTextColor: UIColor
+    let upgradeTextColor: Color
     let onUpgrade: () -> Void
 
     var body: some View {

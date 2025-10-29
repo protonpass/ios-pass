@@ -129,12 +129,12 @@ private extension NoteDetailView {
             if trimState.isTrimmed {
                 Button(action: expandNote) {
                     Text("More")
-                        .foregroundStyle(PassColor.noteInteractionNormMajor2.toColor)
+                        .foregroundStyle(PassColor.noteInteractionNormMajor2)
                         .padding(.leading, DesignConstant.sectionPadding * 2)
                         .background(LinearGradient(stops:
                             [
                                 Gradient.Stop(color: .clear, location: 0),
-                                Gradient.Stop(color: PassColor.backgroundNorm.toColor, location: 1)
+                                Gradient.Stop(color: PassColor.backgroundNorm, location: 1)
                             ],
                             startPoint: UnitPoint(x: 0, y: 0.5),
                             endPoint: UnitPoint(x: 0.41, y: 0.5)))

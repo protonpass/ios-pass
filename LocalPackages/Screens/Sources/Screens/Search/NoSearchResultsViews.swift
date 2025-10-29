@@ -36,7 +36,7 @@ public struct NoSearchResultsView: View {
             Text("Couldn't find \"\(query)\"", bundle: .module)
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
                 .padding(.bottom)
                 .animationsDisabled()
             TrySearchAgainText()
@@ -49,7 +49,7 @@ private struct TrySearchAgainText: View {
     var body: some View {
         Text("Try searching using different spelling or keywords", bundle: .module)
             .font(.callout)
-            .foregroundStyle(PassColor.textWeak.toColor)
+            .foregroundStyle(PassColor.textWeak)
             .multilineTextAlignment(.center)
     }
 }

@@ -40,8 +40,8 @@ enum InfoBanner: Equatable, Hashable {
                          description: description,
                          icon: PassIcon.inviteBannerIcon,
                          ctaTitle: nil,
-                         backgroundColor: PassColor.backgroundMedium.toColor,
-                         foregroundColor: PassColor.textNorm.toColor)
+                         backgroundColor: PassColor.backgroundMedium,
+                         foregroundColor: PassColor.textNorm)
         }
     }
 
@@ -53,13 +53,13 @@ enum InfoBanner: Equatable, Hashable {
 
 enum CtaButtonType {
     case text
-    case capsule(buttonTitle: UIColor, buttonBackground: UIColor)
+    case capsule(buttonTitle: Color, buttonBackground: Color)
 }
 
 struct InfoBannerDetail {
     let title: String
     let description: String
-    let icon: UIImage?
+    let icon: Image?
     /// Call-to-action button title
     let ctaTitle: String?
     let backgroundColor: Color
@@ -69,11 +69,11 @@ struct InfoBannerDetail {
 
     init(title: String,
          description: String,
-         icon: UIImage?,
+         icon: Image?,
          ctaTitle: String?,
          backgroundColor: Color,
          foregroundColor: Color,
-         closeButtonColor: Color = PassColor.textInvert.toColor,
+         closeButtonColor: Color = PassColor.textInvert,
          typeOfCtaButton: CtaButtonType = .text) {
         self.title = title
         self.description = description

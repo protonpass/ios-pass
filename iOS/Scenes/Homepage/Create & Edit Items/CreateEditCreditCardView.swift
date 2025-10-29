@@ -31,8 +31,6 @@ struct CreateEditCreditCardView: View {
     @State private var lastFocusedField: Field?
     @Namespace private var fileAttachmentsID
 
-    private var tintColor: UIColor { viewModel.itemContentType.normMajor1Color }
-
     enum Field: CustomFieldTypes {
         case title, cardholderName, cardNumber, verificationNumber, pin, note
         case custom(CustomField?)
@@ -138,9 +136,9 @@ private extension CreateEditCreditCardView {
     var upsellBanner: some View {
         Text("Upgrade to create credit cards")
             .padding()
-            .foregroundStyle(PassColor.textNorm.toColor)
+            .foregroundStyle(PassColor.textNorm)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(PassColor.cardInteractionNormMinor1.toColor)
+            .background(PassColor.cardInteractionNormMinor1)
             .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 }
@@ -173,7 +171,7 @@ private extension CreateEditCreditCardView {
                     .textInputAutocapitalization(.words)
                     .autocorrectionDisabled()
                     .focused($focusedField, equals: .cardholderName)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .submitLabel(.next)
                     .onSubmit { focusedField = .cardNumber }
             }
@@ -199,7 +197,7 @@ private extension CreateEditCreditCardView {
                     }
                     focusedField = .verificationNumber
                 }.focused($focusedField, equals: .cardNumber)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -223,7 +221,7 @@ private extension CreateEditCreditCardView {
                                    field: .verificationNumber)
                     .keyboardType(.numberPad)
                     .autocorrectionDisabled()
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .submitLabel(.next)
                     .onSubmit { focusedField = .pin }
             }
@@ -249,7 +247,7 @@ private extension CreateEditCreditCardView {
                                    field: .pin)
                     .keyboardType(.numberPad)
                     .autocorrectionDisabled()
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .submitLabel(.next)
                     .onSubmit { focusedField = .note }
             }
@@ -269,7 +267,7 @@ private extension CreateEditCreditCardView {
                 Text("Expiration date")
                     .editableSectionTitleText(for: viewModel.monthYear)
                 MonthYearTextField(placeholder: #localized("MM / YY"),
-                                   tintColor: tintColor,
+                                   tintColor: viewModel.itemContentType.normMajor1UIColor,
                                    month: $viewModel.month,
                                    year: $viewModel.year)
             }

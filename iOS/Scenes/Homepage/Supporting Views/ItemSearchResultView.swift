@@ -36,14 +36,14 @@ struct ItemSearchResultView: View, Equatable {
             VStack(alignment: .leading, spacing: 4) {
                 HStack(spacing: 4) {
                     if let vaultContent = result.vault?.vaultContent {
-                        Image(uiImage: vaultContent.vaultSmallIcon)
+                        vaultContent.vaultSmallIcon
                             .resizable()
                             .scaledToFit()
-                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .foregroundStyle(PassColor.textWeak)
                             .frame(width: 12, height: 12)
                     }
                     HighlightText(highlightableText: result.highlightableTitle)
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm)
                         .animationsDisabled()
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -54,7 +54,7 @@ struct ItemSearchResultView: View, Equatable {
                         if !eachDetail.fullText.isEmpty {
                             HighlightText(highlightableText: eachDetail)
                                 .font(.callout)
-                                .foregroundStyle(PassColor.textWeak.toColor)
+                                .foregroundStyle(PassColor.textWeak)
                                 .lineLimit(1)
                                 .animationsDisabled()
                         }

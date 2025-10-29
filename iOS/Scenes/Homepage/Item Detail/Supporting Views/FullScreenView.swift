@@ -70,7 +70,7 @@ struct FullScreenView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                PassColor.backgroundNorm.toColor
+                PassColor.backgroundNorm
                     .ignoresSafeArea()
 
                 Group {
@@ -112,7 +112,7 @@ struct FullScreenView: View {
                 mode = mode.oppositeMode
             }, label: {
                 Image(systemName: mode.oppositeMode.systemImageName)
-                    .foregroundStyle(PassColor.interactionNorm.toColor)
+                    .foregroundStyle(PassColor.interactionNorm)
             })
         }
     }
@@ -141,11 +141,11 @@ private struct FullScreenTextView: View {
             HStack {
                 Text(verbatim: "A")
                 Slider(value: $percentage)
-                    .tint(PassColor.interactionNorm.toColor)
+                    .tint(PassColor.interactionNorm)
                 Text(verbatim: "A")
                     .font(.title)
             }
         }
-        .foregroundStyle(PassColor.textNorm.toColor)
+        .foregroundStyle(PassColor.textNorm)
     }
 }

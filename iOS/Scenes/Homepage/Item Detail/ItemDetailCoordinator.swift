@@ -22,7 +22,6 @@ import Core
 import Entities
 import FactoryKit
 import SwiftUI
-import UIKit
 
 @MainActor
 final class ItemDetailCoordinator: DeinitPrintable {
