@@ -41,7 +41,6 @@ public extension PassColor {
     static let backgroundNorm = Color.backgroundNorm
     static let backgroundStrong = Color.backgroundStrong
     static let backgroundWeak = Color.backgroundWeak
-    static let tabBarBackground = Color.tabBarBackground
 
     static let newBackgroundStrong = Color.newBackgroundStrong
 }
@@ -114,4 +113,19 @@ public extension PassColor {
     static let vaultMercury = Color.vaultMercury
     static let vaultPorsche = Color.vaultPorsche
     static let vaultWaterLeaf = Color.vaultWaterLeaf
+}
+
+public enum PassUIColor: Sendable {}
+
+public extension PassUIColor {
+    static let aliasInteractionNormMajor1 = UIColor.aliasInteractionNormMajor1
+    static let backgroundNorm = UIColor.backgroundNorm
+    static let cardInteractionNormMajor1 = UIColor.cardInteractionNormMajor1
+    static let interactionNorm = UIColor.interactionNorm
+    static let interactionNormMajor1 = UIColor.interactionNormMajor1
+    static let interactionNormMajor2 = UIColor.interactionNormMajor2
+    static let loginInteractionNormMajor1 = UIColor.loginInteractionNormMajor1
+    static let noteInteractionNormMajor1 = UIColor.noteInteractionNormMajor1
+    static let tabBarBackground = UIColor.tabBarBackground
+    static let textNorm = UIColor.textNorm
 }

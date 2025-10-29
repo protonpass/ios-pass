@@ -25,13 +25,13 @@ public struct TextViewConfiguration: Sendable {
     public let minWidth: CGFloat
     public let minHeight: CGFloat
     public let font: UIFont
-    public let textColor: Color
+    public let textColor: UIColor
 
     public init(minWidth: CGFloat = 300,
                 // 0 means taking the minimal height for displaying the text view
                 minHeight: CGFloat = 0,
                 font: UIFont = .body,
-                textColor: Color = PassColor.textNorm) {
+                textColor: UIColor = PassUIColor.textNorm) {
         self.minWidth = minWidth
         self.minHeight = minHeight
         self.font = font
@@ -58,7 +58,7 @@ struct EditableTextView: UIViewRepresentable {
         view.text = text
         view.font = config.font
         view.backgroundColor = .clear
-        view.textColor = config.textColor.uiColor
+        view.textColor = config.textColor
         view.isEditable = true
         view.isScrollEnabled = false
         view.textContainerInset = .zero
@@ -75,7 +75,7 @@ struct EditableTextView: UIViewRepresentable {
         // Update text and properties
         textView.text = text
         textView.font = config.font
-        textView.textColor = config.textColor.uiColor
+        textView.textColor = config.textColor
 
         // Restore cursor position and scroll offset
         textView.selectedRange = selectedRange

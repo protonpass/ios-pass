@@ -26,12 +26,6 @@ public extension UIColor {
     }
 }
 
-public extension Color {
-    var uiColor: UIColor {
-        UIColor(self)
-    }
-}
-
 // Helper extension for hex color
 public extension Color {
     init(hex: String) {
