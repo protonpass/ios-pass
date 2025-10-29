@@ -118,7 +118,7 @@ private extension EditableVaultListView {
                 Text("Upgrade to Pass Plus")
                     .foregroundStyle(PassColor.textNorm)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                Image(uiImage: IconProvider.chevronRight)
+                IconProvider.chevronRight
                     .resizable()
                     .frame(width: 16, height: 16)
                     .foregroundStyle(PassColor.interactionNormMajor2)
@@ -309,7 +309,7 @@ private extension EditableVaultListView {
     }
 
     func threeDotsIcon() -> some View {
-        Image(uiImage: IconProvider.threeDotsVertical)
+        IconProvider.threeDotsVertical
             .resizable()
             .scaledToFit()
             .frame(width: 24, height: 24)
@@ -326,7 +326,7 @@ private extension EditableVaultListView {
                     Label(title: {
                         Text("Edit")
                     }, icon: {
-                        Image(uiImage: IconProvider.pencil)
+                        IconProvider.pencil
                             .renderingMode(.template)
                             .foregroundStyle(PassColor.textWeak)
                     })
@@ -396,7 +396,7 @@ private extension EditableVaultListView {
                     Label(title: {
                         Text("Restore all items")
                     }, icon: {
-                        Image(uiImage: IconProvider.clockRotateLeft)
+                        IconProvider.clockRotateLeft
                     })
                 }
 
@@ -410,7 +410,7 @@ private extension EditableVaultListView {
                            Label(title: {
                                Text("Empty trash")
                            }, icon: {
-                               Image(uiImage: IconProvider.trashCross)
+                               IconProvider.trashCross
                            })
                        })
             }, label: threeDotsIcon)
@@ -459,11 +459,11 @@ extension VaultSelection {
         case let .precise(vault):
             vault.vaultBigIcon ?? PassIcon.vaultIcon1Big
         case .trash:
-            IconProvider.trash.toImage
+            IconProvider.trash
         case .sharedByMe:
-            IconProvider.userArrowRight.toImage
+            IconProvider.userArrowRight
         case .sharedWithMe:
-            IconProvider.userArrowLeft.toImage
+            IconProvider.userArrowLeft
         }
     }
 

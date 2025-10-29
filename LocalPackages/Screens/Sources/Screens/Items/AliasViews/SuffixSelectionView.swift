@@ -48,7 +48,7 @@ struct SuffixSelectionView: View {
                                 Spacer()
 
                                 if isSelected(suffix) {
-                                    Image(uiImage: IconProvider.checkmark)
+                                    IconProvider.checkmark
                                         .foregroundStyle(tintColor)
                                 }
                             }

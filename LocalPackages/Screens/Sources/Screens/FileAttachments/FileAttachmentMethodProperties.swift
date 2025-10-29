@@ -41,7 +41,7 @@ public extension FileAttachmentMethod {
     var icon: Image {
         switch self {
         case .takePhoto:
-            IconProvider.camera.toImage
+            IconProvider.camera
         case .scanDocuments:
             PassIcon.documentScan
         case .choosePhotoOrVideo:

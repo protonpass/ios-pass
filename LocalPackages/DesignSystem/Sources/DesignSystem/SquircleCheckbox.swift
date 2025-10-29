@@ -34,7 +34,7 @@ public struct SquircleCheckbox: View {
             PassColor.interactionNorm
                 .clipShape(RoundedRectangle(cornerRadius: height / 2.5, style: .continuous))
 
-            Image(uiImage: IconProvider.checkmark)
+            IconProvider.checkmark
                 .resizable()
                 .scaledToFit()
                 .frame(width: height / 2)

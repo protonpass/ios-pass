@@ -142,7 +142,7 @@ private extension ShareInviteeView {
                     EmptyView()
                 }
             }
-        }, label: { Image(uiImage: IconProvider.threeDotsVertical)
+        }, label: { IconProvider.threeDotsVertical
             .resizable()
             .scaledToFit()
             .frame(width: 24, height: 24)
@@ -150,14 +150,14 @@ private extension ShareInviteeView {
         })
     }
 
-    func button(option: ShareInviteeOption, title: LocalizedStringKey, image: UIImage) -> some View {
+    func button(option: ShareInviteeOption, title: LocalizedStringKey, image: Image) -> some View {
         Button(action: {
             onSelect(option)
         }, label: {
             Label(title: {
                 Text(title)
             }, icon: {
-                Image(uiImage: image)
+                image
                     .renderingMode(.template)
                     .foregroundStyle(PassColor.textWeak)
             })

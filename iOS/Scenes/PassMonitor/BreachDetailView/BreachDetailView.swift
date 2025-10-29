@@ -152,7 +152,7 @@ private extension BreachDetailView {
                     HStack {
                         VStack {
                             Spacer()
-                            Image(uiImage: item.knownCode.icon)
+                            item.knownCode.icon
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 20)
@@ -210,7 +210,7 @@ private extension BreachDetailView {
 }
 
 private extension BreachActionCode {
-    var icon: UIImage {
+    var icon: Image {
         switch self {
         case .stayAlert:
             IconProvider.checkmark

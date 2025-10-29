@@ -270,7 +270,7 @@ private extension BugReportView {
             Button(action: {
                 viewModel.removeFile(fileName)
             }, label: {
-                Image(uiImage: IconProvider.crossCircle)
+                IconProvider.crossCircle
                     .resizable()
                     .foregroundStyle(PassColor.interactionNormMajor2)
                     .frame(width: 18, height: 18)

@@ -33,7 +33,7 @@ struct UpgradeButton: View {
             HStack {
                 Text("Upgrade")
                     .font(.callout)
-                Image(uiImage: IconProvider.arrowOutSquare)
+                IconProvider.arrowOutSquare
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: 16)
@@ -57,7 +57,7 @@ struct UpgradeButtonLite: View {
         Button(action: action) {
             HStack {
                 Text("Upgrade")
-                Image(uiImage: IconProvider.arrowOutSquare)
+                IconProvider.arrowOutSquare
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: 16)

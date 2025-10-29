@@ -161,7 +161,7 @@ private extension UserPermissionView {
                     }
                 })
             }
-        }, label: { Image(uiImage: IconProvider.threeDotsVertical)
+        }, label: { IconProvider.threeDotsVertical
             .resizable()
             .scaledToFit()
             .frame(width: 24, height: 24)

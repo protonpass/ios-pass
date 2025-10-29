@@ -57,11 +57,7 @@ struct ItemDetailMoreInfoSection: View {
 
                     Spacer()
 
-                    if isExpanded {
-                        icon(from: IconProvider.chevronUp)
-                    } else {
-                        icon(from: IconProvider.chevronDown)
-                    }
+                    icon(from: isExpanded ? IconProvider.chevronUp : IconProvider.chevronDown)
                 }
             }
 
@@ -125,8 +121,8 @@ private extension ItemDetailMoreInfoSection {
         }
     }
 
-    func icon(from image: UIImage) -> some View {
-        Image(uiImage: image)
+    func icon(from image: Image) -> some View {
+        image
             .resizable()
             .scaledToFit()
             .frame(width: 16)

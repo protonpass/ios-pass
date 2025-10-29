@@ -59,7 +59,7 @@ public struct AliasSyncExplanationView: View {
 
             if let dimissAction {
                 Button(action: dimissAction) {
-                    Image(uiImage: IconProvider.cross)
+                    IconProvider.cross
                         .resizable()
                         .renderingMode(.template)
                         .scaledToFit()

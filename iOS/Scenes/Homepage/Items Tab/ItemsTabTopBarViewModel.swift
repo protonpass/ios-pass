@@ -73,7 +73,7 @@ enum ExtraBulkActionOption {
         case .disableAliases:
             PassIcon.aliasSlash
         case .enableAliases:
-            IconProvider.alias.toImage
+            IconProvider.alias
         }
     }
 }

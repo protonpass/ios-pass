@@ -114,7 +114,7 @@ public struct StorageCounter: View {
                                  color: level.progressColor)
                     .fixedSize(horizontal: true, vertical: true)
             case .full:
-                Image(uiImage: IconProvider.exclamationCircleFilled)
+                IconProvider.exclamationCircleFilled
                     .resizable()
                     .scaledToFit()
                     .foregroundStyle(level.progressColor)
@@ -159,7 +159,7 @@ private struct StorageUpsell: View {
                         .font(.headline)
                         .fontWeight(.medium)
 
-                    Image(uiImage: IconProvider.exclamationCircleFilled)
+                    IconProvider.exclamationCircleFilled
                         .resizable()
                         .scaledToFit()
                         .frame(height: 20)

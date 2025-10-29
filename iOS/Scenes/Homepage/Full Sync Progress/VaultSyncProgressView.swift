@@ -68,7 +68,7 @@ private extension VaultSyncProgressView {
             detail(vaultContent: vaultContent, itemsState: itemsState)
             Spacer()
             if progress.isDone {
-                Image(uiImage: IconProvider.checkmark)
+                IconProvider.checkmark
                     .resizable()
                     .scaledToFit()
                     .foregroundStyle(PassColor.interactionNorm)

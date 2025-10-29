@@ -63,11 +63,11 @@ public struct CustomSectionHeader: View {
             if editable {
                 Menu(content: {
                     Label(title: { Text("Edit section's title", bundle: .module) },
-                          icon: { Image(uiImage: IconProvider.pencil) })
+                          icon: { IconProvider.pencil })
                         .buttonEmbeded(action: onEditTitle)
 
                     Label(title: { Text("Remove section", bundle: .module) },
-                          icon: { Image(uiImage: IconProvider.crossCircle) })
+                          icon: { IconProvider.crossCircle })
                         .buttonEmbeded(action: onRemove)
                 }, label: {
                     IconProvider.threeDotsVertical

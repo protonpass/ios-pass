@@ -180,7 +180,7 @@ private extension CreateEditIdentityView {
                             .font(.callout)
                             .fontWeight(.medium)
                     }, icon: {
-                        Image(uiImage: IconProvider.arrowOutSquare)
+                        IconProvider.arrowOutSquare
                             .resizable()
                             .scaledToFit()
                             .frame(maxWidth: 16)
@@ -683,7 +683,7 @@ private extension CreateEditIdentityView {
                             .font(.callout)
                             .fontWeight(.medium)
                     }, icon: {
-                        Image(uiImage: IconProvider.arrowOutSquare)
+                        IconProvider.arrowOutSquare
                             .resizable()
                             .scaledToFit()
                             .frame(maxWidth: 16)

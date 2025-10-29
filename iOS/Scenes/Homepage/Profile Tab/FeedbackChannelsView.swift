@@ -78,7 +78,7 @@ extension FeedbackChannel {
     var icon: Image {
         switch self {
         case .bugReport:
-            IconProvider.bug.toImage
+            IconProvider.bug
         case .reddit:
             PassIcon.brandReddit
         case .uservoice:
