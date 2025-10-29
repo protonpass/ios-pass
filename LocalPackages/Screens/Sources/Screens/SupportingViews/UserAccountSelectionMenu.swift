@@ -75,10 +75,10 @@ public struct UserAccountSelectionMenu: View {
 
                 Label(title: { Text(text) },
                       icon: { Image(systemName: "chevron.up.chevron.down") })
-                    .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                    .foregroundStyle(PassColor.interactionNormMajor2)
                     .labelStyle(.rightIcon)
                     .padding(10)
-                    .background(PassColor.interactionNormMinor1.toColor)
+                    .background(PassColor.interactionNormMinor1)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
 
                 Spacer()

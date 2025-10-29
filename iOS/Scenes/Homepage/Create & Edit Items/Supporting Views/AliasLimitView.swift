@@ -22,7 +22,7 @@ import DesignSystem
 import SwiftUI
 
 struct AliasLimitView: View {
-    let backgroundColor: UIColor
+    let backgroundColor: Color
 
     var body: some View {
         // swiftlint:disable:next line_length

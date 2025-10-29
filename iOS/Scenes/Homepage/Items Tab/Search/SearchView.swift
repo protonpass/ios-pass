@@ -36,7 +36,7 @@ struct SearchView: View {
     var body: some View {
         GeometryReader { proxy in
             ZStack {
-                PassColor.backgroundNorm.toColor
+                PassColor.backgroundNorm
                     .ignoresSafeArea(edges: .all)
                 switch viewModel.state {
                 case let .error(error):

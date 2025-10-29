@@ -57,10 +57,10 @@ struct TipKitSection: View {
     func tipDetail(title: String, description: String) -> some View {
         VStack(alignment: .leading) {
             Text(title)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
             Text(description)
                 .font(.caption)
-                .foregroundStyle(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }

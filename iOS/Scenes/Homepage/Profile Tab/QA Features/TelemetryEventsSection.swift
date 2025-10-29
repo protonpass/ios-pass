@@ -44,8 +44,6 @@ private struct TelemetryEventUiModel: Identifiable {
     }
 }
 
-// swiftlint:disable force_unwrapping
-
 @MainActor
 private final class TelemetryEventsViewModel: ObservableObject {
     private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
@@ -108,7 +106,7 @@ private struct TelemetryEventsView: View {
                 if viewModel.uiModels.isEmpty {
                     Form {
                         Text(verbatim: "No events")
-                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .foregroundStyle(PassColor.textWeak)
                     }
                 } else {
                     eventsList
@@ -144,11 +142,11 @@ private struct EventView: View {
         Label(title: {
             VStack(alignment: .leading) {
                 Text(uiModel.event.type.emoji)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
 
                 Text(uiModel.relativeDate)
                     .font(.footnote)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }, icon: {
@@ -160,16 +158,16 @@ private struct EventView: View {
 }
 
 private extension TelemetryEventType {
-    var icon: UIImage {
+    var icon: Image {
         switch self {
         case let .create(type), let .delete(type), let .read(type), let .update(type):
             type.regularIcon
         case .autofillDisplay, .autofillTriggeredFromApp, .autofillTriggeredFromSource:
-            UIImage(systemName: "rectangle.and.pencil.and.ellipsis")!
+            Image(systemName: "rectangle.and.pencil.and.ellipsis")
         case .searchClick, .searchTriggered:
-            UIImage(systemName: "magnifyingglass")!
+            Image(systemName: "magnifyingglass")
         case .twoFaCreation, .twoFaUpdate:
-            UIImage(systemName: "2.circle")!
+            Image(systemName: "2.circle")
         case .passkeyAuth, .passkeyCreate, .passkeyDisplay:
             PassIcon.passkey
         case .monitorAddCustomEmailFromSuggestion,
@@ -184,15 +182,15 @@ private extension TelemetryEventType {
              .monitorItemDetailFromMissing2FA,
              .monitorItemDetailFromReusedPassword,
              .monitorItemDetailFromWeakPassword:
-            UIImage(systemName: "person.badge.shield.checkmark.fill")!
+            Image(systemName: "person.badge.shield.checkmark.fill")
         case .multiAccountAddAccount, .multiAccountRemoveAccount:
-            UIImage(systemName: "person.3.fill")!
+            Image(systemName: "person.3.fill")
         case .notificationChangeStatus, .notificationCtaClick, .notificationDisplay:
-            UIImage(systemName: "envelope.fill")!
+            Image(systemName: "envelope.fill")
         case .fileUploaded:
-            UIImage(systemName: "icloud.and.arrow.up.fill")!
+            Image(systemName: "icloud.and.arrow.up.fill")
         case .newLoginFlow:
-            UIImage(systemName: "house")!
+            Image(systemName: "house")
         case .onboardingAliasVideoOpened,
              .onboardingBiometricsEnabled,
              .onboardingBiometricsSkipped,
@@ -201,11 +199,11 @@ private extension TelemetryEventType {
              .onboardingUpsellCtaClicked,
              .onboardingUpsellSkipped,
              .onboardingUpsellSubscribed:
-            UIImage(systemName: "hand.wave.fill")!
+            Image(systemName: "hand.wave.fill")
         }
     }
 
-    var iconColor: UIColor {
+    var iconColor: Color {
         switch self {
         case let .create(type), let .delete(type), let .read(type), let .update(type):
             type.normMajor1Color
@@ -252,7 +250,7 @@ private extension TelemetryEventType {
         }
     }
 
-    var backgroundColor: UIColor {
+    var backgroundColor: Color {
         switch self {
         case let .create(type), let .delete(type), let .read(type), let .update(type):
             type.normMinor1Color
@@ -262,9 +260,9 @@ private extension TelemetryEventType {
              .passkeyAuth,
              .passkeyCreate,
              .passkeyDisplay:
-            PassColor.signalInfo.withAlphaComponent(0.16)
+            PassColor.signalInfo.opacity(0.16)
         case .searchClick, .searchTriggered:
-            PassColor.signalDanger.withAlphaComponent(0.16)
+            PassColor.signalDanger.opacity(0.16)
         case .twoFaCreation, .twoFaUpdate:
             ItemContentType.login.normMinor1Color
         case .monitorAddCustomEmailFromSuggestion,
@@ -386,5 +384,3 @@ private extension TelemetryEventType {
         }
     }
 }
-
-// swiftlint:enable force_unwrapping

@@ -64,7 +64,7 @@ enum ExtraBulkActionOption {
         }
     }
 
-    var icon: UIImage {
+    var icon: Image {
         switch self {
         case .pin:
             PassIcon.pinAngled

@@ -36,7 +36,7 @@ struct AcceptRejectInviteView: View {
                     if viewModel.userInvite.fromNewUser {
                         Text("Congratulations,\n your access has been confirmed")
                             .font(.title2.bold())
-                            .foregroundStyle(PassColor.textNorm.toColor)
+                            .foregroundStyle(PassColor.textNorm)
                             .multilineTextAlignment(.center)
                     } else {
                         senderEmailInfo
@@ -59,7 +59,7 @@ struct AcceptRejectInviteView: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 24)
-        .background(PassColor.backgroundWeak.toColor)
+        .background(PassColor.backgroundWeak)
         .animation(.default, value: viewModel.vaultInfos)
         .showSpinner(viewModel.executingAction)
         .onChange(of: viewModel.shouldCloseSheet) { value in
@@ -86,7 +86,7 @@ private extension AcceptRejectInviteView {
                     .padding(.bottom, 16)
             }
         }
-        .foregroundStyle(PassColor.textNorm.toColor)
+        .foregroundStyle(PassColor.textNorm)
     }
 }
 
@@ -94,24 +94,24 @@ private extension AcceptRejectInviteView {
     func vaultInformation(infos: VaultContent) -> some View {
         VStack {
             ZStack {
-                infos.display.color.color.color.withAlphaComponent(0.16).toColor
+                infos.display.color.color.color.opacity(0.16)
                     .clipShape(Circle())
 
-                Image(uiImage: infos.display.icon.icon.bigImage)
+                infos.display.icon.icon.bigImage
                     .resizable()
                     .renderingMode(.template)
                     .scaledToFit()
-                    .foregroundStyle(infos.display.color.color.color.toColor)
+                    .foregroundStyle(infos.display.color.color.color)
                     .frame(width: 28, height: 28)
             }
             .frame(width: 64, height: 64)
 
             Text(infos.name)
                 .font(.title2.bold())
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
             Text(viewModel.userInvite.vaultsCountInfos)
                 .font(.title3)
-                .foregroundStyle(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak)
         }
     }
 }

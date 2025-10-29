@@ -44,7 +44,7 @@ struct EditSpotlightSearchableContentView: View {
             }
         }
         .scrollViewEmbeded(maxWidth: .infinity)
-        .background(PassColor.backgroundWeak.toColor)
+        .background(PassColor.backgroundWeak)
         .navigationStackEmbeded()
     }
 }
@@ -55,7 +55,7 @@ private extension EditSpotlightSearchableContentView {
                             height: .compact,
                             content: {
                                 Text(content.title)
-                                    .foregroundStyle(PassColor.textNorm.toColor)
+                                    .foregroundStyle(PassColor.textNorm)
                             },
                             isSelected: content == selection)
     }

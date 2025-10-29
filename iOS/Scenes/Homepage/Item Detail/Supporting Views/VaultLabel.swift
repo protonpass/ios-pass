@@ -30,11 +30,11 @@ struct VaultLabel: View {
             Text(vaultContent.name)
                 .font(.footnote)
         }, icon: {
-            Image(uiImage: vaultContent.vaultSmallIcon)
+            vaultContent.vaultSmallIcon
                 .resizable()
                 .scaledToFit()
                 .frame(width: 12, height: 12)
         })
-        .foregroundStyle(PassColor.textWeak.toColor)
+        .foregroundStyle(PassColor.textWeak)
     }
 }

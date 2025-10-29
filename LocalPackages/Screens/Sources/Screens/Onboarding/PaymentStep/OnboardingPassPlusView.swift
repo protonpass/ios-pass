@@ -50,8 +50,8 @@ struct OnboardingPassPlusView: View {
         ZStack {
             HStack {
                 Spacer()
-                ThemedColor(dark: PassColor.backgroundMedium.toColor,
-                            light: PassColor.newBackgroundStrong.toColor)
+                ThemedColor(dark: PassColor.backgroundMedium,
+                            light: PassColor.newBackgroundStrong)
                     .frame(width: detailColumnWidth)
                     .clipShape(RoundedRectangle(cornerRadius: 24))
             }
@@ -87,7 +87,7 @@ private extension OnboardingPassPlusView {
                     PerkDetailView(perk: feature.higherPerk)
                 }
             }
-            .themedForegroundStyle(dark: .white, light: PassColor.textNorm.toColor)
+            .themedForegroundStyle(dark: .white, light: PassColor.textNorm)
             .padding(.vertical)
     }
 }
@@ -99,7 +99,7 @@ struct PassPlusTitle: View {
             .padding(.vertical, 4)
             .padding(.horizontal)
             .background(ThemedColor(dark: Color(red: 0.05, green: 0.05, blue: 0.05, opacity: 0.6),
-                                    light: PassColor.newBackgroundStrong.toColor))
+                                    light: PassColor.newBackgroundStrong))
             .clipShape(.capsule)
     }
 }

@@ -36,9 +36,7 @@ let package = Package(name: "DesignSystem",
                                     .product(name: "MBProgressHUD", package: "MBProgressHUD"),
                                     .product(name: "Macro", package: "Macro")
                                   ],
-                                  resources: [.process("Resources")]),
-                          .testTarget(name: "DesignSystemTests",
-                                      dependencies: ["DesignSystem"])
+                                  resources: [.process("Resources")])
                       ],
                       swiftLanguageModes: [.version("6")]
 )

@@ -310,7 +310,7 @@ private extension DetailHistoryView {
                          border: customSectionsColor)
         } header: {
             Text(customSection.title)
-                .foregroundStyle(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.top, DesignConstant.sectionPadding)
                 .padding(.vertical, DesignConstant.sectionPadding)
@@ -328,7 +328,7 @@ private extension DetailHistoryView {
                     .sectionTitleText()
 
                 Text(value)
-                    .foregroundStyle(textColor(for: element).toColor)
+                    .foregroundStyle(textColor(for: element))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
@@ -340,7 +340,7 @@ private extension DetailHistoryView {
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
 
-    func customFields(_ fields: [CustomField], border: UIColor) -> some View {
+    func customFields(_ fields: [CustomField], border: Color) -> some View {
         VStack(spacing: 0) {
             ForEach(fields) { field in
                 HStack(spacing: DesignConstant.sectionPadding) {
@@ -349,7 +349,7 @@ private extension DetailHistoryView {
                             .sectionTitleText()
 
                         Text(field.content)
-                            .foregroundStyle(PassColor.textNorm.toColor)
+                            .foregroundStyle(PassColor.textNorm)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
@@ -362,7 +362,7 @@ private extension DetailHistoryView {
         .roundedDetailSection(borderColor: border)
     }
 
-    var customSectionsColor: UIColor {
+    var customSectionsColor: Color {
         var currentSections: [CustomSection] = []
         var pastSections: [CustomSection] = []
         switch viewModel.itemContentType {
@@ -386,7 +386,7 @@ private extension DetailHistoryView {
 
     func sectionTitle(title: LocalizedStringKey) -> some View {
         Text(title)
-            .foregroundStyle(PassColor.textWeak.toColor)
+            .foregroundStyle(PassColor.textWeak)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.top, DesignConstant.sectionPadding)
             .padding(.vertical, DesignConstant.sectionPadding)

@@ -43,7 +43,7 @@ struct MonitorProtonAddressesView: View {
         .scrollViewEmbeded()
         .animation(.default, value: viewModel.access)
         .animation(.default, value: viewModel.allAddresses)
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
         .toolbar { toolbarContent }
         .navigationBarTitleDisplayMode(.large)
         .navigationTitle("Proton addresses")
@@ -110,7 +110,7 @@ private extension MonitorProtonAddressesView {
     @ViewBuilder
     var disabledView: some View {
         Text("Enable monitoring to get notified if your Proton addresses were leaked.")
-            .foregroundStyle(PassColor.textNorm.toColor)
+            .foregroundStyle(PassColor.textNorm)
             .padding(.vertical)
         ForEach(viewModel.allAddresses) { address in
             MonitorExcludedEmailView(address: address)

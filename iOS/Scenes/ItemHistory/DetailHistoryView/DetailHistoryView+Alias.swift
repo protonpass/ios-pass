@@ -64,7 +64,7 @@ private extension DetailHistoryView {
                     .sectionTitleText()
 
                 Text(item.aliasEmail ?? "")
-                    .foregroundStyle(textColor(for: \.aliasEmail).toColor)
+                    .foregroundStyle(textColor(for: \.aliasEmail))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)

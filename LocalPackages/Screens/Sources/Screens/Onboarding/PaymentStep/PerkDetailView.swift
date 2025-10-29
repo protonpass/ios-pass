@@ -30,7 +30,7 @@ struct PerkDetailView: View {
         Group {
             switch perk {
             case .available:
-                Image(uiImage: IconProvider.checkmarkCircleFilled)
+                IconProvider.checkmarkCircleFilled
                     .resizable()
                     .scaledToFit()
                     .frame(width: 20)
@@ -50,6 +50,6 @@ struct PerkDetailView: View {
                 Text(value)
             }
         }
-        .themedForegroundStyle(dark: .white, light: PassColor.textNorm.toColor)
+        .themedForegroundStyle(dark: .white, light: PassColor.textNorm)
     }
 }

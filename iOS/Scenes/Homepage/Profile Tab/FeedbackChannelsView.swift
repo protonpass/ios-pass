@@ -48,12 +48,12 @@ struct FeedbackChannelsView: View {
                                       Label(title: {
                                           Text(channel.description)
                                       }, icon: {
-                                          Image(uiImage: channel.icon)
+                                          channel.icon
                                               .resizable()
                                               .scaledToFit()
                                               .frame(maxWidth: 20, maxHeight: 20)
                                       })
-                                      .foregroundStyle(PassColor.textNorm.toColor)
+                                      .foregroundStyle(PassColor.textNorm)
                                   })
 
                         PassDivider()
@@ -62,7 +62,7 @@ struct FeedbackChannelsView: View {
                 .padding(.horizontal)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(PassColor.backgroundWeak.toColor)
+            .background(PassColor.backgroundWeak)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -75,7 +75,7 @@ struct FeedbackChannelsView: View {
 }
 
 extension FeedbackChannel {
-    var icon: UIImage {
+    var icon: Image {
         switch self {
         case .bugReport:
             IconProvider.bug

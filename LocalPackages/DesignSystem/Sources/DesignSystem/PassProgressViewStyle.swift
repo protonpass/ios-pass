@@ -27,8 +27,8 @@ public struct PassProgressViewStyle: ProgressViewStyle {
             .frame(height: 8)
             .scaleEffect(x: 1, y: 2, anchor: .center)
             .clipShape(RoundedRectangle(cornerRadius: 8))
-            .accentColor(PassColor.interactionNorm.toColor)
-            .tint(PassColor.interactionNorm.toColor)
+            .accentColor(PassColor.interactionNorm)
+            .tint(PassColor.interactionNorm)
     }
 }
 

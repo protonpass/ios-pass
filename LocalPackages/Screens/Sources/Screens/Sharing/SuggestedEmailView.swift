@@ -42,7 +42,7 @@ struct SuggestedEmailView: View {
             Spacer()
 
             Text(email)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             Spacer()

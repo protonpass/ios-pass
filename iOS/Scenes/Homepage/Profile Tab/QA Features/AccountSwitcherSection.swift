@@ -85,7 +85,7 @@ private struct AccountSwitcherView: View {
             .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
         .navigationBarTitleDisplayMode(.inline)
         .modifier(AccountSwitchModifier(details: details,
                                         activeId: eric.id,

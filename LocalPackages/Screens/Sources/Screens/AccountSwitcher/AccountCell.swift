@@ -129,9 +129,9 @@ public struct AccountCell: View {
 private extension AccountCell {
     var initial: some View {
         ZStack {
-            PassColor.interactionNormMajor1.toColor
+            PassColor.interactionNormMajor1
             Text(verbatim: detail.initial)
-                .foregroundStyle(PassColor.textInvert.toColor)
+                .foregroundStyle(PassColor.textInvert)
                 .fontWeight(.medium)
         }
         .frame(width: 36, height: 36)
@@ -144,7 +144,7 @@ private extension AccountCell {
             EmptyView()
         } else {
             Text(verbatim: detail.displayName)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
         }
     }
 
@@ -153,8 +153,7 @@ private extension AccountCell {
         if let planName = detail.planName {
             Text(verbatim: planName)
                 .font(.caption)
-                .foregroundStyle((detail.isPremium ? PassColor.noteInteractionNormMajor2 : PassColor.textNorm)
-                    .toColor)
+                .foregroundStyle(detail.isPremium ? PassColor.noteInteractionNormMajor2 : PassColor.textNorm)
         } else {
             EmptyView()
         }
@@ -163,6 +162,6 @@ private extension AccountCell {
     var email: some View {
         Text(verbatim: detail.email)
             .font(.caption)
-            .foregroundStyle(PassColor.textWeak.toColor)
+            .foregroundStyle(PassColor.textWeak)
     }
 }

@@ -60,7 +60,7 @@ struct NoteDetailSection: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         }
         .padding(DesignConstant.sectionPadding)
-        .tint(itemContent.type.normMajor2Color.toColor)
+        .tint(itemContent.type.normMajor2Color)
         .roundedDetailSection()
         .sheet(isPresented: $isShowingFullNote) {
             FullNoteView(itemContent: itemContent, vault: vault, title: title, note: note)
@@ -100,6 +100,6 @@ private struct FullNoteView: View {
                 }
             }
         }
-        .tint(itemContent.type.normMajor2Color.toColor)
+        .tint(itemContent.type.normMajor2Color)
     }
 }

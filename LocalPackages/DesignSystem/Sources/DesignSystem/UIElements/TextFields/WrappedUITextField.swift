@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
-import UIKit
 
 public struct WrappedUITextFieldConfiguration {
     let shouldActivateCursorMovement: Bool

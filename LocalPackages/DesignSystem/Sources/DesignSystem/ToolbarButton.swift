@@ -23,12 +23,12 @@ import SwiftUI
 public struct ToolbarButton: View {
     let title: LocalizedStringKey
     let titleBundle: Bundle
-    let image: UIImage
+    let image: Image
     let action: () -> Void
 
     public init(_ title: LocalizedStringKey,
                 titleBundle: Bundle,
-                image: UIImage,
+                image: Image,
                 action: @escaping () -> Void) {
         self.title = title
         self.titleBundle = titleBundle
@@ -40,7 +40,7 @@ public struct ToolbarButton: View {
         Button(action: action) {
             // Use HStack instead of Label because Label's text is not rendered in toolbar
             HStack {
-                Image(uiImage: image)
+                image
                     .resizable()
                     .frame(width: 18, height: 18)
                 Text(title, bundle: titleBundle)

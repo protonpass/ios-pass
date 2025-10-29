@@ -59,7 +59,7 @@ public struct VaultSelectionView: View {
                     }
                 }
             }
-            .background(PassColor.backgroundWeak.toColor)
+            .background(PassColor.backgroundWeak)
             .navigationBarTitleDisplayMode(.inline)
             .animation(.default, value: selectedVault)
             .navigationTitle(Text("Default SimpleLogin vault", bundle: .module))

@@ -34,12 +34,12 @@ public struct UsernameTip: Tip {
 
     public var title: Text {
         Text("Add username field", bundle: .module)
-            .foregroundStyle(PassColor.textNorm.toColor)
+            .foregroundStyle(PassColor.textNorm)
     }
 
     public var message: Text? {
         Text("Tap here to add a field for a username.", bundle: .module)
-            .foregroundStyle(PassColor.textWeak.toColor)
+            .foregroundStyle(PassColor.textWeak)
     }
 
     public var image: Image? {

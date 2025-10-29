@@ -36,7 +36,7 @@ struct EditClipboardExpirationView: View {
                                             height: .compact,
                                             content: {
                                                 Text(expiration.description)
-                                                    .foregroundStyle(PassColor.textNorm.toColor)
+                                                    .foregroundStyle(PassColor.textNorm)
                                             },
                                             isSelected: expiration == selection)
 
@@ -46,7 +46,7 @@ struct EditClipboardExpirationView: View {
                 .padding(.horizontal)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(PassColor.backgroundWeak.toColor)
+            .background(PassColor.backgroundWeak)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {

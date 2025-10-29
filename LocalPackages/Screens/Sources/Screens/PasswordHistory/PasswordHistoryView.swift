@@ -41,7 +41,7 @@ public struct PasswordHistoryView: View {
 
     public var body: some View {
         ZStack {
-            PassColor.backgroundNorm.toColor
+            PassColor.backgroundNorm
                 .ignoresSafeArea()
 
             if viewModel.loading {
@@ -85,7 +85,7 @@ private extension PasswordHistoryView {
                            action: viewModel.clearHistory,
                            label: {
                                Label(title: { Text("Clear history", bundle: .module) },
-                                     icon: { Image(uiImage: PassIcon.clearHistory) })
+                                     icon: { PassIcon.clearHistory })
                            })
                 }, label: {
                     CircleButton(icon: IconProvider.threeDotsVertical,
@@ -102,7 +102,7 @@ private extension PasswordHistoryView {
             Text("No history", bundle: .module)
                 .font(.title3)
                 .fontWeight(.bold)
-                .foregroundStyle(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak)
                 .padding(.bottom)
             twoWeeksNotice(font: .body)
             Spacer()
@@ -116,7 +116,7 @@ private extension PasswordHistoryView {
     func twoWeeksNotice(font: Font) -> some View {
         Text("Generated passwords will be stored for 2 weeks.", bundle: .module)
             .font(font)
-            .foregroundStyle(PassColor.textWeak.toColor)
+            .foregroundStyle(PassColor.textWeak)
             .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity)
     }
@@ -169,23 +169,23 @@ private struct GeneratedPasswordRow: View {
                 switch password.visibility {
                 case .masked:
                     Text(verbatim: String(repeating: "•", count: 12))
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm)
 
                 case let .unmasked(clearPassword):
                     Text(clearPassword.coloredPassword())
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm)
 
                 case .failedToUnmask:
                     Image(systemName: "exclamationmark.3")
                         .resizable()
                         .scaledToFit()
-                        .foregroundStyle(PassColor.signalWarning.toColor)
+                        .foregroundStyle(PassColor.signalWarning)
                         .frame(width: 24)
                 }
 
                 Text(verbatim: password.relativeCreationDate)
                     .font(.callout)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
@@ -212,17 +212,17 @@ private struct GeneratedPasswordRow: View {
         Menu(content: {
             Button(action: onCopy) {
                 Label(title: { Text("Copy password", bundle: .module) },
-                      icon: { Image(uiImage: IconProvider.key) })
+                      icon: { IconProvider.key })
             }
 
             Button(action: onCreateLogin) {
                 Label(title: { Text("Create login", bundle: .module) },
-                      icon: { Image(uiImage: IconProvider.user) })
+                      icon: { IconProvider.user })
             }
 
             Button(action: onRemove) {
                 Label(title: { Text("Remove from history", bundle: .module) },
-                      icon: { Image(uiImage: IconProvider.trashCross) })
+                      icon: { IconProvider.trashCross })
             }
         }, label: {
             CircleButton(icon: IconProvider.threeDotsVertical,

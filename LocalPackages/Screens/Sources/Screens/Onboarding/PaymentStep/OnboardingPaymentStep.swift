@@ -52,7 +52,7 @@ struct OnboardingPaymentStep: View {
             Text("Unlock premium features.", bundle: .module)
                 .font(.title3)
                 .fontWeight(.bold)
-                .themedForegroundStyle(dark: .white, light: PassColor.textNorm.toColor)
+                .themedForegroundStyle(dark: .white, light: PassColor.textNorm)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, DesignConstant.onboardingPadding)
 
@@ -131,9 +131,8 @@ private extension OnboardingPaymentStep {
                 .font(.caption)
         }
         .frame(maxWidth: .infinity, alignment: .center)
-        .foregroundStyle(selected ? PassColor.textInvert.toColor : colorScheme == .dark ? .white : PassColor
-            .textNorm
-            .toColor)
+        .foregroundStyle(selected ? PassColor.textInvert : colorScheme == .dark ? .white : PassColor
+            .textNorm)
         .contentShape(.rect)
         .onTapGesture(perform: onSelect)
     }
@@ -154,7 +153,7 @@ private extension OnboardingPaymentStep {
                 Text("Auto renews at \(selectedPlan.displayYearlyPrice) every year",
                      bundle: .module)
                     .font(.callout)
-                    .themedForegroundStyle(dark: .white, light: PassColor.textNorm.toColor)
+                    .themedForegroundStyle(dark: .white, light: PassColor.textNorm)
                     .padding([.bottom, .horizontal], DesignConstant.onboardingPadding)
             }
         }

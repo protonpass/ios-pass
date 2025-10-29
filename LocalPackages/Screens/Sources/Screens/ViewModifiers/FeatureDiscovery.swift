@@ -58,17 +58,17 @@ private struct FeatureDiscoveryModifier: ViewModifier {
         case .newLabel:
             Text("NEW", bundle: .module)
                 .font(.caption)
-                .foregroundStyle(PassColor.textInvert.toColor)
+                .foregroundStyle(PassColor.textInvert)
                 .fontWeight(.medium)
                 .padding(.horizontal, 8)
                 .padding(.vertical, 4)
-                .background(PassColor.signalInfo.toColor)
+                .background(PassColor.signalInfo)
                 .cornerRadius(6)
                 .offset(config.offset)
 
         case .dot:
             Circle()
-                .fill(PassColor.signalInfo.toColor)
+                .fill(PassColor.signalInfo)
                 .frame(width: 10, height: 10)
                 .offset(config.offset)
         }

@@ -30,7 +30,7 @@ struct LogInDetailView: View {
     @State private var isShowingPassword = false
     @Namespace private var bottomID
 
-    private var iconTintColor: UIColor { viewModel.itemContent.type.normColor }
+    private var iconTintColor: Color { viewModel.itemContent.type.normColor }
 
     init(viewModel: LogInDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -201,8 +201,8 @@ private extension LogInDetailView {
                         Button { viewModel.showAliasDetail() } label: {
                             Text("View alias")
                                 .font(.callout)
-                                .foregroundStyle(viewModel.itemContent.type.normMajor2Color.toColor)
-                                .underline(color: viewModel.itemContent.type.normMajor2Color.toColor)
+                                .foregroundStyle(viewModel.itemContent.type.normMajor2Color)
+                                .underline(color: viewModel.itemContent.type.normMajor2Color)
                         }
                         .padding(.top, 8)
                     }
@@ -354,7 +354,7 @@ private extension LogInDetailView {
                             viewModel.openUrl(url)
                         }, label: {
                             Text(url)
-                                .foregroundStyle(viewModel.itemContent.type.normMajor2Color.toColor)
+                                .foregroundStyle(viewModel.itemContent.type.normMajor2Color)
                                 .multilineTextAlignment(.leading)
                                 .lineLimit(2)
                         })
@@ -385,16 +385,16 @@ private extension LogInDetailView {
         Group {
             Text("View and edit details for this alias on the separate alias page.")
                 .font(.callout)
-                .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
+                .adaptiveForegroundStyle(PassColor.textNorm) +
                 Text(verbatim: " ")
                 .font(.callout) +
                 Text("View")
                 .font(.callout)
-                .adaptiveForegroundStyle(viewModel.itemContent.type.normMajor2Color.toColor)
-                .underline(color: viewModel.itemContent.type.normMajor2Color.toColor)
+                .adaptiveForegroundStyle(viewModel.itemContent.type.normMajor2Color)
+                .underline(color: viewModel.itemContent.type.normMajor2Color)
         }
         .padding(DesignConstant.sectionPadding)
-        .background(PassColor.backgroundMedium.toColor)
+        .background(PassColor.backgroundMedium)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .onTapGesture(perform: viewModel.showAliasDetail)
     }
@@ -421,7 +421,7 @@ private extension LogInDetailView {
                         .renderingMode(.template)
                         .scaledToFit()
                         .symbolRenderingMode(.hierarchical)
-                        .foregroundStyle(rowType.iconColor.toColor)
+                        .foregroundStyle(rowType.iconColor)
                         .frame(width: 28)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                     Spacer()
@@ -432,7 +432,7 @@ private extension LogInDetailView {
                 if let title = weakness.detailTitle {
                     Text(title)
                         .fontWeight(.bold)
-                        .foregroundStyle(rowType.iconColor.toColor)
+                        .foregroundStyle(rowType.iconColor)
                 }
                 if weakness == .reusedPasswords {
                     reusedList(rowType: rowType)
@@ -441,7 +441,7 @@ private extension LogInDetailView {
                 if let infos = weakness.infos {
                     Text(infos)
                         .font(.callout)
-                        .foregroundStyle(rowType.iconColor.toColor)
+                        .foregroundStyle(rowType.iconColor)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -457,19 +457,19 @@ private extension LogInDetailView {
         switch viewModel.reusedItems {
         case .fetching:
             ProgressView()
-                .tint(rowType.iconColor.toColor)
+                .tint(rowType.iconColor)
         case let .fetched(reusedItems):
             let reuseText: () -> Text = {
                 Text("\(reusedItems.count) other logins use this password")
                     .fontWeight(.bold)
-                    .adaptiveForegroundStyle(rowType.iconColor.toColor)
+                    .adaptiveForegroundStyle(rowType.iconColor)
             }
             if reusedItems.count > 5 {
                 reuseText()
                 HStack {
                     CapsuleTextButton(title: #localized("See all"),
                                       titleColor: rowType.iconColor,
-                                      backgroundColor: rowType.iconColor.withAlphaComponent(0.2),
+                                      backgroundColor: rowType.iconColor.opacity(0.2),
                                       action: { viewModel.showItemList() })
                         .fixedSize(horizontal: true, vertical: true)
                     Spacer()
@@ -508,12 +508,12 @@ struct ReusedItemsPassListView: View {
                                                   alternativeBackground: true)
                             Text(item.title)
                                 .lineLimit(1)
-                                .foregroundStyle(PassColor.textNorm.toColor)
+                                .foregroundStyle(PassColor.textNorm)
                                 .padding(.trailing, 8)
                         }
                         .padding(8)
                         .frame(maxWidth: 165, alignment: .leading)
-                        .background(item.type.normMinor1Color.toColor)
+                        .background(item.type.normMinor1Color)
                         .cornerRadius(16)
                     }
                 }

@@ -32,13 +32,13 @@ struct OnboardingFirstLoginCreatedStep: View {
             Text("First login created")
                 .font(.title)
                 .fontWeight(.bold)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
                 .padding(.top, 50)
                 .padding(.bottom, DesignConstant.sectionPadding)
             // swiftlint:disable:next line_length
             Text("You are ready to get the most out of Proton Pass: the magic of AutoFill, the privacy of Aliases and much more.")
                 .font(.title3)
-                .foregroundStyle(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak)
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
@@ -50,7 +50,7 @@ struct OnboardingFirstLoginCreatedStep: View {
 private extension OnboardingFirstLoginCreatedStep {
     var sparkledLogin: some View {
         ZStack(alignment: .trailing) {
-            Image(uiImage: PassIcon.onboardLoginCreatedSparkle)
+            PassIcon.onboardLoginCreatedSparkle
                 .resizable()
                 .scaledToFit()
                 .frame(width: 67)
@@ -65,10 +65,10 @@ private extension OnboardingFirstLoginCreatedStep {
             KnownServiceThumbnail(service: payload.service, height: 40)
             VStack(alignment: .leading) {
                 Text(payload.title)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 Text(payload.emailOrUsername)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             .frame(maxWidth: .infinity, alignment: .leading)

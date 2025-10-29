@@ -102,7 +102,7 @@ private extension ItemSquircleThumbnail {
                 .if(!isEnabled) { view in
                     view.overlay {
                         RoundedRectangle(cornerRadius: size.height / 2.5, style: .continuous)
-                            .stroke((alternativeBackground ? type.normMinor2Color : type.normMinor1Color).toColor,
+                            .stroke(alternativeBackground ? type.normMinor2Color : type.normMinor1Color,
                                     lineWidth: 1)
                     }
                 }
@@ -124,7 +124,7 @@ private extension ItemSquircleThumbnail {
                             .scaledToFit()
                             .padding(size.height / 5)
                         RoundedRectangle(cornerRadius: size.height / 2.5, style: .continuous)
-                            .stroke(PassColor.inputBorderNorm.toColor, lineWidth: size.strokeWidth)
+                            .stroke(PassColor.inputBorderNorm, lineWidth: size.strokeWidth)
                     }
                     .clipShape(RoundedRectangle(cornerRadius: size.height / 2.5, style: .continuous))
                 } else {
@@ -166,7 +166,7 @@ private extension ItemSquircleThumbnail {
     var pin: some View {
         ZStack(alignment: .bottomTrailing) {
             Color.clear
-            PassColor.backgroundNorm.toColor
+            PassColor.backgroundNorm
                 .frame(width: size.pinHeight, height: size.pinHeight)
                 .clipShape(Circle())
                 .overlay {
