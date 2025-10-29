@@ -23,8 +23,8 @@ import SwiftUI
 /// TextField that has month year picker as keyboard
 public struct MonthYearTextField: UIViewRepresentable {
     let placeholder: String
-    let textColor: Color
-    let tintColor: Color
+    let textColor: UIColor
+    let tintColor: UIColor
     let font: UIFont
     let months: [Int]
     let years: [Int]
@@ -32,10 +32,10 @@ public struct MonthYearTextField: UIViewRepresentable {
     @Binding var year: Int?
 
     public init(placeholder: String,
-                tintColor: Color,
+                tintColor: UIColor,
                 month: Binding<Int?>,
                 year: Binding<Int?>,
-                textColor: Color = PassColor.textNorm,
+                textColor: UIColor = PassUIColor.textNorm,
                 font: UIFont = .preferredFont(forTextStyle: .body)) {
         self.placeholder = placeholder
         self.textColor = textColor
@@ -64,12 +64,12 @@ public struct MonthYearTextField: UIViewRepresentable {
 
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
-        toolbar.tintColor = tintColor.uiColor
+        toolbar.tintColor = tintColor
 
         let textField = UITextField()
         textField.placeholder = placeholder
-        textField.textColor = textColor.uiColor
-        textField.tintColor = tintColor.uiColor
+        textField.textColor = textColor
+        textField.tintColor = tintColor
         textField.font = font
         textField.inputView = picker
         textField.inputAccessoryView = toolbar

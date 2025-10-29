@@ -24,7 +24,7 @@ import SwiftUI
 /// `UITextView` wrapper that support data type detections
 public struct ReadOnlyTextView: UIViewRepresentable {
     let text: String
-    let textColor: Color
+    let textColor: UIColor
     let font: UIFont
     let minWidth: CGFloat
     let maxHeight: CGFloat
@@ -33,7 +33,7 @@ public struct ReadOnlyTextView: UIViewRepresentable {
     let onRenderCompletion: ((_ isTrimmed: Bool) -> Void)?
 
     public init(_ text: String,
-                textColor: Color = PassColor.textNorm,
+                textColor: UIColor = PassUIColor.textNorm,
                 font: UIFont = .body,
                 minWidth: CGFloat = 300,
                 maxHeight: CGFloat = .greatestFiniteMagnitude,
@@ -54,7 +54,7 @@ public struct ReadOnlyTextView: UIViewRepresentable {
         let view = UITextView()
         view.font = font
         view.backgroundColor = .clear
-        view.textColor = textColor.uiColor
+        view.textColor = textColor
         view.isEditable = false
         view.isScrollEnabled = false
         view.dataDetectorTypes = dataDetectorTypes

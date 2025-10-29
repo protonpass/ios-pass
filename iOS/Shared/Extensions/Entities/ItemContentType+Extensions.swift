@@ -83,6 +83,21 @@ extension ItemContentType {
         }
     }
 
+    var normMajor1UIColor: UIColor {
+        switch self {
+        case .alias:
+            PassUIColor.aliasInteractionNormMajor1
+        case .login:
+            PassUIColor.loginInteractionNormMajor1
+        case .note:
+            PassUIColor.noteInteractionNormMajor1
+        case .creditCard:
+            PassUIColor.cardInteractionNormMajor1
+        case .custom, .identity, .sshKey, .wifi:
+            PassUIColor.interactionNormMajor1
+        }
+    }
+
     var normMajor2Color: Color {
         switch self {
         case .alias:

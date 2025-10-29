@@ -125,8 +125,8 @@ private extension UserEmailView {
                                               autoCorrection: .no,
                                               keyboardType: .emailAddress,
                                               returnKeyType: .default,
-                                              textColor: PassColor.textNorm,
-                                              tintColor: PassColor.interactionNorm),
+                                              textColor: PassUIColor.textNorm,
+                                              tintColor: PassUIColor.interactionNorm),
                                 onBackspace: { viewModel.highlightLastEmail() },
                                 onReturn: { _ = viewModel.appendCurrentEmail() })
             .frame(width: max(150, CGFloat(maxCharCount) * 10), height: 32)

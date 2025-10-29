@@ -59,8 +59,8 @@ public struct BackspaceAwareTextField: UIViewRepresentable {
         textField.autocorrectionType = config.autoCorrection
         textField.keyboardType = config.keyboardType
         textField.returnKeyType = config.returnKeyType
-        textField.textColor = config.textColor.uiColor
-        textField.tintColor = config.tintColor.uiColor
+        textField.textColor = config.textColor
+        textField.tintColor = config.tintColor
         textField.addAction(UIAction(handler: { _ in
             text = textField.text ?? ""
         }), for: .editingChanged)
@@ -109,8 +109,8 @@ public extension BackspaceAwareTextField {
         let autoCorrection: UITextAutocorrectionType
         let keyboardType: UIKeyboardType
         let returnKeyType: UIReturnKeyType
-        let textColor: Color
-        let tintColor: Color
+        let textColor: UIColor
+        let tintColor: UIColor
 
         public init(font: UIFont,
                     placeholder: String,
@@ -118,8 +118,8 @@ public extension BackspaceAwareTextField {
                     autoCorrection: UITextAutocorrectionType,
                     keyboardType: UIKeyboardType,
                     returnKeyType: UIReturnKeyType,
-                    textColor: Color,
-                    tintColor: Color) {
+                    textColor: UIColor,
+                    tintColor: UIColor) {
             self.font = font
             self.placeholder = placeholder
             self.autoCapitalization = autoCapitalization
