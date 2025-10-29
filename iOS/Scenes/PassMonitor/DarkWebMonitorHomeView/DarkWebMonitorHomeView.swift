@@ -398,7 +398,7 @@ private extension DarkWebMonitorHomeView {
                                      action: { router.navigate(to: .breachDetail(.customEmail(email))) })
         } else {
             HStack {
-                Image(uiImage: IconProvider.envelope)
+                IconProvider.envelope
                     .resizable()
                     .scaledToFit()
                     .frame(height: 24)
@@ -423,11 +423,11 @@ private extension DarkWebMonitorHomeView {
 
                 Menu(content: {
                     Label(title: { Text("Verify") },
-                          icon: { Image(uiImage: IconProvider.paperPlane) })
+                          icon: { IconProvider.paperPlane })
                         .buttonEmbeded { router.present(sheet: .addEmail(.customEmail(email))) }
 
                     Label(title: { Text("Remove") },
-                          icon: { Image(uiImage: IconProvider.trash) })
+                          icon: { IconProvider.trash })
                         .buttonEmbeded { viewModel.removeCustomMailFromMonitor(email: email) }
                 }, label: {
                     CircleButton(icon: IconProvider.threeDotsVertical,
@@ -445,7 +445,7 @@ private extension DarkWebMonitorHomeView {
 private extension DarkWebMonitorHomeView {
     func suggestedEmailRow(_ email: SuggestedEmail) -> some View {
         HStack {
-            Image(uiImage: IconProvider.envelope)
+            IconProvider.envelope
                 .resizable()
                 .scaledToFit()
                 .frame(height: 24)
@@ -557,14 +557,14 @@ private extension DarkWebMonitorHomeView {
             let totalBreaches = aliasBreaches.breachCount + customEmailBreaches.breachCount + viewModel
                 .userBreaches.emailsCount
             let noBreaches = totalBreaches == 0
-            let icon: UIImage = noBreaches ? IconProvider.checkmarkCircleFilled : IconProvider
-                .exclamationCircleFilled
+            let icon: Image = noBreaches ?
+                IconProvider.checkmarkCircleFilled : IconProvider.exclamationCircleFilled
             let iconColor = noBreaches ? PassColor.cardInteractionNormMajor2 : PassColor
                 .passwordInteractionNormMajor2
             let backgroundColor = noBreaches ? PassColor.cardInteractionNormMinor2 : PassColor
                 .passwordInteractionNormMinor2
             ToolbarItem(placement: .topBarTrailing) {
-                CircleButton(icon: icon.toImage, iconColor: iconColor, backgroundColor: backgroundColor) {
+                CircleButton(icon: icon, iconColor: iconColor, backgroundColor: backgroundColor) {
                     if noBreaches {
                         showNoBreachesAlert.toggle()
                     } else {

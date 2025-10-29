@@ -161,7 +161,7 @@ struct GeneratePasswordView: View {
                 HStack {
                     Text(viewModel.passwordType.title)
                         .foregroundStyle(PassColor.textNorm)
-                    Image(uiImage: IconProvider.chevronDownFilled)
+                    IconProvider.chevronDownFilled
                         .resizable()
                         .scaledToFit()
                         .foregroundStyle(PassColor.textHint)
@@ -262,7 +262,7 @@ struct GeneratePasswordView: View {
                 HStack {
                     Text(viewModel.typeOfWordSeparator.title)
                         .foregroundStyle(PassColor.textNorm)
-                    Image(uiImage: IconProvider.chevronDownFilled)
+                    IconProvider.chevronDownFilled
                         .resizable()
                         .scaledToFit()
                         .foregroundStyle(PassColor.textHint)

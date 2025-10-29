@@ -99,19 +99,19 @@ extension ItemType {
     var icon: Image {
         switch self {
         case .login:
-            IconProvider.user.toImage
+            IconProvider.user
         case .alias:
-            IconProvider.alias.toImage
+            IconProvider.alias
         case .creditCard:
             PassIcon.passCreditCardOneStripe
         case .note:
-            IconProvider.fileLines.toImage
+            IconProvider.fileLines
         case .password:
-            IconProvider.key.toImage
+            IconProvider.key
         case .identity:
-            IconProvider.cardIdentity.toImage
+            IconProvider.cardIdentity
         case .custom:
-            IconProvider.wrench.toImage
+            IconProvider.wrench
         }
     }
 

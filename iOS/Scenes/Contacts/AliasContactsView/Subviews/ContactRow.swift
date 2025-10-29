@@ -41,7 +41,7 @@ struct ContactRow: View {
 
                 if !contact.blocked {
                     Button(action: onSend) {
-                        Image(uiImage: IconProvider.paperPlane)
+                        IconProvider.paperPlane
                             .foregroundStyle(PassColor.textWeak)
                     }
                     .padding(.trailing, DesignConstant.sectionPadding)
@@ -113,7 +113,7 @@ private extension AliasContact {
     }
 
     var actionIcon: Image {
-        blocked ? IconProvider.envelopeOpenText.toImage : IconProvider.circleSlash.toImage
+        blocked ? IconProvider.envelopeOpenText : IconProvider.circleSlash
     }
 
     var activityText: String {

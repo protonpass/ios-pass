@@ -301,19 +301,19 @@ private struct MailboxElementRow: View {
             Menu(content: {
                 if mailbox.verificationNeeded {
                     Label(title: { Text("Verify") },
-                          icon: { Image(uiImage: IconProvider.checkmarkCircle) })
+                          icon: { IconProvider.checkmarkCircle })
                         .buttonEmbeded(action: verify)
                 }
 
                 if mailbox.verified, !mailbox.isDefault {
                     Label(title: { Text("Make default") },
-                          icon: { Image(uiImage: IconProvider.star) })
+                          icon: { IconProvider.star })
                         .buttonEmbeded(action: setDefault)
                 }
 
                 if mailbox.pendingEmail == nil {
                     Label(title: { Text("Change mailbox email") },
-                          icon: { Image(uiImage: IconProvider.pencil) })
+                          icon: { IconProvider.pencil })
                         .buttonEmbeded(action: changeEmail)
                 } else {
                     Label("Cancel mailbox change", systemImage: "xmark.circle")
@@ -323,7 +323,7 @@ private struct MailboxElementRow: View {
                 if !mailbox.isDefault {
                     Divider()
                     Label(title: { Text("Delete") },
-                          icon: { Image(uiImage: IconProvider.trash) })
+                          icon: { IconProvider.trash })
                         .buttonEmbeded(action: delete)
                 }
             }, label: {
@@ -368,7 +368,7 @@ private struct SynchroElementRow: View {
 
             Spacer()
 
-            Image(uiImage: IconProvider.chevronRight)
+            IconProvider.chevronRight
                 .resizable()
                 .scaledToFit()
                 .foregroundStyle(PassColor.textWeak)
@@ -494,7 +494,7 @@ private struct GenericSelectionView<Selection: Identifiable & Equatable & TitleR
             Spacer()
 
             if isSelected {
-                Image(uiImage: IconProvider.checkmark)
+                IconProvider.checkmark
                     .resizable()
                     .scaledToFit()
                     .foregroundStyle(PassColor.interactionNorm)
@@ -552,7 +552,7 @@ private struct MailboxDeletionView: View {
 
                 if mailbox.aliasCount > 0, !wantToTransferAliases {
                     HStack {
-                        Image(uiImage: IconProvider.infoCircleFilled)
+                        IconProvider.infoCircleFilled
                             .resizable()
                             .frame(width: 25, height: 25)
                             .foregroundStyle(PassColor.textWeak)

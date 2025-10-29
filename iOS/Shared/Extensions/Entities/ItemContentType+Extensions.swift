@@ -30,17 +30,17 @@ extension ItemContentType {
     var regularIcon: Image {
         switch self {
         case .alias:
-            IconProvider.alias.toImage
+            IconProvider.alias
         case .login:
-            IconProvider.user.toImage
+            IconProvider.user
         case .note:
-            IconProvider.fileLines.toImage
+            IconProvider.fileLines
         case .creditCard:
             PassIcon.passCreditCardOneStripe
         case .identity:
             IconProvider.cardIdentity
         case .custom, .sshKey, .wifi:
-            IconProvider.wrench.toImage
+            IconProvider.wrench
         }
     }
 

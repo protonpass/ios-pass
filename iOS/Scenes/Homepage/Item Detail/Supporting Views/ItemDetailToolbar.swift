@@ -182,7 +182,7 @@ private struct ShareCounterButton: View {
     var body: some View {
         Button(action: action) {
             HStack(spacing: 4) {
-                Image(uiImage: IconProvider.usersPlus)
+                IconProvider.usersPlus
                     .resizable()
                     .scaledToFit()
                     .foregroundStyle(iconColor)

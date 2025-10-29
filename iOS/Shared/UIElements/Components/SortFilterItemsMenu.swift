@@ -118,7 +118,7 @@ private extension SortFilterItemsMenu {
                     text(for: selectedOption.uiModel(from: itemCount))
                 }
             }, icon: {
-                !selectedOption.isDefault ? PassIcon.filterFilled : IconProvider.filter.toImage
+                !selectedOption.isDefault ? PassIcon.filterFilled : IconProvider.filter
             })
         })
     }
@@ -170,7 +170,7 @@ private extension SortFilterItemsMenu {
                     Text(verbatim: selectedType.title)
                 }
             }, icon: {
-                Image(uiImage: IconProvider.arrowDownArrowUp)
+                IconProvider.arrowDownArrowUp
             })
         })
     }

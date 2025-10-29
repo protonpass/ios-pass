@@ -70,7 +70,7 @@ private extension FileAttachmentsBanner {
                     .resizable()
                     .scaledToFit()
 
-                Image(uiImage: IconProvider.crossCircleFilled)
+                IconProvider.crossCircleFilled
                     .resizable()
                     .scaledToFit()
                     .frame(width: 24)

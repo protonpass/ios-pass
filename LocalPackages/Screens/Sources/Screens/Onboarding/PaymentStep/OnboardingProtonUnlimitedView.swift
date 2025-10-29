@@ -68,10 +68,10 @@ private extension OnboardingProtonUnlimitedView {
     var protonApps: some View {
         HStack {
             app(name: "Pass", icon: PassIcon.passIcon)
-            app(name: "Mail", icon: IconProvider.mailMainTransparent.toImage)
-            app(name: "Calendar", icon: IconProvider.calendarMainTransparent.toImage)
-            app(name: "Drive", icon: IconProvider.driveMainTransparent.toImage)
-            app(name: "VPN", icon: IconProvider.vpnMainTransparent.toImage)
+            app(name: "Mail", icon: IconProvider.mailMainTransparent)
+            app(name: "Calendar", icon: IconProvider.calendarMainTransparent)
+            app(name: "Drive", icon: IconProvider.driveMainTransparent)
+            app(name: "VPN", icon: IconProvider.vpnMainTransparent)
         }
         .frame(maxWidth: .infinity)
     }

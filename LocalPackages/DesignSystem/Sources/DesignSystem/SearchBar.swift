@@ -64,7 +64,7 @@ public struct SearchBar: View {
             ZStack {
                 PassColor.backgroundStrong
                 HStack(spacing: 12) {
-                    Image(uiImage: IconProvider.magnifier)
+                    IconProvider.magnifier
                         .resizable()
                         .scaledToFit()
                         .foregroundStyle(PassColor.textWeak)
@@ -84,7 +84,7 @@ public struct SearchBar: View {
                         Button(action: {
                             query = ""
                         }, label: {
-                            Image(uiImage: IconProvider.cross)
+                            IconProvider.cross
                                 .resizable()
                                 .scaledToFit()
                                 .foregroundStyle(PassColor.textWeak)

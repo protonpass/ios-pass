@@ -91,10 +91,9 @@ struct ItemDetailHistorySection: View {
 }
 
 private extension ItemDetailHistorySection {
-    func infoRow(title: LocalizedStringKey, infos: String, icon: UIImage) -> some View {
+    func infoRow(title: LocalizedStringKey, infos: String, icon: Image) -> some View {
         HStack(spacing: DesignConstant.sectionPadding) {
-            ItemDetailSectionIcon(icon: icon.toImage,
-                                  color: PassColor.textWeak)
+            ItemDetailSectionIcon(icon: icon, color: PassColor.textWeak)
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(title)

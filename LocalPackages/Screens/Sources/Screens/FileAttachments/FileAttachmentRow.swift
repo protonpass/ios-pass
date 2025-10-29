@@ -115,7 +115,7 @@ private extension FileAttachmentRow {
                     switch mode {
                     case let .edit(onOpen, onRename, onDelete, _):
                         LabelButton(title: "Open",
-                                    icon: IconProvider.eye.toImage,
+                                    icon: IconProvider.eye,
                                     action: onOpen)
                         LabelButton(title: "Rename",
                                     icon: PassIcon.rename,
@@ -127,14 +127,14 @@ private extension FileAttachmentRow {
 
                     case let .view(onOpen, onSave, onShare):
                         LabelButton(title: "Open",
-                                    icon: IconProvider.eye.toImage,
+                                    icon: IconProvider.eye,
                                     action: onOpen)
                         LabelButton(title: "Save",
-                                    icon: IconProvider.arrowDownCircle.toImage,
+                                    icon: IconProvider.arrowDownCircle,
                                     action: onSave)
 
                         LabelButton(title: "Share",
-                                    icon: IconProvider.arrowUpFromSquare.toImage,
+                                    icon: IconProvider.arrowUpFromSquare,
                                     action: onShare)
                     }
                 }, label: {

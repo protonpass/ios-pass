@@ -156,7 +156,7 @@ struct AccountView: View {
                               },
                               trailing: {
                                   if let image = accountRecovery.imageForSettingsItem {
-                                      CircleButton(icon: image.toImage,
+                                      CircleButton(icon: Image(uiImage: image),
                                                    iconColor: PassColor.interactionNormMajor2,
                                                    backgroundColor: PassColor.interactionNormMinor1)
                                   }
@@ -285,7 +285,7 @@ private extension AccountView {
                                  action: { showDisableExtraPasswordAlert.toggle() },
                                  label: { Text("Remove") })
                       }, label: {
-                          Image(uiImage: IconProvider.threeDotsVertical)
+                          IconProvider.threeDotsVertical
                               .resizable()
                               .scaledToFit()
                               .foregroundStyle(PassColor.textWeak)

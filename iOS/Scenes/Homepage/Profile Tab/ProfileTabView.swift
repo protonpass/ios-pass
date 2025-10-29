@@ -449,7 +449,7 @@ struct ProfileTabView: View {
                                   .foregroundStyle(PassColor.textNorm)
                           },
                           trailing: {
-                              Image(uiImage: IconProvider.arrowOutSquare)
+                              IconProvider.arrowOutSquare
                                   .resizable()
                                   .scaledToFit()
                                   .frame(height: 16)
@@ -469,7 +469,7 @@ struct ProfileTabView: View {
                           .frame(maxWidth: .infinity, alignment: .leading)
                   },
                   leading: {
-                      Image(uiImage: ProtonCoreUIFoundations.IconProvider.qrCode)
+                      IconProvider.qrCode
                           .resizable()
                           .scaledToFit()
                           .frame(width: 24, height: 24)

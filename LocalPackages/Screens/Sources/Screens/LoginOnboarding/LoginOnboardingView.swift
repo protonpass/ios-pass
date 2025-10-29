@@ -80,7 +80,7 @@ public struct LoginOnboardingView: View {
                     bottomActionButton(signUp: true)
                     bottomActionButton(signUp: false)
                         .padding(.vertical, 8)
-                    Image(uiImage: IconProvider.footer)
+                    IconProvider.footer
                         .resizable()
                         .renderingMode(.template)
                         .scaledToFit()

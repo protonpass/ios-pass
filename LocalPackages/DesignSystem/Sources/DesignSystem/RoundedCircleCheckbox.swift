@@ -36,7 +36,7 @@ public struct RoundedCircleCheckbox: View {
             if isChecked {
                 PassColor.interactionNormMajor1
                     .clipShape(RoundedRectangle(cornerRadius: width / 4))
-                Image(uiImage: IconProvider.checkmark)
+                IconProvider.checkmark
                     .resizable()
                     .scaledToFit()
                     .frame(width: width * 3 / 4)

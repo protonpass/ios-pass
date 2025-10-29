@@ -227,7 +227,7 @@ private extension DetailMonitoredItemView {
                     if viewModel.isCustomEmail {
                         Button { viewModel.removeCustomMailFromMonitor() } label: {
                             Label(title: { Text("Remove") },
-                                  icon: { Image(uiImage: IconProvider.trash) })
+                                  icon: { IconProvider.trash })
                         }
                     } else {
                         ToggleMonitorButton(monitored: viewModel.isMonitored,

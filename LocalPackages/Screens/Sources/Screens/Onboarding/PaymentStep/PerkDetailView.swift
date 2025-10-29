@@ -30,7 +30,7 @@ struct PerkDetailView: View {
         Group {
             switch perk {
             case .available:
-                Image(uiImage: IconProvider.checkmarkCircleFilled)
+                IconProvider.checkmarkCircleFilled
                     .resizable()
                     .scaledToFit()
                     .frame(width: 20)

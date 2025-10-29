@@ -84,7 +84,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
                     }
 
                     if isShared {
-                        Image(uiImage: IconProvider.usersFilled)
+                        IconProvider.usersFilled
                             .resizable()
                             .frame(width: 16, height: 16)
                             .foregroundStyle(PassColor.textNorm)
