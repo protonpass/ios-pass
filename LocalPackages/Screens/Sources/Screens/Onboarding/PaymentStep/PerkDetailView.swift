@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import DesignSystem
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -29,7 +30,7 @@ struct PerkDetailView: View {
         Group {
             switch perk {
             case .available:
-                Image(uiImage: IconProvider.checkmarkCircleFilled)
+                IconProvider.checkmarkCircleFilled
                     .resizable()
                     .scaledToFit()
                     .frame(width: 20)
@@ -49,6 +50,6 @@ struct PerkDetailView: View {
                 Text(value)
             }
         }
-        .foregroundStyle(.white)
+        .themedForegroundStyle(dark: .white, light: PassColor.textNorm)
     }
 }

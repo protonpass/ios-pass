@@ -35,7 +35,7 @@ public struct MonthYearTextField: UIViewRepresentable {
                 tintColor: UIColor,
                 month: Binding<Int?>,
                 year: Binding<Int?>,
-                textColor: UIColor = PassColor.textNorm,
+                textColor: UIColor = PassUIColor.textNorm,
                 font: UIFont = .preferredFont(forTextStyle: .body)) {
         self.placeholder = placeholder
         self.textColor = textColor

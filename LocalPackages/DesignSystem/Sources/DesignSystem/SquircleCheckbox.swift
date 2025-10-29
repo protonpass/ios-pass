@@ -31,14 +31,14 @@ public struct SquircleCheckbox: View {
 
     public var body: some View {
         ZStack {
-            PassColor.interactionNorm.toColor
+            PassColor.interactionNorm
                 .clipShape(RoundedRectangle(cornerRadius: height / 2.5, style: .continuous))
 
-            Image(uiImage: IconProvider.checkmark)
+            IconProvider.checkmark
                 .resizable()
                 .scaledToFit()
                 .frame(width: height / 2)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
         }
         .frame(width: height, height: height)
     }

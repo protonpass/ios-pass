@@ -120,7 +120,7 @@ private extension InAppPromoView {
                     dismiss()
                     onClose()
                 }, label: {
-                    Image(uiImage: IconProvider.crossCircleFilled)
+                    IconProvider.crossCircleFilled
                         .resizable()
                         .scaledToFit()
                         .frame(width: 32)

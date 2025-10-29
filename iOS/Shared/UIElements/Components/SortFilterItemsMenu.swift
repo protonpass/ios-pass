@@ -79,10 +79,9 @@ struct SortFilterItemsMenu: View {
         }, label: {
             CircleButton(icon: IconProvider.threeDotsVertical,
                          iconColor: highlighted ? PassColor.textInvert : PassColor.interactionNormMajor2,
-                         backgroundColor: highlighted ? PassColor.interactionNormMajor1 : .clear,
-                         accessibilityLabel: "Items filtering and sort menu")
+                         backgroundColor: highlighted ? PassColor.interactionNormMajor1 : .clear)
         })
-        .accessibilityLabel(Text("Items filter Menus"))
+        .accessibilityLabel(Text("Items filtering and sort menu"))
     }
 }
 
@@ -119,7 +118,7 @@ private extension SortFilterItemsMenu {
                     text(for: selectedOption.uiModel(from: itemCount))
                 }
             }, icon: {
-                Image(uiImage: !selectedOption.isDefault ? PassIcon.filterFilled : IconProvider.filter)
+                !selectedOption.isDefault ? PassIcon.filterFilled : IconProvider.filter
             })
         })
     }
@@ -171,7 +170,7 @@ private extension SortFilterItemsMenu {
                     Text(verbatim: selectedType.title)
                 }
             }, icon: {
-                Image(uiImage: IconProvider.arrowDownArrowUp)
+                IconProvider.arrowDownArrowUp
             })
         })
     }

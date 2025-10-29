@@ -43,13 +43,13 @@ struct BiometricAuthenticationView: View {
                 case .lastAttempt:
                     Text("This is your last attempt. You will be logged out after failing to authenticate again.")
                         .multilineTextAlignment(.center)
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm)
                     retryButton
                         .padding(.top)
 
                 case let .remainingAttempts(count):
                     Text("\(count) remaining attempt(s)")
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm)
                     retryButton
                         .padding(.top)
                 }
@@ -76,7 +76,7 @@ struct BiometricAuthenticationView: View {
 
 private extension BiometricAuthenticationView {
     var passLogo: some View {
-        Image(uiImage: PassIcon.passIcon)
+        PassIcon.passIcon
             .resizable()
             .scaledToFit()
             .frame(maxWidth: 160)
@@ -85,7 +85,7 @@ private extension BiometricAuthenticationView {
     var retryButton: some View {
         Button(action: viewModel.biometricallyAuthenticate) {
             Text("Try again")
-                .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                .foregroundStyle(PassColor.interactionNormMajor2)
         }
     }
 }

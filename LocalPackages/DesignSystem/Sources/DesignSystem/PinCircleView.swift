@@ -22,24 +22,24 @@
 import SwiftUI
 
 public struct PinCircleView: View {
-    let tintColor: UIColor
+    let tintColor: Color
     let height: CGFloat
 
-    public init(tintColor: UIColor, height: CGFloat) {
+    public init(tintColor: Color, height: CGFloat) {
         self.tintColor = tintColor
         self.height = height
     }
 
     public var body: some View {
         ZStack {
-            tintColor.toColor
+            tintColor
                 .clipShape(Circle())
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-            Image(uiImage: PassIcon.pinAngledFilled)
+            PassIcon.pinAngledFilled
                 .resizable()
                 .scaledToFit()
                 .frame(height: height * 3 / 5)
-                .foregroundStyle(PassColor.textInvert.toColor)
+                .foregroundStyle(PassColor.textInvert)
         }
         .frame(width: height, height: height)
     }

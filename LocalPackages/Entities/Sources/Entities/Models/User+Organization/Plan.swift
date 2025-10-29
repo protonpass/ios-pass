@@ -33,6 +33,7 @@ public struct Plan: Decodable, Hashable, Sendable {
     public let displayName: String
 
     /// Force hide the upgrade button independently of plan
+    /// E.g premium SimpleLogin users
     public let hideUpgrade: Bool
 
     public let trialEnd: Int?
@@ -73,6 +74,8 @@ public struct Plan: Decodable, Hashable, Sendable {
     public var isBusinessUser: Bool { planType == .business }
 
     public var isInTrial: Bool { planType == .trial }
+
+    public var shouldUpsell: Bool { isFreeUser && !hideUpgrade }
 
     public init(type: String,
                 internalName: String,

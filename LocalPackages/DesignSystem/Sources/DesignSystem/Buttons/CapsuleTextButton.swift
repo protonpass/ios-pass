@@ -23,20 +23,20 @@ import SwiftUI
 /// A capsule button with a text as title
 public struct CapsuleTextButton: View {
     let title: String
-    let titleColor: UIColor
+    let titleColor: Color
     let font: Font
     let fontWeight: Font.Weight
-    let backgroundColor: UIColor
+    let backgroundColor: Color
     let height: CGFloat
     let maxWidth: CGFloat?
     let horizontalPadding: CGFloat?
     let action: (() -> Void)?
 
     public init(title: String,
-                titleColor: UIColor,
+                titleColor: Color,
                 font: Font = .callout,
                 fontWeight: Font.Weight = .regular,
-                backgroundColor: UIColor,
+                backgroundColor: Color,
                 height: CGFloat = 40,
                 maxWidth: CGFloat? = .infinity,
                 horizontalPadding: CGFloat? = DesignConstant.sectionPadding,
@@ -68,31 +68,31 @@ private extension CapsuleTextButton {
         Text(title)
             .font(font)
             .fontWeight(fontWeight)
-            .foregroundStyle(titleColor.toColor)
+            .foregroundStyle(titleColor)
             .frame(height: height)
             .frame(maxWidth: maxWidth)
             .padding(.horizontal, horizontalPadding)
-            .background(backgroundColor.toColor)
+            .background(backgroundColor)
             .clipShape(Capsule())
     }
 }
 
 public struct DisablableCapsuleTextButton: View {
     let title: String
-    let titleColor: UIColor
-    let disableTitleColor: UIColor
-    let backgroundColor: UIColor
-    let disableBackgroundColor: UIColor
+    let titleColor: Color
+    let disableTitleColor: Color
+    let backgroundColor: Color
+    let disableBackgroundColor: Color
     let disabled: Bool
     let height: CGFloat
     let maxWidth: CGFloat?
     let action: () -> Void
 
     public init(title: String,
-                titleColor: UIColor,
-                disableTitleColor: UIColor,
-                backgroundColor: UIColor,
-                disableBackgroundColor: UIColor,
+                titleColor: Color,
+                disableTitleColor: Color,
+                backgroundColor: Color,
+                disableBackgroundColor: Color,
                 disabled: Bool,
                 height: CGFloat = 40,
                 maxWidth: CGFloat? = .infinity,
@@ -112,11 +112,11 @@ public struct DisablableCapsuleTextButton: View {
         Button(action: action) {
             Text(title)
                 .font(.callout)
-                .foregroundStyle((disabled ? disableTitleColor : titleColor).toColor)
+                .foregroundStyle(disabled ? disableTitleColor : titleColor)
                 .frame(height: height)
                 .frame(maxWidth: maxWidth)
                 .padding(.horizontal, 16)
-                .background((disabled ? disableBackgroundColor : backgroundColor).toColor)
+                .background(disabled ? disableBackgroundColor : backgroundColor)
                 .clipShape(Capsule())
         }
         .disabled(disabled)

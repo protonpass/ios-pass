@@ -21,10 +21,10 @@
 
 import DesignSystem
 import Entities
-import UIKit
+import SwiftUI
 
 public extension FileGroup {
-    var icon: UIImage {
+    var icon: Image {
         switch self {
         case .image:
             PassIcon.fileTypeImage

@@ -33,7 +33,7 @@ public struct SwiftUIImage: View {
                 width: CGFloat? = nil,
                 height: CGFloat? = nil,
                 contentMode: ContentMode = .fit,
-                tintColor: UIColor = PassColor.textNorm) {
+                tintColor: Color = PassColor.textNorm) {
         self.image = image
 
         if let width, let height {
@@ -51,7 +51,7 @@ public struct SwiftUIImage: View {
         }
 
         self.contentMode = contentMode
-        self.tintColor = tintColor.toColor
+        self.tintColor = tintColor
     }
 
     public var body: some View {

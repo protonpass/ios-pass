@@ -122,9 +122,7 @@ extension OnboardingHandler: OnboardingDelegate {
             return
         }
         let cycle = BillingCycle(rawValue: plan.instance.cycle) ?? .all
-        _ = try await manager.purchase(product,
-                                       planName: plan.plan.name ?? "",
-                                       planCycle: cycle.rawValue)
+        _ = try await manager.purchase(product)
     }
 
     func enableBiometric() async throws {

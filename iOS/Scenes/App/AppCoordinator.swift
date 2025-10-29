@@ -89,6 +89,8 @@ final class AppCoordinator {
     private var clearCacheForLoggedOutUsers
     @LazyInjected(\SharedServiceContainer.telemetryService) private var telemetryService
     @LazyInjected(\UseCasesContainer.firstRunDetector) private var firstRunDetector
+    @LazyInjected(\SharedServiceContainer.inAppNotificationManager)
+    private var inAppNotificationManager
 
     private var authDeviceManagerUI: AuthDeviceManagerUI?
 
@@ -135,6 +137,7 @@ final class AppCoordinator {
                 switch appState {
                 case let .loggedOut(reason):
                     logger.info("Logged out \(reason)")
+                    inAppNotificationManager.removeCurrentNotification()
                     showWelcomeScene(reason: reason)
                 case .alreadyLoggedIn:
                     logger.info("Already logged in")

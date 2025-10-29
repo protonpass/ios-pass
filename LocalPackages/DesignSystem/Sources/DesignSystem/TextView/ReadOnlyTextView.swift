@@ -33,7 +33,7 @@ public struct ReadOnlyTextView: UIViewRepresentable {
     let onRenderCompletion: ((_ isTrimmed: Bool) -> Void)?
 
     public init(_ text: String,
-                textColor: UIColor = PassColor.textNorm,
+                textColor: UIColor = PassUIColor.textNorm,
                 font: UIFont = .body,
                 minWidth: CGFloat = 300,
                 maxHeight: CGFloat = .greatestFiniteMagnitude,

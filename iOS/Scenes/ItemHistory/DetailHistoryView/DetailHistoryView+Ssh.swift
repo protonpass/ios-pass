@@ -72,7 +72,7 @@ private extension DetailHistoryView {
             } else {
                 Text(data.publicKey)
                     .lineLimit(3)
-                    .foregroundStyle(textColor(for: \.sshKey?.publicKey).toColor)
+                    .foregroundStyle(textColor(for: \.sshKey?.publicKey))
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -91,7 +91,7 @@ private extension DetailHistoryView {
                     .placeholderText()
             } else {
                 Text(String(repeating: "•", count: 12))
-                    .foregroundStyle(textColor(for: \.sshKey?.privateKey).toColor)
+                    .foregroundStyle(textColor(for: \.sshKey?.privateKey))
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

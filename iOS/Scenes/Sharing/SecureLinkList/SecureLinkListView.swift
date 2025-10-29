@@ -77,7 +77,7 @@ struct SecureLinkListView: View {
             .animation(.default, value: viewModel.display)
             .animation(.default, value: viewModel.secureLinks)
             .navigationStackEmbeded()
-            .tint(PassColor.interactionNorm.toColor)
+            .tint(PassColor.interactionNorm)
     }
 }
 
@@ -87,12 +87,12 @@ private extension SecureLinkListView {
         if viewModel.secureLinks.isEmpty {
             VStack {
                 Spacer()
-                Image(uiImage: PassIcon.securityEmptyState)
+                PassIcon.securityEmptyState
                     .resizable()
                     .scaledToFit()
                     .frame(width: 195)
                 Text("You currently don't have any secure links")
-                    .foregroundStyle(PassColor.textHint.toColor)
+                    .foregroundStyle(PassColor.textHint)
                     .fontWeight(.medium)
                     .multilineTextAlignment(.center)
                 Spacer()
@@ -129,7 +129,7 @@ private extension SecureLinkListView {
             } header: {
                 HStack {
                     Text("Inactive links")
-                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .foregroundStyle(PassColor.textWeak)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.vertical, DesignConstant.sectionPadding)
                     Spacer()
@@ -140,15 +140,15 @@ private extension SecureLinkListView {
                                    Label(title: {
                                        Text("Remove all inactive links")
                                    }, icon: {
-                                       Image(uiImage: IconProvider.crossCircle)
+                                       IconProvider.crossCircle
                                    })
                                })
                     } label: {
-                        Image(uiImage: IconProvider.threeDotsVertical)
+                        IconProvider.threeDotsVertical
                             .resizable()
                             .scaledToFit()
                             .frame(width: 20, height: 20)
-                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .foregroundStyle(PassColor.textWeak)
                             .contentShape(.rect)
                     }
                 }
@@ -175,7 +175,7 @@ private extension SecureLinkListView {
                 listItemCell(for: item, isInactive: isInactive)
             }
         }
-        .background(isInactive ? PassColor.textDisabled.toColor : PassColor.interactionNormMinor2.toColor)
+        .background(isInactive ? PassColor.textDisabled : PassColor.interactionNormMinor2)
         .cornerRadius(20)
         .onTapGesture {
             viewModel.goToDetail(link: item)
@@ -193,7 +193,7 @@ private extension SecureLinkListView {
         Text(item.itemContent.name)
             .matchedGeometryEffect(id: "name\(item.secureLink.linkID)", in: animation)
             .lineLimit(1)
-            .foregroundStyle(PassColor.textNorm.toColor)
+            .foregroundStyle(PassColor.textNorm)
             .fontWeight(.medium)
             .frame(maxWidth: .infinity, alignment: viewModel.isGrid ? .center : .leading)
     }
@@ -222,7 +222,7 @@ private extension SecureLinkListView {
                     .matchedGeometryEffect(id: GeoMatchIds.internalContainer(item.id).id,
                                            in: animation)
                     .font(.caption)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
                 }
                 .matchedGeometryEffect(id: GeoMatchIds.externalContainer(item.id).id,
                                        in: animation)
@@ -256,7 +256,7 @@ private extension SecureLinkListView {
                 }
                 .matchedGeometryEffect(id: GeoMatchIds.internalContainer(item.id).id, in: animation)
                 .font(.caption)
-                .foregroundStyle(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak)
             }
             .matchedGeometryEffect(id: GeoMatchIds.externalContainer(item.id).id, in: animation)
 
@@ -286,9 +286,9 @@ private extension SecureLinkListView {
                     Label(title: {
                         Text("Copy link")
                     }, icon: {
-                        Image(uiImage: IconProvider.squares)
+                        IconProvider.squares
                             .renderingMode(.template)
-                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .foregroundStyle(PassColor.textWeak)
                     })
                 }
                 Divider()
@@ -299,15 +299,15 @@ private extension SecureLinkListView {
                        Label(title: {
                            Text(isInactive ? "Remove inactive link" : "Remove link")
                        }, icon: {
-                           Image(uiImage: IconProvider.crossCircle)
+                           IconProvider.crossCircle
                        })
                    })
         } label: {
-            Image(uiImage: IconProvider.threeDotsVertical)
+            IconProvider.threeDotsVertical
                 .resizable()
                 .scaledToFit()
                 .frame(width: 20, height: 20)
-                .foregroundStyle(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak)
                 .contentShape(.rect)
         }
         .simultaneousGesture(TapGesture().onEnded {})
@@ -334,7 +334,7 @@ private extension SecureLinkListView {
                 } label: {
                     Image(systemName: viewModel.isGrid ? "list.bullet.rectangle" : "square.grid.3x3.square")
                 }
-                .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                .foregroundStyle(PassColor.interactionNormMajor2)
                 .buttonStyle(.plain)
             }
         }
@@ -351,8 +351,8 @@ private struct CommonViewSetUpModifier: ViewModifier {
             .padding(.horizontal, DesignConstant.sectionPadding)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .scrollViewEmbeded(maxWidth: .infinity)
-            .background(PassColor.backgroundNorm.toColor)
-            .toolbarBackground(PassColor.backgroundNorm.toColor,
+            .background(PassColor.backgroundNorm)
+            .toolbarBackground(PassColor.backgroundNorm,
                                for: .navigationBar)
 
             .navigationTitle(title)

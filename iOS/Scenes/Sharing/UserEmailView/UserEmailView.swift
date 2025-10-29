@@ -50,7 +50,7 @@ struct UserEmailView: View {
             .padding(.horizontal, DesignConstant.sectionPadding)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .navigationBarTitleDisplayMode(.inline)
-            .background(PassColor.backgroundNorm.toColor)
+            .background(PassColor.backgroundNorm)
             .toolbar { toolbarContent }
             .routingProvided
             .navigationStackEmbeded($router.path)
@@ -103,7 +103,7 @@ private extension UserEmailView {
         Text("Share with")
             .font(.largeTitle)
             .fontWeight(.bold)
-            .foregroundStyle(PassColor.textNorm.toColor)
+            .foregroundStyle(PassColor.textNorm)
     }
 
     @ViewBuilder
@@ -151,8 +151,8 @@ private extension UserEmailView {
                                               autoCorrection: .no,
                                               keyboardType: .emailAddress,
                                               returnKeyType: .default,
-                                              textColor: PassColor.textNorm,
-                                              tintColor: PassColor.interactionNorm),
+                                              textColor: PassUIColor.textNorm,
+                                              tintColor: PassUIColor.interactionNorm),
                                 onBackspace: { viewModel.highlightLast() },
                                 onReturn: { _ = viewModel.appendCurrentEmail() })
             .frame(width: max(150, CGFloat(maxCharCount) * 10), height: 32)
@@ -164,7 +164,7 @@ private extension UserEmailView {
         let highlighted = viewModel.highlightedRecommendation == reco
         let invalid = viewModel.invalidEmails.contains(reco.name)
 
-        let textColor: () -> UIColor = {
+        let textColor: () -> Color = {
             switch (highlighted, invalid) {
             case (false, true):
                 PassColor.passwordInteractionNormMajor1
@@ -175,7 +175,7 @@ private extension UserEmailView {
             }
         }
 
-        let backgroundColor: () -> UIColor = {
+        let backgroundColor: () -> Color = {
             switch (highlighted, invalid) {
             case (true, true):
                 PassColor.passwordInteractionNormMajor1
@@ -212,10 +212,10 @@ private extension UserEmailView {
                 .fixedSize(horizontal: true, vertical: false)
         }
         .font(.callout)
-        .foregroundStyle(textColor().toColor)
+        .foregroundStyle(textColor())
         .padding(.horizontal, 10)
         .padding(.vertical, 8)
-        .background(backgroundColor().toColor)
+        .background(backgroundColor())
         .cornerRadius(9)
         .animation(.default, value: highlighted)
         .animation(.default, value: invalid)
@@ -246,8 +246,7 @@ private extension UserEmailView {
             VaultRow(thumbnail: {
                          CircleButton(icon: vault.display.icon.icon.bigImage,
                                       iconColor: vault.display.color.color.color,
-                                      backgroundColor: vault.display.color.color.color
-                                          .withAlphaComponent(0.16))
+                                      backgroundColor: vault.display.color.color.color.opacity(0.16))
                      },
                      title: vault.name,
                      itemCount: 1,
@@ -309,7 +308,7 @@ struct GroupUsersInformationView: View {
     var body: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             Text(verbatim: "\(groupInfo.group.name)")
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
                 .fontWeight(.bold)
                 .frame(maxWidth: .infinity, alignment: .center)
 
@@ -319,22 +318,22 @@ struct GroupUsersInformationView: View {
                         if let email = member.email {
                             HStack(spacing: DesignConstant.sectionPadding) {
                                 ZStack {
-                                    PassColor.interactionNormMinor1.toColor
+                                    PassColor.interactionNormMinor1
                                         .clipShape(RoundedRectangle(cornerRadius: 40 / 2.5, style: .continuous))
                                     Text(String(email.prefix(2).uppercased()))
                                         .font(.system(size: 40 / 3))
                                         .fontWeight(.medium)
-                                        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                                        .foregroundStyle(PassColor.interactionNormMajor2)
                                 }
                                 .frame(width: 40, height: 40)
 
                                 VStack {
                                     Text(email)
-                                        .foregroundStyle(PassColor.textNorm.toColor)
+                                        .foregroundStyle(PassColor.textNorm)
                                         .lineLimit(1)
                                     if let rights {
                                         Text(rights)
-                                            .foregroundStyle(PassColor.textWeak.toColor)
+                                            .foregroundStyle(PassColor.textWeak)
                                     }
                                 }.frame(maxWidth: .infinity, alignment: .leading)
                             }
@@ -346,7 +345,7 @@ struct GroupUsersInformationView: View {
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .padding(.top, 32)
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
     }
 }
 

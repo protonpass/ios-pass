@@ -33,14 +33,14 @@ public struct NoPasskeysView: View {
     public var body: some View {
         NavigationStack {
             ZStack {
-                PassColor.backgroundNorm.toColor
+                PassColor.backgroundNorm
                     .ignoresSafeArea()
 
                 VStack {
                     Spacer()
                     Text("No logins with Passkeys found.", bundle: .module)
                         .font(.headline)
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm)
                     Button(action: {
                         if let url = URL(string: "https://proton.me/support/pass-autofill-fields-ios18") {
                             openURL(url)
@@ -48,11 +48,11 @@ public struct NoPasskeysView: View {
                     }, label: {
                         Label("How to autofill fields with a Password",
                               systemImage: "questionmark.circle")
-                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .foregroundStyle(PassColor.textWeak)
                             .padding(.vertical, 10)
                             .padding(.horizontal, 18)
                             .overlay(Capsule()
-                                .stroke(ColorProvider.InteractionWeak.toColor, lineWidth: 1))
+                                .stroke(ColorProvider.InteractionWeak, lineWidth: 1))
                     })
                     .padding(.top)
                     .padding(.bottom, 44)
@@ -65,14 +65,14 @@ public struct NoPasskeysView: View {
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action: onCancel) {
                         Text("Cancel", bundle: .module)
-                            .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                            .foregroundStyle(PassColor.interactionNormMajor2)
                     }
                 }
 
                 ToolbarItem(placement: .principal) {
                     Text("AutoFill Passkey", bundle: .module)
                         .fontWeight(.bold)
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm)
                 }
             }
         }

@@ -122,7 +122,7 @@ private struct TextCustomFieldSection: View {
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .padding(.vertical, isASection ? DesignConstant.sectionPadding : 0)
-        .tint(itemContentType.normColor.toColor)
+        .tint(itemContentType.normColor)
         .if(isASection) { view in
             view.roundedDetailSection()
         }
@@ -186,7 +186,7 @@ private struct HiddenCustomFieldSection: View {
         .animation(.default, value: isShowingText)
         .padding(.horizontal, DesignConstant.sectionPadding)
         .padding(.vertical, isASection ? DesignConstant.sectionPadding : 0)
-        .tint(itemContentType.normColor.toColor)
+        .tint(itemContentType.normColor)
         .if(isASection) { view in
             view.roundedDetailSection()
         }
@@ -267,7 +267,7 @@ private struct TotpCustomFieldSection: View {
                     case .invalid:
                         Text("Invalid TOTP URI")
                             .font(.caption)
-                            .foregroundStyle(PassColor.signalDanger.toColor)
+                            .foregroundStyle(PassColor.signalDanger)
                     }
                 }
             }
@@ -290,7 +290,7 @@ private struct TotpCustomFieldSection: View {
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .padding(.vertical, isASection ? DesignConstant.sectionPadding : 0)
-        .tint(itemContentType.normColor.toColor)
+        .tint(itemContentType.normColor)
         .if(isASection) { view in
             view.roundedDetailSection()
         }
@@ -329,15 +329,15 @@ private struct TimestampCustomFieldSection: View {
                 } else if content.isEmpty {
                     Text("Empty")
                         .italic()
-                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .foregroundStyle(PassColor.textWeak)
                 } else if let timeInterval = TimeInterval(content) {
                     let date = Date(timeIntervalSince1970: timeInterval)
                     Text(verbatim: DateFormatter.timestampCustomField.string(from: date))
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm)
                 } else {
                     Text("Error occurred")
                         .font(.caption)
-                        .foregroundStyle(PassColor.signalDanger.toColor)
+                        .foregroundStyle(PassColor.signalDanger)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -345,7 +345,7 @@ private struct TimestampCustomFieldSection: View {
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .padding(.vertical, isASection ? DesignConstant.sectionPadding : 0)
-        .tint(itemContentType.normColor.toColor)
+        .tint(itemContentType.normColor)
         .if(isASection) { view in
             view.roundedDetailSection()
         }

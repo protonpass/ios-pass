@@ -45,7 +45,7 @@ struct MonitorAllAliasesView: View {
         }
         .padding(.horizontal)
         .scrollViewEmbeded()
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 CircleButton(icon: IconProvider.chevronLeft,

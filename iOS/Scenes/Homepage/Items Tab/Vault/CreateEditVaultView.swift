@@ -51,7 +51,7 @@ struct CreateEditVaultView: View {
             .padding(DesignConstant.sectionPadding)
             .showSpinner(viewModel.loading)
             .navigationBarTitleDisplayMode(.inline)
-            .background(PassColor.backgroundNorm.toColor)
+            .background(PassColor.backgroundNorm)
             .toolbar { toolbarContent }
             .ignoresSafeArea(.keyboard)
             .gesture(DragGesture().onChanged { _ in isFocusedOnTitle = false })
@@ -106,13 +106,13 @@ struct CreateEditVaultView: View {
             let previewWidth: CGFloat = UIDevice.current.isIpad ? 60 : 40
             VStack {
                 Spacer()
-                Image(uiImage: viewModel.selectedIcon.bigImage)
+                viewModel.selectedIcon.bigImage
                     .resizable()
                     .scaledToFit()
-                    .foregroundStyle(viewModel.selectedColor.color.toColor)
+                    .foregroundStyle(viewModel.selectedColor.color)
                     .padding(previewWidth / 4)
                     .frame(width: previewWidth, height: previewWidth)
-                    .background(viewModel.selectedColor.color.toColor.opacity(0.16))
+                    .background(viewModel.selectedColor.color.opacity(0.16))
                     .clipShape(Circle())
                     .animation(.default, value: viewModel.selectedIcon)
                     .animation(.default, value: viewModel.selectedColor)
@@ -125,7 +125,7 @@ struct CreateEditVaultView: View {
                         .sectionTitleText()
                     TextField("Untitled", text: $viewModel.title)
                         .font(.title.weight(.bold))
-                        .tint(PassColor.interactionNorm.toColor)
+                        .tint(PassColor.interactionNorm)
                         .keyboardType(.asciiCapable)
                         .submitLabel(.done)
                         .focused($isFocusedOnTitle)
@@ -181,7 +181,7 @@ private struct VaultColorView: View {
             Button(action: {
                 selectedColor = color
             }, label: {
-                color.color.toColor
+                color.color
                     .clipShape(Circle())
                     .padding(proxy.size.width / 10)
                     .overlay(overlay(size: proxy.size))
@@ -195,7 +195,7 @@ private struct VaultColorView: View {
     private func overlay(size: CGSize) -> some View {
         if color == selectedColor {
             Circle()
-                .strokeBorder(PassColor.textHint.toColor,
+                .strokeBorder(PassColor.textHint,
                               style: StrokeStyle(lineWidth: size.width / 20))
         } else {
             EmptyView()
@@ -213,11 +213,11 @@ private struct VaultIconView: View {
                 selectedIcon = icon
             }, label: {
                 ZStack {
-                    PassColor.inputBackgroundNorm.toColor
-                    Image(uiImage: icon.bigImage)
+                    PassColor.inputBackgroundNorm
+                    icon.bigImage
                         .resizable()
                         .scaledToFit()
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm)
                         .padding(proxy.size.width / 6)
                 }
                 .clipShape(Circle())
@@ -233,7 +233,7 @@ private struct VaultIconView: View {
     private func overlay(size: CGSize) -> some View {
         if icon == selectedIcon {
             Circle()
-                .strokeBorder(PassColor.textHint.toColor,
+                .strokeBorder(PassColor.textHint,
                               style: StrokeStyle(lineWidth: size.width / 20))
         } else {
             EmptyView()

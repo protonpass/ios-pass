@@ -36,7 +36,7 @@ public struct StorageCounter: View {
     private enum Level {
         case low, medium, full
 
-        var textColor: UIColor {
+        var textColor: Color {
             switch self {
             case .low:
                 PassColor.textNorm
@@ -56,7 +56,7 @@ public struct StorageCounter: View {
             }
         }
 
-        var progressColor: UIColor {
+        var progressColor: Color {
             switch self {
             case .low:
                 PassColor.signalSuccess
@@ -105,7 +105,7 @@ public struct StorageCounter: View {
             Text(verbatim: "\(detail) (\(percentage)%)")
                 .font(.callout)
                 .fontWeight(level.textFontWeight)
-                .foregroundStyle(level.textColor.toColor)
+                .foregroundStyle(level.textColor)
 
             switch level {
             case .low, .medium:
@@ -114,10 +114,10 @@ public struct StorageCounter: View {
                                  color: level.progressColor)
                     .fixedSize(horizontal: true, vertical: true)
             case .full:
-                Image(uiImage: IconProvider.exclamationCircleFilled)
+                IconProvider.exclamationCircleFilled
                     .resizable()
                     .scaledToFit()
-                    .foregroundStyle(level.progressColor.toColor)
+                    .foregroundStyle(level.progressColor)
                     .frame(maxHeight: 18)
             }
         }
@@ -143,11 +143,11 @@ private struct StorageUpsell: View {
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            PassColor.backgroundNorm.toColor
+            PassColor.backgroundNorm
                 .ignoresSafeArea()
 
             VStack(spacing: DesignConstant.sectionPadding) {
-                Image(uiImage: PassIcon.storageFull)
+                PassIcon.storageFull
                     .resizable()
                     .scaledToFit()
                     .padding(.top)
@@ -159,12 +159,12 @@ private struct StorageUpsell: View {
                         .font(.headline)
                         .fontWeight(.medium)
 
-                    Image(uiImage: IconProvider.exclamationCircleFilled)
+                    IconProvider.exclamationCircleFilled
                         .resizable()
                         .scaledToFit()
                         .frame(height: 20)
                 }
-                .foregroundStyle(PassColor.signalDanger.toColor)
+                .foregroundStyle(PassColor.signalDanger)
 
                 Spacer()
 
@@ -172,10 +172,10 @@ private struct StorageUpsell: View {
                     .font(.title)
                     .fontWeight(.bold)
                     .multilineTextAlignment(.center)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
 
                 Text("Upgrade to increase your storage capacity.", bundle: .module)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
                     .multilineTextAlignment(.center)
                 Spacer()
 
@@ -192,7 +192,7 @@ private struct StorageUpsell: View {
                     .resizable()
                     .padding(4)
                     .frame(width: 30, height: 30)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
             }
             .padding(16)
             .buttonStyle(.plain)

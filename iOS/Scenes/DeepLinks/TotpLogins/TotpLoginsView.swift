@@ -39,7 +39,7 @@ struct TotpLoginsView: View {
 
     var body: some View {
         ZStack {
-            PassColor.backgroundNorm.toColor
+            PassColor.backgroundNorm
                 .ignoresSafeArea()
 
             mainContainer
@@ -50,7 +50,7 @@ struct TotpLoginsView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("Set up 2FA")
-        .toolbarBackground(PassColor.backgroundNorm.toColor,
+        .toolbarBackground(PassColor.backgroundNorm,
                            for: .navigationBar)
         .navigationStackEmbeded()
         .alert("Associate 2FA?",
@@ -102,7 +102,7 @@ private extension TotpLoginsView {
                         Text("Login items")
                             .font(.callout)
                             .fontWeight(.bold)
-                            .foregroundStyle(PassColor.textNorm.toColor)
+                            .foregroundStyle(PassColor.textNorm)
 
                         Spacer()
 
@@ -132,7 +132,7 @@ private extension TotpLoginsView {
                 .frame(height: 52)
                 .frame(maxWidth: .infinity)
                 .padding(.horizontal, 16)
-                .background(PassColor.loginInteractionNormMinor1.toColor)
+                .background(PassColor.loginInteractionNormMinor1)
                 .clipShape(Capsule())
                 .padding(.horizontal)
                 .padding(.bottom, 8)
@@ -176,7 +176,7 @@ private extension TotpLoginsView {
                     }, header: {
                         Text(result.sectionTitle)
                             .font(.callout)
-                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .foregroundStyle(PassColor.textWeak)
                     })
                 }
             }

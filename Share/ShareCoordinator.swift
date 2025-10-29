@@ -28,7 +28,6 @@ import FactoryKit
 import Macro
 import Screens
 @preconcurrency import SwiftUI
-import UIKit
 import UniformTypeIdentifiers
 
 enum SharedContent: Sendable {
