@@ -40,7 +40,7 @@ struct SimpleLoginAliasActivationView: View {
 
             Text("SimpleLogin aliases will be imported into this vault.")
                 .font(.footnote)
-                .foregroundStyle(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
@@ -48,7 +48,7 @@ struct SimpleLoginAliasActivationView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .toolbar { toolbarContent }
         .scrollViewEmbeded(maxWidth: .infinity)
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
         .sheet(isPresented: $showVaultSelectionSheet) {
             VaultSelectionView(selectedVault: $viewModel.selectedVault,
                                vaults: viewModel.vaults)

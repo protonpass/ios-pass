@@ -25,6 +25,7 @@ import ProtonCorePaymentsV2
 import SwiftUI
 
 struct OnboardingPaymentStep: View {
+    @Environment(\.colorScheme) private var colorScheme
     @State private var selection: Selection = .plus
     let plans: PassPlans
     @Binding var selectedPlan: PlanUiModel?
@@ -51,7 +52,7 @@ struct OnboardingPaymentStep: View {
             Text("Unlock premium features.", bundle: .module)
                 .font(.title3)
                 .fontWeight(.bold)
-                .foregroundStyle(.white)
+                .themedForegroundStyle(dark: .white, light: PassColor.textNorm)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, DesignConstant.onboardingPadding)
 
@@ -114,7 +115,8 @@ private extension OnboardingPaymentStep {
             }
         })
         .padding(4)
-        .background(Color.black.opacity(0.3).clipShape(.capsule))
+        .background(ThemedColor(dark: Color.black,
+                                light: Color.white).opacity(0.3).clipShape(.capsule))
     }
 
     func planDetail(name: String,
@@ -129,7 +131,8 @@ private extension OnboardingPaymentStep {
                 .font(.caption)
         }
         .frame(maxWidth: .infinity, alignment: .center)
-        .foregroundStyle(selected ? PassColor.textInvert.toColor : .white)
+        .foregroundStyle(selected ? PassColor.textInvert : colorScheme == .dark ? .white : PassColor
+            .textNorm)
         .contentShape(.rect)
         .onTapGesture(perform: onSelect)
     }
@@ -137,10 +140,11 @@ private extension OnboardingPaymentStep {
     var ctaButton: some View {
         VStack(alignment: .center, spacing: 0) {
             CapsuleTextButton(title: selection.ctaTitle,
-                              titleColor: PassColor.textInvert,
+                              titleColor: colorScheme == .dark ? PassColor.textInvert : PassColor
+                                  .interactionNormMinor2,
                               font: .body,
                               fontWeight: .medium,
-                              backgroundColor: .white,
+                              backgroundColor: colorScheme == .dark ? .white : .black,
                               height: 52,
                               action: onPurchase)
                 .padding(DesignConstant.onboardingPadding)
@@ -149,7 +153,7 @@ private extension OnboardingPaymentStep {
                 Text("Auto renews at \(selectedPlan.displayYearlyPrice) every year",
                      bundle: .module)
                     .font(.callout)
-                    .foregroundStyle(.white)
+                    .themedForegroundStyle(dark: .white, light: PassColor.textNorm)
                     .padding([.bottom, .horizontal], DesignConstant.onboardingPadding)
             }
         }

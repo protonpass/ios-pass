@@ -80,13 +80,13 @@ public struct VaultRow<Thumbnail: View>: View {
                     .resizable()
                     .scaledToFit()
                     .frame(maxHeight: 20)
-                    .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                    .foregroundStyle(PassColor.interactionNormMajor2)
             }
 
             ZStack(alignment: .bottomTrailing) {
                 thumbnail()
                 if case let .view(isSelected, isHidden, _) = mode, isSelected || isHidden {
-                    let icon: UIImage? = if isSelected {
+                    let icon: Image? = if isSelected {
                         IconProvider.checkmark
                     } else if isHidden {
                         IconProvider.eyeSlash
@@ -95,13 +95,13 @@ public struct VaultRow<Thumbnail: View>: View {
                     }
 
                     if let icon {
-                        Image(uiImage: icon)
+                        icon
                             .resizable()
                             .scaledToFit()
-                            .foregroundStyle(PassColor.textInvert.toColor)
+                            .foregroundStyle(PassColor.textInvert)
                             .padding(3)
                             .background(colorScheme == .dark ?
-                                PassColor.interactionNormMajor2.toColor : PassColor.interactionNorm.toColor)
+                                PassColor.interactionNormMajor2 : PassColor.interactionNorm)
                             .frame(height: 20)
                             .clipShape(Circle())
                             .offset(x: 5, y: 5)
@@ -111,7 +111,7 @@ public struct VaultRow<Thumbnail: View>: View {
 
             VStack(alignment: .leading) {
                 Text(title)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
 
                 if itemCount == 0 {
                     Text("Empty", bundle: .module)
@@ -119,7 +119,7 @@ public struct VaultRow<Thumbnail: View>: View {
                 } else {
                     Text("\(itemCount) item(s)", bundle: .module)
                         .font(.callout)
-                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .foregroundStyle(PassColor.textWeak)
                 }
             }
 
@@ -129,16 +129,16 @@ public struct VaultRow<Thumbnail: View>: View {
 
             if mode.isView, let share {
                 HStack(spacing: 4) {
-                    Image(uiImage: IconProvider.usersPlus)
+                    IconProvider.usersPlus
                         .resizable()
                         .scaledToFit()
-                        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                        .foregroundStyle(PassColor.interactionNormMajor2)
                         .frame(maxHeight: 20)
                     if share.newUserInvitesReady > 0 {
-                        Image(uiImage: IconProvider.exclamationCircleFilled)
+                        IconProvider.exclamationCircleFilled
                             .resizable()
                             .scaledToFit()
-                            .foregroundStyle(PassColor.signalDanger.toColor)
+                            .foregroundStyle(PassColor.signalDanger)
                             .frame(maxHeight: 16)
                             .offset(y: -10)
                     }
@@ -146,15 +146,15 @@ public struct VaultRow<Thumbnail: View>: View {
                         Text(verbatim: "\(share.members)")
                             .font(.caption)
                             .fontWeight(.medium)
-                            .foregroundStyle(PassColor.interactionNormMinor1.toColor)
+                            .foregroundStyle(PassColor.interactionNormMinor1)
                             .padding(.horizontal, 6)
                             .padding(.vertical, 2)
-                            .background(PassColor.interactionNormMajor2.toColor)
+                            .background(PassColor.interactionNormMajor2)
                             .cornerRadius(20)
                     }
                 }
                 .padding(10)
-                .background(PassColor.interactionNormMinor1.toColor)
+                .background(PassColor.interactionNormMinor1)
                 .cornerRadius(20)
                 .buttonEmbeded {
                     if case let .view(_, _, action) = mode {

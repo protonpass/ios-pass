@@ -27,7 +27,7 @@ extension ItemTypeIdentifiable {
         case .login:
             #localized("Login moved to trash")
         case .alias:
-            #localized("Alias \"%@\" will stop forwarding emails to your mailbox", aliasEmail ?? "")
+            #localized("Alias \"%@\" moved to trash", aliasEmail ?? "")
         case .creditCard:
             #localized("Credit card moved to trash")
         case .note:

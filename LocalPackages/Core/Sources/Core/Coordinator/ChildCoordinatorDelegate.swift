@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
-import UIKit
 
 /// Control how and what to do before presenting a view
 @MainActor

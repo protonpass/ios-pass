@@ -61,24 +61,24 @@ private enum ContactCreationSteps: Hashable {
 
                     Text("Save")
                         .font(.callout)
-                        .foregroundStyle(PassColor.textInvert.toColor)
+                        .foregroundStyle(PassColor.textInvert)
                         .frame(height: 40)
                         .padding(.horizontal, 16)
-                        .background(PassColor.aliasInteractionNormMajor1.toColor)
+                        .background(PassColor.aliasInteractionNormMajor1)
                         .clipShape(Capsule())
                 }
                 Text("Create contact")
                     .font(.title.bold())
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .padding(.vertical, 16)
 
                 Text(verbatim: "recipient_address@proton.me")
                     .padding(.top, 16)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
             }
             .padding(16)
             .background(ZStack {
-                PassColor.inputBorderNorm.toColor
+                PassColor.inputBorderNorm
                 LinearGradient(gradient:
                     Gradient(colors: [
                         Color(red: 255 / 255, green: 255 / 255, blue: 255 / 255, opacity: 0.05),
@@ -89,7 +89,7 @@ private enum ContactCreationSteps: Hashable {
             })
             .cornerRadius(12)
             .overlay(RoundedRectangle(cornerRadius: 12)
-                .stroke(PassColor.borderWeak.toColor, lineWidth: 1))
+                .stroke(PassColor.borderWeak, lineWidth: 1))
         case let .third(info):
             VStack(alignment: .leading, spacing: 0) {
                 VStack(alignment: .leading, spacing: 0) {
@@ -99,23 +99,23 @@ private enum ContactCreationSteps: Hashable {
                                 .fontWeight(.semibold)
                             Text("To")
                                 .fontWeight(.semibold)
-                        }.foregroundStyle(PassColor.textInvert.toColor)
+                        }.foregroundStyle(PassColor.textInvert)
 
                         VStack(alignment: .leading, spacing: 0) {
                             Label("From your alias <\(info)>",
                                   image: IconProvider.lockFilled)
                                 .lineLimit(1)
                             Text("Your recipient")
-                        }.foregroundStyle(PassColor.textInvert.toColor)
+                        }.foregroundStyle(PassColor.textInvert)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    Image(uiImage: PassIcon.halfButtons)
+                    PassIcon.halfButtons
                         .padding(.top, 16)
                 }
                 .padding(.leading, 18)
                 .padding(.top, 12)
                 .overlay(CustomBorderShape(cornerRadius: 12)
-                    .stroke(PassColor.borderWeak.toColor, lineWidth: 1))
+                    .stroke(PassColor.borderWeak, lineWidth: 1))
                 .padding(.leading, 16)
                 .padding(.top, 16)
                 .frame(maxWidth: .infinity)
@@ -137,7 +137,7 @@ struct AliasExplanationView: View {
         ScrollView {
             VStack {
                 ZStack(alignment: .topTrailing) {
-                    Image(uiImage: PassIcon.envelope)
+                    PassIcon.envelope
                         .resizable()
                         .scaledToFill()
                         .frame(maxWidth: .infinity)
@@ -157,12 +157,12 @@ struct AliasExplanationView: View {
                     Text("Alias contacts")
                         .font(.title)
                         .fontWeight(.bold)
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm)
                     // swiftlint:disable:next line_length
                     Text("To keep your personal email address hidden, you can create an alias contact that masks your address.")
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm)
                     Text("Here’s how it works:")
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm)
 
                     ForEach([
                         ContactCreationSteps.first,
@@ -186,18 +186,18 @@ private struct ContactStepView: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 10) {
                 Text(step.number)
-                    .foregroundStyle(PassColor.aliasInteractionNormMajor2.toColor)
+                    .foregroundStyle(PassColor.aliasInteractionNormMajor2)
                     .fontWeight(.medium)
                     .padding(10)
                     .background(Circle()
-                        .stroke(PassColor.aliasInteractionNormMinor1.toColor, lineWidth: 1))
+                        .stroke(PassColor.aliasInteractionNormMinor1, lineWidth: 1))
                 VStack {
                     Divider()
                 }
             }.padding(.top, 10)
 
             Text(step.title)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
 
             step.descriptionSubview
         }

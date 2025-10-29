@@ -61,7 +61,7 @@ struct WrappedCodeScannerView: View {
                         isGaleryPresented.toggle()
                     }, label: {
                         Image(systemName: "photo.on.rectangle.angled")
-                            .foregroundStyle(PassColor.interactionNormMajor1.toColor)
+                            .foregroundStyle(PassColor.interactionNormMajor1)
                     })
                 }
             }

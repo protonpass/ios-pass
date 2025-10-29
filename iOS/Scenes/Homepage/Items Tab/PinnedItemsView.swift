@@ -23,6 +23,7 @@ import Entities
 import SwiftUI
 
 struct PinnedItemsView: View {
+    @Environment(\.accessibilityShowButtonShapes) private var showButtonShapes
     let pinnedItems: [ItemUiModel]
     let onSearch: () -> Void
     let action: (ItemUiModel) -> Void
@@ -40,12 +41,12 @@ struct PinnedItemsView: View {
                                                   alternativeBackground: true)
                             Text(item.title)
                                 .lineLimit(1)
-                                .foregroundStyle(PassColor.textNorm.toColor)
+                                .foregroundStyle(PassColor.textNorm)
                                 .padding(.trailing, 8)
                         }
                         .padding(8)
                         .frame(maxWidth: 165, alignment: .leading)
-                        .background(item.type.normMinor1Color.toColor)
+                        .background(item.type.normMinor1Color)
                         .cornerRadius(16)
                     }
                 }
@@ -56,13 +57,13 @@ struct PinnedItemsView: View {
                     } label: {
                         Text("See all")
                             .font(.callout.weight(.medium))
-                            .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                            .foregroundStyle(PassColor.interactionNormMajor2)
                             .padding(.trailing, 8)
                     }
                 }
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 12)
+            .padding(.horizontal, showButtonShapes ? 0 : nil)
+            .padding(.vertical, showButtonShapes ? 4 : 12)
             .shadow(color: .black.opacity(0.2), radius: 6, x: 0, y: 4)
         }
     }

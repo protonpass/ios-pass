@@ -29,7 +29,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
     let title: String
     let titleLineLimit: Int
     let secondaryTitle: String?
-    let secondaryTitleColor: UIColor?
+    let secondaryTitleColor: Color?
     let description: String?
     let descriptionLineLimit: Int
     let hasTotp: Bool
@@ -42,7 +42,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
          description: String?,
          descriptionLineLimit: Int = 1,
          secondaryTitle: String? = nil,
-         secondaryTitleColor: UIColor? = nil,
+         secondaryTitleColor: Color? = nil,
          hasTotp: Bool = false,
          isShared: Bool = false,
          showTitleDiscovery: Bool = false) {
@@ -77,17 +77,17 @@ struct GeneralItemRow<ThumbnailView: View>: View {
                         .fixedSize(horizontal: false, vertical: true)
 
                     if hasTotp {
-                        Image(uiImage: PassIcon.shieldLock)
+                        PassIcon.shieldLock
                             .resizable()
                             .frame(width: 16, height: 16)
-                            .foregroundStyle(PassColor.loginInteractionNormMajor1.toColor)
+                            .foregroundStyle(PassColor.loginInteractionNormMajor1)
                     }
 
                     if isShared {
-                        Image(uiImage: IconProvider.usersFilled)
+                        IconProvider.usersFilled
                             .resizable()
                             .frame(width: 16, height: 16)
-                            .foregroundStyle(PassColor.textNorm.toColor)
+                            .foregroundStyle(PassColor.textNorm)
                     }
                 }
                 .if(showTitleDiscovery) { view in
@@ -100,7 +100,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
                         .font(.callout)
                         .lineLimit(descriptionLineLimit)
                         .minimumScaleFactor(descriptionLineLimit > 1 ? 0.75 : 1.0)
-                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .foregroundStyle(PassColor.textWeak)
                         .fixedSize(horizontal: false, vertical: true)
                         .frame(maxHeight: .infinity)
                 }
@@ -115,13 +115,13 @@ struct GeneralItemRow<ThumbnailView: View>: View {
     var titleTexts: [Text] {
         var result = [Text]()
         let titleText = Text(title)
-            .adaptiveForegroundStyle((isEnabled ? PassColor.textNorm : PassColor.textWeak).toColor)
+            .adaptiveForegroundStyle(isEnabled ? PassColor.textNorm : PassColor.textWeak)
         result.append(titleText)
         if let secondaryTitle {
             result.append(Text(verbatim: " "))
             let secondaryText = Text(secondaryTitle)
-                .adaptiveForegroundStyle((isEnabled ?
-                        (secondaryTitleColor ?? PassColor.textNorm) : PassColor.textWeak).toColor)
+                .adaptiveForegroundStyle(isEnabled ?
+                    (secondaryTitleColor ?? PassColor.textNorm) : PassColor.textWeak)
             result.append(secondaryText)
         }
         return result

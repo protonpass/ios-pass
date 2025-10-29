@@ -98,7 +98,7 @@ struct AliasSyncConfigurationView: View {
                     Text("Mailbox is where emails sent to an alias are forwarded to. It's your usual mailbox, e.g. Gmail, Outlook, Proton Mail, etc.")
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .font(.footnote)
-                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .foregroundStyle(PassColor.textWeak)
                         .padding(.bottom, DesignConstant.sectionPadding)
                 }
             } header: {
@@ -148,7 +148,7 @@ struct AliasSyncConfigurationView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .toolbar { toolbarContent }
         .scrollViewEmbeded(maxWidth: .infinity)
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
         .optionalSheet(binding: $sheetState) { state in
             sheetContent(for: state)
                 .presentationDetents(presentationDetents(for: state))
@@ -223,7 +223,7 @@ struct AliasSyncConfigurationView: View {
     }
 
     var passPlusBadge: some View {
-        Image(uiImage: PassIcon.passSubscriptionBadge)
+        PassIcon.passSubscriptionBadge
             .resizable()
             .scaledToFit()
             .frame(height: 24)
@@ -233,7 +233,7 @@ struct AliasSyncConfigurationView: View {
 private extension AliasSyncConfigurationView {
     func sectionHeader(_ text: LocalizedStringKey) -> some View {
         Text(text)
-            .foregroundStyle(PassColor.textNorm.toColor)
+            .foregroundStyle(PassColor.textNorm)
             .fontWeight(.bold)
     }
 
@@ -277,22 +277,22 @@ private struct MailboxElementRow: View {
         HStack {
             VStack(alignment: .leading) {
                 Text(mailbox.email)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 HStack(spacing: 8) {
                     if mailbox.isDefault {
                         Text("Default")
                             .font(.footnote)
-                            .foregroundStyle(PassColor.interactionNormMinor1.toColor)
+                            .foregroundStyle(PassColor.interactionNormMinor1)
                             .padding(.horizontal, 10)
                             .padding(.vertical, 4)
-                            .background(PassColor.interactionNormMajor2.toColor)
+                            .background(PassColor.interactionNormMajor2)
                             .clipShape(Capsule())
                     }
                     Text(description)
                         .font(.footnote)
-                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .foregroundStyle(PassColor.textWeak)
                 }
             }
 
@@ -301,19 +301,19 @@ private struct MailboxElementRow: View {
             Menu(content: {
                 if mailbox.verificationNeeded {
                     Label(title: { Text("Verify") },
-                          icon: { Image(uiImage: IconProvider.checkmarkCircle) })
+                          icon: { IconProvider.checkmarkCircle })
                         .buttonEmbeded(action: verify)
                 }
 
                 if mailbox.verified, !mailbox.isDefault {
                     Label(title: { Text("Make default") },
-                          icon: { Image(uiImage: IconProvider.star) })
+                          icon: { IconProvider.star })
                         .buttonEmbeded(action: setDefault)
                 }
 
                 if mailbox.pendingEmail == nil {
                     Label(title: { Text("Change mailbox email") },
-                          icon: { Image(uiImage: IconProvider.pencil) })
+                          icon: { IconProvider.pencil })
                         .buttonEmbeded(action: changeEmail)
                 } else {
                     Label("Cancel mailbox change", systemImage: "xmark.circle")
@@ -323,7 +323,7 @@ private struct MailboxElementRow: View {
                 if !mailbox.isDefault {
                     Divider()
                     Label(title: { Text("Delete") },
-                          icon: { Image(uiImage: IconProvider.trash) })
+                          icon: { IconProvider.trash })
                         .buttonEmbeded(action: delete)
                 }
             }, label: {
@@ -355,11 +355,11 @@ private struct SynchroElementRow: View {
             VStack(alignment: .leading) {
                 Text(title)
                     .font(.callout)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
 
                 Text(verbatim: loaded ?
                     (content ?? #localized("Not selected")) : "Placeholder text")
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .if(!loaded) { view in
                         view.redacted(reason: .placeholder)
                     }
@@ -368,10 +368,10 @@ private struct SynchroElementRow: View {
 
             Spacer()
 
-            Image(uiImage: IconProvider.chevronRight)
+            IconProvider.chevronRight
                 .resizable()
                 .scaledToFit()
-                .foregroundStyle(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak)
                 .frame(maxHeight: 20)
         }
         .frame(maxWidth: .infinity)
@@ -466,7 +466,7 @@ private struct GenericSelectionView<Selection: Identifiable & Equatable & TitleR
                 }
                 .padding(.horizontal)
             }
-            .background(PassColor.backgroundWeak.toColor)
+            .background(PassColor.backgroundWeak)
             .navigationBarTitleDisplayMode(.inline)
             .animation(.default, value: selected)
             .toolbar {
@@ -482,27 +482,27 @@ private struct GenericSelectionView<Selection: Identifiable & Equatable & TitleR
         HStack {
             VStack {
                 Text(title)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 if let subtitle {
                     Text(subtitle)
-                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .foregroundStyle(PassColor.textWeak)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
             Spacer()
 
             if isSelected {
-                Image(uiImage: IconProvider.checkmark)
+                IconProvider.checkmark
                     .resizable()
                     .scaledToFit()
-                    .foregroundStyle(PassColor.interactionNorm.toColor)
+                    .foregroundStyle(PassColor.interactionNorm)
                     .frame(maxHeight: 25)
             }
 
             if shouldUpsell {
-                Image(uiImage: PassIcon.passSubscriptionUnlimited)
+                PassIcon.passSubscriptionUnlimited
                     .resizable()
                     .scaledToFit()
                     .frame(height: 24)
@@ -538,13 +538,13 @@ private struct MailboxDeletionView: View {
         VStack(spacing: DesignConstant.sectionPadding) {
             VStack(spacing: DesignConstant.sectionPadding) {
                 Text("Delete mailbox")
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .fontWeight(.semibold)
                     .layoutPriority(1)
 
                 // swiftlint:disable:next line_length
                 Text("All aliases using the mailbox **\(mailbox.email)** will be also deleted. To keep receiving emails transfer these aliases to a different mailbox:")
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .multilineTextAlignment(.center)
                     .minimumScaleFactor(0.90)
                     .frame(maxWidth: .infinity, alignment: .center)
@@ -552,13 +552,13 @@ private struct MailboxDeletionView: View {
 
                 if mailbox.aliasCount > 0, !wantToTransferAliases {
                     HStack {
-                        Image(uiImage: IconProvider.infoCircleFilled)
+                        IconProvider.infoCircleFilled
                             .resizable()
                             .frame(width: 25, height: 25)
-                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .foregroundStyle(PassColor.textWeak)
 
                         Text("Please note that once deleted, aliases cannot be restored.")
-                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .foregroundStyle(PassColor.textWeak)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .minimumScaleFactor(0.75)
                     }
@@ -570,7 +570,7 @@ private struct MailboxDeletionView: View {
                 if !otherMailboxes.isEmpty {
                     Toggle(isOn: $wantToTransferAliases) {
                         Text("Transfer aliases")
-                            .foregroundStyle(PassColor.textNorm.toColor)
+                            .foregroundStyle(PassColor.textNorm)
                     }
                     .toggleStyle(SwitchToggleStyle.pass)
                     .layoutPriority(1)
@@ -580,7 +580,7 @@ private struct MailboxDeletionView: View {
                             Divider()
                             HStack {
                                 Text("To mailbox")
-                                    .foregroundStyle(PassColor.textNorm.toColor)
+                                    .foregroundStyle(PassColor.textNorm)
 
                                 Spacer()
 
@@ -592,8 +592,8 @@ private struct MailboxDeletionView: View {
                                     }
                                 }
                                 .padding(4)
-                                .tint(PassColor.textNorm.toColor)
-                                .background(PassColor.interactionNormMinor1.toColor)
+                                .tint(PassColor.textNorm)
+                                .background(PassColor.interactionNormMinor1)
                                 .clipShape(RoundedRectangle(cornerRadius: 8))
                             }
                         }
@@ -626,6 +626,6 @@ private struct MailboxDeletionView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .animation(.default, value: wantToTransferAliases)
         .padding(24)
-        .background(PassColor.backgroundWeak.toColor)
+        .background(PassColor.backgroundWeak)
     }
 }

@@ -106,7 +106,7 @@ struct GeneratePasswordView: View {
                 ctaButtons
             }
             .padding(.horizontal)
-            .background(PassColor.backgroundWeak.toColor)
+            .background(PassColor.backgroundWeak)
             .navigationBarTitleDisplayMode(.inline)
             .animation(.default, value: viewModel.password)
             .animation(.default, value: viewModel.isShowingAdvancedOptions)
@@ -139,7 +139,7 @@ struct GeneratePasswordView: View {
     private var passwordTypeRow: some View {
         HStack {
             Text("Type")
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
 
             Spacer()
 
@@ -160,11 +160,11 @@ struct GeneratePasswordView: View {
             }, label: {
                 HStack {
                     Text(viewModel.passwordType.title)
-                        .foregroundStyle(PassColor.textNorm.toColor)
-                    Image(uiImage: IconProvider.chevronDownFilled)
+                        .foregroundStyle(PassColor.textNorm)
+                    IconProvider.chevronDownFilled
                         .resizable()
                         .scaledToFit()
-                        .foregroundStyle(PassColor.textHint.toColor)
+                        .foregroundStyle(PassColor.textHint)
                         .frame(width: 16)
                 }
             })
@@ -203,10 +203,10 @@ struct GeneratePasswordView: View {
             Text("\(Int(viewModel.numberOfCharacters)) characters")
                 .monospacedDigit()
                 .frame(minWidth: 120, alignment: .leading)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
                 .animationsDisabled()
             Slider(value: $viewModel.numberOfCharacters, in: viewModel.minChar...viewModel.maxChar, step: 1)
-                .tint(PassColor.loginInteractionNormMajor1.toColor)
+                .tint(PassColor.loginInteractionNormMajor1)
         }
     }
 
@@ -215,17 +215,17 @@ struct GeneratePasswordView: View {
             Text("\(Int(viewModel.numberOfWords)) word(s)")
                 .monospacedDigit()
                 .frame(minWidth: 120, alignment: .leading)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
                 .animationsDisabled()
             Slider(value: $viewModel.numberOfWords, in: viewModel.minWord...viewModel.maxWord, step: 1)
-                .tint(PassColor.loginInteractionNormMajor1.toColor)
+                .tint(PassColor.loginInteractionNormMajor1)
         }
     }
 
     private func toggle(title: String, isOn: Binding<Bool>, hasPolicy: Bool = false) -> some View {
         Toggle(isOn: isOn) {
             Text(title)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
         }
         .toggleStyle(SwitchToggleStyle.pass)
         .disabled(hasPolicy)
@@ -240,7 +240,7 @@ struct GeneratePasswordView: View {
     private var wordSeparatorRow: some View {
         HStack {
             Text("Word separator")
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
 
             Spacer()
 
@@ -261,11 +261,11 @@ struct GeneratePasswordView: View {
             }, label: {
                 HStack {
                     Text(viewModel.typeOfWordSeparator.title)
-                        .foregroundStyle(PassColor.textNorm.toColor)
-                    Image(uiImage: IconProvider.chevronDownFilled)
+                        .foregroundStyle(PassColor.textNorm)
+                    IconProvider.chevronDownFilled
                         .resizable()
                         .scaledToFit()
-                        .foregroundStyle(PassColor.textHint.toColor)
+                        .foregroundStyle(PassColor.textHint)
                         .frame(width: 16)
                 }
             })

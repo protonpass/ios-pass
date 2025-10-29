@@ -41,9 +41,9 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .background(PassColor.backgroundNorm.toColor)
+            .background(PassColor.backgroundNorm)
             .navigationBarTitleDisplayMode(.inline)
-            .tint(viewModel.itemContentType.normMajor1Color.toColor)
+            .tint(viewModel.itemContentType.normMajor1Color)
             .disabled(viewModel.isSaving)
             .animation(.default, value: viewModel.customFields)
             .animation(.default, value: viewModel.customSections)
@@ -81,9 +81,7 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                                                      update: .title(customFieldTitle))
                                            customFieldTitle = ""
                                        })
-            .sharedCreationAlert(showItemShareAlert: $viewModel.showSharedItemCreationAlert,
-                                 members: viewModel.selectedVault.members,
-                                 onSave: viewModel.dismissSharedItemAlertAndSave(doNotShowAgain:))
+            .sharedCreationAlert(content: $viewModel.itemEditionAlertContent)
             .sheet(isPresented: $viewModel.isShowingNoCameraPermissionView) {
                 NoCameraPermissionView { viewModel.openSettings() }
             }
@@ -304,22 +302,22 @@ private extension View {
               })
     }
 
-    func sharedCreationAlert(showItemShareAlert: Binding<Bool>,
-                             members: Int,
-                             onSave: @escaping (_ doNotShowAgain: Bool) -> Void) -> some View {
-        alert("Item in a shared vault",
-              isPresented: showItemShareAlert) {
-            Button { onSave(false) } label: {
-                Text("OK")
-            }
-            Button { onSave(true) } label: {
-                Text("Don't remind me again")
-            }
-            Button(role: .cancel) {
-                Text("Cancel")
+    func sharedCreationAlert(content: Binding<ItemEditionAlertContent?>) -> some View {
+        alert(content.wrappedValue?.title ?? "Unkown",
+              isPresented: content.mappedToBool()) {
+            if let buttons = content.wrappedValue?.buttons, !buttons.isEmpty {
+                ForEach(buttons, id: \.id) { button in
+                    Button(role: button.role, action: button.action) {
+                        Text(button.title)
+                    }
+                }
+            } else {
+                Button(role: .cancel) {
+                    Text("Cancel")
+                }
             }
         } message: {
-            Text("You are creating an item in a shared vault and \(members) users will immediately gain access to it.")
+            Text(verbatim: content.wrappedValue?.message ?? "")
         }
     }
 }

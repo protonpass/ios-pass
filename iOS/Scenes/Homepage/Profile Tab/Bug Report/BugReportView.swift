@@ -134,15 +134,15 @@ private extension BugReportView {
             .frame(maxHeight: .infinity)
             .animation(.default, value: viewModel.currentFiles)
         }
-        .tint(PassColor.interactionNorm.toColor)
-        .background(PassColor.backgroundNorm.toColor)
+        .tint(PassColor.interactionNorm)
+        .background(PassColor.backgroundNorm)
     }
 
     func pickerLabel(_ title: String) -> some View {
         Label(title: { Text(title) },
               icon: { Image(systemName: "chevron.up.chevron.down") })
             .fontWeight(.bold)
-            .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+            .foregroundStyle(PassColor.interactionNormMajor2)
             .labelStyle(.rightIcon)
             .padding(DesignConstant.sectionPadding)
             .roundedEditableSection(backgroundColor: PassColor.interactionNormMinor1,
@@ -184,14 +184,14 @@ private extension BugReportView {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(title)
                     .font(.footnote)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
 
                 // iOS 16 doesn't seem to support multiline placeholder
                 // workaround by using a ZStack
                 ZStack(alignment: .topLeading) {
                     if viewModel.description.isEmpty {
                         Text(placeholder)
-                            .foregroundStyle(PassColor.textHint.toColor)
+                            .foregroundStyle(PassColor.textHint)
                     }
 
                     TextEditorWithPlaceholder(text: $viewModel.description,
@@ -218,7 +218,7 @@ private extension BugReportView {
     var logsSection: some View {
         VStack {
             Toggle("Logs", isOn: $viewModel.shouldSendLogs)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
             // swiftlint:disable:next line_length
             Text("A log is a type of file that shows us the actions you took that led to an error. We'll only ever use them to help our engineers fix bugs.")
                 .sectionTitleText()
@@ -232,7 +232,7 @@ private extension BugReportView {
         VStack {
             HStack {
                 Text("Attachments")
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                 Spacer()
                 Menu(content: {
                     Button(action: {
@@ -265,14 +265,14 @@ private extension BugReportView {
         Label(title: {
             Text(fileName)
                 .font(.callout)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
         }, icon: {
             Button(action: {
                 viewModel.removeFile(fileName)
             }, label: {
-                Image(uiImage: IconProvider.crossCircle)
+                IconProvider.crossCircle
                     .resizable()
-                    .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                    .foregroundStyle(PassColor.interactionNormMajor2)
                     .frame(width: 18, height: 18)
             })
         })
@@ -280,6 +280,6 @@ private extension BugReportView {
         .padding(.horizontal, 10)
         .padding(.vertical, 8)
         .overlay(RoundedRectangle(cornerRadius: 4)
-            .stroke(PassColor.backgroundMedium.toColor, lineWidth: 1))
+            .stroke(PassColor.backgroundMedium, lineWidth: 1))
     }
 }

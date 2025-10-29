@@ -23,13 +23,13 @@ import SwiftUI
 
 public struct TextBanner: View {
     let text: LocalizedStringKey
-    let foregroundColor: UIColor
-    let backgroundColor: UIColor
+    let foregroundColor: Color
+    let backgroundColor: Color
     let cornerRadius: CGFloat
 
     public init(_ text: LocalizedStringKey,
-                foregroundColor: UIColor = PassColor.textNorm,
-                backgroundColor: UIColor = PassColor.interactionNormMinor1,
+                foregroundColor: Color = PassColor.textNorm,
+                backgroundColor: Color = PassColor.interactionNormMinor1,
                 cornerRadius: CGFloat = 16) {
         self.text = text
         self.foregroundColor = foregroundColor
@@ -40,8 +40,8 @@ public struct TextBanner: View {
     public var body: some View {
         Text(text)
             .padding()
-            .foregroundStyle(foregroundColor.toColor)
-            .background(backgroundColor.toColor)
+            .foregroundStyle(foregroundColor)
+            .background(backgroundColor)
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
             .multilineTextAlignment(.leading)
     }

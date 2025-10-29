@@ -64,9 +64,9 @@ private extension DarkWebMonitorHomeView {
         .animation(.default, value: viewModel.suggestedEmailsState)
         .toolbar { toolbarContent }
         .scrollViewEmbeded(maxWidth: .infinity)
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
         .navigationBarBackButtonHidden(true)
-        .toolbarBackground(PassColor.backgroundNorm.toColor,
+        .toolbarBackground(PassColor.backgroundNorm,
                            for: .navigationBar)
         .navigationBarTitleDisplayMode(.inline)
         .alert(Text("Data Security"),
@@ -90,7 +90,7 @@ private extension DarkWebMonitorHomeView {
         Label(title: {
             Text("Dark Web Monitoring")
                 .font(.title.bold())
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
         }, icon: {
             Button(action: {
                 showDataSecurityExplanation = true
@@ -98,7 +98,7 @@ private extension DarkWebMonitorHomeView {
                 Image(systemName: "questionmark.circle")
                     .resizable()
                     .scaledToFit()
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
                     .frame(maxWidth: 24)
             })
             .buttonStyle(.plain)
@@ -115,10 +115,10 @@ private extension DarkWebMonitorHomeView {
         HStack {
             VStack(alignment: .leading) {
                 Text(title)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                 Text(subtitle)
                     .font(.callout)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -168,7 +168,7 @@ private extension DarkWebMonitorHomeView {
                     } label: {
                         Text("See all")
                             .font(.callout.weight(.bold))
-                            .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                            .foregroundStyle(PassColor.interactionNormMajor2)
                             .padding(.trailing, 8)
                     }
                 }
@@ -223,7 +223,7 @@ private extension DarkWebMonitorHomeView {
                 HStack {
                     VStack(alignment: .leading) {
                         Text(title)
-                            .foregroundStyle(PassColor.textNorm.toColor)
+                            .foregroundStyle(PassColor.textNorm)
                         Text(verbatim: "You can't see me, can you?")
                             .redacted(reason: .placeholder)
                     }
@@ -278,7 +278,7 @@ private extension DarkWebMonitorHomeView {
                     } label: {
                         Text("See all")
                             .font(.callout.weight(.bold))
-                            .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                            .foregroundStyle(PassColor.interactionNormMajor2)
                             .padding(.trailing, 8)
                     }
                 }
@@ -350,7 +350,7 @@ private extension DarkWebMonitorHomeView {
                     HStack {
                         Text(error.localizedDescription)
                             .font(.callout)
-                            .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                            .foregroundStyle(PassColor.passwordInteractionNormMajor2)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         Spacer()
                         RetryButton { viewModel.fetchSuggestedEmails() }
@@ -398,12 +398,12 @@ private extension DarkWebMonitorHomeView {
                                      action: { router.navigate(to: .breachDetail(.customEmail(email))) })
         } else {
             HStack {
-                Image(uiImage: IconProvider.envelope)
+                IconProvider.envelope
                     .resizable()
                     .scaledToFit()
                     .frame(height: 24)
                     .padding(10)
-                    .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                    .foregroundStyle(PassColor.interactionNormMajor2)
                     .roundedDetailSection(backgroundColor: PassColor.interactionNormMinor1,
                                           borderColor: .clear)
 
@@ -411,23 +411,23 @@ private extension DarkWebMonitorHomeView {
 
                 VStack(alignment: .leading) {
                     Text(email.email)
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm)
                         .frame(maxWidth: .infinity, alignment: .leading)
 
                     Text("Unverified")
                         .font(.footnote)
-                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .foregroundStyle(PassColor.textWeak)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 Spacer()
 
                 Menu(content: {
                     Label(title: { Text("Verify") },
-                          icon: { Image(uiImage: IconProvider.paperPlane) })
+                          icon: { IconProvider.paperPlane })
                         .buttonEmbeded { router.present(sheet: .addEmail(.customEmail(email))) }
 
                     Label(title: { Text("Remove") },
-                          icon: { Image(uiImage: IconProvider.trash) })
+                          icon: { IconProvider.trash })
                         .buttonEmbeded { viewModel.removeCustomMailFromMonitor(email: email) }
                 }, label: {
                     CircleButton(icon: IconProvider.threeDotsVertical,
@@ -445,12 +445,12 @@ private extension DarkWebMonitorHomeView {
 private extension DarkWebMonitorHomeView {
     func suggestedEmailRow(_ email: SuggestedEmail) -> some View {
         HStack {
-            Image(uiImage: IconProvider.envelope)
+            IconProvider.envelope
                 .resizable()
                 .scaledToFit()
                 .frame(height: 24)
                 .padding(10)
-                .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                .foregroundStyle(PassColor.interactionNormMajor2)
                 .roundedDetailSection(backgroundColor: PassColor.interactionNormMinor1,
                                       borderColor: .clear)
 
@@ -458,12 +458,12 @@ private extension DarkWebMonitorHomeView {
 
             VStack(alignment: .leading) {
                 Text(email.email)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 Text("Used in \(email.count) logins")
                     .font(.footnote)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
 
@@ -489,19 +489,19 @@ private extension DarkWebMonitorHomeView {
 private extension DarkWebMonitorHomeView {
     func colorOfTitle(hasBreaches: Bool, isDetail: Bool) -> Color {
         if isDetail {
-            (hasBreaches ? PassColor.passwordInteractionNormMajor2 : PassColor
-                .textNorm).toColor
+            hasBreaches ? PassColor.passwordInteractionNormMajor2 : PassColor
+                .textNorm
         } else {
-            PassColor.textNorm.toColor
+            PassColor.textNorm
         }
     }
 
     func colorOfSubtitle(hasBreaches: Bool, isDetail: Bool) -> Color {
         if isDetail {
-            PassColor.textNorm.toColor
+            PassColor.textNorm
         } else {
-            (hasBreaches ? PassColor.passwordInteractionNormMajor2 : PassColor
-                .cardInteractionNormMajor1).toColor
+            hasBreaches ? PassColor.passwordInteractionNormMajor2 : PassColor
+                .cardInteractionNormMajor1
         }
     }
 
@@ -526,8 +526,8 @@ private extension DarkWebMonitorHomeView {
 
             if let count {
                 CapsuleCounter(count: count,
-                               foregroundStyle: SecureRowType.danger.iconColor.toColor,
-                               background: SecureRowType.danger.background.toColor)
+                               foregroundStyle: SecureRowType.danger.iconColor,
+                               background: SecureRowType.danger.background)
             }
 
             ItemDetailSectionIcon(icon: IconProvider.chevronRight,
@@ -557,8 +557,8 @@ private extension DarkWebMonitorHomeView {
             let totalBreaches = aliasBreaches.breachCount + customEmailBreaches.breachCount + viewModel
                 .userBreaches.emailsCount
             let noBreaches = totalBreaches == 0
-            let icon: UIImage = noBreaches ? IconProvider.checkmarkCircleFilled : IconProvider
-                .exclamationCircleFilled
+            let icon: Image = noBreaches ?
+                IconProvider.checkmarkCircleFilled : IconProvider.exclamationCircleFilled
             let iconColor = noBreaches ? PassColor.cardInteractionNormMajor2 : PassColor
                 .passwordInteractionNormMajor2
             let backgroundColor = noBreaches ? PassColor.cardInteractionNormMinor2 : PassColor

@@ -38,7 +38,7 @@ struct UserPermissionView: View {
             Text("Set access level")
                 .font(.largeTitle)
                 .fontWeight(.bold)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
             if viewModel.hasOnlyOneInvite,
                let invite = viewModel.invites.keys.first {
                 emailDisplayView(invite: invite)
@@ -52,7 +52,7 @@ struct UserPermissionView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(DesignConstant.sectionPadding)
         .navigationBarTitleDisplayMode(.inline)
-        .background(PassColor.backgroundNorm.toColor)
+        .background(PassColor.backgroundNorm)
         .toolbar { toolbarContent }
         .sheet(item: $showMember) { infos in
             GroupUsersInformationView(groupInfo: infos, rights: nil)
@@ -65,7 +65,7 @@ struct UserPermissionView: View {
     func butonDisplay(with permission: ShareRole) -> some View {
         if viewModel.selectedUserRole == permission {
             Circle()
-                .fill(PassColor.interactionNormMajor1.toColor)
+                .fill(PassColor.interactionNormMajor1)
                 .frame(width: 15, height: 15)
         } else {
             EmptyView()
@@ -90,7 +90,7 @@ private extension UserPermissionView {
 
                 setAccessLevelMenu
             }
-            .foregroundStyle(PassColor.textWeak.toColor)
+            .foregroundStyle(PassColor.textWeak)
             .frame(maxWidth: .infinity)
 
             inviteeList(for: viewModel.invites)
@@ -114,10 +114,10 @@ private extension UserPermissionView {
         } label: {
             Label("Set access level", systemImage: "chevron.down")
                 .labelStyle(.rightIcon)
-                .foregroundStyle(PassColor.interactionNorm.toColor)
+                .foregroundStyle(PassColor.interactionNorm)
                 .padding(12)
                 .overlay(RoundedRectangle(cornerRadius: 8)
-                    .strokeBorder(PassColor.interactionNorm.toColor, lineWidth: 1))
+                    .strokeBorder(PassColor.interactionNorm, lineWidth: 1))
         }
     }
 
@@ -132,7 +132,7 @@ private extension UserPermissionView {
                         if let currentRole = viewModel.invites[invite] {
                             HStack {
                                 Text(currentRole.title(managerAsAdmin: viewModel.managerAsAdmin))
-                                    .foregroundStyle(PassColor.textWeak.toColor)
+                                    .foregroundStyle(PassColor.textWeak)
                             }
                         }
                     }
@@ -165,11 +165,11 @@ private extension UserPermissionView {
                     }
                 })
             }
-        }, label: { Image(uiImage: IconProvider.threeDotsVertical)
+        }, label: { IconProvider.threeDotsVertical
             .resizable()
             .scaledToFit()
             .frame(width: 24, height: 24)
-            .foregroundStyle(PassColor.textWeak.toColor)
+            .foregroundStyle(PassColor.textWeak)
         })
     }
 }
@@ -198,17 +198,17 @@ private extension UserPermissionView {
                     HStack(spacing: 16) {
                         VStack(alignment: .leading, spacing: 2) {
                             Text(role.title(managerAsAdmin: viewModel.managerAsAdmin))
-                                .foregroundStyle(PassColor.textNorm.toColor)
+                                .foregroundStyle(PassColor.textNorm)
                                 .padding(.bottom, 2)
 
                             Text(role.description(isItemSharing: viewModel.isItemSharing))
-                                .foregroundStyle(PassColor.textWeak.toColor)
+                                .foregroundStyle(PassColor.textWeak)
                         }
                         Spacer()
 
                         Circle()
                             .strokeBorder(viewModel.selectedUserRole == role ? PassColor
-                                .interactionNormMajor1.toColor : PassColor.textWeak.toColor,
+                                .interactionNormMajor1 : PassColor.textWeak,
                                 lineWidth: 2)
                             .overlay(butonDisplay(with: role))
                             .frame(width: 24, height: 24)
@@ -220,7 +220,7 @@ private extension UserPermissionView {
                     .overlay(RoundedRectangle(cornerRadius: 16)
                         .strokeBorder(viewModel.selectedUserRole == role ? PassColor
                             .interactionNormMajor1
-                            .toColor : PassColor.textWeak.toColor,
+                            : PassColor.textWeak,
                             lineWidth: 1))
                 }
                 .buttonStyle(.plain)
@@ -245,15 +245,15 @@ private extension UserPermissionView {
                     Text(verbatim: " (")
                     Button { showMember = infos } label: {
                         Text(#localized("%lld member(s)", members))
-                            .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                            .foregroundStyle(PassColor.interactionNormMajor2)
                     }.buttonStyle(.plain)
                     Text(verbatim: ")")
                 }
             }
-            .foregroundStyle(PassColor.textNorm.toColor)
+            .foregroundStyle(PassColor.textNorm)
         } else {
             Text(invite.name)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm)
         }
     }
 }

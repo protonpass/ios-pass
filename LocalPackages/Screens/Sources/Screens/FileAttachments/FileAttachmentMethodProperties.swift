@@ -38,7 +38,7 @@ public extension FileAttachmentMethod {
         }
     }
 
-    var icon: UIImage {
+    var icon: Image {
         switch self {
         case .takePhoto:
             IconProvider.camera

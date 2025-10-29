@@ -27,7 +27,7 @@ import SwiftUI
 struct MailboxSelectionView: View {
     @Binding var mailboxSelection: AliasLinkedMailboxSelection
     let title: String
-    var tint = PassColor.aliasInteractionNormMajor2.toColor
+    var tint = PassColor.aliasInteractionNormMajor2
     let showTip: Bool
     let onAddMailbox: () -> Void
     let onDismissTip: () -> Void
@@ -43,11 +43,11 @@ struct MailboxSelectionView: View {
                             let isSelected = mailboxSelection.selectedMailboxes.contains(mailbox)
                             HStack {
                                 Text(mailbox.email)
-                                    .foregroundStyle(isSelected ? tint : PassColor.textNorm.toColor)
+                                    .foregroundStyle(isSelected ? tint : PassColor.textNorm)
                                 Spacer()
 
                                 if isSelected {
-                                    Image(uiImage: IconProvider.checkmark)
+                                    IconProvider.checkmark
                                         .foregroundStyle(tint)
                                 }
                             }
@@ -72,7 +72,7 @@ struct MailboxSelectionView: View {
                     .padding(.horizontal)
                 }
             }
-            .background(PassColor.backgroundWeak.toColor)
+            .background(PassColor.backgroundWeak)
             .animation(.default, value: showTip)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

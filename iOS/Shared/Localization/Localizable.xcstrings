@@ -25900,198 +25900,126 @@
         }
       }
     },
-    "Alias \"%@\" will stop forwarding emails to your mailbox" : {
+    "Alias \"%@\" moved to trash" : {
       "localizations" : {
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Псеўданім \"%@\" перастане перасылаць лісты ў вашу паштовую скрыню"
+            "value" : "Псеўданім \"%@\" перамешчаны ў сметніцу"
           }
         },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "L'àlies \"%@\" deixarà de reenviar correus electrònics a la vostra bústia de correu"
+            "value" : "L'àlies\"%@\" s'ha mogut a la paperera"
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias \"%@\" přestane přeposílat e-maily do vaší schránky"
+            "value" : "Alias \"%@\" přesunut do koše"
           }
         },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aliasset \"%@\" vil stoppe med at videresende e-mails til din indbakke"
+            "value" : "Alias \"%@\" flyttet til papirkurv"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias \"%@\" wird keine E-Mails mehr an dein Postfach weiterleiten."
+            "value" : "Aliasnamen „%@“ in Papierkorb verschoben"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Το ψευδώνυμο \"%@\" θα σταματήσει να προωθεί μηνύματα ηλεκτρονικού ταχυδρομείου στο γραμματοκιβώτιό σας"
+            "value" : "Το ψευδώνυμο \"%@\" μεταφέρθηκε στον κάδο απορριμμάτων"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias \"%@\" will stop forwarding emails to your mailbox"
+            "value" : "Alias \"%@\" moved to trash"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El alias \"%@\" dejará de reenviar correos a tu buzón."
+            "value" : "El alias \"%@\" se ha movido a la papelera"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El alias \"%@\" dejará de reenviar correos a el buzón."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alias \"%@\" ei enää ohjaa viestejä postilaatikkoosi"
+            "value" : "Alias «%@» movido a la papelera"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "L'alias « %@ » ne transférera plus les messages vers votre messagerie."
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Az „%@” álnév leállítja az e-mailek továbbítását a postafiókodba."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alias \"%@\" akan berhenti meneruskan email ke kotak masuk Anda"
+            "value" : "L'alias « %@ » a été déplacé dans la corbeille."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "L'alias \"%@\" interromperà l'inoltro delle email alla tua casella di posta"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "エイリアス「%@」はメールボックスへのメールの転送を停止します"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ფსევდონიმი \"%@\" ელფოსტების თქვენს საფოსტო ყუთში გადამისამართებას შეწყვეტს"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "별칭 \"%@\"의 사용자 메일함에 대한 이메일 포워딩이 중단됩니다."
+            "value" : "Alias \"%@\" spostato nel Cestino"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias \"%@\" vil slutte å videresende e-post til postkassen din."
+            "value" : "Alias \"%@\" flyttet til papirkurven"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias \"%@\" verplaatst naar prullenbak - het zal stoppen met het doorsturen van e-mails naar uw mailbox"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alias \"%@\" przestanie przekierowywać wiadomości do skrzynki pocztowej"
+            "value" : "Alias \"%@\" verplaatst naar prullenbak"
           }
         },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias \"%@\" deixará de reencaminhar e-mails para a sua caixa de correio"
+            "value" : "Alias \"%@\" movido para o lixo"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O alias \"%@\" deixará de encaminhar e-mails para a sua caixa de entrada"
+            "value" : "Alias \"%@\" para a lixeira"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aliasul „%@” va înceta redirecționarea mesajelor."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Псевдоним \"%@\" прекратит пересылку писем в ваш почтовый ящик"
+            "value" : "Aliasul „%@” a fost mutat în gunoi."
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias \"%@\" už nebude preposielať emaily do vašej schránky"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vzdevek »%@« bo ustavil posredovanje e-pošte v vaš nabiralnik"
+            "value" : "Alias \"%@\" presunutý do koša"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias ”%@” kommer sluta vidarebefordra e-post till din brevlåda"
+            "value" : "Alias “%@“ flyttad till papperskorg"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "\"%@\" takma adı e-postaları gelen kutunuza iletmeyecek"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Псевдонім \"%@\" перестане пересилати електронні листи на вашу поштову скриньку"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bí danh \"%@\" sẽ dừng chuyển tiếp email đến hộp thư đến của bạn"
+            "value" : "Takma ad \"%@\" çöpe atıldı"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "别名“%@”将停止将电子邮件转发到您的邮箱"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "別名%@將會停止轉寄電子郵件到信箱"
+            "value" : "别名 \"%@\" 已移动到废件箱"
           }
         }
       }
@@ -28462,7 +28390,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Àlies de l'element d'inic de sessió \"%@\""
+            "value" : "Àlies de l'element d'inici de sessió \"%@\""
           }
         },
         "cs" : {
@@ -30417,7 +30345,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tot excepte les dades les sensibles"
+            "value" : "Tot excepte les dades sensibles"
           }
         },
         "cs" : {
@@ -33146,7 +33074,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esteu segur que voleu suprimir la següent secció \"%@\"?"
+            "value" : "Segur que voleu eliminar la secció següent \"%@\"?"
           }
         },
         "cs" : {
@@ -33539,7 +33467,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Associa l'A2F?"
+            "value" : "Voleu associar l'autenticació de doble factor (2FA)?"
           }
         },
         "cs" : {
@@ -34323,7 +34251,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Almenys un dels elements seleccionats està compartit actualment. Si el mou a una altra volta, se suprimirà l'accés a la resta d'usuaris."
+            "value" : "Almenys un dels elements seleccionats està compartit actualment. Si el moveu a una altra caixa forta, se suprimirà l'accés per a la resta d'usuaris."
           }
         },
         "cs" : {
@@ -35300,7 +35228,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Emplenament automàtic en aplicacions i llocs web activant l'emplenament automàtic de Proton Pass"
+            "value" : "Activeu l'emplenament automàtic de Proton Pass per a utilitzar-lo en aplicacions i llocs web."
           }
         },
         "cs" : {
@@ -37054,7 +36982,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Menú d'acció de detall d'infraccions"
+            "value" : "Menú d'accions detallades de filtracions de dades"
           }
         },
         "cs" : {
@@ -38623,7 +38551,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Permet crear, editar, suprimir i exportar elements en aquesta caixa forta"
+            "value" : "Permet crear, editar, eliminar i exportar elements en aquesta caixa forta"
           }
         },
         "cs" : {
@@ -64147,10 +64075,130 @@
     },
     "Don't remind me again" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Больш не нагадваць"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No m'ho torneu a recordar"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Znovu nepřipomínat"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Påmind mig ikke igen"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nicht erneut erinnern"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Μην μου υπενθυμίσεις ξανά"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Don't remind me again"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No volver a recordarme"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No volver a recordarme"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ne plus me le rappeler"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jangan ingatkan saya lagi"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non ricordarmelo di nuovo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次回から通知しない"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikke minn meg på det igjen"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niet opnieuw herinneren"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não lembrar novamente"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nu-mi mai reaminti"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Už nepripomínať"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Påminn mig inte igen"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bir daha hatırlatma"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "不再提示"
           }
         }
       }
@@ -83787,6 +83835,12 @@
             "value" : "非公開の保管庫"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "숨겨진 보관함"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -83827,6 +83881,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gizli kasalar"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "隐藏的保险库"
           }
         }
       }
@@ -93954,10 +94014,130 @@
     },
     "Item in a shared vault" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Элемент у абагуленым сховішчы"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Element en una caixa forta compartida"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Položka ve sdíleném trezoru"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Element i en delt boks"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eintrag in einem gemeinsamen Tresor"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Στοιχείο σε κοινόχρηστη κρύπτη"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Item in a shared vault"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elemento en una caja fuerte compartida"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elemento en una bóveda compartida"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Élément dans un coffre-fort partagé"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item pada brankas yang dibagikan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elemento in una cassaforte condivisa"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共有保管庫内のアイテム"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Element i et delt hvelv"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item in een gedeelde kluis"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item em um cofre compartilhado"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Articol într-un seif partajat"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Položka v zdieľanom terzore"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Objekt i ett delat valv"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öge paylaşılan bir kasada"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共享保险库中的项目"
           }
         }
       }
@@ -95744,202 +95924,6 @@
         }
       }
     },
-    "Items filter Menus" : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Меню фільтра элементаў"
-          }
-        },
-        "ca" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Menús de filtratge d'elements"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nabídky filtru položek"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Elementfilter-menuer"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Menüs zum Filtern von Einträgen"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Μενού φίλτρων στοιχείου"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Items filter Menus"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Menú de filtros de los elementos"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Menú de filtros de los elementos"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kohteiden suodatusvalikot"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Menu des filtres des éléments"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Elemek szűrő menüjei"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Menu penyaringan item"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Menu filtro elementi"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "アイテムフィルタメニュー"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ელემენტების ფილტრის მენიუები"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "항목 필터 메뉴"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Filtermenyer for elementer"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Item filter menu"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Filtry elementów"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Menus de filtro de itens"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Menu de filtros de item"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Meniu filtru articole"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Меню фильтра элементов"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Menu filtrovania položiek"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Meni za filtriranje predmetov"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Filtermeny för objekt"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ögeleri süzme menüleri"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Меню фільтра елементів"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Các tùy chọn bộ lọc nội dung"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "项目筛选菜单"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "項目篩選選單"
-          }
-        }
-      }
-    },
     "Items filtering and sort menu" : {
       "comment" : "accessibility",
       "localizations" : {
@@ -96998,7 +96982,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bergabung ke brankas terbagi"
+            "value" : "Gabung ke brankas yang dibagikan"
           }
         },
         "it" : {
@@ -121741,6 +121725,12 @@
             "value" : "保管庫を整理する"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "보관함 정리"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -121781,6 +121771,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kasaları düzenle"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "整理保险库"
           }
         }
       }
@@ -157337,6 +157333,112 @@
         }
       }
     },
+    "Shared item" : {
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Абагулены элемент"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Element compartit"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sdílená položka"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delt element"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geteiltes Element"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shared item"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elemento compartido"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Élément partagé"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elemento condiviso"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delt element"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gedeeld item"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item compartilhado"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Articol partajat"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zdieľaná položka"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delat objekt"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paylaşılmış öge"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已共享的项目"
+          }
+        }
+      }
+    },
     "Shared item invitation" : {
       "localizations" : {
         "be" : {
@@ -171739,6 +171841,12 @@
             "value" : "これらの保管庫にはアクセスできなくなり、そのコンテンツは検索や自動入力で利用できなくなります。"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 보관함들은 접근할 수 없으며, 해당 콘텐츠는 검색 또는 자동완성에서 사용할 수 없습니다."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -171773,6 +171881,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu kasalara erişilemeyecek ve içerikleri arama veya otomatik doldurma için kullanılmayacak."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "这些保险库将无法访问，且其内容无法用于搜索或自动填充。"
           }
         }
       }
@@ -172437,7 +172551,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Item ini saat ini dibagikan. Memindahkannya ke brankas yang lain akan menghilangkan akses untuk semua pengguna lain."
+            "value" : "Item ini saat ini sedang dibagikan. Dengan memindahkan item ini ke brankas lain, izin akses bagi seluruh pengguna lainnya akan dihapus."
           }
         },
         "it" : {
@@ -182828,6 +182942,16 @@
         }
       }
     },
+    "Upgrade to Pass Plus" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgrade to Pass Plus"
+          }
+        }
+      }
+    },
     "Use %@" : {
       "localizations" : {
         "be" : {
@@ -190467,6 +190591,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Görünür kasalar"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "可见的保险库"
           }
         }
       }
@@ -198347,24 +198477,214 @@
         }
       }
     },
-    "You are creating an item in a shared vault and %lld users will immediately gain access to it." : {
+    "You are creating an item in a shared vault and members will immediately gain access to this item." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы ствараеце элемент у абагуленым сховішчы, і ўдзельнікі неадкладна атрымаюць доступ да гэтага элемента."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esteu creant un element en una caixa forta compartida. Els membres hi tindran accés immediatament."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vytváříte položku ve sdíleném trezoru a členové k ní okamžitě získají přístup."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du opretter et element i en delt boks, og medlemmer får straks adgang til dette element."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du erstellst einen Eintrag in einem freigegebenen Tresor, und die Mitglieder erhalten sofort Zugriff auf diesen Eintrag"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Δημιουργείτε ένα στοιχείο σε κοινόχρηστη κρύπτη και τα μέλη θα αποκτήσουν αμέσως πρόσβαση σε αυτό."
+          }
+        },
         "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "You are creating an item in a shared vault and %lld user will immediately gain access to it."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "You are creating an item in a shared vault and %lld users will immediately gain access to it."
-                }
-              }
-            }
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You are creating an item in a shared vault and members will immediately gain access to this item."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estás creando un elemento en una caja fuerte compartida y los miembros obtendrán acceso inmediatamente a este elemento."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Está creando un elemento en una bóveda compartida y los miembros obtendrán acceso inmediatamente a él."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous créez un élément dans un coffre-fort partagé et les membres auront immédiatement accès à cet élément."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stai creando un elemento in una cassaforte condivisa e i membri avranno immediatamente accesso a questo elemento."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du oppretter et element i et delt hvelv, og medlemmer vil umiddelbart få tilgang til dette elementet."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "U maakt een item aan in een gedeelde kluis en gebruikers krijgen er direct toegang toe."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Você está criando um item em um cofre compartilhado e os membros terão acesso imediato a ele."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creați un articol într-un seif partajat, iar membrii vor obține imediat acces la acesta."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vytvárate položku v zdieľanom trezore a členovia získajú k tejto položke okamžitý prístup."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paylaşılmış bir kasada bir öge oluşturuyorsunuz ve üyeler bu ögeye hemen erişebilecekler."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您正在共享保险库中创建项目，成员将立即获得此项目的访问权限。"
+          }
+        }
+      }
+    },
+    "You are editing a shared item. Changes will be visible to everyone it's shared with immediately." : {
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы рэдагуеце абагулены элемент. Змены будуць адразу будуць бачныя ўсім тым, з кім гэты элемент абагулены."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esteu editant un element compartit. Els canvis seran visibles immediatament per a tothom amb qui s'hagi compartit."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upravujete sdílenou položku. Změny budou okamžitě viditelné pro všechny, s nimiž je položka sdílena."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du redigerer et delt element. Ændringer vil øjeblikkeligt være synlige for alle, det er delt med."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du bearbeitest gerade ein freigegebenes Element. Änderungen werden sofort für alle sichtbar, mit denen es geteilt wurde."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You are editing a shared item. Changes will be visible to everyone it's shared with immediately."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estás editando un elemento compartido. Los cambios serán visibles de inmediato para todos los que tengan acceso compartido."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous êtes en train de modifier un élément partagé. Les modifications seront visibles immédiatement par toutes les personnes avec lesquelles il est partagé."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stai modificando un elemento condiviso. Le modifiche saranno immediatamente visibili a tutti con cui è condiviso."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du redigerer et delt element. Endringer vil være synlige for alle det er delt med umiddelbart."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "U bent een gedeeld item aan het bewerken. Wijzigingen zullen onmiddellijk zichtbaar zijn voor iedereen waarmee het gedeeld is."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Você está editando um item compartilhado. As alterações ficarão visíveis imediatamente para todas as pessoas com acesso a ele."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editați un articol partajat. Modificările vor fi vizibile imediat pentru toți cei cu care este partajat."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upravujete zdieľanú položku. Zmeny budú okamžite viditeľné pre všetkých, s ktorými je zdieľaná."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paylaşılmış bir ögeyi düzenliyorsunuz. Yapılan değişiliklikler paylaşılan kişilere anınında görünecek."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您正在编辑一个分享的项目。更改将立即对所有共享者可见。"
           }
         }
       }
@@ -202165,7 +202485,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Anda telah diundang ke brankas bersama. Klik di sini untuk rincian lebih lanjut."
+            "value" : "Anda telah diundang ke brankas yang dibagikan. Klik di sini untuk rincian lebih lanjut."
           }
         },
         "it" : {

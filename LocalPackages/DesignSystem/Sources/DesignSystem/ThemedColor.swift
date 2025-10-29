@@ -1,7 +1,7 @@
 //
-// UIImage+Extensions.swift
-// Proton Pass - Created on 03/08/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// ThemedColor.swift
+// Proton Pass - Created on 27/10/2025.
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -20,8 +20,17 @@
 
 import SwiftUI
 
-public extension UIImage {
-    var toImage: Image {
-        Image(uiImage: self)
+public struct ThemedColor: View {
+    @Environment(\.colorScheme) private var colorScheme
+    let dark: Color
+    let light: Color
+
+    public init(dark: Color, light: Color) {
+        self.dark = dark
+        self.light = light
+    }
+
+    public var body: some View {
+        colorScheme == .dark ? dark : light
     }
 }

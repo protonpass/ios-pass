@@ -31,7 +31,7 @@ struct LoginDetailView: View {
     @State private var selectedPasskey: Passkey?
     @State private var showPassword = false
 
-    private var tintColor: UIColor {
+    private var tintColor: Color {
         viewModel.type.normColor
     }
 
@@ -180,8 +180,8 @@ private extension LoginDetailView {
                         Button { viewModel.viewAlias() } label: {
                             Text("View alias")
                                 .font(.callout)
-                                .foregroundStyle(viewModel.type.normMajor2Color.toColor)
-                                .underline(color: viewModel.type.normMajor2Color.toColor)
+                                .foregroundStyle(viewModel.type.normMajor2Color)
+                                .underline(color: viewModel.type.normMajor2Color)
                         }
                         .padding(.top, 8)
                     }
@@ -279,7 +279,7 @@ private extension LoginDetailView {
                 VStack(alignment: .leading, spacing: 12) {
                     ForEach(viewModel.urls, id: \.self) { url in
                         Text(url)
-                            .foregroundStyle(viewModel.type.normMajor2Color.toColor)
+                            .foregroundStyle(viewModel.type.normMajor2Color)
                             .multilineTextAlignment(.leading)
                             .lineLimit(2)
                             .onTapGesture {

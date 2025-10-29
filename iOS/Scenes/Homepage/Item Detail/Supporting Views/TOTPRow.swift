@@ -56,13 +56,13 @@ final class TOTPRowViewModel: ObservableObject {
 
 struct TOTPRow: View {
     @ObservedObject private var viewModel = TOTPRowViewModel()
-    let textColor: UIColor
-    let tintColor: UIColor
+    let textColor: Color
+    let tintColor: Color
     let onCopyTotpToken: (String) -> Void
 
     init(uri: String,
-         textColor: UIColor = PassColor.textNorm,
-         tintColor: UIColor,
+         textColor: Color = PassColor.textNorm,
+         tintColor: Color,
          onCopyTotpToken: @escaping (String) -> Void) {
         self.textColor = textColor
         self.tintColor = tintColor
@@ -89,7 +89,7 @@ struct TOTPRow: View {
                 case .invalid:
                     Text("Invalid TOTP URI")
                         .font(.caption)
-                        .foregroundStyle(PassColor.signalDanger.toColor)
+                        .foregroundStyle(PassColor.signalDanger)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)

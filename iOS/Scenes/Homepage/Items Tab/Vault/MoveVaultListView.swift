@@ -34,17 +34,17 @@ struct MoveVaultListView: View {
                 Text("Select a vault")
                     .font(.title3)
                     .fontWeight(.bold)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
 
                 if viewModel.showWarning {
                     // swiftlint:disable:next line_length
                     Label("When moving items between vaults we will preserve up to the last 50 modifications performed to each item",
                           systemImage: "info.circle.fill")
                         .font(.callout)
-                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .foregroundStyle(PassColor.textWeak)
                         .padding(.horizontal, 16)
                         .padding(.vertical, 12)
-                        .background(PassColor.backgroundNorm.toColor)
+                        .background(PassColor.backgroundNorm)
                         .cornerRadius(12)
 
                     Divider()
@@ -92,7 +92,7 @@ struct MoveVaultListView: View {
             }
             .padding([.bottom, .horizontal])
         }
-        .background(PassColor.backgroundWeak.toColor)
+        .background(PassColor.backgroundWeak)
         .frame(maxWidth: .infinity, alignment: .leading)
         .animation(.default, value: viewModel.isFreeUser)
     }

@@ -26,8 +26,8 @@ import SwiftUI
 
 @MainActor
 public protocol FileAttachmentsViewHandler: AnyObject {
-    var fileAttachmentsSectionPrimaryColor: UIColor { get }
-    var fileAttachmentsSectionSecondaryColor: UIColor { get }
+    var fileAttachmentsSectionPrimaryColor: Color { get }
+    var fileAttachmentsSectionSecondaryColor: Color { get }
 
     func retryFetchingAttachments()
     func open(_ file: FileAttachmentUiModel)
@@ -41,13 +41,13 @@ public struct FileAttachmentsViewSection: View {
     private let isFetching: Bool
     /// Error while fetching already attached files
     private let fetchError: (any Error)?
-    private let borderColor: UIColor?
+    private let borderColor: Color?
     private let handler: any FileAttachmentsViewHandler
 
     public init(files: [FileAttachmentUiModel],
                 isFetching: Bool,
                 fetchError: (any Error)?,
-                borderColor: UIColor? = nil,
+                borderColor: Color? = nil,
                 handler: any FileAttachmentsViewHandler) {
         self.files = files
         self.isFetching = isFetching
@@ -63,7 +63,7 @@ public struct FileAttachmentsViewSection: View {
 
                 VStack(alignment: .leading) {
                     Text("Attachments", bundle: .module)
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm)
 
                     if isFetching {
                         ProgressView()
@@ -80,7 +80,7 @@ public struct FileAttachmentsViewSection: View {
                     if !files.isEmpty {
                         Text("\(files.count) files", bundle: .module)
                             .font(.callout)
-                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .foregroundStyle(PassColor.textWeak)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)

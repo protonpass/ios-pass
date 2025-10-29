@@ -41,14 +41,14 @@ public struct AliasSyncExplanationView: View {
             VStack {
                 Text("Enable SimpleLogin sync", bundle: .module)
                     .fontWeight(.bold)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .padding(.bottom, 8)
                 // swiftlint:disable:next line_length
                 Text("We detected that you have \(missingAliases) aliases that are present in SimpleLogin but missing in Proton Pass. Would you like to import them?",
                      bundle: .module)
                     .font(.callout)
                     .multilineTextAlignment(.center)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm)
                     .padding(.bottom, 8)
                 CapsuleTextButton(title: #localized("Sync aliases", bundle: .module),
                                   titleColor: PassColor.interactionNormMinor1,
@@ -59,13 +59,13 @@ public struct AliasSyncExplanationView: View {
 
             if let dimissAction {
                 Button(action: dimissAction) {
-                    Image(uiImage: IconProvider.cross)
+                    IconProvider.cross
                         .resizable()
                         .renderingMode(.template)
                         .scaledToFit()
                         .frame(width: 24, height: 24)
                         .padding(16)
-                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .foregroundStyle(PassColor.textWeak)
                 }
             }
         }

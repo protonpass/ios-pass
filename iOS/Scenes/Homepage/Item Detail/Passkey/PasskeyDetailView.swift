@@ -32,7 +32,7 @@ struct PasskeyDetailView: View {
 
     var body: some View {
         ZStack {
-            PassColor.backgroundWeak.toColor
+            PassColor.backgroundWeak
                 .ignoresSafeArea()
             content
         }
@@ -132,7 +132,7 @@ private extension PasskeyDetailView {
                     .lineLimit(2)
                 if Bundle.main.isQaBuild {
                     Text(passkey.description)
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm)
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }

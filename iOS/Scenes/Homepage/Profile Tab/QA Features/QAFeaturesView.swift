@@ -99,6 +99,6 @@ struct QAFeaturesView: View {
                 }
             }
         }
-        .tint(PassColor.interactionNorm.toColor)
+        .tint(PassColor.interactionNorm)
     }
 }
