@@ -31,8 +31,6 @@ struct CreateEditCreditCardView: View {
     @State private var lastFocusedField: Field?
     @Namespace private var fileAttachmentsID
 
-    private var tintColor: Color { viewModel.itemContentType.normMajor1Color }
-
     enum Field: CustomFieldTypes {
         case title, cardholderName, cardNumber, verificationNumber, pin, note
         case custom(CustomField?)
