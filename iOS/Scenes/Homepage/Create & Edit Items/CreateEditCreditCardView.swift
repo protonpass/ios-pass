@@ -269,7 +269,7 @@ private extension CreateEditCreditCardView {
                 Text("Expiration date")
                     .editableSectionTitleText(for: viewModel.monthYear)
                 MonthYearTextField(placeholder: #localized("MM / YY"),
-                                   tintColor: tintColor,
+                                   tintColor: viewModel.itemContentType.normMajor1UIColor,
                                    month: $viewModel.month,
                                    year: $viewModel.year)
             }
