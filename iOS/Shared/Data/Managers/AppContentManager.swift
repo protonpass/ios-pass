@@ -646,13 +646,14 @@ private extension [Share] {
         bestShares.reserveCapacity(count)
 
         for share in self {
-            if let existing = bestShares[share.vaultID + share.targetID] {
+            let itemId = share.vaultID + share.targetID
+            if let existing = bestShares[itemId] {
                 // Keep the one with higher role weight
                 if share.shareRole > existing.shareRole {
-                    bestShares[share.vaultID] = share
+                    bestShares[itemId] = share
                 }
             } else {
-                bestShares[share.vaultID] = share
+                bestShares[itemId] = share
             }
         }
 
