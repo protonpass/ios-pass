@@ -36,23 +36,28 @@ public protocol LocalInviteDatasourceProtocol: Sendable {
     func upsertGroupInvites(userId: String, invites: [GroupInvite]) async throws
     func removeGroupInvites(userId: String, invites: [GroupInvite]) async throws
     func removeAllGroupInvites(userId: String) async throws
-
-    // Remove invites related to a user (e.g after logging from an account)
-    func removeAllInvites(userId: String) async throws
 }
 
 public extension LocalInviteDatasourceProtocol {
-    func removeUserInvites(userId: String, invite: UserInvite) async throws {
+    func removeUserInvite(userId: String, invite: UserInvite) async throws {
         try await removeUserInvites(userId: userId, invites: [invite])
     }
 
-    func removeGroupInvites(userId: String, invite: GroupInvite) async throws {
+    func removeGroupInvite(userId: String, invite: GroupInvite) async throws {
         try await removeGroupInvites(userId: userId, invites: [invite])
     }
 }
 
 public final class LocalInviteDatasource: LocalDatasource, LocalInviteDatasourceProtocol,
     @unchecked Sendable {}
+
+public extension LocalInviteDatasourceProtocol {
+    func removeAllInvites(userId: String) async throws {
+        async let removeAllUserInvites: Void = removeAllUserInvites(userId: userId)
+        async let removeAllGroupInvites: Void = removeAllGroupInvites(userId: userId)
+        _ = try await (removeAllUserInvites, removeAllGroupInvites)
+    }
+}
 
 // MARK: - User
 
@@ -84,14 +89,6 @@ public extension LocalInviteDatasource {
 
     func removeAllUserInvites(userId: String) async throws {
         try await removeAllInvites(userId: userId, entity: UserInviteEntity.self)
-    }
-
-    func removeAllInvites(userId: String) async throws {
-        let deleteContext = newTaskContext(type: .delete)
-
-        try await deleteEntities(["UserInviteEntity", "GroupInviteEntity"],
-                                 userId: userId,
-                                 context: deleteContext)
     }
 }
 
@@ -143,9 +140,9 @@ private extension LocalInviteDatasource {
 // MARK: - Generic Helpers
 
 private extension LocalInviteDatasource {
-    func getInvites<T: Sendable, E>(userId: String,
-                                    entity: E.Type,
-                                    map: (E) -> T) async throws -> [T] where E: NSManagedObject {
+    func getInvites<T, E>(userId: String,
+                          entity: E.Type,
+                          map: (E) -> T) async throws -> [T] where E: NSManagedObject {
         let fetchContext = newTaskContext(type: .fetch)
         let fetchRequest = NSFetchRequest<E>(entityName: String(describing: entity))
         fetchRequest.predicate = NSPredicate(format: "userID = %@", userId)

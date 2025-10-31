@@ -388,9 +388,9 @@ private extension InviteRepository {
         }
         switch invite {
         case let .user(invite):
-            try await localDatasource.removeUserInvites(userId: userId, invite: invite)
+            try await localDatasource.removeUserInvite(userId: userId, invite: invite)
         case let .group(invite):
-            try await localDatasource.removeGroupInvites(userId: userId, invite: invite)
+            try await localDatasource.removeGroupInvite(userId: userId, invite: invite)
         }
         try await loadLocalInvites(userId: userId)
     }
