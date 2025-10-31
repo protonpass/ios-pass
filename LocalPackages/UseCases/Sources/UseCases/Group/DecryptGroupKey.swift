@@ -48,7 +48,7 @@ public final class DecryptGroupKey: DecryptGroupKeyUseCase {
 
     public func execute(group: Group) async throws -> DecryptedGroupAddressKey {
         guard let address = group.address,
-              let primaryKey = address.keys.first
+              let primaryKey = address.keys.first(where: { $0.primary == 1 })
         else {
             throw PassError.crypto(.missingGroupAddress(group.id))
         }
