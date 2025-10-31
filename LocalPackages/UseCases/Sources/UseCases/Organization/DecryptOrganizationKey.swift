@@ -28,12 +28,12 @@ import ProtonCoreCrypto
 @preconcurrency import ProtonCoreLogin
 
 public protocol DecryptOrganizationKeyUseCase: Sendable {
-    func execute() async throws -> DecryptedOrgKey
+    func execute(user: UserData) async throws -> DecryptedOrgKey
 }
 
 public extension DecryptOrganizationKeyUseCase {
-    func callAsFunction() async throws -> DecryptedOrgKey {
-        try await execute()
+    func callAsFunction(user: UserData) async throws -> DecryptedOrgKey {
+        try await execute(user: user)
     }
 }
 
@@ -43,19 +43,13 @@ public struct DecryptedOrgKey {
 }
 
 public final class DecryptOrganizationKey: DecryptOrganizationKeyUseCase {
-    private let userManager: any UserManagerProtocol
     private let repository: any OrganizationRepositoryProtocol
 
-    public init(userManager: any UserManagerProtocol,
-                repository: any OrganizationRepositoryProtocol) {
-        self.userManager = userManager
+    public init(repository: any OrganizationRepositoryProtocol) {
         self.repository = repository
     }
 
-    public func execute() async throws -> DecryptedOrgKey {
-        guard let user = userManager.currentActiveUser.value else {
-            throw PassError.noUserData
-        }
+    public func execute(user: UserData) async throws -> DecryptedOrgKey {
         let organizationKey = try await repository.getOrganizationKeys(userId: user.user.ID)
         let orgToken = try getOrganizationKeyToken(userData: user, organizationKey: organizationKey)
         guard let privateKey = organizationKey.privateKey else {
