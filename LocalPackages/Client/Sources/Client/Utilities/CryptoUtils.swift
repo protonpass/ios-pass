@@ -99,7 +99,7 @@ public enum CryptoUtils {
         let publicKey = ArmoredKey(value: publicReceiverKey.value)
         let signerKey = SigningKey(privateKey: addressKey.privateKey,
                                    passphrase: addressKey.passphrase)
-        let context = SignatureContext(value: Constants.existingUserSharingSignatureContext,
+        let context = SignatureContext(value: Constants.SignatureContext.existingUserSharing,
                                        isCritical: true)
 
         let encryptedVaultKeyString = try Encryptor.encrypt(publicKey: publicKey,

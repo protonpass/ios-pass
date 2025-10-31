@@ -63,7 +63,7 @@ struct SuggestedEmailView: View {
         case let .email(email):
             return email
         case .group:
-            guard let memberCounts = recommendation.memberCounts else {
+            guard let memberCounts = recommendation.memberCount else {
                 return recommendation.name
             }
             return recommendation.name + " " + #localized("(%lld members)", memberCounts)

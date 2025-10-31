@@ -159,7 +159,7 @@ private extension SendShareInvite {
                                    passphrase: addressKey.passphrase)
         let unsignedSignature = makeUnsignedSignatureForVaultSharing(email: email,
                                                                      vaultKey: shareKey.keyData)
-        let context = SignatureContext(value: Constants.newUserSharingSignatureContext,
+        let context = SignatureContext(value: Constants.SignatureContext.newUserSharing,
                                        isCritical: true)
 
         return try Sign.signDetached(signingKey: signerKey,

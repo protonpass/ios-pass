@@ -29,11 +29,11 @@ import ProtonCoreDataModel
 import ProtonCoreLogin
 
 public protocol DecodeShareVaultInformationUseCase: Sendable {
-    func execute(with invite: InviteType) async throws -> VaultContent
+    func execute(with invite: Invite) async throws -> VaultContent
 }
 
 public extension DecodeShareVaultInformationUseCase {
-    func callAsFunction(with invite: InviteType) async throws -> VaultContent {
+    func callAsFunction(with invite: Invite) async throws -> VaultContent {
         try await execute(with: invite)
     }
 }
@@ -51,7 +51,7 @@ public final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShare
         logger = .init(manager: logManager)
     }
 
-    public func execute(with invite: InviteType) async throws -> VaultContent {
+    public func execute(with invite: Invite) async throws -> VaultContent {
         logger.trace("Start decoding invitation share information for invitee user \(invite.invitedEmail)")
 
         do {
@@ -72,7 +72,7 @@ public final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShare
 
             let (decryptionKeys, verificationsKeys) = try await (decryptionKeysProcess, verificationsKeysProcess)
 
-            let context = VerificationContext(value: Constants.existingUserSharingSignatureContext,
+            let context = VerificationContext(value: Constants.SignatureContext.existingUserSharing,
                                               required: .always)
 
             let decode: VerifiedData = try Decryptor.decryptAndVerify(decryptionKeys: decryptionKeys,
@@ -94,7 +94,7 @@ public final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShare
 }
 
 private extension DecodeShareVaultInformation {
-    func getVerificationKeys(invite: InviteType) async throws -> [ArmoredKey] {
+    func getVerificationKeys(invite: Invite) async throws -> [ArmoredKey] {
         let inviterPublicKeys = try await getEmailPublicKey(with: invite.inviterEmail)
         return inviterPublicKeys.map { ArmoredKey(value: $0.value) }
     }

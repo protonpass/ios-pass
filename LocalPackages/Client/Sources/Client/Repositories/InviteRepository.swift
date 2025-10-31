@@ -26,13 +26,13 @@ import ProtonCoreLogin
 
 // sourcery: AutoMockable
 public protocol InviteRepositoryProtocol: Sendable {
-    var currentPendingInvites: CurrentValueSubject<[InviteType], Never> { get }
+    var currentPendingInvites: CurrentValueSubject<[Invite], Never> { get }
 
     func loadLocalInvites(userId: String) async throws
-    func acceptInvite(_ invite: InviteType, and keys: [ItemKey]) async throws -> Share?
+    func acceptInvite(_ invite: Invite, and keys: [ItemKey]) async throws -> Share?
 
     @discardableResult
-    func rejectInvite(_ invite: InviteType) async throws -> Bool
+    func rejectInvite(_ invite: Invite) async throws -> Bool
     func refreshInvites(userId: String) async throws
     func removeCachedInvite(containing inviteToken: String) async
 
@@ -75,7 +75,7 @@ public actor InviteRepository: FullInviteRepositoryProtocol {
     private let logger: Logger
     private let userManager: any UserManagerProtocol
 
-    public nonisolated let currentPendingInvites: CurrentValueSubject<[InviteType], Never> = .init([])
+    public nonisolated let currentPendingInvites: CurrentValueSubject<[Invite], Never> = .init([])
 
     public init(remoteDatasource: any RemoteInviteDatasourceProtocol,
                 localDatasource: any LocalInviteDatasourceProtocol,
@@ -97,7 +97,7 @@ public extension InviteRepository {
         mergeInvites(groupInvites: groupInvites, userInvites: userInvites)
     }
 
-    func acceptInvite(_ invite: InviteType, and keys: [ItemKey]) async throws -> Share? {
+    func acceptInvite(_ invite: Invite, and keys: [ItemKey]) async throws -> Share? {
         let userId = try await userManager.getActiveUserId()
         let inviteToken = invite.inviteToken
         logger.trace("Accepting invite \(inviteToken)")
@@ -125,7 +125,7 @@ public extension InviteRepository {
         }
     }
 
-    func rejectInvite(_ invite: InviteType) async throws -> Bool {
+    func rejectInvite(_ invite: Invite) async throws -> Bool {
         let userId = try await userManager.getActiveUserId()
         let inviteToken = invite.inviteToken
         logger.trace("Reject invite \(inviteToken)")
@@ -375,12 +375,12 @@ private extension InviteRepository {
     }
 
     func mergeInvites(groupInvites: [GroupInvite], userInvites: [UserInvite]) {
-        let invites: [InviteType] = groupInvites.map { .group($0) } + userInvites.map { .user($0) }
+        let invites: [Invite] = groupInvites.map { .group($0) } + userInvites.map { .user($0) }
 
         currentPendingInvites.send(invites)
     }
 
-    func removeLocalOutdateInvite(userId: String, error: Error, invite: InviteType) async throws {
+    func removeLocalOutdateInvite(userId: String, error: Error, invite: Invite) async throws {
         // Invite doesn't exist anymore (stale cache or race condition)
 
         guard error.asPassApiError == .invalidValidation else {

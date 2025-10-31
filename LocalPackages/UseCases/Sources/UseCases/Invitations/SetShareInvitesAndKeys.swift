@@ -46,7 +46,7 @@ public final class SetShareInvitesAndKeys: SetShareInvitesAndKeysUseCase {
     public func execute(with inviteDestinations: [InviteRecommendationType]) async throws {
         var inviteDestinationsAndKeys = [InviteRecommendationType: [PublicKey]?]()
         for destination in inviteDestinations {
-            guard let email = destination.currentEmail else { continue }
+            guard let email = destination.emailAddress else { continue }
             do {
                 let receiverPublicKeys = try await getEmailPublicKeyUseCase(with: email)
                 inviteDestinationsAndKeys[destination] = receiverPublicKeys

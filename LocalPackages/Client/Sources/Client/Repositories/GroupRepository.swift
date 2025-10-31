@@ -22,6 +22,8 @@ import Core
 import Entities
 import Foundation
 
+private typealias UserID = String
+
 public protocol GroupRepositoryProtocol: Sendable {
     // periphery:ignore
     func getGroups(userId: String) async throws -> [Group]
@@ -34,7 +36,7 @@ public protocol GroupRepositoryProtocol: Sendable {
 public actor GroupRepository: GroupRepositoryProtocol {
     private let remoteDatasource: any RemoteGroupDatasourceProtocol
     private let logger: Logger
-    private var cache: [String: Set<Group>] = [:]
+    private var cache: [UserID: Set<Group>] = [:]
 
     public init(remoteDatasource: any RemoteGroupDatasourceProtocol,
                 logManager: any LogManagerProtocol) {
@@ -59,7 +61,7 @@ public extension GroupRepository {
 
         guard let group = try await getGroups(userId: userId)
             .first(where: { $0.id == groupId }) else {
-            throw PassError.group(.noMatchingGroup)
+            throw PassError.group(.noMatchingGroup(userId: userId, groupId: groupId))
         }
         return group
     }

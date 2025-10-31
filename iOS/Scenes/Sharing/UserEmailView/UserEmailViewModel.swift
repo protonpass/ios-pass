@@ -256,6 +256,6 @@ private extension UserEmailViewModel {
 
 private extension [InviteRecommendationType] {
     var emails: [String] {
-        compactMap(\.currentEmail)
+        compactMap(\.emailAddress)
     }
 }

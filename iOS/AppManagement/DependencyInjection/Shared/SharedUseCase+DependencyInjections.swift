@@ -330,7 +330,7 @@ extension SharedUseCasesContainer {
     }
 
     var decryptGroupKey: Factory<any DecryptGroupKeyUseCase> {
-        self { DecryptGroupKey(decryptOrganizationKeyUseCase: self.decryptOrganizationKey()) }
+        self { DecryptGroupKey(decryptOrganizationKey: self.decryptOrganizationKey()) }
     }
 }
 

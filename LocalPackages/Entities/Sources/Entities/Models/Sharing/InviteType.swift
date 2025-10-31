@@ -20,7 +20,7 @@
 
 import Foundation
 
-public enum InviteType: Equatable, Hashable, Sendable {
+public enum Invite: Equatable, Hashable, Sendable {
     case user(UserInvite)
     case group(GroupInvite)
 
@@ -33,10 +33,10 @@ public enum InviteType: Equatable, Hashable, Sendable {
         }
     }
 
-    public var inviteType: TargetType {
+    public var targetType: TargetType {
         switch self {
         case let .user(invite):
-            .init(rawValue: invite.targetType) ?? .unknown
+            invite.inviteType
         case let .group(invite):
             .init(rawValue: invite.targetType) ?? .unknown
         }
@@ -61,7 +61,7 @@ public enum InviteType: Equatable, Hashable, Sendable {
     }
 
     public var isVault: Bool {
-        inviteType == .vault
+        targetType == .vault
     }
 
     public var vaultData: VaultData? {

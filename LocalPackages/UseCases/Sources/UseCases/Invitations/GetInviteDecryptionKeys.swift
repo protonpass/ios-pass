@@ -27,11 +27,11 @@ import ProtonCoreDataModel
 import ProtonCoreLogin
 
 public protocol GetInviteDecryptionKeysUseCase: Sendable {
-    func execute(invite: InviteType) async throws -> [DecryptionKey]
+    func execute(invite: Invite) async throws -> [DecryptionKey]
 }
 
 public extension GetInviteDecryptionKeysUseCase {
-    func callAsFunction(invite: InviteType) async throws -> [DecryptionKey] {
+    func callAsFunction(invite: Invite) async throws -> [DecryptionKey] {
         try await execute(invite: invite)
     }
 }
@@ -52,14 +52,14 @@ public final class GetInviteDecryptionKeys: GetInviteDecryptionKeysUseCase {
         self.updateUserAddresses = updateUserAddresses
     }
 
-    public func execute(invite: InviteType) async throws -> [DecryptionKey] {
+    public func execute(invite: Invite) async throws -> [DecryptionKey] {
         let userData = try await userManager.getUnwrappedActiveUserData()
         return try await getDecryptionKeys(invite: invite, userData: userData)
     }
 }
 
 private extension GetInviteDecryptionKeys {
-    func getDecryptionKeys(invite: InviteType, userData: UserData) async throws -> [DecryptionKey] {
+    func getDecryptionKeys(invite: Invite, userData: UserData) async throws -> [DecryptionKey] {
         switch invite {
         case let .user(invite):
             guard let invitedAddress = try await address(for: invite.invitedEmail, userData: userData) else {

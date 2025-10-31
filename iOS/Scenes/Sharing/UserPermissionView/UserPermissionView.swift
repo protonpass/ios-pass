@@ -241,7 +241,7 @@ private extension UserPermissionView {
         if case let .group(infos) = invite {
             HStack(spacing: 0) {
                 Text(invite.name)
-                if let members = invite.memberCounts {
+                if let members = invite.memberCount {
                     Text(verbatim: " (")
                     Button { showMember = infos } label: {
                         Text(#localized("%lld member(s)", members))
