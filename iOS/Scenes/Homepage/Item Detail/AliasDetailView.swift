@@ -130,6 +130,8 @@ struct AliasDetailView: View {
             await viewModel.loadContact()
         }
         .onFirstAppear {
+            // Reset the navigation path because it could be modified by a previous alias' detail page
+            router.popToRoot()
             viewModel.getAlias()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 animate = true
