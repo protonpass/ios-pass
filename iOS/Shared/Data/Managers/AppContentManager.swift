@@ -524,7 +524,7 @@ private extension AppContentManager {
         let allItems = try await itemRepository.getAllItems(userId: userId)
 
         let sharesData = try await getShareDatas(symmetricKey: symmetricKey,
-                                                 shares: shares,
+                                                 shares: shares.filteredSharesWithHighestRole,
                                                  items: allItems)
         let userPreferences = preferencesManager.userPreferences.unwrapped()
 
@@ -636,5 +636,26 @@ private extension AppContentManager {
 extension [ShareContent] {
     func sortedByHidden() -> Self {
         sorted(by: { !$0.share.hidden && $1.share.hidden })
+    }
+}
+
+private extension [Share] {
+    /// Returns shares with unique vault IDs, keeping the one with the highest `shareRole` weight.
+    var filteredSharesWithHighestRole: [Share] {
+        var bestShares: [String: Share] = [:]
+        bestShares.reserveCapacity(count)
+
+        for share in self {
+            if let existing = bestShares[share.vaultID + share.targetID] {
+                // Keep the one with higher role weight
+                if share.shareRole > existing.shareRole {
+                    bestShares[share.vaultID] = share
+                }
+            } else {
+                bestShares[share.vaultID] = share
+            }
+        }
+
+        return Array(bestShares.values)
     }
 }

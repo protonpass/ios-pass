@@ -379,7 +379,7 @@ private extension EditableVaultListView {
                            Label("Delete vault",
                                  uiImage: IconProvider.trash)
                        })
-            } else if !vault.isOwner, vault.groupID == nil {
+            } else if vault.groupID == nil {
                 Button(role: .destructive,
                        action: {
                            viewModel.leaveVault(vault: vault)

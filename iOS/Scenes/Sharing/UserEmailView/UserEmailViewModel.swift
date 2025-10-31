@@ -68,6 +68,7 @@ final class UserEmailViewModel: ObservableObject {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var currentTask: Task<Void, Never>?
     private var canFetchMoreEmails = true
+    private var cachedGroupInfos: [InviteRecommendationType]?
 
     init() {
         setUp()
@@ -171,11 +172,13 @@ final class UserEmailViewModel: ObservableObject {
                 }
                 guard let shareId = element?.shareId else { return }
                 isFetchingMore = true
+
                 if removingCurrentRecommendations {
                     recommendationsState = .loading
                 }
 
                 let currentRecommendations = recommendationsState.suggestions
+
                 let query = InviteRecommendationsQuery(lastToken: currentRecommendations?.recommendations
                     .planRecommendedEmailsNextToken,
                     pageSize: Constants.Utils.defaultPageSize,
@@ -183,12 +186,14 @@ final class UserEmailViewModel: ObservableObject {
                 let recommendations = try await inviteRepository
                     .getInviteRecommendations(shareId: shareId, query: query)
                 canFetchMoreEmails = recommendations.planRecommendedEmailsNextToken != nil
+
                 if var currentRecommendations, !removingCurrentRecommendations {
                     currentRecommendations.recommendations = currentRecommendations.recommendations
                         .merging(with: recommendations)
                     recommendationsState = .loaded(currentRecommendations)
                 } else {
-                    recommendationsState = .loaded(FullInviteSuggestions(recommendations: recommendations))
+                    recommendationsState = .loaded(FullInviteSuggestions(recommendations: recommendations,
+                                                                         groupInfos: cachedGroupInfos))
                 }
             } catch {
                 recommendationsState = .loaded(nil)
@@ -208,8 +213,10 @@ final class UserEmailViewModel: ObservableObject {
             return
         }
 
-        let groupInfos: [InviteRecommendationType]? = try? await groupRepository.getGroupsInfos(userId: userId)
+        let groupInfos: [InviteRecommendationType]? = try? await groupRepository
+            .getGroupsInfos(userId: userId)
             .map { .group($0) }
+        cachedGroupInfos = groupInfos
         if var currentRecommendations = recommendationsState.suggestions {
             currentRecommendations.groupInfos = groupInfos
             recommendationsState = .loaded(currentRecommendations)
@@ -224,6 +231,7 @@ private extension UserEmailViewModel {
         $email
             .dropFirst() // Ignore first event when the view model is initialized
             .removeDuplicates()
+            .compactMap(\.self)
             .debounce(for: 0.4, scheduler: DispatchQueue.main)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
