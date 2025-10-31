@@ -24,28 +24,6 @@ import Entities
 import Macro
 import SwiftUI
 
-extension FullInviteSuggestions {
-    var recentCount: Int {
-        recommendations.recommendedEmails.count + (groupInfos?.count ?? 0)
-    }
-
-    func recommendations(_ selectedIndex: Int) -> [InviteRecommendationType] {
-        if selectedIndex == 0 {
-            let groups = groupInfos ?? [InviteRecommendationType]()
-            let emails = recommendations.recommendedEmails.toInviteRecommendationTypes
-            return groups + emails
-        } else {
-            return recommendations.planRecommendedEmails.toInviteRecommendationTypes
-        }
-    }
-}
-
-extension [String] {
-    var toInviteRecommendationTypes: [InviteRecommendationType] {
-        map { .email($0) }
-    }
-}
-
 public struct InviteSuggestionsSection: View {
     @State private var selectedIndex = 0
     private let selectedRecommendations: [InviteRecommendationType]
@@ -133,5 +111,27 @@ private extension InviteSuggestionsSection {
                 .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
         }
         .shimmering()
+    }
+}
+
+private extension FullInviteSuggestions {
+    var recentCount: Int {
+        recommendations.recommendedEmails.count + (groupInfos?.count ?? 0)
+    }
+
+    func recommendations(_ selectedIndex: Int) -> [InviteRecommendationType] {
+        if selectedIndex == 0 {
+            let groups = groupInfos ?? [InviteRecommendationType]()
+            let emails = recommendations.recommendedEmails.toInviteRecommendationTypes
+            return groups + emails
+        } else {
+            return recommendations.planRecommendedEmails.toInviteRecommendationTypes
+        }
+    }
+}
+
+private extension [String] {
+    var toInviteRecommendationTypes: [InviteRecommendationType] {
+        map { .email($0) }
     }
 }
