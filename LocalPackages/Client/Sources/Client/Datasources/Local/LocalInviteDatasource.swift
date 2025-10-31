@@ -122,21 +122,6 @@ public extension LocalInviteDatasource {
     }
 }
 
-// MARK: - Utils
-
-private extension LocalInviteDatasource {
-    func deleteEntities(_ entityNames: [String],
-                        userId: String,
-                        context: NSManagedObjectContext) async throws {
-        for entityName in entityNames {
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-            fetchRequest.predicate = NSPredicate(format: "userID == %@", userId)
-            try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
-                              context: context)
-        }
-    }
-}
-
 // MARK: - Generic Helpers
 
 private extension LocalInviteDatasource {
