@@ -40,19 +40,19 @@ public struct DecryptedGroupAddressKey {
 }
 
 public final class DecryptGroupKey: DecryptGroupKeyUseCase {
-    private let decryptOrganizationKeyUseCase: any DecryptOrganizationKeyUseCase
+    private let decryptOrganizationKey: any DecryptOrganizationKeyUseCase
 
-    public init(decryptOrganizationKeyUseCase: any DecryptOrganizationKeyUseCase) {
-        self.decryptOrganizationKeyUseCase = decryptOrganizationKeyUseCase
+    public init(decryptOrganizationKey: any DecryptOrganizationKeyUseCase) {
+        self.decryptOrganizationKey = decryptOrganizationKey
     }
 
     public func execute(group: Group) async throws -> DecryptedGroupAddressKey {
         guard let address = group.address,
               let primaryKey = address.keys.first
         else {
-            throw PassError.crypto(.missingGroupAddress)
+            throw PassError.crypto(.missingGroupAddress(group.id))
         }
-        let orgKey = try await decryptOrganizationKeyUseCase()
+        let orgKey = try await decryptOrganizationKey()
 
         let decryptedToken = try Decryptor.decryptAndVerify(decryptionKey: orgKey.privateKey,
                                                             addrToken: ArmoredMessage(value: primaryKey.token),

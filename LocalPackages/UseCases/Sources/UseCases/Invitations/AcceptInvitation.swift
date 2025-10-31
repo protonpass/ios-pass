@@ -30,11 +30,11 @@ import ProtonCoreLogin
 import ProtonCoreNetworking
 
 public protocol AcceptInvitationUseCase: Sendable {
-    func execute(with invite: InviteType) async throws -> Share?
+    func execute(with invite: Invite) async throws -> Share?
 }
 
 public extension AcceptInvitationUseCase {
-    func callAsFunction(with invite: InviteType) async throws -> Share? {
+    func callAsFunction(with invite: Invite) async throws -> Share? {
         try await execute(with: invite)
     }
 }
@@ -58,7 +58,7 @@ public final class AcceptInvitation: AcceptInvitationUseCase {
         logger = .init(manager: logManager)
     }
 
-    public func execute(with invite: InviteType) async throws -> Share? {
+    public func execute(with invite: Invite) async throws -> Share? {
         logger.trace("Start accepting share invite for invitee email \(invite.invitedEmail)")
         let encrytedKeys = try await encryptKeys(invite: invite)
         logger.trace("Finished encrypting keys")
@@ -72,7 +72,7 @@ struct TransformKeyConfig {
 }
 
 private extension AcceptInvitation {
-    func encryptKeys(invite: InviteType) async throws -> [ItemKey] {
+    func encryptKeys(invite: Invite) async throws -> [ItemKey] {
         do {
             async let userDataProcess = try userManager.getUnwrappedActiveUserData()
             async let addressKeysProcess = try getInviteDecryptionKeys(invite: invite)
@@ -109,7 +109,7 @@ private extension AcceptInvitation {
 
         let armoredEncryptedKeyData = try CryptoUtils.armorMessage(decodeKey)
         let armorMessage = ArmoredMessage(value: armoredEncryptedKeyData)
-        let context = VerificationContext(value: Constants.existingUserSharingSignatureContext,
+        let context = VerificationContext(value: Constants.SignatureContext.existingUserSharing,
                                           required: .always)
 
         let decode: VerifiedData = try Decryptor.decryptAndVerify(decryptionKeys: addressKeys,
@@ -128,7 +128,7 @@ private extension AcceptInvitation {
 }
 
 private extension AcceptInvitation {
-    func getConfig(invite: InviteType,
+    func getConfig(invite: Invite,
                    addressKeys: [DecryptionKey],
                    userData: UserData) throws -> TransformKeyConfig {
         var config: TransformKeyConfig

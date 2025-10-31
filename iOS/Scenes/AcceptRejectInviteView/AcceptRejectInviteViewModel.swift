@@ -28,7 +28,7 @@ import Foundation
 
 @MainActor
 final class AcceptRejectInviteViewModel: ObservableObject {
-    @Published private(set) var invite: InviteType
+    @Published private(set) var invite: Invite
     @Published private(set) var vaultInfos: VaultContent?
     @Published private(set) var executingAction = false
     @Published private(set) var shouldCloseSheet = false
@@ -43,7 +43,7 @@ final class AcceptRejectInviteViewModel: ObservableObject {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var cancellables = Set<AnyCancellable>()
 
-    init(invite: InviteType) {
+    init(invite: Invite) {
         self.invite = invite
         setUp()
     }

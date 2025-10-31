@@ -136,7 +136,7 @@ private extension AcceptRejectInviteView {
     AcceptRejectInviteView(viewModel: AcceptRejectInviteViewModel(invite: .user(UserInvite.mocked)))
 }
 
-private extension InviteType {
+private extension Invite {
     var acceptButtonTitle: String {
         isVault ? fromNewUser ? #localized("See the shared vault") : #localized("Join shared vault") :
             #localized("Accept and view the item")

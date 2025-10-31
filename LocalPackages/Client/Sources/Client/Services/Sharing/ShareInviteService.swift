@@ -81,7 +81,7 @@ public extension ShareInviteService {
         }
         var result = [SharingInfos]()
         for (invite, keys) in invitesAndKeys {
-            if let role = invitesAndRole[invite], let email = invite.currentEmail {
+            if let role = invitesAndRole[invite], let email = invite.emailAddress {
                 let info = SharingInfos(shareElement: element,
                                         email: email,
                                         role: role,

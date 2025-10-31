@@ -79,13 +79,13 @@ public extension OrganizationRepository {
     func getOrganizationKeys(userId: String) async throws -> OrganizationKey {
         logger.trace("Getting organization key for userId \(userId)")
         if let key = organizationKeyCache {
-            logger.info("Found local organization key for userId \(userId)")
+            logger.info("Found cached organization key for userId \(userId)")
             return key
         }
 
-        logger.trace("Found no local organization key for userId \(userId)")
+        logger.trace("Found no cached organization key for userId \(userId)")
         let key = try await remoteDatasource.getOrganizationKey(userId: userId)
-        logger.trace("Saving organization key for userId \(userId). To cache.")
+        logger.trace("Caching organization key for userId \(userId).")
         organizationKeyCache = key
         return key
     }

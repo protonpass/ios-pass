@@ -22,12 +22,12 @@ import Foundation
 
 public extension PassError {
     enum GroupFailureReason: CustomDebugStringConvertible, Sendable {
-        case noMatchingGroup
+        case noMatchingGroup(userId: String, groupId: String)
 
         public var debugDescription: String {
             switch self {
-            case .noMatchingGroup:
-                "Could not find a matching group for this user and id"
+            case let .noMatchingGroup(userId, groupId):
+                "Could not find a matching group for this userId \(userId) and id \(groupId)"
             }
         }
     }

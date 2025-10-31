@@ -28,12 +28,16 @@ public enum Constants {
     public static let filterTypeKey = "filterType"
     public static let incompleteFullSyncUserId = "incompleteFullSyncUserId"
     public static let appStoreUrl = "itms-apps://itunes.apple.com/app/id6443490629"
-    public static let existingUserSharingSignatureContext = "pass.invite.vault.existing-user"
-    public static let organizationKeySignatureContext = "account.key-token.organization"
-    public static let newUserSharingSignatureContext = "pass.invite.vault.new-user"
+
     public static let freeAccountsLimit = 1
     public static let biometricStateKey = "BiometricsPolicyState"
     public static let textAutoFillHistoryLimit = 5
+
+    public enum SignatureContext {
+        public static let existingUserSharing = "pass.invite.vault.existing-user"
+        public static let organizationKey = "account.key-token.organization"
+        public static let newUserSharing = "pass.invite.vault.new-user"
+    }
 
     public enum PINCode {
         public static let minLength = 4

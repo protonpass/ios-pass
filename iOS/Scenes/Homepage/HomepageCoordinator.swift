@@ -779,7 +779,7 @@ extension HomepageCoordinator {
         }
     }
 
-    func presentAcceptRejectInvite(with invite: InviteType) {
+    func presentAcceptRejectInvite(with invite: Invite) {
         let view = AcceptRejectInviteView(viewModel: AcceptRejectInviteViewModel(invite: invite))
 
         let viewController = UIHostingController(rootView: view)

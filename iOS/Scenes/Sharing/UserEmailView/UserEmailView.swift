@@ -200,7 +200,7 @@ private extension UserEmailView {
             let name = if reco.isEmail {
                 reco.name
             } else {
-                if let memberCount = reco.memberCounts {
+                if let memberCount = reco.memberCount {
                     "\(reco.name) (\(memberCount))"
                 } else {
                     reco.name

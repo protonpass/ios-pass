@@ -85,7 +85,7 @@ private extension DecryptOrganizationKey {
 
         let verificationKeys = userData.user.keys.map(\.publicKey).map { ArmoredKey(value: $0) }
 
-        let context = VerificationContext(value: Constants.organizationKeySignatureContext,
+        let context = VerificationContext(value: Constants.SignatureContext.organizationKey,
                                           required: .always)
 
         for decryptionKey in decryptionKeys {

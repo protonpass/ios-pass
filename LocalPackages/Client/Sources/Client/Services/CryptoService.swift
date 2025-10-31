@@ -103,7 +103,7 @@ private extension CryptoService {
         let group = try await groupRepository.getGroup(userId: userData.user.ID, groupId: groupId)
         guard let groupAddressEmail = group.address?.email else {
             logger.trace("No group address found for group with ID \(groupId)")
-            throw PassError.crypto(.missingGroupAddress)
+            throw PassError.crypto(.missingGroupAddress(groupId))
         }
         let publickey = try await publicKeyRepository.getPublicKeys(email: groupAddressEmail)
         guard !publickey.isEmpty else {

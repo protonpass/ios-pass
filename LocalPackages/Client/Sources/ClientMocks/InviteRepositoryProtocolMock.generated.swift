@@ -32,12 +32,12 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
     // MARK: - currentPendingInvites
     public var invokedCurrentPendingInvitesSetter = false
     public var invokedCurrentPendingInvitesSetterCount = 0
-    public var invokedCurrentPendingInvites: CurrentValueSubject<[InviteType], Never>?
-    public var invokedCurrentPendingInvitesList = [CurrentValueSubject<[InviteType], Never>?]()
+    public var invokedCurrentPendingInvites: CurrentValueSubject<[Invite], Never>?
+    public var invokedCurrentPendingInvitesList = [CurrentValueSubject<[Invite], Never>?]()
     public var invokedCurrentPendingInvitesGetter = false
     public var invokedCurrentPendingInvitesGetterCount = 0
-    public var stubbedCurrentPendingInvites: CurrentValueSubject<[InviteType], Never>!
-    public var currentPendingInvites: CurrentValueSubject<[InviteType], Never> {
+    public var stubbedCurrentPendingInvites: CurrentValueSubject<[Invite], Never>!
+    public var currentPendingInvites: CurrentValueSubject<[Invite], Never> {
         set {
             invokedCurrentPendingInvitesSetter = true
             invokedCurrentPendingInvitesSetterCount += 1
@@ -72,11 +72,11 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
     public var closureAcceptInvite: () -> () = {}
     public var invokedAcceptInvitefunction = false
     public var invokedAcceptInviteCount = 0
-    public var invokedAcceptInviteParameters: (invite: InviteType, keys: [ItemKey])?
-    public var invokedAcceptInviteParametersList = [(invite: InviteType, keys: [ItemKey])]()
+    public var invokedAcceptInviteParameters: (invite: Invite, keys: [ItemKey])?
+    public var invokedAcceptInviteParametersList = [(invite: Invite, keys: [ItemKey])]()
     public var stubbedAcceptInviteResult: Share?
 
-    public func acceptInvite(_ invite: InviteType, and keys: [ItemKey]) async throws -> Share? {
+    public func acceptInvite(_ invite: Invite, and keys: [ItemKey]) async throws -> Share? {
         invokedAcceptInvitefunction = true
         invokedAcceptInviteCount += 1
         invokedAcceptInviteParameters = (invite, keys)
@@ -110,11 +110,11 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
     public var closureRejectInvite: () -> () = {}
     public var invokedRejectInvitefunction = false
     public var invokedRejectInviteCount = 0
-    public var invokedRejectInviteParameters: (invite: InviteType, Void)?
-    public var invokedRejectInviteParametersList = [(invite: InviteType, Void)]()
+    public var invokedRejectInviteParameters: (invite: Invite, Void)?
+    public var invokedRejectInviteParametersList = [(invite: Invite, Void)]()
     public var stubbedRejectInviteResult: Bool!
 
-    public func rejectInvite(_ invite: InviteType) async throws -> Bool {
+    public func rejectInvite(_ invite: Invite) async throws -> Bool {
         invokedRejectInvitefunction = true
         invokedRejectInviteCount += 1
         invokedRejectInviteParameters = (invite, ())

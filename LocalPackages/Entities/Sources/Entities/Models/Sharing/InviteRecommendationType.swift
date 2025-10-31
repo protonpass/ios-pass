@@ -26,7 +26,7 @@ public enum InviteRecommendationType: Sendable, Equatable, Hashable, Identifiabl
 
     public var id: Self { self }
 
-    public var currentEmail: String? {
+    public var emailAddress: String? {
         switch self {
         case let .email(email):
             email
@@ -44,7 +44,7 @@ public enum InviteRecommendationType: Sendable, Equatable, Hashable, Identifiabl
         }
     }
 
-    public var memberCounts: Int? {
+    public var memberCount: Int? {
         switch self {
         case let .group(groupInfo):
             groupInfo.memberCounts
@@ -65,9 +65,12 @@ public enum InviteRecommendationType: Sendable, Equatable, Hashable, Identifiabl
     public var hasMembers: Bool {
         switch self {
         case let .group(groupInfo):
-            groupInfo.memberCounts != nil
+            guard let count = groupInfo.memberCounts, count > 0 else {
+                return false
+            }
+            return true
         default:
-            false
+            return false
         }
     }
 }
