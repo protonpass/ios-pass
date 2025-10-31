@@ -30,7 +30,7 @@ struct RejectGroupInviteEndpoint: Endpoint {
     var method: HTTPMethod
 
     init(with inviteToken: String) {
-        debugDescription = "Reject an invite"
+        debugDescription = "Reject a group invite"
         path = "/pass/v1/invite/group/\(inviteToken)"
         method = .delete
     }

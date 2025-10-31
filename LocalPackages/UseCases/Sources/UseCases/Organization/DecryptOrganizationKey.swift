@@ -56,7 +56,7 @@ public final class DecryptOrganizationKey: DecryptOrganizationKeyUseCase {
         guard let user = userManager.currentActiveUser.value else {
             throw PassError.noUserData
         }
-        let organizationKey: OrganizationKey = try await repository.getOrganizationKeys(userId: user.user.ID)
+        let organizationKey = try await repository.getOrganizationKeys(userId: user.user.ID)
         let orgToken = try getOrganizationKeyToken(userData: user, organizationKey: organizationKey)
         guard let privateKey = organizationKey.privateKey else {
             throw PassError.organizationNotFound

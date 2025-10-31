@@ -31,7 +31,7 @@ public struct GroupInvite: Decodable, Hashable, Equatable, Identifiable, Sendabl
     public let remindersSent: Int
     public let inviteToken: String
     public let invitedAddressID: String
-    public let keys: [ItemKey]
+    public let keys: [InviteKey]
     public let vaultData: VaultData?
     public let data: String?
     public let createTime: Int
