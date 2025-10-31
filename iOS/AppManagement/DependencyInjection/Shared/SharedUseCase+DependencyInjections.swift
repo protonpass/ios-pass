@@ -325,8 +325,7 @@ extension SharedUseCasesContainer {
     }
 
     var decryptOrganizationKey: Factory<any DecryptOrganizationKeyUseCase> {
-        self { DecryptOrganizationKey(userManager: self.userManager,
-                                      repository: SharedRepositoryContainer.shared.organizationRepository()) }
+        self { DecryptOrganizationKey(repository: SharedRepositoryContainer.shared.organizationRepository()) }
     }
 
     var decryptGroupKey: Factory<any DecryptGroupKeyUseCase> {

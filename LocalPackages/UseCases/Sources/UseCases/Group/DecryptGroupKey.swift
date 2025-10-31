@@ -24,12 +24,12 @@ import ProtonCoreCrypto
 @preconcurrency import ProtonCoreLogin
 
 public protocol DecryptGroupKeyUseCase: Sendable {
-    func execute(group: Group) async throws -> DecryptedGroupAddressKey
+    func execute(group: Group, userData: UserData) async throws -> DecryptedGroupAddressKey
 }
 
 public extension DecryptGroupKeyUseCase {
-    func callAsFunction(group: Group) async throws -> DecryptedGroupAddressKey {
-        try await execute(group: group)
+    func callAsFunction(group: Group, userData: UserData) async throws -> DecryptedGroupAddressKey {
+        try await execute(group: group, userData: userData)
     }
 }
 
@@ -46,13 +46,13 @@ public final class DecryptGroupKey: DecryptGroupKeyUseCase {
         self.decryptOrganizationKey = decryptOrganizationKey
     }
 
-    public func execute(group: Group) async throws -> DecryptedGroupAddressKey {
+    public func execute(group: Group, userData: UserData) async throws -> DecryptedGroupAddressKey {
         guard let address = group.address,
               let primaryKey = address.keys.first(where: { $0.primary == 1 })
         else {
             throw PassError.crypto(.missingGroupAddress(group.id))
         }
-        let orgKey = try await decryptOrganizationKey()
+        let orgKey = try await decryptOrganizationKey(user: userData)
 
         let decryptedToken = try Decryptor.decryptAndVerify(decryptionKey: orgKey.privateKey,
                                                             addrToken: ArmoredMessage(value: primaryKey.token),

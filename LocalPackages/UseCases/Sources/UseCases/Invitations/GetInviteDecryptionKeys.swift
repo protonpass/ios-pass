@@ -71,7 +71,7 @@ private extension GetInviteDecryptionKeys {
         case let .group(invite):
             let group = try await groupRepository.getGroup(userId: userData.user.ID,
                                                            groupId: invite.invitedGroupID)
-            let groupAddressKeys = try await decryptGroupKeys(group: group)
+            let groupAddressKeys = try await decryptGroupKeys(group: group, userData: userData)
             return [groupAddressKeys.privateKey]
         }
     }
