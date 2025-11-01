@@ -642,21 +642,9 @@ extension [ShareContent] {
 private extension [Share] {
     /// Returns shares with unique vault IDs, keeping the one with the highest `shareRole` weight.
     var filteredSharesWithHighestRole: [Share] {
-        var bestShares: [String: Share] = [:]
-        bestShares.reserveCapacity(count)
-
-        for share in self {
-            let itemId = share.vaultID + share.targetID
-            if let existing = bestShares[itemId] {
-                // Keep the one with higher role weight
-                if share.shareRole > existing.shareRole {
-                    bestShares[itemId] = share
-                }
-            } else {
-                bestShares[itemId] = share
-            }
-        }
-
-        return Array(bestShares.values)
+        uniqued(by: { $0.vaultID + $0.targetID },
+                combine: { existing, new in
+                    new.shareRole > existing.shareRole ? new : existing
+                })
     }
 }

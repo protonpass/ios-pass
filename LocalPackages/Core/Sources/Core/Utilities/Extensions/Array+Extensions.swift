@@ -79,6 +79,24 @@ public extension Array {
         return result
     }
 
+    /// Returns a filtered array where duplicate keys are resolved using a custom combine closure.
+    func uniqued<Key: Hashable>(by key: (Element) -> Key,
+                                combine: (Element, Element) -> Element) -> [Element] {
+        var result: [Key: Element] = [:]
+        result.reserveCapacity(count)
+
+        for element in self {
+            let identificationKey = key(element)
+            if let existing = result[identificationKey] {
+                result[identificationKey] = combine(existing, element)
+            } else {
+                result[identificationKey] = element
+            }
+        }
+
+        return Array(result.values)
+    }
+
     mutating func popAndRemoveFirstElements(_ count: Int) -> [Element] {
         let count = Swift.min(count, self.count)
         let elements = prefix(count)
