@@ -26,6 +26,13 @@ final class ArrayDeduplicateTests: XCTestCase {
     struct Vault: Equatable {
         let shareId: String
         let vaultId: String
+        let weight: Int
+        
+        init(shareId: String, vaultId: String, weight: Int = 1) {
+            self.shareId = shareId
+            self.vaultId = vaultId
+            self.weight = weight
+        }
     }
 
     func testDeduplication() {
@@ -43,5 +50,24 @@ final class ArrayDeduplicateTests: XCTestCase {
 
         // Then
         XCTAssertEqual(result, [vault1, vault3, vault5])
+    }
+    
+    func testUniqueness() {
+        // Given
+        let vault1 = Vault(shareId: "share1", vaultId: "vault1")
+        let vault2 = Vault(shareId: "share1", vaultId: "vault2", weight: 2)
+        let vault3 = Vault(shareId: "share2", vaultId: "vault3", weight: 3)
+        let vault4 = Vault(shareId: "share2", vaultId: "vault4", weight: 2)
+        let vault5 = Vault(shareId: "share3", vaultId: "vault5")
+
+        let sut = [vault1, vault2, vault3, vault4, vault5]
+
+        // When
+        let result = sut.uniqued(by: \.shareId) { first, second in
+            first.weight >= second.weight ? first : second
+        }
+
+        // Then
+        XCTAssertEqual(result, [vault2, vault3, vault5])
     }
 }
