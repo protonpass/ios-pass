@@ -37,6 +37,7 @@ public extension PassError {
         case failedToDecode
         case failedToEncode(String)
         case failedToAESEncrypt
+        case failedToVerifyContent(String)
         case inactiveUserKey(userKeyId: String) // Caused by "forgot password"
         case addressNotFound(addressID: String)
         case corruptedShareContent(shareID: String)
@@ -93,6 +94,8 @@ public extension PassError {
                 "Unmatch key rotation \(lhsKey) - \(rhsKey)"
             case let .missingItemKeyRotation(rotation):
                 "Missing item key rotation \(rotation)"
+            case let .failedToVerifyContent(error):
+                "Failed to verify content: \(error)"
             case let .missingGroupAddress(groupId):
                 "Missing group address for groupId \(groupId)"
             }
