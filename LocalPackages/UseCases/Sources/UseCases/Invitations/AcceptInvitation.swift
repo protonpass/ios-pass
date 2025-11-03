@@ -110,6 +110,8 @@ private extension AcceptInvitation {
                                                                   verificationKeys: armoredInviterPublicKeys,
                                                                   verificationContext: context)
 
+        let verifiedContent = try decode.verifiedContent
+
         guard let userKey = userData.user.keys.first else {
             throw PassError.crypto(.missingUserKey(userID: userData.user.ID))
         }
@@ -124,7 +126,7 @@ private extension AcceptInvitation {
                                    passphrase: .init(value: passphrase))
 
         let encryptedVaultKeyDataString = try Encryptor.encrypt(publicKey: publicKey,
-                                                                clearData: decode.content,
+                                                                clearData: verifiedContent,
                                                                 signerKey: signerKey)
             .unArmor().value.base64EncodedString()
 
