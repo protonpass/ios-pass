@@ -1,0 +1,40 @@
+apiVersion: testing.ephemera.crossplane.io/v1alpha1
+kind: EnvironmentClaim
+metadata:
+  name: <|ephemera.provider.generate-name|>
+spec:
+  providerConfigRef:
+    name: ephemera
+  forProvider:
+    nameService:
+      app: pass
+      tag: <|NAMESERVICE_REF|>
+      branch: <|NAMESERVICE_REF|>
+      timeoutDelta: 8h
+      deleteDelta: 12h
+    claim:
+      inherits:
+        - backend
+        - mock-server
+        - patch-affinity
+        - patch-namespace
+        - patch-sync-waves
+        - patch-labels
+      charts:
+        mock-server:
+          values: |
+            image:
+              tag: v1.1.1
+          charts:
+        slim-api-admin:
+          enabled: "false"
+        mailin:
+          enabled: "false"
+        mailout:
+          enabled: "false"
+        docs-rts-api:
+          enabled: "false"
+        docs-rts-scheduler:
+          enabled: "false"
+        docs-rts-worker:
+          enabled: "false"
