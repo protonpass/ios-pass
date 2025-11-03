@@ -69,7 +69,7 @@ public final class CryptoService: CryptoServiceProtocol {
                                                                         value: .init(value: armoredEncryptedKeyData),
                                                                         verificationKeys: keys.verificationKeys)
         logger.trace("Decrypted share key \(keyDescription)")
-        return decryptedKey.content
+        return try decryptedKey.verifiedContent
     }
 }
 
