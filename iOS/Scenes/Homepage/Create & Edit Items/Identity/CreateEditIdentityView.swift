@@ -257,6 +257,7 @@ private extension CreateEditIdentityView {
                                     onToggle: { viewModel.toggleCollapsingSection(section) },
                                     onEditTitle: { /* Not applicable */ },
                                     onRemove: { /* Not applicable */ })
+                    .padding(.top, DesignConstant.sectionPadding)
             })
         }
     }
