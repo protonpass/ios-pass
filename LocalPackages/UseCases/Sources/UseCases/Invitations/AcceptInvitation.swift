@@ -116,9 +116,11 @@ private extension AcceptInvitation {
                                                                   value: armorMessage,
                                                                   verificationKeys: armoredInviterPublicKeys,
                                                                   verificationContext: context)
+        
+        let verifiedContent = try decode.verifiedContent
 
         let encryptedVaultKeyDataString = try Encryptor.encrypt(publicKey: config.publicKey,
-                                                                clearData: decode.content,
+                                                                clearData: verifiedContent,
                                                                 signerKey: config.signerKey)
             .unArmor().value.base64EncodedString()
 

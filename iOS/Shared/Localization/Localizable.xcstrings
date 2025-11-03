@@ -25956,6 +25956,12 @@
             "value" : "Alias «%@» movido a la papelera"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias \"%@\" siirrettiin roskakoriin"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -26014,6 +26020,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Takma ad \"%@\" çöpe atıldı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Псевдонім «%@» переміщено до смітника"
           }
         },
         "zh-Hans" : {
@@ -64129,6 +64141,12 @@
             "value" : "No volver a recordarme"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Älä muistuta uudelleen"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -64193,6 +64211,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bir daha hatırlatma"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Більше не нагадувати"
           }
         },
         "zh-Hans" : {
@@ -83883,6 +83907,12 @@
             "value" : "Gizli kasalar"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Приховані сховища"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -94068,6 +94098,12 @@
             "value" : "Elemento en una bóveda compartida"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kohde jaetussa holvissa"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -94132,6 +94168,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Öge paylaşılan bir kasada"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Елемент у спільному сховищі"
           }
         },
         "zh-Hans" : {
@@ -121771,6 +121813,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kasaları düzenle"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Упорядкувати сховища"
           }
         },
         "zh-Hans" : {
@@ -157365,6 +157413,12 @@
             "value" : "Geteiltes Element"
           }
         },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Κοινοποιημένο στοιχείο"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -157375,6 +157429,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Elemento compartido"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elemento compartido"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jaettu kohde"
           }
         },
         "fr" : {
@@ -157429,6 +157495,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Paylaşılmış öge"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Спільний елемент"
           }
         },
         "zh-Hans" : {
@@ -171883,6 +171955,12 @@
             "value" : "Bu kasalara erişilemeyecek ve içerikleri arama veya otomatik doldurma için kullanılmayacak."
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ці сховища не будуть доступні, а їхній вміст не буде доступний для пошуку чи автозаповнення."
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -182944,10 +183022,118 @@
     },
     "Upgrade to Pass Plus" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Палепшыць да Pass Plus"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Milloreu a Pass Plus"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navýšit na Pass Plus"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opgrader til Pass Plus"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auf Pass Plus umsteigen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αναβαθμίστε στο Pass Plus"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Upgrade to Pass Plus"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mejorar a Pass Plus"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Päivitä Pass Plussaan"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je passe à Pass Plus"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passa a Pass Plus"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oppgrader til Pass Plus"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgraden naar Pass Plus"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faça upgrade para o Pass Plus"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Treceți la Pass Plus"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zvýšte úroveň na Pass Plus"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uppgradera till Pass Plus"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pass Plus tarifesine yükselt"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Покращити до Pass Plus"
           }
         }
       }
@@ -190591,6 +190777,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Görünür kasalar"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Видимі сховища"
           }
         },
         "zh-Hans" : {
@@ -198533,6 +198725,12 @@
             "value" : "Está creando un elemento en una bóveda compartida y los miembros obtendrán acceso inmediatamente a él."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Luot kohteen jaettuun holviin, ja jäsenet voivat välittömästi käyttää sitä."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -198581,6 +198779,12 @@
             "value" : "Paylaşılmış bir kasada bir öge oluşturuyorsunuz ve üyeler bu ögeye hemen erişebilecekler."
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ви створюєте елемент у спільному сховищі, і учасники негайно отримають доступ до цього елемента."
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -198621,6 +198825,12 @@
             "value" : "Du bearbeitest gerade ein freigegebenes Element. Änderungen werden sofort für alle sichtbar, mit denen es geteilt wurde."
           }
         },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Επεξεργάζεστε ένα κοινόχρηστο στοιχείο. Οι αλλαγές θα είναι αμέσως ορατές σε όλους όσους έχουν πρόσβαση σε αυτό."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -198631,6 +198841,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Estás editando un elemento compartido. Los cambios serán visibles de inmediato para todos los que tengan acceso compartido."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Está editando un elemento compartido. Los cambios serán visibles de inmediato para todos los que tengan acceso compartido."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muokkaat jaettua kohdetta. Muutokset näkyvät välittömästi kaikille, joiden kanssa se on jaettu."
           }
         },
         "fr" : {
@@ -198679,6 +198901,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Paylaşılmış bir ögeyi düzenliyorsunuz. Yapılan değişiliklikler paylaşılan kişilere anınında görünecek."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ви редагуєте спільний елемент. Зміни будуть негайно видимі усім, з ким він поділений."
           }
         },
         "zh-Hans" : {

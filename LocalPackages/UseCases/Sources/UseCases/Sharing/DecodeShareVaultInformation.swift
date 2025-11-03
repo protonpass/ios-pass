@@ -79,9 +79,10 @@ public final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShare
                                                                       value: encryptedValue,
                                                                       verificationKeys: verificationsKeys,
                                                                       verificationContext: context)
+            let verifiedContent = try decode.verifiedContent
 
             let decryptedContent = try AES.GCM.open(encryptedVaultContent,
-                                                    key: decode.content,
+                                                    key: verifiedContent,
                                                     associatedData: .vaultContent)
             let vaultContent = try VaultContent(data: decryptedContent)
             logger.trace("Finished decoding vault content")
