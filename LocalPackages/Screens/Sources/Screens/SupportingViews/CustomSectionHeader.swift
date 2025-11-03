@@ -55,7 +55,6 @@ public struct CustomSectionHeader: View {
                   })
                   .foregroundStyle(PassColor.textWeak)
                   .frame(maxWidth: .infinity, alignment: .leading)
-                  .padding(.top, DesignConstant.sectionPadding)
                   .buttonEmbeded(action: onToggle)
 
             Spacer()
@@ -72,7 +71,6 @@ public struct CustomSectionHeader: View {
                 }, label: {
                     IconProvider.threeDotsVertical
                         .foregroundStyle(PassColor.textWeak)
-                        .padding(.top, DesignConstant.sectionPadding)
                 })
             }
         }

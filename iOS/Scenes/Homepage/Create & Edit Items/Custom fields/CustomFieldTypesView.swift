@@ -46,24 +46,22 @@ struct CustomFieldTypesView: View {
     }
 
     private func row(for type: CustomFieldType) -> some View {
-        Button(action: {
-            onSelect(type)
-        }, label: {
-            HStack(spacing: 18) {
-                type.icon
-                    .resizable()
-                    .scaledToFit()
-                    .foregroundStyle(PassColor.textWeak)
-                    .frame(maxWidth: 20)
+        HStack(spacing: 18) {
+            type.icon
+                .resizable()
+                .scaledToFit()
+                .foregroundStyle(PassColor.textWeak)
+                .frame(maxWidth: 20)
 
-                Text(type.title)
-                    .foregroundStyle(PassColor.textNorm)
-                    .multilineTextAlignment(.leading)
+            Text(type.title)
+                .foregroundStyle(PassColor.textNorm)
+                .multilineTextAlignment(.leading)
 
-                Spacer()
-            }
-            .frame(height: OptionRowHeight.short.value, alignment: .leading)
-        })
+            Spacer()
+        }
+        .frame(height: OptionRowHeight.short.value, alignment: .leading)
+        .contentShape(.rect)
+        .onTapGesture { onSelect(type) }
     }
 }
 
