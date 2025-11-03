@@ -62,7 +62,7 @@ public enum Constants {
     }
 
     public enum ContentFormatVersion {
-        public static let item = 6
+        public static let item = 7
         public static let vault = 1
     }
 
