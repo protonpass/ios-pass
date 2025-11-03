@@ -142,6 +142,6 @@ private extension ShareKeyRepository {
                                                                         verificationKeys: verificationKeys)
 
         logger.trace("Decrypted share key \(keyDescription)")
-        return decryptedKey.content
+        return try decryptedKey.verifiedContent
     }
 }

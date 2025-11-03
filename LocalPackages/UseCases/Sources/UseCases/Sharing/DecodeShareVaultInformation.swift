@@ -87,13 +87,14 @@ public final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShare
                                                                       value: vaultKeyArmorMessage,
                                                                       verificationKeys: armoredInviterPublicKeys,
                                                                       verificationContext: context)
+            let verifiedContent = try decode.verifiedContent
 
             guard let content = try vaultData.content.base64Decode() else {
                 throw PassError.sharing(.cannotDecode)
             }
 
             let decryptedContent = try AES.GCM.open(content,
-                                                    key: decode.content,
+                                                    key: verifiedContent,
                                                     associatedData: .vaultContent)
             let vaultContent = try VaultContent(data: decryptedContent)
             logger.trace("Finished decoding vault content")
