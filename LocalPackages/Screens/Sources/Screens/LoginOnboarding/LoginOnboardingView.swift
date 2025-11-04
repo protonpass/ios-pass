@@ -167,7 +167,7 @@ private extension LoginOnboardingView {
         if signUp {
             CapsuleTextButton(title: #localized("Create an account", bundle: .module),
                               titleColor: .white,
-                              backgroundColor: signUp ? Color(red: 110, green: 74, blue: 255) : .clear,
+                              backgroundColor: signUp ? Color(red: 0.43, green: 0.29, blue: 1) : .clear,
                               action: { onAction(signUp) })
         } else {
             CapsuleTextBorderedButton(title: #localized("Sign in", bundle: .module),

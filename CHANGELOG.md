@@ -1,5 +1,6 @@
 # Version 1.17.10
 - Improved homepage layout when "Button Shapes" accessibility setting is enabled
+- Fixed password generator not fully visible on certain devices running iOS 26
 - Fixed an issue where the contact list from a previous alias was shown when viewing the details of another alias
 - Core libraries upgraded from 32.8.0 to 33.5.1
 - Updated item content format version from 6 to 7
