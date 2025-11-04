@@ -123,6 +123,7 @@ extension OnboardingHandler: OnboardingDelegate {
         }
         let cycle = BillingCycle(rawValue: plan.instance.cycle) ?? .all
         _ = try await manager.purchase(product)
+        try await accessRepository.refreshAccess(userId: nil)
     }
 
     func enableBiometric() async throws {
