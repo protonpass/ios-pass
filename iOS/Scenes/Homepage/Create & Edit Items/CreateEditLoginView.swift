@@ -33,6 +33,7 @@ struct CreateEditLoginView: View {
     @StateObject private var viewModel: CreateEditLoginViewModel
     @FocusState private var focusedField: Field?
     @State private var lastFocusedField: Field?
+    @State private var showPasswordGenerator = false
     @Namespace private var emailOrUsernameID
     @Namespace private var usernameID
     @Namespace private var emailID
@@ -181,6 +182,14 @@ struct CreateEditLoginView: View {
                     }
                 }
             }
+            .sheet(isPresented: $showPasswordGenerator) {
+                GeneratePasswordView(viewModel: .init(mode: .createLogin))
+            }
+            .onChange(of: showPasswordGenerator) { newValue in
+                if !newValue {
+                    focusedField = lastFocusedField
+                }
+            }
         }
     }
 }
@@ -248,13 +257,9 @@ private extension CreateEditLoginView {
                           titleBundle: .main,
                           image: IconProvider.arrowsRotate,
                           action: {
-                              if #available(iOS 26, *) {
-                                  // On several devices on iOS 26, keyboard would stay visible which
-                                  // partially hides the password generator.
-                                  // So we dismiss the keyboard beforehand
-                                  focusedField = nil
-                              }
-                              viewModel.generatePassword()
+                              lastFocusedField = focusedField
+                              focusedField = nil
+                              showPasswordGenerator.toggle()
                           })
 
             PassDivider()
