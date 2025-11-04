@@ -30,9 +30,15 @@ struct GeneratePasswordView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: GeneratePasswordViewModel
     @State private var maxPasswordHeight = 0.0
+    private let onConfirm: (String) -> Void
+    private let onUpdateHeight: ((Double) -> Void)?
 
-    init(viewModel: GeneratePasswordViewModel) {
-        _viewModel = .init(wrappedValue: viewModel)
+    init(mode: GeneratePasswordViewMode,
+         onConfirm: @escaping (String) -> Void,
+         onUpdateHeight: ((Double) -> Void)? = nil) {
+        _viewModel = .init(wrappedValue: .init(mode: mode))
+        self.onConfirm = onConfirm
+        self.onUpdateHeight = onUpdateHeight
     }
 
     var body: some View {
@@ -85,18 +91,18 @@ struct GeneratePasswordView: View {
                 }
                 PassDivider()
 
-                toggle(title: #localized("Special characters"),
+                toggle(title: "Special characters",
                        isOn: $viewModel.activateSpecialCharacters,
                        hasPolicy: viewModel.passwordPolicy?.randomPasswordMustIncludeSymbols != nil)
                 PassDivider()
 
                 if viewModel.isShowingAdvancedOptions {
-                    toggle(title: #localized("Capital letters"),
+                    toggle(title: "Capital letters",
                            isOn: $viewModel.activateCapitalCharacters,
                            hasPolicy: viewModel.passwordPolicy?.randomPasswordMustIncludeUppercase != nil)
                     PassDivider()
 
-                    toggle(title: #localized("Include numbers"),
+                    toggle(title: "Include numbers",
                            isOn: $viewModel.activateNumberCharacters,
                            hasPolicy: viewModel.passwordPolicy?.randomPasswordMustIncludeNumbers != nil)
                     PassDivider()
@@ -116,7 +122,7 @@ struct GeneratePasswordView: View {
                     capitalizingWordsRow
                     PassDivider()
 
-                    toggle(title: #localized("Include numbers"),
+                    toggle(title: "Include numbers",
                            isOn: $viewModel.includeNumbers,
                            hasPolicy: viewModel.passwordPolicy?.memorablePasswordMustIncludeNumbers != nil)
                     PassDivider()
@@ -135,8 +141,7 @@ struct GeneratePasswordView: View {
         .animation(.default, value: viewModel.password)
         .animation(.default, value: viewModel.isShowingAdvancedOptions)
         .presentationDragIndicator(.visible)
-        .fittedPresentationDetent { _ in
-        }
+        .fittedPresentationDetent { onUpdateHeight?($0) }
     }
 }
 
@@ -202,8 +207,8 @@ private extension GeneratePasswordView {
                               backgroundColor: PassColor.loginInteractionNormMajor1,
                               height: 44,
                               action: {
-                                  viewModel.confirm()
-                                  if case .createLogin = viewModel.mode {
+                                  viewModel.saveHistory { password in
+                                      onConfirm(password)
                                       dismiss()
                                   }
                               })
@@ -235,7 +240,7 @@ private extension GeneratePasswordView {
         }
     }
 
-    func toggle(title: String, isOn: Binding<Bool>, hasPolicy: Bool = false) -> some View {
+    func toggle(title: LocalizedStringKey, isOn: Binding<Bool>, hasPolicy: Bool = false) -> some View {
         Toggle(isOn: isOn) {
             Text(title)
                 .foregroundStyle(PassColor.textNorm)
@@ -245,7 +250,7 @@ private extension GeneratePasswordView {
     }
 
     var capitalizingWordsRow: some View {
-        toggle(title: #localized("Capitalize"),
+        toggle(title: "Capitalize",
                isOn: $viewModel.activateCapitalized,
                hasPolicy: viewModel.passwordPolicy?.memorablePasswordMustCapitalize != nil)
     }
@@ -284,5 +289,37 @@ private extension GeneratePasswordView {
             })
         }
         .animationsDisabled()
+    }
+}
+
+private extension GeneratePasswordViewMode {
+    var confirmTitle: String {
+        switch self {
+        case .createLogin: #localized("Confirm")
+        case .random: #localized("Copy and close")
+        }
+    }
+}
+
+private extension PasswordType {
+    var title: LocalizedStringKey {
+        switch self {
+        case .random: "Random password"
+        case .memorable: "Memorable password"
+        }
+    }
+}
+
+private extension WordSeparator {
+    var title: LocalizedStringKey {
+        switch self {
+        case .hyphens: "Hyphens"
+        case .spaces: "Spaces"
+        case .periods: "Periods"
+        case .commas: "Commas"
+        case .underscores: "Underscores"
+        case .numbers: "Numbers"
+        case .numbersAndSymbols: "Numbers and Symbols"
+        }
     }
 }
