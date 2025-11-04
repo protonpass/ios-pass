@@ -30,6 +30,7 @@ import SwiftUI
 import TipKit
 
 struct CreateEditLoginView: View {
+    @Environment(\.colorScheme) private var colorScheme
     @StateObject private var viewModel: CreateEditLoginViewModel
     @FocusState private var focusedField: Field?
     @State private var lastFocusedField: Field?
@@ -183,7 +184,9 @@ struct CreateEditLoginView: View {
                 }
             }
             .sheet(isPresented: $showPasswordGenerator) {
-                GeneratePasswordView(viewModel: .init(mode: .createLogin))
+                GeneratePasswordView(mode: .createLogin,
+                                     onConfirm: { viewModel.password = $0 })
+                    .environment(\.colorScheme, colorScheme)
             }
             .onChange(of: showPasswordGenerator) { newValue in
                 if !newValue {

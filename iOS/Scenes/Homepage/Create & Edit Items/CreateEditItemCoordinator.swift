@@ -24,11 +24,6 @@ import FactoryKit
 import ProtonCoreLogin
 import SwiftUI
 
-typealias CreateEditItemDelegates =
-    CreateEditLoginViewModelDelegate &
-    GeneratePasswordCoordinatorDelegate &
-    GeneratePasswordViewModelDelegate
-
 @MainActor
 final class CreateEditItemCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
@@ -37,13 +32,12 @@ final class CreateEditItemCoordinator: DeinitPrintable {
     private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
-    private weak var createEditItemDelegates: (any CreateEditItemDelegates)?
+    private weak var createEditItemDelegate: (any CreateEditLoginViewModelDelegate)?
 
     private var currentViewModel: BaseCreateEditItemViewModel?
-    private var generatePasswordCoordinator: GeneratePasswordCoordinator?
 
-    init(createEditItemDelegates: (any CreateEditItemDelegates)?) {
-        self.createEditItemDelegates = createEditItemDelegates
+    init(createEditItemDelegate: (any CreateEditLoginViewModelDelegate)?) {
+        self.createEditItemDelegate = createEditItemDelegate
     }
 }
 
@@ -77,7 +71,6 @@ extension CreateEditItemCoordinator {
         }
     }
 
-    @MainActor
     func presentCreateItemView(for itemType: ItemType,
                                onError: @escaping (any Error) -> Void) async throws {
         let shareId = appContentManager.vaultSelection.preciseVault?.shareId
@@ -92,17 +85,12 @@ extension CreateEditItemCoordinator {
         case .note:
             try presentCreateEditNoteView(mode: .create(shareId: shareId, type: .note(title: "", note: "")))
         case .password:
-            presentGeneratePasswordView(mode: .random,
-                                        generatePasswordViewModelDelegate: createEditItemDelegates)
+            assertionFailure("Should be handled outside of this coordinator")
         case .identity:
             try presentCreateEditIdentityView(mode: .create(shareId: shareId, type: .identity))
         case .custom:
             try presentCustomItemList(shareId: shareId, onError: onError)
         }
-    }
-
-    func presentGeneratePasswordForLoginItem(delegate: any GeneratePasswordViewModelDelegate) {
-        presentGeneratePasswordView(mode: .createLogin, generatePasswordViewModelDelegate: delegate)
     }
 }
 
@@ -121,7 +109,7 @@ private extension CreateEditItemCoordinator {
         let viewModel = try CreateEditLoginViewModel(mode: mode,
                                                      upgradeChecker: upgradeChecker,
                                                      vaults: vaults)
-        viewModel.delegate = createEditItemDelegates
+        viewModel.delegate = createEditItemDelegate
         let view = CreateEditLoginView(viewModel: viewModel)
         present(view, dismissable: false)
         currentViewModel = viewModel
@@ -188,19 +176,6 @@ private extension CreateEditItemCoordinator {
         let view = CreateEditCustomItemView(viewModel: viewModel)
         present(view, dismissable: false)
         currentViewModel = viewModel
-    }
-
-    func presentGeneratePasswordView(mode: GeneratePasswordViewMode,
-                                     generatePasswordViewModelDelegate: (any GeneratePasswordViewModelDelegate)?) {
-        Task { [weak self] in
-            guard let self else { return }
-            let coordinator =
-                GeneratePasswordCoordinator(generatePasswordViewModelDelegate: generatePasswordViewModelDelegate,
-                                            mode: mode)
-            coordinator.delegate = createEditItemDelegates
-            coordinator.start()
-            generatePasswordCoordinator = coordinator
-        }
     }
 }
 

@@ -829,6 +829,10 @@ extension HomepageCoordinator {
     }
 
     func presentCreateItemView(for itemType: ItemType) {
+        if itemType == .password {
+            presentPasswordGenerator()
+            return
+        }
         Task { [weak self] in
             guard let self else {
                 return
@@ -843,6 +847,47 @@ extension HomepageCoordinator {
                 handle(error: error)
             }
         }
+    }
+
+    func presentPasswordGenerator() {
+        let viewPasswordHistory: @MainActor (PMBanner) -> Void = { [weak self] banner in
+            guard let self else { return }
+            banner.dismiss()
+            presentPasswordHistoryView()
+        }
+
+        let copyPassword: (String) -> Void = { [weak self] password in
+            guard let self else { return }
+            bannerManager.displayBottomInfoMessage(#localized("Password copied"),
+                                                   dismissButtonTitle: #localized("View"),
+                                                   onDismiss: viewPasswordHistory)
+            copyToClipboard(password)
+        }
+
+        var sheetPresentationController: UISheetPresentationController?
+        let updateSheetHeight: (Double) -> Void = { height in
+            guard let sheetPresentationController else {
+                assertionFailure("sheetPresentationController is not set")
+                return
+            }
+            let detent = UISheetPresentationController.Detent.custom { _ in
+                height
+            }
+            let detentIdentifier = detent.identifier
+
+            sheetPresentationController.animateChanges {
+                sheetPresentationController.detents = [detent]
+                sheetPresentationController.selectedDetentIdentifier = detentIdentifier
+            }
+        }
+
+        let view = GeneratePasswordView(mode: .random,
+                                        onConfirm: copyPassword,
+                                        onUpdateHeight: updateSheetHeight)
+        let viewController = UIHostingController(rootView: view)
+        sheetPresentationController = viewController.sheetPresentationController
+        sheetPresentationController?.prefersGrabberVisible = true
+        present(viewController)
     }
 
     func presentCreateEditVaultView(mode: VaultMode) {
@@ -1290,7 +1335,7 @@ extension HomepageCoordinator {
 
 private extension HomepageCoordinator {
     func makeCreateEditItemCoordinator() -> CreateEditItemCoordinator {
-        let coordinator = CreateEditItemCoordinator(createEditItemDelegates: self)
+        let coordinator = CreateEditItemCoordinator(createEditItemDelegate: self)
         createEditItemCoordinator = coordinator
         return coordinator
     }
@@ -1635,14 +1680,6 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
     }
 }
 
-// MARK: - GeneratePasswordCoordinatorDelegate
-
-extension HomepageCoordinator: GeneratePasswordCoordinatorDelegate {
-    func generatePasswordCoordinatorWantsToPresent(viewController: UIViewController) {
-        present(viewController)
-    }
-}
-
 extension HomepageCoordinator {
     func presentSetPINCodeView() {
         dismissTopMostViewController { [weak self] in
@@ -1732,35 +1769,6 @@ extension HomepageCoordinator: CreateEditLoginViewModelDelegate {
         viewController.sheetPresentationController?.detents = [.medium()]
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
-    }
-
-    func createEditLoginViewModelWantsToGeneratePassword(_ delegate: any GeneratePasswordViewModelDelegate) {
-        let coordinator = makeCreateEditItemCoordinator()
-        coordinator.presentGeneratePasswordForLoginItem(delegate: delegate)
-    }
-}
-
-// MARK: - GeneratePasswordViewModelDelegate
-
-extension HomepageCoordinator: GeneratePasswordViewModelDelegate {
-    func generatePasswordViewModelDidConfirm(password: String) {
-        dismissTopMostViewController(animated: true) { [weak self] in
-            guard let self else { return }
-            let viewPasswordHistory: @Sendable (PMBanner) -> Void = { [weak self] banner in
-                guard let self else { return }
-                Task { @MainActor [weak self] in
-                    guard let self else {
-                        return
-                    }
-                    banner.dismiss()
-                    presentPasswordHistoryView()
-                }
-            }
-            bannerManager.displayBottomInfoMessage(#localized("Password copied"),
-                                                   dismissButtonTitle: #localized("View"),
-                                                   onDismiss: viewPasswordHistory)
-            copyToClipboard(password)
-        }
     }
 }
 
