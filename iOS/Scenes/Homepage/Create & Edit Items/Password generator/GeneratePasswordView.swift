@@ -43,20 +43,7 @@ struct GeneratePasswordView: View {
 
     var body: some View {
         VStack {
-            HStack {
-                // Hidden gimmick button to make the navigation title centered properly
-                regeneratePasswordButton
-                    .opacity(0)
-
-                Spacer()
-
-                Text("Generate password")
-                    .navigationTitleText()
-
-                Spacer()
-
-                regeneratePasswordButton
-            }
+            titleBar
 
             // The height of password text grows as text gets longer
             // We remember the last known max height and make it the min height
@@ -86,52 +73,10 @@ struct GeneratePasswordView: View {
 
             switch viewModel.passwordType {
             case .random:
-                if viewModel.minChar < viewModel.maxChar {
-                    characterCountRow
-                }
-                PassDivider()
-
-                toggle(title: "Special characters",
-                       isOn: $viewModel.activateSpecialCharacters,
-                       hasPolicy: viewModel.passwordPolicy?.randomPasswordMustIncludeSymbols != nil)
-                PassDivider()
-
-                if viewModel.isShowingAdvancedOptions {
-                    toggle(title: "Capital letters",
-                           isOn: $viewModel.activateCapitalCharacters,
-                           hasPolicy: viewModel.passwordPolicy?.randomPasswordMustIncludeUppercase != nil)
-                    PassDivider()
-
-                    toggle(title: "Include numbers",
-                           isOn: $viewModel.activateNumberCharacters,
-                           hasPolicy: viewModel.passwordPolicy?.randomPasswordMustIncludeNumbers != nil)
-                    PassDivider()
-                } else {
-                    advancedOptionsRow
-                }
+                randomPasswordOptions
 
             case .memorable:
-                if viewModel.minWord < viewModel.maxWord {
-                    wordCountRow
-                }
-                PassDivider()
-                if viewModel.isShowingAdvancedOptions {
-                    wordSeparatorRow
-                    PassDivider()
-
-                    capitalizingWordsRow
-                    PassDivider()
-
-                    toggle(title: "Include numbers",
-                           isOn: $viewModel.includeNumbers,
-                           hasPolicy: viewModel.passwordPolicy?.memorablePasswordMustIncludeNumbers != nil)
-                    PassDivider()
-                } else {
-                    capitalizingWordsRow
-                    PassDivider()
-
-                    advancedOptionsRow
-                }
+                memorablePasswordOptions
             }
 
             ctaButtons
@@ -146,6 +91,19 @@ struct GeneratePasswordView: View {
 }
 
 private extension GeneratePasswordView {
+    var titleBar: some View {
+        HStack {
+            // Hidden gimmick button to make the navigation title centered properly
+            regeneratePasswordButton
+                .opacity(0)
+            Spacer()
+            Text("Generate password")
+                .navigationTitleText()
+            Spacer()
+            regeneratePasswordButton
+        }
+    }
+
     var regeneratePasswordButton: some View {
         CircleButton(icon: IconProvider.arrowsRotate,
                      iconColor: PassColor.loginInteractionNormMajor2,
@@ -188,6 +146,58 @@ private extension GeneratePasswordView {
             })
         }
         .animationsDisabled()
+    }
+
+    @ViewBuilder
+    var randomPasswordOptions: some View {
+        if viewModel.minChar < viewModel.maxChar {
+            characterCountRow
+        }
+        PassDivider()
+
+        toggle(title: "Special characters",
+               isOn: $viewModel.activateSpecialCharacters,
+               hasPolicy: viewModel.passwordPolicy?.randomPasswordMustIncludeSymbols != nil)
+        PassDivider()
+
+        if viewModel.isShowingAdvancedOptions {
+            toggle(title: "Capital letters",
+                   isOn: $viewModel.activateCapitalCharacters,
+                   hasPolicy: viewModel.passwordPolicy?.randomPasswordMustIncludeUppercase != nil)
+            PassDivider()
+
+            toggle(title: "Include numbers",
+                   isOn: $viewModel.activateNumberCharacters,
+                   hasPolicy: viewModel.passwordPolicy?.randomPasswordMustIncludeNumbers != nil)
+            PassDivider()
+        } else {
+            advancedOptionsRow
+        }
+    }
+
+    @ViewBuilder
+    var memorablePasswordOptions: some View {
+        if viewModel.minWord < viewModel.maxWord {
+            wordCountRow
+        }
+        PassDivider()
+        if viewModel.isShowingAdvancedOptions {
+            wordSeparatorRow
+            PassDivider()
+
+            capitalizingWordsRow
+            PassDivider()
+
+            toggle(title: "Include numbers",
+                   isOn: $viewModel.includeNumbers,
+                   hasPolicy: viewModel.passwordPolicy?.memorablePasswordMustIncludeNumbers != nil)
+            PassDivider()
+        } else {
+            capitalizingWordsRow
+            PassDivider()
+
+            advancedOptionsRow
+        }
     }
 
     var advancedOptionsRow: some View {
