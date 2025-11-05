@@ -588,7 +588,6 @@
 		5B5DBF182B68048600F72F6C /* TotpLoginsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5DBF162B68048600F72F6C /* TotpLoginsView.swift */; };
 		5B5DBF192B68048600F72F6C /* TotpLoginsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5DBF172B68048600F72F6C /* TotpLoginsViewModel.swift */; };
 		5B5DBF1B2B6961EE00F72F6C /* ItemContent+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5DBF1A2B6961EE00F72F6C /* ItemContent+Extensions.swift */; };
-		5B5E0DC12D5A4EBB00E7BCD4 /* NewLoginSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5E0DC02D5A4EBB00E7BCD4 /* NewLoginSection.swift */; };
 		5B62931C2CDA215E006C3C67 /* ContactRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B62931B2CDA215B006C3C67 /* ContactRow.swift */; };
 		5B62931E2CDA27C6006C3C67 /* AliasContactsEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B62931D2CDA27C4006C3C67 /* AliasContactsEmptyView.swift */; };
 		5B6293212CDA287E006C3C67 /* AliasExplanationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6293202CDA287D006C3C67 /* AliasExplanationView.swift */; };
@@ -1137,7 +1136,6 @@
 		5B5DBF162B68048600F72F6C /* TotpLoginsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotpLoginsView.swift; sourceTree = "<group>"; };
 		5B5DBF172B68048600F72F6C /* TotpLoginsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotpLoginsViewModel.swift; sourceTree = "<group>"; };
 		5B5DBF1A2B6961EE00F72F6C /* ItemContent+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemContent+Extensions.swift"; sourceTree = "<group>"; };
-		5B5E0DC02D5A4EBB00E7BCD4 /* NewLoginSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLoginSection.swift; sourceTree = "<group>"; };
 		5B62931B2CDA215B006C3C67 /* ContactRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactRow.swift; sourceTree = "<group>"; };
 		5B62931D2CDA27C4006C3C67 /* AliasContactsEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasContactsEmptyView.swift; sourceTree = "<group>"; };
 		5B6293202CDA287D006C3C67 /* AliasExplanationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasExplanationView.swift; sourceTree = "<group>"; };
@@ -1464,7 +1462,6 @@
 		353739DF29EAE84000A3255E /* QA Features */ = {
 			isa = PBXGroup;
 			children = (
-				5B5E0DC02D5A4EBB00E7BCD4 /* NewLoginSection.swift */,
 				5B4459AA2D43B74300E1F198 /* FeatureDiscoverySection.swift */,
 				533EAB942D3F974B00217171 /* AliasDiscoverySection.swift */,
 				5BC4F6772CE639E9005D49FC /* InAppNotificationSection.swift */,
@@ -3990,7 +3987,6 @@
 				35EDB30D2C13101600FE441C /* EnableExtraPasswordViewModel.swift in Sources */,
 				5B1453E22A727EFF0048B022 /* AcceptRejectInviteViewModel.swift in Sources */,
 				35B9321C2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift in Sources */,
-				5B5E0DC12D5A4EBB00E7BCD4 /* NewLoginSection.swift in Sources */,
 				35E50656286F830A00A3F6EA /* SceneDelegate.swift in Sources */,
 				3560844729DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */,
 				5B1092D92B56E17B002621A4 /* DetailHistoryView+CreditCard.swift in Sources */,

@@ -18,17 +18,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+// periphery:ignore:all
 import CryptoKit
 import Foundation
 
 /// A protocol that experiments can conform to.
 /// Conformance to `CaseIterable` allows us to cycle through all possible variants.
 public protocol ABTestVariant: CaseIterable {}
-
-public enum LoginFlowExperiment: String, ABTestVariant {
-    case new
-    case old
-}
 
 public protocol ABTestingManagerProtocol: Sendable {
     func variant<T: ABTestVariant>(for experiment: String,
@@ -37,7 +33,6 @@ public protocol ABTestingManagerProtocol: Sendable {
 }
 
 public extension ABTestingManagerProtocol {
-    // periphery:ignore
     func variant<T: ABTestVariant>(for experiment: String, type: T.Type) -> T? {
         variant(for: experiment, type: type, default: nil)
     }
