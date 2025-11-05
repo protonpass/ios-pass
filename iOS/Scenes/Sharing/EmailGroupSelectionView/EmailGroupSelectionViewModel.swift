@@ -1,6 +1,6 @@
 //
 //
-// UserEmailViewModel.swift
+// EmailGroupSelectionViewModel.swift
 // Proton Pass - Created on 19/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -43,7 +43,7 @@ enum RecommendationsState: Equatable {
 }
 
 @MainActor
-final class UserEmailViewModel: ObservableObject {
+final class EmailGroupSelectionViewModel: ObservableObject {
     @Published var email = ""
     @Published var selectedRecommendations: [InviteRecommendationType] = []
     @Published var highlightedRecommendation: InviteRecommendationType?
@@ -226,7 +226,7 @@ final class UserEmailViewModel: ObservableObject {
     }
 }
 
-private extension UserEmailViewModel {
+private extension EmailGroupSelectionViewModel {
     func setUp() {
         $email
             .dropFirst() // Ignore first event when the view model is initialized

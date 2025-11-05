@@ -1,6 +1,6 @@
 //
 //
-// UserEmailView.swift
+// EmailGroupSelectionView.swift
 // Proton Pass - Created on 19/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -28,9 +28,9 @@ import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 
-struct UserEmailView: View {
+struct EmailGroupSelectionView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var viewModel = UserEmailViewModel()
+    @StateObject private var viewModel = EmailGroupSelectionViewModel()
     @StateObject private var router = resolve(\RouterContainer.sharingRouter)
     @State private var isFocused = false
 
@@ -69,7 +69,7 @@ struct UserEmailView: View {
 
 // MARK: - Internal views
 
-private extension UserEmailView {
+private extension EmailGroupSelectionView {
     var mainContent: some View {
         VStack(alignment: .leading) {
             title
@@ -129,7 +129,7 @@ private extension UserEmailView {
     }
 }
 
-private extension UserEmailView {
+private extension EmailGroupSelectionView {
     @ViewBuilder
     func token(for recommendation: InviteRecommendationType) -> some View {
         if recommendation.name.isEmpty {
@@ -240,7 +240,7 @@ private extension UserEmailView {
     }
 }
 
-private extension UserEmailView {
+private extension EmailGroupSelectionView {
     func vaultRow(_ vault: VaultContent) -> some View {
         HStack(spacing: 16) {
             VaultRow(thumbnail: {
@@ -263,7 +263,7 @@ private extension UserEmailView {
     }
 }
 
-private extension UserEmailView {
+private extension EmailGroupSelectionView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
@@ -350,5 +350,5 @@ struct GroupUsersInformationView: View {
 }
 
 #Preview("UserEmailView Preview") {
-    UserEmailView()
+    EmailGroupSelectionView()
 }
