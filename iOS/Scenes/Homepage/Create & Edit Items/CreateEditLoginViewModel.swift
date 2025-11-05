@@ -34,8 +34,6 @@ protocol CreateEditLoginViewModelDelegate: AnyObject {
     func createEditLoginViewModelWantsToGenerateAlias(options: AliasOptions,
                                                       creationInfo: AliasCreationLiteInfo,
                                                       delegate: any AliasCreationLiteInfoDelegate)
-
-    func createEditLoginViewModelWantsToGeneratePassword(_ delegate: any GeneratePasswordViewModelDelegate)
 }
 
 @MainActor
@@ -309,10 +307,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         }
     }
 
-    func generatePassword() {
-        delegate?.createEditLoginViewModelWantsToGeneratePassword(self)
-    }
-
     func pastePasswordFromClipboard() {
         password = getClipboardContent()
     }
@@ -395,14 +389,6 @@ private extension CreateEditLoginViewModel {
         if #available(iOS 17, *) {
             UsernameTip.enabled = true
         }
-    }
-}
-
-// MARK: - GeneratePasswordViewModelDelegate
-
-extension CreateEditLoginViewModel: GeneratePasswordViewModelDelegate {
-    func generatePasswordViewModelDidConfirm(password: String) {
-        self.password = password
     }
 }
 
