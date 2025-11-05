@@ -165,32 +165,11 @@ private extension TelemetryEvent {
         }
     }
 
-    var measurementGroup: String {
-        switch type {
-        case .newLoginFlow:
-            "account.any.signup"
-        default:
-            "pass.any.user_actions"
-        }
-    }
+    var measurementGroup: String { "pass.any.user_actions" }
 
-    var flow: String? {
-        switch type {
-        case .newLoginFlow:
-            "pass_new_login"
-        default:
-            nil
-        }
-    }
+    var flow: String? { nil }
 
-    var item: String? {
-        switch type {
-        case let .newLoginFlow(_, item):
-            item
-        default:
-            nil
-        }
-    }
+    var item: String? { nil }
 }
 
 private extension ItemContentType {
