@@ -56,7 +56,6 @@ struct QAFeaturesView: View {
                     DismissibleUIElementsSection()
 
                     if #available(iOS 17, *) {
-                        NewLoginSection()
                         InAppNotificationSection(onDismiss: dismiss.callAsFunction)
                     }
                     Toggle(isOn: $displayUpgradeAppBanner) {
