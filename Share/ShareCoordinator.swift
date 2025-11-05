@@ -95,7 +95,6 @@ final class ShareCoordinator {
     private var lastChildViewController: UIViewController?
     private weak var rootViewController: UIViewController?
     private var createEditItemViewModel: BaseCreateEditItemViewModel?
-    private var generatePasswordCoordinator: GeneratePasswordCoordinator?
 
     private var parsedContent: SharedContent?
     private var cancellables = Set<AnyCancellable>()
@@ -395,22 +394,6 @@ extension ShareCoordinator: CreateEditLoginViewModelDelegate {
         let viewController = UIHostingController(rootView: view)
         viewController.sheetPresentationController?.detents = [.medium()]
         viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
-    }
-
-    func createEditLoginViewModelWantsToGeneratePassword(_ delegate: any GeneratePasswordViewModelDelegate) {
-        let coordinator = GeneratePasswordCoordinator(generatePasswordViewModelDelegate: delegate,
-                                                      mode: .createLogin)
-        coordinator.delegate = self
-        coordinator.start()
-        generatePasswordCoordinator = coordinator
-    }
-}
-
-// MARK: GeneratePasswordCoordinatorDelegate
-
-extension ShareCoordinator: GeneratePasswordCoordinatorDelegate {
-    func generatePasswordCoordinatorWantsToPresent(viewController: UIViewController) {
         present(viewController)
     }
 }

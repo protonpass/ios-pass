@@ -122,6 +122,7 @@ extension OnboardingHandler: OnboardingDelegate {
             return
         }
         _ = try await manager.purchase(product)
+        try await accessRepository.refreshAccess(userId: nil)
     }
 
     func enableBiometric() async throws {
