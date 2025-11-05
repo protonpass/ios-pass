@@ -76,7 +76,6 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     private var lastChildViewController: UIViewController?
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
     private var credentialsViewModel: CredentialsViewModel?
-    private var generatePasswordCoordinator: GeneratePasswordCoordinator?
     private var startTask: Task<Void, Never>?
 
     private var topMostViewController: UIViewController? {
@@ -492,14 +491,6 @@ private extension CredentialProviderCoordinator {
         }
     }
 
-    func showGeneratePasswordView(delegate: any GeneratePasswordViewModelDelegate) {
-        let coordinator = GeneratePasswordCoordinator(generatePasswordViewModelDelegate: delegate,
-                                                      mode: .createLogin)
-        coordinator.delegate = self
-        coordinator.start()
-        generatePasswordCoordinator = coordinator
-    }
-
     func handleCreatedItem(_ itemContentType: ItemContentType) {
         topMostViewController?.dismiss(animated: true) { [weak self] in
             guard let self else { return }
@@ -540,14 +531,6 @@ private extension CredentialProviderCoordinator {
             guard let self else { return }
             rootViewController?.present(alert, animated: true)
         }
-    }
-}
-
-// MARK: - GeneratePasswordCoordinatorDelegate
-
-extension CredentialProviderCoordinator: GeneratePasswordCoordinatorDelegate {
-    func generatePasswordCoordinatorWantsToPresent(viewController: UIViewController) {
-        present(viewController)
     }
 }
 
@@ -616,10 +599,6 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
         viewController.sheetPresentationController?.detents = [.medium()]
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController, dismissible: true)
-    }
-
-    func createEditLoginViewModelWantsToGeneratePassword(_ delegate: any GeneratePasswordViewModelDelegate) {
-        showGeneratePasswordView(delegate: delegate)
     }
 }
 

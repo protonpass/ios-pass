@@ -65,7 +65,6 @@ public enum TelemetryEventType: Sendable, Equatable, Codable {
     case notificationChangeStatus(key: String, status: Int)
     case notificationCtaClick(key: String)
     case fileUploaded(mimeType: String)
-    case newLoginFlow(event: String, item: String?)
     case onboardingUpsellCtaClicked(planName: String)
     case onboardingUpsellSubscribed
     case onboardingUpsellSkipped
@@ -221,8 +220,6 @@ public enum TelemetryEventType: Sendable, Equatable, Codable {
             "pass_notification.notification_cta_click"
         case .fileUploaded:
             "pass_file_attachment.file_uploaded"
-        case let .newLoginFlow(name, _):
-            name
         case .onboardingUpsellCtaClicked:
             "onboarding_upsell_cta_clicked"
         case .onboardingUpsellSubscribed:

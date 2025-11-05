@@ -51,8 +51,6 @@ final class WelcomeCoordinator: DeinitPrintable {
 
     @LazyInjected(\UseCasesContainer.createLogsFile) private var createLogsFile
     @LazyInjected(\SharedRepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
-    @LazyInjected(\SharedServiceContainer.abTestingManager) var abTestingManager
-    @LazyInjected(\SharedUseCasesContainer.sendTelemetryEvent) var sendTelemetryEvent
 
     let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
 
@@ -65,7 +63,12 @@ final class WelcomeCoordinator: DeinitPrintable {
 
 private extension WelcomeCoordinator {
     func makeWelcomeViewController() -> UIViewController {
-        let welcomeViewController = createLoginFlow()
+        let view = LoginOnboardingView(onAction: { [weak self] signUp in
+            guard let self else { return }
+            beginAddAccountFlow(isSigningUp: signUp)
+        })
+
+        let welcomeViewController = UIHostingController(rootView: view)
 
         welcomeViewController.view?.addShakeMotionDetector { [weak self] in
             guard let self else { return }
@@ -80,14 +83,12 @@ private extension WelcomeCoordinator {
             return getSharedPreferences().theme.inAppTheme
         })
         if isSigningUp {
-            sendTelemetryEvent(.newLoginFlow(event: "user.welcome.clicked", item: "sign_up"))
             logInAndSignUp.presentSignupFlow(over: rootViewController,
                                              customization: options) { [weak self] result in
                 guard let self else { return }
                 handle(result)
             }
         } else {
-            sendTelemetryEvent(.newLoginFlow(event: "user.welcome.clicked", item: "sign_in"))
             logInAndSignUp.presentLoginFlow(over: rootViewController,
                                             customization: options) { [weak self] result in
                 guard let self else { return }
@@ -160,86 +161,10 @@ private extension WelcomeCoordinator {
                      paymentsAvailability: .notAvailable,
                      signupAvailability: .available(parameters: signUpParameters))
     }
-
-    func createLoginFlow() -> UIViewController {
-        if UserDefaults.standard.bool(forKey: Constants.QA.newLoginFlow) {
-            return UIHostingController(rootView: LoginOnboardingView(onAction: { [weak self] signUp in
-                guard let self else { return }
-                beginAddAccountFlow(isSigningUp: signUp)
-            }))
-        }
-
-        let loginVariant = abTestingManager.variant(for: "LoginFlowExperiment",
-                                                    type: LoginFlowExperiment.self,
-                                                    default: .new)
-        switch loginVariant {
-        case .new:
-            sendTelemetryEvent(.newLoginFlow(event: "fe.welcome.displayed", item: nil))
-            return UIHostingController(rootView: LoginOnboardingView(onAction: { [weak self] signUp in
-                guard let self else { return }
-                beginAddAccountFlow(isSigningUp: signUp)
-            }))
-        default:
-            return WelcomeViewController(variant: .pass(.init(body: #localized("Secure password manager and more"))),
-                                         delegate: self,
-                                         username: nil,
-                                         signupAvailable: true)
-        }
-    }
 }
 
-// MARK: - WelcomeViewControllerDelegate
-
-extension WelcomeCoordinator: WelcomeViewControllerDelegate {
-    nonisolated func userWantsToLogIn(username: String?) {
-        let customization: LoginCustomizationOptions = .init(inAppTheme: { [weak self] in
-            guard let self else { return .default }
-            return theme.inAppTheme
-        })
-        Task { @MainActor [weak self] in
-            guard let self else {
-                return
-            }
-            logInAndSignUp.presentLoginFlow(over: welcomeViewController,
-                                            customization: customization) { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case .dismissed:
-                    break
-                case let .loggedIn(logInData):
-                    handle(logInData: logInData)
-                case let .signedUp(logInData):
-                    handle(logInData: logInData)
-                }
-            }
-        }
-    }
-
-    nonisolated func userWantsToSignUp() {
-        let customization: LoginCustomizationOptions = .init(inAppTheme: { [weak self] in
-            guard let self else { return .default }
-            return theme.inAppTheme
-        })
-        Task { @MainActor [weak self] in
-            guard let self else {
-                return
-            }
-            logInAndSignUp.presentSignupFlow(over: welcomeViewController,
-                                             customization: customization) { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case .dismissed:
-                    break
-                case let .loggedIn(logInData):
-                    handle(logInData: logInData)
-                case let .signedUp(logInData):
-                    handle(logInData: logInData)
-                }
-            }
-        }
-    }
-
-    private func handle(logInData: LoginData) {
+private extension WelcomeCoordinator {
+    func handle(logInData: LoginData) {
         // Have to refresh `logInAndSignUp` in case `logInData` is ignored and user has to authenticate again.
         logInAndSignUp = makeLoginAndSignUp()
         delegate?.welcomeCoordinator(didFinishWith: logInData)
