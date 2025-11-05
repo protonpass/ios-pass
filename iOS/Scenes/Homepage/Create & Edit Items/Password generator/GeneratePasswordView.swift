@@ -29,114 +29,90 @@ import SwiftUI
 struct GeneratePasswordView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: GeneratePasswordViewModel
+    @State private var maxPasswordHeight = 0.0
+    private let onConfirm: (String) -> Void
+    private let onUpdateHeight: ((Double) -> Void)?
 
-    init(viewModel: GeneratePasswordViewModel) {
-        _viewModel = .init(wrappedValue: viewModel)
+    init(mode: GeneratePasswordViewMode,
+         onConfirm: @escaping (String) -> Void,
+         onUpdateHeight: ((Double) -> Void)? = nil) {
+        _viewModel = .init(wrappedValue: .init(mode: mode))
+        self.onConfirm = onConfirm
+        self.onUpdateHeight = onUpdateHeight
     }
 
     var body: some View {
-        NavigationStack {
-            VStack {
-                Text(viewModel.password.coloredPassword())
-                    .font(.title3.monospaced())
-                    .minimumScaleFactor(0.5)
-                    .frame(maxHeight: .infinity, alignment: .center)
-                    .animationsDisabled()
+        VStack {
+            titleBar
 
-                Label(viewModel.strength.title, systemImage: viewModel.strength.iconName)
-                    .font(.headline)
-                    .foregroundStyle(viewModel.strength.color)
-                    .animationsDisabled()
+            // The height of password text grows as text gets longer
+            // We remember the last known max height and make it the min height
+            // in order to avoid animation glitch when height increases and decreases as lenght changes
+            Text(viewModel.password.coloredPassword())
+                .font(.title3.monospaced())
+                .frame(minHeight: max(32, maxPasswordHeight), alignment: .center)
+                .fixedSize(horizontal: false, vertical: true)
+                .animationsDisabled()
+                .onGeometryChange(for: Double.self,
+                                  of: { $0.size.height },
+                                  action: { newHeight in
+                                      if newHeight > maxPasswordHeight {
+                                          maxPasswordHeight = newHeight
+                                      }
+                                  })
 
-                if viewModel.shouldDisplayTypeSelection {
-                    passwordTypeRow
-                    PassDivider()
-                }
+            Label(viewModel.strength.title, systemImage: viewModel.strength.iconName)
+                .font(.headline)
+                .foregroundStyle(viewModel.strength.color)
+                .animationsDisabled()
 
-                switch viewModel.passwordType {
-                case .random:
-                    if viewModel.minChar < viewModel.maxChar {
-                        characterCountRow
-                    }
-                    PassDivider()
-
-                    toggle(title: #localized("Special characters"),
-                           isOn: $viewModel.activateSpecialCharacters,
-                           hasPolicy: viewModel.passwordPolicy?.randomPasswordMustIncludeSymbols != nil)
-                    PassDivider()
-
-                    if viewModel.isShowingAdvancedOptions {
-                        toggle(title: #localized("Capital letters"),
-                               isOn: $viewModel.activateCapitalCharacters,
-                               hasPolicy: viewModel.passwordPolicy?.randomPasswordMustIncludeUppercase != nil)
-                        PassDivider()
-
-                        toggle(title: #localized("Include numbers"),
-                               isOn: $viewModel.activateNumberCharacters,
-                               hasPolicy: viewModel.passwordPolicy?.randomPasswordMustIncludeNumbers != nil)
-                        PassDivider()
-                    } else {
-                        advancedOptionsRow
-                    }
-
-                case .memorable:
-                    if viewModel.minWord < viewModel.maxWord {
-                        wordCountRow
-                    }
-                    PassDivider()
-                    if viewModel.isShowingAdvancedOptions {
-                        wordSeparatorRow
-                        PassDivider()
-
-                        capitalizingWordsRow
-                        PassDivider()
-
-                        toggle(title: #localized("Include numbers"),
-                               isOn: $viewModel.includeNumbers,
-                               hasPolicy: viewModel.passwordPolicy?.memorablePasswordMustIncludeNumbers != nil)
-                        PassDivider()
-                    } else {
-                        capitalizingWordsRow
-                        PassDivider()
-
-                        advancedOptionsRow
-                    }
-                }
-
-                ctaButtons
+            if viewModel.shouldDisplayTypeSelection {
+                passwordTypeRow
+                PassDivider()
             }
-            .padding(.horizontal)
-            .background(PassColor.backgroundWeak)
-            .navigationBarTitleDisplayMode(.inline)
-            .animation(.default, value: viewModel.password)
-            .animation(.default, value: viewModel.isShowingAdvancedOptions)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    // Hidden gimmick button to make the navigation title centered properly
-                    CircleButton(icon: IconProvider.arrowsRotate,
-                                 iconColor: PassColor.interactionNormMajor1,
-                                 backgroundColor: PassColor.interactionNormMinor1,
-                                 action: { viewModel.regenerate() })
-                        .opacity(0)
-                }
 
-                ToolbarItem(placement: .principal) {
-                    Text("Generate password")
-                        .navigationTitleText()
-                }
+            switch viewModel.passwordType {
+            case .random:
+                randomPasswordOptions
 
-                ToolbarItem(placement: .topBarTrailing) {
-                    CircleButton(icon: IconProvider.arrowsRotate,
-                                 iconColor: PassColor.loginInteractionNormMajor2,
-                                 backgroundColor: PassColor.loginInteractionNormMinor1,
-                                 accessibilityLabel: "Regenerate password",
-                                 action: { viewModel.regenerate() })
-                }
+            case .memorable:
+                memorablePasswordOptions
             }
+
+            ctaButtons
+        }
+        .padding([.top, .horizontal])
+        .background(PassColor.backgroundNorm)
+        .animation(.default, value: viewModel.password)
+        .animation(.default, value: viewModel.isShowingAdvancedOptions)
+        .presentationDragIndicator(.visible)
+        .fittedPresentationDetent { onUpdateHeight?($0) }
+    }
+}
+
+private extension GeneratePasswordView {
+    var titleBar: some View {
+        HStack {
+            // Hidden gimmick button to make the navigation title centered properly
+            regeneratePasswordButton
+                .opacity(0)
+            Spacer()
+            Text("Generate password")
+                .navigationTitleText()
+            Spacer()
+            regeneratePasswordButton
         }
     }
 
-    private var passwordTypeRow: some View {
+    var regeneratePasswordButton: some View {
+        CircleButton(icon: IconProvider.arrowsRotate,
+                     iconColor: PassColor.loginInteractionNormMajor2,
+                     backgroundColor: PassColor.loginInteractionNormMinor1,
+                     accessibilityLabel: "Regenerate password",
+                     action: { viewModel.regenerate() })
+    }
+
+    var passwordTypeRow: some View {
         HStack {
             Text("Type")
                 .foregroundStyle(PassColor.textNorm)
@@ -172,11 +148,63 @@ struct GeneratePasswordView: View {
         .animationsDisabled()
     }
 
-    private var advancedOptionsRow: some View {
+    @ViewBuilder
+    var randomPasswordOptions: some View {
+        if viewModel.minChar < viewModel.maxChar {
+            characterCountRow
+        }
+        PassDivider()
+
+        toggle(title: "Special characters",
+               isOn: $viewModel.activateSpecialCharacters,
+               hasPolicy: viewModel.passwordPolicy?.randomPasswordMustIncludeSymbols != nil)
+        PassDivider()
+
+        if viewModel.isShowingAdvancedOptions {
+            toggle(title: "Capital letters",
+                   isOn: $viewModel.activateCapitalCharacters,
+                   hasPolicy: viewModel.passwordPolicy?.randomPasswordMustIncludeUppercase != nil)
+            PassDivider()
+
+            toggle(title: "Include numbers",
+                   isOn: $viewModel.activateNumberCharacters,
+                   hasPolicy: viewModel.passwordPolicy?.randomPasswordMustIncludeNumbers != nil)
+            PassDivider()
+        } else {
+            advancedOptionsRow
+        }
+    }
+
+    @ViewBuilder
+    var memorablePasswordOptions: some View {
+        if viewModel.minWord < viewModel.maxWord {
+            wordCountRow
+        }
+        PassDivider()
+        if viewModel.isShowingAdvancedOptions {
+            wordSeparatorRow
+            PassDivider()
+
+            capitalizingWordsRow
+            PassDivider()
+
+            toggle(title: "Include numbers",
+                   isOn: $viewModel.includeNumbers,
+                   hasPolicy: viewModel.passwordPolicy?.memorablePasswordMustIncludeNumbers != nil)
+            PassDivider()
+        } else {
+            capitalizingWordsRow
+            PassDivider()
+
+            advancedOptionsRow
+        }
+    }
+
+    var advancedOptionsRow: some View {
         AdvancedOptionsSection(isShowingAdvancedOptions: $viewModel.isShowingAdvancedOptions)
     }
 
-    private var ctaButtons: some View {
+    var ctaButtons: some View {
         HStack {
             CapsuleTextButton(title: #localized("Cancel"),
                               titleColor: PassColor.textWeak,
@@ -189,8 +217,8 @@ struct GeneratePasswordView: View {
                               backgroundColor: PassColor.loginInteractionNormMajor1,
                               height: 44,
                               action: {
-                                  viewModel.confirm()
-                                  if case .createLogin = viewModel.mode {
+                                  viewModel.saveHistory { password in
+                                      onConfirm(password)
                                       dismiss()
                                   }
                               })
@@ -198,7 +226,7 @@ struct GeneratePasswordView: View {
         .padding(.vertical)
     }
 
-    private var characterCountRow: some View {
+    var characterCountRow: some View {
         HStack {
             Text("\(Int(viewModel.numberOfCharacters)) characters")
                 .monospacedDigit()
@@ -210,7 +238,7 @@ struct GeneratePasswordView: View {
         }
     }
 
-    private var wordCountRow: some View {
+    var wordCountRow: some View {
         HStack {
             Text("\(Int(viewModel.numberOfWords)) word(s)")
                 .monospacedDigit()
@@ -222,7 +250,7 @@ struct GeneratePasswordView: View {
         }
     }
 
-    private func toggle(title: String, isOn: Binding<Bool>, hasPolicy: Bool = false) -> some View {
+    func toggle(title: LocalizedStringKey, isOn: Binding<Bool>, hasPolicy: Bool = false) -> some View {
         Toggle(isOn: isOn) {
             Text(title)
                 .foregroundStyle(PassColor.textNorm)
@@ -231,13 +259,13 @@ struct GeneratePasswordView: View {
         .disabled(hasPolicy)
     }
 
-    private var capitalizingWordsRow: some View {
-        toggle(title: #localized("Capitalize"),
+    var capitalizingWordsRow: some View {
+        toggle(title: "Capitalize",
                isOn: $viewModel.activateCapitalized,
                hasPolicy: viewModel.passwordPolicy?.memorablePasswordMustCapitalize != nil)
     }
 
-    private var wordSeparatorRow: some View {
+    var wordSeparatorRow: some View {
         HStack {
             Text("Word separator")
                 .foregroundStyle(PassColor.textNorm)
@@ -271,5 +299,37 @@ struct GeneratePasswordView: View {
             })
         }
         .animationsDisabled()
+    }
+}
+
+private extension GeneratePasswordViewMode {
+    var confirmTitle: String {
+        switch self {
+        case .createLogin: #localized("Confirm")
+        case .random: #localized("Copy and close")
+        }
+    }
+}
+
+private extension PasswordType {
+    var title: LocalizedStringKey {
+        switch self {
+        case .random: "Random password"
+        case .memorable: "Memorable password"
+        }
+    }
+}
+
+private extension WordSeparator {
+    var title: LocalizedStringKey {
+        switch self {
+        case .hyphens: "Hyphens"
+        case .spaces: "Spaces"
+        case .periods: "Periods"
+        case .commas: "Commas"
+        case .underscores: "Underscores"
+        case .numbers: "Numbers"
+        case .numbersAndSymbols: "Numbers and Symbols"
+        }
     }
 }
