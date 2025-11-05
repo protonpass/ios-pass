@@ -93,6 +93,8 @@ final class AppContentManager: ObservableObject, @unchecked Sendable, DeinitPrin
     private var getLastEventIdIfNotExist
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
+    @LazyInjected(\SharedUseCasesContainer.dedupShare)
+    private var dedupShare
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -523,8 +525,10 @@ private extension AppContentManager {
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
         let allItems = try await itemRepository.getAllItems(userId: userId)
 
+        let dedupShares = dedupShare(shares: shares)
+
         let sharesData = try await getShareDatas(symmetricKey: symmetricKey,
-                                                 shares: shares.filteredSharesWithHighestRole,
+                                                 shares: dedupShares,
                                                  items: allItems)
         let userPreferences = preferencesManager.userPreferences.unwrapped()
 

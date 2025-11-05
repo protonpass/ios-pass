@@ -731,7 +731,7 @@ extension HomepageCoordinator {
     func presentSharingFlow(dismissal: SheetDismissal) {
         let completion: () -> Void = { [weak self] in
             guard let self else { return }
-            present(UserEmailView())
+            present(EmailGroupSelectionView())
         }
 
         switch dismissal {
