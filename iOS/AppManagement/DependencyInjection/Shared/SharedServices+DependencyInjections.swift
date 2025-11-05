@@ -175,6 +175,7 @@ extension SharedServiceContainer {
         self { TelemetryService.shared }
     }
 
+    // periphery:ignore
     var abTestingManager: Factory<any ABTestingManagerProtocol> {
         self { ABTestingManager() }
     }

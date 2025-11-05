@@ -189,8 +189,6 @@ private extension TelemetryEventType {
             Image(systemName: "envelope.fill")
         case .fileUploaded:
             Image(systemName: "icloud.and.arrow.up.fill")
-        case .newLoginFlow:
-            Image(systemName: "house")
         case .onboardingAliasVideoOpened,
              .onboardingBiometricsEnabled,
              .onboardingBiometricsSkipped,
@@ -231,8 +229,7 @@ private extension TelemetryEventType {
              .monitorItemDetailFromReusedPassword,
              .monitorItemDetailFromWeakPassword,
              .multiAccountAddAccount,
-             .multiAccountRemoveAccount,
-             .newLoginFlow:
+             .multiAccountRemoveAccount:
             ItemContentType.note.normMajor1Color
         case .notificationChangeStatus, .notificationCtaClick, .notificationDisplay:
             ItemContentType.creditCard.normMajor1Color
@@ -278,8 +275,7 @@ private extension TelemetryEventType {
              .monitorItemDetailFromReusedPassword,
              .monitorItemDetailFromWeakPassword,
              .multiAccountAddAccount,
-             .multiAccountRemoveAccount,
-             .newLoginFlow:
+             .multiAccountRemoveAccount:
             ItemContentType.note.normMinor1Color
         case .notificationChangeStatus, .notificationCtaClick, .notificationDisplay:
             ItemContentType.creditCard.normMinor1Color
@@ -363,8 +359,6 @@ private extension TelemetryEventType {
             "Notification Cta clicked"
         case let .fileUploaded(mimeType):
             "File uploaded (\(mimeType))"
-        case let .newLoginFlow(event, item):
-            "New Login flow with event (\(event)) and item (\(String(describing: item)))"
         case .onboardingUpsellCtaClicked:
             "Clicked onboarding upsell CTA"
         case .onboardingUpsellSubscribed:

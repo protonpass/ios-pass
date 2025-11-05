@@ -156,6 +156,7 @@ extension SharedUseCasesContainer {
                                  logManager: self.logManager) }
     }
 
+    // periphery:ignore
     var sendTelemetryEvent: Factory<any SendTelemetryEventUseCase> {
         self {
             SendTelemetryEvent(datasource: SharedRepositoryContainer.shared.remoteTelemetryEventDatasource(),
