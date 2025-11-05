@@ -246,7 +246,7 @@ struct AccountView: View {
         }
         if viewModel.plan?.shouldUpsell == true {
             ToolbarItem(placement: .topBarTrailing) {
-                CapsuleLabelButton(icon: PassIcon.brandPass,
+                CapsuleLabelButton(icon: PassIcon.diamond,
                                    title: #localized("Upgrade"),
                                    titleColor: ColorProvider.TextInverted,
                                    backgroundColor: PassColor.interactionNormMajor2,

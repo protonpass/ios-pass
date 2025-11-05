@@ -24,14 +24,15 @@ import Entities
 import FactoryKit
 import SwiftUI
 
-@MainActor
-protocol GeneratePasswordViewModelDelegate: AnyObject {
-    func generatePasswordViewModelDidConfirm(password: String)
+enum GeneratePasswordViewMode {
+    /// View is shown as part of create login process
+    case createLogin
+    /// View is shown indepently without any context
+    case random
 }
 
-@MainActor
-protocol GeneratePasswordViewModelUiDelegate: AnyObject {
-    func generatePasswordViewModelWantsToUpdateSheetHeight(isShowingAdvancedOptions: Bool)
+enum PasswordType: Int, CaseIterable {
+    case random = 0, memorable
 }
 
 @MainActor
@@ -56,8 +57,7 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     @Published private(set) var minWord: Double = 1
     @Published private(set) var maxWord: Double = 10
     @Published private(set) var passwordPolicy: PasswordPolicy?
-
-    @Published var isShowingAdvancedOptions = false { didSet { requestHeightUpdate() } }
+    @Published var isShowingAdvancedOptions = false
 
     private var qaPasswordPolicyOverride: Bool {
         UserDefaults.standard.bool(forKey: Constants.QA.forcePasswordPolicy)
@@ -67,7 +67,6 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     private var type: PasswordType = .memorable {
         didSet {
             regenerate(forceRefresh: false)
-            requestHeightUpdate()
         }
     }
 
@@ -89,7 +88,6 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     private var wordSeparator: WordSeparator = .hyphens {
         didSet {
             regenerate(forceRefresh: false)
-            requestHeightUpdate()
         }
     }
 
@@ -101,9 +99,6 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
 
     @AppStorage("includingNumbers", store: kSharedUserDefaults)
     private var includingNumbers = true
-
-    weak var delegate: (any GeneratePasswordViewModelDelegate)?
-    weak var uiDelegate: (any GeneratePasswordViewModelUiDelegate)?
 
     var shouldDisplayTypeSelection: Bool {
         if let randomPasswordAllowed = passwordPolicy?.randomPasswordAllowed, !randomPasswordAllowed {
@@ -177,16 +172,16 @@ extension GeneratePasswordViewModel {
         wordSeparator = separator
     }
 
-    func confirm() {
+    func saveHistory(onComplete: @escaping (String) -> Void) {
         Task { [weak self] in
             guard let self else { return }
             do {
                 try await passwordHistoryRepository.insertPassword(password)
+                onComplete(password)
             } catch {
                 logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
-
-            delegate?.generatePasswordViewModelDidConfirm(password: password)
         }
     }
 }
@@ -194,11 +189,6 @@ extension GeneratePasswordViewModel {
 // MARK: - Private APIs
 
 private extension GeneratePasswordViewModel {
-    func requestHeightUpdate() {
-        uiDelegate?
-            .generatePasswordViewModelWantsToUpdateSheetHeight(isShowingAdvancedOptions: isShowingAdvancedOptions)
-    }
-
     func checkForOrganisationLimitation() {
         Task { [weak self] in
             guard let self else { return }
