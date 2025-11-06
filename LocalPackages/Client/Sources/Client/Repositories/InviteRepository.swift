@@ -63,6 +63,11 @@ public protocol ShareInviteRepositoryProtocol: Sendable {
 
     func getInviteRecommendations(shareId: String,
                                   query: InviteRecommendationsQuery) async throws -> InviteRecommendations
+    
+    func getRecentInviteRecommendations(shareId: String,
+                                        email: String?) async throws -> [RecentInviteSuggestion]
+    func getOrganisationInviteRecommendations(shareId: String,
+                                              query: InviteRecommendationsQuery) async throws -> OrganizationRecommendations
 
     func checkAddresses(shareId: String, emails: [String]) async throws -> [String]
 }
@@ -282,6 +287,20 @@ public extension InviteRepository {
         logger.trace("Getting invite recommendations for share \(shareId)")
         let userId = try await userManager.getActiveUserId()
         return try await remoteDatasource.getInviteRecommendations(userId: userId, shareId: shareId, query: query)
+    }
+    
+    func getRecentInviteRecommendations(shareId: String,
+                                  email: String?) async throws -> [RecentInviteSuggestion] {
+        logger.trace("Getting recent invite recommendations for share \(shareId)")
+        let userId = try await userManager.getActiveUserId()
+        return try await remoteDatasource.getRecentInviteRecommendations(userId: userId, shareId: shareId, email: email)
+    }
+    
+    func getOrganisationInviteRecommendations(shareId: String,
+                                              query: InviteRecommendationsQuery) async throws -> OrganizationRecommendations {
+        logger.trace("Getting organization invite recommendations for share \(shareId)")
+        let userId = try await userManager.getActiveUserId()
+        return try await remoteDatasource.getOrganizationRecommendations(userId: userId, shareId: shareId, query: query)
     }
 
     func checkAddresses(shareId: String, emails: [String]) async throws -> [String] {
