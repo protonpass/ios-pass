@@ -1,4 +1,4 @@
-//  
+//
 // GetRecentInviteRecommendationsEndpoint.swift
 // Proton Pass - Created on 06/11/2025.
 // Copyright (c) 2025 Proton Technologies AG

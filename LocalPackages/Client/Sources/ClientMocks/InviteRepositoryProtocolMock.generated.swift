@@ -87,26 +87,8 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
         closureAcceptInvite()
         return stubbedAcceptInviteResult
     }
-    // MARK: - acceptGroupInvite
-    public var acceptGroupInviteWithAndThrowableError3: Error?
-    public var closureAcceptGroupInvite: () -> () = {}
-    public var invokedAcceptGroupInvitefunction = false
-    public var invokedAcceptGroupInviteCount = 0
-    public var invokedAcceptGroupInviteParameters: (inviteToken: String, keys: [ItemKey])?
-    public var invokedAcceptGroupInviteParametersList = [(inviteToken: String, keys: [ItemKey])]()
-
-    public func acceptGroupInvite(with inviteToken: String, and keys: [ItemKey]) async throws {
-        invokedAcceptGroupInvitefunction = true
-        invokedAcceptGroupInviteCount += 1
-        invokedAcceptGroupInviteParameters = (inviteToken, keys)
-        invokedAcceptGroupInviteParametersList.append((inviteToken, keys))
-        if let error = acceptGroupInviteWithAndThrowableError3 {
-            throw error
-        }
-        closureAcceptGroupInvite()
-    }
     // MARK: - rejectInvite
-    public var rejectInviteThrowableError4: Error?
+    public var rejectInviteThrowableError3: Error?
     public var closureRejectInvite: () -> () = {}
     public var invokedRejectInvitefunction = false
     public var invokedRejectInviteCount = 0
@@ -119,14 +101,14 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
         invokedRejectInviteCount += 1
         invokedRejectInviteParameters = (invite, ())
         invokedRejectInviteParametersList.append((invite, ()))
-        if let error = rejectInviteThrowableError4 {
+        if let error = rejectInviteThrowableError3 {
             throw error
         }
         closureRejectInvite()
         return stubbedRejectInviteResult
     }
     // MARK: - refreshInvites
-    public var refreshInvitesUserIdThrowableError5: Error?
+    public var refreshInvitesUserIdThrowableError4: Error?
     public var closureRefreshInvites: () -> () = {}
     public var invokedRefreshInvitesfunction = false
     public var invokedRefreshInvitesCount = 0
@@ -138,7 +120,7 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
         invokedRefreshInvitesCount += 1
         invokedRefreshInvitesParameters = (userId, ())
         invokedRefreshInvitesParametersList.append((userId, ()))
-        if let error = refreshInvitesUserIdThrowableError5 {
+        if let error = refreshInvitesUserIdThrowableError4 {
             throw error
         }
         closureRefreshInvites()

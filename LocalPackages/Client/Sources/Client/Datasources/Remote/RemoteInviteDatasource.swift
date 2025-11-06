@@ -46,13 +46,14 @@ public protocol RemoteInviteDatasourceProtocol: Sendable {
     func getInviteRecommendations(userId: String,
                                   shareId: String,
                                   query: InviteRecommendationsQuery) async throws -> InviteRecommendations
-    
+
     func getRecentInviteRecommendations(userId: String,
                                         shareId: String,
                                         email: String?) async throws -> [RecentInviteSuggestion]
     func getOrganizationRecommendations(userId: String,
                                         shareId: String,
-                                        query: InviteRecommendationsQuery) async throws -> OrganizationRecommendations
+                                        query: InviteRecommendationsQuery) async throws
+        -> OrganizationRecommendations
     /// Check the list of emails if they can be invited, return the list of eligible emails
     func checkAddresses(userId: String, shareId: String, emails: [String]) async throws -> [String]
 
@@ -163,15 +164,16 @@ public extension RemoteInviteDatasource {
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.suggested
     }
-    
+
     func getOrganizationRecommendations(userId: String,
                                         shareId: String,
-                                        query: InviteRecommendationsQuery) async throws -> OrganizationRecommendations {
+                                        query: InviteRecommendationsQuery) async throws
+        -> OrganizationRecommendations {
         let endpoint = GetOrgInviteRecommendationsEndpoint(shareId: shareId, query: query)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.recommendation
     }
-    
+
     func inviteMultipleProtonUsers(userId: String,
                                    shareId: String,
                                    request: InviteMultipleUsersToShareRequest) async throws -> Bool {
