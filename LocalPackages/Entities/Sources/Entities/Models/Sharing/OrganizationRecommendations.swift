@@ -1,4 +1,4 @@
-//  
+//
 // OrganizationRecommendations.swift
 // Proton Pass - Created on 06/11/2025.
 // Copyright (c) 2025 Proton Technologies AG
@@ -22,7 +22,7 @@ public struct OrganizationRecommendations: Sendable, Identifiable, Decodable {
     public let groupDisplayName: String
     public let nextToken: String?
     public let entries: [OrganizationMemberEmailSuggestion]
-    
+
     public init(groupDisplayName: String, nextToken: String?, entries: [OrganizationMemberEmailSuggestion]) {
         self.groupDisplayName = groupDisplayName
         self.nextToken = nextToken
@@ -38,6 +38,6 @@ public struct OrganizationMemberEmailSuggestion: Sendable, Identifiable, Decodab
     public init(email: String) {
         self.email = email
     }
-    
+
     public var id: String { email }
 }
