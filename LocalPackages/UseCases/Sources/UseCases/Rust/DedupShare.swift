@@ -41,7 +41,8 @@ public final class DedupShare: DedupShareUseCase {
     }
 
     public func execute(shares: [Entities.Share]) -> [Entities.Share] {
-        let shareIdsToKeep = contentDedupParser.getVisibleShares(shares: shares.map(\.toRustShare))
+        let shareIdsToKeep = contentDedupParser.getVisibleShares(shares: shares.map(\.toRustShare),
+                                                                 filterHidden: true)
         return shares.filter { shareIdsToKeep.contains($0.shareId) }
     }
 }
@@ -53,7 +54,8 @@ private extension Entities.Share {
                            targetType: shareType.toRustTargetType,
                            targetId: targetID,
                            roleId: shareRoleID,
-                           permissions: UInt16(permission))
+                           permissions: UInt16(permission),
+                           flags: UInt16(flags))
     }
 }
 

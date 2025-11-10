@@ -49,11 +49,11 @@ public protocol RemoteInviteDatasourceProtocol: Sendable {
 
     func getRecentInviteRecommendations(userId: String,
                                         shareId: String,
-                                        email: String?) async throws -> [RecentInviteSuggestion]
+                                        email: String?) async throws -> [InviteSuggestion]
     func getOrganizationRecommendations(userId: String,
                                         shareId: String,
                                         query: InviteRecommendationsQuery) async throws
-        -> OrganizationRecommendations
+        -> OrganizationInviteRecommendations
     /// Check the list of emails if they can be invited, return the list of eligible emails
     func checkAddresses(userId: String, shareId: String, emails: [String]) async throws -> [String]
 
@@ -159,8 +159,8 @@ public extension RemoteInviteDatasource {
 
     func getRecentInviteRecommendations(userId: String,
                                         shareId: String,
-                                        email: String?) async throws -> [RecentInviteSuggestion] {
-        let endpoint = GetRecentInviteRecommendationsEndpoint(shareId: shareId, email: email)
+                                        email: String?) async throws -> [InviteSuggestion] {
+        let endpoint = GetInviteSuggestionsEndpoint(shareId: shareId, email: email)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.suggested
     }
@@ -168,7 +168,7 @@ public extension RemoteInviteDatasource {
     func getOrganizationRecommendations(userId: String,
                                         shareId: String,
                                         query: InviteRecommendationsQuery) async throws
-        -> OrganizationRecommendations {
+        -> OrganizationInviteRecommendations {
         let endpoint = GetOrgInviteRecommendationsEndpoint(shareId: shareId, query: query)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.recommendation

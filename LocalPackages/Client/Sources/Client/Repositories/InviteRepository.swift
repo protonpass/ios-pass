@@ -64,11 +64,11 @@ public protocol ShareInviteRepositoryProtocol: Sendable {
     func getInviteRecommendations(shareId: String,
                                   query: InviteRecommendationsQuery) async throws -> InviteRecommendations
 
-    func getRecentInviteRecommendations(shareId: String,
-                                        email: String?) async throws -> [RecentInviteSuggestion]
+    func getSuggestedInvite(shareId: String,
+                            email: String?) async throws -> [InviteSuggestion]
     func getOrganisationInviteRecommendations(shareId: String,
                                               query: InviteRecommendationsQuery) async throws
-        -> OrganizationRecommendations
+        -> OrganizationInviteRecommendations
 
     func checkAddresses(shareId: String, emails: [String]) async throws -> [String]
 }
@@ -290,8 +290,8 @@ public extension InviteRepository {
         return try await remoteDatasource.getInviteRecommendations(userId: userId, shareId: shareId, query: query)
     }
 
-    func getRecentInviteRecommendations(shareId: String,
-                                        email: String?) async throws -> [RecentInviteSuggestion] {
+    func getSuggestedInvite(shareId: String,
+                            email: String?) async throws -> [InviteSuggestion] {
         logger.trace("Getting recent invite recommendations for share \(shareId)")
         let userId = try await userManager.getActiveUserId()
         return try await remoteDatasource.getRecentInviteRecommendations(userId: userId,
@@ -301,7 +301,7 @@ public extension InviteRepository {
 
     func getOrganisationInviteRecommendations(shareId: String,
                                               query: InviteRecommendationsQuery) async throws
-        -> OrganizationRecommendations {
+        -> OrganizationInviteRecommendations {
         logger.trace("Getting organization invite recommendations for share \(shareId)")
         let userId = try await userManager.getActiveUserId()
         return try await remoteDatasource.getOrganizationRecommendations(userId: userId,

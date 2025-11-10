@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public struct OrganizationRecommendations: Sendable, Identifiable, Decodable {
+public struct OrganizationInviteRecommendations: Sendable, Identifiable, Decodable {
     public let groupDisplayName: String
     public let nextToken: String?
     public let entries: [OrganizationMemberEmailSuggestion]
@@ -30,6 +30,12 @@ public struct OrganizationRecommendations: Sendable, Identifiable, Decodable {
     }
 
     public var id: String { groupDisplayName }
+
+    public var reset: OrganizationInviteRecommendations {
+        OrganizationInviteRecommendations(groupDisplayName: groupDisplayName,
+                                          nextToken: nil,
+                                          entries: [])
+    }
 }
 
 public struct OrganizationMemberEmailSuggestion: Sendable, Identifiable, Decodable {
