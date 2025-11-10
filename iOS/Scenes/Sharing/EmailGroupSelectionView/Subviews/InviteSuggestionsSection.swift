@@ -95,7 +95,7 @@ private extension InviteSuggestionsSection {
         .shimmering()
     }
 }
- 
+
 struct EnumSegmentedPicker<Selection>: View where Selection: RawRepresentable, Selection.RawValue == Int,
     Selection: Hashable {
     @Binding private var selection: Selection
@@ -105,10 +105,10 @@ struct EnumSegmentedPicker<Selection>: View where Selection: RawRepresentable, S
     private let backgroundColor: Color
 
     init(selection: Binding<Selection>,
-                options: [String],
-                highlightTextColor: Color = PassColor.textNorm,
-                mainColor: Color = PassColor.interactionNormMajor1,
-                backgroundColor: Color = PassColor.interactionNormMinor1) {
+         options: [String],
+         highlightTextColor: Color = PassColor.textNorm,
+         mainColor: Color = PassColor.interactionNormMajor1,
+         backgroundColor: Color = PassColor.interactionNormMinor1) {
         _selection = selection
         self.options = options
         self.mainColor = mainColor
