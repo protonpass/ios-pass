@@ -54,7 +54,7 @@ public struct InviteSuggestionsSection: View {
     var suggestionPicker: some View {
         if let organizationTitle = viewModel.organizationTitle {
             EnumSegmentedPicker(selection: $viewModel.displayType,
-                                   options: [#localized("Suggestions"), organizationTitle])
+                                options: [#localized("Suggestions"), organizationTitle])
         }
     }
 }
