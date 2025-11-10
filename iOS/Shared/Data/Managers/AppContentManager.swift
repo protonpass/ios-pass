@@ -642,13 +642,3 @@ extension [ShareContent] {
         sorted(by: { !$0.share.hidden && $1.share.hidden })
     }
 }
-
-private extension [Share] {
-    /// Returns shares with unique vault IDs, keeping the one with the highest `shareRole` weight.
-    var filteredSharesWithHighestRole: [Share] {
-        uniqued(by: { $0.vaultID + $0.targetID },
-                combine: { existing, new in
-                    new.shareRole > existing.shareRole ? new : existing
-                })
-    }
-}

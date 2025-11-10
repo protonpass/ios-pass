@@ -43,6 +43,7 @@ public protocol RemoteInviteDatasourceProtocol: Sendable {
     func sendInviteReminder(userId: String, shareId: String, inviteId: String) async throws -> Bool
     func deleteShareInvite(userId: String, shareId: String, inviteId: String) async throws -> Bool
     func deleteShareNewUserInvite(userId: String, shareId: String, inviteId: String) async throws -> Bool
+    // periphery:ignore
     func getInviteRecommendations(userId: String,
                                   shareId: String,
                                   query: InviteRecommendationsQuery) async throws -> InviteRecommendations

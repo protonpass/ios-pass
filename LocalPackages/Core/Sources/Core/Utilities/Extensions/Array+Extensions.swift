@@ -79,6 +79,7 @@ public extension Array {
         return result
     }
 
+    // periphery:ignore
     /// Returns a filtered array where duplicate keys are resolved using a custom combine closure.
     func uniqued<Key: Hashable>(by key: (Element) -> Key,
                                 combine: (Element, Element) -> Element) -> [Element] {
