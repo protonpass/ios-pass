@@ -25,10 +25,10 @@ import Macro
 import Screens
 import SwiftUI
 
-public struct InviteSuggestionsSection: View {
+struct InviteSuggestionsSection: View {
     @EnvironmentObject private var viewModel: EmailGroupSelectionViewModel
 
-    public var body: some View {
+    var body: some View {
         LazyVStack {
             title
 
@@ -95,8 +95,8 @@ private extension InviteSuggestionsSection {
         .shimmering()
     }
 }
-
-public struct EnumSegmentedPicker<Selection>: View where Selection: RawRepresentable, Selection.RawValue == Int,
+ 
+struct EnumSegmentedPicker<Selection>: View where Selection: RawRepresentable, Selection.RawValue == Int,
     Selection: Hashable {
     @Binding private var selection: Selection
     private let options: [String]
@@ -104,7 +104,7 @@ public struct EnumSegmentedPicker<Selection>: View where Selection: RawRepresent
     private let mainColor: Color
     private let backgroundColor: Color
 
-    public init(selection: Binding<Selection>,
+    init(selection: Binding<Selection>,
                 options: [String],
                 highlightTextColor: Color = PassColor.textNorm,
                 mainColor: Color = PassColor.interactionNormMajor1,
@@ -116,7 +116,7 @@ public struct EnumSegmentedPicker<Selection>: View where Selection: RawRepresent
         self.highlightTextColor = highlightTextColor
     }
 
-    public var body: some View {
+    var body: some View {
         ZStack {
             GeometryReader { proxy in
                 let thumbWidth = proxy.size.width / CGFloat(options.count)
