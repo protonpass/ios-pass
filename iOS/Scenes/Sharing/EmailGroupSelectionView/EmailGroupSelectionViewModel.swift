@@ -29,17 +29,9 @@ import Foundation
 import Macro
 import ProtonCoreHumanVerification
 
-enum RecommendationsState: Equatable {
-    case loading
-    case loaded(FullInviteSuggestions?)
-
-    var suggestions: FullInviteSuggestions? {
-        if case let .loaded(suggestions) = self {
-            return suggestions
-        }
-
-        return nil
-    }
+enum SuggestionsDisplayType: Int, Hashable {
+    case suggestion = 0
+    case organisation = 1
 }
 
 @MainActor
@@ -50,10 +42,12 @@ final class EmailGroupSelectionViewModel: ObservableObject {
     @Published private(set) var invalidEmails: [String] = []
     @Published private(set) var canContinue = false
     @Published private(set) var element: SharingElementData?
-    @Published private(set) var recommendationsState: RecommendationsState = .loaded(nil)
     @Published private(set) var isChecking = false
     @Published private(set) var isFetchingMore = false
+    @Published private(set) var loading = false
     @Published var showGroupMembers = false
+    @Published var displayType = SuggestionsDisplayType.suggestion
+    @Published private(set) var suggestions: [InviteRecommendationType]?
 
     private var cancellables = Set<AnyCancellable>()
     private let inviteRepository = resolve(\SharedRepositoryContainer.inviteRepository)
@@ -67,12 +61,27 @@ final class EmailGroupSelectionViewModel: ObservableObject {
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var currentTask: Task<Void, Never>?
-    private var canFetchMoreEmails = true
     private var cachedGroupInfos: [InviteRecommendationType]?
+    private var cachedOrganizationInfos: OrganizationInviteRecommendations?
+    private var updateSuggestionTask: Task<Void, Never>?
+
+    var organizationTitle: String? {
+        cachedOrganizationInfos?.groupDisplayName
+    }
+
+    var canFetchMore: Bool {
+        guard let cachedOrganizationInfos else {
+            return true
+        }
+        if cachedOrganizationInfos.nextToken == nil, cachedOrganizationInfos.entries.isEmpty {
+            return true
+        }
+
+        return false
+    }
 
     init() {
         setUp()
-        updateRecommendations(removingCurrentRecommendations: true)
     }
 
     func highlightLast() {
@@ -156,72 +165,29 @@ final class EmailGroupSelectionViewModel: ObservableObject {
         shareInviteService.resetShareInviteInformations()
     }
 
-    func updateRecommendations(removingCurrentRecommendations: Bool) {
-        guard canFetchMoreEmails else { return }
+    func loadData() async {
+        loading = true
+        await fetchGroupsInfos()
+        async let fetchSuggestions = fetchSuggestions()
+        async let fetchingOrganizationsRecommendation = fetchOrganizationsRecommendation(shouldFetchMore: true)
+
+        let (newSuggestions, _) = await (fetchSuggestions, fetchingOrganizationsRecommendation)
+        suggestions = newSuggestions
+        loading = false
+    }
+
+    func loadMore() {
+        guard canFetchMore else {
+            return
+        }
         currentTask?.cancel()
         currentTask = nil
         currentTask = Task { [weak self] in
             guard let self else { return }
             defer {
                 currentTask = nil
-                isFetchingMore = false
             }
-            do {
-                if Task.isCancelled {
-                    return
-                }
-                guard let shareId = element?.shareId else { return }
-                isFetchingMore = true
-
-                if removingCurrentRecommendations {
-                    recommendationsState = .loading
-                }
-
-                let currentRecommendations = recommendationsState.suggestions
-
-                let query = InviteRecommendationsQuery(lastToken: currentRecommendations?.recommendations
-                    .planRecommendedEmailsNextToken,
-                    pageSize: Constants.Utils.defaultPageSize,
-                    email: email)
-                let recommendations = try await inviteRepository
-                    .getInviteRecommendations(shareId: shareId, query: query)
-                canFetchMoreEmails = recommendations.planRecommendedEmailsNextToken != nil
-
-                if var currentRecommendations, !removingCurrentRecommendations {
-                    currentRecommendations.recommendations = currentRecommendations.recommendations
-                        .merging(with: recommendations)
-                    recommendationsState = .loaded(currentRecommendations)
-                } else {
-                    recommendationsState = .loaded(FullInviteSuggestions(recommendations: recommendations,
-                                                                         groupInfos: cachedGroupInfos))
-                }
-            } catch {
-                recommendationsState = .loaded(nil)
-                router.display(element: .displayErrorBanner(error))
-            }
-        }
-    }
-
-    func fetchGroupsInfos() async {
-        guard getFeatureFlagStatus(for: FeatureFlagType.passGroupSharingV1) else {
-            return
-        }
-
-        guard let userAccess = accessRepository.access.value,
-              userAccess.access.plan.isBusinessUser,
-              let userId = try? await userManager.getActiveUserId() else {
-            return
-        }
-
-        let groupInfos: [InviteRecommendationType]? = try? await groupRepository
-            .getGroupsInfos(userId: userId)
-            .map { .group($0) }
-        cachedGroupInfos = groupInfos
-        if var currentRecommendations = recommendationsState.suggestions {
-            currentRecommendations.groupInfos = groupInfos
-            recommendationsState = .loaded(currentRecommendations)
-        } else {
-            recommendationsState = .loaded(FullInviteSuggestions(groupInfos: groupInfos))
+            suggestions = await fetchOrganizationsRecommendation(shouldFetchMore: true)
         }
     }
 }
@@ -236,8 +202,8 @@ private extension EmailGroupSelectionViewModel {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 guard let self else { return }
-                canFetchMoreEmails = true
-                updateRecommendations(removingCurrentRecommendations: true)
+                cachedOrganizationInfos = cachedOrganizationInfos?.reset
+                updateSuggestedContent(fetchMore: true)
             }
             .store(in: &cancellables)
 
@@ -259,11 +225,118 @@ private extension EmailGroupSelectionViewModel {
             .store(in: &cancellables)
 
         element = shareInviteService.currentSelectedElement.value
+
+        $displayType
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                updateSuggestedContent()
+            }
+            .store(in: &cancellables)
+    }
+
+    func updateSuggestedContent(fetchMore: Bool = false) {
+        updateSuggestionTask?.cancel()
+        updateSuggestionTask = Task { [weak self] in
+            guard let self else { return }
+            switch displayType {
+            case .organisation:
+                suggestions = await fetchOrganizationsRecommendation(shouldFetchMore: fetchMore)
+            case .suggestion:
+                suggestions = await fetchSuggestions()
+            }
+        }
+    }
+
+    // MARK: - Utils
+
+    func fetchGroupsInfos() async {
+        guard getFeatureFlagStatus(for: FeatureFlagType.passGroupSharingV1) else {
+            return
+        }
+
+        guard let userAccess = accessRepository.access.value,
+              userAccess.access.plan.isBusinessUser,
+              let userId = try? await userManager.getActiveUserId() else {
+            return
+        }
+
+        let groupInfos: [InviteRecommendationType]? = try? await groupRepository
+            .getGroupsInfos(userId: userId)
+            .map { .group($0) }
+        cachedGroupInfos = groupInfos
+    }
+
+    func fetchSuggestions() async -> [InviteRecommendationType]? {
+        guard let shareId = element?.shareId else { return nil }
+
+        do {
+            let content = try await inviteRepository.getSuggestedInvite(shareId: shareId, email: email)
+            var invitations: [InviteRecommendationType] = []
+            for element in content {
+                if element.isGroup,
+                   let groupInvite = cachedGroupInfos?.first(where: { element.email == $0.emailAddress }) {
+                    invitations.append(groupInvite)
+                } else {
+                    invitations.append(.email(element.email))
+                }
+            }
+            return invitations
+        } catch {
+            router.display(element: .displayErrorBanner(error))
+            return nil
+        }
+    }
+
+    func fetchOrganizationsRecommendation(shouldFetchMore: Bool = false) async -> [InviteRecommendationType]? {
+        guard let shareId = element?.shareId else { return nil }
+        defer {
+            isFetchingMore = false
+        }
+        do {
+            if canFetchMore, shouldFetchMore {
+                isFetchingMore = true
+                let query = InviteRecommendationsQuery(lastToken: cachedOrganizationInfos?.nextToken,
+                                                       pageSize: Constants.Utils.defaultPageSize,
+                                                       email: email)
+                if Task.isCancelled {
+                    return nil
+                }
+                let content = try await inviteRepository.getOrganisationInviteRecommendations(shareId: shareId,
+                                                                                              query: query)
+
+                if let cachedOrganizationInfos {
+                    self.cachedOrganizationInfos = cachedOrganizationInfos.update(newRecommendations: content)
+                } else {
+                    cachedOrganizationInfos = content
+                }
+            }
+            guard let cachedOrganizationInfos else {
+                return nil
+            }
+            var recommendation = cachedGroupInfos ?? []
+            for entry in cachedOrganizationInfos.entries {
+                recommendation.append(.email(entry.email))
+            }
+            return recommendation
+        } catch {
+            router.display(element: .displayErrorBanner(error))
+            return nil
+        }
     }
 }
 
 private extension [InviteRecommendationType] {
     var emails: [String] {
         compactMap(\.emailAddress)
+    }
+}
+
+extension OrganizationInviteRecommendations {
+    func update(newRecommendations reco: OrganizationInviteRecommendations) -> OrganizationInviteRecommendations {
+        let updateEmails = entries.appending(reco.entries)
+        return OrganizationInviteRecommendations(groupDisplayName: groupDisplayName,
+                                                 nextToken: reco.nextToken,
+                                                 entries: updateEmails)
     }
 }

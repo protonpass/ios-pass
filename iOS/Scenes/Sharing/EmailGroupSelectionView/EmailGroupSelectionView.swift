@@ -36,17 +36,18 @@ struct EmailGroupSelectionView: View {
 
     var body: some View {
         mainContent
+            .environmentObject(viewModel)
             .onAppear {
                 isFocused = true
             }
             .task {
-                await viewModel.fetchGroupsInfos()
+                await viewModel.loadData()
             }
             .onChange(of: viewModel.highlightedRecommendation) { highlightedRecommendation in
                 isFocused = highlightedRecommendation == nil
             }
             .animation(.default, value: viewModel.selectedRecommendations)
-            .animation(.default, value: viewModel.recommendationsState)
+            .animation(.default, value: viewModel.loading)
             .padding(.horizontal, DesignConstant.sectionPadding)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .navigationBarTitleDisplayMode(.inline)
@@ -108,23 +109,20 @@ private extension EmailGroupSelectionView {
 
     @ViewBuilder
     var suggestions: some View {
-        if viewModel.recommendationsState == .loading {
+        InviteSuggestionsSection()
+            .overlay {
+                overlayContent
+            }
+    }
+
+    @ViewBuilder
+    var overlayContent: some View {
+        if viewModel.loading {
             VStack {
                 Spacer(minLength: 150)
                 ProgressView()
             }
             .frame(maxWidth: .infinity, alignment: .center)
-        } else if let suggestions = viewModel.recommendationsState.suggestions,
-                  !suggestions.isEmpty {
-            InviteSuggestionsSection(selectedRecommendations: viewModel.selectedRecommendations,
-                                     suggestions: suggestions,
-                                     isFetchingMore: viewModel.isFetchingMore,
-                                     displayCounts: Bundle.main.isQaBuild,
-                                     onSelect: { viewModel.handleSelection($0) },
-                                     onLoadMore: {
-                                         viewModel
-                                             .updateRecommendations(removingCurrentRecommendations: false)
-                                     })
         }
     }
 }

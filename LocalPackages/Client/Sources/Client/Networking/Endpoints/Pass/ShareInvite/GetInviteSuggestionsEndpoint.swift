@@ -1,5 +1,5 @@
 //
-// GetRecentInviteRecommendationsEndpoint.swift
+// GetInviteSuggestionsEndpoint.swift
 // Proton Pass - Created on 06/11/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
@@ -21,13 +21,13 @@
 import Entities
 import ProtonCoreNetworking
 
-struct GetRecentInviteRecommendationsResponse: Sendable, Decodable {
-    let suggested: [RecentInviteSuggestion]
+struct GetInviteSuggestionsResponse: Sendable, Decodable {
+    let suggested: [InviteSuggestion]
 }
 
-struct GetRecentInviteRecommendationsEndpoint: @unchecked Sendable, Endpoint {
+struct GetInviteSuggestionsEndpoint: @unchecked Sendable, Endpoint {
     typealias Body = EmptyRequest
-    typealias Response = GetRecentInviteRecommendationsResponse
+    typealias Response = GetInviteSuggestionsResponse
 
     var debugDescription: String
     var path: String

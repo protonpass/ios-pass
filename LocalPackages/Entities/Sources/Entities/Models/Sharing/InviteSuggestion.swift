@@ -1,5 +1,5 @@
 //
-// RecentInviteSuggestion.swift
+// InviteSuggestion.swift
 // Proton Pass - Created on 06/11/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct RecentInviteSuggestion: Sendable, Identifiable, Decodable {
+public struct InviteSuggestion: Sendable, Identifiable, Decodable {
     public let email: String
     public let addressID: String
     public let isGroup: Bool

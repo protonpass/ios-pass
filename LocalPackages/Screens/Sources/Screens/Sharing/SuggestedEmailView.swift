@@ -25,18 +25,18 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
-struct SuggestedEmailView: View {
+public struct SuggestedEmailView: View {
     private let recommendation: InviteRecommendationType
     private let isSelected: Bool
     private let onSelect: () -> Void
 
-    init(recommendation: InviteRecommendationType, isSelected: Bool, onSelect: @escaping () -> Void) {
+    public init(recommendation: InviteRecommendationType, isSelected: Bool, onSelect: @escaping () -> Void) {
         self.recommendation = recommendation
         self.isSelected = isSelected
         self.onSelect = onSelect
     }
 
-    var body: some View {
+    public var body: some View {
         HStack {
             SquircleThumbnail(data: recommendation
                 .isEmail ? .initials(String(recommendation.name.prefix(2).uppercased())) :

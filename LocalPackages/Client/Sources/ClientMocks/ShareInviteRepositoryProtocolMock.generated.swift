@@ -169,25 +169,25 @@ public final class ShareInviteRepositoryProtocolMock: @unchecked Sendable, Share
         closureGetInviteRecommendations()
         return stubbedGetInviteRecommendationsResult
     }
-    // MARK: - getRecentInviteRecommendations
-    public var getRecentInviteRecommendationsShareIdEmailThrowableError8: Error?
-    public var closureGetRecentInviteRecommendations: () -> () = {}
-    public var invokedGetRecentInviteRecommendationsfunction = false
-    public var invokedGetRecentInviteRecommendationsCount = 0
-    public var invokedGetRecentInviteRecommendationsParameters: (shareId: String, email: String?)?
-    public var invokedGetRecentInviteRecommendationsParametersList = [(shareId: String, email: String?)]()
-    public var stubbedGetRecentInviteRecommendationsResult: [RecentInviteSuggestion]!
+    // MARK: - getSuggestedInvite
+    public var getSuggestedInviteShareIdEmailThrowableError8: Error?
+    public var closureGetSuggestedInvite: () -> () = {}
+    public var invokedGetSuggestedInvitefunction = false
+    public var invokedGetSuggestedInviteCount = 0
+    public var invokedGetSuggestedInviteParameters: (shareId: String, email: String?)?
+    public var invokedGetSuggestedInviteParametersList = [(shareId: String, email: String?)]()
+    public var stubbedGetSuggestedInviteResult: [InviteSuggestion]!
 
-    public func getRecentInviteRecommendations(shareId: String, email: String?) async throws -> [RecentInviteSuggestion] {
-        invokedGetRecentInviteRecommendationsfunction = true
-        invokedGetRecentInviteRecommendationsCount += 1
-        invokedGetRecentInviteRecommendationsParameters = (shareId, email)
-        invokedGetRecentInviteRecommendationsParametersList.append((shareId, email))
-        if let error = getRecentInviteRecommendationsShareIdEmailThrowableError8 {
+    public func getSuggestedInvite(shareId: String, email: String?) async throws -> [InviteSuggestion] {
+        invokedGetSuggestedInvitefunction = true
+        invokedGetSuggestedInviteCount += 1
+        invokedGetSuggestedInviteParameters = (shareId, email)
+        invokedGetSuggestedInviteParametersList.append((shareId, email))
+        if let error = getSuggestedInviteShareIdEmailThrowableError8 {
             throw error
         }
-        closureGetRecentInviteRecommendations()
-        return stubbedGetRecentInviteRecommendationsResult
+        closureGetSuggestedInvite()
+        return stubbedGetSuggestedInviteResult
     }
     // MARK: - getOrganisationInviteRecommendations
     public var getOrganisationInviteRecommendationsShareIdQueryThrowableError9: Error?
@@ -196,9 +196,9 @@ public final class ShareInviteRepositoryProtocolMock: @unchecked Sendable, Share
     public var invokedGetOrganisationInviteRecommendationsCount = 0
     public var invokedGetOrganisationInviteRecommendationsParameters: (shareId: String, query: InviteRecommendationsQuery)?
     public var invokedGetOrganisationInviteRecommendationsParametersList = [(shareId: String, query: InviteRecommendationsQuery)]()
-    public var stubbedGetOrganisationInviteRecommendationsResult: OrganizationRecommendations!
+    public var stubbedGetOrganisationInviteRecommendationsResult: OrganizationInviteRecommendations!
 
-    public func getOrganisationInviteRecommendations(shareId: String, query: InviteRecommendationsQuery) async throws -> OrganizationRecommendations {
+    public func getOrganisationInviteRecommendations(shareId: String, query: InviteRecommendationsQuery) async throws -> OrganizationInviteRecommendations {
         invokedGetOrganisationInviteRecommendationsfunction = true
         invokedGetOrganisationInviteRecommendationsCount += 1
         invokedGetOrganisationInviteRecommendationsParameters = (shareId, query)

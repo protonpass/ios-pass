@@ -22,7 +22,7 @@ import Entities
 import ProtonCoreNetworking
 
 struct GetOrgInviteRecommendationsResponse: Sendable, Decodable {
-    let recommendation: OrganizationRecommendations
+    let recommendation: OrganizationInviteRecommendations
 }
 
 struct GetOrgInviteRecommendationsEndpoint: @unchecked Sendable, Endpoint {
