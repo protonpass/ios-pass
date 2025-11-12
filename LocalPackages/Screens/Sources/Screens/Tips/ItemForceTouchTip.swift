@@ -23,6 +23,8 @@ import TipKit
 
 @available(iOS 17, *)
 public struct ItemForceTouchTip: Tip {
+    private let bundle: Bundle
+
     public var id: String { PassTip.itemForceTouch.id }
 
     /// Any actions that is accessible via context menu like copy username/password, pin/unpin or trash, etc...
@@ -35,12 +37,12 @@ public struct ItemForceTouchTip: Tip {
     }
 
     public var title: Text {
-        Text("Quick actions on items", bundle: .module)
+        Text("Quick actions on items", bundle: bundle)
             .foregroundStyle(PassColor.textNorm)
     }
 
     public var message: Text? {
-        Text("Press and hold an item to reveal extra options.", bundle: .module)
+        Text("Press and hold an item to reveal extra options.", bundle: bundle)
             .foregroundStyle(PassColor.textWeak)
     }
 
@@ -53,5 +55,8 @@ public struct ItemForceTouchTip: Tip {
         Tips.MaxDisplayCount(1)
     }
 
-    public init() {}
+    @MainActor
+    public init() {
+        bundle = Foundation.Bundle.module
+    }
 }

@@ -24,6 +24,12 @@ import TipKit
 @available(iOS 17, *)
 public struct SpotlightTip: Tip {
     public var id: String { PassTip.spotlight.id }
+    private let bundle: Bundle
+
+    @MainActor
+    public init() {
+        bundle = Foundation.Bundle.module
+    }
 
     @Parameter
     public static var spotlightEnabled: Bool = false
@@ -37,13 +43,13 @@ public struct SpotlightTip: Tip {
     }
 
     public var title: Text {
-        Text("Enable Spotlight search", bundle: .module)
+        Text("Enable Spotlight search", bundle: bundle)
             .foregroundStyle(PassColor.textNorm)
     }
 
     public var message: Text? {
         Text("Seamlessly search for items via your home screen. Open Settings → Spotlight to enable.",
-             bundle: .module)
+             bundle: bundle)
             .foregroundStyle(PassColor.textWeak)
     }
 
@@ -61,6 +67,4 @@ public struct SpotlightTip: Tip {
             PassTipAction.openSettings.toAction()
         ]
     }
-
-    public init() {}
 }

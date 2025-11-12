@@ -21,7 +21,7 @@
 
 import SwiftUI
 
-struct FeatureUiModel: Identifiable {
+nonisolated struct FeatureUiModel: Identifiable {
     let id = UUID().uuidString
     let description: LocalizedStringKey
     let lowerPerk: PerkDetail
