@@ -69,7 +69,8 @@ final class TotpLoginsViewModel: ObservableObject {
         setUp()
     }
 
-    nonisolated func loadLogins() async {
+    @concurrent
+    func loadLogins() async {
         await MainActor.run { [weak self] in
             guard let self else { return }
             loading = true
@@ -183,7 +184,7 @@ private extension TotpLoginsViewModel {
     }
 
     // swiftlint:disable:next cyclomatic_complexity
-    nonisolated func sortResultsAsync(query: String?) async {
+    @concurrent func sortResultsAsync(query: String?) async {
         do {
             await MainActor.run { [weak self] in
                 guard let self else { return }

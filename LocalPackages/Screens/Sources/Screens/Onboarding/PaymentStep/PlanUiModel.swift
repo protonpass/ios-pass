@@ -24,11 +24,12 @@ import Macro
 import ProtonCorePaymentsV2
 import StoreKit
 
-public struct PlanUiModel: Equatable, Sendable {
+public nonisolated struct PlanUiModel: Equatable, Sendable {
     let plan: ComposedPlan
     let displayMonthlyPrice: String
     let displayYearlyPrice: String
 
+    @MainActor
     public init?(plan: ComposedPlan) {
         self.plan = plan
         guard let product = plan.product as? Product else {

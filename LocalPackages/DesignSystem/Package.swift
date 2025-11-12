@@ -36,7 +36,13 @@ let package = Package(name: "DesignSystem",
                                     .product(name: "MBProgressHUD", package: "MBProgressHUD"),
                                     .product(name: "Macro", package: "Macro")
                                   ],
-                                  resources: [.process("Resources")])
+                                  resources: [.process("Resources")],
+                                  swiftSettings: [
+                                    .defaultIsolation(MainActor.self),
+                                    .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
+                                    .enableUpcomingFeature("InferIsolatedConformances")
+                                  ]
+                                 )
                       ],
                       swiftLanguageModes: [.version("6")]
 )

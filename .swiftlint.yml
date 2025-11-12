@@ -91,7 +91,7 @@ opt_in_rules:
   - let_var_whitespace
   - literal_expression_end_indentation
   # - missing_docs
-  - modifier_order
+#  - modifier_order
   - multiline_arguments
   # - multiline_literal_brackets
   - multiline_parameters
@@ -253,3 +253,9 @@ custom_rules:
     name: "Nil if empty"
     message: "Use Collection's computed property nilIfEmpty"
     regex: "\\.isEmpty \\? nil"
+
+  nonisolated_async_warning:
+    name: "Nonisolated Async Function"
+    regex: '\bnonisolated\b\s*\n?\s*func\s+\w+\s*\([^)]*\)\s*async\b'
+    message: "Consider migrating this `nonisolated func ... async` to the new Swift 6.2 `@concurrent` isolation model."
+    severity: warning

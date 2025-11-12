@@ -31,7 +31,7 @@ public enum OnboardFirstLoginSuggestion: Sendable {
     case suggestedShare(shareId: String)
 }
 
-public struct OnboardFirstLoginPayload: Sendable, Equatable {
+public nonisolated struct OnboardFirstLoginPayload: Sendable, Equatable {
     public let shareId: String
     public let service: KnownService
     public let title: String
@@ -45,7 +45,7 @@ public struct OnboardFirstLoginPayload: Sendable, Equatable {
     }
 }
 
-public struct KnownService: Sendable, Decodable, Equatable {
+public nonisolated struct KnownService: Sendable, Decodable, Equatable {
     let name: String
     let url: String
     let favIconUrl: String
@@ -58,7 +58,7 @@ public struct KnownService: Sendable, Decodable, Equatable {
 
 public typealias OnboardingHandling = OnboardingDatasource & OnboardingDelegate
 
-public struct PassPlans: Sendable, Equatable {
+public nonisolated struct PassPlans: Sendable, Equatable {
     let plus: PlanUiModel
     let unlimited: PlanUiModel
 
@@ -89,7 +89,7 @@ public protocol OnboardingDelegate: Sendable, AnyObject {
     func handle(error: any Error) async
 }
 
-enum OnboardStep: Sendable, Equatable {
+nonisolated enum OnboardStep: Sendable, Equatable {
     case payment(PassPlans)
     case biometric(LABiometryType)
     case autofill

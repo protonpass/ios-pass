@@ -38,11 +38,14 @@ enum BaseIdentitySection: String, CaseIterable {
     }
 }
 
-@Copyable
 struct CreateEditIdentitySection: Hashable, Identifiable {
     var id: String = UUID().uuidString
     let type: BaseIdentitySection
     let isCollapsed: Bool
+
+    func copy(isCollapsed: Bool) -> CreateEditIdentitySection {
+        CreateEditIdentitySection(id: id, type: type, isCollapsed: isCollapsed)
+    }
 }
 
 struct HiddenStringValue: Sendable {

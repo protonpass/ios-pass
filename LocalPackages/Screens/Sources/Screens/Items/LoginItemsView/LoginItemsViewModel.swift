@@ -88,7 +88,8 @@ private extension LoginItemsViewModel {
         }
     }
 
-    nonisolated func searchAsync(term: String) async {
+    @concurrent
+    func searchAsync(term: String) async {
         await MainActor.run { [weak self] in
             guard let self else { return }
             state = .searching

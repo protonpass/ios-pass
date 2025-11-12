@@ -529,7 +529,8 @@ private extension ItemsTabViewModel {
         }
     }
 
-    nonisolated func filterAndSortItemsAsync(sortType: SortType) async {
+    @concurrent
+    func filterAndSortItemsAsync(sortType: SortType) async {
         do {
             let filteredItems = await appContentManager.getFilteredItems()
 
