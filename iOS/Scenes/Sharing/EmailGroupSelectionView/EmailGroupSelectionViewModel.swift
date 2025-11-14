@@ -318,7 +318,7 @@ private extension EmailGroupSelectionViewModel {
             for entry in cachedOrganizationInfos.entries {
                 recommendation.append(.email(entry.email))
             }
-            return recommendation
+            return recommendation.alphabeticallySortedEmails
         } catch {
             router.display(element: .displayErrorBanner(error))
             return nil
@@ -329,6 +329,10 @@ private extension EmailGroupSelectionViewModel {
 private extension [InviteRecommendationType] {
     var emails: [String] {
         compactMap(\.emailAddress)
+    }
+
+    var alphabeticallySortedEmails: [InviteRecommendationType] {
+        sorted { $0.name < $1.name }
     }
 }
 
