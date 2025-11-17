@@ -289,8 +289,8 @@ extension LocalDatasource {
         }
     }
 
-    func execute<T>(fetchRequest request: NSFetchRequest<T>,
-                    context: NSManagedObjectContext) async throws -> [T] {
+    func execute<T: NSManagedObject>(fetchRequest request: NSFetchRequest<T>,
+                                     context: NSManagedObjectContext) async throws -> [T] {
         try await context.perform {
             guard context.hasPersistentStore else { return [] }
             #if DEBUG
@@ -302,7 +302,7 @@ extension LocalDatasource {
         }
     }
 
-    func count(fetchRequest request: NSFetchRequest<some Any>,
+    func count(fetchRequest request: NSFetchRequest<some NSManagedObject>,
                context: NSManagedObjectContext) async throws -> Int {
         try await context.perform {
             guard context.hasPersistentStore else { return 0 }
