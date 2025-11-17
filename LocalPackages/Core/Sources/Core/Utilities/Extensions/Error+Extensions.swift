@@ -25,8 +25,8 @@ import Foundation
 public extension Error {
     /// Concatenate `localizedDescription` & `debugDescription`
     var localizedDebugDescription: String {
-        if let debug = self as? CustomDebugStringConvertible,
-           debug.debugDescription != localizedDescription {
+        let debug = self as any CustomDebugStringConvertible
+        return if debug.debugDescription != localizedDescription {
             "\(localizedDescription) \(debug.debugDescription)"
         } else {
             localizedDescription
