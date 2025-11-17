@@ -113,9 +113,9 @@ private extension RetryableErrorView {
 
 private extension Error {
     var localizedDebugDescription: String {
-        if let debugDescription = (self as? CustomDebugStringConvertible)?.debugDescription,
-           debugDescription != localizedDescription {
-            "\(localizedDescription) \(debugDescription)"
+        let debug = self as any CustomDebugStringConvertible
+        return if debug.debugDescription != localizedDescription {
+            "\(localizedDescription) \(debug.debugDescription)"
         } else {
             localizedDescription
         }
