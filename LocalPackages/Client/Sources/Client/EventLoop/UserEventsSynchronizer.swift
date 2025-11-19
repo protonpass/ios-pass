@@ -21,29 +21,17 @@
 import Core
 import Foundation
 
-/// The result of user events sync giving information to act upon on
-public struct UserEventsSyncResult: Sendable, Equatable {
-    /// Items or shares were updated, a UI refresh is needed to reflect updated data
-    public let dataUpdated: Bool
+public struct UserEventsSyncResult: OptionSet, Sendable {
+    public let rawValue: UInt8
 
-    /// Invites were updated, go update the invite banner
-    public let invitesChanged: Bool
-
-    /// User's plan has changed (e.g free -> paid), go fetch the updated plan
-    public let planChanged: Bool
-
-    /// Force full sync (e.g users haven't used the app for a long period and last event ID is obsolete)
-    public let fullRefreshNeeded: Bool
-
-    public init(dataUpdated: Bool,
-                invitesChanged: Bool,
-                planChanged: Bool,
-                fullRefreshNeeded: Bool) {
-        self.dataUpdated = dataUpdated
-        self.invitesChanged = invitesChanged
-        self.planChanged = planChanged
-        self.fullRefreshNeeded = fullRefreshNeeded
+    public init(rawValue: UInt8) {
+        self.rawValue = rawValue
     }
+
+    public static let dataUpdated = Self(rawValue: 1 << 0)
+    public static let invitesChanged = Self(rawValue: 1 << 1)
+    public static let planChanged = Self(rawValue: 1 << 2)
+    public static let fullRefreshNeeded = Self(rawValue: 1 << 3)
 }
 
 public protocol UserEventsSynchronizerProtocol: Sendable {
@@ -84,99 +72,50 @@ public extension UserEventsSynchronizer {
         logger.trace("Syncing user events for user \(userId)")
         guard let lastEventId = try await localUserEventIdDatasource.getLastEventId(userId: userId) else {
             logger.warning("No local user event ID for user \(userId). Force full refresh.")
-            return .init(dataUpdated: false,
-                         invitesChanged: false,
-                         planChanged: false,
-                         fullRefreshNeeded: true)
+            return []
         }
-        var dataUpdated = false
-        var invitesChanged = false
-        var planChanged = false
-        var fullRefreshNeeded = false
-        try await recursivelySync(userId: userId,
-                                  lastEventId: lastEventId,
-                                  dataUpdated: &dataUpdated,
-                                  invitesChanged: &invitesChanged,
-                                  planChanged: &planChanged,
-                                  fullRefreshNeeded: &fullRefreshNeeded)
+
+        let userSyncResult = try await parseUserEvents(userId: userId,
+                                                       lastEventId: lastEventId)
         logger.info("Finished syncing with user events for user \(userId)")
-        return .init(dataUpdated: dataUpdated,
-                     invitesChanged: invitesChanged,
-                     planChanged: planChanged,
-                     fullRefreshNeeded: fullRefreshNeeded)
+        return userSyncResult
     }
 }
 
 private extension UserEventsSynchronizer {
-    // swiftlint:disable:next function_parameter_count
-    func recursivelySync(userId: String,
-                         lastEventId: String,
-                         dataUpdated: inout Bool,
-                         invitesChanged: inout Bool,
-                         planChanged: inout Bool,
-                         fullRefreshNeeded: inout Bool) async throws {
-        logger.trace("Getting user events for user \(userId)")
-        let events = try await remoteUserEventsDatasource.getUserEvents(userId: userId,
-                                                                        lastEventId: lastEventId)
-        logger.trace("Processing events for user \(userId)")
-        try await process(events: events, for: userId)
-        logger.trace("Processed events for user \(userId)")
+    func parseUserEvents(userId: String, lastEventId: String) async throws -> UserEventsSyncResult {
+        var result: UserEventsSyncResult = []
 
-        dataUpdated = dataUpdated || events.dataUpdated
-        invitesChanged = invitesChanged || events.invitesChanged != nil
-        planChanged = planChanged || events.planChanged
-        fullRefreshNeeded = fullRefreshNeeded || events.fullRefresh
+        while true {
+            let events = try await remoteUserEventsDatasource.getUserEvents(userId: userId,
+                                                                            lastEventId: lastEventId)
 
-        logger.trace("Upserting last user event ID for user \(userId)")
-        try await localUserEventIdDatasource.upsertLastEventId(userId: userId,
-                                                               lastEventId: events.lastEventID)
+            try await process(events: events, for: userId)
 
-        if events.eventsPending {
-            logger.trace("Continue syncing because events are still pending for user \(userId)")
-            return try await recursivelySync(userId: userId,
-                                             lastEventId: events.lastEventID,
-                                             dataUpdated: &dataUpdated,
-                                             invitesChanged: &invitesChanged,
-                                             planChanged: &planChanged,
-                                             fullRefreshNeeded: &fullRefreshNeeded)
+            // Combine flags using OptionSet
+            if events.dataUpdated { result.insert(.dataUpdated) }
+            if events.invitesChanged != nil { result.insert(.invitesChanged) }
+            if events.planChanged { result.insert(.planChanged) }
+            if events.fullRefresh { result.insert(.fullRefreshNeeded) }
+
+            try await localUserEventIdDatasource.upsertLastEventId(userId: userId,
+                                                                   lastEventId: events.lastEventID)
+
+            guard events.eventsPending else { break }
         }
+
+        return result
     }
 
     func process(events: UserEvents, for userId: String) async throws {
-        try await withThrowingTaskGroup(of: Void.self) { taskGroup in
-            taskGroup.addTask { [weak self] in
-                guard let self else { return }
-                try await processUpdatedItems(events.itemsUpdated, userId: userId)
-            }
+        async let updatedItems: () = processUpdatedItems(events.itemsUpdated, userId: userId)
+        async let deletedItems: () = processDeletedItems(events.itemsDeleted, userId: userId)
+        async let aliasNotes: () = processAliasNoteChangedItems(events.aliasNoteChanged, userId: userId)
+        async let updatedShares: () = processUpdatedShares(events.sharesUpdated, userId: userId)
+        async let deletedShares: () = processDeletedShares(events.sharesDeleted, userId: userId)
+        async let invites: () = processInviteChanges(inviteChanges: events.invitesChanged, userId: userId)
 
-            taskGroup.addTask { [weak self] in
-                guard let self else { return }
-                try await processDeletedItems(events.itemsDeleted, userId: userId)
-            }
-
-            taskGroup.addTask { [weak self] in
-                guard let self else { return }
-                try await processAliasNoteChangedItems(events.aliasNoteChanged, userId: userId)
-            }
-
-            taskGroup.addTask { [weak self] in
-                guard let self else { return }
-                try await processUpdatedShares(events.sharesUpdated, userId: userId)
-            }
-
-            taskGroup.addTask { [weak self] in
-                guard let self else { return }
-                try await processDeletedShares(events.sharesDeleted, userId: userId)
-            }
-
-            taskGroup.addTask { [weak self] in
-                guard let self else { return }
-                try await processInviteChanges(inviteChanges: events.invitesChanged,
-                                               userId: userId)
-            }
-
-            try await taskGroup.waitForAll()
-        }
+        _ = try await (updatedItems, deletedItems, aliasNotes, updatedShares, deletedShares, invites)
     }
 
     func processUpdatedItems(_ updatedItems: [UserEventItem], userId: String) async throws {
@@ -227,7 +166,7 @@ private extension UserEventsSynchronizer {
         logger.trace("Refreshing \(updatedShares.count) shares for user \(userId)")
         try await withThrowingTaskGroup(of: Void.self) { taskGroup in
             for updatedShare in updatedShares {
-                taskGroup.addTask { [shareRepository, itemRepository, userId ] in
+                taskGroup.addTask { [shareRepository, itemRepository, userId] in
                     let localShareState = try await shareRepository.getShare(shareId: updatedShare.shareID)
                     try await shareRepository.refreshShare(userId: userId,
                                                            shareId: updatedShare.shareID,
@@ -251,13 +190,9 @@ private extension UserEventsSynchronizer {
         try await withThrowingTaskGroup(of: Void.self) { taskGroup in
             for share in deletedShares {
                 taskGroup.addTask { [shareRepository, itemRepository, userId] in
-                    async let deleteShare: Void = shareRepository.deleteShareLocally(
-                        userId: userId,
-                        shareId: share.shareID
-                    )
-                    async let deleteItems: Void = itemRepository.deleteAllItemsLocally(
-                        shareId: share.shareID
-                    )
+                    async let deleteShare: Void = shareRepository.deleteShareLocally(userId: userId,
+                                                                                     shareId: share.shareID)
+                    async let deleteItems: Void = itemRepository.deleteAllItemsLocally(shareId: share.shareID)
                     _ = try await (deleteShare, deleteItems)
                 }
             }
