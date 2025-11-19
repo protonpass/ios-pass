@@ -185,11 +185,9 @@ private extension UserEventsSynchronizer {
             return
         }
         logger.trace("Refreshing \(updatedItems.count) updated items for user \(userId)")
-        try await withThrowingTaskGroup(of: Void.self) { [weak self] taskGroup in
-            guard let self else { return }
+        try await withThrowingTaskGroup(of: Void.self) { taskGroup in
             for updatedItem in updatedItems {
-                taskGroup.addTask { [weak self] in
-                    guard let self else { return }
+                taskGroup.addTask { [itemRepository, userId] in
                     try await itemRepository.refreshItem(userId: userId,
                                                          shareId: updatedItem.shareID,
                                                          itemId: updatedItem.itemID,
@@ -227,14 +225,16 @@ private extension UserEventsSynchronizer {
             return
         }
         logger.trace("Refreshing \(updatedShares.count) shares for user \(userId)")
-        try await withThrowingTaskGroup(of: Void.self) { [weak self] taskGroup in
-            guard let self else { return }
+        try await withThrowingTaskGroup(of: Void.self) { taskGroup in
             for updatedShare in updatedShares {
-                taskGroup.addTask { [weak self] in
-                    guard let self else { return }
+                taskGroup.addTask { [shareRepository, itemRepository, userId ] in
+                    let localShareState = try await shareRepository.getShare(shareId: updatedShare.shareID)
                     try await shareRepository.refreshShare(userId: userId,
                                                            shareId: updatedShare.shareID,
                                                            eventToken: updatedShare.eventToken)
+                    if localShareState == nil {
+                        try await itemRepository.refreshItems(userId: userId, shareId: updatedShare.shareID)
+                    }
                 }
             }
 
@@ -248,17 +248,19 @@ private extension UserEventsSynchronizer {
             return
         }
         logger.trace("Deleting \(deletedShares.count) shares for user \(userId)")
-        try await withThrowingTaskGroup(of: Void.self) { [weak self] taskGroup in
-            guard let self else { return }
-            for deletedShare in deletedShares {
-                taskGroup.addTask { [weak self] in
-                    guard let self else { return }
-                    try await shareRepository.deleteShareLocally(userId: userId,
-                                                                 shareId: deletedShare.shareID)
-                    try await itemRepository.deleteAllItemsLocally(shareId: deletedShare.shareID)
+        try await withThrowingTaskGroup(of: Void.self) { taskGroup in
+            for share in deletedShares {
+                taskGroup.addTask { [shareRepository, itemRepository, userId] in
+                    async let deleteShare: Void = shareRepository.deleteShareLocally(
+                        userId: userId,
+                        shareId: share.shareID
+                    )
+                    async let deleteItems: Void = itemRepository.deleteAllItemsLocally(
+                        shareId: share.shareID
+                    )
+                    _ = try await (deleteShare, deleteItems)
                 }
             }
-
             try await taskGroup.waitForAll()
         }
     }
