@@ -72,7 +72,7 @@ public extension UserEventsSynchronizer {
         logger.trace("Syncing user events for user \(userId)")
         guard let lastEventId = try await localUserEventIdDatasource.getLastEventId(userId: userId) else {
             logger.warning("No local user event ID for user \(userId). Force full refresh.")
-            return []
+            return [.fullRefreshNeeded]
         }
 
         let userSyncResult = try await parseUserEvents(userId: userId,
