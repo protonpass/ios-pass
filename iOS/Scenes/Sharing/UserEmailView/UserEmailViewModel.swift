@@ -55,12 +55,14 @@ final class UserEmailViewModel: ObservableObject {
     @Published private(set) var isChecking = false
     @Published private(set) var isFetchingMore = false
 
+    @LazyInjected(\SharedRepositoryContainer.shareInviteRepository) private var shareInviteRepository
+    @LazyInjected(\UseCasesContainer.checkAddressesForInvite) private var checkAddressesForInvite
+    @LazyInjected(\ServiceContainer.shareInviteService) private var shareInviteService
+    @LazyInjected(\UseCasesContainer.setShareInvitesUserEmailsAndKeys) private var
+        setShareInvitesUserEmailsAndKeys
+    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
+
     private var cancellables = Set<AnyCancellable>()
-    private let shareInviteRepository = resolve(\SharedRepositoryContainer.shareInviteRepository)
-    private let checkAddressesForInvite = resolve(\UseCasesContainer.checkAddressesForInvite)
-    private let shareInviteService = resolve(\ServiceContainer.shareInviteService)
-    private let setShareInvitesUserEmailsAndKeys = resolve(\UseCasesContainer.setShareInvitesUserEmailsAndKeys)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var currentTask: Task<Void, Never>?
     private var canFetchMoreEmails = true
 
@@ -139,9 +141,10 @@ final class UserEmailViewModel: ObservableObject {
     }
 
     func customizeVault() {
-        if case let .new(vault, itemContent) = element {
-            router.present(for: .customizeNewVault(vault, itemContent))
+        guard case let .new(vault, itemContent) = element else {
+            return
         }
+        router.present(for: .customizeNewVault(vault, itemContent))
     }
 
     func resetShareInviteInformation() {

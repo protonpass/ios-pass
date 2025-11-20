@@ -41,12 +41,12 @@ extension RouterContainer {
     }
 
     var darkWebRouter: Factory<PathRouter> {
-        self { PathRouter() }
+        self { @MainActor in PathRouter() }
             .unique
     }
 
     var sharingRouter: Factory<PathRouter> {
-        self { PathRouter() }
+        self { @MainActor in PathRouter() }
             .unique
     }
 }
