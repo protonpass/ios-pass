@@ -44,11 +44,6 @@ extension RouterContainer {
         self { @MainActor in PathRouter() }
             .unique
     }
-
-    var sharingRouter: Factory<PathRouter> {
-        self { @MainActor in PathRouter() }
-            .unique
-    }
 }
 
 extension RouterContainer {

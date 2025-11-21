@@ -32,6 +32,7 @@ public struct UserEventsSyncResult: OptionSet, Sendable {
     public static let invitesChanged = Self(rawValue: 1 << 1)
     public static let planChanged = Self(rawValue: 1 << 2)
     public static let fullRefreshNeeded = Self(rawValue: 1 << 3)
+    public static let groupInvitesChanged = Self(rawValue: 1 << 4)
 }
 
 public protocol UserEventsSynchronizerProtocol: Sendable {
@@ -95,6 +96,7 @@ private extension UserEventsSynchronizer {
             // Combine flags using OptionSet
             if events.dataUpdated { result.insert(.dataUpdated) }
             if events.invitesChanged != nil { result.insert(.invitesChanged) }
+            if events.groupInvitesChanged != nil { result.insert(.groupInvitesChanged) }
             if events.planChanged { result.insert(.planChanged) }
             if events.fullRefresh { result.insert(.fullRefreshNeeded) }
 
@@ -107,18 +109,33 @@ private extension UserEventsSynchronizer {
         return result
     }
 
+    // All todos need to be done in upcoming MRs for group invites and folders
     func process(events: UserEvents, for userId: String) async throws {
         async let updatedItems: () = processUpdatedItems(events.itemsUpdated, userId: userId)
         async let deletedItems: () = processDeletedItems(events.itemsDeleted, userId: userId)
         async let aliasNotes: () = processAliasNoteChangedItems(events.aliasNoteChanged, userId: userId)
+        // swiftlint:disable:next todo
+        // TODO: created shares
+//        async let createShares: () = processCreatedShares(events.sharesCreated, userId: userId)
         async let updatedShares: () = processUpdatedShares(events.sharesUpdated, userId: userId)
         async let deletedShares: () = processDeletedShares(events.sharesDeleted, userId: userId)
+        // swiftlint:disable:next todo
+        // TODO: folder
+//        async let foldersUpdated: () = processSharesToCreate(events.foldersUpdated, userId: userId)
+//        async let foldersDeleted: () = processInviteChanges(inviteChanges: events.foldersDeleted, userId: userId)
         async let invites: () = processInviteChanges(inviteChanges: events.invitesChanged, userId: userId)
-
+        // swiftlint:disable:next todo
+        // TODO: Group invite
+//        async let groupInvites: () = processInviteChanges(inviteChanges: events.groupInvitesChanged, userId:
+//        userId)
+        // swiftlint:disable:next todo
+        // TODO: share with invite
+//        async let inviteCreatedShares: () = processInviteChanges(inviteChanges: events.sharesWithInvitesToCreate,
+//        userId: userId)
         _ = try await (updatedItems, deletedItems, aliasNotes, updatedShares, deletedShares, invites)
     }
 
-    func processUpdatedItems(_ updatedItems: [UserEventItem], userId: String) async throws {
+    func processUpdatedItems(_ updatedItems: [ItemEvent], userId: String) async throws {
         guard !updatedItems.isEmpty else {
             logger.trace("No updated items for user \(userId)")
             return
@@ -138,7 +155,7 @@ private extension UserEventsSynchronizer {
         }
     }
 
-    func processDeletedItems(_ deletedItems: [UserEventItem], userId: String) async throws {
+    func processDeletedItems(_ deletedItems: [ItemEvent], userId: String) async throws {
         guard !deletedItems.isEmpty else {
             logger.trace("No deleted items for user \(userId)")
             return
@@ -147,7 +164,7 @@ private extension UserEventsSynchronizer {
         try await itemRepository.delete(userId: userId, items: deletedItems)
     }
 
-    func processAliasNoteChangedItems(_ aliasNoteChangedItems: [UserEventItem],
+    func processAliasNoteChangedItems(_ aliasNoteChangedItems: [ItemEvent],
                                       userId: String) async throws {
         guard !aliasNoteChangedItems.isEmpty else {
             logger.trace("No alias note changed for user \(userId)")
@@ -158,7 +175,7 @@ private extension UserEventsSynchronizer {
                                                               aliases: aliasNoteChangedItems)
     }
 
-    func processUpdatedShares(_ updatedShares: [UserEventShare], userId: String) async throws {
+    func processUpdatedShares(_ updatedShares: [ShareEvent], userId: String) async throws {
         guard !updatedShares.isEmpty else {
             logger.trace("No updated shares for user \(userId)")
             return
@@ -166,14 +183,10 @@ private extension UserEventsSynchronizer {
         logger.trace("Refreshing \(updatedShares.count) shares for user \(userId)")
         try await withThrowingTaskGroup(of: Void.self) { taskGroup in
             for updatedShare in updatedShares {
-                taskGroup.addTask { [shareRepository, itemRepository, userId] in
-                    let localShareState = try await shareRepository.getShare(shareId: updatedShare.shareID)
+                taskGroup.addTask { [shareRepository, userId] in
                     try await shareRepository.refreshShare(userId: userId,
                                                            shareId: updatedShare.shareID,
                                                            eventToken: updatedShare.eventToken)
-                    if localShareState == nil {
-                        try await itemRepository.refreshItems(userId: userId, shareId: updatedShare.shareID)
-                    }
                 }
             }
 
@@ -181,7 +194,27 @@ private extension UserEventsSynchronizer {
         }
     }
 
-    func processDeletedShares(_ deletedShares: [UserEventShare], userId: String) async throws {
+    func processCreatedShares(_ createdShares: [ShareEvent], userId: String) async throws {
+        guard !createdShares.isEmpty else {
+            logger.trace("No shares to create for user \(userId)")
+            return
+        }
+        logger.trace("Creating \(createdShares.count) shares for user \(userId)")
+        try await withThrowingTaskGroup(of: Void.self) { taskGroup in
+            for updatedShare in createdShares {
+                taskGroup.addTask { [shareRepository, itemRepository, userId] in
+                    try await shareRepository.refreshShare(userId: userId,
+                                                           shareId: updatedShare.shareID,
+                                                           eventToken: updatedShare.eventToken)
+                    try await itemRepository.refreshItems(userId: userId, shareId: updatedShare.shareID)
+                }
+            }
+
+            try await taskGroup.waitForAll()
+        }
+    }
+
+    func processDeletedShares(_ deletedShares: [ShareEvent], userId: String) async throws {
         guard !deletedShares.isEmpty else {
             logger.trace("No deleted shares for user \(userId)")
             return
@@ -200,7 +233,7 @@ private extension UserEventsSynchronizer {
         }
     }
 
-    func processInviteChanges(inviteChanges: UserEventInviteChange?,
+    func processInviteChanges(inviteChanges: InviteChangeEvent?,
                               userId: String) async throws {
         guard inviteChanges != nil else {
             logger.trace("No invite changes for user \(userId)")
