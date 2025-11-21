@@ -76,8 +76,12 @@ private struct Args {
                       itemsDeleted: [],
                       aliasNoteChanged: [],
                       invitesChanged: nil,
+                      groupInvitesChanged: nil,
                       sharesUpdated: [],
                       sharesDeleted: [],
+                      sharesWithInvitesToCreate: [],
+                      foldersUpdated: [],
+                      foldersDeleted: [],
                       planChanged: false,
                       eventsPending: false,
                       fullRefresh: true)
@@ -94,8 +98,12 @@ private struct Args {
                       itemsDeleted: .random(count: 8),
                       aliasNoteChanged: .random(count: 14),
                       invitesChanged: nil,
+                      groupInvitesChanged: nil,
                       sharesUpdated: .random(count: 19),
                       sharesDeleted: .random(count: 21),
+                      sharesWithInvitesToCreate: [],
+                      foldersUpdated: [],
+                      foldersDeleted: [],
                       planChanged: false,
                       eventsPending: false,
                       fullRefresh: false)
@@ -118,8 +126,12 @@ private struct Args {
                       itemsDeleted: .random(count: 16),
                       aliasNoteChanged: .random(count: 90),
                       invitesChanged: nil,
+                      groupInvitesChanged: nil,
                       sharesUpdated: .random(count: 3),
                       sharesDeleted: .random(count: 8),
+                      sharesWithInvitesToCreate: [],
+                      foldersUpdated: [],
+                      foldersDeleted: [],
                       planChanged: true,
                       eventsPending: true,
                       fullRefresh: false),
@@ -128,8 +140,12 @@ private struct Args {
                       itemsDeleted: .random(count: 3),
                       aliasNoteChanged: .random(count: 3),
                       invitesChanged: .init(eventToken: .random()),
+                      groupInvitesChanged: nil,
                       sharesUpdated: .random(count: 27),
                       sharesDeleted: .random(count: 14),
+                      sharesWithInvitesToCreate: [],
+                      foldersUpdated: [],
+                      foldersDeleted: [],
                       planChanged: false,
                       eventsPending: false,
                       fullRefresh: false)
@@ -201,13 +217,13 @@ private extension UserEventsSynchronizerTests {
     }
 }
 
-extension UserEventItem: Randomable {
+extension ItemEvent: Randomable {
     public static func random() -> Self {
         .init(shareID: .random(), itemID: .random(), eventToken: .random())
     }
 }
 
-extension UserEventShare: Randomable {
+extension ShareEvent: Randomable {
     public static func random() -> Self {
         .init(shareID: .random(),  eventToken: .random())
     }
