@@ -64,10 +64,7 @@ private struct Args {
     var storedLastEventId: String?
 
     static var noLocalLastEventIdTriggerFullRefresh: Self {
-        .init(result: .init(dataUpdated: false,
-                            invitesChanged: false,
-                            planChanged: false,
-                            fullRefreshNeeded: true),
+        .init(result: [.fullRefreshNeeded],
               getUserEventsRouteCalled: false)
     }
 
@@ -85,10 +82,7 @@ private struct Args {
                       eventsPending: false,
                       fullRefresh: true)
               ],
-              result: .init(dataUpdated: false,
-                            invitesChanged: false,
-                            planChanged: false,
-                            fullRefreshNeeded: true),
+              result: [.fullRefreshNeeded],
               getUserEventsRouteCalled: true)
     }
 
@@ -106,10 +100,7 @@ private struct Args {
                       eventsPending: false,
                       fullRefresh: false)
               ],
-              result: .init(dataUpdated: true,
-                            invitesChanged: false,
-                            planChanged: false,
-                            fullRefreshNeeded: false),
+              result: [.dataUpdated],
               getUserEventsRouteCalled: true,
               refreshItemInvokeCount: 5,
               deleteItemsInvokeCount: 1,
@@ -143,10 +134,7 @@ private struct Args {
                       eventsPending: false,
                       fullRefresh: false)
               ],
-              result: .init(dataUpdated: true,
-                            invitesChanged: true,
-                            planChanged: true,
-                            fullRefreshNeeded: false),
+              result: [.dataUpdated, .invitesChanged, .planChanged],
               getUserEventsRouteCalled: true,
               refreshItemInvokeCount: 17,
               deleteItemsInvokeCount: 2,
