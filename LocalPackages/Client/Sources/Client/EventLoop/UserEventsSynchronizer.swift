@@ -114,22 +114,20 @@ private extension UserEventsSynchronizer {
         async let updatedItems: () = processUpdatedItems(events.itemsUpdated, userId: userId)
         async let deletedItems: () = processDeletedItems(events.itemsDeleted, userId: userId)
         async let aliasNotes: () = processAliasNoteChangedItems(events.aliasNoteChanged, userId: userId)
-        // swiftlint:disable:next todo
-        // TODO: created shares
         async let createShares: () = processCreatedShares(events.sharesCreated, userId: userId)
         async let updatedShares: () = processUpdatedShares(events.sharesUpdated, userId: userId)
         async let deletedShares: () = processDeletedShares(events.sharesDeleted, userId: userId)
         // swiftlint:disable:next todo
-        // TODO: folder
+        // TODO: folder to be implemented in the folder ticket mr
 //        async let foldersUpdated: () = processSharesToCreate(events.foldersUpdated, userId: userId)
 //        async let foldersDeleted: () = processInviteChanges(inviteChanges: events.foldersDeleted, userId: userId)
         async let invites: () = processInviteChanges(inviteChanges: events.invitesChanged, userId: userId)
         // swiftlint:disable:next todo
-        // TODO: Group invite
+        // TODO: Group invite to be added to the group sharing MR
 //        async let groupInvites: () = processInviteChanges(inviteChanges: events.groupInvitesChanged, userId:
 //        userId)
         // swiftlint:disable:next todo
-        // TODO: share with invite
+        // TODO: share with invite to be added to the group sharing MR that contains changes to invite logic and serices
 //        async let inviteCreatedShares: () = processInviteChanges(inviteChanges: events.sharesWithInvitesToCreate,
 //        userId: userId)
         _ = try await (updatedItems, deletedItems, aliasNotes, createShares, updatedShares, deletedShares, invites)
