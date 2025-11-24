@@ -30,7 +30,7 @@ public struct UserEvents: Sendable, Decodable {
     public let aliasNoteChanged: [ItemEvent]
     public let invitesChanged: InviteChangeEvent?
     public let groupInvitesChanged: InviteChangeEvent?
-    //    public let sharesCreated: [UserEventShare]
+    public let sharesCreated: [ShareEvent]
     public let sharesUpdated: [ShareEvent]
     public let sharesDeleted: [ShareEvent]
     public let sharesWithInvitesToCreate: [ShareEvent]
@@ -45,6 +45,7 @@ public struct UserEvents: Sendable, Decodable {
         !itemsUpdated.isEmpty ||
             !itemsDeleted.isEmpty ||
             !aliasNoteChanged.isEmpty ||
+            !sharesCreated.isEmpty ||
             !sharesUpdated.isEmpty ||
             !sharesDeleted.isEmpty ||
             !sharesWithInvitesToCreate.isEmpty ||

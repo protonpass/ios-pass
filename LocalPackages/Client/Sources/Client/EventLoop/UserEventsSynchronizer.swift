@@ -116,7 +116,7 @@ private extension UserEventsSynchronizer {
         async let aliasNotes: () = processAliasNoteChangedItems(events.aliasNoteChanged, userId: userId)
         // swiftlint:disable:next todo
         // TODO: created shares
-//        async let createShares: () = processCreatedShares(events.sharesCreated, userId: userId)
+        async let createShares: () = processCreatedShares(events.sharesCreated, userId: userId)
         async let updatedShares: () = processUpdatedShares(events.sharesUpdated, userId: userId)
         async let deletedShares: () = processDeletedShares(events.sharesDeleted, userId: userId)
         // swiftlint:disable:next todo
@@ -132,7 +132,7 @@ private extension UserEventsSynchronizer {
         // TODO: share with invite
 //        async let inviteCreatedShares: () = processInviteChanges(inviteChanges: events.sharesWithInvitesToCreate,
 //        userId: userId)
-        _ = try await (updatedItems, deletedItems, aliasNotes, updatedShares, deletedShares, invites)
+        _ = try await (updatedItems, deletedItems, aliasNotes, createShares, updatedShares, deletedShares, invites)
     }
 
     func processUpdatedItems(_ updatedItems: [ItemEvent], userId: String) async throws {
@@ -194,8 +194,6 @@ private extension UserEventsSynchronizer {
         }
     }
 
-    // Remove later
-    // periphery:ignore
     func processCreatedShares(_ createdShares: [ShareEvent], userId: String) async throws {
         guard !createdShares.isEmpty else {
             logger.trace("No shares to create for user \(userId)")
@@ -203,12 +201,17 @@ private extension UserEventsSynchronizer {
         }
         logger.trace("Creating \(createdShares.count) shares for user \(userId)")
         try await withThrowingTaskGroup(of: Void.self) { taskGroup in
-            for updatedShare in createdShares {
+            for newShare in createdShares {
                 taskGroup.addTask { [shareRepository, itemRepository, userId] in
+                    // We need to start for a fresh data state
+                    if let localShare = try await shareRepository.getShare(shareId: newShare.shareID) {
+                        try await shareRepository.deleteShareLocally(userId: userId, shareId: localShare.shareID)
+                        try await itemRepository.deleteAllItemsLocally(shareId: localShare.shareID)
+                    }
                     try await shareRepository.refreshShare(userId: userId,
-                                                           shareId: updatedShare.shareID,
-                                                           eventToken: updatedShare.eventToken)
-                    try await itemRepository.refreshItems(userId: userId, shareId: updatedShare.shareID)
+                                                           shareId: newShare.shareID,
+                                                           eventToken: newShare.eventToken)
+                    try await itemRepository.refreshItems(userId: userId, shareId: newShare.shareID)
                 }
             }
 

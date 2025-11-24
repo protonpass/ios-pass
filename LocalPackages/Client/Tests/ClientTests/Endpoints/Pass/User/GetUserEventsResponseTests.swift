@@ -57,6 +57,16 @@ struct GetUserEventsResponseTests {
                     "EventToken": "Token7"
                   }
                 ],
+                            "SharesCreated": [
+                              {
+                                "ShareID": "ShareID10",
+                                "EventToken": "Token10"
+                              },
+                              {
+                                "ShareID": "ShareID11",
+                                "EventToken": "Token11"
+                              }
+                            ],
                 "SharesUpdated": [
                   {
                     "ShareID": "ShareID4",
