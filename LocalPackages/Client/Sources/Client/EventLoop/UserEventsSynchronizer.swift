@@ -194,6 +194,8 @@ private extension UserEventsSynchronizer {
         }
     }
 
+    // Remove later
+    // periphery:ignore
     func processCreatedShares(_ createdShares: [ShareEvent], userId: String) async throws {
         guard !createdShares.isEmpty else {
             logger.trace("No shares to create for user \(userId)")
