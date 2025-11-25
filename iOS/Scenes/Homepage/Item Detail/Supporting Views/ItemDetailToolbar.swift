@@ -86,7 +86,7 @@ struct ItemDetailToolbar: ToolbarContent {
                         }
 
                         if viewModel.isAllowedToClone {
-                            Label("Clone", image: IconProvider.squares)
+                            Label("Duplicate", image: IconProvider.squares)
                                 .buttonEmbeded { viewModel.clone() }
                         }
 
