@@ -151,13 +151,13 @@ extension UseCasesContainer {
     }
 
     var getCurrentShareInviteInformations: Factory<any GetCurrentShareInviteInformationsUseCase> {
-        self { GetCurrentShareInviteInformations(shareInviteService: self.shareInviteService)
+        self { @MainActor in GetCurrentShareInviteInformations(shareInviteService: self.shareInviteService)
         }
     }
 
     var setShareInviteVault: Factory<any SetShareInviteVaultUseCase> {
-        self { SetShareInviteVault(shareInviteService: self.shareInviteService,
-                                   getVaultItemCount: self.getVaultItemCount()) }
+        self { @MainActor in SetShareInviteVault(shareInviteService: self.shareInviteService,
+                                                 getVaultItemCount: self.getVaultItemCount()) }
     }
 
     var setShareInvitesUserEmailsAndKeys: Factory<any SetShareInvitesUserEmailsAndKeysUseCase> {
@@ -166,7 +166,7 @@ extension UseCasesContainer {
     }
 
     var setShareInviteRole: Factory<any SetShareInviteRoleUseCase> {
-        self { SetShareInviteRole(shareInviteService: self.shareInviteService) }
+        self { @MainActor in SetShareInviteRole(shareInviteService: self.shareInviteService) }
     }
 
     var sendShareInvite: Factory<any SendShareInviteUseCase> {
@@ -283,7 +283,7 @@ extension UseCasesContainer {
     }
 
     var canUserTransferVaultOwnership: Factory<any CanUserTransferVaultOwnershipUseCase> {
-        self { CanUserTransferVaultOwnership(appContentManager: self.appContentManager) }
+        self { @MainActor in CanUserTransferVaultOwnership(appContentManager: self.appContentManager) }
     }
 
     var makeUnsignedSignatureForVaultSharing: Factory<any MakeUnsignedSignatureForVaultSharingUseCase> {
@@ -295,7 +295,7 @@ extension UseCasesContainer {
 
 extension UseCasesContainer {
     var getVaultItemCount: Factory<any GetVaultItemCountUseCase> {
-        self { GetVaultItemCount(appContentManager: self.appContentManager) }
+        self { @MainActor in GetVaultItemCount(appContentManager: self.appContentManager) }
     }
 
     var transferVaultOwnership: Factory<any TransferVaultOwnershipUseCase> {

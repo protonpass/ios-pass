@@ -110,7 +110,7 @@ struct ItemsTabView: View {
                                animationNamespace: animationNamespace,
                                isEditMode: $viewModel.isEditMode,
                                showPromoBadge: viewModel.showPromoBadge,
-                               onSearch: { searchMode = .all(viewModel.appContentManager.vaultSelection) },
+                               onSearch: { searchMode = .all(viewModel.appContentManager.shareSelection) },
                                onShowVaultList: { viewModel.presentVaultList() },
                                onPin: { viewModel.pinSelectedItems() },
                                onUnpin: { viewModel.unpinSelectedItems() },
@@ -148,7 +148,7 @@ struct ItemsTabView: View {
                 }
 
                 if let pinnedItems = viewModel.pinnedItems, !pinnedItems.isEmpty, !viewModel.isEditMode,
-                   viewModel.appContentManager.vaultSelection != .trash {
+                   viewModel.appContentManager.shareSelection != .trash {
                     PinnedItemsView(pinnedItems: pinnedItems,
                                     onSearch: { searchMode = .pinned },
                                     action: { viewModel.viewDetail(of: $0) })
@@ -205,7 +205,7 @@ struct ItemsTabView: View {
 private extension ItemsTabView {
     @ViewBuilder
     var emptySections: some View {
-        switch viewModel.appContentManager.vaultSelection {
+        switch viewModel.appContentManager.shareSelection {
         case .all:
             EmptyVaultView(canCreateItems: !viewModel.appContentManager.getAllEditableVaultContents().isEmpty,
                            onCreate: { viewModel.createNewItem(type: $0) })
@@ -221,7 +221,7 @@ private extension ItemsTabView {
             VStack {
                 Spacer()
                 Text(viewModel.appContentManager
-                    .vaultSelection == .sharedByMe ? "You have not shared any items" :
+                    .shareSelection == .sharedByMe ? "You have not shared any items" :
                     "No items are shared with you")
                     .font(.title2)
                     .fontWeight(.bold)
@@ -286,7 +286,7 @@ private extension ItemsTabView {
     @ViewBuilder
     func itemRow(_ item: ItemUiModel) -> ItemRow {
         let isTrashed = item.state == .trashed
-        let isSwipeEnabled = !viewModel.appContentManager.vaultSelection.isShared
+        let isSwipeEnabled = !viewModel.appContentManager.shareSelection.isShared
         let isEditable = viewModel.isEditable(item)
         let isSelected = viewModel.isSelected(item)
         ItemRow(item: item,

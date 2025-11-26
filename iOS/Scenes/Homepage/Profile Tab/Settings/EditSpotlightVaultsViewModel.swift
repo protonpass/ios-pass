@@ -22,6 +22,7 @@ import Entities
 import FactoryKit
 import Foundation
 
+@MainActor
 final class EditSpotlightVaultsViewModel: ObservableObject {
     private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     @Published private(set) var selectedVaults = [Share]()

@@ -248,7 +248,7 @@ private extension EditableVaultListView {
     }
 
     @ViewBuilder
-    func vaultRow(for selection: VaultSelection) -> some View {
+    func vaultRow(for selection: ShareSelection) -> some View {
         let itemCount = viewModel.itemCount(for: selection)
 
         let vaultRowMode: VaultRowMode = switch viewModel.mode {
@@ -436,7 +436,7 @@ private extension EditableVaultListView {
     }
 }
 
-extension VaultSelection {
+extension ShareSelection {
     var title: String {
         switch self {
         case .all:

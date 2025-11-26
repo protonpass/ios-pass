@@ -58,7 +58,7 @@ public extension UpgradeChecker {
     func aliasLimitation() async throws -> AliasLimitation? {
         let plan = try await accessRepository.getPlan(userId: nil)
         if let aliasLimit = plan.aliasLimit {
-            return .init(count: counter.getAliasCount(), limit: aliasLimit)
+            return await .init(count: counter.getAliasCount(), limit: aliasLimit)
         }
         return nil
     }
@@ -66,7 +66,7 @@ public extension UpgradeChecker {
     func canCreateMoreVaults() async throws -> Bool {
         let plan = try await accessRepository.getPlan(userId: nil)
         if let vaultLimit = plan.vaultLimit {
-            let vaultCount = counter.getVaultsCount()
+            let vaultCount = await counter.getVaultsCount()
             return vaultCount < vaultLimit
         }
         return true
@@ -75,7 +75,7 @@ public extension UpgradeChecker {
     func canHaveMoreLoginsWith2FA() async throws -> Bool {
         let plan = try await accessRepository.getPlan(userId: nil)
         guard let totpLimit = plan.totpLimit else { return true }
-        return counter.getTOTPCount() < totpLimit
+        return await counter.getTOTPCount() < totpLimit
     }
 
     func canShowTOTPToken(creationDate: Int64) async throws -> Bool {
@@ -95,11 +95,11 @@ public extension UpgradeChecker {
 }
 
 public protocol LimitationCounterProtocol: AnyObject, Sendable {
-    func getAliasCount() -> Int
+    func getAliasCount() async -> Int
     // periphery:ignore
-    func getSharesCount() -> Int
-    func getVaultsCount() -> Int
-    func getTOTPCount() -> Int
+    func getSharesCount() async -> Int
+    func getVaultsCount() async -> Int
+    func getTOTPCount() async -> Int
 }
 
 public protocol TOTPCheckerProtocol: Sendable {

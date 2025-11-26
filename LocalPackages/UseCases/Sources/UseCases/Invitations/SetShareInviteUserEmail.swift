@@ -61,6 +61,6 @@ public final class SetShareInvitesUserEmailsAndKeys: SetShareInvitesUserEmailsAn
                 }
             }
         }
-        shareInviteService.setEmailsAndKeys(with: emailsAndKeys)
+        await shareInviteService.setEmailsAndKeys(with: emailsAndKeys)
     }
 }

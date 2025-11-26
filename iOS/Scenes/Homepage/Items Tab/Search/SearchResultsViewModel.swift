@@ -57,11 +57,11 @@ final class SearchResultsViewModel: ObservableObject {
     let fullResults: SearchDataDisplayContainer
 
     var isTrash: Bool {
-        mode?.vaultSelection == .trash
+        mode?.shareSelection == .trash
     }
 
     var currentSelectionTitle: String {
-        switch mode?.vaultSelection {
+        switch mode?.shareSelection {
         case .sharedWithMe:
             #localized("Shared with me")
         case .sharedByMe:
