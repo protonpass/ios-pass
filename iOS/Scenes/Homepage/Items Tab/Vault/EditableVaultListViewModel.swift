@@ -32,7 +32,8 @@ private extension EditableVaultListViewModel {
         let value: Int
     }
 
-    struct Count: Sendable {
+    @MainActor
+    struct Count {
         let all: Int
         let vaultCounts: [VaultCount]
         let trashed: Int
@@ -149,11 +150,11 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
     deinit { print(deinitMessage) }
 
-    func select(_ selection: VaultSelection) {
+    func select(_ selection: ShareSelection) {
         appContentManager.select(selection)
     }
 
-    func isSelected(_ selection: VaultSelection) -> Bool {
+    func isSelected(_ selection: ShareSelection) -> Bool {
         appContentManager.isSelected(selection)
     }
 
@@ -169,7 +170,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
         canUserPerformActionOnVault(for: vault)
     }
 
-    func canSelectVault(selection: VaultSelection) -> Bool {
+    func canSelectVault(selection: ShareSelection) -> Bool {
         guard selection == .sharedByMe || selection == .sharedWithMe else {
             return true
         }
@@ -310,7 +311,7 @@ extension EditableVaultListViewModel {
         }
     }
 
-    func itemCount(for selection: VaultSelection) -> Int {
+    func itemCount(for selection: ShareSelection) -> Int {
         let itemsSharedWithMe = appContentManager.state.loadedContent?.itemsSharedWithMe ?? []
         let activeItemsSharedWithMeCount = itemsSharedWithMe.count(where: { $0.state == .active })
 

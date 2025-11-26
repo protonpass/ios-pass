@@ -73,7 +73,7 @@ extension CreateEditItemCoordinator {
 
     func presentCreateItemView(for itemType: ItemType,
                                onError: @escaping (any Error) -> Void) async throws {
-        let shareId = appContentManager.vaultSelection.preciseVault?.shareId
+        let shareId = appContentManager.shareSelection.preciseShare?.shareId
         switch itemType {
         case .login:
             let logInType = ItemCreationType.login(autofill: false)

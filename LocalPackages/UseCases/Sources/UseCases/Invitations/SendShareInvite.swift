@@ -38,7 +38,7 @@ public extension SendShareInviteUseCase {
     }
 }
 
-public final class SendShareInvite: @unchecked Sendable, SendShareInviteUseCase {
+public final class SendShareInvite: Sendable, SendShareInviteUseCase {
     private let createAndMoveItemToNewVault: any CreateAndMoveItemToNewVaultUseCase
     private let makeUnsignedSignatureForVaultSharing: any MakeUnsignedSignatureForVaultSharingUseCase
     private let shareInviteService: any ShareInviteServiceProtocol
@@ -97,7 +97,7 @@ public final class SendShareInvite: @unchecked Sendable, SendShareInviteUseCase 
 
         if invited {
             syncEventLoop.forceSync()
-            shareInviteService.resetShareInviteInformations()
+            await shareInviteService.resetShareInviteInformations()
             return share
         }
 

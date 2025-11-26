@@ -23,6 +23,7 @@
 import Client
 import Entities
 
+@MainActor
 public protocol GetVaultItemCountUseCase: Sendable {
     func execute(for vault: Share, and type: ItemContentType?) -> Int
 }
@@ -33,7 +34,8 @@ public extension GetVaultItemCountUseCase {
     }
 }
 
-public final class GetVaultItemCount: @unchecked Sendable, GetVaultItemCountUseCase {
+@MainActor
+public final class GetVaultItemCount: GetVaultItemCountUseCase {
     private let appContentManager: any AppContentManagerProtocol
 
     public init(appContentManager: any AppContentManagerProtocol) {

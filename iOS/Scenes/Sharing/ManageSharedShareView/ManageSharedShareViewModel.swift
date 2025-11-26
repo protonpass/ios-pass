@@ -29,7 +29,7 @@ import Macro
 import ProtonCoreNetworking
 
 @MainActor
-final class ManageSharedShareViewModel: ObservableObject, @unchecked Sendable {
+final class ManageSharedShareViewModel: ObservableObject {
     @Published private(set) var itemsNumber = 0
     @Published private(set) var invitations = ShareInvites.default
     @Published private(set) var vaultMembers: [any ShareInvitee] = []
@@ -232,7 +232,6 @@ final class ManageSharedShareViewModel: ObservableObject, @unchecked Sendable {
 }
 
 private extension ManageSharedShareViewModel {
-    @MainActor
     func execute(_ action: @Sendable @autoclosure () async throws -> Void,
                  shouldForceSync: Bool = true,
                  elementDisplay: UIElementDisplay? = nil) async throws {
@@ -251,7 +250,6 @@ private extension ManageSharedShareViewModel {
         }
     }
 
-    @MainActor
     func doFetchShareInformation() async throws {
         itemsNumber = getVaultItemCount(for: share)
         if Task.isCancelled {

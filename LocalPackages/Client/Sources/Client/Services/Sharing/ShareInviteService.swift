@@ -22,6 +22,7 @@
 import Entities
 import Foundation
 
+@MainActor
 public protocol ShareInviteServiceProtocol: Sendable {
     var currentSelectedElement: CurrentValueSubject<SharingElementData?, Never> { get }
 
@@ -34,24 +35,11 @@ public protocol ShareInviteServiceProtocol: Sendable {
     func resetShareInviteInformations()
 }
 
-public final class ShareInviteService: @unchecked Sendable, ShareInviteServiceProtocol {
+@MainActor
+public final class ShareInviteService: ShareInviteServiceProtocol {
     public nonisolated let currentSelectedElement: CurrentValueSubject<SharingElementData?, Never> = .init(nil)
 
-    private let queue = DispatchQueue(label: "me.proton.pass.shareInviteService")
-    private var safeCurrentSelectedVaultItems: Int?
-    private var currentSelectedVaultItems: Int? {
-        get {
-            queue.sync {
-                safeCurrentSelectedVaultItems
-            }
-        }
-        set {
-            queue.sync {
-                safeCurrentSelectedVaultItems = newValue
-            }
-        }
-    }
-
+    private var currentSelectedVaultItems: Int?
     private var emailsAndKeys = [String: [PublicKey]?]()
     private var emailsAndRole = [String: ShareRole]()
 

@@ -21,7 +21,7 @@
 import Entities
 import Macro
 
-public extension VaultSelection {
+public extension ShareSelection {
     var searchBarPlaceholder: String {
         switch self {
         case .all:

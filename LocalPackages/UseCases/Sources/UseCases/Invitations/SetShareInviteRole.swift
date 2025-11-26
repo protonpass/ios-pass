@@ -23,6 +23,7 @@
 import Client
 import Entities
 
+@MainActor
 public protocol SetShareInviteRoleUseCase {
     func execute(with roles: [String: ShareRole])
 }

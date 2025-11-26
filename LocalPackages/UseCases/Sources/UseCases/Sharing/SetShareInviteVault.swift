@@ -23,6 +23,7 @@
 import Client
 import Entities
 
+@MainActor
 public protocol SetShareInviteVaultUseCase {
     func execute(with element: SharingElementData)
 }

@@ -161,7 +161,7 @@ private extension ItemsTabViewModel {
             }
             .store(in: &cancellables)
 
-        appContentManager.$vaultSelection
+        appContentManager.$shareSelection
             .receive(on: DispatchQueue.main)
             .dropFirst()
             .sink { [weak self] _ in

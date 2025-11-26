@@ -224,7 +224,7 @@ private extension HomepageCoordinator {
             }
         }
 
-        Publishers.CombineLatest(appContentManager.$vaultSelection, appContentManager.$state)
+        Publishers.CombineLatest(appContentManager.$shareSelection, appContentManager.$state)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] selection, _ in
                 guard let self else { return }

@@ -24,6 +24,7 @@ import Client
 import Entities
 
 // sourcery: AutoMockable
+@MainActor
 public protocol GetCurrentShareInviteInformationsUseCase {
     func execute() -> [SharingInfos]
 }

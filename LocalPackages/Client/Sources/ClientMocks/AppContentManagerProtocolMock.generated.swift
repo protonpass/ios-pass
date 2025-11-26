@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.2.7 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.3.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
@@ -26,24 +26,17 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
 
     public init() {}
 
-    // MARK: - currentVaults
-    public var invokedCurrentVaultsSetter = false
-    public var invokedCurrentVaultsSetterCount = 0
-    public var invokedCurrentVaults: CurrentValueSubject<[Share], Never>?
-    public var invokedCurrentVaultsList = [CurrentValueSubject<[Share], Never>?]()
-    public var invokedCurrentVaultsGetter = false
-    public var invokedCurrentVaultsGetterCount = 0
-    public var stubbedCurrentVaults: CurrentValueSubject<[Share], Never>!
-    public var currentVaults: CurrentValueSubject<[Share], Never> {
-        set {
-            invokedCurrentVaultsSetter = true
-            invokedCurrentVaultsSetterCount += 1
-            invokedCurrentVaults = newValue
-            invokedCurrentVaultsList.append(newValue)
-        } get {
-            invokedCurrentVaultsGetter = true
-            invokedCurrentVaultsGetterCount += 1
-            return stubbedCurrentVaults
+    // MARK: - currentShares
+    public var invokedCurrentSharesSetter = false
+    public var invokedCurrentSharesSetterCount = 0
+    public var invokedCurrentShares: CurrentValueSubject<[Share], Never>?
+    public var invokedCurrentSharesList = [CurrentValueSubject<[Share], Never>?]()
+    public var invokedCurrentSharesGetter = false
+    public var invokedCurrentSharesGetterCount = 0
+    public nonisolated(unsafe) var stubbedCurrentShares: CurrentValueSubject<[Share], Never>!
+    public var currentShares: CurrentValueSubject<[Share], Never> {
+        get {
+            return stubbedCurrentShares
         }
     }
     // MARK: - hasOnlyOneOwnedVault
