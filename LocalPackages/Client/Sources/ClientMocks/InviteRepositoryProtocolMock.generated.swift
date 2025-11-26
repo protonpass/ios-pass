@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.2.7 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.3.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
@@ -107,23 +107,41 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
         closureRejectInvite()
         return stubbedRejectInviteResult
     }
-    // MARK: - refreshInvites
-    public var refreshInvitesUserIdThrowableError4: Error?
-    public var closureRefreshInvites: () -> () = {}
-    public var invokedRefreshInvitesfunction = false
-    public var invokedRefreshInvitesCount = 0
-    public var invokedRefreshInvitesParameters: (userId: String, Void)?
-    public var invokedRefreshInvitesParametersList = [(userId: String, Void)]()
+    // MARK: - refreshAllInvites
+    public var refreshAllInvitesUserIdThrowableError4: Error?
+    public var closureRefreshAllInvites: () -> () = {}
+    public var invokedRefreshAllInvitesfunction = false
+    public var invokedRefreshAllInvitesCount = 0
+    public var invokedRefreshAllInvitesParameters: (userId: String, Void)?
+    public var invokedRefreshAllInvitesParametersList = [(userId: String, Void)]()
 
-    public func refreshInvites(userId: String) async throws {
-        invokedRefreshInvitesfunction = true
-        invokedRefreshInvitesCount += 1
-        invokedRefreshInvitesParameters = (userId, ())
-        invokedRefreshInvitesParametersList.append((userId, ()))
-        if let error = refreshInvitesUserIdThrowableError4 {
+    public func refreshAllInvites(userId: String) async throws {
+        invokedRefreshAllInvitesfunction = true
+        invokedRefreshAllInvitesCount += 1
+        invokedRefreshAllInvitesParameters = (userId, ())
+        invokedRefreshAllInvitesParametersList.append((userId, ()))
+        if let error = refreshAllInvitesUserIdThrowableError4 {
             throw error
         }
-        closureRefreshInvites()
+        closureRefreshAllInvites()
+    }
+    // MARK: - refreshSpecificInvites
+    public var refreshSpecificInvitesUserIdRefreshInviteTypeThrowableError5: Error?
+    public var closureRefreshSpecificInvites: () -> () = {}
+    public var invokedRefreshSpecificInvitesfunction = false
+    public var invokedRefreshSpecificInvitesCount = 0
+    public var invokedRefreshSpecificInvitesParameters: (userId: String, refreshInviteType: RefreshInviteType)?
+    public var invokedRefreshSpecificInvitesParametersList = [(userId: String, refreshInviteType: RefreshInviteType)]()
+
+    public func refreshSpecificInvites(userId: String, refreshInviteType: RefreshInviteType) async throws {
+        invokedRefreshSpecificInvitesfunction = true
+        invokedRefreshSpecificInvitesCount += 1
+        invokedRefreshSpecificInvitesParameters = (userId, refreshInviteType)
+        invokedRefreshSpecificInvitesParametersList.append((userId, refreshInviteType))
+        if let error = refreshSpecificInvitesUserIdRefreshInviteTypeThrowableError5 {
+            throw error
+        }
+        closureRefreshSpecificInvites()
     }
     // MARK: - removeCachedInvite
     public var closureRemoveCachedInvite: () -> () = {}
@@ -138,5 +156,23 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
         invokedRemoveCachedInviteParameters = (inviteToken, ())
         invokedRemoveCachedInviteParametersList.append((inviteToken, ()))
         closureRemoveCachedInvite()
+    }
+    // MARK: - sendNewShareInvites
+    public var sendNewShareInvitesShareIdNewShareInviteThrowableError7: Error?
+    public var closureSendNewShareInvites: () -> () = {}
+    public var invokedSendNewShareInvitesfunction = false
+    public var invokedSendNewShareInvitesCount = 0
+    public var invokedSendNewShareInvitesParameters: (shareId: String, newShareInvite: [ShareNewUserInvite])?
+    public var invokedSendNewShareInvitesParametersList = [(shareId: String, newShareInvite: [ShareNewUserInvite])]()
+
+    public func sendNewShareInvites(shareId: String, newShareInvite: [ShareNewUserInvite]) async throws {
+        invokedSendNewShareInvitesfunction = true
+        invokedSendNewShareInvitesCount += 1
+        invokedSendNewShareInvitesParameters = (shareId, newShareInvite)
+        invokedSendNewShareInvitesParametersList.append((shareId, newShareInvite))
+        if let error = sendNewShareInvitesShareIdNewShareInviteThrowableError7 {
+            throw error
+        }
+        closureSendNewShareInvites()
     }
 }

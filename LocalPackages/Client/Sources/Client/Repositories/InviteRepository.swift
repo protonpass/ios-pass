@@ -74,6 +74,7 @@ public protocol ShareInviteRepositoryProtocol: Sendable {
     func checkAddresses(shareId: String, emails: [String]) async throws -> [String]
 }
 
+// sourcery: AutoMockable
 public typealias FullInviteRepositoryProtocol = InviteRepositoryProtocol & ShareInviteRepositoryProtocol
 
 public actor InviteRepository: FullInviteRepositoryProtocol {
