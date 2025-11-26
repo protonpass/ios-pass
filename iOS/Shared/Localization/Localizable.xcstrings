@@ -25968,10 +25968,22 @@
             "value" : "L'alias « %@ » a été déplacé dans la corbeille."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias \"%@\" dipindahkan ke sampah"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alias \"%@\" spostato nel Cestino"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エイリアス「%@」をごみ箱に移動しました"
           }
         },
         "nb" : {
@@ -44424,203 +44436,6 @@
         }
       }
     },
-    "Clone" : {
-      "comment" : "Title of the button that clones the content of an item to make a new one",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Кланіраваць"
-          }
-        },
-        "ca" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Clonar"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Duplikovat"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Klon"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Klonen"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Κλωνοποίηση"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Clone"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Duplicar"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Duplicar"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monista"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dupliquer"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Klón"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gandakan"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Clona"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "複製"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "კლონი"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "복제"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Klone"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dupliceren"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sklonuj"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Clonar"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Clonar"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Clonare"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Клонировать"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Klonovať"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kloniraj"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Klona"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kopyala"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Клонувати"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nhân bản"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "复制"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "複製"
-          }
-        }
-      }
-    },
     "Close" : {
       "localizations" : {
         "be" : {
@@ -52145,7 +51960,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "メール非表示エイリアスを作成"
+            "value" : "Hide My Email エイリアスを作成"
           }
         },
         "ka" : {
@@ -55670,7 +55485,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "現在の保管庫"
+            "value" : "この保管庫"
           }
         },
         "ko" : {
@@ -64096,7 +63911,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No m'ho torneu a recordar"
+            "value" : "No m'ho tornis a recordar"
           }
         },
         "cs" : {
@@ -64990,6 +64805,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "駕照"
+          }
+        }
+      }
+    },
+    "Duplicate" : {
+      "comment" : "Title of the button that duplicates the content of an item to make a new one",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duplicate"
           }
         }
       }
@@ -77802,7 +77628,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ファイナンス"
+            "value" : "金融"
           }
         },
         "ko" : {
@@ -81319,7 +81145,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "パスワードを生成する"
+            "value" : "生成されたパスワード"
           }
         },
         "ko" : {
@@ -84402,7 +84228,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "メールを非表示"
+            "value" : "アドレスを隠してください"
           }
         },
         "ka" : {
@@ -106231,7 +106057,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "くすり"
+            "value" : "薬"
           }
         },
         "ko" : {
@@ -111010,7 +110836,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Перамясціць у Сметніцу"
+            "value" : "Перамясціць у сметніцу"
           }
         },
         "ca" : {
@@ -124647,7 +124473,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "クリップボードから貼り付け"
+            "value" : "貼り付け"
           }
         },
         "ko" : {
@@ -132394,7 +132220,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Прэміяльны дамен"
+            "value" : "прэміяльны дамен"
           }
         },
         "ca" : {
@@ -136885,7 +136711,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "レコード番号"
+            "value" : "医療記録番号"
           }
         },
         "ko" : {
@@ -146356,7 +146182,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "QRコードをスキャンして参加する"
+            "value" : "QRコードをスキャンして参加できます"
           }
         },
         "ko" : {
@@ -157252,10 +157078,22 @@
             "value" : "Élément partagé"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item terbagi"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Elemento condiviso"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共有済みアイテム"
           }
         },
         "nb" : {
@@ -162063,7 +161901,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "SimpleLoginのメモはエイリアスアドレスと一緒に同じ場所に保存され、保存時には暗号化されていますが、E2E暗号化されていないため、SimpleLoginのデータベースにアクセスできる人は誰でもそれを読むことができます。"
+            "value" : "SimpleLoginのメモはエイリアスと同じ場所に保存され、保存時には暗号化されます。しかし、エンドツーエンド暗号化はしていないので、SimpleLoginデータベースにアクセスできる人なら誰でもメモを読むことができます。"
           }
         },
         "ko" : {
@@ -163021,7 +162859,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "パスワードリセットにより、一部保管庫にアクセスできなくなりました。アカウントキーを再アクティブ化して、アクセスを回復してください。"
+            "value" : "パスワード初期化により、一部の保管庫にアクセスできなくなりました。アカウント鍵を再度有効化して、アクセスを回復しましょう。"
           }
         },
         "ko" : {
@@ -169760,7 +169598,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "テクノロジー"
+            "value" : "技術"
           }
         },
         "ko" : {
@@ -173805,7 +173643,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "これにより、メール、カレンダー、ドライブに保存されているデータを含む、Proton アカウントとそのすべてのデータが永久に削除されます。このアカウントを再度有効にすることはできません。"
+            "value" : "これにより、メール、カレンダー、ドライブ内のファイルなど、Proton アカウントとその全てのデータが完全に削除されます。このアカウントを再度有効にすることはできません。"
           }
         },
         "ka" : {
@@ -183031,7 +182869,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Milloreu a Pass Plus"
+            "value" : "Milloreu al Pass Plus"
           }
         },
         "cs" : {
@@ -183070,6 +182908,12 @@
             "value" : "Mejorar a Pass Plus"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mejorar a Pass Plus"
+          }
+        },
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -183082,10 +182926,22 @@
             "value" : "Je passe à Pass Plus"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tingkatkan ke Pass Plus"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Passa a Pass Plus"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pass Plus へアップグレード"
           }
         },
         "nb" : {
@@ -196593,7 +196449,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "「 %1$@ 」 を 「 %2$@ 」 に関連付けますか?"
+            "value" : "「 %2$@ 」を「 %1$@ 」に指定しますか?"
           }
         },
         "ka" : {
@@ -198737,10 +198593,22 @@
             "value" : "Vous créez un élément dans un coffre-fort partagé et les membres auront immédiatement accès à cet élément."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anda sedang membuat item pada brankas yang dibagikan. Pengguna yang berbagi brankas dengan Anda akan memperoleh akses ke item ini dengan segera."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Stai creando un elemento in una cassaforte condivisa e i membri avranno immediatamente accesso a questo elemento."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共有済みの保管庫内でアイテムを作ると、メンバーの人はすぐこのアイテムにアクセスできるようになります。"
           }
         },
         "nb" : {
@@ -198861,10 +198729,22 @@
             "value" : "Vous êtes en train de modifier un élément partagé. Les modifications seront visibles immédiatement par toutes les personnes avec lesquelles il est partagé."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anda sedang menyunting item yang dibagikan. Perubahan yang Anda buat akan terlihat oleh semua orang yang memiliki akses ke item ini dengan segera."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Stai modificando un elemento condiviso. Le modifiche saranno immediatamente visibili a tutti con cui è condiviso."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "編集中のアイテムは共有済みです。変更内容は直ちに共有されます。"
           }
         },
         "nb" : {

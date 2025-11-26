@@ -47,6 +47,6 @@ public final class RefreshInvitations: RefreshInvitationsUseCase {
             return
         }
         let userId = try await userManager.getActiveUserId()
-        try await inviteRepository.refreshInvites(userId: userId)
+        try await inviteRepository.refreshAllInvites(userId: userId)
     }
 }

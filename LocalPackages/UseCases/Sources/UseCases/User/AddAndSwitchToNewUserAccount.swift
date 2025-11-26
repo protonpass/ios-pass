@@ -74,7 +74,7 @@ public final class AddAndSwitchToNewUserAccount: AddAndSwitchToNewUserAccountUse
                                                                value: true)
         }
         await fullContentSync(userId: userId, shouldStopEventLoop: true)
-        try await inviteRepository.refreshInvites(userId: userId)
+        try await inviteRepository.refreshAllInvites(userId: userId)
         syncEventLoop.start()
     }
 }

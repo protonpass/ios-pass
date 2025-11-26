@@ -7937,7 +7937,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "履歴の消去"
+            "value" : "履歴を消去"
           }
         },
         "ko" : {
@@ -9415,7 +9415,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Creeu el vostre primer inici de sessió"
+            "value" : "Creeu el primer inici de sessió"
           }
         },
         "cs" : {
@@ -9493,7 +9493,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "最初のログインを作成"
+            "value" : "はじめてのログインを作成しましょう"
           }
         },
         "ko" : {
@@ -14466,7 +14466,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "パスワードを生成する"
+            "value" : "生成されたパスワード"
           }
         },
         "ko" : {
@@ -15136,7 +15136,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Obtingueu Proton Unlimited"
+            "value" : "Obtingueu el Proton Unlimited"
           }
         },
         "cs" : {
@@ -18250,7 +18250,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "最新"
+            "value" : "新"
           }
         },
         "ko" : {
@@ -24745,7 +24745,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proton Pass を設定して顔または指紋でロックを解除し、自分だけがアクセスできるようにします."
+            "value" : "Proton Pass を顔や指紋でロック解除できるように設定して、あなただけのスペースにしましょう。"
           }
         },
         "ko" : {
@@ -26859,7 +26859,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "本当のメールアドレスを共有するのはやめてください。代わりに、メールエイリアスで非表示にします - Proton Pass専用です。"
+            "value" : "本当のメールアドレスを共有するのはやめ、Proton Pass 専用のエイリアスを代わりに使用することで安全を守りましょう。"
           }
         },
         "ko" : {
@@ -30673,7 +30673,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "フィッシングの脅威に対して、メール非表示エイリアスを使用します。"
+            "value" : "フィッシング脅威から身を守るため、Hide My Email エイリアスを使いましょう。"
           }
         },
         "ka" : {
@@ -32597,7 +32597,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "どのサービスのログインを作成しますか？"
+            "value" : "どのサービスに使うログインですか？"
           }
         },
         "ko" : {
@@ -32775,7 +32775,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "これで Proton Pass を最大限に活用する準備ができました。自動入力の魔法、エイリアスのプライバシーなど、さまざまな機能をご利用いただけます。"
+            "value" : "これで Proton Pass を最大限に活用する準備ができました。魔法のような自動入力、安全を守ってくれるエイリアスなど、さまざまな機能をご利用いただけます。"
           }
         },
         "ko" : {
