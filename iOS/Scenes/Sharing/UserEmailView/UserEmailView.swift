@@ -115,7 +115,7 @@ private extension UserEmailView {
     @ViewBuilder
     var emailTextField: some View {
         let placeholder = #localized("Email address")
-        let width = max(150, CGFloat(placeholder.witchIsLongest(other: viewModel.email)) * 10)
+        let width = max(150, CGFloat(max(placeholder.count, viewModel.email.count)) * 10)
         BackspaceAwareTextField(text: $viewModel.email,
                                 isFocused: $isFocused,
                                 config: .init(font: .body,
@@ -255,10 +255,4 @@ private extension UserEmailView {
 
 #Preview("UserEmailView Preview") {
     UserEmailView()
-}
-
-private extension String {
-    func witchIsLongest(other: String) -> Int {
-        max(count, other.count)
-    }
 }

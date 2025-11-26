@@ -48,6 +48,7 @@ public actor UserEventsSynchronizer: UserEventsSynchronizerProtocol {
     private let inviteRepository: any InviteRepositoryProtocol
     private let simpleLoginNoteSynchronizer: any SimpleLoginNoteSynchronizerProtocol
     private let logger: Logger
+    private let maxPerRoundFetchCycle = 10
 
     public init(localUserEventIdDatasource: any LocalUserEventIdDatasourceProtocol,
                 remoteUserEventsDatasource: any RemoteUserEventsDatasourceProtocol,
@@ -86,8 +87,9 @@ public extension UserEventsSynchronizer {
 private extension UserEventsSynchronizer {
     func parseUserEvents(userId: String, lastEventId: String) async throws -> UserEventsSyncResult {
         var result: UserEventsSyncResult = []
+        var currentCycle = 0
 
-        while true {
+        while currentCycle <= maxPerRoundFetchCycle {
             let events = try await remoteUserEventsDatasource.getUserEvents(userId: userId,
                                                                             lastEventId: lastEventId)
 
@@ -104,6 +106,7 @@ private extension UserEventsSynchronizer {
                                                                    lastEventId: events.lastEventID)
 
             guard events.eventsPending else { break }
+            currentCycle += 1
         }
 
         return result
@@ -113,8 +116,8 @@ private extension UserEventsSynchronizer {
     func process(events: UserEvents, for userId: String) async throws {
         async let updatedItems: () = processUpdatedItems(events.itemsUpdated, userId: userId)
         async let deletedItems: () = processDeletedItems(events.itemsDeleted, userId: userId)
-        async let aliasNotes: () = processAliasNoteChangedItems(events.aliasNoteChanged, userId: userId)
-        async let createShares: () = processCreatedShares(events.sharesCreated, userId: userId)
+        async let aliasNotesChanged: () = processAliasNoteChangedItems(events.aliasNoteChanged, userId: userId)
+        async let createdShares: () = processCreatedShares(events.sharesCreated, userId: userId)
         async let updatedShares: () = processUpdatedShares(events.sharesUpdated, userId: userId)
         async let deletedShares: () = processDeletedShares(events.sharesDeleted, userId: userId)
         // swiftlint:disable:next todo
@@ -130,7 +133,13 @@ private extension UserEventsSynchronizer {
         // TODO: share with invite to be added to the group sharing MR that contains changes to invite logic and serices
 //        async let inviteCreatedShares: () = processInviteChanges(inviteChanges: events.sharesWithInvitesToCreate,
 //        userId: userId)
-        _ = try await (updatedItems, deletedItems, aliasNotes, createShares, updatedShares, deletedShares, invites)
+        _ = try await (updatedItems,
+                       deletedItems,
+                       aliasNotesChanged,
+                       createdShares,
+                       updatedShares,
+                       deletedShares,
+                       invites)
     }
 
     func processUpdatedItems(_ updatedItems: [ItemEvent], userId: String) async throws {
