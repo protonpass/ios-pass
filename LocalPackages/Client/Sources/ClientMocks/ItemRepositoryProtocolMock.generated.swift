@@ -682,7 +682,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedDeleteAllItemsLocallyShareIdAsync33 = true
         invokedDeleteAllItemsLocallyShareIdAsyncCount33 += 1
         invokedDeleteAllItemsLocallyShareIdAsyncParameters33 = (shareId, ())
-        invokedDeleteAllItemsLocallyShareIdAsyncParametersList33.append((shareId, ()))
+//        invokedDeleteAllItemsLocallyShareIdAsyncParametersList33.append((shareId, ()))
         if let error = deleteAllItemsLocallyShareIdThrowableError33 {
             throw error
         }

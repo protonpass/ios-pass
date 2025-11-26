@@ -22,7 +22,6 @@
 
 import DesignSystem
 import Entities
-import FactoryKit
 import Macro
 import ProtonCoreUIFoundations
 import Screens
@@ -31,7 +30,7 @@ import SwiftUI
 struct EmailGroupSelectionView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = EmailGroupSelectionViewModel()
-    @StateObject private var router = resolve(\RouterContainer.sharingRouter)
+    @StateObject private var router = PathRouter()
     @State private var isFocused = false
 
     var body: some View {
@@ -140,20 +139,16 @@ private extension EmailGroupSelectionView {
     @ViewBuilder
     var emailTextField: some View {
         let placeholder = #localized("Email address")
-        let maxCharCount = max(placeholder.count, viewModel.email.count)
+        let width = max(150, CGFloat(max(placeholder.count, viewModel.email.count)) * 10)
         BackspaceAwareTextField(text: $viewModel.email,
                                 isFocused: $isFocused,
                                 config: .init(font: .body,
                                               placeholder: placeholder,
-                                              autoCapitalization: .none,
-                                              autoCorrection: .no,
-                                              keyboardType: .emailAddress,
-                                              returnKeyType: .default,
                                               textColor: PassUIColor.textNorm,
                                               tintColor: PassUIColor.interactionNorm),
                                 onBackspace: { viewModel.highlightLast() },
                                 onReturn: { _ = viewModel.appendCurrentEmail() })
-            .frame(width: max(150, CGFloat(maxCharCount) * 10), height: 32)
+            .frame(width: width, height: 32)
             .clipped()
     }
 
@@ -225,10 +220,6 @@ private extension EmailGroupSelectionView {
                                     isFocused: focused,
                                     config: .init(font: .title,
                                                   placeholder: "",
-                                                  autoCapitalization: .none,
-                                                  autoCorrection: .no,
-                                                  keyboardType: .emailAddress,
-                                                  returnKeyType: .default,
                                                   textColor: .clear,
                                                   tintColor: .clear),
                                     onBackspace: { viewModel.deselect(reco) },

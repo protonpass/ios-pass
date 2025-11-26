@@ -226,7 +226,7 @@ extension AppContentManager {
 
             // 4. Refresh invites
             if getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1) {
-                try await inviteRepository.refreshInvites(userId: userId)
+                try await inviteRepository.refreshAllInvites(userId: userId)
             }
 
             try await loadContents(userId: userId, for: remoteShares.shares)

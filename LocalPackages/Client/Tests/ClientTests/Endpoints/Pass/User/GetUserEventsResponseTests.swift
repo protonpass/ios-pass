@@ -57,6 +57,16 @@ struct GetUserEventsResponseTests {
                     "EventToken": "Token7"
                   }
                 ],
+                            "SharesCreated": [
+                              {
+                                "ShareID": "ShareID10",
+                                "EventToken": "Token10"
+                              },
+                              {
+                                "ShareID": "ShareID11",
+                                "EventToken": "Token11"
+                              }
+                            ],
                 "SharesUpdated": [
                   {
                     "ShareID": "ShareID4",
@@ -73,6 +83,27 @@ struct GetUserEventsResponseTests {
                     "EventToken": "Token6"
                   }
                 ],
+                "SharesWithInvitesToCreate": [
+                              {
+                                "ShareID": "ShareID7",
+                                "EventToken": "Token7"
+                              }
+                ],
+                "FoldersUpdated": [
+                              {
+                                "ShareID": "ShareID7",
+                                "FolderID": "FolderID1",
+                                "EventToken": "Token8"
+                              }
+
+                ],
+                "FoldersDeleted": [
+                    {
+                      "ShareID": "ShareID7",
+                      "FolderID": "FolderID2",
+                      "EventToken": "Token9"
+                    }
+                ],
                 "PlanChanged": true,
                 "EventsPending": true,
                 "FullRefresh": false
@@ -84,28 +115,38 @@ struct GetUserEventsResponseTests {
         let events = response.events
         #expect(events.lastEventID == "TestLastID")
         #expect(events.itemsUpdated.count == 2)
-        #expect(events.itemsUpdated.first == UserEventItem(shareID: "ShareID1",
+        #expect(events.itemsUpdated.first == ItemEvent(shareID: "ShareID1",
                                                            itemID: "ItemID1",
                                                            eventToken: "Token1"))
-        #expect(events.itemsUpdated.last == UserEventItem(shareID: "ShareID2",
+        #expect(events.itemsUpdated.last == ItemEvent(shareID: "ShareID2",
                                                           itemID: "ItemID2",
                                                           eventToken: "Token2"))
         #expect(events.itemsDeleted.count == 1)
-        #expect(events.itemsDeleted.last == UserEventItem(shareID: "ShareID3",
+        #expect(events.itemsDeleted.last == ItemEvent(shareID: "ShareID3",
                                                           itemID: "ItemID3",
                                                           eventToken: "Token3"))
         #expect(events.aliasNoteChanged.count == 1)
-        #expect(events.aliasNoteChanged.last == UserEventItem(shareID: "ShareID7",
+        #expect(events.aliasNoteChanged.last == ItemEvent(shareID: "ShareID7",
                                                               itemID: "ItemID7",
                                                               eventToken: "Token7"))
         #expect(events.sharesUpdated.count == 2)
-        #expect(events.sharesUpdated.first == UserEventShare(shareID: "ShareID4",
+        #expect(events.sharesUpdated.first == ShareEvent(shareID: "ShareID4",
                                                              eventToken: "Token4"))
-        #expect(events.sharesUpdated.last == UserEventShare(shareID: "ShareID5",
+        #expect(events.sharesUpdated.last == ShareEvent(shareID: "ShareID5",
                                                             eventToken: "Token5"))
         #expect(events.sharesDeleted.count == 1)
-        #expect(events.sharesDeleted.first == UserEventShare(shareID: "ShareID6",
+        #expect(events.sharesDeleted.first == ShareEvent(shareID: "ShareID6",
                                                              eventToken: "Token6"))
+        #expect(events.sharesCreated.count == 2)
+        #expect(events.sharesCreated.first == ShareEvent(shareID: "ShareID10",
+                                                             eventToken: "Token10"))
+        
+        #expect(events.foldersDeleted.count == 1)
+        #expect(events.foldersDeleted.first == FolderEvent(shareID: "ShareID7", folderID: "FolderID2", eventToken: "Token9"))
+        
+        #expect(events.foldersUpdated.count == 1)
+        #expect(events.foldersUpdated.first == FolderEvent(shareID: "ShareID7", folderID: "FolderID1", eventToken: "Token8"))
+                
         #expect(events.planChanged)
         #expect(events.eventsPending)
         #expect(!events.fullRefresh)

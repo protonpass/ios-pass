@@ -33,10 +33,10 @@ public protocol InviteRepositoryProtocol: Sendable {
 
     @discardableResult
     func rejectInvite(_ invite: Invite) async throws -> Bool
-    func refreshInvites(userId: String) async throws
+    func refreshAllInvites(userId: String) async throws
+    func refreshSpecificInvites(userId: String, refreshInviteType: RefreshInviteType) async throws
     func removeCachedInvite(containing inviteToken: String) async
-
-    // MARK: - Invite Creation
+    func sendNewShareInvites(shareId: String, newShareInvite: [ShareNewUserInvite]) async throws
 }
 
 // sourcery: AutoMockable
@@ -157,7 +157,7 @@ public extension InviteRepository {
         }
     }
 
-    func refreshInvites(userId: String) async throws {
+    func refreshAllInvites(userId: String) async throws {
         let userInvites = try await updateUserInvite(userId)
         ///  The following should fail silently as only org admins have the right to fetch group invites
         let groupInvites = try? await updateGroupInvite(userId)
@@ -165,10 +165,30 @@ public extension InviteRepository {
         mergeInvites(groupInvites: groupInvites ?? [], userInvites: userInvites)
     }
 
+    func refreshSpecificInvites(userId: String, refreshInviteType: RefreshInviteType) async throws {
+        var groupInvites = [GroupInvite]()
+        var userInvites = [UserInvite]()
+        switch refreshInviteType {
+        case .groupInvite:
+            groupInvites = await (try? updateGroupInvite(userId)) ?? []
+            userInvites = try await localDatasource.getUserInvites(userId: userId)
+        case .userInvite:
+            groupInvites = try await localDatasource.getGroupInvites(userId: userId)
+            userInvites = try await updateUserInvite(userId)
+        }
+
+        mergeInvites(groupInvites: groupInvites, userInvites: userInvites)
+    }
+
     func removeCachedInvite(containing inviteToken: String) async {
         logger.trace("Removing current cached invite containing inviteToken \(inviteToken)")
         let newInvites = currentPendingInvites.value.filter { $0.inviteToken != inviteToken }
         currentPendingInvites.send(newInvites)
+    }
+
+    func sendNewShareInvites(shareId: String, newShareInvite: [ShareNewUserInvite]) async throws {
+        let inviteNewUserToShareRequest = newShareInvite.map(\.toInviteNewUserToShareRequest)
+        _ = try await sendExternalInvites(shareId: shareId, requests: inviteNewUserToShareRequest)
     }
 }
 
@@ -419,5 +439,20 @@ private extension InviteRepository {
             try await localDatasource.removeGroupInvite(userId: userId, invite: invite)
         }
         try await loadLocalInvites(userId: userId)
+    }
+}
+
+public enum RefreshInviteType: Sendable {
+    case userInvite
+    case groupInvite
+}
+
+private extension ShareNewUserInvite {
+    var toInviteNewUserToShareRequest: InviteNewUserToShareRequest {
+        InviteNewUserToShareRequest(email: invitedEmail,
+                                    targetType: shareType,
+                                    signature: signature,
+                                    shareRole: shareRole,
+                                    itemId: shareType == .item ? targetID : nil)
     }
 }

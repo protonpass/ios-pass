@@ -18,17 +18,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+// Remove later
+// periphery:ignore:all
 import Entities
 import Foundation
 
 public struct UserEvents: Sendable, Decodable {
     public let lastEventID: String
-    public let itemsUpdated: [UserEventItem]
-    public let itemsDeleted: [UserEventItem]
-    public let aliasNoteChanged: [UserEventItem]
-    public let invitesChanged: UserEventInviteChange?
-    public let sharesUpdated: [UserEventShare]
-    public let sharesDeleted: [UserEventShare]
+    public let itemsUpdated: [ItemEvent]
+    public let itemsDeleted: [ItemEvent]
+    public let aliasNoteChanged: [ItemEvent]
+    public let invitesChanged: InviteChangeEvent?
+    public let groupInvitesChanged: InviteChangeEvent?
+    public let sharesCreated: [ShareEvent]
+    public let sharesUpdated: [ShareEvent]
+    public let sharesDeleted: [ShareEvent]
+    public let sharesWithInvitesToCreate: [ShareEvent]
+    public let foldersUpdated: [FolderEvent]
+    public let foldersDeleted: [FolderEvent]
     public let planChanged: Bool
     public let eventsPending: Bool
     public let fullRefresh: Bool
@@ -38,12 +45,16 @@ public struct UserEvents: Sendable, Decodable {
         !itemsUpdated.isEmpty ||
             !itemsDeleted.isEmpty ||
             !aliasNoteChanged.isEmpty ||
+            !sharesCreated.isEmpty ||
             !sharesUpdated.isEmpty ||
-            !sharesDeleted.isEmpty
+            !sharesDeleted.isEmpty ||
+            !sharesWithInvitesToCreate.isEmpty ||
+            !foldersUpdated.isEmpty ||
+            !foldersDeleted.isEmpty
     }
 }
 
-public struct UserEventItem: Sendable, Decodable, Equatable, ItemIdentifiable {
+public struct ItemEvent: Sendable, Decodable, Equatable, ItemIdentifiable {
     public let shareID: String
     public let itemID: String
     public let eventToken: String
@@ -59,11 +70,27 @@ public struct UserEventItem: Sendable, Decodable, Equatable, ItemIdentifiable {
     }
 }
 
-public struct UserEventShare: Sendable, Decodable, Equatable {
+public struct ShareEvent: Sendable, Decodable, Equatable {
     public let shareID: String
     public let eventToken: String
 }
 
-public struct UserEventInviteChange: Sendable, Decodable, Equatable {
+public struct InviteChangeEvent: Sendable, Decodable, Equatable {
     public let eventToken: String
+}
+
+public struct FolderEvent: Sendable, Decodable, Equatable {
+    public let shareID: String
+    public let folderID: String
+    public let eventToken: String
+
+    // Seemingly redundant but we need to keep `shareID` and `itemID`
+    // with capitalized D in order to not break the decoding process
+    public var shareId: String {
+        shareID
+    }
+
+    public var folderId: String {
+        folderID
+    }
 }

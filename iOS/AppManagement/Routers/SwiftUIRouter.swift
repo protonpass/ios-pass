@@ -131,36 +131,33 @@ extension View {
     }
 }
 
+@MainActor
 final class PathRouter: ObservableObject {
-    @MainActor @Published var path = NavigationPath()
-    @MainActor @Published var presentedSheet: GeneralSheetDestination?
+    @Published var path = NavigationPath()
+    @Published var presentedSheet: GeneralSheetDestination?
 
     init() {}
 
-    @MainActor
     func navigate(to destination: GeneralRouterDestination) {
         path.append(destination)
     }
 
     // periphery:ignore
-    @MainActor
+
     func popToRoot() {
         path = NavigationPath()
     }
 
     // periphery:ignore
-    @MainActor
     func back(to numberOfScreen: Int = 1) {
         path.removeLast(numberOfScreen)
     }
 
-    @MainActor
     func present(sheet: GeneralSheetDestination) {
         presentedSheet = sheet
     }
 
     // periphery:ignore
-    @MainActor
     func dismissSheet() {
         presentedSheet = nil
     }

@@ -141,7 +141,7 @@ private extension AliasSynchronizerTests {
     }
 }
 
-extension PendingAlias: Randomable {
+extension PendingAlias: @retroactive Randomable {
     public static func random() -> Self {
         .init(pendingAliasID: .random(),
               aliasEmail: .random(),

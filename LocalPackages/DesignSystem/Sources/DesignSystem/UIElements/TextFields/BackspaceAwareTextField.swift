@@ -21,14 +21,12 @@
 
 import SwiftUI
 
-private protocol DeleteBackwardDelegate: UITextFieldDelegate {
-    func didDeleteBackward()
-}
-
 private final class BackspaceAwareUITextField: UITextField {
+    weak var backspaceDelegate: BackspaceAwareTextField.Coordinator?
+
     override func deleteBackward() {
         super.deleteBackward()
-        (delegate as? DeleteBackwardDelegate)?.didDeleteBackward()
+        backspaceDelegate?.handleBackspace()
     }
 }
 
@@ -61,41 +59,59 @@ public struct BackspaceAwareTextField: UIViewRepresentable {
         textField.returnKeyType = config.returnKeyType
         textField.textColor = config.textColor
         textField.tintColor = config.tintColor
-        textField.addAction(UIAction(handler: { _ in
-            text = textField.text ?? ""
-        }), for: .editingChanged)
+
+        textField.addTarget(context.coordinator,
+                            action: #selector(Coordinator.textChanged(_:)),
+                            for: .editingChanged)
+
+        textField.backspaceDelegate = context.coordinator
+
         textField.delegate = context.coordinator
         return textField
     }
 
     public func updateUIView(_ textField: UITextField, context: Context) {
-        if isFocused {
+        if textField.text != text {
+            textField.text = text
+        }
+
+        // Manage focus
+        if isFocused, !textField.isFirstResponder {
             textField.becomeFirstResponder()
-        } else {
+        } else if !isFocused, textField.isFirstResponder {
             textField.resignFirstResponder()
         }
-        textField.text = text
+        context.coordinator.onBackspace = onBackspace
+        context.coordinator.onReturn = onReturn
     }
 
     public func makeCoordinator() -> Coordinator {
-        Coordinator(self)
+        Coordinator(text: $text)
     }
 }
 
 public extension BackspaceAwareTextField {
-    final class Coordinator: NSObject, DeleteBackwardDelegate {
-        let parent: BackspaceAwareTextField
+    final class Coordinator: NSObject, UITextFieldDelegate {
+        @Binding private var text: String
 
-        init(_ parent: BackspaceAwareTextField) {
-            self.parent = parent
+        var onBackspace: (() -> Void)?
+        var onReturn: (() -> Void)?
+
+        init(text: Binding<String>) {
+            _text = text
+            super.init()
         }
 
-        func didDeleteBackward() {
-            parent.onBackspace()
+        @objc func textChanged(_ textField: UITextField) {
+            text = textField.text ?? ""
+        }
+
+        func handleBackspace() {
+            onBackspace?()
         }
 
         public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-            parent.onReturn()
+            onReturn?()
             return true
         }
     }
@@ -114,10 +130,10 @@ public extension BackspaceAwareTextField {
 
         public init(font: UIFont,
                     placeholder: String,
-                    autoCapitalization: UITextAutocapitalizationType,
-                    autoCorrection: UITextAutocorrectionType,
-                    keyboardType: UIKeyboardType,
-                    returnKeyType: UIReturnKeyType,
+                    autoCapitalization: UITextAutocapitalizationType = .none,
+                    autoCorrection: UITextAutocorrectionType = .no,
+                    keyboardType: UIKeyboardType = .emailAddress,
+                    returnKeyType: UIReturnKeyType = .default,
                     textColor: UIColor,
                     tintColor: UIColor) {
             self.font = font

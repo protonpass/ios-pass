@@ -295,7 +295,7 @@ private extension SyncEventLoop {
             if userEventsEnabled == true {
                 let result = try await userEventsSynchronizer.sync(userId: userId)
 
-                if result.fullRefreshNeeded {
+                if result.contains(.fullRefreshNeeded) {
                     try await delegate?.syncEventLoopRequiresFullSync(userId: userId)
                     return
                 }
@@ -304,7 +304,7 @@ private extension SyncEventLoop {
 
                 let syncedSLNotes = try await slNoteSynchronizer.syncAllAliases(userId: userId)
 
-                hasNewEvents = result.dataUpdated || syncedAliases || syncedSLNotes
+                hasNewEvents = result.contains(.dataUpdated) || syncedAliases || syncedSLNotes
             } else {
                 hasNewEvents = try await synchronizer.sync(userId: userId)
             }

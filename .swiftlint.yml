@@ -43,10 +43,6 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
 ##############
 
 disabled_rules:
-  # - private_over_fileprivate
-  # - cyclomatic_complexity
-  # - function_body_length
-  # - redundant_string_enum_value
   - nesting
 
 ##############
@@ -55,7 +51,6 @@ disabled_rules:
 
 opt_in_rules:
   - array_init
-#  - attributes
   - closure_spacing
   - collection_alignment
   - contains_over_filter_count
@@ -70,9 +65,7 @@ opt_in_rules:
   - empty_xctest_method
   - enum_case_associated_values_count
   - expiring_todo
-  # - explicit_enum_raw_value
   - explicit_init
-#  - explicit_self
   - extension_access_modifier
   - fallthrough
   - fatal_error_message
@@ -80,7 +73,6 @@ opt_in_rules:
   - first_where
   - flatmap_over_map_reduce
   - force_unwrapping
-#  - function_default_parameter_at_end
   - ibinspectable_in_extension
   - identical_operands
   - implicit_return
@@ -90,10 +82,7 @@ opt_in_rules:
   - legacy_random
   - let_var_whitespace
   - literal_expression_end_indentation
-  # - missing_docs
-#- modifier_order
   - multiline_arguments
-  # - multiline_literal_brackets
   - multiline_parameters
   - nimble_operator
   - nslocalizedstring_key
