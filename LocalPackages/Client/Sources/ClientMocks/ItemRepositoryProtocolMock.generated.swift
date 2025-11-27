@@ -761,7 +761,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         return stubbedGetAllPinnedItemsResult
     }
     // MARK: - refreshPinnedItemDataStream
-    public var refreshPinnedItemDataStreamThrowableError39: Error?
+    public var refreshPinnedItemDataStreamThrowableError40: Error?
     public var closureRefreshPinnedItemDataStream: () -> () = {}
     public var invokedRefreshPinnedItemDataStreamfunction = false
     public var invokedRefreshPinnedItemDataStreamCount = 0
@@ -769,13 +769,13 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public func refreshPinnedItemDataStream() async throws {
         invokedRefreshPinnedItemDataStreamfunction = true
         invokedRefreshPinnedItemDataStreamCount += 1
-        if let error = refreshPinnedItemDataStreamThrowableError39 {
+        if let error = refreshPinnedItemDataStreamThrowableError40 {
             throw error
         }
         closureRefreshPinnedItemDataStream()
     }
     // MARK: - updateItemFlags
-    public var updateItemFlagsFlagsShareIdItemIdThrowableError40: Error?
+    public var updateItemFlagsFlagsShareIdItemIdThrowableError41: Error?
     public var closureUpdateItemFlags: () -> () = {}
     public var invokedUpdateItemFlagsfunction = false
     public var invokedUpdateItemFlagsCount = 0
@@ -786,14 +786,13 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedUpdateItemFlagsfunction = true
         invokedUpdateItemFlagsCount += 1
         invokedUpdateItemFlagsParameters = (flags, shareId, itemId)
-        invokedUpdateItemFlagsParametersList.append((flags, shareId, itemId))
-        if let error = updateItemFlagsFlagsShareIdItemIdThrowableError40 {
+        if let error = updateItemFlagsFlagsShareIdItemIdThrowableError41 {
             throw error
         }
         closureUpdateItemFlags()
     }
     // MARK: - getAllItemsContent
-    public var getAllItemsContentItemsThrowableError41: Error?
+    public var getAllItemsContentItemsThrowableError42: Error?
     public var closureGetAllItemsContent: () -> () = {}
     public var invokedGetAllItemsContentfunction = false
     public var invokedGetAllItemsContentCount = 0
@@ -805,15 +804,14 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedGetAllItemsContentfunction = true
         invokedGetAllItemsContentCount += 1
         invokedGetAllItemsContentParameters = (items, ())
-        invokedGetAllItemsContentParametersList.append((items, ()))
-        if let error = getAllItemsContentItemsThrowableError41 {
+        if let error = getAllItemsContentItemsThrowableError42 {
             throw error
         }
         closureGetAllItemsContent()
         return stubbedGetAllItemsContentResult
     }
     // MARK: - resetHistory
-    public var resetHistoryThrowableError42: Error?
+    public var resetHistoryThrowableError43: Error?
     public var closureResetHistory: () -> () = {}
     public var invokedResetHistoryfunction = false
     public var invokedResetHistoryCount = 0
@@ -824,14 +822,13 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedResetHistoryfunction = true
         invokedResetHistoryCount += 1
         invokedResetHistoryParameters = (item, ())
-        invokedResetHistoryParametersList.append((item, ()))
-        if let error = resetHistoryThrowableError42 {
+        if let error = resetHistoryThrowableError43 {
             throw error
         }
         closureResetHistory()
     }
     // MARK: - importLogins
-    public var importLoginsUserIdShareIdLoginsThrowableError43: Error?
+    public var importLoginsUserIdShareIdLoginsThrowableError44: Error?
     public var closureImportLogins: () -> () = {}
     public var invokedImportLoginsfunction = false
     public var invokedImportLoginsCount = 0
@@ -842,14 +839,13 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedImportLoginsfunction = true
         invokedImportLoginsCount += 1
         invokedImportLoginsParameters = (userId, shareId, logins)
-        invokedImportLoginsParametersList.append((userId, shareId, logins))
-        if let error = importLoginsUserIdShareIdLoginsThrowableError43 {
+        if let error = importLoginsUserIdShareIdLoginsThrowableError44 {
             throw error
         }
         closureImportLogins()
     }
     // MARK: - totpCreationDateThreshold
-    public var totpCreationDateThresholdNumberOfTotpThrowableError44: Error?
+    public var totpCreationDateThresholdNumberOfTotpThrowableError45: Error?
     public var closureTotpCreationDateThreshold: () -> () = {}
     public var invokedTotpCreationDateThresholdfunction = false
     public var invokedTotpCreationDateThresholdCount = 0
@@ -861,8 +857,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedTotpCreationDateThresholdfunction = true
         invokedTotpCreationDateThresholdCount += 1
         invokedTotpCreationDateThresholdParameters = (numberOfTotp, ())
-        invokedTotpCreationDateThresholdParametersList.append((numberOfTotp, ()))
-        if let error = totpCreationDateThresholdNumberOfTotpThrowableError44 {
+        if let error = totpCreationDateThresholdNumberOfTotpThrowableError45 {
             throw error
         }
         closureTotpCreationDateThreshold()
