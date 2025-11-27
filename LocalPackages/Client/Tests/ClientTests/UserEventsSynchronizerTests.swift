@@ -41,13 +41,15 @@ struct UserEventsSynchronizerTests {
     var sut: (any UserEventsSynchronizerProtocol)!
 
     init() {
-        accessRespository.stubbedGetAccessResult = .init(userId: "UserId", access: .init(plan: .mockFreePlan,
+        accessRespository.stubbedRefreshAccessResult = .init(userId: "UserId", access: .init(plan: .mockFreePlan,
                                                                                          monitor: .mock(),
                                                                                          pendingInvites: 0,
                                                                                          waitingNewUserInvites: 0,
                                                                                          minVersionUpgrade: nil,
                                                                                          userData: .mock(aliasSyncEnabled: true,
                                                                                                          pendingAliasToSync: 10)) )
+        
+        
         sut = UserEventsSynchronizer(localUserEventIdDatasource: localUserEventIdDatasource,
                                      remoteUserEventsDatasource: remoteUserEventsDatasource,
                                      itemRepository: itemRepository,
@@ -210,7 +212,7 @@ private extension UserEventsSynchronizerTests {
         }
 
         if let deleteItemsInvokeCount = args.deleteItemsInvokeCount {
-            #expect(itemRepository.invokedDeleteCount == deleteItemsInvokeCount)
+            #expect(itemRepository.invokedDeleteItemsLocallyItemsAsyncCount35 == deleteItemsInvokeCount)
         }
 
         if let refreshShareInvokeCount = args.refreshShareInvokeCount {

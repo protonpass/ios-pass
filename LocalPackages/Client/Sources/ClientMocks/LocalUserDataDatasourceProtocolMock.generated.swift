@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.2.7 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.3.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
@@ -56,7 +56,6 @@ public final class LocalUserDataDatasourceProtocolMock: @unchecked Sendable, Loc
         invokedRemovefunction = true
         invokedRemoveCount += 1
         invokedRemoveParameters = (userId, ())
-        invokedRemoveParametersList.append((userId, ()))
         if let error = removeUserIdThrowableError2 {
             throw error
         }
@@ -74,7 +73,6 @@ public final class LocalUserDataDatasourceProtocolMock: @unchecked Sendable, Loc
         invokedUpsertfunction = true
         invokedUpsertCount += 1
         invokedUpsertParameters = (userData, ())
-        invokedUpsertParametersList.append((userData, ()))
         if let error = upsertThrowableError3 {
             throw error
         }
@@ -92,7 +90,6 @@ public final class LocalUserDataDatasourceProtocolMock: @unchecked Sendable, Loc
         invokedUpdateNewActiveUserfunction = true
         invokedUpdateNewActiveUserCount += 1
         invokedUpdateNewActiveUserParameters = (userId, ())
-        invokedUpdateNewActiveUserParametersList.append((userId, ()))
         if let error = updateNewActiveUserUserIdThrowableError4 {
             throw error
         }

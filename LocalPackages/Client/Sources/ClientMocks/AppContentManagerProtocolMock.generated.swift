@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.2.7 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.3.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
@@ -78,7 +78,6 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         invokedRefreshfunction = true
         invokedRefreshCount += 1
         invokedRefreshParameters = (userId, ())
-        invokedRefreshParametersList.append((userId, ()))
         if let error = refreshUserIdThrowableError1 {
             throw error
         }
@@ -95,7 +94,6 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         invokedFullSyncfunction = true
         invokedFullSyncCount += 1
         invokedFullSyncParameters = (userId, ())
-        invokedFullSyncParametersList.append((userId, ()))
         closureFullSync()
     }
     // MARK: - localFullSync
@@ -110,7 +108,6 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         invokedLocalFullSyncfunction = true
         invokedLocalFullSyncCount += 1
         invokedLocalFullSyncParameters = (userId, ())
-        invokedLocalFullSyncParametersList.append((userId, ()))
         if let error = localFullSyncUserIdThrowableError3 {
             throw error
         }
@@ -128,7 +125,6 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         invokedGetItemsfunction = true
         invokedGetItemsCount += 1
         invokedGetItemsParameters = (vault, ())
-        invokedGetItemsParametersList.append((vault, ()))
         closureGetItems()
         return stubbedGetItemsResult
     }
@@ -144,7 +140,6 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         invokedDeletefunction = true
         invokedDeleteCount += 1
         invokedDeleteParameters = (userId, shareId)
-        invokedDeleteParametersList.append((userId, shareId))
         if let error = deleteUserIdShareIdThrowableError5 {
             throw error
         }
