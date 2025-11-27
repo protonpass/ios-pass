@@ -170,12 +170,12 @@ public extension InviteRepository {
         var groupInvites = [GroupInvite]()
         var userInvites = [UserInvite]()
         switch refreshInviteType {
-        case .groupInvite:
-            groupInvites = await (try? updateGroupInvite(userId)) ?? []
+        case let .groupInvite(token):
+            groupInvites = await (try? updateGroupInvite(userId, evenToken: token)) ?? []
             userInvites = try await localDatasource.getUserInvites(userId: userId)
-        case .userInvite:
+        case let .userInvite(token):
             groupInvites = try await localDatasource.getGroupInvites(userId: userId)
-            userInvites = try await updateUserInvite(userId)
+            userInvites = try await updateUserInvite(userId, evenToken: token)
         }
 
         mergeInvites(groupInvites: groupInvites, userInvites: userInvites)
@@ -388,7 +388,7 @@ private extension InviteRepository {
         }
     }
 
-    func updateUserInvite(_ userId: String) async throws -> [UserInvite] {
+    func updateUserInvite(_ userId: String, evenToken: String? = nil) async throws -> [UserInvite] {
         logger.trace("Refreshing user invites for user \(userId)")
         let invites = try await remoteDatasource.getPendingInvitesForUser(userId: userId)
         logger.trace("Fetched \(invites.count) user invites for user \(userId)")
@@ -399,7 +399,7 @@ private extension InviteRepository {
         return invites
     }
 
-    func updateGroupInvite(_ userId: String) async throws -> [GroupInvite] {
+    func updateGroupInvite(_ userId: String, evenToken: String? = nil) async throws -> [GroupInvite] {
         logger.trace("Refreshing group invites for user \(userId)")
         var invites = [GroupInvite]()
         var lastToken: String?
@@ -444,8 +444,8 @@ private extension InviteRepository {
 }
 
 public enum RefreshInviteType: Sendable {
-    case userInvite
-    case groupInvite
+    case userInvite(eventToken: String)
+    case groupInvite(eventToken: String)
 }
 
 private extension ShareNewUserInvite {
