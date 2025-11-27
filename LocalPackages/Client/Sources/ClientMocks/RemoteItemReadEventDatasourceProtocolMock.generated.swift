@@ -38,7 +38,6 @@ public final class RemoteItemReadEventDatasourceProtocolMock: @unchecked Sendabl
         invokedSendfunction = true
         invokedSendCount += 1
         invokedSendParameters = (userId, events, shareId)
-        invokedSendParametersList.append((userId, events, shareId))
         if let error = sendUserIdEventsShareIdThrowableError1 {
             throw error
         }

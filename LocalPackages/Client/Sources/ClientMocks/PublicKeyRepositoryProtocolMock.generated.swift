@@ -39,7 +39,6 @@ public final class PublicKeyRepositoryProtocolMock: @unchecked Sendable, PublicK
         invokedGetPublicKeysfunction = true
         invokedGetPublicKeysCount += 1
         invokedGetPublicKeysParameters = (email, ())
-        invokedGetPublicKeysParametersList.append((email, ()))
         if let error = getPublicKeysEmailThrowableError1 {
             throw error
         }

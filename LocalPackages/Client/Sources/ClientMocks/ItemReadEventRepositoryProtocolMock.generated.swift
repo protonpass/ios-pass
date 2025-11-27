@@ -39,7 +39,6 @@ public final class ItemReadEventRepositoryProtocolMock: @unchecked Sendable, Ite
         invokedAddEventfunction = true
         invokedAddEventCount += 1
         invokedAddEventParameters = (userId, item)
-        invokedAddEventParametersList.append((userId, item))
         if let error = addEventUserIdItemThrowableError1 {
             throw error
         }
@@ -58,7 +57,6 @@ public final class ItemReadEventRepositoryProtocolMock: @unchecked Sendable, Ite
         invokedGetAllEventsfunction = true
         invokedGetAllEventsCount += 1
         invokedGetAllEventsParameters = (userId, ())
-        invokedGetAllEventsParametersList.append((userId, ()))
         if let error = getAllEventsUserIdThrowableError2 {
             throw error
         }
@@ -77,7 +75,6 @@ public final class ItemReadEventRepositoryProtocolMock: @unchecked Sendable, Ite
         invokedSendAllEventsfunction = true
         invokedSendAllEventsCount += 1
         invokedSendAllEventsParameters = (userId, ())
-        invokedSendAllEventsParametersList.append((userId, ()))
         if let error = sendAllEventsUserIdThrowableError3 {
             throw error
         }

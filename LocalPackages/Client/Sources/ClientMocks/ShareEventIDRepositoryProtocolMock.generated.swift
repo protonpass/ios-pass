@@ -38,7 +38,6 @@ public final class ShareEventIDRepositoryProtocolMock: @unchecked Sendable, Shar
         invokedGetLastEventIdfunction = true
         invokedGetLastEventIdCount += 1
         invokedGetLastEventIdParameters = (forceRefresh, userId, shareId)
-        invokedGetLastEventIdParametersList.append((forceRefresh, userId, shareId))
         if let error = getLastEventIdForceRefreshUserIdShareIdThrowableError1 {
             throw error
         }
@@ -57,7 +56,6 @@ public final class ShareEventIDRepositoryProtocolMock: @unchecked Sendable, Shar
         invokedUpsertLastEventIdfunction = true
         invokedUpsertLastEventIdCount += 1
         invokedUpsertLastEventIdParameters = (userId, shareId, lastEventId)
-        invokedUpsertLastEventIdParametersList.append((userId, shareId, lastEventId))
         if let error = upsertLastEventIdUserIdShareIdLastEventIdThrowableError2 {
             throw error
         }

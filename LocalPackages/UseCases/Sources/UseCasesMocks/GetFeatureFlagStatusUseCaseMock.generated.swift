@@ -39,7 +39,6 @@ public final class GetFeatureFlagStatusUseCaseMock: @unchecked Sendable, GetFeat
         invokedExecutefunction = true
         invokedExecuteCount += 1
         invokedExecuteParameters = (flag, ())
-        invokedExecuteParametersList.append((flag, ()))
         closureExecute()
         return stubbedExecuteResult
     }

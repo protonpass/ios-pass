@@ -38,7 +38,6 @@ public final class LocalShareDatasourceProtocolMock: @unchecked Sendable, LocalS
         invokedGetSharefunction = true
         invokedGetShareCount += 1
         invokedGetShareParameters = (userId, shareId)
-        invokedGetShareParametersList.append((userId, shareId))
         if let error = getShareUserIdShareIdThrowableError1 {
             throw error
         }
@@ -58,7 +57,6 @@ public final class LocalShareDatasourceProtocolMock: @unchecked Sendable, LocalS
         invokedGetAllSharesUserIdAsync2 = true
         invokedGetAllSharesUserIdAsyncCount2 += 1
         invokedGetAllSharesUserIdAsyncParameters2 = (userId, ())
-        invokedGetAllSharesUserIdAsyncParametersList2.append((userId, ()))
         if let error = getAllSharesUserIdThrowableError2 {
             throw error
         }
@@ -78,7 +76,6 @@ public final class LocalShareDatasourceProtocolMock: @unchecked Sendable, LocalS
         invokedGetAllSharesVaultIdAsync3 = true
         invokedGetAllSharesVaultIdAsyncCount3 += 1
         invokedGetAllSharesVaultIdAsyncParameters3 = (vaultId, ())
-        invokedGetAllSharesVaultIdAsyncParametersList3.append((vaultId, ()))
         if let error = getAllSharesVaultIdThrowableError3 {
             throw error
         }
@@ -97,7 +94,6 @@ public final class LocalShareDatasourceProtocolMock: @unchecked Sendable, LocalS
         invokedUpsertSharesfunction = true
         invokedUpsertSharesCount += 1
         invokedUpsertSharesParameters = (shares, userId)
-        invokedUpsertSharesParametersList.append((shares, userId))
         if let error = upsertSharesUserIdThrowableError4 {
             throw error
         }
@@ -115,7 +111,6 @@ public final class LocalShareDatasourceProtocolMock: @unchecked Sendable, LocalS
         invokedRemoveSharefunction = true
         invokedRemoveShareCount += 1
         invokedRemoveShareParameters = (shareId, userId)
-        invokedRemoveShareParametersList.append((shareId, userId))
         if let error = removeShareShareIdUserIdThrowableError5 {
             throw error
         }
@@ -133,7 +128,6 @@ public final class LocalShareDatasourceProtocolMock: @unchecked Sendable, LocalS
         invokedRemoveAllSharesfunction = true
         invokedRemoveAllSharesCount += 1
         invokedRemoveAllSharesParameters = (userId, ())
-        invokedRemoveAllSharesParametersList.append((userId, ()))
         if let error = removeAllSharesUserIdThrowableError6 {
             throw error
         }

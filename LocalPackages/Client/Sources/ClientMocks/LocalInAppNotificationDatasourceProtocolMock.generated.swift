@@ -39,7 +39,6 @@ public final class LocalInAppNotificationDatasourceProtocolMock: @unchecked Send
         invokedGetAllNotificationsByPriorityfunction = true
         invokedGetAllNotificationsByPriorityCount += 1
         invokedGetAllNotificationsByPriorityParameters = (userId, ())
-        invokedGetAllNotificationsByPriorityParametersList.append((userId, ()))
         if let error = getAllNotificationsByPriorityUserIdThrowableError1 {
             throw error
         }
@@ -58,7 +57,6 @@ public final class LocalInAppNotificationDatasourceProtocolMock: @unchecked Send
         invokedUpsertNotificationsfunction = true
         invokedUpsertNotificationsCount += 1
         invokedUpsertNotificationsParameters = (notifications, userId)
-        invokedUpsertNotificationsParametersList.append((notifications, userId))
         if let error = upsertNotificationsUserIdThrowableError2 {
             throw error
         }
@@ -76,7 +74,6 @@ public final class LocalInAppNotificationDatasourceProtocolMock: @unchecked Send
         invokedRemoveAllNotificationsfunction = true
         invokedRemoveAllNotificationsCount += 1
         invokedRemoveAllNotificationsParameters = (userId, ())
-        invokedRemoveAllNotificationsParametersList.append((userId, ()))
         if let error = removeAllNotificationsUserIdThrowableError3 {
             throw error
         }
@@ -94,7 +91,6 @@ public final class LocalInAppNotificationDatasourceProtocolMock: @unchecked Send
         invokedRemovefunction = true
         invokedRemoveCount += 1
         invokedRemoveParameters = (notificationId, userId)
-        invokedRemoveParametersList.append((notificationId, userId))
         if let error = removeNotificationIdUserIdThrowableError4 {
             throw error
         }
