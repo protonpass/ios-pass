@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.2.7 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.3.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
@@ -55,7 +55,6 @@ public final class LocalSharedPreferencesDatasourceProtocolMock: @unchecked Send
         invokedUpsertPreferencesfunction = true
         invokedUpsertPreferencesCount += 1
         invokedUpsertPreferencesParameters = (preferences, ())
-        invokedUpsertPreferencesParametersList.append((preferences, ()))
         if let error = upsertPreferencesThrowableError2 {
             throw error
         }

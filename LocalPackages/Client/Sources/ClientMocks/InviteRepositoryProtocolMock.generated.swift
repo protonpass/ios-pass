@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.2.7 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.3.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
@@ -61,7 +61,6 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
         invokedLoadLocalInvitesfunction = true
         invokedLoadLocalInvitesCount += 1
         invokedLoadLocalInvitesParameters = (userId, ())
-        invokedLoadLocalInvitesParametersList.append((userId, ()))
         if let error = loadLocalInvitesUserIdThrowableError1 {
             throw error
         }
@@ -80,7 +79,6 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
         invokedAcceptInvitefunction = true
         invokedAcceptInviteCount += 1
         invokedAcceptInviteParameters = (invite, keys)
-        invokedAcceptInviteParametersList.append((invite, keys))
         if let error = acceptInviteAndThrowableError2 {
             throw error
         }
@@ -100,7 +98,6 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
         invokedRejectInvitefunction = true
         invokedRejectInviteCount += 1
         invokedRejectInviteParameters = (invite, ())
-        invokedRejectInviteParametersList.append((invite, ()))
         if let error = rejectInviteThrowableError3 {
             throw error
         }
@@ -129,7 +126,6 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
         invokedRefreshInvitesUserIdAsync5 = true
         invokedRefreshInvitesUserIdAsyncCount5 += 1
         invokedRefreshInvitesUserIdAsyncParameters5 = (userId, ())
-        invokedRefreshInvitesUserIdAsyncParametersList5.append((userId, ()))
         if let error = refreshInvitesUserIdThrowableError5 {
             throw error
         }
@@ -146,7 +142,6 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
         invokedRemoveCachedInvitefunction = true
         invokedRemoveCachedInviteCount += 1
         invokedRemoveCachedInviteParameters = (inviteToken, ())
-        invokedRemoveCachedInviteParametersList.append((inviteToken, ()))
         closureRemoveCachedInvite()
     }
 }

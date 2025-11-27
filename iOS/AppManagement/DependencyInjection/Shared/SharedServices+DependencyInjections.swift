@@ -89,17 +89,9 @@ extension SharedServiceContainer {
                                           shareRepository: container.shareRepository(),
                                           accessRepository: container.accessRepository(),
                                           inviteRepository: container.inviteRepository(),
+                                          aliasRepository: container.aliasRepository(),
                                           simpleLoginNoteSynchronizer: self.simpleLoginNoteSynchronizer(),
                                           logManager: self.logManager)
-        }
-    }
-
-    var aliasSynchronizer: Factory<any AliasSynchronizerProtocol> {
-        self {
-            let container = SharedRepositoryContainer.shared
-            return AliasSynchronizer(accessRepository: container.accessRepository(),
-                                     aliasRepository: container.aliasRepository(),
-                                     itemRepository: container.itemRepository())
         }
     }
 
@@ -107,7 +99,6 @@ extension SharedServiceContainer {
         self { SyncEventLoop(currentDateProvider: self.currentDateProvider,
                              synchronizer: self.eventSynchronizer(),
                              userEventsSynchronizer: self.userEventsSynchronizer(),
-                             aliasSynchronizer: self.aliasSynchronizer(),
                              slNoteSynchronizer: self.simpleLoginNoteSynchronizer(),
                              userManager: self.userManager(),
                              logManager: self.logManager,

@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Entities
 import Foundation
 
 public struct UserEventsSyncResult: OptionSet, Sendable {
@@ -30,7 +31,7 @@ public struct UserEventsSyncResult: OptionSet, Sendable {
 
     public static let dataUpdated = Self(rawValue: 1 << 0)
     public static let invitesChanged = Self(rawValue: 1 << 1)
-    public static let planChanged = Self(rawValue: 1 << 2)
+    public static let refreshUser = Self(rawValue: 1 << 2)
     public static let fullRefreshNeeded = Self(rawValue: 1 << 3)
     public static let groupInvitesChanged = Self(rawValue: 1 << 4)
 }
@@ -39,13 +40,14 @@ public protocol UserEventsSynchronizerProtocol: Sendable {
     func sync(userId: String) async throws -> UserEventsSyncResult
 }
 
-public actor UserEventsSynchronizer: UserEventsSynchronizerProtocol {
+public final class UserEventsSynchronizer: UserEventsSynchronizerProtocol {
     private let localUserEventIdDatasource: any LocalUserEventIdDatasourceProtocol
     private let remoteUserEventsDatasource: any RemoteUserEventsDatasourceProtocol
     private let itemRepository: any ItemRepositoryProtocol
     private let shareRepository: any ShareRepositoryProtocol
     private let accessRepository: any AccessRepositoryProtocol
     private let inviteRepository: any InviteRepositoryProtocol
+    private let aliasRepository: any AliasRepositoryProtocol
     private let simpleLoginNoteSynchronizer: any SimpleLoginNoteSynchronizerProtocol
     private let logger: Logger
     private let maxPerRoundFetchCycle = 10
@@ -56,6 +58,7 @@ public actor UserEventsSynchronizer: UserEventsSynchronizerProtocol {
                 shareRepository: any ShareRepositoryProtocol,
                 accessRepository: any AccessRepositoryProtocol,
                 inviteRepository: any InviteRepositoryProtocol,
+                aliasRepository: any AliasRepositoryProtocol,
                 simpleLoginNoteSynchronizer: any SimpleLoginNoteSynchronizerProtocol,
                 logManager: any LogManagerProtocol) {
         self.localUserEventIdDatasource = localUserEventIdDatasource
@@ -64,6 +67,7 @@ public actor UserEventsSynchronizer: UserEventsSynchronizerProtocol {
         self.shareRepository = shareRepository
         self.accessRepository = accessRepository
         self.inviteRepository = inviteRepository
+        self.aliasRepository = aliasRepository
         self.simpleLoginNoteSynchronizer = simpleLoginNoteSynchronizer
         logger = .init(manager: logManager)
     }
@@ -99,7 +103,7 @@ private extension UserEventsSynchronizer {
             if events.dataUpdated { result.insert(.dataUpdated) }
             if events.invitesChanged != nil { result.insert(.invitesChanged) }
             if events.groupInvitesChanged != nil { result.insert(.groupInvitesChanged) }
-            if events.planChanged { result.insert(.planChanged) }
+            if events.refreshUser { result.insert(.refreshUser) }
             if events.fullRefresh { result.insert(.fullRefreshNeeded) }
 
             try await localUserEventIdDatasource.upsertLastEventId(userId: userId,
@@ -133,12 +137,18 @@ private extension UserEventsSynchronizer {
         // TODO: share with invite to be added to the group sharing MR that contains changes to invite logic and serices
 //        async let inviteCreatedShares: () = processInviteChanges(inviteChanges: events.sharesWithInvitesToCreate,
 //        userId: userId)
+        async let pendingAliasToCreate: () = processPendingAliasToCreateChanged(events.pendingAliasToCreateChanged,
+                                                                                userId: userId)
+        async let userChange: () = processUserChanged(events.refreshUser, userId: userId)
+
         _ = try await (updatedItems,
                        deletedItems,
                        aliasNotesChanged,
                        createdShares,
                        updatedShares,
                        deletedShares,
+                       pendingAliasToCreate,
+                       userChange,
                        invites)
     }
 
@@ -168,7 +178,7 @@ private extension UserEventsSynchronizer {
             return
         }
         logger.trace("Deleting \(deletedItems.count) items for user \(userId)")
-        try await itemRepository.delete(userId: userId, items: deletedItems)
+        try await itemRepository.deleteItemsLocally(items: deletedItems)
     }
 
     func processAliasNoteChangedItems(_ aliasNoteChangedItems: [ItemEvent],
@@ -245,12 +255,63 @@ private extension UserEventsSynchronizer {
         }
     }
 
-    func processInviteChanges(inviteChanges: InviteChangeEvent?,
+    func processInviteChanges(inviteChanges: ChangeEvent?,
                               userId: String) async throws {
         guard inviteChanges != nil else {
             logger.trace("No invite changes for user \(userId)")
             return
         }
         try await inviteRepository.refreshInvites(userId: userId)
+    }
+
+    func processPendingAliasToCreateChanged(_ pendingAliasToCreateChanged: ChangeEvent?,
+                                            userId: String) async throws {
+        guard pendingAliasToCreateChanged != nil else {
+            logger.trace("No aliases to create for user \(userId)")
+            return
+        }
+        logger.trace("Creating aliases for user \(userId)")
+        let settings = try await accessRepository.getAccess(userId: userId).access.userData
+        guard settings.aliasSyncEnabled,
+              settings.pendingAliasToSync > 0,
+              let shareId = settings.defaultShareID else {
+            logger.trace("Skipped creating aliases for user \(userId)")
+            return
+        }
+
+        var sinceLastToken: String?
+
+        while true {
+            let paginatedAlias = try await aliasRepository.getPendingAliasesToSync(userId: userId,
+                                                                                   since: sinceLastToken)
+
+            if paginatedAlias.aliases.isEmpty {
+                break
+            }
+
+            let itemsContent = Dictionary(uniqueKeysWithValues: paginatedAlias.aliases.map { alias in
+                (alias.pendingAliasID, ItemContentProtobuf(name: alias.aliasEmail,
+                                                           note: "",
+                                                           itemUuid: UUID().uuidString,
+                                                           data: .alias,
+                                                           customFields: []))
+            })
+
+            let result = try await itemRepository.createPendingAliasesItem(userId: userId,
+                                                                           shareId: shareId,
+                                                                           itemsContent: itemsContent)
+            logger.trace("Created \(result.count) aliases for user \(userId)")
+
+            // Move to the next page
+            sinceLastToken = paginatedAlias.lastToken
+        }
+    }
+
+    func processUserChanged(_ refreshUser: Bool, userId: String) async throws {
+        guard refreshUser else {
+            logger.trace("No updates for user \(userId)")
+            return
+        }
+        try await accessRepository.refreshAccess(userId: userId)
     }
 }

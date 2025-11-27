@@ -104,7 +104,16 @@ struct GetUserEventsResponseTests {
                       "EventToken": "Token9"
                     }
                 ],
-                "PlanChanged": true,
+            "InvitesChanged": {
+            "EventToken": "InvitesChangedToken"
+            },
+            "GroupInvitesChanged": {
+            "EventToken": "GroupInvitesChangedToken"
+            },
+            "PendingAliasToCreateChanged": {
+            "EventToken": "PendingAliasToCreateChangedToken"
+            },
+                "RefreshUser": true,
                 "EventsPending": true,
                 "FullRefresh": false
               }
@@ -147,7 +156,12 @@ struct GetUserEventsResponseTests {
         #expect(events.foldersUpdated.count == 1)
         #expect(events.foldersUpdated.first == FolderEvent(shareID: "ShareID7", folderID: "FolderID1", eventToken: "Token8"))
                 
-        #expect(events.planChanged)
+        #expect(events.pendingAliasToCreateChanged == ChangeEvent(eventToken: "PendingAliasToCreateChangedToken"))
+        #expect(events.groupInvitesChanged == ChangeEvent(eventToken: "GroupInvitesChangedToken"))
+        #expect(events.invitesChanged == ChangeEvent(eventToken: "InvitesChangedToken"))
+
+
+        #expect(events.refreshUser)
         #expect(events.eventsPending)
         #expect(!events.fullRefresh)
     }

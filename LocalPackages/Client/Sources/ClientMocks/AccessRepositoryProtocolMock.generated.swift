@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.2.7 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.3.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
@@ -100,7 +100,6 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
         invokedGetAccessfunction = true
         invokedGetAccessCount += 1
         invokedGetAccessParameters = (userId, ())
-        invokedGetAccessParametersList.append((userId, ()))
         if let error = getAccessUserIdThrowableError1 {
             throw error
         }
@@ -120,7 +119,6 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
         invokedRefreshAccessfunction = true
         invokedRefreshAccessCount += 1
         invokedRefreshAccessParameters = (userId, ())
-        invokedRefreshAccessParametersList.append((userId, ()))
         if let error = refreshAccessUserIdThrowableError2 {
             throw error
         }
@@ -153,7 +151,6 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
         invokedUpdateProtonAddressesMonitorfunction = true
         invokedUpdateProtonAddressesMonitorCount += 1
         invokedUpdateProtonAddressesMonitorParameters = (userId, monitored)
-        invokedUpdateProtonAddressesMonitorParametersList.append((userId, monitored))
         if let error = updateProtonAddressesMonitorUserIdMonitoredThrowableError4 {
             throw error
         }
@@ -171,7 +168,6 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
         invokedUpdateAliasesMonitorfunction = true
         invokedUpdateAliasesMonitorCount += 1
         invokedUpdateAliasesMonitorParameters = (userId, monitored)
-        invokedUpdateAliasesMonitorParametersList.append((userId, monitored))
         if let error = updateAliasesMonitorUserIdMonitoredThrowableError5 {
             throw error
         }
@@ -190,7 +186,6 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
         invokedGetPassUserInformationfunction = true
         invokedGetPassUserInformationCount += 1
         invokedGetPassUserInformationParameters = (userId, ())
-        invokedGetPassUserInformationParametersList.append((userId, ()))
         if let error = getPassUserInformationUserIdThrowableError6 {
             throw error
         }

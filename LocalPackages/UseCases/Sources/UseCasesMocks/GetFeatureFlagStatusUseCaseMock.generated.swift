@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.2.7 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.3.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
@@ -39,7 +39,6 @@ public final class GetFeatureFlagStatusUseCaseMock: @unchecked Sendable, GetFeat
         invokedExecutefunction = true
         invokedExecuteCount += 1
         invokedExecuteParameters = (flag, ())
-        invokedExecuteParametersList.append((flag, ()))
         closureExecute()
         return stubbedExecuteResult
     }

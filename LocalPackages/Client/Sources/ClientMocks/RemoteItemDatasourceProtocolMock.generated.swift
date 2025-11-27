@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.2.7 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.3.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
@@ -41,7 +41,6 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedGetItemsfunction = true
         invokedGetItemsCount += 1
         invokedGetItemsParameters = (userId, shareId, eventStream)
-        invokedGetItemsParametersList.append((userId, shareId, eventStream))
         if let error = getItemsUserIdShareIdEventStreamThrowableError1 {
             throw error
         }
@@ -61,7 +60,6 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedGetItemRevisionsfunction = true
         invokedGetItemRevisionsCount += 1
         invokedGetItemRevisionsParameters = (userId, shareId, itemId, lastToken)
-        invokedGetItemRevisionsParametersList.append((userId, shareId, itemId, lastToken))
         if let error = getItemRevisionsUserIdShareIdItemIdLastTokenThrowableError2 {
             throw error
         }
@@ -81,7 +79,6 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedGetItemfunction = true
         invokedGetItemCount += 1
         invokedGetItemParameters = (userId, shareId, itemId, eventToken)
-        invokedGetItemParametersList.append((userId, shareId, itemId, eventToken))
         if let error = getItemUserIdShareIdItemIdEventTokenThrowableError3 {
             throw error
         }
@@ -101,7 +98,6 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedCreateItemfunction = true
         invokedCreateItemCount += 1
         invokedCreateItemParameters = (userId, shareId, request)
-        invokedCreateItemParametersList.append((userId, shareId, request))
         if let error = createItemUserIdShareIdRequestThrowableError4 {
             throw error
         }
@@ -121,7 +117,6 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedCreateAliasfunction = true
         invokedCreateAliasCount += 1
         invokedCreateAliasParameters = (userId, shareId, request)
-        invokedCreateAliasParametersList.append((userId, shareId, request))
         if let error = createAliasUserIdShareIdRequestThrowableError5 {
             throw error
         }
@@ -141,7 +136,6 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedCreateAliasAndAnotherItemfunction = true
         invokedCreateAliasAndAnotherItemCount += 1
         invokedCreateAliasAndAnotherItemParameters = (userId, shareId, request)
-        invokedCreateAliasAndAnotherItemParametersList.append((userId, shareId, request))
         if let error = createAliasAndAnotherItemUserIdShareIdRequestThrowableError6 {
             throw error
         }
@@ -161,7 +155,6 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedTrashItemfunction = true
         invokedTrashItemCount += 1
         invokedTrashItemParameters = (items, shareId, userId)
-        invokedTrashItemParametersList.append((items, shareId, userId))
         if let error = trashItemShareIdUserIdThrowableError7 {
             throw error
         }
@@ -181,7 +174,6 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedUntrashItemfunction = true
         invokedUntrashItemCount += 1
         invokedUntrashItemParameters = (items, shareId, userId)
-        invokedUntrashItemParametersList.append((items, shareId, userId))
         if let error = untrashItemShareIdUserIdThrowableError8 {
             throw error
         }
@@ -200,7 +192,6 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedDeleteItemfunction = true
         invokedDeleteItemCount += 1
         invokedDeleteItemParameters = (items, shareId, skipTrash, userId)
-        invokedDeleteItemParametersList.append((items, shareId, skipTrash, userId))
         if let error = deleteItemShareIdSkipTrashUserIdThrowableError9 {
             throw error
         }
@@ -219,7 +210,6 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedUpdateItemfunction = true
         invokedUpdateItemCount += 1
         invokedUpdateItemParameters = (userId, shareId, itemId, request)
-        invokedUpdateItemParametersList.append((userId, shareId, itemId, request))
         if let error = updateItemUserIdShareIdItemIdRequestThrowableError10 {
             throw error
         }
@@ -239,7 +229,6 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedUpdateLastUseTimefunction = true
         invokedUpdateLastUseTimeCount += 1
         invokedUpdateLastUseTimeParameters = (userId, shareId, itemId, lastUseTime)
-        invokedUpdateLastUseTimeParametersList.append((userId, shareId, itemId, lastUseTime))
         if let error = updateLastUseTimeUserIdShareIdItemIdLastUseTimeThrowableError11 {
             throw error
         }
@@ -259,7 +248,6 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedMovefunction = true
         invokedMoveCount += 1
         invokedMoveParameters = (userId, fromShareId, request)
-        invokedMoveParametersList.append((userId, fromShareId, request))
         if let error = moveUserIdFromShareIdRequestThrowableError12 {
             throw error
         }
@@ -279,7 +267,6 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedPinfunction = true
         invokedPinCount += 1
         invokedPinParameters = (userId, item)
-        invokedPinParametersList.append((userId, item))
         if let error = pinUserIdItemThrowableError13 {
             throw error
         }
@@ -299,7 +286,6 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedUnpinfunction = true
         invokedUnpinCount += 1
         invokedUnpinParameters = (userId, item)
-        invokedUnpinParametersList.append((userId, item))
         if let error = unpinUserIdItemThrowableError14 {
             throw error
         }
@@ -319,7 +305,6 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedUpdateItemFlagsfunction = true
         invokedUpdateItemFlagsCount += 1
         invokedUpdateItemFlagsParameters = (userId, itemId, shareId, request)
-        invokedUpdateItemFlagsParametersList.append((userId, itemId, shareId, request))
         if let error = updateItemFlagsUserIdItemIdShareIdRequestThrowableError15 {
             throw error
         }
@@ -339,7 +324,6 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedCreatePendingAliasesItemfunction = true
         invokedCreatePendingAliasesItemCount += 1
         invokedCreatePendingAliasesItemParameters = (userId, shareId, request)
-        invokedCreatePendingAliasesItemParametersList.append((userId, shareId, request))
         if let error = createPendingAliasesItemUserIdShareIdRequestThrowableError16 {
             throw error
         }
@@ -359,7 +343,6 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedToggleAliasStatusfunction = true
         invokedToggleAliasStatusCount += 1
         invokedToggleAliasStatusParameters = (userId, shareId, itemId, enabled)
-        invokedToggleAliasStatusParametersList.append((userId, shareId, itemId, enabled))
         if let error = toggleAliasStatusUserIdShareIdItemIdEnabledThrowableError17 {
             throw error
         }
@@ -379,7 +362,6 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedResetHistoryfunction = true
         invokedResetHistoryCount += 1
         invokedResetHistoryParameters = (userId, shareId, itemId)
-        invokedResetHistoryParametersList.append((userId, shareId, itemId))
         if let error = resetHistoryUserIdShareIdItemIdThrowableError18 {
             throw error
         }
@@ -399,7 +381,6 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedImportItemsfunction = true
         invokedImportItemsCount += 1
         invokedImportItemsParameters = (userId, shareId, items)
-        invokedImportItemsParametersList.append((userId, shareId, items))
         if let error = importItemsUserIdShareIdItemsThrowableError19 {
             throw error
         }
