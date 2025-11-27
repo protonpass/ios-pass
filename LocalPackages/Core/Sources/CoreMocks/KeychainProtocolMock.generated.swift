@@ -39,7 +39,6 @@ public final class KeychainProtocolMock: @unchecked Sendable, KeychainProtocol {
         invokedDataOrErrorfunction = true
         invokedDataOrErrorCount += 1
         invokedDataOrErrorParameters = (key, attributes)
-        invokedDataOrErrorParametersList.append((key, attributes))
         if let error = dataOrErrorForKeyAttributesThrowableError1 {
             throw error
         }
@@ -59,7 +58,6 @@ public final class KeychainProtocolMock: @unchecked Sendable, KeychainProtocol {
         invokedStringOrErrorfunction = true
         invokedStringOrErrorCount += 1
         invokedStringOrErrorParameters = (key, attributes)
-        invokedStringOrErrorParametersList.append((key, attributes))
         if let error = stringOrErrorForKeyAttributesThrowableError2 {
             throw error
         }
@@ -78,7 +76,6 @@ public final class KeychainProtocolMock: @unchecked Sendable, KeychainProtocol {
         invokedSetOrErrorDataKeyAttributes3 = true
         invokedSetOrErrorDataKeyAttributesCount3 += 1
         invokedSetOrErrorDataKeyAttributesParameters3 = (data, key, attributes)
-        invokedSetOrErrorDataKeyAttributesParametersList3.append((data, key, attributes))
         if let error = setOrErrorForKeyAttributesThrowableError3 {
             throw error
         }
@@ -96,7 +93,6 @@ public final class KeychainProtocolMock: @unchecked Sendable, KeychainProtocol {
         invokedSetOrErrorStringKeyAttributes4 = true
         invokedSetOrErrorStringKeyAttributesCount4 += 1
         invokedSetOrErrorStringKeyAttributesParameters4 = (string, key, attributes)
-        invokedSetOrErrorStringKeyAttributesParametersList4.append((string, key, attributes))
         if let error = setOrErrorForKeyAttributesThrowableError4 {
             throw error
         }
@@ -114,7 +110,6 @@ public final class KeychainProtocolMock: @unchecked Sendable, KeychainProtocol {
         invokedRemoveOrErrorfunction = true
         invokedRemoveOrErrorCount += 1
         invokedRemoveOrErrorParameters = (key, ())
-        invokedRemoveOrErrorParametersList.append((key, ()))
         if let error = removeOrErrorForKeyThrowableError5 {
             throw error
         }

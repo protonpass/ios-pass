@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.2.7 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.3.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
@@ -111,7 +111,6 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
         invokedUpsertAndMarkAsActivefunction = true
         invokedUpsertAndMarkAsActiveCount += 1
         invokedUpsertAndMarkAsActiveParameters = (userData, ())
-        invokedUpsertAndMarkAsActiveParametersList.append((userData, ()))
         if let error = upsertAndMarkAsActiveUserDataThrowableError3 {
             throw error
         }
@@ -129,7 +128,6 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
         invokedSwitchActiveUserfunction = true
         invokedSwitchActiveUserCount += 1
         invokedSwitchActiveUserParameters = (userId, onMemory)
-        invokedSwitchActiveUserParametersList.append((userId, onMemory))
         if let error = switchActiveUserWithOnMemoryThrowableError4 {
             throw error
         }
@@ -163,7 +161,6 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
         invokedRemovefunction = true
         invokedRemoveCount += 1
         invokedRemoveParameters = (userId, ())
-        invokedRemoveParametersList.append((userId, ()))
         if let error = removeUserIdThrowableError6 {
             throw error
         }
@@ -194,7 +191,6 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
         invokedSetUserDatafunction = true
         invokedSetUserDataCount += 1
         invokedSetUserDataParameters = (userData, ())
-        invokedSetUserDataParametersList.append((userData, ()))
         closureSetUserData()
     }
 }

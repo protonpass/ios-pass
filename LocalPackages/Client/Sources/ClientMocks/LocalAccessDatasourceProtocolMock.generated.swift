@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.2.7 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.3.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
@@ -39,7 +39,6 @@ public final class LocalAccessDatasourceProtocolMock: @unchecked Sendable, Local
         invokedGetAccessfunction = true
         invokedGetAccessCount += 1
         invokedGetAccessParameters = (userId, ())
-        invokedGetAccessParametersList.append((userId, ()))
         if let error = getAccessUserIdThrowableError1 {
             throw error
         }
@@ -74,7 +73,6 @@ public final class LocalAccessDatasourceProtocolMock: @unchecked Sendable, Local
         invokedUpsertAccessAsync3 = true
         invokedUpsertAccessAsyncCount3 += 1
         invokedUpsertAccessAsyncParameters3 = (access, ())
-        invokedUpsertAccessAsyncParametersList3.append((access, ()))
         if let error = upsertAccessThrowableError3 {
             throw error
         }
@@ -92,7 +90,6 @@ public final class LocalAccessDatasourceProtocolMock: @unchecked Sendable, Local
         invokedRemoveAccessfunction = true
         invokedRemoveAccessCount += 1
         invokedRemoveAccessParameters = (userId, ())
-        invokedRemoveAccessParametersList.append((userId, ()))
         if let error = removeAccessUserIdThrowableError4 {
             throw error
         }
@@ -111,7 +108,6 @@ public final class LocalAccessDatasourceProtocolMock: @unchecked Sendable, Local
         invokedGetPassUserInformationsfunction = true
         invokedGetPassUserInformationsCount += 1
         invokedGetPassUserInformationsParameters = (userId, ())
-        invokedGetPassUserInformationsParametersList.append((userId, ()))
         if let error = getPassUserInformationsUserIdThrowableError5 {
             throw error
         }
@@ -130,7 +126,6 @@ public final class LocalAccessDatasourceProtocolMock: @unchecked Sendable, Local
         invokedUpsertInformationsUserIdAsync6 = true
         invokedUpsertInformationsUserIdAsyncCount6 += 1
         invokedUpsertInformationsUserIdAsyncParameters6 = (informations, userId)
-        invokedUpsertInformationsUserIdAsyncParametersList6.append((informations, userId))
         if let error = upsertInformationsUserIdThrowableError6 {
             throw error
         }

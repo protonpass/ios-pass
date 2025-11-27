@@ -57,7 +57,6 @@ public actor LogManagerProtocolMock: LogManagerProtocol {
         invokedLogfunction = true
         invokedLogCount += 1
         invokedLogParameters = (entry, ())
-        invokedLogParametersList.append((entry, ()))
         closureLog()
     }
     // MARK: - getLogEntries
@@ -107,7 +106,6 @@ public actor LogManagerProtocolMock: LogManagerProtocol {
         invokedToggleLoggingfunction = true
         invokedToggleLoggingCount += 1
         invokedToggleLoggingParameters = (shouldLog, ())
-        invokedToggleLoggingParametersList.append((shouldLog, ()))
         closureToggleLogging()
     }
 }
