@@ -612,11 +612,11 @@ public extension ItemRepository {
     }
 
     func deleteItemsLocally(items: [any ItemIdentifiable]) async throws {
-        logger.trace("Deleting locally items \(items)")
+        logger.trace("Deleting locally items \(items.count)")
         try await localDatasource.deleteItems(items)
         try await refreshPinnedItemDataStream()
         itemsWereUpdated.send()
-        logger.trace("Deleted locally items \(items)")
+        logger.trace("Deleted locally items \(items.count)")
     }
 
     func updateItem(userId: String,

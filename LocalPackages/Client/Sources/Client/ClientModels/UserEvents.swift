@@ -28,15 +28,15 @@ public struct UserEvents: Sendable, Decodable {
     public let itemsUpdated: [ItemEvent]
     public let itemsDeleted: [ItemEvent]
     public let aliasNoteChanged: [ItemEvent]
-    public let invitesChanged: PendingChangeEvent?
-    public let groupInvitesChanged: PendingChangeEvent?
+    public let invitesChanged: ChangeEvent?
+    public let groupInvitesChanged: ChangeEvent?
     public let sharesCreated: [ShareEvent]
     public let sharesUpdated: [ShareEvent]
     public let sharesDeleted: [ShareEvent]
     public let sharesWithInvitesToCreate: [ShareEvent]
     public let foldersUpdated: [FolderEvent]
     public let foldersDeleted: [FolderEvent]
-    public let pendingAliasToCreateChanged: PendingChangeEvent?
+    public let pendingAliasToCreateChanged: ChangeEvent?
     public let refreshUser: Bool
     public let eventsPending: Bool
     public let fullRefresh: Bool
@@ -77,7 +77,7 @@ public struct ShareEvent: Sendable, Decodable, Equatable {
     public let eventToken: String
 }
 
-public struct PendingChangeEvent: Sendable, Decodable, Equatable {
+public struct ChangeEvent: Sendable, Decodable, Equatable {
     public let eventToken: String
 }
 

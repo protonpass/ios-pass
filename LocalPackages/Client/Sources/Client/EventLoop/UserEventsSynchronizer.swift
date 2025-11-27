@@ -137,8 +137,8 @@ private extension UserEventsSynchronizer {
         // TODO: share with invite to be added to the group sharing MR that contains changes to invite logic and serices
 //        async let inviteCreatedShares: () = processInviteChanges(inviteChanges: events.sharesWithInvitesToCreate,
 //        userId: userId)
-        async let endingAliasToCreate: () = processPendingAliasToCreateChanged(events.pendingAliasToCreateChanged,
-                                                                               userId: userId)
+        async let pendingAliasToCreate: () = processPendingAliasToCreateChanged(events.pendingAliasToCreateChanged,
+                                                                                userId: userId)
         async let userChange: () = processUserChanged(events.refreshUser, userId: userId)
 
         _ = try await (updatedItems,
@@ -147,7 +147,7 @@ private extension UserEventsSynchronizer {
                        createdShares,
                        updatedShares,
                        deletedShares,
-                       endingAliasToCreate,
+                       pendingAliasToCreate,
                        userChange,
                        invites)
     }
@@ -255,7 +255,7 @@ private extension UserEventsSynchronizer {
         }
     }
 
-    func processInviteChanges(inviteChanges: PendingChangeEvent?,
+    func processInviteChanges(inviteChanges: ChangeEvent?,
                               userId: String) async throws {
         guard inviteChanges != nil else {
             logger.trace("No invite changes for user \(userId)")
@@ -264,16 +264,18 @@ private extension UserEventsSynchronizer {
         try await inviteRepository.refreshInvites(userId: userId)
     }
 
-    func processPendingAliasToCreateChanged(_ pendingAliasToCreateChanged: PendingChangeEvent?,
+    func processPendingAliasToCreateChanged(_ pendingAliasToCreateChanged: ChangeEvent?,
                                             userId: String) async throws {
         guard pendingAliasToCreateChanged != nil else {
-            logger.trace("No pending AliasToCreate changes for user \(userId)")
+            logger.trace("No aliases to create for user \(userId)")
             return
         }
+        logger.trace("Creating aliases for user \(userId)")
         let settings = try await accessRepository.getAccess(userId: userId).access.userData
         guard settings.aliasSyncEnabled,
               settings.pendingAliasToSync > 0,
               let shareId = settings.defaultShareID else {
+            logger.trace("Skipped creating aliases for user \(userId)")
             return
         }
 
@@ -295,9 +297,10 @@ private extension UserEventsSynchronizer {
                                                            customFields: []))
             })
 
-            _ = try await itemRepository.createPendingAliasesItem(userId: userId,
-                                                                  shareId: shareId,
-                                                                  itemsContent: itemsContent)
+            let result = try await itemRepository.createPendingAliasesItem(userId: userId,
+                                                                           shareId: shareId,
+                                                                           itemsContent: itemsContent)
+            logger.trace("Created \(result.count) aliases for user \(userId)")
 
             // Move to the next page
             sinceLastToken = paginatedAlias.lastToken
