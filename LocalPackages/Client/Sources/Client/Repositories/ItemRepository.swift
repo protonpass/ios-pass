@@ -148,6 +148,9 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
 
     /// Delete items locally after sync events
     func deleteItemsLocally(itemIds: [String], shareId: String) async throws
+    
+    /// Delete items locally after user sync events
+    func deleteItemsLocally(items: [any ItemIdentifiable]) async throws
 
     // MARK: - AutoFill operations
 
@@ -606,6 +609,14 @@ public extension ItemRepository {
         try await refreshPinnedItemDataStream()
         itemsWereUpdated.send()
         logger.trace("Deleted locally items \(itemIds) for share \(shareId)")
+    }
+    
+    func deleteItemsLocally(items: [any ItemIdentifiable]) async throws {
+        logger.trace("Deleting locally items \(items)")
+        try await localDatasource.deleteItems(items)
+        try await refreshPinnedItemDataStream()
+        itemsWereUpdated.send()
+        logger.trace("Deleted locally items \(items)")
     }
 
     func updateItem(userId: String,
