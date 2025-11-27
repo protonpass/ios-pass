@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.2.7 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.3.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
@@ -44,7 +44,6 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
         invokedGetSharesfunction = true
         invokedGetSharesCount += 1
         invokedGetSharesParameters = (userId, ())
-        invokedGetSharesParametersList.append((userId, ()))
         if let error = getSharesUserIdThrowableError1 {
             throw error
         }
@@ -64,7 +63,6 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
         invokedGetSharefunction = true
         invokedGetShareCount += 1
         invokedGetShareParameters = (shareId, ())
-        invokedGetShareParametersList.append((shareId, ()))
         if let error = getShareShareIdThrowableError2 {
             throw error
         }
@@ -84,7 +82,6 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
         invokedGetDecryptedSharesfunction = true
         invokedGetDecryptedSharesCount += 1
         invokedGetDecryptedSharesParameters = (userId, ())
-        invokedGetDecryptedSharesParametersList.append((userId, ()))
         if let error = getDecryptedSharesUserIdThrowableError3 {
             throw error
         }
@@ -104,7 +101,6 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
         invokedGetDecryptedSharefunction = true
         invokedGetDecryptedShareCount += 1
         invokedGetDecryptedShareParameters = (shareId, ())
-        invokedGetDecryptedShareParametersList.append((shareId, ()))
         if let error = getDecryptedShareShareIdThrowableError4 {
             throw error
         }
@@ -124,7 +120,6 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
         invokedGetDecryptedRemoteSharesfunction = true
         invokedGetDecryptedRemoteSharesCount += 1
         invokedGetDecryptedRemoteSharesParameters = (userId, ())
-        invokedGetDecryptedRemoteSharesParametersList.append((userId, ()))
         if let error = getDecryptedRemoteSharesUserIdThrowableError5 {
             throw error
         }
@@ -157,7 +152,6 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
         invokedDeleteShareLocallyfunction = true
         invokedDeleteShareLocallyCount += 1
         invokedDeleteShareLocallyParameters = (userId, shareId)
-        invokedDeleteShareLocallyParametersList.append((userId, shareId))
         if let error = deleteShareLocallyUserIdShareIdThrowableError7 {
             throw error
         }
@@ -175,7 +169,6 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
         invokedUpsertSharesfunction = true
         invokedUpsertSharesCount += 1
         invokedUpsertSharesParameters = (userId, shares, eventStream)
-        invokedUpsertSharesParametersList.append((userId, shares, eventStream))
         if let error = upsertSharesUserIdSharesEventStreamThrowableError8 {
             throw error
         }
@@ -193,7 +186,6 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
         invokedRefreshSharefunction = true
         invokedRefreshShareCount += 1
         invokedRefreshShareParameters = (userId, shareId, eventToken)
-        invokedRefreshShareParametersList.append((userId, shareId, eventToken))
         if let error = refreshShareUserIdShareIdEventTokenThrowableError9 {
             throw error
         }
@@ -212,7 +204,6 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
         invokedGetUsersLinkedToVaultSharefunction = true
         invokedGetUsersLinkedToVaultShareCount += 1
         invokedGetUsersLinkedToVaultShareParameters = (shareId, lastToken)
-        invokedGetUsersLinkedToVaultShareParametersList.append((shareId, lastToken))
         if let error = getUsersLinkedToVaultShareToLastTokenThrowableError10 {
             throw error
         }
@@ -232,7 +223,6 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
         invokedGetUsersLinkedToItemSharefunction = true
         invokedGetUsersLinkedToItemShareCount += 1
         invokedGetUsersLinkedToItemShareParameters = (shareId, itemId, lastToken)
-        invokedGetUsersLinkedToItemShareParametersList.append((shareId, itemId, lastToken))
         if let error = getUsersLinkedToItemShareToItemIdLastTokenThrowableError11 {
             throw error
         }
@@ -252,7 +242,6 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
         invokedUpdateUserPermissionfunction = true
         invokedUpdateUserPermissionCount += 1
         invokedUpdateUserPermissionParameters = (userShareId, shareId, shareRole, expireTime)
-        invokedUpdateUserPermissionParametersList.append((userShareId, shareId, shareRole, expireTime))
         if let error = updateUserPermissionUserShareIdShareIdShareRoleExpireTimeThrowableError12 {
             throw error
         }
@@ -272,7 +261,6 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
         invokedDeleteUserSharefunction = true
         invokedDeleteUserShareCount += 1
         invokedDeleteUserShareParameters = (userShareId, shareId)
-        invokedDeleteUserShareParametersList.append((userShareId, shareId))
         if let error = deleteUserShareUserShareIdShareIdThrowableError13 {
             throw error
         }
@@ -292,7 +280,6 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
         invokedDeleteSharefunction = true
         invokedDeleteShareCount += 1
         invokedDeleteShareParameters = (userId, shareId)
-        invokedDeleteShareParametersList.append((userId, shareId))
         if let error = deleteShareUserIdShareIdThrowableError14 {
             throw error
         }
@@ -312,7 +299,6 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
         invokedCreateVaultfunction = true
         invokedCreateVaultCount += 1
         invokedCreateVaultParameters = (userId, vault)
-        invokedCreateVaultParametersList.append((userId, vault))
         if let error = createVaultUserIdVaultThrowableError15 {
             throw error
         }
@@ -331,7 +317,6 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
         invokedEditfunction = true
         invokedEditCount += 1
         invokedEditParameters = (oldVault, newVault)
-        invokedEditParametersList.append((oldVault, newVault))
         if let error = editOldVaultNewVaultThrowableError16 {
             throw error
         }
@@ -349,7 +334,6 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
         invokedDeleteVaultfunction = true
         invokedDeleteVaultCount += 1
         invokedDeleteVaultParameters = (shareId, ())
-        invokedDeleteVaultParametersList.append((shareId, ()))
         if let error = deleteVaultShareIdThrowableError17 {
             throw error
         }
@@ -368,7 +352,6 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
         invokedTransferVaultOwnershipfunction = true
         invokedTransferVaultOwnershipCount += 1
         invokedTransferVaultOwnershipParameters = (vaultShareId, newOwnerShareId)
-        invokedTransferVaultOwnershipParametersList.append((vaultShareId, newOwnerShareId))
         if let error = transferVaultOwnershipVaultShareIdNewOwnerShareIdThrowableError18 {
             throw error
         }
@@ -387,7 +370,6 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
         invokedHideUnhideSharesfunction = true
         invokedHideUnhideSharesCount += 1
         invokedHideUnhideSharesParameters = (userId, sharesToHide, sharesToUnhide)
-        invokedHideUnhideSharesParametersList.append((userId, sharesToHide, sharesToUnhide))
         if let error = hideUnhideSharesUserIdSharesToHideSharesToUnhideThrowableError19 {
             throw error
         }

@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.2.7 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.3.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
@@ -40,7 +40,6 @@ public final class ReportRepositoryProtocolMock: @unchecked Sendable, ReportRepo
         invokedSendBugfunction = true
         invokedSendBugCount += 1
         invokedSendBugParameters = (title, description, logs)
-        invokedSendBugParametersList.append((title, description, logs))
         if let error = sendBugWithAndOptionalThrowableError1 {
             throw error
         }
