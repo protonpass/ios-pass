@@ -30,7 +30,7 @@ public struct UserEventsSyncResult: OptionSet, Sendable {
 
     public static let dataUpdated = Self(rawValue: 1 << 0)
     public static let invitesChanged = Self(rawValue: 1 << 1)
-    public static let planChanged = Self(rawValue: 1 << 2)
+    public static let refreshUser = Self(rawValue: 1 << 2)
     public static let fullRefreshNeeded = Self(rawValue: 1 << 3)
     public static let groupInvitesChanged = Self(rawValue: 1 << 4)
 }
@@ -39,7 +39,9 @@ public protocol UserEventsSynchronizerProtocol: Sendable {
     func sync(userId: String) async throws -> UserEventsSyncResult
 }
 
-public actor UserEventsSynchronizer: UserEventsSynchronizerProtocol {
+
+//TODO: All logic should be local
+public final class UserEventsSynchronizer: UserEventsSynchronizerProtocol {
     private let localUserEventIdDatasource: any LocalUserEventIdDatasourceProtocol
     private let remoteUserEventsDatasource: any RemoteUserEventsDatasourceProtocol
     private let itemRepository: any ItemRepositoryProtocol
@@ -99,7 +101,7 @@ private extension UserEventsSynchronizer {
             if events.dataUpdated { result.insert(.dataUpdated) }
             if events.invitesChanged != nil { result.insert(.invitesChanged) }
             if events.groupInvitesChanged != nil { result.insert(.groupInvitesChanged) }
-            if events.planChanged { result.insert(.planChanged) }
+            if events.refreshUser { result.insert(.refreshUser) }
             if events.fullRefresh { result.insert(.fullRefreshNeeded) }
 
             try await localUserEventIdDatasource.upsertLastEventId(userId: userId,
@@ -168,9 +170,10 @@ private extension UserEventsSynchronizer {
             return
         }
         logger.trace("Deleting \(deletedItems.count) items for user \(userId)")
-        try await itemRepository.delete(userId: userId, items: deletedItems)
+        try await itemRepository.deleteItemsLocally(items: deletedItems)
     }
 
+    //TODO: Need to add eventoken
     func processAliasNoteChangedItems(_ aliasNoteChangedItems: [ItemEvent],
                                       userId: String) async throws {
         guard !aliasNoteChangedItems.isEmpty else {
@@ -245,7 +248,7 @@ private extension UserEventsSynchronizer {
         }
     }
 
-    func processInviteChanges(inviteChanges: InviteChangeEvent?,
+    func processInviteChanges(inviteChanges: PendingChangeEvent?,
                               userId: String) async throws {
         guard inviteChanges != nil else {
             logger.trace("No invite changes for user \(userId)")
