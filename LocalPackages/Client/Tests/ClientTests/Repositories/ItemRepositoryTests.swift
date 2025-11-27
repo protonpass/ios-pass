@@ -32,6 +32,7 @@ final class ItemRepositoryTests: XCTestCase {
     var userManager: UserManagerProtocolMock!
     var localDatasource: LocalItemDatasourceProtocolMock!
     var remoteDatasource: RemoteItemDatasourceProtocol!
+    var localShareDatasource: LocalShareDatasourceProtocolMock!
     var shareEventIDRepository: ShareEventIDRepositoryProtocol!
     var passKeyManager: PassKeyManagerProtocol!
     var logManager: LogManagerProtocol!
@@ -45,6 +46,7 @@ final class ItemRepositoryTests: XCTestCase {
         userManager = UserManagerProtocolMock()
         localDatasource.stubbedGetAllPinnedItemsResult = []
         remoteDatasource = RemoteItemDatasourceProtocolMock()
+        localShareDatasource = .init()
         shareEventIDRepository = ShareEventIDRepositoryProtocolMock()
         passKeyManager = PassKeyManagerProtocolMock()
         logManager = LogManagerProtocolMock()
@@ -78,6 +80,7 @@ extension ItemRepositoryTests {
                              userManager: userManager,
                              localDatasource: localDatasource,
                              remoteDatasource: remoteDatasource,
+                             localShareDatasource: localShareDatasource,
                              shareEventIDRepository: shareEventIDRepository,
                              passKeyManager: passKeyManager,
                              logManager: logManager)
