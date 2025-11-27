@@ -257,20 +257,24 @@ private extension UserEventsSynchronizer {
 
     func processUserInviteChanges(inviteChanges: ChangeEvent?,
                                   userId: String) async throws {
-        guard inviteChanges != nil else {
+        guard let inviteChanges else {
             logger.trace("No user invite changes for user \(userId)")
             return
         }
-        try await inviteRepository.refreshSpecificInvites(userId: userId, refreshInviteType: .userInvite)
+        try await inviteRepository.refreshSpecificInvites(userId: userId,
+                                                          refreshInviteType: .userInvite(eventToken: inviteChanges
+                                                              .eventToken))
     }
 
     func processGroupInviteChanges(inviteChanges: ChangeEvent?,
                                    userId: String) async throws {
-        guard inviteChanges != nil else {
+        guard let inviteChanges else {
             logger.trace("No group invite changes for user \(userId)")
             return
         }
-        try await inviteRepository.refreshSpecificInvites(userId: userId, refreshInviteType: .groupInvite)
+        try await inviteRepository.refreshSpecificInvites(userId: userId,
+                                                          refreshInviteType: .groupInvite(eventToken: inviteChanges
+                                                              .eventToken))
     }
 
     func processNewShareWithInviteChanges(shareWithInvitesChanges: [ShareEvent],
