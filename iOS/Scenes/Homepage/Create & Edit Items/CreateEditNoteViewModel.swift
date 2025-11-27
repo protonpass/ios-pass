@@ -28,8 +28,6 @@ import SwiftUI
 final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    @Published var note = ""
-
     override init(mode: ItemMode,
                   upgradeChecker: any UpgradeCheckerProtocol,
                   vaults: [Share]) throws {
@@ -51,6 +49,7 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
     }
 
     override func bindValues() {
+        super.bindValues()
         switch mode {
         case let .create(_, type):
             if case let .note(title, note) = type {
@@ -59,10 +58,7 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
             }
 
         case let .clone(itemContent), let .edit(itemContent):
-            if case .note = itemContent.contentData {
-                title = itemContent.name
-                note = itemContent.note
-            }
+            break
         }
     }
 
