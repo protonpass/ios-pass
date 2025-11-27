@@ -104,7 +104,7 @@ struct GetUserEventsResponseTests {
                       "EventToken": "Token9"
                     }
                 ],
-                "PlanChanged": true,
+                "RefreshUser": true,
                 "EventsPending": true,
                 "FullRefresh": false
               }
@@ -147,7 +147,7 @@ struct GetUserEventsResponseTests {
         #expect(events.foldersUpdated.count == 1)
         #expect(events.foldersUpdated.first == FolderEvent(shareID: "ShareID7", folderID: "FolderID1", eventToken: "Token8"))
                 
-        #expect(events.planChanged)
+        #expect(events.refreshUser)
         #expect(events.eventsPending)
         #expect(!events.fullRefresh)
     }

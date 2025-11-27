@@ -51,7 +51,8 @@ public struct UserEvents: Sendable, Decodable {
             !sharesDeleted.isEmpty ||
             !sharesWithInvitesToCreate.isEmpty ||
             !foldersUpdated.isEmpty ||
-            !foldersDeleted.isEmpty
+            !foldersDeleted.isEmpty ||
+            pendingAliasToCreateChanged != nil
     }
 }
 

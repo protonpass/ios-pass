@@ -25,6 +25,7 @@ import Core
 import CoreMocks
 import Testing
 import TestingToolkit
+import Entities
 
 @Suite(.tags(.synchronizer))
 struct UserEventsSynchronizerTests {
@@ -36,17 +37,27 @@ struct UserEventsSynchronizerTests {
     let accessRespository = AccessRepositoryProtocolMock()
     let inviteRepository = InviteRepositoryProtocolMock()
     let slNoteSynchronizer = SimpleLoginNoteSynchronizerProtocolMock()
+    let aliasRepository = AliasRepositoryProtocolMock()
     var sut: (any UserEventsSynchronizerProtocol)!
 
     init() {
+        accessRespository.stubbedGetAccessResult = .init(userId: "UserId", access: .init(plan: .mockFreePlan,
+                                                                                         monitor: .mock(),
+                                                                                         pendingInvites: 0,
+                                                                                         waitingNewUserInvites: 0,
+                                                                                         minVersionUpgrade: nil,
+                                                                                         userData: .mock(aliasSyncEnabled: true,
+                                                                                                         pendingAliasToSync: 10)) )
         sut = UserEventsSynchronizer(localUserEventIdDatasource: localUserEventIdDatasource,
                                      remoteUserEventsDatasource: remoteUserEventsDatasource,
                                      itemRepository: itemRepository,
                                      shareRepository: shareRepository,
                                      accessRepository: accessRespository,
                                      inviteRepository: inviteRepository,
+                                     aliasRepository: aliasRepository,
                                      simpleLoginNoteSynchronizer: slNoteSynchronizer,
                                      logManager: LogManagerProtocolMock())
+       
     }
 }
 
@@ -83,7 +94,8 @@ private struct Args {
                       sharesWithInvitesToCreate: [],
                       foldersUpdated: [],
                       foldersDeleted: [],
-                      planChanged: false,
+                      pendingAliasToCreateChanged: nil,
+                      refreshUser: false,
                       eventsPending: false,
                       fullRefresh: true)
               ],
@@ -106,7 +118,8 @@ private struct Args {
                       sharesWithInvitesToCreate: [],
                       foldersUpdated: [],
                       foldersDeleted: [],
-                      planChanged: false,
+                      pendingAliasToCreateChanged: nil,
+                      refreshUser: false,
                       eventsPending: false,
                       fullRefresh: false)
               ],
@@ -135,7 +148,8 @@ private struct Args {
                       sharesWithInvitesToCreate: [],
                       foldersUpdated: [],
                       foldersDeleted: [],
-                      planChanged: true,
+                      pendingAliasToCreateChanged: nil,
+                      refreshUser: true,
                       eventsPending: true,
                       fullRefresh: false),
                 .init(lastEventID: "TestID2",
@@ -150,11 +164,12 @@ private struct Args {
                       sharesWithInvitesToCreate: [],
                       foldersUpdated: [],
                       foldersDeleted: [],
-                      planChanged: false,
+                      pendingAliasToCreateChanged: nil,
+                      refreshUser: false,
                       eventsPending: false,
                       fullRefresh: false)
               ],
-              result: [.dataUpdated, .invitesChanged, .planChanged],
+              result: [.dataUpdated, .invitesChanged, .refreshUser],
               getUserEventsRouteCalled: true,
               refreshItemInvokeCount: 17,
               deleteItemsInvokeCount: 2,
