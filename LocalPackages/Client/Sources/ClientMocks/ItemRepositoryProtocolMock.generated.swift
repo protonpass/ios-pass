@@ -760,6 +760,20 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         closureGetAllPinnedItems()
         return stubbedGetAllPinnedItemsResult
     }
+    // MARK: - refreshPinnedItemDataStream
+    public var refreshPinnedItemDataStreamThrowableError39: Error?
+    public var closureRefreshPinnedItemDataStream: () -> () = {}
+    public var invokedRefreshPinnedItemDataStreamfunction = false
+    public var invokedRefreshPinnedItemDataStreamCount = 0
+
+    public func refreshPinnedItemDataStream() async throws {
+        invokedRefreshPinnedItemDataStreamfunction = true
+        invokedRefreshPinnedItemDataStreamCount += 1
+        if let error = refreshPinnedItemDataStreamThrowableError39 {
+            throw error
+        }
+        closureRefreshPinnedItemDataStream()
+    }
     // MARK: - updateItemFlags
     public var updateItemFlagsFlagsShareIdItemIdThrowableError40: Error?
     public var closureUpdateItemFlags: () -> () = {}
@@ -772,6 +786,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedUpdateItemFlagsfunction = true
         invokedUpdateItemFlagsCount += 1
         invokedUpdateItemFlagsParameters = (flags, shareId, itemId)
+        invokedUpdateItemFlagsParametersList.append((flags, shareId, itemId))
         if let error = updateItemFlagsFlagsShareIdItemIdThrowableError40 {
             throw error
         }
@@ -790,6 +805,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedGetAllItemsContentfunction = true
         invokedGetAllItemsContentCount += 1
         invokedGetAllItemsContentParameters = (items, ())
+        invokedGetAllItemsContentParametersList.append((items, ()))
         if let error = getAllItemsContentItemsThrowableError41 {
             throw error
         }
@@ -808,6 +824,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedResetHistoryfunction = true
         invokedResetHistoryCount += 1
         invokedResetHistoryParameters = (item, ())
+        invokedResetHistoryParametersList.append((item, ()))
         if let error = resetHistoryThrowableError42 {
             throw error
         }
@@ -825,6 +842,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedImportLoginsfunction = true
         invokedImportLoginsCount += 1
         invokedImportLoginsParameters = (userId, shareId, logins)
+        invokedImportLoginsParametersList.append((userId, shareId, logins))
         if let error = importLoginsUserIdShareIdLoginsThrowableError43 {
             throw error
         }
@@ -843,6 +861,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedTotpCreationDateThresholdfunction = true
         invokedTotpCreationDateThresholdCount += 1
         invokedTotpCreationDateThresholdParameters = (numberOfTotp, ())
+        invokedTotpCreationDateThresholdParametersList.append((numberOfTotp, ()))
         if let error = totpCreationDateThresholdNumberOfTotpThrowableError44 {
             throw error
         }

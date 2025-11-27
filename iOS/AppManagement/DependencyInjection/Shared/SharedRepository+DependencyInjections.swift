@@ -286,6 +286,7 @@ extension SharedRepositoryContainer {
                            userManager: self.userManager,
                            localDatasource: self.localItemDatasource(),
                            remoteDatasource: self.remoteItemDatasource(),
+                           localShareDatasource: self.localShareDatasource(),
                            shareEventIDRepository: self.shareEventIDRepository(),
                            passKeyManager: self.passKeyManager(),
                            logManager: self.logManager)
