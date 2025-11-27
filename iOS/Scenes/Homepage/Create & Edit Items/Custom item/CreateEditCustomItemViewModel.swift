@@ -49,8 +49,6 @@ private struct DefaultField {
 final class CreateEditCustomItemViewModel: BaseCreateEditItemViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    @Published var note = ""
-
     override var shouldUpgrade: Bool {
         if case .create = mode, isFreeUser {
             return true
@@ -59,6 +57,7 @@ final class CreateEditCustomItemViewModel: BaseCreateEditItemViewModel, DeinitPr
     }
 
     override func bindValues() {
+        super.bindValues()
         switch mode {
         case let .create(_, type):
             if case let .custom(template) = type {
@@ -71,9 +70,7 @@ final class CreateEditCustomItemViewModel: BaseCreateEditItemViewModel, DeinitPr
 
         case let .clone(itemContent), let .edit(itemContent):
             if case let .custom(data) = itemContent.contentData {
-                title = itemContent.name
                 customSections = data.sections
-                note = itemContent.note
             }
         }
     }

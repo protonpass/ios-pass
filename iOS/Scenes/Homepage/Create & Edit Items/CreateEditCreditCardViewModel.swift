@@ -34,7 +34,6 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
     @Published var pin = ""
     @Published var month: Int?
     @Published var year: Int?
-    @Published var note = ""
 
     // For swapping section title color purpose
     // We're only interested in the emptiness of the string, not the format
@@ -119,10 +118,10 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
     }
 
     override func bindValues() {
+        super.bindValues()
         switch mode {
         case let .clone(itemContent), let .edit(itemContent):
             guard case let .creditCard(data) = itemContent.contentData else { return }
-            title = itemContent.name
             cardholderName = data.cardholderName
             cardNumber = data.number.toCreditCardNumber()
             verificationNumber = data.verificationNumber
@@ -131,8 +130,6 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
             let monthYear = data.expirationDate.components(separatedBy: "-")
             month = Int(monthYear.last ?? "")
             year = Int(monthYear.first ?? "")
-
-            note = itemContent.note
 
         case .create:
             break
