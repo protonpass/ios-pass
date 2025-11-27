@@ -42,7 +42,6 @@ public final class ShareInviteRepositoryProtocolMock: @unchecked Sendable, Share
         invokedGetAllPendingInvitesfunction = true
         invokedGetAllPendingInvitesCount += 1
         invokedGetAllPendingInvitesParameters = (shareId, ())
-        invokedGetAllPendingInvitesParametersList.append((shareId, ()))
         if let error = getAllPendingInvitesShareIdThrowableError1 {
             throw error
         }
@@ -62,7 +61,6 @@ public final class ShareInviteRepositoryProtocolMock: @unchecked Sendable, Share
         invokedSendInvitesfunction = true
         invokedSendInvitesCount += 1
         invokedSendInvitesParameters = (shareId, itemId, inviteesData, targetType)
-        invokedSendInvitesParametersList.append((shareId, itemId, inviteesData, targetType))
         if let error = sendInvitesShareIdItemIdInviteesDataTargetTypeThrowableError2 {
             throw error
         }
@@ -82,7 +80,6 @@ public final class ShareInviteRepositoryProtocolMock: @unchecked Sendable, Share
         invokedPromoteNewUserInvitefunction = true
         invokedPromoteNewUserInviteCount += 1
         invokedPromoteNewUserInviteParameters = (shareId, inviteId, keys)
-        invokedPromoteNewUserInviteParametersList.append((shareId, inviteId, keys))
         if let error = promoteNewUserInviteShareIdInviteIdKeysThrowableError3 {
             throw error
         }
@@ -102,7 +99,6 @@ public final class ShareInviteRepositoryProtocolMock: @unchecked Sendable, Share
         invokedSendInviteReminderfunction = true
         invokedSendInviteReminderCount += 1
         invokedSendInviteReminderParameters = (shareId, inviteId)
-        invokedSendInviteReminderParametersList.append((shareId, inviteId))
         if let error = sendInviteReminderShareIdInviteIdThrowableError4 {
             throw error
         }
@@ -122,7 +118,6 @@ public final class ShareInviteRepositoryProtocolMock: @unchecked Sendable, Share
         invokedDeleteInvitefunction = true
         invokedDeleteInviteCount += 1
         invokedDeleteInviteParameters = (shareId, inviteId)
-        invokedDeleteInviteParametersList.append((shareId, inviteId))
         if let error = deleteInviteShareIdInviteIdThrowableError5 {
             throw error
         }
@@ -142,7 +137,6 @@ public final class ShareInviteRepositoryProtocolMock: @unchecked Sendable, Share
         invokedDeleteNewUserInvitefunction = true
         invokedDeleteNewUserInviteCount += 1
         invokedDeleteNewUserInviteParameters = (shareId, inviteId)
-        invokedDeleteNewUserInviteParametersList.append((shareId, inviteId))
         if let error = deleteNewUserInviteShareIdInviteIdThrowableError6 {
             throw error
         }
@@ -162,7 +156,6 @@ public final class ShareInviteRepositoryProtocolMock: @unchecked Sendable, Share
         invokedGetInviteRecommendationsfunction = true
         invokedGetInviteRecommendationsCount += 1
         invokedGetInviteRecommendationsParameters = (shareId, query)
-        invokedGetInviteRecommendationsParametersList.append((shareId, query))
         if let error = getInviteRecommendationsShareIdQueryThrowableError7 {
             throw error
         }
@@ -182,7 +175,6 @@ public final class ShareInviteRepositoryProtocolMock: @unchecked Sendable, Share
         invokedGetSuggestedInvitefunction = true
         invokedGetSuggestedInviteCount += 1
         invokedGetSuggestedInviteParameters = (shareId, email)
-        invokedGetSuggestedInviteParametersList.append((shareId, email))
         if let error = getSuggestedInviteShareIdEmailThrowableError8 {
             throw error
         }
@@ -202,7 +194,6 @@ public final class ShareInviteRepositoryProtocolMock: @unchecked Sendable, Share
         invokedGetOrganisationInviteRecommendationsfunction = true
         invokedGetOrganisationInviteRecommendationsCount += 1
         invokedGetOrganisationInviteRecommendationsParameters = (shareId, query)
-        invokedGetOrganisationInviteRecommendationsParametersList.append((shareId, query))
         if let error = getOrganisationInviteRecommendationsShareIdQueryThrowableError9 {
             throw error
         }
@@ -222,7 +213,6 @@ public final class ShareInviteRepositoryProtocolMock: @unchecked Sendable, Share
         invokedCheckAddressesfunction = true
         invokedCheckAddressesCount += 1
         invokedCheckAddressesParameters = (shareId, emails)
-        invokedCheckAddressesParametersList.append((shareId, emails))
         if let error = checkAddressesShareIdEmailsThrowableError10 {
             throw error
         }

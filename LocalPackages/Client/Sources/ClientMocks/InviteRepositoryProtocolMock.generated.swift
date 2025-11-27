@@ -61,7 +61,6 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
         invokedLoadLocalInvitesfunction = true
         invokedLoadLocalInvitesCount += 1
         invokedLoadLocalInvitesParameters = (userId, ())
-        invokedLoadLocalInvitesParametersList.append((userId, ()))
         if let error = loadLocalInvitesUserIdThrowableError1 {
             throw error
         }
@@ -80,7 +79,6 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
         invokedAcceptInvitefunction = true
         invokedAcceptInviteCount += 1
         invokedAcceptInviteParameters = (invite, keys)
-        invokedAcceptInviteParametersList.append((invite, keys))
         if let error = acceptInviteAndThrowableError2 {
             throw error
         }
@@ -100,7 +98,6 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
         invokedRejectInvitefunction = true
         invokedRejectInviteCount += 1
         invokedRejectInviteParameters = (invite, ())
-        invokedRejectInviteParametersList.append((invite, ()))
         if let error = rejectInviteThrowableError3 {
             throw error
         }
@@ -119,7 +116,6 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
         invokedRefreshAllInvitesfunction = true
         invokedRefreshAllInvitesCount += 1
         invokedRefreshAllInvitesParameters = (userId, ())
-        invokedRefreshAllInvitesParametersList.append((userId, ()))
         if let error = refreshAllInvitesUserIdThrowableError4 {
             throw error
         }
@@ -137,7 +133,6 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
         invokedRefreshSpecificInvitesfunction = true
         invokedRefreshSpecificInvitesCount += 1
         invokedRefreshSpecificInvitesParameters = (userId, refreshInviteType)
-        invokedRefreshSpecificInvitesParametersList.append((userId, refreshInviteType))
         if let error = refreshSpecificInvitesUserIdRefreshInviteTypeThrowableError5 {
             throw error
         }
@@ -154,7 +149,6 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
         invokedRemoveCachedInvitefunction = true
         invokedRemoveCachedInviteCount += 1
         invokedRemoveCachedInviteParameters = (inviteToken, ())
-        invokedRemoveCachedInviteParametersList.append((inviteToken, ()))
         closureRemoveCachedInvite()
     }
     // MARK: - sendNewShareInvites
@@ -169,7 +163,6 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
         invokedSendNewShareInvitesfunction = true
         invokedSendNewShareInvitesCount += 1
         invokedSendNewShareInvitesParameters = (shareId, newShareInvite)
-        invokedSendNewShareInvitesParametersList.append((shareId, newShareInvite))
         if let error = sendNewShareInvitesShareIdNewShareInviteThrowableError7 {
             throw error
         }

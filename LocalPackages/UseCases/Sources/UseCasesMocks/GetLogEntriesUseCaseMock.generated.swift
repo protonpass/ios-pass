@@ -39,7 +39,6 @@ public final class GetLogEntriesUseCaseMock: @unchecked Sendable, GetLogEntriesU
         invokedExecutefunction = true
         invokedExecuteCount += 1
         invokedExecuteParameters = (module, ())
-        invokedExecuteParametersList.append((module, ()))
         if let error = executeForThrowableError1 {
             throw error
         }

@@ -39,7 +39,6 @@ public actor SimpleLoginNoteSynchronizerProtocolMock: SimpleLoginNoteSynchronize
         invokedSyncAllAliasesfunction = true
         invokedSyncAllAliasesCount += 1
         invokedSyncAllAliasesParameters = (userId, ())
-        invokedSyncAllAliasesParametersList.append((userId, ()))
         if let error = syncAllAliasesUserIdThrowableError1 {
             throw error
         }
@@ -59,7 +58,6 @@ public actor SimpleLoginNoteSynchronizerProtocolMock: SimpleLoginNoteSynchronize
         invokedSyncAliasesfunction = true
         invokedSyncAliasesCount += 1
         invokedSyncAliasesParameters = (userId, aliases)
-        invokedSyncAliasesParametersList.append((userId, aliases))
         if let error = syncAliasesUserIdAliasesThrowableError2 {
             throw error
         }

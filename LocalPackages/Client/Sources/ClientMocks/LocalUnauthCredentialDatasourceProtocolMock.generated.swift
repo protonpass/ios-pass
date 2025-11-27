@@ -55,7 +55,6 @@ public final class LocalUnauthCredentialDatasourceProtocolMock: @unchecked Senda
         invokedUpsertUnauthCredentialfunction = true
         invokedUpsertUnauthCredentialCount += 1
         invokedUpsertUnauthCredentialParameters = (credential, ())
-        invokedUpsertUnauthCredentialParametersList.append((credential, ()))
         if let error = upsertUnauthCredentialThrowableError2 {
             throw error
         }

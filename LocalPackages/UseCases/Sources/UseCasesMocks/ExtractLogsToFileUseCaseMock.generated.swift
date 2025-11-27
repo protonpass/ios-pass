@@ -39,7 +39,6 @@ public final class ExtractLogsToFileUseCaseMock: @unchecked Sendable, ExtractLog
         invokedExecutefunction = true
         invokedExecuteCount += 1
         invokedExecuteParameters = (entries, fileName)
-        invokedExecuteParametersList.append((entries, fileName))
         if let error = executeForInThrowableError1 {
             throw error
         }

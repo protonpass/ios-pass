@@ -37,7 +37,6 @@ public final class MoveItemsBetweenVaultsUseCaseMock: @unchecked Sendable, MoveI
         invokedExecutefunction = true
         invokedExecuteCount += 1
         invokedExecuteParameters = (context, shareId)
-        invokedExecuteParametersList.append((context, shareId))
         if let error = executeContextToThrowableError1 {
             throw error
         }
