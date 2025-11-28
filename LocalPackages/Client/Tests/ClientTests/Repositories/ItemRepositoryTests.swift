@@ -71,8 +71,11 @@ extension ItemRepositoryTests {
 
     func testGetAllPinnedItem() async throws {
         let user = UserData.preview
-
-        localDatasource.stubbedGetAllPinnedItemsResult = [SymmetricallyEncryptedItem].random(count: 10, randomElement: .random(userId: user.user.ID,
+        let shareId = UUID().uuidString
+        localShareDatasource.stubbedGetAllSharesUserIdAsyncResult2 = [SymmetricallyEncryptedShare(encryptedContent: nil,
+                                                                                                  share: .random(shareId: shareId))]
+        localDatasource.stubbedGetAllPinnedItemsResult = [SymmetricallyEncryptedItem].random(count: 10, randomElement: .random(shareId: shareId,
+                                                                                                                               userId: user.user.ID,
                                                                                                                                item:.random(pinned: true)))
         userManager.stubbedGetActiveUserDataResult = user
 
