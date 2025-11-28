@@ -23,7 +23,7 @@ import Entities
 public protocol RemoteInviteDatasourceProtocol: Sendable {
     // MARK: - Users
 
-    func getPendingInvitesForUser(userId: String) async throws -> [UserInvite]
+    func getPendingInvitesForUser(userId: String, eventToken: String?) async throws -> [UserInvite]
     func acceptInvite(userId: String, inviteToken: String, request: AcceptInviteRequest) async throws -> Share
     func rejectInvite(userId: String, inviteToken: String) async throws -> Bool
 
@@ -60,7 +60,8 @@ public protocol RemoteInviteDatasourceProtocol: Sendable {
 
     // MARK: - Groups
 
-    func getPendingGroupInvitesForUser(lastToken: String?, userId: String) async throws -> PaginatedGroupInvites
+    func getPendingGroupInvitesForUser(lastToken: String?, userId: String, eventToken: String?) async throws
+        -> PaginatedGroupInvites
     func acceptGroupInvite(userId: String, inviteToken: String, request: AcceptInviteRequest) async throws
     func rejectGroupInvite(userId: String, inviteToken: String) async throws -> Bool
 }
@@ -70,8 +71,8 @@ public final class RemoteInviteDatasource: RemoteDatasource, RemoteInviteDatasou
 // MARK: - Users
 
 public extension RemoteInviteDatasource {
-    func getPendingInvitesForUser(userId: String) async throws -> [UserInvite] {
-        let getSharesEndpoint = GetPendingInviteForUserEndpoint()
+    func getPendingInvitesForUser(userId: String, eventToken: String?) async throws -> [UserInvite] {
+        let getSharesEndpoint = GetPendingInviteForUserEndpoint(eventToken: eventToken)
         try Task.checkCancellation()
         let getSharesResponse = try await exec(userId: userId, endpoint: getSharesEndpoint)
         return getSharesResponse.invites
@@ -93,8 +94,9 @@ public extension RemoteInviteDatasource {
 // MARK: - Group
 
 public extension RemoteInviteDatasource {
-    func getPendingGroupInvitesForUser(lastToken: String?, userId: String) async throws -> PaginatedGroupInvites {
-        let endpoint = GetPendingGroupInvitesEndpoint(sinceToken: lastToken)
+    func getPendingGroupInvitesForUser(lastToken: String?, userId: String,
+                                       eventToken: String?) async throws -> PaginatedGroupInvites {
+        let endpoint = GetPendingGroupInvitesEndpoint(sinceToken: lastToken, eventToken: eventToken)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.invites
     }

@@ -171,11 +171,11 @@ public extension InviteRepository {
         var userInvites = [UserInvite]()
         switch refreshInviteType {
         case let .groupInvite(token):
-            groupInvites = await (try? updateGroupInvite(userId, evenToken: token)) ?? []
+            groupInvites = await (try? updateGroupInvite(userId, eventToken: token)) ?? []
             userInvites = try await localDatasource.getUserInvites(userId: userId)
         case let .userInvite(token):
             groupInvites = try await localDatasource.getGroupInvites(userId: userId)
-            userInvites = try await updateUserInvite(userId, evenToken: token)
+            userInvites = try await updateUserInvite(userId, eventToken: token)
         }
 
         mergeInvites(groupInvites: groupInvites, userInvites: userInvites)
@@ -388,9 +388,9 @@ private extension InviteRepository {
         }
     }
 
-    func updateUserInvite(_ userId: String, evenToken: String? = nil) async throws -> [UserInvite] {
+    func updateUserInvite(_ userId: String, eventToken: String? = nil) async throws -> [UserInvite] {
         logger.trace("Refreshing user invites for user \(userId)")
-        let invites = try await remoteDatasource.getPendingInvitesForUser(userId: userId)
+        let invites = try await remoteDatasource.getPendingInvitesForUser(userId: userId, eventToken: eventToken)
         logger.trace("Fetched \(invites.count) user invites for user \(userId)")
         try await localDatasource.removeAllUserInvites(userId: userId)
         logger.trace("Removed old local user invites for user \(userId)")
@@ -399,13 +399,14 @@ private extension InviteRepository {
         return invites
     }
 
-    func updateGroupInvite(_ userId: String, evenToken: String? = nil) async throws -> [GroupInvite] {
+    func updateGroupInvite(_ userId: String, eventToken: String? = nil) async throws -> [GroupInvite] {
         logger.trace("Refreshing group invites for user \(userId)")
         var invites = [GroupInvite]()
         var lastToken: String?
         while true {
             let results = try await remoteDatasource.getPendingGroupInvitesForUser(lastToken: lastToken,
-                                                                                   userId: userId)
+                                                                                   userId: userId,
+                                                                                   eventToken: eventToken)
             invites.append(contentsOf: results.invites)
             if results.invites.isEmpty || results.lastID == nil {
                 break

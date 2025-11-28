@@ -25,10 +25,19 @@ struct GetPendingInviteForUserResponse: Decodable, Sendable {
     let invites: [UserInvite]
 }
 
-struct GetPendingInviteForUserEndpoint: Endpoint {
+struct GetPendingInviteForUserEndpoint: Endpoint, @unchecked Sendable {
     typealias Body = EmptyRequest
     typealias Response = GetPendingInviteForUserResponse
 
     let debugDescription = "Get pending invites for user"
     let path = "/pass/v1/invite"
+    let queries: [String: Any]?
+
+    init(eventToken: String?) {
+        var queries: [String: Any]?
+        if let eventToken {
+            queries = ["EventToken": eventToken]
+        }
+        self.queries = queries
+    }
 }

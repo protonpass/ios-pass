@@ -39,13 +39,17 @@ struct GetPendingGroupInvitesEndpoint: Endpoint, @unchecked Sendable {
     let path: String
     let queries: [String: Any]?
 
-    init(sinceToken: String?) {
+    init(sinceToken: String?, eventToken: String?) {
         debugDescription = "Get a list of group invites for a specific user"
         path = "/pass/v1/invite/group"
 
         var queries: [String: Any] = [:]
         if let sinceToken {
             queries["Since"] = sinceToken
+        }
+
+        if let eventToken {
+            queries = ["EventToken": eventToken]
         }
         self.queries = queries
     }
