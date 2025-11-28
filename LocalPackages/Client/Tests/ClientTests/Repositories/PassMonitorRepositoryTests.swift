@@ -54,8 +54,10 @@ struct PassMonitorRepositoryTests {
     }
 
     func createEncryptedLoginItems(weakness: [SecurityWeakness], addStrong: Bool = true) -> [SymmetricallyEncryptedItem] {
+        let shareID = UUID().uuidString
         var items = [SymmetricallyEncryptedItem]()
         let key = symmetricKeyProviderMockFactory.key
+        shareRepository.stubbedGetSharesResult = [SymmetricallyEncryptedShare(encryptedContent: nil, share: .random(shareId: shareID))]
 
         for weakness in weakness {
             switch weakness {
@@ -66,7 +68,8 @@ struct PassMonitorRepositoryTests {
                                                                                         itemUuid: UUID().uuidString,
                                                                                         data: .login(loginData),
                                                                                         customFields: [])
-                items.append(SymmetricallyEncryptedItem.random(item: Item.monitoredMock,
+                items.append(SymmetricallyEncryptedItem.random(shareId: shareID,
+                                                               item: Item.monitoredMock,
                                                                encryptedContent: try! reused1Login.encrypt(symmetricKey: key)))
 
             case .weakPasswords:
@@ -76,7 +79,8 @@ struct PassMonitorRepositoryTests {
                                                                                          itemUuid: UUID().uuidString,
                                                                                          data: .login(loginData),
                                                                                          customFields: [])
-                items.append(SymmetricallyEncryptedItem.random(item: Item.monitoredMock,
+                items.append(SymmetricallyEncryptedItem.random(shareId: shareID,
+                    item: Item.monitoredMock,
                                                                encryptedContent: try! weakpassLogin.encrypt(symmetricKey: key)))
             case .excludedItems:
                 let loginData = LogInItemData.mock(totpUri: "", urls: ["google.com"])
@@ -85,7 +89,8 @@ struct PassMonitorRepositoryTests {
                                                                                            itemUuid: UUID().uuidString,
                                                                                            data: .login(loginData),
                                                                                            customFields: [])
-                items.append(SymmetricallyEncryptedItem.random(item: Item.notMonitoredMock,
+                items.append(SymmetricallyEncryptedItem.random(shareId: shareID,
+                    item: Item.notMonitoredMock,
                                                                encryptedContent: try! nonMonitorLogin.encrypt(symmetricKey: key)))
             case .missing2FA:
                 let loginData = LogInItemData.mock(username: "test", password: "Ageless6-Evidence0-Detonator1-Cider4-Synthesis6sdf", totpUri: "", urls: ["google.com"])
@@ -94,7 +99,8 @@ struct PassMonitorRepositoryTests {
                                                                                       itemUuid: UUID().uuidString,
                                                                                       data: .login(loginData),
                                                                                       customFields: [])
-                items.append(SymmetricallyEncryptedItem.random(item: Item.monitoredMock,
+                items.append(SymmetricallyEncryptedItem.random(shareId: shareID,
+                    item: Item.monitoredMock,
                                                                encryptedContent: try! no2FALogin.encrypt(symmetricKey: key)))
             default:
                 continue
@@ -108,7 +114,8 @@ struct PassMonitorRepositoryTests {
                                                                                        itemUuid: UUID().uuidString,
                                                                                        data: .login(loginData),
                                                                                        customFields: [])
-            items.append(SymmetricallyEncryptedItem.random(item: Item.monitoredMock,
+            items.append(SymmetricallyEncryptedItem.random(shareId: shareID,
+                item: Item.monitoredMock,
                                                            encryptedContent: try! noWeaknessLogin.encrypt(symmetricKey: key)))
         }
         
@@ -118,6 +125,7 @@ struct PassMonitorRepositoryTests {
     @Test("PassMonitorRepository operations")
     func testPassMonitorRepositoryTests() async throws {
         itemRepository.stubbedGetActiveLogInItemsResult = createEncryptedLoginItems(weakness: [.reusedPasswords,.reusedPasswords,.weakPasswords,.missing2FA, .excludedItems])
+      
         try await sut.refreshSecurityChecks()
         
         let state = sut.weaknessStats.value

@@ -36,7 +36,6 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     @Published var prefix = ""
     @Published var prefixManuallyEdited = false
-    @Published var note = ""
     @Published var simpleLoginNote = ""
     @Published var senderName = ""
 

@@ -653,6 +653,17 @@
         }
       }
     },
+    "%@ (copied)" : {
+      "comment" : "Default title when duplicating items. Placeholder is the original title.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (copied)"
+          }
+        }
+      }
+    },
     "%@ copied" : {
       "localizations" : {
         "be" : {

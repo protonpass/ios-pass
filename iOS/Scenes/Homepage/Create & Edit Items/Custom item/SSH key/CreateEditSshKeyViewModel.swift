@@ -28,7 +28,6 @@ final class CreateEditSshKeyViewModel: BaseCreateEditItemViewModel, DeinitPrinta
 
     @Published var publicKey = ""
     @Published var privateKey = ""
-    @Published var note = ""
 
     override var shouldUpgrade: Bool {
         if case .create = mode, isFreeUser {
@@ -38,6 +37,7 @@ final class CreateEditSshKeyViewModel: BaseCreateEditItemViewModel, DeinitPrinta
     }
 
     override func bindValues() {
+        super.bindValues()
         switch mode {
         case .create:
             customFields = [
@@ -48,10 +48,8 @@ final class CreateEditSshKeyViewModel: BaseCreateEditItemViewModel, DeinitPrinta
 
         case let .clone(itemContent), let .edit(itemContent):
             if case let .sshKey(data) = itemContent.contentData {
-                title = itemContent.name
                 publicKey = data.publicKey
                 privateKey = data.privateKey
-                note = itemContent.note
             }
         }
     }

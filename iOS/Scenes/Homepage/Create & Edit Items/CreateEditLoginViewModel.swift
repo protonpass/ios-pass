@@ -55,7 +55,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published private(set) var totpUriErrorMessage = ""
     @Published var urls: [IdentifiableObject<String>] = [.init(value: "")]
     @Published var invalidURLs = [String]()
-    @Published var note = ""
 
     @Published private(set) var loading = false
 
@@ -95,6 +94,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     override func bindValues() {
+        super.bindValues()
         defer {
             emailUsernameExpanded = emailUsernameExpanded || getSharedPreferences().alwaysShowUsernameField
         }
@@ -102,8 +102,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         switch mode {
         case let .clone(itemContent), let .edit(itemContent):
             if case let .login(data) = itemContent.contentData {
-                title = itemContent.name
-
                 emailOrUsername = data.email.isEmpty ? data.username : data.email
                 emailUsernameExpanded = !data.email.isEmpty && !data.username.isEmpty
                 email = data.email
@@ -117,7 +115,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 if !data.urls.isEmpty {
                     urls = data.urls.map { .init(value: $0) }
                 }
-                note = itemContent.note
             }
 
         case let .create(_, type):
