@@ -335,36 +335,7 @@ extension AppContentManager {
         self.filterOption = filterOption
     }
 
-//    func getFilteredItems() -> [ItemUiModel] {
-//        guard let sharesData = state.loadedContent else { return [] }
-//        let hiddenShareIds = sharesData.shares.compactMap(\.share).hiddenShareIds
-//        let items: [ItemUiModel] = switch shareSelection {
-//        case .all:
-//            sharesData.shares.flatMap(\.items).filter { !hiddenShareIds.contains($0.shareId) }
-//        case let .precise(selectedVault):
-//            sharesData.shares
-//                .filter { $0.share.shareId == selectedVault.shareId }
-//                .flatMap(\.items)
-//        case .sharedByMe:
-//            sharesData.itemsSharedByMe
-//        case .sharedWithMe:
-//            sharesData.itemsSharedWithMe
-//        case .trash:
-//            sharesData.trashedItems.filter { !hiddenShareIds.contains($0.shareId) }
-//        }
-//
-//        switch filterOption {
-//        case .all:
-//            return items
-//        case let .precise(type):
-//            return items.filter { $0.type.isSameType(with: type) }
-//        case .itemSharedWithMe:
-//            return sharesData.itemsSharedWithMe
-//        case .itemSharedByMe:
-//            return sharesData.itemsSharedByMe
-//        }
-//    }
-    
+    // swiftlint:disable:next cyclomatic_complexity
     func getFilteredItems() -> [ItemUiModel] {
         guard let sharesData = state.loadedContent else { return [] }
 
@@ -401,7 +372,7 @@ extension AppContentManager {
             return baseItems
         case let .precise(type):
             return baseItems.filter { $0.type.isSameType(with: type) }
-        case .itemSharedWithMe, .itemSharedByMe:
+        case .itemSharedByMe, .itemSharedWithMe:
             fatalError("Unreachable: handled by early return")
         }
     }
