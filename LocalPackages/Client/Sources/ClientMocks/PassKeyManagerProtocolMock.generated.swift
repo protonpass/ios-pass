@@ -42,7 +42,6 @@ public final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManag
         invokedGetShareKeyfunction = true
         invokedGetShareKeyCount += 1
         invokedGetShareKeyParameters = (userId, shareId, keyRotation)
-        invokedGetShareKeyParametersList.append((userId, shareId, keyRotation))
         if let error = getShareKeyUserIdShareIdKeyRotationThrowableError1 {
             throw error
         }
@@ -62,7 +61,6 @@ public final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManag
         invokedGetLatestShareKeyfunction = true
         invokedGetLatestShareKeyCount += 1
         invokedGetLatestShareKeyParameters = (userId, shareId)
-        invokedGetLatestShareKeyParametersList.append((userId, shareId))
         if let error = getLatestShareKeyUserIdShareIdThrowableError2 {
             throw error
         }
@@ -82,7 +80,6 @@ public final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManag
         invokedGetShareKeysfunction = true
         invokedGetShareKeysCount += 1
         invokedGetShareKeysParameters = (userId, share, item)
-        invokedGetShareKeysParametersList.append((userId, share, item))
         if let error = getShareKeysUserIdShareItemThrowableError3 {
             throw error
         }
@@ -102,7 +99,6 @@ public final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManag
         invokedGetLatestItemKeyfunction = true
         invokedGetLatestItemKeyCount += 1
         invokedGetLatestItemKeyParameters = (userId, shareId, itemId)
-        invokedGetLatestItemKeyParametersList.append((userId, shareId, itemId))
         if let error = getLatestItemKeyUserIdShareIdItemIdThrowableError4 {
             throw error
         }
@@ -122,7 +118,6 @@ public final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManag
         invokedGetItemKeysfunction = true
         invokedGetItemKeysCount += 1
         invokedGetItemKeysParameters = (userId, shareId, itemId)
-        invokedGetItemKeysParametersList.append((userId, shareId, itemId))
         if let error = getItemKeysUserIdShareIdItemIdThrowableError5 {
             throw error
         }
@@ -142,7 +137,6 @@ public final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManag
         invokedGetItemKeyfunction = true
         invokedGetItemKeyCount += 1
         invokedGetItemKeyParameters = (userId, shareId, itemId, keyRotation)
-        invokedGetItemKeyParametersList.append((userId, shareId, itemId, keyRotation))
         if let error = getItemKeyUserIdShareIdItemIdKeyRotationThrowableError6 {
             throw error
         }

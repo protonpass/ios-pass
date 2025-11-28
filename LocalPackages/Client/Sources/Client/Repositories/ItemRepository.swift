@@ -149,6 +149,9 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     /// Delete items locally after sync events
     func deleteItemsLocally(itemIds: [String], shareId: String) async throws
 
+    /// Delete items locally after user sync events
+    func deleteItemsLocally(items: [any ItemIdentifiable]) async throws
+
     // MARK: - AutoFill operations
 
     /// Get active log in items of all shares
@@ -159,6 +162,8 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     func unpinItems(_ items: [any ItemIdentifiable]) async throws
 
     func getAllPinnedItems() async throws -> [SymmetricallyEncryptedItem]
+
+    func refreshPinnedItemDataStream() async throws
 
     func updateItemFlags(flags: [ItemFlag], shareId: String, itemId: String) async throws
 
@@ -206,6 +211,7 @@ public actor ItemRepository: ItemRepositoryProtocol {
     private let userManager: any UserManagerProtocol
     private let localDatasource: any LocalItemDatasourceProtocol
     private let remoteDatasource: any RemoteItemDatasourceProtocol
+    private let localShareDatasource: any LocalShareDatasourceProtocol
     private let shareEventIDRepository: any ShareEventIDRepositoryProtocol
     private let passKeyManager: any PassKeyManagerProtocol
     private let logger: Logger
@@ -218,12 +224,14 @@ public actor ItemRepository: ItemRepositoryProtocol {
                 userManager: any UserManagerProtocol,
                 localDatasource: any LocalItemDatasourceProtocol,
                 remoteDatasource: any RemoteItemDatasourceProtocol,
+                localShareDatasource: any LocalShareDatasourceProtocol,
                 shareEventIDRepository: any ShareEventIDRepositoryProtocol,
                 passKeyManager: any PassKeyManagerProtocol,
                 logManager: any LogManagerProtocol) {
         self.symmetricKeyProvider = symmetricKeyProvider
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
+        self.localShareDatasource = localShareDatasource
         self.shareEventIDRepository = shareEventIDRepository
         self.passKeyManager = passKeyManager
         self.userManager = userManager
@@ -270,7 +278,10 @@ public extension ItemRepository {
 
     func getAllPinnedItems() async throws -> [SymmetricallyEncryptedItem] {
         let userId = try await userManager.getActiveUserId()
-        return try await localDatasource.getAllPinnedItems(userId: userId)
+        let shares = try await localShareDatasource.getAllShares(userId: userId)
+        let visibleShareIds = shares.filter(\.share.visible).map(\.share.shareId)
+        let pinnedItems = try await localDatasource.getAllPinnedItems(userId: userId)
+        return pinnedItems.filter { visibleShareIds.contains($0.shareId) }
     }
 
     func getItemContent(shareId: String, itemId: String) async throws -> ItemContent? {
@@ -608,6 +619,14 @@ public extension ItemRepository {
         logger.trace("Deleted locally items \(itemIds) for share \(shareId)")
     }
 
+    func deleteItemsLocally(items: [any ItemIdentifiable]) async throws {
+        logger.trace("Deleting locally items \(items.count)")
+        try await localDatasource.deleteItems(items)
+        try await refreshPinnedItemDataStream()
+        itemsWereUpdated.send()
+        logger.trace("Deleted locally items \(items.count)")
+    }
+
     func updateItem(userId: String,
                     oldItem: Item,
                     newItemContent: any ProtobufableItemContentProtocol,
@@ -865,10 +884,9 @@ public extension ItemRepository {
 
 // MARK: - Refresh Data
 
-private extension ItemRepository {
+public extension ItemRepository {
     func refreshPinnedItemDataStream() async throws {
-        let userId = try await userManager.getActiveUserId()
-        let pinnedItems = try await localDatasource.getAllPinnedItems(userId: userId)
+        let pinnedItems = try await getAllPinnedItems()
         currentlyPinnedItems.send(pinnedItems)
     }
 }

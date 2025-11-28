@@ -139,6 +139,7 @@ struct ItemEditionAlertContent {
 @MainActor
 class BaseCreateEditItemViewModel: ObservableObject {
     @Published var title = ""
+    @Published var note = ""
     @Published var selectedVault: Share
     @Published private(set) var isFreeUser = false
     @Published private(set) var isSaving = false
@@ -298,7 +299,20 @@ class BaseCreateEditItemViewModel: ObservableObject {
         setUp()
     }
 
-    func bindValues() {}
+    func bindValues() {
+        switch mode {
+        case .create:
+            break
+
+        case let .clone(itemContent):
+            title = #localized("%@ (copied)", itemContent.name)
+            note = itemContent.note
+
+        case let .edit(itemContent):
+            title = itemContent.name
+            note = itemContent.note
+        }
+    }
 
     var itemContentType: ItemContentType {
         fatalError("Must be overridden by subclasses")

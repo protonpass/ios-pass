@@ -37,7 +37,6 @@ public final class UserSettingsRepositoryProtocolMock: @unchecked Sendable, User
         invokedGetSettingsfunction = true
         invokedGetSettingsCount += 1
         invokedGetSettingsParameters = (id, ())
-        invokedGetSettingsParametersList.append((id, ()))
         closureGetSettings()
         return stubbedGetSettingsResult
     }
@@ -53,7 +52,6 @@ public final class UserSettingsRepositoryProtocolMock: @unchecked Sendable, User
         invokedRefreshSettingsfunction = true
         invokedRefreshSettingsCount += 1
         invokedRefreshSettingsParameters = (id, ())
-        invokedRefreshSettingsParametersList.append((id, ()))
         if let error = refreshSettingsForThrowableError2 {
             throw error
         }
@@ -72,7 +70,6 @@ public final class UserSettingsRepositoryProtocolMock: @unchecked Sendable, User
         invokedToggleSentinelfunction = true
         invokedToggleSentinelCount += 1
         invokedToggleSentinelParameters = (id, ())
-        invokedToggleSentinelParametersList.append((id, ()))
         if let error = toggleSentinelForThrowableError3 {
             throw error
         }

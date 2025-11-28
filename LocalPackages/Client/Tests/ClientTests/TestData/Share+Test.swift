@@ -36,7 +36,7 @@ extension Share {
               targetMaxMembers: .random(in: 0...10), 
               pendingInvites: .random(in: 0...4),
               newUserInvitesReady: .random(in: 0...5),
-              owner: .random(),
+              owner: true,
               shared: true,
               content: .random(),
               contentKeyRotation: contentKeyRotation ?? .random(in: 0...10),
@@ -44,6 +44,6 @@ extension Share {
               expireTime: .random(in: 0...1_000_000),
               createTime: .random(in: 0...1_000_000),
               canAutoFill: .random(),
-              flags: .random(in: 0...10))
+              flags: 0)
     }
 }

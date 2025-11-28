@@ -39,7 +39,6 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
         invokedGetAllItemsfunction = true
         invokedGetAllItemsCount += 1
         invokedGetAllItemsParameters = (userId, ())
-        invokedGetAllItemsParametersList.append((userId, ()))
         if let error = getAllItemsUserIdThrowableError1 {
             throw error
         }
@@ -59,7 +58,6 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
         invokedGetAllPinnedItemsfunction = true
         invokedGetAllPinnedItemsCount += 1
         invokedGetAllPinnedItemsParameters = (userId, ())
-        invokedGetAllPinnedItemsParametersList.append((userId, ()))
         if let error = getAllPinnedItemsUserIdThrowableError2 {
             throw error
         }
@@ -79,7 +77,6 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
         invokedGetItemsUserIdStateAsync3 = true
         invokedGetItemsUserIdStateAsyncCount3 += 1
         invokedGetItemsUserIdStateAsyncParameters3 = (userId, state)
-        invokedGetItemsUserIdStateAsyncParametersList3.append((userId, state))
         if let error = getItemsUserIdStateThrowableError3 {
             throw error
         }
@@ -99,7 +96,6 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
         invokedGetItemsShareIdStateAsync4 = true
         invokedGetItemsShareIdStateAsyncCount4 += 1
         invokedGetItemsShareIdStateAsyncParameters4 = (shareId, state)
-        invokedGetItemsShareIdStateAsyncParametersList4.append((shareId, state))
         if let error = getItemsShareIdStateThrowableError4 {
             throw error
         }
@@ -119,7 +115,6 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
         invokedGetItemsIdsAsync5 = true
         invokedGetItemsIdsAsyncCount5 += 1
         invokedGetItemsIdsAsyncParameters5 = (ids, ())
-        invokedGetItemsIdsAsyncParametersList5.append((ids, ()))
         if let error = getItemsThrowableError5 {
             throw error
         }
@@ -139,7 +134,6 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
         invokedGetItemfunction = true
         invokedGetItemCount += 1
         invokedGetItemParameters = (shareId, itemId)
-        invokedGetItemParametersList.append((shareId, itemId))
         if let error = getItemShareIdItemIdThrowableError6 {
             throw error
         }
@@ -159,7 +153,6 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
         invokedGetAliasItemfunction = true
         invokedGetAliasItemCount += 1
         invokedGetAliasItemParameters = (email, shareId)
-        invokedGetAliasItemParametersList.append((email, shareId))
         if let error = getAliasItemEmailShareIdThrowableError7 {
             throw error
         }
@@ -179,7 +172,6 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
         invokedGetItemCountfunction = true
         invokedGetItemCountCount += 1
         invokedGetItemCountParameters = (shareId, ())
-        invokedGetItemCountParametersList.append((shareId, ()))
         if let error = getItemCountShareIdThrowableError8 {
             throw error
         }
@@ -199,7 +191,6 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
         invokedGetAliasCountfunction = true
         invokedGetAliasCountCount += 1
         invokedGetAliasCountParameters = (userId, ())
-        invokedGetAliasCountParametersList.append((userId, ()))
         if let error = getAliasCountUserIdThrowableError9 {
             throw error
         }
@@ -219,7 +210,6 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
         invokedGetUnsyncedSimpleLoginNoteAliasesfunction = true
         invokedGetUnsyncedSimpleLoginNoteAliasesCount += 1
         invokedGetUnsyncedSimpleLoginNoteAliasesParameters = (userId, ())
-        invokedGetUnsyncedSimpleLoginNoteAliasesParametersList.append((userId, ()))
         if let error = getUnsyncedSimpleLoginNoteAliasesUserIdThrowableError10 {
             throw error
         }
@@ -238,7 +228,6 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
         invokedUpdateCachedAliasInfofunction = true
         invokedUpdateCachedAliasInfoCount += 1
         invokedUpdateCachedAliasInfoParameters = (items, aliases)
-        invokedUpdateCachedAliasInfoParametersList.append((items, aliases))
         if let error = updateCachedAliasInfoItemsAliasesThrowableError11 {
             throw error
         }
@@ -256,7 +245,6 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
         invokedUpsertItemsItemsAsync12 = true
         invokedUpsertItemsItemsAsyncCount12 += 1
         invokedUpsertItemsItemsAsyncParameters12 = (items, ())
-        invokedUpsertItemsItemsAsyncParametersList12.append((items, ()))
         if let error = upsertItemsThrowableError12 {
             throw error
         }
@@ -274,7 +262,6 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
         invokedUpsertItemsItemsModifiedItemsAsync13 = true
         invokedUpsertItemsItemsModifiedItemsAsyncCount13 += 1
         invokedUpsertItemsItemsModifiedItemsAsyncParameters13 = (items, modifiedItems)
-        invokedUpsertItemsItemsModifiedItemsAsyncParametersList13.append((items, modifiedItems))
         if let error = upsertItemsModifiedItemsThrowableError13 {
             throw error
         }
@@ -292,7 +279,6 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
         invokedUpdatefunction = true
         invokedUpdateCount += 1
         invokedUpdateParameters = (lastUseItems, shareId)
-        invokedUpdateParametersList.append((lastUseItems, shareId))
         if let error = updateLastUseItemsShareIdThrowableError14 {
             throw error
         }
@@ -303,14 +289,13 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
     public var closureDeleteItemsItemsAsync15: () -> () = {}
     public var invokedDeleteItemsItemsAsync15 = false
     public var invokedDeleteItemsItemsAsyncCount15 = 0
-    public var invokedDeleteItemsItemsAsyncParameters15: (items: [SymmetricallyEncryptedItem], Void)?
-    public var invokedDeleteItemsItemsAsyncParametersList15 = [(items: [SymmetricallyEncryptedItem], Void)]()
+    public var invokedDeleteItemsItemsAsyncParameters15: (items: [any ItemIdentifiable], Void)?
+    public var invokedDeleteItemsItemsAsyncParametersList15 = [(items: [any ItemIdentifiable], Void)]()
 
-    public func deleteItems(_ items: [SymmetricallyEncryptedItem]) async throws {
+    public func deleteItems(_ items: [any ItemIdentifiable]) async throws {
         invokedDeleteItemsItemsAsync15 = true
         invokedDeleteItemsItemsAsyncCount15 += 1
         invokedDeleteItemsItemsAsyncParameters15 = (items, ())
-        invokedDeleteItemsItemsAsyncParametersList15.append((items, ()))
         if let error = deleteItemsThrowableError15 {
             throw error
         }
@@ -328,7 +313,6 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
         invokedDeleteItemsItemIdsShareIdAsync16 = true
         invokedDeleteItemsItemIdsShareIdAsyncCount16 += 1
         invokedDeleteItemsItemIdsShareIdAsyncParameters16 = (itemIds, shareId)
-        invokedDeleteItemsItemIdsShareIdAsyncParametersList16.append((itemIds, shareId))
         if let error = deleteItemsItemIdsShareIdThrowableError16 {
             throw error
         }
@@ -360,7 +344,6 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
         invokedRemoveAllItemsShareIdAsync18 = true
         invokedRemoveAllItemsShareIdAsyncCount18 += 1
         invokedRemoveAllItemsShareIdAsyncParameters18 = (shareId, ())
-        invokedRemoveAllItemsShareIdAsyncParametersList18.append((shareId, ()))
         if let error = removeAllItemsShareIdThrowableError18 {
             throw error
         }
@@ -378,7 +361,6 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
         invokedRemoveAllItemsUserIdAsync19 = true
         invokedRemoveAllItemsUserIdAsyncCount19 += 1
         invokedRemoveAllItemsUserIdAsyncParameters19 = (userId, ())
-        invokedRemoveAllItemsUserIdAsyncParametersList19.append((userId, ()))
         if let error = removeAllItemsUserIdThrowableError19 {
             throw error
         }
@@ -397,7 +379,6 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
         invokedGetActiveLogInItemsfunction = true
         invokedGetActiveLogInItemsCount += 1
         invokedGetActiveLogInItemsParameters = (userId, ())
-        invokedGetActiveLogInItemsParametersList.append((userId, ()))
         if let error = getActiveLogInItemsUserIdThrowableError20 {
             throw error
         }
@@ -417,7 +398,6 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
         invokedGetItemsItemsAsync21 = true
         invokedGetItemsItemsAsyncCount21 += 1
         invokedGetItemsItemsAsyncParameters21 = (items, ())
-        invokedGetItemsItemsAsyncParametersList21.append((items, ()))
         if let error = getItemsForThrowableError21 {
             throw error
         }

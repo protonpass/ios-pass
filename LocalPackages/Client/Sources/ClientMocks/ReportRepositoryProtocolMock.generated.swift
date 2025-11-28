@@ -40,7 +40,6 @@ public final class ReportRepositoryProtocolMock: @unchecked Sendable, ReportRepo
         invokedSendBugfunction = true
         invokedSendBugCount += 1
         invokedSendBugParameters = (title, description, logs)
-        invokedSendBugParametersList.append((title, description, logs))
         if let error = sendBugWithAndOptionalThrowableError1 {
             throw error
         }

@@ -133,7 +133,6 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, @unche
     // Injected params
     private let synchronizer: any EventSynchronizerProtocol
     private let userEventsSynchronizer: any UserEventsSynchronizerProtocol
-    private let aliasSynchronizer: any AliasSynchronizerProtocol
     private let slNoteSynchronizer: any SimpleLoginNoteSynchronizerProtocol
     private let logger: Logger
 
@@ -145,7 +144,6 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, @unche
     public init(currentDateProvider: any CurrentDateProviderProtocol,
                 synchronizer: any EventSynchronizerProtocol,
                 userEventsSynchronizer: any UserEventsSynchronizerProtocol,
-                aliasSynchronizer: any AliasSynchronizerProtocol,
                 slNoteSynchronizer: any SimpleLoginNoteSynchronizerProtocol,
                 userManager: any UserManagerProtocol,
                 logManager: any LogManagerProtocol,
@@ -153,7 +151,6 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, @unche
         backOffManager = BackOffManager(currentDateProvider: currentDateProvider)
         self.synchronizer = synchronizer
         self.userEventsSynchronizer = userEventsSynchronizer
-        self.aliasSynchronizer = aliasSynchronizer
         self.slNoteSynchronizer = slNoteSynchronizer
         logger = .init(manager: logManager)
         self.reachability = reachability
@@ -300,11 +297,9 @@ private extension SyncEventLoop {
                     return
                 }
 
-                let syncedAliases = try await aliasSynchronizer.sync(userId: userId)
-
                 let syncedSLNotes = try await slNoteSynchronizer.syncAllAliases(userId: userId)
 
-                hasNewEvents = result.contains(.dataUpdated) || syncedAliases || syncedSLNotes
+                hasNewEvents = result.contains(.dataUpdated) || syncedSLNotes
             } else {
                 hasNewEvents = try await synchronizer.sync(userId: userId)
             }

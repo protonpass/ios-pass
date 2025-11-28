@@ -198,6 +198,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
     }
 
     override func bindValues() {
+        super.bindValues()
         switch mode {
         case let .clone(itemContent), let .edit(itemContent):
             guard case let .identity(data) = itemContent.contentData else { return }
@@ -208,7 +209,6 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
                 sections.append(section)
             }
 
-            title = itemContent.name
             fullName = data.fullName
             email = data.email
             phoneNumber = data.phoneNumber

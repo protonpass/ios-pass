@@ -39,7 +39,6 @@ public final class CreateAndMoveItemToNewVaultUseCaseMock: @unchecked Sendable, 
         invokedExecutefunction = true
         invokedExecuteCount += 1
         invokedExecuteParameters = (userId, vault, itemContent)
-        invokedExecuteParametersList.append((userId, vault, itemContent))
         if let error = executeUserIdVaultItemContentThrowableError1 {
             throw error
         }

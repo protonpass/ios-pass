@@ -64,7 +64,7 @@ public protocol LocalItemDatasourceProtocol: Sendable {
     func update(lastUseItems: [LastUseItem], shareId: String) async throws
 
     /// Permanently delete items
-    func deleteItems(_ items: [SymmetricallyEncryptedItem]) async throws
+    func deleteItems(_ items: [any ItemIdentifiable]) async throws
 
     /// Permanently delete items with given ids
     func deleteItems(itemIds: [String], shareId: String) async throws
@@ -283,9 +283,9 @@ public extension LocalItemDatasource {
         }
     }
 
-    func deleteItems(_ items: [SymmetricallyEncryptedItem]) async throws {
+    func deleteItems(_ items: [any ItemIdentifiable]) async throws {
         for item in items {
-            try await deleteItems(itemIds: [item.item.itemID], shareId: item.shareId)
+            try await deleteItems(itemIds: [item.itemId], shareId: item.shareId)
         }
     }
 

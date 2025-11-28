@@ -39,7 +39,6 @@ public final class CreateVaultUseCaseMock: @unchecked Sendable, CreateVaultUseCa
         invokedExecutefunction = true
         invokedExecuteCount += 1
         invokedExecuteParameters = (userId, vault)
-        invokedExecuteParametersList.append((userId, vault))
         if let error = executeUserIdWithThrowableError1 {
             throw error
         }
