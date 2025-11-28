@@ -94,7 +94,8 @@ public extension RemoteInviteDatasource {
 // MARK: - Group
 
 public extension RemoteInviteDatasource {
-    func getPendingGroupInvitesForUser(lastToken: String?, userId: String,
+    func getPendingGroupInvitesForUser(lastToken: String?,
+                                       userId: String,
                                        eventToken: String?) async throws -> PaginatedGroupInvites {
         let endpoint = GetPendingGroupInvitesEndpoint(sinceToken: lastToken, eventToken: eventToken)
         let response = try await exec(userId: userId, endpoint: endpoint)
