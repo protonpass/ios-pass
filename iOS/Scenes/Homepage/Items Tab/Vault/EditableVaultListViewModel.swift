@@ -92,6 +92,9 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     @LazyInjected(\UseCasesContainer.reorganizeVaults)
     private var reorganizeVaults
 
+    @LazyInjected(\SharedRepositoryContainer.itemRepository)
+    private var itemRepository
+
     private var cancellables = Set<AnyCancellable>()
 
     var filteredOrderedVaults: [Share] {
@@ -384,6 +387,7 @@ extension EditableVaultListViewModel {
                                               hiddenShareIds: hiddenShareIds) {
                     let userId = try await userManager.getActiveUserId()
                     try await appContentManager.localFullSync(userId: userId)
+                    try await itemRepository.refreshPinnedItemDataStream()
                 }
             } catch {
                 handle(error)

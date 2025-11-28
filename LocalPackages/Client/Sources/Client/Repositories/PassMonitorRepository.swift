@@ -284,15 +284,18 @@ private extension PassMonitorRepository {
     func weaknessStats(userId: String, userOwned: Bool) async throws -> (WeaknessStats, [SecurityAffectedItem]) {
         var passwordCounts = [String: Int]()
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
-        let ownedShareIds = try await ownedShareIds(userId: userId, userOwned: userOwned)
-        let loginItems = try await itemRepository.getActiveLogInItems(userId: userId)
-            .filter {
-                if userOwned {
-                    ownedShareIds.contains($0.shareId)
-                } else {
-                    true
+        let shares = try await shareRepository.getShares(userId: userId)
+        let applicableShareIds = shares
+            .compactMapToSet { share -> String? in
+                guard share.share.visible else { return nil }
+
+                if userOwned, !share.share.owner {
+                    return nil
                 }
+                return share.share.shareID
             }
+        let loginItems = try await itemRepository.getActiveLogInItems(userId: userId)
+            .filter { applicableShareIds.contains($0.shareId) }
             .compactMap { encryptedItem -> InternalPassMonitorItem? in
                 guard let item = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
                       let loginItem = item.loginItem else {
@@ -349,20 +352,6 @@ private extension PassMonitorRepository {
                               missing2FA: numberOfMissing2fa,
                               excludedItems: numberOfExcludedItems),
                 securityAffectedItems)
-    }
-
-    func ownedShareIds(userId: String, userOwned: Bool) async throws -> Set<String> {
-        var ownedShareIds = Set<String>()
-        if userOwned {
-            ownedShareIds = try await shareRepository.getShares(userId: userId)
-                .compactMapToSet { share -> String? in
-                    guard share.share.owner else {
-                        return nil
-                    }
-                    return share.share.shareID
-                }
-        }
-        return ownedShareIds
     }
 }
 
