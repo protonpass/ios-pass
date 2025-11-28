@@ -137,7 +137,6 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         invokedGetItemsWithSamePasswordfunction = true
         invokedGetItemsWithSamePasswordCount += 1
         invokedGetItemsWithSamePasswordParameters = (item, ())
-        invokedGetItemsWithSamePasswordParametersList.append((item, ()))
         if let error = getItemsWithSamePasswordItemThrowableError2 {
             throw error
         }
@@ -213,7 +212,6 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         invokedAddEmailToBreachMonitoringfunction = true
         invokedAddEmailToBreachMonitoringCount += 1
         invokedAddEmailToBreachMonitoringParameters = (email, ())
-        invokedAddEmailToBreachMonitoringParametersList.append((email, ()))
         if let error = addEmailToBreachMonitoringEmailThrowableError7 {
             throw error
         }
@@ -232,7 +230,6 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         invokedVerifyCustomEmailfunction = true
         invokedVerifyCustomEmailCount += 1
         invokedVerifyCustomEmailParameters = (email, code)
-        invokedVerifyCustomEmailParametersList.append((email, code))
         if let error = verifyCustomEmailEmailCodeThrowableError8 {
             throw error
         }
@@ -250,7 +247,6 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         invokedRemoveEmailFromBreachMonitoringfunction = true
         invokedRemoveEmailFromBreachMonitoringCount += 1
         invokedRemoveEmailFromBreachMonitoringParameters = (email, ())
-        invokedRemoveEmailFromBreachMonitoringParametersList.append((email, ()))
         if let error = removeEmailFromBreachMonitoringEmailThrowableError9 {
             throw error
         }
@@ -268,7 +264,6 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         invokedResendEmailVerificationfunction = true
         invokedResendEmailVerificationCount += 1
         invokedResendEmailVerificationParameters = (email, ())
-        invokedResendEmailVerificationParametersList.append((email, ()))
         if let error = resendEmailVerificationEmailThrowableError10 {
             throw error
         }
@@ -287,7 +282,6 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         invokedGetBreachesForAliasfunction = true
         invokedGetBreachesForAliasCount += 1
         invokedGetBreachesForAliasParameters = (sharedId, itemId)
-        invokedGetBreachesForAliasParametersList.append((sharedId, itemId))
         if let error = getBreachesForAliasSharedIdItemIdThrowableError11 {
             throw error
         }
@@ -307,7 +301,6 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         invokedGetAllBreachesForEmailfunction = true
         invokedGetAllBreachesForEmailCount += 1
         invokedGetAllBreachesForEmailParameters = (emailId, ())
-        invokedGetAllBreachesForEmailParametersList.append((emailId, ()))
         if let error = getAllBreachesForEmailEmailIdThrowableError12 {
             throw error
         }
@@ -327,7 +320,6 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         invokedGetAllBreachesForProtonAddressfunction = true
         invokedGetAllBreachesForProtonAddressCount += 1
         invokedGetAllBreachesForProtonAddressParameters = (addressId, ())
-        invokedGetAllBreachesForProtonAddressParametersList.append((addressId, ()))
         if let error = getAllBreachesForProtonAddressAddressIdThrowableError13 {
             throw error
         }
@@ -346,7 +338,6 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         invokedMarkAliasAsResolvedfunction = true
         invokedMarkAliasAsResolvedCount += 1
         invokedMarkAliasAsResolvedParameters = (sharedId, itemId)
-        invokedMarkAliasAsResolvedParametersList.append((sharedId, itemId))
         if let error = markAliasAsResolvedSharedIdItemIdThrowableError14 {
             throw error
         }
@@ -364,7 +355,6 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         invokedMarkProtonAddressAsResolvedfunction = true
         invokedMarkProtonAddressAsResolvedCount += 1
         invokedMarkProtonAddressAsResolvedParameters = (address, ())
-        invokedMarkProtonAddressAsResolvedParametersList.append((address, ()))
         if let error = markProtonAddressAsResolvedAddressThrowableError15 {
             throw error
         }
@@ -383,7 +373,6 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         invokedMarkCustomEmailAsResolvedfunction = true
         invokedMarkCustomEmailAsResolvedCount += 1
         invokedMarkCustomEmailAsResolvedParameters = (email, ())
-        invokedMarkCustomEmailAsResolvedParametersList.append((email, ()))
         if let error = markCustomEmailAsResolvedEmailThrowableError16 {
             throw error
         }
@@ -402,7 +391,6 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         invokedToggleMonitoringForAddressShouldMonitorAsync17 = true
         invokedToggleMonitoringForAddressShouldMonitorAsyncCount17 += 1
         invokedToggleMonitoringForAddressShouldMonitorAsyncParameters17 = (address, shouldMonitor)
-        invokedToggleMonitoringForAddressShouldMonitorAsyncParametersList17.append((address, shouldMonitor))
         if let error = toggleMonitoringForAddressShouldMonitorThrowableError17 {
             throw error
         }
@@ -421,7 +409,6 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         invokedToggleMonitoringForEmailShouldMonitorAsync18 = true
         invokedToggleMonitoringForEmailShouldMonitorAsyncCount18 += 1
         invokedToggleMonitoringForEmailShouldMonitorAsyncParameters18 = (email, shouldMonitor)
-        invokedToggleMonitoringForEmailShouldMonitorAsyncParametersList18.append((email, shouldMonitor))
         if let error = toggleMonitoringForEmailShouldMonitorThrowableError18 {
             throw error
         }
@@ -440,7 +427,6 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         invokedToggleMonitoringForAliasfunction = true
         invokedToggleMonitoringForAliasCount += 1
         invokedToggleMonitoringForAliasParameters = (sharedId, itemId, shouldMonitor)
-        invokedToggleMonitoringForAliasParametersList.append((sharedId, itemId, shouldMonitor))
         if let error = toggleMonitoringForAliasSharedIdItemIdShouldMonitorThrowableError19 {
             throw error
         }

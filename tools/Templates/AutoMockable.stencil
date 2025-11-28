@@ -60,11 +60,9 @@
         {% if method.parameters.count == 1 %}
         {% if not method.parameters.0.typeName.isClosure or method.parameters.0.typeAttributes.escaping %}
         invoked{{ method.shortName|upperFirstLetter }}Parameters = ({% for param in method.parameters where not param.typeName.isClosure or param.typeAttributes.escaping %}{{param.name}}, {% endfor %}())
-        invoked{{ method.shortName|upperFirstLetter }}ParametersList.append(({% for param in method.parameters where not param.typeName.isClosure or param.typeAttributes.escaping %}{{param.name}}{% endfor %}, ()))
         {% endif %}
         {% elif not method.parameters.count == 0 %}
         invoked{{ method.shortName|upperFirstLetter }}Parameters = ({% for param in method.parameters where not param.typeName.isClosure or param.typeAttributes.escaping %}{{param.name}}{{ ', ' if not forloop.last }}{% if forloop.last and forloop.counter == 1 %}, (){% endif %}{% endfor %})
-        invoked{{ method.shortName|upperFirstLetter }}ParametersList.append(({% for param in method.parameters  where not param.typeName.isClosure or param.typeAttributes.escaping%}{{param.name}}{{ ', ' if not forloop.last }}{% if forloop.last and forloop.counter == 1 %}, (){% endif %}{% endfor %}))
         {% endif %}
         {% for param in method.parameters %}
         {% if param.typeName.isClosure %}
@@ -129,11 +127,9 @@
         {% if method.parameters.count == 1 %}
         {% if not method.parameters.0.typeName.isClosure or method.parameters.0.typeAttributes.escaping %}
         invoked{{ method.shortName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}{% if method.isAsync %}Async{% endif %}Parameters{{forloop.outer.counter}} = ({% for param in method.parameters where not param.typeName.isClosure or param.typeAttributes.escaping %}{{param.name}}, {% endfor %}())
-        invoked{{ method.shortName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}{% if method.isAsync %}Async{% endif %}ParametersList{{forloop.outer.counter}}.append(({% for param in method.parameters where not param.typeName.isClosure or param.typeAttributes.escaping %}{{param.name}}{% endfor %}, ()))
         {% endif %}
         {% elif not method.parameters.count == 0 %}
         invoked{{ method.shortName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}{% if method.isAsync %}Async{% endif %}Parameters{{forloop.outer.counter}} = ({% for param in method.parameters where not param.typeName.isClosure or param.typeAttributes.escaping %}{{param.name}}{{ ', ' if not forloop.last }}{% if forloop.last and forloop.counter == 1 %}, (){% endif %}{% endfor %})
-        invoked{{ method.shortName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}{% if method.isAsync %}Async{% endif %}ParametersList{{forloop.outer.counter}}.append(({% for param in method.parameters  where not param.typeName.isClosure or param.typeAttributes.escaping%}{{param.name}}{{ ', ' if not forloop.last }}{% if forloop.last and forloop.counter == 1 %}, (){% endif %}{% endfor %}))
         {% endif %}
         {% for param in method.parameters %}
         {% if param.typeName.isClosure %}

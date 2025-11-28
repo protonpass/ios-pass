@@ -79,7 +79,6 @@ public final class SyncEventLoopProtocolMock: @unchecked Sendable, SyncEventLoop
         invokedAddAdditionalTaskfunction = true
         invokedAddAdditionalTaskCount += 1
         invokedAddAdditionalTaskParameters = (task, ())
-        invokedAddAdditionalTaskParametersList.append((task, ()))
         closureAddAdditionalTask()
     }
 }

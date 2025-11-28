@@ -29,7 +29,6 @@ final class CreateEditWifiViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
     @Published var ssid = ""
     @Published var password = ""
     @Published var security: WifiData.Security = .unspecified
-    @Published var note = ""
 
     override var shouldUpgrade: Bool {
         if case .create = mode, isFreeUser {
@@ -39,18 +38,17 @@ final class CreateEditWifiViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
     }
 
     override func bindValues() {
+        super.bindValues()
         switch mode {
         case .create:
             customFields = [.init(title: #localized("Note"), type: .text, content: "")]
 
         case let .clone(itemContent), let .edit(itemContent):
             if case let .wifi(data) = itemContent.contentData {
-                title = itemContent.name
                 ssid = data.ssid
                 password = data.password
                 security = data.security
                 customSections = data.extraSections
-                note = itemContent.note
             }
         }
     }

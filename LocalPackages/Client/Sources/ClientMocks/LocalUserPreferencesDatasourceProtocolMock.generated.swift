@@ -41,7 +41,6 @@ public final class LocalUserPreferencesDatasourceProtocolMock: @unchecked Sendab
         invokedGetPreferencesfunction = true
         invokedGetPreferencesCount += 1
         invokedGetPreferencesParameters = (userId, ())
-        invokedGetPreferencesParametersList.append((userId, ()))
         if let error = getPreferencesForThrowableError1 {
             throw error
         }
@@ -60,7 +59,6 @@ public final class LocalUserPreferencesDatasourceProtocolMock: @unchecked Sendab
         invokedUpsertPreferencesfunction = true
         invokedUpsertPreferencesCount += 1
         invokedUpsertPreferencesParameters = (preferences, userId)
-        invokedUpsertPreferencesParametersList.append((preferences, userId))
         if let error = upsertPreferencesForThrowableError2 {
             throw error
         }
@@ -78,7 +76,6 @@ public final class LocalUserPreferencesDatasourceProtocolMock: @unchecked Sendab
         invokedRemovePreferencesfunction = true
         invokedRemovePreferencesCount += 1
         invokedRemovePreferencesParameters = (userId, ())
-        invokedRemovePreferencesParametersList.append((userId, ()))
         if let error = removePreferencesForThrowableError3 {
             throw error
         }

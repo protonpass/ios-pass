@@ -32,6 +32,7 @@ final class ItemRepositoryTests: XCTestCase {
     var userManager: UserManagerProtocolMock!
     var localDatasource: LocalItemDatasourceProtocolMock!
     var remoteDatasource: RemoteItemDatasourceProtocol!
+    var localShareDatasource: LocalShareDatasourceProtocolMock!
     var shareEventIDRepository: ShareEventIDRepositoryProtocol!
     var passKeyManager: PassKeyManagerProtocol!
     var logManager: LogManagerProtocol!
@@ -45,6 +46,7 @@ final class ItemRepositoryTests: XCTestCase {
         userManager = UserManagerProtocolMock()
         localDatasource.stubbedGetAllPinnedItemsResult = []
         remoteDatasource = RemoteItemDatasourceProtocolMock()
+        localShareDatasource = .init()
         shareEventIDRepository = ShareEventIDRepositoryProtocolMock()
         passKeyManager = PassKeyManagerProtocolMock()
         logManager = LogManagerProtocolMock()
@@ -69,8 +71,11 @@ extension ItemRepositoryTests {
 
     func testGetAllPinnedItem() async throws {
         let user = UserData.preview
-
-        localDatasource.stubbedGetAllPinnedItemsResult = [SymmetricallyEncryptedItem].random(count: 10, randomElement: .random(userId: user.user.ID,
+        let shareId = UUID().uuidString
+        localShareDatasource.stubbedGetAllSharesUserIdAsyncResult2 = [SymmetricallyEncryptedShare(encryptedContent: nil,
+                                                                                                  share: .random(shareId: shareId))]
+        localDatasource.stubbedGetAllPinnedItemsResult = [SymmetricallyEncryptedItem].random(count: 10, randomElement: .random(shareId: shareId,
+                                                                                                                               userId: user.user.ID,
                                                                                                                                item:.random(pinned: true)))
         userManager.stubbedGetActiveUserDataResult = user
 
@@ -78,6 +83,7 @@ extension ItemRepositoryTests {
                              userManager: userManager,
                              localDatasource: localDatasource,
                              remoteDatasource: remoteDatasource,
+                             localShareDatasource: localShareDatasource,
                              shareEventIDRepository: shareEventIDRepository,
                              passKeyManager: passKeyManager,
                              logManager: logManager)

@@ -55,7 +55,6 @@ public final class LocalSharedPreferencesDatasourceProtocolMock: @unchecked Send
         invokedUpsertPreferencesfunction = true
         invokedUpsertPreferencesCount += 1
         invokedUpsertPreferencesParameters = (preferences, ())
-        invokedUpsertPreferencesParametersList.append((preferences, ()))
         if let error = upsertPreferencesThrowableError2 {
             throw error
         }

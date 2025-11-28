@@ -38,7 +38,6 @@ public final class RemoteBreachDataSourceProtocolMock: @unchecked Sendable, Remo
         invokedGetAllBreachesForUserfunction = true
         invokedGetAllBreachesForUserCount += 1
         invokedGetAllBreachesForUserParameters = (userId, ())
-        invokedGetAllBreachesForUserParametersList.append((userId, ()))
         if let error = getAllBreachesForUserUserIdThrowableError1 {
             throw error
         }
@@ -58,7 +57,6 @@ public final class RemoteBreachDataSourceProtocolMock: @unchecked Sendable, Remo
         invokedGetAllCustomEmailForUserfunction = true
         invokedGetAllCustomEmailForUserCount += 1
         invokedGetAllCustomEmailForUserParameters = (userId, ())
-        invokedGetAllCustomEmailForUserParametersList.append((userId, ()))
         if let error = getAllCustomEmailForUserUserIdThrowableError2 {
             throw error
         }
@@ -78,7 +76,6 @@ public final class RemoteBreachDataSourceProtocolMock: @unchecked Sendable, Remo
         invokedAddEmailToBreachMonitoringfunction = true
         invokedAddEmailToBreachMonitoringCount += 1
         invokedAddEmailToBreachMonitoringParameters = (userId, email)
-        invokedAddEmailToBreachMonitoringParametersList.append((userId, email))
         if let error = addEmailToBreachMonitoringUserIdEmailThrowableError3 {
             throw error
         }
@@ -97,7 +94,6 @@ public final class RemoteBreachDataSourceProtocolMock: @unchecked Sendable, Remo
         invokedVerifyCustomEmailfunction = true
         invokedVerifyCustomEmailCount += 1
         invokedVerifyCustomEmailParameters = (userId, emailId, code)
-        invokedVerifyCustomEmailParametersList.append((userId, emailId, code))
         if let error = verifyCustomEmailUserIdEmailIdCodeThrowableError4 {
             throw error
         }
@@ -116,7 +112,6 @@ public final class RemoteBreachDataSourceProtocolMock: @unchecked Sendable, Remo
         invokedGetAllBreachesForEmailfunction = true
         invokedGetAllBreachesForEmailCount += 1
         invokedGetAllBreachesForEmailParameters = (userId, emailId)
-        invokedGetAllBreachesForEmailParametersList.append((userId, emailId))
         if let error = getAllBreachesForEmailUserIdEmailIdThrowableError5 {
             throw error
         }
@@ -136,7 +131,6 @@ public final class RemoteBreachDataSourceProtocolMock: @unchecked Sendable, Remo
         invokedGetAllBreachesForProtonAddressfunction = true
         invokedGetAllBreachesForProtonAddressCount += 1
         invokedGetAllBreachesForProtonAddressParameters = (userId, addressId)
-        invokedGetAllBreachesForProtonAddressParametersList.append((userId, addressId))
         if let error = getAllBreachesForProtonAddressUserIdAddressIdThrowableError6 {
             throw error
         }
@@ -155,7 +149,6 @@ public final class RemoteBreachDataSourceProtocolMock: @unchecked Sendable, Remo
         invokedRemoveEmailFromBreachMonitoringfunction = true
         invokedRemoveEmailFromBreachMonitoringCount += 1
         invokedRemoveEmailFromBreachMonitoringParameters = (userId, emailId)
-        invokedRemoveEmailFromBreachMonitoringParametersList.append((userId, emailId))
         if let error = removeEmailFromBreachMonitoringUserIdEmailIdThrowableError7 {
             throw error
         }
@@ -174,7 +167,6 @@ public final class RemoteBreachDataSourceProtocolMock: @unchecked Sendable, Remo
         invokedGetBreachesForAliasfunction = true
         invokedGetBreachesForAliasCount += 1
         invokedGetBreachesForAliasParameters = (userId, sharedId, itemId)
-        invokedGetBreachesForAliasParametersList.append((userId, sharedId, itemId))
         if let error = getBreachesForAliasUserIdSharedIdItemIdThrowableError8 {
             throw error
         }
@@ -193,7 +185,6 @@ public final class RemoteBreachDataSourceProtocolMock: @unchecked Sendable, Remo
         invokedResendEmailVerificationfunction = true
         invokedResendEmailVerificationCount += 1
         invokedResendEmailVerificationParameters = (userId, emailId)
-        invokedResendEmailVerificationParametersList.append((userId, emailId))
         if let error = resendEmailVerificationUserIdEmailIdThrowableError9 {
             throw error
         }
@@ -211,7 +202,6 @@ public final class RemoteBreachDataSourceProtocolMock: @unchecked Sendable, Remo
         invokedMarkAliasAsResolvedfunction = true
         invokedMarkAliasAsResolvedCount += 1
         invokedMarkAliasAsResolvedParameters = (userId, sharedId, itemId)
-        invokedMarkAliasAsResolvedParametersList.append((userId, sharedId, itemId))
         if let error = markAliasAsResolvedUserIdSharedIdItemIdThrowableError10 {
             throw error
         }
@@ -229,7 +219,6 @@ public final class RemoteBreachDataSourceProtocolMock: @unchecked Sendable, Remo
         invokedMarkProtonAddressAsResolvedfunction = true
         invokedMarkProtonAddressAsResolvedCount += 1
         invokedMarkProtonAddressAsResolvedParameters = (userId, address)
-        invokedMarkProtonAddressAsResolvedParametersList.append((userId, address))
         if let error = markProtonAddressAsResolvedUserIdAddressThrowableError11 {
             throw error
         }
@@ -248,7 +237,6 @@ public final class RemoteBreachDataSourceProtocolMock: @unchecked Sendable, Remo
         invokedMarkCustomEmailAsResolvedfunction = true
         invokedMarkCustomEmailAsResolvedCount += 1
         invokedMarkCustomEmailAsResolvedParameters = (userId, email)
-        invokedMarkCustomEmailAsResolvedParametersList.append((userId, email))
         if let error = markCustomEmailAsResolvedUserIdEmailThrowableError12 {
             throw error
         }
@@ -267,7 +255,6 @@ public final class RemoteBreachDataSourceProtocolMock: @unchecked Sendable, Remo
         invokedToggleMonitoringForUserIdAddressShouldMonitorAsync13 = true
         invokedToggleMonitoringForUserIdAddressShouldMonitorAsyncCount13 += 1
         invokedToggleMonitoringForUserIdAddressShouldMonitorAsyncParameters13 = (userId, address, shouldMonitor)
-        invokedToggleMonitoringForUserIdAddressShouldMonitorAsyncParametersList13.append((userId, address, shouldMonitor))
         if let error = toggleMonitoringForUserIdAddressShouldMonitorThrowableError13 {
             throw error
         }
@@ -286,7 +273,6 @@ public final class RemoteBreachDataSourceProtocolMock: @unchecked Sendable, Remo
         invokedToggleMonitoringForUserIdEmailShouldMonitorAsync14 = true
         invokedToggleMonitoringForUserIdEmailShouldMonitorAsyncCount14 += 1
         invokedToggleMonitoringForUserIdEmailShouldMonitorAsyncParameters14 = (userId, email, shouldMonitor)
-        invokedToggleMonitoringForUserIdEmailShouldMonitorAsyncParametersList14.append((userId, email, shouldMonitor))
         if let error = toggleMonitoringForUserIdEmailShouldMonitorThrowableError14 {
             throw error
         }
@@ -305,7 +291,6 @@ public final class RemoteBreachDataSourceProtocolMock: @unchecked Sendable, Remo
         invokedSendUserMonitorStatsfunction = true
         invokedSendUserMonitorStatsCount += 1
         invokedSendUserMonitorStatsParameters = (userId, stats)
-        invokedSendUserMonitorStatsParametersList.append((userId, stats))
         if let error = sendUserMonitorStatsUserIdStatsThrowableError15 {
             throw error
         }

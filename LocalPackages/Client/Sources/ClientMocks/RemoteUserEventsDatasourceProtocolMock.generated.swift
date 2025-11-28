@@ -37,7 +37,6 @@ public final class RemoteUserEventsDatasourceProtocolMock: @unchecked Sendable, 
         invokedGetLastEventIdfunction = true
         invokedGetLastEventIdCount += 1
         invokedGetLastEventIdParameters = (userId, ())
-        invokedGetLastEventIdParametersList.append((userId, ()))
         if let error = getLastEventIdUserIdThrowableError1 {
             throw error
         }
@@ -57,7 +56,6 @@ public final class RemoteUserEventsDatasourceProtocolMock: @unchecked Sendable, 
         invokedGetUserEventsfunction = true
         invokedGetUserEventsCount += 1
         invokedGetUserEventsParameters = (userId, lastEventId)
-        invokedGetUserEventsParametersList.append((userId, lastEventId))
         if let error = getUserEventsUserIdLastEventIdThrowableError2 {
             throw error
         }

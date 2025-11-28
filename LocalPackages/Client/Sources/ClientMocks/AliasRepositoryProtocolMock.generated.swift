@@ -80,7 +80,6 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
         invokedGetAliasOptionsfunction = true
         invokedGetAliasOptionsCount += 1
         invokedGetAliasOptionsParameters = (userId, shareId)
-        invokedGetAliasOptionsParametersList.append((userId, shareId))
         if let error = getAliasOptionsUserIdShareIdThrowableError1 {
             throw error
         }
@@ -100,7 +99,6 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
         invokedGetAliasDetailsfunction = true
         invokedGetAliasDetailsCount += 1
         invokedGetAliasDetailsParameters = (userId, shareId, itemId)
-        invokedGetAliasDetailsParametersList.append((userId, shareId, itemId))
         if let error = getAliasDetailsUserIdShareIdItemIdThrowableError2 {
             throw error
         }
@@ -120,7 +118,6 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
         invokedChangeMailboxesfunction = true
         invokedChangeMailboxesCount += 1
         invokedChangeMailboxesParameters = (shareId, itemId, mailboxIDs)
-        invokedChangeMailboxesParametersList.append((shareId, itemId, mailboxIDs))
         if let error = changeMailboxesShareIdItemIdMailboxIDsThrowableError3 {
             throw error
         }
@@ -140,7 +137,6 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
         invokedChangeMailboxEmailfunction = true
         invokedChangeMailboxEmailCount += 1
         invokedChangeMailboxEmailParameters = (userId, mailboxId, newMailboxEmail)
-        invokedChangeMailboxEmailParametersList.append((userId, mailboxId, newMailboxEmail))
         if let error = changeMailboxEmailUserIdMailboxIdNewMailboxEmailThrowableError4 {
             throw error
         }
@@ -159,7 +155,6 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
         invokedCancelMailboxChangefunction = true
         invokedCancelMailboxChangeCount += 1
         invokedCancelMailboxChangeParameters = (userId, mailboxId)
-        invokedCancelMailboxChangeParametersList.append((userId, mailboxId))
         if let error = cancelMailboxChangeUserIdMailboxIdThrowableError5 {
             throw error
         }
@@ -178,7 +173,6 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
         invokedGetAliasSyncStatusfunction = true
         invokedGetAliasSyncStatusCount += 1
         invokedGetAliasSyncStatusParameters = (userId, ())
-        invokedGetAliasSyncStatusParametersList.append((userId, ()))
         if let error = getAliasSyncStatusUserIdThrowableError6 {
             throw error
         }
@@ -197,7 +191,6 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
         invokedEnableSlAliasSyncfunction = true
         invokedEnableSlAliasSyncCount += 1
         invokedEnableSlAliasSyncParameters = (userId, defaultShareID)
-        invokedEnableSlAliasSyncParametersList.append((userId, defaultShareID))
         if let error = enableSlAliasSyncUserIdDefaultShareIDThrowableError7 {
             throw error
         }
@@ -215,7 +208,6 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
         invokedUpdateSlAliasNamefunction = true
         invokedUpdateSlAliasNameCount += 1
         invokedUpdateSlAliasNameParameters = (userId, shareId, itemId, name)
-        invokedUpdateSlAliasNameParametersList.append((userId, shareId, itemId, name))
         if let error = updateSlAliasNameUserIdShareIdItemIdNameThrowableError8 {
             throw error
         }
@@ -233,7 +225,6 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
         invokedUpdateSlAliasNotefunction = true
         invokedUpdateSlAliasNoteCount += 1
         invokedUpdateSlAliasNoteParameters = (userId, shareId, itemId, note)
-        invokedUpdateSlAliasNoteParametersList.append((userId, shareId, itemId, note))
         if let error = updateSlAliasNoteUserIdShareIdItemIdNoteThrowableError9 {
             throw error
         }
@@ -252,7 +243,6 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
         invokedGetPendingAliasesToSyncfunction = true
         invokedGetPendingAliasesToSyncCount += 1
         invokedGetPendingAliasesToSyncParameters = (userId, since, pageSize)
-        invokedGetPendingAliasesToSyncParametersList.append((userId, since, pageSize))
         if let error = getPendingAliasesToSyncUserIdSincePageSizeThrowableError10 {
             throw error
         }
@@ -272,7 +262,6 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
         invokedGetAliasSettingsfunction = true
         invokedGetAliasSettingsCount += 1
         invokedGetAliasSettingsParameters = (userId, ())
-        invokedGetAliasSettingsParametersList.append((userId, ()))
         if let error = getAliasSettingsUserIdThrowableError11 {
             throw error
         }
@@ -292,7 +281,6 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
         invokedUpdateAliasDefaultDomainfunction = true
         invokedUpdateAliasDefaultDomainCount += 1
         invokedUpdateAliasDefaultDomainParameters = (userId, request)
-        invokedUpdateAliasDefaultDomainParametersList.append((userId, request))
         if let error = updateAliasDefaultDomainUserIdRequestThrowableError12 {
             throw error
         }
@@ -312,7 +300,6 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
         invokedUpdateAliasDefaultMailboxfunction = true
         invokedUpdateAliasDefaultMailboxCount += 1
         invokedUpdateAliasDefaultMailboxParameters = (userId, request)
-        invokedUpdateAliasDefaultMailboxParametersList.append((userId, request))
         if let error = updateAliasDefaultMailboxUserIdRequestThrowableError13 {
             throw error
         }
@@ -332,7 +319,6 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
         invokedGetAllAliasDomainsfunction = true
         invokedGetAllAliasDomainsCount += 1
         invokedGetAllAliasDomainsParameters = (userId, ())
-        invokedGetAllAliasDomainsParametersList.append((userId, ()))
         if let error = getAllAliasDomainsUserIdThrowableError14 {
             throw error
         }
@@ -352,7 +338,6 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
         invokedGetAllAliasMailboxesfunction = true
         invokedGetAllAliasMailboxesCount += 1
         invokedGetAllAliasMailboxesParameters = (userId, ())
-        invokedGetAllAliasMailboxesParametersList.append((userId, ()))
         if let error = getAllAliasMailboxesUserIdThrowableError15 {
             throw error
         }
@@ -372,7 +357,6 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
         invokedCreateMailboxfunction = true
         invokedCreateMailboxCount += 1
         invokedCreateMailboxParameters = (userId, email)
-        invokedCreateMailboxParametersList.append((userId, email))
         if let error = createMailboxUserIdEmailThrowableError16 {
             throw error
         }
@@ -391,7 +375,6 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
         invokedDeleteMailboxfunction = true
         invokedDeleteMailboxCount += 1
         invokedDeleteMailboxParameters = (userId, mailboxID, transferMailboxID)
-        invokedDeleteMailboxParametersList.append((userId, mailboxID, transferMailboxID))
         if let error = deleteMailboxUserIdMailboxIDTransferMailboxIDThrowableError17 {
             throw error
         }
@@ -410,7 +393,6 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
         invokedVerifyMailboxfunction = true
         invokedVerifyMailboxCount += 1
         invokedVerifyMailboxParameters = (userId, mailboxID, code)
-        invokedVerifyMailboxParametersList.append((userId, mailboxID, code))
         if let error = verifyMailboxUserIdMailboxIDCodeThrowableError18 {
             throw error
         }
@@ -430,7 +412,6 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
         invokedResendMailboxVerificationEmailfunction = true
         invokedResendMailboxVerificationEmailCount += 1
         invokedResendMailboxVerificationEmailParameters = (userId, mailboxID)
-        invokedResendMailboxVerificationEmailParametersList.append((userId, mailboxID))
         if let error = resendMailboxVerificationEmailUserIdMailboxIDThrowableError19 {
             throw error
         }
@@ -450,7 +431,6 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
         invokedGetContactsfunction = true
         invokedGetContactsCount += 1
         invokedGetContactsParameters = (userId, shareId, itemId, lastContactId)
-        invokedGetContactsParametersList.append((userId, shareId, itemId, lastContactId))
         if let error = getContactsUserIdShareIdItemIdLastContactIdThrowableError20 {
             throw error
         }
@@ -470,7 +450,6 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
         invokedCreateContactfunction = true
         invokedCreateContactCount += 1
         invokedCreateContactParameters = (userId, shareId, itemId, request)
-        invokedCreateContactParametersList.append((userId, shareId, itemId, request))
         if let error = createContactUserIdShareIdItemIdRequestThrowableError21 {
             throw error
         }
@@ -490,7 +469,6 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
         invokedGetContactInfosfunction = true
         invokedGetContactInfosCount += 1
         invokedGetContactInfosParameters = (userId, shareId, itemId, contactId)
-        invokedGetContactInfosParametersList.append((userId, shareId, itemId, contactId))
         if let error = getContactInfosUserIdShareIdItemIdContactIdThrowableError22 {
             throw error
         }
@@ -510,7 +488,6 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
         invokedUpdateContactfunction = true
         invokedUpdateContactCount += 1
         invokedUpdateContactParameters = (userId, shareId, itemId, contactId, blocked)
-        invokedUpdateContactParametersList.append((userId, shareId, itemId, contactId, blocked))
         if let error = updateContactUserIdShareIdItemIdContactIdBlockedThrowableError23 {
             throw error
         }
@@ -529,7 +506,6 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
         invokedDeleteContactfunction = true
         invokedDeleteContactCount += 1
         invokedDeleteContactParameters = (userId, shareId, itemId, contactId)
-        invokedDeleteContactParametersList.append((userId, shareId, itemId, contactId))
         if let error = deleteContactUserIdShareIdItemIdContactIdThrowableError24 {
             throw error
         }
