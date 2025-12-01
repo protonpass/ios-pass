@@ -35,7 +35,7 @@ struct UserEventsSynchronizerTests {
     let itemRepository = ItemRepositoryProtocolMock()
     let shareRepository = ShareRepositoryProtocolMock()
     let accessRespository = AccessRepositoryProtocolMock()
-    let inviteRepository = InviteRepositoryProtocolMock()
+    let inviteRepository = FullInviteRepositoryProtocolMock()
     let slNoteSynchronizer = SimpleLoginNoteSynchronizerProtocolMock()
     let aliasRepository = AliasRepositoryProtocolMock()
     var sut: (any UserEventsSynchronizerProtocol)!
@@ -224,7 +224,7 @@ private extension UserEventsSynchronizerTests {
         }
 
         if let refreshInviteInvokeCount = args.refreshInviteInvokeCount {
-            #expect(inviteRepository.invokedRefreshInvitesUserIdAsyncCount5 == refreshInviteInvokeCount)
+            #expect(inviteRepository.invokedRefreshSpecificInvitesCount == refreshInviteInvokeCount)
         }
 
         if let syncSimpleLoginNoteInvokeCount = args.syncSimpleLoginNoteInvokeCount {

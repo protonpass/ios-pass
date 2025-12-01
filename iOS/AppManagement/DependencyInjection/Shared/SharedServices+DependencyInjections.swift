@@ -176,6 +176,17 @@ extension SharedServiceContainer {
                                        accessRepository: self.accessRepository,
                                        logManager: self.logManager) }
     }
+
+    var cryptoService: Factory<any CryptoServiceProtocol> {
+        self {
+            CryptoService(remoteDatasource: SharedRepositoryContainer.shared.remoteShareDatasource(),
+                          localDatasource: SharedRepositoryContainer.shared.localShareDatasource(),
+                          groupRepository: SharedRepositoryContainer.shared.groupRepository(),
+                          logManager: self.logManager,
+                          publicKeyRepository: SharedRepositoryContainer.shared.publicKeyRepository(),
+                          symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider())
+        }
+    }
 }
 
 // MARK: - User

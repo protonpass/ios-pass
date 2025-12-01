@@ -731,7 +731,7 @@ extension HomepageCoordinator {
     func presentSharingFlow(dismissal: SheetDismissal) {
         let completion: () -> Void = { [weak self] in
             guard let self else { return }
-            present(UserEmailView())
+            present(EmailGroupSelectionView())
         }
 
         switch dismissal {
@@ -779,7 +779,7 @@ extension HomepageCoordinator {
         }
     }
 
-    func presentAcceptRejectInvite(with invite: UserInvite) {
+    func presentAcceptRejectInvite(with invite: Invite) {
         let view = AcceptRejectInviteView(viewModel: AcceptRejectInviteViewModel(invite: invite))
 
         let viewController = UIHostingController(rootView: view)

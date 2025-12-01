@@ -24,6 +24,7 @@ import Foundation
 
 public protocol RemoteOrganizationDatasourceProtocol: Sendable {
     func getOrganization(userId: String) async throws -> Organization?
+    func getOrganizationKey(userId: String) async throws -> OrganizationKey
 }
 
 public final class RemoteOrganizationDatasource: RemoteDatasource, RemoteOrganizationDatasourceProtocol,
@@ -34,5 +35,11 @@ public extension RemoteOrganizationDatasource {
         let endpoint = GetOrganizationEndpoint()
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.organization
+    }
+
+    func getOrganizationKey(userId: String) async throws -> OrganizationKey {
+        let endpoint = GetOrganizationKeysEndpoint()
+        let response = try await exec(userId: userId, endpoint: endpoint)
+        return response
     }
 }

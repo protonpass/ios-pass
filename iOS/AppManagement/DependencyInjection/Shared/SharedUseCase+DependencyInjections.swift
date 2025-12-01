@@ -324,6 +324,18 @@ extension SharedUseCasesContainer {
         self { GetUserUiModels(userManager: self.userManager,
                                localAccessDatasource: SharedRepositoryContainer.shared.localAccessDatasource()) }
     }
+
+    var decryptOrganizationKey: Factory<any DecryptOrganizationKeyUseCase> {
+        self { DecryptOrganizationKey(repository: SharedRepositoryContainer.shared.organizationRepository()) }
+    }
+
+    var decryptGroupKey: Factory<any DecryptGroupKeyUseCase> {
+        self { DecryptGroupKey(decryptOrganizationKey: self.decryptOrganizationKey()) }
+    }
+
+    var dedupShare: Factory<any DedupShareUseCase> {
+        self { DedupShare() }
+    }
 }
 
 // MARK: - Items
@@ -418,7 +430,7 @@ extension SharedUseCasesContainer {
                                        userPreferencesDatasource: container.userPreferencesDatasource(),
                                        inAppNotificationDatasource: container.localInAppNotificationDatasource(),
                                        passwordDatasource: container.localPasswordDatasource(),
-                                       userInviteDatasource: container.localUserInviteDatasource(),
+                                       userInviteDatasource: container.localInviteDatasource(),
                                        userEventIdDatasource: container.localUserEventIdDatasource())
         }
     }

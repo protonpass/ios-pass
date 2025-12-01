@@ -371,18 +371,23 @@ private extension EditableVaultListView {
 
             Divider()
 
-            Button(role: .destructive,
-                   action: {
-                       if vault.isOwner {
+            if vault.isOwner {
+                Button(role: .destructive,
+                       action: {
                            vaultToDelete = vault
-                       } else {
+                       }, label: {
+                           Label("Delete vault",
+                                 uiImage: IconProvider.trash)
+                       })
+            } else if vault.groupID == nil {
+                Button(role: .destructive,
+                       action: {
                            viewModel.leaveVault(vault: vault)
-                       }
-                   },
-                   label: {
-                       Label(vault.isOwner ? "Delete vault" : "Leave vault",
-                             uiImage: IconProvider.trash)
-                   })
+                       }, label: {
+                           Label("Leave vault",
+                                 uiImage: IconProvider.trash)
+                       })
+            }
         }, label: threeDotsIcon)
     }
 

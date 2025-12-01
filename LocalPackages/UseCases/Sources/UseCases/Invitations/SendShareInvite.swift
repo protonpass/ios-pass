@@ -90,7 +90,8 @@ public final class SendShareInvite: Sendable, SendShareInviteUseCase {
                                                                                            share: share,
                                                                                            shareKey: key) }
 
-        let invited = try await shareInviteRepository.sendInvites(shareId: share.id,
+        let invited = try await shareInviteRepository.sendInvites(userId: userId,
+                                                                  shareId: share.id,
                                                                   itemId: itemId,
                                                                   inviteesData: inviteesData,
                                                                   targetType: baseInfo.shareTargetType)
@@ -159,7 +160,7 @@ private extension SendShareInvite {
                                    passphrase: addressKey.passphrase)
         let unsignedSignature = makeUnsignedSignatureForVaultSharing(email: email,
                                                                      vaultKey: shareKey.keyData)
-        let context = SignatureContext(value: Constants.newUserSharingSignatureContext,
+        let context = SignatureContext(value: Constants.SignatureContext.newUserSharing,
                                        isCritical: true)
 
         return try Sign.signDetached(signingKey: signerKey,

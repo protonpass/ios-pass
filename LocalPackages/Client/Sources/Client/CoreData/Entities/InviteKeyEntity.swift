@@ -34,7 +34,8 @@ extension InviteKeyEntity {
 
     @NSManaged var key: String
     @NSManaged var keyRotation: Int64
-    @NSManaged var invite: UserInviteEntity
+    @NSManaged var userInvite: UserInviteEntity?
+    @NSManaged var groupInvite: GroupInviteEntity?
 }
 
 extension InviteKeyEntity {

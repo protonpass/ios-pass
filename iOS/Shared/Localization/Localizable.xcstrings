@@ -656,10 +656,100 @@
     "%@ (copied)" : {
       "comment" : "Default title when duplicating items. Placeholder is the original title.",
       "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (copiat)"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (zkopírováno)"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (kopieret)"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (kopiert)"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (αντιγράφηκε)"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ (copied)"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (copiado)"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (kopioitu)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (copié)"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (másolva)"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (kopiert)"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (gekopieerd)"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (copiado)"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (copiat)"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (skopírované)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (kopyalandı)"
           }
         }
       }
@@ -3574,7 +3664,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld blokerede"
+                  "value" : "%lld blokeret"
                 }
               }
             }
@@ -10556,13 +10646,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld element er blevet fastgjort"
+                  "value" : "%lld element fastgjort"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld elementer er blevet fastgjort"
+                  "value" : "%lld elementer fastgjort"
                 }
               }
             }
@@ -11160,13 +11250,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld element er blevet frigjort"
+                  "value" : "%lld element frigjort"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld elementer er blevet frigjort"
+                  "value" : "%lld elementer frigjort"
                 }
               }
             }
@@ -22711,7 +22801,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tilføj bruger"
+            "value" : "Tilføj brugernavn"
           }
         },
         "de" : {
@@ -25934,7 +26024,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias \"%@\" flyttet til papirkurv"
+            "value" : "Alias \"%@\" flyttet til papirkurven"
           }
         },
         "de" : {
@@ -25979,6 +26069,12 @@
             "value" : "L'alias « %@ » a été déplacé dans la corbeille."
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%@\" álnév a lomtárba helyezve"
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25995,6 +26091,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "エイリアス「%@」をごみ箱に移動しました"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "별칭 \"%@\"이(가) 휴지통으로 이동되었습니다"
           }
         },
         "nb" : {
@@ -42319,7 +42421,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ændr adgangskode"
+            "value" : "Skift adgangskode"
           }
         },
         "de" : {
@@ -48588,7 +48690,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kopier e-mail"
+            "value" : "Kopiér e-mail"
           }
         },
         "de" : {
@@ -50930,7 +51032,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Land"
+            "value" : "Amt"
           }
         },
         "de" : {
@@ -63979,6 +64081,12 @@
             "value" : "Ne plus me le rappeler"
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ne emlékeztessen újra"
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -63995,6 +64103,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "次回から通知しない"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다시 보지 않기"
           }
         },
         "nb" : {
@@ -64823,10 +64937,118 @@
     "Duplicate" : {
       "comment" : "Title of the button that duplicates the content of an item to make a new one",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дубліраваць"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duplica"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duplikovat"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dupliker"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duplizieren"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Διπλότυπο"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Duplicate"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duplicar"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duplicar"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Luo kopio"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dupliquer"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duplikálás"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dupliser"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dupliceer"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duplicar"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duplicare"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duplikovať"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duplicera"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Çoğalt"
           }
         }
       }
@@ -65249,7 +65471,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Redigér"
+            "value" : "Rediger"
           }
         },
         "de" : {
@@ -65445,7 +65667,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Redigér alias"
+            "value" : "Rediger alias"
           }
         },
         "de" : {
@@ -65838,7 +66060,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Redigér navn"
+            "value" : "Rediger navn"
           }
         },
         "de" : {
@@ -84945,7 +85167,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Amaga el número de la seguretat social"
+            "value" : "Amaga el número de la Seguretat Social."
           }
         },
         "cs" : {
@@ -93947,6 +94169,12 @@
             "value" : "Élément dans un coffre-fort partagé"
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elem egy megosztott tárolóban"
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -93963,6 +94191,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "共有保管庫内のアイテム"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "공유된 금고 내의 항목"
           }
         },
         "nb" : {
@@ -121523,7 +121757,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Organitzeu les caixes fortes"
+            "value" : "Organitza les caixes fortes"
           }
         },
         "cs" : {
@@ -157089,6 +157323,12 @@
             "value" : "Élément partagé"
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Megosztott elem"
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -157105,6 +157345,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "共有済みアイテム"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "공유된 항목"
           }
         },
         "nb" : {
@@ -160478,7 +160724,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mostra el número de la seguretat social"
+            "value" : "Mostra el número de la Seguretat Social."
           }
         },
         "cs" : {
@@ -167173,6 +167419,203 @@
         }
       }
     },
+    "Suggestions" : {
+      "comment" : "Title of suggested emails section when sharing",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прапановы"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggeriments"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Návrhy"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forslag"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vorschläge"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Υποδείξεις"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggestions"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sugerencias"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sugerencias"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ehdotukset"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggestions"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Javaslatok"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saran"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggerimenti"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "提案"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შეთავაზებები"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "제안"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forslag"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggesties"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sugestie"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sugestões"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sugestões"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sugestii"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Рекомендации"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Návrhy"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Predlogi"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Förslag"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öneriler"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пропозиції"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Các gợi ý"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "建议"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "建議"
+          }
+        }
+      }
+    },
     "Suggestions for %@" : {
       "comment" : "The title of the section of matched login items of a given URL. E.g \"Suggestions for https://proton.me\"",
       "localizations" : {
@@ -170685,6 +171128,16 @@
         }
       }
     },
+    "The group is invited to a vault. Tap for details." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The group is invited to a vault. Tap for details."
+          }
+        }
+      }
+    },
     "The selected file exceeds the size limit. Please choose a file smaller than 100 MB." : {
       "localizations" : {
         "be" : {
@@ -171589,6 +172042,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tieto trezory nebudú prístupné a ich obsah nebude dostupný pre Hľadanie alebo Automatické dopĺňanie."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dessa valv kommer inte vara åtkomliga och deras innehåll kommer inte vara tillgängligt för sök eller automatisk ifyllning."
           }
         },
         "tr" : {
@@ -182730,6 +183189,12 @@
             "value" : "Je passe à Pass Plus"
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fizessen elő a Pass Plusra"
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -182746,6 +183211,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pass Plus へアップグレード"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pass Plus로 업그레이드"
           }
         },
         "nb" : {
@@ -186369,6 +186840,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "保管庫名稱"
+          }
+        }
+      }
+    },
+    "Vault shared with a group you administer" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vault shared with a group you administer"
           }
         }
       }
@@ -190385,6 +190866,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "公開の保管庫"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "표시되는 금고"
           }
         },
         "nb" : {
@@ -198387,6 +198874,12 @@
             "value" : "Vous créez un élément dans un coffre-fort partagé et les membres auront immédiatement accès à cet élément."
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Egy elemet hoz létre egy megosztott tárolóban és a tagok azonnal hozzáférést kapnak ehhez az elemhez."
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -198403,6 +198896,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "共有済みの保管庫内でアイテムを作ると、メンバーの人はすぐこのアイテムにアクセスできるようになります。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "공유된 금고 내에서 항목을 생성하고 있습니다. 구성원들이 이 항목에 즉시 접근할 수 있게 됩니다."
           }
         },
         "nb" : {
@@ -198523,6 +199022,12 @@
             "value" : "Vous êtes en train de modifier un élément partagé. Les modifications seront visibles immédiatement par toutes les personnes avec lesquelles il est partagé."
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Egy megosztott elemet szerkeszt. A módosítások mindenkinek azonnal megjelennek."
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -198539,6 +199044,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "編集中のアイテムは共有済みです。変更内容は直ちに共有されます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "공유된 금고를 편집하고 있습니다. 변경 사항은 이 항목을 공유하는 모든 사용자에게 즉시 반영됩니다."
           }
         },
         "nb" : {

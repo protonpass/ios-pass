@@ -1,6 +1,6 @@
 //
 //
-// SetShareInviteUserEmail.swift
+// SetShareInvitesAndKeys.swift
 // Proton Pass - Created on 20/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -23,17 +23,17 @@
 import Client
 import Entities
 
-public protocol SetShareInvitesUserEmailsAndKeysUseCase: Sendable {
-    func execute(with emails: [String]) async throws
+public protocol SetShareInvitesAndKeysUseCase: Sendable {
+    func execute(with inviteDestinations: [InviteRecommendationType]) async throws
 }
 
-public extension SetShareInvitesUserEmailsAndKeysUseCase {
-    func callAsFunction(with emails: [String]) async throws {
-        try await execute(with: emails)
+public extension SetShareInvitesAndKeysUseCase {
+    func callAsFunction(with inviteDestinations: [InviteRecommendationType]) async throws {
+        try await execute(with: inviteDestinations)
     }
 }
 
-public final class SetShareInvitesUserEmailsAndKeys: SetShareInvitesUserEmailsAndKeysUseCase {
+public final class SetShareInvitesAndKeys: SetShareInvitesAndKeysUseCase {
     private let shareInviteService: any ShareInviteServiceProtocol
     private let getEmailPublicKeyUseCase: any GetEmailPublicKeyUseCase
 
@@ -43,24 +43,25 @@ public final class SetShareInvitesUserEmailsAndKeys: SetShareInvitesUserEmailsAn
         self.getEmailPublicKeyUseCase = getEmailPublicKeyUseCase
     }
 
-    public func execute(with emails: [String]) async throws {
-        var emailsAndKeys = [String: [PublicKey]?]()
-        for email in emails {
+    public func execute(with inviteDestinations: [InviteRecommendationType]) async throws {
+        var inviteDestinationsAndKeys = [InviteRecommendationType: [PublicKey]?]()
+        for destination in inviteDestinations {
+            guard let email = destination.emailAddress else { continue }
             do {
                 let receiverPublicKeys = try await getEmailPublicKeyUseCase(with: email)
-                emailsAndKeys[email] = receiverPublicKeys
+                inviteDestinationsAndKeys[destination] = receiverPublicKeys
             } catch {
                 if let passError = error as? PassError,
                    case let .sharing(reason) = passError,
                    reason == .notProtonAddress {
                     /// Subcript will not work because it won't create the key with nil value
                     /// if the key doesn't exist before. Have to use `updateValue`.
-                    emailsAndKeys.updateValue(nil, forKey: email)
+                    inviteDestinationsAndKeys.updateValue(nil, forKey: destination)
                 } else {
                     throw error
                 }
             }
         }
-        await shareInviteService.setEmailsAndKeys(with: emailsAndKeys)
+        await shareInviteService.setInvitesAndKeys(with: inviteDestinationsAndKeys)
     }
 }

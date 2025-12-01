@@ -1,0 +1,240 @@
+//
+// LocalInviteDatasourceTests.swift
+// Proton Pass - Created on 30/07/2025.
+// Copyright (c) 2025 Proton Technologies AG
+//
+// This file is part of Proton Pass.
+//
+// Proton Pass is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Pass is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
+
+@testable import Client
+import Entities
+import Testing
+
+@Suite(.tags(.localDatasource))
+struct LocalInviteDatasourceTests {
+    let sut: any LocalInviteDatasourceProtocol
+
+    init() {
+        sut = LocalInviteDatasource(databaseService: DatabaseService(inMemory: true))
+    }
+
+    // MARK: - User invites
+    
+    @Test("Insert and get user invites")
+    func insertAndGetUserInvites() async throws {
+        // Given
+        let userId1 = String.random()
+        let userId2 = String.random()
+
+        let invite1 = UserInvite.random()
+        let invite2 = UserInvite.random()
+        let invite3 = UserInvite.random()
+        let invite4 = UserInvite.random()
+
+        // When
+        try await sut.upsertUserInvites(userId: userId1, invites: [invite1, invite2])
+        try await sut.upsertUserInvites(userId: userId2, invites: [invite3, invite4])
+
+        let invites1 = try await sut.getUserInvites(userId: userId1)
+        let invites2 = try await sut.getUserInvites(userId: userId2)
+
+        // Then
+        #expect(invites1.count == 2)
+        #expect(invites1.contains(invite1))
+        #expect(invites1.contains(invite2))
+
+        #expect(invites2.count == 2)
+        #expect(invites2.contains(invite3))
+        #expect(invites2.contains(invite4))
+    }
+
+    @Test("Upsert user invites")
+    func upsert() async throws {
+        // Given
+        let userId = String.random()
+        let invite = UserInvite.random()
+        let updatedInvite = UserInvite.random(inviteToken: invite.inviteToken)
+
+        // When
+        try await sut.upsertUserInvites(userId: userId, invites: [invite])
+        try await sut.upsertUserInvites(userId: userId, invites: [updatedInvite])
+        let finalInvites = try await sut.getUserInvites(userId: userId)
+
+        // Then
+        #expect(finalInvites.count == 1)
+        #expect(finalInvites.contains(updatedInvite))
+    }
+
+    @Test("Remove by userID and invites")
+    func removeByUserIdAndInvite() async throws {
+        // Given
+        let userId = String.random()
+        let invite = UserInvite.random()
+
+        // When
+        try await sut.upsertUserInvites(userId: userId, invites: [invite])
+        try await sut.removeUserInvites(userId: userId, invites: [invite])
+        let finalInvites = try await sut.getUserInvites(userId: userId)
+
+        // Then
+        #expect(finalInvites.isEmpty)
+    }
+
+    @Test("Remove by userID")
+    func removeByUserId() async throws {
+        // Given
+        let userId1 = String.random()
+        let userId2 = String.random()
+
+        try await sut.upsertUserInvites(userId: userId1, invites: [.random(), .random()])
+        try await sut.upsertUserInvites(userId: userId2, invites: [.random(), .random(), .random()])
+
+        // When
+        try await sut.removeAllUserInvites(userId: userId1)
+        let invites1 = try await sut.getUserInvites(userId: userId1)
+        let invites2 = try await sut.getUserInvites(userId: userId2)
+
+        // Then
+        #expect(invites1.isEmpty)
+        #expect(invites2.count == 3)
+    }
+    
+    // MARK: - Group invites
+
+    @Test("Insert and get group invites")
+    func insertAndGetGroupInvites() async throws {
+        // Given
+        let userId1 = String.random()
+        let userId2 = String.random()
+
+        let invite1 = GroupInvite.random()
+        let invite2 = GroupInvite.random()
+        let invite3 = GroupInvite.random()
+        let invite4 = GroupInvite.random()
+
+        // When
+        try await sut.upsertGroupInvites(userId: userId1, invites: [invite1, invite2])
+        try await sut.upsertGroupInvites(userId: userId2, invites: [invite3, invite4])
+
+        let invites1 = try await sut.getGroupInvites(userId: userId1)
+        let invites2 = try await sut.getGroupInvites(userId: userId2)
+
+        // Then
+        #expect(invites1.count == 2)
+        #expect(invites1.contains(invite1))
+        #expect(invites1.contains(invite2))
+
+        #expect(invites2.count == 2)
+        #expect(invites2.contains(invite3))
+        #expect(invites2.contains(invite4))
+    }
+
+    @Test("Upsert group invites")
+    func upsertGroupInvite() async throws {
+        // Given
+        let userId = String.random()
+        let invite = GroupInvite.random()
+        let updatedInvite = GroupInvite.random(inviteToken: invite.inviteToken)
+
+        // When
+        try await sut.upsertGroupInvites(userId: userId, invites: [invite])
+        try await sut.upsertGroupInvites(userId: userId, invites: [updatedInvite])
+        let finalInvites = try await sut.getGroupInvites(userId: userId)
+
+        // Then
+        #expect(finalInvites.count == 1)
+        #expect(finalInvites.contains(updatedInvite))
+    }
+
+    @Test("Remove group invite by userID and invites")
+    func removeGroupInviteByUserIdAndInvite() async throws {
+        // Given
+        let userId = String.random()
+        let invite = GroupInvite.random()
+
+        // When
+        try await sut.upsertGroupInvites(userId: userId, invites: [invite])
+        try await sut.removeGroupInvites(userId: userId, invites: [invite])
+        let finalInvites = try await sut.getGroupInvites(userId: userId)
+
+        // Then
+        #expect(finalInvites.isEmpty)
+    }
+
+    @Test("Remove group invite by userID")
+    func removeGroupInviteByUserId() async throws {
+        // Given
+        let userId1 = String.random()
+        let userId2 = String.random()
+
+        try await sut.upsertGroupInvites(userId: userId1, invites: [.random(), .random()])
+        try await sut.upsertGroupInvites(userId: userId2, invites: [.random(), .random(), .random()])
+
+        // When
+        try await sut.removeAllGroupInvites(userId: userId1)
+        let invites1 = try await sut.getGroupInvites(userId: userId1)
+        let invites2 = try await sut.getGroupInvites(userId: userId2)
+
+        // Then
+        #expect(invites1.isEmpty)
+        #expect(invites2.count == 3)
+    }
+}
+
+private extension UserInvite {
+    static func random(inviteToken: String? = nil) -> UserInvite {
+        .init(inviteToken: inviteToken ?? .random(),
+              remindersSent: .random(in: 1...100),
+              targetType: .random(in: 1...100),
+              targetID: .random(),
+              inviterEmail: .random(),
+              invitedEmail: .random(),
+              invitedAddressID: .random(),
+              keys: [.init(key: .random(), keyRotation: .random(in: 1...100))],
+              vaultData: .init(content: .random(),
+                               contentKeyRotation: .random(in: 1...100),
+                               contentFormatVersion: .random(in: 1...100),
+                               memberCount: .random(in: 1...100),
+                               itemCount: .random(in: 1...100)),
+              fromNewUser: .random(),
+              createTime: .random(in: 1...100))
+    }
+}
+
+private extension GroupInvite {
+    static func random(inviteToken: String? = nil) -> GroupInvite {
+        GroupInvite(inviteID: .random(),
+                    inviterUserID: .random(),
+                    inviterEmail: .random(),
+                    invitedGroupID: .random(),
+                    invitedEmail: .random(),
+                    targetType: .random(in: 1...100),
+                    targetID: .random(),
+                    remindersSent: .random(in: 1...100),
+                    inviteToken: inviteToken ?? .random(),
+                    invitedAddressID: .random(),
+                    keys: [.init(key: .random(), keyRotation: .random(in: 1...100))],
+                    vaultData: .init(content: .random(),
+                                                                    contentKeyRotation: .random(in: 1...100),
+                                                                    contentFormatVersion: .random(in: 1...100),
+                                                                    memberCount: .random(in: 1...100),
+                                                                    itemCount: .random(in: 1...100)),
+                    data: nil,
+                    createTime: .random(in: 1...100))
+    }
+}
+
+
