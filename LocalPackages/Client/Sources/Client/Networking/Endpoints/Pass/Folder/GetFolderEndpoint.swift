@@ -1,4 +1,4 @@
-//  
+//
 // GetFolderEndpoint.swift
 // Proton Pass - Created on 28/11/2025.
 // Copyright (c) 2025 Proton Technologies AG
@@ -26,12 +26,12 @@ struct GetFolderResponse: Decodable, Sendable {
     let folder: Folder
 }
 
-struct GetFolderEndpoint: Endpoint, @unchecked Sendable {
+struct GetFolderEndpoint: Endpoint, Sendable {
     typealias Body = EmptyRequest
     typealias Response = GetFolderResponse
 
-    var debugDescription: String
-    var path: String
+    let debugDescription: String
+    let path: String
 
     init(shareId: String,
          folderId: String) {

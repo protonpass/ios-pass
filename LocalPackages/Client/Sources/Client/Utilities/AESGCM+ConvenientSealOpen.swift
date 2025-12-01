@@ -30,6 +30,8 @@ public enum AssociatedData: Sendable {
     case fileMetadata(version: Int)
     case fileData(version: Int, chunkIndex: Int, chunkCount: Int)
     case fileKey
+    case folderContent
+    case folderKey
 
     var data: Data {
         let value = switch self {
@@ -54,6 +56,12 @@ public enum AssociatedData: Sendable {
 
         case .fileKey:
             "filekey"
+
+        case .folderContent:
+            "foldercontent"
+
+        case .folderKey:
+            "folderkey"
         }
         return value.data(using: .utf8) ?? .init()
     }
