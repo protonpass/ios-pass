@@ -48,7 +48,7 @@ public final class RemoveUserLocalData: Sendable, RemoveUserLocalDataUseCase {
     private let userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol
     private let inAppNotificationDatasource: any LocalInAppNotificationDatasourceProtocol
     private let passwordDatasource: any LocalPasswordDatasourceProtocol
-    private let userInviteDatasource: any LocalUserInviteDatasourceProtocol
+    private let userInviteDatasource: any LocalInviteDatasourceProtocol
     private let userEventIdDatasource: any LocalUserEventIdDatasourceProtocol
 
     public init(accessDatasource: any LocalAccessDatasourceProtocol,
@@ -65,7 +65,7 @@ public final class RemoveUserLocalData: Sendable, RemoveUserLocalDataUseCase {
                 userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol,
                 inAppNotificationDatasource: any LocalInAppNotificationDatasourceProtocol,
                 passwordDatasource: any LocalPasswordDatasourceProtocol,
-                userInviteDatasource: any LocalUserInviteDatasourceProtocol,
+                userInviteDatasource: any LocalInviteDatasourceProtocol,
                 userEventIdDatasource: any LocalUserEventIdDatasourceProtocol) {
         self.accessDatasource = accessDatasource
         self.itemDatasource = itemDatasource
@@ -103,7 +103,7 @@ public extension RemoveUserLocalData {
         async let removeInAppNotifications: () = inAppNotificationDatasource
             .removeAllNotifications(userId: userId)
         async let removePasswords: () = passwordDatasource.deleteAllPasswords(userId: userId)
-        async let removeInvites: () = userInviteDatasource.removeInvites(userId: userId)
+        async let removeInvites: () = userInviteDatasource.removeAllInvites(userId: userId)
         async let removeLastEventId: () = userEventIdDatasource.removeLastEventId(userId: userId)
 
         _ = try await (removeAccess,

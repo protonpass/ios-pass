@@ -28,7 +28,7 @@ import Foundation
 
 @MainActor
 final class AcceptRejectInviteViewModel: ObservableObject {
-    @Published private(set) var userInvite: UserInvite
+    @Published private(set) var invite: Invite
     @Published private(set) var vaultInfos: VaultContent?
     @Published private(set) var executingAction = false
     @Published private(set) var shouldCloseSheet = false
@@ -43,8 +43,8 @@ final class AcceptRejectInviteViewModel: ObservableObject {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var cancellables = Set<AnyCancellable>()
 
-    init(invite: UserInvite) {
-        userInvite = invite
+    init(invite: Invite) {
+        self.invite = invite
         setUp()
     }
 
@@ -59,11 +59,11 @@ final class AcceptRejectInviteViewModel: ObservableObject {
 
             do {
                 executingAction = true
-                try await rejectInvitation(userInvite)
-                await updateCachedInvitations(for: userInvite.inviteToken)
+                try await rejectInvitation(invite)
+                await updateCachedInvitations(for: invite.inviteToken)
                 shouldCloseSheet = true
             } catch {
-                logger.error(message: "Could not reject invitation \(userInvite)", error: error)
+                logger.error(message: "Could not reject invitation \(invite)", error: error)
                 display(error: error)
             }
         }
@@ -74,14 +74,16 @@ final class AcceptRejectInviteViewModel: ObservableObject {
             guard let self else {
                 return
             }
-
             do {
                 executingAction = true
-                _ = try await acceptInvitation(with: userInvite)
-                await updateCachedInvitations(for: userInvite.inviteToken)
+                _ = try await acceptInvitation(with: invite)
+                await updateCachedInvitations(for: invite.inviteToken)
                 syncEventLoop.forceSync()
+                if case .group = invite {
+                    shouldCloseSheet = true
+                }
             } catch {
-                logger.error(message: "Could not accept invitation \(userInvite)", error: error)
+                logger.error(message: "Could not accept invitation \(invite)", error: error)
                 display(error: error)
                 executingAction = false
             }
@@ -91,7 +93,7 @@ final class AcceptRejectInviteViewModel: ObservableObject {
 
 private extension AcceptRejectInviteViewModel {
     func setUp() {
-        if userInvite.isVault, userInvite.vaultData != nil {
+        if invite.isVault, invite.vaultData != nil {
             decodeVaultData()
         }
 
@@ -101,11 +103,14 @@ private extension AcceptRejectInviteViewModel {
                 guard let self,
                       let sharesData = state.loadedContent,
                       let shareContent = sharesData.shares
-                      .first(where: { $0.share.targetID == self.userInvite.targetID })
+                      .first(where: { $0.share.targetID == self.invite.targetID })
                 else {
                     return
                 }
                 if !shareContent.share.isVaultRepresentation, shareContent.items.isEmpty {
+                    return
+                }
+                guard case .user = invite else {
                     return
                 }
                 displayItemPage(shareContent: shareContent)
@@ -118,7 +123,7 @@ private extension AcceptRejectInviteViewModel {
                 return
             }
             do {
-                vaultInfos = try await decodeShareVaultInformation(with: userInvite)
+                vaultInfos = try await decodeShareVaultInformation(with: invite)
             } catch {
                 logger.error(message: "Could not decode vault content from invitation", error: error)
                 display(error: error)
@@ -131,7 +136,7 @@ private extension AcceptRejectInviteViewModel {
     }
 
     func displayItemPage(shareContent: ShareContent) {
-        guard !userInvite.isVault,
+        guard !invite.isVault,
               let item = shareContent.items.first else {
             cleanup()
             return

@@ -24,11 +24,11 @@ import Client
 import Entities
 
 public protocol SetShareInviteRoleUseCase {
-    func execute(with roles: [String: ShareRole])
+    func execute(with roles: [InviteRecommendationType: ShareRole])
 }
 
 public extension SetShareInviteRoleUseCase {
-    func callAsFunction(with roles: [String: ShareRole]) {
+    func callAsFunction(with roles: [InviteRecommendationType: ShareRole]) {
         execute(with: roles)
     }
 }
@@ -40,7 +40,7 @@ public final class SetShareInviteRole: SetShareInviteRoleUseCase {
         self.shareInviteService = shareInviteService
     }
 
-    public func execute(with roles: [String: ShareRole]) {
-        shareInviteService.setEmailsAndRoles(with: roles)
+    public func execute(with roles: [InviteRecommendationType: ShareRole]) {
+        shareInviteService.setInvitesAndRoles(with: roles)
     }
 }

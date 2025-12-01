@@ -34,15 +34,19 @@ public extension RefreshInvitationsUseCase {
 
 public final class RefreshInvitations: RefreshInvitationsUseCase {
     private let inviteRepository: any InviteRepositoryProtocol
+    private let userManager: any UserManagerProtocol
 
-    public init(inviteRepository: any InviteRepositoryProtocol) {
+    public init(inviteRepository: any InviteRepositoryProtocol,
+                userManager: any UserManagerProtocol) {
         self.inviteRepository = inviteRepository
+        self.userManager = userManager
     }
 
     public func execute() async throws {
         if Task.isCancelled {
             return
         }
-        await inviteRepository.refreshInvites()
+        let userId = try await userManager.getActiveUserId()
+        try await inviteRepository.refreshAllInvites(userId: userId)
     }
 }

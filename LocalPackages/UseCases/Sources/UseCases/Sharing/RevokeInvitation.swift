@@ -1,5 +1,4 @@
 //
-//
 // RevokeInvitation.swift
 // Proton Pass - Created on 04/08/2023.
 // Copyright (c) 2023 Proton Technologies AG
@@ -23,12 +22,12 @@
 import Client
 
 public protocol RevokeInvitationUseCase: Sendable {
-    func execute(with shareId: String, and inviteId: String) async throws
+    func execute(userId: String, shareId: String, inviteId: String) async throws
 }
 
 public extension RevokeInvitationUseCase {
-    func callAsFunction(with shareId: String, and inviteId: String) async throws {
-        try await execute(with: shareId, and: inviteId)
+    func callAsFunction(userId: String, shareId: String, inviteId: String) async throws {
+        try await execute(userId: userId, shareId: shareId, inviteId: inviteId)
     }
 }
 
@@ -39,7 +38,9 @@ public final class RevokeInvitation: RevokeInvitationUseCase {
         self.shareInviteRepository = shareInviteRepository
     }
 
-    public func execute(with shareId: String, and inviteId: String) async throws {
-        try await shareInviteRepository.deleteInvite(shareId: shareId, inviteId: inviteId)
+    public func execute(userId: String, shareId: String, inviteId: String) async throws {
+        try await shareInviteRepository.deleteInvite(userId: userId,
+                                                     shareId: shareId,
+                                                     inviteId: inviteId)
     }
 }
