@@ -152,18 +152,18 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
         closureRemoveCachedInvite()
     }
     // MARK: - sendNewShareInvites
-    public var sendNewShareInvitesShareIdNewShareInviteThrowableError7: Error?
+    public var sendNewShareInvitesShareIdNewShareInvitesThrowableError7: Error?
     public var closureSendNewShareInvites: () -> () = {}
     public var invokedSendNewShareInvitesfunction = false
     public var invokedSendNewShareInvitesCount = 0
-    public var invokedSendNewShareInvitesParameters: (shareId: String, newShareInvite: [ShareNewUserInvite])?
-    public var invokedSendNewShareInvitesParametersList = [(shareId: String, newShareInvite: [ShareNewUserInvite])]()
+    public var invokedSendNewShareInvitesParameters: (shareId: String, newShareInvites: [ShareNewUserInvite])?
+    public var invokedSendNewShareInvitesParametersList = [(shareId: String, newShareInvites: [ShareNewUserInvite])]()
 
-    public func sendNewShareInvites(shareId: String, newShareInvite: [ShareNewUserInvite]) async throws {
+    public func sendNewShareInvites(shareId: String, newShareInvites: [ShareNewUserInvite]) async throws {
         invokedSendNewShareInvitesfunction = true
         invokedSendNewShareInvitesCount += 1
-        invokedSendNewShareInvitesParameters = (shareId, newShareInvite)
-        if let error = sendNewShareInvitesShareIdNewShareInviteThrowableError7 {
+        invokedSendNewShareInvitesParameters = (shareId, newShareInvites)
+        if let error = sendNewShareInvitesShareIdNewShareInvitesThrowableError7 {
             throw error
         }
         closureSendNewShareInvites()
