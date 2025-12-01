@@ -65,6 +65,7 @@ public protocol ShareInviteRepositoryProtocol: Sendable {
     @discardableResult
     func deleteNewUserInvite(userId: String, shareId: String, inviteId: String) async throws -> Bool
 
+    // periphery:ignore
     func getInviteRecommendations(userId: String,
                                   shareId: String,
                                   query: InviteRecommendationsQuery) async throws -> InviteRecommendations
