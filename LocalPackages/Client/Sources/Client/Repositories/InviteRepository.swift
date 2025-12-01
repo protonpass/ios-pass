@@ -316,9 +316,9 @@ public extension InviteRepository {
                             email: String?) async throws -> [InviteSuggestion] {
         logger.trace("Getting recent invite recommendations for share \(shareId)")
         let userId = try await userManager.getActiveUserId()
-        return try await remoteDatasource.getRecentInviteRecommendations(userId: userId,
-                                                                         shareId: shareId,
-                                                                         email: email)
+        return try await remoteDatasource.getInviteSuggestions(userId: userId,
+                                                               shareId: shareId,
+                                                               email: email)
     }
 
     func getOrganisationInviteRecommendations(shareId: String,
@@ -358,9 +358,9 @@ private extension InviteRepository {
         do {
             let request = InviteMultipleUsersToShareRequest(invites: requests)
             let userId = try await userManager.getActiveUserId()
-            let inviteStatus = try await remoteDatasource.inviteMultipleProtonUsers(userId: userId,
-                                                                                    shareId: shareId,
-                                                                                    request: request)
+            let inviteStatus = try await remoteDatasource.inviteExistingUsers(userId: userId,
+                                                                              shareId: shareId,
+                                                                              request: request)
             logger.info("Invited batch Proton users to \(shareId)")
             return inviteStatus
         } catch {
@@ -376,9 +376,9 @@ private extension InviteRepository {
         do {
             let request = InviteMultipleNewUsersToShareRequest(newUserInvites: requests)
             let userId = try await userManager.getActiveUserId()
-            let inviteStatus = try await remoteDatasource.inviteMultipleExternalUsers(userId: userId,
-                                                                                      shareId: shareId,
-                                                                                      request: request)
+            let inviteStatus = try await remoteDatasource.inviteNewUsers(userId: userId,
+                                                                         shareId: shareId,
+                                                                         request: request)
             logger.info("Invited multiple external users to \(shareId)")
             return inviteStatus
         } catch {
