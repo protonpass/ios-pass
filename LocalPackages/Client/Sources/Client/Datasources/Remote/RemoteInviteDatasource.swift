@@ -30,27 +30,26 @@ public protocol RemoteInviteDatasourceProtocol: Sendable {
     // MARK: - Shares
 
     func getPendingInvites(userId: String, sharedId: String) async throws -> ShareInvites
-    func inviteMultipleProtonUsers(userId: String,
-                                   shareId: String,
-                                   request: InviteMultipleUsersToShareRequest) async throws
+    func inviteExistingUsers(userId: String,
+                             shareId: String,
+                             request: InviteMultipleUsersToShareRequest) async throws
         -> Bool
-    func inviteMultipleExternalUsers(userId: String,
-                                     shareId: String,
-                                     request: InviteMultipleNewUsersToShareRequest) async throws
+    func inviteNewUsers(userId: String,
+                        shareId: String,
+                        request: InviteMultipleNewUsersToShareRequest) async throws
         -> Bool
     func promoteNewUserInvite(userId: String, shareId: String, inviteId: String, keys: [ItemKey]) async throws
         -> Bool
     func sendInviteReminder(userId: String, shareId: String, inviteId: String) async throws -> Bool
     func deleteShareInvite(userId: String, shareId: String, inviteId: String) async throws -> Bool
     func deleteShareNewUserInvite(userId: String, shareId: String, inviteId: String) async throws -> Bool
-    // periphery:ignore
     func getInviteRecommendations(userId: String,
                                   shareId: String,
                                   query: InviteRecommendationsQuery) async throws -> InviteRecommendations
 
-    func getRecentInviteRecommendations(userId: String,
-                                        shareId: String,
-                                        email: String?) async throws -> [InviteSuggestion]
+    func getInviteSuggestions(userId: String,
+                              shareId: String,
+                              email: String?) async throws -> [InviteSuggestion]
     func getOrganizationRecommendations(userId: String,
                                         shareId: String,
                                         query: InviteRecommendationsQuery) async throws
@@ -161,9 +160,9 @@ public extension RemoteInviteDatasource {
         return response.recommendation
     }
 
-    func getRecentInviteRecommendations(userId: String,
-                                        shareId: String,
-                                        email: String?) async throws -> [InviteSuggestion] {
+    func getInviteSuggestions(userId: String,
+                              shareId: String,
+                              email: String?) async throws -> [InviteSuggestion] {
         let endpoint = GetInviteSuggestionsEndpoint(shareId: shareId, email: email)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.suggested
@@ -178,17 +177,17 @@ public extension RemoteInviteDatasource {
         return response.recommendation
     }
 
-    func inviteMultipleProtonUsers(userId: String,
-                                   shareId: String,
-                                   request: InviteMultipleUsersToShareRequest) async throws -> Bool {
+    func inviteExistingUsers(userId: String,
+                             shareId: String,
+                             request: InviteMultipleUsersToShareRequest) async throws -> Bool {
         let endpoint = InviteMultipleUserToShareEndpoint(shareId: shareId, request: request)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.isSuccessful
     }
 
-    func inviteMultipleExternalUsers(userId: String,
-                                     shareId: String,
-                                     request: InviteMultipleNewUsersToShareRequest) async throws -> Bool {
+    func inviteNewUsers(userId: String,
+                        shareId: String,
+                        request: InviteMultipleNewUsersToShareRequest) async throws -> Bool {
         let endpoint = InviteMultipleNewUserToShareEndpoint(shareId: shareId, request: request)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.isSuccessful
