@@ -4753,7 +4753,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tilføj bruger"
+            "value" : "Tilføj brugernavn"
           }
         },
         "de" : {
@@ -7601,7 +7601,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Выберите файл"
+            "value" : "Выбрать файл"
           }
         },
         "sk" : {
@@ -7791,7 +7791,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Выберите фото или видео"
+            "value" : "Выбрать фото или видео"
           }
         },
         "sk" : {
@@ -25502,7 +25502,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "비밀번호와 민감한 정보를 안전하고 쉽게 공유하세요."
+            "value" : "비밀번호와 민감한 정보를 안전하고 쉽게 공유해 보세요."
           }
         },
         "nb" : {
@@ -31069,7 +31069,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "피싱 위협에 대해 Hide-My-Email 별칭을 사용하세요."
+            "value" : "피싱 위협에 대항하기 위해 Hide-My-Email 별칭을 사용해 보세요."
           }
         },
         "nb" : {
