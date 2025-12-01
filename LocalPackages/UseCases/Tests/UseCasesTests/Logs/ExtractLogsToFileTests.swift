@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import CoreMocks
-import FactoryKit
 import Foundation
 import UseCases
 import XCTest
