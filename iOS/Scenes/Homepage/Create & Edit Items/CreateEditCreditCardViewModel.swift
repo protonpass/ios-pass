@@ -23,6 +23,7 @@ import Combine
 import Core
 import DocScanner
 import Entities
+import FactoryKit
 import SwiftUI
 
 final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPrintable {
@@ -34,6 +35,9 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
     @Published var pin = ""
     @Published var month: Int?
     @Published var year: Int?
+
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private var getFeatureFlagStatus
 
     // For swapping section title color purpose
     // We're only interested in the emptiness of the string, not the format
@@ -50,7 +54,7 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
     override var shouldUpgrade: Bool {
         // Free users can not create more credit cards but can only update
         if case .create = mode, isFreeUser {
-            return true
+            return !getFeatureFlagStatus(for: FeatureFlagType.passAllowCreditCardFreeUsers)
         }
         return false
     }
