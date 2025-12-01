@@ -242,7 +242,8 @@ extension UseCasesContainer {
     }
 
     var rejectInvitation: Factory<any RejectInvitationUseCase> {
-        self { RejectInvitation(repository: self.inviteRepository) }
+        self { RejectInvitation(repository: self.inviteRepository,
+                                userManager: self.userManager) }
     }
 
     var acceptInvitation: Factory<any AcceptInvitationUseCase> {
@@ -274,8 +275,7 @@ extension UseCasesContainer {
     }
 
     var sendInviteReminder: Factory<any SendInviteReminderUseCase> {
-        self { SendInviteReminder(shareInviteRepository: self.inviteRepository)
-        }
+        self { SendInviteReminder(shareInviteRepository: self.inviteRepository) }
     }
 
     var canUserTransferVaultOwnership: Factory<any CanUserTransferVaultOwnershipUseCase> {
