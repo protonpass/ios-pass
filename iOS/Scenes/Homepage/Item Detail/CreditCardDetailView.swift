@@ -153,7 +153,7 @@ private extension CreditCardDetailView {
 
     @ViewBuilder
     var cardNumberRow: some View {
-        let shouldShowOptions = !viewModel.isFreeUser && !viewModel.cardNumber.isEmpty
+        let shouldShowOptions = viewModel.creditCardsAllowed && !viewModel.cardNumber.isEmpty
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.creditCard, color: tintColor)
 
@@ -162,10 +162,9 @@ private extension CreditCardDetailView {
                     .sectionTitleText()
 
                 UpsellableDetailText(text: isShowingCardNumber ?
-                    viewModel.cardNumber.toCreditCardNumber() : viewModel.cardNumber
-                    .toMaskedCreditCardNumber(),
+                    viewModel.cardNumber.toCreditCardNumber() : viewModel.cardNumber.toMaskedCreditCardNumber(),
                     placeholder: #localized("Empty"),
-                    shouldUpgrade: viewModel.isFreeUser,
+                    shouldUpgrade: !viewModel.creditCardsAllowed,
                     upgradeTextColor: tintColor,
                     onUpgrade: { viewModel.upgrade() })
                     .animation(.default, value: isShowingCardNumber)

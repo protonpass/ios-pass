@@ -92,6 +92,9 @@ public extension String {
     }
 
     func toMaskedCreditCardNumber() -> String {
+        if isEmpty {
+            return ""
+        }
         guard count >= 12 else {
             return "•••• •••• •••• ••••"
         }
