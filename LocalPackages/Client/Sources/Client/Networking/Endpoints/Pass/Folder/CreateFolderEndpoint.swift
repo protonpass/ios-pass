@@ -1,4 +1,4 @@
-//  
+//
 // CreateFolderEndpoint.swift
 // Proton Pass - Created on 28/11/2025.
 // Copyright (c) 2025 Proton Technologies AG
@@ -25,10 +25,10 @@ struct CreateFolderEndpoint: Endpoint {
     typealias Body = CreateItemRequest
     typealias Response = GetFolderResponse
 
-    var debugDescription: String
-    var path: String
-    var method: HTTPMethod
-    var body: CreateFolderRequest?
+    let debugDescription: String
+    let path: String
+    let method: HTTPMethod
+    let body: CreateFolderRequest?
 
     init(shareId: String, request: CreateFolderRequest) {
         debugDescription = "Create folder"
@@ -44,15 +44,18 @@ public struct CreateFolderRequest: Sendable {
     public let contentFormatVersion: Int16
     public let content: String
     public let folderKey: String
-    
-    public init(parentFolderID: String?, keyRotation: Int64, contentFormatVersion: Int16, content: String, folderKey: String) {
+
+    public init(parentFolderID: String?,
+                keyRotation: Int64,
+                contentFormatVersion: Int16,
+                content: String,
+                folderKey: String) {
         self.parentFolderID = parentFolderID
         self.keyRotation = keyRotation
         self.contentFormatVersion = contentFormatVersion
         self.content = content
         self.folderKey = folderKey
     }
-    
 }
 
 extension CreateFolderRequest: Encodable {

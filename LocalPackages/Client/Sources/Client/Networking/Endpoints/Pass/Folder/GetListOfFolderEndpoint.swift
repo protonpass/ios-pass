@@ -1,4 +1,4 @@
-//  
+//
 // GetListOfFolderEndpoint.swift
 // Proton Pass - Created on 28/11/2025.
 // Copyright (c) 2025 Proton Technologies AG
@@ -30,8 +30,8 @@ struct GetListOfFolderEndpoint: Endpoint, @unchecked Sendable {
     typealias Body = EmptyRequest
     typealias Response = GetListOfFolderResponse
 
-    var debugDescription: String
-    var path: String
+    let debugDescription: String
+    let path: String
     var queries: [String: Any]?
 
     init(shareId: String,
@@ -52,15 +52,4 @@ public struct FolderPaginated: Decodable, Sendable {
     public let total: Int
     public let lastToken: String?
     public let folders: [Folder]
-}
-
-
-public struct Folder: Decodable, Sendable {
-    public let vaultID: String
-    public let folderID: String
-    public let parentFolderID: String?
-    public let keyRotation: Int
-    public let folderKey: String
-    public let contentFormatVersion: Int
-    public let content: String
 }

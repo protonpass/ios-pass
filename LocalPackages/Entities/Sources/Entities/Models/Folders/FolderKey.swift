@@ -1,0 +1,49 @@
+//
+// FolderKey.swift
+// Proton Pass - Created on 01/12/2025.
+// Copyright (c) 2025 Proton Technologies AG
+//
+// This file is part of Proton Pass.
+//
+// Proton Pass is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Pass is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+
+import Foundation
+
+public struct FolderKey: Codable, Equatable, Hashable, Sendable {
+    /// Encrypted key encoded in base64
+    public let folderKey: String
+    public let keyRotation: Int64
+
+    public init(folderKey: String, keyRotation: Int64) {
+        self.folderKey = folderKey
+        self.keyRotation = keyRotation
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case folderKey = "FolderKey"
+        case keyRotation = "KeyRotation"
+    }
+
+    // custom decoder
+    public init(from decoder: any Decoder) throws {
+        // keys that work with `JSONDecoder.KeyDecodingStrategy.decapitaliseFirstLetter`
+        enum DecodingKeys: String, CodingKey {
+            case folderKey
+            case keyRotation
+        }
+        let container = try decoder.container(keyedBy: DecodingKeys.self)
+        folderKey = try container.decode(String.self, forKey: .folderKey)
+        keyRotation = try container.decode(Int64.self, forKey: .keyRotation)
+    }
+}
