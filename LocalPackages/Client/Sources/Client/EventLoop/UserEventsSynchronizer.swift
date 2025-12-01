@@ -128,12 +128,10 @@ private extension UserEventsSynchronizer {
         // TODO: folder to be implemented in the folder ticket mr
 //        async let foldersUpdated: () = processSharesToCreate(events.foldersUpdated, userId: userId)
 //        async let foldersDeleted: () = processInviteChanges(inviteChanges: events.foldersDeleted, userId: userId)
-        async let invites: () = processUserInviteChanges(inviteChanges: events.invitesChanged, userId: userId)
-        async let groupInvites: () = processGroupInviteChanges(inviteChanges: events.groupInvitesChanged,
-                                                               userId: userId)
-        async let newShareWithInvites: () = processNewShareWithInviteChanges(shareWithInvitesChanges: events
-            .sharesWithInvitesToCreate,
-            userId: userId)
+        async let invites: () = processUserInviteChanges(events.invitesChanged, userId: userId)
+        async let groupInvites: () = processGroupInviteChanges(events.groupInvitesChanged, userId: userId)
+        async let newShareWithInvites: () = processNewShareWithInviteChanges(events.sharesWithInvitesToCreate,
+                                                                             userId: userId)
 
         async let pendingAliasToCreate: () = processPendingAliasToCreateChanged(events.pendingAliasToCreateChanged,
                                                                                 userId: userId)
@@ -181,15 +179,14 @@ private extension UserEventsSynchronizer {
         try await itemRepository.deleteItemsLocally(items: deletedItems)
     }
 
-    func processAliasNoteChangedItems(_ aliasNoteChangedItems: [ItemEvent],
+    func processAliasNoteChangedItems(_ events: [ItemEvent],
                                       userId: String) async throws {
-        guard !aliasNoteChangedItems.isEmpty else {
+        guard !events.isEmpty else {
             logger.trace("No alias note changed for user \(userId)")
             return
         }
-        logger.trace("Syncing SL note for \(aliasNoteChangedItems.count) items for user \(userId)")
-        _ = try await simpleLoginNoteSynchronizer.syncAliases(userId: userId,
-                                                              aliases: aliasNoteChangedItems)
+        logger.trace("Syncing SL note for \(events.count) items for user \(userId)")
+        _ = try await simpleLoginNoteSynchronizer.syncAliases(userId: userId, aliases: events)
     }
 
     func processUpdatedShares(_ updatedShares: [ShareEvent], userId: String) async throws {
@@ -255,49 +252,50 @@ private extension UserEventsSynchronizer {
         }
     }
 
-    func processUserInviteChanges(inviteChanges: ChangeEvent?,
+    func processUserInviteChanges(_ event: ChangeEvent?,
                                   userId: String) async throws {
-        guard let inviteChanges else {
+        guard let event else {
             logger.trace("No user invite changes for user \(userId)")
             return
         }
         try await inviteRepository.refreshSpecificInvites(userId: userId,
-                                                          refreshInviteType: .userInvite(eventToken: inviteChanges
-                                                              .eventToken))
+                                                          refreshInviteType: .user(token: event.eventToken))
     }
 
-    func processGroupInviteChanges(inviteChanges: ChangeEvent?,
+    func processGroupInviteChanges(_ event: ChangeEvent?,
                                    userId: String) async throws {
-        guard let inviteChanges else {
+        guard let event else {
             logger.trace("No group invite changes for user \(userId)")
             return
         }
         try await inviteRepository.refreshSpecificInvites(userId: userId,
-                                                          refreshInviteType: .groupInvite(eventToken: inviteChanges
-                                                              .eventToken))
+                                                          refreshInviteType: .group(token: event.eventToken))
     }
 
-    func processNewShareWithInviteChanges(shareWithInvitesChanges: [ShareEvent],
+    func processNewShareWithInviteChanges(_ events: [ShareEvent],
                                           userId: String) async throws {
-        guard !shareWithInvitesChanges.isEmpty else {
+        guard !events.isEmpty else {
             logger.trace("No shares with invite changes for user \(userId)")
             return
         }
         try await withThrowingTaskGroup(of: Void.self) { taskGroup in
-            for share in shareWithInvitesChanges {
+            for event in events {
                 taskGroup.addTask { [inviteRepository] in
-                    let pendingInvites = try await inviteRepository.getAllPendingInvites(shareId: share.shareID)
-                    try await inviteRepository.sendNewShareInvites(shareId: share.shareID,
-                                                                   newShareInvite: pendingInvites.newUserInvites)
+                    let shareId = event.shareID
+                    let pendingInvites = try await inviteRepository.getAllPendingInvites(userId: userId,
+                                                                                         shareId: shareId)
+                    try await inviteRepository.sendNewShareInvites(userId: userId,
+                                                                   shareId: shareId,
+                                                                   newShareInvites: pendingInvites.newUserInvites)
                 }
             }
             try await taskGroup.waitForAll()
         }
     }
 
-    func processPendingAliasToCreateChanged(_ pendingAliasToCreateChanged: ChangeEvent?,
+    func processPendingAliasToCreateChanged(_ event: ChangeEvent?,
                                             userId: String) async throws {
-        guard pendingAliasToCreateChanged != nil else {
+        guard event != nil else {
             logger.trace("No aliases to create for user \(userId)")
             return
         }

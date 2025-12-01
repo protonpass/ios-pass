@@ -62,7 +62,8 @@ public final class AcceptInvitation: AcceptInvitationUseCase {
         logger.trace("Start accepting share invite for invitee email \(invite.invitedEmail)")
         let encrytedKeys = try await encryptKeys(invite: invite)
         logger.trace("Finished encrypting keys")
-        return try await repository.acceptInvite(invite, and: encrytedKeys)
+        let userId = try await userManager.getActiveUserId()
+        return try await repository.acceptInvite(userId: userId, invite: invite, keys: encrytedKeys)
     }
 }
 
