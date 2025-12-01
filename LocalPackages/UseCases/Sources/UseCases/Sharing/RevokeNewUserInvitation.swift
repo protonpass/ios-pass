@@ -21,12 +21,12 @@
 import Client
 
 public protocol RevokeNewUserInvitationUseCase: Sendable {
-    func execute(with shareId: String, and inviteId: String) async throws
+    func execute(userId: String, shareId: String, inviteId: String) async throws
 }
 
 public extension RevokeNewUserInvitationUseCase {
-    func callAsFunction(with shareId: String, and inviteId: String) async throws {
-        try await execute(with: shareId, and: inviteId)
+    func callAsFunction(userId: String, shareId: String, inviteId: String) async throws {
+        try await execute(userId: userId, shareId: shareId, inviteId: inviteId)
     }
 }
 
@@ -37,7 +37,9 @@ public final class RevokeNewUserInvitation: RevokeNewUserInvitationUseCase {
         self.shareInviteRepository = shareInviteRepository
     }
 
-    public func execute(with shareId: String, and inviteId: String) async throws {
-        try await shareInviteRepository.deleteNewUserInvite(shareId: shareId, inviteId: inviteId)
+    public func execute(userId: String, shareId: String, inviteId: String) async throws {
+        try await shareInviteRepository.deleteNewUserInvite(userId: userId,
+                                                            shareId: shareId,
+                                                            inviteId: inviteId)
     }
 }

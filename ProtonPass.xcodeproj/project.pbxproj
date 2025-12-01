@@ -540,8 +540,8 @@
 		5B1453792A6038FE0048B022 /* Entities in Frameworks */ = {isa = PBXBuildFile; productRef = 5B1453782A6038FE0048B022 /* Entities */; };
 		5B14538D2A681B400048B022 /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B14538C2A681B400048B022 /* MainRouter.swift */; };
 		5B14538F2A6821D20048B022 /* Router+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B14538E2A6821D20048B022 /* Router+DependencyInjections.swift */; };
-		5B1453942A6832780048B022 /* UserEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453922A6832780048B022 /* UserEmailView.swift */; };
-		5B1453952A6832780048B022 /* UserEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453932A6832780048B022 /* UserEmailViewModel.swift */; };
+		5B1453942A6832780048B022 /* EmailGroupSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453922A6832780048B022 /* EmailGroupSelectionView.swift */; };
+		5B1453952A6832780048B022 /* EmailGroupSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453932A6832780048B022 /* EmailGroupSelectionViewModel.swift */; };
 		5B1453992A6938660048B022 /* UserPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453972A6938660048B022 /* UserPermissionView.swift */; };
 		5B14539A2A6938660048B022 /* UserPermissionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453982A6938660048B022 /* UserPermissionViewModel.swift */; };
 		5B1453B12A69816C0048B022 /* SharingSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453AF2A69816C0048B022 /* SharingSummaryView.swift */; };
@@ -554,6 +554,7 @@
 		5B159D312D00AB3C00150125 /* ShareContent+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B159D302D00AB3500150125 /* ShareContent+Extensions.swift */; };
 		5B159D322D00AB3C00150125 /* ShareContent+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B159D302D00AB3500150125 /* ShareContent+Extensions.swift */; };
 		5B159D332D00AB3C00150125 /* ShareContent+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B159D302D00AB3500150125 /* ShareContent+Extensions.swift */; };
+		5B1F0F072EC1DF5C0015982A /* InviteSuggestionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F0F062EC1DF5C0015982A /* InviteSuggestionsSection.swift */; };
 		5B1F5CCB2A5D822300A6C3ED /* BugReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */; };
 		5B1F5CE82A5EAD0400A6C3ED /* WrappedCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB50F2A5D41BF00C2D1F9 /* WrappedCodeScannerView.swift */; };
 		5B1F5CE92A5EAD0900A6C3ED /* WrappedCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB50F2A5D41BF00C2D1F9 /* WrappedCodeScannerView.swift */; };
@@ -1090,8 +1091,8 @@
 		5B1092DA2B56EA93002621A4 /* DetailHistoryView+Alias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailHistoryView+Alias.swift"; sourceTree = "<group>"; };
 		5B14538C2A681B400048B022 /* MainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouter.swift; sourceTree = "<group>"; };
 		5B14538E2A6821D20048B022 /* Router+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Router+DependencyInjections.swift"; sourceTree = "<group>"; };
-		5B1453922A6832780048B022 /* UserEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEmailView.swift; sourceTree = "<group>"; };
-		5B1453932A6832780048B022 /* UserEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEmailViewModel.swift; sourceTree = "<group>"; };
+		5B1453922A6832780048B022 /* EmailGroupSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailGroupSelectionView.swift; sourceTree = "<group>"; };
+		5B1453932A6832780048B022 /* EmailGroupSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailGroupSelectionViewModel.swift; sourceTree = "<group>"; };
 		5B1453972A6938660048B022 /* UserPermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPermissionView.swift; sourceTree = "<group>"; };
 		5B1453982A6938660048B022 /* UserPermissionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPermissionViewModel.swift; sourceTree = "<group>"; };
 		5B1453AF2A69816C0048B022 /* SharingSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharingSummaryView.swift; sourceTree = "<group>"; };
@@ -1102,6 +1103,7 @@
 		5B1453E02A727EFF0048B022 /* AcceptRejectInviteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptRejectInviteViewModel.swift; sourceTree = "<group>"; };
 		5B1453E42A72BF570048B022 /* ShareRole+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareRole+Extensions.swift"; sourceTree = "<group>"; };
 		5B159D302D00AB3500150125 /* ShareContent+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareContent+Extensions.swift"; sourceTree = "<group>"; };
+		5B1F0F062EC1DF5C0015982A /* InviteSuggestionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteSuggestionsSection.swift; sourceTree = "<group>"; };
 		5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReportView.swift; sourceTree = "<group>"; };
 		5B1F5CEA2A5ED6D000A6C3ED /* CustomFieldTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFieldTypes.swift; sourceTree = "<group>"; };
 		5B229A682A863FBC0009103E /* SharedRouter+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedRouter+DependencyInjections.swift"; sourceTree = "<group>"; };
@@ -2218,18 +2220,19 @@
 				5B653AF42A7A5FEF00D6869A /* ManageSharedShareView */,
 				5B1453AE2A69814C0048B022 /* SummaryView */,
 				5B1453962A69382E0048B022 /* UserPermissionView */,
-				5B1453912A68321B0048B022 /* UserEmailView */,
+				5B1453912A68321B0048B022 /* EmailGroupSelectionView */,
 			);
 			path = Sharing;
 			sourceTree = "<group>";
 		};
-		5B1453912A68321B0048B022 /* UserEmailView */ = {
+		5B1453912A68321B0048B022 /* EmailGroupSelectionView */ = {
 			isa = PBXGroup;
 			children = (
-				5B1453922A6832780048B022 /* UserEmailView.swift */,
-				5B1453932A6832780048B022 /* UserEmailViewModel.swift */,
+				5B1F0F052EC1DD7B0015982A /* Subviews */,
+				5B1453922A6832780048B022 /* EmailGroupSelectionView.swift */,
+				5B1453932A6832780048B022 /* EmailGroupSelectionViewModel.swift */,
 			);
-			path = UserEmailView;
+			path = EmailGroupSelectionView;
 			sourceTree = "<group>";
 		};
 		5B1453962A69382E0048B022 /* UserPermissionView */ = {
@@ -2279,6 +2282,14 @@
 				5BD6138C2C202B0E00968E0F /* UpsellEntry+Extensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		5B1F0F052EC1DD7B0015982A /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				5B1F0F062EC1DF5C0015982A /* InviteSuggestionsSection.swift */,
+			);
+			path = Subviews;
 			sourceTree = "<group>";
 		};
 		5B1F5CE72A5EAC7100A6C3ED /* UIElements */ = {
@@ -3722,6 +3733,7 @@
 				354F769228C8678100EB2383 /* LogInDetailView.swift in Sources */,
 				3551BC6129A505940048CE07 /* AdvancedOptionsSection.swift in Sources */,
 				354AD96028CB5934000E645B /* EmptyTrashView.swift in Sources */,
+				5B1F0F072EC1DF5C0015982A /* InviteSuggestionsSection.swift in Sources */,
 				53A2EB092D6F538A008A4A0C /* CustomItemTemplatesList.swift in Sources */,
 				5B7C7FC32C5D25A700E1F646 /* AliasSyncConfigurationView.swift in Sources */,
 				5B7C7FC42C5D25A700E1F646 /* AliasSyncConfigurationViewModel.swift in Sources */,
@@ -3732,7 +3744,7 @@
 				355E92782A59D2D500C22703 /* Factory+Extensions.swift in Sources */,
 				5BF9F9562C183F0700EF0627 /* SecureLinkListView.swift in Sources */,
 				5BF9F9572C183F0700EF0627 /* SecureLinkListViewModel.swift in Sources */,
-				5B1453952A6832780048B022 /* UserEmailViewModel.swift in Sources */,
+				5B1453952A6832780048B022 /* EmailGroupSelectionViewModel.swift in Sources */,
 				358152032C57C3EB0054F755 /* CredentialsSection.swift in Sources */,
 				3545731F2BDA9E2E00D85B9F /* MonitorAllAliasesView.swift in Sources */,
 				534090602D70A6E7002E42F8 /* CreateEditWifiViewModel.swift in Sources */,
@@ -3949,7 +3961,7 @@
 				5BFFB5122A5D42C300C2D1F9 /* SharedUseCase+DependencyInjections.swift in Sources */,
 				53AEE46B2D7F0E1800CE0CA7 /* CustomSectionsSection.swift in Sources */,
 				35703F282A279B950088C287 /* CustomFieldSections.swift in Sources */,
-				5B1453942A6832780048B022 /* UserEmailView.swift in Sources */,
+				5B1453942A6832780048B022 /* EmailGroupSelectionView.swift in Sources */,
 				3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */,
 				5BDD9AEE2CC9094700C120B3 /* PasswordPolicySection.swift in Sources */,
 				356A1EFE2B889D9900561950 /* PasskeyDetailView.swift in Sources */,

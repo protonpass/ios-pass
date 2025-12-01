@@ -30,12 +30,12 @@ import ProtonCoreLogin
 import ProtonCoreNetworking
 
 public protocol AcceptInvitationUseCase: Sendable {
-    func execute(with userInvite: UserInvite) async throws -> Share
+    func execute(with invite: Invite) async throws -> Share?
 }
 
 public extension AcceptInvitationUseCase {
-    func callAsFunction(with userInvite: UserInvite) async throws -> Share {
-        try await execute(with: userInvite)
+    func callAsFunction(with invite: Invite) async throws -> Share? {
+        try await execute(with: invite)
     }
 }
 
@@ -43,46 +43,54 @@ public final class AcceptInvitation: AcceptInvitationUseCase {
     private let repository: any InviteRepositoryProtocol
     private let userManager: any UserManagerProtocol
     private let getEmailPublicKey: any GetEmailPublicKeyUseCase
-    private let updateUserAddresses: any UpdateUserAddressesUseCase
+    private let getInviteDecryptionKeys: GetInviteDecryptionKeysUseCase
     private let logger: Logger
 
     public init(repository: any InviteRepositoryProtocol,
                 userManager: any UserManagerProtocol,
                 getEmailPublicKey: any GetEmailPublicKeyUseCase,
-                updateUserAddresses: any UpdateUserAddressesUseCase,
+                getInviteDecryptionKeys: GetInviteDecryptionKeysUseCase,
                 logManager: any LogManagerProtocol) {
         self.repository = repository
         self.userManager = userManager
         self.getEmailPublicKey = getEmailPublicKey
-        self.updateUserAddresses = updateUserAddresses
+        self.getInviteDecryptionKeys = getInviteDecryptionKeys
         logger = .init(manager: logManager)
     }
 
-    public func execute(with userInvite: UserInvite) async throws -> Share {
-        logger.trace("Start accepting share invite for invitee email \(userInvite.invitedEmail)")
-        let encrytedKeys = try await encryptKeys(userInvite: userInvite)
+    public func execute(with invite: Invite) async throws -> Share? {
+        logger.trace("Start accepting share invite for invitee email \(invite.invitedEmail)")
+        let encrytedKeys = try await encryptKeys(invite: invite)
         logger.trace("Finished encrypting keys")
-        return try await repository.acceptInvite(userInvite, and: encrytedKeys)
+        let userId = try await userManager.getActiveUserId()
+        return try await repository.acceptInvite(userId: userId, invite: invite, keys: encrytedKeys)
     }
 }
 
-private extension AcceptInvitation {
-    func encryptKeys(userInvite: UserInvite) async throws -> [ItemKey] {
-        do {
-            let userData = try await userManager.getUnwrappedActiveUserData()
-            guard let address = try await fetchInvitedAddress(with: userInvite, userData: userData) else {
-                throw PassError.sharing(.invalidAddress(userInvite.invitedEmail))
-            }
-            let addressKeys = try CryptoUtils.unlockAddressKeys(address: address,
-                                                                userData: userData)
-            let inviterPublicKeys = try await getEmailPublicKey(with: userInvite.inviterEmail)
-            let armoredInviterPublicKeys = inviterPublicKeys.map { ArmoredKey(value: $0.value) }
+struct TransformKeyConfig {
+    let publicKey: ArmoredKey
+    let signerKey: SigningKey
+}
 
-            let reencrytedKeys: [ItemKey] = try userInvite.keys.map { key in
+private extension AcceptInvitation {
+    func encryptKeys(invite: Invite) async throws -> [ItemKey] {
+        do {
+            async let userDataProcess = try userManager.getUnwrappedActiveUserData()
+            async let addressKeysProcess = try getInviteDecryptionKeys(invite: invite)
+            async let inviterPublicKeysProcess = try getEmailPublicKey(with: invite.inviterEmail)
+
+            let (userData, addressKeys, inviterPublicKeys) = try await (userDataProcess,
+                                                                        addressKeysProcess,
+                                                                        inviterPublicKeysProcess)
+
+            let armoredInviterPublicKeys = inviterPublicKeys.map { ArmoredKey(value: $0.value) }
+            let config = try getConfig(invite: invite, addressKeys: addressKeys, userData: userData)
+
+            let reencrytedKeys: [ItemKey] = try invite.keys.map { key in
                 try transformKey(key: key,
                                  addressKeys: addressKeys,
                                  armoredInviterPublicKeys: armoredInviterPublicKeys,
-                                 userData: userData)
+                                 config: config)
             }
 
             return reencrytedKeys
@@ -95,14 +103,14 @@ private extension AcceptInvitation {
     func transformKey(key: ItemKey,
                       addressKeys: [DecryptionKey],
                       armoredInviterPublicKeys: [ArmoredKey],
-                      userData: UserData) throws -> ItemKey {
+                      config: TransformKeyConfig) throws -> ItemKey {
         guard let decodeKey = try? key.key.base64Decode() else {
             throw PassError.sharing(.cannotDecode)
         }
 
         let armoredEncryptedKeyData = try CryptoUtils.armorMessage(decodeKey)
         let armorMessage = ArmoredMessage(value: armoredEncryptedKeyData)
-        let context = VerificationContext(value: Constants.existingUserSharingSignatureContext,
+        let context = VerificationContext(value: Constants.SignatureContext.existingUserSharing,
                                           required: .always)
 
         let decode: VerifiedData = try Decryptor.decryptAndVerify(decryptionKeys: addressKeys,
@@ -112,6 +120,36 @@ private extension AcceptInvitation {
 
         let verifiedContent = try decode.verifiedContent
 
+        let encryptedVaultKeyDataString = try Encryptor.encrypt(publicKey: config.publicKey,
+                                                                clearData: verifiedContent,
+                                                                signerKey: config.signerKey)
+            .unArmor().value.base64EncodedString()
+
+        return ItemKey(key: encryptedVaultKeyDataString,
+                       keyRotation: key.keyRotation)
+    }
+}
+
+private extension AcceptInvitation {
+    func getConfig(invite: Invite,
+                   addressKeys: [DecryptionKey],
+                   userData: UserData) throws -> TransformKeyConfig {
+        var config: TransformKeyConfig
+        if case .user = invite {
+            config = try getUserConfig(userData: userData)
+        } else {
+            guard let groupKey = addressKeys.first else {
+                throw PassError.sharing(.invalidAddress(invite.invitedEmail))
+            }
+            let publicKey = ArmoredKey(value: groupKey.privateKey.armoredPublicKey)
+            let signerKey = groupKey
+
+            config = TransformKeyConfig(publicKey: publicKey, signerKey: signerKey)
+        }
+        return config
+    }
+
+    func getUserConfig(userData: UserData) throws -> TransformKeyConfig {
         guard let userKey = userData.user.keys.first else {
             throw PassError.crypto(.missingUserKey(userID: userData.user.ID))
         }
@@ -125,22 +163,6 @@ private extension AcceptInvitation {
         let signerKey = SigningKey(privateKey: privateKey,
                                    passphrase: .init(value: passphrase))
 
-        let encryptedVaultKeyDataString = try Encryptor.encrypt(publicKey: publicKey,
-                                                                clearData: verifiedContent,
-                                                                signerKey: signerKey)
-            .unArmor().value.base64EncodedString()
-
-        return ItemKey(key: encryptedVaultKeyDataString,
-                       keyRotation: key.keyRotation)
-    }
-}
-
-private extension AcceptInvitation {
-    func fetchInvitedAddress(with userInvite: UserInvite, userData: UserData) async throws -> Address? {
-        guard let invitedAddress = userData.address(for: userInvite.invitedEmail) else {
-            return try await updateUserAddresses()?
-                .first(where: { $0.email.lowercased() == userInvite.invitedEmail.lowercased() })
-        }
-        return invitedAddress
+        return TransformKeyConfig(publicKey: publicKey, signerKey: signerKey)
     }
 }

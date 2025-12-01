@@ -29,71 +29,59 @@ import ProtonCoreDataModel
 import ProtonCoreLogin
 
 public protocol DecodeShareVaultInformationUseCase: Sendable {
-    func execute(with userInvite: UserInvite) async throws -> VaultContent
+    func execute(with invite: Invite) async throws -> VaultContent
 }
 
 public extension DecodeShareVaultInformationUseCase {
-    func callAsFunction(with userInvite: UserInvite) async throws -> VaultContent {
-        try await execute(with: userInvite)
+    func callAsFunction(with invite: Invite) async throws -> VaultContent {
+        try await execute(with: invite)
     }
 }
 
 public final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShareVaultInformationUseCase {
-    private let userManager: any UserManagerProtocol
     private let getEmailPublicKey: any GetEmailPublicKeyUseCase
-    private let updateUserAddresses: any UpdateUserAddressesUseCase
+    private let getInviteDecryptionKeys: any GetInviteDecryptionKeysUseCase
     private let logger: Logger
 
-    public init(userManager: any UserManagerProtocol,
-                getEmailPublicKey: any GetEmailPublicKeyUseCase,
-                updateUserAddresses: any UpdateUserAddressesUseCase,
+    public init(getEmailPublicKey: any GetEmailPublicKeyUseCase,
+                getInviteDecryptionKeys: GetInviteDecryptionKeysUseCase,
                 logManager: any LogManagerProtocol) {
-        self.userManager = userManager
         self.getEmailPublicKey = getEmailPublicKey
-        self.updateUserAddresses = updateUserAddresses
+        self.getInviteDecryptionKeys = getInviteDecryptionKeys
         logger = .init(manager: logManager)
     }
 
-    public func execute(with userInvite: UserInvite) async throws -> VaultContent {
-        logger.trace("Start decoding invitation share information for invitee user \(userInvite.invitedEmail)")
+    public func execute(with invite: Invite) async throws -> VaultContent {
+        logger.trace("Start decoding invitation share information for invitee user \(invite.invitedEmail)")
 
         do {
-            let userData = try await userManager.getUnwrappedActiveUserData()
-            guard let vaultData = userInvite.vaultData,
-                  let intermediateVaultKey = userInvite.keys
+            guard let vaultData = invite.vaultData,
+                  let intermediateVaultKey = invite.keys
                   .first(where: { $0.keyRotation == vaultData.contentKeyRotation }) else {
                 throw PassError.sharing(.invalidKey)
             }
-            guard let invitedAddress = try await address(for: userInvite, userData: userData) else {
-                throw PassError.sharing(.invalidAddress(userInvite.invitedEmail))
-            }
 
-            let invitedAddressKeys = try CryptoUtils.unlockAddressKeys(address: invitedAddress,
-                                                                       userData: userData)
-
-            guard let decodedIntermediateVaultKey = try intermediateVaultKey.key.base64Decode() else {
+            guard let encryptedVaultContent = try vaultData.content.base64Decode() else {
                 throw PassError.sharing(.cannotDecode)
             }
 
-            let inviterPublicKeys = try await getEmailPublicKey(with: userInvite.inviterEmail)
-            let armoredEncryptedVaultKeyData = try CryptoUtils.armorMessage(decodedIntermediateVaultKey)
+            let encryptedValue = try getValue(intermediateVaultKey: intermediateVaultKey)
 
-            let vaultKeyArmorMessage = ArmoredMessage(value: armoredEncryptedVaultKeyData)
-            let armoredInviterPublicKeys = inviterPublicKeys.map { ArmoredKey(value: $0.value) }
-            let context = VerificationContext(value: Constants.existingUserSharingSignatureContext,
+            async let decryptionKeysProcess = try getInviteDecryptionKeys(invite: invite)
+            async let verificationsKeysProcess = try getVerificationKeys(invite: invite)
+
+            let (decryptionKeys, verificationsKeys) = try await (decryptionKeysProcess, verificationsKeysProcess)
+
+            let context = VerificationContext(value: Constants.SignatureContext.existingUserSharing,
                                               required: .always)
 
-            let decode: VerifiedData = try Decryptor.decryptAndVerify(decryptionKeys: invitedAddressKeys,
-                                                                      value: vaultKeyArmorMessage,
-                                                                      verificationKeys: armoredInviterPublicKeys,
+            let decode: VerifiedData = try Decryptor.decryptAndVerify(decryptionKeys: decryptionKeys,
+                                                                      value: encryptedValue,
+                                                                      verificationKeys: verificationsKeys,
                                                                       verificationContext: context)
             let verifiedContent = try decode.verifiedContent
 
-            guard let content = try vaultData.content.base64Decode() else {
-                throw PassError.sharing(.cannotDecode)
-            }
-
-            let decryptedContent = try AES.GCM.open(content,
+            let decryptedContent = try AES.GCM.open(encryptedVaultContent,
                                                     key: verifiedContent,
                                                     associatedData: .vaultContent)
             let vaultContent = try VaultContent(data: decryptedContent)
@@ -107,11 +95,18 @@ public final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShare
 }
 
 private extension DecodeShareVaultInformation {
-    func address(for userInvite: UserInvite, userData: UserData) async throws -> Address? {
-        guard let invitedAddress = userData.address(for: userInvite.invitedEmail) else {
-            return try await updateUserAddresses()?
-                .first(where: { $0.email == userInvite.invitedEmail })
+    func getVerificationKeys(invite: Invite) async throws -> [ArmoredKey] {
+        let inviterPublicKeys = try await getEmailPublicKey(with: invite.inviterEmail)
+        return inviterPublicKeys.map { ArmoredKey(value: $0.value) }
+    }
+
+    func getValue(intermediateVaultKey: ItemKey) throws -> ArmoredMessage {
+        guard let decodedIntermediateVaultKey = try intermediateVaultKey.key.base64Decode() else {
+            throw PassError.sharing(.cannotDecode)
         }
-        return invitedAddress
+
+        let armoredEncryptedVaultKeyData = try CryptoUtils.armorMessage(decodedIntermediateVaultKey)
+
+        return ArmoredMessage(value: armoredEncryptedVaultKeyData)
     }
 }

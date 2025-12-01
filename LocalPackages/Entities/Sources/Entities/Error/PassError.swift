@@ -60,6 +60,7 @@ public enum PassError: Error, CustomDebugStringConvertible, Equatable {
     case importer(ImporterFailureReason)
     case `extension`(ExtensionFailureReason)
     case itemsNotBelongToSameVault
+    case group(GroupFailureReason)
 
     public var debugDescription: String {
         switch self {
@@ -137,6 +138,8 @@ public enum PassError: Error, CustomDebugStringConvertible, Equatable {
             reason.debugDescription
         case .itemsNotBelongToSameVault:
             "Items not belong to same vault"
+        case let .group(reason):
+            reason.debugDescription
         }
     }
 

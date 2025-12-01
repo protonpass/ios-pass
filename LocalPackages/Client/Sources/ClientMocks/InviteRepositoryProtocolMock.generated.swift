@@ -32,12 +32,12 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
     // MARK: - currentPendingInvites
     public var invokedCurrentPendingInvitesSetter = false
     public var invokedCurrentPendingInvitesSetterCount = 0
-    public var invokedCurrentPendingInvites: CurrentValueSubject<[UserInvite], Never>?
-    public var invokedCurrentPendingInvitesList = [CurrentValueSubject<[UserInvite], Never>?]()
+    public var invokedCurrentPendingInvites: CurrentValueSubject<[Invite], Never>?
+    public var invokedCurrentPendingInvitesList = [CurrentValueSubject<[Invite], Never>?]()
     public var invokedCurrentPendingInvitesGetter = false
     public var invokedCurrentPendingInvitesGetterCount = 0
-    public var stubbedCurrentPendingInvites: CurrentValueSubject<[UserInvite], Never>!
-    public var currentPendingInvites: CurrentValueSubject<[UserInvite], Never> {
+    public var stubbedCurrentPendingInvites: CurrentValueSubject<[Invite], Never>!
+    public var currentPendingInvites: CurrentValueSubject<[Invite], Never> {
         set {
             invokedCurrentPendingInvitesSetter = true
             invokedCurrentPendingInvitesSetterCount += 1
@@ -67,69 +67,76 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
         closureLoadLocalInvites()
     }
     // MARK: - acceptInvite
-    public var acceptInviteAndThrowableError2: Error?
+    public var acceptInviteUserIdInviteKeysThrowableError2: Error?
     public var closureAcceptInvite: () -> () = {}
     public var invokedAcceptInvitefunction = false
     public var invokedAcceptInviteCount = 0
-    public var invokedAcceptInviteParameters: (invite: UserInvite, keys: [ItemKey])?
-    public var invokedAcceptInviteParametersList = [(invite: UserInvite, keys: [ItemKey])]()
-    public var stubbedAcceptInviteResult: Share!
+    public var invokedAcceptInviteParameters: (userId: String, invite: Invite, keys: [ItemKey])?
+    public var invokedAcceptInviteParametersList = [(userId: String, invite: Invite, keys: [ItemKey])]()
+    public var stubbedAcceptInviteResult: Share?
 
-    public func acceptInvite(_ invite: UserInvite, and keys: [ItemKey]) async throws -> Share {
+    public func acceptInvite(userId: String, invite: Invite, keys: [ItemKey]) async throws -> Share? {
         invokedAcceptInvitefunction = true
         invokedAcceptInviteCount += 1
-        invokedAcceptInviteParameters = (invite, keys)
-        if let error = acceptInviteAndThrowableError2 {
+        invokedAcceptInviteParameters = (userId, invite, keys)
+        if let error = acceptInviteUserIdInviteKeysThrowableError2 {
             throw error
         }
         closureAcceptInvite()
         return stubbedAcceptInviteResult
     }
     // MARK: - rejectInvite
-    public var rejectInviteThrowableError3: Error?
+    public var rejectInviteUserIdInviteThrowableError3: Error?
     public var closureRejectInvite: () -> () = {}
     public var invokedRejectInvitefunction = false
     public var invokedRejectInviteCount = 0
-    public var invokedRejectInviteParameters: (invite: UserInvite, Void)?
-    public var invokedRejectInviteParametersList = [(invite: UserInvite, Void)]()
+    public var invokedRejectInviteParameters: (userId: String, invite: Invite)?
+    public var invokedRejectInviteParametersList = [(userId: String, invite: Invite)]()
     public var stubbedRejectInviteResult: Bool!
 
-    public func rejectInvite(_ invite: UserInvite) async throws -> Bool {
+    public func rejectInvite(userId: String, invite: Invite) async throws -> Bool {
         invokedRejectInvitefunction = true
         invokedRejectInviteCount += 1
-        invokedRejectInviteParameters = (invite, ())
-        if let error = rejectInviteThrowableError3 {
+        invokedRejectInviteParameters = (userId, invite)
+        if let error = rejectInviteUserIdInviteThrowableError3 {
             throw error
         }
         closureRejectInvite()
         return stubbedRejectInviteResult
     }
-    // MARK: - refreshInvites
-    public var closureRefreshInvitesAsync4: () -> () = {}
-    public var invokedRefreshInvitesAsync4 = false
-    public var invokedRefreshInvitesAsyncCount4 = 0
+    // MARK: - refreshAllInvites
+    public var refreshAllInvitesUserIdThrowableError4: Error?
+    public var closureRefreshAllInvites: () -> () = {}
+    public var invokedRefreshAllInvitesfunction = false
+    public var invokedRefreshAllInvitesCount = 0
+    public var invokedRefreshAllInvitesParameters: (userId: String, Void)?
+    public var invokedRefreshAllInvitesParametersList = [(userId: String, Void)]()
 
-    public func refreshInvites() async {
-        invokedRefreshInvitesAsync4 = true
-        invokedRefreshInvitesAsyncCount4 += 1
-        closureRefreshInvitesAsync4()
-    }
-    // MARK: - refreshInvitesUserId
-    public var refreshInvitesUserIdThrowableError5: Error?
-    public var closureRefreshInvitesUserIdAsync5: () -> () = {}
-    public var invokedRefreshInvitesUserIdAsync5 = false
-    public var invokedRefreshInvitesUserIdAsyncCount5 = 0
-    public var invokedRefreshInvitesUserIdAsyncParameters5: (userId: String, Void)?
-    public var invokedRefreshInvitesUserIdAsyncParametersList5 = [(userId: String, Void)]()
-
-    public func refreshInvites(userId: String) async throws {
-        invokedRefreshInvitesUserIdAsync5 = true
-        invokedRefreshInvitesUserIdAsyncCount5 += 1
-        invokedRefreshInvitesUserIdAsyncParameters5 = (userId, ())
-        if let error = refreshInvitesUserIdThrowableError5 {
+    public func refreshAllInvites(userId: String) async throws {
+        invokedRefreshAllInvitesfunction = true
+        invokedRefreshAllInvitesCount += 1
+        invokedRefreshAllInvitesParameters = (userId, ())
+        if let error = refreshAllInvitesUserIdThrowableError4 {
             throw error
         }
-        closureRefreshInvitesUserIdAsync5()
+        closureRefreshAllInvites()
+    }
+    // MARK: - refreshSpecificInvites
+    public var refreshSpecificInvitesUserIdRefreshInviteTypeThrowableError5: Error?
+    public var closureRefreshSpecificInvites: () -> () = {}
+    public var invokedRefreshSpecificInvitesfunction = false
+    public var invokedRefreshSpecificInvitesCount = 0
+    public var invokedRefreshSpecificInvitesParameters: (userId: String, refreshInviteType: RefreshInviteType)?
+    public var invokedRefreshSpecificInvitesParametersList = [(userId: String, refreshInviteType: RefreshInviteType)]()
+
+    public func refreshSpecificInvites(userId: String, refreshInviteType: RefreshInviteType) async throws {
+        invokedRefreshSpecificInvitesfunction = true
+        invokedRefreshSpecificInvitesCount += 1
+        invokedRefreshSpecificInvitesParameters = (userId, refreshInviteType)
+        if let error = refreshSpecificInvitesUserIdRefreshInviteTypeThrowableError5 {
+            throw error
+        }
+        closureRefreshSpecificInvites()
     }
     // MARK: - removeCachedInvite
     public var closureRemoveCachedInvite: () -> () = {}
@@ -143,5 +150,22 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
         invokedRemoveCachedInviteCount += 1
         invokedRemoveCachedInviteParameters = (inviteToken, ())
         closureRemoveCachedInvite()
+    }
+    // MARK: - sendNewShareInvites
+    public var sendNewShareInvitesUserIdShareIdNewShareInvitesThrowableError7: Error?
+    public var closureSendNewShareInvites: () -> () = {}
+    public var invokedSendNewShareInvitesfunction = false
+    public var invokedSendNewShareInvitesCount = 0
+    public var invokedSendNewShareInvitesParameters: (userId: String, shareId: String, newShareInvites: [ShareNewUserInvite])?
+    public var invokedSendNewShareInvitesParametersList = [(userId: String, shareId: String, newShareInvites: [ShareNewUserInvite])]()
+
+    public func sendNewShareInvites(userId: String, shareId: String, newShareInvites: [ShareNewUserInvite]) async throws {
+        invokedSendNewShareInvitesfunction = true
+        invokedSendNewShareInvitesCount += 1
+        invokedSendNewShareInvitesParameters = (userId, shareId, newShareInvites)
+        if let error = sendNewShareInvitesUserIdShareIdNewShareInvitesThrowableError7 {
+            throw error
+        }
+        closureSendNewShareInvites()
     }
 }

@@ -127,10 +127,6 @@ extension SharedRepositoryContainer {
         self { RemotePublicKeyDatasource(apiServicing: self.apiManager) }
     }
 
-    var remoteShareInviteDatasource: Factory<any RemoteShareInviteDatasourceProtocol> {
-        self { RemoteShareInviteDatasource(apiServicing: self.apiManager) }
-    }
-
     var localTelemetryEventDatasource: Factory<any LocalTelemetryEventDatasourceProtocol> {
         self { LocalTelemetryEventDatasource(databaseService: self.databaseService) }
     }
@@ -235,8 +231,12 @@ extension SharedRepositoryContainer {
         self { RemoteUserEventsDatasource(apiServicing: self.apiManager) }
     }
 
-    var localUserInviteDatasource: Factory<any LocalUserInviteDatasourceProtocol> {
-        self { LocalUserInviteDatasource(databaseService: self.databaseService) }
+    var localInviteDatasource: Factory<any LocalInviteDatasourceProtocol> {
+        self { LocalInviteDatasource(databaseService: self.databaseService) }
+    }
+
+    var remoteGroupDatasource: Factory<any RemoteGroupDatasourceProtocol> {
+        self { RemoteGroupDatasource(apiServicing: self.apiManager) }
     }
 }
 
@@ -256,6 +256,7 @@ extension SharedRepositoryContainer {
         self {
             ShareKeyRepository(localDatasource: self.localShareKeyDatasource(),
                                remoteDatasource: self.remoteShareKeyDatasource(),
+                               cryptoService: SharedServiceContainer.shared.cryptoService(),
                                logManager: self.logManager,
                                symmetricKeyProvider: self.symmetricKeyProvider,
                                userManager: self.userManager)
@@ -326,16 +327,9 @@ extension SharedRepositoryContainer {
         }
     }
 
-    var shareInviteRepository: Factory<any ShareInviteRepositoryProtocol> {
-        self { ShareInviteRepository(remoteDataSource: self.remoteShareInviteDatasource(),
-                                     userManager: self.userManager,
-                                     logManager: self.logManager) }
-    }
-
-    var inviteRepository: Factory<any InviteRepositoryProtocol> {
+    var inviteRepository: Factory<any FullInviteRepositoryProtocol> {
         self { InviteRepository(remoteDatasource: self.remoteInviteDatasource(),
-                                localDatasource: self.localUserInviteDatasource(),
-                                userManager: self.userManager,
+                                localDatasource: self.localInviteDatasource(),
                                 logManager: self.logManager) }
     }
 
@@ -419,6 +413,12 @@ extension SharedRepositoryContainer {
                                          currentDateProvider: self.currentDateProvider,
                                          symmetricKeyProvider: self.symmetricKeyProvider,
                                          logManager: self.logManager) }
+    }
+
+    var groupRepository: Factory<any GroupRepositoryProtocol> {
+        self {
+            GroupRepository(remoteDatasource: self.remoteGroupDatasource(), logManager: self.logManager)
+        }
     }
 }
 

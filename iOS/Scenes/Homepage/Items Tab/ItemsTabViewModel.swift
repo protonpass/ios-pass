@@ -262,7 +262,7 @@ private extension ItemsTabViewModel {
             .store(in: &cancellables)
     }
 
-    func refreshBanners(_ invites: [UserInvite]? = nil) {
+    func refreshBanners(_ invites: [Invite]? = nil) {
         var banners = [InfoBanner]()
         if let invites, !invites.isEmpty {
             if let newUserInvite = invites.first(where: { $0.fromNewUser }) {
@@ -594,7 +594,7 @@ extension ItemsTabViewModel: SyncEventLoopPullToRefreshDelegate {
     }
 }
 
-private extension [UserInvite] {
+private extension [Invite] {
     var toInfoBanners: InfoBanner {
         .invite(self)
     }

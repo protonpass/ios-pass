@@ -31,7 +31,7 @@ struct BannersSection: View {
 private struct ManageBannersView: View {
     var body: some View {
         Form {
-            InfoBannerView(banner: .invite([.mocked]), dismiss: {}, action: {})
+            InfoBannerView(banner: .invite([.user(.mocked)]), dismiss: {}, action: {})
         }
         .navigationBarTitleDisplayMode(.inline)
     }

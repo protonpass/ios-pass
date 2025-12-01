@@ -38,3 +38,5 @@
 --enable isEmpty,\
 blankLineAfterImports,\
 sortSwitchCases,\
+redundantAsync,\
+

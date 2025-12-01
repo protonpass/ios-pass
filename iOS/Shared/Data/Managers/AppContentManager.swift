@@ -94,6 +94,8 @@ final class AppContentManager: ObservableObject, DeinitPrintable, AppContentMana
     private var getLastEventIdIfNotExist
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
+    @LazyInjected(\SharedUseCasesContainer.dedupShare)
+    private var dedupShare
 
     private var cancellables = Set<AnyCancellable>()
     private var isRefreshing: Bool = false
@@ -207,7 +209,7 @@ extension AppContentManager {
 
             // 4. Refresh invites
             if getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1) {
-                try await inviteRepository.refreshInvites(userId: userId)
+                try await inviteRepository.refreshAllInvites(userId: userId)
             }
 
             try await loadContents(userId: userId, for: remoteShares.shares)
@@ -516,8 +518,10 @@ private extension AppContentManager {
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
         let allItems = try await itemRepository.getAllItems(userId: userId)
 
+        let dedupShares = dedupShare(shares: shares)
+
         let sharesData = try await getShareDatas(symmetricKey: symmetricKey,
-                                                 shares: shares,
+                                                 shares: dedupShares,
                                                  items: allItems)
         let userPreferences = preferencesManager.userPreferences.unwrapped()
 

@@ -178,19 +178,24 @@ final class ManageSharedShareViewModel: ObservableObject {
         Task { [weak self] in
             guard let self else { return }
             do {
+                let userId = try await userManager.getActiveUserId()
+                let shareId = share.shareId
                 switch option {
                 case let .remindExistingUserInvitation(inviteId):
-                    try await execute(await sendInviteReminder(with: share.shareId,
-                                                               and: inviteId),
+                    try await execute(await sendInviteReminder(userId: userId,
+                                                               shareId: shareId,
+                                                               inviteId: inviteId),
                                       shouldForceSync: false)
 
                 case let .cancelExistingUserInvitation(inviteId):
-                    try await execute(await revokeInvitation(with: share.shareId,
-                                                             and: inviteId))
+                    try await execute(await revokeInvitation(userId: userId,
+                                                             shareId: share.shareId,
+                                                             inviteId: inviteId))
 
                 case let .cancelNewUserInvitation(inviteId):
-                    try await execute(await revokeNewUserInvitation(with: share.shareId,
-                                                                    and: inviteId))
+                    try await execute(await revokeNewUserInvitation(userId: userId,
+                                                                    shareId: shareId,
+                                                                    inviteId: inviteId))
 
                 case let .confirmAccess(access):
                     try await execute(await promoteNewUserInvite(share: share,
@@ -325,6 +330,7 @@ private extension ManageSharedShareViewModel {
         guard share.isManager else {
             return .default
         }
-        return try await getPendingInvitationsForShare(with: share.shareId)
+        let userId = try await userManager.getActiveUserId()
+        return try await getPendingInvitationsForShare(userId: userId, shareId: share.shareId)
     }
 }

@@ -44,6 +44,14 @@ public struct InviteRecommendations: Sendable, Decodable, Hashable {
         recommendedEmails.isEmpty && planRecommendedEmails.isEmpty
     }
 
+    public static var empty: Self {
+        .init(recommendedEmails: [],
+              planInternalName: nil,
+              groupDisplayName: nil,
+              planRecommendedEmails: [],
+              planRecommendedEmailsNextToken: nil)
+    }
+
     public func merging(with other: Self) -> Self {
         .init(recommendedEmails: other.recommendedEmails,
               planInternalName: planInternalName,

@@ -1,6 +1,6 @@
 //
 //
-// UserEmailView.swift
+// EmailGroupSelectionView.swift
 // Proton Pass - Created on 19/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -27,19 +27,52 @@ import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 
-struct UserEmailView: View {
+struct EmailGroupSelectionView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var viewModel = UserEmailViewModel()
+    @StateObject private var viewModel = EmailGroupSelectionViewModel()
     @StateObject private var router = PathRouter()
     @State private var isFocused = false
 
     var body: some View {
+        mainContent
+            .environmentObject(viewModel)
+            .onAppear {
+                isFocused = true
+            }
+            .task {
+                await viewModel.loadData()
+            }
+            .onChange(of: viewModel.highlightedRecommendation) { highlightedRecommendation in
+                isFocused = highlightedRecommendation == nil
+            }
+            .animation(.default, value: viewModel.selectedRecommendations)
+            .animation(.default, value: viewModel.loading)
+            .padding(.horizontal, DesignConstant.sectionPadding)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .navigationBarTitleDisplayMode(.inline)
+            .background(PassColor.backgroundNorm)
+            .toolbar { toolbarContent }
+            .routingProvided
+            .navigationStackEmbeded($router.path)
+            .environmentObject(router)
+            .ignoresSafeArea(.keyboard)
+            .sheet(isPresented: $viewModel.showGroupMembers) {
+                if let reco = viewModel.highlightedRecommendation,
+                   case let .group(infos) = reco {
+                    GroupUsersInformationView(groupInfo: infos, rights: nil)
+                        .presentationDetents([.medium, .large])
+                        .presentationDragIndicator(.visible)
+                }
+            }
+    }
+}
+
+// MARK: - Internal views
+
+private extension EmailGroupSelectionView {
+    var mainContent: some View {
         VStack(alignment: .leading) {
-            Text("Share with")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .foregroundStyle(PassColor.textNorm)
-                .padding(.horizontal, DesignConstant.sectionPadding)
+            title
 
             VStack(alignment: .leading) {
                 if case let .new(vault, _) = viewModel.element {
@@ -47,68 +80,59 @@ struct UserEmailView: View {
                 }
 
                 AnyLayout(FlowLayout(spacing: 8)) {
-                    ForEach(viewModel.selectedEmails + [""], id: \.self) { item in
+                    ForEach(viewModel.selectedRecommendations + [.email("")]) { item in
                         token(for: item)
+                            .fixedSize()
                     }
                 }
-                .padding(.leading, -4)
 
                 PassDivider()
                     .padding(.horizontal, -DesignConstant.sectionPadding)
                     .padding(.top, 16)
                     .padding(.bottom, 24)
 
-                if viewModel.recommendationsState == .loading {
-                    VStack {
-                        Spacer(minLength: 150)
-                        ProgressView()
-                    }
-                    .frame(maxWidth: .infinity, alignment: .center)
-                } else if let recommendations = viewModel.recommendationsState.recommendations,
-                          !recommendations.isEmpty {
-                    InviteSuggestionsSection(selectedEmails: viewModel.selectedEmails,
-                                             recommendations: recommendations,
-                                             isFetchingMore: viewModel.isFetchingMore,
-                                             displayCounts: Bundle.main.isQaBuild,
-                                             onSelect: { viewModel.handleSelection(suggestedEmail: $0) },
-                                             onLoadMore: {
-                                                 viewModel
-                                                     .updateRecommendations(removingCurrentRecommendations: false)
-                                             })
-                }
+                suggestions
 
                 Spacer()
             }
-            .frame(maxWidth: .infinity)
-            .padding(.horizontal, DesignConstant.sectionPadding)
             .scrollViewEmbeded(maxWidth: .infinity)
         }
-        .onAppear {
-            isFocused = true
+    }
+
+    var title: some View {
+        Text("Share with")
+            .font(.largeTitle)
+            .fontWeight(.bold)
+            .foregroundStyle(PassColor.textNorm)
+    }
+
+    @ViewBuilder
+    var suggestions: some View {
+        InviteSuggestionsSection()
+            .overlay {
+                overlayContent
+            }
+    }
+
+    @ViewBuilder
+    var overlayContent: some View {
+        if viewModel.loading {
+            VStack {
+                Spacer(minLength: 150)
+                ProgressView()
+            }
+            .frame(maxWidth: .infinity, alignment: .center)
         }
-        .onChange(of: viewModel.highlightedEmail) { highlightedEmail in
-            isFocused = highlightedEmail == nil
-        }
-        .animation(.default, value: viewModel.selectedEmails)
-        .animation(.default, value: viewModel.recommendationsState)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .navigationBarTitleDisplayMode(.inline)
-        .background(PassColor.backgroundNorm)
-        .toolbar { toolbarContent }
-        .routingProvided
-        .navigationStackEmbeded($router.path)
-        .environmentObject(router)
-        .ignoresSafeArea(.keyboard)
     }
 }
 
-private extension UserEmailView {
+private extension EmailGroupSelectionView {
     @ViewBuilder
-    func token(for email: String) -> some View {
-        if email.isEmpty {
+    func token(for recommendation: InviteRecommendationType) -> some View {
+        if recommendation.name.isEmpty {
             emailTextField
         } else {
-            emailCell(for: email)
+            recommendationCell(for: recommendation)
         }
     }
 
@@ -122,16 +146,16 @@ private extension UserEmailView {
                                               placeholder: placeholder,
                                               textColor: PassUIColor.textNorm,
                                               tintColor: PassUIColor.interactionNorm),
-                                onBackspace: { viewModel.highlightLastEmail() },
+                                onBackspace: { viewModel.highlightLast() },
                                 onReturn: { _ = viewModel.appendCurrentEmail() })
             .frame(width: width, height: 32)
             .clipped()
     }
 
     @ViewBuilder
-    func emailCell(for email: String) -> some View {
-        let highlighted = viewModel.highlightedEmail == email
-        let invalid = viewModel.invalidEmails.contains(email)
+    func recommendationCell(for reco: InviteRecommendationType) -> some View {
+        let highlighted = viewModel.highlightedRecommendation == reco
+        let invalid = viewModel.invalidEmails.contains(reco.name)
 
         let textColor: () -> Color = {
             switch (highlighted, invalid) {
@@ -161,13 +185,24 @@ private extension UserEmailView {
             highlighted
         }, set: { newValue in
             if !newValue {
-                viewModel.highlightedEmail = nil
+                viewModel.highlightedRecommendation = nil
             }
         })
 
         HStack(alignment: .center, spacing: 10) {
-            Text(email)
+            let name = if reco.isEmail {
+                reco.name
+            } else {
+                if let memberCount = reco.memberCount {
+                    "\(reco.name) (\(memberCount))"
+                } else {
+                    reco.name
+                }
+            }
+            Text(name)
                 .lineLimit(1)
+                .truncationMode(.tail) // ellipsis if too long
+                .fixedSize(horizontal: true, vertical: false)
         }
         .font(.callout)
         .foregroundStyle(textColor())
@@ -178,7 +213,7 @@ private extension UserEmailView {
         .animation(.default, value: highlighted)
         .animation(.default, value: invalid)
         .contentShape(.rect)
-        .onTapGesture { viewModel.toggleHighlight(email) }
+        .onTapGesture { viewModel.toggleHighlight(reco) }
         .overlay {
             // Dummy invisible text field to allow removing a token with backspace
             BackspaceAwareTextField(text: .constant(""),
@@ -187,14 +222,14 @@ private extension UserEmailView {
                                                   placeholder: "",
                                                   textColor: .clear,
                                                   tintColor: .clear),
-                                    onBackspace: { viewModel.deselect(email) },
-                                    onReturn: { viewModel.toggleHighlight(email) })
+                                    onBackspace: { viewModel.deselect(reco) },
+                                    onReturn: { viewModel.toggleHighlight(reco) })
                 .opacity(0)
         }
     }
 }
 
-private extension UserEmailView {
+private extension EmailGroupSelectionView {
     func vaultRow(_ vault: VaultContent) -> some View {
         HStack(spacing: 16) {
             VaultRow(thumbnail: {
@@ -217,7 +252,7 @@ private extension UserEmailView {
     }
 }
 
-private extension UserEmailView {
+private extension EmailGroupSelectionView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
@@ -253,6 +288,56 @@ private extension UserEmailView {
     }
 }
 
+// MARK: - Subviews
+
+struct GroupUsersInformationView: View {
+    let groupInfo: GroupInfo
+    let rights: String?
+
+    var body: some View {
+        VStack(spacing: DesignConstant.sectionPadding) {
+            Text(verbatim: "\(groupInfo.group.name)")
+                .foregroundStyle(PassColor.textNorm)
+                .fontWeight(.bold)
+                .frame(maxWidth: .infinity, alignment: .center)
+
+            ScrollView {
+                LazyVStack(spacing: 24) {
+                    ForEach(groupInfo.members ?? []) { member in
+                        if let email = member.email {
+                            HStack(spacing: DesignConstant.sectionPadding) {
+                                ZStack {
+                                    PassColor.interactionNormMinor1
+                                        .clipShape(RoundedRectangle(cornerRadius: 40 / 2.5, style: .continuous))
+                                    Text(String(email.prefix(2).uppercased()))
+                                        .font(.system(size: 40 / 3))
+                                        .fontWeight(.medium)
+                                        .foregroundStyle(PassColor.interactionNormMajor2)
+                                }
+                                .frame(width: 40, height: 40)
+
+                                VStack {
+                                    Text(email)
+                                        .foregroundStyle(PassColor.textNorm)
+                                        .lineLimit(1)
+                                    if let rights {
+                                        Text(rights)
+                                            .foregroundStyle(PassColor.textWeak)
+                                    }
+                                }.frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                            .contentShape(.rect)
+                        }
+                    }
+                }
+            }
+        }
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .padding(.top, 32)
+        .background(PassColor.backgroundNorm)
+    }
+}
+
 #Preview("UserEmailView Preview") {
-    UserEmailView()
+    EmailGroupSelectionView()
 }
