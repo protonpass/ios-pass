@@ -59,16 +59,17 @@ public final class PromoteNewUserInvite: PromoteNewUserInviteUseCase {
                         email: String,
                         itemId: String?) async throws {
         let userData = try await userManager.getUnwrappedActiveUserData()
+        let userId = userData.user.ID
         let publicKeys = try await publicKeyRepository.getPublicKeys(email: email)
         guard let activeKey = publicKeys.first else {
             throw PassError.sharing(.noPublicKeyAssociatedWithEmail(email))
         }
 
         let key: any ShareKeyProtocol = if share.isVaultRepresentation {
-            try await passKeyManager.getLatestShareKey(userId: userData.user.ID,
+            try await passKeyManager.getLatestShareKey(userId: userId,
                                                        shareId: share.id)
         } else if let itemId {
-            try await passKeyManager.getLatestItemKey(userId: userData.user.ID,
+            try await passKeyManager.getLatestItemKey(userId: userId,
                                                       shareId: share.id,
                                                       itemId: itemId)
         } else {
@@ -79,7 +80,8 @@ public final class PromoteNewUserInvite: PromoteNewUserInviteUseCase {
                                                              publicReceiverKey: activeKey,
                                                              userData: userData,
                                                              key: key)
-        let promoted = try await shareInviteRepository.promoteNewUserInvite(shareId: share.id,
+        let promoted = try await shareInviteRepository.promoteNewUserInvite(userId: userId,
+                                                                            shareId: share.id,
                                                                             inviteId: inviteId,
                                                                             keys: [signedKey])
         if !promoted {

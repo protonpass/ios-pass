@@ -90,7 +90,8 @@ public final class SendShareInvite: @unchecked Sendable, SendShareInviteUseCase 
                                                                                            share: share,
                                                                                            shareKey: key) }
 
-        let invited = try await shareInviteRepository.sendInvites(shareId: share.id,
+        let invited = try await shareInviteRepository.sendInvites(userId: userId,
+                                                                  shareId: share.id,
                                                                   itemId: itemId,
                                                                   inviteesData: inviteesData,
                                                                   targetType: baseInfo.shareTargetType)

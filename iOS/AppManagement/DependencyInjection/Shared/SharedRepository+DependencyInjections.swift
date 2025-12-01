@@ -329,7 +329,6 @@ extension SharedRepositoryContainer {
     var inviteRepository: Factory<any FullInviteRepositoryProtocol> {
         self { InviteRepository(remoteDatasource: self.remoteInviteDatasource(),
                                 localDatasource: self.localInviteDatasource(),
-                                userManager: self.userManager,
                                 logManager: self.logManager) }
     }
 
