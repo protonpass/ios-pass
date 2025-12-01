@@ -33,7 +33,7 @@ struct AcceptRejectInviteView: View {
         GeometryReader { geometry in
             ScrollView(showsIndicators: false) {
                 VStack {
-                    if viewModel.userInvite.fromNewUser {
+                    if viewModel.invite.fromNewUser {
                         Text("Congratulations,\n your access has been confirmed")
                             .font(.title2.bold())
                             .foregroundStyle(PassColor.textNorm)
@@ -42,7 +42,7 @@ struct AcceptRejectInviteView: View {
                         senderEmailInfo
                     }
 
-                    if viewModel.userInvite.isVault {
+                    if viewModel.invite.isVault {
                         if let infos = viewModel.vaultInfos {
                             vaultInformation(infos: infos)
                         } else {
@@ -73,15 +73,15 @@ struct AcceptRejectInviteView: View {
 private extension AcceptRejectInviteView {
     var senderEmailInfo: some View {
         VStack(alignment: .center) {
-            if viewModel.userInvite.isVault {
-                Text(viewModel.userInvite.inviterEmail)
+            if viewModel.invite.isVault {
+                Text(viewModel.invite.inviterEmail)
                     .fontWeight(.bold)
                 Text("invites you to access items in")
             } else {
                 Text("Shared item invitation")
                     .font(.title)
                     .padding(.bottom, 16)
-                Text("\(viewModel.userInvite.inviterEmail) wants to share an item with you.")
+                Text("\(viewModel.invite.inviterEmail) wants to share an item with you.")
                     .multilineTextAlignment(.center)
                     .padding(.bottom, 16)
             }
@@ -109,7 +109,7 @@ private extension AcceptRejectInviteView {
             Text(infos.name)
                 .font(.title2.bold())
                 .foregroundStyle(PassColor.textNorm)
-            Text(viewModel.userInvite.vaultsCountInfos)
+            Text(viewModel.invite.vaultsCountInfos)
                 .font(.title3)
                 .foregroundStyle(PassColor.textWeak)
         }
@@ -119,12 +119,12 @@ private extension AcceptRejectInviteView {
 private extension AcceptRejectInviteView {
     var actionButtons: some View {
         VStack {
-            CapsuleTextButton(title: viewModel.userInvite.acceptButtonTitle,
+            CapsuleTextButton(title: viewModel.invite.acceptButtonTitle,
                               titleColor: PassColor.textInvert,
                               backgroundColor: PassColor.interactionNorm,
                               action: { viewModel.accept() })
 
-            CapsuleTextButton(title: viewModel.userInvite.rejectButtonTitle,
+            CapsuleTextButton(title: viewModel.invite.rejectButtonTitle,
                               titleColor: PassColor.interactionNormMajor1,
                               backgroundColor: PassColor.interactionNormMinor1,
                               action: { viewModel.reject() })
@@ -133,10 +133,10 @@ private extension AcceptRejectInviteView {
 }
 
 #Preview("AcceptRejectInviteView Preview") {
-    AcceptRejectInviteView(viewModel: AcceptRejectInviteViewModel(invite: UserInvite.mocked))
+    AcceptRejectInviteView(viewModel: AcceptRejectInviteViewModel(invite: .user(UserInvite.mocked)))
 }
 
-private extension UserInvite {
+private extension Invite {
     var acceptButtonTitle: String {
         isVault ? fromNewUser ? #localized("See the shared vault") : #localized("Join shared vault") :
             #localized("Accept and view the item")

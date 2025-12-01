@@ -46,7 +46,7 @@ public final class UserEventsSynchronizer: UserEventsSynchronizerProtocol {
     private let itemRepository: any ItemRepositoryProtocol
     private let shareRepository: any ShareRepositoryProtocol
     private let accessRepository: any AccessRepositoryProtocol
-    private let inviteRepository: any InviteRepositoryProtocol
+    private let inviteRepository: any FullInviteRepositoryProtocol
     private let aliasRepository: any AliasRepositoryProtocol
     private let simpleLoginNoteSynchronizer: any SimpleLoginNoteSynchronizerProtocol
     private let logger: Logger
@@ -57,7 +57,7 @@ public final class UserEventsSynchronizer: UserEventsSynchronizerProtocol {
                 itemRepository: any ItemRepositoryProtocol,
                 shareRepository: any ShareRepositoryProtocol,
                 accessRepository: any AccessRepositoryProtocol,
-                inviteRepository: any InviteRepositoryProtocol,
+                inviteRepository: any FullInviteRepositoryProtocol,
                 aliasRepository: any AliasRepositoryProtocol,
                 simpleLoginNoteSynchronizer: any SimpleLoginNoteSynchronizerProtocol,
                 logManager: any LogManagerProtocol) {
@@ -128,15 +128,11 @@ private extension UserEventsSynchronizer {
         // TODO: folder to be implemented in the folder ticket mr
 //        async let foldersUpdated: () = processSharesToCreate(events.foldersUpdated, userId: userId)
 //        async let foldersDeleted: () = processInviteChanges(inviteChanges: events.foldersDeleted, userId: userId)
-        async let invites: () = processInviteChanges(inviteChanges: events.invitesChanged, userId: userId)
-        // swiftlint:disable:next todo
-        // TODO: Group invite to be added to the group sharing MR
-//        async let groupInvites: () = processInviteChanges(inviteChanges: events.groupInvitesChanged, userId:
-//        userId)
-        // swiftlint:disable:next todo
-        // TODO: share with invite to be added to the group sharing MR that contains changes to invite logic and serices
-//        async let inviteCreatedShares: () = processInviteChanges(inviteChanges: events.sharesWithInvitesToCreate,
-//        userId: userId)
+        async let invites: () = processUserInviteChanges(events.invitesChanged, userId: userId)
+        async let groupInvites: () = processGroupInviteChanges(events.groupInvitesChanged, userId: userId)
+        async let newShareWithInvites: () = processNewShareWithInviteChanges(events.sharesWithInvitesToCreate,
+                                                                             userId: userId)
+
         async let pendingAliasToCreate: () = processPendingAliasToCreateChanged(events.pendingAliasToCreateChanged,
                                                                                 userId: userId)
         async let userChange: () = processUserChanged(events.refreshUser, userId: userId)
@@ -149,7 +145,9 @@ private extension UserEventsSynchronizer {
                        deletedShares,
                        pendingAliasToCreate,
                        userChange,
-                       invites)
+                       invites,
+                       groupInvites,
+                       newShareWithInvites)
     }
 
     func processUpdatedItems(_ updatedItems: [ItemEvent], userId: String) async throws {
@@ -181,15 +179,14 @@ private extension UserEventsSynchronizer {
         try await itemRepository.deleteItemsLocally(items: deletedItems)
     }
 
-    func processAliasNoteChangedItems(_ aliasNoteChangedItems: [ItemEvent],
+    func processAliasNoteChangedItems(_ events: [ItemEvent],
                                       userId: String) async throws {
-        guard !aliasNoteChangedItems.isEmpty else {
+        guard !events.isEmpty else {
             logger.trace("No alias note changed for user \(userId)")
             return
         }
-        logger.trace("Syncing SL note for \(aliasNoteChangedItems.count) items for user \(userId)")
-        _ = try await simpleLoginNoteSynchronizer.syncAliases(userId: userId,
-                                                              aliases: aliasNoteChangedItems)
+        logger.trace("Syncing SL note for \(events.count) items for user \(userId)")
+        _ = try await simpleLoginNoteSynchronizer.syncAliases(userId: userId, aliases: events)
     }
 
     func processUpdatedShares(_ updatedShares: [ShareEvent], userId: String) async throws {
@@ -255,18 +252,50 @@ private extension UserEventsSynchronizer {
         }
     }
 
-    func processInviteChanges(inviteChanges: ChangeEvent?,
-                              userId: String) async throws {
-        guard inviteChanges != nil else {
-            logger.trace("No invite changes for user \(userId)")
+    func processUserInviteChanges(_ event: ChangeEvent?,
+                                  userId: String) async throws {
+        guard let event else {
+            logger.trace("No user invite changes for user \(userId)")
             return
         }
-        try await inviteRepository.refreshInvites(userId: userId)
+        try await inviteRepository.refreshSpecificInvites(userId: userId,
+                                                          refreshInviteType: .user(token: event.eventToken))
     }
 
-    func processPendingAliasToCreateChanged(_ pendingAliasToCreateChanged: ChangeEvent?,
+    func processGroupInviteChanges(_ event: ChangeEvent?,
+                                   userId: String) async throws {
+        guard let event else {
+            logger.trace("No group invite changes for user \(userId)")
+            return
+        }
+        try await inviteRepository.refreshSpecificInvites(userId: userId,
+                                                          refreshInviteType: .group(token: event.eventToken))
+    }
+
+    func processNewShareWithInviteChanges(_ events: [ShareEvent],
+                                          userId: String) async throws {
+        guard !events.isEmpty else {
+            logger.trace("No shares with invite changes for user \(userId)")
+            return
+        }
+        try await withThrowingTaskGroup(of: Void.self) { taskGroup in
+            for event in events {
+                taskGroup.addTask { [inviteRepository] in
+                    let shareId = event.shareID
+                    let pendingInvites = try await inviteRepository.getAllPendingInvites(userId: userId,
+                                                                                         shareId: shareId)
+                    try await inviteRepository.sendNewShareInvites(userId: userId,
+                                                                   shareId: shareId,
+                                                                   newShareInvites: pendingInvites.newUserInvites)
+                }
+            }
+            try await taskGroup.waitForAll()
+        }
+    }
+
+    func processPendingAliasToCreateChanged(_ event: ChangeEvent?,
                                             userId: String) async throws {
-        guard pendingAliasToCreateChanged != nil else {
+        guard event != nil else {
             logger.trace("No aliases to create for user \(userId)")
             return
         }

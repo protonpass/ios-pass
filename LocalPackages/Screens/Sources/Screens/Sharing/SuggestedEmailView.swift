@@ -20,28 +20,33 @@
 //
 
 import DesignSystem
+import Entities
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
 
-struct SuggestedEmailView: View {
-    private let email: String
+public struct SuggestedEmailView: View {
+    private let recommendation: InviteRecommendationType
     private let isSelected: Bool
     private let onSelect: () -> Void
 
-    init(email: String, isSelected: Bool, onSelect: @escaping () -> Void) {
-        self.email = email
+    public init(recommendation: InviteRecommendationType, isSelected: Bool, onSelect: @escaping () -> Void) {
+        self.recommendation = recommendation
         self.isSelected = isSelected
         self.onSelect = onSelect
     }
 
-    var body: some View {
+    public var body: some View {
         HStack {
-            SquircleThumbnail(data: .initials(String(email.prefix(2).uppercased())),
-                              tintColor: PassColor.interactionNormMajor2,
-                              backgroundColor: PassColor.interactionNormMinor1)
+            SquircleThumbnail(data: recommendation
+                .isEmail ? .initials(String(recommendation.name.prefix(2).uppercased())) :
+                .icon(IconProvider.users),
+                tintColor: PassColor.interactionNormMajor2,
+                backgroundColor: PassColor.interactionNormMinor1)
 
             Spacer()
 
-            Text(email)
+            Text(name)
                 .foregroundStyle(PassColor.textNorm)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -51,5 +56,17 @@ struct SuggestedEmailView: View {
         }
         .contentShape(.rect)
         .onTapGesture(perform: onSelect)
+    }
+
+    private var name: String {
+        switch recommendation {
+        case let .email(email):
+            return email
+        case .group:
+            guard let memberCounts = recommendation.memberCount else {
+                return recommendation.name
+            }
+            return recommendation.name + " " + #localized("(%lld members)", memberCounts)
+        }
     }
 }

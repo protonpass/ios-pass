@@ -39,6 +39,29 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
+    <entity name="GroupInviteEntity" representedClassName="GroupInviteEntity" syncable="YES">
+        <attribute name="createTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="data" optional="YES" attributeType="String"/>
+        <attribute name="invitedAddressID" attributeType="String"/>
+        <attribute name="invitedEmail" attributeType="String"/>
+        <attribute name="invitedGroupID" attributeType="String"/>
+        <attribute name="inviteID" attributeType="String"/>
+        <attribute name="inviterEmail" attributeType="String"/>
+        <attribute name="inviterUserID" attributeType="String"/>
+        <attribute name="inviteToken" attributeType="String"/>
+        <attribute name="remindersSent" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="targetID" attributeType="String"/>
+        <attribute name="targetType" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="userID" attributeType="String"/>
+        <relationship name="keys" toMany="YES" deletionRule="Cascade" destinationEntity="InviteKeyEntity" inverseName="groupInvite" inverseEntity="InviteKeyEntity"/>
+        <relationship name="vaultData" maxCount="1" deletionRule="Cascade" destinationEntity="VaultDataEntity" inverseName="groupInvite" inverseEntity="VaultDataEntity"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="userID"/>
+                <constraint value="inviteToken"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
     <entity name="InAppNotificationEntity" representedClassName="InAppNotificationEntity" syncable="YES">
         <attribute name="ctaRef" optional="YES" attributeType="String"/>
         <attribute name="ctaText" optional="YES" attributeType="String"/>
@@ -76,7 +99,8 @@
     <entity name="InviteKeyEntity" representedClassName="InviteKeyEntity" syncable="YES">
         <attribute name="key" attributeType="String"/>
         <attribute name="keyRotation" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="invite" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserInviteEntity" inverseName="keys" inverseEntity="UserInviteEntity"/>
+        <relationship name="groupInvite" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="GroupInviteEntity" inverseName="keys" inverseEntity="GroupInviteEntity"/>
+        <relationship name="userInvite" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserInviteEntity" inverseName="keys" inverseEntity="UserInviteEntity"/>
     </entity>
     <entity name="ItemEntity" representedClassName="ItemEntity" syncable="YES">
         <attribute name="aliasEmail" optional="YES" attributeType="String"/>
@@ -180,6 +204,7 @@
         <attribute name="createTime" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="expireTime" optional="YES" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="flags" attributeType="Integer 64" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="groupID" optional="YES" attributeType="String"/>
         <attribute name="newUserInvitesReady" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="owner" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="pendingInvites" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
@@ -282,8 +307,8 @@
         <attribute name="targetID" attributeType="String"/>
         <attribute name="targetType" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="userID" attributeType="String"/>
-        <relationship name="keys" toMany="YES" deletionRule="Cascade" destinationEntity="InviteKeyEntity" inverseName="invite" inverseEntity="InviteKeyEntity"/>
-        <relationship name="vaultData" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="VaultDataEntity" inverseName="invite" inverseEntity="VaultDataEntity"/>
+        <relationship name="keys" toMany="YES" deletionRule="Cascade" destinationEntity="InviteKeyEntity" inverseName="userInvite" inverseEntity="InviteKeyEntity"/>
+        <relationship name="vaultData" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="VaultDataEntity" inverseName="userInvite" inverseEntity="VaultDataEntity"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="userID"/>
@@ -317,6 +342,7 @@
         <attribute name="contentKeyRotation" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="itemCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="memberCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="invite" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserInviteEntity" inverseName="vaultData" inverseEntity="UserInviteEntity"/>
+        <relationship name="groupInvite" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="GroupInviteEntity" inverseName="vaultData" inverseEntity="GroupInviteEntity"/>
+        <relationship name="userInvite" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserInviteEntity" inverseName="vaultData" inverseEntity="UserInviteEntity"/>
     </entity>
 </model>

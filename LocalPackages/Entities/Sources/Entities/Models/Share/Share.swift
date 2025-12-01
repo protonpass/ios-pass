@@ -67,6 +67,9 @@ public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable {
     /// Version of the content's format
     public let contentFormatVersion: Int64?
 
+    /// ID of the group that grants access to this resource. If it is null then it is a normal user share
+    public let groupID: String?
+
     /// Expiration time for this share
     public let expireTime: Int64?
 
@@ -119,6 +122,7 @@ public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable {
                 content: String?,
                 contentKeyRotation: Int64?,
                 contentFormatVersion: Int64?,
+                groupID: String?,
                 expireTime: Int64?,
                 createTime: Int64,
                 canAutoFill: Bool,
@@ -139,6 +143,7 @@ public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable {
         self.content = content
         self.contentKeyRotation = contentKeyRotation
         self.contentFormatVersion = contentFormatVersion
+        self.groupID = groupID
         self.expireTime = expireTime
         self.createTime = createTime
         self.canAutoFill = canAutoFill
@@ -165,6 +170,7 @@ public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable {
         content = try container.decodeIfPresent(String.self, forKey: .content)
         contentKeyRotation = try container.decodeIfPresent(Int64.self, forKey: .contentKeyRotation)
         contentFormatVersion = try container.decodeIfPresent(Int64.self, forKey: .contentFormatVersion)
+        groupID = try container.decodeIfPresent(String.self, forKey: .groupID)
         expireTime = try container.decodeIfPresent(Int64.self, forKey: .expireTime)
         createTime = try container.decode(Int64.self, forKey: .createTime)
         canAutoFill = try container.decode(Bool.self, forKey: .canAutoFill)
@@ -175,7 +181,8 @@ public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable {
     private enum CodingKeys: String, CodingKey {
         case shareID, vaultID, addressID, targetType, targetID, permission, shareRoleID, targetMembers,
              targetMaxMembers
-        case pendingInvites, newUserInvitesReady, owner, shared, content, contentKeyRotation, contentFormatVersion
+        case pendingInvites, newUserInvitesReady, owner, shared, content, contentKeyRotation, contentFormatVersion,
+             groupID
         case expireTime, createTime, canAutoFill, flags
     }
 

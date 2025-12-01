@@ -46,6 +46,7 @@ public extension PassError {
         case missingKeys
         case unmatchedKeyRotation(lhsKey: Int64, rhsKey: Int64)
         case missingItemKeyRotation(Int)
+        case missingGroupAddress(String)
 
         public var debugDescription: String {
             switch self {
@@ -95,6 +96,8 @@ public extension PassError {
                 "Missing item key rotation \(rotation)"
             case let .failedToVerifyContent(error):
                 "Failed to verify content: \(error)"
+            case let .missingGroupAddress(groupId):
+                "Missing group address for groupId \(groupId)"
             }
         }
     }

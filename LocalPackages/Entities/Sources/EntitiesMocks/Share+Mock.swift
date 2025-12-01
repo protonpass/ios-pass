@@ -57,6 +57,7 @@ public extension Share {
               content: content,
               contentKeyRotation: contentKeyRotation,
               contentFormatVersion: contentFormatVersion,
+              groupID: nil,
               expireTime: expireTime,
               createTime: createTime,
               canAutoFill: canAutoFill,

@@ -63,17 +63,18 @@ public final class AddAndSwitchToNewUserAccount: AddAndSwitchToNewUserAccountUse
 
     public func execute(userData: UserData, hasExtraPassword: Bool) async throws {
         syncEventLoop.stop()
+        let userId = userData.user.ID
         // We add the new user and credential to the user manager and the main authManager
         // We also update the main apiservice with the new session id through apiManager
         try await userManager.upsertAndMarkAsActive(userData: userData)
-        try await preferencesManager.switchUserPreferences(userId: userData.user.ID)
+        try await preferencesManager.switchUserPreferences(userId: userId)
         refreshFeatureFlags()
         if hasExtraPassword {
             try await preferencesManager.updateUserPreferences(\.extraPasswordEnabled,
                                                                value: true)
         }
-        await fullContentSync(userId: userData.user.ID, shouldStopEventLoop: true)
-        await inviteRepository.refreshInvites()
+        await fullContentSync(userId: userId, shouldStopEventLoop: true)
+        try await inviteRepository.refreshAllInvites(userId: userId)
         syncEventLoop.start()
     }
 }

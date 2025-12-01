@@ -32,12 +32,16 @@ public protocol OrganizationRepositoryProtocol: Sendable {
     /// Could be nil if the user is not in business plan
     @discardableResult
     func refreshOrganization(userId: String) async throws -> Organization?
+
+    func getOrganizationKeys(userId: String) async throws -> OrganizationKey
 }
 
 public actor OrganizationRepository: OrganizationRepositoryProtocol {
     private let localDatasource: any LocalOrganizationDatasourceProtocol
     private let remoteDatasource: any RemoteOrganizationDatasourceProtocol
     private let logger: Logger
+
+    private var organizationKeyCache: OrganizationKey?
 
     public init(localDatasource: any LocalOrganizationDatasourceProtocol,
                 remoteDatasource: any RemoteOrganizationDatasourceProtocol,
@@ -70,5 +74,19 @@ public extension OrganizationRepository {
         }
         logger.info("Refreshed and found no organization for suserId \(userId)")
         return nil
+    }
+
+    func getOrganizationKeys(userId: String) async throws -> OrganizationKey {
+        logger.trace("Getting organization key for userId \(userId)")
+        if let key = organizationKeyCache {
+            logger.info("Found cached organization key for userId \(userId)")
+            return key
+        }
+
+        logger.trace("Found no cached organization key for userId \(userId)")
+        let key = try await remoteDatasource.getOrganizationKey(userId: userId)
+        logger.trace("Caching organization key for userId \(userId).")
+        organizationKeyCache = key
+        return key
     }
 }
