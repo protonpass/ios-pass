@@ -21,8 +21,8 @@
 @testable import Core
 import Foundation
 
-enum LogEntryFactory {
-    static func createMock(timestamp: TimeInterval = 0,
+public enum LogEntryFactory {
+    public static func createMock(timestamp: TimeInterval = 0,
                            subsystem: String = "",
                            category: String = "",
                            level: LogLevel = .debug,
@@ -42,7 +42,7 @@ enum LogEntryFactory {
               column: column)
     }
 
-    static func createMockArray(count: Int,
+    public static func createMockArray(count: Int,
                                 timestamp: TimeInterval = 0,
                                 subsystem: String = "",
                                 category: String = "",
