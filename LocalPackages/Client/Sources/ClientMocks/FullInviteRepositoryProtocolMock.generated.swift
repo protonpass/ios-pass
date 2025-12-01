@@ -68,38 +68,38 @@ public final class FullInviteRepositoryProtocolMock: @unchecked Sendable, Invite
         closureLoadLocalInvites()
     }
     // MARK: - acceptInvite
-    public var acceptInviteAndThrowableError2: Error?
+    public var acceptInviteUserIdInviteKeysThrowableError2: Error?
     public var closureAcceptInvite: () -> () = {}
     public var invokedAcceptInvitefunction = false
     public var invokedAcceptInviteCount = 0
-    public var invokedAcceptInviteParameters: (invite: Invite, keys: [ItemKey])?
-    public var invokedAcceptInviteParametersList = [(invite: Invite, keys: [ItemKey])]()
+    public var invokedAcceptInviteParameters: (userId: String, invite: Invite, keys: [ItemKey])?
+    public var invokedAcceptInviteParametersList = [(userId: String, invite: Invite, keys: [ItemKey])]()
     public var stubbedAcceptInviteResult: Share?
 
-    public func acceptInvite(_ invite: Invite, and keys: [ItemKey]) async throws -> Share? {
+    public func acceptInvite(userId: String, invite: Invite, keys: [ItemKey]) async throws -> Share? {
         invokedAcceptInvitefunction = true
         invokedAcceptInviteCount += 1
-        invokedAcceptInviteParameters = (invite, keys)
-        if let error = acceptInviteAndThrowableError2 {
+        invokedAcceptInviteParameters = (userId, invite, keys)
+        if let error = acceptInviteUserIdInviteKeysThrowableError2 {
             throw error
         }
         closureAcceptInvite()
         return stubbedAcceptInviteResult
     }
     // MARK: - rejectInvite
-    public var rejectInviteThrowableError3: Error?
+    public var rejectInviteUserIdInviteThrowableError3: Error?
     public var closureRejectInvite: () -> () = {}
     public var invokedRejectInvitefunction = false
     public var invokedRejectInviteCount = 0
-    public var invokedRejectInviteParameters: (invite: Invite, Void)?
-    public var invokedRejectInviteParametersList = [(invite: Invite, Void)]()
+    public var invokedRejectInviteParameters: (userId: String, invite: Invite)?
+    public var invokedRejectInviteParametersList = [(userId: String, invite: Invite)]()
     public var stubbedRejectInviteResult: Bool!
 
-    public func rejectInvite(_ invite: Invite) async throws -> Bool {
+    public func rejectInvite(userId: String, invite: Invite) async throws -> Bool {
         invokedRejectInvitefunction = true
         invokedRejectInviteCount += 1
-        invokedRejectInviteParameters = (invite, ())
-        if let error = rejectInviteThrowableError3 {
+        invokedRejectInviteParameters = (userId, invite)
+        if let error = rejectInviteUserIdInviteThrowableError3 {
             throw error
         }
         closureRejectInvite()
@@ -153,208 +153,208 @@ public final class FullInviteRepositoryProtocolMock: @unchecked Sendable, Invite
         closureRemoveCachedInvite()
     }
     // MARK: - sendNewShareInvites
-    public var sendNewShareInvitesShareIdNewShareInvitesThrowableError7: Error?
+    public var sendNewShareInvitesUserIdShareIdNewShareInvitesThrowableError7: Error?
     public var closureSendNewShareInvites: () -> () = {}
     public var invokedSendNewShareInvitesfunction = false
     public var invokedSendNewShareInvitesCount = 0
-    public var invokedSendNewShareInvitesParameters: (shareId: String, newShareInvites: [ShareNewUserInvite])?
-    public var invokedSendNewShareInvitesParametersList = [(shareId: String, newShareInvites: [ShareNewUserInvite])]()
+    public var invokedSendNewShareInvitesParameters: (userId: String, shareId: String, newShareInvites: [ShareNewUserInvite])?
+    public var invokedSendNewShareInvitesParametersList = [(userId: String, shareId: String, newShareInvites: [ShareNewUserInvite])]()
 
-    public func sendNewShareInvites(shareId: String, newShareInvites: [ShareNewUserInvite]) async throws {
+    public func sendNewShareInvites(userId: String, shareId: String, newShareInvites: [ShareNewUserInvite]) async throws {
         invokedSendNewShareInvitesfunction = true
         invokedSendNewShareInvitesCount += 1
-        invokedSendNewShareInvitesParameters = (shareId, newShareInvites)
-        if let error = sendNewShareInvitesShareIdNewShareInvitesThrowableError7 {
+        invokedSendNewShareInvitesParameters = (userId, shareId, newShareInvites)
+        if let error = sendNewShareInvitesUserIdShareIdNewShareInvitesThrowableError7 {
             throw error
         }
         closureSendNewShareInvites()
     }
     // MARK: - ⚡️ ShareInviteRepositoryProtocol
     // MARK: - getAllPendingInvites
-    public var getAllPendingInvitesShareIdThrowableError1: Error?
+    public var getAllPendingInvitesUserIdShareIdThrowableError1: Error?
     public var closureGetAllPendingInvites: () -> () = {}
     public var invokedGetAllPendingInvitesfunction = false
     public var invokedGetAllPendingInvitesCount = 0
-    public var invokedGetAllPendingInvitesParameters: (shareId: String, Void)?
-    public var invokedGetAllPendingInvitesParametersList = [(shareId: String, Void)]()
+    public var invokedGetAllPendingInvitesParameters: (userId: String, shareId: String)?
+    public var invokedGetAllPendingInvitesParametersList = [(userId: String, shareId: String)]()
     public var stubbedGetAllPendingInvitesResult: ShareInvites!
 
-    public func getAllPendingInvites(shareId: String) async throws -> ShareInvites {
+    public func getAllPendingInvites(userId: String, shareId: String) async throws -> ShareInvites {
         invokedGetAllPendingInvitesfunction = true
         invokedGetAllPendingInvitesCount += 1
-        invokedGetAllPendingInvitesParameters = (shareId, ())
-        if let error = getAllPendingInvitesShareIdThrowableError1 {
+        invokedGetAllPendingInvitesParameters = (userId, shareId)
+        if let error = getAllPendingInvitesUserIdShareIdThrowableError1 {
             throw error
         }
         closureGetAllPendingInvites()
         return stubbedGetAllPendingInvitesResult
     }
     // MARK: - sendInvites
-    public var sendInvitesShareIdItemIdInviteesDataTargetTypeThrowableError2: Error?
+    public var sendInvitesUserIdShareIdItemIdInviteesDataTargetTypeThrowableError2: Error?
     public var closureSendInvites: () -> () = {}
     public var invokedSendInvitesfunction = false
     public var invokedSendInvitesCount = 0
-    public var invokedSendInvitesParameters: (shareId: String, itemId: String?, inviteesData: [InviteeData], targetType: TargetType)?
-    public var invokedSendInvitesParametersList = [(shareId: String, itemId: String?, inviteesData: [InviteeData], targetType: TargetType)]()
+    public var invokedSendInvitesParameters: (userId: String, shareId: String, itemId: String?, inviteesData: [InviteeData], targetType: TargetType)?
+    public var invokedSendInvitesParametersList = [(userId: String, shareId: String, itemId: String?, inviteesData: [InviteeData], targetType: TargetType)]()
     public var stubbedSendInvitesResult: Bool!
 
-    public func sendInvites(shareId: String, itemId: String?, inviteesData: [InviteeData], targetType: TargetType) async throws -> Bool {
+    public func sendInvites(userId: String, shareId: String, itemId: String?, inviteesData: [InviteeData], targetType: TargetType) async throws -> Bool {
         invokedSendInvitesfunction = true
         invokedSendInvitesCount += 1
-        invokedSendInvitesParameters = (shareId, itemId, inviteesData, targetType)
-        if let error = sendInvitesShareIdItemIdInviteesDataTargetTypeThrowableError2 {
+        invokedSendInvitesParameters = (userId, shareId, itemId, inviteesData, targetType)
+        if let error = sendInvitesUserIdShareIdItemIdInviteesDataTargetTypeThrowableError2 {
             throw error
         }
         closureSendInvites()
         return stubbedSendInvitesResult
     }
     // MARK: - promoteNewUserInvite
-    public var promoteNewUserInviteShareIdInviteIdKeysThrowableError3: Error?
+    public var promoteNewUserInviteUserIdShareIdInviteIdKeysThrowableError3: Error?
     public var closurePromoteNewUserInvite: () -> () = {}
     public var invokedPromoteNewUserInvitefunction = false
     public var invokedPromoteNewUserInviteCount = 0
-    public var invokedPromoteNewUserInviteParameters: (shareId: String, inviteId: String, keys: [ItemKey])?
-    public var invokedPromoteNewUserInviteParametersList = [(shareId: String, inviteId: String, keys: [ItemKey])]()
+    public var invokedPromoteNewUserInviteParameters: (userId: String, shareId: String, inviteId: String, keys: [ItemKey])?
+    public var invokedPromoteNewUserInviteParametersList = [(userId: String, shareId: String, inviteId: String, keys: [ItemKey])]()
     public var stubbedPromoteNewUserInviteResult: Bool!
 
-    public func promoteNewUserInvite(shareId: String, inviteId: String, keys: [ItemKey]) async throws -> Bool {
+    public func promoteNewUserInvite(userId: String, shareId: String, inviteId: String, keys: [ItemKey]) async throws -> Bool {
         invokedPromoteNewUserInvitefunction = true
         invokedPromoteNewUserInviteCount += 1
-        invokedPromoteNewUserInviteParameters = (shareId, inviteId, keys)
-        if let error = promoteNewUserInviteShareIdInviteIdKeysThrowableError3 {
+        invokedPromoteNewUserInviteParameters = (userId, shareId, inviteId, keys)
+        if let error = promoteNewUserInviteUserIdShareIdInviteIdKeysThrowableError3 {
             throw error
         }
         closurePromoteNewUserInvite()
         return stubbedPromoteNewUserInviteResult
     }
     // MARK: - sendInviteReminder
-    public var sendInviteReminderShareIdInviteIdThrowableError4: Error?
+    public var sendInviteReminderUserIdShareIdInviteIdThrowableError4: Error?
     public var closureSendInviteReminder: () -> () = {}
     public var invokedSendInviteReminderfunction = false
     public var invokedSendInviteReminderCount = 0
-    public var invokedSendInviteReminderParameters: (shareId: String, inviteId: String)?
-    public var invokedSendInviteReminderParametersList = [(shareId: String, inviteId: String)]()
+    public var invokedSendInviteReminderParameters: (userId: String, shareId: String, inviteId: String)?
+    public var invokedSendInviteReminderParametersList = [(userId: String, shareId: String, inviteId: String)]()
     public var stubbedSendInviteReminderResult: Bool!
 
-    public func sendInviteReminder(shareId: String, inviteId: String) async throws -> Bool {
+    public func sendInviteReminder(userId: String, shareId: String, inviteId: String) async throws -> Bool {
         invokedSendInviteReminderfunction = true
         invokedSendInviteReminderCount += 1
-        invokedSendInviteReminderParameters = (shareId, inviteId)
-        if let error = sendInviteReminderShareIdInviteIdThrowableError4 {
+        invokedSendInviteReminderParameters = (userId, shareId, inviteId)
+        if let error = sendInviteReminderUserIdShareIdInviteIdThrowableError4 {
             throw error
         }
         closureSendInviteReminder()
         return stubbedSendInviteReminderResult
     }
     // MARK: - deleteInvite
-    public var deleteInviteShareIdInviteIdThrowableError5: Error?
+    public var deleteInviteUserIdShareIdInviteIdThrowableError5: Error?
     public var closureDeleteInvite: () -> () = {}
     public var invokedDeleteInvitefunction = false
     public var invokedDeleteInviteCount = 0
-    public var invokedDeleteInviteParameters: (shareId: String, inviteId: String)?
-    public var invokedDeleteInviteParametersList = [(shareId: String, inviteId: String)]()
+    public var invokedDeleteInviteParameters: (userId: String, shareId: String, inviteId: String)?
+    public var invokedDeleteInviteParametersList = [(userId: String, shareId: String, inviteId: String)]()
     public var stubbedDeleteInviteResult: Bool!
 
-    public func deleteInvite(shareId: String, inviteId: String) async throws -> Bool {
+    public func deleteInvite(userId: String, shareId: String, inviteId: String) async throws -> Bool {
         invokedDeleteInvitefunction = true
         invokedDeleteInviteCount += 1
-        invokedDeleteInviteParameters = (shareId, inviteId)
-        if let error = deleteInviteShareIdInviteIdThrowableError5 {
+        invokedDeleteInviteParameters = (userId, shareId, inviteId)
+        if let error = deleteInviteUserIdShareIdInviteIdThrowableError5 {
             throw error
         }
         closureDeleteInvite()
         return stubbedDeleteInviteResult
     }
     // MARK: - deleteNewUserInvite
-    public var deleteNewUserInviteShareIdInviteIdThrowableError6: Error?
+    public var deleteNewUserInviteUserIdShareIdInviteIdThrowableError6: Error?
     public var closureDeleteNewUserInvite: () -> () = {}
     public var invokedDeleteNewUserInvitefunction = false
     public var invokedDeleteNewUserInviteCount = 0
-    public var invokedDeleteNewUserInviteParameters: (shareId: String, inviteId: String)?
-    public var invokedDeleteNewUserInviteParametersList = [(shareId: String, inviteId: String)]()
+    public var invokedDeleteNewUserInviteParameters: (userId: String, shareId: String, inviteId: String)?
+    public var invokedDeleteNewUserInviteParametersList = [(userId: String, shareId: String, inviteId: String)]()
     public var stubbedDeleteNewUserInviteResult: Bool!
 
-    public func deleteNewUserInvite(shareId: String, inviteId: String) async throws -> Bool {
+    public func deleteNewUserInvite(userId: String, shareId: String, inviteId: String) async throws -> Bool {
         invokedDeleteNewUserInvitefunction = true
         invokedDeleteNewUserInviteCount += 1
-        invokedDeleteNewUserInviteParameters = (shareId, inviteId)
-        if let error = deleteNewUserInviteShareIdInviteIdThrowableError6 {
+        invokedDeleteNewUserInviteParameters = (userId, shareId, inviteId)
+        if let error = deleteNewUserInviteUserIdShareIdInviteIdThrowableError6 {
             throw error
         }
         closureDeleteNewUserInvite()
         return stubbedDeleteNewUserInviteResult
     }
     // MARK: - getInviteRecommendations
-    public var getInviteRecommendationsShareIdQueryThrowableError7: Error?
+    public var getInviteRecommendationsUserIdShareIdQueryThrowableError7: Error?
     public var closureGetInviteRecommendations: () -> () = {}
     public var invokedGetInviteRecommendationsfunction = false
     public var invokedGetInviteRecommendationsCount = 0
-    public var invokedGetInviteRecommendationsParameters: (shareId: String, query: InviteRecommendationsQuery)?
-    public var invokedGetInviteRecommendationsParametersList = [(shareId: String, query: InviteRecommendationsQuery)]()
+    public var invokedGetInviteRecommendationsParameters: (userId: String, shareId: String, query: InviteRecommendationsQuery)?
+    public var invokedGetInviteRecommendationsParametersList = [(userId: String, shareId: String, query: InviteRecommendationsQuery)]()
     public var stubbedGetInviteRecommendationsResult: InviteRecommendations!
 
-    public func getInviteRecommendations(shareId: String, query: InviteRecommendationsQuery) async throws -> InviteRecommendations {
+    public func getInviteRecommendations(userId: String, shareId: String, query: InviteRecommendationsQuery) async throws -> InviteRecommendations {
         invokedGetInviteRecommendationsfunction = true
         invokedGetInviteRecommendationsCount += 1
-        invokedGetInviteRecommendationsParameters = (shareId, query)
-        if let error = getInviteRecommendationsShareIdQueryThrowableError7 {
+        invokedGetInviteRecommendationsParameters = (userId, shareId, query)
+        if let error = getInviteRecommendationsUserIdShareIdQueryThrowableError7 {
             throw error
         }
         closureGetInviteRecommendations()
         return stubbedGetInviteRecommendationsResult
     }
     // MARK: - getSuggestedInvite
-    public var getSuggestedInviteShareIdEmailThrowableError8: Error?
+    public var getSuggestedInviteUserIdShareIdEmailThrowableError8: Error?
     public var closureGetSuggestedInvite: () -> () = {}
     public var invokedGetSuggestedInvitefunction = false
     public var invokedGetSuggestedInviteCount = 0
-    public var invokedGetSuggestedInviteParameters: (shareId: String, email: String?)?
-    public var invokedGetSuggestedInviteParametersList = [(shareId: String, email: String?)]()
+    public var invokedGetSuggestedInviteParameters: (userId: String, shareId: String, email: String?)?
+    public var invokedGetSuggestedInviteParametersList = [(userId: String, shareId: String, email: String?)]()
     public var stubbedGetSuggestedInviteResult: [InviteSuggestion]!
 
-    public func getSuggestedInvite(shareId: String, email: String?) async throws -> [InviteSuggestion] {
+    public func getSuggestedInvite(userId: String, shareId: String, email: String?) async throws -> [InviteSuggestion] {
         invokedGetSuggestedInvitefunction = true
         invokedGetSuggestedInviteCount += 1
-        invokedGetSuggestedInviteParameters = (shareId, email)
-        if let error = getSuggestedInviteShareIdEmailThrowableError8 {
+        invokedGetSuggestedInviteParameters = (userId, shareId, email)
+        if let error = getSuggestedInviteUserIdShareIdEmailThrowableError8 {
             throw error
         }
         closureGetSuggestedInvite()
         return stubbedGetSuggestedInviteResult
     }
     // MARK: - getOrganisationInviteRecommendations
-    public var getOrganisationInviteRecommendationsShareIdQueryThrowableError9: Error?
+    public var getOrganisationInviteRecommendationsUserIdShareIdQueryThrowableError9: Error?
     public var closureGetOrganisationInviteRecommendations: () -> () = {}
     public var invokedGetOrganisationInviteRecommendationsfunction = false
     public var invokedGetOrganisationInviteRecommendationsCount = 0
-    public var invokedGetOrganisationInviteRecommendationsParameters: (shareId: String, query: InviteRecommendationsQuery)?
-    public var invokedGetOrganisationInviteRecommendationsParametersList = [(shareId: String, query: InviteRecommendationsQuery)]()
+    public var invokedGetOrganisationInviteRecommendationsParameters: (userId: String, shareId: String, query: InviteRecommendationsQuery)?
+    public var invokedGetOrganisationInviteRecommendationsParametersList = [(userId: String, shareId: String, query: InviteRecommendationsQuery)]()
     public var stubbedGetOrganisationInviteRecommendationsResult: OrganizationInviteRecommendations!
 
-    public func getOrganisationInviteRecommendations(shareId: String, query: InviteRecommendationsQuery) async throws -> OrganizationInviteRecommendations {
+    public func getOrganisationInviteRecommendations(userId: String, shareId: String, query: InviteRecommendationsQuery) async throws -> OrganizationInviteRecommendations {
         invokedGetOrganisationInviteRecommendationsfunction = true
         invokedGetOrganisationInviteRecommendationsCount += 1
-        invokedGetOrganisationInviteRecommendationsParameters = (shareId, query)
-        if let error = getOrganisationInviteRecommendationsShareIdQueryThrowableError9 {
+        invokedGetOrganisationInviteRecommendationsParameters = (userId, shareId, query)
+        if let error = getOrganisationInviteRecommendationsUserIdShareIdQueryThrowableError9 {
             throw error
         }
         closureGetOrganisationInviteRecommendations()
         return stubbedGetOrganisationInviteRecommendationsResult
     }
     // MARK: - checkAddresses
-    public var checkAddressesShareIdEmailsThrowableError10: Error?
+    public var checkAddressesUserIdShareIdEmailsThrowableError10: Error?
     public var closureCheckAddresses: () -> () = {}
     public var invokedCheckAddressesfunction = false
     public var invokedCheckAddressesCount = 0
-    public var invokedCheckAddressesParameters: (shareId: String, emails: [String])?
-    public var invokedCheckAddressesParametersList = [(shareId: String, emails: [String])]()
+    public var invokedCheckAddressesParameters: (userId: String, shareId: String, emails: [String])?
+    public var invokedCheckAddressesParametersList = [(userId: String, shareId: String, emails: [String])]()
     public var stubbedCheckAddressesResult: [String]!
 
-    public func checkAddresses(shareId: String, emails: [String]) async throws -> [String] {
+    public func checkAddresses(userId: String, shareId: String, emails: [String]) async throws -> [String] {
         invokedCheckAddressesfunction = true
         invokedCheckAddressesCount += 1
-        invokedCheckAddressesParameters = (shareId, emails)
-        if let error = checkAddressesShareIdEmailsThrowableError10 {
+        invokedCheckAddressesParameters = (userId, shareId, emails)
+        if let error = checkAddressesUserIdShareIdEmailsThrowableError10 {
             throw error
         }
         closureCheckAddresses()

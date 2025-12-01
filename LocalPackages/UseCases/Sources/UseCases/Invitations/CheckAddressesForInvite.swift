@@ -67,7 +67,8 @@ public final class CheckAddressesForInvite: CheckAddressesForInviteUseCase {
             return .valid
         }
 
-        let validAddresses = try await shareInviteRepository.checkAddresses(shareId: shareId,
+        let validAddresses = try await shareInviteRepository.checkAddresses(userId: userId,
+                                                                            shareId: shareId,
                                                                             emails: emails)
 
         let invalidAddresses = emails.filter { !validAddresses.contains($0) }

@@ -281,8 +281,11 @@ private extension UserEventsSynchronizer {
         try await withThrowingTaskGroup(of: Void.self) { taskGroup in
             for event in events {
                 taskGroup.addTask { [inviteRepository] in
-                    let pendingInvites = try await inviteRepository.getAllPendingInvites(shareId: event.shareID)
-                    try await inviteRepository.sendNewShareInvites(shareId: event.shareID,
+                    let shareId = event.shareID
+                    let pendingInvites = try await inviteRepository.getAllPendingInvites(userId: userId,
+                                                                                         shareId: shareId)
+                    try await inviteRepository.sendNewShareInvites(userId: userId,
+                                                                   shareId: shareId,
                                                                    newShareInvites: pendingInvites.newUserInvites)
                 }
             }

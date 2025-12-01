@@ -1,5 +1,4 @@
 //
-//
 // SendInviteReminder.swift
 // Proton Pass - Created on 04/08/2023.
 // Copyright (c) 2023 Proton Technologies AG
@@ -23,12 +22,12 @@
 import Client
 
 public protocol SendInviteReminderUseCase: Sendable {
-    func execute(with shareId: String, and inviteId: String) async throws
+    func execute(userId: String, shareId: String, inviteId: String) async throws
 }
 
 public extension SendInviteReminderUseCase {
-    func callAsFunction(with shareId: String, and inviteId: String) async throws {
-        try await execute(with: shareId, and: inviteId)
+    func callAsFunction(userId: String, shareId: String, inviteId: String) async throws {
+        try await execute(userId: userId, shareId: shareId, inviteId: inviteId)
     }
 }
 
@@ -39,7 +38,9 @@ public final class SendInviteReminder: SendInviteReminderUseCase {
         self.shareInviteRepository = shareInviteRepository
     }
 
-    public func execute(with shareId: String, and inviteId: String) async throws {
-        try await shareInviteRepository.sendInviteReminder(shareId: shareId, inviteId: inviteId)
+    public func execute(userId: String, shareId: String, inviteId: String) async throws {
+        try await shareInviteRepository.sendInviteReminder(userId: userId,
+                                                           shareId: shareId,
+                                                           inviteId: inviteId)
     }
 }

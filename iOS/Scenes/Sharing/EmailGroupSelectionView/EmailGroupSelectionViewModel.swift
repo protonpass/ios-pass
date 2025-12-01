@@ -271,7 +271,10 @@ private extension EmailGroupSelectionViewModel {
         guard let shareId = element?.shareId else { return nil }
 
         do {
-            let content = try await inviteRepository.getSuggestedInvite(shareId: shareId, email: email)
+            let userId = try await userManager.getActiveUserId()
+            let content = try await inviteRepository.getSuggestedInvite(userId: userId,
+                                                                        shareId: shareId,
+                                                                        email: email)
             var invitations: [InviteRecommendationType] = []
             for element in content {
                 if element.isGroup,
@@ -302,7 +305,9 @@ private extension EmailGroupSelectionViewModel {
                 if Task.isCancelled {
                     return nil
                 }
-                let content = try await inviteRepository.getOrganisationInviteRecommendations(shareId: shareId,
+                let userId = try await userManager.getActiveUserId()
+                let content = try await inviteRepository.getOrganisationInviteRecommendations(userId: userId,
+                                                                                              shareId: shareId,
                                                                                               query: query)
 
                 if let cachedOrganizationInfos {
