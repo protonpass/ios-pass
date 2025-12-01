@@ -1,7 +1,7 @@
 //
-// GetLogsEntriesTests.swift
-// Proton Pass - Created on 29/06/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// GetLogEntriesTests.swift
+// Proton Pass - Created on 01/12/2025.
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,47 +18,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
 import Core
+import CoreMocks
 import Entities
+import Foundation
 import UseCases
 import XCTest
-@testable import Proton_Pass
-
-enum LogEntryFactory {
-    static func createMock(timestamp: TimeInterval = 0,
-                           subsystem: String = "",
-                           category: String = "",
-                           level: LogLevel = .debug,
-                           message: String = "",
-                           file: String = "",
-                           function: String = "",
-                           line: UInt = 0,
-                           column: UInt = 0) -> LogEntry {
-        .init(timestamp: timestamp,
-              subsystem: subsystem,
-              category: category,
-              level: level,
-              message: message,
-              file: file,
-              function: function,
-              line: line,
-              column: column)
-    }
-    
-    static func createMockArray(count: Int,
-                                timestamp: TimeInterval = 0,
-                                subsystem: String = "",
-                                category: String = "",
-                                level: LogLevel = .debug,
-                                message: String = "",
-                                file: String = "",
-                                function: String = "",
-                                line: UInt = 0,
-                                column: UInt = 0) -> [LogEntry] {
-        .init(repeating: LogEntryFactory.createMock(), count: count)
-    }
-}
 
 class GetLogEntriesTests: XCTestCase {
     @MainActor

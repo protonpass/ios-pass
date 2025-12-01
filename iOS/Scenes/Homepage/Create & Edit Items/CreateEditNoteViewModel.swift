@@ -57,7 +57,7 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
                 self.note = note
             }
 
-        case let .clone(itemContent), let .edit(itemContent):
+        case .clone, .edit:
             break
         }
     }
