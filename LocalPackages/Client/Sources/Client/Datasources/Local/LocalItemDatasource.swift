@@ -154,7 +154,7 @@ public extension LocalItemDatasource {
             .init(format: "itemID = %@", itemId)
         ])
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
-        return try itemEntities.map { try $0.toEncryptedItem() }.first
+        return try itemEntities.first?.toEncryptedItem()
     }
 
     func getAliasItem(email: String, shareId: String) async throws -> SymmetricallyEncryptedItem? {
@@ -166,7 +166,7 @@ public extension LocalItemDatasource {
         ])
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         assert(itemEntities.count <= 1, "Could not have more than 1 matched alias item")
-        return try itemEntities.map { try $0.toEncryptedItem() }.first
+        return try itemEntities.first?.toEncryptedItem()
     }
 
     // periphery:ignore
@@ -252,9 +252,11 @@ public extension LocalItemDatasource {
                                         lastUseTime: item.item.lastUseTime,
                                         revisionTime: modifiedItem.revisionTime,
                                         flags: modifiedItem.flags,
-                                        shareCount: item.item.shareCount)
+                                        shareCount: item.item.shareCount,
+                                        folderID: item.folderId)
                 try await upsertItems([.init(shareId: item.shareId,
                                              userId: item.userId,
+                                             folderId: item.folderId,
                                              item: modifiedItem,
                                              encryptedContent: item.encryptedContent,
                                              isLogInItem: item.isLogInItem,

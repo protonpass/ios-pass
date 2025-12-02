@@ -1,4 +1,4 @@
-//  
+//
 // FolderRepository.swift
 // Proton Pass - Created on 02/12/2025.
 // Copyright (c) 2025 Proton Technologies AG
@@ -22,20 +22,30 @@ import Core
 import Entities
 import Foundation
 
-protocol FolderRepositoryProtocol {
-    
-}
+protocol FolderRepositoryProtocol {}
 
 public final class FolderRepository: FolderRepositoryProtocol {
     private let remoteDatasource: any RemoteFolderDatasourceProtocol
     private let localDatasource: any LocalFolderDatasourceProtocol
+    private let symmetricKeyProvider: any SymmetricKeyProvider
+    private let shareEventIDRepository: any ShareEventIDRepositoryProtocol
+    private let passKeyManager: any PassKeyManagerProtocol
+    private let userManager: any UserManagerProtocol
     private let logger: Logger
 
     public init(remoteDatasource: any RemoteFolderDatasourceProtocol,
                 localDatasource: any LocalFolderDatasourceProtocol,
+                symmetricKeyProvider: any SymmetricKeyProvider,
+                userManager: any UserManagerProtocol,
+                shareEventIDRepository: any ShareEventIDRepositoryProtocol,
+                passKeyManager: any PassKeyManagerProtocol,
                 logManager: any LogManagerProtocol) {
         self.remoteDatasource = remoteDatasource
         self.localDatasource = localDatasource
+        self.symmetricKeyProvider = symmetricKeyProvider
+        self.shareEventIDRepository = shareEventIDRepository
+        self.passKeyManager = passKeyManager
+        self.userManager = userManager
         logger = .init(manager: logManager)
     }
 }

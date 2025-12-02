@@ -1,5 +1,5 @@
-//  
-// RemoteFolderDataSource.swift
+//
+// RemoteFolderDatasource.swift
 // Proton Pass - Created on 02/12/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
@@ -22,7 +22,7 @@ import Core
 import Entities
 import Foundation
 
-public protocol RemoteFolderDataSourceProtocol: Sendable {
+public protocol RemoteFolderDatasourceProtocol: Sendable {
     func getFolders(userId: String,
                     shareId: String,
                     sinceToken: String?,
@@ -32,22 +32,23 @@ public protocol RemoteFolderDataSourceProtocol: Sendable {
                    folderId: String) async throws -> Folder
     func create(userId: String, shareId: String, request: CreateFolderRequest) async throws -> Folder
     func delete() async throws
-    func update(userId: String, shareId: String, folderId: String, request: UpdateFolderRequest) async throws -> Folder
+    func update(userId: String, shareId: String, folderId: String, request: UpdateFolderRequest) async throws
+        -> Folder
     func move(userId: String, shareId: String, folderId: String, request: MoveFolderRequest) async throws -> Folder
 }
 
-public extension RemoteFolderDataSourceProtocol {
+public extension RemoteFolderDatasourceProtocol {
     func getFolders(userId: String,
                     shareId: String,
                     sinceToken: String? = nil,
                     pageSize: Int = Constants.Utils.defaultPageSize) async throws -> PaginatedFolders {
-       try await getFolders(userId: userId, shareId: shareId, sinceToken: sinceToken, pageSize: pageSize)
+        try await getFolders(userId: userId, shareId: shareId, sinceToken: sinceToken, pageSize: pageSize)
     }
 }
 
-public final class RemoteFolderDataSource: RemoteDatasource, RemoteFolderDataSourceProtocol, @unchecked Sendable {}
+public final class RemoteFolderDatasource: RemoteDatasource, RemoteFolderDatasourceProtocol, @unchecked Sendable {}
 
-public extension RemoteFolderDataSource {
+public extension RemoteFolderDatasource {
     func getFolders(userId: String,
                     shareId: String,
                     sinceToken: String?,
@@ -56,7 +57,7 @@ public extension RemoteFolderDataSource {
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.folders
     }
-    
+
     func getFolder(userId: String,
                    shareId: String,
                    folderId: String) async throws -> Folder {
@@ -64,22 +65,28 @@ public extension RemoteFolderDataSource {
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.folder
     }
-    
+
     func create(userId: String, shareId: String, request: CreateFolderRequest) async throws -> Folder {
         let endpoint = CreateFolderEndpoint(shareId: shareId, request: request)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.folder
     }
-    
+
     func delete() async throws {}
-    
-    func update(userId: String, shareId: String, folderId: String, request: UpdateFolderRequest) async throws -> Folder {
+
+    func update(userId: String,
+                shareId: String,
+                folderId: String,
+                request: UpdateFolderRequest) async throws -> Folder {
         let endpoint = UpdateFolderEndpoint(shareId: shareId, folderId: folderId, request: request)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.folder
     }
-    
-    func move(userId: String, shareId: String, folderId: String, request: MoveFolderRequest) async throws -> Folder {
+
+    func move(userId: String,
+              shareId: String,
+              folderId: String,
+              request: MoveFolderRequest) async throws -> Folder {
         let endpoint = MoveFolderEndpoint(shareId: shareId, folderId: folderId, request: request)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.folder

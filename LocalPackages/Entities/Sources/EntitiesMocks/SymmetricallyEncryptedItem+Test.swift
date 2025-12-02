@@ -29,6 +29,7 @@ public extension SymmetricallyEncryptedItem {
                        encryptedSimpleLoginNote: String? = nil) -> SymmetricallyEncryptedItem {
         .init(shareId: shareId ?? .random(),
               userId: userId ?? .random(),
+              folderId: nil,
               item: item ?? .random(),
               encryptedContent: encryptedContent ?? .random(),
               isLogInItem: isLogInItem,
