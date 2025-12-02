@@ -51,7 +51,7 @@ struct MoveFolderEndpoint: Endpoint {
     var method: HTTPMethod
     var body: MoveFolderRequest?
 
-    init(request: MoveFolderRequest, from shareId: String, folderId: String) {
+    init(shareId: String, folderId: String, request: MoveFolderRequest) {
         debugDescription = "Move folder"
         path = "/pass/v1/share/\(shareId)/folder/\(folderId)/move"
         method = .put

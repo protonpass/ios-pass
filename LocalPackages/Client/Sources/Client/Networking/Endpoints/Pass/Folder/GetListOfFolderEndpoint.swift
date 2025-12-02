@@ -27,7 +27,7 @@ import Entities
 import ProtonCoreNetworking
 
 struct GetListOfFolderResponse: Decodable, Sendable {
-    let folders: FolderPaginated
+    let folders: PaginatedFolders
 }
 
 struct GetListOfFolderEndpoint: Endpoint, @unchecked Sendable {
@@ -52,7 +52,7 @@ struct GetListOfFolderEndpoint: Endpoint, @unchecked Sendable {
     }
 }
 
-public struct FolderPaginated: Decodable, Sendable {
+public struct PaginatedFolders: Decodable, Sendable {
     public let total: Int
     public let lastToken: String?
     public let folders: [Folder]
