@@ -297,9 +297,7 @@ private extension SyncEventLoop {
                     return
                 }
 
-                let syncedSLNotes = try await slNoteSynchronizer.syncAllAliases(userId: userId)
-
-                hasNewEvents = result.contains(.dataUpdated) || syncedSLNotes
+                hasNewEvents = result.contains(.dataUpdated)
             } else {
                 hasNewEvents = try await synchronizer.sync(userId: userId)
             }

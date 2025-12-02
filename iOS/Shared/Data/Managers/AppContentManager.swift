@@ -68,6 +68,7 @@ final class AppContentManager: ObservableObject, @unchecked Sendable, DeinitPrin
     @LazyInjected(\SharedToolingContainer.preferencesManager) private var preferencesManager
     @LazyInjected(\SharedRepositoryContainer.inviteRepository)
     private var inviteRepository
+    @LazyInjected(\SharedServiceContainer.simpleLoginNoteSynchronizer) private var slNoteSynchronizer
 
     private let queue = DispatchQueue(label: "me.proton.pass.vaultsManager")
     private var safeIsRefreshing = false
@@ -230,6 +231,7 @@ extension AppContentManager {
             }
 
             try await loadContents(userId: userId, for: remoteShares.shares)
+            _ = try await slNoteSynchronizer.syncAllAliases(userId: userId)
 
             // 5. Get the lastEventID as a starting point for user events sync loop
             try await getLastEventIdIfNotExist(userId: userId)
