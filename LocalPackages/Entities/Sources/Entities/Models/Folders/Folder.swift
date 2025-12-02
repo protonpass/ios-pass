@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct Folder: Codable, Sendable, Identifiable {
+public struct Folder: Codable, Sendable, Identifiable, Equatable, Hashable {
     public let vaultID: String
     public let folderID: String
     public let parentFolderID: String?

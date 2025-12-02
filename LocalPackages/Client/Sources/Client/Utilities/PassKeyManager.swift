@@ -78,6 +78,8 @@ public protocol PassKeyManagerProtocol: Sendable, AnyObject {
                     shareId: String,
                     itemId: String,
                     keyRotation: Int64) async throws -> DecryptedItemKey
+
+    // TODO: Folder KEy
 }
 
 public actor PassKeyManager: PassKeyManagerProtocol {

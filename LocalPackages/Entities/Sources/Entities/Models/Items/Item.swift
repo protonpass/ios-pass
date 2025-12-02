@@ -69,6 +69,9 @@ public struct Item: Decodable, Equatable, Sendable, Hashable {
     /// Monitor`
     public let flags: Int
 
+    // Parent FolderID if this item is in a folder
+    public let folderID: String?
+
     /// Enum representation of `state`
     public var itemState: ItemState { .init(rawValue: state) ?? .active }
 
@@ -87,7 +90,8 @@ public struct Item: Decodable, Equatable, Sendable, Hashable {
                 lastUseTime: Int64?,
                 revisionTime: Int64,
                 flags: Int,
-                shareCount: Int) {
+                shareCount: Int,
+                folderID: String?) {
         self.itemID = itemID
         self.revision = revision
         self.contentFormatVersion = contentFormatVersion
@@ -104,6 +108,7 @@ public struct Item: Decodable, Equatable, Sendable, Hashable {
         self.revisionTime = revisionTime
         self.flags = flags
         self.shareCount = shareCount
+        self.folderID = folderID
     }
 
     public var isASharedWithMeItem: Bool {

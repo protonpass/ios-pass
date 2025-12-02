@@ -925,6 +925,7 @@ private extension ItemRepository {
 
         return .init(shareId: shareId,
                      userId: userId,
+                     folderId: itemRevision.folderID,
                      item: itemRevision,
                      encryptedContent: encryptedContent,
                      isLogInItem: isLogInItem,

@@ -1,4 +1,4 @@
-//  
+//
 // LocalFolderDatasource.swift
 // Proton Pass - Created on 02/12/2025.
 // Copyright (c) 2025 Proton Technologies AG
@@ -22,17 +22,90 @@ import CoreData
 import Entities
 
 // sourcery: AutoMockable
-public protocol LocalFolderDatasourceProtocol: Sendable {}
+public protocol LocalFolderDatasourceProtocol: Sendable {
+    func getAllFolders(userId: String) async throws -> [SymmetricallyEncryptedFolder]
+    func getFolder(shareId: String, folderId: String) async throws -> SymmetricallyEncryptedFolder?
+    func upsertFolders(_ folders: [SymmetricallyEncryptedFolder]) async throws
+    func removeAllFolders() async throws
+    func removeAllFolders(userId: String) async throws
+    func removeAllFolders(shareId: String) async throws
+}
 
 public final class LocalFolderDatasource: LocalDatasource, LocalFolderDatasourceProtocol, @unchecked Sendable {}
 
 public extension LocalFolderDatasource {
-        func getAllFolders(userId: String) async throws -> [SymmetricallyEncryptedItem] {
-            let taskContext = newTaskContext(type: .fetch)
-            let fetchRequest = FolderEntity.fetchRequest()
-            fetchRequest.predicate = .init(format: "userID = %@", userId)
-            let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
-            return try itemEntities.map { try $0.toEncryptedFolder() }
+    func getAllFolders(userId: String) async throws -> [SymmetricallyEncryptedFolder] {
+        let taskContext = newTaskContext(type: .fetch)
+        let fetchRequest = FolderEntity.fetchRequest()
+        fetchRequest.predicate = .init(format: "userID = %@", userId)
+        let folderEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
+        return try folderEntities.map { try $0.toEncryptedFolder() }
+    }
+
+    func getFolder(shareId: String, folderId: String) async throws -> SymmetricallyEncryptedFolder? {
+        let taskContext = newTaskContext(type: .fetch)
+        let fetchRequest = FolderEntity.fetchRequest()
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            .init(format: "shareID = %@", shareId),
+            .init(format: "folderID = %@", folderId)
+        ])
+        let folderEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
+        return try folderEntities.first?.toEncryptedFolder()
+    }
+
+    func upsertFolders(_ folders: [SymmetricallyEncryptedFolder]) async throws {
+        try await upsert(folders,
+                         entityType: FolderEntity.self,
+                         fetchPredicate: NSPredicate(format: "folderID IN %@ AND shareID IN %@",
+                                                     folders.map(\.folderId),
+                                                     folders.map(\.shareId)),
+                         isEqual: { folder, entity in
+                             folder.shareId == entity.shareID && folder.folderId == entity.folderID
+                         },
+                         hydrate: { folder, entity in
+                             try entity.hydrate(from: folder)
+                         })
+    }
+
+    func deleteFolders(_ folders: [any ElementIdentifiable]) async throws {
+        for folder in folders {
+            try await deleteFolders(folderIds: [folder.elementId], shareId: folder.shareId)
         }
-    
+    }
+
+    func deleteFolders(folderIds: [String], shareId: String) async throws {
+        let taskContext = newTaskContext(type: .delete)
+        for folderId in folderIds {
+            let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "FolderEntity")
+            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                .init(format: "shareID = %@", shareId),
+                .init(format: "folderID = %@", folderId)
+            ])
+            try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+                              context: taskContext)
+        }
+    }
+
+    func removeAllFolders() async throws {
+        let taskContext = newTaskContext(type: .delete)
+        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "FolderEntity")
+        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+                          context: taskContext)
+    }
+
+    func removeAllFolders(userId: String) async throws {
+        let taskContext = newTaskContext(type: .delete)
+        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "FolderEntity")
+        fetchRequest.predicate = .init(format: "userID = %@", userId)
+        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+                          context: taskContext)
+    }
+
+    func removeAllFolders(shareId: String) async throws {
+        let taskContext = newTaskContext(type: .delete)
+        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "FolderEntity")
+        fetchRequest.predicate = .init(format: "shareID = %@", shareId)
+        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+                          context: taskContext)
+    }
 }
