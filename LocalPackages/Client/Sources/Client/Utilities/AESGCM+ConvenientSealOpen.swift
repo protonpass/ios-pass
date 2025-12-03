@@ -58,10 +58,10 @@ public enum AssociatedData: Sendable {
             "filekey"
 
         case .folderContent:
-            "foldercontent"
+            "content.folder.pass.proton"
 
         case .folderKey:
-            "folderkey"
+            "key.folder.pass.proton"
         }
         return value.data(using: .utf8) ?? .init()
     }

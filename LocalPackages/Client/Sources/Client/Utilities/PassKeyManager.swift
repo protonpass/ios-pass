@@ -55,6 +55,20 @@ public struct DecryptedItemKey: ShareKeyProtocol {
     }
 }
 
+public struct DecryptedFolderKey: ShareKeyProtocol {
+    public let shareId: String
+    public let folderId: String
+    public let keyRotation: Int64
+    public let keyData: Data
+    
+    public init(shareId: String, folderId: String, keyRotation: Int64, keyData: Data) {
+        self.shareId = shareId
+        self.folderId = folderId
+        self.keyRotation = keyRotation
+        self.keyData = keyData
+    }
+}
+
 // sourcery: AutoMockable
 public protocol PassKeyManagerProtocol: Sendable, AnyObject {
     /// Get share key of a given key rotation to decrypt share content
@@ -78,6 +92,10 @@ public protocol PassKeyManagerProtocol: Sendable, AnyObject {
                     shareId: String,
                     itemId: String,
                     keyRotation: Int64) async throws -> DecryptedItemKey
+    
+    func getFolderKeys(userId: String, parentId: String, folderId: String) async throws -> [DecryptedFolderKey] {
+        
+    }
 
     // TODO: Folder KEy
 }
@@ -241,6 +259,34 @@ private extension PassKeyManager {
                                                     associatedData: .itemKey)
 
         return .init(shareId: shareId,
+                     itemId: itemId,
+                     keyRotation: itemKey.keyRotation,
+                     keyData: decryptedItemKeyData)
+    }
+    
+    //TODO: if first folder need to have vault key = getShareKey else need parent key m,eamiong folderkey
+    // need to loop in the calling function and order folder using parent id to have the parent key to save and access
+    func decrypt(folderKey: FolderKey,
+                 userId: String,
+                 shareId: String,
+                 folderId: String) async throws -> DecryptedFolderKey {
+        
+        
+//        let vaultKey = try await getShareKey(userId: userId,
+//                                             shareId: shareId,
+//                                             keyRotation: folderKey.keyRotation)
+
+        guard let encryptedFolderKeyData = try folderKey.folderKey.base64Decode() else {
+            throw PassError.crypto(.failedToBase64Decode)
+        }
+
+        let decryptedItemKeyData = try AES.GCM.open(encryptedItemKeyData,
+                                                    key: vaultKey.keyData,
+                                                    associatedData: .folderKey)
+
+        return DecryptedFolderKey(shareId: shareId,
+        folderId: <#T##String#>)
+            .init(shareId: shareId,
                      itemId: itemId,
                      keyRotation: itemKey.keyRotation,
                      keyData: decryptedItemKeyData)
