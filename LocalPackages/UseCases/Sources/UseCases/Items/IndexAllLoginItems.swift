@@ -74,22 +74,46 @@ public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUs
         try await credentialManager.removeAllCredentials()
         let userIds = userManager.allUserAccounts.value.map(\.user.ID)
 
-        // Step 1: get all the vaults from all users
         // Filterting out the duplicated and keep the most permissive ones
-        var allUsersSharesIds = Set<String>()
-        for userId in userIds {
-            let encryptedShares = try await shareRepository.getShares(userId: userId)
-            for encryptedShare in encryptedShares
-                where encryptedShare.share.canAutoFill && !encryptedShare.share.hidden {
-                allUsersSharesIds.insert(encryptedShare.share.id)
+        let allUsersSharesIds: Set<String> = try await withThrowingTaskGroup(of: [String].self) { [weak self] group in
+            guard let self else {
+                throw PassError.unexpectedError
             }
+            for userId in userIds {
+                group.addTask { [weak self] in
+                    guard let self else { return [] }
+                    let encryptedShares = try await shareRepository.getShares(userId: userId)
+                    return encryptedShares
+                        .filter { $0.share.canAutoFill && !$0.share.hidden }
+                        .map(\.share.id)
+                }
+            }
+            var result = Set<String>()
+            for try await shareIds in group {
+                result.formUnion(shareIds)
+            }
+            return result
         }
 
+        // Optimization: Parallel item fetching instead of sequential
         // Step 2: fetch all the items related to the applicable vaults
-        var allUserItems = [SymmetricallyEncryptedItem]()
-        for userId in userIds {
-            let items = try await filterItems(userId: userId, applicableSharesIds: allUsersSharesIds)
-            allUserItems.append(contentsOf: items)
+        let allUserItems: [SymmetricallyEncryptedItem] = try await withThrowingTaskGroup(of: [
+            SymmetricallyEncryptedItem
+        ].self) { [weak self] group in
+            guard let self else {
+                throw PassError.unexpectedError
+            }
+            for userId in userIds {
+                group.addTask { [weak self] in
+                    guard let self else { return [] }
+                    return try await filterItems(userId: userId, applicableSharesIds: allUsersSharesIds)
+                }
+            }
+            var result = [SymmetricallyEncryptedItem]()
+            for try await items in group {
+                result.append(contentsOf: items)
+            }
+            return result
         }
 
         // Step 3: index the fetched items

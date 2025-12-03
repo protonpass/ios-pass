@@ -173,8 +173,9 @@ public extension FileAttachmentRepository {
         }
 
         let keys = try await getShareKeys(userId: userId, item: item)
+        let keysByRotation = Dictionary(uniqueKeysWithValues: keys.map { ($0.keyRotation, $0) })
 
-        guard let itemKey = keys.first(where: { $0.keyRotation == file.itemKeyRotation }) else {
+        guard let itemKey = keysByRotation[Int64(file.itemKeyRotation)] else {
             throw PassError.fileAttachment(.missingItemKey(file.itemKeyRotation))
         }
 
@@ -278,9 +279,11 @@ public extension FileAttachmentRepository {
             throw PassError.keysNotFound(shareID: item.shareId)
         }
 
+        let keysByRotation = Dictionary(uniqueKeysWithValues: keys.map { ($0.keyRotation, $0) })
+
         var updatedItem: Item?
         for file in files {
-            guard let usedKey = keys.first(where: { $0.keyRotation == file.itemKeyRotation }) else {
+            guard let usedKey = keysByRotation[Int64(file.itemKeyRotation)] else {
                 throw PassError.fileAttachment(.missingItemKey(file.itemKeyRotation))
             }
 
@@ -326,10 +329,12 @@ private extension FileAttachmentRepository {
         let keys = try await keyManager.getShareKeys(userId: userId,
                                                      share: share,
                                                      item: item)
+        let keysByRotation = Dictionary(uniqueKeysWithValues: keys.map { ($0.keyRotation, $0) })
+
         while true {
             let response = try await getFiles(lastId)
             for var file in response.files {
-                guard let itemKey = keys.first(where: { $0.keyRotation == file.itemKeyRotation }) else {
+                guard let itemKey = keysByRotation[Int64(file.itemKeyRotation)] else {
                     throw PassError.crypto(.missingItemKeyRotation(file.itemKeyRotation))
                 }
 

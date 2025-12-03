@@ -1,7 +1,7 @@
 //
-// URL+Extensions.swift
-// Proton Pass - Created on 16/04/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// ItemContentProtobuf+Extensions.swift
+// Proton Pass - Created on 18/01/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,16 +17,21 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Core
-import Foundation
+import Entities
 
-extension URL {
-    static func favIconsContainerURL() -> URL {
-        guard let fileContainer = FileManager.default
-            .containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroup) else {
-            fatalError("Can not create folder for fav icons")
-        }
-        return fileContainer.appendingPathComponent("FavIcons", isDirectory: true)
+public extension ItemContentProtobuf {
+    func isLooselyEqual(to other: Self) -> Bool {
+        let sameMetadata = metadata.isLooselyEqual(to: other.metadata)
+        let sameContent = content == other.content
+        let sameCustomFields = customFields.isLooselyEqual(to: other.customFields)
+        return sameMetadata && sameContent && sameCustomFields
+    }
+}
+
+private extension ProtonPassItemV1_Metadata {
+    func isLooselyEqual(to other: Self) -> Bool {
+        name == other.name && note == other.note
     }
 }
