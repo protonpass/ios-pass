@@ -58,8 +58,8 @@ extension BackOffManagerTests {
     }
 
     func testAddNewDatesToArrayWhenRecordingFailures() async {
-        var failures = await sut.failureDates
-        XCTAssertTrue(failures.isEmpty)
+        var failures = await sut.lastFailureDate
+        XCTAssertTrue(failures == nil)
 
         // When
         let date0 = Date.now
@@ -67,9 +67,10 @@ extension BackOffManagerTests {
         // Then
         currentDateProviderMock.currentDateStub.bodyIs { _ in date0 }
         await sut.recordFailure()
-        failures = await sut.failureDates
-        XCTAssertEqual(failures.count, 1)
-        XCTAssertEqual(failures.first, date0)
+        failures = await sut.lastFailureDate
+        var count = await sut.failureCount
+        XCTAssertEqual(count, 1)
+        XCTAssertEqual(failures, date0)
 
         // When
         let date1 = Date.now
@@ -77,10 +78,10 @@ extension BackOffManagerTests {
         await sut.recordFailure()
 
         // Then
-        failures = await sut.failureDates
-        XCTAssertEqual(failures.count, 2)
-        XCTAssertEqual(failures.first, date0)
-        XCTAssertEqual(failures.last, date1)
+        failures = await sut.lastFailureDate
+        count = await sut.failureCount
+        XCTAssertEqual(count, 2)
+        XCTAssertEqual(failures, date1)
 
         // When
         let date2 = Date.now
@@ -88,20 +89,19 @@ extension BackOffManagerTests {
         await sut.recordFailure()
 
         // Then
-        failures = await sut.failureDates
+        failures = await sut.lastFailureDate
+        count = await sut.failureCount
 
-        XCTAssertEqual(failures.count, 3)
-        XCTAssertEqual(failures[0], date0)
-        XCTAssertEqual(failures[1], date1)
-        XCTAssertEqual(failures[2], date2)
+        XCTAssertEqual(count, 3)
+        XCTAssertEqual(failures, date2)
     }
 
     func testNoFailuresNoNeedToBackOff() async {
         let canProceed = await sut.canProceed()
-        let failures = await sut.failureDates
+        let failures = await sut.lastFailureDate
 
         XCTAssertTrue(canProceed)
-        XCTAssertTrue(failures.isEmpty)
+        XCTAssertTrue(failures == nil)
     }
 
     func testOneFailureBackOffOneSecond() async {
@@ -114,10 +114,10 @@ extension BackOffManagerTests {
 
         // Then
         var canProceed = await sut.canProceed()
-        var failures = await sut.failureDates
-
+        var failures = await sut.lastFailureDate
+        var count = await sut.failureCount
         XCTAssertFalse(canProceed)
-        XCTAssertEqual(failures.count, 1)
+        XCTAssertEqual(count, 1)
 
         // When
         currentDateProviderMock.currentDateStub.bodyIs { _ in failureDate.adding(component: .second,
@@ -125,18 +125,20 @@ extension BackOffManagerTests {
 
         // Then
         canProceed = await sut.canProceed()
-        failures = await sut.failureDates
+        failures = await sut.lastFailureDate
+        count = await sut.failureCount
+
         XCTAssertTrue(canProceed)
-        XCTAssertEqual(failures.count, 1)
+        XCTAssertEqual(count, 1)
 
         // When
         await sut.recordSuccess()
 
         // Then
         canProceed = await sut.canProceed()
-        failures = await sut.failureDates
+        failures = await sut.lastFailureDate
         XCTAssertTrue(canProceed)
-        XCTAssertTrue(failures.isEmpty)
+        XCTAssertTrue(failures == nil)
     }
 
     func testTwoFailuresBackOffTwoSeconds() async {
@@ -156,9 +158,11 @@ extension BackOffManagerTests {
                                                                                   value: 1) }
         // Then
         var canProceed = await sut.canProceed()
-        var failures = await sut.failureDates
+        var failures = await sut.lastFailureDate
+        var count = await sut.failureCount
+
         XCTAssertFalse(canProceed)
-        XCTAssertEqual(failures.count, 2)
+        XCTAssertEqual(count, 2)
 
         // When
         // Retry 2 secs later
@@ -167,18 +171,20 @@ extension BackOffManagerTests {
 
         // Then
         canProceed = await sut.canProceed()
-        failures = await sut.failureDates
+        failures = await sut.lastFailureDate
+        count = await sut.failureCount
+
         XCTAssertTrue(canProceed)
-        XCTAssertEqual(failures.count, 2)
+        XCTAssertEqual(count, 2)
 
         // When
         await sut.recordSuccess()
 
         // Then
         canProceed = await sut.canProceed()
-        failures = await sut.failureDates
+        failures = await sut.lastFailureDate
         XCTAssertTrue(canProceed)
-        XCTAssertTrue(failures.isEmpty)
+        XCTAssertTrue(failures == nil)
     }
 
     func testThreeFailuresBackOffFiveSeconds() async {
@@ -202,9 +208,11 @@ extension BackOffManagerTests {
                                                                                   value: 1) }
         // Then
         var canProceed = await sut.canProceed()
-        var failures = await sut.failureDates
+        var failures = await sut.lastFailureDate
+        var count = await sut.failureCount
+
         XCTAssertFalse(canProceed)
-        XCTAssertEqual(failures.count, 3)
+        XCTAssertEqual(count, 3)
 
         // When
         // Retry 2 secs later
@@ -213,9 +221,11 @@ extension BackOffManagerTests {
 
         // Then
         canProceed = await sut.canProceed()
-        failures = await sut.failureDates
+        failures = await sut.lastFailureDate
+        count = await sut.failureCount
+
         XCTAssertFalse(canProceed)
-        XCTAssertEqual(failures.count, 3)
+        XCTAssertEqual(count, 3)
 
         // When
         // Retry 3 secs later
@@ -224,9 +234,11 @@ extension BackOffManagerTests {
 
         // Then
         canProceed = await sut.canProceed()
-        failures = await sut.failureDates
+        failures = await sut.lastFailureDate
+        count = await sut.failureCount
+
         XCTAssertFalse(canProceed)
-        XCTAssertEqual(failures.count, 3)
+        XCTAssertEqual(count, 3)
 
         // When
         // Retry 4 secs later
@@ -235,9 +247,11 @@ extension BackOffManagerTests {
 
         // Then
         canProceed = await sut.canProceed()
-        failures = await sut.failureDates
+        failures = await sut.lastFailureDate
+        count = await sut.failureCount
+
         XCTAssertFalse(canProceed)
-        XCTAssertEqual(failures.count, 3)
+        XCTAssertEqual(count, 3)
 
         // When
         // Retry 5 secs later
@@ -246,18 +260,20 @@ extension BackOffManagerTests {
 
         // Then
         canProceed = await sut.canProceed()
-        failures = await sut.failureDates
+        failures = await sut.lastFailureDate
+        count = await sut.failureCount
         XCTAssertTrue(canProceed)
-        XCTAssertEqual(failures.count, 3)
+        XCTAssertEqual(count, 3)
 
         // When
         await sut.recordSuccess()
 
         // Then
         canProceed = await sut.canProceed()
-        failures = await sut.failureDates
+        failures = await sut.lastFailureDate
+        count = await sut.failureCount
         XCTAssertTrue(canProceed)
-        XCTAssertTrue(failures.isEmpty)
+        XCTAssertTrue(failures == nil)
     }
 }
 
