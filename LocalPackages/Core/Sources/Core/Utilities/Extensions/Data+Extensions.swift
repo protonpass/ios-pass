@@ -36,11 +36,17 @@ public extension Data {
     /// https://base64.guru/standards/base64url
     /// - Returns: A string that is url safe
     func base64URLSafeEncodedString() -> String {
-        let base64String = base64EncodedString()
-        let urlSafeBase64String = base64String
-            .replacingOccurrences(of: "+", with: "-")
-            .replacingOccurrences(of: "/", with: "_")
-            .replacingOccurrences(of: "=", with: "")
-        return urlSafeBase64String
+        // Optimization: Single-pass character transformation instead of three replacingOccurrences calls
+        var result = ""
+        result.reserveCapacity(base64EncodedString().count)
+        for char in base64EncodedString() {
+            switch char {
+            case "+": result.append("-")
+            case "/": result.append("_")
+            case "=": break // Skip padding
+            default: result.append(char)
+            }
+        }
+        return result
     }
 }

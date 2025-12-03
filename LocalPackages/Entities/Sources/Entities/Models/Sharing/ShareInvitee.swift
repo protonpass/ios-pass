@@ -47,7 +47,24 @@ public enum ShareInviteeOption: Identifiable, Sendable {
     case transferOwnership(NewOwner)
 
     public var id: String {
-        UUID().uuidString
+        switch self {
+        case let .remindExistingUserInvitation(inviteId):
+            "remind_\(inviteId)"
+        case let .cancelExistingUserInvitation(inviteId):
+            "cancelExisting_\(inviteId)"
+        case let .cancelNewUserInvitation(inviteId):
+            "cancelNew_\(inviteId)"
+        case let .confirmAccess(access):
+            "confirmAccess_\(access.inviteId)"
+        case let .updateRole(shareId, role):
+            "updateRole_\(shareId)_\(role.rawValue)"
+        case let .revokeAccess(shareId):
+            "revokeAccess_\(shareId)"
+        case let .confirmTransferOwnership(owner):
+            "confirmTransfer_\(owner.shareId)"
+        case let .transferOwnership(owner):
+            "transfer_\(owner.shareId)"
+        }
     }
 
     /// To show "Confirm access" button or not

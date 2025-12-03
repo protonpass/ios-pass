@@ -34,27 +34,33 @@ public protocol BackOffManagerProtocol: Sendable {
 }
 
 public actor BackOffManager {
-    public var failureDates: [Date]
+    // Optimization: Use count + last date instead of unbounded array
+    // Only failureCount and lastFailureDate are needed for backoff logic
+    public var failureCount: Int
+    public var lastFailureDate: Date?
     public let currentDateProvider: any CurrentDateProviderProtocol
 
     public init(currentDateProvider: any CurrentDateProviderProtocol) {
-        failureDates = []
+        failureCount = 0
+        lastFailureDate = nil
         self.currentDateProvider = currentDateProvider
     }
 }
 
 extension BackOffManager: BackOffManagerProtocol {
     public func recordFailure() {
-        failureDates.append(currentDateProvider.getCurrentDate())
+        failureCount += 1
+        lastFailureDate = currentDateProvider.getCurrentDate()
     }
 
     public func recordSuccess() {
-        failureDates.removeAll()
+        failureCount = 0
+        lastFailureDate = nil
     }
 
     public func canProceed() -> Bool {
-        guard let mostRecentFailureDate = failureDates.last else { return true }
-        let stride = BackOffStride.stride(failureCount: failureDates.count)
+        guard let mostRecentFailureDate = lastFailureDate else { return true }
+        let stride = BackOffStride.stride(failureCount: failureCount)
         let thresholdDate = mostRecentFailureDate.adding(component: .second,
                                                          value: stride.valueInSeconds.toInt)
         let currentDate = currentDateProvider.getCurrentDate()

@@ -34,24 +34,27 @@ public protocol ShareIdToUserManagerProtocol {
 /// Cache and keep track of the mapping `ShareID` <-> `User`
 /// Used in multi accounts item display context to get the user that owns an item
 public final class ShareIdToUserManager: ShareIdToUserManagerProtocol {
-    private let users: [UserUiModel]
-    private var userVaults = Set<UserVault>()
+    // Optimization: Use dictionaries for O(1) lookup instead of linear search
+    private var shareIdToUserId = [String: String]()
+    private let userIdToModel: [String: UserUiModel]
 
     public init(users: [UserUiModel]) {
-        self.users = users
+        // Optimization: Pre-build user lookup dictionary
+        userIdToModel = Dictionary(uniqueKeysWithValues: users.map { ($0.id, $0) })
     }
 }
 
 public extension ShareIdToUserManager {
     func index(vaults: [Share], userId: String) {
         for vault in vaults {
-            userVaults.insert(.init(userId: userId, shareId: vault.id))
+            shareIdToUserId[vault.id] = userId
         }
     }
 
     func getUser(for item: any ItemIdentifiable) throws -> UserUiModel {
-        guard let userId = userVaults.first(where: { $0.shareId == item.shareId })?.userId,
-              let user = users.first(where: { $0.id == userId }) else {
+        // Optimization: O(1) dictionary lookup instead of O(n) linear search
+        guard let userId = shareIdToUserId[item.shareId],
+              let user = userIdToModel[userId] else {
             throw PassError.userManager(.noUserFound(shareId: item.shareId, itemId: item.itemId))
         }
         return user

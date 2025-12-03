@@ -92,29 +92,24 @@ public struct MostRecentSortResult<T: DateSortable>: SearchResults {
 
 public extension Array where Element: DateSortable {
     func mostRecentSortResult() throws -> MostRecentSortResult<Element> {
-        var buckets: [MostRecentSortBucket<Element>] = []
-
-        for type in MostRecentType.allCases {
-            try Task.checkCancellation()
-            buckets.append(MostRecentSortBucket(type: type, items: []))
+        var buckets: [MostRecentSortBucket<Element>] = MostRecentType.allCases.map {
+            MostRecentSortBucket(type: $0, items: [])
         }
-
-        let sortedElements = try sorted(by: {
-            try Task.checkCancellation()
-            return $0.dateForSorting > $1.dateForSorting
-        })
-        var bucketIndex = 0
 
         let cutOffDates = MostRecentType.cutOffDates
 
-        for item in sortedElements {
+        // Single pass: bucket items directly without pre-sorting
+        for item in self {
             try Task.checkCancellation()
-            // Move to the next bucket if the item's date is less than the current cutoff
-            while bucketIndex < cutOffDates.count - 1, item.dateForSorting < cutOffDates[bucketIndex] {
-                bucketIndex += 1
-            }
-            // Assign the item to the current bucket
+            // Find the appropriate bucket for this item
+            let bucketIndex = cutOffDates.firstIndex { item.dateForSorting >= $0 } ?? (cutOffDates.count - 1)
             buckets[bucketIndex].items.append(item)
+        }
+
+        // Sort only within each bucket (smaller arrays = faster sorts)
+        for index in buckets.indices {
+            try Task.checkCancellation()
+            buckets[index].items.sort { $0.dateForSorting > $1.dateForSorting }
         }
 
         return MostRecentSortResult(numberOfItems: count, buckets: buckets)
@@ -286,14 +281,19 @@ public struct MonthYear: Hashable, Sendable {
     public let month: Int
     public let year: Int
 
+    // Optimization: Static cached DateFormatter to avoid recreation on every access
+    private static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM yyyy"
+        return formatter
+    }()
+
     public var relativeString: String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MMMM yyyy"
         var dateComponents = DateComponents()
         dateComponents.day = 1
         dateComponents.month = month
         dateComponents.year = year
-        return dateFormatter.string(from: Calendar.current.date(from: dateComponents) ?? .now)
+        return Self.dateFormatter.string(from: Calendar.current.date(from: dateComponents) ?? .now)
     }
 
     init(date: Date) {

@@ -94,6 +94,7 @@ public extension LocalItemDatasource {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ItemEntity.fetchRequest()
         fetchRequest.predicate = .init(format: "userID = %@", userId)
+        fetchRequest.fetchBatchSize = 100
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return try itemEntities.map { try $0.toEncryptedItem() }
     }
@@ -101,13 +102,13 @@ public extension LocalItemDatasource {
     func getAllPinnedItems(userId: String) async throws -> [SymmetricallyEncryptedItem] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ItemEntity.fetchRequest()
-        fetchRequest.predicate = .init(format: "pinned = %d", true)
         fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
             .init(format: "pinned = %d", true),
             .init(format: "state = %d", ItemState.active.rawValue),
             .init(format: "userID = %@", userId)
         ])
         fetchRequest.sortDescriptors = [.init(key: "pinTime", ascending: false)]
+        fetchRequest.fetchBatchSize = 100
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return try itemEntities.map { try $0.toEncryptedItem() }
     }
@@ -266,17 +267,20 @@ public extension LocalItemDatasource {
     func update(lastUseItems: [LastUseItem], shareId: String) async throws {
         let taskContext = newTaskContext(type: .fetch)
         try taskContext.performAndWait {
-            for item in lastUseItems {
-                let fetchRequest: NSFetchRequest<ItemEntity> = ItemEntity.fetchRequest()
-                fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-                    NSPredicate(format: "shareID = %@", shareId),
-                    NSPredicate(format: "itemID = %@", item.itemID)
-                ])
-                let results = try taskContext.fetch(fetchRequest)
-                if let fetchedItem = results.first {
-                    fetchedItem.lastUseTime = Int64(item.lastUseTime)
+            let fetchRequest: NSFetchRequest<ItemEntity> = ItemEntity.fetchRequest()
+            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                NSPredicate(format: "shareID = %@", shareId),
+                NSPredicate(format: "itemID IN %@", lastUseItems.map(\.itemID))
+            ])
+            let results = try taskContext.fetch(fetchRequest)
+
+            let itemMap = Dictionary(uniqueKeysWithValues: lastUseItems.map { ($0.itemID, $0.lastUseTime) })
+            for entity in results {
+                if let lastUseTime = itemMap[entity.itemID] {
+                    entity.lastUseTime = Int64(lastUseTime)
                 }
             }
+
             if taskContext.hasChanges {
                 try taskContext.save()
             }
@@ -284,22 +288,22 @@ public extension LocalItemDatasource {
     }
 
     func deleteItems(_ items: [any ItemIdentifiable]) async throws {
-        for item in items {
-            try await deleteItems(itemIds: [item.itemId], shareId: item.shareId)
+        let groupedItems = Dictionary(grouping: items, by: \.shareId)
+        for (shareId, itemsInShare) in groupedItems {
+            try await deleteItems(itemIds: itemsInShare.map(\.itemId), shareId: shareId)
         }
     }
 
     func deleteItems(itemIds: [String], shareId: String) async throws {
+        guard !itemIds.isEmpty else { return }
         let taskContext = newTaskContext(type: .delete)
-        for itemId in itemIds {
-            let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "ItemEntity")
-            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-                .init(format: "shareID = %@", shareId),
-                .init(format: "itemID = %@", itemId)
-            ])
-            try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
-                              context: taskContext)
-        }
+        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "ItemEntity")
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            .init(format: "shareID = %@", shareId),
+            .init(format: "itemID IN %@", itemIds)
+        ])
+        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+                          context: taskContext)
     }
 
     func removeAllItems() async throws {
@@ -334,6 +338,7 @@ public extension LocalItemDatasource {
             .init(format: "isLogInItem = %d", true)
         ])
         fetchRequest.sortDescriptors = [.init(key: "modifyTime", ascending: false)]
+        fetchRequest.fetchBatchSize = 100
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return try itemEntities.map { try $0.toEncryptedItem() }
     }

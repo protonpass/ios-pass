@@ -72,13 +72,10 @@ public final class TOTPManager: TOTPManagerProtocol, @unchecked Sendable {
 
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             guard let self else { return }
-            Task { @MainActor [weak self] in
-                guard let self else { return }
-                if remainTime > 0 {
-                    remainTime -= 1
-                } else {
-                    refreshData()
-                }
+            if remainTime > 0 {
+                remainTime -= 1
+            } else {
+                refreshData()
             }
         }
         timer?.fire()
