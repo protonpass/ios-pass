@@ -28,13 +28,9 @@ import Entities
 import Foundation
 import ProtonCoreNetworking
 
-struct UpdateFolderResponse: Decodable, Sendable {
-    let folder: Folder
-}
-
 struct UpdateFolderEndpoint: Endpoint {
     typealias Body = UpdateFolderRequest
-    typealias Response = UpdateFolderResponse
+    typealias Response = FolderResponse
 
     var debugDescription: String
     var path: String

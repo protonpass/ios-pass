@@ -23,9 +23,9 @@ import Foundation
 public struct FolderKey: Codable, Equatable, Hashable, Sendable {
     /// Encrypted key encoded in base64
     public let folderKey: String
-    public let keyRotation: Int64
+    public let keyRotation: Int
 
-    public init(folderKey: String, keyRotation: Int64) {
+    public init(folderKey: String, keyRotation: Int) {
         self.folderKey = folderKey
         self.keyRotation = keyRotation
     }
@@ -33,17 +33,5 @@ public struct FolderKey: Codable, Equatable, Hashable, Sendable {
     enum CodingKeys: String, CodingKey {
         case folderKey = "FolderKey"
         case keyRotation = "KeyRotation"
-    }
-
-    // custom decoder
-    public init(from decoder: any Decoder) throws {
-        // keys that work with `JSONDecoder.KeyDecodingStrategy.decapitaliseFirstLetter`
-        enum DecodingKeys: String, CodingKey {
-            case folderKey
-            case keyRotation
-        }
-        let container = try decoder.container(keyedBy: DecodingKeys.self)
-        folderKey = try container.decode(String.self, forKey: .folderKey)
-        keyRotation = try container.decode(Int64.self, forKey: .keyRotation)
     }
 }
