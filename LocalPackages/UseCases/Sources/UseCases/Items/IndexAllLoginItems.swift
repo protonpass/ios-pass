@@ -75,25 +75,30 @@ public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUs
         let userIds = userManager.allUserAccounts.value.map(\.user.ID)
 
         // Filterting out the duplicated and keep the most permissive ones
-        let allUsersSharesIds: Set<String> = try await withThrowingTaskGroup(of: [String].self) { [weak self] group in
-            guard let self else {
-                throw PassError.unexpectedError
-            }
-            for userId in userIds {
-                group.addTask { [weak self] in
-                    guard let self else { return [] }
-                    let encryptedShares = try await shareRepository.getShares(userId: userId)
-                    return encryptedShares
-                        .filter { $0.share.canAutoFill && !$0.share.hidden }
-                        .map(\.share.id)
+        let allUsersSharesIds: Set<String> = try await withThrowingTaskGroup(of: [String]
+            .self) { [weak self] group in
+                guard let self else {
+                    throw PassError.unexpectedError
                 }
+                for userId in userIds {
+                    group.addTask { [weak self] in
+                        guard let self else { return [] }
+                        let encryptedShares = try await shareRepository.getShares(userId: userId)
+                        return encryptedShares.compactMap { encryptedShare in
+                            guard encryptedShare.share.canAutoFill,
+                                  !encryptedShare.share.hidden else {
+                                return nil
+                            }
+                            return encryptedShare.share.id
+                        }
+                    }
+                }
+                var result = Set<String>()
+                for try await shareIds in group {
+                    result.formUnion(shareIds)
+                }
+                return result
             }
-            var result = Set<String>()
-            for try await shareIds in group {
-                result.formUnion(shareIds)
-            }
-            return result
-        }
 
         // Optimization: Parallel item fetching instead of sequential
         // Step 2: fetch all the items related to the applicable vaults
