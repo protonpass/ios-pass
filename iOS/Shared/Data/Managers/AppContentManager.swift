@@ -232,7 +232,8 @@ extension AppContentManager {
                 do {
                     _ = try await (syncAlias, refreshInvites)
                 } catch {
-                    // We logs the errors silently to let the full content refresh continue offering a better experience to the user.
+                    // We logs the errors silently to let the full content refreshX continue offering a better
+                    // experience to the user.
                     logger.error(error)
                 }
             }
