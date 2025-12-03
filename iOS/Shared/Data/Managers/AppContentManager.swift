@@ -227,12 +227,12 @@ extension AppContentManager {
 
             // 4. Refresh invite and sl notes
             if getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1) {
-                async let syncAlias: Bool = slNoteSynchronizer.syncAllAliases(userId: userId)
+                async let syncAliases: Bool = slNoteSynchronizer.syncAllAliases(userId: userId)
                 async let refreshInvites: Void = inviteRepository.refreshAllInvites(userId: userId)
                 do {
-                    _ = try await (syncAlias, refreshInvites)
+                    _ = try await (syncAliases, refreshInvites)
                 } catch {
-                    // We logs the errors silently to let the full content refreshX continue offering a better
+                    // We logs the errors silently to let the full content refresh continue offering a better
                     // experience to the user.
                     logger.error(error)
                 }
