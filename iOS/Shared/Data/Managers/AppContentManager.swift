@@ -225,13 +225,19 @@ extension AppContentManager {
                 }
             }
 
-            // 4. Refresh invites
+            // 4. Refresh invite and sl notes
             if getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1) {
-                try await inviteRepository.refreshAllInvites(userId: userId)
+                async let syncAlias: Bool = slNoteSynchronizer.syncAllAliases(userId: userId)
+                async let refreshInvites: Void = inviteRepository.refreshAllInvites(userId: userId)
+                do {
+                    _ = try await (syncAlias, refreshInvites)
+                } catch {
+                    // We logs the errors silently to let the full content refresh continue offering a better experience to the user.
+                    logger.error(error)
+                }
             }
 
             try await loadContents(userId: userId, for: remoteShares.shares)
-            _ = try await slNoteSynchronizer.syncAllAliases(userId: userId)
 
             // 5. Get the lastEventID as a starting point for user events sync loop
             try await getLastEventIdIfNotExist(userId: userId)
