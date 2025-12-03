@@ -1,6 +1,6 @@
 //
-// FolderKey.swift
-// Proton Pass - Created on 01/12/2025.
+// PaginatedFolders.swift
+// Proton Pass - Created on 03/12/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,18 +20,14 @@
 
 import Foundation
 
-public struct FolderKey: Codable, Equatable, Hashable, Sendable {
-    /// Encrypted key encoded in base64
-    public let folderKey: String
-    public let keyRotation: Int
+public struct PaginatedFolders: Decodable, Sendable {
+    public let total: Int
+    public let lastToken: String?
+    public let folders: [Folder]
 
-    public init(folderKey: String, keyRotation: Int) {
-        self.folderKey = folderKey
-        self.keyRotation = keyRotation
-    }
-
-    enum CodingKeys: String, CodingKey {
-        case folderKey = "FolderKey"
-        case keyRotation = "KeyRotation"
+    public init(total: Int, lastToken: String?, folders: [Folder]) {
+        self.total = total
+        self.lastToken = lastToken
+        self.folders = folders
     }
 }

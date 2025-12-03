@@ -27,10 +27,6 @@ import Entities
 import Foundation
 import ProtonCoreNetworking
 
-struct MoveFolderResponse: Decodable, Sendable {
-    let folder: Folder
-}
-
 public struct MoveFolderRequest: Encodable, Sendable {
     /// Encrypted ID of the destination share
     let parentFolderID: String
@@ -44,7 +40,7 @@ public struct MoveFolderRequest: Encodable, Sendable {
 
 struct MoveFolderEndpoint: Endpoint {
     typealias Body = MoveFolderRequest
-    typealias Response = MoveFolderResponse
+    typealias Response = FolderResponse
 
     var debugDescription: String
     var path: String

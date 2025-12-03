@@ -25,13 +25,13 @@
 import Entities
 import ProtonCoreNetworking
 
-struct GetFolderResponse: Decodable, Sendable {
+struct FolderResponse: Decodable, Sendable {
     let folder: Folder
 }
 
 struct GetFolderEndpoint: Endpoint, Sendable {
     typealias Body = EmptyRequest
-    typealias Response = GetFolderResponse
+    typealias Response = FolderResponse
 
     let debugDescription: String
     let path: String
