@@ -99,7 +99,6 @@ extension SharedServiceContainer {
         self { SyncEventLoop(currentDateProvider: self.currentDateProvider,
                              synchronizer: self.eventSynchronizer(),
                              userEventsSynchronizer: self.userEventsSynchronizer(),
-                             slNoteSynchronizer: self.simpleLoginNoteSynchronizer(),
                              userManager: self.userManager(),
                              logManager: self.logManager,
                              reachability: SharedServiceContainer.shared.reachabilityService()) }
