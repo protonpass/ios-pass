@@ -21,11 +21,6 @@
 
 import Entities
 
-private struct UserVault: Sendable, Hashable {
-    let userId: String
-    let shareId: String
-}
-
 public protocol ShareIdToUserManagerProtocol {
     func index(vaults: [Share], userId: String)
     func getUser(for item: any ItemIdentifiable) throws -> UserUiModel
@@ -34,12 +29,10 @@ public protocol ShareIdToUserManagerProtocol {
 /// Cache and keep track of the mapping `ShareID` <-> `User`
 /// Used in multi accounts item display context to get the user that owns an item
 public final class ShareIdToUserManager: ShareIdToUserManagerProtocol {
-    // Optimization: Use dictionaries for O(1) lookup instead of linear search
     private var shareIdToUserId = [String: String]()
     private let userIdToModel: [String: UserUiModel]
 
     public init(users: [UserUiModel]) {
-        // Optimization: Pre-build user lookup dictionary
         userIdToModel = Dictionary(uniqueKeysWithValues: users.map { ($0.id, $0) })
     }
 }
@@ -52,7 +45,6 @@ public extension ShareIdToUserManager {
     }
 
     func getUser(for item: any ItemIdentifiable) throws -> UserUiModel {
-        // Optimization: O(1) dictionary lookup instead of O(n) linear search
         guard let userId = shareIdToUserId[item.shareId],
               let user = userIdToModel[userId] else {
             throw PassError.userManager(.noUserFound(shareId: item.shareId, itemId: item.itemId))

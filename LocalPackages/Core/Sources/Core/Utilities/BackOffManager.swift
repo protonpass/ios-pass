@@ -34,8 +34,6 @@ public protocol BackOffManagerProtocol: Sendable {
 }
 
 public actor BackOffManager {
-    // Optimization: Use count + last date instead of unbounded array
-    // Only failureCount and lastFailureDate are needed for backoff logic
     public var failureCount: Int
     public var lastFailureDate: Date?
     public let currentDateProvider: any CurrentDateProviderProtocol

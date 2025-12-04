@@ -100,7 +100,6 @@ public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUs
                 return result
             }
 
-        // Optimization: Parallel item fetching instead of sequential
         // Step 2: fetch all the items related to the applicable vaults
         let allUserItems: [SymmetricallyEncryptedItem] = try await withThrowingTaskGroup(of: [
             SymmetricallyEncryptedItem

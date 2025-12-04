@@ -63,7 +63,6 @@ public final class GetSearchableItems: GetSearchableItemsUseCase {
 
         return try await withThrowingTaskGroup(of: [SearchableItem].self,
                                                returning: [SearchableItem].self) { @Sendable group in
-            // Optimization: Adaptive batch size based on device cores and item count
             let deviceCores = ProcessInfo.processInfo.activeProcessorCount
             let adaptiveBatchSize = max(50, min(Constants.Utils.batchSize, filteredItems.count / deviceCores))
             let itemBatches = filteredItems.chunked(into: adaptiveBatchSize)
