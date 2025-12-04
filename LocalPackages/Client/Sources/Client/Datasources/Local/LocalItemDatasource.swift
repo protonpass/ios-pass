@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import CoreData
 import Entities
 
@@ -94,7 +95,7 @@ public extension LocalItemDatasource {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ItemEntity.fetchRequest()
         fetchRequest.predicate = .init(format: "userID = %@", userId)
-        fetchRequest.fetchBatchSize = 100
+        fetchRequest.fetchBatchSize = Constants.Database.fetchBatchSize
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return try itemEntities.map { try $0.toEncryptedItem() }
     }
@@ -108,7 +109,7 @@ public extension LocalItemDatasource {
             .init(format: "userID = %@", userId)
         ])
         fetchRequest.sortDescriptors = [.init(key: "pinTime", ascending: false)]
-        fetchRequest.fetchBatchSize = 100
+        fetchRequest.fetchBatchSize = Constants.Database.fetchBatchSize
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return try itemEntities.map { try $0.toEncryptedItem() }
     }
@@ -154,8 +155,9 @@ public extension LocalItemDatasource {
             .init(format: "shareID = %@", shareId),
             .init(format: "itemID = %@", itemId)
         ])
+        fetchRequest.fetchLimit = 1
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
-        return try itemEntities.map { try $0.toEncryptedItem() }.first
+        return try itemEntities.first.map { try $0.toEncryptedItem() }
     }
 
     func getAliasItem(email: String, shareId: String) async throws -> SymmetricallyEncryptedItem? {
@@ -165,9 +167,9 @@ public extension LocalItemDatasource {
             .init(format: "aliasEmail = %@", email),
             .init(format: "shareID = %@", shareId)
         ])
+        fetchRequest.fetchLimit = 1
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
-        assert(itemEntities.count <= 1, "Could not have more than 1 matched alias item")
-        return try itemEntities.map { try $0.toEncryptedItem() }.first
+        return try itemEntities.first.map { try $0.toEncryptedItem() }
     }
 
     // periphery:ignore
@@ -203,6 +205,12 @@ public extension LocalItemDatasource {
 
     func updateCachedAliasInfo(items: [SymmetricallyEncryptedItem],
                                aliases: [SymmetricallyEncryptedAlias]) async throws {
+        let aliasMap = Dictionary(uniqueKeysWithValues: aliases.compactMap { alias -> (String,
+                                                                                       SymmetricallyEncryptedAlias)? in
+                guard !alias.email.isEmpty else { return nil }
+                return (alias.email, alias)
+            })
+
         try await upsert(items,
                          entityType: ItemEntity.self,
                          fetchPredicate: NSPredicate(format: "itemID IN %@ AND shareID IN %@",
@@ -212,7 +220,8 @@ public extension LocalItemDatasource {
                              item.shareId == entity.shareID && item.itemId == entity.itemID
                          },
                          hydrate: { item, entity in
-                             if let alias = aliases.first(where: { $0.email == item.item.aliasEmail }) {
+                             if let aliasEmail = item.item.aliasEmail,
+                                let alias = aliasMap[aliasEmail] {
                                  entity.encryptedSimpleLoginNote = alias.encryptedNote
                              } else {
                                  assertionFailure("No matched encrypted alias for \(item.item.aliasEmail ?? "")")
@@ -236,31 +245,40 @@ public extension LocalItemDatasource {
 
     func upsertItems(_ items: [SymmetricallyEncryptedItem],
                      modifiedItems: [ModifiedItem]) async throws {
+        let modifiedMap = Dictionary(uniqueKeysWithValues: modifiedItems.map { ($0.itemID, $0) })
+
+        var itemsToUpsert = [SymmetricallyEncryptedItem]()
+        itemsToUpsert.reserveCapacity(items.count)
+
         for item in items {
-            if let modifiedItem = modifiedItems.first(where: { $0.itemID == item.item.itemID }) {
-                let modifiedItem = Item(itemID: item.item.itemID,
-                                        revision: modifiedItem.revision,
-                                        contentFormatVersion: item.item.contentFormatVersion,
-                                        keyRotation: item.item.keyRotation,
-                                        content: item.item.content,
-                                        itemKey: item.item.itemKey,
-                                        state: modifiedItem.state,
-                                        pinned: item.item.pinned,
-                                        pinTime: item.item.pinTime,
-                                        aliasEmail: item.item.aliasEmail,
-                                        createTime: item.item.createTime,
-                                        modifyTime: modifiedItem.modifyTime,
-                                        lastUseTime: item.item.lastUseTime,
-                                        revisionTime: modifiedItem.revisionTime,
-                                        flags: modifiedItem.flags,
-                                        shareCount: item.item.shareCount)
-                try await upsertItems([.init(shareId: item.shareId,
-                                             userId: item.userId,
-                                             item: modifiedItem,
-                                             encryptedContent: item.encryptedContent,
-                                             isLogInItem: item.isLogInItem,
-                                             encryptedSimpleLoginNote: item.encryptedSimpleLoginNote)])
+            if let modifiedItem = modifiedMap[item.item.itemID] {
+                let updatedItem = Item(itemID: item.item.itemID,
+                                       revision: modifiedItem.revision,
+                                       contentFormatVersion: item.item.contentFormatVersion,
+                                       keyRotation: item.item.keyRotation,
+                                       content: item.item.content,
+                                       itemKey: item.item.itemKey,
+                                       state: modifiedItem.state,
+                                       pinned: item.item.pinned,
+                                       pinTime: item.item.pinTime,
+                                       aliasEmail: item.item.aliasEmail,
+                                       createTime: item.item.createTime,
+                                       modifyTime: modifiedItem.modifyTime,
+                                       lastUseTime: item.item.lastUseTime,
+                                       revisionTime: modifiedItem.revisionTime,
+                                       flags: modifiedItem.flags,
+                                       shareCount: item.item.shareCount)
+                itemsToUpsert.append(.init(shareId: item.shareId,
+                                           userId: item.userId,
+                                           item: updatedItem,
+                                           encryptedContent: item.encryptedContent,
+                                           isLogInItem: item.isLogInItem,
+                                           encryptedSimpleLoginNote: item.encryptedSimpleLoginNote))
             }
+        }
+
+        if !itemsToUpsert.isEmpty {
+            try await upsertItems(itemsToUpsert)
         }
     }
 
@@ -338,7 +356,7 @@ public extension LocalItemDatasource {
             .init(format: "isLogInItem = %d", true)
         ])
         fetchRequest.sortDescriptors = [.init(key: "modifyTime", ascending: false)]
-        fetchRequest.fetchBatchSize = 100
+        fetchRequest.fetchBatchSize = Constants.Database.fetchBatchSize
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return try itemEntities.map { try $0.toEncryptedItem() }
     }

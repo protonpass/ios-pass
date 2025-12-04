@@ -98,15 +98,12 @@ public extension Array where Element: DateSortable {
 
         let cutOffDates = MostRecentType.cutOffDates
 
-        // Single pass: bucket items directly without pre-sorting
         for item in self {
             try Task.checkCancellation()
-            // Find the appropriate bucket for this item
             let bucketIndex = cutOffDates.firstIndex { item.dateForSorting >= $0 } ?? (cutOffDates.count - 1)
             buckets[bucketIndex].items.append(item)
         }
 
-        // Sort only within each bucket (smaller arrays = faster sorts)
         for index in buckets.indices {
             try Task.checkCancellation()
             buckets[index].items.sort { $0.dateForSorting > $1.dateForSorting }
@@ -281,7 +278,6 @@ public struct MonthYear: Hashable, Sendable {
     public let month: Int
     public let year: Int
 
-    // Optimization: Static cached DateFormatter to avoid recreation on every access
     private static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM yyyy"

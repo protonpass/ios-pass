@@ -56,7 +56,6 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
     }
 
     public var id: String {
-        // Optimization: Direct concatenation instead of string interpolation
         item.itemID + shareId
     }
 

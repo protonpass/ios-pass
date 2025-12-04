@@ -36,7 +36,6 @@ public extension Data {
     /// https://base64.guru/standards/base64url
     /// - Returns: A string that is url safe
     func base64URLSafeEncodedString() -> String {
-        // Optimization: Single-pass character transformation instead of three replacingOccurrences calls
         var result = ""
         result.reserveCapacity(base64EncodedString().count)
         for char in base64EncodedString() {
