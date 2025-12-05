@@ -200,7 +200,6 @@ private extension UserEventsSynchronizer {
         }
         logger.trace("Refreshing \(updatedShares.count) shares for user \(userId)")
 
-        // Optimization: Process in batches with controlled parallelism instead of unbounded
         for batch in updatedShares.chunked(into: maxConcurrentItemRefreshes) {
             try await withThrowingTaskGroup(of: Void.self) { taskGroup in
                 for updatedShare in batch {
