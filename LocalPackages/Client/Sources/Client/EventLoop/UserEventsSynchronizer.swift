@@ -138,7 +138,7 @@ private extension UserEventsSynchronizer {
 
         async let pendingAliasToCreate: () = processPendingAliasToCreateChanged(events.pendingAliasToCreateChanged,
                                                                                 userId: userId)
-        async let breachUpdate: () = processBreachesChanges(events.breachUpdate, userId: userId)
+        async let breachUpdate: () = processBreachesChanges(events.breachUpdate)
 
         async let userChange: () = processUserChanged(events.refreshUser, userId: userId)
 
@@ -298,10 +298,9 @@ private extension UserEventsSynchronizer {
                                                           refreshInviteType: .group(token: event.eventToken))
     }
 
-    func processBreachesChanges(_ event: ChangeEvent?,
-                                userId: String) async throws {
-        guard let event else {
-            logger.trace("No breaches changes for user \(userId)")
+    func processBreachesChanges(_ event: ChangeEvent?) async throws {
+        guard event != nil else {
+            logger.trace("No breaches changes for user")
             return
         }
         _ = try await passMonitorRepository.refreshUserBreaches()

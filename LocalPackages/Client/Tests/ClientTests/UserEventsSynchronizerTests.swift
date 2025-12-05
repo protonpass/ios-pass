@@ -38,6 +38,7 @@ struct UserEventsSynchronizerTests {
     let inviteRepository = FullInviteRepositoryProtocolMock()
     let slNoteSynchronizer = SimpleLoginNoteSynchronizerProtocolMock()
     let aliasRepository = AliasRepositoryProtocolMock()
+    let passMonitorRepository = PassMonitorRepositoryProtocolMock()
     var sut: (any UserEventsSynchronizerProtocol)!
 
     init() {
@@ -57,6 +58,7 @@ struct UserEventsSynchronizerTests {
                                      accessRepository: accessRespository,
                                      inviteRepository: inviteRepository,
                                      aliasRepository: aliasRepository,
+                                     passMonitorRepository: passMonitorRepository,
                                      simpleLoginNoteSynchronizer: slNoteSynchronizer,
                                      logManager: LogManagerProtocolMock())
        
@@ -97,6 +99,7 @@ private struct Args {
                       foldersUpdated: [],
                       foldersDeleted: [],
                       pendingAliasToCreateChanged: nil,
+                      breachUpdate: nil,
                       refreshUser: false,
                       eventsPending: false,
                       fullRefresh: true)
@@ -121,6 +124,7 @@ private struct Args {
                       foldersUpdated: [],
                       foldersDeleted: [],
                       pendingAliasToCreateChanged: nil,
+                      breachUpdate: nil,
                       refreshUser: false,
                       eventsPending: false,
                       fullRefresh: false)
@@ -151,6 +155,7 @@ private struct Args {
                       foldersUpdated: [],
                       foldersDeleted: [],
                       pendingAliasToCreateChanged: nil,
+                      breachUpdate: nil,
                       refreshUser: true,
                       eventsPending: true,
                       fullRefresh: false),
@@ -167,6 +172,7 @@ private struct Args {
                       foldersUpdated: [],
                       foldersDeleted: [],
                       pendingAliasToCreateChanged: nil,
+                      breachUpdate: nil,
                       refreshUser: false,
                       eventsPending: false,
                       fullRefresh: false)
