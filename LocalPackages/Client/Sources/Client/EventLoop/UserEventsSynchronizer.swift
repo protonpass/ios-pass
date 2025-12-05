@@ -48,6 +48,7 @@ public final class UserEventsSynchronizer: UserEventsSynchronizerProtocol {
     private let accessRepository: any AccessRepositoryProtocol
     private let inviteRepository: any FullInviteRepositoryProtocol
     private let aliasRepository: any AliasRepositoryProtocol
+    private let passMonitorRepository: any PassMonitorRepositoryProtocol
     private let simpleLoginNoteSynchronizer: any SimpleLoginNoteSynchronizerProtocol
     private let logger: Logger
     private let maxPerRoundFetchCycle = 10
@@ -61,6 +62,7 @@ public final class UserEventsSynchronizer: UserEventsSynchronizerProtocol {
                 accessRepository: any AccessRepositoryProtocol,
                 inviteRepository: any FullInviteRepositoryProtocol,
                 aliasRepository: any AliasRepositoryProtocol,
+    passMonitorRepository: any PassMonitorRepositoryProtocol,
                 simpleLoginNoteSynchronizer: any SimpleLoginNoteSynchronizerProtocol,
                 logManager: any LogManagerProtocol) {
         self.localUserEventIdDatasource = localUserEventIdDatasource
@@ -71,6 +73,7 @@ public final class UserEventsSynchronizer: UserEventsSynchronizerProtocol {
         self.inviteRepository = inviteRepository
         self.aliasRepository = aliasRepository
         self.simpleLoginNoteSynchronizer = simpleLoginNoteSynchronizer
+        self.passMonitorRepository = passMonitorRepository
         logger = .init(manager: logManager)
     }
 }
@@ -120,15 +123,13 @@ private extension UserEventsSynchronizer {
 
     // All todos need to be done in upcoming MRs for group invites and folders
     func process(events: UserEvents, for userId: String) async throws {
-        async let updatedItems: () = processUpdatedItems(events.itemsUpdated, userId: userId)
+        async let serializedParsing: () = serializeCreationUpdateParsing(events: events, for : userId)
         async let deletedItems: () = processDeletedItems(events.itemsDeleted, userId: userId)
         async let aliasNotesChanged: () = processAliasNoteChangedItems(events.aliasNoteChanged, userId: userId)
-        async let createdShares: () = processCreatedShares(events.sharesCreated, userId: userId)
         async let updatedShares: () = processUpdatedShares(events.sharesUpdated, userId: userId)
         async let deletedShares: () = processDeletedShares(events.sharesDeleted, userId: userId)
         // swiftlint:disable:next todo
         // TODO: folder to be implemented in the folder ticket mr
-//        async let foldersUpdated: () = processSharesToCreate(events.foldersUpdated, userId: userId)
 //        async let foldersDeleted: () = processInviteChanges(inviteChanges: events.foldersDeleted, userId: userId)
         async let invites: () = processUserInviteChanges(events.invitesChanged, userId: userId)
         async let groupInvites: () = processGroupInviteChanges(events.groupInvitesChanged, userId: userId)
@@ -137,20 +138,32 @@ private extension UserEventsSynchronizer {
 
         async let pendingAliasToCreate: () = processPendingAliasToCreateChanged(events.pendingAliasToCreateChanged,
                                                                                 userId: userId)
+        async let breachUpdate: () = processBreachesChanges(events.breachUpdate, userId: userId)
+        
         async let userChange: () = processUserChanged(events.refreshUser, userId: userId)
 
-        _ = try await (updatedItems,
+        _ = try await (serializedParsing,
                        deletedItems,
                        aliasNotesChanged,
-                       createdShares,
                        updatedShares,
                        deletedShares,
                        pendingAliasToCreate,
                        userChange,
                        invites,
                        groupInvites,
-                       newShareWithInvites)
+                       newShareWithInvites,
+                       breachUpdate)
     }
+    
+    // We must add some serialisation logic for all share / folder / item creation or update as we will need to rely on a tree of decryption keys in the futur
+    // Will have an update on the key decryption process
+    func serializeCreationUpdateParsing(events: UserEvents, for userId: String) async throws {
+        try await processCreatedShares(events.sharesCreated, userId: userId)
+        //TODO: add folder processing after shares and before items
+        //        async let foldersUpdated: () = processSharesToCreate(events.foldersUpdated, userId: userId)
+        try await processUpdatedItems(events.itemsUpdated, userId: userId)
+    }
+    
 
     func processUpdatedItems(_ updatedItems: [ItemEvent], userId: String) async throws {
         guard !updatedItems.isEmpty else {
@@ -284,6 +297,15 @@ private extension UserEventsSynchronizer {
                                                           refreshInviteType: .group(token: event.eventToken))
     }
 
+    func processBreachesChanges(_ event: ChangeEvent?,
+                                  userId: String) async throws {
+        guard let event else {
+            logger.trace("No breaches changes for user \(userId)")
+            return
+        }
+       _ = try await passMonitorRepository.refreshUserBreaches()
+    }
+    
     func processNewShareWithInviteChanges(_ events: [ShareEvent],
                                           userId: String) async throws {
         guard !events.isEmpty else {
