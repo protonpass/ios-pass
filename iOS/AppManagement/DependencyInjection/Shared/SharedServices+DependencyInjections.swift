@@ -90,6 +90,7 @@ extension SharedServiceContainer {
                                           accessRepository: container.accessRepository(),
                                           inviteRepository: container.inviteRepository(),
                                           aliasRepository: container.aliasRepository(),
+                                          passMonitorRepository: container.passMonitorRepository(),
                                           simpleLoginNoteSynchronizer: self.simpleLoginNoteSynchronizer(),
                                           logManager: self.logManager)
         }
