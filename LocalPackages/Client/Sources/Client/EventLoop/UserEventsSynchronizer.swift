@@ -160,6 +160,7 @@ private extension UserEventsSynchronizer {
     // Will have an update on the key decryption process
     func serializeCreationUpdateParsing(events: UserEvents, for userId: String) async throws {
         try await processCreatedShares(events.sharesCreated, userId: userId)
+        // swiftlint:disable:next todo
         // TODO: add folder processing after shares and before items
         //        async let foldersUpdated: () = processSharesToCreate(events.foldersUpdated, userId: userId)
         try await processUpdatedItems(events.itemsUpdated, userId: userId)
