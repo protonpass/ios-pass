@@ -37,7 +37,7 @@ public protocol MutexProtected<Value>: Sendable {
 }
 
 /// Legacy mutex implementation using OSAllocatedUnfairLock
-final class LegacyMutex<Value: Sendable>: MutexProtected {
+private final class LegacyMutex<Value: Sendable>: MutexProtected {
     private let lock: OSAllocatedUnfairLock<Value>
 
     init(_ value: Value) {
@@ -63,7 +63,7 @@ final class LegacyMutex<Value: Sendable>: MutexProtected {
 }
 
 @available(iOS 18.0, macOS 15.0, watchOS 11.0, tvOS 18.0, *)
-final class NativeMutex<Value: Sendable>: MutexProtected {
+private final class NativeMutex<Value: Sendable>: MutexProtected {
     private let mutex: Mutex<Value>
 
     init(_ value: Value) {
