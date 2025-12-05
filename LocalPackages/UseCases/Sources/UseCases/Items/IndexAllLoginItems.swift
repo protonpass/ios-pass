@@ -101,24 +101,23 @@ public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUs
             }
 
         // Step 2: fetch all the items related to the applicable vaults
-        let allUserItems: [SymmetricallyEncryptedItem] = try await withThrowingTaskGroup(of: [
-            SymmetricallyEncryptedItem
-        ].self) { [weak self] group in
-            guard let self else {
-                throw PassError.unexpectedError
-            }
-            for userId in userIds {
-                group.addTask { [weak self] in
-                    guard let self else { return [] }
-                    return try await filterItems(userId: userId, applicableSharesIds: allUsersSharesIds)
+        let allUserItems =
+            try await withThrowingTaskGroup(of: [SymmetricallyEncryptedItem].self) { [weak self] group in
+                guard let self else {
+                    throw PassError.unexpectedError
                 }
+                for userId in userIds {
+                    group.addTask { [weak self] in
+                        guard let self else { return [] }
+                        return try await filterItems(userId: userId, applicableSharesIds: allUsersSharesIds)
+                    }
+                }
+                var result = [SymmetricallyEncryptedItem]()
+                for try await items in group {
+                    result.append(contentsOf: items)
+                }
+                return result
             }
-            var result = [SymmetricallyEncryptedItem]()
-            for try await items in group {
-                result.append(contentsOf: items)
-            }
-            return result
-        }
 
         // Step 3: index the fetched items
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
