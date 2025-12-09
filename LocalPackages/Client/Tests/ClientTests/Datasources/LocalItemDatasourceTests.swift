@@ -544,6 +544,7 @@ private extension LocalItemDatasource {
         let encryptedContent = encryptedContent ?? .random()
         let item = SymmetricallyEncryptedItem(shareId: shareId, 
                                               userId: userId ?? .random(),
+                                              folderId: nil,
                                               item: itemRevision,
                                               encryptedContent: encryptedContent,
                                               isLogInItem: isLogInItem,

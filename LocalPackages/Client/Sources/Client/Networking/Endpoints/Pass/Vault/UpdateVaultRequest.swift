@@ -37,7 +37,7 @@ public struct UpdateVaultRequest: Sendable {
 }
 
 public extension UpdateVaultRequest {
-    init(vault: VaultContent, shareKey: DecryptedShareKey) throws {
+    init(vault: VaultContent, shareKey: any CryptographicKeyProtocol) throws {
         contentFormatVersion = Constants.ContentFormatVersion.vault
         let vaultKey = shareKey.keyData
 

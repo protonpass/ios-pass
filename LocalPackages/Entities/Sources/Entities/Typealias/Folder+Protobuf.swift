@@ -1,4 +1,4 @@
-//  
+//
 // Folder+Protobuf.swift
 // Proton Pass - Created on 09/12/2025.
 // Copyright (c) 2025 Proton Technologies AG

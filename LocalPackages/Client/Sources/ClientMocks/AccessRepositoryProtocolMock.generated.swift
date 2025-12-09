@@ -36,14 +36,7 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
     public var invokedAccessGetterCount = 0
     public var stubbedAccess: CurrentValueSubject<UserAccess?, Never>!
     public var access: CurrentValueSubject<UserAccess?, Never> {
-        set {
-            invokedAccessSetter = true
-            invokedAccessSetterCount += 1
-            invokedAccess = newValue
-            invokedAccessList.append(newValue)
-        } get {
-            invokedAccessGetter = true
-            invokedAccessGetterCount += 1
+         get {
             return stubbedAccess
         }
     }
@@ -56,14 +49,7 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
     public var invokedAccessesGetterCount = 0
     public var stubbedAccesses: CurrentValueSubject<[UserAccess], Never>!
     public var accesses: CurrentValueSubject<[UserAccess], Never> {
-        set {
-            invokedAccessesSetter = true
-            invokedAccessesSetterCount += 1
-            invokedAccesses = newValue
-            invokedAccessesList.append(newValue)
-        } get {
-            invokedAccessesGetter = true
-            invokedAccessesGetterCount += 1
+         get {
             return stubbedAccesses
         }
     }

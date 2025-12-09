@@ -59,14 +59,7 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
     public var invokedUserBreachesGetterCount = 0
     public var stubbedUserBreaches: CurrentValueSubject<UserBreaches?, Never>!
     public var userBreaches: CurrentValueSubject<UserBreaches?, Never> {
-        set {
-            invokedUserBreachesSetter = true
-            invokedUserBreachesSetterCount += 1
-            invokedUserBreaches = newValue
-            invokedUserBreachesList.append(newValue)
-        } get {
-            invokedUserBreachesGetter = true
-            invokedUserBreachesGetterCount += 1
+         get {
             return stubbedUserBreaches
         }
     }
@@ -79,14 +72,7 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
     public var invokedWeaknessStatsGetterCount = 0
     public var stubbedWeaknessStats: CurrentValueSubject<WeaknessStats, Never>!
     public var weaknessStats: CurrentValueSubject<WeaknessStats, Never> {
-        set {
-            invokedWeaknessStatsSetter = true
-            invokedWeaknessStatsSetterCount += 1
-            invokedWeaknessStats = newValue
-            invokedWeaknessStatsList.append(newValue)
-        } get {
-            invokedWeaknessStatsGetter = true
-            invokedWeaknessStatsGetterCount += 1
+         get {
             return stubbedWeaknessStats
         }
     }
@@ -99,14 +85,7 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
     public var invokedItemsWithSecurityIssuesGetterCount = 0
     public var stubbedItemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never>!
     public var itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> {
-        set {
-            invokedItemsWithSecurityIssuesSetter = true
-            invokedItemsWithSecurityIssuesSetterCount += 1
-            invokedItemsWithSecurityIssues = newValue
-            invokedItemsWithSecurityIssuesList.append(newValue)
-        } get {
-            invokedItemsWithSecurityIssuesGetter = true
-            invokedItemsWithSecurityIssuesGetterCount += 1
+         get {
             return stubbedItemsWithSecurityIssues
         }
     }

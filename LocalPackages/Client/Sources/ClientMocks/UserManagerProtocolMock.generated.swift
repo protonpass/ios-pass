@@ -38,14 +38,7 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
     public var invokedCurrentActiveUserGetterCount = 0
     public var stubbedCurrentActiveUser: CurrentValueSubject<UserData?, Never>!
     public var currentActiveUser: CurrentValueSubject<UserData?, Never> {
-        set {
-            invokedCurrentActiveUserSetter = true
-            invokedCurrentActiveUserSetterCount += 1
-            invokedCurrentActiveUser = newValue
-            invokedCurrentActiveUserList.append(newValue)
-        } get {
-            invokedCurrentActiveUserGetter = true
-            invokedCurrentActiveUserGetterCount += 1
+         get {
             return stubbedCurrentActiveUser
         }
     }
@@ -58,14 +51,7 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
     public var invokedAllUserAccountsGetterCount = 0
     public var stubbedAllUserAccounts: CurrentValueSubject<[UserData], Never>!
     public var allUserAccounts: CurrentValueSubject<[UserData], Never> {
-        set {
-            invokedAllUserAccountsSetter = true
-            invokedAllUserAccountsSetterCount += 1
-            invokedAllUserAccounts = newValue
-            invokedAllUserAccountsList.append(newValue)
-        } get {
-            invokedAllUserAccountsGetter = true
-            invokedAllUserAccountsGetterCount += 1
+         get {
             return stubbedAllUserAccounts
         }
     }
