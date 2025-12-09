@@ -75,6 +75,7 @@ public actor DownloadAndDecryptFile: DownloadAndDecryptFileUseCase {
                 continuation.finish()
             }
         }
+        // TODO: this need to change as item can be in folder that take precedent on share I presume
         guard let share = try await shareRepository.getShare(shareId: item.shareId) else {
             throw PassError.shareNotFoundInLocalDB(shareID: item.shareId)
         }

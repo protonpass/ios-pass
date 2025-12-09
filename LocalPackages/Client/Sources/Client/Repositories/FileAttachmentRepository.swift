@@ -373,7 +373,7 @@ private extension FileAttachmentRepository {
     }
 
     func getShareKeys(userId: String,
-                      item: any ItemIdentifiable) async throws -> [any ShareKeyProtocol] {
+                      item: any ItemIdentifiable) async throws -> [any CryptographicKeyProtocol] {
         guard let share = try await shareRepository.getShare(shareId: item.shareId) else {
             throw PassError.shareNotFoundInLocalDB(shareID: item.shareId)
         }

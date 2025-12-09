@@ -22,6 +22,7 @@ import UseCases
 import Client
 import Entities
 
+@MainActor
 public final class GetCurrentShareInviteInformationsUseCaseMock: @unchecked Sendable, GetCurrentShareInviteInformationsUseCase {
 
     public init() {}

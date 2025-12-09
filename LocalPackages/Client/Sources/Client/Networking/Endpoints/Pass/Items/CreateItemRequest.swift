@@ -49,17 +49,17 @@ extension CreateItemRequest: Encodable {
 }
 
 extension CreateItemRequest {
-    init(vaultKey: DecryptedShareKey, itemContent: any ProtobufableItemContentProtocol) throws {
+    init(containerKey: any CryptographicKeyProtocol, itemContent: any ProtobufableItemContentProtocol) throws {
         let itemKey = try Data.random()
         let encryptedContent = try AES.GCM.seal(itemContent.data(),
                                                 key: itemKey,
                                                 associatedData: .itemContent)
 
         let encryptedItemKey = try AES.GCM.seal(itemKey,
-                                                key: vaultKey.keyData,
+                                                key: containerKey.keyData,
                                                 associatedData: .itemKey)
 
-        self.init(keyRotation: vaultKey.keyRotation,
+        self.init(keyRotation: containerKey.keyRotation,
                   contentFormatVersion: Int16(Constants.ContentFormatVersion.item),
                   content: encryptedContent.base64EncodedString(),
                   itemKey: encryptedItemKey.base64EncodedString())

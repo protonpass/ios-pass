@@ -1,7 +1,7 @@
 //
-// ItemContentProtobuf+Extensions.swift
-// Proton Pass - Created on 24/11/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// FolderContent+Extensions.swift
+// Proton Pass - Created on 09/12/2025.
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -19,8 +19,5 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Entities
-import Foundation
 
-// MARK: - Symmetric encryption/decryption
-
-extension ItemContentProtobuf: SymmetricEncryptableElement {}
+extension FolderContent: SymmetricEncryptableElement {}

@@ -37,14 +37,7 @@ public final class ThemeProviderMock: @unchecked Sendable, ThemeProvider {
     public var invokedSharedPreferencesGetterCount = 0
     public var stubbedSharedPreferences: CurrentValueSubject<SharedPreferences?, Never>!
     public var sharedPreferences: CurrentValueSubject<SharedPreferences?, Never> {
-        set {
-            invokedSharedPreferencesSetter = true
-            invokedSharedPreferencesSetterCount += 1
-            invokedSharedPreferences = newValue
-            invokedSharedPreferencesList.append(newValue)
-        } get {
-            invokedSharedPreferencesGetter = true
-            invokedSharedPreferencesGetterCount += 1
+         get {
             return stubbedSharedPreferences
         }
     }

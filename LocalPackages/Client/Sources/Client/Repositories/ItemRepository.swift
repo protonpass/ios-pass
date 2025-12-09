@@ -333,6 +333,7 @@ public extension ItemRepository {
         logger.trace("Encrypting \(itemRevisions.count) remote items for share \(shareId)")
         var encryptedItems = [SymmetricallyEncryptedItem]()
 
+        // TODO: refresh in batch to optimize the code
         let symmetricKey = try await getSymmetricKey()
         for (index, itemRevision) in itemRevisions.enumerated() {
             let encryptedItem = try await symmetricallyEncrypt(itemRevision: itemRevision,
@@ -635,7 +636,7 @@ public extension ItemRepository {
         let itemId = oldItem.itemID
         logger.trace("Updating item \(itemId) for share \(shareId)")
 
-        let latestItemKey: any ShareKeyProtocol = if oldItem.isASharedWithMeItem {
+        let latestItemKey: any CryptographicKeyProtocol = if oldItem.isASharedWithMeItem {
             try await passKeyManager.getLatestShareKey(userId: userId, shareId: shareId)
         } else {
             try await passKeyManager.getLatestItemKey(userId: userId,
@@ -806,7 +807,7 @@ public extension ItemRepository {
                                                   itemUuid: UUID().uuidString,
                                                   data: loginData,
                                                   customFields: [])
-                return try .init(vaultKey: vaultKey, itemContent: content)
+                return try .init(containerKey: vaultKey, itemContent: content)
             }
             logger.debug("Bulk importing \(itemsToImport.count) logins")
             let items = try await remoteDatasource.importItems(userId: userId,
@@ -907,7 +908,7 @@ private extension ItemRepository {
                                                             shareId: shareId,
                                                             keyRotation: itemRevision.keyRotation)
 
-        let contentProtobuf = try itemRevision.getContentProtobuf(shareKey: shareKey)
+        let contentProtobuf = try itemRevision.getContentProtobuf(containerKey: shareKey)
 
         let encryptedContent = try contentProtobuf.encrypt(symmetricKey: symmetricKey)
 
@@ -935,8 +936,9 @@ private extension ItemRepository {
     func createItemRequest(itemContent: any ProtobufableItemContentProtocol,
                            userId: String,
                            shareId: String) async throws -> CreateItemRequest {
+        //TODO: check if we need to get parent key to encrypt or style shared key
         let latestKey = try await passKeyManager.getLatestShareKey(userId: userId, shareId: shareId)
-        return try CreateItemRequest(vaultKey: latestKey, itemContent: itemContent)
+        return try CreateItemRequest(containerKey: latestKey, itemContent: itemContent)
     }
 }
 
@@ -1087,7 +1089,7 @@ private extension ItemRepository {
         let shareKey = try await passKeyManager.getShareKey(userId: userId,
                                                             shareId: shareId,
                                                             keyRotation: item.keyRotation)
-        let contentProtobuf = try item.getContentProtobuf(shareKey: shareKey)
+        let contentProtobuf = try item.getContentProtobuf(containerKey: shareKey)
         return ItemContent(userId: userId,
                            shareId: shareId,
                            item: item,

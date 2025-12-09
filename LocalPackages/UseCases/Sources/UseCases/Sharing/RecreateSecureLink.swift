@@ -46,17 +46,12 @@ public final class RecreateSecureLink: RecreateSecureLinkUseCase {
 
     public func execute(for link: SecureLink, itemContent: ItemContent) async throws -> String {
         let userId = try await userManager.getActiveUserId()
-        let shareKey: any ShareKeyProtocol = if link.linkKeyEncryptedWithItemKey {
-            if itemContent.item.itemKey == nil {
-                try await passKeyManager.getShareKey(userId: userId,
-                                                     shareId: link.shareID,
-                                                     keyRotation: link.linkKeyShareKeyRotation)
-            } else {
-                try await passKeyManager.getItemKey(userId: userId,
-                                                    shareId: link.shareID,
-                                                    itemId: link.itemID,
-                                                    keyRotation: link.linkKeyShareKeyRotation)
-            }
+        let shareKey: any CryptographicKeyProtocol = if link.linkKeyEncryptedWithItemKey,
+                                                        itemContent.item.itemKey != nil {
+            try await passKeyManager.getItemKey(userId: userId,
+                                                shareId: link.shareID,
+                                                itemId: link.itemID,
+                                                keyRotation: link.linkKeyShareKeyRotation)
         } else {
             try await passKeyManager.getShareKey(userId: userId,
                                                  shareId: link.shareID,

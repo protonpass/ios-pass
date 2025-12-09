@@ -24,7 +24,7 @@ public struct Folder: Codable, Sendable, Identifiable, Equatable, Hashable {
     public let vaultID: String
     public let folderID: String
     public let parentFolderID: String?
-    public let keyRotation: Int
+    public let keyRotation: Int64
     public let folderKey: String
     public let contentFormatVersion: Int
     public let content: String
@@ -36,7 +36,7 @@ public struct Folder: Codable, Sendable, Identifiable, Equatable, Hashable {
     public init(vaultID: String,
                 folderID: String,
                 parentFolderID: String?,
-                keyRotation: Int,
+                keyRotation: Int64,
                 folderKey: String,
                 contentFormatVersion: Int,
                 content: String) {

@@ -51,7 +51,7 @@ public final class GetSecureLinkKeys: GetSecureLinkKeysUseCase {
     public func execute(item: ItemContent, share: Share) async throws -> SecureLinkKeys {
         let userId = try await userManager.getActiveUserId()
 
-        let itemKeyInfo: any ShareKeyProtocol = if share.shareType == .vault {
+        let itemKeyInfo: any CryptographicKeyProtocol = if share.shareType == .vault {
             try await passKeyManager.getLatestItemKey(userId: userId,
                                                       shareId: item.shareId,
                                                       itemId: item.itemId)

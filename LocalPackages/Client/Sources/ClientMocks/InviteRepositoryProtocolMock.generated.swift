@@ -38,14 +38,7 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
     public var invokedCurrentPendingInvitesGetterCount = 0
     public var stubbedCurrentPendingInvites: CurrentValueSubject<[Invite], Never>!
     public var currentPendingInvites: CurrentValueSubject<[Invite], Never> {
-        set {
-            invokedCurrentPendingInvitesSetter = true
-            invokedCurrentPendingInvitesSetterCount += 1
-            invokedCurrentPendingInvites = newValue
-            invokedCurrentPendingInvitesList.append(newValue)
-        } get {
-            invokedCurrentPendingInvitesGetter = true
-            invokedCurrentPendingInvitesGetterCount += 1
+         get {
             return stubbedCurrentPendingInvites
         }
     }

@@ -39,14 +39,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var invokedCurrentlyPinnedItemsGetterCount = 0
     public var stubbedCurrentlyPinnedItems: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never>!
     public var currentlyPinnedItems: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never> {
-        set {
-            invokedCurrentlyPinnedItemsSetter = true
-            invokedCurrentlyPinnedItemsSetterCount += 1
-            invokedCurrentlyPinnedItems = newValue
-            invokedCurrentlyPinnedItemsList.append(newValue)
-        } get {
-            invokedCurrentlyPinnedItemsGetter = true
-            invokedCurrentlyPinnedItemsGetterCount += 1
+         get {
             return stubbedCurrentlyPinnedItems
         }
     }
@@ -59,14 +52,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var invokedItemsWereUpdatedGetterCount = 0
     public var stubbedItemsWereUpdated: CurrentValueSubject<Void, Never>!
     public var itemsWereUpdated: CurrentValueSubject<Void, Never> {
-        set {
-            invokedItemsWereUpdatedSetter = true
-            invokedItemsWereUpdatedSetterCount += 1
-            invokedItemsWereUpdated = newValue
-            invokedItemsWereUpdatedList.append(newValue)
-        } get {
-            invokedItemsWereUpdatedGetter = true
-            invokedItemsWereUpdatedGetterCount += 1
+         get {
             return stubbedItemsWereUpdated
         }
     }

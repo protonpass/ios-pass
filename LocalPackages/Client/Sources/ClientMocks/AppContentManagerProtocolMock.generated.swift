@@ -22,6 +22,7 @@ import Client
 import Combine
 import Entities
 
+@MainActor
 public final class AppContentManagerProtocolMock: @unchecked Sendable, AppContentManagerProtocol {
 
     public init() {}
@@ -35,7 +36,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
     public var invokedCurrentSharesGetterCount = 0
     public nonisolated(unsafe) var stubbedCurrentShares: CurrentValueSubject<[Share], Never>!
     public var currentShares: CurrentValueSubject<[Share], Never> {
-        get {
+         get {
             return stubbedCurrentShares
         }
     }
@@ -144,7 +145,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
     public var invokedGetOldestOwnedVaultCount = 0
     public var stubbedGetOldestOwnedVaultResult: Share?
 
-    public func getOldestOwnedVault() -> Share? {
+    public func getOldestOwnedVault() async -> Share? {
         invokedGetOldestOwnedVaultfunction = true
         invokedGetOldestOwnedVaultCount += 1
         closureGetOldestOwnedVault()
