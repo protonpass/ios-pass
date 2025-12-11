@@ -50,6 +50,7 @@ public final class UserEventsSynchronizer: UserEventsSynchronizerProtocol {
     private let aliasRepository: any AliasRepositoryProtocol
     private let passMonitorRepository: any PassMonitorRepositoryProtocol
     private let simpleLoginNoteSynchronizer: any SimpleLoginNoteSynchronizerProtocol
+    private let organizationRepository: any OrganizationRepositoryProtocol
     private let logger: Logger
     private let maxPerRoundFetchCycle = 10
     private let maxConcurrentItemRefreshes = 20
@@ -63,6 +64,7 @@ public final class UserEventsSynchronizer: UserEventsSynchronizerProtocol {
                 inviteRepository: any FullInviteRepositoryProtocol,
                 aliasRepository: any AliasRepositoryProtocol,
                 passMonitorRepository: any PassMonitorRepositoryProtocol,
+                organizationRepository: any OrganizationRepositoryProtocol,
                 simpleLoginNoteSynchronizer: any SimpleLoginNoteSynchronizerProtocol,
                 logManager: any LogManagerProtocol) {
         self.localUserEventIdDatasource = localUserEventIdDatasource
@@ -74,6 +76,7 @@ public final class UserEventsSynchronizer: UserEventsSynchronizerProtocol {
         self.aliasRepository = aliasRepository
         self.simpleLoginNoteSynchronizer = simpleLoginNoteSynchronizer
         self.passMonitorRepository = passMonitorRepository
+        self.organizationRepository = organizationRepository
         logger = .init(manager: logManager)
     }
 }
@@ -140,6 +143,8 @@ private extension UserEventsSynchronizer {
                                                                                 userId: userId)
         async let breachUpdate: () = processBreachesChanges(events.breachUpdate)
 
+        async let organizationUpdate: () = processOrgaChanges(events.organizationUpdate, userId: userId)
+
         async let userChange: () = processUserChanged(events.refreshUser, userId: userId)
 
         _ = try await (serializedParsing,
@@ -152,7 +157,8 @@ private extension UserEventsSynchronizer {
                        invites,
                        groupInvites,
                        newShareWithInvites,
-                       breachUpdate)
+                       breachUpdate,
+                       organizationUpdate)
     }
 
     // We must add some serialisation logic for all share / folder / item creation or update as we will need to
@@ -304,6 +310,14 @@ private extension UserEventsSynchronizer {
             return
         }
         _ = try await passMonitorRepository.refreshUserBreaches()
+    }
+
+    func processOrgaChanges(_ event: ChangeEvent?, userId: String) async throws {
+        guard event != nil else {
+            logger.trace("No organizations changes for user")
+            return
+        }
+        _ = try await organizationRepository.refreshOrganization(userId: userId)
     }
 
     func processNewShareWithInviteChanges(_ events: [ShareEvent],
