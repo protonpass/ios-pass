@@ -39,6 +39,7 @@ struct UserEventsSynchronizerTests {
     let slNoteSynchronizer = SimpleLoginNoteSynchronizerProtocolMock()
     let aliasRepository = AliasRepositoryProtocolMock()
     let passMonitorRepository = PassMonitorRepositoryProtocolMock()
+    let organizationRepository = OrganizationRepositoryProtocolMock()
     var sut: (any UserEventsSynchronizerProtocol)!
 
     init() {
@@ -59,6 +60,7 @@ struct UserEventsSynchronizerTests {
                                      inviteRepository: inviteRepository,
                                      aliasRepository: aliasRepository,
                                      passMonitorRepository: passMonitorRepository,
+                                     organizationRepository: organizationRepository,
                                      simpleLoginNoteSynchronizer: slNoteSynchronizer,
                                      logManager: LogManagerProtocolMock())
        
@@ -100,6 +102,7 @@ private struct Args {
                       foldersDeleted: [],
                       pendingAliasToCreateChanged: nil,
                       breachUpdate: nil,
+                      organizationUpdate: nil,
                       refreshUser: false,
                       eventsPending: false,
                       fullRefresh: true)
@@ -125,6 +128,7 @@ private struct Args {
                       foldersDeleted: [],
                       pendingAliasToCreateChanged: nil,
                       breachUpdate: nil,
+                      organizationUpdate: nil,
                       refreshUser: false,
                       eventsPending: false,
                       fullRefresh: false)
@@ -156,6 +160,7 @@ private struct Args {
                       foldersDeleted: [],
                       pendingAliasToCreateChanged: nil,
                       breachUpdate: nil,
+                      organizationUpdate: nil,
                       refreshUser: true,
                       eventsPending: true,
                       fullRefresh: false),
@@ -173,6 +178,7 @@ private struct Args {
                       foldersDeleted: [],
                       pendingAliasToCreateChanged: nil,
                       breachUpdate: nil,
+                      organizationUpdate: nil,
                       refreshUser: false,
                       eventsPending: false,
                       fullRefresh: false)
