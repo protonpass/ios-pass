@@ -27,14 +27,14 @@ import Foundation
 
 public protocol DownloadAndDecryptFileUseCase: Sendable {
     func execute(userId: String,
-                 item: any ItemIdentifiable,
+                 item: any FullItemIdentifiable,
                  file: ItemFile) async throws
         -> AsyncThrowingStream<ProgressEvent<URL>, any Error>
 }
 
 public extension DownloadAndDecryptFileUseCase {
     func callAsFunction(userId: String,
-                        item: any ItemIdentifiable,
+                        item: any FullItemIdentifiable,
                         file: ItemFile) async throws
         -> AsyncThrowingStream<ProgressEvent<URL>, any Error> {
         try await execute(userId: userId, item: item, file: file)
@@ -58,7 +58,7 @@ public actor DownloadAndDecryptFile: DownloadAndDecryptFileUseCase {
     }
 
     public func execute(userId: String,
-                        item: any ItemIdentifiable,
+                        item: any FullItemIdentifiable,
                         file: ItemFile) async throws
         -> AsyncThrowingStream<ProgressEvent<URL>, any Error> {
         let fileManager = FileManager.default

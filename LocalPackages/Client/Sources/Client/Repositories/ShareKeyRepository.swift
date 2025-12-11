@@ -30,6 +30,8 @@ typealias Encryptor = ProtonCoreCrypto.Encryptor
 
 /// This repository is not offline first because without keys, the app is not functional.
 public protocol ShareKeyRepositoryProtocol: Sendable {
+    func getAllLocalKeys() async throws -> [SymmetricallyEncryptedShareKey]
+
     /// Get share keys of a share with `shareId`. Not offline first.
     func getKeys(userId: String, shareId: String) async throws -> [SymmetricallyEncryptedShareKey]
 
@@ -64,6 +66,13 @@ public actor ShareKeyRepository: ShareKeyRepositoryProtocol {
 }
 
 public extension ShareKeyRepository {
+    func getAllLocalKeys() async throws -> [SymmetricallyEncryptedShareKey] {
+        logger.trace("Getting all local share keys")
+        let keys = try await localDatasource.getAllKeys()
+        logger.trace("Got \(keys.count) local keys")
+        return keys
+    }
+
     func getKeys(userId: String, shareId: String) async throws -> [SymmetricallyEncryptedShareKey] {
         logger.trace("Getting keys for share \(shareId)")
         let keys = try await localDatasource.getKeys(shareId: shareId)

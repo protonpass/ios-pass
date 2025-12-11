@@ -61,3 +61,8 @@ public extension Array where Element: ItemIdentifiable {
         return copiedArray
     }
 }
+
+public protocol FullItemIdentifiable: Sendable, CustomDebugStringConvertible, Equatable, ItemIdentifiable {
+    var shareId: String { get }
+    var item: Item { get }
+}

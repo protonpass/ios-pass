@@ -639,9 +639,8 @@ public extension ItemRepository {
         let latestItemKey: any CryptographicKeyProtocol = if oldItem.isASharedWithMeItem {
             try await passKeyManager.getLatestShareKey(userId: userId, shareId: shareId)
         } else {
-            try await passKeyManager.getLatestItemKey(userId: userId,
-                                                      shareId: shareId,
-                                                      itemId: itemId)
+            try await passKeyManager.getDecryptionKey(userId: userId, containerId: oldItem.folderID ?? shareId,
+                                                      keyRotation: oldItem.keyRotation)
         }
 
         let request = try UpdateItemRequest(oldRevision: oldItem,
@@ -936,7 +935,7 @@ private extension ItemRepository {
     func createItemRequest(itemContent: any ProtobufableItemContentProtocol,
                            userId: String,
                            shareId: String) async throws -> CreateItemRequest {
-        //TODO: check if we need to get parent key to encrypt or style shared key
+        // TODO: check if we need to get parent key to encrypt or style shared key
         let latestKey = try await passKeyManager.getLatestShareKey(userId: userId, shareId: shareId)
         return try CreateItemRequest(containerKey: latestKey, itemContent: itemContent)
     }
@@ -976,7 +975,7 @@ public extension ItemRepository {
 
 private extension ItemRepository {
     @discardableResult
-    func parallelMove(items: [any ItemIdentifiable],
+    func parallelMove(items: [any FullItemIdentifiable],
                       to toShareId: String) async throws -> [SymmetricallyEncryptedItem] {
         let splitArray = items.chunked(into: 10)
         do {
@@ -1007,7 +1006,7 @@ private extension ItemRepository {
     }
 
     @discardableResult
-    func doMove(items: [any ItemIdentifiable],
+    func doMove(items: [any FullItemIdentifiable],
                 toShareId: String) async throws -> [SymmetricallyEncryptedItem] {
         guard let fromSharedId = items.first?.shareId else {
             throw PassError.unexpectedError
@@ -1022,7 +1021,9 @@ private extension ItemRepository {
             // Get all decrypted item keys
             let decryptedItemKeys = try await passKeyManager.getItemKeys(userId: userId,
                                                                          shareId: item.shareId,
-                                                                         itemId: item.itemId)
+                                                                         containerId: item.item.folderID ?? item
+                                                                             .shareId,
+                                                                         itemId: item.item.itemID)
             // Re-encrypt all those item keys with the destination vault key
             var encryptedItemKeys = [ItemKey]()
             for itemKey in decryptedItemKeys {
@@ -1032,7 +1033,7 @@ private extension ItemRepository {
                 encryptedItemKeys.append(.init(key: encryptedItemKey.base64EncodedString(),
                                                keyRotation: itemKey.keyRotation))
             }
-            itemsToBeMoved.append(.init(itemId: item.itemId,
+            itemsToBeMoved.append(.init(itemId: item.item.itemID,
                                         itemKeys: encryptedItemKeys))
         }
 
@@ -1048,7 +1049,7 @@ private extension ItemRepository {
                                                      userId: userId,
                                                      symmetricKey: symmetricKey)
             }.compactMap(\.self)
-        try await localDatasource.deleteItems(itemIds: items.map(\.itemId),
+        try await localDatasource.deleteItems(itemIds: items.map(\.item.itemID),
                                               shareId: fromSharedId)
         try await localDatasource.upsertItems(newEncryptedItems)
         return newEncryptedItems
@@ -1086,10 +1087,13 @@ private extension ItemRepository {
 
 private extension ItemRepository {
     func decrypt(userId: String, item: Item, shareId: String) async throws -> ItemContent {
-        let shareKey = try await passKeyManager.getShareKey(userId: userId,
-                                                            shareId: shareId,
-                                                            keyRotation: item.keyRotation)
-        let contentProtobuf = try item.getContentProtobuf(containerKey: shareKey)
+//        let shareKey = try await passKeyManager.getShareKey(userId: userId,
+//                                                            shareId: shareId,
+//                                                            keyRotation: item.keyRotation)
+        let containerKey = try await passKeyManager.getDecryptionKey(userId: userId,
+                                                                     containerId: item.folderID ?? shareId,
+                                                                     keyRotation: item.keyRotation)
+        let contentProtobuf = try item.getContentProtobuf(containerKey: containerKey)
         return ItemContent(userId: userId,
                            shareId: shareId,
                            item: item,
@@ -1099,3 +1103,5 @@ private extension ItemRepository {
 }
 
 // swiftlint: enable discouraged_optional_self file_length
+
+extension SymmetricallyEncryptedItem: @retroactive FullItemIdentifiable {}

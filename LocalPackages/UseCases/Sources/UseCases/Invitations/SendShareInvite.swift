@@ -70,14 +70,15 @@ public final class SendShareInvite: Sendable, SendShareInviteUseCase {
         let userData = try await userManager.getUnwrappedActiveUserData()
         let userId = userData.user.ID
         let share = try await getShare(userId: userId, from: baseInfo)
-        let itemId = getItemId(from: baseInfo)
+        let item = getItem(from: baseInfo)
         let key: any CryptographicKeyProtocol = if baseInfo.shareTargetType == .vault {
             try await passKeyManager.getLatestShareKey(userId: userId, shareId: share.id)
-        } else if let itemId {
+        } else if let item {
             if share.shareType == .vault {
                 try await passKeyManager.getLatestItemKey(userId: userId,
                                                           shareId: share.id,
-                                                          itemId: itemId)
+                                                          containerId: item.item.folderID ?? share.id,
+                                                          itemId: item.itemId)
             } else {
                 try await passKeyManager.getLatestShareKey(userId: userId, shareId: share.id)
             }
@@ -92,7 +93,7 @@ public final class SendShareInvite: Sendable, SendShareInviteUseCase {
 
         let invited = try await shareInviteRepository.sendInvites(userId: userId,
                                                                   shareId: share.id,
-                                                                  itemId: itemId,
+                                                                  itemId: item?.itemId,
                                                                   inviteesData: inviteesData,
                                                                   targetType: baseInfo.shareTargetType)
 
@@ -118,10 +119,10 @@ private extension SendShareInvite {
         }
     }
 
-    func getItemId(from info: SharingInfos) -> String? {
+    func getItem(from info: SharingInfos) -> ItemContent? {
         switch info.shareElement {
         case let .item(item, _):
-            item.itemId
+            item
         default:
             nil
         }
