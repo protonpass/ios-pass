@@ -34,6 +34,8 @@ import UseCases
 
 typealias ScanResponsePublisher = PassthroughSubject<(any ScanResult)?, any Error>
 
+extension ItemContent: @retroactive FullItemIdentifiable {}
+
 enum ItemMode: Equatable, Hashable {
     case create(shareId: String?, type: ItemCreationType)
     case clone(ItemContent)
@@ -545,7 +547,7 @@ private extension BaseCreateEditItemViewModel {
             return edited
         }
 
-        var updatedItem: any ItemIdentifiable = oldItem
+        var updatedItem: any FullItemIdentifiable = oldItem
         if !oldItemContent.protobuf.isLooselyEqual(to: newItemContent) {
             updatedItem = try await itemRepository.updateItem(userId: oldItem.userId,
                                                               oldItem: oldItem.item,
@@ -561,7 +563,7 @@ private extension BaseCreateEditItemViewModel {
         return edited
     }
 
-    func linkFiles(to item: any ItemIdentifiable) async throws -> Bool {
+    func linkFiles(to item: any FullItemIdentifiable) async throws -> Bool {
         let attachedFiles = attachedFiles?.fetchedObject ?? []
 
         let filesToLink = getFilesToLink(attachedFiles: attachedFiles, updatedFiles: files)

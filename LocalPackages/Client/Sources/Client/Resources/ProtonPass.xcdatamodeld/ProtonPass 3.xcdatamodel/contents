@@ -52,6 +52,18 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
+    <entity name="FolderKeyEntity" representedClassName="FolderKeyEntity" syncable="YES">
+        <attribute name="encryptedKey" attributeType="String"/>
+        <attribute name="folderId" attributeType="String"/>
+        <attribute name="keyRotation" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="userId" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="folderId"/>
+                <constraint value="keyRotation"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
     <entity name="GroupInviteEntity" representedClassName="GroupInviteEntity" syncable="YES">
         <attribute name="createTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="data" optional="YES" attributeType="String"/>
