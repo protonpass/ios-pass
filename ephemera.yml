@@ -16,10 +16,7 @@ spec:
       inherits:
         - backend
         - mock-server
-        - patch-affinity
-        - patch-namespace
-        - patch-sync-waves
-        - patch-labels
+        - default-patches
       charts:
         mock-server:
           values: |
