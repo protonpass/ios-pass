@@ -1,3 +1,7 @@
+# Version 1.17.11
+- Reworded "Clone" to "Duplicate"
+- Free credit cards
+
 # Version 1.17.10
 - Improved homepage layout when "Button Shapes" accessibility setting is enabled
 - Fixed password generator not fully visible on certain devices running iOS 26
