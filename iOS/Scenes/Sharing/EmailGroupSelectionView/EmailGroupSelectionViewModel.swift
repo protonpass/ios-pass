@@ -27,7 +27,6 @@ import Entities
 import FactoryKit
 import Foundation
 import Macro
-import ProtonCoreHumanVerification
 
 enum SuggestionsDisplayType: Int, Hashable {
     case suggestion = 0
@@ -47,7 +46,8 @@ final class EmailGroupSelectionViewModel: ObservableObject {
     @Published private(set) var loading = false
     @Published var showGroupMembers = false
     @Published var displayType = SuggestionsDisplayType.suggestion
-    @Published private(set) var suggestions: [InviteRecommendationType]?
+    @Published private(set) var suggestions: [InviteRecommendationType] = []
+    @Published private var cachedOrgRecommendations: OrganizationInviteRecommendations?
 
     private var cancellables = Set<AnyCancellable>()
     private let inviteRepository = resolve(\SharedRepositoryContainer.inviteRepository)
@@ -62,22 +62,14 @@ final class EmailGroupSelectionViewModel: ObservableObject {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var currentTask: Task<Void, Never>?
     private var cachedGroupInfos: [InviteRecommendationType]?
-    private var cachedOrganizationInfos: OrganizationInviteRecommendations?
     private var updateSuggestionTask: Task<Void, Never>?
 
     var organizationTitle: String? {
-        cachedOrganizationInfos?.groupDisplayName
+        cachedOrgRecommendations?.groupDisplayName
     }
 
     var canFetchMore: Bool {
-        guard let cachedOrganizationInfos else {
-            return true
-        }
-        if cachedOrganizationInfos.nextToken == nil, cachedOrganizationInfos.entries.isEmpty {
-            return true
-        }
-
-        return false
+        cachedOrgRecommendations?.canFetchMore == true
     }
 
     init() {
@@ -202,7 +194,7 @@ private extension EmailGroupSelectionViewModel {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 guard let self else { return }
-                cachedOrganizationInfos = cachedOrganizationInfos?.reset
+                cachedOrgRecommendations?.reset()
                 updateSuggestedContent(fetchMore: true)
             }
             .store(in: &cancellables)
@@ -267,8 +259,8 @@ private extension EmailGroupSelectionViewModel {
         cachedGroupInfos = groupInfos
     }
 
-    func fetchSuggestions() async -> [InviteRecommendationType]? {
-        guard let shareId = element?.shareId else { return nil }
+    func fetchSuggestions() async -> [InviteRecommendationType] {
+        guard let shareId = element?.shareId else { return [] }
 
         do {
             let userId = try await userManager.getActiveUserId()
@@ -287,46 +279,47 @@ private extension EmailGroupSelectionViewModel {
             return invitations
         } catch {
             router.display(element: .displayErrorBanner(error))
-            return nil
+            return []
         }
     }
 
-    func fetchOrganizationsRecommendation(shouldFetchMore: Bool = false) async -> [InviteRecommendationType]? {
-        guard let shareId = element?.shareId else { return nil }
+    func fetchOrganizationsRecommendation(shouldFetchMore: Bool = false) async -> [InviteRecommendationType] {
+        guard let shareId = element?.shareId else { return [] }
         defer {
             isFetchingMore = false
         }
         do {
             if canFetchMore, shouldFetchMore {
                 isFetchingMore = true
-                let query = InviteRecommendationsQuery(lastToken: cachedOrganizationInfos?.nextToken,
+                let query = InviteRecommendationsQuery(lastToken: cachedOrgRecommendations?.nextToken,
                                                        pageSize: Constants.Utils.defaultPageSize,
                                                        email: email)
                 if Task.isCancelled {
-                    return nil
+                    return []
                 }
                 let userId = try await userManager.getActiveUserId()
-                let content = try await inviteRepository.getOrganisationInviteRecommendations(userId: userId,
-                                                                                              shareId: shareId,
-                                                                                              query: query)
+                let newRecommendations =
+                    try await inviteRepository.getOrganisationInviteRecommendations(userId: userId,
+                                                                                    shareId: shareId,
+                                                                                    query: query)
 
-                if let cachedOrganizationInfos {
-                    self.cachedOrganizationInfos = cachedOrganizationInfos.update(newRecommendations: content)
+                if cachedOrgRecommendations != nil {
+                    cachedOrgRecommendations?.merge(with: newRecommendations)
                 } else {
-                    cachedOrganizationInfos = content
+                    cachedOrgRecommendations = newRecommendations
                 }
             }
-            guard let cachedOrganizationInfos else {
-                return nil
+            guard let cachedOrgRecommendations else {
+                return []
             }
             var recommendation = cachedGroupInfos ?? []
-            for entry in cachedOrganizationInfos.entries {
+            for entry in cachedOrgRecommendations.entries {
                 recommendation.append(.email(entry.email))
             }
-            return recommendation.alphabeticallySortedEmails
+            return recommendation.alphabeticallySorted
         } catch {
             router.display(element: .displayErrorBanner(error))
-            return nil
+            return []
         }
     }
 }
@@ -336,16 +329,7 @@ private extension [InviteRecommendationType] {
         compactMap(\.emailAddress)
     }
 
-    var alphabeticallySortedEmails: [InviteRecommendationType] {
+    var alphabeticallySorted: [InviteRecommendationType] {
         sorted { $0.name < $1.name }
-    }
-}
-
-extension OrganizationInviteRecommendations {
-    func update(newRecommendations reco: OrganizationInviteRecommendations) -> OrganizationInviteRecommendations {
-        let updateEmails = entries.appending(reco.entries)
-        return OrganizationInviteRecommendations(groupDisplayName: groupDisplayName,
-                                                 nextToken: reco.nextToken,
-                                                 entries: updateEmails)
     }
 }
