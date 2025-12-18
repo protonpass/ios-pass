@@ -129,7 +129,7 @@ private struct FullScreenTextView: View {
             switch data {
             case let .password(password):
                 Text(password.coloredPassword())
-                    .font(.system(size: (percentage + 1) * 24))
+                    .font(.system(size: (percentage + 1) * 24).monospaced())
                     .fontWeight(.semibold)
             case let .text(text):
                 Text(verbatim: text)
