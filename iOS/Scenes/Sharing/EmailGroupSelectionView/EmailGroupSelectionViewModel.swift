@@ -68,7 +68,7 @@ final class EmailGroupSelectionViewModel: ObservableObject {
         cachedOrgRecommendations?.groupDisplayName
     }
 
-    var canFetchMore: Bool {
+    private var canFetchMore: Bool {
         cachedOrgRecommendations?.canFetchMore ?? true
     }
 
