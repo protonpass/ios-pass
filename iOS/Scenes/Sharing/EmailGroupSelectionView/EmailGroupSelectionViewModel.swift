@@ -68,8 +68,8 @@ final class EmailGroupSelectionViewModel: ObservableObject {
         cachedOrgRecommendations?.groupDisplayName
     }
 
-    var canFetchMore: Bool {
-        cachedOrgRecommendations?.canFetchMore == true
+    private var canFetchMore: Bool {
+        cachedOrgRecommendations?.canFetchMore ?? true
     }
 
     init() {
@@ -192,9 +192,11 @@ private extension EmailGroupSelectionViewModel {
             .compactMap(\.self)
             .debounce(for: 0.4, scheduler: DispatchQueue.main)
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
+            .sink { [weak self] newValue in
                 guard let self else { return }
-                cachedOrgRecommendations?.reset()
+                if !newValue.isEmpty {
+                    cachedOrgRecommendations?.reset()
+                }
                 updateSuggestedContent(fetchMore: true)
             }
             .store(in: &cancellables)
@@ -219,6 +221,7 @@ private extension EmailGroupSelectionViewModel {
         element = shareInviteService.currentSelectedElement.value
 
         $displayType
+            .dropFirst()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 guard let self else { return }
@@ -283,7 +286,7 @@ private extension EmailGroupSelectionViewModel {
         }
     }
 
-    func fetchOrganizationsRecommendation(shouldFetchMore: Bool = false) async -> [InviteRecommendationType] {
+    func fetchOrganizationsRecommendation(shouldFetchMore: Bool) async -> [InviteRecommendationType] {
         guard let shareId = element?.shareId else { return [] }
         defer {
             isFetchingMore = false

@@ -36,7 +36,7 @@ public struct OrganizationInviteRecommendations: Sendable, Identifiable, Decodab
     public var id: String { groupDisplayName ?? UUID().uuidString }
 
     public var canFetchMore: Bool {
-        nextToken == nil && entries.isEmpty
+        nextToken != nil || entries.isEmpty
     }
 
     public mutating func merge(with other: Self) {
