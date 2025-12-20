@@ -24,12 +24,14 @@ import ProtonCoreCrypto
 @preconcurrency import ProtonCoreLogin
 
 public protocol DecryptGroupKeyUseCase: Sendable {
-    func execute(group: Group, userData: UserData) async throws -> DecryptedGroupAddressKey
+    func execute(group: Group, isGroupOwner: Bool, userData: UserData) async throws -> DecryptedGroupAddressKey
 }
 
 public extension DecryptGroupKeyUseCase {
-    func callAsFunction(group: Group, userData: UserData) async throws -> DecryptedGroupAddressKey {
-        try await execute(group: group, userData: userData)
+    func callAsFunction(group: Group,
+                        isGroupOwner: Bool,
+                        userData: UserData) async throws -> DecryptedGroupAddressKey {
+        try await execute(group: group, isGroupOwner: isGroupOwner, userData: userData)
     }
 }
 
@@ -46,12 +48,49 @@ public final class DecryptGroupKey: DecryptGroupKeyUseCase {
         self.decryptOrganizationKey = decryptOrganizationKey
     }
 
-    public func execute(group: Group, userData: UserData) async throws -> DecryptedGroupAddressKey {
+    public func execute(group: Group,
+                        isGroupOwner: Bool,
+                        userData: UserData) async throws -> DecryptedGroupAddressKey {
         guard let address = group.address,
               let primaryKey = address.keys.first(where: { $0.primary == 1 })
         else {
             throw PassError.crypto(.missingGroupAddress(group.id))
         }
+
+        let content = if isGroupOwner {
+            try decryptWithUserKeys(primaryKey: primaryKey, userData: userData)
+        } else {
+            try await decryptWithOrgKeys(primaryKey: primaryKey, userData: userData)
+        }
+
+        let armoredPrivateKey = ArmoredKey(value: primaryKey.privateKey)
+        let privateKey = DecryptionKey(privateKey: armoredPrivateKey,
+                                       passphrase: .init(value: content))
+        let publicKey = armoredPrivateKey.value.publicKey
+
+        return DecryptedGroupAddressKey(privateKey: privateKey, publicKey: publicKey, groupAddressKey: primaryKey)
+    }
+}
+
+private extension DecryptGroupKey {
+//    func getDecryptionKeys(isGroupAdmin: Bool, userData: UserData) async throws -> DecryptionKey {
+//        if isGroupAdmin {
+//            guard let key = userData.user.keys.first else {
+//                throw PassError.crypto(.missingKeys)
+//            }
+//            return DecryptionKey(privateKey: .init(value: key.privateKey),
+//                                 passphrase: .init(value: userData.passphrases[key.keyID] ?? ""))
+    ////            return userData.user.keys.first() {
+    ////                DecryptionKey(privateKey: .init(value: $0.privateKey),
+    ////                              passphrase: .init(value: userData.passphrases[$0.keyID] ?? ""))
+    ////            }
+//        } else {
+//            let result = try await decryptOrganizationKey(user: userData).privateKey
+//            return result
+//        }
+//    }
+
+    func decryptWithOrgKeys(primaryKey: GroupAddressKey, userData: UserData) async throws -> String {
         let orgKey = try await decryptOrganizationKey(user: userData)
 
         let decryptedToken = try Decryptor.decryptAndVerify(decryptionKey: orgKey.privateKey,
@@ -59,11 +98,193 @@ public final class DecryptGroupKey: DecryptGroupKeyUseCase {
                                                             detachedSign: ArmoredSignature(value: primaryKey
                                                                 .signature),
                                                             verificationKeys: [orgKey.privateKey.privateKey])
-        let armoredPrivateKey = ArmoredKey(value: primaryKey.privateKey)
-        let privateKey = DecryptionKey(privateKey: armoredPrivateKey,
-                                       passphrase: .init(value: decryptedToken.content))
-        let publicKey = armoredPrivateKey.value.publicKey
 
-        return DecryptedGroupAddressKey(privateKey: privateKey, publicKey: publicKey, groupAddressKey: primaryKey)
+        guard case let .verified(content) = decryptedToken else {
+            throw PassError.crypto(.failedToVerifySignature)
+        }
+
+        return content
+    }
+
+    func decryptWithUserKeys(primaryKey: GroupAddressKey, userData: UserData) throws -> String {
+        let decryptionKeys = userData.user.keys.map {
+            DecryptionKey(privateKey: .init(value: $0.privateKey),
+                          passphrase: .init(value: userData.passphrases[$0.keyID] ?? ""))
+        }
+        let verificationKeys = userData.user.keys.map(\.publicKey).map { ArmoredKey(value: $0) }
+        let context = VerificationContext(value: "account.key-token.address",
+                                          required: .always)
+        var errors = [String]()
+        for decryptionKey in decryptionKeys {
+            do {
+                let decryptedToken = try Decryptor.decryptAndVerify(decryptionKey: decryptionKey,
+                                                                    addrToken: ArmoredMessage(value: primaryKey
+                                                                        .token),
+                                                                    detachedSign: ArmoredSignature(value: primaryKey
+                                                                        .signature),
+                                                                    verificationKeys: verificationKeys,
+                                                                    verificationContext: context)
+
+                if case let .verified(content) = decryptedToken {
+                    return content
+                }
+            } catch {
+                errors.append(error.localizedDescription)
+                continue
+            }
+//            if let decryptedToken = try? Decryptor.decryptAndVerify(decryptionKey: decryptionKey,
+//                                                                    addrToken: ArmoredMessage(value: primaryKey
+//                                                                        .token),
+//                                                                    detachedSign: ArmoredSignature(value: primaryKey
+//                                                                        .signature),
+//                                                                    verificationKeys: verificationKeys,
+//                                                                    verificationContext: context),
+//                case let .verified(content) = decryptedToken {
+//                return content
+//            }
+        }
+        throw PassError.crypto(.missingKeys)
     }
 }
+
+// var errors = [String]()
+//
+//   for decryptionKey in decryptionKeys {
+//       if let decryptedToken = try? Decryptor.decryptAndVerify(decryptionKey: decryptionKey,
+////                if let decryptedToken = try? Decryptor.decryptAndVerify(decryptionKey: decryptionKey,
+////                                                                        addrToken: ArmoredMessage(value:
+/// token),
+////                                                                        detachedSign: ArmoredSignature(value:
+/// signature),
+////                                                                        verificationKeys: verificationKeys,
+////                                                                        verificationContext: context),
+////                   case let .verified(content) = decryptedToken {
+////                    return content
+////                }
+//
+//       do {
+//           let decryptedToken = try Decryptor.decryptAndVerify(decryptionKey: decryptionKey,
+//                                                               addrToken: ArmoredMessage(value: token),
+//                                                               detachedSign: ArmoredSignature(value: signature),
+//                                                               verificationKeys: verificationKeys,
+//                                                               verificationContext: context),
+//           case let .verified(content) = decryptedToken {
+//           return content
+//                                                               verificationContext: context)
+//           if case let .verified(content) = decryptedToken {
+//               return content
+//           }
+//       } catch {
+//           errors.append(error.localizedDescription)
+//           continue
+//       }
+
+// guard organizationKey.isPasswordless else {
+//    return userData.credential.mailboxpassword
+// }
+// guard let token = organizationKey.token, let signature = organizationKey.signature else {
+//    throw PassError.crypto(.missingKeys)
+// }
+//
+//
+// let verificationKeys = userData.user.keys.map(\.publicKey).map { ArmoredKey(value: $0) }
+//
+// let context = VerificationContext(value: Constants.SignatureContext.organizationKey,
+//                                  required: .always)
+//
+// for decryptionKey in decryptionKeys {
+//    if let decryptedToken = try? Decryptor.decryptAndVerify(decryptionKey: decryptionKey,
+//                                                            addrToken: ArmoredMessage(value: token),
+//                                                            detachedSign: ArmoredSignature(value: signature),
+//                                                            verificationKeys: verificationKeys,
+//                                                            verificationContext: context),
+//        case let .verified(content) = decryptedToken {
+//        return content
+//    }
+// }
+
+// let decryptionKeys = userData.user.keys.map {
+//    DecryptionKey(privateKey: .init(value: $0.privateKey),
+//                  passphrase: .init(value: userData.passphrases[$0.keyID] ?? ""))
+// }
+//
+// let verificationKeys = userData.user.keys.map(\.publicKey).map { ArmoredKey(value: $0) }
+//
+////CryptoService
+//
+// public static func unlockAddressKeys(address: Address,
+//                                     userData: UserData) throws -> [ProtonCoreCrypto.DecryptionKey] {
+//    let binKeys = userData.user.keys
+//    return address.keys.compactMap { key -> DecryptionKey? in
+//        for passphrase in userData.passphrases {
+//            if let decryptionKeyPassphrase = try? key.passphrase(userPrivateKeys: binKeys.toArmoredPrivateKeys,
+//                                                                 mailboxPassphrase: Passphrase(value: passphrase
+//                                                                     .value)) {
+//                return .init(privateKey: .init(value: key.privateKey),
+//                             passphrase: .init(value: decryptionKeyPassphrase.value))
+//            }
+//        }
+//        return nil
+//    }
+// }
+//
+// public struct GroupAddress: Codable, Sendable, Equatable, Hashable {
+//    let ID: String
+//    public let domainID: String
+//    public let email: String
+//    public let status: Int
+//    public let type: Int
+//    public let receive: Int
+//    public let send: Int
+//    public let displayName: String
+//    public let signature: String
+//    public let order: Int
+//    public let priority: Int
+//    public let catchAll: Bool
+//    public let protonMX: Bool
+//    public let confirmationState: Int
+//    public let hasKeys: Int
+//    public let keys: [GroupAddressKey]
+//    public let signedKeyList: SignedKeyList?
+// }
+//
+// @objc public final class Key: NSObject {
+//
+//    public let keyID: String
+//    public var privateKey: String
+//
+//    // TODO:: this is a bit set. need to refactor to a struct
+//    public var keyFlags: Int = 0
+//
+//    // key migration step 1 08/01/2019
+//    public var token: String?
+//    public var signature: String?
+//
+//    // old activetion flow
+//    public var activation: String? // armed pgp msg, token encrypted by user's public key and
+//
+//    // unused
+//    public var active: Int = 0
+//    public var version: Int = 0
+//
+//    // the other way: first key will be the primary
+//    public var primary: Int = 0
+//
+//    // local var use when update the key password
+//    public var isUpdated: Bool = false
+//
+//    public init(keyID: String, privateKey: String?, keyFlags: Int = 0,
+//                token: String? = nil, signature: String? = nil, activation: String? = nil,
+//                active: Int = 0, version: Int = 0, primary: Int = 0, isUpdated: Bool = false) {
+//        self.keyID = keyID
+//        self.privateKey = privateKey ?? ""
+//        self.keyFlags = keyFlags
+//        self.token = token
+//        self.signature = signature
+//        self.activation = activation
+//        self.active = active
+//        self.version = version
+//        self.primary = primary
+//        self.isUpdated = isUpdated
+//    }
+// }

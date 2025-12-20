@@ -87,8 +87,9 @@ private extension DecryptOrganizationKey {
                                                                     addrToken: ArmoredMessage(value: token),
                                                                     detachedSign: ArmoredSignature(value: signature),
                                                                     verificationKeys: verificationKeys,
-                                                                    verificationContext: context) {
-                return decryptedToken.content
+                                                                    verificationContext: context),
+                case let .verified(content) = decryptedToken {
+                return content
             }
         }
         throw PassError.crypto(.missingKeys)
