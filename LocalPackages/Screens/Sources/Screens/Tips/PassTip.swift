@@ -22,7 +22,7 @@ import Foundation
 import Macro
 import TipKit
 
-enum PassTip: String {
+nonisolated enum PassTip: String {
     case itemForceTouch
     case spotlight
     case username
@@ -30,7 +30,7 @@ enum PassTip: String {
     var id: String { rawValue }
 }
 
-public enum PassTipAction: String {
+public nonisolated enum PassTipAction: String {
     /// Open Pass settings, not iOS settings
     case openSettings
 
@@ -39,7 +39,7 @@ public enum PassTipAction: String {
     public var title: String {
         switch self {
         case .openSettings:
-            #localized("Open Settings", bundle: .module)
+            String(localized: "Open Settings")
         }
     }
 

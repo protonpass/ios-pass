@@ -10,7 +10,10 @@ var platforms: [SupportedPlatform] = [
     .watchOS(.v8)
 ]
 
-let swiftSettings: [SwiftSetting] = []
+let swiftSettings: [SwiftSetting] = [
+    .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
+    .enableUpcomingFeature("InferIsolatedConformances")
+]
 
 let package = Package(name: "Client",
                       defaultLocalization: "en",

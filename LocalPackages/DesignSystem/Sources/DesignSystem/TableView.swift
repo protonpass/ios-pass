@@ -25,7 +25,7 @@ private let kAnimationThreshold = 500
 private let kHeaderId = "header"
 private let kCellId = "cell"
 
-private struct PassSectionIdentifier: Sendable, Hashable {
+private nonisolated struct PassSectionIdentifier: Sendable, Hashable {
     let id: Int
     let title: String
 
@@ -79,7 +79,7 @@ public struct TableViewConfiguration {
 public typealias TableViewItemConformance = Hashable & Sendable
 
 public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderView: View>: UIViewRepresentable {
-    public struct Section: Hashable, Equatable {
+    public nonisolated struct Section: Hashable, Equatable {
         public let type: AnyHashable
         public let title: String
         public let items: [Item]

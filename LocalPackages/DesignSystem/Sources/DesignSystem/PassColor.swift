@@ -20,7 +20,7 @@
 
 import SwiftUI
 
-public enum PassColor: Sendable {}
+public nonisolated enum PassColor: Sendable {}
 
 public extension PassColor {
     static let inputBackgroundNorm = Color.inputBackgroundNorm
@@ -115,7 +115,7 @@ public extension PassColor {
     static let vaultWaterLeaf = Color.vaultWaterLeaf
 }
 
-public enum PassUIColor: Sendable {}
+public nonisolated enum PassUIColor: Sendable {}
 
 public extension PassUIColor {
     static let aliasInteractionNormMajor1 = UIColor.aliasInteractionNormMajor1

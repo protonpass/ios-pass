@@ -11,6 +11,8 @@ var platforms: [SupportedPlatform] = [
 ]
 
 let swiftSettings: [SwiftSetting] = [
+    .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
+    .enableUpcomingFeature("InferIsolatedConformances")
 ]
 
 let package = Package(name: "Core",
