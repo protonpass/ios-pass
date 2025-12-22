@@ -54,7 +54,6 @@ public actor LogManager: LogManagerProtocol {
     private var currentSavedlogs = [String]()
     private var currentMemoryLogs = [LogEntry]()
     private let config: LogManagerConfig
-    private var timer: Timer?
     private var timerTask: Task<Void, Never>?
     private var secondCount: Double = 0
 

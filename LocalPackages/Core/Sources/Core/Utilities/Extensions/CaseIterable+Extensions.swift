@@ -1,5 +1,5 @@
 //
-// CaseIterable+Random.swift
+// CaseIterable+Extensions.swift
 // Proton Pass - Created on 29/03/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //

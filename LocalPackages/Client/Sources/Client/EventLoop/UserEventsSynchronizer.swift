@@ -51,6 +51,8 @@ public final class UserEventsSynchronizer: UserEventsSynchronizerProtocol {
     private let simpleLoginNoteSynchronizer: any SimpleLoginNoteSynchronizerProtocol
     private let logger: Logger
     private let maxPerRoundFetchCycle = 10
+    private let maxConcurrentItemRefreshes = 20
+    private let maxConcurrentShareCreations = 10
 
     public init(localUserEventIdDatasource: any LocalUserEventIdDatasourceProtocol,
                 remoteUserEventsDatasource: any RemoteUserEventsDatasourceProtocol,
@@ -156,17 +158,19 @@ private extension UserEventsSynchronizer {
             return
         }
         logger.trace("Refreshing \(updatedItems.count) updated items for user \(userId)")
-        try await withThrowingTaskGroup(of: Void.self) { taskGroup in
-            for updatedItem in updatedItems {
-                taskGroup.addTask { [itemRepository, userId] in
-                    try await itemRepository.refreshItem(userId: userId,
-                                                         shareId: updatedItem.shareID,
-                                                         itemId: updatedItem.itemID,
-                                                         eventToken: updatedItem.eventToken)
-                }
-            }
 
-            try await taskGroup.waitForAll()
+        for batch in updatedItems.chunked(into: maxConcurrentItemRefreshes) {
+            try await withThrowingTaskGroup(of: Void.self) { taskGroup in
+                for updatedItem in batch {
+                    taskGroup.addTask { [itemRepository, userId] in
+                        try await itemRepository.refreshItem(userId: userId,
+                                                             shareId: updatedItem.shareID,
+                                                             itemId: updatedItem.itemID,
+                                                             eventToken: updatedItem.eventToken)
+                    }
+                }
+                try await taskGroup.waitForAll()
+            }
         }
     }
 
@@ -195,16 +199,18 @@ private extension UserEventsSynchronizer {
             return
         }
         logger.trace("Refreshing \(updatedShares.count) shares for user \(userId)")
-        try await withThrowingTaskGroup(of: Void.self) { taskGroup in
-            for updatedShare in updatedShares {
-                taskGroup.addTask { [shareRepository, userId] in
-                    try await shareRepository.refreshShare(userId: userId,
-                                                           shareId: updatedShare.shareID,
-                                                           eventToken: updatedShare.eventToken)
-                }
-            }
 
-            try await taskGroup.waitForAll()
+        for batch in updatedShares.chunked(into: maxConcurrentItemRefreshes) {
+            try await withThrowingTaskGroup(of: Void.self) { taskGroup in
+                for updatedShare in batch {
+                    taskGroup.addTask { [shareRepository, userId] in
+                        try await shareRepository.refreshShare(userId: userId,
+                                                               shareId: updatedShare.shareID,
+                                                               eventToken: updatedShare.eventToken)
+                    }
+                }
+                try await taskGroup.waitForAll()
+            }
         }
     }
 
@@ -214,22 +220,25 @@ private extension UserEventsSynchronizer {
             return
         }
         logger.trace("Creating \(createdShares.count) shares for user \(userId)")
-        try await withThrowingTaskGroup(of: Void.self) { taskGroup in
-            for newShare in createdShares {
-                taskGroup.addTask { [shareRepository, itemRepository, userId] in
-                    // We need to start for a fresh data state
-                    if let localShare = try await shareRepository.getShare(shareId: newShare.shareID) {
-                        try await shareRepository.deleteShareLocally(userId: userId, shareId: localShare.shareID)
-                        try await itemRepository.deleteAllItemsLocally(shareId: localShare.shareID)
-                    }
-                    try await shareRepository.refreshShare(userId: userId,
-                                                           shareId: newShare.shareID,
-                                                           eventToken: newShare.eventToken)
-                    try await itemRepository.refreshItems(userId: userId, shareId: newShare.shareID)
-                }
-            }
 
-            try await taskGroup.waitForAll()
+        for batch in createdShares.chunked(into: maxConcurrentShareCreations) {
+            try await withThrowingTaskGroup(of: Void.self) { taskGroup in
+                for newShare in batch {
+                    taskGroup.addTask { [shareRepository, itemRepository, userId] in
+                        // We need to start for a fresh data state
+                        if let localShare = try await shareRepository.getShare(shareId: newShare.shareID) {
+                            try await shareRepository.deleteShareLocally(userId: userId,
+                                                                         shareId: localShare.shareID)
+                            try await itemRepository.deleteAllItemsLocally(shareId: localShare.shareID)
+                        }
+                        try await shareRepository.refreshShare(userId: userId,
+                                                               shareId: newShare.shareID,
+                                                               eventToken: newShare.eventToken)
+                        try await itemRepository.refreshItems(userId: userId, shareId: newShare.shareID)
+                    }
+                }
+                try await taskGroup.waitForAll()
+            }
         }
     }
 
@@ -239,16 +248,19 @@ private extension UserEventsSynchronizer {
             return
         }
         logger.trace("Deleting \(deletedShares.count) shares for user \(userId)")
-        try await withThrowingTaskGroup(of: Void.self) { taskGroup in
-            for share in deletedShares {
-                taskGroup.addTask { [shareRepository, itemRepository, userId] in
-                    async let deleteShare: Void = shareRepository.deleteShareLocally(userId: userId,
-                                                                                     shareId: share.shareID)
-                    async let deleteItems: Void = itemRepository.deleteAllItemsLocally(shareId: share.shareID)
-                    _ = try await (deleteShare, deleteItems)
+
+        for batch in deletedShares.chunked(into: maxConcurrentItemRefreshes) {
+            try await withThrowingTaskGroup(of: Void.self) { taskGroup in
+                for share in batch {
+                    taskGroup.addTask { [shareRepository, itemRepository, userId] in
+                        async let deleteShare: Void = shareRepository.deleteShareLocally(userId: userId,
+                                                                                         shareId: share.shareID)
+                        async let deleteItems: Void = itemRepository.deleteAllItemsLocally(shareId: share.shareID)
+                        _ = try await (deleteShare, deleteItems)
+                    }
                 }
+                try await taskGroup.waitForAll()
             }
-            try await taskGroup.waitForAll()
         }
     }
 
@@ -278,18 +290,22 @@ private extension UserEventsSynchronizer {
             logger.trace("No shares with invite changes for user \(userId)")
             return
         }
-        try await withThrowingTaskGroup(of: Void.self) { taskGroup in
-            for event in events {
-                taskGroup.addTask { [inviteRepository] in
-                    let shareId = event.shareID
-                    let pendingInvites = try await inviteRepository.getAllPendingInvites(userId: userId,
-                                                                                         shareId: shareId)
-                    try await inviteRepository.sendNewShareInvites(userId: userId,
-                                                                   shareId: shareId,
-                                                                   newShareInvites: pendingInvites.newUserInvites)
+
+        for batch in events.chunked(into: maxConcurrentShareCreations) {
+            try await withThrowingTaskGroup(of: Void.self) { taskGroup in
+                for event in batch {
+                    taskGroup.addTask { [inviteRepository] in
+                        let shareId = event.shareID
+                        let pendingInvites = try await inviteRepository.getAllPendingInvites(userId: userId,
+                                                                                             shareId: shareId)
+                        try await inviteRepository.sendNewShareInvites(userId: userId,
+                                                                       shareId: shareId,
+                                                                       newShareInvites: pendingInvites
+                                                                           .newUserInvites)
+                    }
                 }
+                try await taskGroup.waitForAll()
             }
-            try await taskGroup.waitForAll()
         }
     }
 

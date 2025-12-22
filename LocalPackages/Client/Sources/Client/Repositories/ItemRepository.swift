@@ -279,7 +279,7 @@ public extension ItemRepository {
     func getAllPinnedItems() async throws -> [SymmetricallyEncryptedItem] {
         let userId = try await userManager.getActiveUserId()
         let shares = try await localShareDatasource.getAllShares(userId: userId)
-        let visibleShareIds = shares.filter(\.share.visible).map(\.share.shareId)
+        let visibleShareIds = Set(shares.filter(\.share.visible).map(\.share.shareId))
         let pinnedItems = try await localDatasource.getAllPinnedItems(userId: userId)
         return pinnedItems.filter { visibleShareIds.contains($0.shareId) }
     }

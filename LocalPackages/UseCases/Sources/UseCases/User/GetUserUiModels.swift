@@ -21,6 +21,7 @@
 
 import Client
 import Entities
+@preconcurrency import ProtonCoreLogin
 
 public protocol GetUserUiModelsUseCase: Sendable {
     func execute() async throws -> [UserUiModel]
@@ -48,20 +49,31 @@ public final class GetUserUiModels: GetUserUiModelsUseCase {
             throw PassError.userManager(.noUserDataFound)
         }
 
-        var uiModels = [UserUiModel]()
-
-        for userData in userDatas {
-            let userId = userData.user.ID
-            if let access = try await localAccessDatasource.getAccess(userId: userId) {
-                uiModels.append(.init(id: userId,
-                                      displayName: userData.user.displayName,
-                                      email: userData.user.email,
-                                      plan: access.access.plan))
-            } else {
-                throw PassError.userManager(.noAccessFound(userId))
+        return try await withThrowingTaskGroup(of: UserUiModel.self) { [weak self] group in
+            guard let self else {
+                throw PassError.unexpectedError
             }
-        }
+            for userData in userDatas {
+                group.addTask {
+                    let userId = userData.user.ID
+                    guard let access = try await self.localAccessDatasource.getAccess(userId: userId) else {
+                        throw PassError.userManager(.noAccessFound(userId))
+                    }
+                    return .init(id: userId,
+                                 displayName: userData.user.displayName,
+                                 email: userData.user.email,
+                                 plan: access.access.plan)
+                }
+            }
 
-        return uiModels
+            var uiModels = [UserUiModel]()
+            uiModels.reserveCapacity(userDatas.count)
+            for try await model in group {
+                uiModels.append(model)
+            }
+            return uiModels
+        }
     }
 }
+
+extension UserData: @retroactive @unchecked Sendable {}

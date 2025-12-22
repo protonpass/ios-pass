@@ -83,6 +83,7 @@ public enum Constants {
 
     public enum Database {
         public static let encryptedSlNotePlaceholder = "NULL"
+        public static let fetchBatchSize = 200
     }
 
     // swiftlint:disable:next type_name

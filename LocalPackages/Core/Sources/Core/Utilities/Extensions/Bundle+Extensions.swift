@@ -56,3 +56,45 @@ public extension Bundle {
         fetchPlistValue(for: key.rawValue, in: plist.rawValue) ?? ""
     }
 }
+
+public extension Bundle {
+    var versionNumber: String { string(forKey: "CFBundleShortVersionString") ?? "0.0.0" }
+    var buildNumber: String { string(forKey: "CFBundleVersion") ?? "0" }
+    var versionIdentifier: String? { string(forKey: "APP_VERSION_IDENTIFIER") }
+    var gitCommitHash: String? { string(forKey: "GIT_COMMIT_HASH") }
+    var isQaBuild: Bool { bool(forKey: "IS_QA_BUILD") }
+    var isBetaBuild: Bool { bool(forKey: "IS_BETA_BUILD") }
+
+    /// Get the full name of the current version e.g "1.0.0-dev" or "1.2.0"
+    var fullAppVersionName: String {
+        if let versionIdentifier, !versionIdentifier.isEmpty {
+            return "\(versionNumber)-\(versionIdentifier)"
+        }
+        return versionNumber
+    }
+
+    /// Full app version name + build number + git commit hash
+    /// E.g: 1.0.0 (1) (abcdef)
+    var displayedAppVersion: String {
+        let fullAppVersionName = Bundle.main.fullAppVersionName
+        let buildNumber = Bundle.main.buildNumber
+        if let gitCommitHash = Bundle.main.gitCommitHash {
+            return "\(fullAppVersionName) (\(buildNumber)) (\(gitCommitHash))"
+        } else {
+            assertionFailure("Missing git commit hash")
+            return "\(fullAppVersionName) (\(buildNumber))"
+        }
+    }
+}
+
+private extension Bundle {
+    func string(forKey key: String) -> String? {
+        infoDictionary?[key] as? String
+    }
+
+    /// Default to `false` if the key does not exist
+    func bool(forKey key: String) -> Bool {
+        let boolString = infoDictionary?[key] as? String
+        return boolString == "YES"
+    }
+}
