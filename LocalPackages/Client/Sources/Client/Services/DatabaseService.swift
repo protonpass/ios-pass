@@ -27,9 +27,8 @@ public protocol DatabaseServiceProtocol: Sendable {
 }
 
 public final class DatabaseService: DatabaseServiceProtocol, @unchecked Sendable {
-    private var container: NSPersistentContainer
+    private let container: NSPersistentContainer
     private let logger: Logger?
-    private let lock = NSLock()
 
     public init(logManager: (any LogManagerProtocol)? = nil, inMemory: Bool = false) {
         if let logManager {
@@ -41,11 +40,7 @@ public final class DatabaseService: DatabaseServiceProtocol, @unchecked Sendable
     }
 
     public func getContainer() -> NSPersistentContainer {
-        lock.lock()
-        defer {
-            lock.unlock()
-        }
-        return container
+        container
     }
 }
 

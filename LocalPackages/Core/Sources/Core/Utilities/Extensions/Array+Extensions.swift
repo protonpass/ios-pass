@@ -29,12 +29,10 @@ public extension Array where Element: Identifiable, Element: Equatable {
             return false
         }
 
+        let anotherDict = Dictionary(uniqueKeysWithValues: anotherArray.map { ($0.id, $0) })
+
         for element in self {
-            if let anotherElement = anotherArray.first(where: { $0.id == element.id }) {
-                if element != anotherElement {
-                    return false
-                }
-            } else {
+            if let anotherElement = anotherDict[element.id], element != anotherElement {
                 return false
             }
         }
