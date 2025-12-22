@@ -138,7 +138,8 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
         fatalError("Must be overridden by subclasses")
     }
 
-    nonisolated func fetchAutoFillCredentials(userId: String) async throws -> T {
+    @concurrent
+    func fetchAutoFillCredentials(userId: String) async throws -> T {
         fatalError("Must be overridden by subclasses")
     }
 
@@ -147,7 +148,8 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
     func changeToErrorState(_ error: any Error) {}
     func changeToLoadingState() {}
 
-    nonisolated func fetchItems() async {
+    @concurrent
+    func fetchItems() async {
         do {
             if await isErrorState() {
                 await changeToLoadingState()

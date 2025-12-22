@@ -211,7 +211,8 @@ private extension SearchViewModel {
         }
     }
 
-    nonisolated func filterAndSortResultsAsync() async {
+    @concurrent
+    func filterAndSortResultsAsync() async {
         let results = await results
 
         let updateState: (SearchViewState) async -> Void = { [weak self] newState in
@@ -247,7 +248,8 @@ private extension SearchViewModel {
         }
     }
 
-    nonisolated func parse(results: [ItemSearchResult]) async throws -> SearchDataDisplay {
+    @concurrent
+    func parse(results: [ItemSearchResult]) async throws -> SearchDataDisplay {
         let selectedType = await selectedType
         let selectedSortType = await selectedSortType
 

@@ -1830,7 +1830,7 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
     }
 
     func syncEventLoopShouldUseUserEvents() async -> Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1)
+        await getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1)
     }
 
     nonisolated func syncEventLoopDidSkipLoop(reason: SyncEventLoopSkipReason) {
@@ -1838,11 +1838,11 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
     }
 
     func syncEventLoopRequiresFullSync(userId: String) async throws {
-        router.present(for: .fullSync)
+        await router.present(for: .fullSync)
         logger.info("Full syncing triggered by user events")
         await fullContentSync(userId: userId, shouldStopEventLoop: false)
         logger.info("Done full syncing triggered by user events")
-        router.display(element: .successMessage(config: .refresh))
+        await router.display(element: .successMessage(config: .refresh))
     }
 
     nonisolated func syncEventLoopDidFinishLoop(userId: String, hasNewEvents: Bool) {

@@ -49,7 +49,13 @@ let package = Package(
                 .product(name: "ProtonCorePaymentsV2", package: "protoncore_ios")
 
             ],
-            resources: [.process("Resources")])
+            resources: [.process("Resources")],
+            swiftSettings: [
+              .defaultIsolation(MainActor.self),
+              .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
+              .enableUpcomingFeature("InferIsolatedConformances")
+            ]
+        )
     ],
     swiftLanguageModes: [.version("6")]
 )
