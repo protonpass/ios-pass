@@ -251,8 +251,7 @@ private extension HomepageCoordinator {
     }
 
     func customEmailBreach(customEmailId: String) async throws {
-        let breaches = try await passMonitorRepository
-            .refreshUserBreaches() // getAllBreachesForEmail(emailId: customEmail)
+        let breaches = try await passMonitorRepository.refreshUserBreaches()
         guard let breach = breaches.customEmails.first(where: { $0.customEmailID == customEmailId }) else {
             return
         }
