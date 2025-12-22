@@ -50,6 +50,6 @@ public nonisolated struct PlanUiModel: Equatable, Sendable {
     }
 
     public static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.plan.plan.id == rhs.plan.plan.id
+        lhs.plan.plan.ID == rhs.plan.plan.ID
     }
 }
