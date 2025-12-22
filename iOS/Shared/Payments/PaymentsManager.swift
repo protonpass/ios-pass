@@ -38,8 +38,6 @@ final class PaymentsManager: Sendable {
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let userManager = resolve(\SharedServiceContainer.userManager)
     private let authManager = resolve(\SharedToolingContainer.authManager)
-    private let appVersion = resolve(\SharedToolingContainer.appVersion)
-    private let doh = resolve(\SharedToolingContainer.doh)
     private let mainKeyProvider = resolve(\SharedToolingContainer.mainKeyProvider)
     private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
 
@@ -73,10 +71,7 @@ final class PaymentsManager: Sendable {
         }
         do {
             if featureFlagsRepository.isEnabled(CoreFeatureFlagType.paymentsV2) {
-                guard let doh = doh as? ProtonPassDoH else {
-                    return
-                }
-                try createPaymentsV2UI(hideCurrentPlan: isUpgrading, doh: doh, completion: completion)
+                try createPaymentsV2UI(hideCurrentPlan: isUpgrading, completion: completion)
             } else {
                 let paymentsUI = try createPaymentsUI()
                 if isUpgrading {
@@ -100,13 +95,10 @@ final class PaymentsManager: Sendable {
 
     func restorePurchases() async throws {
         guard !Bundle.main.isBetaBuild,
-              featureFlagsRepository.isEnabled(CoreFeatureFlagType.paymentsV2),
-              let doh = doh as? ProtonPassDoH,
-              let userData = userManager.currentActiveUser.value else { return }
-        _ = try await paymentsV2.restorePurchases(sessionId: userData.credential.sessionID,
-                                                  token: userData.credential.accessToken,
-                                                  doh: doh,
-                                                  appVersion: appVersion)
+              featureFlagsRepository.isEnabled(CoreFeatureFlagType.paymentsV2) else { return }
+        let userID = try await userManager.getActiveUserId()
+        let apiService = try apiManager.getApiService(userId: userID)
+        _ = try await paymentsV2.restorePurchases(apiService: apiService)
     }
 }
 
@@ -119,19 +111,12 @@ private extension PaymentsManager {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] userData in
                 guard let self else { return }
-                if userData == nil {
+                guard let userData else {
                     transactionsObserver.stop()
                     return
                 }
 
-                guard let userData,
-                      let doh = doh as? ProtonPassDoH
-                else {
-                    transactionsObserver.stop()
-                    return
-                }
-
-                handleTransactionObserver(userData: userData, doh: doh)
+                handleTransactionObserver(userData: userData)
             }
             .store(in: &cancellables)
     }
@@ -147,21 +132,16 @@ private extension PaymentsManager {
     }
 
     func createPaymentsV2UI(hideCurrentPlan: Bool = false,
-                            doh: DoHInterface & ServerConfig,
                             completion: @escaping (Result<Bool, any Error>) -> Void) throws {
         guard let userData = userManager.currentActiveUser.value else {
             throw PassError.payments(.couldNotCreatePaymentStack)
         }
 
-        let sessionID = userData.credential.sessionID
-        let accessToken = userData.credential.accessToken
+        let apiService = try apiManager.getApiService(userId: userData.user.ID)
 
         try paymentsV2.showAvailablePlans(presentationMode: .modal,
-                                          sessionID: sessionID,
-                                          accessToken: accessToken,
-                                          appVersion: appVersion,
                                           hideCurrentPlan: hideCurrentPlan,
-                                          doh: doh)
+                                          apiService: apiService)
         paymentsV2.transactionProgress
             .dropFirst()
             .receive(on: DispatchQueue.main)
@@ -242,22 +222,19 @@ private extension PaymentsManager {
         }
     }
 
-    func handleTransactionObserver(userData: UserData, doh: ProtonPassDoH) {
-        let appVersion = appVersion
-        let sessionID = userData.credential.sessionID
-        let authToken = userData.credential.accessToken
+    func handleTransactionObserver(userData: UserData) {
+        let userId = userData.user.ID
+
         transactionTask?.cancel()
         transactionTask = Task { [weak self] in
             guard let self else { return }
-
-            let configuration = TransactionsObserverConfiguration(sessionID: sessionID,
-                                                                  authToken: authToken,
-                                                                  appVersion: appVersion,
-                                                                  doh: doh)
-
-            transactionsObserver.setConfiguration(configuration)
-
             do {
+                let apiService = try apiManager.getApiService(userId: userId)
+                let remoteManager = RemoteManager(apiService: apiService)
+
+                let configuration = TransactionsObserverConfiguration(remoteManager: remoteManager)
+
+                transactionsObserver.setConfiguration(configuration)
                 try await transactionsObserver.start()
             } catch {
                 logger.error(error)
