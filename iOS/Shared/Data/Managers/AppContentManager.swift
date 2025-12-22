@@ -534,7 +534,7 @@ private extension AppContentManager {
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
         let allItems = try await itemRepository.getAllItems(userId: userId)
 
-        let dedupShares = dedupShare(shares: shares)
+        let dedupShares = dedupShare(shares: shares, filterHidden: false)
 
         let sharesData = try await getShareDatas(symmetricKey: symmetricKey,
                                                  shares: dedupShares,
