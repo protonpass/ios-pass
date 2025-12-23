@@ -164,6 +164,7 @@ private extension WelcomeCoordinator {
 }
 
 // MARK: - WelcomeViewControllerDelegate
+
 extension WelcomeCoordinator: WelcomeViewControllerDelegate {
     nonisolated func userWantsToLogIn(username: String?) {
         let customization: LoginCustomizationOptions = .init(inAppTheme: { [weak self] in
