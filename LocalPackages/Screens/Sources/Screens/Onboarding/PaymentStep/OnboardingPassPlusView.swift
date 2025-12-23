@@ -22,7 +22,7 @@
 import DesignSystem
 import SwiftUI
 
-struct OnboardingPassPlusView: View {
+nonisolated struct OnboardingPassPlusView: View {
     let detailColumnWidth: CGFloat = 86
     let features: [FeatureUiModel] =
         [

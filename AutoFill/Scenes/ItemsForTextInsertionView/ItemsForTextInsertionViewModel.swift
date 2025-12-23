@@ -125,7 +125,8 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
             .store(in: &cancellables)
     }
 
-    override nonisolated func fetchItems() async {
+    @concurrent
+    override func fetchItems() async {
         await super.fetchItems()
         await filterAndSortItemsAsync()
     }
@@ -182,7 +183,8 @@ private extension ItemsForTextInsertionViewModel {
         }
     }
 
-    nonisolated func searchAsync(term: String) async {
+    @concurrent
+    func searchAsync(term: String) async {
         let hashedTerm = term.sha256
         await MainActor.run { [weak self] in
             guard let self else { return }
@@ -207,7 +209,7 @@ private extension ItemsForTextInsertionViewModel {
     }
 
     // swiftlint:disable:next cyclomatic_complexity
-    nonisolated func filterAndSortItemsAsync() async {
+    @concurrent func filterAndSortItemsAsync() async {
         let searchableItems: [SearchableItem]
         let history: [ItemUiModel]
         let allItems: [ItemUiModel]

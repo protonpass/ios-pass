@@ -24,12 +24,12 @@ import Entities
 import PassRustCore
 
 public protocol DedupShareUseCase: Sendable {
-    func execute(shares: [Entities.Share]) -> [Entities.Share]
+    func execute(shares: [Entities.Share], filterHidden: Bool) -> [Entities.Share]
 }
 
 public extension DedupShareUseCase {
-    func callAsFunction(shares: [Entities.Share]) -> [Entities.Share] {
-        execute(shares: shares)
+    func callAsFunction(shares: [Entities.Share], filterHidden: Bool) -> [Entities.Share] {
+        execute(shares: shares, filterHidden: filterHidden)
     }
 }
 
@@ -40,9 +40,9 @@ public final class DedupShare: DedupShareUseCase {
         self.contentDedupParser = contentDedupParser
     }
 
-    public func execute(shares: [Entities.Share]) -> [Entities.Share] {
+    public func execute(shares: [Entities.Share], filterHidden: Bool) -> [Entities.Share] {
         let shareIdsToKeep = contentDedupParser.getVisibleShares(shares: shares.map(\.toRustShare),
-                                                                 filterHidden: true)
+                                                                 filterHidden: filterHidden)
         return shares.filter { shareIdsToKeep.contains($0.shareId) }
     }
 }

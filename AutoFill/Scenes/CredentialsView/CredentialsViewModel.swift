@@ -147,7 +147,8 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
             .store(in: &cancellables)
     }
 
-    override nonisolated func fetchItems() async {
+    @concurrent
+    override func fetchItems() async {
         await super.fetchItems()
         await filterAndSortItemsAsync()
     }
@@ -182,7 +183,8 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
         state = .loading
     }
 
-    nonisolated func filterAndSortItemsAsync() async {
+    @concurrent
+    func filterAndSortItemsAsync() async {
         do {
             try await filterItemsAsync()
             await sortNotMatchedItemsAsync()
@@ -312,7 +314,8 @@ private extension CredentialsViewModel {
         }
     }
 
-    nonisolated func searchAsync(term: String) async throws {
+    @concurrent
+    func searchAsync(term: String) async throws {
         guard !term.isEmpty else {
             await MainActor.run { [weak self] in
                 guard let self else { return }
@@ -340,7 +343,8 @@ private extension CredentialsViewModel {
         }
     }
 
-    nonisolated func filterItemsAsync() async throws {
+    @concurrent
+    func filterItemsAsync() async throws {
         await MainActor.run { [weak self] in
             guard let self else { return }
             state = .loading
@@ -377,7 +381,8 @@ private extension CredentialsViewModel {
         }
     }
 
-    nonisolated func sortNotMatchedItemsAsync() async {
+    @concurrent
+    func sortNotMatchedItemsAsync() async {
         await MainActor.run { [weak self] in
             guard let self else { return }
             notMatchedItemSections = .fetching

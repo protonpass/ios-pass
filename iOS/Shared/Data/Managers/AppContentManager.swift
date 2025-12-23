@@ -84,6 +84,7 @@ final class AppContentManager: ObservableObject, DeinitPrintable, AppContentMana
     private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
     @LazyInjected(\SharedToolingContainer.preferencesManager) private var preferencesManager
     @LazyInjected(\SharedRepositoryContainer.inviteRepository) private var inviteRepository
+    @LazyInjected(\SharedServiceContainer.simpleLoginNoteSynchronizer) private var slNoteSynchronizer
 
     // Use cases
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
@@ -207,9 +208,17 @@ extension AppContentManager {
                 }
             }
 
-            // 4. Refresh invites
+            // 4. Refresh invite and sl notes
             if getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1) {
-                try await inviteRepository.refreshAllInvites(userId: userId)
+                async let syncAliases: Bool = slNoteSynchronizer.syncAllAliases(userId: userId)
+                async let refreshInvites: Void = inviteRepository.refreshAllInvites(userId: userId)
+                do {
+                    _ = try await (syncAliases, refreshInvites)
+                } catch {
+                    // We logs the errors silently to let the full content refresh continue offering a better
+                    // experience to the user.
+                    logger.error(error)
+                }
             }
 
             try await loadContents(userId: userId, for: remoteShares.shares)
@@ -518,7 +527,7 @@ private extension AppContentManager {
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
         let allItems = try await itemRepository.getAllItems(userId: userId)
 
-        let dedupShares = dedupShare(shares: shares)
+        let dedupShares = dedupShare(shares: shares, filterHidden: false)
 
         let sharesData = try await getShareDatas(symmetricKey: symmetricKey,
                                                  shares: dedupShares,

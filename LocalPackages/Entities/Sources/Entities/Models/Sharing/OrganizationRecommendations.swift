@@ -18,32 +18,39 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public struct OrganizationInviteRecommendations: Sendable, Identifiable, Decodable {
-    public let groupDisplayName: String
-    public let nextToken: String?
-    public let entries: [OrganizationMemberEmailSuggestion]
+import Foundation
 
-    public init(groupDisplayName: String, nextToken: String?, entries: [OrganizationMemberEmailSuggestion]) {
+public struct OrganizationInviteRecommendations: Sendable, Identifiable, Decodable {
+    public private(set) var groupDisplayName: String?
+    public private(set) var nextToken: String?
+    public private(set) var entries: [OrganizationMemberEmailSuggestion]
+
+    public init(groupDisplayName: String?,
+                nextToken: String?,
+                entries: [OrganizationMemberEmailSuggestion]) {
         self.groupDisplayName = groupDisplayName
         self.nextToken = nextToken
         self.entries = entries
     }
 
-    public var id: String { groupDisplayName }
+    public var id: String { groupDisplayName ?? UUID().uuidString }
 
-    public var reset: OrganizationInviteRecommendations {
-        OrganizationInviteRecommendations(groupDisplayName: groupDisplayName,
-                                          nextToken: nil,
-                                          entries: [])
+    public var canFetchMore: Bool {
+        nextToken != nil || entries.isEmpty
+    }
+
+    public mutating func merge(with other: Self) {
+        groupDisplayName = other.groupDisplayName ?? groupDisplayName
+        nextToken = other.nextToken
+        entries.append(contentsOf: other.entries)
+    }
+
+    public mutating func reset() {
+        nextToken = nil
+        entries.removeAll()
     }
 }
 
-public struct OrganizationMemberEmailSuggestion: Sendable, Identifiable, Decodable {
+public struct OrganizationMemberEmailSuggestion: Sendable, Decodable {
     public let email: String
-
-    public init(email: String) {
-        self.email = email
-    }
-
-    public var id: String { email }
 }

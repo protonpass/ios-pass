@@ -28,7 +28,7 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
-public struct UpsellElement: @unchecked Sendable, Hashable, Identifiable {
+public nonisolated struct UpsellElement: @unchecked Sendable, Hashable, Identifiable {
     public let id = UUID().uuidString
     let icon: Image
     let title: String
@@ -47,7 +47,7 @@ public struct UpsellElement: @unchecked Sendable, Hashable, Identifiable {
     }
 }
 
-public struct UpsellingViewConfiguration: @unchecked Sendable, Hashable {
+public nonisolated struct UpsellingViewConfiguration: @unchecked Sendable, Hashable {
     let icon: Image
     let title: String
     let description: String
