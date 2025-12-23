@@ -38,7 +38,7 @@ struct UpdateFolderEndpoint: Endpoint {
     var body: UpdateFolderRequest?
 
     init(shareId: String, folderId: String, request: UpdateFolderRequest) {
-        debugDescription = "Update folder"
+        debugDescription = "Update folder with id: \(folderId) from share: \(shareId)"
         path = "/pass/v1/share/\(shareId)/folder/\(folderId)"
         method = .put
         body = request

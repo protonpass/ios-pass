@@ -128,12 +128,12 @@ extension AppContentManager {
         defer { isRefreshing = false }
         do {
             // No need to show loading indicator once items are loaded beforehand.
-            var cryptoErrorOccured = false
+            var cryptoErrorOccurred = false
             switch state {
             case .loaded:
                 break
             case let .error(error):
-                cryptoErrorOccured = error is CryptoKitError
+                cryptoErrorOccurred = error is CryptoKitError
                 state = .loading
             default:
                 state = .loading
@@ -144,7 +144,7 @@ extension AppContentManager {
                 await fullSync(userId: userId)
                 await loginMethod.setLogInFlow(newState: false)
                 logger.info("Manual login, done full sync")
-            } else if cryptoErrorOccured {
+            } else if cryptoErrorOccurred {
                 logger.info("Crypto error occurred. Doing full sync")
                 await fullSync(userId: userId)
                 logger.info("Crypto error occurred. Done full sync")
