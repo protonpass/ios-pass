@@ -453,6 +453,10 @@ extension UseCasesContainer {
     var firstRunDetector: Factory<any FirstRunDetectorProtocol> {
         self { FirstRunDetector(userDefaults: kSharedUserDefaults, bundle: .main) }
     }
+
+    var postbackConversionValue: Factory<any PostbackConversionValueUseCase> {
+        self { PostbackConversionValue() }
+    }
 }
 
 // MARK: - Security
