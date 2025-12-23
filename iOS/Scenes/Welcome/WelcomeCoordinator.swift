@@ -33,7 +33,7 @@ import SwiftUI
 
 @MainActor
 protocol WelcomeCoordinatorDelegate: AnyObject {
-    func welcomeCoordinator(didFinishWith loginData: LoginData)
+    func welcomeCoordinator(didFinishWith loginData: LoginData, isSignUp: Bool)
 }
 
 @MainActor
@@ -164,19 +164,24 @@ private extension WelcomeCoordinator {
 }
 
 private extension WelcomeCoordinator {
-    func handle(logInData: LoginData) {
+    func handle(logInData: LoginData, isSignUp: Bool) {
         // Have to refresh `logInAndSignUp` in case `logInData` is ignored and user has to authenticate again.
         logInAndSignUp = makeLoginAndSignUp()
-        delegate?.welcomeCoordinator(didFinishWith: logInData)
+        delegate?.welcomeCoordinator(didFinishWith: logInData, isSignUp: isSignUp)
     }
 
     func handle(_ result: LoginResult) {
         switch result {
         case .dismissed:
             return
-        case let .loggedIn(logInData), let .signedUp(logInData):
+
+        case let .loggedIn(logInData):
             logInAndSignUp = makeLoginAndSignUp()
-            handle(logInData: logInData)
+            handle(logInData: logInData, isSignUp: false)
+
+        case let .signedUp(logInData):
+            logInAndSignUp = makeLoginAndSignUp()
+            handle(logInData: logInData, isSignUp: true)
         }
     }
 }
