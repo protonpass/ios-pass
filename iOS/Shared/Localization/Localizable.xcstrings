@@ -656,6 +656,12 @@
     "%@ (copied)" : {
       "comment" : "Default title when duplicating items. Placeholder is the original title.",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (скапіявана)"
+          }
+        },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
@@ -716,6 +722,24 @@
             "value" : "%@ (másolva)"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (copiato)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (コピーしました)"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (복사됨)"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -746,10 +770,22 @@
             "value" : "%@ (skopírované)"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (kopierad)"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ (kopyalandı)"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (đã sao chép)"
           }
         }
       }
@@ -26151,6 +26187,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Псевдонім «%@» переміщено до смітника"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bí danh \"%@\" đã được chuyển vào thùng rác"
           }
         },
         "zh-Hans" : {
@@ -64159,6 +64201,12 @@
             "value" : "Більше не нагадувати"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không nhắc lại nữa"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -65009,6 +65057,24 @@
             "value" : "Duplikálás"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duplica"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "複製"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "복제"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -65049,6 +65115,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Çoğalt"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhân đôi"
           }
         }
       }
@@ -83972,6 +84044,12 @@
             "value" : "Приховані сховища"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Các kho lưu trữ đã ẩn"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -94245,6 +94323,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Елемент у спільному сховищі"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nội dung trong một kho lưu trữ được chia sẽ"
           }
         },
         "zh-Hans" : {
@@ -109885,6 +109969,12 @@
             "value" : "Більше"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thêm"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -121890,6 +121980,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Упорядкувати сховища"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quản lý kho lưu trữ"
           }
         },
         "zh-Hans" : {
@@ -147073,6 +147169,12 @@
             "value" : "Шукати у всіх елементах"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tìm trong các tất cả nội dung"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -157401,6 +157503,12 @@
             "value" : "Спільний елемент"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nội dung được chia sẻ"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -163191,6 +163299,12 @@
             "value" : "Деякі сховища більше не доступні через скидання пароля. Повторно активуйте ключі облікового запису, щоб відновити доступ."
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Một số kho lưu trữ không thể truy cập được do việc đặt lại mật khẩu. Để khôi phục quyền truy cập, vui lòng kích hoạt lại các khóa tài khoản của bạn."
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -167488,18 +167602,6 @@
             "value" : "Suggestions"
           }
         },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Javaslatok"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Saran"
-          }
-        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -167509,19 +167611,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "提案"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "შეთავაზებები"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "제안"
+            "value" : "候補"
           }
         },
         "nb" : {
@@ -167536,18 +167626,6 @@
             "value" : "Suggesties"
           }
         },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sugestie"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sugestões"
-          }
-        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -167560,22 +167638,10 @@
             "value" : "Sugestii"
           }
         },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Рекомендации"
-          }
-        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Návrhy"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Predlogi"
           }
         },
         "sv" : {
@@ -167590,28 +167656,10 @@
             "value" : "Öneriler"
           }
         },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Пропозиції"
-          }
-        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Các gợi ý"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "建议"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "建議"
+            "value" : "Đề xuất"
           }
         }
       }
@@ -171130,10 +171178,130 @@
     },
     "The group is invited to a vault. Tap for details." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Група запрошана ў сховішча. Націсніце, каб даведацца больш."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S'ha convidat el grup a una caixa forta. Toqueu per veure'n els detalls."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skupina je pozvána ke sdílení trezoru. Klepněte pro detaily."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gruppen er inviteret til en boks. Tryk for detaljer."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Gruppe wurde zu einem Tresor eingeladen. Antippen für weitere Details."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Η ομάδα προσκαλείται σε μία κρύπτη. Πατήστε για λεπτομέρειες."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The group is invited to a vault. Tap for details."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El grupo ha sido invitado a una caja fuerte. Pulsa para ver los detalles."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El grupo está invitado a una bóveda. Pulse para ver los detalles."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ryhmä on kutsuttu holviin. Näytä tiedot napauttamalla."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le groupe est invité à un coffre-fort. Appuyez pour avoir plus d'informations."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il gruppo è invitato a una cassaforte. Tocca per i dettagli."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "グループは保管庫に招待されています。詳細 をタップしてください。"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gruppen er invitert til et hvelv. Trykk for detaljer."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De groep wordt uitgenodigd tot een kluis. Tik voor gegevens."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O grupo foi convidado para um cofre. Toque para obter detalhes."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grupul este invitat la un seif. Atingeți pentru detalii."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skupina je pozvaná do trezoru. Ťuknite pre podrobnosti."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gruppen är inbjuden till ett valv. Tryck för detaljer."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grup bir kasaya davet edildi. Ayrıntılar için dokunun."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhóm được mời vào một kho lưu trữ. Chạm để biết chi tiết."
           }
         }
       }
@@ -172062,6 +172230,12 @@
             "value" : "Ці сховища не будуть доступні, а їхній вміст не буде доступний для пошуку чи автозаповнення."
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Các kho lữu trữ này sẽ không truy cập được và nội dung của chúng sẽ không khả dụng cho Tìm kiếm hoặc Tự động điền."
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -172821,6 +172995,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Наразі цей елемент у спільному доступі. Перемістивши його в інше сховище, ви вилучите доступ у всіх інших користувачів."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mục này hiện đang được chia sẻ. Việc di chuyển mục này sang kho lưu trữ khác sẽ xóa quyền truy cập của tất cả người dùng còn lại."
           }
         },
         "zh-Hans" : {
@@ -174178,6 +174358,12 @@
             "value" : "Рівень"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cấp/Bậc"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -174361,6 +174547,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Рівень / Статус"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cấp/Trạng thái"
           }
         },
         "zh-Hans" : {
@@ -183107,6 +183299,12 @@
             "value" : "Покращте, щоб створювати власні елементи"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nâng cấp để tạo mục tùy chỉnh"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -186846,10 +187044,124 @@
     },
     "Vault shared with a group you administer" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сховішча абагулена з групай, якую вы адмініструеце"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caixa forta compartida amb un grup que administreu"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trezor sdílený se skupinou, kterou spravujete"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Boks delt med en gruppe, som du administrerer"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tresor, der mit einer von dir verwalteten Gruppe geteilt wird"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Η κρύπτη είναι κοινοποιημένη σε μια ομάδα που διαχειρίζεστε"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vault shared with a group you administer"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caja fuerte compartida con un grupo que administras"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bóveda compartida con un grupo que usted administra"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hallinnoimasi ryhmän kanssa jaettu holvi"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coffre-fort partagé avec un groupe que vous administrez."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cassaforte condivisa con un gruppo che amministri"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あなたが管理するグループと共有された保管庫"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hvelv delt med en gruppe du administrerer"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kluis gedeeld met een groep die u beheert"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cofre compartilhado com um grupo que você administra"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seif partajat cu un grup pe care-l administrați"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trezor zdieľaný so skupinou, ktorú spravujete"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valv delat med en grupp du administrerar"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kasa yönettiğiniz bir grupla paylaşıldı"
           }
         }
       }
@@ -194007,6 +194319,12 @@
             "value" : "Подробиці про Wi-Fi, SSH, власні елементи та інше"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thông tin WiFI, SSH, mục tùy chỉnh, và hơn thể nữa"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -196811,6 +197129,12 @@
             "value" : "Чи хотіли б ви пов'язати «%1$@» з «%2$@»?"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bạn có muốn liên kết \"%1$@\" với \"%2$@\" không?"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -198934,6 +199258,12 @@
             "value" : "Vytvárate položku v zdieľanom trezore a členovia získajú k tejto položke okamžitý prístup."
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du skapar ett objekt i ett delat valv och medlemmar kommer omedelbart beviljas åtkomst till detta objekt."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -198944,6 +199274,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ви створюєте елемент у спільному сховищі, і учасники негайно отримають доступ до цього елемента."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bạn đang tạo một mục trong một kho lưu trữ được chia sẽ và thành viên sẽ có quyền truy cập lập tức vào nó."
           }
         },
         "zh-Hans" : {
@@ -199082,6 +199418,12 @@
             "value" : "Upravujete zdieľanú položku. Zmeny budú okamžite viditeľné pre všetkých, s ktorými je zdieľaná."
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du redigerar ett delat objekt. Ändringar kommer vara synliga för alla som det delas med omedelbart."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -199092,6 +199434,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ви редагуєте спільний елемент. Зміни будуть негайно видимі усім, з ким він поділений."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bạn đang chỉnh sửa một mục trong mọt kho lưu trữ được chia sẽ. Các thay đổi sẽ được hiển thị lập tức với những người được chia sẽ."
           }
         },
         "zh-Hans" : {
@@ -200684,6 +201032,12 @@
             "value" : "Наразі у вас немає елементів входу із секретним ключем 2FA (TOTP)"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hiện tại bạn không có mục đăng nhập nào với khóa 2FA (TOTP)"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -201442,6 +201796,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ви не поділились нічим іншим"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bạn hiện không chia sẽ mục nào"
           }
         },
         "zh-Hans" : {
@@ -202804,6 +203164,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ви втратите доступ до цього елемент та його деталей. Ви хочете продовжити?"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bạn sẽ mất quyền truy cập vào mục này và nội dung của nó. Bạn có muốn tiếp tục không"
           }
         },
         "zh-Hans" : {
@@ -205586,6 +205952,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ваш тарифний план дозволяє використовувати для автозаповнення лише предмети з перших 2 сховищ."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gói của bạn chỉ cho phép sử dụng các nội dung trong 2 kho lưu trữ đầu tiên để tự động điền."
           }
         },
         "zh-Hans" : {

@@ -23,6 +23,7 @@ import Core
 import Entities
 import Foundation
 
+// sourcery: AutoMockable
 public protocol OrganizationRepositoryProtocol: Sendable {
     /// Get from local, refresh if not exist
     /// Could be nil if the user is not in business plan

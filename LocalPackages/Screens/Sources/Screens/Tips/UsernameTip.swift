@@ -22,7 +22,8 @@ import DesignSystem
 import TipKit
 
 @available(iOS 17, *)
-public struct UsernameTip: Tip {
+public nonisolated struct UsernameTip: Tip {
+    private let bundle: Bundle
     public var id: String { PassTip.username.id }
 
     @Parameter
@@ -33,12 +34,12 @@ public struct UsernameTip: Tip {
     }
 
     public var title: Text {
-        Text("Add username field", bundle: .module)
+        Text("Add username field", bundle: bundle)
             .foregroundStyle(PassColor.textNorm)
     }
 
     public var message: Text? {
-        Text("Tap here to add a field for a username.", bundle: .module)
+        Text("Tap here to add a field for a username.", bundle: bundle)
             .foregroundStyle(PassColor.textWeak)
     }
 
@@ -51,5 +52,8 @@ public struct UsernameTip: Tip {
         Tips.MaxDisplayCount(1)
     }
 
-    public init() {}
+    @MainActor
+    public init() {
+        bundle = Foundation.Bundle.module
+    }
 }

@@ -27,7 +27,7 @@ let package = Package(
         .package(name: "UseCases", path: "../UseCases"),
         .package(name: "DesignSystem", path: "../DesignSystem"),
         .package(name: "Macro", path: "../Macro"),
-        .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "33.5.1"),
+        .package(url: "https://github.com/ProtonMail/protoncore_ios", from: "34.2.2"),
         .package(url: "https://github.com/protonpass/DocScanner", .upToNextMajor(from: "0.2.3"))
 
     ],
@@ -49,7 +49,13 @@ let package = Package(
                 .product(name: "ProtonCorePaymentsV2", package: "protoncore_ios")
 
             ],
-            resources: [.process("Resources")])
+            resources: [.process("Resources")],
+            swiftSettings: [
+              .defaultIsolation(MainActor.self),
+              .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
+              .enableUpcomingFeature("InferIsolatedConformances")
+            ]
+        )
     ],
     swiftLanguageModes: [.version("6")]
 )

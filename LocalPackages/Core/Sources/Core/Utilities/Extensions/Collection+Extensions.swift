@@ -1,7 +1,7 @@
 //
-// Collection+ParallelMap.swift
-// Proton Pass - Created on 22/09/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// Collection+Extensions.swift
+// Proton Pass - Created on 05/03/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,8 +17,15 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
 import Foundation
+
+public extension Collection {
+    var nilIfEmpty: Self? {
+        isEmpty ? nil : self
+    }
+}
 
 public extension Collection where Element: Sendable {
     func parallelMap<T: Sendable>(parallelism: Int = 2,
