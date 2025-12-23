@@ -82,12 +82,13 @@ private extension CoarseConversionValue {
         }
     }
 
-    @available(iOS 17.4, *)
-    var adAttributionKitValue: AdAttributionKit.CoarseConversionValue {
-        switch self {
-        case .low: .low
-        case .medium: .medium
-        case .high: .high
-        }
-    }
+    // Enable this after removing StoreKit's SKAdNetwork
+//    @available(iOS 17.4, *)
+//    var adAttributionKitValue: AdAttributionKit.CoarseConversionValue {
+//        switch self {
+//        case .low: .low
+//        case .medium: .medium
+//        case .high: .high
+//        }
+//    }
 }
