@@ -38,7 +38,7 @@ struct GetFolderEndpoint: Endpoint, Sendable {
 
     init(shareId: String,
          folderId: String) {
-        debugDescription = "Get folder for share"
+        debugDescription = "Get folder for share with id: \(shareId)"
         path = "/pass/v1/share/\(shareId)/folder/\(folderId)"
     }
 }

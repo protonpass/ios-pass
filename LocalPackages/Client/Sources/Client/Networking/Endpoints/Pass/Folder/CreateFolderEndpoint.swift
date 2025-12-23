@@ -35,14 +35,14 @@ struct CreateFolderEndpoint: Endpoint {
     let body: CreateFolderRequest?
 
     init(shareId: String, request: CreateFolderRequest) {
-        debugDescription = "Create folder"
+        debugDescription = "Create folder in share with id: \(shareId)"
         path = "/pass/v1/share/\(shareId)/folder"
         method = .post
         body = request
     }
 }
 
-public struct CreateFolderRequest: Sendable {
+public struct CreateFolderRequest: Sendable, Encodable {
     public let parentFolderID: String?
     public let keyRotation: Int
     public let contentFormatVersion: Int
@@ -60,9 +60,7 @@ public struct CreateFolderRequest: Sendable {
         self.content = content
         self.folderKey = folderKey
     }
-}
-
-extension CreateFolderRequest: Encodable {
+    
     enum CodingKeys: String, CodingKey {
         case parentFolderID = "ParentFolderID"
         case keyRotation = "KeyRotation"
