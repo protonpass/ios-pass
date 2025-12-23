@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import AdAttributionKit
 import Client
 import Combine
 import Core
@@ -90,6 +89,7 @@ final class AppCoordinator {
     private var clearCacheForLoggedOutUsers
     @LazyInjected(\SharedServiceContainer.telemetryService) private var telemetryService
     @LazyInjected(\UseCasesContainer.firstRunDetector) private var firstRunDetector
+    @LazyInjected(\UseCasesContainer.postbackConversionValue) private var postbackConversionValue
     @LazyInjected(\SharedServiceContainer.inAppNotificationManager)
     private var inAppNotificationManager
 
@@ -123,12 +123,7 @@ final class AppCoordinator {
         try? keychain.removeOrError(forKey: AuthManager.storageKey)
         Task { [weak self] in
             guard let self else { return }
-            if #available(iOS 17.4, *) {
-                try? await Postback.updateConversionValue(1,
-                                                          coarseConversionValue: .low,
-                                                          lockPostback: false)
-            }
-
+            try? await postbackConversionValue(0, coarseValue: .low, lockPostback: false)
             try? await localUserDataDatasource.removeAll()
         }
     }
@@ -459,14 +454,7 @@ extension AppCoordinator: WelcomeCoordinatorDelegate {
         } else {
             showExtraPasswordLockScreen(userData)
         }
-
-        Task {
-            if #available(iOS 17.4, *) {
-                try? await Postback.updateConversionValue(isSignUp ? 2 : 1,
-                                                          coarseConversionValue: .medium,
-                                                          lockPostback: false)
-            }
-        }
+        postbackConversionValue(isSignUp ? 2 : 1, coarseValue: .low, lockPostback: false)
     }
 }
 
