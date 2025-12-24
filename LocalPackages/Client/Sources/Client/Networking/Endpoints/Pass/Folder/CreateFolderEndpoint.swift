@@ -60,7 +60,7 @@ public struct CreateFolderRequest: Sendable, Encodable {
         self.content = content
         self.folderKey = folderKey
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case parentFolderID = "ParentFolderID"
         case keyRotation = "KeyRotation"
