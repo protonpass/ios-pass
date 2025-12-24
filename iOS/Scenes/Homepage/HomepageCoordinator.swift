@@ -105,6 +105,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
     @LazyInjected(\SharedUseCasesContainer.fullContentSync) var fullContentSync
+    @LazyInjected(\UseCasesContainer.postbackConversionValue) var postbackConversionValue
 
     private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
     let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
@@ -1725,6 +1726,13 @@ extension HomepageCoordinator {
                 try await appContentManager.refresh(userId: userId)
                 homepageTabDelegate?.change(tab: .items)
                 increaseCreatedItemsCountAndAskForReviewIfNecessary()
+
+                // MMP: optionally get the plan and post back. We don't care if errors occur.
+                if let isFreeUser = try? await accessRepository.getPlan(userId: userId).isFreeUser {
+                    try? await postbackConversionValue(isFreeUser ? 3 : 61,
+                                                       coarseValue: isFreeUser ? .medium : .high,
+                                                       lockPostback: !isFreeUser)
+                }
             } catch {
                 bannerManager.displayTopErrorMessage(error)
             }
