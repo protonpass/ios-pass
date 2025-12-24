@@ -42,7 +42,7 @@ extension ServiceContainer {
     }
 
     var shareInviteService: Factory<any ShareInviteServiceProtocol> {
-        self { ShareInviteService() }
+        self { @MainActor in ShareInviteService() }
     }
 
 //    var pushNotificationService: Factory<any PushNotificationServiceProtocol> {

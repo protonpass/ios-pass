@@ -92,7 +92,7 @@ final class ShareElementViewModel: ObservableObject {
                     throw PassError.sharing(.failedToInvite)
                 }
 
-                setShareInviteVault(with: .item(item: itemContent, share: share))
+                await setShareInviteVault(with: .item(item: itemContent, share: share))
                 router.present(for: .sharingFlow(.topMost))
             } catch {
                 router.display(element: .displayErrorBanner(error))

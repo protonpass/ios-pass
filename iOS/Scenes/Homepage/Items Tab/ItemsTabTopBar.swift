@@ -60,12 +60,12 @@ private extension ItemsTabTopBar {
     var viewModeView: some View {
         HStack {
             // Vault selector button
-            let uiModel = viewModel.vaultSelection.uiModel
+            let uiModel = viewModel.shareSelection.uiModel
             CircleButton(icon: uiModel.icon,
                          iconColor: uiModel.iconColor,
                          backgroundColor: uiModel.backgroundColor,
                          action: onShowVaultList)
-                .accessibilityLabel(viewModel.vaultSelection.accessibilityLabel)
+                .accessibilityLabel(viewModel.shareSelection.accessibilityLabel)
 
             if searchMode == nil {
                 // Search bar
@@ -76,7 +76,7 @@ private extension ItemsTabTopBar {
                             .resizable()
                             .scaledToFit()
                             .frame(width: 20, height: 20)
-                        Text(viewModel.vaultSelection.searchBarPlaceholder)
+                        Text(viewModel.shareSelection.searchBarPlaceholder)
                             .lineLimit(1)
                             .minimumScaleFactor(0.75)
                     }
@@ -155,7 +155,7 @@ private extension ItemsTabTopBar {
 
                 Spacer()
 
-                switch viewModel.vaultSelection {
+                switch viewModel.shareSelection {
                 case .all, .precise:
                     button(action: onMove, icon: IconProvider.folderArrowIn)
                         .padding(.horizontal)
@@ -230,23 +230,23 @@ private struct VautlSelectionUiModel: Sendable {
     let backgroundColor: Color
 }
 
-private extension VaultSelection {
+private extension ShareSelection {
     var uiModel: VautlSelectionUiModel {
         switch self {
         case .all:
             .init(icon: PassIcon.brandPass,
-                  iconColor: VaultSelection.all.color,
-                  backgroundColor: VaultSelection.all.color.opacity(0.16))
+                  iconColor: ShareSelection.all.color,
+                  backgroundColor: ShareSelection.all.color.opacity(0.16))
 
         case .sharedByMe:
             .init(icon: IconProvider.userArrowRight,
-                  iconColor: VaultSelection.all.color,
-                  backgroundColor: VaultSelection.all.color.opacity(0.16))
+                  iconColor: ShareSelection.all.color,
+                  backgroundColor: ShareSelection.all.color.opacity(0.16))
 
         case .sharedWithMe:
             .init(icon: IconProvider.userArrowLeft,
-                  iconColor: VaultSelection.all.color,
-                  backgroundColor: VaultSelection.all.color.opacity(0.16))
+                  iconColor: ShareSelection.all.color,
+                  backgroundColor: ShareSelection.all.color.opacity(0.16))
 
         case let .precise(vault):
             if let vaultContent = vault.vaultContent {
@@ -255,14 +255,14 @@ private extension VaultSelection {
                       backgroundColor: vaultContent.backgroundColor)
             } else {
                 .init(icon: PassIcon.brandPass,
-                      iconColor: VaultSelection.all.color,
-                      backgroundColor: VaultSelection.all.color.opacity(0.16))
+                      iconColor: ShareSelection.all.color,
+                      backgroundColor: ShareSelection.all.color.opacity(0.16))
             }
 
         case .trash:
             .init(icon: IconProvider.trash,
-                  iconColor: VaultSelection.trash.color,
-                  backgroundColor: VaultSelection.trash.color.opacity(0.16))
+                  iconColor: ShareSelection.trash.color,
+                  backgroundColor: ShareSelection.trash.color.opacity(0.16))
         }
     }
 }

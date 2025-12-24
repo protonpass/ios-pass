@@ -1,7 +1,7 @@
-//
-// LogingManagerMock.swift
-// Proton Pass - Created on 29/06/2023.
-// Copyright (c) 2023 Proton Technologies AG
+//  
+// LogManagerMock.swift
+// Proton Pass - Created on 01/12/2025.
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -21,33 +21,38 @@
 import Core
 import Foundation
 
-actor LogManagerMock: LogManagerProtocol {
-    var shouldLog: Bool = true
-    var logEntries: [LogEntry] = []
+public actor LogManagerMock: LogManagerProtocol {
+    public var shouldLog: Bool = true
+    public var logEntries: [LogEntry] = []
 
-    var logFunction: ((LogEntry) -> Void)?
-    var getLogEntriesFunction: (() async throws -> [LogEntry])?
+    public var logFunction: ((LogEntry) -> Void)?
+    public var getLogEntriesFunction: (() async throws -> [LogEntry])?
+    
+    public init() {
+        
+    }
 
-    func log(entry: LogEntry) {
+    public  func log(entry: LogEntry) {
         logFunction?(entry)
         if shouldLog {
             logEntries.append(entry)
         }
     }
 
-    func getLogEntries() async throws -> [LogEntry] {
+    public func getLogEntries() async throws -> [LogEntry] {
         return logEntries
     }
 
-    func removeAllLogs() {
+    public  func removeAllLogs() {
         logEntries.removeAll()
     }
 
-    func saveAllLogs() {
+    public func saveAllLogs() {
         // Do nothing in the mock implementation
     }
 
-    func toggleLogging(shouldLog: Bool) {
+    public func toggleLogging(shouldLog: Bool) {
         self.shouldLog = shouldLog
     }
 }
+

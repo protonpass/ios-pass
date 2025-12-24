@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Core
+import CoreMocks
 import XCTest
 
 final class LogManagerTests: XCTestCase, @unchecked Sendable {
