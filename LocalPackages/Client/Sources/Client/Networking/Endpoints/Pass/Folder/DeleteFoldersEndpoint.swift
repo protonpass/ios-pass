@@ -36,7 +36,7 @@ struct DeleteFoldersEndpoint: Endpoint {
 
     init(shareId: String, folderIds: [String]) {
         debugDescription = "Delete folders in share with id: \(shareId)"
-        path = "/pass/v1/share/\(shareId)/item"
+        path = "/pass/v1/share/\(shareId)/folder"
         method = .delete
         body = .init(folderIDs: folderIds)
     }

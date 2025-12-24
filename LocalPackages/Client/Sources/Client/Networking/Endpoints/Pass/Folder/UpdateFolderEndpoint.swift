@@ -53,11 +53,11 @@ public struct UpdateFolderRequest: Sendable, Encodable {
     let content: String
 
     /// Version of the content format used to create the item
-    let contentFormatVersion: Int16
+    let contentFormatVersion: Int
 
     public init(keyRotation: Int64,
                 content: String,
-                contentFormatVersion: Int16) {
+                contentFormatVersion: Int) {
         self.keyRotation = keyRotation
         self.content = content
         self.contentFormatVersion = contentFormatVersion
@@ -73,7 +73,7 @@ public struct UpdateFolderRequest: Sendable, Encodable {
 
         self.init(keyRotation: keyRotation,
                   content: updatedContent.base64EncodedString(),
-                  contentFormatVersion: Int16(Constants.ContentFormatVersion.folder))
+                  contentFormatVersion: Constants.ContentFormatVersion.folder)
     }
 
     enum CodingKeys: String, CodingKey {
