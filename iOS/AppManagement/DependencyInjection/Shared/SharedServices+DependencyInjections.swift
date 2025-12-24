@@ -118,7 +118,7 @@ extension SharedServiceContainer {
     }
 
     var appContentManager: Factory<AppContentManager> {
-        self { AppContentManager() }
+        self { @MainActor in AppContentManager() }
     }
 
     var upgradeChecker: Factory<any UpgradeCheckerProtocol> {

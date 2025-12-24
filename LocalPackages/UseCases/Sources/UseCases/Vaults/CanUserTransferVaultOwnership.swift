@@ -23,6 +23,7 @@
 import Client
 import Entities
 
+@MainActor
 public protocol CanUserTransferVaultOwnershipUseCase: Sendable {
     func execute(for vault: Share, to invitee: any ShareInvitee) -> Bool
 }

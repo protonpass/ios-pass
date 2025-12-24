@@ -57,8 +57,25 @@ enum AppContentState: Equatable {
     }
 }
 
-final class AppContentManager: ObservableObject, @unchecked Sendable, DeinitPrintable, AppContentManagerProtocol {
+@MainActor
+final class AppContentManager: ObservableObject, DeinitPrintable, AppContentManagerProtocol {
     deinit { print(deinitMessage) }
+
+    @Published private(set) var state = AppContentState.loading
+    @Published private(set) var shareSelection = ShareSelection.all
+    @Published private(set) var itemCount = ItemCount.zero
+
+    @AppStorage(Constants.filterTypeKey, store: kSharedUserDefaults)
+    private(set) var filterOption = ItemTypeFilterOption.all
+
+    @AppStorage(Constants.incompleteFullSyncUserId, store: kSharedUserDefaults)
+    private(set) var incompleteFullSyncUserId: String?
+
+    nonisolated let currentShares: CurrentValueSubject<[Share], Never> = .init([])
+    // Should subscribe and receive on main queue in view models to be sure not crash appears between @MainActor
+    // isolation and combine
+    nonisolated let vaultSyncEventStream = PassthroughSubject<VaultSyncProgressEvent, Never>()
+    nonisolated let currentSpotlightSelectedVaults: CurrentValueSubject<[Share], Never> = .init([])
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
@@ -66,24 +83,8 @@ final class AppContentManager: ObservableObject, @unchecked Sendable, DeinitPrin
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
     @LazyInjected(\SharedToolingContainer.preferencesManager) private var preferencesManager
-    @LazyInjected(\SharedRepositoryContainer.inviteRepository)
-    private var inviteRepository
+    @LazyInjected(\SharedRepositoryContainer.inviteRepository) private var inviteRepository
     @LazyInjected(\SharedServiceContainer.simpleLoginNoteSynchronizer) private var slNoteSynchronizer
-
-    private let queue = DispatchQueue(label: "me.proton.pass.vaultsManager")
-    private var safeIsRefreshing = false
-    private var isRefreshing: Bool {
-        get {
-            queue.sync {
-                safeIsRefreshing
-            }
-        }
-        set {
-            queue.sync {
-                safeIsRefreshing = newValue
-            }
-        }
-    }
 
     // Use cases
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
@@ -98,23 +99,7 @@ final class AppContentManager: ObservableObject, @unchecked Sendable, DeinitPrin
     private var dedupShare
 
     private var cancellables = Set<AnyCancellable>()
-
-    @Published private(set) var state = AppContentState.loading
-    @Published private(set) var vaultSelection = VaultSelection.all
-    @Published private(set) var itemCount = ItemCount.zero
-
-    @AppStorage(Constants.filterTypeKey, store: kSharedUserDefaults)
-    private(set) var filterOption = ItemTypeFilterOption.all
-
-    @AppStorage(Constants.incompleteFullSyncUserId, store: kSharedUserDefaults)
-    private(set) var incompleteFullSyncUserId: String?
-
-    nonisolated let currentVaults: CurrentValueSubject<[Share], Never> = .init([])
-    // Should subscribe and receive on main queue in view models to be sure not crash appears between @MainActor
-    // isolation and combine
-    nonisolated let vaultSyncEventStream = PassthroughSubject<VaultSyncProgressEvent, Never>()
-    nonisolated let currentSpotlightSelectedVaults: CurrentValueSubject<[Share], Never> = .init([])
-
+    private var isRefreshing: Bool = false
     // The filter option after switching vaults
     private var pendingItemTypeFilterOption: ItemTypeFilterOption?
 
@@ -126,12 +111,11 @@ final class AppContentManager: ObservableObject, @unchecked Sendable, DeinitPrin
         getAllShares().numberOfOwnedVault <= 1
     }
 
-    @MainActor
     func reset() {
         state = .loading
-        vaultSelection = .all
+        shareSelection = .all
         itemCount = .zero
-        currentVaults.send([])
+        currentShares.send([])
         vaultSyncEventStream.send(.initialization)
     }
 }
@@ -139,18 +123,17 @@ final class AppContentManager: ObservableObject, @unchecked Sendable, DeinitPrin
 // MARK: - Data loading Public APIs
 
 extension AppContentManager {
-    @MainActor
     func refresh(userId: String) async throws {
         guard !isRefreshing else { return }
         defer { isRefreshing = false }
         do {
             // No need to show loading indicator once items are loaded beforehand.
-            var cryptoErrorOccured = false
+            var cryptoErrorOccurred = false
             switch state {
             case .loaded:
                 break
             case let .error(error):
-                cryptoErrorOccured = error is CryptoKitError
+                cryptoErrorOccurred = error is CryptoKitError
                 state = .loading
             default:
                 state = .loading
@@ -161,7 +144,7 @@ extension AppContentManager {
                 await fullSync(userId: userId)
                 await loginMethod.setLogInFlow(newState: false)
                 logger.info("Manual login, done full sync")
-            } else if cryptoErrorOccured {
+            } else if cryptoErrorOccurred {
                 logger.info("Crypto error occurred. Doing full sync")
                 await fullSync(userId: userId)
                 logger.info("Crypto error occurred. Done full sync")
@@ -261,9 +244,9 @@ extension AppContentManager {
 // MARK: - Share Actions Public APIs
 
 extension AppContentManager {
-    func select(_ selection: VaultSelection, filterOption: ItemTypeFilterOption? = nil) {
+    func select(_ selection: ShareSelection, filterOption: ItemTypeFilterOption? = nil) {
         pendingItemTypeFilterOption = filterOption
-        vaultSelection = selection
+        shareSelection = selection
 
         Task { [weak self] in
             guard let self else { return }
@@ -276,8 +259,8 @@ extension AppContentManager {
         }
     }
 
-    func isSelected(_ selection: VaultSelection) -> Bool {
-        vaultSelection == selection
+    func isSelected(_ selection: ShareSelection) -> Bool {
+        shareSelection == selection
     }
 
     func getShareContent(for shareId: String) -> ShareContent? {
@@ -363,16 +346,29 @@ extension AppContentManager {
         self.filterOption = filterOption
     }
 
+    // swiftlint:disable:next cyclomatic_complexity
     func getFilteredItems() -> [ItemUiModel] {
         guard let sharesData = state.loadedContent else { return [] }
+
+        // 1. Early exit for filter options that completely override share selection
+        switch filterOption {
+        case .itemSharedWithMe:
+            return sharesData.itemsSharedWithMe
+        case .itemSharedByMe:
+            return sharesData.itemsSharedByMe
+        case .all, .precise:
+            break // Proceed to share selection logic
+        }
+
         let hiddenShareIds = sharesData.shares.compactMap(\.share).hiddenShareIds
-        let items: [ItemUiModel] = switch vaultSelection {
+
+        // 2. Determine base items based on share selection
+        // (hidden shares are computed lazily only when needed)
+        let baseItems: [ItemUiModel] = switch shareSelection {
         case .all:
             sharesData.shares.flatMap(\.items).filter { !hiddenShareIds.contains($0.shareId) }
-        case let .precise(selectedVault):
-            sharesData.shares
-                .filter { $0.share.shareId == selectedVault.shareId }
-                .flatMap(\.items)
+        case let .precise(selectedShare):
+            sharesData.shares.first { $0.share.shareId == selectedShare.shareId }?.items ?? []
         case .sharedByMe:
             sharesData.itemsSharedByMe
         case .sharedWithMe:
@@ -381,20 +377,20 @@ extension AppContentManager {
             sharesData.trashedItems.filter { !hiddenShareIds.contains($0.shareId) }
         }
 
+        // 3. Apply final type filter if needed
         switch filterOption {
         case .all:
-            return items
+            return baseItems
         case let .precise(type):
-            return items.filter { $0.type.isSameType(with: type) }
-        case .itemSharedWithMe:
-            return sharesData.itemsSharedWithMe
-        case .itemSharedByMe:
-            return sharesData.itemsSharedByMe
+            return baseItems.filter { $0.type.isSameType(with: type) }
+        case .itemSharedByMe, .itemSharedWithMe:
+            assertionFailure("Unreachable: handled by early return")
+            return baseItems
         }
     }
 
     func isItemVisible(_ item: any ItemIdentifiable, type: ItemContentType) -> Bool {
-        switch vaultSelection {
+        switch shareSelection {
         case .all:
             true
         case let .precise(vault):
@@ -472,7 +468,7 @@ private extension AppContentManager {
             }
             .store(in: &cancellables)
 
-        $vaultSelection
+        $shareSelection
             .receive(on: DispatchQueue.main)
             .dropFirst()
             .sink { [weak self] _ in
@@ -486,37 +482,35 @@ private extension AppContentManager {
 
     func updateItemCount() {
         guard let sharesData = state.loadedContent else { return }
-        var sharedByMe = 0
-        var sharedWithMe = 0
-        var items: [any ItemTypeIdentifiable] = []
-        switch vaultSelection {
+        switch shareSelection {
         case .all:
-            items = sharesData.shares.flatMap(\.items)
-            sharedByMe = sharesData.itemsSharedByMe.count
-            sharedWithMe = sharesData.itemsSharedWithMe.count
+            itemCount = ItemCount(items: sharesData.shares.flatMap(\.items),
+                                  sharedByMe: sharesData.itemsSharedByMe.count,
+                                  sharedWithMe: sharesData.itemsSharedWithMe.count)
         case let .precise(selectedShare):
-            let filteredShare = sharesData.shares
-                .filter { $0.id == selectedShare.id }
-            items = filteredShare
-                .flatMap(\.items)
-            sharedByMe = filteredShare
-                .filter { !$0.share.isVaultRepresentation && $0.share.owner }
-                .flatMap(\.items).count
-            sharedWithMe = filteredShare
-                .filter { !$0.share.isVaultRepresentation && !$0.share.owner }.flatMap(\.items).count
-        case .sharedByMe:
-            items = sharesData.itemsSharedByMe
-            sharedByMe = sharesData.itemsSharedByMe.count
-            sharedWithMe = 0
-        case .sharedWithMe:
-            items = sharesData.itemsSharedWithMe
-            sharedByMe = 0
-            sharedWithMe = sharesData.itemsSharedWithMe.count
-        case .trash:
-            items = sharesData.trashedItems
-        }
+            guard let share = sharesData.shares.first(where: { $0.id == selectedShare.id }) else {
+                itemCount = ItemCount(items: [], sharedByMe: 0, sharedWithMe: 0)
+                return
+            }
+            let items = share.items
+            let shouldCount = !share.share.isVaultRepresentation
 
-        itemCount = .init(items: items, sharedByMe: sharedByMe, sharedWithMe: sharedWithMe)
+            if share.share.owner {
+                itemCount = ItemCount(items: items, sharedByMe: shouldCount ? items.count : 0, sharedWithMe: 0)
+            } else {
+                itemCount = ItemCount(items: items, sharedByMe: 0, sharedWithMe: shouldCount ? items.count : 0)
+            }
+        case .sharedByMe:
+            itemCount = ItemCount(items: sharesData.itemsSharedByMe,
+                                  sharedByMe: sharesData.itemsSharedByMe.count,
+                                  sharedWithMe: 0)
+        case .sharedWithMe:
+            itemCount = ItemCount(items: sharesData.itemsSharedWithMe,
+                                  sharedByMe: 0,
+                                  sharedWithMe: sharesData.itemsSharedWithMe.count)
+        case .trash:
+            itemCount = ItemCount(items: sharesData.trashedItems, sharedByMe: 0, sharedWithMe: 0)
+        }
     }
 
     func createDefaultVault() async throws {
@@ -541,27 +535,27 @@ private extension AppContentManager {
                                                  items: allItems)
         let userPreferences = preferencesManager.userPreferences.unwrapped()
 
-        currentVaults.send(shares)
+        currentShares.send(shares)
         state = .loaded(sharesData)
 
         if let lastSelectedShareId = userPreferences.lastSelectedShareId {
-            if lastSelectedShareId == VaultSelection.sharedByMe.preferenceKey, vaultSelection != .sharedByMe {
-                vaultSelection = .sharedByMe
-            } else if lastSelectedShareId == VaultSelection.sharedWithMe.preferenceKey,
-                      vaultSelection != .sharedWithMe {
-                vaultSelection = .sharedWithMe
-            } else if lastSelectedShareId == VaultSelection.trash.preferenceKey, vaultSelection != .trash {
-                vaultSelection = .trash
+            if lastSelectedShareId == ShareSelection.sharedByMe.preferenceKey, shareSelection != .sharedByMe {
+                shareSelection = .sharedByMe
+            } else if lastSelectedShareId == ShareSelection.sharedWithMe.preferenceKey,
+                      shareSelection != .sharedWithMe {
+                shareSelection = .sharedWithMe
+            } else if lastSelectedShareId == ShareSelection.trash.preferenceKey, shareSelection != .trash {
+                shareSelection = .trash
             } else if let vault = shares.first(where: { $0.shareId == lastSelectedShareId }) {
                 if vault.hidden {
                     // Fallback to selecting all vaults when the previous selected vault is hidden
-                    vaultSelection = .all
+                    shareSelection = .all
                 } else {
-                    vaultSelection = .precise(vault)
+                    shareSelection = .precise(vault)
                 }
             }
         } else {
-            vaultSelection = .all
+            shareSelection = .all
         }
 
         if getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1) {

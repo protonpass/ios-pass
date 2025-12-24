@@ -1,8 +1,7 @@
 //
-//
-// GetMainVault.swift
-// Proton Pass - Created on 03/10/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// FolderKey.swift
+// Proton Pass - Created on 01/12/2025.
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,29 +17,21 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import Client
-import Entities
+import Foundation
 
-public protocol GetMainVaultUseCase: Sendable {
-    func execute() async -> Share?
-}
+public struct FolderKey: Codable, Equatable, Hashable, Sendable {
+    /// Encrypted key encoded in base64
+    public let folderKey: String
+    public let keyRotation: Int
 
-public extension GetMainVaultUseCase {
-    func callAsFunction() async -> Share? {
-        await execute()
-    }
-}
-
-public final class GetMainVault: GetMainVaultUseCase {
-    private let appContentManager: any AppContentManagerProtocol
-
-    public init(appContentManager: any AppContentManagerProtocol) {
-        self.appContentManager = appContentManager
+    public init(folderKey: String, keyRotation: Int) {
+        self.folderKey = folderKey
+        self.keyRotation = keyRotation
     }
 
-    public func execute() async -> Share? {
-        await appContentManager.getOldestOwnedVault()
+    enum CodingKeys: String, CodingKey {
+        case folderKey = "FolderKey"
+        case keyRotation = "KeyRotation"
     }
 }

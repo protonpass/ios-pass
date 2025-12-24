@@ -1,8 +1,7 @@
 //
-//
-// GetMainVault.swift
-// Proton Pass - Created on 03/10/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// PaginatedFolders.swift
+// Proton Pass - Created on 03/12/2025.
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,29 +17,17 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import Client
-import Entities
+import Foundation
 
-public protocol GetMainVaultUseCase: Sendable {
-    func execute() async -> Share?
-}
+public struct PaginatedFolders: Decodable, Sendable {
+    public let total: Int
+    public let lastToken: String?
+    public let folders: [Folder]
 
-public extension GetMainVaultUseCase {
-    func callAsFunction() async -> Share? {
-        await execute()
-    }
-}
-
-public final class GetMainVault: GetMainVaultUseCase {
-    private let appContentManager: any AppContentManagerProtocol
-
-    public init(appContentManager: any AppContentManagerProtocol) {
-        self.appContentManager = appContentManager
-    }
-
-    public func execute() async -> Share? {
-        await appContentManager.getOldestOwnedVault()
+    public init(total: Int, lastToken: String?, folders: [Folder]) {
+        self.total = total
+        self.lastToken = lastToken
+        self.folders = folders
     }
 }

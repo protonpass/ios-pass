@@ -1,8 +1,7 @@
 //
-//
-// GetMainVault.swift
-// Proton Pass - Created on 03/10/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// GetFolderEndpoint.swift
+// Proton Pass - Created on 28/11/2025.
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,29 +17,28 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import Client
+// swiftlint:disable:next todo
+// TODO: remove with folder implementation
+// periphery:ignore:all
+
 import Entities
+import ProtonCoreNetworking
 
-public protocol GetMainVaultUseCase: Sendable {
-    func execute() async -> Share?
+struct FolderResponse: Decodable, Sendable {
+    let folder: Folder
 }
 
-public extension GetMainVaultUseCase {
-    func callAsFunction() async -> Share? {
-        await execute()
-    }
-}
+struct GetFolderEndpoint: Endpoint, Sendable {
+    typealias Body = EmptyRequest
+    typealias Response = FolderResponse
 
-public final class GetMainVault: GetMainVaultUseCase {
-    private let appContentManager: any AppContentManagerProtocol
+    let debugDescription: String
+    let path: String
 
-    public init(appContentManager: any AppContentManagerProtocol) {
-        self.appContentManager = appContentManager
-    }
-
-    public func execute() async -> Share? {
-        await appContentManager.getOldestOwnedVault()
+    init(shareId: String,
+         folderId: String) {
+        debugDescription = "Get folder for share with id: \(shareId)"
+        path = "/pass/v1/share/\(shareId)/folder/\(folderId)"
     }
 }
