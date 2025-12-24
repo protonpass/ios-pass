@@ -384,7 +384,8 @@ extension AppContentManager {
         case let .precise(type):
             return baseItems.filter { $0.type.isSameType(with: type) }
         case .itemSharedByMe, .itemSharedWithMe:
-            fatalError("Unreachable: handled by early return")
+            assertionFailure("Unreachable: handled by early return")
+            return baseItems
         }
     }
 
