@@ -1,6 +1,6 @@
 //
-// Collection+Extensions.swift
-// Proton Pass - Created on 05/03/2024.
+// CaseIterable+Extensions.swift
+// Proton Pass - Created on 29/03/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,8 +21,13 @@
 
 import Foundation
 
-public extension Collection {
-    var nilIfEmpty: Self? {
-        isEmpty ? nil : self
+public extension CaseIterable {
+    // periphery:ignore
+    static func random() -> AllCases.Element? {
+        guard !allCases.isEmpty else {
+            assertionFailure("\(Self.self) has no cases")
+            return nil
+        }
+        return allCases.randomElement()
     }
 }

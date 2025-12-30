@@ -22,19 +22,19 @@
 import CryptoKit
 
 public struct SharesData: Hashable, Sendable {
-    public let shares: [ShareContent]
+    public let shares: [String: ShareContent]
     public let trashedItems: [ItemUiModel]
     public let itemsSharedByMe: [ItemUiModel]
     public let itemsSharedWithMe: [ItemUiModel]
 
-    public init(shares: [ShareContent], trashedItems: [ItemUiModel]) {
+    public init(shares:  [String: ShareContent], trashedItems: [ItemUiModel]) {
         self.shares = shares
         self.trashedItems = trashedItems
 
         var sharedByMeShareIds: Set<String> = []
         var sharedWithMeShareIds: Set<String> = []
 
-        for share in shares {
+        for share in shares.values {
             if share.share.shareRole == .manager {
                 sharedByMeShareIds.insert(share.share.shareId)
             }
@@ -48,20 +48,20 @@ public struct SharesData: Hashable, Sendable {
         let trashedSharedWithMeItems = sharedTrashedItems.filter { sharedWithMeShareIds.contains($0.shareId) }
 
         itemsSharedByMe =
-            shares
+        shares.values
                 .filter { sharedByMeShareIds.contains($0.share.shareId) }
-                .flatMap(\.items)
+                .flatMap(\.elements.allItems)
                 .filter(\.shared) +
                 trashedSharedByMeItems
 
-        itemsSharedWithMe = shares
+        itemsSharedWithMe = shares.values
             .filter { sharedWithMeShareIds.contains($0.share.shareId) }
-            .flatMap(\.items) +
+            .flatMap(\.elements.allItems) +
             trashedSharedWithMeItems
     }
 
     public var filteredOrderedVaults: [Share] {
-        shares
+        shares.values
             .compactMap { shareContent -> Share? in
                 guard shareContent.share.vaultName != nil else { return nil }
                 return shareContent.share

@@ -23,10 +23,12 @@ import CryptoKit
 import Entities
 import Foundation
 
-protocol FolderRepositoryProtocol: Sendable {
+public protocol FolderRepositoryProtocol: Sendable {
     // MARK: - Local functions
 
     func getAllLocalFolders(userId: String) async throws -> [SymmetricallyEncryptedFolder]
+    func refreshFolders(userId: String, shareId: String) async throws
+    func deleteAllLocalFolders(userId: String) async throws
 }
 
 public final class FolderRepository: FolderRepositoryProtocol {
@@ -35,7 +37,6 @@ public final class FolderRepository: FolderRepositoryProtocol {
     private let symmetricKeyProvider: any SymmetricKeyProvider
     private let shareEventIDRepository: any ShareEventIDRepositoryProtocol
     private let passKeyManager: any PassKeyManagerProtocol
-    private let userManager: any UserManagerProtocol
     private let logger: Logger
 
     private var symmetricKey: SymmetricKey {
@@ -47,7 +48,6 @@ public final class FolderRepository: FolderRepositoryProtocol {
     public init(remoteDatasource: any RemoteFolderDatasourceProtocol,
                 localDatasource: any LocalFolderDatasourceProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider,
-                userManager: any UserManagerProtocol,
                 shareEventIDRepository: any ShareEventIDRepositoryProtocol,
                 passKeyManager: any PassKeyManagerProtocol,
                 logManager: any LogManagerProtocol) {
@@ -56,7 +56,6 @@ public final class FolderRepository: FolderRepositoryProtocol {
         self.symmetricKeyProvider = symmetricKeyProvider
         self.shareEventIDRepository = shareEventIDRepository
         self.passKeyManager = passKeyManager
-        self.userManager = userManager
         logger = .init(manager: logManager)
     }
 }
@@ -141,6 +140,12 @@ public extension FolderRepository {
         logger.trace("Saving \(encryptedFolders.count) remote folders revisions to local database")
         try await localDatasource.upsertFolders(encryptedFolders)
         logger.trace("Saved \(encryptedFolders.count) remote folders revisions to local database")
+    }
+
+    func deleteAllLocalFolders(userId: String) async throws {
+        logger.trace("Deleting all local folder of user \(userId)")
+        try await localDatasource.removeAllFolders(userId: userId)
+        logger.trace("Deleted all local folder")
     }
 }
 

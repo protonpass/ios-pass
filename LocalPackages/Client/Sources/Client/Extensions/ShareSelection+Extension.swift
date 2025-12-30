@@ -1,6 +1,6 @@
 //
-// URL+Extensions.swift
-// Proton Pass - Created on 16/04/2023.
+// ShareSelection+Extension.swift
+// Proton Pass - Created on 07/12/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,15 +18,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
-import Foundation
+import Entities
+import Macro
 
-extension URL {
-    static func favIconsContainerURL() -> URL {
-        guard let fileContainer = FileManager.default
-            .containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroup) else {
-            fatalError("Can not create folder for fav icons")
+public extension ShareSelection {
+    var searchBarPlaceholder: String {
+        switch self {
+        case .all:
+            #localized("Search in all items...", bundle: .module)
+        case let .precise(share):
+            #localized("Search in %@...", bundle: .module, share.vaultContent?.name ?? "")
+        case .trash:
+            #localized("Search in Trash...", bundle: .module)
+        case .sharedByMe:
+            #localized("Search in items shared by me", bundle: .module)
+        case .sharedWithMe:
+            #localized("Search in items shared with me", bundle: .module)
         }
-        return fileContainer.appendingPathComponent("FavIcons", isDirectory: true)
     }
 }

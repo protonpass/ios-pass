@@ -28,13 +28,9 @@ import Entities
 import Foundation
 import ProtonCoreNetworking
 
-struct UpdateFolderResponse: Decodable, Sendable {
-    let folder: Folder
-}
-
 struct UpdateFolderEndpoint: Endpoint {
     typealias Body = UpdateFolderRequest
-    typealias Response = UpdateFolderResponse
+    typealias Response = FolderResponse
 
     var debugDescription: String
     var path: String
@@ -42,7 +38,7 @@ struct UpdateFolderEndpoint: Endpoint {
     var body: UpdateFolderRequest?
 
     init(shareId: String, folderId: String, request: UpdateFolderRequest) {
-        debugDescription = "Update folder"
+        debugDescription = "Update folder with id: \(folderId) from share: \(shareId)"
         path = "/pass/v1/share/\(shareId)/folder/\(folderId)"
         method = .put
         body = request
@@ -57,11 +53,11 @@ public struct UpdateFolderRequest: Sendable, Encodable {
     let content: String
 
     /// Version of the content format used to create the item
-    let contentFormatVersion: Int16
+    let contentFormatVersion: Int
 
     public init(keyRotation: Int64,
                 content: String,
-                contentFormatVersion: Int16) {
+                contentFormatVersion: Int) {
         self.keyRotation = keyRotation
         self.content = content
         self.contentFormatVersion = contentFormatVersion
@@ -77,7 +73,7 @@ public struct UpdateFolderRequest: Sendable, Encodable {
 
         self.init(keyRotation: keyRotation,
                   content: updatedContent.base64EncodedString(),
-                  contentFormatVersion: Int16(Constants.ContentFormatVersion.folder))
+                  contentFormatVersion: Constants.ContentFormatVersion.folder)
     }
 
     enum CodingKeys: String, CodingKey {

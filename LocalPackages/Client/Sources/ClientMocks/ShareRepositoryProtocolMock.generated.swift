@@ -127,15 +127,18 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
         return stubbedGetDecryptedRemoteSharesResult
     }
     // MARK: - deleteAllCurrentUserSharesLocally
-    public var deleteAllCurrentUserSharesLocallyThrowableError6: Error?
+    public var deleteAllCurrentUserSharesLocallyUserIdThrowableError6: Error?
     public var closureDeleteAllCurrentUserSharesLocally: () -> () = {}
     public var invokedDeleteAllCurrentUserSharesLocallyfunction = false
     public var invokedDeleteAllCurrentUserSharesLocallyCount = 0
+    public var invokedDeleteAllCurrentUserSharesLocallyParameters: (userId: String, Void)?
+    public var invokedDeleteAllCurrentUserSharesLocallyParametersList = [(userId: String, Void)]()
 
-    public func deleteAllCurrentUserSharesLocally() async throws {
+    public func deleteAllCurrentUserSharesLocally(userId: String) async throws {
         invokedDeleteAllCurrentUserSharesLocallyfunction = true
         invokedDeleteAllCurrentUserSharesLocallyCount += 1
-        if let error = deleteAllCurrentUserSharesLocallyThrowableError6 {
+        invokedDeleteAllCurrentUserSharesLocallyParameters = (userId, ())
+        if let error = deleteAllCurrentUserSharesLocallyUserIdThrowableError6 {
             throw error
         }
         closureDeleteAllCurrentUserSharesLocally()

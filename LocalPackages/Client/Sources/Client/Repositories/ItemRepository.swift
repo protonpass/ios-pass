@@ -141,7 +141,7 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
 
     /// Delete all local items for current active user
     /// This should only be used for a complete nuke of local data for all users
-    func deleteAllCurrentUserItemsLocally() async throws
+    func deleteAllCurrentUserItemsLocally(userId: String) async throws
 
     /// Delete items locally after sync events
     func deleteAllItemsLocally(shareId: String) async throws
@@ -279,7 +279,7 @@ public extension ItemRepository {
     func getAllPinnedItems() async throws -> [SymmetricallyEncryptedItem] {
         let userId = try await userManager.getActiveUserId()
         let shares = try await localShareDatasource.getAllShares(userId: userId)
-        let visibleShareIds = shares.filter(\.share.visible).map(\.share.shareId)
+        let visibleShareIds = Set(shares.filter(\.share.visible).map(\.share.shareId))
         let pinnedItems = try await localDatasource.getAllPinnedItems(userId: userId)
         return pinnedItems.filter { visibleShareIds.contains($0.shareId) }
     }
@@ -596,9 +596,9 @@ public extension ItemRepository {
         logger.trace("Deleted all items locally")
     }
 
-    func deleteAllCurrentUserItemsLocally() async throws {
+    func deleteAllCurrentUserItemsLocally(userId: String) async throws {
         logger.trace("Deleting all items locally")
-        let userId = try await userManager.getActiveUserId()
+//        let userId = try await userManager.getActiveUserId()
         try await localDatasource.removeAllItems(userId: userId)
         try await refreshPinnedItemDataStream()
         logger.trace("Deleted all items locally")
@@ -903,6 +903,7 @@ private extension ItemRepository {
                               userId: String,
                               symmetricKey: SymmetricKey,
                               slNote: String? = nil) async throws -> SymmetricallyEncryptedItem {
+        //TODO: get container key to decrypt folder or share
         let shareKey = try await passKeyManager.getShareKey(userId: userId,
                                                             shareId: shareId,
                                                             keyRotation: itemRevision.keyRotation)

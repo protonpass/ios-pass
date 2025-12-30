@@ -56,7 +56,7 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
     }
 
     public var id: String {
-        "\(item.itemID + shareId)"
+        item.itemID + shareId
     }
 
     public init(shareId: String,

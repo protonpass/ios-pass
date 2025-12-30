@@ -165,9 +165,10 @@
     public var invoked{{variable.name|upperFirstLetter}}List = [{{variable.unwrappedTypeName|upperFirstLetter}}?]()
     public var invoked{{variable.name|upperFirstLetter}}Getter = false
     public var invoked{{variable.name|upperFirstLetter}}GetterCount = 0
+    
+  {% if variable.typeName|!contains: "ValueSubject"  %}
     public var stubbed{{variable.name|upperFirstLetter}}: {{variable.unwrappedTypeName|upperFirstLetter}}!
-  {% if variable.typeName|!contains: "CurrentValueSubject"  %}
-      
+
     public var {{variable.name}}: {{variable.typeName}} {
         set {
             invoked{{variable.name|upperFirstLetter}}Setter = true
@@ -181,6 +182,8 @@
         }
     }
     {% else %}
+    public nonisolated(unsafe) var stubbed{{variable.name|upperFirstLetter}}: {{variable.unwrappedTypeName|upperFirstLetter}}!
+
     public var {{variable.name}}: {{variable.typeName}} {
          get {
             return stubbed{{variable.name|upperFirstLetter}}

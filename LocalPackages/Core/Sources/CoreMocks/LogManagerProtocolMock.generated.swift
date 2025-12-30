@@ -34,6 +34,7 @@ public actor LogManagerProtocolMock: LogManagerProtocol {
     public var invokedShouldLogGetter = false
     public var invokedShouldLogGetterCount = 0
     public var stubbedShouldLog: Bool!
+
     public var shouldLog: Bool {
         set {
             invokedShouldLogSetter = true

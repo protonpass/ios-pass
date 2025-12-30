@@ -242,6 +242,22 @@ extension SharedRepositoryContainer {
     var localFolderKeyDatasource: Factory<any LocalFolderKeyDatasourceProtocol> {
         self { LocalFolderKeyDatasource(databaseService: self.databaseService) }
     }
+
+    var localSearchEntryDatasource: Factory<any LocalSearchEntryDatasourceProtocol> {
+        self { LocalSearchEntryDatasource(databaseService: self.databaseService) }
+    }
+
+    var remoteSyncEventsDatasource: Factory<any RemoteSyncEventsDatasourceProtocol> {
+        self { RemoteSyncEventsDatasource(apiServicing: self.apiManager) }
+    }
+
+    var remoteFolderDatasource: Factory<any RemoteFolderDatasourceProtocol> {
+        self { RemoteFolderDatasource(apiServicing: self.apiManager) }
+    }
+
+    var localFolderDatasource: Factory<any LocalFolderDatasourceProtocol> {
+        self { LocalFolderDatasource(databaseService: self.databaseService) }
+    }
 }
 
 // MARK: Repositories
@@ -364,14 +380,6 @@ extension SharedRepositoryContainer {
                                  userManager: self.userManager) }
     }
 
-    var localSearchEntryDatasource: Factory<any LocalSearchEntryDatasourceProtocol> {
-        self { LocalSearchEntryDatasource(databaseService: self.databaseService) }
-    }
-
-    var remoteSyncEventsDatasource: Factory<any RemoteSyncEventsDatasourceProtocol> {
-        self { RemoteSyncEventsDatasource(apiServicing: self.apiManager) }
-    }
-
     var userSettingsRepository: Factory<any UserSettingsRepositoryProtocol> {
         self { UserSettingsRepository(userDefaultService: SharedServiceContainer.shared.userDefaultService(),
                                       remoteDatasource: self.remoteUserSettingsDatasource()) }
@@ -423,6 +431,17 @@ extension SharedRepositoryContainer {
     var groupRepository: Factory<any GroupRepositoryProtocol> {
         self {
             GroupRepository(remoteDatasource: self.remoteGroupDatasource(), logManager: self.logManager)
+        }
+    }
+
+    var folderRepository: Factory<any FolderRepositoryProtocol> {
+        self {
+            FolderRepository(remoteDatasource: self.remoteFolderDatasource(),
+                             localDatasource: self.localFolderDatasource(),
+                             symmetricKeyProvider: self.symmetricKeyProvider,
+                             shareEventIDRepository: self.shareEventIDRepository(),
+                             passKeyManager: self.passKeyManager(),
+                             logManager: self.logManager)
         }
     }
 }

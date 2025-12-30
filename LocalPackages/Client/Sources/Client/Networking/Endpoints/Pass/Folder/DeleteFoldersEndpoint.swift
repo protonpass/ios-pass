@@ -1,6 +1,6 @@
 //
-// GetListOfFolderEndpoint.swift
-// Proton Pass - Created on 28/11/2025.
+// DeleteFoldersEndpoint.swift
+// Proton Pass - Created on 23/12/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -22,32 +22,30 @@
 // TODO: remove with folder implementation
 // periphery:ignore:all
 
-import Core
 import Entities
 import ProtonCoreNetworking
 
-struct GetListOfFolderResponse: Decodable, Sendable {
-    let folders: PaginatedFolders
-}
-
-struct GetListOfFolderEndpoint: Endpoint, @unchecked Sendable {
-    typealias Body = EmptyRequest
-    typealias Response = GetListOfFolderResponse
+struct DeleteFoldersEndpoint: Endpoint {
+    typealias Body = DeleteFolderRequest
+    typealias Response = CodeOnlyResponse
 
     let debugDescription: String
     let path: String
-    var queries: [String: Any]?
+    let method: HTTPMethod
+    let body: DeleteFolderRequest?
 
-    init(shareId: String,
-         sinceToken: String? = nil,
-         pageSize: Int = Constants.Utils.defaultPageSize) {
-        debugDescription = "Get list of folders for share with id: \(shareId)"
-        path = "pass/v1/share/\(shareId)/folder"
+    init(shareId: String, folderIds: [String]) {
+        debugDescription = "Delete folders in share with id: \(shareId)"
+        path = "/pass/v1/share/\(shareId)/folder"
+        method = .delete
+        body = .init(folderIDs: folderIds)
+    }
+}
 
-        var queries: [String: Any] = ["PageSize": pageSize]
-        if let sinceToken {
-            queries["Since"] = sinceToken
-        }
-        self.queries = queries
+struct DeleteFolderRequest: Sendable, Encodable {
+    let folderIDs: [String]
+
+    enum CodingKeys: String, CodingKey {
+        case folderIDs = "FolderIDs"
     }
 }

@@ -37,6 +37,8 @@ public struct UserEvents: Sendable, Decodable {
     public let foldersUpdated: [FolderEvent]
     public let foldersDeleted: [FolderEvent]
     public let pendingAliasToCreateChanged: ChangeEvent?
+    public let breachUpdate: ChangeEvent?
+    public let organizationUpdate: ChangeEvent?
     public let refreshUser: Bool
     public let eventsPending: Bool
     public let fullRefresh: Bool

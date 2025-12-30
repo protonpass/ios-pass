@@ -11,6 +11,8 @@ var platforms: [SupportedPlatform] = [
 ]
 
 let swiftSettings: [SwiftSetting] = [
+    .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
+    .enableUpcomingFeature("InferIsolatedConformances")
 ]
 
 let package = Package(name: "Core",
@@ -24,7 +26,7 @@ let package = Package(name: "Core",
                                    targets: ["CoreMocks"])
                       ],
                       dependencies: [
-                          .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "33.5.1"),
+                          .package(url: "https://github.com/ProtonMail/protoncore_ios", from: "34.2.2"),
                           .package(name: "Entities", path: "../Entities"),
                           .package(name: "DesignSystem", path: "../DesignSystem"),
                           .package(name: "Macro", path: "../Macro")

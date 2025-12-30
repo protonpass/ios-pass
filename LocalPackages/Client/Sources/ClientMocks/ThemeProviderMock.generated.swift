@@ -35,7 +35,8 @@ public final class ThemeProviderMock: @unchecked Sendable, ThemeProvider {
     public var invokedSharedPreferencesList = [CurrentValueSubject<SharedPreferences?, Never>?]()
     public var invokedSharedPreferencesGetter = false
     public var invokedSharedPreferencesGetterCount = 0
-    public var stubbedSharedPreferences: CurrentValueSubject<SharedPreferences?, Never>!
+    public nonisolated(unsafe) var stubbedSharedPreferences: CurrentValueSubject<SharedPreferences?, Never>!
+
     public var sharedPreferences: CurrentValueSubject<SharedPreferences?, Never> {
          get {
             return stubbedSharedPreferences

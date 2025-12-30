@@ -84,6 +84,8 @@ final class AppContentManager: ObservableObject, DeinitPrintable, AppContentMana
     private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
     @LazyInjected(\SharedToolingContainer.preferencesManager) private var preferencesManager
     @LazyInjected(\SharedRepositoryContainer.inviteRepository) private var inviteRepository
+    @LazyInjected(\SharedServiceContainer.simpleLoginNoteSynchronizer) private var slNoteSynchronizer
+    @LazyInjected(\SharedRepositoryContainer.folderRepository) private var folderRepository
 
     // Use cases
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
@@ -127,12 +129,12 @@ extension AppContentManager {
         defer { isRefreshing = false }
         do {
             // No need to show loading indicator once items are loaded beforehand.
-            var cryptoErrorOccured = false
+            var cryptoErrorOccurred = false
             switch state {
             case .loaded:
                 break
             case let .error(error):
-                cryptoErrorOccured = error is CryptoKitError
+                cryptoErrorOccurred = error is CryptoKitError
                 state = .loading
             default:
                 state = .loading
@@ -143,7 +145,7 @@ extension AppContentManager {
                 await fullSync(userId: userId)
                 await loginMethod.setLogInFlow(newState: false)
                 logger.info("Manual login, done full sync")
-            } else if cryptoErrorOccured {
+            } else if cryptoErrorOccurred {
                 logger.info("Crypto error occurred. Doing full sync")
                 await fullSync(userId: userId)
                 logger.info("Crypto error occurred. Done full sync")
@@ -166,7 +168,7 @@ extension AppContentManager {
         var hasUndecryptableShares = false
         do {
             // 1. Delete all local data
-            try await deleteLocalDataBeforeFullSync()
+            try await deleteLocalDataBeforeFullSync(userId: userId)
 
             // 2. Get all remote shares and their items
             let remoteShares = try await shareRepository.getDecryptedRemoteShares(userId: userId)
@@ -179,10 +181,12 @@ extension AppContentManager {
                                                                                 shares: remoteShares.shares,
                                                                                 eventStream: vaultSyncEventStream)
 
-                // Step 2: Process each share's items concurrently
+                // Step 2: Process each share's folders and items concurrently
                 for share in remoteShares.shares {
                     taskGroup.addTask { [weak self] in
                         guard let self else { return }
+                        try await folderRepository.refreshFolders(userId: userId,
+                                                                  shareId: share.shareID)
                         try await itemRepository.refreshItems(userId: userId,
                                                               shareId: share.shareID,
                                                               eventStream: vaultSyncEventStream)
@@ -207,9 +211,17 @@ extension AppContentManager {
                 }
             }
 
-            // 4. Refresh invites
+            // 4. Refresh invite and sl notes
             if getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1) {
-                try await inviteRepository.refreshAllInvites(userId: userId)
+                async let syncAliases: Bool = slNoteSynchronizer.syncAllAliases(userId: userId)
+                async let refreshInvites: Void = inviteRepository.refreshAllInvites(userId: userId)
+                do {
+                    _ = try await (syncAliases, refreshInvites)
+                } catch {
+                    // We logs the errors silently to let the full content refresh continue offering a better
+                    // experience to the user.
+                    logger.error(error)
+                }
             }
 
             try await loadContents(userId: userId, for: remoteShares.shares)
@@ -256,17 +268,17 @@ extension AppContentManager {
 
     func getShareContent(for shareId: String) -> ShareContent? {
         guard let sharesData = state.loadedContent else { return nil }
-        return sharesData.shares.first { $0.share.id == shareId }
+        return sharesData.shares[shareId] //.first { $0.share.id == shareId }
     }
 
     func getAllSharesContent() -> [ShareContent] {
         guard let sharesData = state.loadedContent else { return [] }
-        return sharesData.shares
+        return sharesData.shares.map(\.value)
     }
 
     func getAllShares() -> [Share] {
         guard let sharesData = state.loadedContent else { return [] }
-        return sharesData.shares.map(\.share)
+        return sharesData.shares.values.map(\.share)
     }
 
     func getAllSharesLinkToVault() -> [Share] {
@@ -276,7 +288,7 @@ extension AppContentManager {
 
     func getAllSharesWithVaultContent() -> [ShareContent] {
         guard let sharesData = state.loadedContent else { return [] }
-        return sharesData.shares.filter { $0.share.vaultContent != nil }
+        return sharesData.shares.values.filter { $0.share.vaultContent != nil }
     }
 
     func getAllEditableVaultContents() -> [ShareContent] {
@@ -304,7 +316,7 @@ extension AppContentManager {
 
     func getOldestOwnedVault() -> Share? {
         guard let sharesData = state.loadedContent else { return nil }
-        let shares = sharesData.shares.map(\.share)
+        let shares = sharesData.shares.map(\.value.share)
         return shares.oldestOwned
     }
 }
@@ -312,21 +324,33 @@ extension AppContentManager {
 // MARK: - Items Actions Public APIs
 
 extension AppContentManager {
-    func getItems(for vault: Share) -> [ItemUiModel] {
+//    func getItems(for vault: Share) -> [ItemUiModel] {
+//        guard let sharesData = state.loadedContent else { return [] }
+//        return sharesData.shares.first { $0.share.id == vault.id }?.items ?? []
+//    }
+//
+//    func getAllActiveAndTrashedItems() -> [ItemUiModel] {
+//        guard let sharesData = state.loadedContent else { return [] }
+//        let activeItems = sharesData.shares.flatMap(\.items)
+//        return activeItems + sharesData.trashedItems
+//    }
+//
+//    func getAllSharesItems() -> [ItemUiModel] {
+//        guard let sharesData = state.loadedContent else { return [] }
+//        return sharesData.shares.flatMap(\.items)
+//    }
+//    
+    func getContent(for shareId: String, elementId: ShareContentID?) -> [ShareContentElement] {
         guard let sharesData = state.loadedContent else { return [] }
-        return sharesData.shares.first { $0.share.id == vault.id }?.items ?? []
+       let shareContent = sharesData.shares[shareId]
+        if let elementId {
+            return shareContent?.lookupTable.element(for: elementId)?.children ?? []
+        } else {
+            return shareContent?.elements ?? []
+        }
+//        return sharesData.shares.first { $0.share.id == shareId }?.elements ?? []
     }
 
-    func getAllActiveAndTrashedItems() -> [ItemUiModel] {
-        guard let sharesData = state.loadedContent else { return [] }
-        let activeItems = sharesData.shares.flatMap(\.items)
-        return activeItems + sharesData.trashedItems
-    }
-
-    func getAllSharesItems() -> [ItemUiModel] {
-        guard let sharesData = state.loadedContent else { return [] }
-        return sharesData.shares.flatMap(\.items)
-    }
 
     func getItemContent(shareId: String, itemId: String) async throws -> ItemContent? {
         try await itemRepository.getItemContent(shareId: shareId, itemId: itemId)
@@ -338,26 +362,26 @@ extension AppContentManager {
     }
 
     // swiftlint:disable:next cyclomatic_complexity
-    func getFilteredItems() -> [ItemUiModel] {
+    func getFilteredItems() -> [ShareContentElement] {
         guard let sharesData = state.loadedContent else { return [] }
 
         // 1. Early exit for filter options that completely override share selection
         switch filterOption {
         case .itemSharedWithMe:
-            return sharesData.itemsSharedWithMe
+            return sharesData.itemsSharedWithMe.map { .item($0) }
         case .itemSharedByMe:
-            return sharesData.itemsSharedByMe
+            return sharesData.itemsSharedByMe.map { .item($0) }
         case .all, .precise:
             break // Proceed to share selection logic
         }
 
-        let hiddenShareIds = sharesData.shares.compactMap(\.share).hiddenShareIds
+        let hiddenShareIds = sharesData.shares.compactMap(\.value.share).hiddenShareIds
 
         // 2. Determine base items based on share selection
         // (hidden shares are computed lazily only when needed)
-        let baseItems: [ItemUiModel] = switch shareSelection {
+        let baseItems: [ShareContentElement] = switch shareSelection {
         case .all:
-            sharesData.shares.flatMap(\.items).filter { !hiddenShareIds.contains($0.shareId) }
+            sharesData.shares.flatMap(\.elements).filter { !hiddenShareIds.contains($0.shareId) }
         case let .precise(selectedShare):
             sharesData.shares.first { $0.share.shareId == selectedShare.shareId }?.items ?? []
         case .sharedByMe:
@@ -375,7 +399,8 @@ extension AppContentManager {
         case let .precise(type):
             return baseItems.filter { $0.type.isSameType(with: type) }
         case .itemSharedByMe, .itemSharedWithMe:
-            fatalError("Unreachable: handled by early return")
+            assertionFailure("Unreachable: handled by early return")
+            return baseItems
         }
     }
 
@@ -420,7 +445,7 @@ extension AppContentManager: LimitationCounterProtocol {
     func getAliasCount() -> Int {
         switch state {
         case let .loaded(sharesData):
-            let activeAliases = sharesData.shares.flatMap(\.items).filter(\.isAlias)
+            let activeAliases = sharesData.shares.flatMap(\.value.elements.allItems).filter(\.isAlias)
             let trashedAliases = sharesData.trashedItems.filter(\.isAlias)
             return activeAliases.count + trashedAliases.count
         default:
@@ -430,7 +455,7 @@ extension AppContentManager: LimitationCounterProtocol {
 
     func getTOTPCount() -> Int {
         guard let sharesData = state.loadedContent else { return 0 }
-        let activeItemsWithTotpUri = sharesData.shares.flatMap(\.items).filter(\.hasTotpUri).count
+        let activeItemsWithTotpUri = sharesData.shares.flatMap(\.value.elements.allItems).filter(\.hasTotpUri).count
         let trashedItemsWithTotpUri = sharesData.trashedItems.filter(\.hasTotpUri).count
         return activeItemsWithTotpUri + trashedItemsWithTotpUri
     }
@@ -474,7 +499,7 @@ private extension AppContentManager {
         guard let sharesData = state.loadedContent else { return }
         switch shareSelection {
         case .all:
-            itemCount = ItemCount(items: sharesData.shares.flatMap(\.items),
+            itemCount = ItemCount(items: sharesData.shares.flatMap(\.value.completeItemCount),
                                   sharedByMe: sharesData.itemsSharedByMe.count,
                                   sharedWithMe: sharesData.itemsSharedWithMe.count)
         case let .precise(selectedShare):
@@ -516,9 +541,13 @@ private extension AppContentManager {
     @MainActor
     func loadContents(userId: String, for shares: [Share]) async throws {
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
-        let allItems = try await itemRepository.getAllItems(userId: userId)
+       
+        async let allItemsFetch = itemRepository.getAllItems(userId: userId)
+        async let foldersFetch = folderRepository.getAllLocalFolders(userId: userId)
 
-        let dedupShares = dedupShare(shares: shares)
+        let (allItems, folders) = try await (allItemsFetch, foldersFetch)
+        
+        let dedupShares = dedupShare(shares: shares, filterHidden: false)
 
         let sharesData = try await getShareDatas(symmetricKey: symmetricKey,
                                                  shares: dedupShares,
@@ -541,6 +570,8 @@ private extension AppContentManager {
                     // Fallback to selecting all vaults when the previous selected vault is hidden
                     shareSelection = .all
                 } else {
+                    
+                //TODO: this need to also take into account folder nows
                     shareSelection = .precise(vault)
                 }
             }
@@ -575,13 +606,16 @@ private extension AppContentManager {
 
     func getShareDatas(symmetricKey: SymmetricKey,
                        shares: [Share],
+                       folders: [SymmetricallyEncryptedFolder],
                        items: [SymmetricallyEncryptedItem]) async throws -> SharesData {
         // Group items by their associated share ID for efficient processing
         let itemsByShareID = Dictionary(grouping: items, by: { $0.shareId })
-
+        let fodlersByShareID = Dictionary(grouping: folders, by: { $0.shareId })
+        
         return try await withThrowingTaskGroup(of: (ShareContent, [ItemUiModel]).self) { @Sendable taskGroup in
             var shareContents: [ShareContent] = []
             var trashedItems: [ItemUiModel] = []
+            
             for share in shares {
                 taskGroup.addTask { @Sendable in
                     // Retrieve items linked to this share

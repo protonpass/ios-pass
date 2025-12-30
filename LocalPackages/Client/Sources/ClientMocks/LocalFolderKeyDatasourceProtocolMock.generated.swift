@@ -19,8 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import Foundation
 import CoreData
+import Foundation
 
 public final class LocalFolderKeyDatasourceProtocolMock: @unchecked Sendable, LocalFolderKeyDatasourceProtocol {
 

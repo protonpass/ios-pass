@@ -1,7 +1,7 @@
 //
-// ItemContentProtobuf+IsLooselyEqual.swift
-// Proton Pass - Created on 18/01/2024.
-// Copyright (c) 2024 Proton Technologies AG
+// PaginatedFolders.swift
+// Proton Pass - Created on 03/12/2025.
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,21 +17,17 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import Entities
+import Foundation
 
-public extension ItemContentProtobuf {
-    func isLooselyEqual(to other: Self) -> Bool {
-        let sameMetadata = metadata.isLooselyEqual(to: other.metadata)
-        let sameContent = content == other.content
-        let sameCustomFields = customFields.isLooselyEqual(to: other.customFields)
-        return sameMetadata && sameContent && sameCustomFields
-    }
-}
+public struct PaginatedFolders: Decodable, Sendable {
+    public let total: Int
+    public let lastToken: String?
+    public let folders: [Folder]
 
-private extension ProtonPassItemV1_Metadata {
-    func isLooselyEqual(to other: Self) -> Bool {
-        name == other.name && note == other.note
+    public init(total: Int, lastToken: String?, folders: [Folder]) {
+        self.total = total
+        self.lastToken = lastToken
+        self.folders = folders
     }
 }
