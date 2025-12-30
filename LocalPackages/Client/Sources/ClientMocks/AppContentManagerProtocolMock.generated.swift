@@ -35,6 +35,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
     public var invokedCurrentSharesGetter = false
     public var invokedCurrentSharesGetterCount = 0
     public nonisolated(unsafe) var stubbedCurrentShares: CurrentValueSubject<[Share], Never>!
+
     public var currentShares: CurrentValueSubject<[Share], Never> {
          get {
             return stubbedCurrentShares
@@ -48,6 +49,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
     public var invokedHasOnlyOneOwnedVaultGetter = false
     public var invokedHasOnlyOneOwnedVaultGetterCount = 0
     public var stubbedHasOnlyOneOwnedVault: Bool!
+
     public var hasOnlyOneOwnedVault: Bool {
         set {
             invokedHasOnlyOneOwnedVaultSetter = true

@@ -211,7 +211,8 @@ private extension SearchViewModel {
         }
     }
 
-    nonisolated func filterAndSortResultsAsync() async {
+    @concurrent
+    func filterAndSortResultsAsync() async {
         let results = await results
 
         let updateState: (SearchViewState) async -> Void = { [weak self] newState in
@@ -247,7 +248,8 @@ private extension SearchViewModel {
         }
     }
 
-    nonisolated func parse(results: [ItemSearchResult]) async throws -> SearchDataDisplay {
+    @concurrent
+    func parse(results: [ItemSearchResult]) async throws -> SearchDataDisplay {
         let selectedType = await selectedType
         let selectedSortType = await selectedSortType
 
@@ -339,8 +341,8 @@ extension SearchViewModel {
             guard let self, let shareSelection = searchMode.shareSelection else { return }
 
             do {
-                if case let .precise(vault) = shareSelection {
-                    try await searchEntryDatasource.removeAllEntries(shareId: vault.shareId)
+                if case let .precise(share) = shareSelection {
+                    try await searchEntryDatasource.removeAllEntries(shareId: share.shareId)
                 } else {
                     let userId = try await userManager.getActiveUserId()
                     try await searchEntryDatasource.removeAllEntries(userId: userId)

@@ -130,7 +130,8 @@ private final class CredentialSearchResultViewModel: ObservableObject {
 }
 
 private extension CredentialSearchResultViewModel {
-    nonisolated func filterAndSortItemsAsync() async {
+    @concurrent
+    func filterAndSortItemsAsync() async {
         let updateState: (State) async -> Void = { [weak self] newState in
             guard let self else { return }
             await MainActor.run { [weak self] in

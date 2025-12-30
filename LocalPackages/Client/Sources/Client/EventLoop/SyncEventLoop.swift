@@ -133,7 +133,6 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, @unche
     // Injected params
     private let synchronizer: any EventSynchronizerProtocol
     private let userEventsSynchronizer: any UserEventsSynchronizerProtocol
-    private let slNoteSynchronizer: any SimpleLoginNoteSynchronizerProtocol
     private let logger: Logger
 
     public weak var delegate: (any SyncEventLoopDelegate)?
@@ -144,14 +143,12 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, @unche
     public init(currentDateProvider: any CurrentDateProviderProtocol,
                 synchronizer: any EventSynchronizerProtocol,
                 userEventsSynchronizer: any UserEventsSynchronizerProtocol,
-                slNoteSynchronizer: any SimpleLoginNoteSynchronizerProtocol,
                 userManager: any UserManagerProtocol,
                 logManager: any LogManagerProtocol,
                 reachability: any ReachabilityServicing) {
         backOffManager = BackOffManager(currentDateProvider: currentDateProvider)
         self.synchronizer = synchronizer
         self.userEventsSynchronizer = userEventsSynchronizer
-        self.slNoteSynchronizer = slNoteSynchronizer
         logger = .init(manager: logManager)
         self.reachability = reachability
         self.userManager = userManager
@@ -297,9 +294,7 @@ private extension SyncEventLoop {
                     return
                 }
 
-                let syncedSLNotes = try await slNoteSynchronizer.syncAllAliases(userId: userId)
-
-                hasNewEvents = result.contains(.dataUpdated) || syncedSLNotes
+                hasNewEvents = result.contains(.dataUpdated)
             } else {
                 hasNewEvents = try await synchronizer.sync(userId: userId)
             }

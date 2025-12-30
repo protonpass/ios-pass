@@ -24,6 +24,7 @@ import Client
 import Core
 @preconcurrency import CryptoKit
 import Entities
+import Foundation
 
 public protocol GetSearchableItemsUseCase: Sendable {
     func execute(userId: String, for searchMode: SearchMode) async throws -> [SearchableItem]
@@ -62,7 +63,9 @@ public final class GetSearchableItems: GetSearchableItemsUseCase {
 
         return try await withThrowingTaskGroup(of: [SearchableItem].self,
                                                returning: [SearchableItem].self) { @Sendable group in
-            let itemBatches = filteredItems.chunked(into: Constants.Utils.batchSize)
+            let deviceCores = ProcessInfo.processInfo.activeProcessorCount
+            let adaptiveBatchSize = max(50, min(Constants.Utils.batchSize, filteredItems.count / deviceCores))
+            let itemBatches = filteredItems.chunked(into: adaptiveBatchSize)
             for batch in itemBatches {
                 group.addTask { @Sendable in
                     try batch.map {

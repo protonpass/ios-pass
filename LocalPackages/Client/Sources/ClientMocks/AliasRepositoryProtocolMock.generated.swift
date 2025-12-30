@@ -35,6 +35,7 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
     public var invokedMailboxUpdatedGetter = false
     public var invokedMailboxUpdatedGetterCount = 0
     public var stubbedMailboxUpdated: PassthroughSubject<MailboxUpdateEvent, Never>!
+
     public var mailboxUpdated: PassthroughSubject<MailboxUpdateEvent, Never> {
         set {
             invokedMailboxUpdatedSetter = true
@@ -55,6 +56,7 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
     public var invokedContactsUpdatedGetter = false
     public var invokedContactsUpdatedGetterCount = 0
     public var stubbedContactsUpdated: PassthroughSubject<Void, Never>!
+
     public var contactsUpdated: PassthroughSubject<Void, Never> {
         set {
             invokedContactsUpdatedSetter = true

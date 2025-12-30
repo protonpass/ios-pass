@@ -10,7 +10,10 @@ var platforms: [SupportedPlatform] = [
     .watchOS(.v8)
 ]
 
-let swiftSettings: [SwiftSetting] = []
+let swiftSettings: [SwiftSetting] = [
+    .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
+    .enableUpcomingFeature("InferIsolatedConformances")
+]
 
 let package = Package(name: "Client",
                       defaultLocalization: "en",
@@ -28,7 +31,7 @@ let package = Package(name: "Client",
                           .package(name: "Entities", path: "../Entities"),
                           .package(name: "Macro", path: "../Macro"),
                           .package(name: "TestingToolkit", path: "../TestingToolkit"),
-                          .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "33.5.1"),
+                          .package(url: "https://github.com/ProtonMail/protoncore_ios", from: "34.2.2"),
                           .package(name: "PassRustCore", path: "../PassRustCore"),
                           .package(url: "https://github.com/apple/swift-collections.git", from: "1.3.0")
                       ],

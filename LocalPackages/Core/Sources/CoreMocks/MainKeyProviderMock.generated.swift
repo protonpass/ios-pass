@@ -34,6 +34,7 @@ public final class MainKeyProviderMock: @unchecked Sendable, MainKeyProvider {
     public var invokedMainKeyGetter = false
     public var invokedMainKeyGetterCount = 0
     public var stubbedMainKey: MainKey!
+
     public var mainKey: MainKey? {
         set {
             invokedMainKeySetter = true

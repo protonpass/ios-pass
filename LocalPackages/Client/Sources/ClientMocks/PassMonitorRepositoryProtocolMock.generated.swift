@@ -38,6 +38,7 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
     public var invokedDarkWebDataSectionUpdateGetter = false
     public var invokedDarkWebDataSectionUpdateGetterCount = 0
     public var stubbedDarkWebDataSectionUpdate: PassthroughSubject<DarkWebDataSectionUpdate, Never>!
+
     public var darkWebDataSectionUpdate: PassthroughSubject<DarkWebDataSectionUpdate, Never> {
         set {
             invokedDarkWebDataSectionUpdateSetter = true
@@ -57,7 +58,8 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
     public var invokedUserBreachesList = [CurrentValueSubject<UserBreaches?, Never>?]()
     public var invokedUserBreachesGetter = false
     public var invokedUserBreachesGetterCount = 0
-    public var stubbedUserBreaches: CurrentValueSubject<UserBreaches?, Never>!
+    public nonisolated(unsafe) var stubbedUserBreaches: CurrentValueSubject<UserBreaches?, Never>!
+
     public var userBreaches: CurrentValueSubject<UserBreaches?, Never> {
          get {
             return stubbedUserBreaches
@@ -70,7 +72,8 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
     public var invokedWeaknessStatsList = [CurrentValueSubject<WeaknessStats, Never>?]()
     public var invokedWeaknessStatsGetter = false
     public var invokedWeaknessStatsGetterCount = 0
-    public var stubbedWeaknessStats: CurrentValueSubject<WeaknessStats, Never>!
+    public nonisolated(unsafe) var stubbedWeaknessStats: CurrentValueSubject<WeaknessStats, Never>!
+
     public var weaknessStats: CurrentValueSubject<WeaknessStats, Never> {
          get {
             return stubbedWeaknessStats
@@ -83,7 +86,8 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
     public var invokedItemsWithSecurityIssuesList = [CurrentValueSubject<[SecurityAffectedItem], Never>?]()
     public var invokedItemsWithSecurityIssuesGetter = false
     public var invokedItemsWithSecurityIssuesGetterCount = 0
-    public var stubbedItemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never>!
+    public nonisolated(unsafe) var stubbedItemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never>!
+
     public var itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> {
          get {
             return stubbedItemsWithSecurityIssues

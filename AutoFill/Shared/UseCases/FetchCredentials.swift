@@ -96,19 +96,6 @@ final class FetchCredentials: FetchCredentialsUseCase {
 }
 
 private extension FetchCredentials {
-    /// When in free plan, only take 2 oldest vaults into account (suggestions & search)
-    /// Otherwise take everything into account
-    func shouldTakeIntoAccount(_ vault: Share, allowedVaults: [Share], withPlan plan: Plan) -> Bool {
-        switch plan.planType {
-        case .free:
-            allowedVaults.contains(where: { $0.shareId == vault.shareId })
-        default:
-            true
-        }
-    }
-}
-
-private extension FetchCredentials {
     // swiftlint:disable:next function_parameter_count
     func fetchPasswords(userId: String,
                         identifiers: [ASCredentialServiceIdentifier],
@@ -120,13 +107,11 @@ private extension FetchCredentials {
         var searchableItems = [SearchableItem]()
         var matchedEncryptedItems = [ScoredSymmetricallyEncryptedItem]()
         var notMatchedEncryptedItems = [SymmetricallyEncryptedItem]()
-
-        let allowedVaults = vaults.autofillAllowedVaults
+        let allowedVaultIds = Set(vaults.autofillAllowedVaults.map(\.shareId))
 
         for encryptedItem in encryptedItems {
             let decryptedItem = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
-            guard let vault = vaults.first(where: { $0.shareId == decryptedItem.shareId }),
-                  shouldTakeIntoAccount(vault, allowedVaults: allowedVaults, withPlan: plan),
+            guard allowedVaultIds.contains(decryptedItem.shareId) || plan.planType != .free,
                   let data = decryptedItem.loginItem else {
                 continue
             }
@@ -183,11 +168,11 @@ private extension FetchCredentials {
         var matchedEncryptedItems = [SymmetricallyEncryptedItem]()
         var notMatchedEncryptedItems = [SymmetricallyEncryptedItem]()
 
-        let allowedVaults = vaults.autofillAllowedVaults
+        let allowedVaultIds = Set(vaults.autofillAllowedVaults.map(\.shareId))
+
         for encryptedItem in encryptedItems {
             let decryptedItem = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
-            guard let vault = vaults.first(where: { $0.shareId == decryptedItem.shareId }),
-                  shouldTakeIntoAccount(vault, allowedVaults: allowedVaults, withPlan: plan),
+            guard allowedVaultIds.contains(decryptedItem.shareId) || plan.planType != .free,
                   let data = decryptedItem.loginItem,
                   !data.passkeys.isEmpty else {
                 continue

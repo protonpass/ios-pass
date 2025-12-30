@@ -50,8 +50,10 @@ public enum Constants {
 
         public static let defaultPageSize = 100
         public static let batchSize = 500
+        public static let maxFolderDepth = 5
+        public static let maxFoldersPerLevel = 10
     }
-
+    
     public enum Attachment {
         public static let version = 2
         public static let maxFileSizeInBytes = 100 * 1_024 * 1_024 // 100 MB
@@ -87,6 +89,7 @@ public enum Constants {
 
     public enum Database {
         public static let encryptedSlNotePlaceholder = "NULL"
+        public static let fetchBatchSize = 200
     }
 
     // swiftlint:disable:next type_name

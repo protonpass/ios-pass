@@ -300,7 +300,11 @@ extension SharedUseCasesContainer {
         self { DeleteLocalDataBeforeFullSync(itemRepository: self.itemRepository,
                                              shareRepository: self.shareRepository,
                                              shareKeyRepository: SharedRepositoryContainer.shared
-                                                 .shareKeyRepository()) }
+                                                 .shareKeyRepository(),
+                                             folderKeyDatasource: SharedRepositoryContainer.shared
+                                                 .localFolderKeyDatasource(),
+                                             folderRepository: SharedRepositoryContainer.shared
+                                                 .folderRepository()) }
     }
 
     var logOutUser: Factory<any LogOutUserUseCase> {

@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import CoreData
 import Entities
 
@@ -94,6 +95,7 @@ public extension LocalItemDatasource {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ItemEntity.fetchRequest()
         fetchRequest.predicate = .init(format: "userID = %@", userId)
+        fetchRequest.fetchBatchSize = Constants.Database.fetchBatchSize
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return try itemEntities.map { try $0.toEncryptedItem() }
     }
@@ -101,13 +103,13 @@ public extension LocalItemDatasource {
     func getAllPinnedItems(userId: String) async throws -> [SymmetricallyEncryptedItem] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ItemEntity.fetchRequest()
-        fetchRequest.predicate = .init(format: "pinned = %d", true)
         fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
             .init(format: "pinned = %d", true),
             .init(format: "state = %d", ItemState.active.rawValue),
             .init(format: "userID = %@", userId)
         ])
         fetchRequest.sortDescriptors = [.init(key: "pinTime", ascending: false)]
+        fetchRequest.fetchBatchSize = Constants.Database.fetchBatchSize
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return try itemEntities.map { try $0.toEncryptedItem() }
     }
@@ -153,6 +155,7 @@ public extension LocalItemDatasource {
             .init(format: "shareID = %@", shareId),
             .init(format: "itemID = %@", itemId)
         ])
+        fetchRequest.fetchLimit = 1
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return try itemEntities.first?.toEncryptedItem()
     }
@@ -164,8 +167,8 @@ public extension LocalItemDatasource {
             .init(format: "aliasEmail = %@", email),
             .init(format: "shareID = %@", shareId)
         ])
+        fetchRequest.fetchLimit = 1
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
-        assert(itemEntities.count <= 1, "Could not have more than 1 matched alias item")
         return try itemEntities.first?.toEncryptedItem()
     }
 
@@ -202,6 +205,12 @@ public extension LocalItemDatasource {
 
     func updateCachedAliasInfo(items: [SymmetricallyEncryptedItem],
                                aliases: [SymmetricallyEncryptedAlias]) async throws {
+        let aliasMap = Dictionary(uniqueKeysWithValues: aliases.compactMap { alias -> (String,
+                                                                                       SymmetricallyEncryptedAlias)? in
+                guard !alias.email.isEmpty else { return nil }
+                return (alias.email, alias)
+            })
+
         try await upsert(items,
                          entityType: ItemEntity.self,
                          fetchPredicate: NSPredicate(format: "itemID IN %@ AND shareID IN %@",
@@ -211,7 +220,8 @@ public extension LocalItemDatasource {
                              item.shareId == entity.shareID && item.itemId == entity.itemID
                          },
                          hydrate: { item, entity in
-                             if let alias = aliases.first(where: { $0.email == item.item.aliasEmail }) {
+                             if let aliasEmail = item.item.aliasEmail,
+                                let alias = aliasMap[aliasEmail] {
                                  entity.encryptedSimpleLoginNote = alias.encryptedNote
                              } else {
                                  assertionFailure("No matched encrypted alias for \(item.item.aliasEmail ?? "")")
@@ -235,50 +245,62 @@ public extension LocalItemDatasource {
 
     func upsertItems(_ items: [SymmetricallyEncryptedItem],
                      modifiedItems: [ModifiedItem]) async throws {
+        let modifiedMap = Dictionary(uniqueKeysWithValues: modifiedItems.map { ($0.itemID, $0) })
+
+        var itemsToUpsert = [SymmetricallyEncryptedItem]()
+        itemsToUpsert.reserveCapacity(items.count)
+
         for item in items {
-            if let modifiedItem = modifiedItems.first(where: { $0.itemID == item.item.itemID }) {
-                let modifiedItem = Item(itemID: item.item.itemID,
-                                        revision: modifiedItem.revision,
-                                        contentFormatVersion: item.item.contentFormatVersion,
-                                        keyRotation: item.item.keyRotation,
-                                        content: item.item.content,
-                                        itemKey: item.item.itemKey,
-                                        state: modifiedItem.state,
-                                        pinned: item.item.pinned,
-                                        pinTime: item.item.pinTime,
-                                        aliasEmail: item.item.aliasEmail,
-                                        createTime: item.item.createTime,
-                                        modifyTime: modifiedItem.modifyTime,
-                                        lastUseTime: item.item.lastUseTime,
-                                        revisionTime: modifiedItem.revisionTime,
-                                        flags: modifiedItem.flags,
-                                        shareCount: item.item.shareCount,
-                                        folderID: item.folderId)
-                try await upsertItems([.init(shareId: item.shareId,
-                                             userId: item.userId,
-                                             folderId: item.folderId,
-                                             item: modifiedItem,
-                                             encryptedContent: item.encryptedContent,
-                                             isLogInItem: item.isLogInItem,
-                                             encryptedSimpleLoginNote: item.encryptedSimpleLoginNote)])
+            if let modifiedItem = modifiedMap[item.item.itemID] {
+                let updatedItem = Item(itemID: item.item.itemID,
+                                       revision: modifiedItem.revision,
+                                       contentFormatVersion: item.item.contentFormatVersion,
+                                       keyRotation: item.item.keyRotation,
+                                       content: item.item.content,
+                                       itemKey: item.item.itemKey,
+                                       state: modifiedItem.state,
+                                       pinned: item.item.pinned,
+                                       pinTime: item.item.pinTime,
+                                       aliasEmail: item.item.aliasEmail,
+                                       createTime: item.item.createTime,
+                                       modifyTime: modifiedItem.modifyTime,
+                                       lastUseTime: item.item.lastUseTime,
+                                       revisionTime: modifiedItem.revisionTime,
+                                       flags: modifiedItem.flags,
+                                       shareCount: item.item.shareCount,
+                                       folderID: item.folderId)
+                itemsToUpsert.append(.init(shareId: item.shareId,
+                                           userId: item.userId,
+                                           folderId: item.folderId,
+                                           item: updatedItem,
+                                           encryptedContent: item.encryptedContent,
+                                           isLogInItem: item.isLogInItem,
+                                           encryptedSimpleLoginNote: item.encryptedSimpleLoginNote))
             }
+        }
+
+        if !itemsToUpsert.isEmpty {
+            try await upsertItems(itemsToUpsert)
         }
     }
 
     func update(lastUseItems: [LastUseItem], shareId: String) async throws {
         let taskContext = newTaskContext(type: .fetch)
         try taskContext.performAndWait {
-            for item in lastUseItems {
-                let fetchRequest: NSFetchRequest<ItemEntity> = ItemEntity.fetchRequest()
-                fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-                    NSPredicate(format: "shareID = %@", shareId),
-                    NSPredicate(format: "itemID = %@", item.itemID)
-                ])
-                let results = try taskContext.fetch(fetchRequest)
-                if let fetchedItem = results.first {
-                    fetchedItem.lastUseTime = Int64(item.lastUseTime)
+            let fetchRequest: NSFetchRequest<ItemEntity> = ItemEntity.fetchRequest()
+            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                NSPredicate(format: "shareID = %@", shareId),
+                NSPredicate(format: "itemID IN %@", lastUseItems.map(\.itemID))
+            ])
+            let results = try taskContext.fetch(fetchRequest)
+
+            let itemMap = Dictionary(uniqueKeysWithValues: lastUseItems.map { ($0.itemID, $0.lastUseTime) })
+            for entity in results {
+                if let lastUseTime = itemMap[entity.itemID] {
+                    entity.lastUseTime = Int64(lastUseTime)
                 }
             }
+
             if taskContext.hasChanges {
                 try taskContext.save()
             }
@@ -286,22 +308,22 @@ public extension LocalItemDatasource {
     }
 
     func deleteItems(_ items: [any ItemIdentifiable]) async throws {
-        for item in items {
-            try await deleteItems(itemIds: [item.itemId], shareId: item.shareId)
+        let groupedItems = Dictionary(grouping: items, by: \.shareId)
+        for (shareId, itemsInShare) in groupedItems {
+            try await deleteItems(itemIds: itemsInShare.map(\.itemId), shareId: shareId)
         }
     }
 
     func deleteItems(itemIds: [String], shareId: String) async throws {
+        guard !itemIds.isEmpty else { return }
         let taskContext = newTaskContext(type: .delete)
-        for itemId in itemIds {
-            let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "ItemEntity")
-            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-                .init(format: "shareID = %@", shareId),
-                .init(format: "itemID = %@", itemId)
-            ])
-            try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
-                              context: taskContext)
-        }
+        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "ItemEntity")
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            .init(format: "shareID = %@", shareId),
+            .init(format: "itemID IN %@", itemIds)
+        ])
+        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+                          context: taskContext)
     }
 
     func removeAllItems() async throws {
@@ -336,6 +358,7 @@ public extension LocalItemDatasource {
             .init(format: "isLogInItem = %d", true)
         ])
         fetchRequest.sortDescriptors = [.init(key: "modifyTime", ascending: false)]
+        fetchRequest.fetchBatchSize = Constants.Database.fetchBatchSize
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return try itemEntities.map { try $0.toEncryptedItem() }
     }

@@ -37,7 +37,8 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var invokedCurrentlyPinnedItemsList = [CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never>?]()
     public var invokedCurrentlyPinnedItemsGetter = false
     public var invokedCurrentlyPinnedItemsGetterCount = 0
-    public var stubbedCurrentlyPinnedItems: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never>!
+    public nonisolated(unsafe) var stubbedCurrentlyPinnedItems: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never>!
+
     public var currentlyPinnedItems: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never> {
          get {
             return stubbedCurrentlyPinnedItems
@@ -50,7 +51,8 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var invokedItemsWereUpdatedList = [CurrentValueSubject<Void, Never>?]()
     public var invokedItemsWereUpdatedGetter = false
     public var invokedItemsWereUpdatedGetterCount = 0
-    public var stubbedItemsWereUpdated: CurrentValueSubject<Void, Never>!
+    public nonisolated(unsafe) var stubbedItemsWereUpdated: CurrentValueSubject<Void, Never>!
+
     public var itemsWereUpdated: CurrentValueSubject<Void, Never> {
          get {
             return stubbedItemsWereUpdated
@@ -613,15 +615,18 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         closureDeleteAllItemsLocallyAsync31()
     }
     // MARK: - deleteAllCurrentUserItemsLocally
-    public var deleteAllCurrentUserItemsLocallyThrowableError32: Error?
+    public var deleteAllCurrentUserItemsLocallyUserIdThrowableError32: Error?
     public var closureDeleteAllCurrentUserItemsLocally: () -> () = {}
     public var invokedDeleteAllCurrentUserItemsLocallyfunction = false
     public var invokedDeleteAllCurrentUserItemsLocallyCount = 0
+    public var invokedDeleteAllCurrentUserItemsLocallyParameters: (userId: String, Void)?
+    public var invokedDeleteAllCurrentUserItemsLocallyParametersList = [(userId: String, Void)]()
 
-    public func deleteAllCurrentUserItemsLocally() async throws {
+    public func deleteAllCurrentUserItemsLocally(userId: String) async throws {
         invokedDeleteAllCurrentUserItemsLocallyfunction = true
         invokedDeleteAllCurrentUserItemsLocallyCount += 1
-        if let error = deleteAllCurrentUserItemsLocallyThrowableError32 {
+        invokedDeleteAllCurrentUserItemsLocallyParameters = (userId, ())
+        if let error = deleteAllCurrentUserItemsLocallyUserIdThrowableError32 {
             throw error
         }
         closureDeleteAllCurrentUserItemsLocally()

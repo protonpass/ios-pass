@@ -25,20 +25,20 @@
 import Entities
 import ProtonCoreNetworking
 
-struct GetFolderResponse: Decodable, Sendable {
+struct FolderResponse: Decodable, Sendable {
     let folder: Folder
 }
 
 struct GetFolderEndpoint: Endpoint, Sendable {
     typealias Body = EmptyRequest
-    typealias Response = GetFolderResponse
+    typealias Response = FolderResponse
 
     let debugDescription: String
     let path: String
 
     init(shareId: String,
          folderId: String) {
-        debugDescription = "Get folder for share"
+        debugDescription = "Get folder for share with id: \(shareId)"
         path = "/pass/v1/share/\(shareId)/folder/\(folderId)"
     }
 }

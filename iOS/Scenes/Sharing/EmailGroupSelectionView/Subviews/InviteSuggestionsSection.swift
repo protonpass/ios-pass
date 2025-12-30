@@ -61,13 +61,13 @@ struct InviteSuggestionsSection: View {
 
 private extension InviteSuggestionsSection {
     func emailList() -> some View {
-        ForEach(viewModel.suggestions ?? []) { recommendation in
+        ForEach(viewModel.suggestions) { recommendation in
             SuggestedEmailView(recommendation: recommendation,
                                isSelected: viewModel.selectedRecommendations.contains(recommendation)) {
                 viewModel.handleSelection(recommendation)
             }.onAppear {
                 if viewModel.displayType == .organisation,
-                   recommendation == viewModel.suggestions?.last {
+                   recommendation == viewModel.suggestions.last {
                     viewModel.loadMore()
                 }
             }

@@ -41,7 +41,7 @@ struct GetListOfFolderEndpoint: Endpoint, @unchecked Sendable {
     init(shareId: String,
          sinceToken: String? = nil,
          pageSize: Int = Constants.Utils.defaultPageSize) {
-        debugDescription = "Get list of folders for share with ID: \(shareId)"
+        debugDescription = "Get list of folders for share with id: \(shareId)"
         path = "pass/v1/share/\(shareId)/folder"
 
         var queries: [String: Any] = ["PageSize": pageSize]
@@ -50,10 +50,4 @@ struct GetListOfFolderEndpoint: Endpoint, @unchecked Sendable {
         }
         self.queries = queries
     }
-}
-
-public struct PaginatedFolders: Decodable, Sendable {
-    public let total: Int
-    public let lastToken: String?
-    public let folders: [Folder]
 }

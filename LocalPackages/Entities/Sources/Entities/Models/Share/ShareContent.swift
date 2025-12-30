@@ -18,21 +18,200 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+
 public struct ShareContent: Identifiable, Hashable, Sendable {
     public let share: Share
     /// `Active` items only
-    public let items: [ItemUiModel]
+    public let elements: [ShareContentElement]
+    
+    // Lookup table for O(1) access to any element in the tree
+    public let lookupTable: ShareContentIndex //[String: (element: ShareContentElement, path: [String])]
 
     public var id: String {
         share.id
     }
 
     public var itemCount: Int {
-        items.count
+        elements.numberOfItems
+    }
+    
+    public var completeItemCount: Int {
+        elements.numberOfAllItems
     }
 
-    public init(share: Share, items: [ItemUiModel]) {
+    public init(share: Share, elements: [ShareContentElement]) {
         self.share = share
-        self.items = items
+        self.elements = elements
+        self.lookupTable = ShareContentIndex(elements: elements)
+    }
+}
+
+public enum ShareContentElement: Sendable, Equatable, Hashable {
+    case item(ItemUiModel)
+    case folder(FolderUiModel)
+}
+
+
+extension ShareContentElement {
+    public var id: ShareContentID { nodeID }
+
+    public var nodeID: ShareContentID {
+        switch self {
+        case let .item(item):
+            return .item(item.id)
+        case let .folder(folder):
+            return .folder(folder.folderId)
+        }
+    }
+
+    public var children: [ShareContentElement] {
+        switch self {
+        case .item:
+            return []
+        case .folder(let folder):
+            return folder.content
+        }
+    }
+    
+    public var isFolder: Bool {
+        switch self {
+        case .folder:
+            return true
+        case .item:
+            return false
+        }
+    }
+    
+    public var fullItemCount: Int {
+        switch self {
+        case .item:
+            return 1
+        case let .folder(folder):
+            return folder.content.reduce(0) { $0 + $1.fullItemCount }
+        }
+    }
+    
+    public var items: [ItemUiModel] {
+        switch self {
+        case let .item(item):
+            return [item]
+        case let .folder(folder):
+            return folder.content.flatMap(\.items)
+        }
+    }
+    
+    public var sharedId: String {
+        switch self {
+        case let .item(item):
+            return item.shareId
+        case let .folder(folder):
+            return folder.shareId
+        }
+    }
+}
+
+public extension [ShareContentElement] {
+    var numberOfAllItems: Int {
+        reduce(0) { $0 + $1.fullItemCount }
+    }
+    
+    var numberOfItems: Int {
+        reduce(0) { $0 + ($1.isFolder ? 0 : 1) }
+    }
+    
+    var allItems: [ItemUiModel] {
+        reduce([]) { $0 + $1.items }
+    }
+}
+
+
+public struct FolderUiModel: PrecomputedHashable, Equatable, Sendable, Identifiable {
+    // Existing properties
+    public var id: String { folderId + shareId }
+    public let folderId: String
+    public let shareId: String
+    public let content: [ShareContentElement]
+    
+    public let precomputedHash: Int
+    
+    public init(folderId: String, shareId: String, content: [ShareContentElement]) {
+        self.folderId = folderId
+        self.shareId = shareId
+        self.content = content
+        var hasher = Hasher()
+        hasher.combine(folderId)
+        hasher.combine(shareId)
+        hasher.combine(content)
+        precomputedHash = hasher.finalize()
+    }
+}
+
+public enum ShareContentID: Hashable, Sendable, Equatable {
+    case item(String)
+    case folder(String)
+}
+
+public struct ShareContentIndex: Sendable, Equatable, Hashable {
+
+    public struct Entry: Sendable, Equatable, Hashable {
+        public let element: ShareContentElement
+        public let path: [ShareContentID]
+    }
+
+    private let entries: [ShareContentID: Entry]
+
+    public init(elements: [ShareContentElement]) {
+        self.entries = Self.buildIndex(from: elements)
+    }
+
+    // MARK: - Public API
+
+    public func contains(_ id: ShareContentID) -> Bool {
+        entries[id] != nil
+    }
+
+    public func element(for id: ShareContentID) -> ShareContentElement? {
+        entries[id]?.element
+    }
+
+    public func path(to id: ShareContentID) -> [ShareContentID]? {
+        entries[id]?.path
+    }
+}
+
+private extension ShareContentIndex {
+
+    static func buildIndex(from roots: [ShareContentElement]) -> [ShareContentID: Entry] {
+        var result: [ShareContentID: Entry] = [:]
+
+        roots.forEach {
+            walk(
+                element: $0,
+                path: [],
+                into: &result
+            )
+        }
+
+        return result
+    }
+
+     static func walk(element: ShareContentElement,
+        path: [ShareContentID],
+        into index: inout [ShareContentID: Entry]) {
+        let id = element.nodeID
+        let currentPath = path + [id]
+
+        index[id] = Entry(
+            element: element,
+            path: currentPath
+        )
+
+        element.children.forEach {
+            walk(
+                element: $0,
+                path: currentPath,
+                into: &index
+            )
+        }
     }
 }

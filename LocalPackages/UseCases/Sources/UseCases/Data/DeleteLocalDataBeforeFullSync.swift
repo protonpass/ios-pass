@@ -27,12 +27,12 @@ import Client
 /// But we need to make sure that all data encrypted by a local symmetric key is deleted
 /// (items, shares, share keys...)
 public protocol DeleteLocalDataBeforeFullSyncUseCase: Sendable {
-    func execute() async throws
+    func execute(userId: String) async throws
 }
 
 public extension DeleteLocalDataBeforeFullSyncUseCase {
-    func callAsFunction() async throws {
-        try await execute()
+    func callAsFunction(userId: String) async throws {
+        try await execute(userId: userId)
     }
 }
 
@@ -40,18 +40,29 @@ public final class DeleteLocalDataBeforeFullSync: DeleteLocalDataBeforeFullSyncU
     private let itemRepository: any ItemRepositoryProtocol
     private let shareRepository: any ShareRepositoryProtocol
     private let shareKeyRepository: any ShareKeyRepositoryProtocol
+    private let folderKeyDatasource: any LocalFolderKeyDatasourceProtocol
+    private let folderRepository: any FolderRepositoryProtocol
 
     public init(itemRepository: any ItemRepositoryProtocol,
                 shareRepository: any ShareRepositoryProtocol,
-                shareKeyRepository: any ShareKeyRepositoryProtocol) {
+                shareKeyRepository: any ShareKeyRepositoryProtocol,
+                folderKeyDatasource: any LocalFolderKeyDatasourceProtocol,
+                folderRepository: any FolderRepositoryProtocol) {
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
         self.shareKeyRepository = shareKeyRepository
+        self.folderKeyDatasource = folderKeyDatasource
+        self.folderRepository = folderRepository
     }
 
-    public func execute() async throws {
-        try await itemRepository.deleteAllCurrentUserItemsLocally()
-        try await shareRepository.deleteAllCurrentUserSharesLocally()
-        try await shareKeyRepository.deleteAllCurrentUserShareKeysLocally()
+    public func execute(userId: String) async throws {
+        async let deletingLocalItems: Void = itemRepository.deleteAllCurrentUserItemsLocally(userId: userId)
+        async let deletingLocalShares: Void = shareRepository.deleteAllCurrentUserSharesLocally(userId: userId)
+        async let deletingLocalShareKeys: Void = shareKeyRepository
+            .deleteAllCurrentUserShareKeysLocally(userId: userId)
+        async let deletingLocalFolderKeys: Void = folderKeyDatasource.removeAllKeys(userId: userId)
+        async let deletingLocalFolders: Void = folderRepository.deleteAllLocalFolders(userId: userId)
+        _ = try await (deletingLocalItems, deletingLocalShares, deletingLocalShareKeys, deletingLocalFolderKeys,
+                       deletingLocalFolders)
     }
 }

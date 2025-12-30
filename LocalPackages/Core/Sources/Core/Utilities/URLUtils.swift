@@ -21,4 +21,33 @@
 import Foundation
 
 /// A namespace for `URL` related utility functions
-public enum URLUtils {}
+public enum URLUtils {
+    public enum Sanitizer {
+        /// Sanitize user's input URL string into a valid one.
+        /// If `urlString` is a valid URI. Return the `urlString` as it is
+        /// If `urlString` string does not have scheme (protocol) (e.g `http`, `https` or `ftp`),
+        /// automatically add `https` as scheme
+        /// - Parameters:
+        ///   - urlString: user's input URL string
+        /// - Returns:
+        /// A sanitized URL string if any.
+        /// `nil` if `urlString` is not valid
+        public static func sanitize(_ urlString: String) -> String? {
+            let httpsUrlString = "https://" + urlString
+            if let httpsUrl = URL(string: httpsUrlString),
+               httpsUrl.scheme != nil,
+               let httpsUrlHost = httpsUrl.host,
+               httpsUrlHost.components(separatedBy: ".").count > 1 {
+                return httpsUrlString
+            }
+
+            if let url = URL(string: urlString),
+               url.scheme != nil,
+               url.host != nil {
+                return urlString
+            }
+
+            return nil
+        }
+    }
+}
