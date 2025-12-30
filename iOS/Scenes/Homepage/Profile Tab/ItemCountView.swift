@@ -179,7 +179,8 @@ private final class ItemCountViewModel: ObservableObject {
 }
 
 private extension ItemCountViewModel {
-    nonisolated func refreshAsync(_ sharesData: SharesData) async {
+    @concurrent
+    func refreshAsync(_ sharesData: SharesData) async {
         if Task.isCancelled { return }
         let hiddenShareIds = sharesData.shares.compactMap(\.share).hiddenShareIds
         let activeItems = sharesData.shares.flatMap(\.items).filter { !hiddenShareIds.contains($0.shareId) }

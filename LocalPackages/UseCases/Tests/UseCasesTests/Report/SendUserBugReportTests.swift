@@ -1,7 +1,7 @@
 //
 // SendUserBugReportTests.swift
-// Proton Pass - Created on 03/07/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Proton Pass - Created on 01/12/2025.
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,18 +18,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
-import UseCases
-import UseCasesMocks
+@testable import UseCases
 import ClientMocks
-@testable import Proton_Pass
+import CoreMocks
+import UseCasesMocks
+import XCTest
+
+// import Proton_Pass
 
 final class SendUserBugReportTests: XCTestCase {
     var sut: SendUserBugReportUseCase!
     var repositoryMock: ReportRepositoryProtocolMock!
     var extractToFileMock: ExtractLogsToFileUseCaseMock!
     var getLogsMock: GetLogEntriesUseCaseMock!
-    
+
     override func setUp() {
         super.setUp()
         repositoryMock = ReportRepositoryProtocolMock()
@@ -50,6 +52,10 @@ final class SendUserBugReportTests: XCTestCase {
         let params = try XCTUnwrap(repositoryMock.invokedSendBugParameters)
         XCTAssertEqual(params.0, "Test bug")
         XCTAssertEqual(params.1, "Bug description")
-        XCTAssertEqual(params.2, ["File0": extractToFileMock.stubbedExecuteResult!, "File1": extractToFileMock.stubbedExecuteResult!])
+        XCTAssertEqual(params.2,
+                       [
+                           "File0": extractToFileMock.stubbedExecuteResult!,
+                           "File1": extractToFileMock.stubbedExecuteResult!
+                       ])
     }
 }

@@ -20,7 +20,7 @@
 
 import SwiftUI
 
-public enum PassIcon: Sendable {}
+public nonisolated enum PassIcon: Sendable {}
 
 public extension PassIcon {
     static let aliasSync = Image(.aliasSync)

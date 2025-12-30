@@ -722,6 +722,12 @@
             "value" : "%@ (másolva)"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (copiato)"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -65049,6 +65055,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Duplikálás"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duplica"
           }
         },
         "ja" : {
@@ -167590,6 +167602,12 @@
             "value" : "Suggestions"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggerimenti"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -171224,6 +171242,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Le groupe est invité à un coffre-fort. Appuyez pour avoir plus d'informations."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il gruppo è invitato a una cassaforte. Tocca per i dettagli."
           }
         },
         "ja" : {
@@ -187084,6 +187108,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Coffre-fort partagé avec un groupe que vous administrez."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cassaforte condivisa con un gruppo che amministri"
           }
         },
         "ja" : {

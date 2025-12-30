@@ -128,12 +128,12 @@ private extension SearchViewModel {
     }
 
     func refreshSearchHistory() async throws {
-        guard let vaultSelection = searchMode.vaultSelection else {
+        guard let shareSelection = searchMode.shareSelection else {
             return
         }
 
         let searchEntries: [SearchEntry]
-        if case let .precise(vault) = vaultSelection {
+        if case let .precise(vault) = shareSelection {
             searchEntries = try await searchEntryDatasource.getAllEntries(shareId: vault.shareId)
         } else {
             let userId = try await userManager.getActiveUserId()
@@ -211,7 +211,8 @@ private extension SearchViewModel {
         }
     }
 
-    nonisolated func filterAndSortResultsAsync() async {
+    @concurrent
+    func filterAndSortResultsAsync() async {
         let results = await results
 
         let updateState: (SearchViewState) async -> Void = { [weak self] newState in
@@ -247,7 +248,8 @@ private extension SearchViewModel {
         }
     }
 
-    nonisolated func parse(results: [ItemSearchResult]) async throws -> SearchDataDisplay {
+    @concurrent
+    func parse(results: [ItemSearchResult]) async throws -> SearchDataDisplay {
         let selectedType = await selectedType
         let selectedSortType = await selectedSortType
 
@@ -336,11 +338,11 @@ extension SearchViewModel {
 
     func removeAllSearchHistory() {
         Task { [weak self] in
-            guard let self, let vaultSelection = searchMode.vaultSelection else { return }
+            guard let self, let shareSelection = searchMode.shareSelection else { return }
 
             do {
-                if case let .precise(vault) = vaultSelection {
-                    try await searchEntryDatasource.removeAllEntries(shareId: vault.shareId)
+                if case let .precise(share) = shareSelection {
+                    try await searchEntryDatasource.removeAllEntries(shareId: share.shareId)
                 } else {
                     let userId = try await userManager.getActiveUserId()
                     try await searchEntryDatasource.removeAllEntries(userId: userId)

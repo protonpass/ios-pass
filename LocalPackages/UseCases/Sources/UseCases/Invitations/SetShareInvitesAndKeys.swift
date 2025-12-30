@@ -62,6 +62,6 @@ public final class SetShareInvitesAndKeys: SetShareInvitesAndKeysUseCase {
                 }
             }
         }
-        shareInviteService.setInvitesAndKeys(with: inviteDestinationsAndKeys)
+        await shareInviteService.setInvitesAndKeys(with: inviteDestinationsAndKeys)
     }
 }
