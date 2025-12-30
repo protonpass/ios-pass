@@ -111,6 +111,7 @@ private extension DecryptGroupKey {
             DecryptionKey(privateKey: .init(value: $0.privateKey),
                           passphrase: .init(value: userData.passphrases[$0.keyID] ?? ""))
         }
+
         let verificationKeys = userData.user.keys.map(\.publicKey).map { ArmoredKey(value: $0) }
         let context = VerificationContext(value: "account.key-token.address",
                                           required: .always)
@@ -122,12 +123,10 @@ private extension DecryptGroupKey {
                                                                         .token),
                                                                     detachedSign: ArmoredSignature(value: primaryKey
                                                                         .signature),
-                                                                    verificationKeys: verificationKeys,
-                                                                    verificationContext: context)
-
-                if case let .verified(content) = decryptedToken {
-                    return content
-                }
+                                                                    verificationKeys: verificationKeys)
+//                                                                    ,
+//                                                                    verificationContext: context)
+                return try decryptedToken.verifiedContent
             } catch {
                 errors.append(error.localizedDescription)
                 continue
@@ -228,63 +227,4 @@ private extension DecryptGroupKey {
 //    }
 // }
 //
-// public struct GroupAddress: Codable, Sendable, Equatable, Hashable {
-//    let ID: String
-//    public let domainID: String
-//    public let email: String
-//    public let status: Int
-//    public let type: Int
-//    public let receive: Int
-//    public let send: Int
-//    public let displayName: String
-//    public let signature: String
-//    public let order: Int
-//    public let priority: Int
-//    public let catchAll: Bool
-//    public let protonMX: Bool
-//    public let confirmationState: Int
-//    public let hasKeys: Int
-//    public let keys: [GroupAddressKey]
-//    public let signedKeyList: SignedKeyList?
-// }
-//
-// @objc public final class Key: NSObject {
-//
-//    public let keyID: String
-//    public var privateKey: String
-//
-//    // TODO:: this is a bit set. need to refactor to a struct
-//    public var keyFlags: Int = 0
-//
-//    // key migration step 1 08/01/2019
-//    public var token: String?
-//    public var signature: String?
-//
-//    // old activetion flow
-//    public var activation: String? // armed pgp msg, token encrypted by user's public key and
-//
-//    // unused
-//    public var active: Int = 0
-//    public var version: Int = 0
-//
-//    // the other way: first key will be the primary
-//    public var primary: Int = 0
-//
-//    // local var use when update the key password
-//    public var isUpdated: Bool = false
-//
-//    public init(keyID: String, privateKey: String?, keyFlags: Int = 0,
-//                token: String? = nil, signature: String? = nil, activation: String? = nil,
-//                active: Int = 0, version: Int = 0, primary: Int = 0, isUpdated: Bool = false) {
-//        self.keyID = keyID
-//        self.privateKey = privateKey ?? ""
-//        self.keyFlags = keyFlags
-//        self.token = token
-//        self.signature = signature
-//        self.activation = activation
-//        self.active = active
-//        self.version = version
-//        self.primary = primary
-//        self.isUpdated = isUpdated
-//    }
-// }
+

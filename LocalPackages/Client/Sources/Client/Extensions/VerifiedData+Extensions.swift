@@ -34,3 +34,16 @@ public extension VerifiedData {
         }
     }
 }
+
+public extension VerifiedString {
+    var verifiedContent: ClearContent {
+        get throws {
+            switch self {
+            case let .verified(content):
+                return content
+            case let .unverified(_, error):
+                throw PassError.crypto(.failedToVerifyContent(error.localizedDescription))
+            }
+        }
+    }
+}
