@@ -105,6 +105,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
     @LazyInjected(\SharedUseCasesContainer.fullContentSync) var fullContentSync
+    @LazyInjected(\UseCasesContainer.postbackConversionValue) var postbackConversionValue
 
     private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
     let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
@@ -224,7 +225,7 @@ private extension HomepageCoordinator {
             }
         }
 
-        Publishers.CombineLatest(appContentManager.$vaultSelection, appContentManager.$state)
+        Publishers.CombineLatest(appContentManager.$shareSelection, appContentManager.$state)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] selection, _ in
                 guard let self else { return }
@@ -1725,6 +1726,13 @@ extension HomepageCoordinator {
                 try await appContentManager.refresh(userId: userId)
                 homepageTabDelegate?.change(tab: .items)
                 increaseCreatedItemsCountAndAskForReviewIfNecessary()
+
+                // MMP: optionally get the plan and post back. We don't care if errors occur.
+                if let isFreeUser = try? await accessRepository.getPlan(userId: userId).isFreeUser {
+                    try? await postbackConversionValue(isFreeUser ? 3 : 61,
+                                                       coarseValue: isFreeUser ? .medium : .high,
+                                                       lockPostback: !isFreeUser)
+                }
             } catch {
                 bannerManager.displayTopErrorMessage(error)
             }
@@ -1830,7 +1838,7 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
     }
 
     func syncEventLoopShouldUseUserEvents() async -> Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1)
+        await getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1)
     }
 
     nonisolated func syncEventLoopDidSkipLoop(reason: SyncEventLoopSkipReason) {
@@ -1838,11 +1846,11 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
     }
 
     func syncEventLoopRequiresFullSync(userId: String) async throws {
-        router.present(for: .fullSync)
+        await router.present(for: .fullSync)
         logger.info("Full syncing triggered by user events")
         await fullContentSync(userId: userId, shouldStopEventLoop: false)
         logger.info("Done full syncing triggered by user events")
-        router.display(element: .successMessage(config: .refresh))
+        await router.display(element: .successMessage(config: .refresh))
     }
 
     nonisolated func syncEventLoopDidFinishLoop(userId: String, hasNewEvents: Bool) {

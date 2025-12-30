@@ -1,6 +1,6 @@
 //
-// CaseIterable+Random.swift
-// Proton Pass - Created on 29/03/2024.
+// ItemContentProtobuf+Extensions.swift
+// Proton Pass - Created on 18/01/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,15 +19,19 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Foundation
+import Entities
 
-public extension CaseIterable {
-    // periphery:ignore
-    static func random() -> AllCases.Element? {
-        guard !allCases.isEmpty else {
-            assertionFailure("\(Self.self) has no cases")
-            return nil
-        }
-        return allCases.randomElement()
+public extension ItemContentProtobuf {
+    func isLooselyEqual(to other: Self) -> Bool {
+        let sameMetadata = metadata.isLooselyEqual(to: other.metadata)
+        let sameContent = content == other.content
+        let sameCustomFields = customFields.isLooselyEqual(to: other.customFields)
+        return sameMetadata && sameContent && sameCustomFields
+    }
+}
+
+private extension ProtonPassItemV1_Metadata {
+    func isLooselyEqual(to other: Self) -> Bool {
+        name == other.name && note == other.note
     }
 }

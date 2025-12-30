@@ -161,7 +161,7 @@ private extension ItemsTabViewModel {
             }
             .store(in: &cancellables)
 
-        appContentManager.$vaultSelection
+        appContentManager.$shareSelection
             .receive(on: DispatchQueue.main)
             .dropFirst()
             .sink { [weak self] _ in
@@ -529,7 +529,8 @@ private extension ItemsTabViewModel {
         }
     }
 
-    nonisolated func filterAndSortItemsAsync(sortType: SortType) async {
+    @concurrent
+    func filterAndSortItemsAsync(sortType: SortType) async {
         do {
             let filteredItems = await appContentManager.getFilteredItems()
 

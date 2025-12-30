@@ -1,7 +1,7 @@
 //
-// ItemContentProtobuf+IsLooselyEqual.swift
-// Proton Pass - Created on 18/01/2024.
-// Copyright (c) 2024 Proton Technologies AG
+// FolderKey.swift
+// Proton Pass - Created on 01/12/2025.
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,21 +17,21 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import Entities
+import Foundation
 
-public extension ItemContentProtobuf {
-    func isLooselyEqual(to other: Self) -> Bool {
-        let sameMetadata = metadata.isLooselyEqual(to: other.metadata)
-        let sameContent = content == other.content
-        let sameCustomFields = customFields.isLooselyEqual(to: other.customFields)
-        return sameMetadata && sameContent && sameCustomFields
+public struct FolderKey: Codable, Equatable, Hashable, Sendable {
+    /// Encrypted key encoded in base64
+    public let folderKey: String
+    public let keyRotation: Int
+
+    public init(folderKey: String, keyRotation: Int) {
+        self.folderKey = folderKey
+        self.keyRotation = keyRotation
     }
-}
 
-private extension ProtonPassItemV1_Metadata {
-    func isLooselyEqual(to other: Self) -> Bool {
-        name == other.name && note == other.note
+    enum CodingKeys: String, CodingKey {
+        case folderKey = "FolderKey"
+        case keyRotation = "KeyRotation"
     }
 }

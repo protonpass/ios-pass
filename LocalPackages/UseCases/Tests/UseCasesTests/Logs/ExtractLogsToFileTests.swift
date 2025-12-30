@@ -1,7 +1,7 @@
 //
 // ExtractLogsToFileTests.swift
-// Proton Pass - Created on 03/07/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Proton Pass - Created on 01/12/2025.
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,22 +18,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import FactoryKit
+import CoreMocks
 import Foundation
-import XCTest
 import UseCases
-@testable import Proton_Pass
+import XCTest
 
 class ExtractLogsToFileTests: XCTestCase {
     var sut: ExtractLogsToFileUseCase!
     var path: String?
     let testFileName = "TestFileLogs.log"
-    
+
     override func setUp() {
         super.setUp()
-        sut = ExtractLogsToFile(logFormatter: SharedToolingContainer.shared.logFormatter())
+        sut = ExtractLogsToFile(logFormatter: LogFormatterProtocolMock())
     }
-    
+
     override func tearDown() {
         super.setUp()
         let file = FileManager.default.temporaryDirectory.appendingPathComponent(testFileName)
@@ -49,7 +48,7 @@ class ExtractLogsToFileTests: XCTestCase {
             XCTFail("Should have created a file with the log entry")
             return
         }
-        
+
         XCTAssertEqual(url.lastPathComponent, "TestFileLogs.log")
     }
 }

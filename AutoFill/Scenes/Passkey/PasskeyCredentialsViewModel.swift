@@ -90,7 +90,8 @@ final class PasskeyCredentialsViewModel: AutoFillViewModel<CredentialsForPasskey
         state = .loading
     }
 
-    override nonisolated func fetchItems() async {
+    @concurrent
+    override func fetchItems() async {
         await super.fetchItems()
         await filterItems()
     }
@@ -118,7 +119,8 @@ extension PasskeyCredentialsViewModel {
 }
 
 private extension PasskeyCredentialsViewModel {
-    nonisolated func filterItems() async {
+    @concurrent
+    func filterItems() async {
         let searchableItems: [SearchableItem]
         let items: [ItemUiModel]
 

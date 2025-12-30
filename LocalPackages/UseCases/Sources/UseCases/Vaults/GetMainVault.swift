@@ -41,6 +41,6 @@ public final class GetMainVault: GetMainVaultUseCase {
     }
 
     public func execute() async -> Share? {
-        appContentManager.getOldestOwnedVault()
+        await appContentManager.getOldestOwnedVault()
     }
 }

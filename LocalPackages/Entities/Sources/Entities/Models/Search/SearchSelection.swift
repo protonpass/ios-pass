@@ -22,9 +22,9 @@ import Foundation
 
 public enum SearchMode: Equatable, Hashable, Sendable {
     case pinned
-    case all(VaultSelection)
+    case all(ShareSelection)
 
-    public var vaultSelection: VaultSelection? {
+    public var shareSelection: ShareSelection? {
         switch self {
         case let .all(selection):
             selection
@@ -34,7 +34,7 @@ public enum SearchMode: Equatable, Hashable, Sendable {
     }
 
     public var isSpecificSelection: Bool {
-        if let selection = vaultSelection, selection != .all {
+        if let selection = shareSelection, selection != .all {
             return true
         }
         return false

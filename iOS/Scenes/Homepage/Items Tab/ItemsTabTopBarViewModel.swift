@@ -28,7 +28,7 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
-extension VaultSelection {
+extension ShareSelection {
     var accessibilityLabel: String {
         switch self {
         case .all:
@@ -98,8 +98,8 @@ final class ItemsTabTopBarViewModel: ObservableObject {
         currentSelectedItems.value.count
     }
 
-    var vaultSelection: VaultSelection {
-        appContentManager.vaultSelection
+    var shareSelection: ShareSelection {
+        appContentManager.shareSelection
     }
 
     var highlighted: Bool {
@@ -111,7 +111,7 @@ final class ItemsTabTopBarViewModel: ObservableObject {
     }
 
     var selectable: Bool {
-        switch appContentManager.vaultSelection {
+        switch appContentManager.shareSelection {
         case .all, .sharedByMe, .sharedWithMe, .trash:
             true
         case let .precise(vault):
@@ -138,7 +138,7 @@ final class ItemsTabTopBarViewModel: ObservableObject {
                 actionsDisabled = items.isEmpty
 
                 extraOptions.removeAll()
-                guard vaultSelection != .trash, !items.isEmpty else { return }
+                guard shareSelection != .trash, !items.isEmpty else { return }
 
                 if items.allSatisfy(\.pinned) {
                     extraOptions.append(.unpin)

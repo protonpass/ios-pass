@@ -36,9 +36,6 @@ final class OnboardingHandler {
     @LazyInjected(\SharedServiceContainer.credentialManager)
     private var credentialManager
 
-    @LazyInjected(\SharedDataContainer.credentialProvider)
-    private var credentialProvider
-
     @LazyInjected(\SharedServiceContainer.userManager)
     private var userManager
 
@@ -51,12 +48,6 @@ final class OnboardingHandler {
     @LazyInjected(\SharedToolingContainer.localAuthenticationEnablingPolicy)
     private var localAuthenticationEnablingPolicy
 
-    @LazyInjected(\SharedToolingContainer.doh)
-    private var doh
-
-    @LazyInjected(\SharedToolingContainer.appVersion)
-    private var appVersion
-
     @LazyInjected(\UseCasesContainer.enableAutoFill)
     private var enableAutoFillUseCase
 
@@ -68,6 +59,9 @@ final class OnboardingHandler {
 
     @LazyInjected(\ SharedUseCasesContainer.addTelemetryEvent)
     private var addTelemetryEvent
+
+    @LazyInjected(\SharedToolingContainer.apiManager)
+    private var apiManager
 
     private var plansManager: ProtonPlansManager?
     private let logger: Logger
@@ -166,22 +160,11 @@ private extension OnboardingHandler {
         if let plansManager {
             return plansManager
         }
-        guard let doh = doh as? ProtonPassDoH else {
-            assertionFailure("DoH should be ProtonPassDoH")
-            return nil
-        }
 
         let userId = try await userManager.getActiveUserId()
-        guard let credentials = credentialProvider.getCredential(userId: userId) else {
-            assertionFailure("No credentials for current user")
-            return nil
-        }
-
-        let remoteManager = RemoteManager(sessionID: credentials.sessionID,
-                                          authToken: credentials.accessToken,
-                                          appVersion: appVersion)
-        let manager = ProtonPlansManager(doh: doh,
-                                         remoteManager: remoteManager)
+        let apiService = try apiManager.getApiService(userId: userId)
+        let remoteManager = RemoteManager(apiService: apiService)
+        let manager = ProtonPlansManager(remoteManager: remoteManager)
         plansManager = manager
         return manager
     }

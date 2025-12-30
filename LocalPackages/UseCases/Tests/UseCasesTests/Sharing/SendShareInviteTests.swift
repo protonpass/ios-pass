@@ -1,7 +1,7 @@
 //
 // SendShareInviteTests.swift
-// Proton Pass - Created on 26/07/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Proton Pass - Created on 01/12/2025.
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,16 +18,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Combine
-import XCTest
-import ProtonCoreLogin
-import Entities
-import EntitiesMocks
-import UseCases
-import UseCasesMocks
-@testable import Proton_Pass
 import Client
 import ClientMocks
+import Combine
+import Entities
+import EntitiesMocks
+import ProtonCoreLogin
+import UseCases
+import UseCasesMocks
+import XCTest
 
 final class SendShareInviteTests: XCTestCase {
     var sut: SendShareInviteUseCase!
@@ -48,18 +47,20 @@ final class SendShareInviteTests: XCTestCase {
         shareInviteRepository = ShareInviteRepositoryProtocolMock()
         userManager = UserManagerProtocolMock()
         syncEventLoop = SyncEventLoopProtocolMock()
-        sut = SendShareInvite(createAndMoveItemToNewVault: createAndMoveItemToNewVault,
-                                   makeUnsignedSignatureForVaultSharing: makeUnsignedSignatureForVaultSharing,
-                                   shareInviteService: ShareInviteService(),
-                                   passKeyManager: passKeyManager,
-                                   shareInviteRepository: shareInviteRepository,
-                                   userManager: userManager,
-                                   syncEventLoop: syncEventLoop)
     }
 
+    @MainActor
     func testSendShareInvite_ShouldNotBeValid_BecauseOfVaultAddress() async throws {
+        sut = SendShareInvite(createAndMoveItemToNewVault: createAndMoveItemToNewVault,
+                              makeUnsignedSignatureForVaultSharing: makeUnsignedSignatureForVaultSharing,
+                              shareInviteService: ShareInviteService(),
+                              passKeyManager: passKeyManager,
+                              shareInviteRepository: shareInviteRepository,
+                              userManager: userManager,
+                              syncEventLoop: syncEventLoop)
         publicKeyRepository.stubbedGetPublicKeysResult = [PublicKey(value: "value")]
-        passKeyManager.stubbedGetLatestShareKeyResult = DecryptedShareKey(shareId: "test", keyRotation: 1, keyData: try! Data.random())
+        passKeyManager.stubbedGetLatestShareKeyResult = DecryptedShareKey(shareId: "test", keyRotation: 1,
+                                                                          keyData: try! Data.random())
         userManager.stubbedGetActiveUserDataResult = .preview
         let infos = SharingInfos(shareElement: .vault(.random()),
                                  email: "Test@test.com",
