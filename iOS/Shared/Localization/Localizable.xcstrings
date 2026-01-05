@@ -169641,7 +169641,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tryk på tandhjulsikonet for at tilpasse aliaset, som du vil have det."
+            "value" : "Tryk på tandhjulsikonet for at tilpasse aliasset, som du vil have det."
           }
         },
         "de" : {
@@ -180785,6 +180785,12 @@
             "value" : "Не вказано"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không xác định"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -181745,6 +181751,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Непідтверджена зміна скриньки"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thay đổi hộp thư chưa được xác minh"
           }
         },
         "zh-Hans" : {
@@ -183463,6 +183475,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Покращити до Pass Plus"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nâng cấp lên Pass Plus"
           }
         }
       }
@@ -187163,6 +187181,12 @@
             "state" : "translated",
             "value" : "Kasa yönettiğiniz bir grupla paylaşıldı"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kho được chia sẻ với một nhóm mà bạn quản trị"
+          }
         }
       }
     },
@@ -188120,6 +188144,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Спільний доступ до сховища: %lld учасників"
+                }
+              }
+            }
+          }
+        },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Chia sẻ kho: %lld thành viên"
                 }
               }
             }
@@ -191234,6 +191270,12 @@
             "value" : "Видимі сховища"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Các kho lưu trữ có thể hiển thị"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -192190,6 +192232,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ми виявили зміни у ваших налаштуваннях біометричної автентифікації. З міркувань безпеки ви вийшли з системи."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chúng tôi đã phát hiện một thay đổi trong cài đặt xác thực sinh trắc học của bạn. Vì lý do bảo mất, bạn đã bị đăng xuất."
           }
         },
         "zh-Hans" : {
@@ -194884,6 +194932,12 @@
             "value" : "Мережу Wi-Fi створено"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mạng WiFi đã được tạo"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -195060,6 +195114,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Мережу Wi-Fi переміщено до смітника"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mạng WiFi đã được chuyển vào thùng rác"
           }
         },
         "zh-Hans" : {
