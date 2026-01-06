@@ -45,7 +45,8 @@ let package = Package(name: "Entities",
                               name: "EntitiesMocks",
                               dependencies: ["Entities"]),
                           .testTarget(name: "EntitiesTests",
-                                      dependencies: ["Entities"])
+                                      dependencies: ["Entities",
+                                                     "EntitiesMocks"])
                       ],
                       swiftLanguageModes: [.version("6")]
 )

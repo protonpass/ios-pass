@@ -25,12 +25,12 @@ import Entities
 
 @MainActor
 public protocol GetVaultItemCountUseCase: Sendable {
-    func execute(for vault: Share, and type: ItemContentType?) -> Int
+    func execute(for shareId: String, and type: ItemContentType?) -> Int
 }
 
 public extension GetVaultItemCountUseCase {
-    func callAsFunction(for vault: Share, and type: ItemContentType? = nil) -> Int {
-        execute(for: vault, and: type)
+    func callAsFunction(for shareId: String, and type: ItemContentType? = nil) -> Int {
+        execute(for: shareId, and: type)
     }
 }
 
@@ -42,10 +42,11 @@ public final class GetVaultItemCount: GetVaultItemCountUseCase {
         self.appContentManager = appContentManager
     }
 
-    public func execute(for vault: Share, and type: ItemContentType?) -> Int {
+    
+    public func execute(for shareId: String, and type: ItemContentType?) -> Int {
         if let type {
-            return appContentManager.getItems(for: vault).count(where: { $0.type == type })
+            return appContentManager.getAllItems(for: shareId).count(where: { $0.type == type })
         }
-        return appContentManager.getItems(for: vault).count
+        return appContentManager.getAllItems(for: shareId).count
     }
 }

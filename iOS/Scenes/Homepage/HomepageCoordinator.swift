@@ -404,6 +404,7 @@ private extension HomepageCoordinator {
             if exitEditMode {
                 itemsTabViewModel?.isEditMode = false
             }
+            //TODO: move the appContentManager refresh somewhere else
             itemsTabViewModel?.refresh()
             itemDetailCoordinator?.refresh()
             createEditItemCoordinator?.refresh()

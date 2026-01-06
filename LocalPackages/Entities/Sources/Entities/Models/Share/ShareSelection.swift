@@ -22,20 +22,20 @@ import Foundation
 
 public enum ShareSelection: Hashable, Sendable {
     case all
-    case precise(Share)
+    case precise(Share, folderId: String?)
     case sharedWithMe
     case sharedByMe
     case trash
 
     public var shared: Bool {
-        if case let .precise(share) = self {
+        if case let .precise(share, _) = self {
             return share.shared
         }
         return false
     }
 
     public var preciseShare: Share? {
-        if case let .precise(share) = self {
+        if case let .precise(share, _) = self {
             return share
         }
         return nil
@@ -45,7 +45,7 @@ public enum ShareSelection: Hashable, Sendable {
         switch self {
         case .all:
             nil
-        case let .precise(share):
+        case let .precise(share, _):
             share.shareId
         case .sharedWithMe:
             "sharedWithMe"

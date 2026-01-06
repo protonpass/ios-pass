@@ -23,13 +23,13 @@ import CryptoKit
 
 public struct SharesData: Hashable, Sendable {
     public let shares: [String: ShareContent]
-    public let trashedItems: [ItemUiModel]
-    public let itemsSharedByMe: [ItemUiModel]
-    public let itemsSharedWithMe: [ItemUiModel]
+    public let trashedItems: [ShareContentElement]
+    public let itemsSharedByMe: [ShareContentElement]
+    public let itemsSharedWithMe: [ShareContentElement]
 
     public init(shares:  [String: ShareContent], trashedItems: [ItemUiModel]) {
         self.shares = shares
-        self.trashedItems = trashedItems
+        self.trashedItems = trashedItems.map { .item($0) }
 
         var sharedByMeShareIds: Set<String> = []
         var sharedWithMeShareIds: Set<String> = []
@@ -43,21 +43,20 @@ public struct SharesData: Hashable, Sendable {
             }
         }
 
-        let sharedTrashedItems = trashedItems.filter(\.shared)
+        let sharedTrashedItems = self.trashedItems.filter(\.shared)
         let trashedSharedByMeItems = sharedTrashedItems.filter { sharedByMeShareIds.contains($0.shareId) }
         let trashedSharedWithMeItems = sharedTrashedItems.filter { sharedWithMeShareIds.contains($0.shareId) }
 
         itemsSharedByMe =
         shares.values
                 .filter { sharedByMeShareIds.contains($0.share.shareId) }
-                .flatMap(\.elements.allItems)
-                .filter(\.shared) +
-                trashedSharedByMeItems
+                .flatMap(\.allElements)
+                .filter(\.shared) + trashedSharedByMeItems
 
         itemsSharedWithMe = shares.values
             .filter { sharedWithMeShareIds.contains($0.share.shareId) }
-            .flatMap(\.elements.allItems) +
-            trashedSharedWithMeItems
+            .flatMap(\.allElements)
+        + trashedSharedWithMeItems
     }
 
     public var filteredOrderedVaults: [Share] {
