@@ -73,23 +73,6 @@ public final class DecryptGroupKey: DecryptGroupKeyUseCase {
 }
 
 private extension DecryptGroupKey {
-//    func getDecryptionKeys(isGroupAdmin: Bool, userData: UserData) async throws -> DecryptionKey {
-//        if isGroupAdmin {
-//            guard let key = userData.user.keys.first else {
-//                throw PassError.crypto(.missingKeys)
-//            }
-//            return DecryptionKey(privateKey: .init(value: key.privateKey),
-//                                 passphrase: .init(value: userData.passphrases[key.keyID] ?? ""))
-    ////            return userData.user.keys.first() {
-    ////                DecryptionKey(privateKey: .init(value: $0.privateKey),
-    ////                              passphrase: .init(value: userData.passphrases[$0.keyID] ?? ""))
-    ////            }
-//        } else {
-//            let result = try await decryptOrganizationKey(user: userData).privateKey
-//            return result
-//        }
-//    }
-
     func decryptWithOrgKeys(primaryKey: GroupAddressKey, userData: UserData) async throws -> String {
         let orgKey = try await decryptOrganizationKey(user: userData)
 
@@ -123,9 +106,8 @@ private extension DecryptGroupKey {
                                                                         .token),
                                                                     detachedSign: ArmoredSignature(value: primaryKey
                                                                         .signature),
-                                                                    verificationKeys: verificationKeys)
-//                                                                    ,
-//                                                                    verificationContext: context)
+                                                                    verificationKeys: verificationKeys,
+                                                                    verificationContext: context)
                 return try decryptedToken.verifiedContent
             } catch {
                 errors.append(error.localizedDescription)
@@ -145,86 +127,3 @@ private extension DecryptGroupKey {
         throw PassError.crypto(.missingKeys)
     }
 }
-
-// var errors = [String]()
-//
-//   for decryptionKey in decryptionKeys {
-//       if let decryptedToken = try? Decryptor.decryptAndVerify(decryptionKey: decryptionKey,
-////                if let decryptedToken = try? Decryptor.decryptAndVerify(decryptionKey: decryptionKey,
-////                                                                        addrToken: ArmoredMessage(value:
-/// token),
-////                                                                        detachedSign: ArmoredSignature(value:
-/// signature),
-////                                                                        verificationKeys: verificationKeys,
-////                                                                        verificationContext: context),
-////                   case let .verified(content) = decryptedToken {
-////                    return content
-////                }
-//
-//       do {
-//           let decryptedToken = try Decryptor.decryptAndVerify(decryptionKey: decryptionKey,
-//                                                               addrToken: ArmoredMessage(value: token),
-//                                                               detachedSign: ArmoredSignature(value: signature),
-//                                                               verificationKeys: verificationKeys,
-//                                                               verificationContext: context),
-//           case let .verified(content) = decryptedToken {
-//           return content
-//                                                               verificationContext: context)
-//           if case let .verified(content) = decryptedToken {
-//               return content
-//           }
-//       } catch {
-//           errors.append(error.localizedDescription)
-//           continue
-//       }
-
-// guard organizationKey.isPasswordless else {
-//    return userData.credential.mailboxpassword
-// }
-// guard let token = organizationKey.token, let signature = organizationKey.signature else {
-//    throw PassError.crypto(.missingKeys)
-// }
-//
-//
-// let verificationKeys = userData.user.keys.map(\.publicKey).map { ArmoredKey(value: $0) }
-//
-// let context = VerificationContext(value: Constants.SignatureContext.organizationKey,
-//                                  required: .always)
-//
-// for decryptionKey in decryptionKeys {
-//    if let decryptedToken = try? Decryptor.decryptAndVerify(decryptionKey: decryptionKey,
-//                                                            addrToken: ArmoredMessage(value: token),
-//                                                            detachedSign: ArmoredSignature(value: signature),
-//                                                            verificationKeys: verificationKeys,
-//                                                            verificationContext: context),
-//        case let .verified(content) = decryptedToken {
-//        return content
-//    }
-// }
-
-// let decryptionKeys = userData.user.keys.map {
-//    DecryptionKey(privateKey: .init(value: $0.privateKey),
-//                  passphrase: .init(value: userData.passphrases[$0.keyID] ?? ""))
-// }
-//
-// let verificationKeys = userData.user.keys.map(\.publicKey).map { ArmoredKey(value: $0) }
-//
-////CryptoService
-//
-// public static func unlockAddressKeys(address: Address,
-//                                     userData: UserData) throws -> [ProtonCoreCrypto.DecryptionKey] {
-//    let binKeys = userData.user.keys
-//    return address.keys.compactMap { key -> DecryptionKey? in
-//        for passphrase in userData.passphrases {
-//            if let decryptionKeyPassphrase = try? key.passphrase(userPrivateKeys: binKeys.toArmoredPrivateKeys,
-//                                                                 mailboxPassphrase: Passphrase(value: passphrase
-//                                                                     .value)) {
-//                return .init(privateKey: .init(value: key.privateKey),
-//                             passphrase: .init(value: decryptionKeyPassphrase.value))
-//            }
-//        }
-//        return nil
-//    }
-// }
-//
-
