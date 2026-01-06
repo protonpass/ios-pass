@@ -21,6 +21,7 @@
 import Foundation
 
 public typealias SectionedItemUiModel = SectionedObjects<ItemUiModel>
+public typealias SectionedShareContentElement = SectionedObjects<ShareContentElement>
 
 public struct ItemUiModel: PrecomputedHashable, Equatable, Sendable, Pinnable {
     // Existing properties

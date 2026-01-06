@@ -340,15 +340,29 @@ extension AppContentManager {
 //        return sharesData.shares.flatMap(\.items)
 //    }
 //    
-    func getContent(for shareId: String, elementId: ShareContentID?) -> [ShareContentElement] {
-        guard let sharesData = state.loadedContent else { return [] }
-       let shareContent = sharesData.shares[shareId]
-        if let elementId {
-            return shareContent?.lookupTable.element(for: elementId)?.children ?? []
-        } else {
-            return shareContent?.elements ?? []
-        }
+    func getContent(for shareId: String, containerId: String?) -> [ShareContentElement] {
+        guard let sharesData = state.loadedContent,
+                let shareContent = sharesData.shares[shareId] else { return [] }
+      
+        return shareContent.elements(for: containerId ?? shareId) ?? []
+        
+//        if let containerId {
+//            return shareContent?.element(for: containerId)?.content ?? []
+//        } else {
+//            return shareContent?.elements ?? []
+//        }
 //        return sharesData.shares.first { $0.share.id == shareId }?.elements ?? []
+    }
+    
+    func getItems(for shareId: String, containerId: String?) -> [ItemUiModel] {
+        let elements = getContent(for: shareId, containerId: containerId)
+        return elements.compactMap(\.itemValue)
+    }
+    
+    func getAllItems(for shareId: String) -> [ItemUiModel] {
+        guard let sharesData = state.loadedContent,
+                let shareContent = sharesData.shares[shareId] else { return [] }
+        return shareContent.allItems
     }
 
 
@@ -368,9 +382,9 @@ extension AppContentManager {
         // 1. Early exit for filter options that completely override share selection
         switch filterOption {
         case .itemSharedWithMe:
-            return sharesData.itemsSharedWithMe.map { .item($0) }
+            return sharesData.itemsSharedWithMe
         case .itemSharedByMe:
-            return sharesData.itemsSharedByMe.map { .item($0) }
+            return sharesData.itemsSharedByMe
         case .all, .precise:
             break // Proceed to share selection logic
         }
@@ -381,9 +395,17 @@ extension AppContentManager {
         // (hidden shares are computed lazily only when needed)
         let baseItems: [ShareContentElement] = switch shareSelection {
         case .all:
-            sharesData.shares.flatMap(\.elements).filter { !hiddenShareIds.contains($0.shareId) }
-        case let .precise(selectedShare):
-            sharesData.shares.first { $0.share.shareId == selectedShare.shareId }?.items ?? []
+            sharesData.shares.values.flatMap(\.rootElements).filter { !hiddenShareIds.contains($0.shareId) }
+        case let .precise(selectedShare, folderId):
+            if let shareContent = sharesData.shares[selectedShare.id]  {
+                if let folderId {
+                    shareContent.elements(for: folderId) ?? []
+                } else {
+                    shareContent.rootElements
+                }
+            } else {
+                []
+            }
         case .sharedByMe:
             sharesData.itemsSharedByMe
         case .sharedWithMe:
@@ -397,6 +419,7 @@ extension AppContentManager {
         case .all:
             return baseItems
         case let .precise(type):
+            //TODO: keep folders and item of correct type
             return baseItems.filter { $0.type.isSameType(with: type) }
         case .itemSharedByMe, .itemSharedWithMe:
             assertionFailure("Unreachable: handled by early return")
@@ -551,6 +574,7 @@ private extension AppContentManager {
 
         let sharesData = try await getShareDatas(symmetricKey: symmetricKey,
                                                  shares: dedupShares,
+                                                 folders: foldersFetch,
                                                  items: allItems)
         let userPreferences = preferencesManager.userPreferences.unwrapped()
 
