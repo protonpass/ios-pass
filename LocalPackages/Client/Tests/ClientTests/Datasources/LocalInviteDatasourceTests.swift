@@ -233,6 +233,7 @@ private extension GroupInvite {
                                                                     memberCount: .random(in: 1...100),
                                                                     itemCount: .random(in: 1...100)),
                     data: nil,
+                    isGroupOwner: false,
                     createTime: .random(in: 1...100))
     }
 }
