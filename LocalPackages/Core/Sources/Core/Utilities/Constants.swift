@@ -53,7 +53,7 @@ public enum Constants {
         public static let maxFolderDepth = 5
         public static let maxFoldersPerLevel = 10
     }
-    
+
     public enum Attachment {
         public static let version = 2
         public static let maxFileSizeInBytes = 100 * 1_024 * 1_024 // 100 MB

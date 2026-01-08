@@ -42,7 +42,6 @@ public final class GetVaultItemCount: GetVaultItemCountUseCase {
         self.appContentManager = appContentManager
     }
 
-    
     public func execute(for shareId: String, and type: ItemContentType?) -> Int {
         if let type {
             return appContentManager.getAllItems(for: shareId).count(where: { $0.type == type })

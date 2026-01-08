@@ -47,9 +47,9 @@ private extension EditableVaultListViewModel {
             }
             var all = 0
             var vaultCounts = [VaultCount]()
-            let hiddenShareIds = sharesData.shares.compactMap(\.share).hiddenShareIds
+            let hiddenShareIds = sharesData.visibleShareIds
 
-            for shareContent in sharesData.shares where shareContent.share.vaultContent != nil {
+            for shareContent in sharesData.visibleShareContents where shareContent.share.vaultContent != nil {
                 if !shareContent.share.hidden {
                     all += shareContent.itemCount
                 }
@@ -123,7 +123,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
         guard let sharesDatas = appContentManager.state.loadedContent else {
             return 0
         }
-        return sharesDatas.trashedItems.filter(\.isAlias).count
+        return sharesDatas.trashedItems.count
     }
 
     enum Mode {
@@ -321,7 +321,7 @@ extension EditableVaultListViewModel {
         return switch selection {
         case .all:
             count.all + activeItemsSharedWithMeCount
-        case let .precise(vault):
+        case let .precise(vault, _):
             count.vaultCounts.first { $0.shareId == vault.shareId }?.value ?? 0
         case .sharedWithMe:
             itemsSharedWithMe.count
@@ -335,7 +335,7 @@ extension EditableVaultListViewModel {
     func refreshHiddenShareIds() {
         // Remove stale shareID from hidden shareID set
         if case let .loaded(data) = state {
-            let applicableShareIds = data.shares.map(\.share.shareId)
+            let applicableShareIds = data.shares.values.map(\.share.shareId)
             for shareId in hiddenShareIds where !applicableShareIds.contains(shareId) {
                 hiddenShareIds.remove(shareId)
             }

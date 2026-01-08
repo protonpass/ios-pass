@@ -97,9 +97,10 @@ private extension GetSearchableItems {
             case .all:
                 try Task.checkCancellation()
                 return try await itemRepository.getItems(userId: userId, state: .active)
-            case let .precise(vault):
+            case let .precise(vault, folderId):
                 try Task.checkCancellation()
-                return try await itemRepository.getItems(shareId: vault.shareId, state: .active)
+                return try await itemRepository.getItems(shareId: vault.shareId, folderId: folderId,
+                                                         state: .active)
             case .trash:
                 try Task.checkCancellation()
                 return try await itemRepository.getItems(userId: userId, state: .trashed)

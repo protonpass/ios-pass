@@ -248,7 +248,8 @@ private extension ShareSelection {
                   iconColor: ShareSelection.all.color,
                   backgroundColor: ShareSelection.all.color.opacity(0.16))
 
-        case let .precise(vault):
+        // TODO: maybe take into account items
+        case let .precise(vault, _):
             if let vaultContent = vault.vaultContent {
                 .init(icon: vaultContent.vaultBigIcon,
                       iconColor: vaultContent.mainColor,

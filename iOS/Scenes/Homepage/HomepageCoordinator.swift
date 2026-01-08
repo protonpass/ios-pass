@@ -234,7 +234,7 @@ private extension HomepageCoordinator {
                 case .all, .trash:
                     let vaults = appContentManager.getAllShares()
                     createButtonDisabled = !vaults.contains(where: \.canEdit)
-                case let .precise(vault):
+                case let .precise(vault, _):
                     createButtonDisabled = !vault.canEdit
                 default:
                     createButtonDisabled = true
@@ -404,7 +404,7 @@ private extension HomepageCoordinator {
             if exitEditMode {
                 itemsTabViewModel?.isEditMode = false
             }
-            //TODO: move the appContentManager refresh somewhere else
+            // TODO: move the appContentManager refresh somewhere else
             itemsTabViewModel?.refresh()
             itemDetailCoordinator?.refresh()
             createEditItemCoordinator?.refresh()

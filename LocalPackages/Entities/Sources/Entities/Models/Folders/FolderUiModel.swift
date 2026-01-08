@@ -1,4 +1,4 @@
-//  
+//
 // FolderUiModel.swift
 // Proton Pass - Created on 05/01/2026.
 // Copyright (c) 2026 Proton Technologies AG
@@ -22,24 +22,35 @@ import Foundation
 
 public struct FolderUiModel: PrecomputedHashable, Equatable, Sendable, Identifiable {
     // Existing properties
-    public var id: String { folderId + shareId }
+    public var id: String { folder.folderID + shareId }
     public let folderId: String
     public let parentId: String
     public let shareId: String
-    public let content: [ShareContentElement]
-    
+    // TODO: this is maybe not good
+    public let lastUseTime: Int64?
+    public let folder: Folder
+    public let content: FolderContent
+//    public let content: [ShareContentElement]
+
     public let precomputedHash: Int
-    
-    public init(folderId: String, shareId: String, parentId: String?, content: [ShareContentElement]) {
-        self.folderId = folderId
+
+    public init(shareId: String, folder: Folder, content: FolderContent, lastUseTime: Int64? = nil) {
+        folderId = folder.folderID
         self.shareId = shareId
-        self.parentId = parentId ?? shareId
+        parentId = folder.parentFolderID ?? shareId
+        self.lastUseTime = lastUseTime
         self.content = content
+        self.folder = folder
+//        self.content = content
         var hasher = Hasher()
         hasher.combine(folderId)
         hasher.combine(parentId)
         hasher.combine(shareId)
+        hasher.combine(lastUseTime)
         hasher.combine(content)
+        hasher.combine(folder)
+
+//        hasher.combine(content)
         precomputedHash = hasher.finalize()
     }
 }

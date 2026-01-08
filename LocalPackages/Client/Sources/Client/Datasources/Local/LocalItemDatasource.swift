@@ -34,6 +34,7 @@ public protocol LocalItemDatasourceProtocol: Sendable {
 
     /// Get items by state
     func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem]
+    func getItems(shareId: String, folderId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem]
 
     /// Get items by ShareID and ItemID
     func getItems(_ ids: [any ItemIdentifiable]) async throws -> [SymmetricallyEncryptedItem]
@@ -130,6 +131,20 @@ public extension LocalItemDatasource {
         let fetchRequest = ItemEntity.fetchRequest()
         fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
             .init(format: "shareID = %@", shareId),
+            .init(format: "state = %d", state.rawValue)
+        ])
+        fetchRequest.sortDescriptors = [.init(key: "modifyTime", ascending: false)]
+        let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
+        return try itemEntities.map { try $0.toEncryptedItem() }
+    }
+
+    func getItems(shareId: String, folderId: String,
+                  state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
+        let taskContext = newTaskContext(type: .fetch)
+        let fetchRequest = ItemEntity.fetchRequest()
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            .init(format: "shareID = %@", shareId),
+            .init(format: "folderID = %@", folderId),
             .init(format: "state = %d", state.rawValue)
         ])
         fetchRequest.sortDescriptors = [.init(key: "modifyTime", ascending: false)]
