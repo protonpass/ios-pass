@@ -33,7 +33,7 @@ extension ShareSelection {
         switch self {
         case .all:
             #localized("Show all vaults")
-        case let .precise(vault):
+        case let .precise(vault, _):
             #localized("Show %@ vault", vault.vaultName ?? "")
         case .trash:
             #localized("Show trash")
@@ -114,7 +114,7 @@ final class ItemsTabTopBarViewModel: ObservableObject {
         switch appContentManager.shareSelection {
         case .all, .sharedByMe, .sharedWithMe, .trash:
             true
-        case let .precise(vault):
+        case let .precise(vault, _):
             vault.canEdit
         }
     }

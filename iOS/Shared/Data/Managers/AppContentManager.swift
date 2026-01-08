@@ -268,7 +268,7 @@ extension AppContentManager {
 
     func getShareContent(for shareId: String) -> ShareContent? {
         guard let sharesData = state.loadedContent else { return nil }
-        return sharesData.shares[shareId] //.first { $0.share.id == shareId }
+        return sharesData.shares[shareId] // .first { $0.share.id == shareId }
     }
 
     func getAllSharesContent() -> [ShareContent] {
@@ -329,23 +329,24 @@ extension AppContentManager {
 //        return sharesData.shares.first { $0.share.id == vault.id }?.items ?? []
 //    }
 //
-//    func getAllActiveAndTrashedItems() -> [ItemUiModel] {
-//        guard let sharesData = state.loadedContent else { return [] }
-//        let activeItems = sharesData.shares.flatMap(\.items)
-//        return activeItems + sharesData.trashedItems
-//    }
+    func getAllActiveAndTrashedItems() -> [ItemUiModel] {
+        guard let sharesData = state.loadedContent else { return [] }
+        let activeItems = getAllSharesItems()
+        return activeItems + sharesData.trashedItems
+    }
+
+    func getAllSharesItems() -> [ItemUiModel] {
+        guard let sharesData = state.loadedContent else { return [] }
+        return sharesData.shares.values.flatMap(\.allItems)
+    }
+
 //
-//    func getAllSharesItems() -> [ItemUiModel] {
-//        guard let sharesData = state.loadedContent else { return [] }
-//        return sharesData.shares.flatMap(\.items)
-//    }
-//    
     func getContent(for shareId: String, containerId: String?) -> [ShareContentElement] {
         guard let sharesData = state.loadedContent,
-                let shareContent = sharesData.shares[shareId] else { return [] }
-      
+              let shareContent = sharesData.shares[shareId] else { return [] }
+
         return shareContent.elements(for: containerId ?? shareId) ?? []
-        
+
 //        if let containerId {
 //            return shareContent?.element(for: containerId)?.content ?? []
 //        } else {
@@ -353,18 +354,18 @@ extension AppContentManager {
 //        }
 //        return sharesData.shares.first { $0.share.id == shareId }?.elements ?? []
     }
-    
+
     func getItems(for shareId: String, containerId: String?) -> [ItemUiModel] {
-        let elements = getContent(for: shareId, containerId: containerId)
-        return elements.compactMap(\.itemValue)
-    }
-    
-    func getAllItems(for shareId: String) -> [ItemUiModel] {
         guard let sharesData = state.loadedContent,
-                let shareContent = sharesData.shares[shareId] else { return [] }
-        return shareContent.allItems
+              let shareContent = sharesData.shares[shareId] else { return [] }
+        return shareContent.flatenedItems(from: containerId ?? shareId)
     }
 
+    func getAllItems(for shareId: String) -> [ItemUiModel] {
+        guard let sharesData = state.loadedContent,
+              let shareContent = sharesData.shares[shareId] else { return [] }
+        return shareContent.allItems
+    }
 
     func getItemContent(shareId: String, itemId: String) async throws -> ItemContent? {
         try await itemRepository.getItemContent(shareId: shareId, itemId: itemId)
@@ -376,7 +377,7 @@ extension AppContentManager {
     }
 
     // swiftlint:disable:next cyclomatic_complexity
-    func getFilteredItems() -> [ShareContentElement] {
+    func getFilteredItems() -> [ItemUiModel] {
         guard let sharesData = state.loadedContent else { return [] }
 
         // 1. Early exit for filter options that completely override share selection
@@ -389,20 +390,21 @@ extension AppContentManager {
             break // Proceed to share selection logic
         }
 
-        let hiddenShareIds = sharesData.shares.compactMap(\.value.share).hiddenShareIds
+        let hiddenShareIds = sharesData.hiddenSharesIds // shares.values.compactMap(\.share).hiddenShareIds
 
         // 2. Determine base items based on share selection
         // (hidden shares are computed lazily only when needed)
-        let baseItems: [ShareContentElement] = switch shareSelection {
+        let baseItems: [ItemUiModel] = switch shareSelection {
         case .all:
-            sharesData.shares.values.flatMap(\.rootElements).filter { !hiddenShareIds.contains($0.shareId) }
+            sharesData.visibleShareContents.flatMap(\.allItems)
         case let .precise(selectedShare, folderId):
-            if let shareContent = sharesData.shares[selectedShare.id]  {
-                if let folderId {
-                    shareContent.elements(for: folderId) ?? []
-                } else {
-                    shareContent.rootElements
-                }
+            if let shareContent = sharesData.shares[selectedShare.id] {
+                shareContent.flatenedItems(from: folderId ?? selectedShare.shareId)
+//                if let folderId {
+//                    shareContent.elements(for: folderId) ?? []
+//                } else {
+//                    shareContent.rootElements
+//                }
             } else {
                 []
             }
@@ -412,6 +414,12 @@ extension AppContentManager {
             sharesData.itemsSharedWithMe
         case .trash:
             sharesData.trashedItems.filter { !hiddenShareIds.contains($0.shareId) }
+//                .compactMap { element in
+//                guard let item = element.itemValue,
+//                      !hiddenShareIds.contains(item.shareId)
+//                else { return nil }
+//                return item
+//            }
         }
 
         // 3. Apply final type filter if needed
@@ -419,8 +427,17 @@ extension AppContentManager {
         case .all:
             return baseItems
         case let .precise(type):
-            //TODO: keep folders and item of correct type
+            // TODO: keep folders and item of correct type
             return baseItems.filter { $0.type.isSameType(with: type) }
+//            return baseItems.filter { element in
+//                if let item = element.itemValue {
+//                    item.type.isSameType(with: type)
+//                } else {
+//                    true
+//                }
+        ////                element.isFolder ||
+        ////                element.itemValue?.isSameType(with: type)
+//            }
         case .itemSharedByMe, .itemSharedWithMe:
             assertionFailure("Unreachable: handled by early return")
             return baseItems
@@ -431,7 +448,8 @@ extension AppContentManager {
         switch shareSelection {
         case .all:
             true
-        case let .precise(vault):
+        // TODO: check if folder id needed
+        case let .precise(vault, _):
             if vault.shareId == item.shareId {
                 switch filterOption {
                 case let .precise(filterType):
@@ -468,9 +486,11 @@ extension AppContentManager: LimitationCounterProtocol {
     func getAliasCount() -> Int {
         switch state {
         case let .loaded(sharesData):
-            let activeAliases = sharesData.shares.flatMap(\.value.elements.allItems).filter(\.isAlias)
-            let trashedAliases = sharesData.trashedItems.filter(\.isAlias)
-            return activeAliases.count + trashedAliases.count
+            let activeAliases = sharesData.shares.values.reduce(0) {
+                $0 + $1.aliasCount
+            } // flatMap(\.allItems).filter(\.isAlias)
+            let trashedAliases = sharesData.trashedItems.compactMap(\.isAlias)
+            return activeAliases + trashedAliases.count
         default:
             return 0
         }
@@ -478,8 +498,8 @@ extension AppContentManager: LimitationCounterProtocol {
 
     func getTOTPCount() -> Int {
         guard let sharesData = state.loadedContent else { return 0 }
-        let activeItemsWithTotpUri = sharesData.shares.flatMap(\.value.elements.allItems).filter(\.hasTotpUri).count
-        let trashedItemsWithTotpUri = sharesData.trashedItems.filter(\.hasTotpUri).count
+        let activeItemsWithTotpUri = sharesData.shares.flatMap(\.value.allItems).filter(\.hasTotpUri).count
+        let trashedItemsWithTotpUri = sharesData.trashedItems.compactMap(\.hasTotpUri).count
         return activeItemsWithTotpUri + trashedItemsWithTotpUri
     }
 
@@ -522,15 +542,15 @@ private extension AppContentManager {
         guard let sharesData = state.loadedContent else { return }
         switch shareSelection {
         case .all:
-            itemCount = ItemCount(items: sharesData.shares.flatMap(\.value.completeItemCount),
+            itemCount = ItemCount(items: sharesData.shares.flatMap(\.value.allItems),
                                   sharedByMe: sharesData.itemsSharedByMe.count,
                                   sharedWithMe: sharesData.itemsSharedWithMe.count)
-        case let .precise(selectedShare):
-            guard let share = sharesData.shares.first(where: { $0.id == selectedShare.id }) else {
+        case let .precise(selectedShare, _):
+            guard let share = sharesData.shares[selectedShare.id] else {
                 itemCount = ItemCount(items: [], sharedByMe: 0, sharedWithMe: 0)
                 return
             }
-            let items = share.items
+            let items = share.allItems
             let shouldCount = !share.share.isVaultRepresentation
 
             if share.share.owner {
@@ -547,7 +567,8 @@ private extension AppContentManager {
                                   sharedByMe: 0,
                                   sharedWithMe: sharesData.itemsSharedWithMe.count)
         case .trash:
-            itemCount = ItemCount(items: sharesData.trashedItems, sharedByMe: 0, sharedWithMe: 0)
+            itemCount = ItemCount(items: sharesData.trashedItems, sharedByMe: 0,
+                                  sharedWithMe: 0)
         }
     }
 
@@ -564,12 +585,12 @@ private extension AppContentManager {
     @MainActor
     func loadContents(userId: String, for shares: [Share]) async throws {
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
-       
+
         async let allItemsFetch = itemRepository.getAllItems(userId: userId)
         async let foldersFetch = folderRepository.getAllLocalFolders(userId: userId)
 
         let (allItems, folders) = try await (allItemsFetch, foldersFetch)
-        
+
         let dedupShares = dedupShare(shares: shares, filterHidden: false)
 
         let sharesData = try await getShareDatas(symmetricKey: symmetricKey,
@@ -594,9 +615,8 @@ private extension AppContentManager {
                     // Fallback to selecting all vaults when the previous selected vault is hidden
                     shareSelection = .all
                 } else {
-                    
-                //TODO: this need to also take into account folder nows
-                    shareSelection = .precise(vault)
+                    // TODO: this need to also take into account folder nows
+                    shareSelection = .precise(vault, folderId: nil)
                 }
             }
         } else {
@@ -634,44 +654,55 @@ private extension AppContentManager {
                        items: [SymmetricallyEncryptedItem]) async throws -> SharesData {
         // Group items by their associated share ID for efficient processing
         let itemsByShareID = Dictionary(grouping: items, by: { $0.shareId })
-        let fodlersByShareID = Dictionary(grouping: folders, by: { $0.shareId })
-        
-        return try await withThrowingTaskGroup(of: (ShareContent, [ItemUiModel]).self) { @Sendable taskGroup in
-            var shareContents: [ShareContent] = []
-            var trashedItems: [ItemUiModel] = []
-            
-            for share in shares {
-                taskGroup.addTask { @Sendable in
-                    // Retrieve items linked to this share
-                    let shareItems = itemsByShareID[share.id] ?? []
+        let foldersByShareID = Dictionary(grouping: folders, by: { $0.shareId })
+        // TODO: need to implement the tree structure
+        return try await withThrowingTaskGroup(of: (ShareContent, [ItemUiModel])
+            .self) { @Sendable taskGroup in
+                var shareContents: [ShareContent] = []
+                var trashedItems: [ItemUiModel] = []
 
-                    // Decrypt items and classify them
-                    var activeItems: [ItemUiModel] = []
-                    var trashItems: [ItemUiModel] = []
+                for share in shares {
+                    taskGroup.addTask { @Sendable in
+                        // Retrieve items linked to this share
+                        let shareItems = itemsByShareID[share.id] ?? []
+                        let shareFolders = foldersByShareID[share.id] ?? []
 
-                    for encryptedItem in shareItems {
-                        let decryptedItem = try encryptedItem.toItemUiModel(symmetricKey)
-                        // Separate active and inactive items
-                        if decryptedItem.state == .active {
-                            activeItems.append(decryptedItem)
-                        } else {
-                            trashItems.append(decryptedItem)
+                        // Decrypt items and classify them
+                        var shareElements: [ShareContentElement] = []
+                        var trashItems: [ItemUiModel] = []
+
+                        for encryptedItem in shareItems {
+                            let decryptedItem = try encryptedItem.toItemUiModel(symmetricKey)
+                            // Separate active and inactive items
+                            if decryptedItem.state == .active {
+                                shareElements.append(.item(decryptedItem))
+                            } else {
+                                trashItems.append(decryptedItem)
+                            }
                         }
+
+                        for shareFolder in shareFolders {
+                            let folder = try shareFolder.toFolderUiModel(symmetricKey)
+                            shareElements.append(.folder(folder))
+                        }
+//                    for encryptedFolder in shareFolders {
+//                        let decryptedItem = try encryptedFolder.toFolderUiModel(symmetricKey)
+//
+//                    }
+
+                        let shareContent = ShareContent(share: share, elements: shareElements)
+                        return (shareContent, trashItems)
                     }
-
-                    let shareContent = ShareContent(share: share, items: activeItems)
-                    return (shareContent, trashItems)
                 }
-            }
 
-            // Aggregate results from all tasks
-            for try await (shareContent, trashItems) in taskGroup {
-                shareContents.append(shareContent)
-                trashedItems.append(contentsOf: trashItems)
-            }
+                // Aggregate results from all tasks
+                for try await (shareContent, trashItems) in taskGroup {
+                    shareContents.append(shareContent)
+                    trashedItems.append(contentsOf: trashItems)
+                }
 
-            return SharesData(shares: shareContents, trashedItems: trashedItems)
-        }
+                return SharesData(shares: shareContents, trashedItems: trashedItems)
+            }
     }
 
     func indexContent(userPreferences: UserPreferences) {

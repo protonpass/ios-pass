@@ -195,7 +195,7 @@ private extension EditableVaultListView {
                     }
 
                     if shouldShow {
-                        vaultRow(for: .precise(vault))
+                        vaultRow(for: .precise(vault, folderId: nil))
                         if viewModel.mode.isView ||
                             (viewModel.mode.isOrganise && !viewModel.isLastVisibleVault(vault)) {
                             PassDivider()
@@ -220,7 +220,7 @@ private extension EditableVaultListView {
 
                     ForEach(viewModel.filteredOrderedVaults) { vault in
                         if viewModel.hiddenShareIds.contains(vault.shareId) {
-                            vaultRow(for: .precise(vault))
+                            vaultRow(for: .precise(vault, folderId: nil))
                             if !viewModel.isLastHiddenVault(vault) {
                                 PassDivider()
                             }
@@ -299,7 +299,7 @@ private extension EditableVaultListView {
                 switch selection {
                 case .all, .sharedByMe, .sharedWithMe:
                     EmptyView()
-                case let .precise(vault):
+                case let .precise(vault, _):
                     vaultTrailingView(vault, haveItems: itemCount > 0)
                 case .trash:
                     trashTrailingView
@@ -446,7 +446,7 @@ extension ShareSelection {
         switch self {
         case .all:
             #localized("All items")
-        case let .precise(vault):
+        case let .precise(vault, _):
             vault.vaultName ?? ""
         case .trash:
             #localized("Trash")
@@ -461,7 +461,7 @@ extension ShareSelection {
         switch self {
         case .all:
             PassIcon.brandPass
-        case let .precise(vault):
+        case let .precise(vault, _):
             vault.vaultBigIcon ?? PassIcon.vaultIcon1Big
         case .trash:
             IconProvider.trash
@@ -476,7 +476,7 @@ extension ShareSelection {
         switch self {
         case .all, .sharedByMe, .sharedWithMe:
             PassColor.interactionNormMajor2
-        case let .precise(vault):
+        case let .precise(vault, _):
             vault.mainColor ?? PassColor.textWeak
         case .trash:
             PassColor.textWeak
@@ -485,7 +485,7 @@ extension ShareSelection {
 
     var share: Share? {
         switch self {
-        case let .precise(vault):
+        case let .precise(vault, _):
             vault
         default:
             nil

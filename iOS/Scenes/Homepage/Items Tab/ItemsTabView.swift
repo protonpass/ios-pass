@@ -210,7 +210,7 @@ private extension ItemsTabView {
             EmptyVaultView(canCreateItems: !viewModel.appContentManager.getAllEditableVaultContents().isEmpty,
                            onCreate: { viewModel.createNewItem(type: $0) })
                 .padding(.bottom, safeAreaInsets.bottom)
-        case let .precise(vault):
+        case let .precise(vault, _):
             EmptyVaultView(canCreateItems: vault.canEdit,
                            onCreate: { viewModel.createNewItem(type: $0) })
                 .padding(.bottom, safeAreaInsets.bottom)

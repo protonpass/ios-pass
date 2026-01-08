@@ -23,18 +23,22 @@ import CryptoKit
 
 public struct SharesData: Hashable, Sendable {
     public let shares: [String: ShareContent]
-    public let trashedItems: [ShareContentElement]
-    public let itemsSharedByMe: [ShareContentElement]
-    public let itemsSharedWithMe: [ShareContentElement]
+    public let trashedItems: [ItemUiModel]
+    public let itemsSharedByMe: [ItemUiModel]
+    public let itemsSharedWithMe: [ItemUiModel]
 
-    public init(shares:  [String: ShareContent], trashedItems: [ItemUiModel]) {
-        self.shares = shares
-        self.trashedItems = trashedItems.map { .item($0) }
+    public init(shares: [ShareContent], trashedItems: [ItemUiModel]) {
+        self.shares = shares.reduce([String: ShareContent]()) { result, shareContent -> [String: ShareContent] in
+            var result = result
+            result[shareContent.share.id] = shareContent
+            return result
+        }
+        self.trashedItems = trashedItems
 
         var sharedByMeShareIds: Set<String> = []
         var sharedWithMeShareIds: Set<String> = []
 
-        for share in shares.values {
+        for share in shares {
             if share.share.shareRole == .manager {
                 sharedByMeShareIds.insert(share.share.shareId)
             }
@@ -48,15 +52,15 @@ public struct SharesData: Hashable, Sendable {
         let trashedSharedWithMeItems = sharedTrashedItems.filter { sharedWithMeShareIds.contains($0.shareId) }
 
         itemsSharedByMe =
-        shares.values
+            self.shares.values
                 .filter { sharedByMeShareIds.contains($0.share.shareId) }
-                .flatMap(\.allElements)
+                .flatMap(\.allItems)
                 .filter(\.shared) + trashedSharedByMeItems
 
-        itemsSharedWithMe = shares.values
+        itemsSharedWithMe = self.shares.values
             .filter { sharedWithMeShareIds.contains($0.share.shareId) }
-            .flatMap(\.allElements)
-        + trashedSharedWithMeItems
+            .flatMap(\.allItems)
+            + trashedSharedWithMeItems
     }
 
     public var filteredOrderedVaults: [Share] {
@@ -77,5 +81,23 @@ public struct SharesData: Hashable, Sendable {
             trashedItems.isEmpty &&
             itemsSharedByMe.isEmpty &&
             itemsSharedWithMe.isEmpty
+    }
+
+    public var hiddenSharesIds: [String] {
+        shares.values.compactMap { shareContent in
+            guard shareContent.share.hidden else {
+                return nil
+            }
+            return shareContent.id
+        }
+    }
+
+    public var visibleShareContents: [ShareContent] {
+        shares.values.compactMap { shareContent in
+            guard !shareContent.share.hidden else {
+                return nil
+            }
+            return shareContent
+        }
     }
 }
