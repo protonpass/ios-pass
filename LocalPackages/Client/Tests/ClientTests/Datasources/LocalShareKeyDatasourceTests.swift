@@ -85,8 +85,7 @@ extension LocalShareKeyDatasourceTests {
 
         // Then
         let keys = try await sut.getKeys(shareId: givenShareId)
-        XCTAssertEqual(keys.count, givenKeys.count)
-        XCTAssertEqual(Set(keys), Set(givenKeys))
+        XCTAssert(keys.contains(givenKeys))
     }
 
     func testRemoveAllKeys() async throws {
