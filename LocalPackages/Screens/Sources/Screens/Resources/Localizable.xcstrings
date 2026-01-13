@@ -93,6 +93,12 @@
             "value" : "(%lld leden)"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(%lld członków)"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15370,7 +15376,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Obțineți Proton Unlimited"
+            "value" : "Luați Proton Unlimited"
           }
         },
         "ru" : {
