@@ -105,7 +105,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
                         .frame(maxHeight: .infinity)
                 }
             }
-            .padding(.vertical, 12)
+            .padding(.vertical, 6)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
