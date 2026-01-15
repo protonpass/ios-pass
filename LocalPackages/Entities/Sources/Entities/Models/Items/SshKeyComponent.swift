@@ -29,4 +29,9 @@ public enum SshKeyComponent: Int, Sendable, Identifiable {
 public struct SshKeyComponents: Sendable {
     public let `private`: String
     public let `public`: String
+
+    public init(private: String, public: String) {
+        self.private = `private`
+        self.public = `public`
+    }
 }
