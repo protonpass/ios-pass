@@ -29,7 +29,7 @@ struct CreateEditSshKeyView: View {
     @StateObject private var viewModel: CreateEditSshKeyViewModel
     @FocusState private var focusedField: Field?
     @State private var lastFocusedField: Field?
-    @State private var selectedKeyType: SshKeyType?
+    @State private var selectedKeyComponent: SshKeyComponent?
 
     enum Field: CustomFieldTypes {
         case title, note
@@ -100,11 +100,11 @@ struct CreateEditSshKeyView: View {
                 focusedField = .title
             }
         }
-        .sheet(item: $selectedKeyType) { keyType in
-            SshKeyEditor(title: keyType.title,
-                         value: keyType == .public ? viewModel.publicKey : viewModel.privateKey,
+        .sheet(item: $selectedKeyComponent) { component in
+            SshKeyEditor(title: component.title,
+                         value: component == .public ? viewModel.publicKey : viewModel.privateKey,
                          onSave: { newValue in
-                             switch keyType {
+                             switch component {
                              case .public:
                                  viewModel.publicKey = newValue
                              case .private:
@@ -137,13 +137,13 @@ private extension CreateEditSshKeyView {
         .roundedEditableSection()
     }
 
-    func view(for keyType: SshKeyType, value: String) -> some View {
+    func view(for component: SshKeyComponent, value: String) -> some View {
         VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-            Text(keyType.title)
+            Text(component.title)
                 .editableSectionTitleText(for: value)
 
-            TextField(keyType.placeholder,
-                      text: keyType == .public ?
+            TextField(component.placeholder,
+                      text: component == .public ?
                           .constant(value) :
                           .constant(String(repeating: "•", count: value.count)))
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -157,7 +157,7 @@ private extension CreateEditSshKeyView {
         .padding(.horizontal, DesignConstant.sectionPadding)
         .buttonEmbeded {
             focusedField = nil
-            selectedKeyType = keyType
+            selectedKeyComponent = component
         }
     }
 

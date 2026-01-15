@@ -20,10 +20,8 @@
 
 import Foundation
 
-public enum SshKeyType: Int, Sendable, Identifiable {
-    case `public`, `private`
-
-    public var id: Int {
-        rawValue
-    }
+public enum SshKeyType: String, Sendable {
+    case rsa2048 = "RSA-2048"
+    case rsa4096 = "RSA-4096"
+    case ed25519 = "Ed25519"
 }

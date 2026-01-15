@@ -417,8 +417,8 @@
 		530505AC2D58C1E000CD0E5E /* ItemTypeIdentifiable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A8FD2B10C37500C44C08 /* ItemTypeIdentifiable+Extensions.swift */; };
 		531A480E2D80832300DDC7FB /* SshDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531A480D2D80831E00DDC7FB /* SshDetailView.swift */; };
 		531A48102D80833D00DDC7FB /* SshDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531A480F2D80833C00DDC7FB /* SshDetailViewModel.swift */; };
-		531A48122D80852800DDC7FB /* SshKeyType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531A48112D80852500DDC7FB /* SshKeyType+Extensions.swift */; };
-		531A48132D80853600DDC7FB /* SshKeyType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531A48112D80852500DDC7FB /* SshKeyType+Extensions.swift */; };
+		531A48122D80852800DDC7FB /* SshKeyComponent+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531A48112D80852500DDC7FB /* SshKeyComponent+Extensions.swift */; };
+		531A48132D80853600DDC7FB /* SshKeyComponent+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531A48112D80852500DDC7FB /* SshKeyComponent+Extensions.swift */; };
 		531A48162D808B9500DDC7FB /* WifiDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531A48152D808B9200DDC7FB /* WifiDetailView.swift */; };
 		531A48182D808BC100DDC7FB /* WifiDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531A48172D808BBF00DDC7FB /* WifiDetailViewModel.swift */; };
 		531A481A2D808D0C00DDC7FB /* WifiData+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531A48192D808D0C00DDC7FB /* WifiData+Extensions.swift */; };
@@ -1039,7 +1039,7 @@
 		35FD55A12C9072DC00805584 /* ItemCreationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCreationInfo.swift; sourceTree = "<group>"; };
 		531A480D2D80831E00DDC7FB /* SshDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SshDetailView.swift; sourceTree = "<group>"; };
 		531A480F2D80833C00DDC7FB /* SshDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SshDetailViewModel.swift; sourceTree = "<group>"; };
-		531A48112D80852500DDC7FB /* SshKeyType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SshKeyType+Extensions.swift"; sourceTree = "<group>"; };
+		531A48112D80852500DDC7FB /* SshKeyComponent+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SshKeyComponent+Extensions.swift"; sourceTree = "<group>"; };
 		531A48152D808B9200DDC7FB /* WifiDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiDetailView.swift; sourceTree = "<group>"; };
 		531A48172D808BBF00DDC7FB /* WifiDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiDetailViewModel.swift; sourceTree = "<group>"; };
 		531A48192D808D0C00DDC7FB /* WifiData+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WifiData+Extensions.swift"; sourceTree = "<group>"; };
@@ -2477,7 +2477,7 @@
 				5B888A242B440E270011D6E0 /* AliasPrefixError+Extensions.swift */,
 				35A5EEDF2958B60200A09623 /* Browser+Extensions.swift */,
 				5BD6138C2C202B0E00968E0F /* UpsellEntry+Extensions.swift */,
-				531A48112D80852500DDC7FB /* SshKeyType+Extensions.swift */,
+				531A48112D80852500DDC7FB /* SshKeyComponent+Extensions.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -3398,7 +3398,7 @@
 				531A48202D808F1500DDC7FB /* CustomDetailViewModel.swift in Sources */,
 				3560843B29DD4909001F7487 /* AppearanceSettings.swift in Sources */,
 				3524A4672CB6B240001EC572 /* IdentityDetailViewModel.swift in Sources */,
-				531A48132D80853600DDC7FB /* SshKeyType+Extensions.swift in Sources */,
+				531A48132D80853600DDC7FB /* SshKeyComponent+Extensions.swift in Sources */,
 				3564DE9D299A4EC00002DDFA /* CreateEditItemTitleSection.swift in Sources */,
 				35AC9A692A0C189000FBCEEC /* EditCustomFieldView.swift in Sources */,
 				355BDED9299E789A009FDBB1 /* CreateEditAliasViewModel.swift in Sources */,
@@ -3637,7 +3637,7 @@
 				35E152C22A38864600E47E57 /* CreateEditCreditCardView.swift in Sources */,
 				5B1092DB2B56EA93002621A4 /* DetailHistoryView+Alias.swift in Sources */,
 				35AC9A682A0C16FE00FBCEEC /* EditCustomFieldView.swift in Sources */,
-				531A48122D80852800DDC7FB /* SshKeyType+Extensions.swift in Sources */,
+				531A48122D80852800DDC7FB /* SshKeyComponent+Extensions.swift in Sources */,
 				5B41C99C2AF51FED00A8E9F0 /* LABiometryType+Extensions.swift in Sources */,
 				3541C0792B68C337006B35D9 /* Spotlight+Extensions.swift in Sources */,
 				53B981792D7ED25D003BD70E /* WifiDetailView.swift in Sources */,
