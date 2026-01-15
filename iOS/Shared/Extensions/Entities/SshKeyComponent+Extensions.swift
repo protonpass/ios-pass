@@ -1,5 +1,5 @@
 //
-// SshKeyType.swift
+// SshKeyComponent+Extensions.swift
 // Proton Pass - Created on 11/03/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
@@ -18,10 +18,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import Entities
+import SwiftUI
 
-public enum SshKeyType: String, Sendable {
-    case rsa2048 = "RSA-2048"
-    case rsa4096 = "RSA-4096"
-    case ed25519 = "Ed25519"
+extension SshKeyComponent {
+    var title: LocalizedStringKey {
+        switch self {
+        case .public: "Public key"
+        case .private: "Private key"
+        }
+    }
+
+    var placeholder: LocalizedStringKey {
+        switch self {
+        case .public: "Add public key"
+        case .private: "Add private key"
+        }
+    }
 }

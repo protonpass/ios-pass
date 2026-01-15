@@ -26,7 +26,7 @@ import SwiftUI
 
 struct SshDetailView: View {
     @StateObject private var viewModel: SshDetailViewModel
-    @State private var selectedKeyType: SshKeyType?
+    @State private var selectedKeyComponent: SshKeyComponent?
     @Namespace private var bottomID
 
     init(viewModel: SshDetailViewModel) {
@@ -90,12 +90,12 @@ struct SshDetailView: View {
         }
         .itemDetailSetUp(viewModel)
         .navigationStackEmbeded()
-        .sheet(item: $selectedKeyType) { keyType in
-            let value = switch keyType {
+        .sheet(item: $selectedKeyComponent) { component in
+            let value = switch component {
             case .private: viewModel.privateKey
             case .public: viewModel.publicKey
             }
-            SshKeyDetailView(value: value, title: keyType.title)
+            SshKeyDetailView(value: value, title: component.title)
         }
     }
 }
@@ -130,7 +130,7 @@ private extension SshDetailView {
         .contentShape(.rect)
         .onTapGesture {
             if !viewModel.publicKey.isEmpty {
-                selectedKeyType = .public
+                selectedKeyComponent = .public
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
@@ -160,7 +160,7 @@ private extension SshDetailView {
         .contentShape(.rect)
         .onTapGesture {
             if !viewModel.privateKey.isEmpty {
-                selectedKeyType = .private
+                selectedKeyComponent = .private
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)

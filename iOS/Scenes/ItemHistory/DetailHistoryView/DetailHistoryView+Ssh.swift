@@ -77,7 +77,7 @@ private extension DetailHistoryView {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .contentShape(.rect)
-        .onTapGesture { selectedKeyType = .public }
+        .onTapGesture { selectedKeyComponent = .public }
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
 
@@ -96,7 +96,7 @@ private extension DetailHistoryView {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .contentShape(.rect)
-        .onTapGesture { selectedKeyType = .private }
+        .onTapGesture { selectedKeyComponent = .private }
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
 }
