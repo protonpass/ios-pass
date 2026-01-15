@@ -344,7 +344,6 @@ private struct ItemRow: View {
                                          onAliasTrash: onAliasTrash,
                                          handler: itemContextMenuHandler)
                 }
-                .padding(.horizontal)
                 .background(isSelected ? PassColor.interactionNormMinor1 : .clear)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .animation(.default, value: isSelected)
