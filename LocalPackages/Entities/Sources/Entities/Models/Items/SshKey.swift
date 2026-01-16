@@ -54,15 +54,3 @@ public struct SshKeyComponents: Sendable {
         self.public = `public`
     }
 }
-
-public struct SshKeyOptions {
-    public let type: SshKeyType
-    public let comment: String
-    public let passphrase: String
-
-    public init(type: SshKeyType, comment: String, passphrase: String) {
-        self.type = type
-        self.comment = comment
-        self.passphrase = passphrase
-    }
-}

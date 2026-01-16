@@ -30,7 +30,6 @@ struct CreateEditSshKeyView: View {
     @FocusState private var focusedField: Field?
     @State private var lastFocusedField: Field?
     @State private var selectedKeyComponent: SshKeyComponent?
-    @State private var showGenerator = false
     @State private var showKeyTypeAlert = false
 
     enum Field: CustomFieldTypes {
@@ -117,21 +116,21 @@ struct CreateEditSshKeyView: View {
                          })
                          .interactiveDismissDisabled()
         }
-        .sheet(isPresented: $showGenerator) {
-            SshKeyGenerator(onConfirm: viewModel.generate(with:))
-        }
         .alert("Generate SSH key",
                isPresented: $showKeyTypeAlert,
                actions: {
                    ForEach(SshKeyType.allCases, id: \.self) { type in
                        Button(action: {
-                           viewModel.generate(with: .init(type: type, comment: "", passphrase: ""))
+                           viewModel.generate(with: type)
                        }, label: {
                            Text(verbatim: type.title)
                        })
                    }
 
                    Button("Cancel", role: .cancel, action: {})
+               },
+               message: {
+                   Text("Select an SSH key type")
                })
     }
 }
