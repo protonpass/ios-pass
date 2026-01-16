@@ -71,12 +71,12 @@ final class CreateEditSshKeyViewModel: BaseCreateEditItemViewModel, DeinitPrinta
                             customFields: customFields)
     }
 
-    func generate(with options: SshKeyOptions) {
+    func generate(with type: SshKeyType) {
         Task {
             do {
                 defer { isLoading = false }
                 isLoading = true
-                let key = try await generateSshKey(with: options)
+                let key = try await generateSshKey(type: type)
                 privateKey = key.private
                 publicKey = key.public
             } catch {

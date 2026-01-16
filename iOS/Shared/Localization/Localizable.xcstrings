@@ -19897,16 +19897,6 @@
         }
       }
     },
-    "Add a comment" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add a comment"
-          }
-        }
-      }
-    },
     "Add a custom section" : {
       "localizations" : {
         "be" : {
@@ -20099,16 +20089,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "新增自訂部分"
-          }
-        }
-      }
-    },
-    "Add a passphrase" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add a passphrase"
           }
         }
       }
@@ -45207,16 +45187,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "逗號"
-          }
-        }
-      }
-    },
-    "Comment" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Comment"
           }
         }
       }
@@ -123254,16 +123224,6 @@
         }
       }
     },
-    "Passphrase" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Passphrase"
-          }
-        }
-      }
-    },
     "Passport" : {
       "comment" : "A custom item template",
       "localizations" : {
@@ -151990,6 +151950,16 @@
         }
       }
     },
+    "Select an SSH key type" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select an SSH key type"
+          }
+        }
+      }
+    },
     "Select items" : {
       "comment" : "Enable bulk action mode",
       "localizations" : {
@@ -165319,16 +165289,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SSH 金鑰已還原"
-          }
-        }
-      }
-    },
-    "SSH key type" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "SSH key type"
           }
         }
       }

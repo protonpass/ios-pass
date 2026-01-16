@@ -25,13 +25,13 @@ import PassRustCore
 public protocol GenerateSshKeyUseCase: Sendable {
     // Generating RSA keys takes seconds so we offload the generation from main thread
     @concurrent
-    func execute(with options: SshKeyOptions) async throws -> SshKeyComponents
+    func execute(type: Entities.SshKeyType) async throws -> SshKeyComponents
 }
 
 public extension GenerateSshKeyUseCase {
     @concurrent
-    func callAsFunction(with options: SshKeyOptions) async throws -> SshKeyComponents {
-        try await execute(with: options)
+    func callAsFunction(type: Entities.SshKeyType) async throws -> SshKeyComponents {
+        try await execute(type: type)
     }
 }
 
@@ -43,10 +43,10 @@ public final class GenerateSshKey: GenerateSshKeyUseCase {
     }
 
     @concurrent
-    public func execute(with options: SshKeyOptions) async throws -> SshKeyComponents {
-        let key = try manager.generateSshKey(comment: options.comment,
-                                             keyType: options.type.rustType,
-                                             passphrase: options.passphrase.nilIfEmpty)
+    public func execute(type: Entities.SshKeyType) async throws -> SshKeyComponents {
+        let key = try manager.generateSshKey(comment: "",
+                                             keyType: type.rustType,
+                                             passphrase: nil)
         return .init(private: key.privateKey, public: key.publicKey)
     }
 }
