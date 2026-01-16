@@ -501,6 +501,7 @@
 		53C81ECE2DDB6E2000A367C1 /* FactoryKit in Frameworks */ = {isa = PBXBuildFile; productRef = 53C81ECD2DDB6E2000A367C1 /* FactoryKit */; };
 		53C81ED02DDB6E2700A367C1 /* FactoryKit in Frameworks */ = {isa = PBXBuildFile; productRef = 53C81ECF2DDB6E2700A367C1 /* FactoryKit */; };
 		53D6B3962D58C12B003EA6D3 /* LoggerManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C22A2965754C0087518A /* LoggerManager+Extensions.swift */; };
+		53DCA8C22F197977000B97BD /* SshKeyGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DCA8C12F197968000B97BD /* SshKeyGenerator.swift */; };
 		53E07DC22D58BD29009D6EE5 /* Screens in Frameworks */ = {isa = PBXBuildFile; productRef = 53E07DC12D58BD29009D6EE5 /* Screens */; };
 		53E07DC32D58BD50009D6EE5 /* ItemTypeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24802A7814C20060EDF7 /* ItemTypeFilter.swift */; };
 		53E07DC42D58BD6C009D6EE5 /* BaseCreateEditItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE1A28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift */; };
@@ -1069,6 +1070,7 @@
 		53B981782D7ED258003BD70E /* WifiDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiDetailView.swift; sourceTree = "<group>"; };
 		53B9817A2D7ED289003BD70E /* WifiDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiDetailViewModel.swift; sourceTree = "<group>"; };
 		53BCE8412DF06576002A903D /* CreateEditKeyboardToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditKeyboardToolbar.swift; sourceTree = "<group>"; };
+		53DCA8C12F197968000B97BD /* SshKeyGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SshKeyGenerator.swift; sourceTree = "<group>"; };
 		53F19E5B2D81961600496168 /* DetailHistoryView+Ssh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailHistoryView+Ssh.swift"; sourceTree = "<group>"; };
 		53F19E5D2D81AA6E00496168 /* DetailHisotryView+Wifi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailHisotryView+Wifi.swift"; sourceTree = "<group>"; };
 		53F19E5F2D81B13900496168 /* DetailHistoryView+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailHistoryView+Custom.swift"; sourceTree = "<group>"; };
@@ -2103,6 +2105,7 @@
 		534090572D709842002E42F8 /* SSH key */ = {
 			isa = PBXGroup;
 			children = (
+				53DCA8C12F197968000B97BD /* SshKeyGenerator.swift */,
 				534090582D70984A002E42F8 /* CreateEditSshKeyView.swift */,
 				534090612D70B060002E42F8 /* CreateEditSshKeyViewModel.swift */,
 			);
@@ -3713,6 +3716,7 @@
 				354F769228C8678100EB2383 /* LogInDetailView.swift in Sources */,
 				3551BC6129A505940048CE07 /* AdvancedOptionsSection.swift in Sources */,
 				354AD96028CB5934000E645B /* EmptyTrashView.swift in Sources */,
+				53DCA8C22F197977000B97BD /* SshKeyGenerator.swift in Sources */,
 				5B1F0F072EC1DF5C0015982A /* InviteSuggestionsSection.swift in Sources */,
 				53A2EB092D6F538A008A4A0C /* CustomItemTemplatesList.swift in Sources */,
 				5B7C7FC32C5D25A700E1F646 /* AliasSyncConfigurationView.swift in Sources */,
