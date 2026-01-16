@@ -29,6 +29,7 @@ struct SshKeyGenerator: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showAdvancedOptions = false
     @State private var showTypeSelector = false
+    @State private var showPasswordGenerator = false
     @State private var comment = ""
     @State private var passphrase = ""
     @State private var type: SshKeyType = .default
@@ -99,16 +100,37 @@ struct SshKeyGenerator: View {
         .animation(.default, value: showAdvancedOptions)
         .presentationDragIndicator(.visible)
         .background(PassColor.backgroundNorm)
+        .toolbar { toolbar }
         .accentColor(PassColor.interactionNorm)
         .tint(PassColor.interactionNorm)
         .fittedPresentationDetent(onHeightChanged: nil)
         .sheet(isPresented: $showTypeSelector) {
             SshKeyTypeList(type: $type)
         }
+        .sheet(isPresented: $showPasswordGenerator) {
+            GeneratePasswordView(mode: .createLogin) {
+                passphrase = $0
+            }
+        }
     }
 }
 
 private extension SshKeyGenerator {
+    @ToolbarContentBuilder
+    var toolbar: some ToolbarContent {
+        ToolbarItem(placement: .keyboard) {
+            switch focusedField {
+            case .passphrase:
+                ToolbarButton("Generate password",
+                              titleBundle: .main,
+                              image: IconProvider.arrowsRotate,
+                              action: { showPasswordGenerator.toggle() })
+            default:
+                EmptyView()
+            }
+        }
+    }
+
     var commentRow: some View {
         VStack(alignment: .leading) {
             HStack {
