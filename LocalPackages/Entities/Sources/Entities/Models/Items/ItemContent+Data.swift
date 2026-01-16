@@ -132,7 +132,7 @@ public struct CreditCardData: Sendable, Equatable, Hashable {
 
 public extension CreditCardData {
     static func expirationDate(month: Int, year: Int) -> String {
-        String(format: "%02d / %02d", month, year % 100)
+        month == 0 || year == 0 ? "" : String(format: "%02d / %02d", month, year % 100)
     }
 }
 

@@ -21,7 +21,6 @@
 import Client
 import Combine
 import Core
-@preconcurrency import CryptoKit
 import Entities
 import FactoryKit
 import Macro
@@ -76,7 +75,6 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     let isShownAsSheet: Bool
-    let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
 
     let upgradeChecker: any UpgradeCheckerProtocol
     private(set) var itemContent: ItemContent {
@@ -338,10 +336,6 @@ class BaseItemDetailViewModel: ObservableObject {
 
     func upgrade() {
         router.present(for: .upgradeFlow)
-    }
-
-    func getSymmetricKey() async throws -> SymmetricKey {
-        try await symmetricKeyProvider.getSymmetricKey()
     }
 
     func showItemHistory() {
