@@ -31,6 +31,7 @@ struct CreateEditSshKeyView: View {
     @State private var lastFocusedField: Field?
     @State private var selectedKeyComponent: SshKeyComponent?
     @State private var showGenerator = false
+    @State private var showKeyTypeAlert = false
 
     enum Field: CustomFieldTypes {
         case title, note, privateKey, publicKey
@@ -119,6 +120,19 @@ struct CreateEditSshKeyView: View {
         .sheet(isPresented: $showGenerator) {
             SshKeyGenerator(onConfirm: viewModel.generate(with:))
         }
+        .alert("Generate SSH key",
+               isPresented: $showKeyTypeAlert,
+               actions: {
+                   ForEach(SshKeyType.allCases, id: \.self) { type in
+                       Button(action: {
+                           viewModel.generate(with: .init(type: type, comment: "", passphrase: ""))
+                       }, label: {
+                           Text(verbatim: type.title)
+                       })
+                   }
+
+                   Button("Cancel", role: .cancel, action: {})
+               })
     }
 }
 
@@ -135,7 +149,7 @@ private extension CreateEditSshKeyView {
                                   action: {
                                       lastFocusedField = focusedField
                                       focusedField = nil
-                                      showGenerator = true
+                                      showKeyTypeAlert = true
                                   })
 
                     Divider()
