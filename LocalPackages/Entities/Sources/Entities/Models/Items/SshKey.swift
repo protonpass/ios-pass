@@ -32,7 +32,7 @@ public enum SshKeyType: Sendable, CaseIterable {
         case .rsa2048:
             "RSA-2048"
         case .rsa4096:
-            "RSA-2048"
+            "RSA-4096"
         }
     }
 }
