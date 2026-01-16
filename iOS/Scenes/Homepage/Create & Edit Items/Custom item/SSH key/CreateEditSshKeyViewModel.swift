@@ -20,6 +20,7 @@
 
 import Core
 import Entities
+import FactoryKit
 import Foundation
 import Macro
 
@@ -28,6 +29,10 @@ final class CreateEditSshKeyViewModel: BaseCreateEditItemViewModel, DeinitPrinta
 
     @Published var publicKey = ""
     @Published var privateKey = ""
+    @Published private(set) var isLoading = false
+
+    @LazyInjected(\UseCasesContainer.generateSshKey)
+    private var generateSshKey
 
     override var shouldUpgrade: Bool {
         if case .create = mode, isFreeUser {
@@ -64,5 +69,19 @@ final class CreateEditSshKeyViewModel: BaseCreateEditItemViewModel, DeinitPrinta
                                                                publicKey: publicKey,
                                                                extraSections: customSections)),
                             customFields: customFields)
+    }
+
+    func generate(with options: SshKeyOptions) {
+        Task {
+            do {
+                defer { isLoading = false }
+                isLoading = true
+                let key = try await generateSshKey(with: options)
+                privateKey = key.private
+                publicKey = key.public
+            } catch {
+                handle(error)
+            }
+        }
     }
 }
