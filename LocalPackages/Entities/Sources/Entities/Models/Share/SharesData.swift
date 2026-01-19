@@ -63,15 +63,15 @@ public struct SharesData: Hashable, Sendable {
             + trashedSharedWithMeItems
     }
 
-    public var filteredOrderedVaults: [Share] {
+    public var filteredOrderedVaults: [ShareContent] {
         shares.values
-            .compactMap { shareContent -> Share? in
+            .compactMap { shareContent -> ShareContent? in
                 guard shareContent.share.vaultName != nil else { return nil }
-                return shareContent.share
+                return shareContent
             }
             .sorted { lhs, rhs in
-                guard let lhsName = lhs.vaultName,
-                      let rhsName = rhs.vaultName else { return false }
+                guard let lhsName = lhs.share.vaultName,
+                      let rhsName = rhs.share.vaultName else { return false }
                 return lhsName < rhsName
             }
     }
