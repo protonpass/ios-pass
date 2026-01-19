@@ -209,11 +209,9 @@ private extension ItemsTabView {
         case .all:
             EmptyVaultView(canCreateItems: !viewModel.appContentManager.getAllEditableVaultContents().isEmpty,
                            onCreate: { viewModel.createNewItem(type: $0) })
-                .padding(.bottom, safeAreaInsets.bottom)
         case let .precise(vault):
             EmptyVaultView(canCreateItems: vault.canEdit,
                            onCreate: { viewModel.createNewItem(type: $0) })
-                .padding(.bottom, safeAreaInsets.bottom)
         case .trash:
             EmptyTrashView()
                 .padding(.bottom, safeAreaInsets.bottom)
@@ -344,7 +342,6 @@ private struct ItemRow: View {
                                          onAliasTrash: onAliasTrash,
                                          handler: itemContextMenuHandler)
                 }
-                .padding(.horizontal)
                 .background(isSelected ? PassColor.interactionNormMinor1 : .clear)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .animation(.default, value: isSelected)
