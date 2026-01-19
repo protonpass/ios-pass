@@ -34,6 +34,7 @@ public struct GroupInvite: Decodable, Hashable, Equatable, Identifiable, Sendabl
     public let keys: [InviteKey]
     public let vaultData: VaultData?
     public let data: String?
+    public let isGroupOwner: Bool
     public let createTime: Int
 
     public var id: String {
@@ -53,6 +54,7 @@ public struct GroupInvite: Decodable, Hashable, Equatable, Identifiable, Sendabl
                 keys: [ItemKey],
                 vaultData: VaultData?,
                 data: String?,
+                isGroupOwner: Bool,
                 createTime: Int) {
         self.inviteID = inviteID
         self.inviterUserID = inviterUserID
@@ -67,6 +69,7 @@ public struct GroupInvite: Decodable, Hashable, Equatable, Identifiable, Sendabl
         self.keys = keys
         self.vaultData = vaultData
         self.data = data
+        self.isGroupOwner = isGroupOwner
         self.createTime = createTime
     }
 }

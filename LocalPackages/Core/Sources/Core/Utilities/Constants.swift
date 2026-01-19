@@ -37,6 +37,7 @@ public enum Constants {
         public static let existingUserSharing = "pass.invite.vault.existing-user"
         public static let organizationKey = "account.key-token.organization"
         public static let newUserSharing = "pass.invite.vault.new-user"
+        public static let accountKeyToken = "account.key-token.address"
     }
 
     public enum PINCode {
