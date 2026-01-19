@@ -557,13 +557,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld àlies presents a SimpleLogin però que falten a Proton Pass."
+                  "value" : "%lld àlies es troba a SimpleLogin però no a Proton Pass."
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld àlies presents a SimpleLogin però que falten a Proton Pass."
+                  "value" : "%lld àlies es troben a SimpleLogin però no a Proton Pass."
                 }
               }
             }
@@ -7212,7 +7212,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Afegint el vostre domini, podeu crear aliases com hola@el-meu-domini.cat."
+            "value" : "En afegir el vostre domini, podeu crear àlies com hola@el-meu-domini.cat."
           }
         },
         "cs" : {
@@ -10111,7 +10111,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Caixa forta SimpleLogin per defecte"
+            "value" : "Caixa forta predeterminada de SimpleLogin"
           }
         },
         "cs" : {
@@ -16202,7 +16202,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Més alta"
+            "value" : "Màxima"
           }
         },
         "cs" : {
