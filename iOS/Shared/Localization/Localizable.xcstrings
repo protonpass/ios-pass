@@ -48864,7 +48864,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Скопировать эл. почту"
+            "value" : "Копировать эл. почту"
           }
         },
         "sk" : {
@@ -49452,7 +49452,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Скопировать полное имя"
+            "value" : "Копировать полное имя"
           }
         },
         "sk" : {
@@ -74098,7 +74098,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Дополнительный пароль отключен"
+            "value" : "Дополнительный пароль отключён"
           }
         },
         "sk" : {
@@ -113556,7 +113556,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No es comparteix cap element amb vós."
+            "value" : "No heu rebut cap element compartit."
           }
         },
         "cs" : {
@@ -146487,7 +146487,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Escaneja el codi QR per unir-se"
+            "value" : "Escanegeu el codi QR per a unir-vos"
           }
         },
         "cs" : {
@@ -150970,7 +150970,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Consulteu tots els membres i els permisos"
+            "value" : "Mostra tots els membres i els permisos"
           }
         },
         "cs" : {
@@ -153316,7 +153316,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proton Sentinel és un programa avançat de protecció de comptes impulsat per sistemes d'IA sofisticats i especialistes que treballen durant tot el dia per protegir-vos dels mals actors i les amenaces de seguretat."
+            "value" : "Proton Sentinel és un programa avançat de protecció de comptes basat en sistemes d'IA sofisticats i especialistes que treballen les vint-i-quatre hores del dia per a protegir-vos d'agents malintencionats i amenaces de seguretat."
           }
         },
         "cs" : {
@@ -162040,7 +162040,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Els àlies de SimpleLogin s'importaran a aquesta caixa forta."
+            "value" : "Els àlies de SimpleLogin s'importaran en aquesta caixa forta."
           }
         },
         "cs" : {
@@ -164848,7 +164848,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ключ SSH перемещен в Корзину"
+            "value" : "Ключ SSH перемещён в Корзину"
           }
         },
         "sk" : {
@@ -164906,7 +164906,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La clau SSH s'ha suprimit permanentment."
+            "value" : "S'ha suprimit la clau SSH permanentment."
           }
         },
         "cs" : {
@@ -165032,7 +165032,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ключ SSH безвозвратно удален"
+            "value" : "Ключ SSH безвозвратно удалён"
           }
         },
         "sk" : {
@@ -165400,7 +165400,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ключ SSH обновлен"
+            "value" : "Ключ SSH обновлён"
           }
         },
         "sk" : {
@@ -171377,7 +171377,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El fitxer seleccionat supera el límit de mida.Trieu un fitxer de menys de 100 MB."
+            "value" : "El fitxer seleccionat supera el límit de mida. Trieu un fitxer de menys de 100 MB."
           }
         },
         "cs" : {
@@ -172518,7 +172518,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aquest és el vostre últim intent. Se us tancarà la sessió quan no us torneu a autenticar."
+            "value" : "Aquest és el vostre últim intent. Se us tancarà la sessió si torna a fallar l'autenticació."
           }
         },
         "cs" : {
@@ -172714,7 +172714,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aquest element està compartit actualment. Eliminar-ho eliminarà l'accés per a tots els altres usuaris."
+            "value" : "Aquest element està compartit actualment. Eliminar-lo suprimirà l'accés per a tots els altres usuaris."
           }
         },
         "cs" : {
@@ -176785,7 +176785,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Transferirà i elimina la bústia de correu"
+            "value" : "Transfereix i elimina la bústia de correu"
           }
         },
         "cs" : {
@@ -177958,7 +177958,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Activeu les contrasenyes d'emplenament automàtic i permeteu l'emplenament des de Proton Pass"
+            "value" : "Activeu l'emplenament automàtic de contrasenyes i permeteu l'emplenament des de Proton Pass"
           }
         },
         "cs" : {
@@ -181660,7 +181660,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No s'ha verificat el canvi de la bústia de correu."
+            "value" : "Canvi de bústia de correu no verificat"
           }
         },
         "cs" : {
@@ -182440,7 +182440,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Milloreu ara el vostre pla per compartir-ho amb més persones"
+            "value" : "Milloreu ara el vostre pla per a compartir amb més persones"
           }
         },
         "cs" : {
@@ -182636,7 +182636,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Milloreu per afegir camps personalitzats"
+            "value" : "Milloreu el plas per a afegir camps personalitzats"
           }
         },
         "cs" : {
@@ -182832,7 +182832,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Milloreu per afegir seccions personalitzades"
+            "value" : "Milloreu el pla per a afegir seccions personalitzades"
           }
         },
         "cs" : {
@@ -183028,7 +183028,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Milloreu per crear targetes de crèdit"
+            "value" : "Milloreu el pla per a crear targetes de crèdit"
           }
         },
         "cs" : {
@@ -183224,7 +183224,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Milloreu el vostre pla per crear elements personalitzats"
+            "value" : "Milloreu el pla per a crear elements personalitzats"
           }
         },
         "cs" : {
@@ -183764,7 +183764,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Utilitza el codi d'accés del sistema quan el Touch ID no funciona."
+            "value" : "Utilitza el codi d'accés del sistema quan el Face ID no funciona."
           }
         },
         "cs" : {
@@ -183960,7 +183960,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Utilitzeu el codi d'accés del sistema quan el Optic ID no funciona."
+            "value" : "Utilitza el codi d'accés del sistema quan l'Optic ID no funciona."
           }
         },
         "cs" : {
@@ -184156,7 +184156,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Utilitza el codi d'accés del sistema quan el Face ID no funciona."
+            "value" : "Utilitza el codi d'accés del sistema quan el Touch ID no funciona."
           }
         },
         "cs" : {
@@ -186359,7 +186359,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "S'ha transferit la caixa forte."
+            "value" : "S'ha transferit la caixa forta."
           }
         },
         "cs" : {
@@ -187143,7 +187143,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Caixa forta compartida amb un grup que administreu"
+            "value" : "S'ha compartit la caixa forta amb un grup que administreu"
           }
         },
         "cs" : {
@@ -187699,13 +187699,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Caixa forta compartida: %lld membre"
+                  "value" : "Compartició de caixa forta: %lld membre"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Caixa forta compartida: %lld membres"
+                  "value" : "Compartició de caixa forta: %lld membres"
                 }
               }
             }
@@ -191963,7 +191963,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Estem baixant i desxifrant els vostres elements."
+            "value" : "Estem descarregant i desxifrant els vostres elements."
           }
         },
         "cs" : {
@@ -192159,7 +192159,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hem detectat un canvi en la vostra configuració d'autenticació biomètrica. Per motius de seguretat, heu tancat la sessió."
+            "value" : "Hem detectat un canvi en la vostra configuració d'autenticació biomètrica. Per motius de seguretat, se us ha tancat la sessió."
           }
         },
         "cs" : {
@@ -193134,7 +193134,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les contrasenyes febles són més fàcils d'endevinar. Genereu contrasenyes robustes per a mantenir el compte segur."
+            "value" : "Les contrasenyes febles són més fàcils d'endevinar. Genereu contrasenyes robustes per a mantenir els vostres comptes segurs,"
           }
         },
         "cs" : {
@@ -195047,7 +195047,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La xarxa wifi s'ha mogut a la paperera."
+            "value" : "S'ha mogut la xarxa wifi a la paperera."
           }
         },
         "cs" : {
@@ -199285,7 +199285,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esteu creant un element en una caixa forta compartida. Els membres hi tindran accés immediatament."
+            "value" : "Esteu creant un element en una caixa forta compartida i els membres hi tindran accés immediatament."
           }
         },
         "cs" : {
@@ -200251,7 +200251,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Això esborrarà l'element de manera irreversible. Esteu segur?"
+            "value" : "Això esborrarà l'element de manera irreversible. N'esteu segur?"
           }
         },
         "cs" : {
@@ -200447,7 +200447,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No podeu convidar persones fora de la vostra organització, contacteu amb l'administrador per obtenir més informació."
+            "value" : "No podeu convidar persones de fora de la vostra organització. Contacteu amb l'administrador per obtenir més informació."
           }
         },
         "cs" : {
@@ -200643,7 +200643,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Actualment no teniu cap enllaç segur"
+            "value" : "Actualment, no teniu cap enllaç segur"
           }
         },
         "cs" : {
@@ -200833,7 +200833,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Actualment no teniu cap element d'inici de sessió"
+            "value" : "Actualment, no teniu cap element d'inici de sessió"
           }
         },
         "cs" : {
@@ -201029,7 +201029,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Actualment no teniu cap element d'inici de sessió amb clau secreta 2FA (TOTP)."
+            "value" : "Actualment, no teniu cap element d'inici de sessió amb clau secreta 2FA (TOTP)."
           }
         },
         "cs" : {
@@ -202378,7 +202378,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Heu arribat al límit de caixes fortes que podeu crear. Milloreu a un pla de pagament per crear diverses voltes."
+            "value" : "Heu arribat al límit de caixes fortes que podeu crear. Milloreu a un pla de pagament per a crear diverses caixes fortes."
           }
         },
         "cs" : {
@@ -202771,7 +202771,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se us demanarà aquesta contrasenya durant la sessió i quan canvieu d'una altra aplicació Proton a Proton Pass al web."
+            "value" : "Se us demanarà aquesta contrasenya durant l'inici de sessió i quan canvieu d'una altra aplicació de Proton a Proton Pass al web."
           }
         },
         "cs" : {
@@ -203163,7 +203163,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Perdéreu l'accés a aquest element i als seus detalls. Voleu continuar?"
+            "value" : "Perdreu l'accés a aquest element i als seus detalls. Voleu continuar?"
           }
         },
         "cs" : {
@@ -203551,7 +203551,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Heu tancat la sessió des de %@."
+            "value" : "Heu tancat la sessió de %@."
           }
         },
         "cs" : {
@@ -204140,7 +204140,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La vostra versió actual de l'aplicació ja no està suportada. Actualitzeu-la a la darrera versió."
+            "value" : "La vostra versió actual de l'aplicació ja no és compatible. Actualitzeu-la a la darrera versió."
           }
         },
         "cs" : {
@@ -205166,7 +205166,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La vostra adreça de correu electrònic s'ha filtrat en almenys 1 infracció de dades."
+            "value" : "La vostra adreça de correu electrònic s'ha filtrat en almenys 1 violació de dades."
           }
         },
         "cs" : {
@@ -205754,7 +205754,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les vostres dades personals van ser filtrades per un servei en línia en una profanació de dades. Milloreu el vostre pla per veure tots els detalls i obtenir accions recomanades."
+            "value" : "Les vostres dades personals van ser filtrades per un servei en línia en una violació de dades. Milloreu el vostre pla per veure tots els detalls i obtenir accions recomanades."
           }
         },
         "cs" : {
