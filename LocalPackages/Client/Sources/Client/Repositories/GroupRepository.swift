@@ -36,7 +36,6 @@ public protocol GroupRepositoryProtocol: Sendable {
 public actor GroupRepository: GroupRepositoryProtocol {
     private let remoteDatasource: any RemoteGroupDatasourceProtocol
     private let logger: Logger
-    private var cache: [UserID: [String: Group]] = [:]
 
     public init(remoteDatasource: any RemoteGroupDatasourceProtocol,
                 logManager: any LogManagerProtocol) {
@@ -50,17 +49,12 @@ public extension GroupRepository {
         logger.trace("Getting all groups for userId \(userId)")
         let groups = try await remoteDatasource.getGroups(userId: userId)
         logger.info("Found \(groups.count) groups for userId \(userId)")
-        cache[userId] = Dictionary(uniqueKeysWithValues: groups.map { ($0.id, $0) })
         return groups
     }
 
     func getGroup(userId: String, groupId: String) async throws -> Group {
-        if let group = cache[userId]?[groupId] {
-            return group
-        }
-
-        _ = try await getGroups(userId: userId)
-        guard let group = cache[userId]?[groupId] else {
+        let groups = try await getGroups(userId: userId)
+        guard let group = groups.first(where: { $0.id == groupId }) else {
             throw PassError.group(.noMatchingGroup(userId: userId, groupId: groupId))
         }
         return group
