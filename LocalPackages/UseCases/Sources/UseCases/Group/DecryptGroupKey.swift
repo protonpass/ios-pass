@@ -18,18 +18,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 @preconcurrency import CryptoKit
 import Entities
 import ProtonCoreCrypto
 @preconcurrency import ProtonCoreLogin
 
 public protocol DecryptGroupKeyUseCase: Sendable {
-    func execute(group: Group, userData: UserData) async throws -> DecryptedGroupAddressKey
+    func execute(group: Group, isGroupOwner: Bool, userData: UserData) async throws -> DecryptedGroupAddressKey
 }
 
 public extension DecryptGroupKeyUseCase {
-    func callAsFunction(group: Group, userData: UserData) async throws -> DecryptedGroupAddressKey {
-        try await execute(group: group, userData: userData)
+    func callAsFunction(group: Group,
+                        isGroupOwner: Bool,
+                        userData: UserData) async throws -> DecryptedGroupAddressKey {
+        try await execute(group: group, isGroupOwner: isGroupOwner, userData: userData)
     }
 }
 
@@ -46,12 +49,32 @@ public final class DecryptGroupKey: DecryptGroupKeyUseCase {
         self.decryptOrganizationKey = decryptOrganizationKey
     }
 
-    public func execute(group: Group, userData: UserData) async throws -> DecryptedGroupAddressKey {
+    public func execute(group: Group,
+                        isGroupOwner: Bool,
+                        userData: UserData) async throws -> DecryptedGroupAddressKey {
         guard let address = group.address,
               let primaryKey = address.keys.first(where: { $0.primary == 1 })
         else {
             throw PassError.crypto(.missingGroupAddress(group.id))
         }
+
+        let content = if isGroupOwner {
+            try decryptWithUserKeys(primaryKey: primaryKey, userData: userData)
+        } else {
+            try await decryptWithOrgKeys(primaryKey: primaryKey, userData: userData)
+        }
+
+        let armoredPrivateKey = ArmoredKey(value: primaryKey.privateKey)
+        let privateKey = DecryptionKey(privateKey: armoredPrivateKey,
+                                       passphrase: .init(value: content))
+        let publicKey = armoredPrivateKey.value.publicKey
+
+        return DecryptedGroupAddressKey(privateKey: privateKey, publicKey: publicKey, groupAddressKey: primaryKey)
+    }
+}
+
+private extension DecryptGroupKey {
+    func decryptWithOrgKeys(primaryKey: GroupAddressKey, userData: UserData) async throws -> String {
         let orgKey = try await decryptOrganizationKey(user: userData)
 
         let decryptedToken = try Decryptor.decryptAndVerify(decryptionKey: orgKey.privateKey,
@@ -59,11 +82,33 @@ public final class DecryptGroupKey: DecryptGroupKeyUseCase {
                                                             detachedSign: ArmoredSignature(value: primaryKey
                                                                 .signature),
                                                             verificationKeys: [orgKey.privateKey.privateKey])
-        let armoredPrivateKey = ArmoredKey(value: primaryKey.privateKey)
-        let privateKey = DecryptionKey(privateKey: armoredPrivateKey,
-                                       passphrase: .init(value: decryptedToken.content))
-        let publicKey = armoredPrivateKey.value.publicKey
 
-        return DecryptedGroupAddressKey(privateKey: privateKey, publicKey: publicKey, groupAddressKey: primaryKey)
+        guard case let .verified(content) = decryptedToken else {
+            throw PassError.crypto(.failedToVerifySignature)
+        }
+
+        return content
+    }
+
+    func decryptWithUserKeys(primaryKey: GroupAddressKey, userData: UserData) throws -> String {
+        let decryptionKeys = userData.user.keys.map {
+            DecryptionKey(privateKey: .init(value: $0.privateKey),
+                          passphrase: .init(value: userData.passphrases[$0.keyID] ?? ""))
+        }
+
+        let verificationKeys = userData.user.keys.map(\.publicKey).map { ArmoredKey(value: $0) }
+        let context = VerificationContext(value: Constants.SignatureContext.accountKeyToken, required: .always)
+        for decryptionKey in decryptionKeys {
+            if let decryptedToken = try? Decryptor.decryptAndVerify(decryptionKey: decryptionKey,
+                                                                    addrToken: ArmoredMessage(value: primaryKey
+                                                                        .token),
+                                                                    detachedSign: ArmoredSignature(value: primaryKey
+                                                                        .signature),
+                                                                    verificationKeys: verificationKeys,
+                                                                    verificationContext: context) {
+                return try decryptedToken.verifiedContent
+            }
+        }
+        throw PassError.crypto(.missingKeys)
     }
 }

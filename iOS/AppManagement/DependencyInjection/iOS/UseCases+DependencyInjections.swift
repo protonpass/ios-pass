@@ -370,6 +370,10 @@ extension UseCasesContainer {
         self { GetItemContentFromBase64IDs(itemRepository: self.itemRepository,
                                            symmetricKeyProvider: self.symmetricKeyProvider) }
     }
+
+    var generateSshKey: Factory<any GenerateSshKeyUseCase> {
+        self { GenerateSshKey() }
+    }
 }
 
 // MARK: - User

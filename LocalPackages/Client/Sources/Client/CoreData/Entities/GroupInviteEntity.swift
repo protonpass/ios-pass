@@ -43,6 +43,7 @@ extension GroupInviteEntity {
     @NSManaged var remindersSent: Int64
     @NSManaged var inviteToken: String
     @NSManaged var invitedAddressID: String
+    @NSManaged var isGroupOwner: Bool
     @NSManaged var data: String?
     @NSManaged var createTime: Int64
     @NSManaged var vaultData: VaultDataEntity?
@@ -64,6 +65,7 @@ extension GroupInviteEntity {
                     keys: keys.map(\.toInviteKey),
                     vaultData: vaultData?.toVaultData,
                     data: data,
+                    isGroupOwner: isGroupOwner,
                     createTime: Int(createTime))
     }
 
@@ -81,6 +83,7 @@ extension GroupInviteEntity {
         inviteToken = invite.inviteToken
         invitedAddressID = invite.invitedAddressID
         data = invite.data
+        isGroupOwner = invite.isGroupOwner
         createTime = Int64(invite.createTime)
 
         if let existingVaultData = vaultData, let newVaultData = invite.vaultData {

@@ -99,17 +99,33 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
     private var cancellables = Set<AnyCancellable>()
 
-    var filteredOrderedVaults: [ShareContent] {
+    private var orderedVaults: [ShareContent] {
         if case let .loaded(data) = state {
-            data.filteredOrderedVaults.filter { mode.isView ? !$0.share.hidden : true }
+            data.filteredOrderedVaults
         } else {
             []
         }
     }
 
+    var visibleVaults: [ShareContent] {
+        if mode == .view {
+            orderedVaults.filter(\.share.hidden)
+        } else {
+            orderedVaults.filter { !hiddenShareIds.contains($0.id) }
+        }
+    }
+
+    var hiddenVaults: [ShareContent] {
+        orderedVaults.filter { hiddenShareIds.contains($0.id) }
+    }
+
     var hideShowVaultSupported: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passHideShowVault) ||
-            filteredOrderedVaults.contains(where: \.share.hidden)
+            orderedVaults.contains(where: \.share.hidden)
+    }
+
+    var folderSupported: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passFolder)
     }
 
     var hasTrashItems: Bool {
@@ -354,7 +370,7 @@ extension EditableVaultListViewModel {
     }
 
     func isLastVisibleVault(_ share: Share) -> Bool {
-        if let lastVisibleVault = filteredOrderedVaults
+        if let lastVisibleVault = visibleVaults
             .last(where: { !hiddenShareIds.contains($0.share.shareId) }) {
             lastVisibleVault.share.shareId == share.shareId
         } else {
@@ -363,7 +379,7 @@ extension EditableVaultListViewModel {
     }
 
     func isLastHiddenVault(_ share: Share) -> Bool {
-        if let lastHiddenVault = filteredOrderedVaults.last(where: { hiddenShareIds.contains($0.share.shareId) }) {
+        if let lastHiddenVault = hiddenVaults.last(where: { hiddenShareIds.contains($0.share.shareId) }) {
             lastHiddenVault.share.shareId == share.shareId
         } else {
             false

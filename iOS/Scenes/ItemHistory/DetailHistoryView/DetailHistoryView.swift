@@ -35,7 +35,7 @@ struct DetailHistoryView: View {
     @State var isShowingCardNumber = false
     @State var isShowingVerificationNumber = false
     @State var isShowingPIN = false
-    @State var selectedKeyType: SshKeyType?
+    @State var selectedKeyComponent: SshKeyComponent?
 
     var body: some View {
         mainContainer
@@ -70,14 +70,14 @@ struct DetailHistoryView: View {
                     ActivityView(items: [url])
                 }
             }
-            .sheet(item: $selectedKeyType) { keyType in
-                let value = switch keyType {
-                case .private: viewModel.selectedRevisionContent.sshKey?.privateKey
-                case .public: viewModel.selectedRevisionContent.sshKey?.publicKey
+            .sheet(item: $selectedKeyComponent) { component in
+                let value = switch component {
+                case .privateKey: viewModel.selectedRevisionContent.sshKey?.privateKey
+                case .publicKey: viewModel.selectedRevisionContent.sshKey?.publicKey
                 }
 
                 if let value {
-                    SshKeyDetailView(value: value, title: keyType.title)
+                    SshKeyDetailView(value: value, title: component.title)
                 }
             }
     }
