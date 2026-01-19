@@ -38,7 +38,7 @@ public enum SshKeyType: Sendable, CaseIterable {
 }
 
 public enum SshKeyComponent: Int, Sendable, Identifiable {
-    case `public`, `private`
+    case publicKey, privateKey
 
     public var id: Int {
         rawValue
@@ -46,11 +46,11 @@ public enum SshKeyComponent: Int, Sendable, Identifiable {
 }
 
 public struct SshKeyComponents: Sendable {
-    public let `private`: String
-    public let `public`: String
+    public let privateKey: String
+    public let publicKey: String
 
-    public init(private: String, public: String) {
-        self.private = `private`
-        self.public = `public`
+    public init(privateKey: String, publicKey: String) {
+        self.privateKey = privateKey
+        self.publicKey = publicKey
     }
 }

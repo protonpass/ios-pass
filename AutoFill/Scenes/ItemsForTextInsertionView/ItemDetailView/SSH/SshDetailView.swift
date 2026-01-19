@@ -66,8 +66,8 @@ private extension SshDetailView {
         .roundedDetailSection()
         .sheet(item: $selectedKeyComponent) { component in
             let value = switch component {
-            case .private: viewModel.privateKey
-            case .public: viewModel.publicKey
+            case .privateKey: viewModel.privateKey
+            case .publicKey: viewModel.publicKey
             }
             SshKeyDetailView(value: value, title: component.title)
                 .environment(\.colorScheme, colorScheme)
@@ -93,7 +93,7 @@ private extension SshDetailView {
         .contentShape(.rect)
         .onTapGesture {
             if !viewModel.publicKey.isEmpty {
-                selectedKeyComponent = .public
+                selectedKeyComponent = .publicKey
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
@@ -116,7 +116,7 @@ private extension SshDetailView {
         .contentShape(.rect)
         .onTapGesture {
             if !viewModel.privateKey.isEmpty {
-                selectedKeyComponent = .private
+                selectedKeyComponent = .privateKey
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)

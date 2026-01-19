@@ -47,7 +47,7 @@ public final class GenerateSshKey: GenerateSshKeyUseCase {
         let key = try manager.generateSshKey(comment: "",
                                              keyType: type.rustType,
                                              passphrase: nil)
-        return .init(private: key.privateKey, public: key.publicKey)
+        return .init(privateKey: key.privateKey, publicKey: key.publicKey)
     }
 }
 

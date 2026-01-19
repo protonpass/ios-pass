@@ -24,15 +24,15 @@ import SwiftUI
 extension SshKeyComponent {
     var title: LocalizedStringKey {
         switch self {
-        case .public: "Public key"
-        case .private: "Private key"
+        case .publicKey: "Public key"
+        case .privateKey: "Private key"
         }
     }
 
     var placeholder: LocalizedStringKey {
         switch self {
-        case .public: "Add public key"
-        case .private: "Add private key"
+        case .publicKey: "Add public key"
+        case .privateKey: "Add private key"
         }
     }
 }

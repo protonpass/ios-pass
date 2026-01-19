@@ -77,8 +77,8 @@ final class CreateEditSshKeyViewModel: BaseCreateEditItemViewModel, DeinitPrinta
                 defer { isLoading = false }
                 isLoading = true
                 let key = try await generateSshKey(type: type)
-                privateKey = key.private
-                publicKey = key.public
+                privateKey = key.privateKey
+                publicKey = key.publicKey
             } catch {
                 handle(error)
             }

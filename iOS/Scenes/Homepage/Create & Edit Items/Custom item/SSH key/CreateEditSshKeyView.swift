@@ -105,12 +105,12 @@ struct CreateEditSshKeyView: View {
         .showSpinner(viewModel.isLoading)
         .sheet(item: $selectedKeyComponent) { component in
             SshKeyEditor(title: component.title,
-                         value: component == .public ? viewModel.publicKey : viewModel.privateKey,
+                         value: component == .publicKey ? viewModel.publicKey : viewModel.privateKey,
                          onSave: { newValue in
                              switch component {
-                             case .public:
+                             case .publicKey:
                                  viewModel.publicKey = newValue
-                             case .private:
+                             case .privateKey:
                                  viewModel.privateKey = newValue
                              }
                          })
@@ -160,7 +160,7 @@ private extension CreateEditSshKeyView {
                                       lastFocusedField = focusedField
                                       focusedField = nil
                                       selectedKeyComponent = focusedField == .publicKey
-                                          ? .public : .private
+                                          ? .publicKey : .privateKey
                                   })
                 }
             default:
@@ -181,9 +181,9 @@ private extension CreateEditSshKeyView {
 
     var keys: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
-            view(for: .public, value: viewModel.publicKey)
+            view(for: .publicKey, value: viewModel.publicKey)
             PassSectionDivider()
-            view(for: .private, value: viewModel.privateKey)
+            view(for: .privateKey, value: viewModel.privateKey)
         }
         .padding(.vertical, DesignConstant.sectionPadding)
         .roundedEditableSection()
@@ -196,11 +196,11 @@ private extension CreateEditSshKeyView {
 
             Group {
                 switch component {
-                case .private:
+                case .privateKey:
                     SecureField(component.placeholder, text: $viewModel.privateKey)
                         .focused($focusedField, equals: .privateKey)
 
-                case .public:
+                case .publicKey:
                     TextField(component.placeholder, text: $viewModel.publicKey)
                         .focused($focusedField, equals: .publicKey)
                         .keyboardType(.default)
