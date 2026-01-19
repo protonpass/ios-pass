@@ -128,6 +128,12 @@
             "state" : "translated",
             "value" : "(%lld üye)"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(%lld 位成员)"
+          }
         }
       }
     },
@@ -21336,7 +21342,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Si us plau, inicieu la sessió per utilitzar l'extensió d'emplenament automàtic de Proton Pass"
+            "value" : "Inicieu la sessió per a utilitzar l'extensió d'emplenament automàtic de Proton Pass"
           }
         },
         "cs" : {
@@ -21532,7 +21538,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Si us plau, inicieu la sessió per utilitzar l'extensió Proton Pass Share"
+            "value" : "Inicieu la sessió per a utilitzar l'extensió de compartició de Proton Pass"
           }
         },
         "cs" : {
@@ -26901,7 +26907,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Deixeu de compartir la vostra adreça de correu electrònic real. En lloc d'això, amagueu-la amb àlies de correu electrònic, una exclusiva de Proton Pass."
+            "value" : "Deixeu de compartir la vostra adreça de correu electrònic real. Amagueu-la amb àlies de correu electrònic, una funció exclusiva de Proton Pass."
           }
         },
         "cs" : {
@@ -30157,7 +30163,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Actualitzeu per augmentar l'emmagatzematge."
+            "value" : "Milloreu el pla per augmentar l'emmagatzematge."
           }
         },
         "cs" : {
@@ -31096,7 +31102,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Caixa forta, i compartició d’enllaços i elements"
+            "value" : "Compartició de caixes fortes, elements i enllaços"
           }
         },
         "cs" : {
@@ -31682,13 +31688,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Hem detectat que teniu %lld àlies en SimpleLogin però no apareix en Proton Pass. Voleu importar-lo?"
+                  "value" : "Hem detectat que teniu %lld àlies en SimpleLogin que no apareix en Proton Pass. Voleu importar-lo?"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Hem detectat que teniu %lld àlies en SimpleLogin però no apareixen en Proton Pass. Voleu importar-los?"
+                  "value" : "Hem detectat que teniu %lld àlies en SimpleLogin que no apareixen en Proton Pass. Voleu importar-los?"
                 }
               }
             }
@@ -32639,7 +32645,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Per quin servei voleu crear l'inici de sessió?"
+            "value" : "Per a quin servei voleu crear l'inici de sessió?"
           }
         },
         "cs" : {
