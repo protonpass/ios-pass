@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 @preconcurrency import CryptoKit
 import Entities
 import ProtonCoreCrypto
@@ -96,7 +97,7 @@ private extension DecryptGroupKey {
         }
 
         let verificationKeys = userData.user.keys.map(\.publicKey).map { ArmoredKey(value: $0) }
-        let context = VerificationContext(value: "account.key-token.address", required: .always)
+        let context = VerificationContext(value: Constants.SignatureContext.accountKeyToken, required: .always)
         for decryptionKey in decryptionKeys {
             if let decryptedToken = try? Decryptor.decryptAndVerify(decryptionKey: decryptionKey,
                                                                     addrToken: ArmoredMessage(value: primaryKey
