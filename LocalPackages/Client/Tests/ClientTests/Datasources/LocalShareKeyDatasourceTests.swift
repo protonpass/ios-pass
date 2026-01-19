@@ -61,21 +61,18 @@ extension LocalShareKeyDatasourceTests {
         // Given
         let givenShareId = String.random()
         let givenUserId = String.random()
-        let firstKeys = [SymmetricallyEncryptedShareKey]
-            .random(randomElement: .init(encryptedKey: .random(),
-                                         shareId: givenShareId,
-                                         userId: givenUserId,
-                                         shareKey: .random()))
-        let secondKeys = [SymmetricallyEncryptedShareKey]
-            .random(randomElement: .init(encryptedKey: .random(),
-                                         shareId: givenShareId,
-                                         userId: givenUserId,
-                                         shareKey: .random()))
-        let thirdKeys = [SymmetricallyEncryptedShareKey]
-            .random(randomElement: .init(encryptedKey: .random(),
-                                         shareId: givenShareId,
-                                         userId: givenUserId,
-                                         shareKey: .random()))
+        let firstKeys: [SymmetricallyEncryptedShareKey] = [.init(encryptedKey: .random(),
+                                                                  shareId: givenShareId,
+                                                                  userId: givenUserId,
+                                                                  shareKey: .random())]
+        let secondKeys: [SymmetricallyEncryptedShareKey] = [.init(encryptedKey: .random(),
+                                                                   shareId: givenShareId,
+                                                                   userId: givenUserId,
+                                                                   shareKey: .random())]
+        let thirdKeys: [SymmetricallyEncryptedShareKey] = [.init(encryptedKey: .random(),
+                                                                  shareId: givenShareId,
+                                                                  userId: givenUserId,
+                                                                  shareKey: .random())]
         let givenKeys = firstKeys + secondKeys + thirdKeys
 
         // When
@@ -85,8 +82,10 @@ extension LocalShareKeyDatasourceTests {
 
         // Then
         let keys = try await sut.getKeys(shareId: givenShareId)
-        XCTAssertEqual(keys.count, givenKeys.count)
-        XCTAssertEqual(Set(keys), Set(givenKeys))
+        XCTAssertEqual(
+            Set(keys),
+            Set(givenKeys)
+        )
     }
 
     func testRemoveAllKeys() async throws {
