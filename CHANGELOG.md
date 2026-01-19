@@ -1,3 +1,18 @@
+# Version 1.18.0
+SSH key generator: You can now generate an SSH key by focusing on the public or private key field and selecting "Generate SSH key".
+
+Improvements:
+- Reduced spacing between items on the homepage
+- Handle missing credit card expiration date
+- Fixed filters resetting after editing items or unlocking the app
+- Fixed jumping cursor in text custom fields
+- Fixed file picker not appearing in some cases
+
+Others:
+- MMP
+- Core libraries upgraded from 34.2.2 to 35.0.0
+- Rust library upgraded from 0.28.4 to 0.28.8
+
 # Version 1.17.11
 - Reworded "Clone" to "Duplicate"
 - Free credit cards
