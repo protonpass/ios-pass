@@ -29,10 +29,11 @@ struct CreateEditSshKeyView: View {
     @StateObject private var viewModel: CreateEditSshKeyViewModel
     @FocusState private var focusedField: Field?
     @State private var lastFocusedField: Field?
-    @State private var selectedKeyType: SshKeyType?
+    @State private var selectedKeyComponent: SshKeyComponent?
+    @State private var showKeyTypeAlert = false
 
     enum Field: CustomFieldTypes {
-        case title, note
+        case title, note, privateKey, publicKey
         case custom(CustomField?)
 
         var customField: CustomField? {
@@ -91,6 +92,7 @@ struct CreateEditSshKeyView: View {
                                           onOpenCodeScanner: viewModel.openCodeScanner,
                                           onPasteTotpUri: { viewModel.handlePastingTotpUri(customField: $0) })
             }
+            .toolbar { keyboardToolbar }
         }
         .fullSheetBackground()
         .itemCreateEditSetUp(viewModel)
@@ -100,23 +102,73 @@ struct CreateEditSshKeyView: View {
                 focusedField = .title
             }
         }
-        .sheet(item: $selectedKeyType) { keyType in
-            SshKeyEditor(title: keyType.title,
-                         value: keyType == .public ? viewModel.publicKey : viewModel.privateKey,
+        .showSpinner(viewModel.isLoading)
+        .sheet(item: $selectedKeyComponent) { component in
+            SshKeyEditor(title: component.title,
+                         value: component == .publicKey ? viewModel.publicKey : viewModel.privateKey,
                          onSave: { newValue in
-                             switch keyType {
-                             case .public:
+                             switch component {
+                             case .publicKey:
                                  viewModel.publicKey = newValue
-                             case .private:
+                             case .privateKey:
                                  viewModel.privateKey = newValue
                              }
                          })
                          .interactiveDismissDisabled()
         }
+        .alert("Generate SSH key",
+               isPresented: $showKeyTypeAlert,
+               actions: {
+                   ForEach(SshKeyType.allCases, id: \.self) { type in
+                       Button(action: {
+                           viewModel.generate(with: type)
+                       }, label: {
+                           Text(verbatim: type.title)
+                       })
+                   }
+
+                   Button("Cancel", role: .cancel, action: {})
+               },
+               message: {
+                   Text("Select an SSH key type")
+               })
     }
 }
 
 private extension CreateEditSshKeyView {
+    @ToolbarContentBuilder
+    var keyboardToolbar: some ToolbarContent {
+        ToolbarItemGroup(placement: .keyboard) {
+            switch focusedField {
+            case .privateKey, .publicKey:
+                HStack {
+                    ToolbarButton("Generate SSH key",
+                                  titleBundle: .main,
+                                  image: IconProvider.arrowsRotate,
+                                  action: {
+                                      lastFocusedField = focusedField
+                                      focusedField = nil
+                                      showKeyTypeAlert = true
+                                  })
+
+                    Divider()
+
+                    ToolbarButton("Expand editor",
+                                  titleBundle: .main,
+                                  image: IconProvider.pencil,
+                                  action: {
+                                      lastFocusedField = focusedField
+                                      focusedField = nil
+                                      selectedKeyComponent = focusedField == .publicKey
+                                          ? .publicKey : .privateKey
+                                  })
+                }
+            default:
+                EmptyView()
+            }
+        }
+    }
+
     var title: some View {
         CreateEditItemTitleSection(title: $viewModel.title,
                                    focusedField: $focusedField,
@@ -129,36 +181,39 @@ private extension CreateEditSshKeyView {
 
     var keys: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
-            view(for: .public, value: viewModel.publicKey)
+            view(for: .publicKey, value: viewModel.publicKey)
             PassSectionDivider()
-            view(for: .private, value: viewModel.privateKey)
+            view(for: .privateKey, value: viewModel.privateKey)
         }
         .padding(.vertical, DesignConstant.sectionPadding)
         .roundedEditableSection()
     }
 
-    func view(for keyType: SshKeyType, value: String) -> some View {
+    func view(for component: SshKeyComponent, value: String) -> some View {
         VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-            Text(keyType.title)
+            Text(component.title)
                 .editableSectionTitleText(for: value)
 
-            TextField(keyType.placeholder,
-                      text: keyType == .public ?
-                          .constant(value) :
-                          .constant(String(repeating: "•", count: value.count)))
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .foregroundStyle(PassColor.textNorm)
-                .disabled(true)
-                .if(!value.isEmpty) { view in
-                    view.monospaced()
+            Group {
+                switch component {
+                case .privateKey:
+                    SecureField(component.placeholder, text: $viewModel.privateKey)
+                        .focused($focusedField, equals: .privateKey)
+
+                case .publicKey:
+                    TextField(component.placeholder, text: $viewModel.publicKey)
+                        .focused($focusedField, equals: .publicKey)
+                        .keyboardType(.default)
                 }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .foregroundStyle(PassColor.textNorm)
+            .if(!value.isEmpty) { view in
+                view.monospaced()
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         .padding(.horizontal, DesignConstant.sectionPadding)
-        .buttonEmbeded {
-            focusedField = nil
-            selectedKeyType = keyType
-        }
     }
 
     var fields: some View {
