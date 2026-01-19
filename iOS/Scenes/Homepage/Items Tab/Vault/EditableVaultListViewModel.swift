@@ -47,7 +47,7 @@ private extension EditableVaultListViewModel {
             }
             var all = 0
             var vaultCounts = [VaultCount]()
-            let hiddenShareIds = sharesData.visibleShareIds
+            let hiddenShareIds = sharesData.hiddenSharesIds
 
             for shareContent in sharesData.visibleShareContents where shareContent.share.vaultContent != nil {
                 if !shareContent.share.hidden {
@@ -70,6 +70,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var hiddenShareIds = Set<String>()
     @Published private(set) var mode: Mode = .view
     @Published private var plan: Plan?
+    @Published private(set) var containersExtended = Set<String>()
 
     private var count: Count
 
@@ -98,9 +99,9 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
     private var cancellables = Set<AnyCancellable>()
 
-    var filteredOrderedVaults: [Share] {
+    var filteredOrderedVaults: [ShareContent] {
         if case let .loaded(data) = state {
-            data.filteredOrderedVaults
+            data.filteredOrderedVaults.filter { mode.isView ? !$0.share.hidden : true }
         } else {
             []
         }
@@ -108,7 +109,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
     var hideShowVaultSupported: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passHideShowVault) ||
-            filteredOrderedVaults.contains(where: \.hidden)
+            filteredOrderedVaults.contains(where: \.share.hidden)
     }
 
     var hasTrashItems: Bool {
@@ -182,6 +183,16 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
     func upgradeSubscription() {
         router.present(for: .upgradeFlow)
+    }
+
+    func toggleDisplayContainerContent(containerId: String) {
+        if containersExtended.contains(containerId) {
+            print("Woot remove container: \(containerId)")
+            containersExtended.remove(containerId)
+        } else {
+            print("Woot add container: \(containerId)")
+            containersExtended.insert(containerId)
+        }
     }
 }
 
@@ -343,16 +354,17 @@ extension EditableVaultListViewModel {
     }
 
     func isLastVisibleVault(_ share: Share) -> Bool {
-        if let lastVivisbleVault = filteredOrderedVaults.last(where: { !hiddenShareIds.contains($0.shareId) }) {
-            lastVivisbleVault.shareId == share.shareId
+        if let lastVisibleVault = filteredOrderedVaults
+            .last(where: { !hiddenShareIds.contains($0.share.shareId) }) {
+            lastVisibleVault.share.shareId == share.shareId
         } else {
             false
         }
     }
 
     func isLastHiddenVault(_ share: Share) -> Bool {
-        if let lastHiddenVault = filteredOrderedVaults.last(where: { hiddenShareIds.contains($0.shareId) }) {
-            lastHiddenVault.shareId == share.shareId
+        if let lastHiddenVault = filteredOrderedVaults.last(where: { hiddenShareIds.contains($0.share.shareId) }) {
+            lastHiddenVault.share.shareId == share.shareId
         } else {
             false
         }
@@ -369,7 +381,10 @@ extension EditableVaultListViewModel {
 
     func updateMode(_ mode: Mode) {
         if mode.isOrganise {
-            hiddenShareIds = Set(filteredOrderedVaults.filter(\.hidden).map(\.shareId))
+            hiddenShareIds = Set(filteredOrderedVaults.compactMap { content in
+                guard content.share.hidden else { return nil }
+                return content.share.shareId
+            }) // .filter(\.hidden).map(\.shareId))
         }
         self.mode = mode
     }
@@ -379,12 +394,12 @@ extension EditableVaultListViewModel {
         Task { [weak self] in
             guard let self else { return }
             defer {
-                loading = false
+//                loading = false
                 updateMode(.view)
             }
-            loading = true
+//            loading = true
             do {
-                if try await reorganizeVaults(currentShares: data.shares.map(\.share),
+                if try await reorganizeVaults(currentShares: data.shares.map(\.value.share),
                                               hiddenShareIds: hiddenShareIds) {
                     let userId = try await userManager.getActiveUserId()
                     try await appContentManager.localFullSync(userId: userId)

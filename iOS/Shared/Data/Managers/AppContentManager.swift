@@ -185,6 +185,7 @@ extension AppContentManager {
                 for share in remoteShares.shares {
                     taskGroup.addTask { [weak self] in
                         guard let self else { return }
+                        // TODO: this fails nee to check what is happening
                         try await folderRepository.refreshFolders(userId: userId,
                                                                   shareId: share.shareID)
                         try await itemRepository.refreshItems(userId: userId,
@@ -283,7 +284,7 @@ extension AppContentManager {
 
     func getAllSharesLinkToVault() -> [Share] {
         guard let sharesData = state.loadedContent else { return [] }
-        return sharesData.filteredOrderedVaults
+        return sharesData.filteredOrderedVaults.map(\.share)
     }
 
     func getAllSharesWithVaultContent() -> [ShareContent] {
@@ -567,7 +568,8 @@ private extension AppContentManager {
                                   sharedByMe: 0,
                                   sharedWithMe: sharesData.itemsSharedWithMe.count)
         case .trash:
-            itemCount = ItemCount(items: sharesData.trashedItems, sharedByMe: 0,
+            itemCount = ItemCount(items: sharesData.trashedItems,
+                                  sharedByMe: 0,
                                   sharedWithMe: 0)
         }
     }
@@ -595,7 +597,7 @@ private extension AppContentManager {
 
         let sharesData = try await getShareDatas(symmetricKey: symmetricKey,
                                                  shares: dedupShares,
-                                                 folders: foldersFetch,
+                                                 folders: folders,
                                                  items: allItems)
         let userPreferences = preferencesManager.userPreferences.unwrapped()
 
@@ -685,6 +687,43 @@ private extension AppContentManager {
                             let folder = try shareFolder.toFolderUiModel(symmetricKey)
                             shareElements.append(.folder(folder))
                         }
+
+                        let testFolder1 =
+                            FolderUiModel(shareId: "J9Bz2I1jtkLpYAeKUlqXgwd0CHzWCIdBmfPlq9dAu78vMpnibNnJZlU6puqL6ON2o5QKgUMCnrPewAhT4hO7JQ==",
+                                          folder: Folder(vaultID: "JoW4Yg8KAwtfezFf1jM2xylY_NjwXMJmwBxzKASs8Wtrm7NYBnNQ4awu-x_EFGJt2mgdmEBbbrZs_YnCipTbww==",
+                                                         folderID: "folder1",
+                                                         parentFolderID: nil,
+                                                         keyRotation: 0, folderKey: "",
+                                                         contentFormatVersion: 1, content: ""),
+                                          content: FolderContent(name: "folder1 test"),
+                                          lastUseTime: nil)
+
+                        let testFolder2 =
+                            FolderUiModel(shareId: "J9Bz2I1jtkLpYAeKUlqXgwd0CHzWCIdBmfPlq9dAu78vMpnibNnJZlU6puqL6ON2o5QKgUMCnrPewAhT4hO7JQ==",
+                                          folder: Folder(vaultID: "JoW4Yg8KAwtfezFf1jM2xylY_NjwXMJmwBxzKASs8Wtrm7NYBnNQ4awu-x_EFGJt2mgdmEBbbrZs_YnCipTbww==",
+                                                         folderID: "folder2",
+                                                         parentFolderID: "folder1",
+                                                         keyRotation: 0,
+                                                         folderKey: "", contentFormatVersion: 1,
+                                                         content: ""),
+                                          content: FolderContent(name: "folder2 test"),
+                                          lastUseTime: nil)
+
+                        let testFolder1bis =
+                            FolderUiModel(shareId: "J9Bz2I1jtkLpYAeKUlqXgwd0CHzWCIdBmfPlq9dAu78vMpnibNnJZlU6puqL6ON2o5QKgUMCnrPewAhT4hO7JQ==",
+                                          folder: Folder(vaultID: "JoW4Yg8KAwtfezFf1jM2xylY_NjwXMJmwBxzKASs8Wtrm7NYBnNQ4awu-x_EFGJt2mgdmEBbbrZs_YnCipTbww==",
+                                                         folderID: "folder1bis",
+                                                         parentFolderID: nil,
+                                                         keyRotation: 0, folderKey: "",
+                                                         contentFormatVersion: 1, content: ""),
+                                          content: FolderContent(name: "folder1 bis test"),
+                                          lastUseTime: nil)
+
+                        shareElements.append(.folder(testFolder1))
+                        shareElements.append(.folder(testFolder1bis))
+
+                        shareElements.append(.folder(testFolder2))
+
 //                    for encryptedFolder in shareFolders {
 //                        let decryptedItem = try encryptedFolder.toFolderUiModel(symmetricKey)
 //

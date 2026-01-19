@@ -616,6 +616,8 @@
 		5BB2B6F22A457F50005E831C /* Pass-Constant-Prod.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */; };
 		5BB403792BF64B18005BF271 /* CreateSecureLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB403772BF64B18005BF271 /* CreateSecureLinkView.swift */; };
 		5BB4037A2BF64B18005BF271 /* CreateSecureLinkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB403782BF64B18005BF271 /* CreateSecureLinkViewModel.swift */; };
+		5BBC742F2F18ED4200043297 /* ShareSelection+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBC742E2F18ED4200043297 /* ShareSelection+Extensions.swift */; };
+		5BBC74312F19506400043297 /* OrganizeVaultListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBC74302F19506400043297 /* OrganizeVaultListView.swift */; };
 		5BBE1CA72C6109A7009F5DDC /* SimpleLoginAliasActivationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBE1CA52C6109A7009F5DDC /* SimpleLoginAliasActivationView.swift */; };
 		5BBE1CA82C6109A7009F5DDC /* SimpleLoginAliasActivationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBE1CA62C6109A7009F5DDC /* SimpleLoginAliasActivationViewModel.swift */; };
 		5BC03E992C175FE50028516E /* HomepageCoordinator+Sharing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC03E982C175FE50028516E /* HomepageCoordinator+Sharing.swift */; };
@@ -1150,6 +1152,8 @@
 		5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Pass-Constant-Prod.plist"; sourceTree = "<group>"; };
 		5BB403772BF64B18005BF271 /* CreateSecureLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSecureLinkView.swift; sourceTree = "<group>"; };
 		5BB403782BF64B18005BF271 /* CreateSecureLinkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSecureLinkViewModel.swift; sourceTree = "<group>"; };
+		5BBC742E2F18ED4200043297 /* ShareSelection+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareSelection+Extensions.swift"; sourceTree = "<group>"; };
+		5BBC74302F19506400043297 /* OrganizeVaultListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizeVaultListView.swift; sourceTree = "<group>"; };
 		5BBE1CA52C6109A7009F5DDC /* SimpleLoginAliasActivationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleLoginAliasActivationView.swift; sourceTree = "<group>"; };
 		5BBE1CA62C6109A7009F5DDC /* SimpleLoginAliasActivationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleLoginAliasActivationViewModel.swift; sourceTree = "<group>"; };
 		5BC03E982C175FE50028516E /* HomepageCoordinator+Sharing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+Sharing.swift"; sourceTree = "<group>"; };
@@ -1659,6 +1663,7 @@
 				35661CB329B8BFCD003BBAD6 /* EditableVaultListViewModel.swift */,
 				3556949C29D45FD5005DD2EB /* MoveVaultListView.swift */,
 				3556949E29D46001005DD2EB /* MoveVaultListViewModel.swift */,
+				5BBC74302F19506400043297 /* OrganizeVaultListView.swift */,
 			);
 			path = Vault;
 			sourceTree = "<group>";
@@ -2478,6 +2483,7 @@
 				35A5EEDF2958B60200A09623 /* Browser+Extensions.swift */,
 				5BD6138C2C202B0E00968E0F /* UpsellEntry+Extensions.swift */,
 				531A48112D80852500DDC7FB /* SshKeyType+Extensions.swift */,
+				5BBC742E2F18ED4200043297 /* ShareSelection+Extensions.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -3889,6 +3895,7 @@
 				5BAE71112BD1128400F579E4 /* AddCustomEmailViewModel.swift in Sources */,
 				3569B29B29B76BF60070830B /* AppContentManager.swift in Sources */,
 				355BFDA229C6FD5200A32AD6 /* ItemContextMenuHandler.swift in Sources */,
+				5BBC742F2F18ED4200043297 /* ShareSelection+Extensions.swift in Sources */,
 				5BECDE492B90EC900040FCA7 /* PassMonitorView.swift in Sources */,
 				534090642D70B11B002E42F8 /* CreateEditCustomItemViewModel.swift in Sources */,
 				357ABEB42B18BB04003D05C8 /* DataStream+DependencyInjections.swift in Sources */,
@@ -3942,6 +3949,7 @@
 				35703F282A279B950088C287 /* CustomFieldSections.swift in Sources */,
 				5B1453942A6832780048B022 /* EmailGroupSelectionView.swift in Sources */,
 				3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */,
+				5BBC74312F19506400043297 /* OrganizeVaultListView.swift in Sources */,
 				5BDD9AEE2CC9094700C120B3 /* PasswordPolicySection.swift in Sources */,
 				356A1EFE2B889D9900561950 /* PasskeyDetailView.swift in Sources */,
 			);

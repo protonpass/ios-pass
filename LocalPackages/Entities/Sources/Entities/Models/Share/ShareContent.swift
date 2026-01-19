@@ -23,15 +23,8 @@ public typealias ContainerId = String
 public struct ShareContent: Identifiable, Hashable, Sendable {
     public let share: Share
 
-//    public let allElements: [String: ShareContentElement]
-
-    //
     private let content: [ContainerId: [ShareContentElement]]
 
-//
-//    // Lookup table for O(1) access to any element in the tree
-//    private let lookupTable: ShareContentIndex
-//
     private let itemsByContainer: [ContainerId: [ShareContentElement]]
     private let foldersByContainer: [ContainerId: [ShareContentElement]]
     public let itemCount: Int
@@ -135,12 +128,12 @@ public extension ShareContent {
     }
 
     func items(in containerId: String) -> [ItemUiModel]? {
-        content[share.id]?.compactMap(\.itemValue)
+        itemsByContainer[containerId]?.compactMap(\.itemValue)
 //        lookupTable.items(in: containerId)
     }
 
     func folders(in containerId: String) -> [FolderUiModel]? {
-        content[share.id]?.compactMap(\.folderValue)
+        foldersByContainer[containerId]?.compactMap(\.folderValue)
 //        lookupTable.subfolders(of: containerId)
     }
 
