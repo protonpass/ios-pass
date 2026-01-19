@@ -55,9 +55,7 @@ struct OrganizeVaultListView: View {
             Spacer()
 
             Button(action: {
-                withAnimation(.spring()) {
-                    viewModel.applyVaultsOrganizations()
-                }
+                viewModel.applyVaultsOrganizations()
             }, label: {
                 Text("Done")
                     .fontWeight(.semibold)
@@ -67,10 +65,9 @@ struct OrganizeVaultListView: View {
         .padding()
     }
 
-    @ViewBuilder
     var vaultsScrollView: some View {
-        if case .loaded = viewModel.state {
-            LazyVStack(spacing: 0) {
+        LazyVStack(spacing: 0) {
+            if case .loaded = viewModel.state {
                 if viewModel.visibleVaults.count != viewModel.hiddenShareIds.count {
                     Text("Visible vaults")
                         .fontWeight(.semibold)
@@ -80,13 +77,11 @@ struct OrganizeVaultListView: View {
                 }
 
                 ForEach(viewModel.visibleVaults) { content in
-//                    if !viewModel.hiddenShareIds.contains(content.id) {
                     vaultRow(for: .precise(content.share, folderId: nil))
                     if viewModel.mode.isView ||
                         (viewModel.mode.isOrganise && !viewModel.isLastVisibleVault(content.share)) {
                         PassDivider()
                     }
-//                    }
                 }
 
                 if !viewModel.hiddenShareIds.isEmpty {
@@ -108,12 +103,11 @@ struct OrganizeVaultListView: View {
                     if !viewModel.isLastHiddenVault(content.share) {
                         PassDivider()
                     }
-//                    }
                 }
             }
-            .padding(.horizontal)
-            .scrollViewEmbeded()
         }
+        .padding(.horizontal)
+        .scrollViewEmbeded()
     }
 
     @ViewBuilder

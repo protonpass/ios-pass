@@ -65,14 +65,13 @@ public struct SharesData: Hashable, Sendable {
 
     public var filteredOrderedVaults: [ShareContent] {
         shares.values
-            .compactMap { shareContent -> ShareContent? in
-                guard shareContent.share.vaultName != nil else { return nil }
-                return shareContent
-            }
+            .filter { $0.share.vaultName != nil }
             .sorted { lhs, rhs in
                 guard let lhsName = lhs.share.vaultName,
                       let rhsName = rhs.share.vaultName else { return false }
-                return lhsName < rhsName
+                return lhsName == rhsName
+                    ? lhs.share.createTime < rhs.share.createTime
+                    : lhsName < rhsName
             }
     }
 
