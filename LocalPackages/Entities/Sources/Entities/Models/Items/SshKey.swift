@@ -1,5 +1,5 @@
 //
-// SshKeyType.swift
+// SshKey.swift
 // Proton Pass - Created on 11/03/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
@@ -20,10 +20,37 @@
 
 import Foundation
 
-public enum SshKeyType: Int, Sendable, Identifiable {
-    case `public`, `private`
+public enum SshKeyType: Sendable, CaseIterable {
+    case ed25519, rsa2048, rsa4096
+
+    public static var `default`: Self { .ed25519 }
+
+    public var title: String {
+        switch self {
+        case .ed25519:
+            "Ed25519"
+        case .rsa2048:
+            "RSA-2048"
+        case .rsa4096:
+            "RSA-4096"
+        }
+    }
+}
+
+public enum SshKeyComponent: Int, Sendable, Identifiable {
+    case publicKey, privateKey
 
     public var id: Int {
         rawValue
+    }
+}
+
+public struct SshKeyComponents: Sendable {
+    public let privateKey: String
+    public let publicKey: String
+
+    public init(privateKey: String, publicKey: String) {
+        self.privateKey = privateKey
+        self.publicKey = publicKey
     }
 }
