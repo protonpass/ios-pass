@@ -87,6 +87,7 @@ extension CreditCardDetailViewModel {
     }
 
     func copyExpirationDate() {
+        guard !expirationDate.isEmpty else { return }
         copyToClipboard(text: expirationDate, message: #localized("Expiration date copied"))
     }
 }

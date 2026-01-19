@@ -752,6 +752,12 @@
             "value" : "%@ (gekopieerd)"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (skopiowano)"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -26048,7 +26054,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "L'àlies\"%@\" s'ha mogut a la paperera"
+            "value" : "L'àlies \"%@\" s'ha mogut a la paperera"
           }
         },
         "cs" : {
@@ -26145,6 +26151,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alias \"%@\" verplaatst naar prullenbak"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias \"%@\" został przeniesiony do kosza"
           }
         },
         "pt" : {
@@ -39318,7 +39330,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Permet concedir i revocar accés a aquesta caixa forta"
+            "value" : "Pot concedir i revocar accés a aquesta caixa forta"
           }
         },
         "cs" : {
@@ -39515,7 +39527,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Permet veure els elements d'aquesta caixa forte"
+            "value" : "Pot veure els elements d'aquesta caixa forta"
           }
         },
         "cs" : {
@@ -48852,7 +48864,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Скопировать эл. почту"
+            "value" : "Копировать эл. почту"
           }
         },
         "sk" : {
@@ -49440,7 +49452,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Скопировать полное имя"
+            "value" : "Копировать полное имя"
           }
         },
         "sk" : {
@@ -52037,7 +52049,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Crea un àlies Hide my email"
+            "value" : "Crea un àlies hide-my-email"
           }
         },
         "cs" : {
@@ -64165,6 +64177,12 @@
             "value" : "Niet opnieuw herinneren"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie przypominaj mi więcej"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -64410,7 +64428,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Torneu a descarregar tots els vostres articles per assegurar-vos que esteu sincronitzats"
+            "value" : "Torneu a descarregar tots els vostres elements per assegurar-vos que estan sincronitzats"
           }
         },
         "cs" : {
@@ -65087,6 +65105,12 @@
             "value" : "Dupliceer"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duplikat"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -65334,7 +65358,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Per exemple, l'ID d'usuari el número de compte"
+            "value" : "Per exemple, l'ID d'usuari o el número de compte"
           }
         },
         "cs" : {
@@ -70430,7 +70454,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Introduïu un nou nom per a \"%@\""
+            "value" : "Introduïu un nou nom per a «%@»"
           }
         },
         "cs" : {
@@ -71600,7 +71624,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cada vegada que el vostre alias rep un correu electrònic de algú, es crea automàticament un contacte."
+            "value" : "Cada vegada que el vostre àlies rep un correu electrònic d'algú, es crea un contacte automàticament."
           }
         },
         "cs" : {
@@ -74074,7 +74098,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Дополнительный пароль отключен"
+            "value" : "Дополнительный пароль отключён"
           }
         },
         "sk" : {
@@ -84008,6 +84032,12 @@
             "value" : "Verborgen kluizen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ukryte sejfy"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -85631,7 +85661,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El monitoratge d'àlies de Hide-my-email s'ha posat en pausa"
+            "value" : "El monitoratge d'àlies de hide-my-email s'ha posat en pausa"
           }
         },
         "cs" : {
@@ -85827,7 +85857,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "S'ha reprès el monitoratge d'àlies d'Hide-my-email"
+            "value" : "S'ha reprès el monitoratge d'àlies de hide-my-email"
           }
         },
         "cs" : {
@@ -94289,6 +94319,12 @@
             "value" : "Item in een gedeelde kluis"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Element w udostępnionym sejfie"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -94769,13 +94805,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Element compartit: %lldusuari"
+                  "value" : "Compartició de l'element: %lld usuari"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Element compartit: %lldusuaris"
+                  "value" : "Compartició de l'element: %lld usuaris"
                 }
               }
             }
@@ -95740,7 +95776,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Menú d'acció de l'element"
+            "value" : "Menú d'accions de l'element"
           }
         },
         "cs" : {
@@ -96329,7 +96365,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Els elements de « %@ » s'han mogut a la caixa forta « %@ »"
+            "value" : "Els elements de «%@» s'han mogut a la caixa forta «%@»"
           }
         },
         "cs" : {
@@ -103799,7 +103835,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Menú d'acció de la bústia de correu"
+            "value" : "Menú d'accions de la bústia de correu"
           }
         },
         "cs" : {
@@ -113520,7 +113556,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No es comparteix cap element amb vosaltres."
+            "value" : "No heu rebut cap element compartit."
           }
         },
         "cs" : {
@@ -115084,7 +115120,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cap de les vostres adreces de correu electrònic o àlies no apareix en una infracció de dades"
+            "value" : "Cap de les vostres adreces de correu electrònic o àlies no apareix en una filtració de dades"
           }
         },
         "cs" : {
@@ -118211,7 +118247,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Una de les vostres adreces de correu electrònic o àlies apareixen en una infracció de dades"
+            "value" : "Una de les vostres adreces de correu electrònic o àlies apareixen en una filtració de dades"
           }
         },
         "cs" : {
@@ -120488,7 +120524,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open SSH kľúč"
+            "value" : "Otvoriť SSH kľúč"
           }
         },
         "sl" : {
@@ -121944,6 +121980,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kluizen organiseren"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organizuj sejfy"
           }
         },
         "pt-BR" : {
@@ -125314,7 +125356,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Creació de compte pendent"
+            "value" : "La creació del compte està pendent"
           }
         },
         "cs" : {
@@ -128885,7 +128927,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Comproveu el correu brossa per obtenir un correu electrònic anomenat \"Confirmeu la vostra adreça de correu electrònic per a Proton Pass\"\n\nSi no troba aquest correu electrònic, pot [sol·licitar un codi nou] (https://proton.me)."
+            "value" : "Comproveu al correu brossa si hi ha un correu electrònic anomenat \"Confirmeu la vostra adreça de correu electrònic per a Proton Pass\"\n\nSi no trobeu aquest correu electrònic, podeu [sol·licitar un codi nou] (https://proton.me)."
           }
         },
         "cs" : {
@@ -129082,7 +129124,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Comproveu el correu brossa per obtenir un correu electrònic anomenat «Confirmeu la vostra bústia de correu %@»\n\nSi no trobeu aquest correu electrònic, podeu [sol·licitar un codi nou] (https://proton.me)."
+            "value" : "Comproveu al correu brossa si hi ha un correu electrònic anomenat «Confirmeu la vostra bústia de correu %@»\n\nSi no trobeu aquest correu electrònic, podeu [sol·licitar un codi nou] (https://proton.me)."
           }
         },
         "cs" : {
@@ -129665,7 +129707,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Descriviu el problema amb el major detall possible. Si hi ha hagut un missatge d'error, feu-nos saber què deia."
+            "value" : "Descriviu el problema amb el màxim detall possible. Si hi ha hagut un missatge d'error, feu-nos saber què deia."
           }
         },
         "cs" : {
@@ -130443,7 +130485,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Un cop suprimit, l'àlies no es pot restaurar. L'àlies ja està desactivat i no reenviarà correus electrònics a la vostra bústia de correu."
+            "value" : "Un cop eliminat, l'àlies no es pot restaurar. L'àlies ja està desactivat i no reenviarà correus electrònics a la vostra bústia de correu."
           }
         },
         "cs" : {
@@ -132371,7 +132413,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El prefix només pot contenir lletres i números en minúscula (a-z, 0-9), punt (.), guió (-) i guionet baix (_)."
+            "value" : "El prefix només pot contenir números i lletres en minúscula (a-z, 0-9), punt (.), guionet (-) i guió baix (_)."
           }
         },
         "cs" : {
@@ -135992,7 +136034,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Suggerències de la barra QuickType"
+            "value" : "Suggeriments de la barra QuickType"
           }
         },
         "cs" : {
@@ -138160,7 +138202,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esborra els adjunts en memòria cau de descàrregues anteriors"
+            "value" : "Esborra els adjunts de descàrregues anteriors en memòria cau"
           }
         },
         "cs" : {
@@ -140507,7 +140549,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Requereix A2F per a l'organització"
+            "value" : "Requereix 2FA per a l'organització"
           }
         },
         "cs" : {
@@ -141672,7 +141714,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "En restablir l'historial, se suprimiran permanentment totes les versions anteriors i no es podran desfer."
+            "value" : "En restablir l'historial, se suprimiran permanentment totes les versions anteriors i no es podrà desfer."
           }
         },
         "cs" : {
@@ -146445,7 +146487,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Escaneja el codi QR per unir-se"
+            "value" : "Escanegeu el codi QR per a unir-vos"
           }
         },
         "cs" : {
@@ -150928,7 +150970,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Consulteu tots els membres i els permisos"
+            "value" : "Mostra tots els membres i els permisos"
           }
         },
         "cs" : {
@@ -153274,7 +153316,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proton Sentinel és un programa avançat de protecció de comptes impulsat per sistemes d'IA sofisticats i especialistes que treballen durant tot el dia per protegir-vos dels mals actors i les amenaces de seguretat."
+            "value" : "Proton Sentinel és un programa avançat de protecció de comptes basat en sistemes d'IA sofisticats i especialistes que treballen les vint-i-quatre hores del dia per a protegir-vos d'agents malintencionats i amenaces de seguretat."
           }
         },
         "cs" : {
@@ -157465,6 +157507,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gedeeld item"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udostępniony element"
           }
         },
         "pt-BR" : {
@@ -161992,7 +162040,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Els àlies de SimpleLogin s'importaran a aquesta caixa forta."
+            "value" : "Els àlies de SimpleLogin s'importaran en aquesta caixa forta."
           }
         },
         "cs" : {
@@ -162903,7 +162951,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Číslo poistenca sociálnej poisťovne"
+            "value" : "Rodné číslo (číslo sociálneho poistenia)"
           }
         },
         "sv" : {
@@ -164800,7 +164848,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ключ SSH перемещен в Корзину"
+            "value" : "Ключ SSH перемещён в Корзину"
           }
         },
         "sk" : {
@@ -164858,7 +164906,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La clau SSH s'ha suprimit permanentment."
+            "value" : "S'ha suprimit la clau SSH permanentment."
           }
         },
         "cs" : {
@@ -164984,7 +165032,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ключ SSH безвозвратно удален"
+            "value" : "Ключ SSH безвозвратно удалён"
           }
         },
         "sk" : {
@@ -165352,7 +165400,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ключ SSH обновлен"
+            "value" : "Ключ SSH обновлён"
           }
         },
         "sk" : {
@@ -167624,6 +167672,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Suggesties"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sugestie"
           }
         },
         "pt-BR" : {
@@ -171268,6 +171322,12 @@
             "value" : "De groep wordt uitgenodigd tot een kluis. Tik voor gegevens."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grupa została zaproszona do sejfu. Kliknij, aby uzyskać szczegółowe informacje."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -171283,7 +171343,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Skupina je pozvaná do trezoru. Ťuknite pre podrobnosti."
+            "value" : "Skupina je pozvaná na zdieľanie trezoru. Kliknite pre detaily."
           }
         },
         "sv" : {
@@ -171317,7 +171377,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El fitxer seleccionat supera el límit de mida.Trieu un fitxer de menys de 100 MB."
+            "value" : "El fitxer seleccionat supera el límit de mida. Trieu un fitxer de menys de 100 MB."
           }
         },
         "cs" : {
@@ -172194,6 +172254,12 @@
             "value" : "Deze kluizen zullen niet toegankelijk zijn en hun inhoud zal niet beschikbaar zijn voor zoeken of automatisch aanvullen."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Te sejfy nie będą dostępne, a ich zawartość nie będzie dostępna dla Wyszukiwania ani Autouzupełniania."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -172452,7 +172518,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aquest és el vostre últim intent. Se us tancarà la sessió quan no us torneu a autenticar."
+            "value" : "Aquest és el vostre últim intent. Se us tancarà la sessió si torna a fallar l'autenticació."
           }
         },
         "cs" : {
@@ -172648,7 +172714,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aquest element està compartit actualment. Eliminar-ho eliminarà l'accés per a tots els altres usuaris."
+            "value" : "Aquest element està compartit actualment. Eliminar-lo suprimirà l'accés per a tots els altres usuaris."
           }
         },
         "cs" : {
@@ -176719,7 +176785,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Transferirà i elimina la bústia de correu"
+            "value" : "Transfereix i elimina la bústia de correu"
           }
         },
         "cs" : {
@@ -177892,7 +177958,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Activeu les contrasenyes d'emplenament automàtic i permeteu l'emplenament des de Proton Pass"
+            "value" : "Activeu l'emplenament automàtic de contrasenyes i permeteu l'emplenament des de Proton Pass"
           }
         },
         "cs" : {
@@ -181594,7 +181660,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No s'ha verificat el canvi de la bústia de correu."
+            "value" : "Canvi de bústia de correu no verificat"
           }
         },
         "cs" : {
@@ -182374,7 +182440,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Milloreu ara el vostre pla per compartir-ho amb més persones"
+            "value" : "Milloreu ara el vostre pla per a compartir amb més persones"
           }
         },
         "cs" : {
@@ -182570,7 +182636,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Milloreu per afegir camps personalitzats"
+            "value" : "Milloreu el plas per a afegir camps personalitzats"
           }
         },
         "cs" : {
@@ -182766,7 +182832,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Milloreu per afegir seccions personalitzades"
+            "value" : "Milloreu el pla per a afegir seccions personalitzades"
           }
         },
         "cs" : {
@@ -182962,7 +183028,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Milloreu per crear targetes de crèdit"
+            "value" : "Milloreu el pla per a crear targetes de crèdit"
           }
         },
         "cs" : {
@@ -183158,7 +183224,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Milloreu el vostre pla per crear elements personalitzats"
+            "value" : "Milloreu el pla per a crear elements personalitzats"
           }
         },
         "cs" : {
@@ -183441,6 +183507,12 @@
             "value" : "Upgraden naar Pass Plus"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ulepsz do Pass Plus"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -183692,7 +183764,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Utilitza el codi d'accés del sistema quan el Touch ID no funciona."
+            "value" : "Utilitza el codi d'accés del sistema quan el Face ID no funciona."
           }
         },
         "cs" : {
@@ -183888,7 +183960,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Utilitzeu el codi d'accés del sistema quan el Optic ID no funciona."
+            "value" : "Utilitza el codi d'accés del sistema quan l'Optic ID no funciona."
           }
         },
         "cs" : {
@@ -184084,7 +184156,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Utilitza el codi d'accés del sistema quan el Face ID no funciona."
+            "value" : "Utilitza el codi d'accés del sistema quan el Touch ID no funciona."
           }
         },
         "cs" : {
@@ -186287,7 +186359,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "S'ha transferit la caixa forte."
+            "value" : "S'ha transferit la caixa forta."
           }
         },
         "cs" : {
@@ -187071,7 +187143,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Caixa forta compartida amb un grup que administreu"
+            "value" : "S'ha compartit la caixa forta amb un grup que administreu"
           }
         },
         "cs" : {
@@ -187150,6 +187222,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kluis gedeeld met een groep die u beheert"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sejf udostępniony grupie, którą administrujesz"
           }
         },
         "pt-BR" : {
@@ -187621,13 +187699,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Caixa forta compartida: %lld membre"
+                  "value" : "Compartició de caixa forta: %lld membre"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Caixa forta compartida: %lld membres"
+                  "value" : "Compartició de caixa forta: %lld membres"
                 }
               }
             }
@@ -191234,6 +191312,12 @@
             "value" : "Zichtbare kluizen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Widoczne sejfy"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -191879,7 +191963,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Estem baixant i desxifrant els vostres elements."
+            "value" : "Estem descarregant i desxifrant els vostres elements."
           }
         },
         "cs" : {
@@ -192075,7 +192159,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hem detectat un canvi en la vostra configuració d'autenticació biomètrica. Per motius de seguretat, heu tancat la sessió."
+            "value" : "Hem detectat un canvi en la vostra configuració d'autenticació biomètrica. Per motius de seguretat, se us ha tancat la sessió."
           }
         },
         "cs" : {
@@ -193050,7 +193134,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les contrasenyes febles són més fàcils d'endevinar. Genereu contrasenyes robustes per a mantenir el compte segur."
+            "value" : "Les contrasenyes febles són més fàcils d'endevinar. Genereu contrasenyes robustes per a mantenir els vostres comptes segurs,"
           }
         },
         "cs" : {
@@ -194963,7 +195047,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La xarxa wifi s'ha mogut a la paperera."
+            "value" : "S'ha mogut la xarxa wifi a la paperera."
           }
         },
         "cs" : {
@@ -195635,7 +195719,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "WiFi sieť aktualizvaná"
+            "value" : "WiFi sieť aktualizovaná"
           }
         },
         "sv" : {
@@ -199201,7 +199285,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esteu creant un element en una caixa forta compartida. Els membres hi tindran accés immediatament."
+            "value" : "Esteu creant un element en una caixa forta compartida i els membres hi tindran accés immediatament."
           }
         },
         "cs" : {
@@ -199298,6 +199382,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "U maakt een item aan in een gedeelde kluis en gebruikers krijgen er direct toegang toe."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tworzysz element w udostępnionym sejfie, a członkowie natychmiast uzyskają do niego dostęp."
           }
         },
         "pt-BR" : {
@@ -199458,6 +199548,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "U bent een gedeeld item aan het bewerken. Wijzigingen zullen onmiddellijk zichtbaar zijn voor iedereen waarmee het gedeeld is."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edytujesz element udostępniony. Zmiany będą natychmiast widoczne dla wszystkich osób, którym został on udostępniony."
           }
         },
         "pt-BR" : {
@@ -200155,7 +200251,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Això esborrarà l'element de manera irreversible. Esteu segur?"
+            "value" : "Això esborrarà l'element de manera irreversible. N'esteu segur?"
           }
         },
         "cs" : {
@@ -200351,7 +200447,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No podeu convidar persones fora de la vostra organització, contacteu amb l'administrador per obtenir més informació."
+            "value" : "No podeu convidar persones de fora de la vostra organització. Contacteu amb l'administrador per obtenir més informació."
           }
         },
         "cs" : {
@@ -200547,7 +200643,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Actualment no teniu cap enllaç segur"
+            "value" : "Actualment, no teniu cap enllaç segur"
           }
         },
         "cs" : {
@@ -200737,7 +200833,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Actualment no teniu cap element d'inici de sessió"
+            "value" : "Actualment, no teniu cap element d'inici de sessió"
           }
         },
         "cs" : {
@@ -200933,7 +201029,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Actualment no teniu cap element d'inici de sessió amb clau secreta 2FA (TOTP)."
+            "value" : "Actualment, no teniu cap element d'inici de sessió amb clau secreta 2FA (TOTP)."
           }
         },
         "cs" : {
@@ -202282,7 +202378,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Heu arribat al límit de caixes fortes que podeu crear. Milloreu a un pla de pagament per crear diverses voltes."
+            "value" : "Heu arribat al límit de caixes fortes que podeu crear. Milloreu a un pla de pagament per a crear diverses caixes fortes."
           }
         },
         "cs" : {
@@ -202675,7 +202771,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se us demanarà aquesta contrasenya durant la sessió i quan canvieu d'una altra aplicació Proton a Proton Pass al web."
+            "value" : "Se us demanarà aquesta contrasenya durant l'inici de sessió i quan canvieu d'una altra aplicació de Proton a Proton Pass al web."
           }
         },
         "cs" : {
@@ -203067,7 +203163,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Perdéreu l'accés a aquest element i als seus detalls. Voleu continuar?"
+            "value" : "Perdreu l'accés a aquest element i als seus detalls. Voleu continuar?"
           }
         },
         "cs" : {
@@ -203455,7 +203551,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Heu tancat la sessió des de %@."
+            "value" : "Heu tancat la sessió de %@."
           }
         },
         "cs" : {
@@ -204044,7 +204140,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La vostra versió actual de l'aplicació ja no està suportada. Actualitzeu-la a la darrera versió."
+            "value" : "La vostra versió actual de l'aplicació ja no és compatible. Actualitzeu-la a la darrera versió."
           }
         },
         "cs" : {
@@ -205070,7 +205166,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La vostra adreça de correu electrònic s'ha filtrat en almenys 1 infracció de dades."
+            "value" : "La vostra adreça de correu electrònic s'ha filtrat en almenys 1 violació de dades."
           }
         },
         "cs" : {
@@ -205658,7 +205754,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les vostres dades personals van ser filtrades per un servei en línia en una profanació de dades. Milloreu el vostre pla per veure tots els detalls i obtenir accions recomanades."
+            "value" : "Les vostres dades personals van ser filtrades per un servei en línia en una violació de dades. Milloreu el vostre pla per veure tots els detalls i obtenir accions recomanades."
           }
         },
         "cs" : {

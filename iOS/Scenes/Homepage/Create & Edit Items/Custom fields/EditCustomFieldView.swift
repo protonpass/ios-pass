@@ -58,8 +58,7 @@ struct EditCustomFieldView<Field: Hashable>: View {
                     let placeholder = value.title
                     switch value.type {
                     case .text:
-                        EditableTextViewWithPlaceholder(text: $value.content,
-                                                        placeholder: placeholder)
+                        TextField(placeholder, text: $value.content, axis: .vertical)
                             .focused(focusedField, equals: field)
 
                     case .totp:

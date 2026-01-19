@@ -297,10 +297,8 @@ extension TelemetryEventRepositoryTests {
 
         let threshold = await telemetryScheduler.getThreshold()
         let newThreshold = try #require(threshold)
-        let difference = Calendar.current.dateComponents([.hour],
-                                                         from: givenCurrentDate,
-                                                         to: newThreshold)
-        let differenceInHours = try #require(difference.hour)
+        let intervalInSeconds = newThreshold.timeIntervalSince(givenCurrentDate)
+        let differenceInHours = intervalInSeconds / 3600
 
         // Then
         #expect(sendResult == .allEventsSent(userIds: [userId3, userId1]))
@@ -311,9 +309,7 @@ extension TelemetryEventRepositoryTests {
 
         let minInterval = await telemetryScheduler.minIntervalInHours
         let maxInterval = await telemetryScheduler.maxIntervalInHours
-        #expect(differenceInHours >= minInterval)
-        #expect(differenceInHours <= maxInterval)
-
+        #expect((Double(minInterval)...Double(maxInterval)).contains(differenceInHours))
         #expect(itemReadEventRepository.invokedSendAllEventsCount == 1)
     }
 

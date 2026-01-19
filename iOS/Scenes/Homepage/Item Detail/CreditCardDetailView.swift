@@ -313,7 +313,7 @@ private extension CreditCardDetailView {
                     .sectionTitleText()
 
                 UpsellableDetailText(text: viewModel.expirationDate,
-                                     placeholder: nil,
+                                     placeholder: #localized("Empty"),
                                      shouldUpgrade: false,
                                      upgradeTextColor: tintColor) {
                     viewModel.upgrade()
