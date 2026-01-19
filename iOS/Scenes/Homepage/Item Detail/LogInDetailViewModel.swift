@@ -176,11 +176,12 @@ extension LogInDetailViewModel {
         Task { [weak self] in
             guard let self else { return }
             do {
-                let symmetricKey = try await getSymmetricKey()
-                let itemContent = try aliasItem.getItemContent(symmetricKey: symmetricKey)
-                router.present(for: .itemDetail(itemContent,
-                                                automaticDisplay: true,
-                                                showSecurityIssues: false))
+                if let content = try await itemRepository.getItemContent(shareId: aliasItem.shareId,
+                                                                         itemId: aliasItem.itemId) {
+                    router.present(for: .itemDetail(content,
+                                                    automaticDisplay: true,
+                                                    showSecurityIssues: false))
+                }
             } catch {
                 handle(error)
             }

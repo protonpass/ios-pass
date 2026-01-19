@@ -38,6 +38,34 @@
         "identifier" : "354A803B28D8B8D8003F49CF",
         "name" : "iOSTests"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:LocalPackages\/Client",
+        "identifier" : "ClientTests",
+        "name" : "ClientTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:LocalPackages\/UseCases",
+        "identifier" : "UseCasesTests",
+        "name" : "UseCasesTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:LocalPackages\/Entities",
+        "identifier" : "EntitiesTests",
+        "name" : "EntitiesTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:LocalPackages\/Core",
+        "identifier" : "CoreTests",
+        "name" : "CoreTests"
+      }
     }
   ],
   "version" : 1

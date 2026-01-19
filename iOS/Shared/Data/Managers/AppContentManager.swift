@@ -471,6 +471,7 @@ private extension AppContentManager {
         $shareSelection
             .receive(on: DispatchQueue.main)
             .dropFirst()
+            .removeDuplicates()
             .sink { [weak self] _ in
                 guard let self else { return }
                 filterOption = pendingItemTypeFilterOption ?? .all

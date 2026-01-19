@@ -35,6 +35,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
     let hasTotp: Bool
     let isShared: Bool
     let showTitleDiscovery: Bool
+    let verticalPadding: CGFloat
 
     init(@ViewBuilder thumbnailView: () -> ThumbnailView,
          title: String,
@@ -45,7 +46,8 @@ struct GeneralItemRow<ThumbnailView: View>: View {
          secondaryTitleColor: Color? = nil,
          hasTotp: Bool = false,
          isShared: Bool = false,
-         showTitleDiscovery: Bool = false) {
+         showTitleDiscovery: Bool = false,
+         verticalPadding: CGFloat = 6) {
         self.thumbnailView = thumbnailView()
         self.title = title
         self.titleLineLimit = titleLineLimit
@@ -56,6 +58,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
         self.hasTotp = hasTotp
         self.isShared = isShared
         self.showTitleDiscovery = showTitleDiscovery
+        self.verticalPadding = verticalPadding
     }
 
     var body: some View {
@@ -105,7 +108,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
                         .frame(maxHeight: .infinity)
                 }
             }
-            .padding(.vertical, 12)
+            .padding(.vertical, verticalPadding)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
