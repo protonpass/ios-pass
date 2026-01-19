@@ -9,7 +9,6 @@ Improvements:
 - Fixed file picker not appearing in some cases
 
 Others:
-- MMP
 - Core libraries upgraded from 34.2.2 to 35.0.0
 - Rust library upgraded from 0.28.4 to 0.28.8
 
