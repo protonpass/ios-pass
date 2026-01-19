@@ -306,6 +306,19 @@ extension AppContentManager {
         logger.info("Deleted vault \(shareId)")
     }
 
+    func delete(userId: String, shareId: String, folderId: String) async throws {
+        guard let sharesData = state.loadedContent,
+              let shareContent = sharesData.shares[shareId] else { return }
+
+        logger.trace("Deleting folder \(folderId)")
+        try await folderRepository.delete(userId: userId, shareId: shareId, folderIds: [folderId])
+        logger.trace("Deleting local active items of folder and subfolders \(folderId)")
+        let itemIds = shareContent.flatenedItems(from: folderId).map(\.itemId)
+        try await itemRepository.deleteItemsLocally(itemIds: itemIds, shareId: shareId)
+        // Delete local items of the vault
+        logger.info("Deleted folder \(folderId)")
+    }
+
     func delete(userId: String, shareId: String) async throws {
         logger.trace("Deleting share \(shareId)")
         try await shareRepository.deleteShare(userId: userId, shareId: shareId)

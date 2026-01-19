@@ -29,6 +29,7 @@ public protocol FolderRepositoryProtocol: Sendable {
     func getAllLocalFolders(userId: String) async throws -> [SymmetricallyEncryptedFolder]
     func refreshFolders(userId: String, shareId: String) async throws
     func deleteAllLocalFolders(userId: String) async throws
+    func delete(userId: String, shareId: String, folderIds: [String]) async throws
 }
 
 public final class FolderRepository: FolderRepositoryProtocol {
@@ -146,6 +147,19 @@ public extension FolderRepository {
         logger.trace("Deleting all local folder of user \(userId)")
         try await localDatasource.removeAllFolders(userId: userId)
         logger.trace("Deleted all local folder")
+    }
+
+    func delete(userId: String, shareId: String, folderIds: [String]) async throws {
+        // Remote deletion
+        logger.trace("Deleting remote folders \(folderIds) for user \(userId)")
+        try await remoteDatasource.delete(userId: userId, shareId: shareId, folderId: folderIds)
+        logger.trace("Deleted remote folders \(folderIds) for user \(userId)")
+        // Local deletion
+        logger.trace("Deleting local vault \(shareId) for user \(userId)")
+        try await localDatasource.deleteFolders(folderIds: folderIds, shareId: shareId)
+        logger.trace("Deleted local folders \(folderIds) for user \(userId)")
+
+        logger.trace("Finished deleting folders \(folderIds) for user \(userId)")
     }
 }
 

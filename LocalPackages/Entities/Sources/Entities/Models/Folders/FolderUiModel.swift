@@ -22,7 +22,7 @@ import Foundation
 
 public struct FolderUiModel: PrecomputedHashable, Equatable, Sendable, Identifiable {
     // Existing properties
-    public var id: String { folder.folderID }
+    public var id: String { folderId }
     public let folderId: String
     public let parentId: String
     public let shareId: String

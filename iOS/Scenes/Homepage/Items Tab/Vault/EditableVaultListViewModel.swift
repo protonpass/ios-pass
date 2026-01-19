@@ -71,6 +71,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var mode: Mode = .view
     @Published private var plan: Plan?
     @Published private(set) var containersExtended = Set<String>()
+    @Published var containerToDelete: ActionnableContainer?
 
     private var count: Count
 
@@ -109,7 +110,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
     var visibleVaults: [ShareContent] {
         if mode == .view {
-            orderedVaults.filter(\.share.hidden)
+            orderedVaults.filter { !$0.share.hidden }
         } else {
             orderedVaults.filter { !hiddenShareIds.contains($0.id) }
         }
@@ -125,7 +126,8 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     }
 
     var folderSupported: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passFolder)
+        true
+//        getFeatureFlagStatus(for: FeatureFlagType.passFolder)
     }
 
     var hasTrashItems: Bool {
@@ -258,17 +260,42 @@ private extension EditableVaultListViewModel {
 // MARK: - Public APIs
 
 extension EditableVaultListViewModel {
-    func delete(vault: Share) {
-        guard let vaultContent = vault.vaultContent else { return }
+//    func delete(vault: Share) {
+//        guard let vaultContent = vault.vaultContent else { return }
+//        Task { [weak self] in
+//            guard let self else { return }
+//            defer { loading = false }
+//            do {
+//                loading = true
+//                let userId = try await userManager.getActiveUserId()
+//                try await appContentManager.delete(vault: vault)
+//                try await appContentManager.refresh(userId: userId)
+//                router.display(element: .infosMessage(#localized("Vault « %@ » deleted", vaultContent.name)))
+//            } catch {
+//                handle(error)
+//            }
+//        }
+//    }
+//
+    func delete(container: ActionnableContainer) {
         Task { [weak self] in
             guard let self else { return }
             defer { loading = false }
             do {
                 loading = true
                 let userId = try await userManager.getActiveUserId()
-                try await appContentManager.delete(vault: vault)
+                switch container {
+                case let .vault(vault):
+                    try await appContentManager.delete(vault: vault)
+                case let .folder(folder):
+                    try await appContentManager.delete(userId: userId,
+                                                       shareId: folder.shareId,
+                                                       folderId: folder.folderId)
+                }
                 try await appContentManager.refresh(userId: userId)
-                router.display(element: .infosMessage(#localized("Vault « %@ » deleted", vaultContent.name)))
+                router.display(element: .infosMessage(#localized("%@ « %@ » deleted",
+                                                                 container.isVault ? "Vault" : "Folder",
+                                                                 container.name ?? "unknown")))
             } catch {
                 handle(error)
             }
@@ -397,10 +424,10 @@ extension EditableVaultListViewModel {
 
     func updateMode(_ mode: Mode) {
         if mode.isOrganise {
-            hiddenShareIds = Set(filteredOrderedVaults.compactMap { content in
+            hiddenShareIds = Set(orderedVaults.compactMap { content in
                 guard content.share.hidden else { return nil }
                 return content.share.shareId
-            }) // .filter(\.hidden).map(\.shareId))
+            })
         }
         self.mode = mode
     }
@@ -409,10 +436,10 @@ extension EditableVaultListViewModel {
         guard case let .loaded(data) = state else { return }
         Task { [weak self] in
             guard let self else { return }
-            defer {
-//                loading = false
-                updateMode(.view)
-            }
+//            defer {
+            ////                loading = false
+//                updateMode(.view)
+//            }
 //            loading = true
             do {
                 if try await reorganizeVaults(currentShares: data.shares.map(\.value.share),
@@ -421,6 +448,7 @@ extension EditableVaultListViewModel {
                     try await appContentManager.localFullSync(userId: userId)
                     try await itemRepository.refreshPinnedItemDataStream()
                 }
+                updateMode(.view)
             } catch {
                 handle(error)
             }

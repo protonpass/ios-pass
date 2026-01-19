@@ -35,6 +35,7 @@ public protocol AppContentManagerProtocol: Sendable {
     func getAllItems(for shareId: String) -> [ItemUiModel]
 
     func delete(userId: String, shareId: String) async throws
+    func delete(userId: String, shareId: String, folderId: String) async throws
     func getOldestOwnedVault() async -> Share?
     func reset() async
 }
