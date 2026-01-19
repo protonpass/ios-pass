@@ -22,8 +22,6 @@ import Core
 import Entities
 import Foundation
 
-private typealias UserID = String
-
 public protocol GroupRepositoryProtocol: Sendable {
     // periphery:ignore
     func getGroups(userId: String) async throws -> [Group]
