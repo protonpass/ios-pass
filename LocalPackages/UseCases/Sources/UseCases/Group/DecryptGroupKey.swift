@@ -96,33 +96,17 @@ private extension DecryptGroupKey {
         }
 
         let verificationKeys = userData.user.keys.map(\.publicKey).map { ArmoredKey(value: $0) }
-        let context = VerificationContext(value: "account.key-token.address",
-                                          required: .always)
-        var errors = [String]()
+        let context = VerificationContext(value: "account.key-token.address", required: .always)
         for decryptionKey in decryptionKeys {
-            do {
-                let decryptedToken = try Decryptor.decryptAndVerify(decryptionKey: decryptionKey,
+            if let decryptedToken = try? Decryptor.decryptAndVerify(decryptionKey: decryptionKey,
                                                                     addrToken: ArmoredMessage(value: primaryKey
                                                                         .token),
                                                                     detachedSign: ArmoredSignature(value: primaryKey
                                                                         .signature),
                                                                     verificationKeys: verificationKeys,
-                                                                    verificationContext: context)
+                                                                    verificationContext: context) {
                 return try decryptedToken.verifiedContent
-            } catch {
-                errors.append(error.localizedDescription)
-                continue
             }
-//            if let decryptedToken = try? Decryptor.decryptAndVerify(decryptionKey: decryptionKey,
-//                                                                    addrToken: ArmoredMessage(value: primaryKey
-//                                                                        .token),
-//                                                                    detachedSign: ArmoredSignature(value: primaryKey
-//                                                                        .signature),
-//                                                                    verificationKeys: verificationKeys,
-//                                                                    verificationContext: context),
-//                case let .verified(content) = decryptedToken {
-//                return content
-//            }
         }
         throw PassError.crypto(.missingKeys)
     }
