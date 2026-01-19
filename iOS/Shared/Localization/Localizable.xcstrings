@@ -72587,6 +72587,16 @@
         }
       }
     },
+    "Expand editor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expand editor"
+          }
+        }
+      }
+    },
     "Expiration date" : {
       "localizations" : {
         "be" : {
@@ -80989,6 +80999,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "產生安全加密鏈結"
+          }
+        }
+      }
+    },
+    "Generate SSH key" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generate SSH key"
           }
         }
       }
@@ -151926,6 +151946,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "選取帳號"
+          }
+        }
+      }
+    },
+    "Select an SSH key type" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select an SSH key type"
           }
         }
       }

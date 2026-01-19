@@ -71,7 +71,7 @@ struct OrganizeVaultListView: View {
     var vaultsScrollView: some View {
         if case .loaded = viewModel.state {
             LazyVStack(spacing: 0) {
-                if viewModel.filteredOrderedVaults.count != viewModel.hiddenShareIds.count {
+                if viewModel.visibleVaults.count != viewModel.hiddenShareIds.count {
                     Text("Visible vaults")
                         .fontWeight(.semibold)
                         .foregroundStyle(PassColor.textNorm)
@@ -79,14 +79,14 @@ struct OrganizeVaultListView: View {
                         .padding(.bottom)
                 }
 
-                ForEach(viewModel.filteredOrderedVaults) { content in
-                    if !viewModel.hiddenShareIds.contains(content.id) {
-                        vaultRow(for: .precise(content.share, folderId: nil))
-                        if viewModel.mode.isView ||
-                            (viewModel.mode.isOrganise && !viewModel.isLastVisibleVault(content.share)) {
-                            PassDivider()
-                        }
+                ForEach(viewModel.visibleVaults) { content in
+//                    if !viewModel.hiddenShareIds.contains(content.id) {
+                    vaultRow(for: .precise(content.share, folderId: nil))
+                    if viewModel.mode.isView ||
+                        (viewModel.mode.isOrganise && !viewModel.isLastVisibleVault(content.share)) {
+                        PassDivider()
                     }
+//                    }
                 }
 
                 if !viewModel.hiddenShareIds.isEmpty {
@@ -103,13 +103,12 @@ struct OrganizeVaultListView: View {
                         .padding(.bottom)
                 }
 
-                ForEach(viewModel.filteredOrderedVaults) { content in
-                    if viewModel.hiddenShareIds.contains(content.share.shareId) {
-                        vaultRow(for: .precise(content.share, folderId: nil))
-                        if !viewModel.isLastHiddenVault(content.share) {
-                            PassDivider()
-                        }
+                ForEach(viewModel.hiddenVaults) { content in
+                    vaultRow(for: .precise(content.share, folderId: nil))
+                    if !viewModel.isLastHiddenVault(content.share) {
+                        PassDivider()
                     }
+//                    }
                 }
             }
             .padding(.horizontal)

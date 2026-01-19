@@ -74,6 +74,7 @@
         <attribute name="inviterEmail" attributeType="String"/>
         <attribute name="inviterUserID" attributeType="String"/>
         <attribute name="inviteToken" attributeType="String"/>
+        <attribute name="isGroupOwner" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="remindersSent" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="targetID" attributeType="String"/>
         <attribute name="targetType" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>

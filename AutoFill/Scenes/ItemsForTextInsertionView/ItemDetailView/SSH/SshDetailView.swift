@@ -26,7 +26,7 @@ import SwiftUI
 struct SshDetailView: View {
     @Environment(\.colorScheme) private var colorScheme
     @StateObject private var viewModel: SshDetailViewModel
-    @State private var selectedKeyType: SshKeyType?
+    @State private var selectedKeyComponent: SshKeyComponent?
 
     init(_ viewModel: SshDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -64,12 +64,12 @@ private extension SshDetailView {
         }
         .padding(.vertical, DesignConstant.sectionPadding)
         .roundedDetailSection()
-        .sheet(item: $selectedKeyType) { keyType in
-            let value = switch keyType {
-            case .private: viewModel.privateKey
-            case .public: viewModel.publicKey
+        .sheet(item: $selectedKeyComponent) { component in
+            let value = switch component {
+            case .privateKey: viewModel.privateKey
+            case .publicKey: viewModel.publicKey
             }
-            SshKeyDetailView(value: value, title: keyType.title)
+            SshKeyDetailView(value: value, title: component.title)
                 .environment(\.colorScheme, colorScheme)
         }
     }
@@ -93,7 +93,7 @@ private extension SshDetailView {
         .contentShape(.rect)
         .onTapGesture {
             if !viewModel.publicKey.isEmpty {
-                selectedKeyType = .public
+                selectedKeyComponent = .publicKey
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
@@ -116,7 +116,7 @@ private extension SshDetailView {
         .contentShape(.rect)
         .onTapGesture {
             if !viewModel.privateKey.isEmpty {
-                selectedKeyType = .private
+                selectedKeyComponent = .privateKey
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)

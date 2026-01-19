@@ -69,7 +69,6 @@ struct EditableVaultListView: View {
     var mainContent: some View {
         if viewModel.mode.isView {
             mainListView
-                .matchedGeometryEffect(id: "content", in: contentNamespace)
         } else {
             OrganizeVaultListView(viewModel: viewModel)
                 .matchedGeometryEffect(id: "content", in: contentNamespace)
@@ -84,6 +83,7 @@ struct EditableVaultListView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         .background(PassColor.backgroundWeak)
+        .matchedGeometryEffect(id: "content", in: contentNamespace)
         .showSpinner(viewModel.loading)
         .animation(.default, value: viewModel.containersExtended)
     }
@@ -162,7 +162,7 @@ private extension EditableVaultListView {
                 vaultRow(for: .all)
                 PassDivider()
 
-                ForEach(viewModel.filteredOrderedVaults) { content in
+                ForEach(viewModel.visibleVaults) { content in
                     HStack {
                         if let folders = content.folders(in: content.id), !folders.isEmpty {
                             Button { viewModel.toggleDisplayContainerContent(containerId: content.id) } label: {
