@@ -26,6 +26,7 @@ import SwiftUI
 
 struct OnboardingPaymentStep: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
     @Environment(\.colorScheme) private var colorScheme
     @State private var selection: Selection = .plus
     @State private var showNoPlansAlert = false
@@ -52,12 +53,23 @@ struct OnboardingPaymentStep: View {
                 .onAppear {
                     showNoPlansAlert.toggle()
                 }
-                .alert("Unable to load available plans",
+                .alert("Upgrade unavailable on mobile",
                        isPresented: $showNoPlansAlert,
-                       actions: { Button(action: dismiss.callAsFunction,
-                                         label: { Text("OK", bundle: .module) }) },
+                       actions: {
+                           Button(action: {
+                               if let url = URL(string: "https://account.proton.me/pass/dashboard") {
+                                   openURL(url)
+                               }
+                               dismiss()
+                           }, label: {
+                               Text("Open web dashboard", bundle: .module)
+                           })
+
+                           Button(action: dismiss.callAsFunction,
+                                  label: { Text("Cancel", bundle: .module) })
+                       },
                        message: {
-                           Text("To upgrade, please use a browser or contact our support team.",
+                           Text("Please use our web account dashboard instead",
                                 bundle: .module)
                        })
         } else {
