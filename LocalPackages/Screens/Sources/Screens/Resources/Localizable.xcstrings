@@ -20753,6 +20753,16 @@
         }
       }
     },
+    "Open web dashboard" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open web dashboard"
+          }
+        }
+      }
+    },
     "Password" : {
       "localizations" : {
         "be" : {
@@ -21719,6 +21729,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "請登入以使用 Proton Pass 分享擴充功能"
+          }
+        }
+      }
+    },
+    "Please use our web account dashboard instead" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please use our web account dashboard instead"
           }
         }
       }
@@ -29190,16 +29210,6 @@
         }
       }
     },
-    "To upgrade, please use a browser or contact our support team." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "To upgrade, please use a browser or contact our support team."
-          }
-        }
-      }
-    },
     "Try searching using different spelling or keywords" : {
       "localizations" : {
         "be" : {
@@ -29588,16 +29598,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "開啟自動填入"
-          }
-        }
-      }
-    },
-    "Unable to load available plans" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unable to load available plans"
           }
         }
       }
@@ -30352,6 +30352,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "升級以增加您的儲存容量。"
+          }
+        }
+      }
+    },
+    "Upgrade unavailable on mobile" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgrade unavailable on mobile"
           }
         }
       }
