@@ -20,7 +20,6 @@
 
 import Foundation
 
-// TODO: ItemIdentifiable need to evolve
 /// ItemRevision with its symmetrically encrypted content by an application-wide symmetric key
 public struct SymmetricallyEncryptedFolder: Equatable, Sendable, Hashable {
     /// ID of the share that the item belongs to

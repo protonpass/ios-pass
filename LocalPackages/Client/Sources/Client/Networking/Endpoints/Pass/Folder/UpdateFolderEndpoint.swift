@@ -63,15 +63,13 @@ public struct UpdateFolderRequest: Sendable, Encodable {
         self.contentFormatVersion = contentFormatVersion
     }
 
-    public init(key: Data,
-                keyRotation: Int64,
-                folderContent: Folder) throws {
-        let data = try JSONEncoder().encode(folderContent)
-        let updatedContent = try AES.GCM.seal(data,
-                                              key: key,
+    public init(encryptionKey: any CryptographicKeyProtocol,
+                folderContent: FolderContent) throws {
+        let updatedContent = try AES.GCM.seal(folderContent.data(),
+                                              key: encryptionKey.keyData,
                                               associatedData: .folderContent)
 
-        self.init(keyRotation: keyRotation,
+        self.init(keyRotation: encryptionKey.keyRotation,
                   content: updatedContent.base64EncodedString(),
                   contentFormatVersion: Constants.ContentFormatVersion.folder)
     }
@@ -82,3 +80,20 @@ public struct UpdateFolderRequest: Sendable, Encodable {
         case contentFormatVersion = "ContentFormatVersion"
     }
 }
+
+// public extension UpdateFolderRequest {
+//    init(folderContent: FolderContent, encryptionKey: any CryptographicKeyProtocol) throws {
+//        contentFormatVersion = Constants.ContentFormatVersion.folder
+//        let folderKey = encryptionKey.keyData
+//
+//        let encryptedContent = try AES.GCM.seal(folderContent.data(),
+//                                                key: folderKey,
+//                                                associatedData: .folderContent)
+//        let base64Content = encryptedContent.base64EncodedString()
+//        guard base64Content.count >= 28 else {
+//            throw PassError.crypto(.failedToAESEncrypt)
+//        }
+//        content = base64Content
+//        keyRotation = encryptionKey.keyRotation
+//    }
+// }

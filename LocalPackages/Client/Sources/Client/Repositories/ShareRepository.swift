@@ -197,7 +197,6 @@ public extension ShareRepository {
     }
 
     func deleteAllCurrentUserSharesLocally(userId: String) async throws {
-//        let userId = try await userManager.getActiveUserId()
         logger.trace("Deleting all local shares for user \(userId)")
         try await localDatasource.removeAllShares(userId: userId)
         logger.trace("Deleted all local shares for user \(userId)")

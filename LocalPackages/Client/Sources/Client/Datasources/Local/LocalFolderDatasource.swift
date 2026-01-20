@@ -25,7 +25,7 @@ import Entities
 public protocol LocalFolderDatasourceProtocol: Sendable {
     func getAllFolders(userId: String) async throws -> [SymmetricallyEncryptedFolder]
     func getFolder(shareId: String, folderId: String) async throws -> SymmetricallyEncryptedFolder?
-    func upsertFolders(_ folders: [SymmetricallyEncryptedFolder]) async throws
+    func upsertFolders(_ folders: [SymmetricallyEncryptedFolder], userId: String) async throws
     func removeAllFolders() async throws
     func removeAllFolders(userId: String) async throws
     func removeAllFolders(shareId: String) async throws
@@ -56,12 +56,13 @@ public extension LocalFolderDatasource {
         return try folderEntities.first?.toEncryptedFolder()
     }
 
-    func upsertFolders(_ folders: [SymmetricallyEncryptedFolder]) async throws {
+    func upsertFolders(_ folders: [SymmetricallyEncryptedFolder], userId: String) async throws {
         try await upsert(folders,
                          entityType: FolderEntity.self,
-                         fetchPredicate: NSPredicate(format: "folderID IN %@ AND shareID IN %@",
+                         fetchPredicate: NSPredicate(format: "folderID IN %@ AND shareID IN %@ AND userID = %@",
                                                      folders.map(\.folderId),
-                                                     folders.map(\.shareId)),
+                                                     folders.map(\.shareId),
+                                                     userId),
                          isEqual: { folder, entity in
                              folder.shareId == entity.shareID && folder.folderId == entity.folderID
                          },

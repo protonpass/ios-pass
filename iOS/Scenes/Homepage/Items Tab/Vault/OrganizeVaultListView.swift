@@ -35,6 +35,7 @@ struct OrganizeVaultListView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         .animation(.default, value: viewModel.hiddenShareIds)
         .background(PassColor.backgroundWeak)
+        .showSpinner(viewModel.loading)
     }
 
     var topView: some View {
