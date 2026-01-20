@@ -653,8 +653,7 @@ public extension ItemRepository {
         let latestItemKey: any CryptographicKeyProtocol = if oldItem.isASharedWithMeItem {
             try await passKeyManager.getLatestShareKey(userId: userId, shareId: shareId)
         } else {
-            try await passKeyManager.getDecryptionKey(userId: userId, containerId: oldItem.folderID ?? shareId,
-                                                      keyRotation: oldItem.keyRotation)
+            try await passKeyManager.getDecryptionKey(userId: userId, containerId: oldItem.folderID ?? shareId)
         }
 
         let request = try UpdateItemRequest(oldRevision: oldItem,
@@ -1106,8 +1105,7 @@ private extension ItemRepository {
 //                                                            shareId: shareId,
 //                                                            keyRotation: item.keyRotation)
         let containerKey = try await passKeyManager.getDecryptionKey(userId: userId,
-                                                                     containerId: item.folderID ?? shareId,
-                                                                     keyRotation: item.keyRotation)
+                                                                     containerId: item.folderID ?? shareId)
         let contentProtobuf = try item.getContentProtobuf(containerKey: containerKey)
         return ItemContent(userId: userId,
                            shareId: shareId,

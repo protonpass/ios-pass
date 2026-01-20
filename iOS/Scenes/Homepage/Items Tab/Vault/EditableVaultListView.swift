@@ -50,6 +50,29 @@ enum ActionnableContainer {
     }
 }
 
+enum FolderAction {
+    case createNewFolder(Share, parentFolderId: String?)
+    case edit(FolderUiModel)
+
+    var isCreatingNew: Bool {
+        switch self {
+        case .createNewFolder:
+            true
+        case .edit:
+            false
+        }
+    }
+
+    var title: LocalizedStringKey {
+        switch self {
+        case .createNewFolder:
+            "Enter a folder title"
+        case .edit:
+            "Enter new folder title"
+        }
+    }
+}
+
 struct EditableVaultListView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = EditableVaultListViewModel()
@@ -88,9 +111,28 @@ struct EditableVaultListView: View {
                        // swiftlint:disable:next line_length
                        Text("This will permanently delete the \(container.isVault ? "vault" : "folder") « \(container.name ?? "") » and all its contents. Enter the \(container.isVault ? "vault" : "folder") name to confirm deletion.")
                    })
+
+            .alert(viewModel.folderAction?.title ?? "New folder",
+                   isPresented: $viewModel.folderAction.mappedToBool(),
+                   presenting: viewModel.folderAction,
+                   actions: { _ in
+                       TextField("Title",
+                                 text: $viewModel.folderName)
+                       Button("Cancel", action: {
+                           viewModel.cleanActions()
+                       })
+
+                       Button(viewModel.folderAction?.isCreatingNew ?? true ? "Create" : "Save",
+                              action: {
+                                  viewModel.folderCreateAndEdition()
+                              })
+                              .disabled(viewModel.folderName.isEmpty)
+                   },
+                   message: { _ in
+                       EmptyView()
+                   })
     }
 
-//    @ViewBuilder
     var mainContent: some View {
         ZStack {
             if viewModel.mode.isView {
@@ -179,7 +221,7 @@ private extension EditableVaultListView {
             switch viewModel.state {
             case .error, .loading:
                 // Should never happen because we don't allow showing list of vaults
-                // when vaults are being loaded or error occured
+                // when vaults are being loaded or error occurred
                 ProgressView()
 
             case .loaded:
@@ -205,7 +247,8 @@ private extension EditableVaultListView {
                     if let folders = content.folders(in: content.id),
                        !folders.isEmpty,
                        viewModel.containersExtended.contains(content.id) {
-                        FolderTreeRow(content: content, folders: folders, viewModel: viewModel)
+                        FolderTreeRow(content: content, share: content.share, folders: folders,
+                                      viewModel: viewModel)
                     }
                     PassDivider()
                 }
@@ -297,7 +340,9 @@ private extension EditableVaultListView {
             }
 
             if viewModel.folderSupported {
-                Button(action: {}, label: {
+                Button(action: {
+                    viewModel.folderAction = .createNewFolder(vault, parentFolderId: nil)
+                }, label: {
                     Label(title: {
                         Text("Create folder")
                     }, icon: {
@@ -416,10 +461,11 @@ private extension EditableVaultListView {
     }
 }
 
-//Mark: folder tree
+// MARK: folder tree
 
 struct FolderTreeRow: View {
     let content: ShareContent
+    let share: Share
     let folders: [FolderUiModel]
     @ObservedObject var viewModel: EditableVaultListViewModel
 
@@ -432,6 +478,7 @@ struct FolderTreeRow: View {
                 if shouldShowSubfolders(of: folder),
                    let subFolders = content.folders(in: folder.id) {
                     FolderTreeRow(content: content,
+                                  share: share,
                                   folders: subFolders,
                                   viewModel: viewModel)
                 }
@@ -488,7 +535,9 @@ private extension FolderTreeRow {
             Spacer()
 
             Menu {
-                Button(action: {}, label: {
+                Button(action: {
+                    viewModel.folderAction = .createNewFolder(share, parentFolderId: folder.id)
+                }, label: {
                     Label(title: {
                         Text("Create sub-folder")
                     }, icon: {
@@ -498,7 +547,9 @@ private extension FolderTreeRow {
                     })
                 })
 
-                Button(action: {}, label: {
+                Button(action: {
+                    viewModel.folderAction = .edit(folder)
+                }, label: {
                     Label(title: {
                         Text("Rename")
                     }, icon: {

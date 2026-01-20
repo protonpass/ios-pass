@@ -127,8 +127,7 @@ public protocol PassKeyManagerProtocol: Sendable, AnyObject {
 
     func decryptAndStoreFolderKeys(shareId: String, folders: [Folder]) async throws
     func getDecryptionKey(userId: String,
-                          containerId: String,
-                          keyRotation: Int64) async throws -> any CryptographicKeyProtocol
+                          containerId: String) async throws -> any CryptographicKeyProtocol
 
 //    func getFolderKeys(userId: String, parentId: String, folderId: String) async throws -> [any
 //    DecryptionKeyProtocol]
@@ -410,8 +409,7 @@ public extension PassKeyManager {
     }
 
     func getDecryptionKey(userId: String,
-                          containerId: String,
-                          keyRotation: Int64) async throws -> any CryptographicKeyProtocol {
+                          containerId: String) async throws -> any CryptographicKeyProtocol {
         guard let key = cachedContainerKeys[containerId] else {
             throw PassError.keysNotFound(shareID: containerId)
         }

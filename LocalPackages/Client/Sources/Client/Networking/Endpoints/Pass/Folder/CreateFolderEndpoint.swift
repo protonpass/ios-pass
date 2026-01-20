@@ -22,11 +22,14 @@
 // TODO: remove with folder implementation
 // periphery:ignore:all
 
+import Core
+import CryptoKit
 import Entities
+import Foundation
 import ProtonCoreNetworking
 
 struct CreateFolderEndpoint: Endpoint {
-    typealias Body = CreateItemRequest
+    typealias Body = CreateFolderRequest
     typealias Response = FolderResponse
 
     let debugDescription: String
@@ -59,6 +62,23 @@ public struct CreateFolderRequest: Sendable, Encodable {
         self.contentFormatVersion = contentFormatVersion
         self.content = content
         self.folderKey = folderKey
+    }
+
+    public init(encryptionKey: any CryptographicKeyProtocol,
+                folderContent: FolderContent,
+                parentFolderId: String?) throws {
+        let folderKey = try Data.random()
+        let encryptedContent = try AES.GCM.seal(folderContent.data(),
+                                                key: folderKey,
+                                                associatedData: .folderContent)
+        let encryptedFolderKey = try AES.GCM.seal(folderKey,
+                                                  key: encryptionKey.keyData,
+                                                  associatedData: .folderKey)
+        self.init(parentFolderID: parentFolderId,
+                  keyRotation: Int(encryptionKey.keyRotation),
+                  contentFormatVersion: Constants.ContentFormatVersion.folder,
+                  content: encryptedContent.base64EncodedString(),
+                  folderKey: encryptedFolderKey.base64EncodedString())
     }
 
     enum CodingKeys: String, CodingKey {

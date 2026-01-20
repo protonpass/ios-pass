@@ -777,3 +777,17 @@ extension [ShareContent] {
         sorted(by: { !$0.share.hidden && $1.share.hidden })
     }
 }
+
+// MARK: - Folders
+
+extension AppContentManager {
+    func createFolder(userId: String, shareId: String, parentFolderId: String?, name: String) async throws {
+        let content = FolderContent(name: name)
+        try await folderRepository.createFolder(userId: userId,
+                                                shareId: shareId,
+                                                parentFolderId: parentFolderId,
+                                                folderContent: content)
+        try await localFullSync(userId: userId)
+        try await itemRepository.refreshPinnedItemDataStream()
+    }
+}

@@ -73,6 +73,11 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var containersExtended = Set<String>()
     @Published var containerToDelete: ActionnableContainer?
 
+    // MARK: - Folder actions
+
+    @Published var folderAction: FolderAction?
+    @Published var folderName: String = ""
+
     private var count: Count
 
     let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -211,6 +216,11 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
             print("Woot add container: \(containerId)")
             containersExtended.insert(containerId)
         }
+    }
+
+    func cleanActions() {
+        folderAction = nil
+        folderName = ""
     }
 }
 
@@ -440,7 +450,7 @@ extension EditableVaultListViewModel {
             ////                loading = false
 //                updateMode(.view)
 //            }
-//            loading = true
+            loading = true
             do {
                 if try await reorganizeVaults(currentShares: data.shares.map(\.value.share),
                                               hiddenShareIds: hiddenShareIds) {
@@ -448,7 +458,54 @@ extension EditableVaultListViewModel {
                     try await appContentManager.localFullSync(userId: userId)
                     try await itemRepository.refreshPinnedItemDataStream()
                 }
+                loading = false
                 updateMode(.view)
+            } catch {
+                loading = false
+                handle(error)
+            }
+        }
+    }
+}
+
+// MARK: - Folder actions
+
+extension EditableVaultListViewModel {
+    func editFolder(_ folder: FolderUiModel) async throws {
+        print("woot editing folder")
+//        let userId = try await userManager.getActiveUserId()
+//        try await appContentManager.localFullSync(userId: userId)
+//        try await itemRepository.refreshPinnedItemDataStream()
+    }
+
+    func createFolder(share: Share, parentFolderId: String?, name: String) async throws {
+        let userId = try await userManager.getActiveUserId()
+        try await appContentManager.createFolder(userId: userId,
+                                                 shareId: share.id,
+                                                 parentFolderId: parentFolderId,
+                                                 name: name)
+        containersExtended.insert(parentFolderId ?? share.id)
+    }
+
+    func folderCreateAndEdition() {
+        guard case let .loaded(data) = state,
+              let folderAction,
+              !folderName.isEmpty else { return }
+        // should not alow creation why other is not finished
+        Task { [weak self] in
+            guard let self else { return }
+            defer {
+                loading = false
+                cleanActions()
+            }
+            loading = true
+            do {
+                switch folderAction {
+                case let .createNewFolder(share, parentFolderId):
+                    try await createFolder(share: share, parentFolderId: parentFolderId, name: folderName)
+                case let .edit(folder):
+                    try await editFolder(folder)
+                }
             } catch {
                 handle(error)
             }
