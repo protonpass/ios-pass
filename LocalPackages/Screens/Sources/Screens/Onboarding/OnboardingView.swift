@@ -189,6 +189,11 @@ private extension OnboardingView {
             OnboardingPaymentStep(plans: plans,
                                   selectedPlan: $viewModel.selectedPlan,
                                   onPurchase: viewModel.purchaseSelectedPlan)
+                .onAppear {
+                    if plans.noPlansAvailable {
+                        topBar = .none
+                    }
+                }
 
         case .biometric:
             descriptiveIllustration(illustration: PassIcon.onboardFaceID,

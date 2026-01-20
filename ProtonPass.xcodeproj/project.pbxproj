@@ -478,6 +478,7 @@
 		539182CF2D7F3EB500815D7F /* CustomDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539182CE2D7F3EAF00815D7F /* CustomDetailView.swift */; };
 		539182D12D7F3ED100815D7F /* CustomDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539182D02D7F3ECF00815D7F /* CustomDetailViewModel.swift */; };
 		53A2EB092D6F538A008A4A0C /* CustomItemTemplatesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53A2EB072D6F5381008A4A0C /* CustomItemTemplatesList.swift */; };
+		53A732B12F1F8AB100EC4A16 /* UpsellSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53A732B02F1F8AA300EC4A16 /* UpsellSection.swift */; };
 		53ABE2D62E842FD500C7355B /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 53ABE2D52E842FD500C7355B /* AppIcon.icon */; };
 		53ABE2D72E842FD500C7355B /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 53ABE2D52E842FD500C7355B /* AppIcon.icon */; };
 		53AEB2E32DDF68B40088DA4B /* TotpTextFieldToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AEB2E22DDF68B00088DA4B /* TotpTextFieldToolbar.swift */; };
@@ -1063,6 +1064,7 @@
 		539182CE2D7F3EAF00815D7F /* CustomDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDetailView.swift; sourceTree = "<group>"; };
 		539182D02D7F3ECF00815D7F /* CustomDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDetailViewModel.swift; sourceTree = "<group>"; };
 		53A2EB072D6F5381008A4A0C /* CustomItemTemplatesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomItemTemplatesList.swift; sourceTree = "<group>"; };
+		53A732B02F1F8AA300EC4A16 /* UpsellSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpsellSection.swift; sourceTree = "<group>"; };
 		53ABE2D52E842FD500C7355B /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 		53AEB2E22DDF68B00088DA4B /* TotpTextFieldToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotpTextFieldToolbar.swift; sourceTree = "<group>"; };
 		53AEE4692D7F0E1200CE0CA7 /* CustomSectionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSectionsSection.swift; sourceTree = "<group>"; };
@@ -1459,6 +1461,7 @@
 				3586478129F825E0003487B1 /* TelemetryEventsSection.swift */,
 				351A96002BAC7E8700D599BB /* TipKitSection.swift */,
 				353EC0152A05A7EF004AF925 /* TrashItemsSection.swift */,
+				53A732B02F1F8AA300EC4A16 /* UpsellSection.swift */,
 			);
 			path = "QA Features";
 			sourceTree = "<group>";
@@ -3845,6 +3848,7 @@
 				3575EB5929FABC92000FFD53 /* EditAppLockTimeView.swift in Sources */,
 				539182CC2D7F2C9100815D7F /* SshDetailViewModel.swift in Sources */,
 				5B0939182C04DD250046F467 /* IdentityDetailView.swift in Sources */,
+				53A732B12F1F8AB100EC4A16 /* UpsellSection.swift in Sources */,
 				5B0939192C04DD250046F467 /* IdentityDetailViewModel.swift in Sources */,
 				5BD870D82BB46C7800A9F1A8 /* PasswordReusedView.swift in Sources */,
 				5B14538F2A6821D20048B022 /* Router+DependencyInjections.swift in Sources */,

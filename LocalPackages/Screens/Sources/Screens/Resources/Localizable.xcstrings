@@ -29190,6 +29190,16 @@
         }
       }
     },
+    "To upgrade, please use a browser or contact our support team." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To upgrade, please use a browser or contact our support team."
+          }
+        }
+      }
+    },
     "Try searching using different spelling or keywords" : {
       "localizations" : {
         "be" : {
@@ -29578,6 +29588,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "開啟自動填入"
+          }
+        }
+      }
+    },
+    "Unable to load available plans" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to load available plans"
           }
         }
       }

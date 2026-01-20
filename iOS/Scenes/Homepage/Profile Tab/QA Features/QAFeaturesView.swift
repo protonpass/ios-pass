@@ -82,6 +82,8 @@ struct QAFeaturesView: View {
 
                 FileAttachmentViewerSection()
 
+                UpsellSection()
+
                 if #available(iOS 17, *) {
                     AliasDiscoverySection()
                     TipKitSection()

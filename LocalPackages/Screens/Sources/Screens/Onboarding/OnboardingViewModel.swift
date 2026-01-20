@@ -59,18 +59,24 @@ public nonisolated struct KnownService: Sendable, Decodable, Equatable {
 public typealias OnboardingHandling = OnboardingDatasource & OnboardingDelegate
 
 public nonisolated struct PassPlans: Sendable, Equatable {
-    let plus: PlanUiModel
-    let unlimited: PlanUiModel
+    let plus: PlanUiModel?
+    let unlimited: PlanUiModel?
 
-    public init(plus: PlanUiModel, unlimited: PlanUiModel) {
+    public init(plus: PlanUiModel?, unlimited: PlanUiModel?) {
         self.plus = plus
         self.unlimited = unlimited
+    }
+
+    public var noPlansAvailable: Bool { plus == nil && unlimited == nil }
+
+    public var onePlanAvailable: Bool {
+        (plus == nil && unlimited != nil) || (plus != nil && unlimited == nil)
     }
 }
 
 public protocol OnboardingDatasource: Sendable, AnyObject {
     func getCurrentPlan() async throws -> Entities.Plan
-    func getPassPlans() async throws -> PassPlans?
+    func getPassPlans() async throws -> PassPlans
     func getBiometryType() async throws -> LABiometryType?
     func isAutoFillEnabled() async -> Bool
     // periphery:ignore
@@ -135,8 +141,15 @@ extension OnboardingViewModel {
             }
 
             availableBiometryType = try await datasource.getBiometryType()
+            let plans = try await datasource.getPassPlans()
 
-            if let plans = try await datasource.getPassPlans() {
+            // When onboarding, we skip payment step when there's no plans.
+            // When upselling (users hit by paywall)
+            // we show payment step regardless of whether plans are available.
+            // If not availble we show a message to redirect users to web
+            let showPaymentStep = mode == .upsell || (mode == .onboarding && !plans.noPlansAvailable)
+
+            if showPaymentStep {
                 currentStep = .fetched(.payment(plans))
             } else if let availableBiometryType, availableBiometryType != .none, mode == .onboarding {
                 currentStep = .fetched(.biometric(availableBiometryType))
