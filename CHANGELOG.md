@@ -4,6 +4,7 @@ SSH key generator: You can now generate an SSH key by focusing on the public or 
 Improvements:
 - Reduced spacing between items on the homepage
 - Handle missing credit card expiration date
+- Handle missing plans when upselling
 - Fixed filters resetting after editing items or unlocking the app
 - Fixed jumping cursor in text custom fields
 - Fixed file picker not appearing in some cases
