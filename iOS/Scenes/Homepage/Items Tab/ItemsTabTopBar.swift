@@ -52,20 +52,64 @@ struct ItemsTabTopBar: View {
             }
         }
         .animation(.default, value: isEditMode)
-        .frame(height: 60)
+//        .frame(height: 60)
     }
 }
 
 private extension ItemsTabTopBar {
     var viewModeView: some View {
-        HStack {
-            // Vault selector button
-            let uiModel = viewModel.shareSelection.uiModel
-            CircleButton(icon: uiModel.icon,
-                         iconColor: uiModel.iconColor,
-                         backgroundColor: uiModel.backgroundColor,
-                         action: onShowVaultList)
-                .accessibilityLabel(viewModel.shareSelection.accessibilityLabel)
+        VStack {
+            HStack {
+                // TODO: need to take into account container selected for icon and title
+                // Vault selector button
+                let uiModel = viewModel.shareSelection.uiModel
+                CircleButton(icon: uiModel.icon,
+                             iconColor: uiModel.iconColor,
+                             backgroundColor: uiModel.backgroundColor,
+                             action: onShowVaultList)
+                    .accessibilityLabel(viewModel.shareSelection.accessibilityLabel)
+
+                Text("\(viewModel.shareSelection.title)")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .frame(maxWidth: .infinity)
+
+                if showPromoBadge {
+                    PassIcon.promoBadge
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: 46)
+                        .buttonEmbeded(action: onPromoBadgeTapped)
+                } else if viewModel.shouldUpsell {
+                    PassIcon.diamond
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                        .scaledToFit()
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .frame(height: 44, alignment: .leading)
+                        .cornerRadius(10)
+                        .foregroundStyle(PassColor.interactionNormMajor2)
+                        .overlay(RoundedRectangle(cornerRadius: 10)
+                            .inset(by: 0.5)
+                            .stroke(PassColor.interactionNormMinor1, lineWidth: 1))
+                        .buttonEmbeded(action: viewModel.upgradeSubscription)
+                }
+
+                SortFilterItemsMenu(options: [
+                    .selectItems { isEditMode.toggle() },
+                    .filter(viewModel.selectedFilterOption, viewModel.itemCount, viewModel.update(_:)),
+                    .sort(viewModel.selectedSortType) { viewModel.selectedSortType = $0 },
+                    .resetFilters { viewModel.resetFilters() }
+                ],
+                highlighted: viewModel.highlighted,
+                selectable: viewModel.selectable)
+            }
+            .frame(height: 48)
+            .padding(.horizontal, showButtonShapes ? 0 : nil)
+            .padding(.vertical, 16)
+            .animation(.default, value: showPromoBadge)
+            .animation(.default, value: viewModel.shouldUpsell)
 
             if searchMode == nil {
                 // Search bar
@@ -90,45 +134,14 @@ private extension ItemsTabTopBar {
                 .contentShape(.rect)
                 .frame(height: DesignConstant.searchBarHeight)
                 .onTapGesture(perform: onSearch)
+                .frame(height: 48)
+                .padding(.bottom, 8)
+                .padding(.horizontal, 16)
             } else {
                 Spacer()
                     .frame(maxWidth: .infinity)
             }
-
-            if showPromoBadge {
-                PassIcon.promoBadge
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: 46)
-                    .buttonEmbeded(action: onPromoBadgeTapped)
-            } else if viewModel.shouldUpsell {
-                PassIcon.diamond
-                    .resizable()
-                    .frame(width: 20, height: 20)
-                    .scaledToFit()
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
-                    .frame(height: 44, alignment: .leading)
-                    .cornerRadius(10)
-                    .foregroundStyle(PassColor.interactionNormMajor2)
-                    .overlay(RoundedRectangle(cornerRadius: 10)
-                        .inset(by: 0.5)
-                        .stroke(PassColor.interactionNormMinor1, lineWidth: 1))
-                    .buttonEmbeded(action: viewModel.upgradeSubscription)
-            }
-
-            SortFilterItemsMenu(options: [
-                .selectItems { isEditMode.toggle() },
-                .filter(viewModel.selectedFilterOption, viewModel.itemCount, viewModel.update(_:)),
-                .sort(viewModel.selectedSortType) { viewModel.selectedSortType = $0 },
-                .resetFilters { viewModel.resetFilters() }
-            ],
-            highlighted: viewModel.highlighted,
-            selectable: viewModel.selectable)
         }
-        .padding(.horizontal, showButtonShapes ? 0 : nil)
-        .animation(.default, value: showPromoBadge)
-        .animation(.default, value: viewModel.shouldUpsell)
     }
 }
 

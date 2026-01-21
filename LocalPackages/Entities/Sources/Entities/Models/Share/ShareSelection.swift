@@ -34,12 +34,19 @@ public enum ShareSelection: Hashable, Sendable {
         return false
     }
 
-    public var preciseShare: Share? {
+    public var selectedShareId: String? {
         if case let .precise(share, _) = self {
-            return share
+            return share.shareId
         }
         return nil
     }
+
+//    public var preciseShare: Share? {
+//        if case let .precise(share, _) = self {
+//            return share
+//        }
+//        return nil
+//    }
 
     public var preferenceKey: String? {
         switch self {
