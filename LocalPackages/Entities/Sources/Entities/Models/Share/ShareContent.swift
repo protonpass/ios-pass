@@ -67,11 +67,9 @@ public struct ShareContent: Identifiable, Hashable, Sendable {
         self.content = content
         self.itemsByContainer = itemsByContainer
         self.foldersByContainer = foldersByContainer
-//        self.allElements = elements.reduce(<#T##initialResult: Result##Result#>, <#T##nextPartialResult: (Result,
-//        ShareContentElement) throws -> Result##(Result, ShareContentElement) throws -> Result##(_ partialResult:
-//        Result, ShareContentElement) throws -> Result#>)
-//        self.content = Dictionary(grouping: elements, by: \.containerId)
-//        self.lookupTable = ShareContentIndex(shareID: share.id, elements: elements)
+        if !foldersByContainer.isEmpty {
+            print("woot")
+        }
     }
 }
 
@@ -116,25 +114,37 @@ public extension ShareContent {
 //        lookupTable.elements(for: containerId)
     }
 
-    func flatenedItems(from containerId: String) -> [ItemUiModel] {
+    func flattenedItems(from containerId: String) -> [ItemUiModel] {
         var items = itemsByContainer[containerId]?.compactMap(\.itemValue) ?? []
-        if let folders = foldersByContainer[containerId], !folders.isEmpty {
+
+        if let folders = foldersByContainer[containerId] {
             for folder in folders {
-                let subfolderItems = itemsByContainer[folder.id]?.compactMap(\.itemValue) ?? []
-                items.append(contentsOf: subfolderItems)
+                if let folderModel = folder.folderValue {
+                    items.append(contentsOf: flattenedItems(from: folderModel.folderId))
+                }
             }
         }
+
         return items
+    }
+
+    func flattenedFolders(from containerId: String) -> [FolderUiModel] {
+        var folders = foldersByContainer[containerId]?.compactMap(\.folderValue) ?? []
+
+        let directFolders = folders
+        for folder in directFolders {
+            folders.append(contentsOf: flattenedFolders(from: folder.folderId))
+        }
+
+        return folders
     }
 
     func items(in containerId: String) -> [ItemUiModel]? {
         itemsByContainer[containerId]?.compactMap(\.itemValue)
-//        lookupTable.items(in: containerId)
     }
 
     func folders(in containerId: String) -> [FolderUiModel]? {
         foldersByContainer[containerId]?.compactMap(\.folderValue)
-//        lookupTable.subfolders(of: containerId)
     }
 
     var rootElements: [ShareContentElement] {

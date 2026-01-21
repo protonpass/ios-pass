@@ -78,7 +78,7 @@ public extension RemoteFolderDatasource {
                 shareId: String,
                 folderId: [String]) async throws {
         let endpoint = DeleteFoldersEndpoint(shareId: shareId, folderIds: folderId)
-        let response = try await exec(userId: userId, endpoint: endpoint)
+        _ = try await exec(userId: userId, endpoint: endpoint)
     }
 
     func update(userId: String,

@@ -300,7 +300,7 @@ extension EditableVaultListViewModel {
                 case let .folder(folder):
                     try await appContentManager.delete(userId: userId,
                                                        shareId: folder.shareId,
-                                                       folderId: folder.folderId)
+                                                       folderId: folder.id)
                 }
                 try await appContentManager.refresh(userId: userId)
                 router.display(element: .infosMessage(#localized("%@ « %@ » deleted",
@@ -472,10 +472,9 @@ extension EditableVaultListViewModel {
 
 extension EditableVaultListViewModel {
     func editFolder(_ folder: FolderUiModel) async throws {
-        print("woot editing folder")
-//        let userId = try await userManager.getActiveUserId()
-//        try await appContentManager.localFullSync(userId: userId)
-//        try await itemRepository.refreshPinnedItemDataStream()
+        let userId = try await userManager.getActiveUserId()
+        try await appContentManager.editFolder(userId: userId, shareId: folder.shareId, folderId: folder.id,
+                                               name: folderName)
     }
 
     func createFolder(share: Share, parentFolderId: String?, name: String) async throws {
@@ -488,8 +487,7 @@ extension EditableVaultListViewModel {
     }
 
     func folderCreateAndEdition() {
-        guard case let .loaded(data) = state,
-              let folderAction,
+        guard let folderAction,
               !folderName.isEmpty else { return }
         // should not alow creation why other is not finished
         Task { [weak self] in
