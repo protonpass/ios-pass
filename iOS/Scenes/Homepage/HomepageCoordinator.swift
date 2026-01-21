@@ -234,8 +234,8 @@ private extension HomepageCoordinator {
                 case .all, .trash:
                     let vaults = appContentManager.getAllShares()
                     createButtonDisabled = !vaults.contains(where: \.canEdit)
-                case let .precise(vault, _):
-                    createButtonDisabled = !vault.canEdit
+                case let .precise(selection):
+                    createButtonDisabled = !selection.share.canEdit
                 default:
                     createButtonDisabled = true
                 }

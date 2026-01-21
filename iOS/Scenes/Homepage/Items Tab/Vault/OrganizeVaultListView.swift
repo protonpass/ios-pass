@@ -78,7 +78,7 @@ struct OrganizeVaultListView: View {
                 }
 
                 ForEach(viewModel.visibleVaults) { content in
-                    vaultRow(for: .precise(content.share, folderId: nil))
+                    vaultRow(for: .precise(.init(share: content.share, folder: nil)))
                     if viewModel.mode.isView ||
                         (viewModel.mode.isOrganise && !viewModel.isLastVisibleVault(content.share)) {
                         PassDivider()
@@ -100,7 +100,7 @@ struct OrganizeVaultListView: View {
                 }
 
                 ForEach(viewModel.hiddenVaults) { content in
-                    vaultRow(for: .precise(content.share, folderId: nil))
+                    vaultRow(for: .precise(.init(share: content.share, folder: nil)))
                     if !viewModel.isLastHiddenVault(content.share) {
                         PassDivider()
                     }

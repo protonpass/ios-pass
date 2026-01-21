@@ -97,8 +97,8 @@ final class ItemsTabTopBarViewModel: ObservableObject {
         switch appContentManager.shareSelection {
         case .all, .sharedByMe, .sharedWithMe, .trash:
             true
-        case let .precise(vault, _):
-            vault.canEdit
+        case let .precise(selection):
+            selection.share.canEdit
         }
     }
 
