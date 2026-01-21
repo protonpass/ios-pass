@@ -70,7 +70,12 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var hiddenShareIds = Set<String>()
     @Published private(set) var mode: Mode = .view
     @Published private var plan: Plan?
-    @Published private(set) var containersExtended = Set<String>()
+    @Published private(set) var containersExtended = Set<String>() {
+        didSet {
+            persist()
+        }
+    }
+
     @Published var containerToDelete: ActionnableContainer?
 
     // MARK: - Folder actions
@@ -175,7 +180,9 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
         setUp()
     }
 
-    deinit { print(deinitMessage) }
+    deinit {
+        print(deinitMessage)
+    }
 
     func select(_ selection: ShareSelection) {
         appContentManager.select(selection)
@@ -228,6 +235,9 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
 private extension EditableVaultListViewModel {
     func setUp() {
+        if let userId = userManager.activeUserId {
+            containersExtended = Self.loadSet(for: userId)
+        }
         appContentManager.$state
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newState in
@@ -265,28 +275,18 @@ private extension EditableVaultListViewModel {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
     }
+
+    func persist() {
+        if let userId = userManager.activeUserId {
+            Self.saveSet(containersExtended,
+                         for: userId)
+        }
+    }
 }
 
 // MARK: - Public APIs
 
 extension EditableVaultListViewModel {
-//    func delete(vault: Share) {
-//        guard let vaultContent = vault.vaultContent else { return }
-//        Task { [weak self] in
-//            guard let self else { return }
-//            defer { loading = false }
-//            do {
-//                loading = true
-//                let userId = try await userManager.getActiveUserId()
-//                try await appContentManager.delete(vault: vault)
-//                try await appContentManager.refresh(userId: userId)
-//                router.display(element: .infosMessage(#localized("Vault « %@ » deleted", vaultContent.name)))
-//            } catch {
-//                handle(error)
-//            }
-//        }
-//    }
-//
     func delete(container: ActionnableContainer) {
         Task { [weak self] in
             guard let self else { return }
@@ -508,5 +508,25 @@ extension EditableVaultListViewModel {
                 handle(error)
             }
         }
+    }
+}
+
+private extension EditableVaultListViewModel {
+    static let keyPrefix = "me.pass.editablevaultlistviewmodel.set"
+
+    static func loadSet(for userId: String) -> Set<String> {
+        let key = makeKey(for: userId)
+        let array = kSharedUserDefaults.stringArray(forKey: key) ?? []
+        return Set(array)
+    }
+
+    static func saveSet(_ value: Set<String>,
+                        for userId: String) {
+        let key = makeKey(for: userId)
+        kSharedUserDefaults.set(Array(value), forKey: key)
+    }
+
+    static func makeKey(for userId: String) -> String {
+        "\(keyPrefix).\(userId)"
     }
 }
