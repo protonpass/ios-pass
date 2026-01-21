@@ -121,7 +121,7 @@ public protocol PassKeyManagerProtocol: Sendable, AnyObject {
 
     func getItemKey(userId: String,
                     shareId: String,
-                    containerid: String,
+                    containerId: String,
                     itemId: String,
                     keyRotation: Int64) async throws -> any CryptographicKeyProtocol
 
@@ -238,19 +238,28 @@ public actor PassKeyManager: PassKeyManagerProtocol {
         // TODO: pull all local share and folder key into cache
     }
 
-    private func loadKeysIfNeeded() {
-        guard !keysLoaded, loadingTask == nil else {
+    private func loadKeysIfNeeded() async {
+        guard !keysLoaded else {
             return
         }
 
-        loadingTask = Task {
-            do {
-                async let shareKeysRequest = shareKeyRepository.getAllLocalKeys()
-                async let folderKeysRequest = folderKeyDatasource.getAllFolderKeys()
-                let (shareKeys, folderKeys) = try await (shareKeysRequest, folderKeysRequest)
-            } catch {
-                logger.error(error)
+        do {
+            async let shareKeysRequest = shareKeyRepository.getAllLocalKeys()
+            async let folderKeysRequest = folderKeyDatasource.getAllFolderKeys()
+            let (shareKeys, folderKeys) = try await (shareKeysRequest, folderKeysRequest)
+            let allKeys: [SymmetricallyEncryptedKeyType] = shareKeys + folderKeys
+
+            for key in allKeys {
+                let decryptedKey = try await symmetricKeyProvider.getSymmetricKey().decrypt(key.encryptedKey)
+                guard let decryptedKeyData = try decryptedKey.base64Decode() else {
+                    throw PassError.crypto(.failedToBase64Decode)
+                }
+                let decryptedContainerKey = key.buildKey(with: decryptedKeyData)
+                cachedContainerKeys[key.id] = decryptedContainerKey
             }
+            keysLoaded = true
+        } catch {
+            logger.error(error)
         }
     }
     // TODO: func load all local keys to cache as know we have share + folder keys
@@ -397,10 +406,10 @@ public extension PassKeyManager {
     // This need to take and item to have info of share or folder or shareId must be repalce by parent id
     func getItemKey(userId: String,
                     shareId: String,
-                    containerid: String,
+                    containerId: String,
                     itemId: String,
                     keyRotation: Int64) async throws -> any CryptographicKeyProtocol {
-        guard let key = try await getItemKeys(userId: userId, shareId: shareId, containerId: containerid,
+        guard let key = try await getItemKeys(userId: userId, shareId: shareId, containerId: containerId,
                                               itemId: itemId)
             .first(where: { $0.keyRotation == keyRotation }) else {
             throw PassError.keysNotFound(shareID: shareId)
@@ -410,6 +419,9 @@ public extension PassKeyManager {
 
     func getDecryptionKey(userId: String,
                           containerId: String) async throws -> any CryptographicKeyProtocol {
+        if !keysLoaded {
+            await loadKeysIfNeeded()
+        }
         guard let key = cachedContainerKeys[containerId] else {
             throw PassError.keysNotFound(shareID: containerId)
         }

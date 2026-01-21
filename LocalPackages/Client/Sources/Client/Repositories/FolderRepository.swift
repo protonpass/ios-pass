@@ -30,11 +30,13 @@ public protocol FolderRepositoryProtocol: Sendable {
     func refreshFolders(userId: String, shareId: String) async throws
     func deleteAllLocalFolders(userId: String) async throws
     func delete(userId: String, shareId: String, folderIds: [String]) async throws
+    func deleteLocalFolder(userId: String, shareId: String, folderIds: [String]) async throws
     @discardableResult
     func createFolder(userId: String,
                       shareId: String,
                       parentFolderId: String?,
                       folderContent: FolderContent) async throws -> Folder
+    func edit(userId: String, shareId: String, folderId: String, folderContent: FolderContent) async throws
 }
 
 public final class FolderRepository: FolderRepositoryProtocol {
@@ -71,6 +73,13 @@ public final class FolderRepository: FolderRepositoryProtocol {
 public extension FolderRepository {
     func getAllLocalFolders(userId: String) async throws -> [SymmetricallyEncryptedFolder] {
         try await localDatasource.getAllFolders(userId: userId)
+    }
+
+    func deleteLocalFolder(userId: String, shareId: String, folderIds: [String]) async throws {
+        // Local deletion
+        logger.trace("Deleting local vault \(shareId) for user \(userId)")
+        try await localDatasource.deleteFolders(folderIds: folderIds, shareId: shareId)
+        logger.trace("Deleted local folders \(folderIds) for user \(userId)")
     }
 }
 
@@ -190,27 +199,19 @@ public extension FolderRepository {
 
     func edit(userId: String, shareId: String, folderId: String, folderContent: FolderContent) async throws {
         logger.trace("Editing folder \(folderId) for user \(userId)")
-        // TODO: maybe need to get parentId for key
         let folderKey = try await passKeyManager.getDecryptionKey(userId: userId, containerId: folderId)
-        let request = try UpdateFolderRequest(encryptionKey: folderKey, folderContent: folderContent)
+        let requestPayload = try UpdateFolderRequestPayload(encryptionKey: folderKey, folderContent: folderContent)
+        let request = UpdateFolderRequest(content: requestPayload)
         let updatedFolder = try await remoteDatasource.update(userId: userId,
                                                               shareId: shareId,
                                                               folderId: folderId,
                                                               request: request)
         logger.trace("Saving updated folder \(folderId) to local for user \(userId)")
-
-//        logger.trace("Editing folder \(oldVault.id) for user \(userId)")
-//        let shareId = oldVault.id
-//        let shareKey = try await passKeyManager.getLatestShareKey(userId: userId, shareId: shareId)
-//        let request = try UpdateVaultRequest(vault: newVault, shareKey: shareKey)
-//        let updatedVault = try await remoteDatasource.updateVault(userId: userId,
-//                                                                  request: request,
-//                                                                  shareId: shareId)
-//        logger.trace("Saving updated vault \(oldVault.id) to local for user \(userId)")
-//        let key = try await getSymmetricKey()
-//        let encryptedShare = try await symmetricallyEncrypt(userId: userId, updatedVault, symmetricKey: key)
-//        try await localDatasource.upsertShares([encryptedShare], userId: userId)
-//        logger.trace("Updated vault \(oldVault.id) for user \(userId)")
+        let encryptedFolder = try await symmetricallyEncrypt(userId: userId,
+                                                             shareId: shareId,
+                                                             folderRevision: updatedFolder)
+        try await localDatasource.upsertFolders([encryptedFolder], userId: userId)
+        logger.trace("Updated folder \(encryptedFolder.folderId) for user \(userId)")
     }
 }
 
@@ -411,7 +412,6 @@ private extension FolderRepository {
                               folderRevision: Folder) async throws -> SymmetricallyEncryptedFolder {
         let symmetricKey = try await symmetricKey
 
-//        let containerId = folderRevision.parentFolderID ?? shareId
         print("woot getting containerKey")
         let containerKey: any CryptographicKeyProtocol = try await passKeyManager.getDecryptionKey(userId: userId,
                                                                                                    containerId: folderRevision

@@ -46,6 +46,18 @@ struct UpdateFolderEndpoint: Endpoint {
 }
 
 public struct UpdateFolderRequest: Sendable, Encodable {
+    let content: UpdateFolderRequestPayload
+
+    init(content: UpdateFolderRequestPayload) {
+        self.content = content
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case content = "Content"
+    }
+}
+
+public struct UpdateFolderRequestPayload: Sendable, Encodable {
     /// RotationID used to encrypt the item contents
     let keyRotation: Int64
 

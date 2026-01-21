@@ -313,8 +313,15 @@ extension AppContentManager {
         logger.trace("Deleting folder \(folderId)")
         try await folderRepository.delete(userId: userId, shareId: shareId, folderIds: [folderId])
         logger.trace("Deleting local active items of folder and subfolders \(folderId)")
-        let itemIds = shareContent.flatenedItems(from: folderId).map(\.itemId)
-        try await itemRepository.deleteItemsLocally(itemIds: itemIds, shareId: shareId)
+        let itemIds = shareContent.flattenedItems(from: folderId).map(\.itemId)
+        let folderIds = shareContent.flattenedFolders(from: folderId).map(\.id)
+        async let deletingFolders: Void = folderIds.isEmpty ? () : folderRepository
+            .deleteLocalFolder(userId: userId,
+                               shareId: shareId,
+                               folderIds: folderIds)
+        async let deletingItems: Void = itemIds.isEmpty ? () : itemRepository.deleteItemsLocally(itemIds: itemIds,
+                                                                                                 shareId: shareId)
+        _ = try await (deletingFolders, deletingItems)
         // Delete local items of the vault
         logger.info("Deleted folder \(folderId)")
     }
@@ -372,7 +379,7 @@ extension AppContentManager {
     func getItems(for shareId: String, containerId: String?) -> [ItemUiModel] {
         guard let sharesData = state.loadedContent,
               let shareContent = sharesData.shares[shareId] else { return [] }
-        return shareContent.flatenedItems(from: containerId ?? shareId)
+        return shareContent.flattenedItems(from: containerId ?? shareId)
     }
 
     func getAllItems(for shareId: String) -> [ItemUiModel] {
@@ -413,7 +420,7 @@ extension AppContentManager {
             sharesData.visibleShareContents.flatMap(\.allItems)
         case let .precise(selectedShare, folderId):
             if let shareContent = sharesData.shares[selectedShare.id] {
-                shareContent.flatenedItems(from: folderId ?? selectedShare.shareId)
+                shareContent.flattenedItems(from: folderId ?? selectedShare.shareId)
 //                if let folderId {
 //                    shareContent.elements(for: folderId) ?? []
 //                } else {
@@ -787,6 +794,14 @@ extension AppContentManager {
                                                 shareId: shareId,
                                                 parentFolderId: parentFolderId,
                                                 folderContent: content)
+        try await localFullSync(userId: userId)
+        try await itemRepository.refreshPinnedItemDataStream()
+    }
+
+    func editFolder(userId: String, shareId: String, folderId: String, name: String) async throws {
+        let content = FolderContent(name: name)
+        try await folderRepository.edit(userId: userId, shareId: shareId, folderId: folderId,
+                                        folderContent: content)
         try await localFullSync(userId: userId)
         try await itemRepository.refreshPinnedItemDataStream()
     }
