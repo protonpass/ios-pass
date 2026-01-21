@@ -37,6 +37,7 @@ typealias ScanResponsePublisher = PassthroughSubject<(any ScanResult)?, any Erro
 extension ItemContent: @retroactive FullItemIdentifiable {}
 
 enum ItemMode: Equatable, Hashable {
+    // TODO: add Folder id to item actions
     case create(shareId: String?, type: ItemCreationType)
     case clone(ItemContent)
     case edit(ItemContent)
