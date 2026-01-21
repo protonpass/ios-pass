@@ -41,6 +41,9 @@ public struct UserPreferences: Codable, Equatable, Sendable {
     /// `shareId` of the last selected vault. `nil` if all vaults are selected
     public var lastSelectedShareId: String?
 
+    /// `shareId` of the last selected vault. `nil` if all vaults are selected
+    public var lastSelectedFolderId: String?
+
     /// `shareId` of the last created item
     public var lastCreatedItemShareId: String?
 
@@ -53,6 +56,7 @@ public struct UserPreferences: Codable, Equatable, Sendable {
                 extraPasswordEnabled: Bool,
                 protonPasswordFailedVerificationCount: Int,
                 lastSelectedShareId: String?,
+                lastSelectedFolderId: String?,
                 lastCreatedItemShareId: String?,
                 dismissedAliasesSyncSheet: Bool) {
         self.spotlightEnabled = spotlightEnabled
@@ -62,6 +66,7 @@ public struct UserPreferences: Codable, Equatable, Sendable {
         self.protonPasswordFailedVerificationCount = protonPasswordFailedVerificationCount
         self.lastSelectedShareId = lastSelectedShareId
         self.lastCreatedItemShareId = lastCreatedItemShareId
+        self.lastSelectedFolderId = lastSelectedFolderId
         self.dismissedAliasesSyncSheet = dismissedAliasesSyncSheet
     }
 }
@@ -74,6 +79,7 @@ private extension UserPreferences {
         static let extraPasswordEnabled = false
         static let protonPasswordFailedVerificationCount = 0
         static let lastSelectedShareId: String? = nil
+        static let lastSelectedFolderId: String? = nil
         static let lastCreatedItemShareId: String? = nil
         static let dismissedAliasesSyncSheet = false
     }
@@ -86,6 +92,7 @@ private extension UserPreferences {
         case protonPasswordFailedVerificationCount
         case lastSelectedShareId
         case lastCreatedItemShareId
+        case lastSelectedFolderId
         case dismissedAliasesSyncSheet
     }
 }
@@ -103,6 +110,7 @@ public extension UserPreferences {
         let protonPasswordFailedVerificationCount =
             try container.decodeIfPresent(Int.self, forKey: .protonPasswordFailedVerificationCount)
         let lastSelectedShareId = try container.decodeIfPresent(String?.self, forKey: .lastSelectedShareId)
+        let lastSelectedFolderId = try container.decodeIfPresent(String?.self, forKey: .lastSelectedFolderId)
         let lastCreatedItemShareId = try container.decodeIfPresent(String?.self, forKey: .lastCreatedItemShareId)
         let dismissedAliasesSyncSheet =
             try container.decodeIfPresent(Bool.self, forKey: .dismissedAliasesSyncSheet)
@@ -113,6 +121,7 @@ public extension UserPreferences {
                   protonPasswordFailedVerificationCount: protonPasswordFailedVerificationCount
                       ?? Default.protonPasswordFailedVerificationCount,
                   lastSelectedShareId: lastSelectedShareId ?? Default.lastSelectedShareId,
+                  lastSelectedFolderId: lastSelectedFolderId ?? Default.lastSelectedFolderId,
                   lastCreatedItemShareId: lastCreatedItemShareId ?? Default.lastCreatedItemShareId,
                   dismissedAliasesSyncSheet: dismissedAliasesSyncSheet ?? Default
                       .dismissedAliasesSyncSheet)
@@ -127,6 +136,7 @@ extension UserPreferences: Defaultable {
               extraPasswordEnabled: Default.extraPasswordEnabled,
               protonPasswordFailedVerificationCount: Default.protonPasswordFailedVerificationCount,
               lastSelectedShareId: Default.lastSelectedShareId,
+              lastSelectedFolderId: Default.lastSelectedFolderId,
               lastCreatedItemShareId: Default.lastCreatedItemShareId,
               dismissedAliasesSyncSheet: Default.dismissedAliasesSyncSheet)
     }

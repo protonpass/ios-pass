@@ -20,25 +20,58 @@
 
 import Foundation
 
+public struct ShareSelectionPayload: Hashable, Sendable {
+    public let share: Share
+    public let folder: FolderUiModel?
+
+    public init(share: Share, folder: FolderUiModel?) {
+        self.share = share
+        self.folder = folder
+    }
+
+    public var isFolderSelected: Bool {
+        folder != nil
+    }
+
+    public var title: String {
+        folder?.content.name ?? share.vaultContent?.name ?? ""
+    }
+}
+
 public enum ShareSelection: Hashable, Sendable {
     case all
-    case precise(Share, folderId: String?)
+    case precise(ShareSelectionPayload)
     case sharedWithMe
     case sharedByMe
     case trash
 
     public var shared: Bool {
-        if case let .precise(share, _) = self {
-            return share.shared
+        if case let .precise(selection) = self {
+            return selection.share.shared
         }
         return false
     }
 
     public var selectedShareId: String? {
-        if case let .precise(share, _) = self {
-            return share.shareId
+        if case let .precise(selection) = self {
+            return selection.share.shareId
         }
         return nil
+    }
+
+    public var preciseSelectionPayload: ShareSelectionPayload? {
+        switch self {
+        case let .precise(selection): selection
+        default: nil
+        }
+    }
+
+    public var isFolderSelection: Bool {
+        switch self {
+        case let .precise(selection):
+            selection.isFolderSelected
+        default: false
+        }
     }
 
 //    public var preciseShare: Share? {
@@ -52,8 +85,8 @@ public enum ShareSelection: Hashable, Sendable {
         switch self {
         case .all:
             nil
-        case let .precise(share, _):
-            share.shareId
+        case let .precise(selection):
+            selection.share.shareId
         case .sharedWithMe:
             "sharedWithMe"
         case .sharedByMe:

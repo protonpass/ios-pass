@@ -257,6 +257,9 @@ extension AppContentManager {
             do {
                 try await preferencesManager.updateUserPreferences(\.lastSelectedShareId,
                                                                    value: selection.preferenceKey)
+                try await preferencesManager.updateUserPreferences(\.lastSelectedFolderId,
+                                                                   value: selection.preciseSelectionPayload?
+                                                                       .folder?.id)
             } catch {
                 logger.error(error)
             }
@@ -418,9 +421,9 @@ extension AppContentManager {
         let baseItems: [ItemUiModel] = switch shareSelection {
         case .all:
             sharesData.visibleShareContents.flatMap(\.allItems)
-        case let .precise(selectedShare, folderId):
-            if let shareContent = sharesData.shares[selectedShare.id] {
-                shareContent.flattenedItems(from: folderId ?? selectedShare.shareId)
+        case let .precise(selection):
+            if let shareContent = sharesData.shares[selection.share.id] {
+                shareContent.flattenedItems(from: selection.folder?.id ?? selection.share.shareId)
 //                if let folderId {
 //                    shareContent.elements(for: folderId) ?? []
 //                } else {
@@ -470,8 +473,8 @@ extension AppContentManager {
         case .all:
             true
         // TODO: check if folder id needed
-        case let .precise(vault, _):
-            if vault.shareId == item.shareId {
+        case let .precise(selection):
+            if selection.share.shareId == item.shareId {
                 switch filterOption {
                 case let .precise(filterType):
                     filterType == type
@@ -567,8 +570,8 @@ private extension AppContentManager {
             itemCount = ItemCount(items: sharesData.shares.flatMap(\.value.allItems),
                                   sharedByMe: sharesData.itemsSharedByMe.count,
                                   sharedWithMe: sharesData.itemsSharedWithMe.count)
-        case let .precise(selectedShare, _):
-            guard let share = sharesData.shares[selectedShare.id] else {
+        case let .precise(selection):
+            guard let share = sharesData.shares[selection.share.id] else {
                 itemCount = ItemCount(items: [], sharedByMe: 0, sharedWithMe: 0)
                 return
             }
@@ -633,13 +636,19 @@ private extension AppContentManager {
                 shareSelection = .sharedWithMe
             } else if lastSelectedShareId == ShareSelection.trash.preferenceKey, shareSelection != .trash {
                 shareSelection = .trash
-            } else if let vault = shares.first(where: { $0.shareId == lastSelectedShareId }) {
-                if vault.hidden {
+            } else if let shareContent = sharesData.shares[lastSelectedShareId] {
+                if shareContent.share.hidden {
                     // Fallback to selecting all vaults when the previous selected vault is hidden
                     shareSelection = .all
                 } else {
-                    // TODO: this need to also take into account folder nows
-                    shareSelection = .precise(vault, folderId: nil)
+                    let folder: FolderUiModel? = if let lastSelectedFolderId = userPreferences
+                        .lastSelectedFolderId {
+                        shareContent.allElements.first(where: { $0.id == lastSelectedFolderId })?.folderValue
+                    } else {
+                        nil
+                    }
+
+                    shareSelection = .precise(.init(share: shareContent.share, folder: folder))
                 }
             }
         } else {

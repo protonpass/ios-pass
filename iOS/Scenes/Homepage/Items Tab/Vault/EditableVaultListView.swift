@@ -241,7 +241,7 @@ private extension EditableVaultListView {
                             }
                             .buttonStyle(.plain)
                         }
-                        vaultRow(for: .precise(content.share, folderId: nil))
+                        vaultRow(for: .precise(.init(share: content.share, folder: nil)))
                     }
 
                     if let folders = content.folders(in: content.id),
@@ -306,8 +306,8 @@ private extension EditableVaultListView {
             switch selection {
             case .all, .sharedByMe, .sharedWithMe:
                 EmptyView()
-            case let .precise(vault, _):
-                vaultTrailingView(vault, haveItems: itemCount > 0)
+            case let .precise(selection):
+                vaultTrailingView(selection.share, haveItems: itemCount > 0)
             case .trash:
                 trashTrailingView
             }
@@ -464,6 +464,7 @@ private extension EditableVaultListView {
 // MARK: folder tree
 
 struct FolderTreeRow: View {
+    @Environment(\.dismiss) private var dismiss
     let content: ShareContent
     let share: Share
     let folders: [FolderUiModel]
@@ -518,7 +519,10 @@ private extension FolderTreeRow {
 
     func folderButton(for folder: FolderUiModel) -> some View {
         HStack {
-            Button {} label: {
+            Button {
+                dismiss()
+                viewModel.select(.precise(.init(share: content.share, folder: folder)))
+            } label: {
                 HStack {
                     IconProvider.foldersFilled
                         .resizable()

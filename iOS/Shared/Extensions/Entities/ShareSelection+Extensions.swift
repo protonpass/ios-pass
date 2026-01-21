@@ -29,8 +29,8 @@ extension ShareSelection {
         switch self {
         case .all:
             #localized("All items")
-        case let .precise(vault, _):
-            vault.vaultName ?? ""
+        case let .precise(selection):
+            selection.title
         case .trash:
             #localized("Trash")
         case .sharedByMe:
@@ -44,8 +44,8 @@ extension ShareSelection {
         switch self {
         case .all:
             PassIcon.brandPass
-        case let .precise(vault, _):
-            vault.vaultBigIcon ?? PassIcon.vaultIcon1Big
+        case let .precise(selection):
+            selection.share.vaultBigIcon ?? PassIcon.vaultIcon1Big
         case .trash:
             IconProvider.trash
         case .sharedByMe:
@@ -59,8 +59,8 @@ extension ShareSelection {
         switch self {
         case .all, .sharedByMe, .sharedWithMe:
             PassColor.interactionNormMajor2
-        case let .precise(vault, _):
-            vault.mainColor ?? PassColor.textWeak
+        case let .precise(selection):
+            selection.share.mainColor ?? PassColor.textWeak
         case .trash:
             PassColor.textWeak
         }
@@ -68,8 +68,8 @@ extension ShareSelection {
 
     var share: Share? {
         switch self {
-        case let .precise(vault, _):
-            vault
+        case let .precise(selection):
+            selection.share
         default:
             nil
         }
@@ -79,8 +79,8 @@ extension ShareSelection {
         switch self {
         case .all:
             #localized("Show all vaults")
-        case let .precise(vault, _):
-            #localized("Show %@ vault", vault.vaultName ?? "")
+        case let .precise(selection):
+            #localized("Show %@ %@", selection.title, selection.isFolderSelected ? "folder" : "vault")
         case .trash:
             #localized("Show trash")
         case .sharedByMe:

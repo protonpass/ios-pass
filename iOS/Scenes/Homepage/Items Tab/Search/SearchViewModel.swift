@@ -134,8 +134,8 @@ private extension SearchViewModel {
 
         let searchEntries: [SearchEntry]
         // TODO: need to filter folder items
-        if case let .precise(vault, _) = shareSelection {
-            searchEntries = try await searchEntryDatasource.getAllEntries(shareId: vault.shareId)
+        if case let .precise(selection) = shareSelection {
+            searchEntries = try await searchEntryDatasource.getAllEntries(shareId: selection.share.shareId)
         } else {
             let userId = try await userManager.getActiveUserId()
             searchEntries = try await searchEntryDatasource.getAllEntries(userId: userId)
@@ -342,8 +342,8 @@ extension SearchViewModel {
             guard let self, let shareSelection = searchMode.shareSelection else { return }
 
             do {
-                if case let .precise(share, _) = shareSelection {
-                    try await searchEntryDatasource.removeAllEntries(shareId: share.shareId)
+                if case let .precise(selection) = shareSelection {
+                    try await searchEntryDatasource.removeAllEntries(shareId: selection.share.shareId)
                 } else {
                     let userId = try await userManager.getActiveUserId()
                     try await searchEntryDatasource.removeAllEntries(userId: userId)

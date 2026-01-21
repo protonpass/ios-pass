@@ -385,8 +385,8 @@ extension EditableVaultListViewModel {
         return switch selection {
         case .all:
             count.all + activeItemsSharedWithMeCount
-        case let .precise(vault, _):
-            count.vaultCounts.first { $0.shareId == vault.shareId }?.value ?? 0
+        case let .precise(selection):
+            count.vaultCounts.first { $0.shareId == selection.share.shareId }?.value ?? 0
         case .sharedWithMe:
             itemsSharedWithMe.count
         case .sharedByMe:

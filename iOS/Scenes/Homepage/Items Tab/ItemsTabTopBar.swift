@@ -52,7 +52,6 @@ struct ItemsTabTopBar: View {
             }
         }
         .animation(.default, value: isEditMode)
-//        .frame(height: 60)
     }
 }
 
@@ -62,12 +61,19 @@ private extension ItemsTabTopBar {
             HStack {
                 // TODO: need to take into account container selected for icon and title
                 // Vault selector button
-                let uiModel = viewModel.shareSelection.uiModel
-                CircleButton(icon: uiModel.icon,
-                             iconColor: uiModel.iconColor,
-                             backgroundColor: uiModel.backgroundColor,
-                             action: onShowVaultList)
-                    .accessibilityLabel(viewModel.shareSelection.accessibilityLabel)
+                if viewModel.shareSelection.isFolderSelection {
+                    CircleButton(icon: IconProvider.folderFilled,
+                                 iconColor: Color(hex: "#E9A944"),
+                                 backgroundColor: PassColor.interactionNormMinor1,
+                                 action: onShowVaultList)
+                } else {
+                    let uiModel = viewModel.shareSelection.uiModel
+                    CircleButton(icon: uiModel.icon,
+                                 iconColor: uiModel.iconColor,
+                                 backgroundColor: uiModel.backgroundColor,
+                                 action: onShowVaultList)
+                        .accessibilityLabel(viewModel.shareSelection.accessibilityLabel)
+                }
 
                 Text("\(viewModel.shareSelection.title)")
                     .font(.title2)
@@ -262,8 +268,8 @@ private extension ShareSelection {
                   backgroundColor: ShareSelection.all.color.opacity(0.16))
 
         // TODO: maybe take into account items
-        case let .precise(vault, _):
-            if let vaultContent = vault.vaultContent {
+        case let .precise(selection):
+            if let vaultContent = selection.share.vaultContent {
                 .init(icon: vaultContent.vaultBigIcon,
                       iconColor: vaultContent.mainColor,
                       backgroundColor: vaultContent.backgroundColor)
