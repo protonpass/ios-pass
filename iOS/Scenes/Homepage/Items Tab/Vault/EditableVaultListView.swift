@@ -100,12 +100,14 @@ struct EditableVaultListView: View {
                        TextField(container.isVault ? "Vault name" : "Folder name",
                                  text: $containerNameConfirmation)
                        Button("Delete",
+                              role: .destructive,
                               action: {
                                   containerNameConfirmation = ""
                                   viewModel.delete(container: container)
                               })
                               .disabled(containerNameConfirmation != container.name)
-                       Button("Cancel", action: { containerNameConfirmation = "" })
+
+                       Button("Cancel", role: .cancel, action: { containerNameConfirmation = "" })
                    },
                    message: { container in
                        // swiftlint:disable:next line_length

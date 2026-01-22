@@ -108,8 +108,7 @@ private extension CreateEditItemCoordinator {
 
     func presentCreateEditLoginView(mode: ItemMode) throws {
         let viewModel = try CreateEditLoginViewModel(mode: mode,
-                                                     upgradeChecker: upgradeChecker,
-                                                     vaults: vaults)
+                                                     upgradeChecker: upgradeChecker)
         viewModel.delegate = createEditItemDelegate
         let view = CreateEditLoginView(viewModel: viewModel)
         present(view, dismissable: false)
@@ -118,8 +117,7 @@ private extension CreateEditItemCoordinator {
 
     func presentCreateEditAliasView(mode: ItemMode) throws {
         let viewModel = try CreateEditAliasViewModel(mode: mode,
-                                                     upgradeChecker: upgradeChecker,
-                                                     vaults: appContentManager.getAllShares())
+                                                     upgradeChecker: upgradeChecker)
         let view = CreateEditAliasView(viewModel: viewModel)
         present(view, dismissable: false)
         currentViewModel = viewModel
@@ -127,8 +125,7 @@ private extension CreateEditItemCoordinator {
 
     func presentCreateEditCreditCardView(mode: ItemMode) throws {
         let viewModel = try CreateEditCreditCardViewModel(mode: mode,
-                                                          upgradeChecker: upgradeChecker,
-                                                          vaults: appContentManager.getAllShares())
+                                                          upgradeChecker: upgradeChecker)
         let view = CreateEditCreditCardView(viewModel: viewModel)
         present(view, dismissable: false)
         currentViewModel = viewModel
@@ -136,8 +133,7 @@ private extension CreateEditItemCoordinator {
 
     func presentCreateEditNoteView(mode: ItemMode) throws {
         let viewModel = try CreateEditNoteViewModel(mode: mode,
-                                                    upgradeChecker: upgradeChecker,
-                                                    vaults: appContentManager.getAllShares())
+                                                    upgradeChecker: upgradeChecker)
         let view = CreateEditNoteView(viewModel: viewModel)
         present(view, dismissable: false)
         currentViewModel = viewModel
@@ -145,8 +141,7 @@ private extension CreateEditItemCoordinator {
 
     func presentCreateEditIdentityView(mode: ItemMode) throws {
         let viewModel = try CreateEditIdentityViewModel(mode: mode,
-                                                        upgradeChecker: upgradeChecker,
-                                                        vaults: appContentManager.getAllShares())
+                                                        upgradeChecker: upgradeChecker)
         let view = CreateEditIdentityView(viewModel: viewModel)
         present(view, dismissable: false)
         currentViewModel = viewModel
@@ -154,8 +149,7 @@ private extension CreateEditItemCoordinator {
 
     func presentCreateEditSshKeyView(mode: ItemMode) throws {
         let viewModel = try CreateEditSshKeyViewModel(mode: mode,
-                                                      upgradeChecker: upgradeChecker,
-                                                      vaults: appContentManager.getAllShares())
+                                                      upgradeChecker: upgradeChecker)
         let view = CreateEditSshKeyView(viewModel: viewModel)
         present(view, dismissable: false)
         currentViewModel = viewModel
@@ -163,8 +157,7 @@ private extension CreateEditItemCoordinator {
 
     func presentCreateEditWifiView(mode: ItemMode) throws {
         let viewModel = try CreateEditWifiViewModel(mode: mode,
-                                                    upgradeChecker: upgradeChecker,
-                                                    vaults: appContentManager.getAllShares())
+                                                    upgradeChecker: upgradeChecker)
         let view = CreateEditWifiView(viewModel: viewModel)
         present(view, dismissable: false)
         currentViewModel = viewModel
@@ -172,8 +165,7 @@ private extension CreateEditItemCoordinator {
 
     func presentCreateEditCustomView(mode: ItemMode) throws {
         let viewModel = try CreateEditCustomItemViewModel(mode: mode,
-                                                          upgradeChecker: upgradeChecker,
-                                                          vaults: appContentManager.getAllShares())
+                                                          upgradeChecker: upgradeChecker)
         let view = CreateEditCustomItemView(viewModel: viewModel)
         present(view, dismissable: false)
         currentViewModel = viewModel
@@ -199,11 +191,11 @@ private extension CreateEditItemCoordinator {
     func handle(template: CustomItemTemplate, shareId: String?) throws {
         switch template {
         case .sshKey:
-            try presentCreateEditSshKeyView(mode: .create(shareId: shareId, type: .sshKey))
+            try presentCreateEditSshKeyView(mode: .create(type: .sshKey))
         case .wifi:
-            try presentCreateEditWifiView(mode: .create(shareId: shareId, type: .wifi))
+            try presentCreateEditWifiView(mode: .create(type: .wifi))
         default:
-            try presentCreateEditCustomView(mode: .create(shareId: shareId, type: .custom(template)))
+            try presentCreateEditCustomView(mode: .create(type: .custom(template)))
         }
     }
 }

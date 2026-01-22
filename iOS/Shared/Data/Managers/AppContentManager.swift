@@ -685,41 +685,41 @@ private extension AppContentManager {
                             shareElements.append(.folder(folder))
                         }
 
-                        let testFolder1 =
-                            FolderUiModel(shareId: "J9Bz2I1jtkLpYAeKUlqXgwd0CHzWCIdBmfPlq9dAu78vMpnibNnJZlU6puqL6ON2o5QKgUMCnrPewAhT4hO7JQ==",
-                                          folder: Folder(vaultID: "JoW4Yg8KAwtfezFf1jM2xylY_NjwXMJmwBxzKASs8Wtrm7NYBnNQ4awu-x_EFGJt2mgdmEBbbrZs_YnCipTbww==",
-                                                         folderID: "folder1",
-                                                         parentFolderID: nil,
-                                                         keyRotation: 0, folderKey: "",
-                                                         contentFormatVersion: 1, content: ""),
-                                          content: FolderContent(name: "folder1 test"),
-                                          lastUseTime: nil)
-
-                        let testFolder2 =
-                            FolderUiModel(shareId: "J9Bz2I1jtkLpYAeKUlqXgwd0CHzWCIdBmfPlq9dAu78vMpnibNnJZlU6puqL6ON2o5QKgUMCnrPewAhT4hO7JQ==",
-                                          folder: Folder(vaultID: "JoW4Yg8KAwtfezFf1jM2xylY_NjwXMJmwBxzKASs8Wtrm7NYBnNQ4awu-x_EFGJt2mgdmEBbbrZs_YnCipTbww==",
-                                                         folderID: "folder2",
-                                                         parentFolderID: "folder1",
-                                                         keyRotation: 0,
-                                                         folderKey: "", contentFormatVersion: 1,
-                                                         content: ""),
-                                          content: FolderContent(name: "folder2 test"),
-                                          lastUseTime: nil)
-
-                        let testFolder1bis =
-                            FolderUiModel(shareId: "J9Bz2I1jtkLpYAeKUlqXgwd0CHzWCIdBmfPlq9dAu78vMpnibNnJZlU6puqL6ON2o5QKgUMCnrPewAhT4hO7JQ==",
-                                          folder: Folder(vaultID: "JoW4Yg8KAwtfezFf1jM2xylY_NjwXMJmwBxzKASs8Wtrm7NYBnNQ4awu-x_EFGJt2mgdmEBbbrZs_YnCipTbww==",
-                                                         folderID: "folder1bis",
-                                                         parentFolderID: nil,
-                                                         keyRotation: 0, folderKey: "",
-                                                         contentFormatVersion: 1, content: ""),
-                                          content: FolderContent(name: "folder1 bis test"),
-                                          lastUseTime: nil)
-
-                        shareElements.append(.folder(testFolder1))
-                        shareElements.append(.folder(testFolder1bis))
-
-                        shareElements.append(.folder(testFolder2))
+//                        let testFolder1 =
+//                            FolderUiModel(shareId: "J9Bz2I1jtkLpYAeKUlqXgwd0CHzWCIdBmfPlq9dAu78vMpnibNnJZlU6puqL6ON2o5QKgUMCnrPewAhT4hO7JQ==",
+//                                          folder: Folder(vaultID: "JoW4Yg8KAwtfezFf1jM2xylY_NjwXMJmwBxzKASs8Wtrm7NYBnNQ4awu-x_EFGJt2mgdmEBbbrZs_YnCipTbww==",
+//                                                         folderID: "folder1",
+//                                                         parentFolderID: nil,
+//                                                         keyRotation: 0, folderKey: "",
+//                                                         contentFormatVersion: 1, content: ""),
+//                                          content: FolderContent(name: "folder1 test"),
+//                                          lastUseTime: nil)
+//
+//                        let testFolder2 =
+//                            FolderUiModel(shareId: "J9Bz2I1jtkLpYAeKUlqXgwd0CHzWCIdBmfPlq9dAu78vMpnibNnJZlU6puqL6ON2o5QKgUMCnrPewAhT4hO7JQ==",
+//                                          folder: Folder(vaultID: "JoW4Yg8KAwtfezFf1jM2xylY_NjwXMJmwBxzKASs8Wtrm7NYBnNQ4awu-x_EFGJt2mgdmEBbbrZs_YnCipTbww==",
+//                                                         folderID: "folder2",
+//                                                         parentFolderID: "folder1",
+//                                                         keyRotation: 0,
+//                                                         folderKey: "", contentFormatVersion: 1,
+//                                                         content: ""),
+//                                          content: FolderContent(name: "folder2 test"),
+//                                          lastUseTime: nil)
+//
+//                        let testFolder1bis =
+//                            FolderUiModel(shareId: "J9Bz2I1jtkLpYAeKUlqXgwd0CHzWCIdBmfPlq9dAu78vMpnibNnJZlU6puqL6ON2o5QKgUMCnrPewAhT4hO7JQ==",
+//                                          folder: Folder(vaultID: "JoW4Yg8KAwtfezFf1jM2xylY_NjwXMJmwBxzKASs8Wtrm7NYBnNQ4awu-x_EFGJt2mgdmEBbbrZs_YnCipTbww==",
+//                                                         folderID: "folder1bis",
+//                                                         parentFolderID: nil,
+//                                                         keyRotation: 0, folderKey: "",
+//                                                         contentFormatVersion: 1, content: ""),
+//                                          content: FolderContent(name: "folder1 bis test"),
+//                                          lastUseTime: nil)
+//
+//                        shareElements.append(.folder(testFolder1))
+//                        shareElements.append(.folder(testFolder1bis))
+//
+//                        shareElements.append(.folder(testFolder2))
 
 //                    for encryptedFolder in shareFolders {
 //                        let decryptedItem = try encryptedFolder.toFolderUiModel(symmetricKey)
@@ -758,6 +758,13 @@ private extension AppContentManager {
 extension [ShareContent] {
     func sortedByHidden() -> Self {
         sorted(by: { !$0.share.hidden && $1.share.hidden })
+            .sorted { lhs, rhs in
+                guard let lhsName = lhs.share.vaultName,
+                      let rhsName = rhs.share.vaultName else { return false }
+                return lhsName == rhsName
+                    ? lhs.share.createTime < rhs.share.createTime
+                    : lhsName < rhsName
+            }
     }
 }
 

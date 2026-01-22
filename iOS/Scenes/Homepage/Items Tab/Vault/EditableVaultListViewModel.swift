@@ -422,7 +422,9 @@ extension EditableVaultListViewModel {
 extension EditableVaultListViewModel {
     func editFolder(_ folder: FolderUiModel) async throws {
         let userId = try await userManager.getActiveUserId()
-        try await appContentManager.editFolder(userId: userId, shareId: folder.shareId, folderId: folder.id,
+        try await appContentManager.editFolder(userId: userId,
+                                               shareId: folder.shareId,
+                                               folderId: folder.id,
                                                name: folderName)
     }
 
