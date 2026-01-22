@@ -62,7 +62,8 @@ public struct ItemToImport: Encodable, Sendable {
         item = .init(keyRotation: containerKey.keyRotation,
                      contentFormatVersion: Int16(Constants.ContentFormatVersion.item),
                      content: encryptedContent.base64EncodedString(),
-                     itemKey: encryptedItemKey.base64EncodedString())
+                     itemKey: encryptedItemKey.base64EncodedString(),
+                     folderId: nil)
     }
 }
 

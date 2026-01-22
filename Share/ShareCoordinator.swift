@@ -285,10 +285,8 @@ private extension ShareCoordinator {
                 switch type {
                 case .note:
                     let creationType = ItemCreationType.note(title: title, note: content.note)
-                    let viewModel = try CreateEditNoteViewModel(mode: .create(shareId: shareId,
-                                                                              type: creationType),
-                                                                upgradeChecker: upgradeChecker,
-                                                                vaults: vaults)
+                    let viewModel = try CreateEditNoteViewModel(mode: .create(type: creationType),
+                                                                upgradeChecker: upgradeChecker)
                     createEditItemViewModel = viewModel
                     let view = CreateEditNoteView(viewModel: viewModel)
                     viewController = UIHostingController(rootView: view)
@@ -299,8 +297,8 @@ private extension ShareCoordinator {
                                                               note: content.note,
                                                               autofill: false)
                     let viewModel =
-                        try CreateEditLoginViewModel(mode: .create(shareId: shareId, type: creationType),
-                                                     upgradeChecker: upgradeChecker, vaults: vaults)
+                        try CreateEditLoginViewModel(mode: .create(type: creationType),
+                                                     upgradeChecker: upgradeChecker)
                     viewModel.delegate = self
                     createEditItemViewModel = viewModel
                     let view = CreateEditLoginView(viewModel: viewModel)

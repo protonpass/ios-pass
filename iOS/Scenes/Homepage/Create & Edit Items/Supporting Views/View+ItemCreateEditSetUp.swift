@@ -87,11 +87,11 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
             }
             .sheet(isPresented: $viewModel.isShowingVaultSelector) {
                 // Add more height when free users to make room for upsell banner
-                let height = viewModel.vaults.filter(\.canEdit).count * 74 + (viewModel.isFreeUser ? 180 : 50)
-                VaultSelectorView(selectedVault: $viewModel.selectedVault,
+//                let height = viewModel.vaults.filter(\.canEdit).count * 74 + (viewModel.isFreeUser ? 180 : 50)
+                VaultSelectorView(selectedContainer: $viewModel.selectedContainer,
                                   isFreeUser: viewModel.isFreeUser,
                                   onUpgrade: { viewModel.upgrade() })
-                    .presentationDetents([.height(CGFloat(height)), .large])
+                    .presentationDetents([ /* .height(CGFloat(height)), */ .large])
                     .environment(\.colorScheme, colorScheme)
             }
             .fullScreenCover(item: $viewModel.filePreviewMode) { mode in
@@ -104,7 +104,7 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                       isSaveable: viewModel.isSaveable,
                                       isSaving: viewModel.isSaving,
                                       canScanDocuments: viewModel.canScanDocuments,
-                                      vault: viewModel.selectedVault,
+                                      container: viewModel.selectedContainer,
                                       canChangeVault: viewModel.mode.canChangeVault,
                                       itemContentType: viewModel.itemContentType,
                                       shouldUpgrade: viewModel.shouldUpgrade,

@@ -100,18 +100,31 @@ public extension ShareContent {
         return result
     }
 
-//    func contains(_ id: String) -> Bool {
-//        lookupTable.contains(id)
-//    }
+    var allFolders: [FolderUiModel] {
+        var result: [FolderUiModel] = []
+        result.reserveCapacity(foldersByContainer.values.reduce(0) { $0 + $1.count })
+
+        for bucket in content.values {
+            for element in bucket {
+                if case let .folder(folder) = element {
+                    result.append(folder)
+                }
+            }
+        }
+
+        return result
+    }
 
     func element(in containerId: String, for id: String) -> ShareContentElement? {
         content[containerId]?.first { $0.id == id }
-//        lookupTable.element(for: id)
     }
 
     func elements(for containerId: String) -> [ShareContentElement]? {
         content[containerId]
-//        lookupTable.elements(for: containerId)
+    }
+
+    func folder(for id: String) -> FolderUiModel? {
+        allFolders.first { $0.id == id }
     }
 
     func flattenedItems(from containerId: String) -> [ItemUiModel] {

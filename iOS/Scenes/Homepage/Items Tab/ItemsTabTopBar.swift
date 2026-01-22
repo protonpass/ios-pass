@@ -21,6 +21,7 @@
 import Client
 import DesignSystem
 import Entities
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -47,6 +48,7 @@ struct ItemsTabTopBar: View {
         ZStack {
             if isEditMode {
                 editModeView
+                    .frame(height: 60)
             } else {
                 viewModeView
             }
@@ -74,11 +76,31 @@ private extension ItemsTabTopBar {
                                  action: onShowVaultList)
                         .accessibilityLabel(viewModel.shareSelection.accessibilityLabel)
                 }
-
-                Text("\(viewModel.shareSelection.title)")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .frame(maxWidth: .infinity)
+                if viewModel.shareSelection.isFolderSelection {
+                    let uiModel = viewModel.shareSelection.uiModel
+                    let title = viewModel.shareSelection.preciseSelectionPayload?.share.vaultContent?.name ?? ""
+                    VStack {
+                        HStack(alignment: .center) {
+                            Spacer()
+                            uiModel.icon
+                                .resizable()
+                                .frame(width: 12, height: 12)
+                                .foregroundStyle(uiModel.iconColor)
+                            Text(title)
+                                .font(.footnote)
+                            Spacer()
+                        }
+                        Text("\(viewModel.shareSelection.title)")
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .frame(maxWidth: .infinity)
+                    }
+                } else {
+                    Text("\(viewModel.shareSelection.title)")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .frame(maxWidth: .infinity)
+                }
 
                 if showPromoBadge {
                     PassIcon.promoBadge
@@ -109,7 +131,8 @@ private extension ItemsTabTopBar {
                     .resetFilters { viewModel.resetFilters() }
                 ],
                 highlighted: viewModel.highlighted,
-                selectable: viewModel.selectable)
+                selectable: viewModel.selectable,
+                folder: viewModel.shareSelection.preciseSelectionPayload?.folder)
             }
             .frame(height: 48)
             .padding(.horizontal, showButtonShapes ? 0 : nil)

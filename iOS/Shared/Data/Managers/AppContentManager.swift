@@ -348,11 +348,6 @@ extension AppContentManager {
 // MARK: - Items Actions Public APIs
 
 extension AppContentManager {
-//    func getItems(for vault: Share) -> [ItemUiModel] {
-//        guard let sharesData = state.loadedContent else { return [] }
-//        return sharesData.shares.first { $0.share.id == vault.id }?.items ?? []
-//    }
-//
     func getAllActiveAndTrashedItems() -> [ItemUiModel] {
         guard let sharesData = state.loadedContent else { return [] }
         let activeItems = getAllSharesItems()
@@ -364,19 +359,11 @@ extension AppContentManager {
         return sharesData.shares.values.flatMap(\.allItems)
     }
 
-//
     func getContent(for shareId: String, containerId: String?) -> [ShareContentElement] {
         guard let sharesData = state.loadedContent,
               let shareContent = sharesData.shares[shareId] else { return [] }
 
         return shareContent.elements(for: containerId ?? shareId) ?? []
-
-//        if let containerId {
-//            return shareContent?.element(for: containerId)?.content ?? []
-//        } else {
-//            return shareContent?.elements ?? []
-//        }
-//        return sharesData.shares.first { $0.share.id == shareId }?.elements ?? []
     }
 
     func getItems(for shareId: String, containerId: String?) -> [ItemUiModel] {
@@ -424,11 +411,6 @@ extension AppContentManager {
         case let .precise(selection):
             if let shareContent = sharesData.shares[selection.share.id] {
                 shareContent.flattenedItems(from: selection.folder?.id ?? selection.share.shareId)
-//                if let folderId {
-//                    shareContent.elements(for: folderId) ?? []
-//                } else {
-//                    shareContent.rootElements
-//                }
             } else {
                 []
             }
@@ -438,12 +420,6 @@ extension AppContentManager {
             sharesData.itemsSharedWithMe
         case .trash:
             sharesData.trashedItems.filter { !hiddenShareIds.contains($0.shareId) }
-//                .compactMap { element in
-//                guard let item = element.itemValue,
-//                      !hiddenShareIds.contains(item.shareId)
-//                else { return nil }
-//                return item
-//            }
         }
 
         // 3. Apply final type filter if needed
@@ -453,15 +429,6 @@ extension AppContentManager {
         case let .precise(type):
             // TODO: keep folders and item of correct type
             return baseItems.filter { $0.type.isSameType(with: type) }
-//            return baseItems.filter { element in
-//                if let item = element.itemValue {
-//                    item.type.isSameType(with: type)
-//                } else {
-//                    true
-//                }
-        ////                element.isFolder ||
-        ////                element.itemValue?.isSameType(with: type)
-//            }
         case .itemSharedByMe, .itemSharedWithMe:
             assertionFailure("Unreachable: handled by early return")
             return baseItems

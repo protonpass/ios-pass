@@ -104,11 +104,9 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     override init(mode: ItemMode,
-                  upgradeChecker: any UpgradeCheckerProtocol,
-                  vaults: [Share]) throws {
+                  upgradeChecker: any UpgradeCheckerProtocol) throws {
         try super.init(mode: mode,
-                       upgradeChecker: upgradeChecker,
-                       vaults: vaults)
+                       upgradeChecker: upgradeChecker)
 
         if case let .edit(itemContent) = mode {
             title = itemContent.name
@@ -139,7 +137,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             }
             .store(in: &cancellables)
 
-        $selectedVault
+        $selectedContainer
             .eraseToAnyPublisher()
             .dropFirst()
             .receive(on: RunLoop.main)
@@ -248,7 +246,7 @@ extension CreateEditAliasViewModel {
             do {
                 state = .loading
 
-                let shareId = selectedVault.shareId
+                let shareId = selectedContainer.share.shareId
                 if case let .edit(itemContent) = mode {
                     let alias =
                         try await aliasRepository.getAliasDetails(shareId: shareId,

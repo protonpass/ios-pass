@@ -78,17 +78,17 @@ extension CreateEditItemCoordinator {
         switch itemType {
         case .login:
             let logInType = ItemCreationType.login(autofill: false)
-            try presentCreateEditLoginView(mode: .create(shareId: shareId, type: logInType))
+            try presentCreateEditLoginView(mode: .create(type: logInType))
         case .alias:
-            try presentCreateEditAliasView(mode: .create(shareId: shareId, type: .alias))
+            try presentCreateEditAliasView(mode: .create(type: .alias))
         case .creditCard:
-            try presentCreateEditCreditCardView(mode: .create(shareId: shareId, type: .creditCard))
+            try presentCreateEditCreditCardView(mode: .create(type: .creditCard))
         case .note:
-            try presentCreateEditNoteView(mode: .create(shareId: shareId, type: .note(title: "", note: "")))
+            try presentCreateEditNoteView(mode: .create(type: .note(title: "", note: "")))
         case .password:
             assertionFailure("Should be handled outside of this coordinator")
         case .identity:
-            try presentCreateEditIdentityView(mode: .create(shareId: shareId, type: .identity))
+            try presentCreateEditIdentityView(mode: .create(type: .identity))
         case .custom:
             try presentCustomItemList(shareId: shareId, onError: onError)
         }
