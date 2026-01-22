@@ -21,6 +21,7 @@
 import DesignSystem
 import Entities
 import FactoryKit
+import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 
@@ -30,10 +31,11 @@ struct VaultSelectorView: View {
     let isFreeUser: Bool
     let onUpgrade: () -> Void
 
+    @State private var containersExtended = Set<String>()
+
     private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
 
-    // TODO: need to change this to have folders
-    private var vaults: [ShareContent] {
+    private var shares: [ShareContent] {
         appContentManager
             .getAllEditableVaultContents()
             .sortedByHidden()
@@ -49,11 +51,10 @@ struct VaultSelectorView: View {
 
                 ScrollView {
                     VStack(spacing: 0) {
-                        ForEach(vaults) { vault in
-                            if let vaultContent = vault.share.vaultContent {
-                                view(for: vault, vaultContent: vaultContent)
-                            }
-                            if vault != vaults.last {
+                        ForEach(shares) { shareContent in
+                            fullRow(content: shareContent)
+                                .padding(.horizontal)
+                            if shareContent != shares.last {
                                 PassDivider()
                                     .padding(.horizontal)
                             }
@@ -86,8 +87,139 @@ struct VaultSelectorView: View {
                                  isHidden: vaultInfos.share.hidden,
                                  action: nil),
                      height: 74)
-                .padding(.horizontal)
         })
         .buttonStyle(.plain)
+    }
+
+    @ViewBuilder
+    private func fullRow(content: ShareContent) -> some View {
+        if let vaultContent = content.share.vaultContent {
+            HStack {
+                if let folders = content.folders(in: content.id), !folders.isEmpty {
+                    Button { toggleDisplayContainerContent(containerId: content.id) } label: {
+                        (containersExtended.contains(content.id) ?
+                            IconProvider.chevronDownFilled : IconProvider.chevronRightFilled)
+                            .resizable()
+                            .frame(width: 30, height: 30)
+                            .foregroundStyle(PassColor.textWeak)
+                    }
+                    .buttonStyle(.plain)
+                }
+                view(for: content, vaultContent: vaultContent)
+            }
+
+            if let folders = content.folders(in: content.id),
+               !folders.isEmpty, containersExtended.contains(content.id) {
+                SmallFolderTreeRow(content: content,
+                                   share: content.share,
+                                   folders: folders,
+                                   containersExtended: $containersExtended,
+                                   selectedContainer: $selectedContainer)
+            }
+        }
+    }
+
+    private func toggleDisplayContainerContent(containerId: String) {
+        if containersExtended.contains(containerId) {
+            print("Woot remove container: \(containerId)")
+            containersExtended.remove(containerId)
+        } else {
+            print("Woot add container: \(containerId)")
+            containersExtended.insert(containerId)
+        }
+    }
+}
+
+struct SmallFolderTreeRow: View {
+    @Environment(\.dismiss) private var dismiss
+    let content: ShareContent
+    let share: Share
+    let folders: [FolderUiModel]
+    @Binding var containersExtended: Set<String>
+    @Binding var selectedContainer: ShareSelectionPayload
+
+    var body: some View {
+        VStack(spacing: 0) {
+            ForEach(folders) { folder in
+                row(for: folder)
+                    .padding(.vertical, 12)
+
+                if shouldShowSubfolders(of: folder),
+                   let subFolders = content.folders(in: folder.id) {
+                    SmallFolderTreeRow(content: content,
+                                       share: share,
+                                       folders: subFolders,
+                                       containersExtended: $containersExtended,
+                                       selectedContainer: $selectedContainer)
+                }
+            }
+        }
+        .padding(.leading, 8)
+    }
+
+    private func toggleDisplayContainerContent(containerId: String) {
+        if containersExtended.contains(containerId) {
+            print("Woot remove container: \(containerId)")
+            containersExtended.remove(containerId)
+        } else {
+            print("Woot add container: \(containerId)")
+            containersExtended.insert(containerId)
+        }
+    }
+}
+
+private extension SmallFolderTreeRow {
+    func row(for folder: FolderUiModel) -> some View {
+        HStack {
+            disclosureButton(for: folder)
+            folderButton(for: folder)
+        }
+    }
+
+    @ViewBuilder
+    func disclosureButton(for folder: FolderUiModel) -> some View {
+        if let subfolders = content.folders(in: folder.id), !subfolders.isEmpty {
+            Button {
+                toggleDisplayContainerContent(containerId: folder.id)
+            } label: {
+                (containersExtended.contains(folder.id)
+                    ? IconProvider.chevronDownFilled
+                    : IconProvider.chevronRightFilled)
+                    .resizable()
+                    .frame(width: 30, height: 30)
+                    .foregroundStyle(PassColor.textWeak)
+            }
+            .buttonStyle(.plain)
+        } else {
+            Text("")
+                .frame(width: 30, height: 30)
+        }
+    }
+
+    func folderButton(for folder: FolderUiModel) -> some View {
+        HStack {
+            Button {
+                dismiss()
+                selectedContainer = ShareSelectionPayload(share: share, folder: folder)
+            } label: {
+                HStack {
+                    IconProvider.foldersFilled
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                        .foregroundStyle(Color(hex: "#E9A944"))
+
+                    Text(folder.content.name)
+                        .foregroundStyle(PassColor.textNorm)
+                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                }
+            }
+            .buttonStyle(.plain)
+
+            Spacer()
+        }
+    }
+
+    func shouldShowSubfolders(of folder: FolderUiModel) -> Bool {
+        containersExtended.contains(folder.id)
     }
 }

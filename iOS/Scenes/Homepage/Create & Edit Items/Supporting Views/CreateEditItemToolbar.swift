@@ -51,36 +51,63 @@ struct CreateEditItemToolbar: ToolbarContent {
                 .disabled(isSaving)
         }
 
-        ToolbarItem(placement: .topBarTrailing) {
-            Group {
-                if shouldUpgrade {
-                    UpgradeButton(backgroundColor: itemContentType.normMajor1Color,
-                                  action: onUpgrade)
-                        .disabled(isSaving)
-                } else {
+        if shouldUpgrade {
+            ToolbarItem(placement: .topBarTrailing) {
+                UpgradeButton(backgroundColor: itemContentType.normMajor1Color,
+                              action: onUpgrade)
+                    .disabled(isSaving)
+            }
+        } else {
+            ToolbarItem(placement: .principal) {
+                Group {
+                    if canChangeVault {
+                        if container.isFolderSelected {
+                            folderButton(folderName: container.title)
+                        } else if let vaultContent = container.share.vaultContent {
+                            vaultButton(vaultContent: vaultContent)
+                        }
+                    } else {
+                        EmptyView()
+                    }
+                }
+            }
+
+            ToolbarItem(placement: .topBarTrailing) {
+                Group {
                     if isSaving {
                         ProgressView()
                     } else {
                         buttons
                     }
                 }
+                .animation(.default, value: isSaving)
             }
-            .animation(.default, value: isSaving)
         }
+//        ToolbarItemGroup {
+//
+//            ToolbarItem(placement: .topBarTrailing) {
+//                Group {
+//                    if shouldUpgrade {
+//                        UpgradeButton(backgroundColor: itemContentType.normMajor1Color,
+//                                      action: onUpgrade)
+//                        .disabled(isSaving)
+//                    } else {
+//                        if isSaving {
+//                            ProgressView()
+//                        } else {
+//                            buttons
+//                        }
+//                    }
+//                }
+//                .animation(.default, value: isSaving)
+//            }
+//        }
     }
 }
 
 private extension CreateEditItemToolbar {
     var buttons: some View {
         HStack {
-            if canChangeVault {
-                if container.isFolderSelected {
-                    folderButton(folderName: container.title)
-                } else if let vaultContent = container.share.vaultContent {
-                    vaultButton(vaultContent: vaultContent)
-                }
-            }
-
             if !ProcessInfo.processInfo.isiOSAppOnMac, canScanDocuments {
                 switch itemContentType {
                 case .creditCard, .note:
@@ -121,10 +148,10 @@ private extension CreateEditItemToolbar {
         .padding(.horizontal, DesignConstant.sectionPadding)
         .background(vaultContent.backgroundColor)
         .clipShape(Capsule())
-        .if(isPhone) { view in
-            view.frame(maxWidth: 150, alignment: .trailing)
-        }
-        .fixedSize(horizontal: false, vertical: false)
+//        .if(isPhone) { view in
+//            view.frame(maxWidth: 150, alignment: .trailing)
+//        }
+//        .fixedSize(horizontal: false, vertical: false)
         .buttonEmbeded(action: onSelectVault)
     }
 
@@ -132,6 +159,7 @@ private extension CreateEditItemToolbar {
         HStack {
             IconProvider.foldersFilled
                 .resizable()
+                .foregroundStyle(Color(hex: "#E9A944"))
                 .scaledToFit()
                 .frame(width: 18)
             Text(folderName)
@@ -145,10 +173,10 @@ private extension CreateEditItemToolbar {
         .padding(.horizontal, DesignConstant.sectionPadding)
         .background(PassColor.interactionNormMinor1)
         .clipShape(Capsule())
-        .if(isPhone) { view in
-            view.frame(maxWidth: 150, alignment: .trailing)
-        }
-        .fixedSize(horizontal: false, vertical: false)
+//        .if(isPhone) { view in
+//            view.frame(maxWidth: 150, alignment: .trailing)
+//        }
+//        .fixedSize(horizontal: false, vertical: false)
         .buttonEmbeded(action: onSelectVault)
     }
 }
