@@ -26,12 +26,13 @@ import SwiftUI
 
 struct VaultSelectorView: View {
     @Environment(\.dismiss) private var dismiss
-    @Binding var selectedVault: Share
+    @Binding var selectedContainer: ShareSelectionPayload
     let isFreeUser: Bool
     let onUpgrade: () -> Void
 
     private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
 
+    // TODO: need to change this to have folders
     private var vaults: [ShareContent] {
         appContentManager
             .getAllEditableVaultContents()
@@ -73,13 +74,15 @@ struct VaultSelectorView: View {
 
     private func view(for vaultInfos: ShareContent, vaultContent: VaultContent) -> some View {
         Button(action: {
-            selectedVault = vaultInfos.share
+            // TODO: prendre en compte les folder
+            selectedContainer = ShareSelectionPayload(share: vaultInfos.share, folder: nil) // vaultInfos.share
             dismiss()
         }, label: {
+            // TODO: update view to take into account folder
             VaultRow(thumbnail: { VaultThumbnail(vaultContent: vaultContent) },
                      title: vaultContent.name,
                      itemCount: vaultInfos.itemCount,
-                     mode: .view(isSelected: selectedVault == vaultInfos.share,
+                     mode: .view(isSelected: selectedContainer.share == vaultInfos.share,
                                  isHidden: vaultInfos.share.hidden,
                                  action: nil),
                      height: 74)

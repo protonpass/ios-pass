@@ -406,6 +406,7 @@ private extension EventSynchronizer {
 
             _ = try await itemRepository.createPendingAliasesItem(userId: userId,
                                                                   shareId: shareId,
+                                                                  folderId: nil,
                                                                   itemsContent: itemsContent)
 
             // Move to the next page

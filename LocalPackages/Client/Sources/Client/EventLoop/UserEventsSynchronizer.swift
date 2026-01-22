@@ -380,6 +380,7 @@ private extension UserEventsSynchronizer {
 
             let result = try await itemRepository.createPendingAliasesItem(userId: userId,
                                                                            shareId: shareId,
+                                                                           folderId: nil,
                                                                            itemsContent: itemsContent)
             logger.trace("Created \(result.count) aliases for user \(userId)")
 

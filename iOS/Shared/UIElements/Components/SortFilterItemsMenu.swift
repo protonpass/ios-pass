@@ -40,6 +40,7 @@ struct SortFilterItemsMenu: View {
     let options: [SortFilterItemsMenuOption]
     let highlighted: Bool
     let selectable: Bool
+    let folder: FolderUiModel?
 
     var body: some View {
         Menu(content: {
@@ -54,6 +55,7 @@ struct SortFilterItemsMenu: View {
                                 IconProvider.checkmarkCircle
                             })
                         }
+                        Divider()
                     }
 
                 case let .filter(selectedOption, itemCount, onSelect):
@@ -74,6 +76,22 @@ struct SortFilterItemsMenu: View {
                             })
                         }
                     }
+                }
+            }
+
+            if folder != nil {
+                Divider()
+
+                folderOptions()
+
+                Divider()
+
+                Button {} label: {
+                    Label(title: {
+                        Text("Create subfolder")
+                    }, icon: {
+                        IconProvider.folderPlus
+                    })
                 }
             }
         }, label: {
@@ -171,6 +189,26 @@ private extension SortFilterItemsMenu {
                 }
             }, icon: {
                 IconProvider.arrowDownArrowUp
+            })
+        })
+    }
+}
+
+private extension SortFilterItemsMenu {
+    func folderOptions() -> some View {
+        Menu(content: {
+            Button(action: {}, label: {
+                Text("Rename")
+            })
+
+            Button(action: {}, label: {
+                Text("Delete")
+            })
+        }, label: {
+            Label(title: {
+                Text("Manage Folder")
+            }, icon: {
+                IconProvider.folderOpen
             })
         })
     }

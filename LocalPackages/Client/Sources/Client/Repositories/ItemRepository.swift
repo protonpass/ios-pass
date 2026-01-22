@@ -82,17 +82,20 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     @discardableResult
     func createItem(userId: String,
                     itemContent: any ProtobufableItemContentProtocol,
-                    shareId: String) async throws -> SymmetricallyEncryptedItem
+                    shareId: String,
+                    folderId: String?) async throws -> SymmetricallyEncryptedItem
 
     @discardableResult
     func createAlias(userId: String,
                      info: AliasCreationInfo,
                      itemContent: any ProtobufableItemContentProtocol,
-                     shareId: String) async throws -> SymmetricallyEncryptedItem
+                     shareId: String,
+                     folderId: String?) async throws -> SymmetricallyEncryptedItem
 
     @discardableResult
     func createPendingAliasesItem(userId: String,
                                   shareId: String,
+                                  folderId: String?,
                                   itemsContent: [String: any ProtobufableItemContentProtocol]) async throws
         -> [SymmetricallyEncryptedItem]
 
@@ -101,7 +104,8 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
                                  info: AliasCreationInfo,
                                  aliasItemContent: any ProtobufableItemContentProtocol,
                                  otherItemContent: any ProtobufableItemContentProtocol,
-                                 shareId: String) async throws
+                                 shareId: String,
+                                 folderId: String?) async throws
         -> (SymmetricallyEncryptedItem, SymmetricallyEncryptedItem)
 
     func trashItems(_ items: [SymmetricallyEncryptedItem]) async throws
@@ -273,7 +277,8 @@ public extension ItemRepository {
     }
 
     /// Get all local items of a share or folder by state
-    func getItems(shareId: String, folderId: String?,
+    func getItems(shareId: String,
+                  folderId: String?,
                   state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
         if let folderId {
             try await localDatasource.getItems(shareId: shareId, folderId: folderId, state: state)
@@ -393,9 +398,11 @@ public extension ItemRepository {
 
     func createItem(userId: String,
                     itemContent: any ProtobufableItemContentProtocol,
-                    shareId: String) async throws -> SymmetricallyEncryptedItem {
+                    shareId: String,
+                    folderId: String?) async throws -> SymmetricallyEncryptedItem {
         logger.trace("Creating item for share \(shareId) and user \(userId)")
-        let request = try await createItemRequest(itemContent: itemContent, userId: userId, shareId: shareId)
+        let request = try await createItemRequest(itemContent: itemContent, userId: userId, shareId: shareId,
+                                                  folderId: folderId)
         let createdItemRevision = try await remoteDatasource.createItem(userId: userId,
                                                                         shareId: shareId,
                                                                         request: request)
@@ -414,11 +421,13 @@ public extension ItemRepository {
     func createAlias(userId: String,
                      info: AliasCreationInfo,
                      itemContent: any ProtobufableItemContentProtocol,
-                     shareId: String) async throws -> SymmetricallyEncryptedItem {
+                     shareId: String,
+                     folderId: String?) async throws -> SymmetricallyEncryptedItem {
         logger.trace("Creating alias item for user \(userId)")
         let createItemRequest = try await createItemRequest(itemContent: itemContent,
                                                             userId: userId,
-                                                            shareId: shareId)
+                                                            shareId: shareId,
+                                                            folderId: folderId)
         let createAliasRequest = CreateCustomAliasRequest(info: info,
                                                           item: createItemRequest)
         let createdItemRevision =
@@ -438,6 +447,7 @@ public extension ItemRepository {
 
     func createPendingAliasesItem(userId: String,
                                   shareId: String,
+                                  folderId: String?,
                                   itemsContent: [String: any ProtobufableItemContentProtocol]) async throws
         -> [SymmetricallyEncryptedItem] {
         logger.trace("Creating pending alias item for user \(userId)")
@@ -445,7 +455,8 @@ public extension ItemRepository {
         let aliasesItemInfos = try await itemsContent.asyncCompactMap { pendingAliasId, value in
             let request = try await createItemRequest(itemContent: value,
                                                       userId: userId,
-                                                      shareId: shareId)
+                                                      shareId: shareId,
+                                                      folderId: folderId)
             return AliasesItemPendingInfo(pendingAliasID: pendingAliasId, item: request)
         }
 
@@ -471,15 +482,18 @@ public extension ItemRepository {
                                  info: AliasCreationInfo,
                                  aliasItemContent: any ProtobufableItemContentProtocol,
                                  otherItemContent: any ProtobufableItemContentProtocol,
-                                 shareId: String)
+                                 shareId: String,
+                                 folderId: String?)
         async throws -> (SymmetricallyEncryptedItem, SymmetricallyEncryptedItem) {
         logger.trace("Creating alias and another item")
         let createAliasItemRequest = try await createItemRequest(itemContent: aliasItemContent,
                                                                  userId: userId,
-                                                                 shareId: shareId)
+                                                                 shareId: shareId,
+                                                                 folderId: folderId)
         let createOtherItemRequest = try await createItemRequest(itemContent: otherItemContent,
                                                                  userId: userId,
-                                                                 shareId: shareId)
+                                                                 shareId: shareId,
+                                                                 folderId: folderId)
 
         let request = CreateAliasAndAnotherItemRequest(info: info,
                                                        aliasItem: createAliasItemRequest,
@@ -917,9 +931,11 @@ private extension ItemRepository {
                               symmetricKey: SymmetricKey,
                               slNote: String? = nil) async throws -> SymmetricallyEncryptedItem {
         // TODO: get container key to decrypt folder or share
-        let shareKey = try await passKeyManager.getShareKey(userId: userId,
-                                                            shareId: shareId,
-                                                            keyRotation: itemRevision.keyRotation)
+        let shareKey = try await passKeyManager.getDecryptionKey(userId: userId,
+                                                                 containerId: itemRevision.folderID ?? shareId)
+//                                                    getShareKey(userId: userId,
+//                                                            shareId: shareId,
+//                                                            keyRotation: itemRevision.keyRotation)
 
         let contentProtobuf = try itemRevision.getContentProtobuf(containerKey: shareKey)
 
@@ -946,12 +962,22 @@ private extension ItemRepository {
                      encryptedSimpleLoginNote: encryptedSlNote)
     }
 
+//    func createItemRequest(itemContent: any ProtobufableItemContentProtocol,
+//                           userId: String,
+//                           shareId: String) async throws -> CreateItemRequest {
+//        // TODO: check if we need to get parent key to encrypt or style shared key
+//        let latestKey = try await passKeyManager.getLatestShareKey(userId: userId, shareId: shareId)
+//        return try CreateItemRequest(containerKey: latestKey, itemContent: itemContent)
+//    }
+
     func createItemRequest(itemContent: any ProtobufableItemContentProtocol,
                            userId: String,
-                           shareId: String) async throws -> CreateItemRequest {
+                           shareId: String,
+                           folderId: String?) async throws -> CreateItemRequest {
         // TODO: check if we need to get parent key to encrypt or style shared key
-        let latestKey = try await passKeyManager.getLatestShareKey(userId: userId, shareId: shareId)
-        return try CreateItemRequest(containerKey: latestKey, itemContent: itemContent)
+        let latestKey = try await passKeyManager.getDecryptionKey(userId: userId, containerId: folderId ?? shareId)
+        // getLatestShareKey(userId: userId, shareId: shareId)
+        return try CreateItemRequest(containerKey: latestKey, itemContent: itemContent, folderId: folderId)
     }
 }
 

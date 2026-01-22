@@ -37,6 +37,8 @@ public struct CreateItemRequest: Sendable {
 
     /// Item key encrypted with the VaultKey, contents encoded in base64
     public let itemKey: String
+
+    public let folderId: String?
 }
 
 extension CreateItemRequest: Encodable {
@@ -45,11 +47,13 @@ extension CreateItemRequest: Encodable {
         case contentFormatVersion = "ContentFormatVersion"
         case content = "Content"
         case itemKey = "ItemKey"
+        case folderId = "FolderID"
     }
 }
 
 extension CreateItemRequest {
-    init(containerKey: any CryptographicKeyProtocol, itemContent: any ProtobufableItemContentProtocol) throws {
+    init(containerKey: any CryptographicKeyProtocol, itemContent: any ProtobufableItemContentProtocol,
+         folderId: String?) throws {
         let itemKey = try Data.random()
         let encryptedContent = try AES.GCM.seal(itemContent.data(),
                                                 key: itemKey,
@@ -62,6 +66,7 @@ extension CreateItemRequest {
         self.init(keyRotation: containerKey.keyRotation,
                   contentFormatVersion: Int16(Constants.ContentFormatVersion.item),
                   content: encryptedContent.base64EncodedString(),
-                  itemKey: encryptedItemKey.base64EncodedString())
+                  itemKey: encryptedItemKey.base64EncodedString(),
+                  folderId: folderId)
     }
 }

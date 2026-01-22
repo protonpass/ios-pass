@@ -231,59 +231,6 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     }
 }
 
-// MARK: - Private APIs
-
-private extension EditableVaultListViewModel {
-    func setUp() {
-        if let userId = userManager.activeUserId {
-            containersExtended = Self.loadSet(for: userId)
-        }
-        appContentManager.$state
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] newState in
-                guard let self else { return }
-                state = newState
-                count = .init(appContentManager: appContentManager)
-                refreshHiddenShareIds()
-            }
-            .store(in: &cancellables)
-
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                let userId = try await userManager.getActiveUserId()
-                if accessRepository.access.value?.access.plan.isBusinessUser == true {
-                    organization = try await organizationRepository.getOrganization(userId: userId)
-                }
-            } catch {
-                handle(error)
-            }
-        }
-
-        accessRepository.access
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] updatedAccess in
-                guard let self else {
-                    return
-                }
-                plan = updatedAccess?.access.plan
-            }
-            .store(in: &cancellables)
-    }
-
-    func handle(_ error: any Error) {
-        logger.error(error)
-        router.display(element: .displayErrorBanner(error))
-    }
-
-    func persist() {
-        if let userId = userManager.activeUserId {
-            Self.saveSet(containersExtended,
-                         for: userId)
-        }
-    }
-}
-
 // MARK: - Public APIs
 
 extension EditableVaultListViewModel {
@@ -301,6 +248,12 @@ extension EditableVaultListViewModel {
                     try await appContentManager.delete(userId: userId,
                                                        shareId: folder.shareId,
                                                        folderId: folder.id)
+                    // If the folder is currently
+                    if let preciseSelectionPayload = appContentManager.shareSelection.preciseSelectionPayload,
+                       preciseSelectionPayload.folder == folder {
+                        appContentManager.select(.precise(.init(share: preciseSelectionPayload.share,
+                                                                folder: nil)))
+                    }
                 }
                 try await appContentManager.refresh(userId: userId)
                 router.display(element: .infosMessage(#localized("%@ « %@ » deleted",
@@ -446,10 +399,6 @@ extension EditableVaultListViewModel {
         guard case let .loaded(data) = state else { return }
         Task { [weak self] in
             guard let self else { return }
-//            defer {
-            ////                loading = false
-//                updateMode(.view)
-//            }
             loading = true
             do {
                 if try await reorganizeVaults(currentShares: data.shares.map(\.value.share),
@@ -507,6 +456,59 @@ extension EditableVaultListViewModel {
             } catch {
                 handle(error)
             }
+        }
+    }
+}
+
+// MARK: - Private APIs
+
+private extension EditableVaultListViewModel {
+    func setUp() {
+        if let userId = userManager.activeUserId {
+            containersExtended = Self.loadSet(for: userId)
+        }
+        appContentManager.$state
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newState in
+                guard let self else { return }
+                state = newState
+                count = .init(appContentManager: appContentManager)
+                refreshHiddenShareIds()
+            }
+            .store(in: &cancellables)
+
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let userId = try await userManager.getActiveUserId()
+                if accessRepository.access.value?.access.plan.isBusinessUser == true {
+                    organization = try await organizationRepository.getOrganization(userId: userId)
+                }
+            } catch {
+                handle(error)
+            }
+        }
+
+        accessRepository.access
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] updatedAccess in
+                guard let self else {
+                    return
+                }
+                plan = updatedAccess?.access.plan
+            }
+            .store(in: &cancellables)
+    }
+
+    func handle(_ error: any Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
+    }
+
+    func persist() {
+        if let userId = userManager.activeUserId {
+            Self.saveSet(containersExtended,
+                         for: userId)
         }
     }
 }

@@ -29,7 +29,7 @@ struct CreateEditItemToolbar: ToolbarContent {
     let isSaveable: Bool
     let isSaving: Bool
     let canScanDocuments: Bool
-    let vault: Share
+    let container: ShareSelectionPayload
     let canChangeVault: Bool
     let itemContentType: ItemContentType
     let shouldUpgrade: Bool
@@ -73,8 +73,12 @@ struct CreateEditItemToolbar: ToolbarContent {
 private extension CreateEditItemToolbar {
     var buttons: some View {
         HStack {
-            if canChangeVault, let vaultContent = vault.vaultContent {
-                vaultButton(vaultContent: vaultContent)
+            if canChangeVault {
+                if container.isFolderSelected {
+                    folderButton(folderName: container.title)
+                } else if let vaultContent = container.share.vaultContent {
+                    vaultButton(vaultContent: vaultContent)
+                }
             }
 
             if !ProcessInfo.processInfo.isiOSAppOnMac, canScanDocuments {
@@ -116,6 +120,30 @@ private extension CreateEditItemToolbar {
         .foregroundStyle(vaultContent.mainColor)
         .padding(.horizontal, DesignConstant.sectionPadding)
         .background(vaultContent.backgroundColor)
+        .clipShape(Capsule())
+        .if(isPhone) { view in
+            view.frame(maxWidth: 150, alignment: .trailing)
+        }
+        .fixedSize(horizontal: false, vertical: false)
+        .buttonEmbeded(action: onSelectVault)
+    }
+
+    func folderButton(folderName: String) -> some View {
+        HStack {
+            IconProvider.foldersFilled
+                .resizable()
+                .scaledToFit()
+                .frame(width: 18)
+            Text(folderName)
+            Image(systemName: "chevron.down")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 12)
+        }
+        .frame(height: 40)
+        .foregroundStyle(PassColor.textNorm)
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .background(PassColor.interactionNormMinor1)
         .clipShape(Capsule())
         .if(isPhone) { view in
             view.frame(maxWidth: 150, alignment: .trailing)

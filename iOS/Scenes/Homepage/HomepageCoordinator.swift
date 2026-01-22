@@ -1102,8 +1102,7 @@ extension HomepageCoordinator {
             guard let self else { return }
             dismissTopMostViewController(animated: true) { [weak self] in
                 guard let self else { return }
-                presentCreateEditLoginView(mode: .create(shareId: nil,
-                                                         type: .login(password: clearPassword,
+                presentCreateEditLoginView(mode: .create(type: .login(password: clearPassword,
                                                                       autofill: false)))
             }
         }

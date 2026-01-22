@@ -287,6 +287,7 @@ public extension [SearchableItem] {
     // While this function has no async operations but they're quite resource demanding
     // when dealing with a large amount of data
     // so we make it async in order to execute it concurrently out of the main thread
+    @concurrent
     func result(for term: String) async throws -> [ItemSearchResult] {
         try compactMap {
             #if DEBUG
