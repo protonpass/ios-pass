@@ -63,11 +63,17 @@ final class OnboardingHandler {
     @LazyInjected(\SharedToolingContainer.apiManager)
     private var apiManager
 
+    private let transactionsObserver: TransactionsObserverProviding
     private var plansManager: ProtonPlansManager?
     private let logger: Logger
+    private let userDefaults: UserDefaults
 
-    nonisolated init(logManager: any LogManagerProtocol) {
+    nonisolated init(logManager: any LogManagerProtocol,
+                     userDefaults: UserDefaults,
+                     transactionsObserver: TransactionsObserverProviding = TransactionsObserver.shared) {
         logger = .init(manager: logManager)
+        self.userDefaults = userDefaults
+        self.transactionsObserver = transactionsObserver
     }
 }
 
@@ -76,21 +82,36 @@ extension OnboardingHandler: OnboardingDatasource {
         try await accessRepository.getPlan(userId: nil)
     }
 
-    func getPassPlans() async throws -> PassPlans? {
+    func getPassPlans() async throws -> PassPlans {
         guard !Bundle.main.isBetaBuild, let manager = try await getPlansManager() else {
-            return nil
+            return .init(plus: nil, unlimited: nil)
         }
         let plans = try await manager.getAvailablePlans()
         let plusId = "iospass_pass2023_12_usd_auto_renewing"
         let unlimitedId = "iospass_bundle2022_12_usd_auto_renewing"
-        if let plusComposedPlan = plans.first(where: { $0.product.id == plusId }),
-           let plusPlan = PlanUiModel(plan: plusComposedPlan),
-           let unlimitedComposedPlan = plans.first(where: { $0.product.id == unlimitedId }),
-           let unlimitedPlan = PlanUiModel(plan: unlimitedComposedPlan) {
-            return .init(plus: plusPlan, unlimited: unlimitedPlan)
-        } else {
-            return nil
+
+        var plusPlan: PlanUiModel?
+        var unlimitedPlan: PlanUiModel?
+
+        if let plusComposedPlan = plans.first(where: { $0.product.id == plusId }) {
+            plusPlan = PlanUiModel(plan: plusComposedPlan)
         }
+
+        if let unlimitedComposedPlan = plans.first(where: { $0.product.id == unlimitedId }) {
+            unlimitedPlan = PlanUiModel(plan: unlimitedComposedPlan)
+        }
+
+        if Bundle.main.isQaBuild {
+            if userDefaults.bool(forKey: Constants.QA.hidePassPlusPlan) {
+                plusPlan = nil
+            }
+
+            if userDefaults.bool(forKey: Constants.QA.hideProtonUnlimitedPlan) {
+                unlimitedPlan = nil
+            }
+        }
+
+        return .init(plus: plusPlan, unlimited: unlimitedPlan)
     }
 
     func getBiometryType() async throws -> LABiometryType? {
@@ -164,6 +185,9 @@ private extension OnboardingHandler {
         let userId = try await userManager.getActiveUserId()
         let apiService = try apiManager.getApiService(userId: userId)
         let remoteManager = RemoteManager(apiService: apiService)
+        let configuration = TransactionsObserverConfiguration(remoteManager: remoteManager)
+        transactionsObserver.setConfiguration(configuration)
+        try await transactionsObserver.start()
         let manager = ProtonPlansManager(remoteManager: remoteManager)
         plansManager = manager
         return manager
