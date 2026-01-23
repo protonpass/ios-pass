@@ -111,11 +111,6 @@ private extension LogInDetailView {
                     withAnimation { value.scrollTo(bottomID, anchor: .bottom) }
                 }
             }
-
-            if viewModel.isAlias {
-                viewAliasCard
-                    .padding(.horizontal)
-            }
         }
         .animation(.default, value: viewModel.moreInfoSectionExpanded)
         .itemDetailSetUp(viewModel)
@@ -379,24 +374,6 @@ private extension LogInDetailView {
         }
         .padding(DesignConstant.sectionPadding)
         .roundedDetailSection()
-    }
-
-    var viewAliasCard: some View {
-        Group {
-            Text("View and edit details for this alias on the separate alias page.")
-                .font(.callout)
-                .adaptiveForegroundStyle(PassColor.textNorm) +
-                Text(verbatim: " ")
-                .font(.callout) +
-                Text("View")
-                .font(.callout)
-                .adaptiveForegroundStyle(viewModel.itemContent.type.normMajor2Color)
-                .underline(color: viewModel.itemContent.type.normMajor2Color)
-        }
-        .padding(DesignConstant.sectionPadding)
-        .background(PassColor.backgroundMedium)
-        .clipShape(RoundedRectangle(cornerRadius: 16))
-        .onTapGesture(perform: viewModel.showAliasDetail)
     }
 }
 
