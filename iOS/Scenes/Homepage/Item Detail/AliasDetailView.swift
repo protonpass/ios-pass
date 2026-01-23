@@ -171,6 +171,13 @@ struct AliasDetailView: View {
 
                 Text(AttributedString(viewModel.aliasEmail, attributes: .lineBreakHyphenErasing))
                     .sectionContentText()
+
+                Text("Create login")
+                    .font(.callout)
+                    .foregroundStyle(viewModel.itemContent.type.normMajor2Color)
+                    .underline(color: viewModel.itemContent.type.normMajor2Color)
+                    .padding(.top, 8)
+                    .buttonEmbeded(action: viewModel.createLogin)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
