@@ -578,8 +578,15 @@ extension HomepageCoordinator {
                     presentSecurityKeys()
                 case .settingsMenu:
                     profileTabViewModelWantsToShowSettingsMenu()
-                case let .createEditLogin(item):
-                    presentCreateEditLoginView(mode: item)
+                case let .createEditLogin(item, dismissAllSheets):
+                    if dismissAllSheets {
+                        dismissAllViewControllers(animated: true) { [weak self] in
+                            guard let self else { return }
+                            presentCreateEditLoginView(mode: item)
+                        }
+                    } else {
+                        presentCreateEditLoginView(mode: item)
+                    }
                 case let .createItem(item, type, _):
                     handleItemCreation(item: item, type: type)
                 case let .editItem(itemContent):
