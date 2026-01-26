@@ -42179,6 +42179,16 @@
         }
       }
     },
+    "Copy after creating alias" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy after creating alias"
+          }
+        }
+      }
+    },
     "Copy alias address" : {
       "localizations" : {
         "be" : {
