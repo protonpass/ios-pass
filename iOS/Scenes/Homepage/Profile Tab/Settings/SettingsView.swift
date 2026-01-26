@@ -118,6 +118,14 @@ private extension SettingsView {
                              isOn: viewModel.alwaysShowUsernameField,
                              action: { viewModel.toggleAlwaysShowUsernameField() })
             }
+
+            PassSectionDivider()
+
+            OptionRow(height: .tall) {
+                StaticToggle(.localized("Copy after creating alias"),
+                             isOn: viewModel.copyAfterCreatingAlias,
+                             action: { viewModel.toggleCopyAfterCreatingAlias() })
+            }
         }
         .roundedEditableSection()
     }

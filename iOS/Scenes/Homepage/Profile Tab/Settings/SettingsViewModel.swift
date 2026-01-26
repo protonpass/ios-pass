@@ -63,6 +63,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var displayFavIcons: Bool
     @Published private(set) var shareClipboard: Bool
     @Published private(set) var alwaysShowUsernameField: Bool
+    @Published private(set) var copyAfterCreatingAlias: Bool
     @Published private(set) var spotlightEnabled: Bool
     @Published private(set) var spotlightSearchableContent: SpotlightSearchableContent
     @Published private(set) var spotlightSearchableVaults: SpotlightSearchableVaults
@@ -83,6 +84,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
         displayFavIcons = sharedPreferences.displayFavIcons
         shareClipboard = sharedPreferences.shareClipboard
         alwaysShowUsernameField = sharedPreferences.alwaysShowUsernameField
+        copyAfterCreatingAlias = sharedPreferences.copyAfterCreatingAlias
         spotlightEnabled = userPreferences.spotlightEnabled
         spotlightSearchableContent = userPreferences.spotlightSearchableContent
         spotlightSearchableVaults = userPreferences.spotlightSearchableVaults
@@ -135,6 +137,19 @@ extension SettingsViewModel {
                 let newValue = !alwaysShowUsernameField
                 try await updateSharedPreferences(\.alwaysShowUsernameField, value: newValue)
                 alwaysShowUsernameField = newValue
+            } catch {
+                handle(error)
+            }
+        }
+    }
+
+    func toggleCopyAfterCreatingAlias() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let newValue = !copyAfterCreatingAlias
+                try await updateSharedPreferences(\.copyAfterCreatingAlias, value: newValue)
+                copyAfterCreatingAlias = newValue
             } catch {
                 handle(error)
             }
