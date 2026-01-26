@@ -78,6 +78,22 @@ struct CreateEditAliasView: View {
                isPresented: $isShowingSlNoteExplanation,
                actions: { Button("OK", action: {}) },
                message: { Text(verbatim: simpleLoginNoteExplanationMessage) })
+        .alert("Copy new alias automatically?",
+               isPresented: $viewModel.showCopyAfterCreatingAlert,
+               actions: {
+                   Button(action: viewModel.optInCopyAfterCreatingAndProceed) {
+                       Text("Yes")
+                   }
+
+                   Button(action: viewModel.ignoreCopyAfterCreatingAndProceed) {
+                       Text("No")
+                   }
+
+                   Button("Cancel", role: .cancel, action: {})
+               },
+               message: {
+                   Text("You can change this anytime in Settings")
+               })
     }
 
     private var closeButtonToolbar: some ToolbarContent {
