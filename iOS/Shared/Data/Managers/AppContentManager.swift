@@ -244,7 +244,7 @@ extension AppContentManager {
 // MARK: - Share Actions Public APIs
 
 extension AppContentManager {
-    func select(_ selection: ShareSelection, filterOption: ItemTypeFilterOption? = nil) {
+    func select(_ selection: ShareSelection, filterOption: ItemTypeFilterOption?) {
         pendingItemTypeFilterOption = filterOption
         shareSelection = selection
 
