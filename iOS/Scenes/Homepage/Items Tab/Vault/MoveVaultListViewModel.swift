@@ -26,6 +26,7 @@ import Entities
 import FactoryKit
 import Macro
 
+// TODO: need to add sharePayload share and folder
 @MainActor
 final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
@@ -40,13 +41,13 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
 
     @Published private(set) var isFreeUser = false
     @Published private(set) var showWarning = false
-    @Published var selectedVault: ShareContent?
+    @Published var selectedContainer: ShareSelectionPayload?
 
-    let allVaults: [ShareContent]
+    let allSharesContent: [ShareContent]
     private let context: MovingContext
 
     init(allVaults: [ShareContent], context: MovingContext) {
-        self.allVaults = allVaults.sortedByHidden()
+        allSharesContent = allVaults.sortedByHidden()
         self.context = context
         let fromShareId: String? = switch context {
         case let .singleItem(item):
@@ -57,9 +58,10 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
             nil
         }
 
-        if let fromShareId {
-            selectedVault = appContentManager
-                .getShareContent(for: fromShareId)
+        if let fromShareId,
+           let shareContent = appContentManager
+           .getShareContent(for: fromShareId) {
+            selectedContainer = ShareSelectionPayload(share: shareContent.share, folder: nil)
         }
 
         Task { [weak self] in
@@ -85,8 +87,8 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
     }
 
     func doMove() {
-        guard let selectedVault, selectedVault.share.isVaultRepresentation,
-              let vaultContent = selectedVault.share.vaultContent else {
+        guard let selectedContainer, selectedContainer.share.isVaultRepresentation
+        /* let vaultContent = selectedVault.share.vaultContent */ else {
             assertionFailure("Should have a selected vault")
             return
         }
@@ -96,8 +98,9 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
             do {
                 router.display(element: .globalLoading(shouldShow: true))
                 try await moveItemsBetweenVaults(context: context,
-                                                 to: selectedVault.share.shareId)
-                router.display(element: successMessage(toVaultName: vaultContent.name))
+                                                 to: selectedContainer.share.shareId,
+                                                 destinationFolderId: selectedContainer.folder?.id)
+                router.display(element: successMessage(toVaultName: selectedContainer.title))
                 currentSelectedItems.send([])
             } catch {
                 logger.error(error)

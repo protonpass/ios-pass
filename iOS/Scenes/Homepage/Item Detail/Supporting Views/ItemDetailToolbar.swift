@@ -66,7 +66,7 @@ struct ItemDetailToolbar: ToolbarContent {
 
                     Menu(content: {
                         if viewModel.itemIsLinkToVault, viewModel.isAllowedToEdit {
-                            Label("Move to another vault", uiImage: IconProvider.folderArrowIn)
+                            Label("Move to another container", uiImage: IconProvider.folderArrowIn)
                                 .buttonEmbeded {
                                     if viewModel.itemContent.shared {
                                         viewModel.showingVaultMoveAlert.toggle()

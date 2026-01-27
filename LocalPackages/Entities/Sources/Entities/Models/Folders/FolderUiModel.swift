@@ -53,4 +53,8 @@ public struct FolderUiModel: PrecomputedHashable, Equatable, Sendable, Identifia
 //        hasher.combine(content)
         precomputedHash = hasher.finalize()
     }
+
+    var isRootFolder: Bool {
+        parentId == shareId
+    }
 }

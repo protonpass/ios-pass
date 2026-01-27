@@ -20,9 +20,17 @@
 
 import Foundation
 
-public struct ShareSelectionPayload: Hashable, Sendable {
+public struct ShareSelectionPayload: Hashable, Sendable, Identifiable {
     public let share: Share
     public let folder: FolderUiModel?
+
+    public var id: String {
+        if let folderId = folder?.folderId {
+            share.id + folderId
+        } else {
+            share.id
+        }
+    }
 
     public init(share: Share, folder: FolderUiModel?) {
         self.share = share
@@ -114,7 +122,7 @@ public enum ShareSelection: Hashable, Sendable {
         case .all:
             nil
         case let .precise(selection):
-            selection.share.shareId
+            selection.id
         case .sharedWithMe:
             "sharedWithMe"
         case .sharedByMe:
