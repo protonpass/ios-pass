@@ -78,7 +78,7 @@ struct CreateEditAliasView: View {
                isPresented: $isShowingSlNoteExplanation,
                actions: { Button("OK", action: {}) },
                message: { Text(verbatim: simpleLoginNoteExplanationMessage) })
-        .alert("Copy new alias automatically?",
+        .alert("Copy new alias address automatically?",
                isPresented: $viewModel.showCopyAfterCreatingAlert,
                actions: {
                    Button(action: viewModel.optInCopyAfterCreatingAndProceed) {

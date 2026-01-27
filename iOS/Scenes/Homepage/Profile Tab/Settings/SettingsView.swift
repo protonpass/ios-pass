@@ -122,7 +122,7 @@ private extension SettingsView {
             PassSectionDivider()
 
             OptionRow(height: .tall) {
-                StaticToggle(.localized("Copy after creating alias"),
+                StaticToggle(.localized("Copy alias address after creation"),
                              isOn: viewModel.copyAfterCreatingAlias,
                              action: { viewModel.toggleCopyAfterCreatingAlias() })
             }
