@@ -42189,16 +42189,6 @@
         }
       }
     },
-    "Copy after creating alias" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Copy after creating alias"
-          }
-        }
-      }
-    },
     "Copy alias address" : {
       "localizations" : {
         "be" : {
@@ -42391,6 +42381,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "複製別名"
+          }
+        }
+      }
+    },
+    "Copy alias address after creation" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy alias address after creation"
           }
         }
       }
@@ -43963,12 +43963,12 @@
         }
       }
     },
-    "Copy new alias automatically?" : {
+    "Copy new alias address automatically?" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Copy new alias automatically?"
+            "value" : "Copy new alias address automatically?"
           }
         }
       }
