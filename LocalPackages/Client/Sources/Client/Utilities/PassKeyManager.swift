@@ -409,7 +409,9 @@ public extension PassKeyManager {
                     containerId: String,
                     itemId: String,
                     keyRotation: Int64) async throws -> any CryptographicKeyProtocol {
-        guard let key = try await getItemKeys(userId: userId, shareId: shareId, containerId: containerId,
+        guard let key = try await getItemKeys(userId: userId,
+                                              shareId: shareId,
+                                              containerId: containerId,
                                               itemId: itemId)
             .first(where: { $0.keyRotation == keyRotation }) else {
             throw PassError.keysNotFound(shareID: shareId)

@@ -132,6 +132,7 @@ struct VaultSelectorView: View {
 
 struct SmallFolderTreeRow: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.colorScheme) private var colorScheme
     let content: ShareContent
     let share: Share
     let folders: [FolderUiModel]
@@ -203,10 +204,25 @@ private extension SmallFolderTreeRow {
                 selectedContainer = ShareSelectionPayload(share: share, folder: folder)
             } label: {
                 HStack {
-                    IconProvider.foldersFilled
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                        .foregroundStyle(Color(hex: "#E9A944"))
+                    ZStack(alignment: .bottomTrailing) {
+                        IconProvider.foldersFilled
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                            .foregroundStyle(Color(hex: "#E9A944"))
+
+                        if selectedContainer.folder == folder {
+                            IconProvider.checkmark
+                                .resizable()
+                                .scaledToFit()
+                                .foregroundStyle(PassColor.textInvert)
+                                .padding(1)
+                                .background(colorScheme == .dark ?
+                                    PassColor.interactionNormMajor2 : PassColor.interactionNorm)
+                                .frame(height: 15)
+                                .clipShape(Circle())
+                                .offset(x: 5, y: 5)
+                        }
+                    }
 
                     Text(folder.content.name)
                         .foregroundStyle(PassColor.textNorm)

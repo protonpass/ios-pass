@@ -89,6 +89,7 @@ class BaseItemDetailViewModel: ObservableObject {
 
     private(set) var customFields: [CustomField]
     let vault: VaultListUiModel?
+    let shareContent: ShareContent?
     let logger = resolve(\SharedToolingContainer.logger)
 
     private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
@@ -158,6 +159,13 @@ class BaseItemDetailViewModel: ObservableObject {
     weak var delegate: (any ItemDetailViewModelDelegate)?
     var cancellables = Set<AnyCancellable>()
 
+    var path: [FolderUiModel] {
+        guard let shareContent, let folderId = itemContent.item.folderID else {
+            return []
+        }
+        return shareContent.getPath(forElementWithContainer: folderId)
+    }
+
     init(isShownAsSheet: Bool,
          itemContent: ItemContent,
          upgradeChecker: any UpgradeCheckerProtocol) {
@@ -165,8 +173,8 @@ class BaseItemDetailViewModel: ObservableObject {
         self.itemContent = itemContent
         customFields = itemContent.customFields
         self.upgradeChecker = upgradeChecker
-
-        vault = appContentManager.getShareContent(for: itemContent.shareId)?.toVaultListUiModel
+        shareContent = appContentManager.getShareContent(for: itemContent.shareId)
+        vault = shareContent?.toVaultListUiModel
 
         bindValues()
         checkIfFreeUser()

@@ -1,5 +1,5 @@
 //
-// MoveItemsEndpoint.swift
+// InternalMoveItemsEndpoint.swift
 // Proton Pass - Created on 29/03/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -23,45 +23,44 @@ import Entities
 import Foundation
 import ProtonCoreNetworking
 
-struct MoveItemsResponse: Decodable, Sendable {
-    let items: [Item]
-}
+// struct InternalMoveItemsResponse: Decodable, Sendable {
+//    let folderId: String?
+//    let items: [Item]
+// }
 
-public struct MoveItemsRequest: Encodable, Sendable {
+public struct InternalMoveItemsRequest: Encodable, Sendable {
     /// Encrypted ID of the destination share
-    let shareId: String
+    let folderId: String?
     let items: [ItemToBeMoved]
 
     enum CodingKeys: String, CodingKey {
-        case shareId = "ShareID"
+        case folderId = "FolderID"
         case items = "Items"
     }
 }
 
-struct ItemToBeMoved: Codable, Sendable {
-    let itemId: String
-    let destinationFolderID: String?
-    let itemKeys: [ItemKey]
+// struct ItemToBeMoved: Codable, Sendable {
+//    let itemId: String
+//    let itemKeys: [ItemKey]
+//
+//    enum CodingKeys: String, CodingKey {
+//        case itemId = "ItemID"
+//        case itemKeys = "ItemKeys"
+//    }
+// }
 
-    enum CodingKeys: String, CodingKey {
-        case itemId = "ItemID"
-        case destinationFolderID = "DestinationFolderID"
-        case itemKeys = "ItemKeys"
-    }
-}
-
-struct MoveItemsEndpoint: Endpoint {
-    typealias Body = MoveItemsRequest
+struct InternalMoveItemsEndpoint: Endpoint {
+    typealias Body = InternalMoveItemsRequest
     typealias Response = MoveItemsResponse
 
     var debugDescription: String
     var path: String
     var method: HTTPMethod
-    var body: MoveItemsRequest?
+    var body: InternalMoveItemsRequest?
 
-    init(request: MoveItemsRequest, fromShareId: String) {
-        debugDescription = "Move items"
-        path = "/pass/v1/share/\(fromShareId)/item/share"
+    init(request: InternalMoveItemsRequest, shareId: String) {
+        debugDescription = "Move items internally in share"
+        path = "/pass/v1/share/\(shareId)/item/folder"
         method = .put
         body = request
     }

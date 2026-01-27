@@ -131,8 +131,9 @@ private extension ItemsTabTopBar {
                     .resetFilters { viewModel.resetFilters() }
                 ],
                 highlighted: viewModel.highlighted,
-                selectable: viewModel.selectable,
-                folder: viewModel.shareSelection.preciseSelectionPayload?.folder)
+                selectable: viewModel.selectable)
+//                                    ,
+//                folder: viewModel.shareSelection.preciseSelectionPayload?.folder)
             }
             .frame(height: 48)
             .padding(.horizontal, showButtonShapes ? 0 : nil)
