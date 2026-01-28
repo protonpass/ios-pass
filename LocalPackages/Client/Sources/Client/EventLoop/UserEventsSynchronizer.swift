@@ -168,8 +168,31 @@ private extension UserEventsSynchronizer {
         try await processCreatedShares(events.sharesCreated, userId: userId)
         // swiftlint:disable:next todo
         // TODO: add folder processing after shares and before items
-        //        async let foldersUpdated: () = processSharesToCreate(events.foldersUpdated, userId: userId)
+        try await processUpdatedFolder(events.foldersUpdated, userId: userId)
         try await processUpdatedItems(events.itemsUpdated, userId: userId)
+    }
+
+    func processUpdatedFolder(_ updatedFolders: [FolderEvent], userId: String) async throws {
+        guard !updatedFolders.isEmpty else {
+            logger.trace("No updated items for user \(userId)")
+            return
+        }
+        logger.trace("Refreshing \(updatedFolders.count) updated folder for user \(userId)")
+//
+//        for batch in updatedFolders.chunked(into: maxConcurrentShareCreations) {
+//            try await withThrowingTaskGroup(of: Void.self) { taskGroup in
+//                for updatedItem in batch {
+//                    taskGroup.addTask { [itemRepository, userId] in
+//                        try await folderRepository.
+        ////                        try await itemRepository.refreshItem(userId: userId,
+        ////                                                             shareId: updatedItem.shareID,
+        ////                                                             itemId: updatedItem.itemID,
+        ////                                                             eventToken: updatedItem.eventToken)
+//                    }
+//                }
+//                try await taskGroup.waitForAll()
+//            }
+//        }
     }
 
     func processUpdatedItems(_ updatedItems: [ItemEvent], userId: String) async throws {
@@ -254,7 +277,7 @@ private extension UserEventsSynchronizer {
                         try await shareRepository.refreshShare(userId: userId,
                                                                shareId: newShare.shareID,
                                                                eventToken: newShare.eventToken)
-                        try await itemRepository.refreshItems(userId: userId, shareId: newShare.shareID)
+//                        try await itemRepository.refreshItems(userId: userId, shareId: newShare.shareID)
                     }
                 }
                 try await taskGroup.waitForAll()

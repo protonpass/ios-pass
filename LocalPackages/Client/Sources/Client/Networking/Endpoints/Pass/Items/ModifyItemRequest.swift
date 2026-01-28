@@ -61,6 +61,7 @@ struct ItemToBeModified: Encodable, Sendable {
 /// Trashed/untrashed item
 public struct ModifiedItem: Decodable, Sendable {
     public let itemID: String
+    public let folderID: String?
     public let revision: Int64
     public let state: Int64
     public let modifyTime: Int64

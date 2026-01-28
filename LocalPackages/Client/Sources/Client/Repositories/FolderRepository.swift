@@ -37,6 +37,7 @@ public protocol FolderRepositoryProtocol: Sendable {
                       parentFolderId: String?,
                       folderContent: FolderContent) async throws -> Folder
     func edit(userId: String, shareId: String, folderId: String, folderContent: FolderContent) async throws
+    func move(userId: String, shareId: String, folderId: String, destinationId: String?) async throws
 }
 
 public final class FolderRepository: FolderRepositoryProtocol {
@@ -213,7 +214,98 @@ public extension FolderRepository {
         try await localDatasource.upsertFolders([encryptedFolder], userId: userId)
         logger.trace("Updated folder \(encryptedFolder.folderId) for user \(userId)")
     }
+
+    func move(userId: String, shareId: String, folderId: String, destinationId: String?) async throws {
+        logger.trace("Move folder \(folderId) to destination \(destinationId ?? shareId)")
+        let destinationKey = try await passKeyManager.getDecryptionKey(userId: userId,
+                                                                       containerId: destinationId ?? shareId)
+
+        let currentFolderKey = try await passKeyManager.getDecryptionKey(userId: userId,
+                                                                         containerId: folderId)
+        let encryptedItemKey = try AES.GCM.seal(currentFolderKey.keyData,
+                                                key: destinationKey.keyData,
+                                                associatedData: .folderKey)
+
+        let request = MoveFolderRequest(parentFolderID: destinationId,
+                                        folderKeys: [.init(folderKey: encryptedItemKey.base64EncodedString(),
+                                                           keyRotation: Int(currentFolderKey.keyRotation))])
+
+        let updatedFolder = try await remoteDatasource.move(userId: userId, shareId: shareId, folderId: folderId,
+                                                            request: request)
+        let encryptedFolder = try await symmetricallyEncrypt(userId: userId,
+                                                             shareId: shareId,
+                                                             folderRevision: updatedFolder)
+        try await localDatasource.deleteFolders(folderIds: [folderId], shareId: shareId)
+        try await localDatasource.upsertFolders([encryptedFolder], userId: userId)
+    }
 }
+
+// func move(items: [any ItemIdentifiable], toShareId: String, destinationFolderId: String?) async throws {
+//    logger.trace("Bulk moving \(items.count) items to share \(toShareId)")
+//    let userId = try await userManager.getActiveUserId()
+////    try await bulkAction(userId: userId, items: items) { [weak self] groupedItems, _ in
+////        guard let self else { return }
+////        try await parallelMove(items: groupedItems,
+////                               to: toShareId,
+////                               destinationFolderId: destinationFolderId)
+////    }
+////    try await refreshPinnedItemDataStream()
+//    logger.info("Moved folder \(items.count) items to share \(toShareId)")
+// }
+//
+// func doMove(items: [any FullItemIdentifiable],
+//            toShareId: String,
+//            destinationFolderId: String?) async throws -> [SymmetricallyEncryptedItem] {
+//    guard let fromSharedId = items.first?.shareId else {
+//        throw PassError.unexpectedError
+//    }
+//    let userId = try await userManager.getActiveUserId()
+//    let symmetricKey = try await getSymmetricKey()
+//
+//    let destinationShareKey = try await passKeyManager.getDecryptionKey(userId: userId,
+//                                                                        containerId: destinationFolderId ??
+//                                                                            toShareId) //
+//                                                                            getLatestShareKey(userId: userId, shareId: toShareId)
+//
+//    var itemsToBeMoved = [ItemToBeMoved]()
+//    for item in items {
+//        // Get all decrypted item keys
+//        let decryptedItemKeys = try await passKeyManager.getItemKeys(userId: userId,
+//                                                                     shareId: item.shareId,
+//                                                                     containerId: item.item.folderID ?? item
+//                                                                         .shareId,
+//                                                                     itemId: item.item.itemID)
+//        // Re-encrypt all those item keys with the destination vault key
+//        var encryptedItemKeys = [ItemKey]()
+//        for itemKey in decryptedItemKeys {
+//            let encryptedItemKey = try AES.GCM.seal(itemKey.keyData,
+//                                                    key: destinationShareKey.keyData,
+//                                                    associatedData: .itemKey)
+//            encryptedItemKeys.append(.init(key: encryptedItemKey.base64EncodedString(),
+//                                           keyRotation: itemKey.keyRotation))
+//        }
+//        itemsToBeMoved.append(.init(itemId: item.item.itemID,
+//                                    destinationFolderID: destinationFolderId,
+//                                    itemKeys: encryptedItemKeys))
+//    }
+//
+//    let request = MoveItemsRequest(shareId: toShareId, items: itemsToBeMoved)
+//    let newItems = try await remoteDatasource.move(userId: userId,
+//                                                   fromShareId: fromSharedId,
+//                                                   request: request)
+//
+//    let newEncryptedItems = try await newItems
+//        .parallelMap { [weak self] in
+//            try await self?.symmetricallyEncrypt(itemRevision: $0,
+//                                                 shareId: toShareId,
+//                                                 userId: userId,
+//                                                 symmetricKey: symmetricKey)
+//        }.compactMap(\.self)
+//    try await localDatasource.deleteItems(itemIds: items.map(\.item.itemID),
+//                                          shareId: fromSharedId)
+//    try await localDatasource.upsertItems(newEncryptedItems)
+//    return newEncryptedItems
+// }
 
 // public extension CreateFolderRequest {
 //    init(encryptionKey: any CryptographicKeyProtocol, folderContent: FolderContent, parentFolderId: String?) throws {

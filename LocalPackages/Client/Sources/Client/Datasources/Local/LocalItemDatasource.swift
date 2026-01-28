@@ -283,10 +283,10 @@ public extension LocalItemDatasource {
                                        revisionTime: modifiedItem.revisionTime,
                                        flags: modifiedItem.flags,
                                        shareCount: item.item.shareCount,
-                                       folderID: item.folderId)
+                                       folderID: modifiedItem.folderID)
                 itemsToUpsert.append(.init(shareId: item.shareId,
                                            userId: item.userId,
-                                           folderId: item.folderId,
+                                           folderId: modifiedItem.folderID,
                                            item: updatedItem,
                                            encryptedContent: item.encryptedContent,
                                            isLogInItem: item.isLogInItem,
