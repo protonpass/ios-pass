@@ -29,7 +29,7 @@ import ProtonCoreNetworking
 
 public struct MoveFolderRequest: Encodable, Sendable {
     /// Encrypted ID of the destination share
-    let parentFolderID: String
+    let parentFolderID: String?
     let folderKeys: [FolderKey]
 
     enum CodingKeys: String, CodingKey {

@@ -546,7 +546,6 @@ struct BreadcrumbView: View {
     var body: some View {
         Button { expanded.toggle() } label: {
             renderedText
-                .animation(.default, value: expanded)
         }
         .padding(DesignConstant.sectionPadding)
         .roundedDetailSection()

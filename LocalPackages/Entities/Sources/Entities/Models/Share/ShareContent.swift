@@ -168,7 +168,7 @@ public extension ShareContent {
         var path: [FolderUiModel] = []
         var containerId: String? = id
         while let currentId = containerId, let folder = folder(for: currentId) {
-            path.append(folder)
+            path.insert(folder, at: 0)
             containerId = folder.isRootFolder ? nil : folder.parentId
         }
         return path

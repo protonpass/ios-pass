@@ -186,8 +186,8 @@ extension AppContentManager {
                     taskGroup.addTask { [weak self] in
                         guard let self else { return }
                         // TODO: this fails nee to check what is happening
-                        try await folderRepository.refreshFolders(userId: userId,
-                                                                  shareId: share.shareID)
+//                        try await folderRepository.refreshFolders(userId: userId,
+//                                                                  shareId: share.shareID)
                         try await itemRepository.refreshItems(userId: userId,
                                                               shareId: share.shareID,
                                                               eventStream: vaultSyncEventStream)
@@ -255,8 +255,9 @@ extension AppContentManager {
         Task { [weak self] in
             guard let self else { return }
             do {
+                let selectedShareId = selection.selectedShareId ?? selection.preferenceKey
                 try await preferencesManager.updateUserPreferences(\.lastSelectedShareId,
-                                                                   value: selection.preferenceKey)
+                                                                   value: selectedShareId)
                 try await preferencesManager.updateUserPreferences(\.lastSelectedFolderId,
                                                                    value: selection.preciseSelectionPayload?
                                                                        .folder?.id)
@@ -787,5 +788,12 @@ extension AppContentManager {
                                         folderContent: content)
         try await localFullSync(userId: userId)
         try await itemRepository.refreshPinnedItemDataStream()
+    }
+
+    func moveFolder(userId: String, shareId: String, folderId: String, newParentFolderId: String?) async throws {
+        try await folderRepository.move(userId: userId, shareId: shareId, folderId: folderId,
+                                        destinationId: newParentFolderId)
+
+        try await localFullSync(userId: userId)
     }
 }

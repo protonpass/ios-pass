@@ -26,6 +26,12 @@ import FactoryKit
 import Foundation
 import Macro
 
+struct FolderToMove: Identifiable, Equatable, Hashable {
+    let id = UUID().uuidString
+    let folder: FolderUiModel
+    let shareContent: ShareContent
+}
+
 private extension EditableVaultListViewModel {
     struct VaultCount: Sendable {
         let shareId: String
@@ -107,6 +113,12 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
     @LazyInjected(\SharedRepositoryContainer.itemRepository)
     private var itemRepository
+
+    var folderToMove: FolderToMove? {
+        didSet {
+            print("woot value of folderToMove: \(folderToMove)")
+        }
+    }
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -263,6 +275,11 @@ extension EditableVaultListViewModel {
                 handle(error)
             }
         }
+    }
+
+    func dismissMoveFolder() {
+        folderToMove = nil
+        print("woot folder to move is nil")
     }
 
     func createNewVault() {
@@ -469,6 +486,7 @@ private extension EditableVaultListViewModel {
         if let userId = userManager.activeUserId {
             containersExtended = Self.loadSet(for: userId)
         }
+
         appContentManager.$state
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newState in

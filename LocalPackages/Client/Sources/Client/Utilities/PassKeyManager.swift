@@ -286,14 +286,14 @@ public extension PassKeyManager {
         guard let encryptedShareKey = allEncryptedShareKeys.first(where: { $0.shareId == shareId }) else {
             throw PassError.keysNotFound(shareID: shareId)
         }
-        return try await symmetricDecryptAndCache(encryptedShareKey)
+        return try await symmetricDecryptAndCache(encryptedShareKey, containerId: shareId)
     }
 
     func getLatestShareKey(userId: String, shareId: String) async throws -> any CryptographicKeyProtocol {
         // TODO: why not check if it is already cached ?
         let allEncryptedShareKeys = try await shareKeyRepository.getKeys(userId: userId, shareId: shareId)
         let latestShareKey = try allEncryptedShareKeys.latestKey()
-        return try await symmetricDecryptAndCache(latestShareKey)
+        return try await symmetricDecryptAndCache(latestShareKey, containerId: shareId)
     }
 
     func getShareKeys(userId: String,
@@ -312,7 +312,7 @@ public extension PassKeyManager {
 
             var decryptedKeys = [any CryptographicKeyProtocol]()
             for encryptedKey in allEncryptedShareKeys {
-                let decryptedKey = try await symmetricDecryptAndCache(encryptedKey)
+                let decryptedKey = try await symmetricDecryptAndCache(encryptedKey, containerId: share.id)
                 decryptedKeys.append(decryptedKey)
             }
             return decryptedKeys
@@ -345,6 +345,7 @@ public extension PassKeyManager {
                           shareId: String,
                           containerId: String,
                           itemId: String) async throws -> any CryptographicKeyProtocol {
+        await loadKeysIfNeeded()
         let keyDescription = "shareId \"\(shareId)\", itemId: \"\(itemId)\""
         logger.trace("Getting latest item key \(keyDescription)")
         let latestItemKey = try await itemKeyDatasource.getLatestKey(userId: userId,
@@ -402,6 +403,14 @@ public extension PassKeyManager {
         logger.trace("Decrypted \(encryptedKeys.count) item keys itemId \(itemId), shareId \(shareId)")
         return decryptedKeys
     }
+
+//    func getFoldersKeys(userId: String,
+//                        shareId: String,
+//                        folderId: String) async throws -> [any CryptographicKeyProtocol] {
+//        logger.trace("Getting all folder keys shareId \(shareId)")
+//        let encryptedKeys = try await folderKeyDatasource.getAllFolderKeys(userId: userId)
+//
+//    }
 
     // This need to take and item to have info of share or folder or shareId must be repalce by parent id
     func getItemKey(userId: String,
@@ -741,9 +750,9 @@ private extension PassKeyManager {
 //        return decryptedShareKey
 //    }
 
-    func symmetricDecryptAndCache(_ encryptedKey: SymmetricallyEncryptedKeyType) async throws
+    func symmetricDecryptAndCache(_ encryptedKey: SymmetricallyEncryptedKeyType, containerId: String?) async throws
         -> any CryptographicKeyProtocol {
-        let containerId = encryptedKey.id
+        let containerId = containerId ?? encryptedKey.id
         let keyRotation = encryptedKey.keyRotation
         let keyDescription = "Container id \(containerId), keyRotation: \(keyRotation)"
         logger.trace("Decrypting container key \(keyDescription)")
