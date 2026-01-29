@@ -25,8 +25,11 @@ import ProtonCorePaymentsV2
 import SwiftUI
 
 struct OnboardingPaymentStep: View {
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
     @Environment(\.colorScheme) private var colorScheme
     @State private var selection: Selection = .plus
+    @State private var showNoPlansAlert = false
     let plans: PassPlans
     @Binding var selectedPlan: PlanUiModel?
     let onPurchase: () -> Void
@@ -45,6 +48,38 @@ struct OnboardingPaymentStep: View {
     }
 
     var body: some View {
+        if plans.noPlansAvailable {
+            Color.clear
+                .onAppear {
+                    showNoPlansAlert.toggle()
+                }
+                .alert("Upgrade unavailable on mobile",
+                       isPresented: $showNoPlansAlert,
+                       actions: {
+                           Button(action: {
+                               if let url = URL(string: "https://account.proton.me/pass/dashboard") {
+                                   openURL(url)
+                               }
+                               dismiss()
+                           }, label: {
+                               Text("Open web dashboard", bundle: .module)
+                           })
+
+                           Button(action: dismiss.callAsFunction,
+                                  label: { Text("Cancel", bundle: .module) })
+                       },
+                       message: {
+                           Text("Please use our web account dashboard instead",
+                                bundle: .module)
+                       })
+        } else {
+            plansDetail
+        }
+    }
+}
+
+private extension OnboardingPaymentStep {
+    var plansDetail: some View {
         VStack {
             Spacer()
                 .frame(maxHeight: 52)
@@ -74,43 +109,52 @@ struct OnboardingPaymentStep: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear {
-            selectedPlan = plans.plus
+            selection = plans.plus != nil ? .plus : .unlimited
+            selectedPlan = plans.plus ?? plans.unlimited
         }
     }
-}
 
-private extension OnboardingPaymentStep {
     var planSelector: some View {
         HStack {
-            planDetail(name: "Plus",
-                       plan: plans.plus,
-                       selected: selection == .plus,
-                       onSelect: {
-                           selection = .plus
-                           selectedPlan = plans.plus
-                       })
-            planDetail(name: "Unlimited",
-                       plan: plans.unlimited,
-                       selected: selection == .unlimited,
-                       onSelect: {
-                           selection = .unlimited
-                           selectedPlan = plans.unlimited
-                       })
+            if let plusPlan = plans.plus {
+                planDetail(name: "Plus",
+                           plan: plusPlan,
+                           selected: selection == .plus,
+                           onSelect: {
+                               selection = .plus
+                               selectedPlan = plans.plus
+                           })
+            }
+
+            if let unlimitedPlan = plans.unlimited {
+                planDetail(name: "Unlimited",
+                           plan: unlimitedPlan,
+                           selected: selection == .unlimited,
+                           onSelect: {
+                               selection = .unlimited
+                               selectedPlan = plans.unlimited
+                           })
+            }
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 8)
         .background(GeometryReader { proxy in
-            HStack {
-                if selection == .unlimited {
-                    Spacer()
-                }
-
+            if plans.onePlanAvailable {
                 Color.white
                     .clipShape(.capsule)
-                    .frame(maxWidth: proxy.size.width / 2)
+            } else {
+                HStack {
+                    if selection == .unlimited {
+                        Spacer()
+                    }
 
-                if selection == .plus {
-                    Spacer()
+                    Color.white
+                        .clipShape(.capsule)
+                        .frame(maxWidth: proxy.size.width / 2)
+
+                    if selection == .plus {
+                        Spacer()
+                    }
                 }
             }
         })

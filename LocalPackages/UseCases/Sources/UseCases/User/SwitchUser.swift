@@ -61,6 +61,7 @@ public final class SwitchUser: SwitchUserUseCase {
         syncEventLoop.stop()
         try await preferencesManager.switchUserPreferences(userId: userId)
         try await userManager.switchActiveUser(with: userId, onMemory: false)
+        await appContentManager.select(.all, filterOption: .all)
         try await appContentManager.localFullSync(userId: userId)
         try await inviteRepository.refreshAllInvites(userId: userId)
         refreshFeatureFlags()

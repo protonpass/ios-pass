@@ -94,17 +94,33 @@ public extension FolderRepository {
         var sinceToken: String?
         var folders = [Folder]()
         while true {
-            let paginatedFolders = try await remoteDatasource.getFolders(userId: userId,
-                                                                         shareId: shareId,
-                                                                         sinceToken: sinceToken)
-            if paginatedFolders.folders.isEmpty {
-                break
+            do {
+                let paginatedFolders = try await remoteDatasource.getFolders(userId: userId,
+                                                                             shareId: shareId,
+                                                                             sinceToken: sinceToken)
+                if paginatedFolders.folders.isEmpty {
+                    break
+                }
+                folders.append(contentsOf: paginatedFolders.folders)
+                if paginatedFolders.lastToken == nil {
+                    break
+                }
+                sinceToken = paginatedFolders.lastToken
+            } catch {
+                print("woot folder refresh error \(error)")
+                throw error
             }
-            folders.append(contentsOf: paginatedFolders.folders)
-            sinceToken = paginatedFolders.lastToken
         }
 
-        try await passKeyManager.decryptAndStoreFolderKeys(shareId: shareId, folders: folders)
+        if folders.isEmpty {
+            return
+        }
+        do {
+            try await passKeyManager.decryptAndStoreFolderKeys(shareId: shareId, folders: folders)
+        } catch {
+            print("woot error in parsing and saving folder keys \(error)")
+            throw error
+        }
         // Need to decrypt and store all keys of folder in PassKeymanager to have all the parents decryption keys
         // when decrypting folder content.
 

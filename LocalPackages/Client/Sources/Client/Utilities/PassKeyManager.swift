@@ -441,74 +441,215 @@ public extension PassKeyManager {
     }
 
     // TODO: decrypt folder keys and store the keys in data base
+//    func decryptAndStoreFolderKeys(shareId: String, folders: [Folder]) async throws {
+//        guard !folders.isEmpty else {
+//            return
+//        }
+//
+//        // Build lookup structures - O(N) initialization
+//        var folderMap: [String: Folder] = [:]
+//        var childrenMap: [String: [String]] = [:]
+//
+//        let userId = try await userManager.getActiveUserId()
+//        for folder in folders {
+//            folderMap[folder.id] = folder
+//
+//            if let parentId = folder.parentFolderID {
+//                childrenMap[parentId, default: []].append(folder.id)
+//            }
+//        }
+//        let startTime = CFAbsoluteTimeGetCurrent()
+//
+//        // Step 1: Identify starting points (explicit or implicit roots)
+//        let startingFolders = try await identifyStartingPoints(shareId: shareId,
+//                                                               folders: folders,
+//                                                               folderMap: folderMap)
+//        guard !startingFolders.isEmpty else {
+//            throw PassError.unexpectedError
+//        }
+//
+//        print("Starting decryption with \(startingFolders.count) starting points")
+//
+//        // Step 2: Initialize BFS queue with starting points
+//        var queue = Deque(startingFolders)
+//        var results: [String: any CryptographicKeyProtocol] = [:]
+//        var currentLevel = 0
+//        var keysToBeSaved = [DecryptedFolderKey]()
+//
+//        // Step 3: BFS traversal with parallel level processing
+//        while !queue.isEmpty, currentLevel < maxLevels {
+//            let levelFolderIds = gatherCurrentLevelFolders(from: &queue)
+//
+//            // Performance: Decrypt all folders at this level in parallel
+//            if let levelResults = try await decryptLevel(userId: userId,
+//                                                         shareId: shareId,
+//                                                         levelFolders: levelFolderIds,
+//                                                         folderMap: folderMap) as? [DecryptedFolderKey] {
+//                keysToBeSaved.append(contentsOf: levelResults)
+//                // Store results and update state
+//                for result in levelResults {
+//                    results[result.folderId] = result
+//                    cachedContainerKeys[result.folderId] = result
+//                    processedCount += 1
+//
+//                    // Enqueue children for next level
+//                    if let children = childrenMap[result.folderId] {
+//                        queue.append(contentsOf: children)
+//                    }
+//                }
+//            }
+//            currentLevel += 1
+//            print("Completed level \(currentLevel), processed \(processedCount) folders")
+//        }
+//        try await saveFolderKeys(userId: userId, keysToBeSaved)
+    ////        // Step 4: Handle any remaining folders (orphaned or in cycles)
+    ////        try await handleRemainingFolders(&results)
+//
+//        let endTime = CFAbsoluteTimeGetCurrent()
+//        print("Total decryption time: \(String(format: "%.3f", endTime - startTime))s")
+//        print("Successfully decrypted \(results.count)/\(folders.count) folders")
+//
+    ////        return results
+//    }
+
+    // 3. THE DECRYPTION LOGIC
+
+    /// Main entry point
     func decryptAndStoreFolderKeys(shareId: String, folders: [Folder]) async throws {
-        // Build lookup structures - O(N) initialization
-        var folderMap: [String: Folder] = [:]
-        var childrenMap: [String: [String]] = [:]
-
+        guard !folders.isEmpty, let shareKey = cachedContainerKeys[shareId] else {
+            return
+        }
         let userId = try await userManager.getActiveUserId()
-        for folder in folders {
-            folderMap[folder.id] = folder
+        // PRE-PROCESSING: O(N)
+        // Group folders by their parentID for instant O(1) lookup later.
+        // We use a Dictionary [Optional<String> : [Folder]]
+        // 'nil' key will hold the Root folders.
+        let adjacencyMap = Dictionary(grouping: folders, by: { $0.parentFolderID })
 
-            if let parentId = folder.parentFolderID {
-                childrenMap[parentId, default: []].append(folder.id)
+        // B. Create a Set of all IDs in this batch for O(1) existence checks
+        let batchFolderIds = Set(folders.map(\.id))
+
+        // C. Identify "Batch Roots"
+        // A folder is a starting point if:
+        // 1. It has NO parent (True Root) OR
+        // 2. Its parent is NOT in this current batch (Mid-tree update)
+        let batchRoots = folders.filter { folder in
+            guard let pId = folder.parentFolderID else { return true } // Case 1
+            return !batchFolderIds.contains(pId) // Case 2
+        }
+
+//
+//        // Get the roots (folders with no parent)
+//        guard let roots = adjacencyMap[nil] else { return }
+
+        // Use a TaskGroup to process independent trees in parallel
+        let keysToBeSaved = try await withThrowingTaskGroup(of: [DecryptedFolderKey].self) { [weak self] group in
+            guard let self else {
+                throw PassError.deallocatedSelf
             }
-        }
-        let startTime = CFAbsoluteTimeGetCurrent()
+//            for root in roots {
+//                group.addTask {
+//                    // Start processing this tree
+//                    try await self.processNode(folder: root,
+//                                               parentKey: shareKey,
+//                                               adjacencyMap: adjacencyMap)
+//                }
+//            }
 
-        // Step 1: Identify starting points (explicit or implicit roots)
-        let startingFolders = try await identifyStartingPoints(shareId: shareId,
-                                                               folders: folders,
-                                                               folderMap: folderMap)
-        guard !startingFolders.isEmpty else {
-            throw PassError.unexpectedError
-//            throw DecryptionError.noStartingPoint(
-//                message: "No root folders found and no parent keys available for any folder"
-//            )
-        }
+            for root in batchRoots {
+                group.addTask {
+                    // Determine the correct key to start with
+                    let startKey: any CryptographicKeyProtocol
 
-        print("Starting decryption with \(startingFolders.count) starting points")
-
-        // Step 2: Initialize BFS queue with starting points
-        var queue = Deque(startingFolders)
-        var results: [String: any CryptographicKeyProtocol] = [:]
-        var currentLevel = 0
-        var keysToBeSaved = [DecryptedFolderKey]()
-
-        // Step 3: BFS traversal with parallel level processing
-        while !queue.isEmpty, currentLevel < maxLevels {
-            let levelFolderIds = gatherCurrentLevelFolders(from: &queue)
-
-            // Performance: Decrypt all folders at this level in parallel
-            if let levelResults = try await decryptLevel(userId: userId,
-                                                         shareId: shareId,
-                                                         levelFolders: levelFolderIds,
-                                                         folderMap: folderMap) as? [DecryptedFolderKey] {
-                keysToBeSaved.append(contentsOf: levelResults)
-                // Store results and update state
-                for result in levelResults {
-                    results[result.folderId] = result
-                    cachedContainerKeys[result.folderId] = result
-                    processedCount += 1
-
-                    // Enqueue children for next level
-                    if let children = childrenMap[result.folderId] {
-                        queue.append(contentsOf: children)
+                    if let pId = root.parentFolderID {
+                        // It's a mid-tree update. We MUST find the key in cache.
+                        guard let cachedKey = await self.cachedContainerKeys[pId] else {
+                            throw PassError.crypto(.missingKeys)
+                        }
+                        startKey = cachedKey
+                    } else {
+                        // It's a true root. Use the Vault Key.
+                        startKey = shareKey
                     }
+
+                    // Start the recursive processing for this tree/subtree
+                    return try await self.processNode(folder: root,
+                                                      parentKey: startKey,
+                                                      adjacencyMap: adjacencyMap)
                 }
             }
-            currentLevel += 1
-            print("Completed level \(currentLevel), processed \(processedCount) folders")
+
+            // Collect results from all trees into a single flat array
+            var allDecryptedFolders: [DecryptedFolderKey] = []
+            for try await treeResult in group {
+                allDecryptedFolders.append(contentsOf: treeResult)
+            }
+
+            return allDecryptedFolders
         }
         try await saveFolderKeys(userId: userId, keysToBeSaved)
-//        // Step 4: Handle any remaining folders (orphaned or in cycles)
-//        try await handleRemainingFolders(&results)
+        //        // Step 4: Handle any remaining folders (orphaned or in cycles)
+        //        try await handleRemainingFolders(&results)
 
-        let endTime = CFAbsoluteTimeGetCurrent()
-        print("Total decryption time: \(String(format: "%.3f", endTime - startTime))s")
-        print("Successfully decrypted \(results.count)/\(folders.count) folders")
+//        let endTime = CFAbsoluteTimeGetCurrent()
+        //                    print("Total decryption time: \(String(format: "%.3f", endTime - startTime))s")
+        print("Successfully decrypted \(keysToBeSaved.count)/\(folders.count) folders")
+    }
 
-//        return results
+    func decrypt(folder: Folder,
+                 parentKey: any CryptographicKeyProtocol) throws -> DecryptedFolderKey {
+        guard let encryptedFolderKeyData = try folder.folderKey.base64Decode() else {
+            throw PassError.crypto(.failedToBase64Decode)
+        }
+
+        let decryptedItemKeyData = try AES.GCM.open(encryptedFolderKeyData,
+                                                    key: parentKey.keyData,
+                                                    associatedData: .folderKey)
+
+        return DecryptedFolderKey(folderId: folder.folderID,
+                                  keyRotation: folder.keyRotation,
+                                  keyData: decryptedItemKeyData)
+    }
+
+    /// Recursive function that handles:
+    /// 1. Decrypting the current node
+    /// 2. Spawning parallel tasks for all children
+    private func processNode(folder: Folder,
+                             parentKey: any CryptographicKeyProtocol,
+                             adjacencyMap: [String?: [Folder]]) async throws -> [DecryptedFolderKey] {
+        // A. Decrypt current folder (Wait for this before children start)
+        let currentDecryptedKey = try decrypt(folder: folder, parentKey: parentKey)
+
+        cachedContainerKeys[folder.id] = currentDecryptedKey
+
+        // B. Check for children
+        guard let children = adjacencyMap[folder.id], !children.isEmpty else {
+            // Leaf node: return just itself
+            return [currentDecryptedKey]
+        }
+
+        // C. Parallel Execution for Children
+        // We create a nested TaskGroup so all siblings decrypt simultaneously
+        return try await withThrowingTaskGroup(of: [DecryptedFolderKey].self) { group in
+            for child in children {
+                group.addTask {
+                    // Recursion: Pass the NEW key down
+                    try await self.processNode(folder: child,
+                                               parentKey: currentDecryptedKey,
+                                               adjacencyMap: adjacencyMap)
+                }
+            }
+
+            // Start with the parent (current node)
+            var subtreeResults = [currentDecryptedKey]
+
+            // Append all children (and their children) as they finish
+            for try await childSubtree in group {
+                subtreeResults.append(contentsOf: childSubtree)
+            }
+
+            return subtreeResults
+        }
     }
 
     func saveFolderKeys(userId: String, _ keys: [DecryptedFolderKey]) async throws {
@@ -679,7 +820,7 @@ private extension PassKeyManager {
 //            throw DecryptionError.folderNotFound(folderId)
         }
 
-        let parentId = folder.parentFolderID ?? folder.id
+        let parentId = folder.parentFolderID ?? sharedId
 
         let parentKey = if let key = cachedContainerKeys[parentId] {
             key

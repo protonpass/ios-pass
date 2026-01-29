@@ -27,6 +27,7 @@ public protocol AppContentManagerProtocol: Sendable {
     nonisolated var currentShares: CurrentValueSubject<[Share], Never> { get }
     var hasOnlyOneOwnedVault: Bool { get }
 
+    func select(_ selection: ShareSelection, filterOption: ItemTypeFilterOption?)
     func refresh(userId: String) async throws
     func fullSync(userId: String) async
     func localFullSync(userId: String) async throws
@@ -38,4 +39,10 @@ public protocol AppContentManagerProtocol: Sendable {
     func delete(userId: String, shareId: String, folderId: String) async throws
     func getOldestOwnedVault() async -> Share?
     func reset() async
+}
+
+public extension AppContentManagerProtocol {
+    func select(_ selection: ShareSelection) {
+        select(selection, filterOption: nil)
+    }
 }

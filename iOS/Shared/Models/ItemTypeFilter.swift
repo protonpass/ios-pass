@@ -25,20 +25,7 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
-enum ItemTypeFilterOption: Equatable, Hashable {
-    case all
-    case precise(ItemContentType)
-    case itemSharedWithMe
-    case itemSharedByMe
-
-    var isDefault: Bool {
-        if case .all = self {
-            true
-        } else {
-            false
-        }
-    }
-
+extension ItemTypeFilterOption {
     func uiModel(from itemCount: ItemCount) -> ItemTypeFilterOptionUiModel {
         switch self {
         case .all:
@@ -77,39 +64,5 @@ private extension ItemContentType {
             itemCount.custom
         }
         return .init(icon: regularIcon, title: filterTitle, count: count)
-    }
-}
-
-/// Conform to `RawRepresentable` to support `@AppStorage`
-/// This extension can be removed after moving away from `@AppStorage`
-extension ItemTypeFilterOption: RawRepresentable {
-    var rawValue: Int {
-        switch self {
-        case .all:
-            -1
-        case let .precise(type):
-            type.rawValue
-        case .itemSharedWithMe:
-            300
-        case .itemSharedByMe:
-            301
-        }
-    }
-
-    init?(rawValue: Int) {
-        switch rawValue {
-        case ItemTypeFilterOption.all.rawValue:
-            self = .all
-        case ItemTypeFilterOption.itemSharedWithMe.rawValue:
-            self = .itemSharedWithMe
-        case ItemTypeFilterOption.itemSharedByMe.rawValue:
-            self = .itemSharedByMe
-        default:
-            if let type = ItemContentType(rawValue: rawValue) {
-                self = .precise(type)
-            } else {
-                return nil
-            }
-        }
     }
 }

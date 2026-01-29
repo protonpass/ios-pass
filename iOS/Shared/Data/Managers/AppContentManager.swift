@@ -186,8 +186,8 @@ extension AppContentManager {
                     taskGroup.addTask { [weak self] in
                         guard let self else { return }
                         // TODO: this fails nee to check what is happening
-//                        try await folderRepository.refreshFolders(userId: userId,
-//                                                                  shareId: share.shareID)
+                        try await folderRepository.refreshFolders(userId: userId,
+                                                                  shareId: share.shareID)
                         try await itemRepository.refreshItems(userId: userId,
                                                               shareId: share.shareID,
                                                               eventStream: vaultSyncEventStream)
@@ -248,7 +248,7 @@ extension AppContentManager {
 // MARK: - Share Actions Public APIs
 
 extension AppContentManager {
-    func select(_ selection: ShareSelection, filterOption: ItemTypeFilterOption? = nil) {
+    func select(_ selection: ShareSelection, filterOption: ItemTypeFilterOption?) {
         pendingItemTypeFilterOption = filterOption
         shareSelection = selection
 
@@ -521,10 +521,11 @@ private extension AppContentManager {
         $shareSelection
             .receive(on: DispatchQueue.main)
             .dropFirst()
-            .removeDuplicates()
             .sink { [weak self] _ in
                 guard let self else { return }
-                filterOption = pendingItemTypeFilterOption ?? .all
+                if let pendingItemTypeFilterOption {
+                    filterOption = pendingItemTypeFilterOption
+                }
                 pendingItemTypeFilterOption = nil
                 updateItemCount()
             }
