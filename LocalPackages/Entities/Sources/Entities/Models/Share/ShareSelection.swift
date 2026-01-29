@@ -110,13 +110,6 @@ public enum ShareSelection: Hashable, Sendable {
         }
     }
 
-//    public var preciseShare: Share? {
-//        if case let .precise(share, _) = self {
-//            return share
-//        }
-//        return nil
-//    }
-
     public var preferenceKey: String? {
         switch self {
         case .all:

@@ -26,11 +26,9 @@ public struct FolderUiModel: PrecomputedHashable, Equatable, Sendable, Identifia
     public let folderId: String
     public let parentId: String
     public let shareId: String
-    // TODO: this is maybe not good
     public let lastUseTime: Int64?
     public let folder: Folder
     public let content: FolderContent
-//    public let content: [ShareContentElement]
 
     public let precomputedHash: Int
 
@@ -41,7 +39,6 @@ public struct FolderUiModel: PrecomputedHashable, Equatable, Sendable, Identifia
         self.lastUseTime = lastUseTime
         self.content = content
         self.folder = folder
-//        self.content = content
         var hasher = Hasher()
         hasher.combine(folderId)
         hasher.combine(parentId)
@@ -49,8 +46,6 @@ public struct FolderUiModel: PrecomputedHashable, Equatable, Sendable, Identifia
         hasher.combine(lastUseTime)
         hasher.combine(content)
         hasher.combine(folder)
-
-//        hasher.combine(content)
         precomputedHash = hasher.finalize()
     }
 

@@ -32,10 +32,7 @@ public protocol PromoteNewUserInviteUseCase: Sendable {
 public extension PromoteNewUserInviteUseCase {
     func callAsFunction(share: Share,
                         inviteId: String,
-                        email: String
-//                        ,
-//                        itemId: String?
-    ) async throws {
+                        email: String) async throws {
         try await execute(share: share, inviteId: inviteId, email: email, itemId: nil)
     }
 }
@@ -70,15 +67,12 @@ public final class PromoteNewUserInvite: PromoteNewUserInviteUseCase {
         let key: any CryptographicKeyProtocol = if share.isVaultRepresentation {
             try await passKeyManager.getLatestShareKey(userId: userId,
                                                        shareId: share.id)
-        }
-//        else if let itemId {
-//            //TODO: maybe to check container id but at the time this is
-//            try await passKeyManager.getLatestItemKey(userId: userId,
-//                                                      shareId: share.id,
-//                                                      containerId: <#String#>,
-//                                                      itemId: itemId)
-//        }
-        else {
+        } else if let itemId {
+            try await passKeyManager.getLatestItemKey(userId: userId,
+                                                      shareId: share.id,
+                                                      containerId: share.id,
+                                                      itemId: itemId)
+        } else {
             throw PassError.sharing(.failedEncryptionKeysFetching)
         }
 

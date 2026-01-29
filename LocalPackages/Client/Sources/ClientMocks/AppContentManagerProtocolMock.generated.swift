@@ -28,23 +28,16 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
     public init() {}
 
     // MARK: - currentShares
-    public nonisolated(unsafe) var invokedCurrentSharesSetter = false
-    public nonisolated(unsafe) var invokedCurrentSharesSetterCount = 0
-    public nonisolated(unsafe) var invokedCurrentShares: CurrentValueSubject<[Share], Never>?
-    public nonisolated(unsafe) var invokedCurrentSharesList = [CurrentValueSubject<[Share], Never>?]()
-    public nonisolated(unsafe) var invokedCurrentSharesGetter = false
-    public nonisolated(unsafe) var invokedCurrentSharesGetterCount = 0
+    public var invokedCurrentSharesSetter = false
+    public var invokedCurrentSharesSetterCount = 0
+    public var invokedCurrentShares: CurrentValueSubject<[Share], Never>?
+    public var invokedCurrentSharesList = [CurrentValueSubject<[Share], Never>?]()
+    public var invokedCurrentSharesGetter = false
+    public var invokedCurrentSharesGetterCount = 0
     public nonisolated(unsafe) var stubbedCurrentShares: CurrentValueSubject<[Share], Never>!
 
     public var currentShares: CurrentValueSubject<[Share], Never> {
-        set {
-            invokedCurrentSharesSetter = true
-            invokedCurrentSharesSetterCount += 1
-            invokedCurrentShares = newValue
-            invokedCurrentSharesList.append(newValue)
-        } get {
-            invokedCurrentSharesGetter = true
-            invokedCurrentSharesGetterCount += 1
+         get {
             return stubbedCurrentShares
         }
     }
@@ -133,33 +126,65 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
     public var closureGetItems: () -> () = {}
     public var invokedGetItemsfunction = false
     public var invokedGetItemsCount = 0
-    public var invokedGetItemsParameters: (vault: Share, Void)?
-    public var invokedGetItemsParametersList = [(vault: Share, Void)]()
+    public var invokedGetItemsParameters: (shareId: String, containerId: String?)?
+    public var invokedGetItemsParametersList = [(shareId: String, containerId: String?)]()
     public var stubbedGetItemsResult: [ItemUiModel]!
 
-    public func getItems(for vault: Share) -> [ItemUiModel] {
+    public func getItems(for shareId: String, containerId: String?) -> [ItemUiModel] {
         invokedGetItemsfunction = true
         invokedGetItemsCount += 1
-        invokedGetItemsParameters = (vault, ())
+        invokedGetItemsParameters = (shareId, containerId)
         closureGetItems()
         return stubbedGetItemsResult
     }
-    // MARK: - delete
-    public var deleteUserIdShareIdThrowableError6: Error?
-    public var closureDelete: () -> () = {}
-    public var invokedDeletefunction = false
-    public var invokedDeleteCount = 0
-    public var invokedDeleteParameters: (userId: String, shareId: String)?
-    public var invokedDeleteParametersList = [(userId: String, shareId: String)]()
+    // MARK: - getAllItems
+    public var closureGetAllItems: () -> () = {}
+    public var invokedGetAllItemsfunction = false
+    public var invokedGetAllItemsCount = 0
+    public var invokedGetAllItemsParameters: (shareId: String, Void)?
+    public var invokedGetAllItemsParametersList = [(shareId: String, Void)]()
+    public var stubbedGetAllItemsResult: [ItemUiModel]!
+
+    public func getAllItems(for shareId: String) -> [ItemUiModel] {
+        invokedGetAllItemsfunction = true
+        invokedGetAllItemsCount += 1
+        invokedGetAllItemsParameters = (shareId, ())
+        closureGetAllItems()
+        return stubbedGetAllItemsResult
+    }
+    // MARK: - deleteUserIdShareId
+    public var deleteUserIdShareIdThrowableError7: Error?
+    public var closureDeleteUserIdShareIdAsync7: () -> () = {}
+    public var invokedDeleteUserIdShareIdAsync7 = false
+    public var invokedDeleteUserIdShareIdAsyncCount7 = 0
+    public var invokedDeleteUserIdShareIdAsyncParameters7: (userId: String, shareId: String)?
+    public var invokedDeleteUserIdShareIdAsyncParametersList7 = [(userId: String, shareId: String)]()
 
     public func delete(userId: String, shareId: String) async throws {
-        invokedDeletefunction = true
-        invokedDeleteCount += 1
-        invokedDeleteParameters = (userId, shareId)
-        if let error = deleteUserIdShareIdThrowableError6 {
+        invokedDeleteUserIdShareIdAsync7 = true
+        invokedDeleteUserIdShareIdAsyncCount7 += 1
+        invokedDeleteUserIdShareIdAsyncParameters7 = (userId, shareId)
+        if let error = deleteUserIdShareIdThrowableError7 {
             throw error
         }
-        closureDelete()
+        closureDeleteUserIdShareIdAsync7()
+    }
+    // MARK: - deleteUserIdShareIdFolderId
+    public var deleteUserIdShareIdFolderIdThrowableError8: Error?
+    public var closureDeleteUserIdShareIdFolderIdAsync8: () -> () = {}
+    public var invokedDeleteUserIdShareIdFolderIdAsync8 = false
+    public var invokedDeleteUserIdShareIdFolderIdAsyncCount8 = 0
+    public var invokedDeleteUserIdShareIdFolderIdAsyncParameters8: (userId: String, shareId: String, folderId: String)?
+    public var invokedDeleteUserIdShareIdFolderIdAsyncParametersList8 = [(userId: String, shareId: String, folderId: String)]()
+
+    public func delete(userId: String, shareId: String, folderId: String) async throws {
+        invokedDeleteUserIdShareIdFolderIdAsync8 = true
+        invokedDeleteUserIdShareIdFolderIdAsyncCount8 += 1
+        invokedDeleteUserIdShareIdFolderIdAsyncParameters8 = (userId, shareId, folderId)
+        if let error = deleteUserIdShareIdFolderIdThrowableError8 {
+            throw error
+        }
+        closureDeleteUserIdShareIdFolderIdAsync8()
     }
     // MARK: - getOldestOwnedVault
     public var closureGetOldestOwnedVault: () -> () = {}

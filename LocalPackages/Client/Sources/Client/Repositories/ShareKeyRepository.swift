@@ -93,10 +93,6 @@ public extension ShareKeyRepository {
         let keys = try await remoteDatasource.getKeys(userId: userId, shareId: shareId)
         logger.trace("Got \(keys.count) keys from remote for share \(shareId)")
 
-//        guard let userData = try await userManager.getUserData(userId) else {
-//            throw PassError.userManager(.noUserDataFound)
-//        }
-
         let encryptedKeys = try await keys.asyncCompactMap { key in
             let decryptedKey = try await cryptoService.decryptShareKey(key, userId: userId, shareId: shareId)
             let encryptedKeyBase64 = decryptedKey.encodeBase64()
@@ -115,7 +111,6 @@ public extension ShareKeyRepository {
     }
 
     func deleteAllCurrentUserShareKeysLocally(userId: String) async throws {
-//        let userId = try await userManager.getActiveUserId()
         logger.trace("Deleting all local share keys of user \(userId)")
         try await localDatasource.removeAllKeys(userId: userId)
         logger.trace("Deleted all local share keys")

@@ -40,7 +40,6 @@ struct SortFilterItemsMenu: View {
     let options: [SortFilterItemsMenuOption]
     let highlighted: Bool
     let selectable: Bool
-//    let folder: FolderUiModel?
 
     var body: some View {
         Menu(content: {
@@ -78,22 +77,6 @@ struct SortFilterItemsMenu: View {
                     }
                 }
             }
-
-//            if folder != nil {
-//                Divider()
-//
-//                folderOptions()
-//
-//                Divider()
-//
-//                Button {} label: {
-//                    Label(title: {
-//                        Text("Create subfolder")
-//                    }, icon: {
-//                        IconProvider.folderPlus
-//                    })
-//                }
-//            }
         }, label: {
             CircleButton(icon: IconProvider.threeDotsVertical,
                          iconColor: highlighted ? PassColor.textInvert : PassColor.interactionNormMajor2,
