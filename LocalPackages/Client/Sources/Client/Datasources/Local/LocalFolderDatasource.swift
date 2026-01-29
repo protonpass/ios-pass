@@ -30,8 +30,8 @@ public protocol LocalFolderDatasourceProtocol: Sendable {
     func removeAllFolders(userId: String) async throws
     func removeAllFolders(shareId: String) async throws
 
-    func deleteFolders(_ folders: [any ElementIdentifiable]) async throws
-    func deleteFolders(folderIds: [String], shareId: String) async throws
+    func deleteFolders(userId: String, folders: [any ElementIdentifiable]) async throws
+    func deleteFolders(userId: String, folderIds: [String], shareId: String) async throws
 }
 
 public final class LocalFolderDatasource: LocalDatasource, LocalFolderDatasourceProtocol, @unchecked Sendable {}
@@ -71,17 +71,19 @@ public extension LocalFolderDatasource {
                          })
     }
 
-    func deleteFolders(_ folders: [any ElementIdentifiable]) async throws {
-        for folder in folders {
-            try await deleteFolders(folderIds: [folder.elementId], shareId: folder.shareId)
+    func deleteFolders(userId: String, folders: [any ElementIdentifiable]) async throws {
+        let foldersByShare = Dictionary(grouping: folders) { $0.shareId }
+        for (shareId, folders) in foldersByShare {
+            try await deleteFolders(userId: userId, folderIds: folders.map(\.elementId), shareId: shareId)
         }
     }
 
-    func deleteFolders(folderIds: [String], shareId: String) async throws {
+    func deleteFolders(userId: String, folderIds: [String], shareId: String) async throws {
         let taskContext = newTaskContext(type: .delete)
         let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "FolderEntity")
         fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
             .init(format: "shareID = %@", shareId),
+            .init(format: "userID = %@", shareId),
             .init(format: "folderID in %@", folderIds)
         ])
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),

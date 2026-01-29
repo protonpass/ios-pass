@@ -48,6 +48,7 @@ public final class UserEventsSynchronizer: UserEventsSynchronizerProtocol {
     private let accessRepository: any AccessRepositoryProtocol
     private let inviteRepository: any FullInviteRepositoryProtocol
     private let aliasRepository: any AliasRepositoryProtocol
+    private let folderRepository: any FolderRepositoryProtocol
     private let passMonitorRepository: any PassMonitorRepositoryProtocol
     private let simpleLoginNoteSynchronizer: any SimpleLoginNoteSynchronizerProtocol
     private let organizationRepository: any OrganizationRepositoryProtocol
@@ -62,6 +63,7 @@ public final class UserEventsSynchronizer: UserEventsSynchronizerProtocol {
                 shareRepository: any ShareRepositoryProtocol,
                 accessRepository: any AccessRepositoryProtocol,
                 inviteRepository: any FullInviteRepositoryProtocol,
+                folderRepository: any FolderRepositoryProtocol,
                 aliasRepository: any AliasRepositoryProtocol,
                 passMonitorRepository: any PassMonitorRepositoryProtocol,
                 organizationRepository: any OrganizationRepositoryProtocol,
@@ -74,6 +76,7 @@ public final class UserEventsSynchronizer: UserEventsSynchronizerProtocol {
         self.accessRepository = accessRepository
         self.inviteRepository = inviteRepository
         self.aliasRepository = aliasRepository
+        self.folderRepository = folderRepository
         self.simpleLoginNoteSynchronizer = simpleLoginNoteSynchronizer
         self.passMonitorRepository = passMonitorRepository
         self.organizationRepository = organizationRepository
@@ -133,7 +136,7 @@ private extension UserEventsSynchronizer {
         async let deletedShares: () = processDeletedShares(events.sharesDeleted, userId: userId)
         // swiftlint:disable:next todo
         // TODO: folder to be implemented in the folder ticket mr
-//        async let foldersDeleted: () = processInviteChanges(inviteChanges: events.foldersDeleted, userId: userId)
+        async let foldersDeleted: () = processDeletedFolder(events.foldersDeleted, userId: userId)
         async let invites: () = processUserInviteChanges(events.invitesChanged, userId: userId)
         async let groupInvites: () = processGroupInviteChanges(events.groupInvitesChanged, userId: userId)
         async let newShareWithInvites: () = processNewShareWithInviteChanges(events.sharesWithInvitesToCreate,
@@ -156,6 +159,7 @@ private extension UserEventsSynchronizer {
                        userChange,
                        invites,
                        groupInvites,
+                       foldersDeleted,
                        newShareWithInvites,
                        breachUpdate,
                        organizationUpdate)
@@ -178,21 +182,16 @@ private extension UserEventsSynchronizer {
             return
         }
         logger.trace("Refreshing \(updatedFolders.count) updated folder for user \(userId)")
-//
-//        for batch in updatedFolders.chunked(into: maxConcurrentShareCreations) {
-//            try await withThrowingTaskGroup(of: Void.self) { taskGroup in
-//                for updatedItem in batch {
-//                    taskGroup.addTask { [itemRepository, userId] in
-//                        try await folderRepository.
-        ////                        try await itemRepository.refreshItem(userId: userId,
-        ////                                                             shareId: updatedItem.shareID,
-        ////                                                             itemId: updatedItem.itemID,
-        ////                                                             eventToken: updatedItem.eventToken)
-//                    }
-//                }
-//                try await taskGroup.waitForAll()
-//            }
-//        }
+        try await folderRepository.refreshFolders(userId: userId, foldersIds: updatedFolders)
+    }
+
+    func processDeletedFolder(_ deletedFolders: [FolderEvent], userId: String) async throws {
+        guard !deletedFolders.isEmpty else {
+            logger.trace("No deleted items for user \(userId)")
+            return
+        }
+        logger.trace("Deleting \(deletedFolders.count) folder for user \(userId)")
+        try await folderRepository.deleteLocal(folders: deletedFolders, userId: userId)
     }
 
     func processUpdatedItems(_ updatedItems: [ItemEvent], userId: String) async throws {
