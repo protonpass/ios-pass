@@ -31,7 +31,6 @@ public protocol AppContentManagerProtocol: Sendable {
     func refresh(userId: String) async throws
     func fullSync(userId: String) async
     func localFullSync(userId: String) async throws
-//    func getItems(for vault: Share) -> [ItemUiModel]
     func getItems(for shareId: String, containerId: String?) -> [ItemUiModel]
     func getAllItems(for shareId: String) -> [ItemUiModel]
 

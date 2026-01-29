@@ -94,8 +94,6 @@ private extension ItemsForTextInsertionView {
                         ],
                         highlighted: viewModel.highlighted,
                         selectable: false)
-//                                            ,
-//                        folder: nil)
                     }
                 }
                 .padding(.horizontal)
