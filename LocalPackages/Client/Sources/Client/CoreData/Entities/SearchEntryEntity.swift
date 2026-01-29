@@ -34,7 +34,6 @@ extension SearchEntryEntity {
 
     @NSManaged var itemID: String
     @NSManaged var shareID: String
-    // TODO: add folder id
     @NSManaged var time: Int64
     @NSManaged var userID: String
 }
@@ -44,7 +43,6 @@ extension SearchEntryEntity {
         .init(itemID: itemID, shareID: shareID, time: time)
     }
 
-    // TODO: add folder id
     func hydrate(from item: any ItemIdentifiable, userId: String, date: Date) {
         itemID = item.itemId
         shareID = item.shareId

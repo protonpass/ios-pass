@@ -277,8 +277,6 @@ private extension ShareCoordinator {
                 if appContentManager.getAllSharesContent().isEmpty {
                     try await appContentManager.refresh(userId: userId)
                 }
-                let shareId = await getMainVault()?.shareId ?? ""
-                let vaults = appContentManager.getAllShares()
                 let title = content.title(for: type)
 
                 let viewController: UIViewController

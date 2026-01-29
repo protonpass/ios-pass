@@ -455,9 +455,7 @@ private extension CredentialProviderCoordinator {
         showView(view)
     }
 
-    func presentCreateLoginView(shareId: String,
-                                vaults: [Share],
-                                url: URL?,
+    func presentCreateLoginView(url: URL?,
                                 request: PasskeyCredentialRequest?) {
         do {
             let creationType = ItemCreationType.login(title: url?.host,
@@ -475,7 +473,7 @@ private extension CredentialProviderCoordinator {
         }
     }
 
-    func presentCreateAliasView(shareId: String, vaults: [Share]) {
+    func presentCreateAliasView() {
         do {
             let viewModel = try CreateEditAliasViewModel(mode: .create(type: .alias),
                                                          upgradeChecker: upgradeChecker)
@@ -605,7 +603,6 @@ extension CredentialProviderCoordinator: AutoFillViewModelDelegate {
             do {
                 let lastCreateItemVault = info.vaults
                     .first { $0.shareId == self.getUserPreferences().lastCreatedItemShareId }
-                let shareId = (lastCreateItemVault ?? info.vaults.oldestOwned)?.shareId ?? ""
 
                 // Temporarily switch the on-memory active user and reload the vaults contents
                 // This is to work-around the fact that many of our repositories, use cases, view models
@@ -617,12 +614,10 @@ extension CredentialProviderCoordinator: AutoFillViewModelDelegate {
 
                 switch info.data {
                 case let .login(url, passkeyCredentialRequest):
-                    presentCreateLoginView(shareId: shareId,
-                                           vaults: info.vaults,
-                                           url: url,
+                    presentCreateLoginView(url: url,
                                            request: passkeyCredentialRequest)
                 case .alias:
-                    presentCreateAliasView(shareId: shareId, vaults: info.vaults)
+                    presentCreateAliasView()
                 }
             } catch {
                 logger.error(error)

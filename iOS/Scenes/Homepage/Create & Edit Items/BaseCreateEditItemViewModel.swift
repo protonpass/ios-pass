@@ -37,8 +37,7 @@ typealias ScanResponsePublisher = PassthroughSubject<(any ScanResult)?, any Erro
 extension ItemContent: @retroactive FullItemIdentifiable {}
 
 enum ItemMode: Equatable, Hashable {
-    // TODO: add Folder id to item actions
-    case create( /* shareId: String?, folderId: String?, */ type: ItemCreationType)
+    case create(type: ItemCreationType)
     case clone(ItemContent)
     case edit(ItemContent)
 
@@ -275,9 +274,8 @@ class BaseCreateEditItemViewModel: ObservableObject {
             throw PassError.vault(.vaultsNotFound(userId: userManager.activeUserId ?? "Unknown"))
         }
 
-        // TODO: implement appmanager and
         var container: ShareSelectionPayload?
-        // TODO: get precise selection from appCOntentManger
+
         switch mode {
         case .create:
             container = if let selection = appContentManager.shareSelection.preciseSelectionPayload,
@@ -287,7 +285,6 @@ class BaseCreateEditItemViewModel: ObservableObject {
                 nil
             }
         case let .clone(itemContent), let .edit(itemContent):
-            // TODO: fetch share and folder info
             if let shareContent = shareContents.shares[itemContent.shareId] {
                 let folder: FolderUiModel? = if let folderId = itemContent.item.folderID {
                     shareContent.folder(for: folderId)
@@ -545,7 +542,9 @@ private extension BaseCreateEditItemViewModel {
             break
         }
 
-        return try await itemRepository.createItem(userId: userId, itemContent: itemContent, shareId: shareId,
+        return try await itemRepository.createItem(userId: userId,
+                                                   itemContent: itemContent,
+                                                   shareId: shareId,
                                                    folderId: selectedContainer.folder?.id)
     }
 

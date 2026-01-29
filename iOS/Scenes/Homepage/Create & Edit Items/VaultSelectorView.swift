@@ -75,8 +75,7 @@ struct VaultSelectorView: View {
 
     private func view(for vaultInfos: ShareContent, vaultContent: VaultContent) -> some View {
         Button(action: {
-            // TODO: prendre en compte les folder
-            selectedContainer = ShareSelectionPayload(share: vaultInfos.share, folder: nil) // vaultInfos.share
+            selectedContainer = ShareSelectionPayload(share: vaultInfos.share, folder: nil)
             dismiss()
         }, label: {
             // TODO: update view to take into account folder

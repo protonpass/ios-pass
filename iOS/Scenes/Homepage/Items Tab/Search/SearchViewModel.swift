@@ -133,7 +133,6 @@ private extension SearchViewModel {
         }
 
         let searchEntries: [SearchEntry]
-        // TODO: need to filter folder items
         if case let .precise(selection) = shareSelection {
             searchEntries = try await searchEntryDatasource.getAllEntries(shareId: selection.share.shareId)
         } else {

@@ -61,8 +61,6 @@ private extension ItemsTabTopBar {
     var viewModeView: some View {
         VStack {
             HStack {
-                // TODO: need to take into account container selected for icon and title
-                // Vault selector button
                 if viewModel.shareSelection.isFolderSelection {
                     CircleButton(icon: IconProvider.folderFilled,
                                  iconColor: Color(hex: "#E9A944"),
@@ -132,8 +130,6 @@ private extension ItemsTabTopBar {
                 ],
                 highlighted: viewModel.highlighted,
                 selectable: viewModel.selectable)
-//                                    ,
-//                folder: viewModel.shareSelection.preciseSelectionPayload?.folder)
             }
             .frame(height: 48)
             .padding(.horizontal, showButtonShapes ? 0 : nil)
@@ -291,7 +287,6 @@ private extension ShareSelection {
                   iconColor: ShareSelection.all.color,
                   backgroundColor: ShareSelection.all.color.opacity(0.16))
 
-        // TODO: maybe take into account items
         case let .precise(selection):
             if let vaultContent = selection.share.vaultContent {
                 .init(icon: vaultContent.vaultBigIcon,

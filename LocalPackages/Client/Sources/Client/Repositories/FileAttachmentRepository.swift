@@ -248,7 +248,8 @@ public extension FileAttachmentRepository {
         }
     }
 
-    func getActiveItemFiles(userId: String, item: any FullItemIdentifiable,
+    func getActiveItemFiles(userId: String,
+                            item: any FullItemIdentifiable,
                             share: Share) async throws -> [ItemFile] {
         try await getAllFiles(userId: userId, share: share, item: item) { [weak self] lastId in
             guard let self else {

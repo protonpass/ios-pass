@@ -213,6 +213,7 @@ extension LocalItemDatasourceTests {
 
         // When
         let modifiedItem = ModifiedItem(itemID: insertedItem.item.itemID,
+                                        folderID: nil,
                                         revision: insertedItem.item.revision,
                                         state: ItemState.trashed.rawValue,
                                         modifyTime: insertedItem.item.modifyTime,
@@ -238,6 +239,7 @@ extension LocalItemDatasourceTests {
         
         // When
         let modifiedItem = ModifiedItem(itemID: insertedItem.item.itemID,
+                                        folderID: nil,
                                         revision: insertedItem.item.revision,
                                         state: ItemState.active.rawValue,
                                         modifyTime: insertedItem.item.modifyTime,

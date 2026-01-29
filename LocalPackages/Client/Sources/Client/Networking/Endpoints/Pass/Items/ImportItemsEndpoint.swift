@@ -47,7 +47,6 @@ public struct ItemToImport: Encodable, Sendable {
         case item = "Item"
     }
 
-    // TODO: maybe parent key and not vault key
     init(containerKey: any CryptographicKeyProtocol,
          itemContent: any ProtobufableItemContentProtocol) throws {
         let itemKey = try Data.random()

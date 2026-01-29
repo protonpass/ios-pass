@@ -38,7 +38,7 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
     public var invokedGetSharesCount = 0
     public var invokedGetSharesParameters: (userId: String, Void)?
     public var invokedGetSharesParametersList = [(userId: String, Void)]()
-    public var stubbedGetSharesResult: [SymmetricallyEncryptedShare]!
+    public nonisolated(unsafe) var stubbedGetSharesResult: [SymmetricallyEncryptedShare]!
 
     public func getShares(userId: String) async throws -> [SymmetricallyEncryptedShare] {
         invokedGetSharesfunction = true

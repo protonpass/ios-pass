@@ -169,15 +169,3 @@ extension ItemsTabTopBarViewModel {
         selectedSortType = .mostRecent
     }
 }
-
-// MARK: - Folder actions
-
-extension ItemsTabTopBarViewModel {
-    func folderActions() {}
-
-    func editFolder() {}
-
-    func createFolder() {}
-
-    func deleteFolder() {}
-}
