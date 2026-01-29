@@ -115,6 +115,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
         router.navigate(to: .urlPage(urlString: Constants.appStoreUrl))
     }
 
+    // TODO: move the appContentManager refresh somewhere else
     func refresh() {
         Task { [weak self] in
             guard let self else {

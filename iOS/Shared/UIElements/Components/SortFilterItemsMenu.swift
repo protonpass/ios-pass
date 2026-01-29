@@ -176,25 +176,3 @@ private extension SortFilterItemsMenu {
         })
     }
 }
-
-private extension SortFilterItemsMenu {
-    func folderOptions() -> some View {
-        Menu(content: {
-            Button(action: {}, label: {
-                Text("Rename")
-            })
-
-            Button(action: {}, label: {
-                Text("Move")
-            })
-
-            Button("Delete", role: .destructive) {}
-        }, label: {
-            Label(title: {
-                Text("Manage Folder")
-            }, icon: {
-                IconProvider.folderOpen
-            })
-        })
-    }
-}

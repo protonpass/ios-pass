@@ -31,7 +31,7 @@ public protocol CryptographicKeyProtocol: Hashable, Sendable {
 }
 
 public struct DecryptedShareKey: CryptographicKeyProtocol {
-    public let shareId: String
+    let shareId: String
     public let keyRotation: Int64
     public let keyData: Data
 
@@ -44,8 +44,8 @@ public struct DecryptedShareKey: CryptographicKeyProtocol {
 
 // TODO: maybe cahnge naming of sahre id for parent id
 public struct DecryptedItemKey: CryptographicKeyProtocol {
-    public let shareId: String
-    public let itemId: String
+    let shareId: String
+    let itemId: String
     public let keyRotation: Int64
     public let keyData: Data
 

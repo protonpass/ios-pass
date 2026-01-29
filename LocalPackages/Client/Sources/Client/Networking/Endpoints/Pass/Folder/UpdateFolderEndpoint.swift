@@ -48,10 +48,6 @@ struct UpdateFolderEndpoint: Endpoint {
 public struct UpdateFolderRequest: Sendable, Encodable {
     let content: UpdateFolderRequestPayload
 
-    init(content: UpdateFolderRequestPayload) {
-        self.content = content
-    }
-
     private enum CodingKeys: String, CodingKey {
         case content = "Content"
     }

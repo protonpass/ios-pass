@@ -119,7 +119,6 @@ final class TotpLoginsViewModel: ObservableObject {
                 return
             }
 
-            let shareId = await getMainVault()?.shareId ?? ""
             let creationType = ItemCreationType.login(totpUri: totpUri, autofill: false)
             router.present(for: .createEditLogin(mode: .create(type: creationType)))
         }

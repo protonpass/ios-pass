@@ -1485,10 +1485,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         let viewController = UIHostingController(rootView: view)
         sheetPresentationController = viewController.sheetPresentationController
 
-        // Num of vaults + all items + trash + create vault button
-        let rowHeight = 74
-        let customHeight = rowHeight * appContentManager.getSharesCount() + (rowHeight * 4) + 120
-        viewController.setDetentType(.large /* .customAndLarge(CGFloat(customHeight)) */,
+        viewController.setDetentType(.large,
                                      parentViewController: rootViewController)
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true

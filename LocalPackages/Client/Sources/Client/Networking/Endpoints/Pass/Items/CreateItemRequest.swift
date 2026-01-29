@@ -52,7 +52,8 @@ extension CreateItemRequest: Encodable {
 }
 
 extension CreateItemRequest {
-    init(containerKey: any CryptographicKeyProtocol, itemContent: any ProtobufableItemContentProtocol,
+    init(containerKey: any CryptographicKeyProtocol,
+         itemContent: any ProtobufableItemContentProtocol,
          folderId: String?) throws {
         let itemKey = try Data.random()
         let encryptedContent = try AES.GCM.seal(itemContent.data(),

@@ -48,7 +48,8 @@ public extension LocalFolderKeyDatasource {
         return folderEntities.map { $0.toSymmetricallyEncryptedKey() }
     }
 
-    func getFolderKeys(userId: String, shareId: String,
+    func getFolderKeys(userId: String,
+                       shareId: String,
                        folderId: String) async throws -> [SymmetricallyEncryptedFolderKey] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = FolderKeyEntity.fetchRequest()

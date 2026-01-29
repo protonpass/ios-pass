@@ -25,7 +25,6 @@ import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 
-// swiftlint:disable file_length
 struct LogInDetailView: View {
     @StateObject private var viewModel: LogInDetailViewModel
     @State private var isShowingPassword = false
@@ -682,5 +681,3 @@ struct NewFlowLayout: Layout {
         }
     }
 }
-
-// swiftlint:enable file_length

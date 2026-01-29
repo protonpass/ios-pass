@@ -26,7 +26,6 @@ import Entities
 import FactoryKit
 import Macro
 
-// TODO: need to add sharePayload share and folder
 @MainActor
 final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }

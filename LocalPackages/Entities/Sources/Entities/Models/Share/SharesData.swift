@@ -28,10 +28,8 @@ public struct SharesData: Hashable, Sendable {
     public let itemsSharedWithMe: [ItemUiModel]
 
     public init(shares: [ShareContent], trashedItems: [ItemUiModel]) {
-        self.shares = shares.reduce([String: ShareContent]()) { result, shareContent -> [String: ShareContent] in
-            var result = result
+        self.shares = shares.reduce(into: [String: ShareContent]()) { result, shareContent in
             result[shareContent.share.id] = shareContent
-            return result
         }
         self.trashedItems = trashedItems
 

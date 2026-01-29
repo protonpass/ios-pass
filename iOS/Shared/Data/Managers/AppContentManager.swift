@@ -427,7 +427,6 @@ extension AppContentManager {
         case .all:
             return baseItems
         case let .precise(type):
-            // TODO: keep folders and item of correct type
             return baseItems.filter { $0.type.isSameType(with: type) }
         case .itemSharedByMe, .itemSharedWithMe:
             assertionFailure("Unreachable: handled by early return")
@@ -439,7 +438,6 @@ extension AppContentManager {
         switch shareSelection {
         case .all:
             true
-        // TODO: check if folder id needed
         case let .precise(selection):
             if selection.share.shareId == item.shareId {
                 switch filterOption {
@@ -655,7 +653,6 @@ private extension AppContentManager {
         // Group items by their associated share ID for efficient processing
         let itemsByShareID = Dictionary(grouping: items, by: { $0.shareId })
         let foldersByShareID = Dictionary(grouping: folders, by: { $0.shareId })
-        // TODO: need to implement the tree structure
         return try await withThrowingTaskGroup(of: (ShareContent, [ItemUiModel])
             .self) { @Sendable taskGroup in
                 var shareContents: [ShareContent] = []
@@ -743,14 +740,18 @@ extension AppContentManager {
 
     func editFolder(userId: String, shareId: String, folderId: String, name: String) async throws {
         let content = FolderContent(name: name)
-        try await folderRepository.edit(userId: userId, shareId: shareId, folderId: folderId,
+        try await folderRepository.edit(userId: userId,
+                                        shareId: shareId,
+                                        folderId: folderId,
                                         folderContent: content)
         try await localFullSync(userId: userId)
         try await itemRepository.refreshPinnedItemDataStream()
     }
 
     func moveFolder(userId: String, shareId: String, folderId: String, newParentFolderId: String?) async throws {
-        try await folderRepository.move(userId: userId, shareId: shareId, folderId: folderId,
+        try await folderRepository.move(userId: userId,
+                                        shareId: shareId,
+                                        folderId: folderId,
                                         destinationId: newParentFolderId)
 
         try await localFullSync(userId: userId)

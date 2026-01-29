@@ -23,6 +23,7 @@ import CryptoKit
 import Entities
 import Foundation
 
+// sourcery: AutoMockable
 public protocol FolderRepositoryProtocol: Sendable {
     // MARK: - Local functions
 
@@ -277,7 +278,8 @@ private extension FolderRepository {
                         guard let self else {
                             throw PassError.deallocatedSelf
                         }
-                        return try await remoteDatasource.getFolder(userId: userId, shareId: folderIds.shareId,
+                        return try await remoteDatasource.getFolder(userId: userId,
+                                                                    shareId: folderIds.shareId,
                                                                     folderId: folderIds.elementId)
                     }
                 }
@@ -292,7 +294,8 @@ private extension FolderRepository {
             folders.append(contentsOf: batch)
         }
 
-        let symmetricallyEncryptedFolders = try await batchSymmetricDecrypt(userId: userId, shareId: shareId,
+        let symmetricallyEncryptedFolders = try await batchSymmetricDecrypt(userId: userId,
+                                                                            shareId: shareId,
                                                                             folders: folders)
 
         guard !symmetricallyEncryptedFolders.isEmpty else {
@@ -304,7 +307,8 @@ private extension FolderRepository {
         logger.trace("Saved \(symmetricallyEncryptedFolders.count) remote folders revisions to local database")
     }
 
-    func batchSymmetricDecrypt(userId: String, shareId: String,
+    func batchSymmetricDecrypt(userId: String,
+                               shareId: String,
                                folders: [Folder]) async throws -> [SymmetricallyEncryptedFolder] {
         if folders.isEmpty {
             logger.trace("Encrypted folders are empty nothing to save locally")

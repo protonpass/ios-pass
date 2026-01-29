@@ -40,6 +40,8 @@ struct UserEventsSynchronizerTests {
     let aliasRepository = AliasRepositoryProtocolMock()
     let passMonitorRepository = PassMonitorRepositoryProtocolMock()
     let organizationRepository = OrganizationRepositoryProtocolMock()
+    let folderRepositoryProtocolMock = FolderRepositoryProtocolMock()
+
     var sut: (any UserEventsSynchronizerProtocol)!
 
     init() {
@@ -58,6 +60,7 @@ struct UserEventsSynchronizerTests {
                                      shareRepository: shareRepository,
                                      accessRepository: accessRespository,
                                      inviteRepository: inviteRepository,
+                                     folderRepository: folderRepositoryProtocolMock,
                                      aliasRepository: aliasRepository,
                                      passMonitorRepository: passMonitorRepository,
                                      organizationRepository: organizationRepository,
@@ -224,7 +227,7 @@ private extension UserEventsSynchronizerTests {
         }
 
         if let deleteItemsInvokeCount = args.deleteItemsInvokeCount {
-            #expect(itemRepository.invokedDeleteItemsLocallyItemsAsyncCount35 == deleteItemsInvokeCount)
+            #expect(itemRepository.invokedDeleteItemsLocallyItemsAsyncCount36 == deleteItemsInvokeCount)
         }
 
         if let refreshShareInvokeCount = args.refreshShareInvokeCount {

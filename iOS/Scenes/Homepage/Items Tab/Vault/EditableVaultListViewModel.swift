@@ -114,11 +114,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     @LazyInjected(\SharedRepositoryContainer.itemRepository)
     private var itemRepository
 
-    var folderToMove: FolderToMove? {
-        didSet {
-            print("woot value of folderToMove: \(folderToMove)")
-        }
-    }
+    var folderToMove: FolderToMove?
 
     private var cancellables = Set<AnyCancellable>()
 

@@ -29,6 +29,7 @@ extension UserPreferences {
               extraPasswordEnabled: .random(),
               protonPasswordFailedVerificationCount: .random(in: 1...10),
               lastSelectedShareId: nil,
+              lastSelectedFolderId: nil,
               lastCreatedItemShareId: nil,
               dismissedAliasesSyncSheet: .random())
     }

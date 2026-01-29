@@ -138,7 +138,8 @@ public extension LocalItemDatasource {
         return try itemEntities.map { try $0.toEncryptedItem() }
     }
 
-    func getItems(shareId: String, folderId: String,
+    func getItems(shareId: String,
+                  folderId: String,
                   state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ItemEntity.fetchRequest()
