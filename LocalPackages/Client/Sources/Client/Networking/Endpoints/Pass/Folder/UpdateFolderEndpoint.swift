@@ -92,20 +92,3 @@ public struct UpdateFolderRequestPayload: Sendable, Encodable {
         case contentFormatVersion = "ContentFormatVersion"
     }
 }
-
-// public extension UpdateFolderRequest {
-//    init(folderContent: FolderContent, encryptionKey: any CryptographicKeyProtocol) throws {
-//        contentFormatVersion = Constants.ContentFormatVersion.folder
-//        let folderKey = encryptionKey.keyData
-//
-//        let encryptedContent = try AES.GCM.seal(folderContent.data(),
-//                                                key: folderKey,
-//                                                associatedData: .folderContent)
-//        let base64Content = encryptedContent.base64EncodedString()
-//        guard base64Content.count >= 28 else {
-//            throw PassError.crypto(.failedToAESEncrypt)
-//        }
-//        content = base64Content
-//        keyRotation = encryptionKey.keyRotation
-//    }
-// }

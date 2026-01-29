@@ -54,25 +54,14 @@ private extension LogInDetailView {
                             securityIssuesView(issues: issues)
                                 .padding(.vertical)
                         }
-                        // TODO: breadcrump view
 
                         if let share = viewModel.shareContent?.share {
                             BreadcrumbView(share: share, itemPath: viewModel.path)
-                            // Custom breadcrumb with any content
-//                            BreadcrumbView(items: viewModel.path,
-//                                           maxLines: 2) { folder in
-//                                Label(folder, systemImage: "folder")
-//                                    .foregroundColor(.blue)
-//                            } separatorView: {
-//                                Image(systemName: "chevron.right")
-//                                    .foregroundColor(.secondary)
-//                            }
                         }
 
                         ItemDetailTitleView(itemContent: viewModel.itemContent,
                                             vault: viewModel.vault?.vault)
                             .padding(.vertical, 16)
-//                            .padding(.bottom, 40)
 
                         if !viewModel.passkeys.isEmpty {
                             ForEach(viewModel.passkeys, id: \.keyID) { passkey in

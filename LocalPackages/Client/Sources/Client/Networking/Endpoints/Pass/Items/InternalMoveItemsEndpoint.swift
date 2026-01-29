@@ -64,31 +64,3 @@ struct InternalMoveItemsEndpoint: Endpoint {
         body = request
     }
 }
-
-// public struct TestItemKey: Codable, Equatable, Hashable, Sendable {
-//    /// Encrypted key encoded in base64
-//    public let itemKey: String
-//    public let keyRotation: Int64
-//
-//    public init(key: String, keyRotation: Int64) {
-//        itemKey = key
-//        self.keyRotation = keyRotation
-//    }
-//
-//    enum CodingKeys: String, CodingKey {
-//        case itemKey = "ItemKey"
-//        case keyRotation = "KeyRotation"
-//    }
-//
-//    // custom decoder
-//    public init(from decoder: any Decoder) throws {
-//        // keys that work with `JSONDecoder.KeyDecodingStrategy.decapitaliseFirstLetter`
-//        enum DecodingKeys: String, CodingKey {
-//            case itemKey
-//            case keyRotation
-//        }
-//        let container = try decoder.container(keyedBy: DecodingKeys.self)
-//        itemKey = try container.decode(String.self, forKey: .itemKey)
-//        keyRotation = try container.decode(Int64.self, forKey: .keyRotation)
-//    }
-// }
