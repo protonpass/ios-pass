@@ -102,6 +102,7 @@ struct PreferencesTests {
             extraPasswordEnabled: UserPreferences.default.extraPasswordEnabled, 
             protonPasswordFailedVerificationCount: UserPreferences.default.protonPasswordFailedVerificationCount, 
             lastSelectedShareId: UserPreferences.default.lastSelectedShareId,
+            lastSelectedFolderId: UserPreferences.default.lastSelectedFolderId,
             lastCreatedItemShareId: UserPreferences.default.lastCreatedItemShareId,
             dismissedAliasesSyncSheet: UserPreferences.default.dismissedAliasesSyncSheet)
         try decodeAndAssert(UserPreferences.self, json: json, expectation: expectation)

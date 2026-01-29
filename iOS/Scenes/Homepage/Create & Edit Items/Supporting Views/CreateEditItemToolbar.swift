@@ -83,25 +83,6 @@ struct CreateEditItemToolbar: ToolbarContent {
                 .animation(.default, value: isSaving)
             }
         }
-//        ToolbarItemGroup {
-//
-//            ToolbarItem(placement: .topBarTrailing) {
-//                Group {
-//                    if shouldUpgrade {
-//                        UpgradeButton(backgroundColor: itemContentType.normMajor1Color,
-//                                      action: onUpgrade)
-//                        .disabled(isSaving)
-//                    } else {
-//                        if isSaving {
-//                            ProgressView()
-//                        } else {
-//                            buttons
-//                        }
-//                    }
-//                }
-//                .animation(.default, value: isSaving)
-//            }
-//        }
     }
 }
 

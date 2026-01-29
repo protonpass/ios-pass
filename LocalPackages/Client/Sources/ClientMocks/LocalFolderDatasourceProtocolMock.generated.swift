@@ -65,18 +65,18 @@ public final class LocalFolderDatasourceProtocolMock: @unchecked Sendable, Local
         return stubbedGetFolderResult
     }
     // MARK: - upsertFolders
-    public var upsertFoldersThrowableError3: Error?
+    public var upsertFoldersUserIdThrowableError3: Error?
     public var closureUpsertFolders: () -> () = {}
     public var invokedUpsertFoldersfunction = false
     public var invokedUpsertFoldersCount = 0
-    public var invokedUpsertFoldersParameters: (folders: [SymmetricallyEncryptedFolder], Void)?
-    public var invokedUpsertFoldersParametersList = [(folders: [SymmetricallyEncryptedFolder], Void)]()
+    public var invokedUpsertFoldersParameters: (folders: [SymmetricallyEncryptedFolder], userId: String)?
+    public var invokedUpsertFoldersParametersList = [(folders: [SymmetricallyEncryptedFolder], userId: String)]()
 
-    public func upsertFolders(_ folders: [SymmetricallyEncryptedFolder]) async throws {
+    public func upsertFolders(_ folders: [SymmetricallyEncryptedFolder], userId: String) async throws {
         invokedUpsertFoldersfunction = true
         invokedUpsertFoldersCount += 1
-        invokedUpsertFoldersParameters = (folders, ())
-        if let error = upsertFoldersThrowableError3 {
+        invokedUpsertFoldersParameters = (folders, userId)
+        if let error = upsertFoldersUserIdThrowableError3 {
             throw error
         }
         closureUpsertFolders()
@@ -128,5 +128,39 @@ public final class LocalFolderDatasourceProtocolMock: @unchecked Sendable, Local
             throw error
         }
         closureRemoveAllFoldersShareIdAsync6()
+    }
+    // MARK: - deleteFoldersUserIdFolders
+    public var deleteFoldersUserIdFoldersThrowableError7: Error?
+    public var closureDeleteFoldersUserIdFoldersAsync7: () -> () = {}
+    public var invokedDeleteFoldersUserIdFoldersAsync7 = false
+    public var invokedDeleteFoldersUserIdFoldersAsyncCount7 = 0
+    public var invokedDeleteFoldersUserIdFoldersAsyncParameters7: (userId: String, folders: [any ElementIdentifiable])?
+    public var invokedDeleteFoldersUserIdFoldersAsyncParametersList7 = [(userId: String, folders: [any ElementIdentifiable])]()
+
+    public func deleteFolders(userId: String, folders: [any ElementIdentifiable]) async throws {
+        invokedDeleteFoldersUserIdFoldersAsync7 = true
+        invokedDeleteFoldersUserIdFoldersAsyncCount7 += 1
+        invokedDeleteFoldersUserIdFoldersAsyncParameters7 = (userId, folders)
+        if let error = deleteFoldersUserIdFoldersThrowableError7 {
+            throw error
+        }
+        closureDeleteFoldersUserIdFoldersAsync7()
+    }
+    // MARK: - deleteFoldersUserIdFolderIdsShareId
+    public var deleteFoldersUserIdFolderIdsShareIdThrowableError8: Error?
+    public var closureDeleteFoldersUserIdFolderIdsShareIdAsync8: () -> () = {}
+    public var invokedDeleteFoldersUserIdFolderIdsShareIdAsync8 = false
+    public var invokedDeleteFoldersUserIdFolderIdsShareIdAsyncCount8 = 0
+    public var invokedDeleteFoldersUserIdFolderIdsShareIdAsyncParameters8: (userId: String, folderIds: [String], shareId: String)?
+    public var invokedDeleteFoldersUserIdFolderIdsShareIdAsyncParametersList8 = [(userId: String, folderIds: [String], shareId: String)]()
+
+    public func deleteFolders(userId: String, folderIds: [String], shareId: String) async throws {
+        invokedDeleteFoldersUserIdFolderIdsShareIdAsync8 = true
+        invokedDeleteFoldersUserIdFolderIdsShareIdAsyncCount8 += 1
+        invokedDeleteFoldersUserIdFolderIdsShareIdAsyncParameters8 = (userId, folderIds, shareId)
+        if let error = deleteFoldersUserIdFolderIdsShareIdThrowableError8 {
+            throw error
+        }
+        closureDeleteFoldersUserIdFolderIdsShareIdAsync8()
     }
 }

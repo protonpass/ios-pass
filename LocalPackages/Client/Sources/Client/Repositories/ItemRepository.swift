@@ -25,7 +25,7 @@ import CoreData
 import Entities
 import ProtonCoreLogin
 
-// swiftlint:disable:next todo file_length
+// swiftlint:disable:next todo function_parameter_count
 // TODO: need to keep an eye on the evolution of Combine publisher and structured concurrency
 extension CurrentValueSubject: @unchecked @retroactive Sendable {}
 extension PassthroughSubject: @unchecked @retroactive Sendable {}
@@ -932,7 +932,6 @@ private extension ItemRepository {
                               userId: String,
                               symmetricKey: SymmetricKey,
                               slNote: String? = nil) async throws -> SymmetricallyEncryptedItem {
-        // TODO: get container key to decrypt folder or share
         let shareKey = try await passKeyManager.getDecryptionKey(userId: userId,
                                                                  containerId: itemRevision.folderID ?? shareId)
 
@@ -1105,12 +1104,9 @@ private extension ItemRepository {
                          shareId: String,
                          toContainerId: String?) async throws {
         let userId = try await userManager.getActiveUserId()
-//        let symmetricKey = try await getSymmetricKey()
-
         let destinationShareKey = try await passKeyManager.getDecryptionKey(userId: userId,
                                                                             containerId: toContainerId ?? shareId)
 
-//        var newEncryptedItemsKeys = [SymmetricallyEncryptedItem: [any CryptographicKeyProtocol]]()
         var itemsToBeMoved = [InternalItemToBeMoved]()
         for item in items {
             // Get all decrypted item keys
@@ -1185,4 +1181,4 @@ private extension ItemRepository {
 }
 
 extension SymmetricallyEncryptedItem: @retroactive FullItemIdentifiable {}
-// swiftlint: enable discouraged_optional_self file_length
+// swiftlint: enable discouraged_optional_self function_parameter_count

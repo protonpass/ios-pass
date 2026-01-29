@@ -254,8 +254,27 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         closureMove()
         return stubbedMoveResult
     }
+    // MARK: - sameShareMove
+    public var sameShareMoveUserIdShareIdRequestThrowableError13: Error?
+    public var closureSameShareMove: () -> () = {}
+    public var invokedSameShareMovefunction = false
+    public var invokedSameShareMoveCount = 0
+    public var invokedSameShareMoveParameters: (userId: String, shareId: String, request: InternalMoveItemsRequest)?
+    public var invokedSameShareMoveParametersList = [(userId: String, shareId: String, request: InternalMoveItemsRequest)]()
+    public var stubbedSameShareMoveResult: [ModifiedItem]!
+
+    public func sameShareMove(userId: String, shareId: String, request: InternalMoveItemsRequest) async throws -> [ModifiedItem] {
+        invokedSameShareMovefunction = true
+        invokedSameShareMoveCount += 1
+        invokedSameShareMoveParameters = (userId, shareId, request)
+        if let error = sameShareMoveUserIdShareIdRequestThrowableError13 {
+            throw error
+        }
+        closureSameShareMove()
+        return stubbedSameShareMoveResult
+    }
     // MARK: - pin
-    public var pinUserIdItemThrowableError13: Error?
+    public var pinUserIdItemThrowableError14: Error?
     public var closurePin: () -> () = {}
     public var invokedPinfunction = false
     public var invokedPinCount = 0
@@ -267,14 +286,14 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedPinfunction = true
         invokedPinCount += 1
         invokedPinParameters = (userId, item)
-        if let error = pinUserIdItemThrowableError13 {
+        if let error = pinUserIdItemThrowableError14 {
             throw error
         }
         closurePin()
         return stubbedPinResult
     }
     // MARK: - unpin
-    public var unpinUserIdItemThrowableError14: Error?
+    public var unpinUserIdItemThrowableError15: Error?
     public var closureUnpin: () -> () = {}
     public var invokedUnpinfunction = false
     public var invokedUnpinCount = 0
@@ -286,14 +305,14 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedUnpinfunction = true
         invokedUnpinCount += 1
         invokedUnpinParameters = (userId, item)
-        if let error = unpinUserIdItemThrowableError14 {
+        if let error = unpinUserIdItemThrowableError15 {
             throw error
         }
         closureUnpin()
         return stubbedUnpinResult
     }
     // MARK: - updateItemFlags
-    public var updateItemFlagsUserIdItemIdShareIdRequestThrowableError15: Error?
+    public var updateItemFlagsUserIdItemIdShareIdRequestThrowableError16: Error?
     public var closureUpdateItemFlags: () -> () = {}
     public var invokedUpdateItemFlagsfunction = false
     public var invokedUpdateItemFlagsCount = 0
@@ -305,14 +324,14 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedUpdateItemFlagsfunction = true
         invokedUpdateItemFlagsCount += 1
         invokedUpdateItemFlagsParameters = (userId, itemId, shareId, request)
-        if let error = updateItemFlagsUserIdItemIdShareIdRequestThrowableError15 {
+        if let error = updateItemFlagsUserIdItemIdShareIdRequestThrowableError16 {
             throw error
         }
         closureUpdateItemFlags()
         return stubbedUpdateItemFlagsResult
     }
     // MARK: - createPendingAliasesItem
-    public var createPendingAliasesItemUserIdShareIdRequestThrowableError16: Error?
+    public var createPendingAliasesItemUserIdShareIdRequestThrowableError17: Error?
     public var closureCreatePendingAliasesItem: () -> () = {}
     public var invokedCreatePendingAliasesItemfunction = false
     public var invokedCreatePendingAliasesItemCount = 0
@@ -324,14 +343,14 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedCreatePendingAliasesItemfunction = true
         invokedCreatePendingAliasesItemCount += 1
         invokedCreatePendingAliasesItemParameters = (userId, shareId, request)
-        if let error = createPendingAliasesItemUserIdShareIdRequestThrowableError16 {
+        if let error = createPendingAliasesItemUserIdShareIdRequestThrowableError17 {
             throw error
         }
         closureCreatePendingAliasesItem()
         return stubbedCreatePendingAliasesItemResult
     }
     // MARK: - toggleAliasStatus
-    public var toggleAliasStatusUserIdShareIdItemIdEnabledThrowableError17: Error?
+    public var toggleAliasStatusUserIdShareIdItemIdEnabledThrowableError18: Error?
     public var closureToggleAliasStatus: () -> () = {}
     public var invokedToggleAliasStatusfunction = false
     public var invokedToggleAliasStatusCount = 0
@@ -343,14 +362,14 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedToggleAliasStatusfunction = true
         invokedToggleAliasStatusCount += 1
         invokedToggleAliasStatusParameters = (userId, shareId, itemId, enabled)
-        if let error = toggleAliasStatusUserIdShareIdItemIdEnabledThrowableError17 {
+        if let error = toggleAliasStatusUserIdShareIdItemIdEnabledThrowableError18 {
             throw error
         }
         closureToggleAliasStatus()
         return stubbedToggleAliasStatusResult
     }
     // MARK: - resetHistory
-    public var resetHistoryUserIdShareIdItemIdThrowableError18: Error?
+    public var resetHistoryUserIdShareIdItemIdThrowableError19: Error?
     public var closureResetHistory: () -> () = {}
     public var invokedResetHistoryfunction = false
     public var invokedResetHistoryCount = 0
@@ -362,14 +381,14 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedResetHistoryfunction = true
         invokedResetHistoryCount += 1
         invokedResetHistoryParameters = (userId, shareId, itemId)
-        if let error = resetHistoryUserIdShareIdItemIdThrowableError18 {
+        if let error = resetHistoryUserIdShareIdItemIdThrowableError19 {
             throw error
         }
         closureResetHistory()
         return stubbedResetHistoryResult
     }
     // MARK: - importItems
-    public var importItemsUserIdShareIdItemsThrowableError19: Error?
+    public var importItemsUserIdShareIdItemsThrowableError20: Error?
     public var closureImportItems: () -> () = {}
     public var invokedImportItemsfunction = false
     public var invokedImportItemsCount = 0
@@ -381,7 +400,7 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedImportItemsfunction = true
         invokedImportItemsCount += 1
         invokedImportItemsParameters = (userId, shareId, items)
-        if let error = importItemsUserIdShareIdItemsThrowableError19 {
+        if let error = importItemsUserIdShareIdItemsThrowableError20 {
             throw error
         }
         closureImportItems()
