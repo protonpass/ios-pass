@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
     "?" : {
       "comment" : "Element of button that showcase a information screen ",
       "localizations" : {
@@ -17,6 +20,9 @@
           }
         }
       }
+    },
+    "..." : {
+
     },
     "\"%1$@\" is copied to clipboard. Expiring in %2$lld seconds." : {
       "comment" : "First placeholder is the 6-digit code. The 2nd one is the number of second remaining.",
@@ -649,6 +655,19 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "%@" : {
+
+    },
+    "%@ « %@ » deleted" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ « %2$@ » deleted"
           }
         }
       }
@@ -53018,6 +53037,9 @@
         }
       }
     },
+    "Create folder" : {
+
+    },
     "Create login" : {
       "comment" : "AutoFill extension",
       "localizations" : {
@@ -53410,6 +53432,9 @@
           }
         }
       }
+    },
+    "Create sub-folder" : {
+
     },
     "Create vault" : {
       "localizations" : {
@@ -60746,6 +60771,9 @@
         }
       }
     },
+    "Delete %@?" : {
+
+    },
     "Delete account" : {
       "localizations" : {
         "be" : {
@@ -61137,6 +61165,9 @@
           }
         }
       }
+    },
+    "Delete folder" : {
+
     },
     "Delete it, I will never need it" : {
       "localizations" : {
@@ -62309,6 +62340,7 @@
       }
     },
     "Delete vault?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -70050,6 +70082,9 @@
         }
       }
     },
+    "Enter a folder title" : {
+
+    },
     "Enter a new section title" : {
       "localizations" : {
         "be" : {
@@ -70441,6 +70476,9 @@
           }
         }
       }
+    },
+    "Enter new folder title" : {
+
     },
     "Enter new name for « %@ »" : {
       "comment" : "Message shown when editing custom field's title. Placeholder is the old title.",
@@ -78459,6 +78497,9 @@
           }
         }
       }
+    },
+    "Folder name" : {
+
     },
     "Follow these simple steps to get the best experience:" : {
       "localizations" : {
@@ -105008,6 +105049,9 @@
         }
       }
     },
+    "Manage Folder" : {
+
+    },
     "Manage subscription" : {
       "localizations" : {
         "be" : {
@@ -110830,6 +110874,9 @@
         }
       }
     },
+    "Move folder" : {
+
+    },
     "Move this item" : {
       "localizations" : {
         "be" : {
@@ -111026,7 +111073,11 @@
         }
       }
     },
+    "Move to another container" : {
+
+    },
     "Move to another vault" : {
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -112388,6 +112439,9 @@
           }
         }
       }
+    },
+    "New folder" : {
+
     },
     "New title" : {
       "localizations" : {
@@ -151557,6 +151611,9 @@
         }
       }
     },
+    "Select a destination" : {
+
+    },
     "Select a vault" : {
       "localizations" : {
         "be" : {
@@ -158374,7 +158431,18 @@
         }
       }
     },
+    "Show %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Show %1$@ %2$@"
+          }
+        }
+      }
+    },
     "Show %@ vault" : {
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -173897,7 +173965,18 @@
         }
       }
     },
+    "This will permanently delete the %@ « %@ » and all its contents. Enter the %@ name to confirm deletion." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "This will permanently delete the %1$@ « %2$@ » and all its contents. Enter the %3$@ name to confirm deletion."
+          }
+        }
+      }
+    },
     "This will permanently delete the vault « %@ » and all its contents. Enter the vault name to confirm deletion." : {
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -185987,6 +186066,7 @@
       }
     },
     "Vault « %@ » deleted" : {
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -190051,202 +190131,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "檢視您的所有安全加密鏈結"
-          }
-        }
-      }
-    },
-    "View and edit details for this alias on the separate alias page." : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Паглядзець і адрэдагаваць падрабязнасці для гэтага псеўданіма на яго асобнай старонцы"
-          }
-        },
-        "ca" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Consulteu i editeu els detalls d'aquest àlies a la pàgina separada d'àlies."
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Podrobnosti o tomto aliasu můžete zobrazit a upravit na samostatné stránce aliasu."
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Se og redigér detaljer for dette alias på den seperate alias-side"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sieh dir die Details für diesen Alias auf der separaten Alias-Seite an und bearbeite diese dort."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Προβάλετε και επεξεργαστείτε λεπτομέρειες για αυτό το ψευδώνυμο στην ξεχωριστή σελίδα ψευδωνύμου."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "View and edit details for this alias on the separate alias page."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Consulta y edita los detalles de este alias en la página de alias separada."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vea y modifique la información de este alias en la página dedicada al alias."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tarkastele ja muokkaa aliaksen tietoja erillisellä alias-sivulla."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Afficher et modifier les informations de cet alias sur la page dédiée à l'alias."
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Az e-mail álnév megjelenítése és szerkesztése egy külön oldalon."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tampilkan dan sunting rincian untuk alias ini pada halaman alias yang terpisah."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Visualizza e modifica i dettagli di questo alias nella pagina alias separata."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "このエイリアスの詳細を別のエイリアス ページで表示および編集します。"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "იხილეთ და ჩაასწორეთ დეტალები ამ ფსევდონიმისთვის, ცალკე გვერდზე."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "별도의 별칭 페이지에서 이 별칭에 대한 세부 사항을 보고 편집하세요."
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vis og rediger detaljer for dette aliaset på den separate aliassiden."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bekijk en bewerk de gegevens voor deze alias op de aparte aliaspagina."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wyświetl i edytuj szczegóły aliasu na osobnej stronie."
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Veja e edite detalhes deste \"alias\" na página dedicada do \"alias\"."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Visualize e edite detalhes desse alias na página separada do alias."
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Afișați și editați detaliile acestui alias pe o pagină separată."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Просматривайте и изменяйте информацию об этом псевдониме на отдельной странице псевдонимов."
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zobraziť a upraviť detaily aliasu na samostatnej stránke aliasu."
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Oglejte si in uredite podrobnosti za ta vzdevek na ločeni strani za vzdevek."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Visa och redigera detaljer för detta alias på den separata sidan för alias."
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bu takma adın bilgilerinin ayrı bir takma ad sayfasında görüntülenmesini ve düzenlenmesini sağlar."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Перегляньте й редагуйте подробиці цього псевдоніма на окремій сторінці."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Xem và chỉnh sửa thông tin của bí danh này trên trang bí danh riêng biệt."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "在单独的别名页面上查看和编辑此别名的详细信息。"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "在獨立的別名頁面上查看及編輯此別名的詳細資料。"
           }
         }
       }
@@ -200661,6 +200545,9 @@
           }
         }
       }
+    },
+    "You cannot move a folder to on of his child folders" : {
+
     },
     "You currently don't have any secure links" : {
       "localizations" : {

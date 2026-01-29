@@ -103,6 +103,8 @@ public enum Constants {
         public static let passwordPolicy = "passwordPolicy" // gitleaks:allow
         public static let useSwiftUIList = "useSwiftUIList"
         public static let forceUsStore = "forceUsStore"
+        public static let hidePassPlusPlan = "hidePassPlusPlan"
+        public static let hideProtonUnlimitedPlan = "hideProtonUnlimitedPlan"
     }
 }
 

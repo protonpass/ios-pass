@@ -28,16 +28,23 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
     public init() {}
 
     // MARK: - currentShares
-    public var invokedCurrentSharesSetter = false
-    public var invokedCurrentSharesSetterCount = 0
-    public var invokedCurrentShares: CurrentValueSubject<[Share], Never>?
-    public var invokedCurrentSharesList = [CurrentValueSubject<[Share], Never>?]()
-    public var invokedCurrentSharesGetter = false
-    public var invokedCurrentSharesGetterCount = 0
+    public nonisolated(unsafe) var invokedCurrentSharesSetter = false
+    public nonisolated(unsafe) var invokedCurrentSharesSetterCount = 0
+    public nonisolated(unsafe) var invokedCurrentShares: CurrentValueSubject<[Share], Never>?
+    public nonisolated(unsafe) var invokedCurrentSharesList = [CurrentValueSubject<[Share], Never>?]()
+    public nonisolated(unsafe) var invokedCurrentSharesGetter = false
+    public nonisolated(unsafe) var invokedCurrentSharesGetterCount = 0
     public nonisolated(unsafe) var stubbedCurrentShares: CurrentValueSubject<[Share], Never>!
 
     public var currentShares: CurrentValueSubject<[Share], Never> {
-         get {
+        set {
+            invokedCurrentSharesSetter = true
+            invokedCurrentSharesSetterCount += 1
+            invokedCurrentShares = newValue
+            invokedCurrentSharesList.append(newValue)
+        } get {
+            invokedCurrentSharesGetter = true
+            invokedCurrentSharesGetterCount += 1
             return stubbedCurrentShares
         }
     }
@@ -62,8 +69,21 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
             return stubbedHasOnlyOneOwnedVault
         }
     }
+    // MARK: - select
+    public var closureSelect: () -> () = {}
+    public var invokedSelectfunction = false
+    public var invokedSelectCount = 0
+    public var invokedSelectParameters: (selection: ShareSelection, filterOption: ItemTypeFilterOption?)?
+    public var invokedSelectParametersList = [(selection: ShareSelection, filterOption: ItemTypeFilterOption?)]()
+
+    public func select(_ selection: ShareSelection, filterOption: ItemTypeFilterOption?) {
+        invokedSelectfunction = true
+        invokedSelectCount += 1
+        invokedSelectParameters = (selection, filterOption)
+        closureSelect()
+    }
     // MARK: - refresh
-    public var refreshUserIdThrowableError1: Error?
+    public var refreshUserIdThrowableError2: Error?
     public var closureRefresh: () -> () = {}
     public var invokedRefreshfunction = false
     public var invokedRefreshCount = 0
@@ -74,7 +94,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         invokedRefreshfunction = true
         invokedRefreshCount += 1
         invokedRefreshParameters = (userId, ())
-        if let error = refreshUserIdThrowableError1 {
+        if let error = refreshUserIdThrowableError2 {
             throw error
         }
         closureRefresh()
@@ -93,7 +113,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         closureFullSync()
     }
     // MARK: - localFullSync
-    public var localFullSyncUserIdThrowableError3: Error?
+    public var localFullSyncUserIdThrowableError4: Error?
     public var closureLocalFullSync: () -> () = {}
     public var invokedLocalFullSyncfunction = false
     public var invokedLocalFullSyncCount = 0
@@ -104,7 +124,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         invokedLocalFullSyncfunction = true
         invokedLocalFullSyncCount += 1
         invokedLocalFullSyncParameters = (userId, ())
-        if let error = localFullSyncUserIdThrowableError3 {
+        if let error = localFullSyncUserIdThrowableError4 {
             throw error
         }
         closureLocalFullSync()
@@ -125,7 +145,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         return stubbedGetItemsResult
     }
     // MARK: - delete
-    public var deleteUserIdShareIdThrowableError5: Error?
+    public var deleteUserIdShareIdThrowableError6: Error?
     public var closureDelete: () -> () = {}
     public var invokedDeletefunction = false
     public var invokedDeleteCount = 0
@@ -136,7 +156,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         invokedDeletefunction = true
         invokedDeleteCount += 1
         invokedDeleteParameters = (userId, shareId)
-        if let error = deleteUserIdShareIdThrowableError5 {
+        if let error = deleteUserIdShareIdThrowableError6 {
             throw error
         }
         closureDelete()
