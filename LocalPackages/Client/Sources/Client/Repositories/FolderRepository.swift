@@ -31,6 +31,7 @@ public protocol FolderRepositoryProtocol: Sendable {
     func deleteAllLocalFolders(userId: String) async throws
     func delete(userId: String, shareId: String, folderIds: [String]) async throws
     func deleteLocalFolder(userId: String, shareId: String, folderIds: [String]) async throws
+    func deleteLocal(folders: [any ElementIdentifiable], userId: String) async throws
     @discardableResult
     func createFolder(userId: String,
                       shareId: String,
@@ -38,6 +39,7 @@ public protocol FolderRepositoryProtocol: Sendable {
                       folderContent: FolderContent) async throws -> Folder
     func edit(userId: String, shareId: String, folderId: String, folderContent: FolderContent) async throws
     func move(userId: String, shareId: String, folderId: String, destinationId: String?) async throws
+    func refreshFolders(userId: String, foldersIds: [any ElementIdentifiable]) async throws
 }
 
 public final class FolderRepository: FolderRepositoryProtocol {
@@ -78,9 +80,21 @@ public extension FolderRepository {
 
     func deleteLocalFolder(userId: String, shareId: String, folderIds: [String]) async throws {
         // Local deletion
-        logger.trace("Deleting local vault \(shareId) for user \(userId)")
-        try await localDatasource.deleteFolders(folderIds: folderIds, shareId: shareId)
+        logger.trace("Deleting local folder \(shareId) for user \(userId)")
+        try await localDatasource.deleteFolders(userId: userId, folderIds: folderIds, shareId: shareId)
         logger.trace("Deleted local folders \(folderIds) for user \(userId)")
+    }
+
+    func deleteAllLocalFolders(userId: String) async throws {
+        logger.trace("Deleting all local folder of user \(userId)")
+        try await localDatasource.removeAllFolders(userId: userId)
+        logger.trace("Deleted all local folder")
+    }
+
+    func deleteLocal(folders: [any ElementIdentifiable], userId: String) async throws {
+        logger.trace("Deleting \(folders.count) local folders of user \(userId)")
+        try await localDatasource.deleteFolders(userId: userId, folders: folders)
+        logger.trace("Deleted all local folder")
     }
 }
 
@@ -174,10 +188,145 @@ public extension FolderRepository {
         logger.trace("Saved \(encryptedFolders.count) remote folders revisions to local database")
     }
 
-    func deleteAllLocalFolders(userId: String) async throws {
-        logger.trace("Deleting all local folder of user \(userId)")
-        try await localDatasource.removeAllFolders(userId: userId)
-        logger.trace("Deleted all local folder")
+    func refreshFolders(userId: String, foldersIds: [any ElementIdentifiable]) async throws {
+        let foldersByShare = Dictionary(grouping: foldersIds, by: { $0.shareId })
+
+        try await withThrowingTaskGroup(of: Void.self) { [weak self] taskGroup in
+            guard let self else { throw PassError.deallocatedSelf }
+            for (shareId, folderIds) in foldersByShare {
+                taskGroup.addTask { [weak self] in
+                    guard let self else {
+                        throw PassError.deallocatedSelf
+                    }
+                    try await refreshFolders(userId: userId, shareId: shareId, foldersIds: folderIds)
+                }
+            }
+            try await taskGroup.waitForAll()
+        }
+
+//        var folders = [Folder]()
+//        for batch in foldersIds.chunked(into: 20) {
+//            let batch = try await withThrowingTaskGroup(of: Folder.self,
+//                                                        returning: [Folder]
+//                                                            .self) { [weak self] taskGroup in
+//                guard let self else { throw PassError.deallocatedSelf }
+//                for folderIds in batch {
+//                    taskGroup.addTask { [weak self] in
+//                        guard let self else {
+//                            throw PassError.deallocatedSelf
+//                        }
+//                        return try await remoteDatasource.getFolder(userId: userId, shareId: folderIds.shareId,
+//                        folderId: folderIds.folderId)
+//
+//                    }
+//                }
+//                var encryptedFolders = [Folder]()
+//
+//                for try await folder in taskGroup {
+//                    encryptedFolders.append(folder)
+//                }
+//
+//                return encryptedFolders
+//            }
+//            folders.append(contentsOf: batch)
+//        }
+//
+//
+//
+//        if folders.isEmpty {
+//            return
+//        }
+//        do {
+//            try await passKeyManager.decryptAndStoreFolderKeys(shareId: shareId, folders: folders)
+//        } catch {
+//            print("woot error in parsing and saving folder keys \(error)")
+//            throw error
+//        }
+
+//
+//        logger.trace("Refreshing item \(itemId) share \(shareId) eventToken \(eventToken)")
+//        let item = try await remoteDatasource.getItem(userId: userId,
+//                                                      shareId: shareId,
+//                                                      itemId: itemId,
+//                                                      eventToken: eventToken)
+//        let symmetricKey = try await getSymmetricKey()
+//        let encryptedItem = try await symmetricallyEncrypt(itemRevision: item,
+//                                                           shareId: shareId,
+//                                                           userId: userId,
+//                                                           symmetricKey: symmetricKey)
+//        try await localDatasource.upsertItems([encryptedItem])
+//        logger.trace("Refreshed item \(itemId) share \(shareId) eventToken \(eventToken)")
+    }
+
+    private func refreshFolders(userId: String, shareId: String,
+                                foldersIds: [any ElementIdentifiable]) async throws {
+        var folders = [Folder]()
+        for batch in foldersIds.chunked(into: 20) {
+            let batch = try await withThrowingTaskGroup(of: Folder.self,
+                                                        returning: [Folder]
+                                                            .self) { [weak self] taskGroup in
+                guard let self else { throw PassError.deallocatedSelf }
+                for folderIds in batch {
+                    taskGroup.addTask { [weak self] in
+                        guard let self else {
+                            throw PassError.deallocatedSelf
+                        }
+                        return try await remoteDatasource.getFolder(userId: userId, shareId: folderIds.shareId,
+                                                                    folderId: folderIds.elementId)
+                    }
+                }
+                var encryptedFolders = [Folder]()
+
+                for try await folder in taskGroup {
+                    encryptedFolders.append(folder)
+                }
+
+                return encryptedFolders
+            }
+            folders.append(contentsOf: batch)
+        }
+
+        if folders.isEmpty {
+            return
+        }
+        do {
+            try await passKeyManager.decryptAndStoreFolderKeys(shareId: shareId, folders: folders)
+        } catch {
+            print("woot error in parsing and saving folder keys \(error)")
+            throw error
+        }
+
+        var encryptedFolders = [SymmetricallyEncryptedFolder]()
+
+        for batch in folders.chunked(into: 20) {
+            let batch = try await withThrowingTaskGroup(of: SymmetricallyEncryptedFolder.self,
+                                                        returning: [SymmetricallyEncryptedFolder]
+                                                            .self) { [weak self] taskGroup in
+                guard let self else { throw PassError.deallocatedSelf }
+                for folder in batch {
+                    taskGroup.addTask { [weak self] in
+                        guard let self else {
+                            throw PassError.deallocatedSelf
+                        }
+                        return try await symmetricallyEncrypt(userId: userId,
+                                                              shareId: shareId,
+                                                              folderRevision: folder)
+                    }
+                }
+                var encryptedFolders = [SymmetricallyEncryptedFolder]()
+
+                for try await symmetricallyEncryptedFolder in taskGroup {
+                    encryptedFolders.append(symmetricallyEncryptedFolder)
+                }
+
+                return encryptedFolders
+            }
+            encryptedFolders.append(contentsOf: batch)
+        }
+
+        logger.trace("Saving \(encryptedFolders.count) remote folders revisions to local database")
+        try await localDatasource.upsertFolders(encryptedFolders, userId: userId)
+        logger.trace("Saved \(encryptedFolders.count) remote folders revisions to local database")
     }
 
     func delete(userId: String, shareId: String, folderIds: [String]) async throws {
@@ -187,7 +336,7 @@ public extension FolderRepository {
         logger.trace("Deleted remote folders \(folderIds) for user \(userId)")
         // Local deletion
         logger.trace("Deleting local vault \(shareId) for user \(userId)")
-        try await localDatasource.deleteFolders(folderIds: folderIds, shareId: shareId)
+        try await localDatasource.deleteFolders(userId: userId, folderIds: folderIds, shareId: shareId)
         logger.trace("Deleted local folders \(folderIds) for user \(userId)")
 
         logger.trace("Finished deleting folders \(folderIds) for user \(userId)")
@@ -251,7 +400,7 @@ public extension FolderRepository {
         let encryptedFolder = try await symmetricallyEncrypt(userId: userId,
                                                              shareId: shareId,
                                                              folderRevision: updatedFolder)
-        try await localDatasource.deleteFolders(folderIds: [folderId], shareId: shareId)
+        try await localDatasource.deleteFolders(userId: userId, folderIds: [folderId], shareId: shareId)
         try await localDatasource.upsertFolders([encryptedFolder], userId: userId)
     }
 }

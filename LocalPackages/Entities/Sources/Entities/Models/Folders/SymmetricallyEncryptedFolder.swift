@@ -51,12 +51,14 @@ public protocol ElementIdentifiable: Sendable, Equatable, CustomDebugStringConve
     var elementId: String { get }
 }
 
+public extension ElementIdentifiable {
+    var debugDescription: String {
+        "Element \(elementId) - Share \(shareId)"
+    }
+}
+
 extension SymmetricallyEncryptedFolder: ElementIdentifiable {
     public var elementId: String {
         folderId
-    }
-
-    public var debugDescription: String {
-        "Element \(elementId) - Share \(shareId)"
     }
 }

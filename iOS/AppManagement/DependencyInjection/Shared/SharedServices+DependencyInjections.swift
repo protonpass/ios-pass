@@ -89,6 +89,7 @@ extension SharedServiceContainer {
                                           shareRepository: container.shareRepository(),
                                           accessRepository: container.accessRepository(),
                                           inviteRepository: container.inviteRepository(),
+                                          folderRepository: container.folderRepository(),
                                           aliasRepository: container.aliasRepository(),
                                           passMonitorRepository: container.passMonitorRepository(),
                                           organizationRepository: container.organizationRepository(),
