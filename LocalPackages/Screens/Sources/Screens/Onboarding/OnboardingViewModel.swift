@@ -67,7 +67,9 @@ public nonisolated struct PassPlans: Sendable, Equatable {
         self.unlimited = unlimited
     }
 
-    public var noPlansAvailable: Bool { plus == nil && unlimited == nil }
+    public var noPlansAvailable: Bool {
+        plus == nil && unlimited == nil
+    }
 
     public var onePlanAvailable: Bool {
         (plus == nil && unlimited != nil) || (plus != nil && unlimited == nil)

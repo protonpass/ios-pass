@@ -19,13 +19,12 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-
 import UserNotifications
 
 public protocol LocalNotificationServiceProtocol: Sendable {
     func requestNotificationPermission(with options: UNAuthorizationOptions)
 
-//    func add(for request: UNNotificationRequest)
+    ///    func add(for request: UNNotificationRequest)
     func addWithTimer(for request: UNNotificationRequest, and delay: TimeInterval)
 }
 

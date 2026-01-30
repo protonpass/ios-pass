@@ -59,7 +59,9 @@ final class CreateEditSshKeyViewModel: BaseCreateEditItemViewModel, DeinitPrinta
         }
     }
 
-    override var itemContentType: ItemContentType { .sshKey }
+    override var itemContentType: ItemContentType {
+        .sshKey
+    }
 
     override func generateItemContent() async -> ItemContentProtobuf {
         ItemContentProtobuf(name: title,

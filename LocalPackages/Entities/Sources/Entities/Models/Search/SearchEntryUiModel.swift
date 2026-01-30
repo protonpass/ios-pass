@@ -42,7 +42,9 @@ public struct SearchEntryUiModel: ItemIdentifiable {
 }
 
 extension SearchEntryUiModel: Identifiable {
-    public var id: String { itemId + shareId }
+    public var id: String {
+        itemId + shareId
+    }
 }
 
 extension SearchEntryUiModel: ItemThumbnailable {}

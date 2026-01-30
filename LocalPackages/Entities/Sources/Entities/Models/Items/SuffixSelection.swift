@@ -22,7 +22,9 @@ public struct SuffixSelection: Equatable, Hashable, Sendable {
     public var selectedSuffix: Suffix?
     public let suffixes: [Suffix]
 
-    public var selectedSuffixString: String { selectedSuffix?.suffix ?? "" }
+    public var selectedSuffixString: String {
+        selectedSuffix?.suffix ?? ""
+    }
 
     public init(suffixes: [Suffix], selectedSuffix: Suffix? = nil) {
         self.suffixes = suffixes

@@ -89,7 +89,10 @@ private struct ItemReadEventsView: View {
 }
 
 private struct ItemReadEventsUiModel: Identifiable {
-    var id: String { event.uuid }
+    var id: String {
+        event.uuid
+    }
+
     let event: ItemReadEvent
     let uiModel: ItemUiModel
     let relativeDate: String

@@ -20,9 +20,9 @@
 
 import Foundation
 
-// These extensions are taken from the following article written by Sundell
-// [Building async and concurrent versions of forEach and
-// map](https://www.swiftbysundell.com/articles/async-and-concurrent-forEach-and-map/)
+/// These extensions are taken from the following article written by Sundell
+/// [Building async and concurrent versions of forEach and
+/// map](https://www.swiftbysundell.com/articles/async-and-concurrent-forEach-and-map/)
 public extension Sequence {
     func asyncForEach(_ operation: @Sendable (Element) async throws -> Void) async rethrows {
         for element in self {

@@ -33,5 +33,7 @@ public struct PassProgressViewStyle: ProgressViewStyle {
 }
 
 public extension ProgressViewStyle where Self == PassProgressViewStyle {
-    static var pass: PassProgressViewStyle { .init() }
+    static var pass: PassProgressViewStyle {
+        .init()
+    }
 }

@@ -65,7 +65,6 @@ struct FileAttachmentRow: View {
 }
 
 private extension FileAttachmentRow {
-    @ViewBuilder
     var content: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             uiModel.group.icon

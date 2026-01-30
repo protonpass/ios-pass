@@ -25,7 +25,9 @@ import TipKit
 public struct ItemForceTouchTip: Tip {
     private let bundle: Bundle
 
-    public var id: String { PassTip.itemForceTouch.id }
+    public var id: String {
+        PassTip.itemForceTouch.id
+    }
 
     /// Any actions that is accessible via context menu like copy username/password, pin/unpin or trash, etc...
     public static let didPerformEligibleQuickAction = Event(id: "didPerformEligibleQuickAction")

@@ -71,7 +71,9 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     @Published var vaultSearchSelection: VaultSearchSelection = .current
 
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
-    var selectedSortType = SortType.mostRecent { didSet { filterAndSortResults() } }
+    var selectedSortType = SortType.mostRecent {
+        didSet { filterAndSortResults() }
+    }
 
     // Injected properties
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)

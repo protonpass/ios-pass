@@ -40,21 +40,27 @@ public extension Organization {
         /// Only share within organization
         case restricted = 1
 
-        public static var `default`: Self { .restricted }
+        public static var `default`: Self {
+            .restricted
+        }
     }
 
     enum ItemShareMode: Int, Sendable, Decodable, Equatable {
         case disabled = 0
         case enabled = 1
 
-        public static var `default`: Self { .enabled }
+        public static var `default`: Self {
+            .enabled
+        }
     }
 
     enum PublicLinkMode: Int, Sendable, Decodable, Equatable {
         case disabled = 0
         case enabled = 1
 
-        public static var `default`: Self { .enabled }
+        public static var `default`: Self {
+            .enabled
+        }
     }
 
     enum ExportMode: Int, Sendable, Decodable, Equatable {
@@ -64,7 +70,9 @@ public extension Organization {
         /// Only admins can export data
         case admins = 1
 
-        public static var `default`: Self { .admins }
+        public static var `default`: Self {
+            .admins
+        }
     }
 
     enum VaultCreateMode: Int, Sendable, Decodable, Equatable {

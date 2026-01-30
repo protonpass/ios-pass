@@ -23,9 +23,9 @@ import Foundation
 private let kBundleModificationDate = "BundleModificationDate"
 private let kIsFirstRun = "isFirstRun"
 
-// Detect app first run differently on iOS and macOS
-// because UserDefaults are not deleted when app is trashed and deleted on macOS
-// We rely on bundle's modification date to detect if app is first run on macOS
+/// Detect app first run differently on iOS and macOS
+/// because UserDefaults are not deleted when app is trashed and deleted on macOS
+/// We rely on bundle's modification date to detect if app is first run on macOS
 public protocol FirstRunDetectorProtocol {
     func isFirstRun() -> Bool
     func completeFirstRun()

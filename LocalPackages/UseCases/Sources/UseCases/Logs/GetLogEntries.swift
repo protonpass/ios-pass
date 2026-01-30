@@ -23,10 +23,9 @@
 import Core
 import Entities
 
-/*
- The GetLogEntriesUseCase protocol defines the contract for a use case that retrieves log entries.
- It inherits from the Sendable protocol, allowing the use case to be executed asynchronously.
- */
+// swiftlint:disable:next orphaned_doc_comment
+/// The GetLogEntriesUseCase protocol defines the contract for a use case that retrieves log entries.
+/// It inherits from the Sendable protocol, allowing the use case to be executed asynchronously.
 // sourcery: AutoMockable
 public protocol GetLogEntriesUseCase: Sendable {
     /**

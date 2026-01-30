@@ -85,23 +85,21 @@ public extension LocalDatasource {
                                   hydrateBlock: @escaping (NSManagedObject, T) -> Void)
         -> NSBatchInsertRequest {
         var index = 0
-        let request = NSBatchInsertRequest(entity: entity,
-                                           managedObjectHandler: { object in
-                                               guard index < sourceItems.count else { return true }
-                                               let item = sourceItems[index]
-                                               hydrateBlock(object, item)
-                                               index += 1
-                                               return false
-                                           })
-        return request
+        return NSBatchInsertRequest(entity: entity,
+                                    managedObjectHandler: { object in
+                                        guard index < sourceItems.count else { return true }
+                                        let item = sourceItems[index]
+                                        hydrateBlock(object, item)
+                                        index += 1
+                                        return false
+                                    })
     }
 
-    func upsert<Item, Entity>(_ items: [Item],
-                              entityType: Entity.Type,
-                              fetchPredicate: NSPredicate,
-                              isEqual: @escaping (Item, Entity) -> Bool,
-                              hydrate: @escaping (Item, Entity) throws -> Void) async throws
-        where Entity: NSManagedObject {
+    func upsert<Item, Entity: NSManagedObject>(_ items: [Item],
+                                               entityType: Entity.Type,
+                                               fetchPredicate: NSPredicate,
+                                               isEqual: @escaping (Item, Entity) -> Bool,
+                                               hydrate: @escaping (Item, Entity) throws -> Void) async throws {
         guard !items.isEmpty else {
             return
         }
@@ -165,14 +163,17 @@ public extension LocalDatasource {
         }
     }
 
-    func upsertWithRelationships<Item: Sendable, Entity>(_ items: [Item],
-                                                         entityType: Entity.Type,
-                                                         fetchPredicate: NSPredicate,
-                                                         isEqual: @escaping @Sendable (Item, Entity) -> Bool,
-                                                         hydrate: @escaping @Sendable (Item, Entity,
-                                                                                       NSManagedObjectContext) throws
-                                                             -> Void) async throws
-        where Entity: NSManagedObject {
+    func upsertWithRelationships<Item: Sendable,
+        Entity: NSManagedObject>(_ items: [Item],
+                                 entityType: Entity.Type,
+                                 fetchPredicate: NSPredicate,
+                                 isEqual: @escaping @Sendable (Item,
+                                                               Entity)
+                                     -> Bool,
+                                 hydrate: @escaping @Sendable (Item,
+                                                               Entity,
+                                                               NSManagedObjectContext) throws
+                                     -> Void) async throws {
         guard !items.isEmpty else {
             return
         }
@@ -227,13 +228,14 @@ public extension LocalDatasource {
         }
     }
 
-    private func insertIndividually<Item: Sendable, Entity>(_ items: [Item],
-                                                            entityType: Entity.Type,
-                                                            context: NSManagedObjectContext,
-                                                            hydrate: @escaping @Sendable (Item, Entity,
-                                                                                          NSManagedObjectContext) throws
-                                                                -> Void) async throws
-        where Entity: NSManagedObject {
+    private func insertIndividually<Item: Sendable,
+        Entity: NSManagedObject>(_ items: [Item],
+                                 entityType: Entity.Type,
+                                 context: NSManagedObjectContext,
+                                 hydrate: @escaping @Sendable (Item,
+                                                               Entity,
+                                                               NSManagedObjectContext) throws
+                                     -> Void) async throws {
         try await context.perform {
             for item in items {
                 let entity = Entity(context: context)
@@ -317,7 +319,7 @@ extension LocalDatasource {
 }
 
 extension NSManagedObject {
-    /*
+    /**
      Such helper function is due to a very strange 🐛 that makes
      unit tests failed out of the blue because `CoreDataEntityName.entity()`
      failed to return a non-null NSEntityDescription.

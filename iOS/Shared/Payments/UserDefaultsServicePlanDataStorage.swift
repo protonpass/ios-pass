@@ -78,8 +78,8 @@ final class UserDefaultsServicePlanDataStorage: ServicePlanDataStorage {
     }
 }
 
-private final class StorageHelper<StorageKeys>
-    where StorageKeys: RawRepresentable, StorageKeys.RawValue == String {
+private final class StorageHelper<StorageKeys: RawRepresentable>
+    where StorageKeys.RawValue == String {
     private let jsonEncoder = JSONEncoder()
     private let jsonDecoder = JSONDecoder()
     private let storage: UserDefaults
@@ -88,7 +88,7 @@ private final class StorageHelper<StorageKeys>
         self.storage = storage
     }
 
-    func getter<T>(_ type: T.Type, key: StorageKeys) -> T? where T: Codable {
+    func getter<T: Codable>(_ type: T.Type, key: StorageKeys) -> T? {
         guard let data = storage.data(forKey: key.rawValue),
               let value = try? jsonDecoder.decode(T.self, from: data) else {
             return nil

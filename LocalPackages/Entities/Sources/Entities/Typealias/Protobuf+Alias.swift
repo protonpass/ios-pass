@@ -26,9 +26,17 @@ public typealias AllowedAndroidApp = ProtonPassItemV1_AllowedAndroidApp
 public typealias Passkey = ProtonPassItemV1_Passkey
 
 extension ItemContentProtobuf: ProtobufableItemContentProtocol {
-    public var name: String { metadata.name }
-    public var note: String { metadata.note }
-    public var uuid: String { metadata.itemUuid }
+    public var name: String {
+        metadata.name
+    }
+
+    public var note: String {
+        metadata.note
+    }
+
+    public var uuid: String {
+        metadata.itemUuid
+    }
 
     public var contentData: ItemContentData {
         switch content.content {
@@ -72,7 +80,9 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
         }
     }
 
-    public var customFields: [CustomField] { extraFields.map { .init(from: $0) } }
+    public var customFields: [CustomField] {
+        extraFields.map { .init(from: $0) }
+    }
 
     public func data() throws -> Data {
         try serializedData()

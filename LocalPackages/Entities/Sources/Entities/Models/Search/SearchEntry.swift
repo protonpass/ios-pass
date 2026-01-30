@@ -39,6 +39,11 @@ public struct SearchEntry: Hashable, Sendable {
 }
 
 extension SearchEntry: ItemIdentifiable {
-    public var shareId: String { shareID }
-    public var itemId: String { itemID }
+    public var shareId: String {
+        shareID
+    }
+
+    public var itemId: String {
+        itemID
+    }
 }

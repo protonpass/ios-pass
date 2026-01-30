@@ -142,7 +142,9 @@ struct HomepageTabbarView: UIViewControllerRepresentable {
 
     func updateUIViewController(_ uiViewController: HomepageTabBarController, context: Context) {}
 
-    func makeCoordinator() -> Coordinator { .init() }
+    func makeCoordinator() -> Coordinator {
+        .init()
+    }
 
     @MainActor
     final class Coordinator: NSObject, HomepageTabDelegate {

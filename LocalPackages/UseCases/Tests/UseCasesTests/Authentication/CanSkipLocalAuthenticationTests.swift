@@ -27,7 +27,9 @@ import UseCases
 
 private struct MockedCurrentDateProvider: CurrentDateProviderProtocol {
     var currentDate = Date.now
-    func getCurrentDate() -> Date { currentDate }
+    func getCurrentDate() -> Date {
+        currentDate
+    }
 }
 
 struct CanSkipLocalAuthenticationTests {

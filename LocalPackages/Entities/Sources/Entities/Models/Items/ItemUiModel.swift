@@ -44,7 +44,9 @@ public struct ItemUiModel: PrecomputedHashable, Equatable, Sendable, Pinnable {
     public let hasUsername: Bool
     public let hasPassword: Bool
 
-    public var hasTotpUri: Bool { totpUri?.isEmpty == false }
+    public var hasTotpUri: Bool {
+        totpUri?.isEmpty == false
+    }
 
     public let precomputedHash: Int
 
@@ -134,9 +136,13 @@ public struct ItemUiModel: PrecomputedHashable, Equatable, Sendable, Pinnable {
 }
 
 extension ItemUiModel: Identifiable {
-    public var id: String { itemId + shareId }
+    public var id: String {
+        itemId + shareId
+    }
 
-    public var aliasDisabled: Bool { !aliasEnabled }
+    public var aliasDisabled: Bool {
+        !aliasEnabled
+    }
 }
 
 extension ItemUiModel: ItemIdentifiable {}

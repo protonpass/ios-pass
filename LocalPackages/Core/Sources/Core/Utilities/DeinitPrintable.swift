@@ -25,5 +25,7 @@ public protocol DeinitPrintable: AnyObject {
 }
 
 public extension DeinitPrintable {
-    var deinitMessage: String { "\(Self.self) is deallocated" }
+    var deinitMessage: String {
+        "\(Self.self) is deallocated"
+    }
 }

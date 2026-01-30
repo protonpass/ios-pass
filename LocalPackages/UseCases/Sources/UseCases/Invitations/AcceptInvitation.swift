@@ -86,14 +86,12 @@ private extension AcceptInvitation {
             let armoredInviterPublicKeys = inviterPublicKeys.map { ArmoredKey(value: $0.value) }
             let config = try getConfig(invite: invite, addressKeys: addressKeys, userData: userData)
 
-            let reencrytedKeys: [ItemKey] = try invite.keys.map { key in
+            return try invite.keys.map { key in
                 try transformKey(key: key,
                                  addressKeys: addressKeys,
                                  armoredInviterPublicKeys: armoredInviterPublicKeys,
                                  config: config)
             }
-
-            return reencrytedKeys
         } catch {
             logger.error(error)
             throw error

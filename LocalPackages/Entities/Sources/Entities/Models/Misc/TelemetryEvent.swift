@@ -155,7 +155,7 @@ public enum TelemetryEventType: Sendable, Equatable, Codable {
         }
     }
 
-    // The event name sent to the BE
+    /// The event name sent to the BE
     public var eventName: String {
         switch self {
         case .create:
