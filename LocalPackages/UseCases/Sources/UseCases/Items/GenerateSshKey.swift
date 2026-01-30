@@ -23,7 +23,7 @@ import Entities
 import PassRustCore
 
 public protocol GenerateSshKeyUseCase: Sendable {
-    // Generating RSA keys takes seconds so we offload the generation from main thread
+    /// Generating RSA keys takes seconds so we offload the generation from main thread
     @concurrent
     func execute(type: Entities.SshKeyType) async throws -> SshKeyComponents
 }

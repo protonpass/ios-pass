@@ -70,7 +70,7 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
         }
     }
 
-    // Random password options
+    /// Random password options
     @AppStorage("characterCount", store: kSharedUserDefaults)
     private var characterCount: Double = 20
 
@@ -83,7 +83,7 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     @AppStorage("hasNumberCharacters", store: kSharedUserDefaults)
     private var hasNumberCharacters = true
 
-    // Memorable password options
+    /// Memorable password options
     @AppStorage("wordSeparator", store: kSharedUserDefaults)
     private var wordSeparator: WordSeparator = .hyphens {
         didSet {

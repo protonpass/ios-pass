@@ -240,8 +240,7 @@ public extension RemoteAliasDatasource {
         let endpoint = GetAliasContactsEndpoint(shareId: shareId,
                                                 itemId: itemId,
                                                 lastContactId: lastContactId)
-        let response = try await exec(userId: userId, endpoint: endpoint)
-        return response
+        return try await exec(userId: userId, endpoint: endpoint)
     }
 
     func createAliasContact(userId: String,

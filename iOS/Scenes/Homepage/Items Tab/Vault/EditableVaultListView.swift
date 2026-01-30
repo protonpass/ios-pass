@@ -316,7 +316,6 @@ private extension EditableVaultListView {
             .foregroundStyle(PassColor.textWeak)
     }
 
-    @ViewBuilder
     func vaultTrailingView(_ vault: Share, haveItems: Bool) -> some View {
         Menu(content: {
             if viewModel.canEdit(vault: vault) {

@@ -244,7 +244,7 @@ private extension View {
         }
     }
 
-    // Only iOS 17+ support disabling alert's buttons
+    /// Only iOS 17+ support disabling alert's buttons
     @ViewBuilder
     func adaptiveDisabledButton(title: LocalizedStringKey,
                                 disabled: Bool,

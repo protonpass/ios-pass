@@ -92,7 +92,6 @@ private extension ShareInviteeView {
 }
 
 private extension ShareInviteeView {
-    @ViewBuilder
     var trailingView: some View {
         Menu(content: {
             ForEach(invitee.options) { option in

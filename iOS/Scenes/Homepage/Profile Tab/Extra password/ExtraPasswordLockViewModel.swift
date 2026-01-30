@@ -33,7 +33,9 @@ final class ExtraPasswordLockViewModel: ObservableObject {
     @Published private(set) var error: (any Error)?
     @Published var extraPassword = ""
 
-    var canProceed: Bool { extraPassword.count >= Constants.ExtraPassword.minLength }
+    var canProceed: Bool {
+        extraPassword.count >= Constants.ExtraPassword.minLength
+    }
 
     private let verifyExtraPassword = resolve(\UseCasesContainer.verifyExtraPassword)
     private let extraPasswordRepository: any ExtraPasswordRepositoryProtocol

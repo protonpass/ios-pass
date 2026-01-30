@@ -41,9 +41,9 @@ public final class RevokeCurrentSession: RevokeCurrentSessionUseCase {
         self.userManager = userManager
     }
 
-    // Do not care if revoke is successful or not
-    // because we don't want to prevent users from logging out
-    // e.g when there's no internet connection
+    /// Do not care if revoke is successful or not
+    /// because we don't want to prevent users from logging out
+    /// e.g when there's no internet connection
     public func execute() async {
         guard let userId = try? await userManager.getActiveUserId() else {
             return

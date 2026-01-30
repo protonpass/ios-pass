@@ -23,7 +23,9 @@ public struct SymmetricallyEncryptedItem: Equatable, ItemIdentifiable, Sendable,
     /// ID of the share that the item belongs to
     public let shareId: String
 
-    public var itemId: String { item.itemID }
+    public var itemId: String {
+        item.itemID
+    }
 
     public var userId: String
 

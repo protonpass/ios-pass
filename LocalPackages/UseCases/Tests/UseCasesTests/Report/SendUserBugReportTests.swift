@@ -53,9 +53,9 @@ final class SendUserBugReportTests: XCTestCase {
         XCTAssertEqual(params.0, "Test bug")
         XCTAssertEqual(params.1, "Bug description")
         XCTAssertEqual(params.2,
-                       [
-                           "File0": extractToFileMock.stubbedExecuteResult!,
-                           "File1": extractToFileMock.stubbedExecuteResult!
+                       try [
+                           "File0": XCTUnwrap(extractToFileMock.stubbedExecuteResult),
+                           "File1": XCTUnwrap(extractToFileMock.stubbedExecuteResult)
                        ])
     }
 }

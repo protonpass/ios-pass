@@ -40,7 +40,9 @@ public struct GroupInfo: Sendable, Equatable, Hashable, Identifiable {
         members?.count
     }
 
-    public var id: Self { self }
+    public var id: Self {
+        self
+    }
 }
 
 public struct Group: Decodable, Sendable, Equatable, Hashable, Identifiable {

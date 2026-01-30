@@ -39,8 +39,13 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var simpleLoginNote = ""
     @Published var senderName = ""
 
-    var suffix: String { suffixSelection.selectedSuffixString }
-    var mailboxes: String { mailboxSelection.selectedMailboxesString }
+    var suffix: String {
+        suffixSelection.selectedSuffixString
+    }
+
+    var mailboxes: String {
+        mailboxSelection.selectedMailboxesString
+    }
 
     @Published private(set) var aliasEmail = ""
     @Published private(set) var state: State = .loading
@@ -158,7 +163,9 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .store(in: &cancellables)
     }
 
-    override var itemContentType: ItemContentType { .alias }
+    override var itemContentType: ItemContentType {
+        .alias
+    }
 
     override func generateItemContent() async -> ItemContentProtobuf {
         ItemContentProtobuf(name: title,

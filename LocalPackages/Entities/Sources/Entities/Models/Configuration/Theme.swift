@@ -27,7 +27,9 @@ public enum Theme: Int, Codable, CaseIterable, Sendable {
     case dark = 1
     case matchSystem = 2
 
-    public static var `default`: Self { .dark }
+    public static var `default`: Self {
+        .dark
+    }
 
     public var userInterfaceStyle: UIUserInterfaceStyle {
         switch self {

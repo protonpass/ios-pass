@@ -34,7 +34,7 @@ public enum ShareRole: String, CaseIterable, Equatable, Sendable, Comparable, Ha
 }
 
 private extension ShareRole {
-    // Used for comparison
+    /// Used for comparison
     var weight: Int {
         switch self {
         case .manager: 3

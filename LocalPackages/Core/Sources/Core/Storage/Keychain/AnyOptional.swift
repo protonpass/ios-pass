@@ -20,16 +20,18 @@
 
 import Foundation
 
-// Used in property wrapper context
-// Since our property wrapper's Value type isn't optional, but
-// can still contain nil values, we'll have to introduce this
-// protocol to enable us to cast any assigned value into a type
-// that we can compare against nil
-// https://www.swiftbysundell.com/articles/property-wrappers-in-swift/
+/// Used in property wrapper context
+/// Since our property wrapper's Value type isn't optional, but
+/// can still contain nil values, we'll have to introduce this
+/// protocol to enable us to cast any assigned value into a type
+/// that we can compare against nil
+/// https://www.swiftbysundell.com/articles/property-wrappers-in-swift/
 public protocol AnyOptional {
     var isNil: Bool { get }
 }
 
 extension Optional: AnyOptional {
-    public var isNil: Bool { self == nil }
+    public var isNil: Bool {
+        self == nil
+    }
 }

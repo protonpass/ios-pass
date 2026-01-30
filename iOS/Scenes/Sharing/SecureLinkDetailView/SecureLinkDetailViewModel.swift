@@ -45,9 +45,7 @@ struct SecureLinkDetailUiModel: Sendable {
         formatter.unitsStyle = .full
 
         let currentDate = Date()
-        let relativeTime = formatter.localizedString(for: expirationDate, relativeTo: currentDate)
-
-        return relativeTime
+        return formatter.localizedString(for: expirationDate, relativeTo: currentDate)
     }
 
     var readTitle: String {

@@ -37,8 +37,8 @@ class ShakeDetectingView: UIView {
         true
     }
 
-    // Automatically become the first responder when the view is added to the window
-    // Otherwise motionEnded callback is not triggered
+    /// Automatically become the first responder when the view is added to the window
+    /// Otherwise motionEnded callback is not triggered
     override func didMoveToWindow() {
         becomeFirstResponder()
     }

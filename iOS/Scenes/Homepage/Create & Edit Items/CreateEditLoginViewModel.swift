@@ -71,7 +71,9 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     private var aliasOptions: AliasOptions?
     @Published private var aliasCreationLiteInfo: AliasCreationLiteInfo?
-    var isAlias: Bool { aliasCreationLiteInfo != nil }
+    var isAlias: Bool {
+        aliasCreationLiteInfo != nil
+    }
 
     private let sanitizeTotpUriForEditing = resolve(\SharedUseCasesContainer.sanitizeTotpUriForEditing)
     private let sanitizeTotpUriForSaving = resolve(\SharedUseCasesContainer.sanitizeTotpUriForSaving)
@@ -145,7 +147,9 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         }
     }
 
-    override var itemContentType: ItemContentType { .login }
+    override var itemContentType: ItemContentType {
+        .login
+    }
 
     override func saveButtonTitle() -> String {
         guard case let .create(_, type) = mode,

@@ -26,7 +26,9 @@ import SwiftUI
 enum FeedbackChannel: Int, CaseIterable, Identifiable {
     case bugReport = 0, reddit, uservoice
 
-    var id: Int { rawValue }
+    var id: Int {
+        rawValue
+    }
 }
 
 struct FeedbackChannelsView: View {

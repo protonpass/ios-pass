@@ -53,7 +53,9 @@ final class CreateEditWifiViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
         }
     }
 
-    override var itemContentType: ItemContentType { .wifi }
+    override var itemContentType: ItemContentType {
+        .wifi
+    }
 
     override func generateItemContent() async -> ItemContentProtobuf {
         ItemContentProtobuf(name: title,

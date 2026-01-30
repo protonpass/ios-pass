@@ -47,7 +47,9 @@ final class WelcomeCoordinator: DeinitPrintable {
     private let theme: Theme
 
     weak var delegate: (any WelcomeCoordinatorDelegate)?
-    var rootViewController: UIViewController { welcomeViewController }
+    var rootViewController: UIViewController {
+        welcomeViewController
+    }
 
     @LazyInjected(\UseCasesContainer.createLogsFile) private var createLogsFile
     @LazyInjected(\SharedRepositoryContainer.featureFlagsRepository) private var featureFlagsRepository

@@ -386,15 +386,6 @@ extension SharedUseCasesContainer {
     }
 }
 
-// MARK: - Session
-
-extension SharedUseCasesContainer {
-//    var forkSession: Factory<any ForkSessionUseCase> {
-//        self { ForkSession(networkRepository: SharedRepositoryContainer.shared.networkRepository(),
-//                           userManager: self.userManager) }
-//    }
-}
-
 // MARK: - User
 
 extension SharedUseCasesContainer {
