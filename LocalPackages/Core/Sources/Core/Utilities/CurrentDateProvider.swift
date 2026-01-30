@@ -26,6 +26,9 @@ public protocol CurrentDateProviderProtocol: Sendable {
 }
 
 public struct CurrentDateProvider: CurrentDateProviderProtocol {
-    public func getCurrentDate() -> Date { .now }
+    public func getCurrentDate() -> Date {
+        .now
+    }
+
     public init() {}
 }

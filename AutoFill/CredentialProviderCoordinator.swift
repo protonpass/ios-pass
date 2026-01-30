@@ -177,9 +177,9 @@ private extension CredentialProviderCoordinator {
 
         var identifiers = identifiers
         #if DEBUG
-        /// As of iOS 18.0, the list of service identifiers when autofilling one-time code
-        /// is always empty even when iOS could detect the OTP form
-        /// So we mock it for testing purpose
+        // As of iOS 18.0, the list of service identifiers when autofilling one-time code
+        // is always empty even when iOS could detect the OTP form
+        // So we mock it for testing purpose
         if identifiers.isEmpty, case .oneTimeCodes = mode {
             identifiers.append(.init(identifier: "https://autofilth.lol", type: .URL))
         }

@@ -33,7 +33,10 @@ struct TelemetryEventsSection: View {
 }
 
 private struct TelemetryEventUiModel: Identifiable {
-    var id: String { event.uuid }
+    var id: String {
+        event.uuid
+    }
+
     let event: TelemetryEvent
     let relativeDate: String
 

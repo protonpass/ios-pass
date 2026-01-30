@@ -23,17 +23,17 @@ import ProtonCoreKeymaker
 
 // sourcery: AutoMockable
 public protocol KeychainProtocol: AnyObject, Sendable {
-    // Getters
+    /// Getters
     func dataOrError(forKey key: String, attributes: [CFString: Any]?) throws -> Data?
     // periphery:ignore
     func stringOrError(forKey key: String, attributes: [CFString: Any]?) throws -> String?
 
-    // Setters
+    /// Setters
     func setOrError(_ data: Data, forKey key: String, attributes: [CFString: Any]?) throws
     // periphery:ignore
     func setOrError(_ string: String, forKey key: String, attributes: [CFString: Any]?) throws
 
-    // Cleaner
+    /// Cleaner
     func removeOrError(forKey key: String) throws
 }
 

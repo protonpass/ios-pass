@@ -20,7 +20,7 @@
 
 import Foundation
 
-// Track file download and upload progress
+/// Track file download and upload progress
 public actor FileProgressTracker {
     private let size: Int
     private var processedBytesCount = 0

@@ -37,7 +37,9 @@ struct CreateEditAliasView: View {
     @State private var isShowingSlNoteExplanation = false
     @State private var sheetState: AliasOptionsSheetState?
 
-    private var tintColor: Color { viewModel.itemContentType.normMajor1Color }
+    private var tintColor: Color {
+        viewModel.itemContentType.normMajor1Color
+    }
 
     init(viewModel: CreateEditAliasViewModel) {
         _viewModel = .init(wrappedValue: viewModel)

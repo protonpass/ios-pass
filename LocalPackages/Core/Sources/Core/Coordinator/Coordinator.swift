@@ -149,7 +149,7 @@ public extension CoordinatorProtocol {
         }
     }
 
-    // Helper function to recursively search for UITabBarController
+    /// Helper function to recursively search for UITabBarController
     func findTabBarController(in viewController: UIViewController) -> UITabBarController? {
         // Check if the current view controller is a UITabBarController
         if let tabBarController = viewController as? UITabBarController {
@@ -191,8 +191,13 @@ enum CoordinatorType {
 open class Coordinator: CoordinatorProtocol {
     private let type: CoordinatorType
 
-    public var rootViewController: UIViewController { type.controller }
-    public var topMostViewController: UIViewController { rootViewController.topMostViewController }
+    public var rootViewController: UIViewController {
+        type.controller
+    }
+
+    public var topMostViewController: UIViewController {
+        rootViewController.topMostViewController
+    }
 
     public init() {
         if UIDevice.current.isIpad {
@@ -230,9 +235,9 @@ open class Coordinator: CoordinatorProtocol {
             case let .navigation(navigationController):
                 navigationController.pushViewController(viewController, animated: animated)
             case let .split(splitViewController):
-                /// Embed in a `UINavigationController` so that `splitViewController` replaces the secondary view
-                /// instead of pushing it into the navigation stack of the current secondary view controller.
-                /// This is to reduce memory footprint.
+                // Embed in a `UINavigationController` so that `splitViewController` replaces the secondary view
+                // instead of pushing it into the navigation stack of the current secondary view controller.
+                // This is to reduce memory footprint.
                 let navigationController = UINavigationController(rootViewController: viewController)
                 navigationController.isNavigationBarHidden = true
 
@@ -250,8 +255,8 @@ open class Coordinator: CoordinatorProtocol {
             case let .navigation(navigationController):
                 navigationController.popViewController(animated: animated)
             case let .split(splitViewController):
-                /// Show primary view controller if it's hidden
-                /// Hide primary view controller if it's visible
+                // Show primary view controller if it's hidden
+                // Hide primary view controller if it's visible
                 switch splitViewController.displayMode {
                 case .secondaryOnly:
                     splitViewController.show(.primary)

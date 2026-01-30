@@ -83,7 +83,7 @@ public final class VerifyProtonPassword: @unchecked Sendable, VerifyProtonPasswo
                     continuation.resume(returning: true)
                 case let .failure(error):
                     switch error {
-                    /// Upon testing`wrongPassword` case is not returned by this method but just in case
+                    // Upon testing`wrongPassword` case is not returned by this method but just in case
                     case .wrongPassword:
                         continuation.resume(returning: false)
                     case let .networkingError(networkError):
@@ -123,10 +123,21 @@ private extension VerifyProtonPassword {
 // MARK: APIServiceDelegate
 
 extension VerifyProtonPassword: APIServiceDelegate {
-    public var appVersion: String { appVer }
-    public var userAgent: String? { UserAgent.default.ua }
-    public var locale: String { Locale.autoupdatingCurrent.identifier }
-    public var additionalHeaders: [String: String]? { nil }
+    public var appVersion: String {
+        appVer
+    }
+
+    public var userAgent: String? {
+        UserAgent.default.ua
+    }
+
+    public var locale: String {
+        Locale.autoupdatingCurrent.identifier
+    }
+
+    public var additionalHeaders: [String: String]? {
+        nil
+    }
 
     public func onDohTroubleshot() {}
 
@@ -143,8 +154,14 @@ extension VerifyProtonPassword: APIServiceDelegate {
 
 /// Do nothing, just to make the `APIService` happy because it expectes an `AuthDelegate`
 extension VerifyProtonPassword: AuthDelegate {
-    public func authCredential(sessionUID: String) -> AuthCredential? { nil }
-    public func credential(sessionUID: String) -> Credential? { nil }
+    public func authCredential(sessionUID: String) -> AuthCredential? {
+        nil
+    }
+
+    public func credential(sessionUID: String) -> Credential? {
+        nil
+    }
+
     public func onUpdate(credential: Credential, sessionUID: String) {}
     public func onSessionObtaining(credential: Credential) {}
     public func onAdditionalCredentialsInfoObtained(sessionUID: String,

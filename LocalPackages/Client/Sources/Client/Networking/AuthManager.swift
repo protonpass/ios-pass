@@ -74,7 +74,7 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
     private let logger: Logger
     private var didSetUp = false
 
-    // This exposes a read only publisher to the rest of the application as AnyPublisher has no send function
+    /// This exposes a read only publisher to the rest of the application as AnyPublisher has no send function
     public var sessionWasInvalidated: AnyPublisher<(sessionId: String, userId: String?), Never> {
         _sessionWasInvalidated.eraseToAnyPublisher()
     }

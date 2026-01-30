@@ -145,7 +145,7 @@ public final class APIManager: @unchecked Sendable, APIManagerProtocol, APIManag
         throw PassError.api(.noApiServiceLinkedToUserId)
     }
 
-    // Called when signing out the last user
+    /// Called when signing out the last user
     public func reset() {
         allCurrentApiServices.removeAll()
     }
@@ -264,10 +264,21 @@ extension APIManager: AuthHelperDelegate {
 // MARK: - APIServiceDelegate
 
 extension APIManager: APIServiceDelegate {
-    public var appVersion: String { appVer }
-    public var userAgent: String? { UserAgent.default.ua }
-    public var locale: String { Locale.autoupdatingCurrent.identifier }
-    public var additionalHeaders: [String: String]? { nil }
+    public var appVersion: String {
+        appVer
+    }
+
+    public var userAgent: String? {
+        UserAgent.default.ua
+    }
+
+    public var locale: String {
+        Locale.autoupdatingCurrent.identifier
+    }
+
+    public var additionalHeaders: [String: String]? {
+        nil
+    }
 
     public func onDohTroubleshot() {}
 

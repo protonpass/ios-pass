@@ -69,7 +69,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let secureLinkManager = resolve(\ServiceContainer.secureLinkManager)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
-    // Repositories
+    /// Repositories
     private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
 
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
@@ -537,7 +537,10 @@ private extension ProfileTabViewModel {
 }
 
 private extension UserData {
-    var userId: String { user.ID }
+    var userId: String {
+        user.ID
+    }
+
     var displayName: String {
         if user.displayName?.isEmpty == true {
             user.name ?? ""
@@ -546,6 +549,11 @@ private extension UserData {
         }
     }
 
-    var email: String { user.email ?? "" }
-    var initial: String { user.name?.first?.uppercased() ?? user.email?.first?.uppercased() ?? "" }
+    var email: String {
+        user.email ?? ""
+    }
+
+    var initial: String {
+        user.name?.first?.uppercased() ?? user.email?.first?.uppercased() ?? ""
+    }
 }

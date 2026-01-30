@@ -96,8 +96,7 @@ private extension InviteSuggestionsSection {
     }
 }
 
-struct EnumSegmentedPicker<Selection>: View where Selection: RawRepresentable, Selection.RawValue == Int,
-    Selection: Hashable {
+struct EnumSegmentedPicker<Selection: RawRepresentable & Hashable>: View where Selection.RawValue == Int {
     @Binding private var selection: Selection
     private let options: [String]
     private let highlightTextColor: Color

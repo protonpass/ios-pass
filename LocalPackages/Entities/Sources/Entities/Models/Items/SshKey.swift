@@ -23,7 +23,9 @@ import Foundation
 public enum SshKeyType: Sendable, CaseIterable {
     case ed25519, rsa2048, rsa4096
 
-    public static var `default`: Self { .ed25519 }
+    public static var `default`: Self {
+        .ed25519
+    }
 
     public var title: String {
         switch self {

@@ -45,8 +45,8 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
         }
     }
 
-    // Triggered in `didSet` block to workaround @Published's behavior
-    // of sinking when the value is not yet updated
+    /// Triggered in `didSet` block to workaround @Published's behavior
+    /// of sinking when the value is not yet updated
     let selectedUserUpdated = PassthroughSubject<Void, Never>()
 
     var cancellables = Set<AnyCancellable>()
@@ -215,9 +215,9 @@ extension AutoFillViewModel {
         }
     }
 
-    // Show the sheet at the coordinator level instead of a view modifier
-    // because SwiftUI's confirmationDialog (action sheet) as well as alerts
-    // don't inherit colorScheme from its parent view
+    /// Show the sheet at the coordinator level instead of a view modifier
+    /// because SwiftUI's confirmationDialog (action sheet) as well as alerts
+    /// don't inherit colorScheme from its parent view
     func presentSelectUserActionSheet() {
         delegate?.autoFillViewModelWantsToSelectUser(users)
     }

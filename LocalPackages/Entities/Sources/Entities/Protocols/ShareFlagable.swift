@@ -36,7 +36,9 @@ public extension ShareFlagable {
         shareFlags.contains(.hidden)
     }
 
-    var visible: Bool { !hidden }
+    var visible: Bool {
+        !hidden
+    }
 }
 
 public struct ShareFlags: Sendable, OptionSet {

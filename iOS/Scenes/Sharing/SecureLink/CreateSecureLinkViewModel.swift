@@ -30,7 +30,9 @@ enum SecureLinkExpiration: Sendable, Hashable, Identifiable {
     case hour(Int)
     case day(Int)
 
-    var id: Int { seconds }
+    var id: Int {
+        seconds
+    }
 
     var title: String {
         switch self {
@@ -69,7 +71,9 @@ enum CreateSecureLinkViewModelState {
         }
     }
 
-    static var `default`: Self { .creationWithoutRestriction }
+    static var `default`: Self {
+        .creationWithoutRestriction
+    }
 }
 
 @MainActor

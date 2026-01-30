@@ -62,7 +62,9 @@ final class AppCoordinator {
 
     private var homepageCoordinator: HomepageCoordinator?
     private var welcomeCoordinator: WelcomeCoordinator?
-    private var rootViewController: UIViewController? { window.rootViewController }
+    private var rootViewController: UIViewController? {
+        window.rootViewController
+    }
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -337,7 +339,7 @@ private extension AppCoordinator {
                           animations: nil) { _ in completion?() }
     }
 
-    // This is used for UI tests
+    /// This is used for UI tests
     func resetAllData() {
         Task {
             // swiftlint:disable:next todo
@@ -354,7 +356,7 @@ private extension AppCoordinator {
         }
     }
 
-    // Check if user is logged out from extensions
+    /// Check if user is logged out from extensions
     func logOutIfNoUserDataFound() {
         Task { [weak self] in
             guard let self else { return }

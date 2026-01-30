@@ -44,7 +44,6 @@ struct FullSyncProgressView: View {
 }
 
 private extension FullSyncProgressView {
-    @ViewBuilder
     var realBody: some View {
         ZStack {
             PassColor.backgroundNorm

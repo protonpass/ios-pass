@@ -83,7 +83,6 @@ private extension DetailHistoryView {
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
 
-    @ViewBuilder
     func cardNumberRow(creditCardItem: CreditCardData) -> some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.creditCard, color: viewModel.currentRevision.type.normColor)
@@ -112,7 +111,6 @@ private extension DetailHistoryView {
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
 
-    @ViewBuilder
     func verificationNumberRow(creditCardItem: CreditCardData) -> some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: PassIcon.shieldCheck, color: viewModel.currentRevision.type.normColor)
@@ -143,7 +141,6 @@ private extension DetailHistoryView {
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
 
-    @ViewBuilder
     func pinRow(creditCardItem: CreditCardData) -> some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.grid3, color: viewModel.currentRevision.type.normColor)

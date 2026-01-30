@@ -117,18 +117,25 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
         return applicableFields.first?.content
     }
 
-    // Must be careful because this does not always represent a shared item that was accepted by user as it also
-    // show in send. To know if an item was share with me we need to check this one and check that item.itemkey is
-    // nil
-    public var shared: Bool { item.shareCount > 0 }
+    /// Must be careful because this does not always represent a shared item that was accepted by user as it also
+    /// show in send. To know if an item was share with me we need to check this one and check that item.itemkey is
+    /// nil
+    public var shared: Bool {
+        item.shareCount > 0
+    }
 }
 
 extension ItemContent: ItemIdentifiable {
-    public var itemId: String { item.itemID }
+    public var itemId: String {
+        item.itemID
+    }
 }
 
 extension ItemContent: ItemTypeIdentifiable {
-    public var type: ItemContentType { contentData.type }
+    public var type: ItemContentType {
+        contentData.type
+    }
+
     public var totpUri: String? {
         if case let .login(data) = contentData {
             data.totpUri
@@ -137,8 +144,13 @@ extension ItemContent: ItemTypeIdentifiable {
         }
     }
 
-    public var aliasEmail: String? { item.aliasEmail }
-    public var aliasEnabled: Bool { item.isAliasEnabled }
+    public var aliasEmail: String? {
+        item.aliasEmail
+    }
+
+    public var aliasEnabled: Bool {
+        item.isAliasEnabled
+    }
 
     public var hasEmail: Bool {
         if case let .login(data) = contentData {
@@ -166,7 +178,9 @@ extension ItemContent: ItemTypeIdentifiable {
 }
 
 extension ItemContent: ItemThumbnailable {
-    public var title: String { name }
+    public var title: String {
+        name
+    }
 
     public var url: String? {
         switch contentData {

@@ -52,7 +52,7 @@ public struct LogFormatOptions: OptionSet, Sendable {
     /// Include `file`, `function`, `line`, `column` fields or not
     static let fileFunctionLineColumn = LogFormatOptions(rawValue: 1 << 3)
 
-    // Predefined options
+    /// Predefined options
     /// Include everything
     public static let verbose: LogFormatOptions = [
         .logLevelEmoji,

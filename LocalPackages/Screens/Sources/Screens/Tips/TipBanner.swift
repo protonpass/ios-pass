@@ -170,7 +170,6 @@ private extension TipBanner {
         }
     }
 
-    @ViewBuilder
     var trailingBackground: some View {
         GeometryReader { proxy in
             if let background = configuration.trailingBackground {
