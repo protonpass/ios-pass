@@ -163,16 +163,17 @@ public extension LocalDatasource {
         }
     }
 
-    func upsertWithRelationships<Item: Sendable, Entity: NSManagedObject>(_ items: [Item],
-                                                                          entityType: Entity.Type,
-                                                                          fetchPredicate: NSPredicate,
-                                                                          isEqual: @escaping @Sendable (Item,
-                                                                                                        Entity)
-                                                                              -> Bool,
-                                                                          hydrate: @escaping @Sendable (Item,
-                                                                                                        Entity,
-                                                                                                        NSManagedObjectContext) throws
-                                                                              -> Void) async throws {
+    func upsertWithRelationships<Item: Sendable,
+        Entity: NSManagedObject>(_ items: [Item],
+                                 entityType: Entity.Type,
+                                 fetchPredicate: NSPredicate,
+                                 isEqual: @escaping @Sendable (Item,
+                                                               Entity)
+                                     -> Bool,
+                                 hydrate: @escaping @Sendable (Item,
+                                                               Entity,
+                                                               NSManagedObjectContext) throws
+                                     -> Void) async throws {
         guard !items.isEmpty else {
             return
         }
@@ -227,13 +228,14 @@ public extension LocalDatasource {
         }
     }
 
-    private func insertIndividually<Item: Sendable, Entity: NSManagedObject>(_ items: [Item],
-                                                                             entityType: Entity.Type,
-                                                                             context: NSManagedObjectContext,
-                                                                             hydrate: @escaping @Sendable (Item,
-                                                                                                           Entity,
-                                                                                                           NSManagedObjectContext) throws
-                                                                                 -> Void) async throws {
+    private func insertIndividually<Item: Sendable,
+        Entity: NSManagedObject>(_ items: [Item],
+                                 entityType: Entity.Type,
+                                 context: NSManagedObjectContext,
+                                 hydrate: @escaping @Sendable (Item,
+                                                               Entity,
+                                                               NSManagedObjectContext) throws
+                                     -> Void) async throws {
         try await context.perform {
             for item in items {
                 let entity = Entity(context: context)
