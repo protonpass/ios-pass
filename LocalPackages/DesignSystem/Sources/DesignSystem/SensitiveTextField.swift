@@ -31,8 +31,13 @@ public struct SensitiveTextField<Field: Hashable>: View {
     let fontWeight: UIFont.Weight
     let onSubmit: (() -> Void)?
 
-    private var isFocused: Bool { focusedField.wrappedValue == field }
-    private var showClearText: Bool { isFocused || text.isEmpty }
+    private var isFocused: Bool {
+        focusedField.wrappedValue == field
+    }
+
+    private var showClearText: Bool {
+        isFocused || text.isEmpty
+    }
 
     public init(text: Binding<String>,
                 placeholder: String,

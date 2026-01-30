@@ -120,7 +120,9 @@ struct AdditionalItemEditResult: Sendable {
     let edited: Bool
     let slNote: String?
 
-    static var `default`: Self { .init(edited: false, slNote: nil) }
+    static var `default`: Self {
+        .init(edited: false, slNote: nil)
+    }
 }
 
 struct ItemEditionAlertContent {
@@ -253,7 +255,9 @@ class BaseCreateEditItemViewModel: ObservableObject {
             fileUiModels.allSatisfy { $0.state == .uploaded }
     }
 
-    var shouldUpgrade: Bool { false }
+    var shouldUpgrade: Bool {
+        false
+    }
 
     var isPhone: Bool {
         UIDevice.current.userInterfaceIdiom == .phone
@@ -324,7 +328,9 @@ class BaseCreateEditItemViewModel: ObservableObject {
     }
 
     /// The new passkey associated with this item
-    func newPasskey() async throws -> CreatePasskeyResponse? { nil }
+    func newPasskey() async throws -> CreatePasskeyResponse? {
+        nil
+    }
 
     func saveButtonTitle() -> String {
         switch mode {
@@ -335,12 +341,21 @@ class BaseCreateEditItemViewModel: ObservableObject {
         }
     }
 
-    func additionalEdit() async throws -> AdditionalItemEditResult { .default }
+    func additionalEdit() async throws -> AdditionalItemEditResult {
+        .default
+    }
 
-    func generateAliasCreationInfo() -> AliasCreationInfo? { nil }
-    func generateAliasItemContent() -> ItemContentProtobuf? { nil }
+    func generateAliasCreationInfo() -> AliasCreationInfo? {
+        nil
+    }
 
-    func telemetryEventTypes() -> [TelemetryEventType] { [] }
+    func generateAliasItemContent() -> ItemContentProtobuf? {
+        nil
+    }
+
+    func telemetryEventTypes() -> [TelemetryEventType] {
+        []
+    }
 
     func openCodeScanner() {
         Task { [weak self] in

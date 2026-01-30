@@ -42,8 +42,7 @@ public final class ExtraPasswordRepository: Sendable, ExtraPasswordRepositoryPro
 public extension ExtraPasswordRepository {
     func getModulus(userId: String) async throws -> Modulus {
         let endpoint = GetModulusEndpoint()
-        let response = try await apiServicing.getApiService(userId: userId).exec(endpoint: endpoint)
-        return response
+        return try await apiServicing.getApiService(userId: userId).exec(endpoint: endpoint)
     }
 
     func enableExtraPassword(userId: String, userSrp: PassUserSrp) async throws {

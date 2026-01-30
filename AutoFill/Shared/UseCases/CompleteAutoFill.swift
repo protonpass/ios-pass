@@ -70,7 +70,7 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
         self.userManager = userManager
     }
 
-    /*
+    /**
      Complete the autofill process by updating item's `lastUseTime` and reindex all login items
      While these processes can eventually fails, we don't really do anything when errors happen but only log them.
      Because they all happen in the completion block of the `completeRequest` of `ASCredentialProviderExtensionContext`

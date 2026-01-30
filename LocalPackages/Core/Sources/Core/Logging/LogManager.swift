@@ -109,8 +109,7 @@ public extension LogManager {
         guard fileExists else { return [] }
         let logContents = try String(contentsOf: url, encoding: .utf8)
         let lines = logContents.components(separatedBy: .newlines).filter { !$0.isEmpty }
-        let entries = lines.compactMap(\.toLogEntry)
-        return entries
+        return lines.compactMap(\.toLogEntry)
     }
 
     func removeAllLogs() {

@@ -32,5 +32,7 @@ extension ItemUiModel: @retroactive DateSortable {
 }
 
 extension ItemUiModel: @retroactive AlphabeticalSortable {
-    public var alphabeticalSortableString: String { title.accentsRemoved }
+    public var alphabeticalSortableString: String {
+        title.accentsRemoved
+    }
 }

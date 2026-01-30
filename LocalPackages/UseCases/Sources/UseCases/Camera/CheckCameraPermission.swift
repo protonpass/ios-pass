@@ -39,7 +39,7 @@ public final class CheckCameraPermission: CheckCameraPermissionUseCase {
     public func execute(for mediaType: AVMediaType = .video) async -> Bool {
         let status = AVCaptureDevice.authorizationStatus(for: mediaType)
 
-        let isAuthorized = if status == .notDetermined {
+        return if status == .notDetermined {
             // If the system hasn't determined the user's authorization status,
             // explicitly prompt them for approval.
             await AVCaptureDevice.requestAccess(for: mediaType)
@@ -47,7 +47,5 @@ public final class CheckCameraPermission: CheckCameraPermissionUseCase {
             // Determine if the user previously authorized camera access.
             status == .authorized
         }
-
-        return isAuthorized
     }
 }

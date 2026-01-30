@@ -48,7 +48,7 @@ struct CheckAddressRequest: Sendable, Encodable {
 }
 
 struct CheckAddressResponse: Sendable, Decodable {
-    // Optional array because otherwise decode process would fail
-    // when receiving an empty array instead of null
+    /// Optional array because otherwise decode process would fail
+    /// when receiving an empty array instead of null
     let emails: [String]?
 }

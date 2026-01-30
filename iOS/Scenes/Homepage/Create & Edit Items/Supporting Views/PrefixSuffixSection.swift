@@ -91,7 +91,6 @@ struct PrefixSuffixSection<Field: Hashable>: View {
         .animation(.default, value: prefix.isEmpty)
     }
 
-    @ViewBuilder
     private var suffixRow: some View {
         HStack {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {

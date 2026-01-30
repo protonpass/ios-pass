@@ -148,7 +148,6 @@ private extension UserPermissionView {
         }
     }
 
-    @ViewBuilder
     func trailingView(invite: InviteRecommendationType, currentRole: ShareRole) -> some View {
         Menu(content: {
             ForEach(ShareRole.allCases, id: \.self) { role in

@@ -57,7 +57,7 @@ class GetSearchableItemsTests: XCTestCase {
         symmetricKeyProvider = nil
     }
 
-    func testSearchPinItemSuccess() throws {
+    func testSearchPinItemSuccess() {
         // Given
 //        let itemToPin = SymmetricallyEncryptedItem.random()
 //        getAllPinnedItems.stubbedExecuteAsyncResult2 = [itemToPin]

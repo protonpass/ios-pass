@@ -44,7 +44,10 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var securityIssues: [SecurityWeakness]?
     @Published private(set) var reusedItems: FetchableObject<[ItemContent]> = .fetching
 
-    var isAlias: Bool { aliasItem != nil }
+    var isAlias: Bool {
+        aliasItem != nil
+    }
+
     let showSecurityIssues: Bool
 
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)

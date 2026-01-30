@@ -63,8 +63,8 @@ public struct ItemEvent: Sendable, Decodable, Equatable, ItemIdentifiable {
     public let itemID: String
     public let eventToken: String
 
-    // Seemingly redundant but we need to keep `shareID` and `itemID`
-    // with capitalized D in order to not break the decoding process
+    /// Seemingly redundant but we need to keep `shareID` and `itemID`
+    /// with capitalized D in order to not break the decoding process
     public var shareId: String {
         shareID
     }
@@ -88,8 +88,8 @@ public struct FolderEvent: Sendable, Decodable, Equatable {
     public let folderID: String
     public let eventToken: String
 
-    // Seemingly redundant but we need to keep `shareID` and `itemID`
-    // with capitalized D in order to not break the decoding process
+    /// Seemingly redundant but we need to keep `shareID` and `itemID`
+    /// with capitalized D in order to not break the decoding process
     public var shareId: String {
         shareID
     }

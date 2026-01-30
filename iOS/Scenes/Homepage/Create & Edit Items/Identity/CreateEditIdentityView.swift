@@ -98,21 +98,21 @@ struct CreateEditIdentityView: View {
 //        case floor
 //        case county
         case socialSecurityNumber
-//        case passportNumber
-//        case licenseNumber
-//        case website
-//        case xHandle
-//        case secondPhoneNumber
-//        case linkedIn
-//        case reddit
-//        case facebook
-//        case yahoo
-//        case instagram
-//        case company
-//        case jobTitle
-//        case personalWebsite
-//        case workPhoneNumber
-//        case workEmail
+        ///        case passportNumber
+        ///        case licenseNumber
+        ///        case website
+        ///        case xHandle
+        ///        case secondPhoneNumber
+        ///        case linkedIn
+        ///        case reddit
+        ///        case facebook
+        ///        case yahoo
+        ///        case instagram
+        ///        case company
+        ///        case jobTitle
+        ///        case personalWebsite
+        ///        case workPhoneNumber
+        ///        case workEmail
         case custom(CustomField?)
 
         var customField: CustomField? {

@@ -38,7 +38,9 @@ public extension String {
         return String((0..<length).compactMap { _ in allCharacters.randomElement() })
     }
 
-    func base64Decode() throws -> Data? { Data(base64Encoded: self) }
+    func base64Decode() throws -> Data? {
+        Data(base64Encoded: self)
+    }
 
     func capitalizingFirstLetter() -> String {
         prefix(1).capitalized + dropFirst()
@@ -198,5 +200,7 @@ public extension String {
 // MARK: Computed Extensions
 
 public extension Substring {
-    var toString: String { String(self) }
+    var toString: String {
+        String(self)
+    }
 }

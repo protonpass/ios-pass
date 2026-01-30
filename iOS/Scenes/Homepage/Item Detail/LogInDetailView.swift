@@ -30,7 +30,9 @@ struct LogInDetailView: View {
     @State private var isShowingPassword = false
     @Namespace private var bottomID
 
-    private var iconTintColor: Color { viewModel.itemContent.type.normColor }
+    private var iconTintColor: Color {
+        viewModel.itemContent.type.normColor
+    }
 
     init(viewModel: LogInDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)

@@ -139,7 +139,6 @@ private extension DarkWebMonitorHomeView {
 // MARK: - Proton Addresses
 
 private extension DarkWebMonitorHomeView {
-    @ViewBuilder
     var protonAddressesSection: some View {
         Section(content: {
             if viewModel.access?.monitor.protonAddress == true {
@@ -214,7 +213,6 @@ private extension DarkWebMonitorHomeView {
 // MARK: - Aliases
 
 private extension DarkWebMonitorHomeView {
-    @ViewBuilder
     var aliasesSection: some View {
         Section(content: {
             let title: LocalizedStringKey = "Hide-my-email aliases"
@@ -288,7 +286,6 @@ private extension DarkWebMonitorHomeView {
         })
     }
 
-    @ViewBuilder
     func monitoredAliasesSection(_ infos: [AliasMonitorInfo]) -> some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             ForEach(infos.topBreaches) { item in

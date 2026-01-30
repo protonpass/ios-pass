@@ -95,7 +95,7 @@ public extension LocalInviteDatasource {
 // MARK: - Group
 
 public extension LocalInviteDatasource {
-    // Group
+    /// Group
     func getGroupInvites(userId: String) async throws -> [GroupInvite] {
         try await getInvites(userId: userId, entity: GroupInviteEntity.self, map: \.toGroupInvite)
     }
@@ -125,9 +125,9 @@ public extension LocalInviteDatasource {
 // MARK: - Generic Helpers
 
 private extension LocalInviteDatasource {
-    func getInvites<T, E>(userId: String,
-                          entity: E.Type,
-                          map: (E) -> T) async throws -> [T] where E: NSManagedObject {
+    func getInvites<T, E: NSManagedObject>(userId: String,
+                                           entity: E.Type,
+                                           map: (E) -> T) async throws -> [T] {
         let fetchContext = newTaskContext(type: .fetch)
         let fetchRequest = NSFetchRequest<E>(entityName: String(describing: entity))
         fetchRequest.predicate = NSPredicate(format: "userID = %@", userId)

@@ -62,10 +62,9 @@ public actor InAppNotificationRepository: InAppNotificationRepositoryProtocol {
         } else {
             storeFront?.countryCode
         }
-        let notifs = try await remoteDatasource.getNotifications(userId: userId,
-                                                                 countryCode: countryCode,
-                                                                 lastNotificationId: lastNotificationId)
-        return notifs
+        return try await remoteDatasource.getNotifications(userId: userId,
+                                                           countryCode: countryCode,
+                                                           lastNotificationId: lastNotificationId)
     }
 
     public func changeNotificationStatus(notificationId: String,

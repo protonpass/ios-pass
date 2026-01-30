@@ -191,7 +191,7 @@ public extension ItemRepositoryProtocol {
                                         aliases: [alias])
     }
 
-    // An overload to provide nil slNote
+    /// An overload to provide nil slNote
     @discardableResult
     func updateItem(userId: String,
                     oldItem: Item,
@@ -291,12 +291,10 @@ public extension ItemRepository {
 
     func getAllItemsContent(items: [any ItemIdentifiable]) async throws -> [ItemContent] {
         let items = try await localDatasource.getItems(for: items)
-        let itemsContent: [ItemContent] = try await items.asyncCompactMap { [weak self] item in
+        return try await items.asyncCompactMap { [weak self] item in
             guard let self else { return nil }
             return try await item.getItemContent(symmetricKey: getSymmetricKey())
         }
-
-        return itemsContent
     }
 
     func getItemRevisions(userId: String,
@@ -977,9 +975,9 @@ private extension ItemRepository {
                       to toShareId: String) async throws -> [SymmetricallyEncryptedItem] {
         let splitArray = items.chunked(into: 10)
         do {
-            let sortedConcurrentDatas = try await withThrowingTaskGroup(of: [SymmetricallyEncryptedItem].self,
-                                                                        returning: [SymmetricallyEncryptedItem]
-                                                                            .self) { [weak self] group in
+            return try await withThrowingTaskGroup(of: [SymmetricallyEncryptedItem].self,
+                                                   returning: [SymmetricallyEncryptedItem]
+                                                       .self) { [weak self] group in
                 guard let self else {
                     return []
                 }
@@ -991,13 +989,11 @@ private extension ItemRepository {
                     }
                 }
 
-                let allConcurrentData = try await group
+                return try await group
                     .reduce(into: [SymmetricallyEncryptedItem]()) { result, data in
                         result.append(contentsOf: data)
                     }
-                return allConcurrentData
             }
-            return sortedConcurrentDatas
         } catch {
             throw error
         }
@@ -1067,7 +1063,7 @@ private extension ItemRepository {
     func groupedEditItems(_ items: [any ItemIdentifiable],
                           action: @escaping @Sendable (any ItemIdentifiable) async throws -> Void) async throws {
         if items.count == 1, let firstItem = items.first {
-            /// Avoid `TaskGroup` overhead when there's only 1 item
+            // Avoid `TaskGroup` overhead when there's only 1 item
             try await action(firstItem)
         } else {
             await withThrowingTaskGroup(of: Void.self) { taskGroup in

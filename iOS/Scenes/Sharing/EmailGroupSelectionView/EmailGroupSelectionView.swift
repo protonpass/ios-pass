@@ -106,7 +106,6 @@ private extension EmailGroupSelectionView {
             .foregroundStyle(PassColor.textNorm)
     }
 
-    @ViewBuilder
     var suggestions: some View {
         InviteSuggestionsSection()
             .overlay {

@@ -763,7 +763,7 @@ extension HomepageCoordinator {
             }
             if let host = rootViewController
                 .topMostViewController as? UIHostingController<ManageSharedShareView> {
-                /// Updating share data circumventing the onAppear not being called after a sheet presentation
+                // Updating share data circumventing the onAppear not being called after a sheet presentation
                 host.rootView.refresh()
                 return
             }

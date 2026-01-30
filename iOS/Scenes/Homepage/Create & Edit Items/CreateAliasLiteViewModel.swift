@@ -34,7 +34,9 @@ struct AliasCreationLiteInfo: Sendable {
     let suffix: Suffix
     let mailboxes: [AliasLinkedMailbox]
 
-    var aliasAddress: String { prefix + suffix.suffix }
+    var aliasAddress: String {
+        prefix + suffix.suffix
+    }
 }
 
 @MainActor

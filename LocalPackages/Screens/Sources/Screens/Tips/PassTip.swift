@@ -27,14 +27,18 @@ nonisolated enum PassTip: String {
     case spotlight
     case username
 
-    var id: String { rawValue }
+    var id: String {
+        rawValue
+    }
 }
 
 public nonisolated enum PassTipAction: String {
     /// Open Pass settings, not iOS settings
     case openSettings
 
-    public var id: String { rawValue }
+    public var id: String {
+        rawValue
+    }
 
     public var title: String {
         switch self {

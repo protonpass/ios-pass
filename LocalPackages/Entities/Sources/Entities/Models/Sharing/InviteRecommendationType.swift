@@ -24,7 +24,9 @@ public enum InviteRecommendationType: Sendable, Equatable, Hashable, Identifiabl
     case email(String)
     case group(GroupInfo)
 
-    public var id: Self { self }
+    public var id: Self {
+        self
+    }
 
     public var emailAddress: String? {
         switch self {

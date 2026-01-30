@@ -69,13 +69,21 @@ public struct Plan: Decodable, Hashable, Sendable {
         }
     }
 
-    public var isFreeUser: Bool { planType == .free }
+    public var isFreeUser: Bool {
+        planType == .free
+    }
 
-    public var isBusinessUser: Bool { planType == .business }
+    public var isBusinessUser: Bool {
+        planType == .business
+    }
 
-    public var isInTrial: Bool { planType == .trial }
+    public var isInTrial: Bool {
+        planType == .trial
+    }
 
-    public var shouldUpsell: Bool { isFreeUser && !hideUpgrade }
+    public var shouldUpsell: Bool {
+        isFreeUser && !hideUpgrade
+    }
 
     public init(type: String,
                 internalName: String,

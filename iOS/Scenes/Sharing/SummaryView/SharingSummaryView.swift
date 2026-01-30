@@ -215,7 +215,9 @@ private extension SharingSummaryView {
 }
 
 private extension ItemContent {
-    var title: String { name }
+    var title: String {
+        name
+    }
 
     var description: String {
         switch contentData {

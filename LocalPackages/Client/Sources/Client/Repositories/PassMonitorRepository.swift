@@ -166,8 +166,7 @@ public extension PassMonitorRepository {
 
     func addEmailToBreachMonitoring(email: String) async throws -> CustomEmail {
         let userId = try await userManager.getActiveUserId()
-        let email = try await remoteDataSource.addEmailToBreachMonitoring(userId: userId, email: email)
-        return email
+        return try await remoteDataSource.addEmailToBreachMonitoring(userId: userId, email: email)
     }
 
     func verifyCustomEmail(email: CustomEmail, code: String) async throws {
