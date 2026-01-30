@@ -59,8 +59,8 @@ final class SendShareInviteTests: XCTestCase {
                               userManager: userManager,
                               syncEventLoop: syncEventLoop)
         publicKeyRepository.stubbedGetPublicKeysResult = [PublicKey(value: "value")]
-        passKeyManager.stubbedGetLatestShareKeyResult = DecryptedShareKey(shareId: "test", keyRotation: 1,
-                                                                          keyData: try! Data.random())
+        passKeyManager.stubbedGetLatestShareKeyResult = try DecryptedShareKey(shareId: "test", keyRotation: 1,
+                                                                              keyData: Data.random())
         userManager.stubbedGetActiveUserDataResult = .preview
         let infos = SharingInfos(shareElement: .vault(.random()),
                                  email: "Test@test.com",

@@ -41,7 +41,7 @@ public struct Item: Decodable, Equatable, Sendable, Hashable {
 
     public let pinTime: Int?
 
-    // Number shares this item has(number of people this item is shared with)
+    /// Number shares this item has(number of people this item is shared with)
     public let shareCount: Int
 
     /// In case this item contains an alias, this is the email address for the alias
@@ -69,11 +69,13 @@ public struct Item: Decodable, Equatable, Sendable, Hashable {
     /// Monitor`
     public let flags: Int
 
-    // Parent FolderID if this item is in a folder
+    /// Parent FolderID if this item is in a folder
     public let folderID: String?
 
     /// Enum representation of `state`
-    public var itemState: ItemState { .init(rawValue: state) ?? .active }
+    public var itemState: ItemState {
+        .init(rawValue: state) ?? .active
+    }
 
     public init(itemID: String,
                 revision: Int64,

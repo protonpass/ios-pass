@@ -51,7 +51,7 @@ public struct LoginOnboardingView: View {
         }
     }
 
-    // Sample data for the carousel
+    /// Sample data for the carousel
     private let items: [CarouselItem] = [
         CarouselItem(title: "All your passwords.",
                      subtitle: "Securely in one place and protected by the most trusted name in privacy.",

@@ -31,13 +31,13 @@ public struct Alias: Decodable, Sendable, Equatable, Hashable {
 }
 
 public struct AliasStats: Decodable, Sendable, Equatable, Hashable {
-    // Count of emails forwarded through this alias in the last 14 days
+    /// Count of emails forwarded through this alias in the last 14 days
     public let forwardedEmails: Int
 
-    // Count of emails replied to in the last 14 days
+    /// Count of emails replied to in the last 14 days
     public let repliedEmails: Int
 
-    // Count of emails blocked in the last 14 days
+    /// Count of emails blocked in the last 14 days
     public let blockedEmails: Int
 }
 

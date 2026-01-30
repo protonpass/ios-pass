@@ -75,7 +75,9 @@ final class CreateEditCustomItemViewModel: BaseCreateEditItemViewModel, DeinitPr
         }
     }
 
-    override var itemContentType: ItemContentType { .custom }
+    override var itemContentType: ItemContentType {
+        .custom
+    }
 
     override func generateItemContent() async -> ItemContentProtobuf {
         ItemContentProtobuf(name: title,

@@ -127,7 +127,7 @@ private extension UserEventsSynchronizer {
         return result
     }
 
-    // All todos need to be done in upcoming MRs for group invites and folders
+    /// All todos need to be done in upcoming MRs for group invites and folders
     func process(events: UserEvents, for userId: String) async throws {
         async let serializedParsing: () = serializeCreationUpdateParsing(events: events, for: userId)
         async let deletedItems: () = processDeletedItems(events.itemsDeleted, userId: userId)
@@ -165,9 +165,9 @@ private extension UserEventsSynchronizer {
                        organizationUpdate)
     }
 
-    // We must add some serialisation logic for all share / folder / item creation or update as we will need to
-    // rely on a tree of decryption keys in the futur
-    // Will have an update on the key decryption process
+    /// We must add some serialisation logic for all share / folder / item creation or update as we will need to
+    /// rely on a tree of decryption keys in the futur
+    /// Will have an update on the key decryption process
     func serializeCreationUpdateParsing(events: UserEvents, for userId: String) async throws {
         try await processCreatedShares(events.sharesCreated, userId: userId)
         // swiftlint:disable:next todo

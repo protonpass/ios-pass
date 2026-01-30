@@ -99,8 +99,13 @@ final class ShareCoordinator {
     private var parsedContent: SharedContent?
     private var cancellables = Set<AnyCancellable>()
 
-    private var context: NSExtensionContext? { rootViewController?.extensionContext }
-    private var topMostViewController: UIViewController? { rootViewController?.topMostViewController }
+    private var context: NSExtensionContext? {
+        rootViewController?.extensionContext
+    }
+
+    private var topMostViewController: UIViewController? {
+        rootViewController?.topMostViewController
+    }
 
     init(rootViewController: UIViewController) {
         SharedViewContainer.shared.register(rootViewController: rootViewController)

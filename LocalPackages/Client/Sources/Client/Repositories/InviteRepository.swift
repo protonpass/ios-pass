@@ -164,7 +164,7 @@ public extension InviteRepository {
 
     func refreshAllInvites(userId: String) async throws {
         let userInvites = try await updateUserInvite(userId)
-        ///  The following should fail silently as only org admins have the right to fetch group invites
+        //  The following should fail silently as only org admins have the right to fetch group invites
         let groupInvites = try? await updateGroupInvite(userId)
 
         updateCurrentInvites(groupInvites: groupInvites ?? [], userInvites: userInvites)

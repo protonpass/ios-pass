@@ -31,5 +31,7 @@ public struct InviteSuggestion: Sendable, Identifiable, Decodable {
         self.isGroup = isGroup
     }
 
-    public var id: String { addressID }
+    public var id: String {
+        addressID
+    }
 }

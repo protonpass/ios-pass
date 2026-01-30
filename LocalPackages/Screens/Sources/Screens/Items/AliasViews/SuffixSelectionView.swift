@@ -31,7 +31,9 @@ struct SuffixSelectionView: View {
     let onDismissTip: () -> Void
     let onDismiss: () -> Void
 
-    private var tintColor: Color { PassColor.aliasInteractionNormMajor2 }
+    private var tintColor: Color {
+        PassColor.aliasInteractionNormMajor2
+    }
 
     var body: some View {
         NavigationStack {

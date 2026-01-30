@@ -178,8 +178,11 @@ public extension FolderRepository {
                       parentFolderId: String?,
                       folderContent: FolderContent) async throws -> Folder {
         logger.trace("Creating folder for user \(userId)")
-        let containerKey = try await passKeyManager.getDecryptionKey(userId: userId,
-                                                                     containerId: parentFolderId ?? shareId)
+        let containerKey = try await passKeyManager.getContainerKey(userId: userId,
+                                                                    containerId: parentFolderId ?? shareId,
+                                                                    keyRotation: nil)
+//        getDecryptionKey(userId: userId,
+//                                                                     containerId: parentFolderId ?? shareId)
         let request = try CreateFolderRequest(encryptionKey: containerKey,
                                               folderContent: folderContent,
                                               parentFolderId: parentFolderId)
@@ -196,7 +199,8 @@ public extension FolderRepository {
 
     func edit(userId: String, shareId: String, folderId: String, folderContent: FolderContent) async throws {
         logger.trace("Editing folder \(folderId) for user \(userId)")
-        let folderKey = try await passKeyManager.getDecryptionKey(userId: userId, containerId: folderId)
+        let folderKey = try await passKeyManager.getContainerKey(userId: userId, containerId: folderId,
+                                                                 keyRotation: nil) // getDecryptionKey(userId: userId, containerId: folderId)
         let requestPayload = try UpdateFolderRequestPayload(encryptionKey: folderKey, folderContent: folderContent)
         let request = UpdateFolderRequest(content: requestPayload)
         let updatedFolder = try await remoteDatasource.update(userId: userId,
@@ -213,11 +217,14 @@ public extension FolderRepository {
 
     func move(userId: String, shareId: String, folderId: String, destinationId: String?) async throws {
         logger.trace("Move folder \(folderId) to destination \(destinationId ?? shareId)")
-        let destinationKey = try await passKeyManager.getDecryptionKey(userId: userId,
-                                                                       containerId: destinationId ?? shareId)
+        let destinationKey = try await passKeyManager.getContainerKey(userId: userId,
+                                                                      containerId: destinationId ?? shareId,
+                                                                      keyRotation: nil) // getDecryptionKey(userId: userId,
+//                                                                       containerId: destinationId ?? shareId)
 
-        let currentFolderKey = try await passKeyManager.getDecryptionKey(userId: userId,
-                                                                         containerId: folderId)
+        let currentFolderKey = try await passKeyManager.getContainerKey(userId: userId, containerId: folderId,
+                                                                        keyRotation: nil) // getDecryptionKey(userId: userId,
+//                                                                         containerId: folderId)
         let encryptedItemKey = try AES.GCM.seal(currentFolderKey.keyData,
                                                 key: destinationKey.keyData,
                                                 associatedData: .folderKey)
@@ -245,9 +252,14 @@ private extension FolderRepository {
         let symmetricKey = try await symmetricKey
 
         print("woot getting containerKey")
-        let containerKey: any CryptographicKeyProtocol = try await passKeyManager.getDecryptionKey(userId: userId,
-                                                                                                   containerId: folderRevision
-                                                                                                       .id)
+        let containerKey: any CryptographicKeyProtocol = try await passKeyManager.getContainerKey(userId: userId,
+                                                                                                  containerId: folderRevision
+                                                                                                      .id,
+                                                                                                  keyRotation: folderRevision
+                                                                                                      .keyRotation)
+//        getDecryptionKey(userId: userId,
+//                                                                                                   containerId: folderRevision
+//                                                                                                       .id)
         print("woot got containerKey: \(containerKey)")
         print("woot getting content of folder")
 
@@ -349,7 +361,7 @@ private extension FolderRepository {
 }
 
 extension Folder {
-    // The key can be from folder or share
+    /// The key can be from folder or share
     func getContent(containerKey: any CryptographicKeyProtocol) throws -> FolderContent {
         print("woot getting keyRotation")
         guard containerKey.keyRotation == keyRotation else {

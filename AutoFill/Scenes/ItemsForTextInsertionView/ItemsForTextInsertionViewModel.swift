@@ -26,9 +26,9 @@ import Entities
 import FactoryKit
 import SwiftUI
 
-// Wrap UI models inside an enum to support displaying the same items
-// in both history and regular sections.
-// Because `UITableViewDiffableDataSource` relies on the hash value of the item to show or hide
+/// Wrap UI models inside an enum to support displaying the same items
+/// in both history and regular sections.
+/// Because `UITableViewDiffableDataSource` relies on the hash value of the item to show or hide
 enum ItemForTextInsertion: Hashable {
     case history(ItemUiModel)
     case regular(ItemUiModel)

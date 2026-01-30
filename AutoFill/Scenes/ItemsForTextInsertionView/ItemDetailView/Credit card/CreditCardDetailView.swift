@@ -31,7 +31,9 @@ struct CreditCardDetailView: View {
     @State private var showVerificationNumber = false
     @State private var showPIN = false
 
-    private var tintColor: Color { viewModel.type.normColor }
+    private var tintColor: Color {
+        viewModel.type.normColor
+    }
 
     init(_ viewModel: CreditCardDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)

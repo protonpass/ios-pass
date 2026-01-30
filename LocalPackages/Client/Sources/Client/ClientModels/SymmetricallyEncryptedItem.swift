@@ -32,7 +32,7 @@ public struct ScoredSymmetricallyEncryptedItem: Sendable {
     }
 }
 
-// https://sarunw.com/posts/how-to-sort-by-multiple-properties-in-swift/
+/// https://sarunw.com/posts/how-to-sort-by-multiple-properties-in-swift/
 private typealias AreInDecreasingOrder = (SymmetricallyEncryptedItem,
                                           SymmetricallyEncryptedItem) -> Bool
 

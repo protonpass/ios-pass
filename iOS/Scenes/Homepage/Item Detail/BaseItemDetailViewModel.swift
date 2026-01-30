@@ -335,7 +335,7 @@ class BaseItemDetailViewModel: ObservableObject {
         itemContextMenuHandler.restore(itemContent)
     }
 
-    // Overridden by alias detail page
+    /// Overridden by alias detail page
     func disableAlias() {}
 
     func permanentlyDelete() {

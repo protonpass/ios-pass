@@ -33,7 +33,7 @@ typealias DimensionsValue = Encodable & Sendable
 struct Dimensions: Encodable, Sendable {
     var properties: [String: any DimensionsValue]
 
-    // Custom encode function to handle dynamic keys and types
+    /// Custom encode function to handle dynamic keys and types
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: DynamicCodingKeys.self)
         for (key, value) in properties {
@@ -57,7 +57,7 @@ struct Dimensions: Encodable, Sendable {
         }
     }
 
-    // Dynamic coding keys to allow for unknown keys
+    /// Dynamic coding keys to allow for unknown keys
     private struct DynamicCodingKeys: CodingKey {
         var intValue: Int?
 
@@ -68,7 +68,9 @@ struct Dimensions: Encodable, Sendable {
 
         var stringValue: String
 
-        init(stringValue: String) { self.stringValue = stringValue }
+        init(stringValue: String) {
+            self.stringValue = stringValue
+        }
     }
 }
 
@@ -165,11 +167,17 @@ private extension TelemetryEvent {
         }
     }
 
-    var measurementGroup: String { "pass.any.user_actions" }
+    var measurementGroup: String {
+        "pass.any.user_actions"
+    }
 
-    var flow: String? { nil }
+    var flow: String? {
+        nil
+    }
 
-    var item: String? { nil }
+    var item: String? {
+        nil
+    }
 }
 
 private extension ItemContentType {

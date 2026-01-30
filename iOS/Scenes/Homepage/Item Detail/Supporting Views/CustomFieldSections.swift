@@ -202,10 +202,10 @@ private final class TotpCustomFieldSectionViewModel: ObservableObject {
     private let logManager = resolve(\SharedToolingContainer.logManager)
     private var cancellable = Set<AnyCancellable>()
 
-    // Manually construct an instance of TOTPManager instead of getting via Factory
-    // to make sure each custom field has its own uniqe manager that binds to its respective URI
-    // `TOTPManager` is scoped as `unique` but Factory somehow still gives the same instance
-    // for all TOTP custom fields (could be Factory bug as of version 2.5.1)
+    /// Manually construct an instance of TOTPManager instead of getting via Factory
+    /// to make sure each custom field has its own uniqe manager that binds to its respective URI
+    /// `TOTPManager` is scoped as `unique` but Factory somehow still gives the same instance
+    /// for all TOTP custom fields (could be Factory bug as of version 2.5.1)
     private lazy var totpManager = TOTPManager(logManager: logManager,
                                                totpService: totpService)
 

@@ -39,7 +39,6 @@ public extension RemoteOrganizationDatasource {
 
     func getOrganizationKey(userId: String) async throws -> OrganizationKey {
         let endpoint = GetOrganizationKeysEndpoint()
-        let response = try await exec(userId: userId, endpoint: endpoint)
-        return response
+        return try await exec(userId: userId, endpoint: endpoint)
     }
 }

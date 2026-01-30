@@ -27,7 +27,9 @@ public struct ItemReadEvent: Sendable, Equatable, Identifiable {
     public let itemId: String
     public let timestamp: TimeInterval
 
-    public var id: String { uuid }
+    public var id: String {
+        uuid
+    }
 
     public init(uuid: String,
                 shareId: String,

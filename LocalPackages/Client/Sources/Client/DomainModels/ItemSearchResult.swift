@@ -173,7 +173,9 @@ public struct ItemSearchResult: Sendable, ItemTypeIdentifiable, Identifiable, Pi
 }
 
 extension ItemSearchResult: ItemThumbnailable {
-    public var title: String { highlightableTitle.fullText }
+    public var title: String {
+        highlightableTitle.fullText
+    }
 }
 
 extension ItemSearchResult: DateSortable {
@@ -183,7 +185,9 @@ extension ItemSearchResult: DateSortable {
 }
 
 extension ItemSearchResult: AlphabeticalSortable {
-    public var alphabeticalSortableString: String { highlightableTitle.fullText }
+    public var alphabeticalSortableString: String {
+        highlightableTitle.fullText
+    }
 }
 
 extension ItemSearchResult: PrecomputedHashable {

@@ -65,18 +65,18 @@ public final class UpdateLastUseTimeAndReindex: UpdateLastUseTimeAndReindexUseCa
     public func execute(item: ItemContent,
                         date: Date,
                         identifiers: [ASCredentialServiceIdentifier]) async throws {
-        /// We get the `Share` of the item in order to know its `VaultID`
+        // We get the `Share` of the item in order to know its `VaultID`
         guard let share = try await localShareDatasource.getShare(userId: item.userId,
                                                                   shareId: item.shareId) else {
             throw PassError.shareNotFoundInLocalDB(shareID: item.shareId)
         }
 
-        /// From the `VaultID`, we get all the related `ShareID`
+        // From the `VaultID`, we get all the related `ShareID`
         let shares = try await localShareDatasource.getAllShares(vaultId: share.share.vaultID)
         let shareIds = shares.map(\.share.shareID)
 
         for shareId in shareIds {
-            /// We loop through all these related `ShareID` and update the last use time of the corresponding items
+            // We loop through all these related `ShareID` and update the last use time of the corresponding items
             if let itemContent = try await itemRepository.getItemContent(shareId: shareId,
                                                                          itemId: item.itemId) {
                 try await itemRepository.updateLastUseTime(userId: itemContent.userId,
