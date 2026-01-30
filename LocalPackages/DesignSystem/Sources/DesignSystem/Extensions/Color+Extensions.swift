@@ -26,7 +26,7 @@ public extension UIColor {
     }
 }
 
-// Helper extension for hex color
+/// Helper extension for hex color
 public extension Color {
     init(hex: String) {
         let scanner = Scanner(string: hex)

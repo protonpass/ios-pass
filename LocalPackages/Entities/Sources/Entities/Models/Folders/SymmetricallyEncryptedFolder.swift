@@ -25,7 +25,9 @@ public struct SymmetricallyEncryptedFolder: Equatable, Sendable, Hashable {
     /// ID of the share that the item belongs to
     public let shareId: String
 
-    public var folderId: String { folder.folderID }
+    public var folderId: String {
+        folder.folderID
+    }
 
     public var userId: String
 

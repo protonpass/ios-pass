@@ -108,8 +108,8 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
             }
             logger.trace("Updating local shares with latest information after previous local deletion")
 
-            /// Updating the local shares with the latest information as `updatedShares` notifies of local
-            /// share changes.
+            // Updating the local shares with the latest information as `updatedShares` notifies of local
+            // share changes.
             localShares = try await shareRepository.getShares(userId: userId)
         }
         if Task.isCancelled {

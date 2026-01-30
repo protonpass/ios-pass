@@ -25,8 +25,8 @@ import Entities
 import Foundation
 @preconcurrency import ProtonCoreDoh
 
-// Redundant with `CodeOnlyReponse` on purpose because `CodeOnlyReponse` is used by
-// core's network layer which has custom decode logic.
+/// Redundant with `CodeOnlyReponse` on purpose because `CodeOnlyReponse` is used by
+/// core's network layer which has custom decode logic.
 private struct UploadMultipartResponse: Decodable {
     let code: Int
 

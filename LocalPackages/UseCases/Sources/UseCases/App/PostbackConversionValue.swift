@@ -39,7 +39,7 @@ public extension PostbackConversionValueUseCase {
         try await execute(fineValue, coarseValue: coarseValue, lockPostback: lockPostback)
     }
 
-    // Non-async variant to use in non async context
+    /// Non-async variant to use in non async context
     func callAsFunction(_ fineValue: Int,
                         coarseValue: CoarseConversionValue,
                         lockPostback: Bool) {

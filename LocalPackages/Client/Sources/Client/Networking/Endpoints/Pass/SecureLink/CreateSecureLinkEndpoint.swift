@@ -44,7 +44,7 @@ struct CreateSecureLinkRequest: Encodable, Sendable {
     /// ShareKey rotation used for encrypting the encryptedLinkKey
     let linkKeyShareKeyRotation: Int64
 
-    // We need to pass this for legacy reason
+    /// We need to pass this for legacy reason
     var linkKeyEncryptedWithItemKey = true
 
     enum CodingKeys: String, CodingKey {

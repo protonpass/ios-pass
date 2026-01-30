@@ -148,13 +148,13 @@ private extension FileAttachmentPreview {
         }
     }
 
-    // When file is saved to filesystem (via Files app) from export or share sheet,
-    // the system removes the file because it's in temporary folder.
-    // So the previous URL to the file becomes obsolete.
-    // As a result, we double check if the file still exists or not.
-    // If not, we dismiss this preview in order for users to manually enter the preview
-    // to download the file again. Otherwise, if the users try to save or share again,
-    // the app will crash because file no more exists at the previous URL
+    /// When file is saved to filesystem (via Files app) from export or share sheet,
+    /// the system removes the file because it's in temporary folder.
+    /// So the previous URL to the file becomes obsolete.
+    /// As a result, we double check if the file still exists or not.
+    /// If not, we dismiss this preview in order for users to manually enter the preview
+    /// to download the file again. Otherwise, if the users try to save or share again,
+    /// the app will crash because file no more exists at the previous URL
     func dismissIfFileIsRemoved(_ url: URL) {
         if !FileManager.default.fileExists(atPath: url.path()) {
             dismiss()

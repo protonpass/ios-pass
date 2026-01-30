@@ -48,7 +48,9 @@ final class ActionCoordinator {
 
     private var lastChildViewController: UIViewController?
     private weak var rootViewController: UIViewController?
-    private var context: NSExtensionContext? { rootViewController?.extensionContext }
+    private var context: NSExtensionContext? {
+        rootViewController?.extensionContext
+    }
 
     private var cancellables = Set<AnyCancellable>()
 

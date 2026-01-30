@@ -33,7 +33,9 @@ struct AliasDetailView: View {
     @StateObject var router = resolve(\RouterContainer.darkWebRouter)
     @Environment(\.dismiss) private var dismiss
 
-    private var iconTintColor: Color { viewModel.itemContent.type.normColor }
+    private var iconTintColor: Color {
+        viewModel.itemContent.type.normColor
+    }
 
     init(viewModel: AliasDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -201,7 +203,6 @@ struct AliasDetailView: View {
         }
     }
 
-    @ViewBuilder
     private var mailboxesRow: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.forward, color: iconTintColor)

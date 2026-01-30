@@ -107,7 +107,6 @@ private extension ManageSharedShareView {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
-    @ViewBuilder
     func inviteesSection(for invitees: [any ShareInvitee],
                          isVaultSection: Bool,
                          canExecuteActions: Bool,

@@ -23,7 +23,10 @@ import TipKit
 
 @available(iOS 17, *)
 public struct SpotlightTip: Tip {
-    public var id: String { PassTip.spotlight.id }
+    public var id: String {
+        PassTip.spotlight.id
+    }
+
     private let bundle: Bundle
 
     @MainActor

@@ -95,7 +95,9 @@ public struct MonthYearTextField: UIViewRepresentable {
         }
     }
 
-    public func makeCoordinator() -> Coordinator { Coordinator(self) }
+    public func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
 
     private func selectDefaultMonthAndYear(picker: UIPickerView) {
         // Default to current month & year when no selected month & no selected year

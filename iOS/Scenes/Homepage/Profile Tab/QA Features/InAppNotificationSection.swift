@@ -285,7 +285,7 @@ private final class InAppNotificationViewModel {
     var message: String = "Message of the test notification"
     var addTheme = false
 
-    // Can be light or dark
+    /// Can be light or dark
     var theme: String = ""
 
     // MARK: - InAppNotificationCTA content
@@ -293,9 +293,9 @@ private final class InAppNotificationViewModel {
     var addCta = true
 
     var text: String = "Learn something"
-    // Action of the CTA. Can be either external_link | internal_navigation
+    /// Action of the CTA. Can be either external_link | internal_navigation
     var type: QACTAType = .external
-    // Destination of the CTA. If type=external_link, it's a URL. If type=internal_navigation, it's a deeplink
+    /// Destination of the CTA. If type=external_link, it's a URL. If type=internal_navigation, it's a deeplink
     var ref: String = "https://en.wikipedia.org/wiki/Wikipedia"
 
     var addPromoContents = false

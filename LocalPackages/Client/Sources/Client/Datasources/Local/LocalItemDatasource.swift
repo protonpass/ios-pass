@@ -24,12 +24,12 @@ import Entities
 
 // sourcery: AutoMockable
 public protocol LocalItemDatasourceProtocol: Sendable {
-    // Get all items (both active & trashed)
+    /// Get all items (both active & trashed)
     func getAllItems(userId: String) async throws -> [SymmetricallyEncryptedItem]
 
     func getAllPinnedItems(userId: String) async throws -> [SymmetricallyEncryptedItem]
 
-    // Get all items by state
+    /// Get all items by state
     func getItems(userId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem]
 
     /// Get items by state

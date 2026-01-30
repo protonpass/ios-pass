@@ -34,7 +34,6 @@ struct AccountView: View {
         }
     }
 
-    @ViewBuilder
     private var realBody: some View {
         ScrollView {
             VStack {

@@ -25,7 +25,7 @@ import ProtonCoreDataModel
 import ProtonCoreLogin
 
 public extension Item {
-    // The key can be from folder or share
+    /// The key can be from folder or share
     func getContentProtobuf(containerKey: any CryptographicKeyProtocol) throws -> ItemContentProtobuf {
         guard containerKey.keyRotation == keyRotation else {
             throw PassError.crypto(.unmatchedKeyRotation(lhsKey: containerKey.keyRotation,

@@ -80,7 +80,6 @@ private extension VaultSyncProgressView {
 }
 
 private extension VaultSyncProgressView {
-    @ViewBuilder
     func thumbnail(for vaultContent: VaultContent) -> some View {
         CircleButton(icon: vaultContent.vaultBigIcon,
                      iconColor: vaultContent.mainColor,

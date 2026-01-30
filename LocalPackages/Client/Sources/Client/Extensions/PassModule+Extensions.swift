@@ -51,7 +51,7 @@ public extension PassModule {
 
     var exportLogFileName: String {
         let hash = Bundle.main.gitCommitHash ?? "?"
-        let fileName = switch self {
+        return switch self {
         case .hostApp:
             "pass_host_application_\(hash).log"
         case .autoFillExtension:
@@ -61,6 +61,5 @@ public extension PassModule {
         case .actionExtension:
             "pass_action_extension\(hash).log"
         }
-        return fileName
     }
 }

@@ -156,7 +156,6 @@ struct SearchResultsView: View {
         }
     }
 
-    @ViewBuilder
     func overlay(show: Bool) -> some View {
         Divider()
             .frame(maxWidth: .infinity, maxHeight: show ? 2 : 1)
@@ -275,7 +274,6 @@ private extension SearchResultsView {
         }
     }
 
-    @ViewBuilder
     func mostRecentItemList(_ result: MostRecentSortResult<ItemSearchResult>) -> some View {
         ForEach(result.buckets) { bucket in
             section(for: bucket.items, headerTitle: bucket.type.title)

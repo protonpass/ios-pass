@@ -27,8 +27,8 @@ public nonisolated enum DesignConstant {
     public static let previewBreachItemCount = 5
     public static let onboardingPadding: CGFloat = 24
 
-    // SwiftUI's default animation duration is 0.35
-    // https://developer.apple.com/documentation/swiftui/animation/linear#
+    /// SwiftUI's default animation duration is 0.35
+    /// https://developer.apple.com/documentation/swiftui/animation/linear#
     public static let animationDuration: CGFloat = 0.35
 
     public enum Icons {

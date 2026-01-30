@@ -65,7 +65,9 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any AccountViewModelDelegate)?
 
-    var username: String { userManager.currentActiveUser.value?.user.email ?? "" }
+    var username: String {
+        userManager.currentActiveUser.value?.user.email ?? ""
+    }
 
     var canRestorePurchases: Bool {
         !Bundle.main.isBetaBuild &&

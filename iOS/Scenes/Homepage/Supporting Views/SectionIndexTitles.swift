@@ -23,7 +23,7 @@ import DesignSystem
 import Entities
 import SwiftUI
 
-// https://www.fivestars.blog/articles/section-title-index-swiftui/
+/// https://www.fivestars.blog/articles/section-title-index-swiftui/
 struct SectionIndexTitles: View {
     let proxy: ScrollViewProxy
     let direction: SortDirection

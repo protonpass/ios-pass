@@ -54,8 +54,8 @@ public final class SetShareInvitesAndKeys: SetShareInvitesAndKeysUseCase {
                 if let passError = error as? PassError,
                    case let .sharing(reason) = passError,
                    reason == .notProtonAddress {
-                    /// Subcript will not work because it won't create the key with nil value
-                    /// if the key doesn't exist before. Have to use `updateValue`.
+                    // Subcript will not work because it won't create the key with nil value
+                    // if the key doesn't exist before. Have to use `updateValue`.
                     inviteDestinationsAndKeys.updateValue(nil, forKey: destination)
                 } else {
                     throw error

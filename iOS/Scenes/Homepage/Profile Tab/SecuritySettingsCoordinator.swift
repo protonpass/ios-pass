@@ -37,7 +37,9 @@ final class SecuritySettingsCoordinator {
 
     weak var delegate: (any ChildCoordinatorDelegate)?
 
-    private var preferences: SharedPreferences { getSharedPreferences() }
+    private var preferences: SharedPreferences {
+        getSharedPreferences()
+    }
 
     init() {}
 }

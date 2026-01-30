@@ -89,7 +89,9 @@ public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable {
         .init(rawValue: shareRoleID) ?? .read
     }
 
-    public var id: String { shareID }
+    public var id: String {
+        shareID
+    }
 
     public var shareId: String {
         shareID

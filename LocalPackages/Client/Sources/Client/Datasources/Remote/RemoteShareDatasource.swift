@@ -72,8 +72,7 @@ public extension RemoteShareDatasource {
                                     shareId: String,
                                     lastToken: String?) async throws -> PaginatedUsersLinkedToShare {
         let endpoint = GetUsersLinkedToVaultShareEndpoint(for: shareId, lastToken: lastToken)
-        let response = try await exec(userId: userId, endpoint: endpoint)
-        return response
+        return try await exec(userId: userId, endpoint: endpoint)
     }
 
     func getUsersLinkedToItemShare(userId: String,
@@ -81,8 +80,7 @@ public extension RemoteShareDatasource {
                                    itemId: String,
                                    lastToken: String?) async throws -> PaginatedUsersLinkedToShare {
         let endpoint = GetUsersLinkedToItemShareEndpoint(for: shareId, itemId: itemId, lastToken: lastToken)
-        let response = try await exec(userId: userId, endpoint: endpoint)
-        return response
+        return try await exec(userId: userId, endpoint: endpoint)
     }
 
     func updateUserSharePermission(userId: String,

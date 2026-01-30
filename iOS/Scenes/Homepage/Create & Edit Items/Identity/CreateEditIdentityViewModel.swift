@@ -124,7 +124,9 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
 
     private var sectionIdToAddCustomField: String?
 
-    override var itemContentType: ItemContentType { .identity }
+    override var itemContentType: ItemContentType {
+        .identity
+    }
 
     override var supportedCustomFieldTypes: [CustomFieldType] {
         var types = super.supportedCustomFieldTypes

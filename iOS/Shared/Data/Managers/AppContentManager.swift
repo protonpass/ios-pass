@@ -101,7 +101,7 @@ final class AppContentManager: ObservableObject, DeinitPrintable, AppContentMana
 
     private var cancellables = Set<AnyCancellable>()
     private var isRefreshing: Bool = false
-    // The filter option after switching vaults
+    /// The filter option after switching vaults
     private var pendingItemTypeFilterOption: ItemTypeFilterOption?
 
     init() {
@@ -160,7 +160,7 @@ extension AppContentManager {
         }
     }
 
-    // Delete everything and download again
+    /// Delete everything and download again
     func fullSync(userId: String) async {
         vaultSyncEventStream.send(.started)
 

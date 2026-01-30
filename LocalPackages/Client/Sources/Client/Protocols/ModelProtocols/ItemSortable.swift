@@ -37,7 +37,9 @@ public enum MostRecentType: String, Hashable, Sendable, CaseIterable, Identifiab
     case last90Days
     case others
 
-    public var id: String { rawValue }
+    public var id: String {
+        rawValue
+    }
 
     static var cutOffDates: [Date] {
         let calendar = Calendar.current
@@ -71,7 +73,9 @@ public struct MostRecentSortBucket<T: DateSortable>: Hashable, Sendable, Identif
     public let type: MostRecentType
     public var items: [T]
 
-    public var id: String { type.id }
+    public var id: String {
+        type.id
+    }
 }
 
 public struct MostRecentSortResult<T: DateSortable>: SearchResults {
@@ -299,11 +303,7 @@ public struct MonthYear: Hashable, Sendable {
     }
 }
 
-extension MonthYear: Equatable {
-    public static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.month == rhs.month && lhs.year == rhs.year
-    }
-}
+extension MonthYear: Equatable {}
 
 extension MonthYear: Comparable {
     public static func < (lhs: MonthYear, rhs: MonthYear) -> Bool {

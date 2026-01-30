@@ -27,10 +27,6 @@ import SwiftUI
 struct LockedCredentialView: View {
     let viewModel: LockedCredentialViewModel
 
-    init(viewModel: LockedCredentialViewModel) {
-        self.viewModel = viewModel
-    }
-
     var body: some View {
         PassColor.backgroundNorm
             .localAuthentication(delayed: true,

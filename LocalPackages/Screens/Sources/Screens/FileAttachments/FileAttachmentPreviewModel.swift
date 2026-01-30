@@ -32,7 +32,9 @@ public protocol FileAttachmentPreviewHandler: Sendable {
 public enum FileAttachmentPreviewPostDownloadAction: String, Identifiable, Sendable {
     case none, save, share
 
-    public var id: String { rawValue }
+    public var id: String {
+        rawValue
+    }
 }
 
 public enum FileAttachmentPreviewMode: Sendable, Identifiable {

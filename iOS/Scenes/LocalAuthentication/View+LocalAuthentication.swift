@@ -36,7 +36,9 @@ enum LocalAuthenticationSuccessMode {
     case definePIN
     case removeLocalAuth
 
-    static var `default`: Self { .none }
+    static var `default`: Self {
+        .none
+    }
 }
 
 struct LocalAuthenticationModifier: ViewModifier {
@@ -45,19 +47,19 @@ struct LocalAuthenticationModifier: ViewModifier {
     @State private var method: LocalAuthenticationMethod
     @State private var authenticated: Bool
 
-    // autolocker as @State because it needs to be updated
-    // when user changes appLockTime in setting
+    /// autolocker as @State because it needs to be updated
+    /// when user changes appLockTime in setting
     @State private var autolocker: Autolocker
 
     @State private var successMode: LocalAuthenticationSuccessMode = .default
 
-    // When autofill from QuickType bar, we need to wait a bit for the view to be fully loaded
-    // Otherwise we would receive error -1004 when calling biometricallyAuthenticate function
-    //
-    // Error Domain=com.apple.LocalAuthentication Code=-1004
-    // "Caller is not running foreground."
-    // UserInfo={NSDebugDescription=Caller is not running foreground.,
-    // NSLocalizedDescription=User interaction required.}
+    /// When autofill from QuickType bar, we need to wait a bit for the view to be fully loaded
+    /// Otherwise we would receive error -1004 when calling biometricallyAuthenticate function
+    ///
+    /// Error Domain=com.apple.LocalAuthentication Code=-1004
+    /// "Caller is not running foreground."
+    /// UserInfo={NSDebugDescription=Caller is not running foreground.,
+    /// NSLocalizedDescription=User interaction required.}
     private let delayed: Bool
 
     private let manuallyAvoidKeyboard: Bool
@@ -174,9 +176,9 @@ struct LocalAuthenticationModifier: ViewModifier {
 }
 
 private extension LocalAuthenticationModifier {
-    // Different events could be triggered when app is foregrounded
-    // depending on context (app is fully backgrounded or just moved to app switch menu)
-    // so we listen to all of them
+    /// Different events could be triggered when app is foregrounded
+    /// depending on context (app is fully backgrounded or just moved to app switch menu)
+    /// so we listen to all of them
     @MainActor
     var foregroundEventsPublisher: AnyPublisher<Void, Never> {
         let center = NotificationCenter.default
@@ -221,7 +223,9 @@ private extension Autolocker {
     convenience init(appLockTime: AppLockTime) {
         struct AutolockerSettingsProvider: SettingsProvider {
             let appLockTime: AppLockTime
-            var lockTime: AutolockTimeout { .minutes(appLockTime.intervalInMinutes) }
+            var lockTime: AutolockTimeout {
+                .minutes(appLockTime.intervalInMinutes)
+            }
         }
         self.init(lockTimeProvider: AutolockerSettingsProvider(appLockTime: appLockTime))
     }

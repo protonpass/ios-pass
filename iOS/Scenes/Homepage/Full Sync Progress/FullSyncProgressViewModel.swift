@@ -42,7 +42,9 @@ final class FullSyncProgressViewModel: ObservableObject {
     enum Mode {
         case logIn, fullSync
 
-        var isFullSync: Bool { self == .fullSync }
+        var isFullSync: Bool {
+            self == .fullSync
+        }
     }
 
     init(mode: Mode) {

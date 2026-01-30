@@ -39,8 +39,8 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
 
-    // For swapping section title color purpose
-    // We're only interested in the emptiness of the string, not the format
+    /// For swapping section title color purpose
+    /// We're only interested in the emptiness of the string, not the format
     var monthYear: String {
         if let month, let year {
             "\(month) / \(year)"
@@ -49,7 +49,9 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
         }
     }
 
-    override var itemContentType: ItemContentType { .creditCard }
+    override var itemContentType: ItemContentType {
+        .creditCard
+    }
 
     override var shouldUpgrade: Bool {
         // Free users can not create more credit cards but can only update

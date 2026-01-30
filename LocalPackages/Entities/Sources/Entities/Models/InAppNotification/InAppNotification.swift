@@ -145,7 +145,7 @@ public enum InAppNotificationDisplayType: Int, Decodable, Sendable, CaseIterable
 public enum InAppNotificationState: Int, Decodable, Sendable, CaseIterable {
     case unread = 0
     case read = 1
-    // Dismissed is the equivalent of delete for the back end should be used with modal
+    /// Dismissed is the equivalent of delete for the back end should be used with modal
     case dismissed = 2
 }
 
