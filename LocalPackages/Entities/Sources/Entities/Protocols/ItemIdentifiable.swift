@@ -21,6 +21,7 @@
 
 import Foundation
 
+// TODO: maybe remove this to use the new entity identifiable
 /// Should be conformed by structs that represent items differently.
 /// E.g: for different purposes like listing & searching
 public protocol ItemIdentifiable: Sendable, CustomDebugStringConvertible, Equatable {
@@ -60,10 +61,4 @@ public extension Array where Element: ItemIdentifiable {
         copiedArray.remove(item: item)
         return copiedArray
     }
-}
-
-public protocol FullItemIdentifiable: Sendable, CustomDebugStringConvertible, Equatable, ItemIdentifiable,
-    Hashable {
-    var shareId: String { get }
-    var item: Item { get }
 }

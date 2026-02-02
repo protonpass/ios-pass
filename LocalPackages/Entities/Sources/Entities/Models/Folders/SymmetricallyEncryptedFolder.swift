@@ -20,9 +20,9 @@
 
 import Foundation
 
-/// ItemRevision with its symmetrically encrypted content by an application-wide symmetric key
+/// FolderRevision with its symmetrically encrypted content by an application-wide symmetric key
 public struct SymmetricallyEncryptedFolder: Equatable, Sendable, Hashable {
-    /// ID of the share that the item belongs to
+    /// ID of the share that the folder belongs to
     public let shareId: String
 
     public var folderId: String {
@@ -31,7 +31,7 @@ public struct SymmetricallyEncryptedFolder: Equatable, Sendable, Hashable {
 
     public var userId: String
 
-    /// Original item revision object as returned by the server
+    /// Original folder revision object as returned by the server
     public let folder: Folder
 
     /// Symmetrically encrypted content in base 64 format
@@ -45,17 +45,6 @@ public struct SymmetricallyEncryptedFolder: Equatable, Sendable, Hashable {
         self.folder = folder
         self.userId = userId
         self.encryptedContent = encryptedContent
-    }
-}
-
-public protocol ElementIdentifiable: Sendable, Equatable, CustomDebugStringConvertible {
-    var shareId: String { get }
-    var elementId: String { get }
-}
-
-public extension ElementIdentifiable {
-    var debugDescription: String {
-        "Element \(elementId) - Share \(shareId)"
     }
 }
 

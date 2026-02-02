@@ -21,19 +21,21 @@
 import Foundation
 
 public struct FolderUiModel: PrecomputedHashable, Equatable, Sendable, Identifiable {
-    /// Existing properties
-    public var id: String {
-        folderId
-    }
-
     public let folderId: String
     public let parentId: String
     public let shareId: String
     public let lastUseTime: Int64?
     public let folder: Folder
     public let content: FolderContent
-
     public let precomputedHash: Int
+
+    public var id: String {
+        folderId
+    }
+
+    var isRootFolder: Bool {
+        parentId == shareId
+    }
 
     public init(shareId: String, folder: Folder, content: FolderContent, lastUseTime: Int64? = nil) {
         folderId = folder.folderID
@@ -50,9 +52,5 @@ public struct FolderUiModel: PrecomputedHashable, Equatable, Sendable, Identifia
         hasher.combine(content)
         hasher.combine(folder)
         precomputedHash = hasher.finalize()
-    }
-
-    var isRootFolder: Bool {
-        parentId == shareId
     }
 }

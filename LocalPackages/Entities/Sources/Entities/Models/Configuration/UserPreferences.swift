@@ -41,7 +41,7 @@ public struct UserPreferences: Codable, Equatable, Sendable {
     /// `shareId` of the last selected vault. `nil` if all vaults are selected
     public var lastSelectedShareId: String?
 
-    /// `shareId` of the last selected vault. `nil` if all vaults are selected
+    /// `FolderId` of the last selected folder. `nil` if no folders were selected
     public var lastSelectedFolderId: String?
 
     /// `shareId` of the last created item
