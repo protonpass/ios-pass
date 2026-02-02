@@ -21,11 +21,13 @@
 import Foundation
 
 public struct DecryptedFolderKey: CryptographicKeyProtocol {
+    public let shareId: String
     public let folderId: String
     public let keyRotation: Int64
     public let keyData: Data
 
-    public init(folderId: String, keyRotation: Int64, keyData: Data) {
+    public init(shareId: String, folderId: String, keyRotation: Int64, keyData: Data) {
+        self.shareId = shareId
         self.folderId = folderId
         self.keyRotation = keyRotation
         self.keyData = keyData

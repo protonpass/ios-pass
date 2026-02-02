@@ -55,6 +55,11 @@ public extension LocalFolderKeyDatasource {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = FolderKeyEntity.fetchRequest()
         fetchRequest.predicate = .init(format: "userId = %@", userId)
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            .init(format: "shareId = %@", shareId),
+            .init(format: "userId = %@", userId),
+            .init(format: "folderId = %@", folderId)
+        ])
         let folderEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return folderEntities.map { $0.toSymmetricallyEncryptedKey() }
     }
@@ -62,8 +67,9 @@ public extension LocalFolderKeyDatasource {
     func upsertFolderKeys(_ keys: [SymmetricallyEncryptedFolderKey]) async throws {
         try await upsert(keys,
                          entityType: FolderKeyEntity.self,
-                         fetchPredicate: NSPredicate(format: "folderId IN %@",
-                                                     keys.map(\.folderId)),
+                         fetchPredicate: NSPredicate(format: "folderId IN %@ AND shareId IN %@",
+                                                     keys.map(\.folderId),
+                                                     keys.map(\.shareId)),
                          isEqual: { key, entity in
                              key.folderId == entity.folderId
                          }, hydrate: { folder, entity in
