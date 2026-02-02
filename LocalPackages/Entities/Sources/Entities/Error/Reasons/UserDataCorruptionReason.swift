@@ -27,6 +27,7 @@ public extension PassError {
         case noAddresses
         case noAddressKeys
         case failedToGetAddressKeyPassphrase
+        case incompleteUserData
 
         public var debugDescription: String {
             switch self {
@@ -36,6 +37,8 @@ public extension PassError {
                 "No address keys"
             case .failedToGetAddressKeyPassphrase:
                 "Failed to get address key passphrase"
+            case .incompleteUserData:
+                "Incomplete user data"
             }
         }
     }
