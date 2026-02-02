@@ -50,6 +50,10 @@ public struct ItemUiModel: PrecomputedHashable, Equatable, Sendable, Pinnable {
         totpUri?.isEmpty == false
     }
 
+    public var parentId: String {
+        folderId ?? shareId
+    }
+
     public let precomputedHash: Int
 
     public init(itemId: String,
