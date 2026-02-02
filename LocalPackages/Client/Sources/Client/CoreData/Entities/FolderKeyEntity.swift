@@ -53,13 +53,3 @@ extension FolderKeyEntity {
         keyRotation = symmetricallyEncryptedKey.keyRotation
     }
 }
-
-public struct SymmetricallyEncryptedFolderKey: Hashable, Sendable {
-    /// Base64 representation of the symmetrically encrypted share key
-    public let encryptedKey: String
-    /// ID of the share that the key belongs to
-    public let folderId: String
-    /// The user ID of the share key
-    public let userId: String
-    public let keyRotation: Int64
-}

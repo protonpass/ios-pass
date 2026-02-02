@@ -1,7 +1,7 @@
-//
-// SymmetricallyEncryptedShareKey.swift
-// Proton Pass - Created on 10/04/2023.
-// Copyright (c) 2023 Proton Technologies AG
+//  
+// CryptoKeyProtocols.swift
+// Proton Pass - Created on 02/02/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,6 +18,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Entities
 import Foundation
 
+public protocol CryptographicKeyProtocol: Hashable, Sendable {
+    var keyRotation: Int64 { get }
+    var keyData: Data { get }
+}
+
+public protocol SymmetricallyEncryptedKeyType {
+    var id: String { get }
+    var keyRotation: Int64 { get }
+    var encryptedKey: String { get }
+
+    func buildKey(with decryptedKeyData: Data) -> any CryptographicKeyProtocol
+}

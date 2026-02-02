@@ -1,7 +1,7 @@
-//
-// SymmetricallyEncryptedShareKey.swift
-// Proton Pass - Created on 10/04/2023.
-// Copyright (c) 2023 Proton Technologies AG
+//  
+// DecryptedShareKey.swift
+// Proton Pass - Created on 02/02/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,6 +18,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Entities
 import Foundation
 
+public struct DecryptedShareKey: CryptographicKeyProtocol {
+    public let shareId: String
+    public let keyRotation: Int64
+    public let keyData: Data
+
+    public init(shareId: String, keyRotation: Int64, keyData: Data) {
+        self.shareId = shareId
+        self.keyRotation = keyRotation
+        self.keyData = keyData
+    }
+}
