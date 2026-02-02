@@ -77,7 +77,7 @@ public final class SendShareInvite: Sendable, SendShareInviteUseCase {
             if share.shareType == .vault {
                 try await passKeyManager.getLatestItemKey(userId: userId,
                                                           shareId: share.id,
-                                                          containerId: item.item.folderID ?? share.id,
+                                                          parentId: item.parentId,
                                                           itemId: item.itemId)
             } else {
                 try await passKeyManager.getLatestShareKey(userId: userId, shareId: share.id)

@@ -54,7 +54,7 @@ public final class GetSecureLinkKeys: GetSecureLinkKeysUseCase {
         let itemKeyInfo: any CryptographicKeyProtocol = if share.shareType == .vault {
             try await passKeyManager.getLatestItemKey(userId: userId,
                                                       shareId: item.shareId,
-                                                      containerId: item.item.folderID ?? item.shareId,
+                                                      parentId: item.parentId,
                                                       itemId: item.itemId)
         } else {
             try await passKeyManager.getLatestShareKey(userId: userId, shareId: item.shareId)

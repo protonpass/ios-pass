@@ -665,7 +665,7 @@ public extension ItemRepository {
         } else {
             try await passKeyManager.getLatestItemKey(userId: userId,
                                                       shareId: shareId,
-                                                      containerId: oldItem.folderID ?? shareId,
+                                                      parentId: oldItem.folderID ?? shareId,
                                                       itemId: itemId)
         }
 
@@ -1071,7 +1071,7 @@ private extension ItemRepository {
             // Get all decrypted item keys
             let decryptedItemKeys = try await passKeyManager.getItemKeys(userId: userId,
                                                                          shareId: item.shareId,
-                                                                         containerId: item.item.folderID ?? item
+                                                                         parentId: item.item.folderID ?? item
                                                                              .shareId,
                                                                          itemId: item.item.itemID)
             // Re-encrypt all those item keys with the destination vault key
@@ -1121,7 +1121,7 @@ private extension ItemRepository {
             // Get all decrypted item keys
             let decryptedItemKeys = try await passKeyManager.getItemKeys(userId: userId,
                                                                          shareId: item.shareId,
-                                                                         containerId: item.item.folderID ?? item
+                                                                         parentId: item.item.folderID ?? item
                                                                              .shareId,
                                                                          itemId: item.item.itemID)
             // Re-encrypt all those item keys with the destination vault key

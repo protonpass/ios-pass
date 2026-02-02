@@ -199,7 +199,8 @@ public extension FolderRepository {
 
     func edit(userId: String, shareId: String, folderId: String, folderContent: FolderContent) async throws {
         logger.trace("Editing folder \(folderId) for user \(userId)")
-        let folderKey = try await passKeyManager.getContainerKey(userId: userId, containerId: folderId,
+        let folderKey = try await passKeyManager.getContainerKey(userId: userId,
+                                                                 containerId: folderId,
                                                                  keyRotation: nil) // getDecryptionKey(userId: userId, containerId: folderId)
         let requestPayload = try UpdateFolderRequestPayload(encryptionKey: folderKey, folderContent: folderContent)
         let request = UpdateFolderRequest(content: requestPayload)
@@ -222,7 +223,8 @@ public extension FolderRepository {
                                                                       keyRotation: nil) // getDecryptionKey(userId: userId,
 //                                                                       containerId: destinationId ?? shareId)
 
-        let currentFolderKey = try await passKeyManager.getContainerKey(userId: userId, containerId: folderId,
+        let currentFolderKey = try await passKeyManager.getContainerKey(userId: userId,
+                                                                        containerId: folderId,
                                                                         keyRotation: nil) // getDecryptionKey(userId: userId,
 //                                                                         containerId: folderId)
         let encryptedItemKey = try AES.GCM.seal(currentFolderKey.keyData,

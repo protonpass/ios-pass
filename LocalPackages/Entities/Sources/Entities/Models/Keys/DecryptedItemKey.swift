@@ -1,4 +1,4 @@
-//  
+//
 // DecryptedItemKey.swift
 // Proton Pass - Created on 02/02/2026.
 // Copyright (c) 2026 Proton Technologies AG

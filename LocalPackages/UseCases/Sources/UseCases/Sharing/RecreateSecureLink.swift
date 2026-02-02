@@ -50,7 +50,7 @@ public final class RecreateSecureLink: RecreateSecureLinkUseCase {
                                                         itemContent.item.itemKey != nil {
             try await passKeyManager.getItemKey(userId: userId,
                                                 shareId: link.shareID,
-                                                containerId: itemContent.item.folderID ?? link.shareID,
+                                                parentId: itemContent.parentId,
                                                 itemId: link.itemID,
                                                 keyRotation: link.linkKeyShareKeyRotation)
         } else {

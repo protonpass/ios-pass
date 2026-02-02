@@ -51,8 +51,6 @@ public enum Constants {
 
         public static let defaultPageSize = 100
         public static let batchSize = 500
-        public static let maxFolderDepth = 5
-        public static let maxFoldersPerLevel = 10
     }
 
     public enum Attachment {
