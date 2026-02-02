@@ -32,11 +32,11 @@ extension FolderEntity {
         NSFetchRequest<FolderEntity>(entityName: "FolderEntity")
     }
 
-    @NSManaged var shareID: String // Custom field
+    @NSManaged var shareID: String
     @NSManaged var userID: String
     @NSManaged var folderID: String
-    @NSManaged var folderData: Data // Custom field
-    @NSManaged var symmetricallyEncryptedContent: String // Custom field
+    @NSManaged var folderData: Data
+    @NSManaged var symmetricallyEncryptedContent: String
 }
 
 extension FolderEntity {
