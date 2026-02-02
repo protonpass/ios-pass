@@ -1,5 +1,5 @@
 //
-// DecryptedFolderKey.swift
+// SymmetricallyEncryptedFolderKey+Mock.swift
 // Proton Pass - Created on 02/02/2026.
 // Copyright (c) 2026 Proton Technologies AG
 //
@@ -18,18 +18,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import Entities
 
-public struct DecryptedFolderKey: CryptographicKeyProtocol {
-    public let shareId: String
-    public let folderId: String
-    public let keyRotation: Int64
-    public let keyData: Data
-
-    public init(shareId: String, folderId: String, keyRotation: Int64, keyData: Data) {
-        self.shareId = shareId
-        self.folderId = folderId
-        self.keyRotation = keyRotation
-        self.keyData = keyData
+public extension SymmetricallyEncryptedFolderKey {
+    static func random(shareId: String? = nil,
+        encryptedKey: String? = nil,
+                       folderId: String? = nil,
+                       userId: String? = nil,
+                       keyRotation: Int64? = nil) -> SymmetricallyEncryptedFolderKey {
+        .init(shareId: shareId ?? .random(),
+              encryptedKey: encryptedKey ?? .random(),
+              folderId: folderId ?? .random(),
+              userId: userId ?? .random(),
+              keyRotation: keyRotation ?? .random(in: 1...100))
     }
 }

@@ -253,7 +253,8 @@ public extension PassKeyManager {
                         startKey = shareKey
                     }
 
-                    return try await self.processNode(folder: root,
+                    return try await self.processNode(shareId: shareId,
+                                                      folder: root,
                                                       parentKey: startKey,
                                                       adjacencyMap: adjacencyMap)
                 }
@@ -267,7 +268,7 @@ public extension PassKeyManager {
             return allDecryptedFolders
         }
 
-        try await saveFolderKeys(userId: userId, keysToBeSaved)
+        try await saveFolderKeys(userId: userId, shareId: shareId, keysToBeSaved)
     }
 }
 
@@ -328,7 +329,8 @@ private extension PassKeyManager {
                                 keyData: decryptedItemKeyData)
     }
 
-    func decryptFolderKey(_ folder: Folder,
+    func decryptFolderKey(shareId: String,
+                          folder: Folder,
                           parentKey: any CryptographicKeyProtocol) throws -> DecryptedFolderKey {
         guard let encryptedFolderKeyData = try folder.folderKey.base64Decode() else {
             throw PassError.crypto(.failedToBase64Decode)
@@ -338,15 +340,17 @@ private extension PassKeyManager {
                                                 key: parentKey.keyData,
                                                 associatedData: .folderKey)
 
-        return DecryptedFolderKey(folderId: folder.folderID,
+        return DecryptedFolderKey(shareId: shareId,
+                                  folderId: folder.folderID,
                                   keyRotation: folder.keyRotation,
                                   keyData: decryptedKeyData)
     }
 
-    func processNode(folder: Folder,
+    func processNode(shareId: String,
+                     folder: Folder,
                      parentKey: any CryptographicKeyProtocol,
                      adjacencyMap: [String?: [Folder]]) async throws -> [DecryptedFolderKey] {
-        let currentDecryptedKey = try decryptFolderKey(folder, parentKey: parentKey)
+        let currentDecryptedKey = try decryptFolderKey(shareId: shareId, folder: folder, parentKey: parentKey)
         cacheKey(currentDecryptedKey, id: folder.id)
 
         guard let children = adjacencyMap[folder.id], !children.isEmpty else {
@@ -356,7 +360,8 @@ private extension PassKeyManager {
         return try await withThrowingTaskGroup(of: [DecryptedFolderKey].self) { group in
             for child in children {
                 group.addTask {
-                    try await self.processNode(folder: child,
+                    try await self.processNode(shareId: shareId,
+                                               folder: child,
                                                parentKey: currentDecryptedKey,
                                                adjacencyMap: adjacencyMap)
                 }
@@ -371,13 +376,14 @@ private extension PassKeyManager {
         }
     }
 
-    func saveFolderKeys(userId: String, _ keys: [DecryptedFolderKey]) async throws {
+    func saveFolderKeys(userId: String, shareId: String, _ keys: [DecryptedFolderKey]) async throws {
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
 
         let encryptedKeys: [SymmetricallyEncryptedFolderKey] = try keys.map { key in
             let encryptedKeyBase64 = key.keyData.encodeBase64()
             let symmetricallyEncryptedKey = try symmetricKey.encrypt(encryptedKeyBase64)
-            return SymmetricallyEncryptedFolderKey(encryptedKey: symmetricallyEncryptedKey,
+            return SymmetricallyEncryptedFolderKey(shareId: shareId,
+                                                   encryptedKey: symmetricallyEncryptedKey,
                                                    folderId: key.folderId,
                                                    userId: userId,
                                                    keyRotation: key.keyRotation)

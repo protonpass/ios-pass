@@ -21,6 +21,7 @@
 import Foundation
 
 public struct SymmetricallyEncryptedFolderKey: Hashable, Sendable {
+    public let shareId: String
     /// Base64 representation of the symmetrically encrypted folder key
     public let encryptedKey: String
     /// ID of the folder that the key belongs to
@@ -29,7 +30,8 @@ public struct SymmetricallyEncryptedFolderKey: Hashable, Sendable {
     public let userId: String
     public let keyRotation: Int64
 
-    public init(encryptedKey: String, folderId: String, userId: String, keyRotation: Int64) {
+    public init(shareId: String, encryptedKey: String, folderId: String, userId: String, keyRotation: Int64) {
+        self.shareId = shareId
         self.encryptedKey = encryptedKey
         self.folderId = folderId
         self.userId = userId
@@ -43,7 +45,8 @@ extension SymmetricallyEncryptedFolderKey: SymmetricallyEncryptedKeyType {
     }
 
     public func buildKey(with decryptedKeyData: Data) -> any CryptographicKeyProtocol {
-        DecryptedFolderKey(folderId: folderId,
+        DecryptedFolderKey(shareId: shareId,
+                           folderId: folderId,
                            keyRotation: keyRotation,
                            keyData: decryptedKeyData)
     }
