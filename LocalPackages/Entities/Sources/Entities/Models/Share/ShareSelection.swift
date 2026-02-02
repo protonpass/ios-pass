@@ -20,60 +20,6 @@
 
 import Foundation
 
-public struct ShareSelectionPayload: Hashable, Sendable, Identifiable {
-    public let share: Share
-    public let folder: FolderUiModel?
-
-    public var id: String {
-        if let folderId = folder?.folderId {
-            share.id + folderId
-        } else {
-            share.id
-        }
-    }
-
-    public init(share: Share, folder: FolderUiModel?) {
-        self.share = share
-        self.folder = folder
-    }
-
-    public var isFolderSelected: Bool {
-        folder != nil
-    }
-
-    public var title: String {
-        folder?.content.name ?? share.vaultContent?.name ?? ""
-    }
-
-    public static var `default`: ShareSelectionPayload {
-        .init(share: .default, folder: nil)
-    }
-}
-
-public extension Share {
-    static let `default` = Share(shareID: "",
-                                 vaultID: "",
-                                 addressID: "",
-                                 targetType: 0,
-                                 targetID: "",
-                                 permission: 0,
-                                 shareRoleID: "",
-                                 targetMembers: 0,
-                                 targetMaxMembers: 0,
-                                 pendingInvites: 0,
-                                 newUserInvitesReady: 0,
-                                 owner: false,
-                                 shared: false,
-                                 content: nil,
-                                 contentKeyRotation: nil,
-                                 contentFormatVersion: nil,
-                                 groupID: nil,
-                                 expireTime: nil,
-                                 createTime: 0,
-                                 canAutoFill: false,
-                                 flags: 0)
-}
-
 public enum ShareSelection: Hashable, Sendable {
     case all
     case precise(ShareSelectionPayload)

@@ -22,62 +22,6 @@
 import EntitiesMocks
 import Testing
 
-// MARK: - Test Helpers
-
-private extension ItemUiModel {
-    static func mock(
-        itemId: String,
-        shareId: String,
-        folderId: String? = nil,
-        isAlias: Bool = false,
-        totpUri: String? = nil
-    ) -> ItemUiModel {
-        ItemUiModel(
-            itemId: itemId,
-            shareId: shareId,
-            folderId: folderId,
-            type: .login,
-            aliasEnabled: false,
-            title: "Item \(itemId)",
-            description: "Description for \(itemId)",
-            isAlias: isAlias,
-            totpUri: totpUri,
-            lastUseTime: 123_456_678,
-            modifyTime: 123_456_789,
-            state: .active,
-            pinned: false,
-            isAliasEnabled: false,
-            shared: false,
-            hasEmail: true,
-            hasUsername: true,
-            hasPassword: true
-        )
-    }
-}
-
-private extension FolderUiModel {
-    static func mock(
-        folderId: String,
-        shareId: String,
-        parentFolderId: String? = nil
-    ) -> FolderUiModel {
-        let folder = Folder(
-            vaultID: shareId,
-            folderID: folderId,
-            parentFolderID: parentFolderId,
-            keyRotation: 1,
-            folderKey: "key",
-            contentFormatVersion: 1,
-            content: "content"
-        )
-        return FolderUiModel(
-            shareId: shareId,
-            folder: folder,
-            content: FolderContent(name: "Folder \(folderId)")
-        )
-    }
-}
-
 // MARK: - ShareContentTests
 
 @Suite("ShareContent Tests")
