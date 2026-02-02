@@ -1195,7 +1195,7 @@ extension HomepageCoordinator {
             authManager.updateEncryptionDetailsForSession(sessionUID: authCredential.sessionID,
                                                           mailboxpassword: authCredential.mailboxpassword,
                                                           salt: authCredential.passwordKeySalt,
-                                                          privateKey: authCredential.passwordKeySalt)
+                                                          privateKey: authCredential.privateKey)
 
             try? await userManager.upsertAndMarkAsActive(userData: .init(credential: authCredential,
                                                                          user: updatedUser,
