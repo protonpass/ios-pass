@@ -19,8 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import CryptoKit
-
 public struct SharesData: Hashable, Sendable {
     public let shares: [String: ShareContent]
     public let trashedItems: [ItemUiModel]
@@ -28,37 +26,37 @@ public struct SharesData: Hashable, Sendable {
     public let itemsSharedWithMe: [ItemUiModel]
 
     public init(shares: [ShareContent], trashedItems: [ItemUiModel]) {
-        self.shares = shares.reduce(into: [String: ShareContent]()) { result, shareContent in
-            result[shareContent.share.id] = shareContent
-        }
-        self.trashedItems = trashedItems
+        var sharesDictionary: [String: ShareContent] = [:]
+        sharesDictionary.reserveCapacity(shares.count)
 
+        var sharedByMeContents: [ShareContent] = []
+        var sharedWithMeContents: [ShareContent] = []
         var sharedByMeShareIds: Set<String> = []
         var sharedWithMeShareIds: Set<String> = []
 
-        for share in shares {
-            if share.share.shareRole == .manager {
-                sharedByMeShareIds.insert(share.share.shareId)
+        // Single pass: build dictionary and categorize simultaneously
+        for shareContent in shares {
+            let share = shareContent.share
+            sharesDictionary[share.shareId] = shareContent
+
+            if share.shareRole == .manager {
+                sharedByMeShareIds.insert(share.shareId)
+                sharedByMeContents.append(shareContent)
             }
-            if !share.share.isVaultRepresentation, !share.share.owner {
-                sharedWithMeShareIds.insert(share.share.shareId)
+            if !share.isVaultRepresentation, !share.owner {
+                sharedWithMeShareIds.insert(share.shareId)
+                sharedWithMeContents.append(shareContent)
             }
         }
 
-        let sharedTrashedItems = self.trashedItems.filter(\.shared)
-        let trashedSharedByMeItems = sharedTrashedItems.filter { sharedByMeShareIds.contains($0.shareId) }
-        let trashedSharedWithMeItems = sharedTrashedItems.filter { sharedWithMeShareIds.contains($0.shareId) }
+        self.shares = sharesDictionary
+        self.trashedItems = trashedItems
+        let sharedTrashedItems = trashedItems.filter(\.shared)
+        itemsSharedByMe = sharedByMeContents.flatMap(\.allItems).filter(\.shared)
+            + sharedTrashedItems.filter { sharedByMeShareIds.contains($0.shareId) }
 
-        itemsSharedByMe =
-            self.shares.values
-                .filter { sharedByMeShareIds.contains($0.share.shareId) }
-                .flatMap(\.allItems)
-                .filter(\.shared) + trashedSharedByMeItems
-
-        itemsSharedWithMe = self.shares.values
-            .filter { sharedWithMeShareIds.contains($0.share.shareId) }
-            .flatMap(\.allItems)
-            + trashedSharedWithMeItems
+        itemsSharedWithMe = sharedWithMeContents.flatMap(\.allItems)
+            + sharedTrashedItems.filter { sharedWithMeShareIds.contains($0.shareId) }
     }
 
     public var filteredOrderedVaults: [ShareContent] {
@@ -90,11 +88,6 @@ public struct SharesData: Hashable, Sendable {
     }
 
     public var visibleShareContents: [ShareContent] {
-        shares.values.compactMap { shareContent in
-            guard !shareContent.share.hidden else {
-                return nil
-            }
-            return shareContent
-        }
+        shares.values.filter { !$0.share.hidden }
     }
 }

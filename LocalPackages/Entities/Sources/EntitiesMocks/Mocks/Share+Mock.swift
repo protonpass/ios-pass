@@ -40,7 +40,7 @@ public extension Share {
                        expireTime: Int64? = nil,
                        createTime: Int64 = .random(in: 0...100),
                        canAutoFill: Bool = true,
-                       flags: Int = .random(in: 0...10)) -> Share {
+                       flags: Int = 0) -> Share {
         Share(shareID: shareID ?? .random(),
               vaultID: vaultID ?? .random(),
               addressID: addressID ?? .random(),
