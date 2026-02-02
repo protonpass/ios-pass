@@ -32,7 +32,7 @@ public final class LocalShareDatasourceProtocolMock: @unchecked Sendable, LocalS
     public var invokedGetShareCount = 0
     public var invokedGetShareParameters: (userId: String, shareId: String)?
     public var invokedGetShareParametersList = [(userId: String, shareId: String)]()
-    public var stubbedGetShareResult: SymmetricallyEncryptedShare?
+    public nonisolated(unsafe) var stubbedGetShareResult: SymmetricallyEncryptedShare?
 
     public func getShare(userId: String, shareId: String) async throws -> SymmetricallyEncryptedShare? {
         invokedGetSharefunction = true

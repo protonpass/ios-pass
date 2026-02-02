@@ -51,7 +51,7 @@ public final class ItemReadEventRepositoryProtocolMock: @unchecked Sendable, Ite
     public var invokedGetAllEventsCount = 0
     public var invokedGetAllEventsParameters: (userId: String, Void)?
     public var invokedGetAllEventsParametersList = [(userId: String, Void)]()
-    public var stubbedGetAllEventsResult: [ItemReadEvent]!
+    public nonisolated(unsafe) var stubbedGetAllEventsResult: [ItemReadEvent]!
 
     public func getAllEvents(userId: String) async throws -> [ItemReadEvent] {
         invokedGetAllEventsfunction = true

@@ -76,7 +76,7 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
     public var invokedGetAliasOptionsCount = 0
     public var invokedGetAliasOptionsParameters: (userId: String?, shareId: String)?
     public var invokedGetAliasOptionsParametersList = [(userId: String?, shareId: String)]()
-    public var stubbedGetAliasOptionsResult: AliasOptions!
+    public nonisolated(unsafe) var stubbedGetAliasOptionsResult: AliasOptions!
 
     public func getAliasOptions(userId: String?, shareId: String) async throws -> AliasOptions {
         invokedGetAliasOptionsfunction = true
@@ -95,7 +95,7 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
     public var invokedGetAliasDetailsCount = 0
     public var invokedGetAliasDetailsParameters: (userId: String?, shareId: String, itemId: String)?
     public var invokedGetAliasDetailsParametersList = [(userId: String?, shareId: String, itemId: String)]()
-    public var stubbedGetAliasDetailsResult: Alias!
+    public nonisolated(unsafe) var stubbedGetAliasDetailsResult: Alias!
 
     public func getAliasDetails(userId: String?, shareId: String, itemId: String) async throws -> Alias {
         invokedGetAliasDetailsfunction = true
@@ -114,7 +114,7 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
     public var invokedChangeMailboxesCount = 0
     public var invokedChangeMailboxesParameters: (shareId: String, itemId: String, mailboxIDs: [Int])?
     public var invokedChangeMailboxesParametersList = [(shareId: String, itemId: String, mailboxIDs: [Int])]()
-    public var stubbedChangeMailboxesResult: Alias!
+    public nonisolated(unsafe) var stubbedChangeMailboxesResult: Alias!
 
     public func changeMailboxes(shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias {
         invokedChangeMailboxesfunction = true
@@ -133,7 +133,7 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
     public var invokedChangeMailboxEmailCount = 0
     public var invokedChangeMailboxEmailParameters: (userId: String, mailboxId: Int, newMailboxEmail: String)?
     public var invokedChangeMailboxEmailParametersList = [(userId: String, mailboxId: Int, newMailboxEmail: String)]()
-    public var stubbedChangeMailboxEmailResult: Mailbox!
+    public nonisolated(unsafe) var stubbedChangeMailboxEmailResult: Mailbox!
 
     public func changeMailboxEmail(userId: String, mailboxId: Int, newMailboxEmail: String) async throws -> Mailbox {
         invokedChangeMailboxEmailfunction = true
@@ -169,7 +169,7 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
     public var invokedGetAliasSyncStatusCount = 0
     public var invokedGetAliasSyncStatusParameters: (userId: String, Void)?
     public var invokedGetAliasSyncStatusParametersList = [(userId: String, Void)]()
-    public var stubbedGetAliasSyncStatusResult: AliasSyncStatus!
+    public nonisolated(unsafe) var stubbedGetAliasSyncStatusResult: AliasSyncStatus!
 
     public func getAliasSyncStatus(userId: String) async throws -> AliasSyncStatus {
         invokedGetAliasSyncStatusfunction = true
@@ -239,7 +239,7 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
     public var invokedGetPendingAliasesToSyncCount = 0
     public var invokedGetPendingAliasesToSyncParameters: (userId: String, since: String?, pageSize: Int)?
     public var invokedGetPendingAliasesToSyncParametersList = [(userId: String, since: String?, pageSize: Int)]()
-    public var stubbedGetPendingAliasesToSyncResult: PaginatedPendingAliases!
+    public nonisolated(unsafe) var stubbedGetPendingAliasesToSyncResult: PaginatedPendingAliases!
 
     public func getPendingAliasesToSync(userId: String, since: String?, pageSize: Int) async throws -> PaginatedPendingAliases {
         invokedGetPendingAliasesToSyncfunction = true
@@ -258,7 +258,7 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
     public var invokedGetAliasSettingsCount = 0
     public var invokedGetAliasSettingsParameters: (userId: String, Void)?
     public var invokedGetAliasSettingsParametersList = [(userId: String, Void)]()
-    public var stubbedGetAliasSettingsResult: AliasSettings!
+    public nonisolated(unsafe) var stubbedGetAliasSettingsResult: AliasSettings!
 
     public func getAliasSettings(userId: String) async throws -> AliasSettings {
         invokedGetAliasSettingsfunction = true
@@ -277,7 +277,7 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
     public var invokedUpdateAliasDefaultDomainCount = 0
     public var invokedUpdateAliasDefaultDomainParameters: (userId: String, request: UpdateAliasDomainRequest)?
     public var invokedUpdateAliasDefaultDomainParametersList = [(userId: String, request: UpdateAliasDomainRequest)]()
-    public var stubbedUpdateAliasDefaultDomainResult: AliasSettings!
+    public nonisolated(unsafe) var stubbedUpdateAliasDefaultDomainResult: AliasSettings!
 
     public func updateAliasDefaultDomain(userId: String, request: UpdateAliasDomainRequest) async throws -> AliasSettings {
         invokedUpdateAliasDefaultDomainfunction = true
@@ -296,7 +296,7 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
     public var invokedUpdateAliasDefaultMailboxCount = 0
     public var invokedUpdateAliasDefaultMailboxParameters: (userId: String, request: UpdateAliasMailboxRequest)?
     public var invokedUpdateAliasDefaultMailboxParametersList = [(userId: String, request: UpdateAliasMailboxRequest)]()
-    public var stubbedUpdateAliasDefaultMailboxResult: AliasSettings!
+    public nonisolated(unsafe) var stubbedUpdateAliasDefaultMailboxResult: AliasSettings!
 
     public func updateAliasDefaultMailbox(userId: String, request: UpdateAliasMailboxRequest) async throws -> AliasSettings {
         invokedUpdateAliasDefaultMailboxfunction = true
@@ -315,7 +315,7 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
     public var invokedGetAllAliasDomainsCount = 0
     public var invokedGetAllAliasDomainsParameters: (userId: String, Void)?
     public var invokedGetAllAliasDomainsParametersList = [(userId: String, Void)]()
-    public var stubbedGetAllAliasDomainsResult: [Domain]!
+    public nonisolated(unsafe) var stubbedGetAllAliasDomainsResult: [Domain]!
 
     public func getAllAliasDomains(userId: String) async throws -> [Domain] {
         invokedGetAllAliasDomainsfunction = true
@@ -334,7 +334,7 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
     public var invokedGetAllAliasMailboxesCount = 0
     public var invokedGetAllAliasMailboxesParameters: (userId: String, Void)?
     public var invokedGetAllAliasMailboxesParametersList = [(userId: String, Void)]()
-    public var stubbedGetAllAliasMailboxesResult: [Mailbox]!
+    public nonisolated(unsafe) var stubbedGetAllAliasMailboxesResult: [Mailbox]!
 
     public func getAllAliasMailboxes(userId: String) async throws -> [Mailbox] {
         invokedGetAllAliasMailboxesfunction = true
@@ -353,7 +353,7 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
     public var invokedCreateMailboxCount = 0
     public var invokedCreateMailboxParameters: (userId: String, email: String)?
     public var invokedCreateMailboxParametersList = [(userId: String, email: String)]()
-    public var stubbedCreateMailboxResult: Mailbox!
+    public nonisolated(unsafe) var stubbedCreateMailboxResult: Mailbox!
 
     public func createMailbox(userId: String, email: String) async throws -> Mailbox {
         invokedCreateMailboxfunction = true
@@ -389,7 +389,7 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
     public var invokedVerifyMailboxCount = 0
     public var invokedVerifyMailboxParameters: (userId: String, mailboxID: Int, code: String)?
     public var invokedVerifyMailboxParametersList = [(userId: String, mailboxID: Int, code: String)]()
-    public var stubbedVerifyMailboxResult: Mailbox!
+    public nonisolated(unsafe) var stubbedVerifyMailboxResult: Mailbox!
 
     public func verifyMailbox(userId: String, mailboxID: Int, code: String) async throws -> Mailbox {
         invokedVerifyMailboxfunction = true
@@ -408,7 +408,7 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
     public var invokedResendMailboxVerificationEmailCount = 0
     public var invokedResendMailboxVerificationEmailParameters: (userId: String, mailboxID: Int)?
     public var invokedResendMailboxVerificationEmailParametersList = [(userId: String, mailboxID: Int)]()
-    public var stubbedResendMailboxVerificationEmailResult: Mailbox!
+    public nonisolated(unsafe) var stubbedResendMailboxVerificationEmailResult: Mailbox!
 
     public func resendMailboxVerificationEmail(userId: String, mailboxID: Int) async throws -> Mailbox {
         invokedResendMailboxVerificationEmailfunction = true
@@ -427,7 +427,7 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
     public var invokedGetContactsCount = 0
     public var invokedGetContactsParameters: (userId: String, shareId: String, itemId: String, lastContactId: Int?)?
     public var invokedGetContactsParametersList = [(userId: String, shareId: String, itemId: String, lastContactId: Int?)]()
-    public var stubbedGetContactsResult: PaginatedAliasContacts!
+    public nonisolated(unsafe) var stubbedGetContactsResult: PaginatedAliasContacts!
 
     public func getContacts(userId: String, shareId: String, itemId: String, lastContactId: Int?) async throws -> PaginatedAliasContacts {
         invokedGetContactsfunction = true
@@ -446,7 +446,7 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
     public var invokedCreateContactCount = 0
     public var invokedCreateContactParameters: (userId: String, shareId: String, itemId: String, request: CreateAContactRequest)?
     public var invokedCreateContactParametersList = [(userId: String, shareId: String, itemId: String, request: CreateAContactRequest)]()
-    public var stubbedCreateContactResult: AliasContactLite!
+    public nonisolated(unsafe) var stubbedCreateContactResult: AliasContactLite!
 
     public func createContact(userId: String, shareId: String, itemId: String, request: CreateAContactRequest) async throws -> AliasContactLite {
         invokedCreateContactfunction = true
@@ -465,7 +465,7 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
     public var invokedGetContactInfosCount = 0
     public var invokedGetContactInfosParameters: (userId: String, shareId: String, itemId: String, contactId: String)?
     public var invokedGetContactInfosParametersList = [(userId: String, shareId: String, itemId: String, contactId: String)]()
-    public var stubbedGetContactInfosResult: AliasContact!
+    public nonisolated(unsafe) var stubbedGetContactInfosResult: AliasContact!
 
     public func getContactInfos(userId: String, shareId: String, itemId: String, contactId: String) async throws -> AliasContact {
         invokedGetContactInfosfunction = true
@@ -484,7 +484,7 @@ public final class AliasRepositoryProtocolMock: @unchecked Sendable, AliasReposi
     public var invokedUpdateContactCount = 0
     public var invokedUpdateContactParameters: (userId: String, shareId: String, itemId: String, contactId: String, blocked: Bool)?
     public var invokedUpdateContactParametersList = [(userId: String, shareId: String, itemId: String, contactId: String, blocked: Bool)]()
-    public var stubbedUpdateContactResult: AliasContactLite!
+    public nonisolated(unsafe) var stubbedUpdateContactResult: AliasContactLite!
 
     public func updateContact(userId: String, shareId: String, itemId: String, contactId: String, blocked: Bool) async throws -> AliasContactLite {
         invokedUpdateContactfunction = true

@@ -32,7 +32,7 @@ public final class LocalUnauthCredentialDatasourceProtocolMock: @unchecked Senda
     public var closureGetUnauthCredential: () -> () = {}
     public var invokedGetUnauthCredentialfunction = false
     public var invokedGetUnauthCredentialCount = 0
-    public var stubbedGetUnauthCredentialResult: AuthCredential?
+    public nonisolated(unsafe) var stubbedGetUnauthCredentialResult: AuthCredential?
 
     public func getUnauthCredential() throws -> AuthCredential? {
         invokedGetUnauthCredentialfunction = true

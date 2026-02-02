@@ -33,7 +33,7 @@ public final class LocalAccessDatasourceProtocolMock: @unchecked Sendable, Local
     public var invokedGetAccessCount = 0
     public var invokedGetAccessParameters: (userId: String, Void)?
     public var invokedGetAccessParametersList = [(userId: String, Void)]()
-    public var stubbedGetAccessResult: UserAccess?
+    public nonisolated(unsafe) var stubbedGetAccessResult: UserAccess?
 
     public func getAccess(userId: String) async throws -> UserAccess? {
         invokedGetAccessfunction = true
@@ -50,7 +50,7 @@ public final class LocalAccessDatasourceProtocolMock: @unchecked Sendable, Local
     public var closureGetAllAccesses: () -> () = {}
     public var invokedGetAllAccessesfunction = false
     public var invokedGetAllAccessesCount = 0
-    public var stubbedGetAllAccessesResult: [UserAccess]!
+    public nonisolated(unsafe) var stubbedGetAllAccessesResult: [UserAccess]!
 
     public func getAllAccesses() async throws -> [UserAccess] {
         invokedGetAllAccessesfunction = true
@@ -102,7 +102,7 @@ public final class LocalAccessDatasourceProtocolMock: @unchecked Sendable, Local
     public var invokedGetPassUserInformationsCount = 0
     public var invokedGetPassUserInformationsParameters: (userId: String, Void)?
     public var invokedGetPassUserInformationsParametersList = [(userId: String, Void)]()
-    public var stubbedGetPassUserInformationsResult: PassUserInformations?
+    public nonisolated(unsafe) var stubbedGetPassUserInformationsResult: PassUserInformations?
 
     public func getPassUserInformations(userId: String) async throws -> PassUserInformations? {
         invokedGetPassUserInformationsfunction = true

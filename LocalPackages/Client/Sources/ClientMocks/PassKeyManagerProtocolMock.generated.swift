@@ -37,7 +37,7 @@ public final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManag
     public var invokedGetShareKeyCount = 0
     public var invokedGetShareKeyParameters: (userId: String, shareId: String, keyRotation: Int64)?
     public var invokedGetShareKeyParametersList = [(userId: String, shareId: String, keyRotation: Int64)]()
-    public var stubbedGetShareKeyResult: (any CryptographicKeyProtocol)!
+    public nonisolated(unsafe) var stubbedGetShareKeyResult: (any CryptographicKeyProtocol)!
 
     public func getShareKey(userId: String, shareId: String, keyRotation: Int64) async throws -> any CryptographicKeyProtocol {
         invokedGetShareKeyfunction = true
@@ -56,7 +56,7 @@ public final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManag
     public var invokedGetLatestShareKeyCount = 0
     public var invokedGetLatestShareKeyParameters: (userId: String, shareId: String)?
     public var invokedGetLatestShareKeyParametersList = [(userId: String, shareId: String)]()
-    public var stubbedGetLatestShareKeyResult: (any CryptographicKeyProtocol)!
+    public nonisolated(unsafe) var stubbedGetLatestShareKeyResult: (any CryptographicKeyProtocol)!
 
     public func getLatestShareKey(userId: String, shareId: String) async throws -> any CryptographicKeyProtocol {
         invokedGetLatestShareKeyfunction = true
@@ -75,7 +75,7 @@ public final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManag
     public var invokedGetShareKeysCount = 0
     public var invokedGetShareKeysParameters: (userId: String, share: Share, item: any FullItemIdentifiable)?
     public var invokedGetShareKeysParametersList = [(userId: String, share: Share, item: any FullItemIdentifiable)]()
-    public var stubbedGetShareKeysResult: ([any CryptographicKeyProtocol])!
+    public nonisolated(unsafe) var stubbedGetShareKeysResult: ([any CryptographicKeyProtocol])!
 
     public func getShareKeys(userId: String, share: Share, item: any FullItemIdentifiable) async throws -> [any CryptographicKeyProtocol] {
         invokedGetShareKeysfunction = true
@@ -94,7 +94,7 @@ public final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManag
     public var invokedGetLatestItemKeyCount = 0
     public var invokedGetLatestItemKeyParameters: (userId: String, shareId: String, containerId: String, itemId: String)?
     public var invokedGetLatestItemKeyParametersList = [(userId: String, shareId: String, containerId: String, itemId: String)]()
-    public var stubbedGetLatestItemKeyResult: (any CryptographicKeyProtocol)!
+    public nonisolated(unsafe) var stubbedGetLatestItemKeyResult: (any CryptographicKeyProtocol)!
 
     public func getLatestItemKey(userId: String, shareId: String, containerId: String, itemId: String) async throws -> any CryptographicKeyProtocol {
         invokedGetLatestItemKeyfunction = true
@@ -113,7 +113,7 @@ public final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManag
     public var invokedGetItemKeysCount = 0
     public var invokedGetItemKeysParameters: (userId: String, shareId: String, containerId: String, itemId: String)?
     public var invokedGetItemKeysParametersList = [(userId: String, shareId: String, containerId: String, itemId: String)]()
-    public var stubbedGetItemKeysResult: ([any CryptographicKeyProtocol])!
+    public nonisolated(unsafe) var stubbedGetItemKeysResult: ([any CryptographicKeyProtocol])!
 
     public func getItemKeys(userId: String, shareId: String, containerId: String, itemId: String) async throws -> [any CryptographicKeyProtocol] {
         invokedGetItemKeysfunction = true
@@ -132,7 +132,7 @@ public final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManag
     public var invokedGetItemKeyCount = 0
     public var invokedGetItemKeyParameters: (userId: String, shareId: String, containerId: String, itemId: String, keyRotation: Int64)?
     public var invokedGetItemKeyParametersList = [(userId: String, shareId: String, containerId: String, itemId: String, keyRotation: Int64)]()
-    public var stubbedGetItemKeyResult: (any CryptographicKeyProtocol)!
+    public nonisolated(unsafe) var stubbedGetItemKeyResult: (any CryptographicKeyProtocol)!
 
     public func getItemKey(userId: String, shareId: String, containerId: String, itemId: String, keyRotation: Int64) async throws -> any CryptographicKeyProtocol {
         invokedGetItemKeyfunction = true
@@ -161,23 +161,23 @@ public final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManag
         }
         closureDecryptAndStoreFolderKeys()
     }
-    // MARK: - getDecryptionKey
-    public var getDecryptionKeyUserIdContainerIdThrowableError8: Error?
-    public var closureGetDecryptionKey: () -> () = {}
-    public var invokedGetDecryptionKeyfunction = false
-    public var invokedGetDecryptionKeyCount = 0
-    public var invokedGetDecryptionKeyParameters: (userId: String, containerId: String)?
-    public var invokedGetDecryptionKeyParametersList = [(userId: String, containerId: String)]()
-    public var stubbedGetDecryptionKeyResult: (any CryptographicKeyProtocol)!
+    // MARK: - getContainerKey
+    public var getContainerKeyUserIdContainerIdKeyRotationThrowableError8: Error?
+    public var closureGetContainerKey: () -> () = {}
+    public var invokedGetContainerKeyfunction = false
+    public var invokedGetContainerKeyCount = 0
+    public var invokedGetContainerKeyParameters: (userId: String, containerId: String, keyRotation: Int64?)?
+    public var invokedGetContainerKeyParametersList = [(userId: String, containerId: String, keyRotation: Int64?)]()
+    public nonisolated(unsafe) var stubbedGetContainerKeyResult: (any CryptographicKeyProtocol)!
 
-    public func getDecryptionKey(userId: String, containerId: String) async throws -> any CryptographicKeyProtocol {
-        invokedGetDecryptionKeyfunction = true
-        invokedGetDecryptionKeyCount += 1
-        invokedGetDecryptionKeyParameters = (userId, containerId)
-        if let error = getDecryptionKeyUserIdContainerIdThrowableError8 {
+    public func getContainerKey(userId: String, containerId: String, keyRotation: Int64?) async throws -> any CryptographicKeyProtocol {
+        invokedGetContainerKeyfunction = true
+        invokedGetContainerKeyCount += 1
+        invokedGetContainerKeyParameters = (userId, containerId, keyRotation)
+        if let error = getContainerKeyUserIdContainerIdKeyRotationThrowableError8 {
             throw error
         }
-        closureGetDecryptionKey()
-        return stubbedGetDecryptionKeyResult
+        closureGetContainerKey()
+        return stubbedGetContainerKeyResult
     }
 }

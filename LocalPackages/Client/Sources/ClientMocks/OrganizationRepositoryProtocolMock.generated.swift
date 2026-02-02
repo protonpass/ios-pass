@@ -34,7 +34,7 @@ public final class OrganizationRepositoryProtocolMock: @unchecked Sendable, Orga
     public var invokedGetOrganizationCount = 0
     public var invokedGetOrganizationParameters: (userId: String, Void)?
     public var invokedGetOrganizationParametersList = [(userId: String, Void)]()
-    public var stubbedGetOrganizationResult: Organization?
+    public nonisolated(unsafe) var stubbedGetOrganizationResult: Organization?
 
     public func getOrganization(userId: String) async throws -> Organization? {
         invokedGetOrganizationfunction = true
@@ -53,7 +53,7 @@ public final class OrganizationRepositoryProtocolMock: @unchecked Sendable, Orga
     public var invokedRefreshOrganizationCount = 0
     public var invokedRefreshOrganizationParameters: (userId: String, Void)?
     public var invokedRefreshOrganizationParametersList = [(userId: String, Void)]()
-    public var stubbedRefreshOrganizationResult: Organization?
+    public nonisolated(unsafe) var stubbedRefreshOrganizationResult: Organization?
 
     public func refreshOrganization(userId: String) async throws -> Organization? {
         invokedRefreshOrganizationfunction = true
@@ -72,7 +72,7 @@ public final class OrganizationRepositoryProtocolMock: @unchecked Sendable, Orga
     public var invokedGetOrganizationKeysCount = 0
     public var invokedGetOrganizationKeysParameters: (userId: String, Void)?
     public var invokedGetOrganizationKeysParametersList = [(userId: String, Void)]()
-    public var stubbedGetOrganizationKeysResult: OrganizationKey!
+    public nonisolated(unsafe) var stubbedGetOrganizationKeysResult: OrganizationKey!
 
     public func getOrganizationKeys(userId: String) async throws -> OrganizationKey {
         invokedGetOrganizationKeysfunction = true

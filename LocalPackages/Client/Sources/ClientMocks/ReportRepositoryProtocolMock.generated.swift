@@ -34,7 +34,7 @@ public final class ReportRepositoryProtocolMock: @unchecked Sendable, ReportRepo
     public var invokedSendBugCount = 0
     public var invokedSendBugParameters: (title: String, description: String, logs: [String: URL])?
     public var invokedSendBugParametersList = [(title: String, description: String, logs: [String: URL])]()
-    public var stubbedSendBugResult: Bool!
+    public nonisolated(unsafe) var stubbedSendBugResult: Bool!
 
     public func sendBug(with title: String, and description: String, optional logs: [String: URL]) async throws -> Bool {
         invokedSendBugfunction = true

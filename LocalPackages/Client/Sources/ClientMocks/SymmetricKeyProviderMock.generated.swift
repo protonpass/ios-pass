@@ -34,7 +34,7 @@ public final class SymmetricKeyProviderMock: @unchecked Sendable, SymmetricKeyPr
     public var closureGetSymmetricKey: () -> () = {}
     public var invokedGetSymmetricKeyfunction = false
     public var invokedGetSymmetricKeyCount = 0
-    public var stubbedGetSymmetricKeyResult: SymmetricKey!
+    public nonisolated(unsafe) var stubbedGetSymmetricKeyResult: SymmetricKey!
 
     public func getSymmetricKey() async throws -> SymmetricKey {
         invokedGetSymmetricKeyfunction = true

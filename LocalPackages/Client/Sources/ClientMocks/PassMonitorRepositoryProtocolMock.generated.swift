@@ -114,7 +114,7 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
     public var invokedGetItemsWithSamePasswordCount = 0
     public var invokedGetItemsWithSamePasswordParameters: (item: ItemContent, Void)?
     public var invokedGetItemsWithSamePasswordParametersList = [(item: ItemContent, Void)]()
-    public var stubbedGetItemsWithSamePasswordResult: [ItemContent]!
+    public nonisolated(unsafe) var stubbedGetItemsWithSamePasswordResult: [ItemContent]!
 
     public func getItemsWithSamePassword(item: ItemContent) async throws -> [ItemContent] {
         invokedGetItemsWithSamePasswordfunction = true
@@ -155,7 +155,7 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
     public var closureRefreshUserBreaches: () -> () = {}
     public var invokedRefreshUserBreachesfunction = false
     public var invokedRefreshUserBreachesCount = 0
-    public var stubbedRefreshUserBreachesResult: UserBreaches!
+    public nonisolated(unsafe) var stubbedRefreshUserBreachesResult: UserBreaches!
 
     public func refreshUserBreaches() async throws -> UserBreaches {
         invokedRefreshUserBreachesfunction = true
@@ -171,7 +171,7 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
     public var closureGetAllCustomEmailForUser: () -> () = {}
     public var invokedGetAllCustomEmailForUserfunction = false
     public var invokedGetAllCustomEmailForUserCount = 0
-    public var stubbedGetAllCustomEmailForUserResult: [CustomEmail]!
+    public nonisolated(unsafe) var stubbedGetAllCustomEmailForUserResult: [CustomEmail]!
 
     public func getAllCustomEmailForUser() async throws -> [CustomEmail] {
         invokedGetAllCustomEmailForUserfunction = true
@@ -189,7 +189,7 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
     public var invokedAddEmailToBreachMonitoringCount = 0
     public var invokedAddEmailToBreachMonitoringParameters: (email: String, Void)?
     public var invokedAddEmailToBreachMonitoringParametersList = [(email: String, Void)]()
-    public var stubbedAddEmailToBreachMonitoringResult: CustomEmail!
+    public nonisolated(unsafe) var stubbedAddEmailToBreachMonitoringResult: CustomEmail!
 
     public func addEmailToBreachMonitoring(email: String) async throws -> CustomEmail {
         invokedAddEmailToBreachMonitoringfunction = true
@@ -259,7 +259,7 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
     public var invokedGetBreachesForAliasCount = 0
     public var invokedGetBreachesForAliasParameters: (sharedId: String, itemId: String)?
     public var invokedGetBreachesForAliasParametersList = [(sharedId: String, itemId: String)]()
-    public var stubbedGetBreachesForAliasResult: EmailBreaches!
+    public nonisolated(unsafe) var stubbedGetBreachesForAliasResult: EmailBreaches!
 
     public func getBreachesForAlias(sharedId: String, itemId: String) async throws -> EmailBreaches {
         invokedGetBreachesForAliasfunction = true
@@ -278,7 +278,7 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
     public var invokedGetAllBreachesForEmailCount = 0
     public var invokedGetAllBreachesForEmailParameters: (emailId: String, Void)?
     public var invokedGetAllBreachesForEmailParametersList = [(emailId: String, Void)]()
-    public var stubbedGetAllBreachesForEmailResult: EmailBreaches!
+    public nonisolated(unsafe) var stubbedGetAllBreachesForEmailResult: EmailBreaches!
 
     public func getAllBreachesForEmail(emailId: String) async throws -> EmailBreaches {
         invokedGetAllBreachesForEmailfunction = true
@@ -297,7 +297,7 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
     public var invokedGetAllBreachesForProtonAddressCount = 0
     public var invokedGetAllBreachesForProtonAddressParameters: (addressId: String, Void)?
     public var invokedGetAllBreachesForProtonAddressParametersList = [(addressId: String, Void)]()
-    public var stubbedGetAllBreachesForProtonAddressResult: EmailBreaches!
+    public nonisolated(unsafe) var stubbedGetAllBreachesForProtonAddressResult: EmailBreaches!
 
     public func getAllBreachesForProtonAddress(addressId: String) async throws -> EmailBreaches {
         invokedGetAllBreachesForProtonAddressfunction = true
@@ -350,7 +350,7 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
     public var invokedMarkCustomEmailAsResolvedCount = 0
     public var invokedMarkCustomEmailAsResolvedParameters: (email: CustomEmail, Void)?
     public var invokedMarkCustomEmailAsResolvedParametersList = [(email: CustomEmail, Void)]()
-    public var stubbedMarkCustomEmailAsResolvedResult: CustomEmail!
+    public nonisolated(unsafe) var stubbedMarkCustomEmailAsResolvedResult: CustomEmail!
 
     public func markCustomEmailAsResolved(email: CustomEmail) async throws -> CustomEmail {
         invokedMarkCustomEmailAsResolvedfunction = true

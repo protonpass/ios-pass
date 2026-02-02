@@ -57,7 +57,7 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
     public var invokedGetShareCount = 0
     public var invokedGetShareParameters: (shareId: String, Void)?
     public var invokedGetShareParametersList = [(shareId: String, Void)]()
-    public var stubbedGetShareResult: Share?
+    public nonisolated(unsafe) var stubbedGetShareResult: Share?
 
     public func getShare(shareId: String) async throws -> Share? {
         invokedGetSharefunction = true
@@ -76,7 +76,7 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
     public var invokedGetDecryptedSharesCount = 0
     public var invokedGetDecryptedSharesParameters: (userId: String, Void)?
     public var invokedGetDecryptedSharesParametersList = [(userId: String, Void)]()
-    public var stubbedGetDecryptedSharesResult: [Share]!
+    public nonisolated(unsafe) var stubbedGetDecryptedSharesResult: [Share]!
 
     public func getDecryptedShares(userId: String) async throws -> [Share] {
         invokedGetDecryptedSharesfunction = true
@@ -95,7 +95,7 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
     public var invokedGetDecryptedShareCount = 0
     public var invokedGetDecryptedShareParameters: (shareId: String, Void)?
     public var invokedGetDecryptedShareParametersList = [(shareId: String, Void)]()
-    public var stubbedGetDecryptedShareResult: Share?
+    public nonisolated(unsafe) var stubbedGetDecryptedShareResult: Share?
 
     public func getDecryptedShare(shareId: String) async throws -> Share? {
         invokedGetDecryptedSharefunction = true
@@ -114,7 +114,7 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
     public var invokedGetDecryptedRemoteSharesCount = 0
     public var invokedGetDecryptedRemoteSharesParameters: (userId: String, Void)?
     public var invokedGetDecryptedRemoteSharesParametersList = [(userId: String, Void)]()
-    public var stubbedGetDecryptedRemoteSharesResult: DecryptedRemoteShares!
+    public nonisolated(unsafe) var stubbedGetDecryptedRemoteSharesResult: DecryptedRemoteShares!
 
     public func getDecryptedRemoteShares(userId: String) async throws -> DecryptedRemoteShares {
         invokedGetDecryptedRemoteSharesfunction = true
@@ -201,7 +201,7 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
     public var invokedGetUsersLinkedToVaultShareCount = 0
     public var invokedGetUsersLinkedToVaultShareParameters: (shareId: String, lastToken: String?)?
     public var invokedGetUsersLinkedToVaultShareParametersList = [(shareId: String, lastToken: String?)]()
-    public var stubbedGetUsersLinkedToVaultShareResult: PaginatedUsersLinkedToShare!
+    public nonisolated(unsafe) var stubbedGetUsersLinkedToVaultShareResult: PaginatedUsersLinkedToShare!
 
     public func getUsersLinkedToVaultShare(to shareId: String, lastToken: String?) async throws -> PaginatedUsersLinkedToShare {
         invokedGetUsersLinkedToVaultSharefunction = true
@@ -220,7 +220,7 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
     public var invokedGetUsersLinkedToItemShareCount = 0
     public var invokedGetUsersLinkedToItemShareParameters: (shareId: String, itemId: String, lastToken: String?)?
     public var invokedGetUsersLinkedToItemShareParametersList = [(shareId: String, itemId: String, lastToken: String?)]()
-    public var stubbedGetUsersLinkedToItemShareResult: PaginatedUsersLinkedToShare!
+    public nonisolated(unsafe) var stubbedGetUsersLinkedToItemShareResult: PaginatedUsersLinkedToShare!
 
     public func getUsersLinkedToItemShare(to shareId: String, itemId: String, lastToken: String?) async throws -> PaginatedUsersLinkedToShare {
         invokedGetUsersLinkedToItemSharefunction = true
@@ -239,7 +239,7 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
     public var invokedUpdateUserPermissionCount = 0
     public var invokedUpdateUserPermissionParameters: (userShareId: String, shareId: String, shareRole: ShareRole?, expireTime: Int?)?
     public var invokedUpdateUserPermissionParametersList = [(userShareId: String, shareId: String, shareRole: ShareRole?, expireTime: Int?)]()
-    public var stubbedUpdateUserPermissionResult: Bool!
+    public nonisolated(unsafe) var stubbedUpdateUserPermissionResult: Bool!
 
     public func updateUserPermission(userShareId: String, shareId: String, shareRole: ShareRole?, expireTime: Int?) async throws -> Bool {
         invokedUpdateUserPermissionfunction = true
@@ -258,7 +258,7 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
     public var invokedDeleteUserShareCount = 0
     public var invokedDeleteUserShareParameters: (userShareId: String, shareId: String)?
     public var invokedDeleteUserShareParametersList = [(userShareId: String, shareId: String)]()
-    public var stubbedDeleteUserShareResult: Bool!
+    public nonisolated(unsafe) var stubbedDeleteUserShareResult: Bool!
 
     public func deleteUserShare(userShareId: String, shareId: String) async throws -> Bool {
         invokedDeleteUserSharefunction = true
@@ -277,7 +277,7 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
     public var invokedDeleteShareCount = 0
     public var invokedDeleteShareParameters: (userId: String, shareId: String)?
     public var invokedDeleteShareParametersList = [(userId: String, shareId: String)]()
-    public var stubbedDeleteShareResult: Bool!
+    public nonisolated(unsafe) var stubbedDeleteShareResult: Bool!
 
     public func deleteShare(userId: String, shareId: String) async throws -> Bool {
         invokedDeleteSharefunction = true
@@ -296,7 +296,7 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
     public var invokedCreateVaultCount = 0
     public var invokedCreateVaultParameters: (userId: String?, vault: VaultContent)?
     public var invokedCreateVaultParametersList = [(userId: String?, vault: VaultContent)]()
-    public var stubbedCreateVaultResult: Share!
+    public nonisolated(unsafe) var stubbedCreateVaultResult: Share!
 
     public func createVault(userId: String?, vault: VaultContent) async throws -> Share {
         invokedCreateVaultfunction = true
@@ -349,7 +349,7 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
     public var invokedTransferVaultOwnershipCount = 0
     public var invokedTransferVaultOwnershipParameters: (vaultShareId: String, newOwnerShareId: String)?
     public var invokedTransferVaultOwnershipParametersList = [(vaultShareId: String, newOwnerShareId: String)]()
-    public var stubbedTransferVaultOwnershipResult: Bool!
+    public nonisolated(unsafe) var stubbedTransferVaultOwnershipResult: Bool!
 
     public func transferVaultOwnership(vaultShareId: String, newOwnerShareId: String) async throws -> Bool {
         invokedTransferVaultOwnershipfunction = true

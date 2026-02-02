@@ -33,7 +33,7 @@ public final class RemoteShareDatasourceProtocolMock: @unchecked Sendable, Remot
     public var invokedGetSharesCount = 0
     public var invokedGetSharesParameters: (userId: String, Void)?
     public var invokedGetSharesParametersList = [(userId: String, Void)]()
-    public var stubbedGetSharesResult: [Share]!
+    public nonisolated(unsafe) var stubbedGetSharesResult: [Share]!
 
     public func getShares(userId: String) async throws -> [Share] {
         invokedGetSharesfunction = true
@@ -52,7 +52,7 @@ public final class RemoteShareDatasourceProtocolMock: @unchecked Sendable, Remot
     public var invokedGetShareCount = 0
     public var invokedGetShareParameters: (shareId: String, userId: String, eventToken: String?)?
     public var invokedGetShareParametersList = [(shareId: String, userId: String, eventToken: String?)]()
-    public var stubbedGetShareResult: Share!
+    public nonisolated(unsafe) var stubbedGetShareResult: Share!
 
     public func getShare(shareId: String, userId: String, eventToken: String?) async throws -> Share {
         invokedGetSharefunction = true
@@ -71,7 +71,7 @@ public final class RemoteShareDatasourceProtocolMock: @unchecked Sendable, Remot
     public var invokedGetUsersLinkedToVaultShareCount = 0
     public var invokedGetUsersLinkedToVaultShareParameters: (userId: String, shareId: String, lastToken: String?)?
     public var invokedGetUsersLinkedToVaultShareParametersList = [(userId: String, shareId: String, lastToken: String?)]()
-    public var stubbedGetUsersLinkedToVaultShareResult: PaginatedUsersLinkedToShare!
+    public nonisolated(unsafe) var stubbedGetUsersLinkedToVaultShareResult: PaginatedUsersLinkedToShare!
 
     public func getUsersLinkedToVaultShare(userId: String, shareId: String, lastToken: String?) async throws -> PaginatedUsersLinkedToShare {
         invokedGetUsersLinkedToVaultSharefunction = true
@@ -90,7 +90,7 @@ public final class RemoteShareDatasourceProtocolMock: @unchecked Sendable, Remot
     public var invokedGetUsersLinkedToItemShareCount = 0
     public var invokedGetUsersLinkedToItemShareParameters: (userId: String, shareId: String, itemId: String, lastToken: String?)?
     public var invokedGetUsersLinkedToItemShareParametersList = [(userId: String, shareId: String, itemId: String, lastToken: String?)]()
-    public var stubbedGetUsersLinkedToItemShareResult: PaginatedUsersLinkedToShare!
+    public nonisolated(unsafe) var stubbedGetUsersLinkedToItemShareResult: PaginatedUsersLinkedToShare!
 
     public func getUsersLinkedToItemShare(userId: String, shareId: String, itemId: String, lastToken: String?) async throws -> PaginatedUsersLinkedToShare {
         invokedGetUsersLinkedToItemSharefunction = true
@@ -109,7 +109,7 @@ public final class RemoteShareDatasourceProtocolMock: @unchecked Sendable, Remot
     public var invokedUpdateUserSharePermissionCount = 0
     public var invokedUpdateUserSharePermissionParameters: (userId: String, shareId: String, userShareId: String, request: UserSharePermissionRequest)?
     public var invokedUpdateUserSharePermissionParametersList = [(userId: String, shareId: String, userShareId: String, request: UserSharePermissionRequest)]()
-    public var stubbedUpdateUserSharePermissionResult: Bool!
+    public nonisolated(unsafe) var stubbedUpdateUserSharePermissionResult: Bool!
 
     public func updateUserSharePermission(userId: String, shareId: String, userShareId: String, request: UserSharePermissionRequest) async throws -> Bool {
         invokedUpdateUserSharePermissionfunction = true
@@ -128,7 +128,7 @@ public final class RemoteShareDatasourceProtocolMock: @unchecked Sendable, Remot
     public var invokedDeleteUserShareCount = 0
     public var invokedDeleteUserShareParameters: (userId: String, shareId: String, userShareId: String)?
     public var invokedDeleteUserShareParametersList = [(userId: String, shareId: String, userShareId: String)]()
-    public var stubbedDeleteUserShareResult: Bool!
+    public nonisolated(unsafe) var stubbedDeleteUserShareResult: Bool!
 
     public func deleteUserShare(userId: String, shareId: String, userShareId: String) async throws -> Bool {
         invokedDeleteUserSharefunction = true
@@ -147,7 +147,7 @@ public final class RemoteShareDatasourceProtocolMock: @unchecked Sendable, Remot
     public var invokedDeleteShareCount = 0
     public var invokedDeleteShareParameters: (userId: String, shareId: String)?
     public var invokedDeleteShareParametersList = [(userId: String, shareId: String)]()
-    public var stubbedDeleteShareResult: Bool!
+    public nonisolated(unsafe) var stubbedDeleteShareResult: Bool!
 
     public func deleteShare(userId: String, shareId: String) async throws -> Bool {
         invokedDeleteSharefunction = true
@@ -166,7 +166,7 @@ public final class RemoteShareDatasourceProtocolMock: @unchecked Sendable, Remot
     public var invokedCreateVaultCount = 0
     public var invokedCreateVaultParameters: (userId: String, request: CreateVaultRequest)?
     public var invokedCreateVaultParametersList = [(userId: String, request: CreateVaultRequest)]()
-    public var stubbedCreateVaultResult: Share!
+    public nonisolated(unsafe) var stubbedCreateVaultResult: Share!
 
     public func createVault(userId: String, request: CreateVaultRequest) async throws -> Share {
         invokedCreateVaultfunction = true
@@ -185,7 +185,7 @@ public final class RemoteShareDatasourceProtocolMock: @unchecked Sendable, Remot
     public var invokedUpdateVaultCount = 0
     public var invokedUpdateVaultParameters: (userId: String, request: UpdateVaultRequest, shareId: String)?
     public var invokedUpdateVaultParametersList = [(userId: String, request: UpdateVaultRequest, shareId: String)]()
-    public var stubbedUpdateVaultResult: Share!
+    public nonisolated(unsafe) var stubbedUpdateVaultResult: Share!
 
     public func updateVault(userId: String, request: UpdateVaultRequest, shareId: String) async throws -> Share {
         invokedUpdateVaultfunction = true
@@ -221,7 +221,7 @@ public final class RemoteShareDatasourceProtocolMock: @unchecked Sendable, Remot
     public var invokedTransferVaultOwnershipCount = 0
     public var invokedTransferVaultOwnershipParameters: (userId: String, vaultShareId: String, request: TransferOwnershipVaultRequest)?
     public var invokedTransferVaultOwnershipParametersList = [(userId: String, vaultShareId: String, request: TransferOwnershipVaultRequest)]()
-    public var stubbedTransferVaultOwnershipResult: Bool!
+    public nonisolated(unsafe) var stubbedTransferVaultOwnershipResult: Bool!
 
     public func transferVaultOwnership(userId: String, vaultShareId: String, request: TransferOwnershipVaultRequest) async throws -> Bool {
         invokedTransferVaultOwnershipfunction = true
@@ -240,7 +240,7 @@ public final class RemoteShareDatasourceProtocolMock: @unchecked Sendable, Remot
     public var invokedHideUnhideSharesCount = 0
     public var invokedHideUnhideSharesParameters: (userId: String, sharesToHide: [String], sharesToUnhide: [String])?
     public var invokedHideUnhideSharesParametersList = [(userId: String, sharesToHide: [String], sharesToUnhide: [String])]()
-    public var stubbedHideUnhideSharesResult: [Share]!
+    public nonisolated(unsafe) var stubbedHideUnhideSharesResult: [Share]!
 
     public func hideUnhideShares(userId: String, sharesToHide: [String], sharesToUnhide: [String]) async throws -> [Share] {
         invokedHideUnhideSharesfunction = true

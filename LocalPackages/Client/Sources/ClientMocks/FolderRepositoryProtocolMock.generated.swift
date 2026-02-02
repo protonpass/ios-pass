@@ -35,7 +35,7 @@ public final class FolderRepositoryProtocolMock: @unchecked Sendable, FolderRepo
     public var invokedGetAllLocalFoldersCount = 0
     public var invokedGetAllLocalFoldersParameters: (userId: String, Void)?
     public var invokedGetAllLocalFoldersParametersList = [(userId: String, Void)]()
-    public var stubbedGetAllLocalFoldersResult: [SymmetricallyEncryptedFolder]!
+    public nonisolated(unsafe) var stubbedGetAllLocalFoldersResult: [SymmetricallyEncryptedFolder]!
 
     public func getAllLocalFolders(userId: String) async throws -> [SymmetricallyEncryptedFolder] {
         invokedGetAllLocalFoldersfunction = true
@@ -139,7 +139,7 @@ public final class FolderRepositoryProtocolMock: @unchecked Sendable, FolderRepo
     public var invokedCreateFolderCount = 0
     public var invokedCreateFolderParameters: (userId: String, shareId: String, parentFolderId: String?, folderContent: FolderContent)?
     public var invokedCreateFolderParametersList = [(userId: String, shareId: String, parentFolderId: String?, folderContent: FolderContent)]()
-    public var stubbedCreateFolderResult: Folder!
+    public nonisolated(unsafe) var stubbedCreateFolderResult: Folder!
 
     public func createFolder(userId: String, shareId: String, parentFolderId: String?, folderContent: FolderContent) async throws -> Folder {
         invokedCreateFolderfunction = true
