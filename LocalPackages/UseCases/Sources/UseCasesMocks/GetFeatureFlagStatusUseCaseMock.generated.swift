@@ -33,7 +33,7 @@ public final class GetFeatureFlagStatusUseCaseMock: @unchecked Sendable, GetFeat
     public var invokedExecuteCount = 0
     public var invokedExecuteParameters: (flag: any FeatureFlagTypeProtocol, Void)?
     public var invokedExecuteParametersList = [(flag: any FeatureFlagTypeProtocol, Void)]()
-    public var stubbedExecuteResult: Bool!
+    public nonisolated(unsafe) var stubbedExecuteResult: Bool!
 
     public func execute(for flag: any FeatureFlagTypeProtocol) -> Bool {
         invokedExecutefunction = true

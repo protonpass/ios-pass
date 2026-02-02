@@ -65,7 +65,7 @@ public actor LogManagerProtocolMock: LogManagerProtocol {
     public var closureGetLogEntries: () -> () = {}
     public var invokedGetLogEntriesfunction = false
     public var invokedGetLogEntriesCount = 0
-    public var stubbedGetLogEntriesResult: [LogEntry]!
+    public nonisolated(unsafe) var stubbedGetLogEntriesResult: [LogEntry]!
 
     public func getLogEntries() async throws -> [LogEntry] {
         invokedGetLogEntriesfunction = true

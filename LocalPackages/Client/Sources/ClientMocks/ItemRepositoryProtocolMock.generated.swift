@@ -65,7 +65,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var invokedGetAllItemsCount = 0
     public var invokedGetAllItemsParameters: (userId: String, Void)?
     public var invokedGetAllItemsParametersList = [(userId: String, Void)]()
-    public var stubbedGetAllItemsResult: [SymmetricallyEncryptedItem]!
+    public nonisolated(unsafe) var stubbedGetAllItemsResult: [SymmetricallyEncryptedItem]!
 
     public func getAllItems(userId: String) async throws -> [SymmetricallyEncryptedItem] {
         invokedGetAllItemsfunction = true
@@ -84,7 +84,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var invokedGetAllItemContentsCount = 0
     public var invokedGetAllItemContentsParameters: (userId: String, Void)?
     public var invokedGetAllItemContentsParametersList = [(userId: String, Void)]()
-    public var stubbedGetAllItemContentsResult: [ItemContent]!
+    public nonisolated(unsafe) var stubbedGetAllItemContentsResult: [ItemContent]!
 
     public func getAllItemContents(userId: String) async throws -> [ItemContent] {
         invokedGetAllItemContentsfunction = true
@@ -160,7 +160,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var invokedGetItemCount = 0
     public var invokedGetItemParameters: (shareId: String, itemId: String)?
     public var invokedGetItemParametersList = [(shareId: String, itemId: String)]()
-    public var stubbedGetItemResult: SymmetricallyEncryptedItem?
+    public nonisolated(unsafe) var stubbedGetItemResult: SymmetricallyEncryptedItem?
 
     public func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem? {
         invokedGetItemfunction = true
@@ -198,7 +198,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var invokedGetAliasItemCount = 0
     public var invokedGetAliasItemParameters: (email: String, shareId: String)?
     public var invokedGetAliasItemParametersList = [(email: String, shareId: String)]()
-    public var stubbedGetAliasItemResult: SymmetricallyEncryptedItem?
+    public nonisolated(unsafe) var stubbedGetAliasItemResult: SymmetricallyEncryptedItem?
 
     public func getAliasItem(email: String, shareId: String) async throws -> SymmetricallyEncryptedItem? {
         invokedGetAliasItemfunction = true
@@ -234,7 +234,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var invokedGetUnsyncedSimpleLoginNoteAliasesCount = 0
     public var invokedGetUnsyncedSimpleLoginNoteAliasesParameters: (userId: String, Void)?
     public var invokedGetUnsyncedSimpleLoginNoteAliasesParametersList = [(userId: String, Void)]()
-    public var stubbedGetUnsyncedSimpleLoginNoteAliasesResult: [SymmetricallyEncryptedItem]!
+    public nonisolated(unsafe) var stubbedGetUnsyncedSimpleLoginNoteAliasesResult: [SymmetricallyEncryptedItem]!
 
     public func getUnsyncedSimpleLoginNoteAliases(userId: String) async throws -> [SymmetricallyEncryptedItem] {
         invokedGetUnsyncedSimpleLoginNoteAliasesfunction = true
@@ -253,7 +253,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var invokedGetItemContentCount = 0
     public var invokedGetItemContentParameters: (shareId: String, itemId: String)?
     public var invokedGetItemContentParametersList = [(shareId: String, itemId: String)]()
-    public var stubbedGetItemContentResult: ItemContent?
+    public nonisolated(unsafe) var stubbedGetItemContentResult: ItemContent?
 
     public func getItemContent(shareId: String, itemId: String) async throws -> ItemContent? {
         invokedGetItemContentfunction = true
@@ -272,7 +272,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var invokedGetItemRevisionsCount = 0
     public var invokedGetItemRevisionsParameters: (userId: String, shareId: String, itemId: String, lastToken: String?)?
     public var invokedGetItemRevisionsParametersList = [(userId: String, shareId: String, itemId: String, lastToken: String?)]()
-    public var stubbedGetItemRevisionsResult: Paginated<ItemContent>!
+    public nonisolated(unsafe) var stubbedGetItemRevisionsResult: Paginated<ItemContent>!
 
     public func getItemRevisions(userId: String, shareId: String, itemId: String, lastToken: String?) async throws -> Paginated<ItemContent> {
         invokedGetItemRevisionsfunction = true
@@ -325,7 +325,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var invokedCreateItemCount = 0
     public var invokedCreateItemParameters: (userId: String, itemContent: any ProtobufableItemContentProtocol, shareId: String, folderId: String?)?
     public var invokedCreateItemParametersList = [(userId: String, itemContent: any ProtobufableItemContentProtocol, shareId: String, folderId: String?)]()
-    public var stubbedCreateItemResult: SymmetricallyEncryptedItem!
+    public nonisolated(unsafe) var stubbedCreateItemResult: SymmetricallyEncryptedItem!
 
     public func createItem(userId: String, itemContent: any ProtobufableItemContentProtocol, shareId: String, folderId: String?) async throws -> SymmetricallyEncryptedItem {
         invokedCreateItemfunction = true
@@ -344,7 +344,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var invokedCreateAliasCount = 0
     public var invokedCreateAliasParameters: (userId: String, info: AliasCreationInfo, itemContent: any ProtobufableItemContentProtocol, shareId: String, folderId: String?)?
     public var invokedCreateAliasParametersList = [(userId: String, info: AliasCreationInfo, itemContent: any ProtobufableItemContentProtocol, shareId: String, folderId: String?)]()
-    public var stubbedCreateAliasResult: SymmetricallyEncryptedItem!
+    public nonisolated(unsafe) var stubbedCreateAliasResult: SymmetricallyEncryptedItem!
 
     public func createAlias(userId: String, info: AliasCreationInfo, itemContent: any ProtobufableItemContentProtocol, shareId: String, folderId: String?) async throws -> SymmetricallyEncryptedItem {
         invokedCreateAliasfunction = true
@@ -363,7 +363,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var invokedCreatePendingAliasesItemCount = 0
     public var invokedCreatePendingAliasesItemParameters: (userId: String, shareId: String, folderId: String?, itemsContent: [String: any ProtobufableItemContentProtocol])?
     public var invokedCreatePendingAliasesItemParametersList = [(userId: String, shareId: String, folderId: String?, itemsContent: [String: any ProtobufableItemContentProtocol])]()
-    public var stubbedCreatePendingAliasesItemResult: [SymmetricallyEncryptedItem]!
+    public nonisolated(unsafe) var stubbedCreatePendingAliasesItemResult: [SymmetricallyEncryptedItem]!
 
     public func createPendingAliasesItem(userId: String, shareId: String, folderId: String?, itemsContent: [String: any ProtobufableItemContentProtocol]) async throws -> [SymmetricallyEncryptedItem] {
         invokedCreatePendingAliasesItemfunction = true
@@ -382,7 +382,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var invokedCreateAliasAndOtherItemCount = 0
     public var invokedCreateAliasAndOtherItemParameters: (userId: String, info: AliasCreationInfo, aliasItemContent: any ProtobufableItemContentProtocol, otherItemContent: any ProtobufableItemContentProtocol, shareId: String, folderId: String?)?
     public var invokedCreateAliasAndOtherItemParametersList = [(userId: String, info: AliasCreationInfo, aliasItemContent: any ProtobufableItemContentProtocol, otherItemContent: any ProtobufableItemContentProtocol, shareId: String, folderId: String?)]()
-    public var stubbedCreateAliasAndOtherItemResult: (SymmetricallyEncryptedItem, SymmetricallyEncryptedItem)!
+    public nonisolated(unsafe) var stubbedCreateAliasAndOtherItemResult: (SymmetricallyEncryptedItem, SymmetricallyEncryptedItem)!
 
     public func createAliasAndOtherItem(userId: String, info: AliasCreationInfo, aliasItemContent: any ProtobufableItemContentProtocol, otherItemContent: any ProtobufableItemContentProtocol, shareId: String, folderId: String?) async throws -> (SymmetricallyEncryptedItem, SymmetricallyEncryptedItem) {
         invokedCreateAliasAndOtherItemfunction = true
@@ -503,7 +503,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var invokedUpdateItemCount = 0
     public var invokedUpdateItemParameters: (userId: String, oldItem: Item, newItemContent: any ProtobufableItemContentProtocol, shareId: String, slNote: String?)?
     public var invokedUpdateItemParametersList = [(userId: String, oldItem: Item, newItemContent: any ProtobufableItemContentProtocol, shareId: String, slNote: String?)]()
-    public var stubbedUpdateItemResult: SymmetricallyEncryptedItem!
+    public nonisolated(unsafe) var stubbedUpdateItemResult: SymmetricallyEncryptedItem!
 
     public func updateItem(userId: String, oldItem: Item, newItemContent: any ProtobufableItemContentProtocol, shareId: String, slNote: String?) async throws -> SymmetricallyEncryptedItem {
         invokedUpdateItemfunction = true
@@ -706,7 +706,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var invokedGetActiveLogInItemsCount = 0
     public var invokedGetActiveLogInItemsParameters: (userId: String, Void)?
     public var invokedGetActiveLogInItemsParametersList = [(userId: String, Void)]()
-    public var stubbedGetActiveLogInItemsResult: [SymmetricallyEncryptedItem]!
+    public nonisolated(unsafe) var stubbedGetActiveLogInItemsResult: [SymmetricallyEncryptedItem]!
 
     public func getActiveLogInItems(userId: String) async throws -> [SymmetricallyEncryptedItem] {
         invokedGetActiveLogInItemsfunction = true
@@ -757,7 +757,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var closureGetAllPinnedItems: () -> () = {}
     public var invokedGetAllPinnedItemsfunction = false
     public var invokedGetAllPinnedItemsCount = 0
-    public var stubbedGetAllPinnedItemsResult: [SymmetricallyEncryptedItem]!
+    public nonisolated(unsafe) var stubbedGetAllPinnedItemsResult: [SymmetricallyEncryptedItem]!
 
     public func getAllPinnedItems() async throws -> [SymmetricallyEncryptedItem] {
         invokedGetAllPinnedItemsfunction = true
@@ -806,7 +806,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var invokedGetAllItemsContentCount = 0
     public var invokedGetAllItemsContentParameters: (items: [any ItemIdentifiable], Void)?
     public var invokedGetAllItemsContentParametersList = [(items: [any ItemIdentifiable], Void)]()
-    public var stubbedGetAllItemsContentResult: [ItemContent]!
+    public nonisolated(unsafe) var stubbedGetAllItemsContentResult: [ItemContent]!
 
     public func getAllItemsContent(items: [any ItemIdentifiable]) async throws -> [ItemContent] {
         invokedGetAllItemsContentfunction = true
@@ -859,7 +859,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var invokedTotpCreationDateThresholdCount = 0
     public var invokedTotpCreationDateThresholdParameters: (numberOfTotp: Int, Void)?
     public var invokedTotpCreationDateThresholdParametersList = [(numberOfTotp: Int, Void)]()
-    public var stubbedTotpCreationDateThresholdResult: Int64?
+    public nonisolated(unsafe) var stubbedTotpCreationDateThresholdResult: Int64?
 
     public func totpCreationDateThreshold(numberOfTotp: Int) async throws -> Int64? {
         invokedTotpCreationDateThresholdfunction = true

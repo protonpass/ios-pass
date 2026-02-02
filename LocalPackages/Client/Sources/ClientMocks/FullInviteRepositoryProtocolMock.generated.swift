@@ -68,7 +68,7 @@ public final class FullInviteRepositoryProtocolMock: @unchecked Sendable, Invite
     public var invokedAcceptInviteCount = 0
     public var invokedAcceptInviteParameters: (userId: String, invite: Invite, keys: [ItemKey])?
     public var invokedAcceptInviteParametersList = [(userId: String, invite: Invite, keys: [ItemKey])]()
-    public var stubbedAcceptInviteResult: Share?
+    public nonisolated(unsafe) var stubbedAcceptInviteResult: Share?
 
     public func acceptInvite(userId: String, invite: Invite, keys: [ItemKey]) async throws -> Share? {
         invokedAcceptInvitefunction = true
@@ -87,7 +87,7 @@ public final class FullInviteRepositoryProtocolMock: @unchecked Sendable, Invite
     public var invokedRejectInviteCount = 0
     public var invokedRejectInviteParameters: (userId: String, invite: Invite)?
     public var invokedRejectInviteParametersList = [(userId: String, invite: Invite)]()
-    public var stubbedRejectInviteResult: Bool!
+    public nonisolated(unsafe) var stubbedRejectInviteResult: Bool!
 
     public func rejectInvite(userId: String, invite: Invite) async throws -> Bool {
         invokedRejectInvitefunction = true
@@ -171,7 +171,7 @@ public final class FullInviteRepositoryProtocolMock: @unchecked Sendable, Invite
     public var invokedGetAllPendingInvitesCount = 0
     public var invokedGetAllPendingInvitesParameters: (userId: String, shareId: String)?
     public var invokedGetAllPendingInvitesParametersList = [(userId: String, shareId: String)]()
-    public var stubbedGetAllPendingInvitesResult: ShareInvites!
+    public nonisolated(unsafe) var stubbedGetAllPendingInvitesResult: ShareInvites!
 
     public func getAllPendingInvites(userId: String, shareId: String) async throws -> ShareInvites {
         invokedGetAllPendingInvitesfunction = true
@@ -190,7 +190,7 @@ public final class FullInviteRepositoryProtocolMock: @unchecked Sendable, Invite
     public var invokedSendInvitesCount = 0
     public var invokedSendInvitesParameters: (userId: String, shareId: String, itemId: String?, inviteesData: [InviteeData], targetType: TargetType)?
     public var invokedSendInvitesParametersList = [(userId: String, shareId: String, itemId: String?, inviteesData: [InviteeData], targetType: TargetType)]()
-    public var stubbedSendInvitesResult: Bool!
+    public nonisolated(unsafe) var stubbedSendInvitesResult: Bool!
 
     public func sendInvites(userId: String, shareId: String, itemId: String?, inviteesData: [InviteeData], targetType: TargetType) async throws -> Bool {
         invokedSendInvitesfunction = true
@@ -209,7 +209,7 @@ public final class FullInviteRepositoryProtocolMock: @unchecked Sendable, Invite
     public var invokedPromoteNewUserInviteCount = 0
     public var invokedPromoteNewUserInviteParameters: (userId: String, shareId: String, inviteId: String, keys: [ItemKey])?
     public var invokedPromoteNewUserInviteParametersList = [(userId: String, shareId: String, inviteId: String, keys: [ItemKey])]()
-    public var stubbedPromoteNewUserInviteResult: Bool!
+    public nonisolated(unsafe) var stubbedPromoteNewUserInviteResult: Bool!
 
     public func promoteNewUserInvite(userId: String, shareId: String, inviteId: String, keys: [ItemKey]) async throws -> Bool {
         invokedPromoteNewUserInvitefunction = true
@@ -228,7 +228,7 @@ public final class FullInviteRepositoryProtocolMock: @unchecked Sendable, Invite
     public var invokedSendInviteReminderCount = 0
     public var invokedSendInviteReminderParameters: (userId: String, shareId: String, inviteId: String)?
     public var invokedSendInviteReminderParametersList = [(userId: String, shareId: String, inviteId: String)]()
-    public var stubbedSendInviteReminderResult: Bool!
+    public nonisolated(unsafe) var stubbedSendInviteReminderResult: Bool!
 
     public func sendInviteReminder(userId: String, shareId: String, inviteId: String) async throws -> Bool {
         invokedSendInviteReminderfunction = true
@@ -247,7 +247,7 @@ public final class FullInviteRepositoryProtocolMock: @unchecked Sendable, Invite
     public var invokedDeleteInviteCount = 0
     public var invokedDeleteInviteParameters: (userId: String, shareId: String, inviteId: String)?
     public var invokedDeleteInviteParametersList = [(userId: String, shareId: String, inviteId: String)]()
-    public var stubbedDeleteInviteResult: Bool!
+    public nonisolated(unsafe) var stubbedDeleteInviteResult: Bool!
 
     public func deleteInvite(userId: String, shareId: String, inviteId: String) async throws -> Bool {
         invokedDeleteInvitefunction = true
@@ -266,7 +266,7 @@ public final class FullInviteRepositoryProtocolMock: @unchecked Sendable, Invite
     public var invokedDeleteNewUserInviteCount = 0
     public var invokedDeleteNewUserInviteParameters: (userId: String, shareId: String, inviteId: String)?
     public var invokedDeleteNewUserInviteParametersList = [(userId: String, shareId: String, inviteId: String)]()
-    public var stubbedDeleteNewUserInviteResult: Bool!
+    public nonisolated(unsafe) var stubbedDeleteNewUserInviteResult: Bool!
 
     public func deleteNewUserInvite(userId: String, shareId: String, inviteId: String) async throws -> Bool {
         invokedDeleteNewUserInvitefunction = true
@@ -285,7 +285,7 @@ public final class FullInviteRepositoryProtocolMock: @unchecked Sendable, Invite
     public var invokedGetInviteRecommendationsCount = 0
     public var invokedGetInviteRecommendationsParameters: (userId: String, shareId: String, query: InviteRecommendationsQuery)?
     public var invokedGetInviteRecommendationsParametersList = [(userId: String, shareId: String, query: InviteRecommendationsQuery)]()
-    public var stubbedGetInviteRecommendationsResult: InviteRecommendations!
+    public nonisolated(unsafe) var stubbedGetInviteRecommendationsResult: InviteRecommendations!
 
     public func getInviteRecommendations(userId: String, shareId: String, query: InviteRecommendationsQuery) async throws -> InviteRecommendations {
         invokedGetInviteRecommendationsfunction = true
@@ -304,7 +304,7 @@ public final class FullInviteRepositoryProtocolMock: @unchecked Sendable, Invite
     public var invokedGetSuggestedInviteCount = 0
     public var invokedGetSuggestedInviteParameters: (userId: String, shareId: String, email: String?)?
     public var invokedGetSuggestedInviteParametersList = [(userId: String, shareId: String, email: String?)]()
-    public var stubbedGetSuggestedInviteResult: [InviteSuggestion]!
+    public nonisolated(unsafe) var stubbedGetSuggestedInviteResult: [InviteSuggestion]!
 
     public func getSuggestedInvite(userId: String, shareId: String, email: String?) async throws -> [InviteSuggestion] {
         invokedGetSuggestedInvitefunction = true
@@ -323,7 +323,7 @@ public final class FullInviteRepositoryProtocolMock: @unchecked Sendable, Invite
     public var invokedGetOrganisationInviteRecommendationsCount = 0
     public var invokedGetOrganisationInviteRecommendationsParameters: (userId: String, shareId: String, query: InviteRecommendationsQuery)?
     public var invokedGetOrganisationInviteRecommendationsParametersList = [(userId: String, shareId: String, query: InviteRecommendationsQuery)]()
-    public var stubbedGetOrganisationInviteRecommendationsResult: OrganizationInviteRecommendations!
+    public nonisolated(unsafe) var stubbedGetOrganisationInviteRecommendationsResult: OrganizationInviteRecommendations!
 
     public func getOrganisationInviteRecommendations(userId: String, shareId: String, query: InviteRecommendationsQuery) async throws -> OrganizationInviteRecommendations {
         invokedGetOrganisationInviteRecommendationsfunction = true
@@ -342,7 +342,7 @@ public final class FullInviteRepositoryProtocolMock: @unchecked Sendable, Invite
     public var invokedCheckAddressesCount = 0
     public var invokedCheckAddressesParameters: (userId: String, shareId: String, emails: [String])?
     public var invokedCheckAddressesParametersList = [(userId: String, shareId: String, emails: [String])]()
-    public var stubbedCheckAddressesResult: [String]!
+    public nonisolated(unsafe) var stubbedCheckAddressesResult: [String]!
 
     public func checkAddresses(userId: String, shareId: String, emails: [String]) async throws -> [String] {
         invokedCheckAddressesfunction = true

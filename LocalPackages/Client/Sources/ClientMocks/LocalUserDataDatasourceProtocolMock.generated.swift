@@ -33,7 +33,7 @@ public final class LocalUserDataDatasourceProtocolMock: @unchecked Sendable, Loc
     public var closureGetAll: () -> () = {}
     public var invokedGetAllfunction = false
     public var invokedGetAllCount = 0
-    public var stubbedGetAllResult: [UserProfile]!
+    public nonisolated(unsafe) var stubbedGetAllResult: [UserProfile]!
 
     public func getAll() async throws -> [UserProfile] {
         invokedGetAllfunction = true
@@ -100,7 +100,7 @@ public final class LocalUserDataDatasourceProtocolMock: @unchecked Sendable, Loc
     public var closureGetActiveUser: () -> () = {}
     public var invokedGetActiveUserfunction = false
     public var invokedGetActiveUserCount = 0
-    public var stubbedGetActiveUserResult: UserProfile?
+    public nonisolated(unsafe) var stubbedGetActiveUserResult: UserProfile?
 
     public func getActiveUser() async throws -> UserProfile? {
         invokedGetActiveUserfunction = true

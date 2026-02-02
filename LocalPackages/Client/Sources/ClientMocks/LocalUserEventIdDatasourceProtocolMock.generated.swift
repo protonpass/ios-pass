@@ -33,7 +33,7 @@ public final class LocalUserEventIdDatasourceProtocolMock: @unchecked Sendable, 
     public var invokedGetLastEventIdCount = 0
     public var invokedGetLastEventIdParameters: (userId: String, Void)?
     public var invokedGetLastEventIdParametersList = [(userId: String, Void)]()
-    public var stubbedGetLastEventIdResult: String?
+    public nonisolated(unsafe) var stubbedGetLastEventIdResult: String?
 
     public func getLastEventId(userId: String) async throws -> String? {
         invokedGetLastEventIdfunction = true

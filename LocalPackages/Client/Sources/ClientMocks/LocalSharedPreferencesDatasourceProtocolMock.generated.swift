@@ -32,7 +32,7 @@ public final class LocalSharedPreferencesDatasourceProtocolMock: @unchecked Send
     public var closureGetPreferences: () -> () = {}
     public var invokedGetPreferencesfunction = false
     public var invokedGetPreferencesCount = 0
-    public var stubbedGetPreferencesResult: SharedPreferences?
+    public nonisolated(unsafe) var stubbedGetPreferencesResult: SharedPreferences?
 
     public func getPreferences() async throws -> SharedPreferences? {
         invokedGetPreferencesfunction = true

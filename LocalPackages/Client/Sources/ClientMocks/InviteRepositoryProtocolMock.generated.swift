@@ -67,7 +67,7 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
     public var invokedAcceptInviteCount = 0
     public var invokedAcceptInviteParameters: (userId: String, invite: Invite, keys: [ItemKey])?
     public var invokedAcceptInviteParametersList = [(userId: String, invite: Invite, keys: [ItemKey])]()
-    public var stubbedAcceptInviteResult: Share?
+    public nonisolated(unsafe) var stubbedAcceptInviteResult: Share?
 
     public func acceptInvite(userId: String, invite: Invite, keys: [ItemKey]) async throws -> Share? {
         invokedAcceptInvitefunction = true
@@ -86,7 +86,7 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
     public var invokedRejectInviteCount = 0
     public var invokedRejectInviteParameters: (userId: String, invite: Invite)?
     public var invokedRejectInviteParametersList = [(userId: String, invite: Invite)]()
-    public var stubbedRejectInviteResult: Bool!
+    public nonisolated(unsafe) var stubbedRejectInviteResult: Bool!
 
     public func rejectInvite(userId: String, invite: Invite) async throws -> Bool {
         invokedRejectInvitefunction = true

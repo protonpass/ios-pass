@@ -33,7 +33,7 @@ public actor SimpleLoginNoteSynchronizerProtocolMock: SimpleLoginNoteSynchronize
     public var invokedSyncAllAliasesCount = 0
     public var invokedSyncAllAliasesParameters: (userId: String, Void)?
     public var invokedSyncAllAliasesParametersList = [(userId: String, Void)]()
-    public var stubbedSyncAllAliasesResult: Bool!
+    public nonisolated(unsafe) var stubbedSyncAllAliasesResult: Bool!
 
     public func syncAllAliases(userId: String) async throws -> Bool {
         invokedSyncAllAliasesfunction = true
@@ -52,7 +52,7 @@ public actor SimpleLoginNoteSynchronizerProtocolMock: SimpleLoginNoteSynchronize
     public var invokedSyncAliasesCount = 0
     public var invokedSyncAliasesParameters: (userId: String, aliases: [any ItemIdentifiable])?
     public var invokedSyncAliasesParametersList = [(userId: String, aliases: [any ItemIdentifiable])]()
-    public var stubbedSyncAliasesResult: Bool!
+    public nonisolated(unsafe) var stubbedSyncAliasesResult: Bool!
 
     public func syncAliases(userId: String, aliases: [any ItemIdentifiable]) async throws -> Bool {
         invokedSyncAliasesfunction = true

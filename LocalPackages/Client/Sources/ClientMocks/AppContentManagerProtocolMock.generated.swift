@@ -128,7 +128,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
     public var invokedGetItemsCount = 0
     public var invokedGetItemsParameters: (shareId: String, containerId: String?)?
     public var invokedGetItemsParametersList = [(shareId: String, containerId: String?)]()
-    public var stubbedGetItemsResult: [ItemUiModel]!
+    public nonisolated(unsafe) var stubbedGetItemsResult: [ItemUiModel]!
 
     public func getItems(for shareId: String, containerId: String?) -> [ItemUiModel] {
         invokedGetItemsfunction = true
@@ -143,7 +143,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
     public var invokedGetAllItemsCount = 0
     public var invokedGetAllItemsParameters: (shareId: String, Void)?
     public var invokedGetAllItemsParametersList = [(shareId: String, Void)]()
-    public var stubbedGetAllItemsResult: [ItemUiModel]!
+    public nonisolated(unsafe) var stubbedGetAllItemsResult: [ItemUiModel]!
 
     public func getAllItems(for shareId: String) -> [ItemUiModel] {
         invokedGetAllItemsfunction = true
@@ -190,7 +190,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
     public var closureGetOldestOwnedVault: () -> () = {}
     public var invokedGetOldestOwnedVaultfunction = false
     public var invokedGetOldestOwnedVaultCount = 0
-    public var stubbedGetOldestOwnedVaultResult: Share?
+    public nonisolated(unsafe) var stubbedGetOldestOwnedVaultResult: Share?
 
     public func getOldestOwnedVault() async -> Share? {
         invokedGetOldestOwnedVaultfunction = true

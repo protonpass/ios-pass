@@ -83,7 +83,7 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
     public var invokedGetAccessCount = 0
     public var invokedGetAccessParameters: (userId: String?, Void)?
     public var invokedGetAccessParametersList = [(userId: String?, Void)]()
-    public var stubbedGetAccessResult: UserAccess!
+    public nonisolated(unsafe) var stubbedGetAccessResult: UserAccess!
 
     public func getAccess(userId: String?) async throws -> UserAccess {
         invokedGetAccessfunction = true
@@ -102,7 +102,7 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
     public var invokedRefreshAccessCount = 0
     public var invokedRefreshAccessParameters: (userId: String?, Void)?
     public var invokedRefreshAccessParametersList = [(userId: String?, Void)]()
-    public var stubbedRefreshAccessResult: UserAccess!
+    public nonisolated(unsafe) var stubbedRefreshAccessResult: UserAccess!
 
     public func refreshAccess(userId: String?) async throws -> UserAccess {
         invokedRefreshAccessfunction = true
@@ -169,7 +169,7 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
     public var invokedGetPassUserInformationCount = 0
     public var invokedGetPassUserInformationParameters: (userId: String, Void)?
     public var invokedGetPassUserInformationParametersList = [(userId: String, Void)]()
-    public var stubbedGetPassUserInformationResult: PassUserInformations!
+    public nonisolated(unsafe) var stubbedGetPassUserInformationResult: PassUserInformations!
 
     public func getPassUserInformation(userId: String) async throws -> PassUserInformations {
         invokedGetPassUserInformationfunction = true

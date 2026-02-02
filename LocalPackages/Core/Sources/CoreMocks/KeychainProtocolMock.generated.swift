@@ -33,7 +33,7 @@ public final class KeychainProtocolMock: @unchecked Sendable, KeychainProtocol {
     public var invokedDataOrErrorCount = 0
     public var invokedDataOrErrorParameters: (key: String, attributes: [CFString: Any]?)?
     public var invokedDataOrErrorParametersList = [(key: String, attributes: [CFString: Any]?)]()
-    public var stubbedDataOrErrorResult: Data?
+    public nonisolated(unsafe) var stubbedDataOrErrorResult: Data?
 
     public func dataOrError(forKey key: String, attributes: [CFString: Any]?) throws -> Data? {
         invokedDataOrErrorfunction = true
@@ -52,7 +52,7 @@ public final class KeychainProtocolMock: @unchecked Sendable, KeychainProtocol {
     public var invokedStringOrErrorCount = 0
     public var invokedStringOrErrorParameters: (key: String, attributes: [CFString: Any]?)?
     public var invokedStringOrErrorParametersList = [(key: String, attributes: [CFString: Any]?)]()
-    public var stubbedStringOrErrorResult: String?
+    public nonisolated(unsafe) var stubbedStringOrErrorResult: String?
 
     public func stringOrError(forKey key: String, attributes: [CFString: Any]?) throws -> String? {
         invokedStringOrErrorfunction = true

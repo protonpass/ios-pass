@@ -100,7 +100,7 @@ public extension ShareContent {
     var allFolders: [FolderUiModel] {
         Array(foldersById.values)
     }
-    
+
     var rootElements: [ShareContentElement] {
         elements(for: share.id) ?? []
     }

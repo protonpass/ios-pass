@@ -35,7 +35,7 @@ public final class LocalUserPreferencesDatasourceProtocolMock: @unchecked Sendab
     public var invokedGetPreferencesCount = 0
     public var invokedGetPreferencesParameters: (userId: String, Void)?
     public var invokedGetPreferencesParametersList = [(userId: String, Void)]()
-    public var stubbedGetPreferencesResult: UserPreferences?
+    public nonisolated(unsafe) var stubbedGetPreferencesResult: UserPreferences?
 
     public func getPreferences(for userId: String) async throws -> UserPreferences? {
         invokedGetPreferencesfunction = true

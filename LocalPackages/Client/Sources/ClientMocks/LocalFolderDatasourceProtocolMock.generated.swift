@@ -33,7 +33,7 @@ public final class LocalFolderDatasourceProtocolMock: @unchecked Sendable, Local
     public var invokedGetAllFoldersCount = 0
     public var invokedGetAllFoldersParameters: (userId: String, Void)?
     public var invokedGetAllFoldersParametersList = [(userId: String, Void)]()
-    public var stubbedGetAllFoldersResult: [SymmetricallyEncryptedFolder]!
+    public nonisolated(unsafe) var stubbedGetAllFoldersResult: [SymmetricallyEncryptedFolder]!
 
     public func getAllFolders(userId: String) async throws -> [SymmetricallyEncryptedFolder] {
         invokedGetAllFoldersfunction = true
@@ -52,7 +52,7 @@ public final class LocalFolderDatasourceProtocolMock: @unchecked Sendable, Local
     public var invokedGetFolderCount = 0
     public var invokedGetFolderParameters: (shareId: String, folderId: String)?
     public var invokedGetFolderParametersList = [(shareId: String, folderId: String)]()
-    public var stubbedGetFolderResult: SymmetricallyEncryptedFolder?
+    public nonisolated(unsafe) var stubbedGetFolderResult: SymmetricallyEncryptedFolder?
 
     public func getFolder(shareId: String, folderId: String) async throws -> SymmetricallyEncryptedFolder? {
         invokedGetFolderfunction = true
