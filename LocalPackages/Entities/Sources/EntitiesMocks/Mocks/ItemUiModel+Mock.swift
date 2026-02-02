@@ -27,7 +27,9 @@ public extension ItemUiModel {
         shareId: String,
         folderId: String? = nil,
         isAlias: Bool = false,
-        totpUri: String? = nil
+        totpUri: String? = nil,
+        state: ItemState = .active,
+        shared: Bool = false
     ) -> ItemUiModel {
         ItemUiModel(
             itemId: itemId,
@@ -41,10 +43,10 @@ public extension ItemUiModel {
             totpUri: totpUri,
             lastUseTime: 123_456_678,
             modifyTime: 123_456_789,
-            state: .active,
+            state: state,
             pinned: false,
             isAliasEnabled: false,
-            shared: false,
+            shared: shared,
             hasEmail: true,
             hasUsername: true,
             hasPassword: true
