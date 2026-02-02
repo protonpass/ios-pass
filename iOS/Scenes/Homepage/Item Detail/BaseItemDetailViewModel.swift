@@ -163,7 +163,7 @@ class BaseItemDetailViewModel: ObservableObject {
         guard let shareContent, let folderId = itemContent.item.folderID else {
             return []
         }
-        return shareContent.getPath(forElementWithContainer: folderId)
+        return shareContent.getPathOfElement(containerId: folderId)
     }
 
     init(isShownAsSheet: Bool,
