@@ -1,7 +1,7 @@
 //
-// VaultProtobuf.swift
-// Proton Pass - Created on 12/07/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// ElementIdentifiable.swift
+// Proton Pass - Created on 02/02/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -20,25 +20,13 @@
 
 import Foundation
 
-public typealias VaultContent = ProtonPassVaultV1_Vault
+public protocol ElementIdentifiable: Sendable, Equatable, CustomDebugStringConvertible {
+    var shareId: String { get }
+    var elementId: String { get }
+}
 
-public extension VaultContent {
-    init(data: Data) throws {
-        self = try VaultContent(serializedBytes: data)
-    }
-
-    init(name: String,
-         description: String,
-         color: ProtonPassVaultV1_VaultColor,
-         icon: ProtonPassVaultV1_VaultIcon) {
-        self.init()
-        self.name = name
-        description_p = description
-        display.color = color
-        display.icon = icon
-    }
-
-    func data() throws -> Data {
-        try serializedData()
+public extension ElementIdentifiable {
+    var debugDescription: String {
+        "Element \(elementId) - Share \(shareId)"
     }
 }

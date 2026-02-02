@@ -1,5 +1,5 @@
 //
-// Protobuf+Alias.swift
+// Item+Protobuf.swift
 // Proton Pass - Created on 24/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
