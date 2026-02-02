@@ -21,31 +21,3 @@
 import Entities
 import Foundation
 
-/// `ShareKey` with its symmetrically encrypted key by an application-wide symmetric key
-public struct SymmetricallyEncryptedShareKey: Hashable, Sendable {
-    /// Base64 representation of the symmetrically encrypted share key
-    public let encryptedKey: String
-
-    /// ID of the share that the key belongs to
-    public let shareId: String
-
-    /// The user ID of the share key
-    public let userId: String
-
-    /// Original `ShareKey` object as returned by the server
-    public let shareKey: ShareKey
-}
-
-public extension [SymmetricallyEncryptedShareKey] {
-    func latestKey() throws -> SymmetricallyEncryptedShareKey {
-        guard !isEmpty else {
-            throw PassError.crypto(.missingKeys)
-        }
-
-        guard let latestKey =
-            sorted(by: { $0.shareKey.keyRotation < $1.shareKey.keyRotation }).last else {
-            throw PassError.crypto(.missingKeys)
-        }
-        return latestKey
-    }
-}

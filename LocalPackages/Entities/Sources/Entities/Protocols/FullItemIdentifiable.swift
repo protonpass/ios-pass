@@ -24,4 +24,12 @@ public protocol FullItemIdentifiable: Sendable, CustomDebugStringConvertible, Eq
     Hashable {
     var shareId: String { get }
     var item: Item { get }
+    
+    var parentId: String { get }
+}
+
+public extension FullItemIdentifiable {
+    var parentId: String {
+        item.folderID ?? shareId
+    }
 }
