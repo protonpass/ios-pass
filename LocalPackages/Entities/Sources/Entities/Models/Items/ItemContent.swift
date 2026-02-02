@@ -59,6 +59,10 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
         item.itemID + shareId
     }
 
+    public var parentId: String {
+        item.folderID ?? shareId
+    }
+
     public init(shareId: String,
                 itemUuid: String,
                 userId: String,

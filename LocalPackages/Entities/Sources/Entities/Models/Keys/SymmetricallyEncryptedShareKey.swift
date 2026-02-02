@@ -1,4 +1,4 @@
-//  
+//
 // SymmetricallyEncryptedShareKey.swift
 // Proton Pass - Created on 02/02/2026.
 // Copyright (c) 2026 Proton Technologies AG
@@ -30,6 +30,13 @@ public struct SymmetricallyEncryptedShareKey: Hashable, Sendable {
     public let userId: String
     /// Original `ShareKey` object as returned by the server
     public let shareKey: ShareKey
+
+    public init(encryptedKey: String, shareId: String, userId: String, shareKey: ShareKey) {
+        self.encryptedKey = encryptedKey
+        self.shareId = shareId
+        self.userId = userId
+        self.shareKey = shareKey
+    }
 }
 
 extension SymmetricallyEncryptedShareKey: SymmetricallyEncryptedKeyType {

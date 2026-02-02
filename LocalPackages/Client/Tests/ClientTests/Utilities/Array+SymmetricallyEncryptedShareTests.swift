@@ -20,6 +20,7 @@
 
 @testable import Client
 import XCTest
+import Entities
 
 // swiftlint:disable:next type_name
 final class ArrayPlusSymmetricallyEncryptedShareTests: XCTestCase {

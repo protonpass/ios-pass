@@ -20,6 +20,7 @@
 
 import Client
 import CoreData
+import Entities
 import Foundation
 
 public final class LocalFolderKeyDatasourceProtocolMock: @unchecked Sendable, LocalFolderKeyDatasourceProtocol {

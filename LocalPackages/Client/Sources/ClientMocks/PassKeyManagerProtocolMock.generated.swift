@@ -88,57 +88,57 @@ public final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManag
         return stubbedGetShareKeysResult
     }
     // MARK: - getLatestItemKey
-    public var getLatestItemKeyUserIdShareIdContainerIdItemIdThrowableError4: Error?
+    public var getLatestItemKeyUserIdShareIdParentIdItemIdThrowableError4: Error?
     public var closureGetLatestItemKey: () -> () = {}
     public var invokedGetLatestItemKeyfunction = false
     public var invokedGetLatestItemKeyCount = 0
-    public var invokedGetLatestItemKeyParameters: (userId: String, shareId: String, containerId: String, itemId: String)?
-    public var invokedGetLatestItemKeyParametersList = [(userId: String, shareId: String, containerId: String, itemId: String)]()
+    public var invokedGetLatestItemKeyParameters: (userId: String, shareId: String, parentId: String, itemId: String)?
+    public var invokedGetLatestItemKeyParametersList = [(userId: String, shareId: String, parentId: String, itemId: String)]()
     public nonisolated(unsafe) var stubbedGetLatestItemKeyResult: (any CryptographicKeyProtocol)!
 
-    public func getLatestItemKey(userId: String, shareId: String, containerId: String, itemId: String) async throws -> any CryptographicKeyProtocol {
+    public func getLatestItemKey(userId: String, shareId: String, parentId: String, itemId: String) async throws -> any CryptographicKeyProtocol {
         invokedGetLatestItemKeyfunction = true
         invokedGetLatestItemKeyCount += 1
-        invokedGetLatestItemKeyParameters = (userId, shareId, containerId, itemId)
-        if let error = getLatestItemKeyUserIdShareIdContainerIdItemIdThrowableError4 {
+        invokedGetLatestItemKeyParameters = (userId, shareId, parentId, itemId)
+        if let error = getLatestItemKeyUserIdShareIdParentIdItemIdThrowableError4 {
             throw error
         }
         closureGetLatestItemKey()
         return stubbedGetLatestItemKeyResult
     }
     // MARK: - getItemKeys
-    public var getItemKeysUserIdShareIdContainerIdItemIdThrowableError5: Error?
+    public var getItemKeysUserIdShareIdParentIdItemIdThrowableError5: Error?
     public var closureGetItemKeys: () -> () = {}
     public var invokedGetItemKeysfunction = false
     public var invokedGetItemKeysCount = 0
-    public var invokedGetItemKeysParameters: (userId: String, shareId: String, containerId: String, itemId: String)?
-    public var invokedGetItemKeysParametersList = [(userId: String, shareId: String, containerId: String, itemId: String)]()
+    public var invokedGetItemKeysParameters: (userId: String, shareId: String, parentId: String, itemId: String)?
+    public var invokedGetItemKeysParametersList = [(userId: String, shareId: String, parentId: String, itemId: String)]()
     public nonisolated(unsafe) var stubbedGetItemKeysResult: ([any CryptographicKeyProtocol])!
 
-    public func getItemKeys(userId: String, shareId: String, containerId: String, itemId: String) async throws -> [any CryptographicKeyProtocol] {
+    public func getItemKeys(userId: String, shareId: String, parentId: String, itemId: String) async throws -> [any CryptographicKeyProtocol] {
         invokedGetItemKeysfunction = true
         invokedGetItemKeysCount += 1
-        invokedGetItemKeysParameters = (userId, shareId, containerId, itemId)
-        if let error = getItemKeysUserIdShareIdContainerIdItemIdThrowableError5 {
+        invokedGetItemKeysParameters = (userId, shareId, parentId, itemId)
+        if let error = getItemKeysUserIdShareIdParentIdItemIdThrowableError5 {
             throw error
         }
         closureGetItemKeys()
         return stubbedGetItemKeysResult
     }
     // MARK: - getItemKey
-    public var getItemKeyUserIdShareIdContainerIdItemIdKeyRotationThrowableError6: Error?
+    public var getItemKeyUserIdShareIdParentIdItemIdKeyRotationThrowableError6: Error?
     public var closureGetItemKey: () -> () = {}
     public var invokedGetItemKeyfunction = false
     public var invokedGetItemKeyCount = 0
-    public var invokedGetItemKeyParameters: (userId: String, shareId: String, containerId: String, itemId: String, keyRotation: Int64)?
-    public var invokedGetItemKeyParametersList = [(userId: String, shareId: String, containerId: String, itemId: String, keyRotation: Int64)]()
+    public var invokedGetItemKeyParameters: (userId: String, shareId: String, parentId: String, itemId: String, keyRotation: Int64)?
+    public var invokedGetItemKeyParametersList = [(userId: String, shareId: String, parentId: String, itemId: String, keyRotation: Int64)]()
     public nonisolated(unsafe) var stubbedGetItemKeyResult: (any CryptographicKeyProtocol)!
 
-    public func getItemKey(userId: String, shareId: String, containerId: String, itemId: String, keyRotation: Int64) async throws -> any CryptographicKeyProtocol {
+    public func getItemKey(userId: String, shareId: String, parentId: String, itemId: String, keyRotation: Int64) async throws -> any CryptographicKeyProtocol {
         invokedGetItemKeyfunction = true
         invokedGetItemKeyCount += 1
-        invokedGetItemKeyParameters = (userId, shareId, containerId, itemId, keyRotation)
-        if let error = getItemKeyUserIdShareIdContainerIdItemIdKeyRotationThrowableError6 {
+        invokedGetItemKeyParameters = (userId, shareId, parentId, itemId, keyRotation)
+        if let error = getItemKeyUserIdShareIdParentIdItemIdKeyRotationThrowableError6 {
             throw error
         }
         closureGetItemKey()

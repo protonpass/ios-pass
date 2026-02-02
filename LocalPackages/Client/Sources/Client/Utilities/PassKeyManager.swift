@@ -56,7 +56,7 @@ public protocol PassKeyManagerProtocol: Sendable, AnyObject {
     func decryptAndStoreFolderKeys(shareId: String, folders: [Folder]) async throws
 
     func getContainerKey(userId: String,
-                         parentId: String,
+                         containerId: String,
                          keyRotation: Int64?) async throws -> any CryptographicKeyProtocol
 }
 
@@ -201,18 +201,18 @@ public extension PassKeyManager {
     }
 
     func getContainerKey(userId: String,
-                         parentId: String,
+                         containerId: String,
                          keyRotation: Int64? = nil) async throws -> any CryptographicKeyProtocol {
         try await loadKeysIfNeeded()
 
         let key: (any CryptographicKeyProtocol)? = if let keyRotation {
-            getCachedKey(id: parentId, keyRotation: keyRotation)
+            getCachedKey(id: containerId, keyRotation: keyRotation)
         } else {
-            getLatestCachedKey(id: parentId)
+            getLatestCachedKey(id: containerId)
         }
 
         guard let key else {
-            throw PassError.keysNotFound(shareID: parentId)
+            throw PassError.keysNotFound(shareID: containerId)
         }
 
         return key
@@ -388,12 +388,13 @@ private extension PassKeyManager {
 }
 
 // MARK: - Cache Helpers
+
 private extension PassKeyManager {
-     func getCachedKey(id: String, keyRotation: Int64) -> (any CryptographicKeyProtocol)? {
+    func getCachedKey(id: String, keyRotation: Int64) -> (any CryptographicKeyProtocol)? {
         keyCache[id]?[keyRotation]
     }
 
-     func getLatestCachedKey(id: String) -> (any CryptographicKeyProtocol)? {
+    func getLatestCachedKey(id: String) -> (any CryptographicKeyProtocol)? {
         guard let rotations = keyCache[id],
               let maxRotation = rotations.keys.max() else {
             return nil
@@ -401,14 +402,14 @@ private extension PassKeyManager {
         return rotations[maxRotation]
     }
 
-     func cacheKey(_ key: any CryptographicKeyProtocol, id: String) {
+    func cacheKey(_ key: any CryptographicKeyProtocol, id: String) {
         keyCache[id, default: [:]][key.keyRotation] = key
     }
 }
 
 // MARK: - Key Loading
+
 private extension PassKeyManager {
-    
     func loadKeysIfNeeded() async throws {
         if keysLoaded { return }
 
@@ -457,7 +458,7 @@ private extension PassKeyManager {
     }
 
     func decryptSymmetricKey(_ key: SymmetricallyEncryptedKeyType,
-                                     using symmetricKey: SymmetricKey) throws -> any CryptographicKeyProtocol {
+                             using symmetricKey: SymmetricKey) throws -> any CryptographicKeyProtocol {
         let decryptedKey = try symmetricKey.decrypt(key.encryptedKey)
         guard let decryptedKeyData = try decryptedKey.base64Decode() else {
             throw PassError.crypto(.failedToBase64Decode)

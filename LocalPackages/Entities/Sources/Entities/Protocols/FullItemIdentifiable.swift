@@ -24,7 +24,7 @@ public protocol FullItemIdentifiable: Sendable, CustomDebugStringConvertible, Eq
     Hashable {
     var shareId: String { get }
     var item: Item { get }
-    
+
     var parentId: String { get }
 }
 

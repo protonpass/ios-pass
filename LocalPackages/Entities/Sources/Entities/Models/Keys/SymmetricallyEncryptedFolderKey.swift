@@ -1,4 +1,4 @@
-//  
+//
 // SymmetricallyEncryptedFolderKey.swift
 // Proton Pass - Created on 02/02/2026.
 // Copyright (c) 2026 Proton Technologies AG
@@ -28,7 +28,7 @@ public struct SymmetricallyEncryptedFolderKey: Hashable, Sendable {
     /// The user ID of the folder key
     public let userId: String
     public let keyRotation: Int64
-    
+
     public init(encryptedKey: String, folderId: String, userId: String, keyRotation: Int64) {
         self.encryptedKey = encryptedKey
         self.folderId = folderId
