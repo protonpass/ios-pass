@@ -55,7 +55,7 @@ public protocol RemoteItemDatasourceProtocol: Sendable {
     func move(userId: String, fromShareId: String, request: MoveItemsRequest) async throws -> [Item]
     func sameShareMove(userId: String,
                        shareId: String,
-                       request: InternalMoveItemsRequest) async throws -> [ModifiedItem]
+                       request: InternalShareMoveItemsRequest) async throws -> [ModifiedItem]
     func pin(userId: String, item: any ItemIdentifiable) async throws -> Item
     func unpin(userId: String, item: any ItemIdentifiable) async throws -> Item
     func updateItemFlags(userId: String,
@@ -188,8 +188,8 @@ public extension RemoteItemDatasource {
 
     func sameShareMove(userId: String,
                        shareId: String,
-                       request: InternalMoveItemsRequest) async throws -> [ModifiedItem] {
-        let endpoint = InternalMoveItemsEndpoint(request: request, shareId: shareId)
+                       request: InternalShareMoveItemsRequest) async throws -> [ModifiedItem] {
+        let endpoint = InternalShareMoveItemsEndpoint(request: request, shareId: shareId)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.items
     }

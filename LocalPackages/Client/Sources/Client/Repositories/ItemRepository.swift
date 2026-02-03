@@ -25,8 +25,7 @@ import CoreData
 import Entities
 import ProtonCoreLogin
 
-// swiftlint:disable:next todo function_parameter_count
-// TODO: need to keep an eye on the evolution of Combine publisher and structured concurrency
+// swiftlint:disable function_parameter_count
 extension CurrentValueSubject: @unchecked @retroactive Sendable {}
 extension PassthroughSubject: @unchecked @retroactive Sendable {}
 
@@ -349,7 +348,6 @@ public extension ItemRepository {
         logger.trace("Encrypting \(itemRevisions.count) remote items for share \(shareId)")
         var encryptedItems = [SymmetricallyEncryptedItem]()
 
-        // TODO: refresh in batch to optimize the code
         let symmetricKey = try await getSymmetricKey()
         for (index, itemRevision) in itemRevisions.enumerated() {
             let encryptedItem = try await symmetricallyEncrypt(itemRevision: itemRevision,
@@ -398,7 +396,9 @@ public extension ItemRepository {
                     shareId: String,
                     folderId: String?) async throws -> SymmetricallyEncryptedItem {
         logger.trace("Creating item for share \(shareId) and user \(userId)")
-        let request = try await createItemRequest(itemContent: itemContent, userId: userId, shareId: shareId,
+        let request = try await createItemRequest(itemContent: itemContent,
+                                                  userId: userId,
+                                                  shareId: shareId,
                                                   folderId: folderId)
         let createdItemRevision = try await remoteDatasource.createItem(userId: userId,
                                                                         shareId: shareId,
@@ -833,7 +833,7 @@ public extension ItemRepository {
                                                   itemUuid: UUID().uuidString,
                                                   data: loginData,
                                                   customFields: [])
-                return try .init(containerKey: vaultKey, itemContent: content)
+                return try .init(parentKey: vaultKey, itemContent: content)
             }
             logger.debug("Bulk importing \(itemsToImport.count) logins")
             let items = try await remoteDatasource.importItems(userId: userId,
@@ -1061,9 +1061,6 @@ private extension ItemRepository {
                                                                            containerId: destinationFolderId ??
                                                                                toShareId,
                                                                            keyRotation: nil)
-//        getDecryptionKey(userId: userId,
-//                                                                            containerId: destinationFolderId ??
-//                                                                                toShareId)
 
         var itemsToBeMoved = [ItemToBeMoved]()
         for item in items {
@@ -1112,8 +1109,6 @@ private extension ItemRepository {
         let destinationShareKey = try await passKeyManager.getContainerKey(userId: userId,
                                                                            containerId: toContainerId ?? shareId,
                                                                            keyRotation: nil)
-//        getDecryptionKey(userId: userId,
-//                                                                            containerId: toContainerId ?? shareId)
 
         var itemsToBeMoved = [InternalItemToBeMoved]()
         for item in items {
@@ -1136,7 +1131,7 @@ private extension ItemRepository {
                                         itemKeys: encryptedItemKeys))
         }
 
-        let request = InternalMoveItemsRequest(folderId: toContainerId, items: itemsToBeMoved)
+        let request = InternalShareMoveItemsRequest(folderId: toContainerId, items: itemsToBeMoved)
 
         let modifiedItems = try await remoteDatasource.sameShareMove(userId: userId,
                                                                      shareId: shareId,
@@ -1180,8 +1175,6 @@ private extension ItemRepository {
         let containerKey = try await passKeyManager.getContainerKey(userId: userId,
                                                                     containerId: item.folderID ?? shareId,
                                                                     keyRotation: nil)
-//        getDecryptionKey(userId: userId,
-//                                                                     containerId: item.folderID ?? shareId)
         let contentProtobuf = try item.getContentProtobuf(parentKey: containerKey)
         return ItemContent(userId: userId,
                            shareId: shareId,
@@ -1191,5 +1184,4 @@ private extension ItemRepository {
     }
 }
 
-extension SymmetricallyEncryptedItem: @retroactive FullItemIdentifiable {}
-// swiftlint: enable discouraged_optional_self function_parameter_count
+// swiftlint:enable discouraged_optional_self function_parameter_count
