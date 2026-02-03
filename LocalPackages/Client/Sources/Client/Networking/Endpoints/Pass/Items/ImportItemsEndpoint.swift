@@ -47,7 +47,7 @@ public struct ItemToImport: Encodable, Sendable {
         case item = "Item"
     }
 
-    init(containerKey: any CryptographicKeyProtocol,
+    init(parentKey: any CryptographicKeyProtocol,
          itemContent: any ProtobufableItemContentProtocol) throws {
         let itemKey = try Data.random()
         let encryptedContent = try AES.GCM.seal(itemContent.data(),
@@ -55,10 +55,10 @@ public struct ItemToImport: Encodable, Sendable {
                                                 associatedData: .itemContent)
 
         let encryptedItemKey = try AES.GCM.seal(itemKey,
-                                                key: containerKey.keyData,
+                                                key: parentKey.keyData,
                                                 associatedData: .itemKey)
 
-        item = .init(keyRotation: containerKey.keyRotation,
+        item = .init(keyRotation: parentKey.keyRotation,
                      contentFormatVersion: Int16(Constants.ContentFormatVersion.item),
                      content: encryptedContent.base64EncodedString(),
                      itemKey: encryptedItemKey.base64EncodedString(),

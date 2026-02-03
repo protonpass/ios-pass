@@ -96,6 +96,8 @@ public extension PassKeyManager {
     func getShareKey(userId: String,
                      shareId: String,
                      keyRotation: Int64) async throws -> any CryptographicKeyProtocol {
+        try await loadKeysIfNeeded()
+
         // Check cache first with correct rotation
         if let cachedKey = getCachedKey(id: shareId, keyRotation: keyRotation) {
             return cachedKey
@@ -110,6 +112,8 @@ public extension PassKeyManager {
     }
 
     func getLatestShareKey(userId: String, shareId: String) async throws -> any CryptographicKeyProtocol {
+        try await loadKeysIfNeeded()
+
         // Check cache first for latest
         if let cachedKey = getLatestCachedKey(id: shareId) {
             return cachedKey
@@ -123,6 +127,8 @@ public extension PassKeyManager {
     func getShareKeys(userId: String,
                       share: Share,
                       item: any FullItemIdentifiable) async throws -> [any CryptographicKeyProtocol] {
+        try await loadKeysIfNeeded()
+
         switch share.shareType {
         case .vault:
             return try await getItemKeys(userId: userId,

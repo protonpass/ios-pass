@@ -21,7 +21,6 @@
 
 import Foundation
 
-// TODO: maybe remove this to use the new entity identifiable
 /// Should be conformed by structs that represent items differently.
 /// E.g: for different purposes like listing & searching
 public protocol ItemIdentifiable: Sendable, CustomDebugStringConvertible, Equatable {
