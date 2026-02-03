@@ -933,10 +933,8 @@ private extension ItemRepository {
         let shareKey = try await passKeyManager.getContainerKey(userId: userId,
                                                                 containerId: itemRevision.folderID ?? shareId,
                                                                 keyRotation: nil)
-//        getDecryptionKey(userId: userId,
-//                                                                 containerId: itemRevision.folderID ?? shareId)
 
-        let contentProtobuf = try itemRevision.getContentProtobuf(containerKey: shareKey)
+        let contentProtobuf = try itemRevision.getContentProtobuf(parentKey: shareKey)
 
         let encryptedContent = try contentProtobuf.encrypt(symmetricKey: symmetricKey)
 
@@ -965,9 +963,10 @@ private extension ItemRepository {
                            userId: String,
                            shareId: String,
                            folderId: String?) async throws -> CreateItemRequest {
-        let latestKey = try await passKeyManager.getContainerKey(userId: userId, containerId: folderId ?? shareId,
-                                                                 keyRotation: nil) // getDecryptionKey(userId: userId, containerId: folderId ?? shareId)
-        return try CreateItemRequest(containerKey: latestKey, itemContent: itemContent, folderId: folderId)
+        let latestParentKey = try await passKeyManager.getContainerKey(userId: userId,
+                                                                       containerId: folderId ?? shareId,
+                                                                       keyRotation: nil)
+        return try CreateItemRequest(parentKey: latestParentKey, itemContent: itemContent, folderId: folderId)
     }
 }
 
@@ -1183,7 +1182,7 @@ private extension ItemRepository {
                                                                     keyRotation: nil)
 //        getDecryptionKey(userId: userId,
 //                                                                     containerId: item.folderID ?? shareId)
-        let contentProtobuf = try item.getContentProtobuf(containerKey: containerKey)
+        let contentProtobuf = try item.getContentProtobuf(parentKey: containerKey)
         return ItemContent(userId: userId,
                            shareId: shareId,
                            item: item,

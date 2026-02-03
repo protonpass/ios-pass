@@ -52,6 +52,10 @@ final class DarkWebMonitorHomeViewModel: ObservableObject {
     private var fetchCustomEmailsTask: Task<Void, Never>?
     private var fetchSuggestedEmailsTask: Task<Void, Never>?
 
+    var topBreachedAddresses: [ProtonAddress] {
+        userBreaches.topBreachedAddresses()
+    }
+
     init(userBreaches: UserBreaches) {
         access = accessRepository.access.value?.access
         self.userBreaches = userBreaches

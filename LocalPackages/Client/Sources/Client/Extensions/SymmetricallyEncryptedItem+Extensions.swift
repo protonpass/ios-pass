@@ -48,18 +48,3 @@ public extension SymmetricallyEncryptedItem {
         return itemContent.toItemUiModel
     }
 }
-
-public extension SymmetricallyEncryptedFolder {
-    /// Symmetrically decrypt and return decrypted item content
-    func getFolderContent(symmetricKey: SymmetricKey) throws -> FolderContent {
-        try FolderContent(base64: encryptedContent, symmetricKey: symmetricKey)
-    }
-}
-
-public extension SymmetricallyEncryptedFolder {
-    func toFolderUiModel(_ symmetricKey: SymmetricKey) throws -> FolderUiModel {
-        let content = try getFolderContent(symmetricKey: symmetricKey)
-
-        return FolderUiModel(shareId: shareId, folder: folder, content: content)
-    }
-}

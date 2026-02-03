@@ -18,10 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// swiftlint:disable:next todo
-// TODO: remove with folder implementation
-// periphery:ignore:all
-
 import Core
 import Entities
 import ProtonCoreNetworking

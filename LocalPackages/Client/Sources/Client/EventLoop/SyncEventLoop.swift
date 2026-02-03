@@ -287,7 +287,6 @@ private extension SyncEventLoop {
 
             let hasNewEvents: Bool
             if userEventsEnabled == true {
-                print("woot using user events!")
                 let result = try await userEventsSynchronizer.sync(userId: userId)
 
                 if result.contains(.fullRefreshNeeded) {
@@ -297,8 +296,6 @@ private extension SyncEventLoop {
 
                 hasNewEvents = result.contains(.dataUpdated)
             } else {
-                print("woot not using user events!")
-
                 hasNewEvents = try await synchronizer.sync(userId: userId)
             }
 

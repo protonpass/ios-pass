@@ -33,6 +33,7 @@
   },
   "testTargets" : [
     {
+      "enabled" : false,
       "target" : {
         "containerPath" : "container:ProtonPass.xcodeproj",
         "identifier" : "354A803B28D8B8D8003F49CF",

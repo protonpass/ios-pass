@@ -23,14 +23,6 @@ import Entities
 import Foundation
 import Macro
 
-extension UserBreaches {
-    var topBreachedAddresses: [ProtonAddress] {
-        Array(monitoredAddresses
-            .sorted { $0.breachCounter > $1.breachCounter }
-            .prefix(DesignConstant.previewBreachItemCount))
-    }
-}
-
 extension AliasMonitorInfo {
     var latestBreach: String {
         #localized("Latest breach on %@", breaches?.breaches.first?.breachDate ?? "")

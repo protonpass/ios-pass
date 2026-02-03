@@ -179,7 +179,7 @@ private extension DarkWebMonitorHomeView {
 
     var monitoredProtonAddressesSection: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
-            ForEach(viewModel.userBreaches.topBreachedAddresses) { item in
+            ForEach(viewModel.topBreachedAddresses) { item in
                 darkWebMonitorHomeRow(title: item.email,
                                       subTitle: item
                                           .breached ? "Latest breach on \(item.lastBreachDate ?? "")" :
@@ -188,7 +188,7 @@ private extension DarkWebMonitorHomeView {
                                       hasBreaches: item.breached,
                                       isDetail: false,
                                       action: { router.navigate(to: .breachDetail(.protonAddress(item))) })
-                if item != viewModel.userBreaches.topBreachedAddresses.last {
+                if item != viewModel.topBreachedAddresses.last {
                     PassDivider()
                 }
             }
