@@ -18,17 +18,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// swiftlint:disable:next todo
-// TODO: remove with folder implementation
-// periphery:ignore:all
-
 import CryptoKit
 import Entities
 import Foundation
 import ProtonCoreNetworking
 
 public struct MoveFolderRequest: Encodable, Sendable {
-    /// Encrypted ID of the destination share
+    /// Encrypted ID of the destination folder if nil destination is share
     let parentFolderID: String?
     let folderKeys: [FolderKey]
 
@@ -48,7 +44,7 @@ struct MoveFolderEndpoint: Endpoint {
     var body: MoveFolderRequest?
 
     init(shareId: String, folderId: String, request: MoveFolderRequest) {
-        debugDescription = "Move folder from folder: \(request.parentFolderID) to folder: \(folderId)"
+        debugDescription = "Move folder to \(request.parentFolderID == nil ? "share" : "folder") with id: \(request.parentFolderID ?? shareId)"
         path = "/pass/v1/share/\(shareId)/folder/\(folderId)/move"
         method = .put
         body = request

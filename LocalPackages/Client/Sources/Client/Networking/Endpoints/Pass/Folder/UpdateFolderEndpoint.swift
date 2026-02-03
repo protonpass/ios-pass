@@ -18,10 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// swiftlint:disable:next todo
-// TODO: remove with folder implementation
-// periphery:ignore:all
-
 import Core
 import CryptoKit
 import Entities
@@ -54,13 +50,11 @@ public struct UpdateFolderRequest: Sendable, Encodable {
 }
 
 public struct UpdateFolderRequestPayload: Sendable, Encodable {
-    /// RotationID used to encrypt the item contents
+    /// RotationID used to encrypt the folder contents
     let keyRotation: Int64
-
-    /// Encrypted item content encoded in Base64
+    /// Encrypted folder content encoded in Base64
     let content: String
-
-    /// Version of the content format used to create the item
+    /// Version of the content format used to create the folder
     let contentFormatVersion: Int
 
     public init(keyRotation: Int64,

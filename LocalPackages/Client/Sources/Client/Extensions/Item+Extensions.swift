@@ -26,9 +26,9 @@ import ProtonCoreLogin
 
 public extension Item {
     /// The key can be from folder or share
-    func getContentProtobuf(containerKey: any CryptographicKeyProtocol) throws -> ItemContentProtobuf {
-        guard containerKey.keyRotation == keyRotation else {
-            throw PassError.crypto(.unmatchedKeyRotation(lhsKey: containerKey.keyRotation,
+    func getContentProtobuf(parentKey: any CryptographicKeyProtocol) throws -> ItemContentProtobuf {
+        guard parentKey.keyRotation == keyRotation else {
+            throw PassError.crypto(.unmatchedKeyRotation(lhsKey: parentKey.keyRotation,
                                                          rhsKey: keyRotation))
         }
 
@@ -42,10 +42,10 @@ public extension Item {
                 throw PassError.crypto(.failedToBase64Decode)
             }
             decryptionKey = try AES.GCM.open(itemKeyData,
-                                             key: containerKey.keyData,
+                                             key: parentKey.keyData,
                                              associatedData: .itemKey)
         } else {
-            decryptionKey = containerKey.keyData
+            decryptionKey = parentKey.keyData
         }
 
         let decryptedContentData = try AES.GCM.open(contentData,

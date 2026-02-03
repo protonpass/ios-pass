@@ -134,8 +134,6 @@ private extension UserEventsSynchronizer {
         async let aliasNotesChanged: () = processAliasNoteChangedItems(events.aliasNoteChanged, userId: userId)
         async let updatedShares: () = processUpdatedShares(events.sharesUpdated, userId: userId)
         async let deletedShares: () = processDeletedShares(events.sharesDeleted, userId: userId)
-        // swiftlint:disable:next todo
-        // TODO: folder to be implemented in the folder ticket mr
         async let foldersDeleted: () = processDeletedFolder(events.foldersDeleted, userId: userId)
         async let invites: () = processUserInviteChanges(events.invitesChanged, userId: userId)
         async let groupInvites: () = processGroupInviteChanges(events.groupInvitesChanged, userId: userId)
@@ -145,9 +143,7 @@ private extension UserEventsSynchronizer {
         async let pendingAliasToCreate: () = processPendingAliasToCreateChanged(events.pendingAliasToCreateChanged,
                                                                                 userId: userId)
         async let breachUpdate: () = processBreachesChanges(events.breachUpdate)
-
         async let organizationUpdate: () = processOrgaChanges(events.organizationUpdate, userId: userId)
-
         async let userChange: () = processUserChanged(events.refreshUser, userId: userId)
 
         _ = try await (serializedParsing,
@@ -170,15 +166,13 @@ private extension UserEventsSynchronizer {
     /// Will have an update on the key decryption process
     func serializeCreationUpdateParsing(events: UserEvents, for userId: String) async throws {
         try await processCreatedShares(events.sharesCreated, userId: userId)
-        // swiftlint:disable:next todo
-        // TODO: add folder processing after shares and before items
         try await processUpdatedFolder(events.foldersUpdated, userId: userId)
         try await processUpdatedItems(events.itemsUpdated, userId: userId)
     }
 
     func processUpdatedFolder(_ updatedFolders: [FolderEvent], userId: String) async throws {
         guard !updatedFolders.isEmpty else {
-            logger.trace("No updated items for user \(userId)")
+            logger.trace("No updated folders for user \(userId)")
             return
         }
         logger.trace("Refreshing \(updatedFolders.count) updated folder for user \(userId)")
@@ -187,10 +181,10 @@ private extension UserEventsSynchronizer {
 
     func processDeletedFolder(_ deletedFolders: [FolderEvent], userId: String) async throws {
         guard !deletedFolders.isEmpty else {
-            logger.trace("No deleted items for user \(userId)")
+            logger.trace("No deleted folders for user \(userId)")
             return
         }
-        logger.trace("Deleting \(deletedFolders.count) folder for user \(userId)")
+        logger.trace("Deleting \(deletedFolders.count) folders for user \(userId)")
         try await folderRepository.deleteLocal(folders: deletedFolders, userId: userId)
     }
 
@@ -276,7 +270,6 @@ private extension UserEventsSynchronizer {
                         try await shareRepository.refreshShare(userId: userId,
                                                                shareId: newShare.shareID,
                                                                eventToken: newShare.eventToken)
-//                        try await itemRepository.refreshItems(userId: userId, shareId: newShare.shareID)
                     }
                 }
                 try await taskGroup.waitForAll()

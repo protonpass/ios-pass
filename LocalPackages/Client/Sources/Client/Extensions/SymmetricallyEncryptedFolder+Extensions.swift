@@ -1,7 +1,7 @@
 //
-// BreachEntities+Extensions.swift
-// Proton Pass - Created on 22/04/2024.
-// Copyright (c) 2024 Proton Technologies AG
+// SymmetricallyEncryptedFolder+Extensions.swift
+// Proton Pass - Created on 03/02/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,13 +18,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import DesignSystem
+import CryptoKit
 import Entities
 import Foundation
-import Macro
 
-extension AliasMonitorInfo {
-    var latestBreach: String {
-        #localized("Latest breach on %@", breaches?.breaches.first?.breachDate ?? "")
+public extension SymmetricallyEncryptedFolder {
+    /// Symmetrically decrypt and return decrypted folder content
+    func getFolderContent(symmetricKey: SymmetricKey) throws -> FolderContent {
+        try FolderContent(base64: encryptedContent, symmetricKey: symmetricKey)
+    }
+}
+
+public extension SymmetricallyEncryptedFolder {
+    func toFolderUiModel(_ symmetricKey: SymmetricKey) throws -> FolderUiModel {
+        let content = try getFolderContent(symmetricKey: symmetricKey)
+
+        return FolderUiModel(shareId: shareId, folder: folder, content: content)
     }
 }
