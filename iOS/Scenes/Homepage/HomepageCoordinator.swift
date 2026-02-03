@@ -404,7 +404,8 @@ private extension HomepageCoordinator {
             if exitEditMode {
                 itemsTabViewModel?.isEditMode = false
             }
-            // TODO: move the appContentManager refresh somewhere else
+
+            // This call to refresh reload data to most
             itemsTabViewModel?.refresh()
             itemDetailCoordinator?.refresh()
             createEditItemCoordinator?.refresh()
@@ -954,31 +955,6 @@ extension HomepageCoordinator {
         // This is temporary until we have the new designs for these steps
         // We are redirecting the user directly to the payment screen.
         startUpgradeFlow()
-//        let view = UpsellingView(configuration: configuration) { [weak self] in
-//            guard let self else {
-//                return
-//            }
-//            startUpgradeFlow()
-//        }
-//
-//        let completion: () -> Void = { [weak self] in
-//            guard let self else {
-//                return
-//            }
-//            let viewController = UIHostingController(rootView: view)
-//
-//            viewController.sheetPresentationController?.prefersGrabberVisible = false
-//            present(viewController)
-//        }
-//
-//        switch dismissal {
-//        case .none:
-//            present(view)
-//        case .topMost:
-//            dismissTopMostViewController(animated: true, completion: completion)
-//        case .all:
-//            dismissAllViewControllers(animated: true, completion: completion)
-//        }
     }
 
     func displaySuccessBanner(with message: String?, and config: NavigationConfiguration?) {

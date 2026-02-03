@@ -84,6 +84,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     weak var delegate: (any ItemsTabViewModelDelegate)?
     private var sortTask: Task<Void, Never>?
+    private var refreshTask: Task<Void, Never>?
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -115,9 +116,15 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
         router.navigate(to: .urlPage(urlString: Constants.appStoreUrl))
     }
 
-    // TODO: move the appContentManager refresh somewhere else
     func refresh() {
-        Task { [weak self] in
+        guard refreshTask == nil else {
+            return
+        }
+        refreshTask = Task { [weak self] in
+            defer {
+                // swiftlint:disable:next discouraged_optional_self
+                self?.refreshTask = nil
+            }
             guard let self else {
                 return
             }
