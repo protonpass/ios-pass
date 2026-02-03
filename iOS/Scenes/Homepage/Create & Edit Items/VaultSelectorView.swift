@@ -49,18 +49,7 @@ struct VaultSelectorView: View {
                         .padding([.horizontal, .top])
                 }
 
-                ScrollView {
-                    VStack(spacing: 0) {
-                        ForEach(shares) { shareContent in
-                            fullRow(content: shareContent)
-                                .padding(.horizontal)
-                            if shareContent != shares.last {
-                                PassDivider()
-                                    .padding(.horizontal)
-                            }
-                        }
-                    }
-                }
+                mainScrollView
             }
             .navigationBarTitleDisplayMode(.inline)
             .background(PassColor.backgroundWeak)
@@ -73,7 +62,60 @@ struct VaultSelectorView: View {
         }
     }
 
-    private func view(for vaultInfos: ShareContent, vaultContent: VaultContent) -> some View {
+    private func toggleDisplayContainerContent(containerId: String) {
+        if containersExtended.contains(containerId) {
+            containersExtended.remove(containerId)
+        } else {
+            containersExtended.insert(containerId)
+        }
+    }
+}
+
+// MARK: - Views
+
+private extension VaultSelectorView {
+    var mainScrollView: some View {
+        ScrollView {
+            VStack(spacing: 0) {
+                ForEach(shares) { shareContent in
+                    fullRow(content: shareContent)
+                        .padding(.horizontal)
+                    if shareContent != shares.last {
+                        PassDivider()
+                            .padding(.horizontal)
+                    }
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func fullRow(content: ShareContent) -> some View {
+        if let vaultContent = content.share.vaultContent {
+            HStack {
+                expandVaultRow(content: content)
+                vaultRow(for: content, vaultContent: vaultContent)
+            }
+
+            folderRow(content: content)
+        }
+    }
+
+    @ViewBuilder
+    func expandVaultRow(content: ShareContent) -> some View {
+        if let folders = content.folders(in: content.id), !folders.isEmpty {
+            Button { toggleDisplayContainerContent(containerId: content.id) } label: {
+                (containersExtended.contains(content.id) ?
+                    IconProvider.chevronDownFilled : IconProvider.chevronRightFilled)
+                    .resizable()
+                    .frame(width: 30, height: 30)
+                    .foregroundStyle(PassColor.textWeak)
+            }
+            .buttonStyle(.plain)
+        }
+    }
+
+    func vaultRow(for vaultInfos: ShareContent, vaultContent: VaultContent) -> some View {
         Button(action: {
             selectedContainer = ShareSelectionPayload(share: vaultInfos.share, folder: nil)
             dismiss()
@@ -91,150 +133,14 @@ struct VaultSelectorView: View {
     }
 
     @ViewBuilder
-    private func fullRow(content: ShareContent) -> some View {
-        if let vaultContent = content.share.vaultContent {
-            HStack {
-                if let folders = content.folders(in: content.id), !folders.isEmpty {
-                    Button { toggleDisplayContainerContent(containerId: content.id) } label: {
-                        (containersExtended.contains(content.id) ?
-                            IconProvider.chevronDownFilled : IconProvider.chevronRightFilled)
-                            .resizable()
-                            .frame(width: 30, height: 30)
-                            .foregroundStyle(PassColor.textWeak)
-                    }
-                    .buttonStyle(.plain)
-                }
-                view(for: content, vaultContent: vaultContent)
-            }
-
-            if let folders = content.folders(in: content.id),
-               !folders.isEmpty, containersExtended.contains(content.id) {
-                SmallFolderTreeRow(content: content,
-                                   share: content.share,
-                                   folders: folders,
-                                   containersExtended: $containersExtended,
-                                   selectedContainer: $selectedContainer)
-            }
+    func folderRow(content: ShareContent) -> some View {
+        if let folders = content.folders(in: content.id),
+           !folders.isEmpty, containersExtended.contains(content.id) {
+            FolderTreeView(content: content,
+                           share: content.share,
+                           folders: folders,
+                           containersExtended: $containersExtended,
+                           selectedContainer: $selectedContainer)
         }
-    }
-
-    private func toggleDisplayContainerContent(containerId: String) {
-        if containersExtended.contains(containerId) {
-            print("Woot remove container: \(containerId)")
-            containersExtended.remove(containerId)
-        } else {
-            print("Woot add container: \(containerId)")
-            containersExtended.insert(containerId)
-        }
-    }
-}
-
-struct SmallFolderTreeRow: View {
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.colorScheme) private var colorScheme
-    let content: ShareContent
-    let share: Share
-    let folders: [FolderUiModel]
-    @Binding var containersExtended: Set<String>
-    @Binding var selectedContainer: ShareSelectionPayload
-
-    var body: some View {
-        VStack(spacing: 0) {
-            ForEach(folders) { folder in
-                row(for: folder)
-                    .padding(.vertical, 12)
-
-                if shouldShowSubfolders(of: folder),
-                   let subFolders = content.folders(in: folder.id) {
-                    SmallFolderTreeRow(content: content,
-                                       share: share,
-                                       folders: subFolders,
-                                       containersExtended: $containersExtended,
-                                       selectedContainer: $selectedContainer)
-                }
-            }
-        }
-        .padding(.leading, 8)
-    }
-
-    private func toggleDisplayContainerContent(containerId: String) {
-        if containersExtended.contains(containerId) {
-            print("Woot remove container: \(containerId)")
-            containersExtended.remove(containerId)
-        } else {
-            print("Woot add container: \(containerId)")
-            containersExtended.insert(containerId)
-        }
-    }
-}
-
-private extension SmallFolderTreeRow {
-    func row(for folder: FolderUiModel) -> some View {
-        HStack {
-            disclosureButton(for: folder)
-            folderButton(for: folder)
-        }
-    }
-
-    @ViewBuilder
-    func disclosureButton(for folder: FolderUiModel) -> some View {
-        if let subfolders = content.folders(in: folder.id), !subfolders.isEmpty {
-            Button {
-                toggleDisplayContainerContent(containerId: folder.id)
-            } label: {
-                (containersExtended.contains(folder.id)
-                    ? IconProvider.chevronDownFilled
-                    : IconProvider.chevronRightFilled)
-                    .resizable()
-                    .frame(width: 30, height: 30)
-                    .foregroundStyle(PassColor.textWeak)
-            }
-            .buttonStyle(.plain)
-        } else {
-            Text("")
-                .frame(width: 30, height: 30)
-        }
-    }
-
-    func folderButton(for folder: FolderUiModel) -> some View {
-        HStack {
-            Button {
-                dismiss()
-                selectedContainer = ShareSelectionPayload(share: share, folder: folder)
-            } label: {
-                HStack {
-                    ZStack(alignment: .bottomTrailing) {
-                        IconProvider.foldersFilled
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                            .foregroundStyle(Color(hex: "#E9A944"))
-
-                        if selectedContainer.folder == folder {
-                            IconProvider.checkmark
-                                .resizable()
-                                .scaledToFit()
-                                .foregroundStyle(PassColor.textInvert)
-                                .padding(1)
-                                .background(colorScheme == .dark ?
-                                    PassColor.interactionNormMajor2 : PassColor.interactionNorm)
-                                .frame(height: 15)
-                                .clipShape(Circle())
-                                .offset(x: 5, y: 5)
-                        }
-                    }
-
-                    Text(folder.content.name)
-                        .foregroundStyle(PassColor.textNorm)
-                        .frame(maxWidth: .infinity, alignment: .topLeading)
-                }
-            }
-            .buttonStyle(.plain)
-
-            Spacer()
-        }
-    }
-
-    func shouldShowSubfolders(of folder: FolderUiModel) -> Bool {
-        containersExtended.contains(folder.id)
     }
 }

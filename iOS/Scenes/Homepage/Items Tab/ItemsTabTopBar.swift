@@ -60,113 +60,138 @@ struct ItemsTabTopBar: View {
 private extension ItemsTabTopBar {
     var viewModeView: some View {
         VStack {
-            HStack {
-                if viewModel.shareSelection.isFolderSelection {
-                    CircleButton(icon: IconProvider.folderFilled,
-                                 iconColor: Color(hex: "#E9A944"),
-                                 backgroundColor: PassColor.interactionNormMinor1,
-                                 action: onShowVaultList)
-                } else {
-                    let uiModel = viewModel.shareSelection.uiModel
-                    CircleButton(icon: uiModel.icon,
-                                 iconColor: uiModel.iconColor,
-                                 backgroundColor: uiModel.backgroundColor,
-                                 action: onShowVaultList)
-                        .accessibilityLabel(viewModel.shareSelection.accessibilityLabel)
-                }
-                if viewModel.shareSelection.isFolderSelection {
-                    let uiModel = viewModel.shareSelection.uiModel
-                    let title = viewModel.shareSelection.preciseSelectionPayload?.share.vaultContent?.name ?? ""
-                    VStack {
-                        HStack(alignment: .center) {
-                            Spacer()
-                            uiModel.icon
-                                .resizable()
-                                .frame(width: 12, height: 12)
-                                .foregroundStyle(uiModel.iconColor)
-                            Text(title)
-                                .font(.footnote)
-                            Spacer()
-                        }
-                        Text("\(viewModel.shareSelection.title)")
-                            .font(.title3)
-                            .fontWeight(.bold)
-                            .frame(maxWidth: .infinity)
-                    }
-                } else {
-                    Text("\(viewModel.shareSelection.title)")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .frame(maxWidth: .infinity)
-                }
+            mainHeaderRow
+            searchBar
+        }
+    }
 
-                if showPromoBadge {
-                    PassIcon.promoBadge
+    var mainHeaderRow: some View {
+        HStack {
+            leadingIconContainerButton
+                .accessibilityLabel(viewModel.shareSelection.accessibilityLabel)
+            titleView
+            upsellView
+            sortAndFilterMenu
+        }
+        .frame(height: 48)
+        .padding(.horizontal, showButtonShapes ? 0 : nil)
+        .padding(.vertical, 16)
+        .animation(.default, value: showPromoBadge)
+        .animation(.default, value: viewModel.shouldUpsell)
+    }
+
+    @ViewBuilder
+    var leadingIconContainerButton: some View {
+        if viewModel.shareSelection.isFolderSelection {
+            CircleButton(icon: IconProvider.folderFilled,
+                         iconColor: PassColor.folderIcon,
+                         backgroundColor: PassColor.interactionNormMinor1,
+                         action: onShowVaultList)
+        } else {
+            let uiModel = viewModel.shareSelection.uiModel
+            CircleButton(icon: uiModel.icon,
+                         iconColor: uiModel.iconColor,
+                         backgroundColor: uiModel.backgroundColor,
+                         action: onShowVaultList)
+        }
+    }
+
+    @ViewBuilder
+    var titleView: some View {
+        if viewModel.shareSelection.isFolderSelection {
+            let uiModel = viewModel.shareSelection.uiModel
+            let title = viewModel.shareSelection.preciseSelectionPayload?.share.vaultContent?.name ?? ""
+            VStack {
+                HStack(alignment: .center) {
+                    Spacer()
+                    uiModel.icon
                         .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: 46)
-                        .buttonEmbeded(action: onPromoBadgeTapped)
-                } else if viewModel.shouldUpsell {
-                    PassIcon.diamond
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                        .scaledToFit()
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 6)
-                        .frame(height: 44, alignment: .leading)
-                        .cornerRadius(10)
-                        .foregroundStyle(PassColor.interactionNormMajor2)
-                        .overlay(RoundedRectangle(cornerRadius: 10)
-                            .inset(by: 0.5)
-                            .stroke(PassColor.interactionNormMinor1, lineWidth: 1))
-                        .buttonEmbeded(action: viewModel.upgradeSubscription)
+                        .frame(width: 12, height: 12)
+                        .foregroundStyle(uiModel.iconColor)
+                    Text(title)
+                        .font(.footnote)
+                    Spacer()
                 }
-
-                SortFilterItemsMenu(options: [
-                    .selectItems { isEditMode.toggle() },
-                    .filter(viewModel.selectedFilterOption, viewModel.itemCount, viewModel.update(_:)),
-                    .sort(viewModel.selectedSortType) { viewModel.selectedSortType = $0 },
-                    .resetFilters { viewModel.resetFilters() }
-                ],
-                highlighted: viewModel.highlighted,
-                selectable: viewModel.selectable)
-            }
-            .frame(height: 48)
-            .padding(.horizontal, showButtonShapes ? 0 : nil)
-            .padding(.vertical, 16)
-            .animation(.default, value: showPromoBadge)
-            .animation(.default, value: viewModel.shouldUpsell)
-
-            if searchMode == nil {
-                // Search bar
-                ZStack {
-                    PassColor.backgroundStrong
-                    HStack {
-                        IconProvider.magnifier
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 20, height: 20)
-                        Text(viewModel.shareSelection.searchBarPlaceholder)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.75)
-                    }
-                    .foregroundStyle(PassColor.textWeak)
-                    .padding(.horizontal)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-                .matchedGeometryEffect(id: SearchEffectID.searchbar.id,
-                                       in: animationNamespace)
-                .contentShape(.rect)
-                .frame(height: DesignConstant.searchBarHeight)
-                .onTapGesture(perform: onSearch)
-                .frame(height: 48)
-                .padding(.bottom, 8)
-                .padding(.horizontal, 16)
-            } else {
-                Spacer()
+                Text("\(viewModel.shareSelection.title)")
+                    .font(.title3)
+                    .fontWeight(.bold)
                     .frame(maxWidth: .infinity)
             }
+        } else {
+            Text("\(viewModel.shareSelection.title)")
+                .font(.title2)
+                .fontWeight(.bold)
+                .frame(maxWidth: .infinity)
+        }
+    }
+
+    @ViewBuilder
+    var upsellView: some View {
+        if showPromoBadge {
+            PassIcon.promoBadge
+                .resizable()
+                .scaledToFit()
+                .frame(maxWidth: 46)
+                .buttonEmbeded(action: onPromoBadgeTapped)
+        } else if viewModel.shouldUpsell {
+            PassIcon.diamond
+                .resizable()
+                .frame(width: 20, height: 20)
+                .scaledToFit()
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .frame(height: 44, alignment: .leading)
+                .cornerRadius(10)
+                .foregroundStyle(PassColor.interactionNormMajor2)
+                .overlay(RoundedRectangle(cornerRadius: 10)
+                    .inset(by: 0.5)
+                    .stroke(PassColor.interactionNormMinor1, lineWidth: 1))
+                .buttonEmbeded(action: viewModel.upgradeSubscription)
+        }
+    }
+
+    var sortAndFilterMenu: some View {
+        SortFilterItemsMenu(options: [
+            .selectItems { isEditMode.toggle() },
+            .filter(viewModel.selectedFilterOption, viewModel.itemCount, viewModel.update(_:)),
+            .sort(viewModel.selectedSortType) { viewModel.selectedSortType = $0 },
+            .resetFilters { viewModel.resetFilters() }
+        ],
+        highlighted: viewModel.highlighted,
+        selectable: viewModel.selectable)
+    }
+
+    @ViewBuilder
+    var searchBar: some View {
+        if searchMode == nil {
+            // Search bar
+            ZStack {
+                PassColor.backgroundStrong
+                HStack {
+                    IconProvider.magnifier
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20, height: 20)
+                    Text(viewModel.shareSelection.searchBarPlaceholder)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.75)
+                }
+                .foregroundStyle(PassColor.textWeak)
+                .padding(.horizontal)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .matchedGeometryEffect(id: SearchEffectID.searchbar.id,
+                                   in: animationNamespace)
+            .contentShape(.rect)
+            .frame(height: DesignConstant.searchBarHeight)
+            .onTapGesture(perform: onSearch)
+            .frame(height: 48)
+            .padding(.bottom, 8)
+            .padding(.horizontal, 16)
+        } else {
+            Spacer()
+                .frame(maxWidth: .infinity)
         }
     }
 }
@@ -194,39 +219,9 @@ private extension ItemsTabTopBar {
 
                 Spacer()
 
-                switch viewModel.shareSelection {
-                case .all, .precise:
-                    button(action: onMove, icon: IconProvider.folderArrowIn)
-                        .padding(.horizontal)
-                    button(action: onTrash, icon: IconProvider.trash)
+                mainActions
 
-                case .trash:
-                    button(action: onRestore, icon: IconProvider.clockRotateLeft)
-                        .padding(.horizontal)
-                    button(action: onPermanentlyDelete,
-                           icon: IconProvider.trashCross,
-                           color: PassColor.signalDanger)
-
-                default:
-                    EmptyView()
-                }
-
-                if !viewModel.extraOptions.isEmpty {
-                    Menu(content: {
-                        ForEach(viewModel.extraOptions, id: \.self) { option in
-                            Section {
-                                Button(action: { handle(extraOption: option) },
-                                       label: {
-                                           Label(option.title, image: option.icon)
-                                       })
-                            }
-                        }
-                    }, label: {
-                        CircleButton(icon: IconProvider.threeDotsVertical,
-                                     iconColor: PassColor.textNorm,
-                                     backgroundColor: .clear)
-                    })
-                }
+                extraOptionsMenu
             }
             .padding(.horizontal)
             .animation(.default, value: viewModel.selectedItemsCount)
@@ -235,6 +230,46 @@ private extension ItemsTabTopBar {
             Spacer()
 
             PassDivider()
+        }
+    }
+
+    @ViewBuilder
+    var mainActions: some View {
+        switch viewModel.shareSelection {
+        case .all, .precise:
+            button(action: onMove, icon: IconProvider.folderArrowIn)
+                .padding(.horizontal)
+            button(action: onTrash, icon: IconProvider.trash)
+
+        case .trash:
+            button(action: onRestore, icon: IconProvider.clockRotateLeft)
+                .padding(.horizontal)
+            button(action: onPermanentlyDelete,
+                   icon: IconProvider.trashCross,
+                   color: PassColor.signalDanger)
+
+        default:
+            EmptyView()
+        }
+    }
+    
+    @ViewBuilder
+    var extraOptionsMenu: some View {
+        if !viewModel.extraOptions.isEmpty {
+            Menu(content: {
+                ForEach(viewModel.extraOptions, id: \.self) { option in
+                    Section {
+                        Button(action: { handle(extraOption: option) },
+                               label: {
+                                   Label(option.title, image: option.icon)
+                               })
+                    }
+                }
+            }, label: {
+                CircleButton(icon: IconProvider.threeDotsVertical,
+                             iconColor: PassColor.textNorm,
+                             backgroundColor: .clear)
+            })
         }
     }
 
