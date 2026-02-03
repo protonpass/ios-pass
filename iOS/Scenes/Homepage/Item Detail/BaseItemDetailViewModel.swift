@@ -228,7 +228,8 @@ class BaseItemDetailViewModel: ObservableObject {
         }
     }
 
-    func refresh() {
+    /// `onItemNotFound` is triggered when item is already deleted but the app tries to refresh
+    func refresh(onItemNotFound: (() -> Void)? = nil) {
         Task { [weak self] in
             guard let self else { return }
             do {
@@ -237,6 +238,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 guard let updatedItemContent =
                     try await itemRepository.getItemContent(shareId: shareId,
                                                             itemId: itemId) else {
+                    onItemNotFound?()
                     return
                 }
                 itemContent = updatedItemContent

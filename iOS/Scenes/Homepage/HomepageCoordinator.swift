@@ -225,6 +225,17 @@ private extension HomepageCoordinator {
             }
         }
 
+        appContentManager.$state
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                itemDetailCoordinator?.refresh(onItemNotFound: { [weak self] in
+                    guard let self else { return }
+                    push(itemDetailPlaceholderView, animated: false, hidesBackButton: false)
+                })
+            }
+            .store(in: &cancellables)
+
         Publishers.CombineLatest(appContentManager.$shareSelection, appContentManager.$state)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] selection, _ in
@@ -296,6 +307,13 @@ private extension HomepageCoordinator {
         setUpInAppNotification()
     }
 
+    var itemDetailPlaceholderView: some View {
+        ItemDetailPlaceholderView { [weak self] in
+            guard let self else { return }
+            popTopViewController(animated: true)
+        }
+    }
+
     func start() {
         let itemsTabViewModel = ItemsTabViewModel()
         itemsTabViewModel.delegate = self
@@ -313,11 +331,6 @@ private extension HomepageCoordinator {
         let profileTabViewModel = ProfileTabViewModel(childCoordinatorDelegate: self)
         profileTabViewModel.delegate = self
 
-        let placeholderView = ItemDetailPlaceholderView { [weak self] in
-            guard let self else { return }
-            popTopViewController(animated: true)
-        }
-
         let homeView = HomepageTabbarView(itemsTabViewModel: itemsTabViewModel,
                                           profileTabViewModel: profileTabViewModel,
                                           passMonitorViewModel: PassMonitorViewModel(),
@@ -329,7 +342,7 @@ private extension HomepageCoordinator {
                 coverApp()
             }
 
-        start(with: homeView, secondaryView: placeholderView)
+        start(with: homeView, secondaryView: itemDetailPlaceholderView)
     }
 
     func synchroniseData() {
@@ -405,7 +418,6 @@ private extension HomepageCoordinator {
                 itemsTabViewModel?.isEditMode = false
             }
             itemsTabViewModel?.refresh()
-            itemDetailCoordinator?.refresh()
             createEditItemCoordinator?.refresh()
         }
     }
@@ -554,7 +566,7 @@ extension HomepageCoordinator {
                 case let .history(item):
                     presentItemHistory(item)
                 case .restoreHistory:
-                    updateAfterRestoration()
+                    dismissTopMostViewController(animated: true, completion: nil)
                 case .tutorial:
                     openTutorialVideo()
                 case .accountSettings:
@@ -1307,11 +1319,6 @@ extension HomepageCoordinator {
             }
         }
     }
-
-    func updateAfterRestoration() {
-        dismissTopMostViewController(animated: true, completion: nil)
-        itemDetailCoordinator?.refresh()
-    }
 }
 
 // MARK: - Open webpages
@@ -1751,7 +1758,6 @@ extension HomepageCoordinator {
                 addNewEvent(type: .update(type))
                 let userId = try await userManager.getActiveUserId()
                 try await appContentManager.refresh(userId: userId)
-                itemDetailCoordinator?.refresh()
                 dismissTopMostViewController { [weak self] in
                     guard let self else { return }
                     bannerManager.displayBottomInfoMessage(type.updateMessage)
@@ -1892,10 +1898,6 @@ private extension HomepageCoordinator {
         }
         if let event = config.telemetryEvent {
             addNewEvent(type: event)
-
-            if case .delete = event {
-                itemDetailCoordinator = nil
-            }
         }
 
         if config.refresh {
