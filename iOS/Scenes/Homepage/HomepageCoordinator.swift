@@ -1120,15 +1120,14 @@ extension HomepageCoordinator {
     func presentSignInToAnotherDeviceView() {
         Task { @MainActor in
             do {
-                guard let userId = userManager.activeUserId,
-                      let authCredential = authManager.getCredential(userId: userId)
+                guard let userData = try await userManager.getActiveUserData(),
+                      let passphrase = userData.getMailboxPassword,
+                      let email = userData.user.email
                 else {
-                    return
+                    throw PassError.corruptedUserData(.incompleteUserData)
                 }
 
-                let passphrase = authCredential.mailboxpassword
-                let email = try await (userManager.getActiveUserData()?.user.email) ?? ""
-                let apiService = try apiManager.getApiService(userId: userId)
+                let apiService = try apiManager.getApiService(userId: userData.user.ID)
 
                 let view = NavigationStackEmbededView(content: {
                     ScanQRCodeInstructionsView(viewModel: .init(dependencies: .init(passphrase: passphrase,
@@ -1195,7 +1194,7 @@ extension HomepageCoordinator {
             authManager.updateEncryptionDetailsForSession(sessionUID: authCredential.sessionID,
                                                           mailboxpassword: authCredential.mailboxpassword,
                                                           salt: authCredential.passwordKeySalt,
-                                                          privateKey: authCredential.passwordKeySalt)
+                                                          privateKey: authCredential.privateKey)
 
             try? await userManager.upsertAndMarkAsActive(userData: .init(credential: authCredential,
                                                                          user: updatedUser,
