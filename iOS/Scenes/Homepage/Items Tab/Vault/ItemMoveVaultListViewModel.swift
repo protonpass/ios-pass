@@ -1,5 +1,5 @@
 //
-// MoveVaultListViewModel.swift
+// ItemMoveVaultListViewModel.swift
 // Proton Pass - Created on 29/03/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -26,7 +26,7 @@ import FactoryKit
 import Macro
 
 @MainActor
-final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
+final class ItemMoveVaultListViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
@@ -36,13 +36,20 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
     private let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
     @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     @Published private(set) var isFreeUser = false
     @Published private(set) var showWarning = false
-    @Published var selectedContainer: ShareSelectionPayload?
+    @Published var selectedContainer = ShareSelectionPayload.default
+
+    @Published var containersExtended = Set<String>()
 
     let allSharesContent: [ShareContent]
     private let context: MovingContext
+
+    var folderSupported: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passFolder)
+    }
 
     init(allVaults: [ShareContent], context: MovingContext) {
         allSharesContent = allVaults.sortedByHidden()
@@ -85,8 +92,7 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
     }
 
     func doMove() {
-        guard let selectedContainer, selectedContainer.share.isVaultRepresentation
-        /* let vaultContent = selectedVault.share.vaultContent */ else {
+        guard selectedContainer.share.isVaultRepresentation, selectedContainer != .default else {
             assertionFailure("Should have a selected vault")
             return
         }
@@ -106,9 +112,17 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
             }
         }
     }
+
+    func toggleDisplayContainerContent(containerId: String) {
+        if containersExtended.contains(containerId) {
+            containersExtended.remove(containerId)
+        } else {
+            containersExtended.insert(containerId)
+        }
+    }
 }
 
-private extension MoveVaultListViewModel {
+private extension ItemMoveVaultListViewModel {
     func successMessage(toVaultName: String) -> UIElementDisplay {
         switch context {
         case let .singleItem(item):

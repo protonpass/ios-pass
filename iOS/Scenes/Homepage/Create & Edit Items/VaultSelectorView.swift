@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import DesignSystem
 import Entities
 import FactoryKit
@@ -34,6 +35,7 @@ struct VaultSelectorView: View {
     @State private var containersExtended = Set<String>()
 
     private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     private var shares: [ShareContent] {
         appContentManager
@@ -103,7 +105,8 @@ private extension VaultSelectorView {
 
     @ViewBuilder
     func expandVaultRow(content: ShareContent) -> some View {
-        if let folders = content.folders(in: content.id), !folders.isEmpty {
+        if getFeatureFlagStatus(for: FeatureFlagType.passFolder), let folders = content.folders(in: content.id),
+           !folders.isEmpty {
             Button { toggleDisplayContainerContent(containerId: content.id) } label: {
                 (containersExtended.contains(content.id) ?
                     IconProvider.chevronDownFilled : IconProvider.chevronRightFilled)
@@ -134,11 +137,13 @@ private extension VaultSelectorView {
 
     @ViewBuilder
     func folderRow(content: ShareContent) -> some View {
-        if let folders = content.folders(in: content.id),
+        if getFeatureFlagStatus(for: FeatureFlagType.passFolder),
+           let folders = content.folders(in: content.id),
            !folders.isEmpty, containersExtended.contains(content.id) {
             FolderTreeView(content: content,
                            share: content.share,
                            folders: folders,
+                           shouldDismissOnSelection: true,
                            containersExtended: $containersExtended,
                            selectedContainer: $selectedContainer)
         }

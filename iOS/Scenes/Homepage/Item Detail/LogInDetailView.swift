@@ -531,7 +531,7 @@ struct BreadcrumbView: View {
             } icon: {
                 IconProvider.foldersFilled
                     .resizable()
-                    .foregroundStyle(Color(hex: "#E9A944"))
+                    .foregroundStyle(PassColor.folderIcon)
                     .frame(width: 16, height: 16)
             }
         }
@@ -574,7 +574,7 @@ struct BreadcrumbView: View {
                     } icon: {
                         IconProvider.foldersFilled
                             .resizable()
-                            .foregroundStyle(Color(hex: "#E9A944"))
+                            .foregroundStyle(PassColor.folderIcon)
                             .frame(width: 16, height: 16)
                     }
                     Spacer()

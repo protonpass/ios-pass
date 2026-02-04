@@ -140,7 +140,7 @@ private extension CreateEditItemToolbar {
         HStack {
             IconProvider.foldersFilled
                 .resizable()
-                .foregroundStyle(Color(hex: "#E9A944"))
+                .foregroundStyle(PassColor.folderIcon)
                 .scaledToFit()
                 .frame(width: 18)
             Text(folderName)
