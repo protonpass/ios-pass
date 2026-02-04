@@ -22,6 +22,7 @@ import Entities
 import FactoryKit
 import Foundation
 
+@MainActor
 @Observable
 final class FolderMoveListViewModel {
     @ObservationIgnored
