@@ -19,6 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Entities
+import Macro
+import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 
