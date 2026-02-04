@@ -184,22 +184,12 @@ private extension ItemCountViewModel {
     @concurrent
     func refreshAsync(_ sharesData: SharesData) async -> FetchableObject<ItemCount>? {
         if Task.isCancelled { return nil }
-        let hiddenShareIds = sharesData.hiddenSharesIds // shares.values.map(\.share).hiddenShareIds
+        let hiddenShareIds = sharesData.hiddenSharesIds
         let activeItems = sharesData.visibleShareContents.flatMap(\.allItems)
-//            .filter { !hiddenShareIds.contains($0.shareId) }
         let allItems = activeItems + sharesData.trashedItems.filter { !hiddenShareIds.contains($0.shareId) }
-//            .compactMap { element in
-//            guard let item = element.itemValue,
-//                  !hiddenShareIds.contains(item.shareId) else { return nil }
-//            return item
-//        }
         let itemCount = ItemCount(items: allItems,
                                   sharedByMe: sharesData.itemsSharedByMe.count,
                                   sharedWithMe: sharesData.itemsSharedWithMe.count)
         return .fetched(itemCount)
-//        await MainActor.run { [weak self] in
-//            guard let self else { return }
-//            object = .fetched(itemCount)
-//        }
     }
 }

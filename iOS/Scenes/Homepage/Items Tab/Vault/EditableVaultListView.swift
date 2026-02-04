@@ -145,7 +145,7 @@ struct EditableVaultListView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         .sheet(item: $viewModel.folderToMove, onDismiss: { viewModel.dismissMoveFolder() }) { folder in
-            MoveFolderListView(folderToMove: folder) {
+            FolderMoveListView(folderToMove: folder) {
                 viewModel.dismissMoveFolder()
             }
         }
@@ -565,7 +565,7 @@ private extension FolderTreeRow {
                         IconProvider.foldersFilled
                             .resizable()
                             .frame(width: 20, height: 20)
-                            .foregroundStyle(Color(hex: "#E9A944"))
+                            .foregroundStyle(PassColor.folderIcon)
 
                         if viewModel.isSelected(.precise(.init(share: share, folder: folder))) {
                             IconProvider.checkmark
@@ -648,172 +648,5 @@ private extension FolderTreeRow {
 
     func shouldShowSubfolders(of folder: FolderUiModel) -> Bool {
         viewModel.containersExtended.contains(folder.id)
-    }
-}
-
-struct MoveFolderListView: View {
-    @Environment(\.dismiss) private var dismiss
-
-    @StateObject private var viewModel = MoveFolderListViewModel()
-
-    let folderToMove: FolderToMove
-    let onDismiss: () -> Void
-
-    var body: some View {
-        VStack(alignment: .leading) {
-            VStack(alignment: .center) {
-                Text("Select a destination")
-                    .font(.title3)
-                    .fontWeight(.bold)
-                    .foregroundStyle(PassColor.textNorm)
-                Label("You cannot move a folder to on of his child folders", systemImage: "info.circle.fill")
-                    .font(.callout)
-                    .foregroundStyle(PassColor.textWeak)
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 12)
-                    .background(PassColor.backgroundNorm)
-                    .cornerRadius(12)
-                Divider()
-                    .padding(.top, 12)
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.horizontal)
-            .padding(.top, 30)
-
-            ScrollView {
-                VStack(spacing: 0) {
-                    fullRow(content: folderToMove.shareContent)
-                }
-                .padding(.horizontal)
-            }
-
-            HStack(spacing: 16) {
-                CapsuleTextButton(title: #localized("Cancel"),
-                                  titleColor: PassColor.textWeak,
-                                  backgroundColor: PassColor.textDisabled,
-                                  height: 44,
-                                  action: {
-                                      onDismiss()
-                                      dismiss()
-                                  })
-
-                DisablableCapsuleTextButton(title: #localized("Confirm"),
-                                            titleColor: PassColor.textInvert,
-                                            disableTitleColor: PassColor.textHint,
-                                            backgroundColor: PassColor.interactionNormMajor1,
-                                            disableBackgroundColor: PassColor.interactionNormMinor1,
-                                            disabled: viewModel.selectedContainer == nil,
-                                            height: 44,
-                                            action: {
-                                                viewModel.move(currentFolderId: folderToMove.folder.id)
-                                                onDismiss()
-                                                dismiss()
-                                            })
-            }
-            .padding([.bottom, .horizontal])
-        }
-        .background(PassColor.backgroundWeak)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .showSpinner(viewModel.loading)
-        .task {
-            viewModel.load(folderInfos: folderToMove)
-        }
-    }
-
-    @ViewBuilder
-    private func fullRow(content: ShareContent) -> some View {
-        if let vaultContent = content.share.vaultContent {
-            HStack {
-                if let folders = content.folders(in: content.id), !folders.isEmpty {
-                    Button { viewModel.toggleDisplayContainerContent(containerId: content.id) } label: {
-                        (viewModel.containersExtended.contains(content.id) ?
-                            IconProvider.chevronDownFilled : IconProvider.chevronRightFilled)
-                            .resizable()
-                            .frame(width: 30, height: 30)
-                            .foregroundStyle(PassColor.textWeak)
-                    }
-                    .buttonStyle(.plain)
-                }
-                view(for: content, vaultContent: vaultContent)
-            }
-
-            if let folders = content.folders(in: content.id),
-               !folders.isEmpty, viewModel.containersExtended.contains(content.id) {
-                SmallFolderTreeRowBis(content: content,
-                                      share: content.share,
-                                      folders: folders,
-                                      containersExtended: $viewModel.containersExtended,
-                                      selectedContainer: $viewModel.selectedContainer)
-            }
-        }
-    }
-
-    private func view(for vaultInfos: ShareContent, vaultContent: VaultContent) -> some View {
-        Button(action: {
-            viewModel
-                .selectedContainer = ShareSelectionPayload(share: vaultInfos.share,
-                                                           folder: nil)
-        }, label: {
-            VaultRow(thumbnail: { VaultThumbnail(vaultContent: vaultContent) },
-                     title: vaultContent.name,
-                     itemCount: vaultInfos.itemCount,
-                     mode: .view(isSelected: viewModel.selectedContainer?.share == vaultInfos.share && viewModel
-                         .selectedContainer?.folder == nil,
-                         isHidden: vaultInfos.share.hidden,
-                         action: nil),
-                     height: 74)
-        })
-        .buttonStyle(.plain)
-    }
-}
-
-@MainActor
-final class MoveFolderListViewModel: ObservableObject {
-    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
-
-    @Published var loading: Bool = false
-    @Published var selectedContainer: ShareSelectionPayload?
-    @Published var containersExtended = Set<String>()
-
-    func move(currentFolderId: String) {
-        guard let selectedContainer else {
-            return
-        }
-        Task {
-            defer {
-                loading = false
-            }
-
-            do {
-                let userId = try await userManager.getActiveUserId()
-                try await appContentManager.moveFolder(userId: userId,
-                                                       shareId: selectedContainer.share.id,
-                                                       folderId: currentFolderId,
-                                                       newParentFolderId: selectedContainer.folder?.id)
-            } catch {
-                router.display(element: .displayErrorBanner(error))
-                print("woot error when moving folder: \(error.localizedDescription)")
-            }
-        }
-    }
-
-    func load(folderInfos: FolderToMove) {
-        selectedContainer = .init(share: folderInfos.shareContent.share, folder: folderInfos.folder)
-        containersExtended.insert(folderInfos.shareContent.share.id)
-        for folder in folderInfos.shareContent.allFolders {
-            containersExtended.insert(folder.id)
-        }
-    }
-
-    func toggleDisplayContainerContent(containerId: String) {
-        if containersExtended.contains(containerId) {
-            print("Woot remove container: \(containerId)")
-            containersExtended.remove(containerId)
-        } else {
-            print("Woot add container: \(containerId)")
-            containersExtended.insert(containerId)
-        }
     }
 }

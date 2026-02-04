@@ -252,7 +252,7 @@ private extension ItemsTabTopBar {
             EmptyView()
         }
     }
-    
+
     @ViewBuilder
     var extraOptionsMenu: some View {
         if !viewModel.extraOptions.isEmpty {

@@ -26,12 +26,6 @@ import FactoryKit
 import Foundation
 import Macro
 
-struct FolderToMove: Identifiable, Equatable, Hashable {
-    let id = UUID().uuidString
-    let folder: FolderUiModel
-    let shareContent: ShareContent
-}
-
 private extension EditableVaultListViewModel {
     struct VaultCount: Sendable {
         let shareId: String
@@ -144,8 +138,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     }
 
     var folderSupported: Bool {
-        true
-//        getFeatureFlagStatus(for: FeatureFlagType.passFolder)
+        getFeatureFlagStatus(for: FeatureFlagType.passFolder)
     }
 
     var hasTrashItems: Bool {

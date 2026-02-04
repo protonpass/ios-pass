@@ -992,8 +992,8 @@ extension HomepageCoordinator {
         guard !allVaults.isEmpty else {
             return
         }
-        let viewModel = MoveVaultListViewModel(allVaults: allVaults, context: context)
-        let view = MoveVaultListView(viewModel: viewModel)
+        let viewModel = ItemMoveVaultListViewModel(allVaults: allVaults, context: context)
+        let view = ItemMoveVaultListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
 
         let customHeight = 66 * allVaults.count + 300

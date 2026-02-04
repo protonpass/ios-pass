@@ -29,17 +29,20 @@ public struct FolderTreeView: View {
     let content: ShareContent
     let share: Share
     let folders: [FolderUiModel]
+    let shouldDismissOnSelection: Bool
     @Binding var containersExtended: Set<String>
     @Binding var selectedContainer: ShareSelectionPayload
 
     public init(content: ShareContent,
                 share: Share,
                 folders: [FolderUiModel],
+                shouldDismissOnSelection: Bool,
                 containersExtended: Binding<Set<String>>,
                 selectedContainer: Binding<ShareSelectionPayload>) {
         self.content = content
         self.share = share
         self.folders = folders
+        self.shouldDismissOnSelection = shouldDismissOnSelection
         _containersExtended = containersExtended
         _selectedContainer = selectedContainer
     }
@@ -55,6 +58,7 @@ public struct FolderTreeView: View {
                     FolderTreeView(content: content,
                                    share: share,
                                    folders: subFolders,
+                                   shouldDismissOnSelection: shouldDismissOnSelection,
                                    containersExtended: $containersExtended,
                                    selectedContainer: $selectedContainer)
                 }
@@ -99,7 +103,9 @@ private extension FolderTreeView {
     func folderButton(for folder: FolderUiModel) -> some View {
         HStack {
             Button {
-                dismiss()
+                if shouldDismissOnSelection {
+                    dismiss()
+                }
                 selectedContainer = ShareSelectionPayload(share: share, folder: folder)
             } label: {
                 HStack {
