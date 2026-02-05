@@ -35,6 +35,87 @@ struct ItemPathBreadcrumbView: View {
         .padding(DesignConstant.sectionPadding)
         .roundedDetailSection()
     }
+}
+
+private extension ItemPathBreadcrumbView {
+    @ViewBuilder
+    var renderedText: some View {
+        if let vaultContent = share.vaultContent {
+            if !expanded, let lastFolder = itemPath.last {
+                nonExtendedView(vaultContent: vaultContent, lastFolder: lastFolder)
+            } else {
+                extendedView(vaultContent: vaultContent)
+            }
+        }
+    }
+
+    func nonExtendedView(vaultContent: VaultContent, lastFolder: FolderUiModel) -> some View {
+        HStack(spacing: 4) {
+            Label {
+                Text(vaultContent.name)
+                    .lineLimit(1)
+                    .foregroundStyle(PassColor.textWeak)
+            } icon: {
+                vaultContent.vaultSmallIcon
+                    .resizable()
+                    .foregroundStyle(vaultContent.mainColor)
+                    .scaledToFit()
+                    .frame(width: 16, height: 16)
+            }
+
+            if itemPath.count > 1 {
+                IconProvider.chevronRight
+                    .resizable()
+                    .foregroundStyle(PassColor.textWeak)
+                    .frame(width: 16, height: 16)
+                Text("...")
+                    .foregroundStyle(PassColor.textWeak)
+            }
+            IconProvider.chevronRight
+                .resizable()
+                .foregroundStyle(PassColor.textWeak)
+                .frame(width: 16, height: 16)
+
+            Label {
+                Text(lastFolder.content.name)
+                    .lineLimit(1)
+                    .fontWeight(.bold)
+                    .foregroundStyle(PassColor.textNorm)
+                    .fixedSize(horizontal: false, vertical: true)
+            } icon: {
+                IconProvider.foldersFilled
+                    .resizable()
+                    .foregroundStyle(PassColor.folderIcon)
+                    .frame(width: 16, height: 16)
+            }
+            Spacer()
+        }
+    }
+
+    func extendedView(vaultContent: VaultContent) -> some View {
+        AnyLayout(FlowLayout(spacing: 8)) {
+            Label {
+                Text(vaultContent.name)
+                    .lineLimit(1)
+                    .foregroundStyle(PassColor.textWeak)
+            } icon: {
+                vaultContent.vaultSmallIcon
+                    .resizable()
+                    .foregroundStyle(vaultContent.mainColor)
+                    .scaledToFit()
+                    .frame(width: 16, height: 16)
+            }
+            ForEach(itemPath) { folder in
+                let isLast = if let last = itemPath.last, last == folder {
+                    true
+                } else {
+                    false
+                }
+                folderElement(folderName: folder.content.name, isLast: isLast)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
 
     func folderElement(folderName: String, isLast: Bool) -> some View {
         HStack(spacing: 4) {
@@ -54,87 +135,4 @@ struct ItemPathBreadcrumbView: View {
             }
         }
     }
-
-    @ViewBuilder
-    private var renderedText: some View {
-        if let vaultContent = share.vaultContent {
-            if !expanded, let lastFolder = itemPath.last {
-                HStack(spacing: 4) {
-                    Label {
-                        Text(vaultContent.name)
-                            .lineLimit(1)
-                            .foregroundStyle(PassColor.textWeak)
-                    } icon: {
-                        vaultContent.vaultSmallIcon
-                            .resizable()
-                            .foregroundStyle(vaultContent.mainColor)
-                            .scaledToFit()
-                            .frame(width: 16, height: 16)
-                    }
-
-                    IconProvider.chevronRight
-                        .resizable()
-                        .foregroundStyle(PassColor.textWeak)
-                        .frame(width: 16, height: 16)
-
-                    if itemPath.count > 1 {
-                        Text("...")
-                            .foregroundStyle(PassColor.textWeak)
-                    }
-                    Label {
-                        Text(lastFolder.content.name)
-                            .lineLimit(1)
-                            .fontWeight(.bold)
-                            .foregroundStyle(PassColor.textNorm)
-                            .fixedSize(horizontal: false, vertical: true)
-                    } icon: {
-                        IconProvider.foldersFilled
-                            .resizable()
-                            .foregroundStyle(PassColor.folderIcon)
-                            .frame(width: 16, height: 16)
-                    }
-                    Spacer()
-                }
-            } else {
-                AnyLayout(FlowLayout(spacing: 8)) {
-                    Label {
-                        Text(vaultContent.name)
-                            .lineLimit(1)
-                            .foregroundStyle(PassColor.textWeak)
-                    } icon: {
-                        vaultContent.vaultSmallIcon
-                            .resizable()
-                            .foregroundStyle(vaultContent.mainColor)
-                            .scaledToFit()
-                            .frame(width: 16, height: 16)
-                    }
-                    ForEach(itemPath) { folder in
-                        let isLast = if let last = itemPath.last, last == folder {
-                            true
-                        } else {
-                            false
-                        }
-                        folderElement(folderName: folder.content.name, isLast: isLast)
-                    }
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-            }
-        }
-    }
-//
-//    @ViewBuilder
-//    private var vaultTitle: some View {
-//        if let vaultContent = share.vaultContent {
-//            Label { Text(vaultContent.name)
-//                .lineLimit(1)
-//                .foregroundStyle(PassColor.textWeak)
-//            } icon: {
-//                vaultContent.vaultSmallIcon
-//                    .resizable()
-//                    .foregroundStyle(vaultContent.mainColor)
-//                    .scaledToFit()
-//                    .frame(width: 16, height: 16)
-//            }
-//        }
-//    }
 }

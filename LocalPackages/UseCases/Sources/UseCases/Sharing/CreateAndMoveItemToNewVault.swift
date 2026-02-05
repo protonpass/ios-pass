@@ -45,8 +45,6 @@ public final class CreateAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCa
         self.appContentManager = appContentManager
     }
 
-    // TODO: maybe take into account folder destination
-
     public func execute(userId: String, vault: VaultContent, itemContent: ItemContent) async throws -> Share {
         do {
             if let vault = try await createVault(userId: userId, with: vault) {

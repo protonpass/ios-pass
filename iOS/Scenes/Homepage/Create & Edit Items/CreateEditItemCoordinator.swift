@@ -73,8 +73,6 @@ extension CreateEditItemCoordinator {
 
     func presentCreateItemView(for itemType: ItemType,
                                onError: @escaping (any Error) -> Void) async throws {
-        // TODO: passer appContentManager dans viewmodel de base
-        let shareId = appContentManager.shareSelection.selectedShareId
         switch itemType {
         case .login:
             let logInType = ItemCreationType.login(autofill: false)
@@ -90,7 +88,7 @@ extension CreateEditItemCoordinator {
         case .identity:
             try presentCreateEditIdentityView(mode: .create(type: .identity))
         case .custom:
-            try presentCustomItemList(shareId: shareId, onError: onError)
+            try presentCustomItemList(onError: onError)
         }
     }
 }
@@ -175,11 +173,11 @@ private extension CreateEditItemCoordinator {
 // MARK: - Custom item
 
 private extension CreateEditItemCoordinator {
-    func presentCustomItemList(shareId: String?, onError: @escaping (any Error) -> Void) throws {
+    func presentCustomItemList(onError: @escaping (any Error) -> Void) throws {
         let view = CustomItemTemplatesList { [weak self] template in
             guard let self else { return }
             do {
-                try handle(template: template, shareId: shareId)
+                try handle(template: template)
             } catch {
                 onError(error)
             }
@@ -188,7 +186,7 @@ private extension CreateEditItemCoordinator {
         present(view, dismissable: true)
     }
 
-    func handle(template: CustomItemTemplate, shareId: String?) throws {
+    func handle(template: CustomItemTemplate) throws {
         switch template {
         case .sshKey:
             try presentCreateEditSshKeyView(mode: .create(type: .sshKey))

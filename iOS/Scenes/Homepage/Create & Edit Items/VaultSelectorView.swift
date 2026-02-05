@@ -61,6 +61,8 @@ struct VaultSelectorView: View {
                         .navigationTitleText()
                 }
             }
+        }.task(id: selectedContainer.id) {
+            load()
         }
     }
 
@@ -69,6 +71,17 @@ struct VaultSelectorView: View {
             containersExtended.remove(containerId)
         } else {
             containersExtended.insert(containerId)
+        }
+    }
+
+    func load() {
+        if selectedContainer.isFolderSelected {
+            containersExtended.insert(selectedContainer.share.id)
+            if let shareContent = appContentManager.getShareContent(for: selectedContainer.share.id) {
+                for folder in shareContent.flattenedFolders(from: selectedContainer.share.id) {
+                    containersExtended.insert(folder.id)
+                }
+            }
         }
     }
 }
@@ -127,9 +140,10 @@ private extension VaultSelectorView {
             VaultRow(thumbnail: { VaultThumbnail(vaultContent: vaultContent) },
                      title: vaultContent.name,
                      itemCount: vaultInfos.itemCount,
-                     mode: .view(isSelected: selectedContainer.share == vaultInfos.share,
-                                 isHidden: vaultInfos.share.hidden,
-                                 action: nil),
+                     mode: .view(isSelected: selectedContainer.share == vaultInfos.share && selectedContainer
+                         .isFolderSelected == false,
+                         isHidden: vaultInfos.share.hidden,
+                         action: nil),
                      height: 74)
         })
         .buttonStyle(.plain)

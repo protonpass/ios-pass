@@ -48,9 +48,13 @@ private extension IdentityDetailView {
         ScrollViewReader { value in
             ScrollView {
                 VStack(spacing: 0) {
+                    if let share = viewModel.shareContent?.share {
+                        ItemPathBreadcrumbView(share: share, itemPath: viewModel.path)
+                    }
+
                     ItemDetailTitleView(itemContent: viewModel.itemContent,
                                         vault: viewModel.vault?.vault)
-                        .padding(.bottom, 25)
+                        .padding(.vertical, 16)
 
                     ForEach(viewModel.sections) { section in
                         if !section.isEmpty {

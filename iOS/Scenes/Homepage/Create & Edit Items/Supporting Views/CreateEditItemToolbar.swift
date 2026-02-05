@@ -129,10 +129,6 @@ private extension CreateEditItemToolbar {
         .padding(.horizontal, DesignConstant.sectionPadding)
         .background(vaultContent.backgroundColor)
         .clipShape(Capsule())
-//        .if(isPhone) { view in
-//            view.frame(maxWidth: 150, alignment: .trailing)
-//        }
-//        .fixedSize(horizontal: false, vertical: false)
         .buttonEmbeded(action: onSelectVault)
     }
 
@@ -154,10 +150,6 @@ private extension CreateEditItemToolbar {
         .padding(.horizontal, DesignConstant.sectionPadding)
         .background(PassColor.interactionNormMinor1)
         .clipShape(Capsule())
-//        .if(isPhone) { view in
-//            view.frame(maxWidth: 150, alignment: .trailing)
-//        }
-//        .fixedSize(horizontal: false, vertical: false)
         .buttonEmbeded(action: onSelectVault)
     }
 }
