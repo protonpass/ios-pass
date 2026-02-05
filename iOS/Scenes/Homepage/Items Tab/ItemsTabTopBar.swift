@@ -25,40 +25,60 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
+enum ItemsTabTopBarActions {
+    case onSearch
+    case onShowVaultList
+    case onPin
+    case onUnpin
+    case onMove
+    case onTrash
+    case onRestore
+    case onPermanentlyDelete
+    case onDisableAliases
+    case onEnableAliases
+    case onPromoBadgeTapped
+}
+
 struct ItemsTabTopBar: View {
     @Environment(\.accessibilityShowButtonShapes) private var showButtonShapes
+    @StateObject private var viewModel = ItemsTabTopBarViewModel()
+
     @Binding var searchMode: SearchMode?
     let animationNamespace: Namespace.ID
-    @StateObject private var viewModel = ItemsTabTopBarViewModel()
     @Binding var isEditMode: Bool
     let showPromoBadge: Bool
-    let onSearch: () -> Void
-    let onShowVaultList: () -> Void
-    let onPin: () -> Void
-    let onUnpin: () -> Void
-    let onMove: () -> Void
-    let onTrash: () -> Void
-    let onRestore: () -> Void
-    let onPermanentlyDelete: () -> Void
-    let onDisableAliases: () -> Void
-    let onEnableAliases: () -> Void
-    let onPromoBadgeTapped: () -> Void
+    let action: (ItemsTabTopBarActions) -> Void
 
     var body: some View {
         ZStack {
             if isEditMode {
-                editModeView
-                    .frame(height: 60)
+                EditModeView(viewModel: viewModel, isEditMode: $isEditMode) { triggeredAction in
+                    action(triggeredAction)
+                }.frame(height: 60)
             } else {
-                viewModeView
+                ViewModeView(viewModel: viewModel,
+                             searchMode: $searchMode,
+                             isEditMode: $isEditMode,
+                             showPromoBadge: showPromoBadge,
+                             animationNamespace: animationNamespace) { triggeredAction in
+                    action(triggeredAction)
+                }
             }
         }
         .animation(.default, value: isEditMode)
     }
 }
 
-private extension ItemsTabTopBar {
-    var viewModeView: some View {
+private struct ViewModeView: View {
+    @Environment(\.accessibilityShowButtonShapes) private var showButtonShapes
+    @ObservedObject var viewModel: ItemsTabTopBarViewModel
+    @Binding var searchMode: SearchMode?
+    @Binding var isEditMode: Bool
+    let showPromoBadge: Bool
+    let animationNamespace: Namespace.ID
+    let action: (ItemsTabTopBarActions) -> Void
+
+    var body: some View {
         VStack {
             mainHeaderRow
             searchBar
@@ -76,7 +96,6 @@ private extension ItemsTabTopBar {
         .frame(height: 48)
         .padding(.horizontal, showButtonShapes ? 0 : nil)
         .padding(.vertical, 16)
-        .animation(.default, value: showPromoBadge)
         .animation(.default, value: viewModel.shouldUpsell)
     }
 
@@ -85,14 +104,16 @@ private extension ItemsTabTopBar {
         if viewModel.shareSelection.isFolderSelection {
             CircleButton(icon: IconProvider.folderFilled,
                          iconColor: PassColor.folderIcon,
-                         backgroundColor: PassColor.interactionNormMinor1,
-                         action: onShowVaultList)
+                         backgroundColor: PassColor.interactionNormMinor1) {
+                action(.onShowVaultList)
+            }
         } else {
             let uiModel = viewModel.shareSelection.uiModel
             CircleButton(icon: uiModel.icon,
                          iconColor: uiModel.iconColor,
-                         backgroundColor: uiModel.backgroundColor,
-                         action: onShowVaultList)
+                         backgroundColor: uiModel.backgroundColor) {
+                action(.onShowVaultList)
+            }
         }
     }
 
@@ -132,7 +153,7 @@ private extension ItemsTabTopBar {
                 .resizable()
                 .scaledToFit()
                 .frame(maxWidth: 46)
-                .buttonEmbeded(action: onPromoBadgeTapped)
+                .buttonEmbeded { action(.onPromoBadgeTapped) }
         } else if viewModel.shouldUpsell {
             PassIcon.diamond
                 .resizable()
@@ -165,30 +186,33 @@ private extension ItemsTabTopBar {
     var searchBar: some View {
         if searchMode == nil {
             // Search bar
-            ZStack {
-                PassColor.backgroundStrong
-                HStack {
-                    IconProvider.magnifier
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 20, height: 20)
-                    Text(viewModel.shareSelection.searchBarPlaceholder)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.75)
+            Button { action(.onSearch) } label: {
+                ZStack {
+                    PassColor.backgroundStrong
+                    HStack {
+                        IconProvider.magnifier
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 20, height: 20)
+                        Text(viewModel.shareSelection.searchBarPlaceholder)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.75)
+                    }
+                    .foregroundStyle(PassColor.textWeak)
+                    .padding(.horizontal)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                .foregroundStyle(PassColor.textWeak)
-                .padding(.horizontal)
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .clipShape(RoundedRectangle(cornerRadius: 16))
+                .matchedGeometryEffect(id: SearchEffectID.searchbar.id,
+                                       in: animationNamespace)
+                .contentShape(.rect)
+                .frame(height: DesignConstant.searchBarHeight)
+                .frame(height: 48)
+                .padding(.bottom, 8)
+                .padding(.horizontal, 16)
             }
-            .clipShape(RoundedRectangle(cornerRadius: 16))
-            .matchedGeometryEffect(id: SearchEffectID.searchbar.id,
-                                   in: animationNamespace)
-            .contentShape(.rect)
-            .frame(height: DesignConstant.searchBarHeight)
-            .onTapGesture(perform: onSearch)
-            .frame(height: 48)
-            .padding(.bottom, 8)
-            .padding(.horizontal, 16)
+            .buttonStyle(.plain)
+            .accessibilityLabel("Start search")
         } else {
             Spacer()
                 .frame(maxWidth: .infinity)
@@ -196,7 +220,15 @@ private extension ItemsTabTopBar {
     }
 }
 
-private extension ItemsTabTopBar {
+private struct EditModeView: View {
+    @ObservedObject var viewModel: ItemsTabTopBarViewModel
+    @Binding var isEditMode: Bool
+    let action: (ItemsTabTopBarActions) -> Void
+
+    var body: some View {
+        editModeView
+    }
+
     var editModeView: some View {
         VStack(spacing: 0) {
             Spacer()
@@ -237,14 +269,14 @@ private extension ItemsTabTopBar {
     var mainActions: some View {
         switch viewModel.shareSelection {
         case .all, .precise:
-            button(action: onMove, icon: IconProvider.folderArrowIn)
+            button(action: { action(.onMove) }, icon: IconProvider.folderArrowIn)
                 .padding(.horizontal)
-            button(action: onTrash, icon: IconProvider.trash)
+            button(action: { action(.onTrash) }, icon: IconProvider.trash)
 
         case .trash:
-            button(action: onRestore, icon: IconProvider.clockRotateLeft)
+            button(action: { action(.onRestore) }, icon: IconProvider.clockRotateLeft)
                 .padding(.horizontal)
-            button(action: onPermanentlyDelete,
+            button(action: { action(.onPermanentlyDelete) },
                    icon: IconProvider.trashCross,
                    color: PassColor.signalDanger)
 
@@ -287,13 +319,13 @@ private extension ItemsTabTopBar {
     func handle(extraOption: ExtraBulkActionOption) {
         switch extraOption {
         case .pin:
-            onPin()
+            action(.onPin)
         case .unpin:
-            onUnpin()
+            action(.onUnpin)
         case .disableAliases:
-            onDisableAliases()
+            action(.onDisableAliases)
         case .enableAliases:
-            onEnableAliases()
+            action(.onEnableAliases)
         }
     }
 }

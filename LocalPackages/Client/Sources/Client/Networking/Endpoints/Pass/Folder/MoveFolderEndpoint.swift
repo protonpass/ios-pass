@@ -44,6 +44,7 @@ struct MoveFolderEndpoint: Endpoint {
     var body: MoveFolderRequest?
 
     init(shareId: String, folderId: String, request: MoveFolderRequest) {
+        // swiftlint:disable:next line_length
         debugDescription = "Move folder to \(request.parentFolderID == nil ? "share" : "folder") with id: \(request.parentFolderID ?? shareId)"
         path = "/pass/v1/share/\(shareId)/folder/\(folderId)/move"
         method = .put

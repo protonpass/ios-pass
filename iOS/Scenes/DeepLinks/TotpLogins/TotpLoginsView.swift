@@ -73,8 +73,8 @@ struct TotpLoginsView: View {
                        Text("This login item already contains a 2FA secret")
                    }
                })
-        .onChange(of: viewModel.shouldDismiss) { value in
-            if value {
+        .onChange(of: viewModel.shouldDismiss) {
+            if viewModel.shouldDismiss {
                 dismiss()
             }
         }

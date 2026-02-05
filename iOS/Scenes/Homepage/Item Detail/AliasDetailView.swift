@@ -123,7 +123,7 @@ struct AliasDetailView: View {
             .animation(.default, value: viewModel.aliasInfos)
             .animation(.default, value: viewModel.contacts)
             .animation(.default, value: viewModel.showContactsTip)
-            .onChange(of: viewModel.moreInfoSectionExpanded) { _ in
+            .onChange(of: viewModel.moreInfoSectionExpanded) {
                 withAnimation { value.scrollTo(bottomID, anchor: .bottom) }
             }
         }

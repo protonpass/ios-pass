@@ -46,7 +46,6 @@ final class TotpLoginsViewModel: ObservableObject {
         }
     }
 
-    @LazyInjected(\SharedUseCasesContainer.getMainVault) private var getMainVault
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     private let getActiveLoginItems = resolve(\SharedUseCasesContainer.getActiveLoginItems)
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)

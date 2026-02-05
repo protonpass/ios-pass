@@ -49,8 +49,8 @@ struct CreateContactView: View {
         .padding(.horizontal)
         .toolbar { toolbarContent }
         .background(PassColor.backgroundNorm)
-        .onChange(of: viewModel.finishedSaving) { saved in
-            guard saved else {
+        .onChange(of: viewModel.finishedSaving) {
+            guard viewModel.finishedSaving else {
                 return
             }
             dismiss()
