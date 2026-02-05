@@ -34,56 +34,9 @@ struct FolderMoveListView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            VStack(alignment: .center) {
-                Text("Select a destination")
-                    .font(.title3)
-                    .fontWeight(.bold)
-                    .foregroundStyle(PassColor.textNorm)
-                Label("You cannot move a folder to on of his child folders", systemImage: "info.circle.fill")
-                    .font(.callout)
-                    .foregroundStyle(PassColor.textWeak)
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 12)
-                    .background(PassColor.backgroundNorm)
-                    .cornerRadius(12)
-                Divider()
-                    .padding(.top, 12)
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.horizontal)
-            .padding(.top, 30)
-
-            ScrollView {
-                VStack(spacing: 0) {
-                    fullRow(content: folderToMove.shareContent)
-                }
-                .padding(.horizontal)
-            }
-
-            HStack(spacing: 16) {
-                CapsuleTextButton(title: #localized("Cancel"),
-                                  titleColor: PassColor.textWeak,
-                                  backgroundColor: PassColor.textDisabled,
-                                  height: 44,
-                                  action: {
-                                      onDismiss()
-                                      dismiss()
-                                  })
-
-                DisablableCapsuleTextButton(title: #localized("Confirm"),
-                                            titleColor: PassColor.textInvert,
-                                            disableTitleColor: PassColor.textHint,
-                                            backgroundColor: PassColor.interactionNormMajor1,
-                                            disableBackgroundColor: PassColor.interactionNormMinor1,
-                                            disabled: viewModel.selectedContainer == .default,
-                                            height: 44,
-                                            action: {
-                                                viewModel.move(currentFolderId: folderToMove.folder.id)
-                                                onDismiss()
-                                                dismiss()
-                                            })
-            }
-            .padding([.bottom, .horizontal])
+            header
+            mainScrollView
+            bottomActionsBar
         }
         .background(PassColor.backgroundWeak)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -92,37 +45,93 @@ struct FolderMoveListView: View {
             viewModel.load(folderInfos: folderToMove)
         }
     }
+}
 
-    @ViewBuilder
-    private func fullRow(content: ShareContent) -> some View {
-        if let vaultContent = content.share.vaultContent {
-            HStack {
-                if let folders = content.folders(in: content.id), !folders.isEmpty {
-                    Button { viewModel.toggleDisplayContainerContent(containerId: content.id) } label: {
-                        (viewModel.containersExtended.contains(content.id) ?
-                            IconProvider.chevronDownFilled : IconProvider.chevronRightFilled)
-                            .resizable()
-                            .frame(width: 30, height: 30)
-                            .foregroundStyle(PassColor.textWeak)
-                    }
-                    .buttonStyle(.plain)
-                }
-                view(for: content, vaultContent: vaultContent)
-            }
+private extension FolderMoveListView {
+    var header: some View {
+        VStack(alignment: .center) {
+            Text("Select a destination")
+                .font(.title3)
+                .fontWeight(.bold)
+                .foregroundStyle(PassColor.textNorm)
+            Label("You cannot move a folder to on of his child folders", systemImage: "info.circle.fill")
+                .font(.callout)
+                .foregroundStyle(PassColor.textWeak)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 12)
+                .background(PassColor.backgroundNorm)
+                .cornerRadius(12)
+            Divider()
+                .padding(.top, 12)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal)
+        .padding(.top, 30)
+    }
 
-            if let folders = content.folders(in: content.id),
-               !folders.isEmpty, viewModel.containersExtended.contains(content.id) {
-                FolderTreeView(content: content,
-                               share: content.share,
-                               folders: folders,
-                               shouldDismissOnSelection: false,
-                               containersExtended: $viewModel.containersExtended,
-                               selectedContainer: $viewModel.selectedContainer)
+    var mainScrollView: some View {
+        ScrollView {
+            VStack(spacing: 0) {
+                fullRow(content: folderToMove.shareContent)
             }
+            .padding(.horizontal)
         }
     }
 
-    private func view(for vaultInfos: ShareContent, vaultContent: VaultContent) -> some View {
+    var bottomActionsBar: some View {
+        HStack(spacing: 16) {
+            CapsuleTextButton(title: #localized("Cancel"),
+                              titleColor: PassColor.textWeak,
+                              backgroundColor: PassColor.textDisabled,
+                              height: 44,
+                              action: {
+                                  onDismiss()
+                                  dismiss()
+                              })
+
+            DisablableCapsuleTextButton(title: #localized("Confirm"),
+                                        titleColor: PassColor.textInvert,
+                                        disableTitleColor: PassColor.textHint,
+                                        backgroundColor: PassColor.interactionNormMajor1,
+                                        disableBackgroundColor: PassColor.interactionNormMinor1,
+                                        disabled: viewModel.selectedContainer == .default,
+                                        height: 44,
+                                        action: {
+                                            viewModel.move(currentFolderId: folderToMove.folder.id)
+                                            onDismiss()
+                                            dismiss()
+                                        })
+        }
+        .padding([.bottom, .horizontal])
+    }
+
+    @ViewBuilder
+    func fullRow(content: ShareContent) -> some View {
+        if let vaultContent = content.share.vaultContent {
+            HStack {
+                expandVaultRow(content: content)
+                vaultRow(for: content, vaultContent: vaultContent)
+            }
+
+            folderRow(content: content)
+        }
+    }
+
+    @ViewBuilder
+    func expandVaultRow(content: ShareContent) -> some View {
+        if viewModel.folderSupported, let folders = content.folders(in: content.id), !folders.isEmpty {
+            Button { viewModel.toggleDisplayContainerContent(containerId: content.id) } label: {
+                (viewModel.containersExtended.contains(content.id) ?
+                    IconProvider.chevronDownFilled : IconProvider.chevronRightFilled)
+                    .resizable()
+                    .frame(width: 30, height: 30)
+                    .foregroundStyle(PassColor.textWeak)
+            }
+            .buttonStyle(.plain)
+        }
+    }
+
+    func vaultRow(for vaultInfos: ShareContent, vaultContent: VaultContent) -> some View {
         Button(action: {
             viewModel
                 .selectedContainer = ShareSelectionPayload(share: vaultInfos.share,
@@ -138,5 +147,18 @@ struct FolderMoveListView: View {
                      height: 74)
         })
         .buttonStyle(.plain)
+    }
+
+    @ViewBuilder
+    func folderRow(content: ShareContent) -> some View {
+        if viewModel.folderSupported, let folders = content.folders(in: content.id),
+           !folders.isEmpty, viewModel.containersExtended.contains(content.id) {
+            FolderTreeView(content: content,
+                           share: content.share,
+                           folders: folders,
+                           shouldDismissOnSelection: false,
+                           containersExtended: $viewModel.containersExtended,
+                           selectedContainer: $viewModel.selectedContainer)
+        }
     }
 }

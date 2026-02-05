@@ -545,6 +545,8 @@
 		5B1453E12A727EFF0048B022 /* AcceptRejectInviteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453DF2A727EFF0048B022 /* AcceptRejectInviteView.swift */; };
 		5B1453E22A727EFF0048B022 /* AcceptRejectInviteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453E02A727EFF0048B022 /* AcceptRejectInviteViewModel.swift */; };
 		5B1453E52A72BF570048B022 /* ShareRole+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453E42A72BF570048B022 /* ShareRole+Extensions.swift */; };
+		5B14E63E2F34CF4A00CB811A /* ItemPathBreadcrumbView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B14E63D2F34CF4A00CB811A /* ItemPathBreadcrumbView.swift */; };
+		5B14E63F2F34CF4A00CB811A /* ItemPathBreadcrumbView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B14E63D2F34CF4A00CB811A /* ItemPathBreadcrumbView.swift */; };
 		5B159D312D00AB3C00150125 /* ShareContent+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B159D302D00AB3500150125 /* ShareContent+Extensions.swift */; };
 		5B159D322D00AB3C00150125 /* ShareContent+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B159D302D00AB3500150125 /* ShareContent+Extensions.swift */; };
 		5B159D332D00AB3C00150125 /* ShareContent+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B159D302D00AB3500150125 /* ShareContent+Extensions.swift */; };
@@ -1096,6 +1098,7 @@
 		5B1453DF2A727EFF0048B022 /* AcceptRejectInviteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptRejectInviteView.swift; sourceTree = "<group>"; };
 		5B1453E02A727EFF0048B022 /* AcceptRejectInviteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptRejectInviteViewModel.swift; sourceTree = "<group>"; };
 		5B1453E42A72BF570048B022 /* ShareRole+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareRole+Extensions.swift"; sourceTree = "<group>"; };
+		5B14E63D2F34CF4A00CB811A /* ItemPathBreadcrumbView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemPathBreadcrumbView.swift; sourceTree = "<group>"; };
 		5B159D302D00AB3500150125 /* ShareContent+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareContent+Extensions.swift"; sourceTree = "<group>"; };
 		5B1F0F062EC1DF5C0015982A /* InviteSuggestionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteSuggestionsSection.swift; sourceTree = "<group>"; };
 		5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReportView.swift; sourceTree = "<group>"; };
@@ -1804,6 +1807,7 @@
 				355792D829E7FB85001198DA /* VaultLabel.swift */,
 				35116E782A82847300CAD616 /* View+ItemDetailSetUp.swift */,
 				5B6639602B4D9A4F0029F8DA /* ItemDetailHistorySection.swift */,
+				5B14E63D2F34CF4A00CB811A /* ItemPathBreadcrumbView.swift */,
 			);
 			path = "Supporting Views";
 			sourceTree = "<group>";
@@ -3535,6 +3539,7 @@
 				3552D0C72CA6D579004156D8 /* ItemsForTextInsertionView.swift in Sources */,
 				352866BD28E2DCB5000630E2 /* CredentialsView.swift in Sources */,
 				53BCE8422DF06586002A903D /* CreateEditKeyboardToolbar.swift in Sources */,
+				5B14E63F2F34CF4A00CB811A /* ItemPathBreadcrumbView.swift in Sources */,
 				35E81D942CBEAAE8008E7BA0 /* SortFilterItemsMenu.swift in Sources */,
 				354B24762A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift in Sources */,
 				3570E0502B8E070F005B8186 /* PasskeyCredentialsViewModel.swift in Sources */,
@@ -3849,6 +3854,7 @@
 				5B0939182C04DD250046F467 /* IdentityDetailView.swift in Sources */,
 				53A732B12F1F8AB100EC4A16 /* UpsellSection.swift in Sources */,
 				5B0939192C04DD250046F467 /* IdentityDetailViewModel.swift in Sources */,
+				5B14E63E2F34CF4A00CB811A /* ItemPathBreadcrumbView.swift in Sources */,
 				5BD870D82BB46C7800A9F1A8 /* PasswordReusedView.swift in Sources */,
 				5B14538F2A6821D20048B022 /* Router+DependencyInjections.swift in Sources */,
 				5BD613892C2028FE00968E0F /* SecureLinkListUIModel.swift in Sources */,
