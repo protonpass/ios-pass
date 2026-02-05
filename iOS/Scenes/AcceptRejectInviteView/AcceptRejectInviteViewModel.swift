@@ -108,7 +108,7 @@ private extension AcceptRejectInviteViewModel {
                     return
                 }
                 if !shareContent.share.isVaultRepresentation,
-                   shareContent.flattenedItems(from: shareContent.id).isEmpty /* shareContent.items.isEmpty */ {
+                   shareContent.flattenedItems(from: shareContent.id).isEmpty {
                     return
                 }
                 guard case .user = invite else {

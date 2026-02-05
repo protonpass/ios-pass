@@ -66,8 +66,8 @@ struct BugReportView: View {
                     focused = true
                 }
         }
-        .onChange(of: viewModel.hasSent) { value in
-            if value {
+        .onChange(of: viewModel.hasSent) {
+            if viewModel.hasSent {
                 // Do not automatically dismiss here but let the coordinator dismiss
                 // Because we need to show a banner after the view is fully dismissed
                 onSuccess()

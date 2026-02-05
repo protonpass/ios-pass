@@ -186,20 +186,20 @@ struct CreateEditAliasView: View {
                 .animation(.default, value: viewModel.dismissedFileAttachmentsBanner)
                 .animation(.default, value: viewModel.showAdvancedOptionsTipBanner)
             }
-            .onChange(of: focusedField) { focusedField in
+            .onChange(of: focusedField) {
                 if case .note = focusedField {
                     withAnimation {
                         proxy.scrollTo(noteID, anchor: .bottom)
                     }
                 }
             }
-            .onChange(of: viewModel.note) { _ in
+            .onChange(of: viewModel.note) {
                 withAnimation {
                     proxy.scrollTo(noteID, anchor: .bottom)
                 }
             }
-            .onChange(of: viewModel.isSaving) { isSaving in
-                if isSaving {
+            .onChange(of: viewModel.isSaving) {
+                if viewModel.isSaving {
                     focusedField = nil
                 }
             }

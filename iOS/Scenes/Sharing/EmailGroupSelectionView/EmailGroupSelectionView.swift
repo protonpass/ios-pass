@@ -42,8 +42,8 @@ struct EmailGroupSelectionView: View {
             .task {
                 await viewModel.loadData()
             }
-            .onChange(of: viewModel.highlightedRecommendation) { highlightedRecommendation in
-                isFocused = highlightedRecommendation == nil
+            .onChange(of: viewModel.highlightedRecommendation) {
+                isFocused = viewModel.highlightedRecommendation == nil
             }
             .animation(.default, value: viewModel.selectedRecommendations)
             .animation(.default, value: viewModel.loading)

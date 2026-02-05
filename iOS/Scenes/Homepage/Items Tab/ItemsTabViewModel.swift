@@ -54,6 +54,8 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published private var organization: Organization?
     @Published private(set) var refreshSearchResult = false
     @Published private(set) var showPromoBadge = false
+    @Published var searchMode: SearchMode?
+    @Published var showSharedItemsAlert = false
 
     let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
     @LazyInjected(\SharedServiceContainer.appContentManager) var appContentManager
@@ -145,6 +147,38 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
                 router.present(for: .fullSync)
                 await appContentManager.fullSync(userId: userId)
             }
+        }
+    }
+
+    // swiftlint:disable:next cyclomatic_complexity
+    func topBarActionTriggered(_ action: ItemsTabTopBarActions) {
+        switch action {
+        case .onSearch:
+            searchMode = .all(appContentManager.shareSelection)
+        case .onShowVaultList:
+            presentVaultList()
+        case .onPin:
+            pinSelectedItems()
+        case .onUnpin:
+            unpinSelectedItems()
+        case .onMove:
+            if hasSharedItems() {
+                showSharedItemsAlert.toggle()
+            } else {
+                presentVaultListToMoveSelectedItems()
+            }
+        case .onTrash:
+            trashSelectedItems()
+        case .onRestore:
+            restoreSelectedItems()
+        case .onPermanentlyDelete:
+            askForBulkPermanentDeleteConfirmation()
+        case .onDisableAliases:
+            disableSelectedAliases()
+        case .onEnableAliases:
+            enableSelectedAliases()
+        case .onPromoBadgeTapped:
+            showNotification()
         }
     }
 }
@@ -304,12 +338,11 @@ private extension ItemsTabViewModel {
 // MARK: - Public APIs
 
 extension ItemsTabViewModel {
-    func filterAndSortItems(sortType: SortType? = nil) {
-        let sortType = sortType ?? selectedSortType
+    func filterAndSortItems() {
         sortTask?.cancel()
         sortTask = Task { [weak self] in
             guard let self else { return }
-            await filterAndSortItemsAsync(sortType: sortType)
+            await filterAndSortItemsAsync(sortType: selectedSortType)
 
             do {
                 let userId = try await userManager.getActiveUserId()

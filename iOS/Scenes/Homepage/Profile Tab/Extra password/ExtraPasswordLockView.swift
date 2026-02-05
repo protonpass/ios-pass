@@ -95,12 +95,12 @@ struct ExtraPasswordLockView: View {
         .background(PassColor.backgroundNorm)
         .animation(.default, value: showWrongPasswordError)
         .onAppear { focused = true }
-        .onChange(of: viewModel.result) { result in
-            if let result { handle(result) }
+        .onChange(of: viewModel.result) {
+            if let result = viewModel.result { handle(result) }
         }
-        .onChange(of: viewModel.extraPassword) { password in
+        .onChange(of: viewModel.extraPassword) {
             if showWrongPasswordError {
-                showWrongPasswordError = password.isEmpty
+                showWrongPasswordError = viewModel.extraPassword.isEmpty
             }
         }
         .showSpinner(viewModel.loading)

@@ -113,7 +113,7 @@ private extension ItemMoveVaultListView {
     }
 
     @ViewBuilder
-    private func fullRow(content: ShareContent) -> some View {
+    func fullRow(content: ShareContent) -> some View {
         if let vaultContent = content.share.vaultContent {
             HStack {
                 expandVaultRow(content: content)
@@ -138,7 +138,7 @@ private extension ItemMoveVaultListView {
         }
     }
 
-    private func vaultRow(for vaultInfos: ShareContent, vaultContent: VaultContent) -> some View {
+    func vaultRow(for vaultInfos: ShareContent, vaultContent: VaultContent) -> some View {
         Button(action: {
             viewModel
                 .selectedContainer = ShareSelectionPayload(share: vaultInfos.share,

@@ -79,14 +79,14 @@ struct EnableExtraPasswordView: View {
         .animation(.default, value: viewModel.canSetExtraPassword)
         .animation(.default, value: viewModel.state)
         .tint(PassColor.interactionNormMajor1)
-        .onChange(of: viewModel.canSetExtraPassword) { _ in
+        .onChange(of: viewModel.canSetExtraPassword) {
             focused = true
         }
-        .onChange(of: viewModel.extraPasswordEnabled) { _ in
+        .onChange(of: viewModel.extraPasswordEnabled) {
             dismiss()
             onExtraPasswordEnabled()
         }
-        .onChange(of: viewModel.failedToVerifyProtonPassword) { _ in
+        .onChange(of: viewModel.failedToVerifyProtonPassword) {
             dismiss()
             onProtonPasswordVerificationFailure()
         }

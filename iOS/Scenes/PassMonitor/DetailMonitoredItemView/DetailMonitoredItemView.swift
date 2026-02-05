@@ -55,7 +55,7 @@ struct DetailMonitoredItemView: View {
         .task {
             await viewModel.fetchData()
         }
-        .onChange(of: viewModel.shouldDismiss) { _ in
+        .onChange(of: viewModel.shouldDismiss) {
             dismiss()
         }
         .alert("Mark as resolved",

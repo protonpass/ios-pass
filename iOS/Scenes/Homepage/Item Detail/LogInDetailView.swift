@@ -113,7 +113,7 @@ private extension LogInDetailView {
                     .padding()
                 }
                 .animation(.default, value: viewModel.moreInfoSectionExpanded)
-                .onChange(of: viewModel.moreInfoSectionExpanded) { _ in
+                .onChange(of: viewModel.moreInfoSectionExpanded) {
                     withAnimation { value.scrollTo(bottomID, anchor: .bottom) }
                 }
             }

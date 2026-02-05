@@ -32,12 +32,12 @@ final class FolderMoveListViewModel {
     @ObservationIgnored
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
 
-    var loading: Bool = false
+    private(set) var loading: Bool = false
     var selectedContainer: ShareSelectionPayload = .default
     var containersExtended = Set<String>()
 
     func move(currentFolderId: String) {
-        guard selectedContainer != .default else {
+        guard selectedContainer != .default, !loading else {
             return
         }
         Task {
@@ -46,6 +46,7 @@ final class FolderMoveListViewModel {
             }
 
             do {
+                loading = true
                 let userId = try await userManager.getActiveUserId()
                 try await appContentManager.moveFolder(userId: userId,
                                                        shareId: selectedContainer.share.id,

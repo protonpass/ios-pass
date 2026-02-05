@@ -62,8 +62,8 @@ struct AcceptRejectInviteView: View {
         .background(PassColor.backgroundWeak)
         .animation(.default, value: viewModel.vaultInfos)
         .showSpinner(viewModel.executingAction)
-        .onChange(of: viewModel.shouldCloseSheet) { value in
-            if value {
+        .onChange(of: viewModel.shouldCloseSheet) {
+            if viewModel.shouldCloseSheet {
                 dismiss()
             }
         }

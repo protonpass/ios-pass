@@ -90,7 +90,7 @@ private extension CreditCardDetailView {
                         .id(bottomID)
                 }
                 .padding()
-                .onChange(of: viewModel.moreInfoSectionExpanded) { _ in
+                .onChange(of: viewModel.moreInfoSectionExpanded) {
                     withAnimation { proxy.scrollTo(bottomID, anchor: .bottom) }
                 }
             }
