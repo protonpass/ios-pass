@@ -125,7 +125,6 @@ public extension FolderRepository {
                 }
                 sinceToken = paginatedFolders.lastToken
             } catch {
-                print("woot folder refresh error \(error)")
                 throw error
             }
         }

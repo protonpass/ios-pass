@@ -355,7 +355,7 @@ private extension CreateEditLoginViewModel {
         bindValues()
 
         $selectedContainer
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .removeDuplicates()
             .sink { [weak self] _ in
                 guard let self else { return }

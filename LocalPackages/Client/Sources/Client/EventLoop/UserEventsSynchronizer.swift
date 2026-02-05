@@ -260,7 +260,7 @@ private extension UserEventsSynchronizer {
         for batch in createdShares.chunked(into: maxConcurrentShareCreations) {
             try await withThrowingTaskGroup(of: Void.self) { taskGroup in
                 for newShare in batch {
-                    taskGroup.addTask { [shareRepository, itemRepository, userId] in
+                    taskGroup.addTask { [shareRepository, folderRepository, itemRepository, userId] in
                         // We need to start for a fresh data state
                         if let localShare = try await shareRepository.getShare(shareId: newShare.shareID) {
                             try await shareRepository.deleteShareLocally(userId: userId,
@@ -270,6 +270,8 @@ private extension UserEventsSynchronizer {
                         try await shareRepository.refreshShare(userId: userId,
                                                                shareId: newShare.shareID,
                                                                eventToken: newShare.eventToken)
+                        try await folderRepository.refreshFolders(userId: userId, shareId: newShare.shareID)
+                        try await itemRepository.refreshItems(userId: userId, shareId: newShare.shareID)
                     }
                 }
                 try await taskGroup.waitForAll()

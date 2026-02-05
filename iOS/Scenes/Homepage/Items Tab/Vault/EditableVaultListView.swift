@@ -144,7 +144,7 @@ struct EditableVaultListView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-        .sheet(item: $viewModel.folderToMove, onDismiss: { viewModel.dismissMoveFolder() }) { folder in
+        .sheet(item: $viewModel.folderToMove) /* onDismiss: { viewModel.dismissMoveFolder() } */ { folder in
             FolderMoveListView(folderToMove: folder) {
                 viewModel.dismissMoveFolder()
             }

@@ -77,13 +77,10 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     }
 
     @Published var containerToDelete: ActionnableContainer?
-
-    // MARK: - Folder actions
-
     @Published var folderAction: FolderAction?
     @Published var folderName: String = ""
 
-    private var count: Count
+    var folderToMove: FolderToMove?
 
     let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
@@ -101,15 +98,12 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     private var organizationRepository
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
-
     @LazyInjected(\UseCasesContainer.reorganizeVaults)
     private var reorganizeVaults
-
     @LazyInjected(\SharedRepositoryContainer.itemRepository)
     private var itemRepository
 
-    var folderToMove: FolderToMove?
-
+    private var count: Count
     private var cancellables = Set<AnyCancellable>()
 
     private var orderedVaults: [ShareContent] {
@@ -218,10 +212,8 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
     func toggleDisplayContainerContent(containerId: String) {
         if containersExtended.contains(containerId) {
-            print("Woot remove container: \(containerId)")
             containersExtended.remove(containerId)
         } else {
-            print("Woot add container: \(containerId)")
             containersExtended.insert(containerId)
         }
     }
@@ -268,7 +260,6 @@ extension EditableVaultListViewModel {
 
     func dismissMoveFolder() {
         folderToMove = nil
-        print("woot folder to move is nil")
     }
 
     func createNewVault() {

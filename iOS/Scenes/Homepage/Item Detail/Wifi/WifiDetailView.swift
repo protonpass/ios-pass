@@ -37,9 +37,13 @@ struct WifiDetailView: View {
     var body: some View {
         ScrollViewReader { proxy in
             LazyVStack(spacing: 0) {
+                if let share = viewModel.shareContent?.share {
+                    ItemPathBreadcrumbView(share: share, itemPath: viewModel.path)
+                }
+
                 ItemDetailTitleView(itemContent: viewModel.itemContent,
                                     vault: viewModel.vault?.vault)
-                    .padding(.bottom, 40)
+                    .padding(.vertical, 16)
 
                 ssidAndPasswordSection
 

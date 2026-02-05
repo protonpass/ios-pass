@@ -144,7 +144,7 @@ struct ItemEditionAlertContent {
 class BaseCreateEditItemViewModel: ObservableObject {
     @Published var title = ""
     @Published var note = ""
-    @Published var selectedContainer = ShareSelectionPayload.default // Share
+    @Published var selectedContainer = ShareSelectionPayload.default
     @Published private(set) var isFreeUser = false
     @Published private(set) var isSaving = false
     @Published private(set) var canAddMoreCustomFields = true
