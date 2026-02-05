@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Entities
 import FactoryKit
 import Foundation
@@ -31,10 +32,15 @@ final class FolderMoveListViewModel {
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @ObservationIgnored
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
+    @ObservationIgnored
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     private(set) var loading: Bool = false
     var selectedContainer: ShareSelectionPayload = .default
     var containersExtended = Set<String>()
+    var folderSupported: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passFolder)
+    }
 
     func move(currentFolderId: String) {
         guard selectedContainer != .default, !loading else {

@@ -107,7 +107,7 @@ struct ItemsTabView: View {
                                showPromoBadge: viewModel.showPromoBadge) { action in
                     viewModel.topBarActionTriggered(action)
                 }
-                
+
                 .hidden(viewModel.noVaults)
 
                 if viewModel.showingUpgradeAppBanner {

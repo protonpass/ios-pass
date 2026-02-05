@@ -90,8 +90,8 @@ struct EditableVaultListView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
             .animation(.spring, value: viewModel.mode)
             .animation(.default, value: viewModel.state)
-            .onChange(of: viewModel.mode) { newMode in
-                onChangeMode(newMode)
+            .onChange(of: viewModel.mode) {
+                onChangeMode(viewModel.mode)
             }
             .alert("Delete \(viewModel.containerToDelete?.isVault ?? true ? "vault" : "folder")?",
                    isPresented: $viewModel.containerToDelete.mappedToBool(),
