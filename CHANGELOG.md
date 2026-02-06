@@ -8,9 +8,11 @@ Improvements:
 - Fixed filters resetting after editing items or unlocking the app
 - Fixed jumping cursor in text custom fields
 - Fixed file picker not appearing in some cases
+- Fixed crypto error when logging with QR code
 
 Others:
-- Core libraries upgraded from 34.2.2 to 35.0.0
+- B2B: personal vault policy
+- Core libraries upgraded from 34.2.2 to 35.0.3
 - Rust library upgraded from 0.28.4 to 0.28.8
 
 # Version 1.17.11
