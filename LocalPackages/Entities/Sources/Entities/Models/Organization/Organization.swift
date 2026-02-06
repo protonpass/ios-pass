@@ -76,8 +76,9 @@ public extension Organization {
     }
 
     enum VaultCreateMode: Int, Sendable, Decodable, Equatable {
-        case anyUser = 0
-        case adminsOnly = 1
+        case allowed = 0
+        case onlyOrgAdmins = 1
+        case onlyOrgAdminsAndPersonalVault = 2
     }
 
     struct Settings: Sendable, Decodable, Equatable {
@@ -113,58 +114,6 @@ public extension Organization {
         }
     }
 }
-
-//
-// RandomPasswordAllowed
-// required
-// boolean
-// Whether subusers are allowed to generate random passwords
-//
-// RandomPasswordMinLength
-// integer or null >= 4
-// Minimum password length. Default limit if null.
-//
-// RandomPasswordMaxLength
-// integer or null <= 64
-// Maximum password length. Default limit if null.
-//
-// RandomPasswordMustIncludeNumbers
-// boolean or null
-// Whether the password must include numbers. If true, it must. If false, it must not. Cannot be changed if not
-// null. Can be changed if null.
-//
-// RandomPasswordMustIncludeSymbols
-// boolean or null
-// Whether the password must include symbols. If true, it must. If false, it must not. Cannot be changed if not
-// null. Can be changed if null.
-//
-// RandomPasswordMustIncludeUppercase
-// boolean or null
-// Whether the password must include uppercase characters. If true, it must. If false, it must not. Cannot be
-// changed if not null. Can be changed if null.
-//
-// MemorablePasswordAllowed
-// required
-// boolean
-// Whether subusers are allowed to generate memorable passwords
-//
-// MemorablePasswordMinWords
-// integer or null
-// Minimum amount of words for the memorable passwords. Default limit if null.
-//
-// MemorablePasswordMaxWords
-// integer or null
-// Maximum amount of words for the memorable passwords. Default limit if null.
-//
-// MemorablePasswordMustCapitalize
-// boolean or null
-// Whether the password must capitalize words. If true, it must. If false, it must not. Cannot be changed if not
-// null. Can be changed if null.
-//
-// MemorablePasswordMustIncludeNumbers
-// boolean or null
-// Whether the password must include numbers. If true, it must. If false, it must not. Cannot be changed if not
-// null. Can be changed if null.
 
 // swiftlint:disable discouraged_optional_boolean
 public struct PasswordPolicy: Sendable, Codable, Equatable {
