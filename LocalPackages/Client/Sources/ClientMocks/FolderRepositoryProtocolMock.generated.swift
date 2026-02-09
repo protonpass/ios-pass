@@ -47,25 +47,8 @@ public final class FolderRepositoryProtocolMock: @unchecked Sendable, FolderRepo
         closureGetAllLocalFolders()
         return stubbedGetAllLocalFoldersResult
     }
-    // MARK: - refreshFoldersUserIdShareId
-    public var refreshFoldersUserIdShareIdThrowableError2: Error?
-    public var closureRefreshFoldersUserIdShareIdAsync2: () -> () = {}
-    public var invokedRefreshFoldersUserIdShareIdAsync2 = false
-    public var invokedRefreshFoldersUserIdShareIdAsyncCount2 = 0
-    public var invokedRefreshFoldersUserIdShareIdAsyncParameters2: (userId: String, shareId: String)?
-    public var invokedRefreshFoldersUserIdShareIdAsyncParametersList2 = [(userId: String, shareId: String)]()
-
-    public func refreshFolders(userId: String, shareId: String) async throws {
-        invokedRefreshFoldersUserIdShareIdAsync2 = true
-        invokedRefreshFoldersUserIdShareIdAsyncCount2 += 1
-        invokedRefreshFoldersUserIdShareIdAsyncParameters2 = (userId, shareId)
-        if let error = refreshFoldersUserIdShareIdThrowableError2 {
-            throw error
-        }
-        closureRefreshFoldersUserIdShareIdAsync2()
-    }
     // MARK: - deleteAllLocalFolders
-    public var deleteAllLocalFoldersUserIdThrowableError3: Error?
+    public var deleteAllLocalFoldersUserIdThrowableError2: Error?
     public var closureDeleteAllLocalFolders: () -> () = {}
     public var invokedDeleteAllLocalFoldersfunction = false
     public var invokedDeleteAllLocalFoldersCount = 0
@@ -76,30 +59,13 @@ public final class FolderRepositoryProtocolMock: @unchecked Sendable, FolderRepo
         invokedDeleteAllLocalFoldersfunction = true
         invokedDeleteAllLocalFoldersCount += 1
         invokedDeleteAllLocalFoldersParameters = (userId, ())
-        if let error = deleteAllLocalFoldersUserIdThrowableError3 {
+        if let error = deleteAllLocalFoldersUserIdThrowableError2 {
             throw error
         }
         closureDeleteAllLocalFolders()
     }
-    // MARK: - delete
-    public var deleteUserIdShareIdFolderIdsThrowableError4: Error?
-    public var closureDelete: () -> () = {}
-    public var invokedDeletefunction = false
-    public var invokedDeleteCount = 0
-    public var invokedDeleteParameters: (userId: String, shareId: String, folderIds: [String])?
-    public var invokedDeleteParametersList = [(userId: String, shareId: String, folderIds: [String])]()
-
-    public func delete(userId: String, shareId: String, folderIds: [String]) async throws {
-        invokedDeletefunction = true
-        invokedDeleteCount += 1
-        invokedDeleteParameters = (userId, shareId, folderIds)
-        if let error = deleteUserIdShareIdFolderIdsThrowableError4 {
-            throw error
-        }
-        closureDelete()
-    }
     // MARK: - deleteLocalFolder
-    public var deleteLocalFolderUserIdShareIdFolderIdsThrowableError5: Error?
+    public var deleteLocalFolderUserIdShareIdFolderIdsThrowableError3: Error?
     public var closureDeleteLocalFolder: () -> () = {}
     public var invokedDeleteLocalFolderfunction = false
     public var invokedDeleteLocalFolderCount = 0
@@ -110,13 +76,13 @@ public final class FolderRepositoryProtocolMock: @unchecked Sendable, FolderRepo
         invokedDeleteLocalFolderfunction = true
         invokedDeleteLocalFolderCount += 1
         invokedDeleteLocalFolderParameters = (userId, shareId, folderIds)
-        if let error = deleteLocalFolderUserIdShareIdFolderIdsThrowableError5 {
+        if let error = deleteLocalFolderUserIdShareIdFolderIdsThrowableError3 {
             throw error
         }
         closureDeleteLocalFolder()
     }
     // MARK: - deleteLocal
-    public var deleteLocalFoldersUserIdThrowableError6: Error?
+    public var deleteLocalFoldersUserIdThrowableError4: Error?
     public var closureDeleteLocal: () -> () = {}
     public var invokedDeleteLocalfunction = false
     public var invokedDeleteLocalCount = 0
@@ -127,10 +93,44 @@ public final class FolderRepositoryProtocolMock: @unchecked Sendable, FolderRepo
         invokedDeleteLocalfunction = true
         invokedDeleteLocalCount += 1
         invokedDeleteLocalParameters = (folders, userId)
-        if let error = deleteLocalFoldersUserIdThrowableError6 {
+        if let error = deleteLocalFoldersUserIdThrowableError4 {
             throw error
         }
         closureDeleteLocal()
+    }
+    // MARK: - refreshFoldersUserIdShareId
+    public var refreshFoldersUserIdShareIdThrowableError5: Error?
+    public var closureRefreshFoldersUserIdShareIdAsync5: () -> () = {}
+    public var invokedRefreshFoldersUserIdShareIdAsync5 = false
+    public var invokedRefreshFoldersUserIdShareIdAsyncCount5 = 0
+    public var invokedRefreshFoldersUserIdShareIdAsyncParameters5: (userId: String, shareId: String)?
+    public var invokedRefreshFoldersUserIdShareIdAsyncParametersList5 = [(userId: String, shareId: String)]()
+
+    public func refreshFolders(userId: String, shareId: String) async throws {
+        invokedRefreshFoldersUserIdShareIdAsync5 = true
+        invokedRefreshFoldersUserIdShareIdAsyncCount5 += 1
+        invokedRefreshFoldersUserIdShareIdAsyncParameters5 = (userId, shareId)
+        if let error = refreshFoldersUserIdShareIdThrowableError5 {
+            throw error
+        }
+        closureRefreshFoldersUserIdShareIdAsync5()
+    }
+    // MARK: - delete
+    public var deleteUserIdShareIdFolderIdsThrowableError6: Error?
+    public var closureDelete: () -> () = {}
+    public var invokedDeletefunction = false
+    public var invokedDeleteCount = 0
+    public var invokedDeleteParameters: (userId: String, shareId: String, folderIds: [String])?
+    public var invokedDeleteParametersList = [(userId: String, shareId: String, folderIds: [String])]()
+
+    public func delete(userId: String, shareId: String, folderIds: [String]) async throws {
+        invokedDeletefunction = true
+        invokedDeleteCount += 1
+        invokedDeleteParameters = (userId, shareId, folderIds)
+        if let error = deleteUserIdShareIdFolderIdsThrowableError6 {
+            throw error
+        }
+        closureDelete()
     }
     // MARK: - createFolder
     public var createFolderUserIdShareIdParentFolderIdFolderContentThrowableError7: Error?

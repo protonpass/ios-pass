@@ -236,7 +236,6 @@ struct PassKeyManagerTests {
 
         // Act
         let containerKey = try await sut.getContainerKey(
-            userId: "user-1",
             containerId: shareId,
             keyRotation: keyRotation
         )
@@ -271,7 +270,6 @@ struct PassKeyManagerTests {
 
         // Act
         let containerKey = try await sut.getContainerKey(
-            userId: "user-1",
             containerId: shareId,
             keyRotation: nil
         )
@@ -289,7 +287,6 @@ struct PassKeyManagerTests {
         // Act & Assert
         await #expect(throws: PassError.self) {
             try await sut.getContainerKey(
-                userId: "user-1",
                 containerId: "nonexistent-share",
                 keyRotation: 1
             )
@@ -321,7 +318,7 @@ struct PassKeyManagerTests {
         try await withThrowingTaskGroup(of: (any CryptographicKeyProtocol).self) { group in
             for _ in 0..<3 {
                 group.addTask {
-                    try await keyManager.getContainerKey(userId: "user-1", containerId: shareId, keyRotation: nil)
+                    try await keyManager.getContainerKey(containerId: shareId, keyRotation: nil)
                 }
             }
             for try await _ in group {}

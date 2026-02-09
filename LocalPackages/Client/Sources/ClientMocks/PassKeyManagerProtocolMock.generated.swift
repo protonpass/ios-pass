@@ -162,19 +162,19 @@ public final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManag
         closureDecryptAndStoreFolderKeys()
     }
     // MARK: - getContainerKey
-    public var getContainerKeyUserIdContainerIdKeyRotationThrowableError8: Error?
+    public var getContainerKeyContainerIdKeyRotationThrowableError8: Error?
     public var closureGetContainerKey: () -> () = {}
     public var invokedGetContainerKeyfunction = false
     public var invokedGetContainerKeyCount = 0
-    public var invokedGetContainerKeyParameters: (userId: String, containerId: String, keyRotation: Int64?)?
-    public var invokedGetContainerKeyParametersList = [(userId: String, containerId: String, keyRotation: Int64?)]()
+    public var invokedGetContainerKeyParameters: (containerId: String, keyRotation: Int64?)?
+    public var invokedGetContainerKeyParametersList = [(containerId: String, keyRotation: Int64?)]()
     public nonisolated(unsafe) var stubbedGetContainerKeyResult: (any CryptographicKeyProtocol)!
 
-    public func getContainerKey(userId: String, containerId: String, keyRotation: Int64?) async throws -> any CryptographicKeyProtocol {
+    public func getContainerKey(containerId: String, keyRotation: Int64?) async throws -> any CryptographicKeyProtocol {
         invokedGetContainerKeyfunction = true
         invokedGetContainerKeyCount += 1
-        invokedGetContainerKeyParameters = (userId, containerId, keyRotation)
-        if let error = getContainerKeyUserIdContainerIdKeyRotationThrowableError8 {
+        invokedGetContainerKeyParameters = (containerId, keyRotation)
+        if let error = getContainerKeyContainerIdKeyRotationThrowableError8 {
             throw error
         }
         closureGetContainerKey()
