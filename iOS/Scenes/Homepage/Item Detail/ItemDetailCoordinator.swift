@@ -63,8 +63,8 @@ final class ItemDetailCoordinator: DeinitPrintable {
     }
 
     /// Refresh the currently presented item detail page
-    func refresh() {
-        currentViewModel?.refresh()
+    func refresh(onItemNotFound: @escaping () -> Void) {
+        currentViewModel?.refresh(onItemNotFound: onItemNotFound)
     }
 }
 

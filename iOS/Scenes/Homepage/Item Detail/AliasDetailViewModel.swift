@@ -155,9 +155,9 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
         setAliasStatus(enabled: false)
     }
 
-    override func refresh() {
+    override func refresh(onItemNotFound: (() -> Void)? = nil) {
         error = nil
-        super.refresh()
+        super.refresh(onItemNotFound: onItemNotFound)
         getAlias()
         task?.cancel()
         task = Task { [weak self] in
