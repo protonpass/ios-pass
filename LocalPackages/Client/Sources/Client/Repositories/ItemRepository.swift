@@ -397,7 +397,6 @@ public extension ItemRepository {
                     folderId: String?) async throws -> SymmetricallyEncryptedItem {
         logger.trace("Creating item for share \(shareId) and user \(userId)")
         let request = try await createItemRequest(itemContent: itemContent,
-                                                  userId: userId,
                                                   shareId: shareId,
                                                   folderId: folderId)
         let createdItemRevision = try await remoteDatasource.createItem(userId: userId,
@@ -422,7 +421,6 @@ public extension ItemRepository {
                      folderId: String?) async throws -> SymmetricallyEncryptedItem {
         logger.trace("Creating alias item for user \(userId)")
         let createItemRequest = try await createItemRequest(itemContent: itemContent,
-                                                            userId: userId,
                                                             shareId: shareId,
                                                             folderId: folderId)
         let createAliasRequest = CreateCustomAliasRequest(info: info,
@@ -451,7 +449,6 @@ public extension ItemRepository {
 
         let aliasesItemInfos = try await itemsContent.asyncCompactMap { pendingAliasId, value in
             let request = try await createItemRequest(itemContent: value,
-                                                      userId: userId,
                                                       shareId: shareId,
                                                       folderId: folderId)
             return AliasesItemPendingInfo(pendingAliasID: pendingAliasId, item: request)
@@ -484,11 +481,9 @@ public extension ItemRepository {
         async throws -> (SymmetricallyEncryptedItem, SymmetricallyEncryptedItem) {
         logger.trace("Creating alias and another item")
         let createAliasItemRequest = try await createItemRequest(itemContent: aliasItemContent,
-                                                                 userId: userId,
                                                                  shareId: shareId,
                                                                  folderId: folderId)
         let createOtherItemRequest = try await createItemRequest(itemContent: otherItemContent,
-                                                                 userId: userId,
                                                                  shareId: shareId,
                                                                  folderId: folderId)
 
@@ -959,7 +954,6 @@ private extension ItemRepository {
     }
 
     func createItemRequest(itemContent: any ProtobufableItemContentProtocol,
-                           userId: String,
                            shareId: String,
                            folderId: String?) async throws -> CreateItemRequest {
         let latestParentKey = try await passKeyManager.getContainerKey(containerId: folderId ?? shareId,

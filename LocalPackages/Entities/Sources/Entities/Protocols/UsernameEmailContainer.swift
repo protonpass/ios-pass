@@ -20,7 +20,7 @@
 
 import Foundation
 
-public protocol UsernameEmailContainer: Sendable {
+protocol UsernameEmailContainer: Sendable {
     var email: String { get }
     var username: String { get }
 }

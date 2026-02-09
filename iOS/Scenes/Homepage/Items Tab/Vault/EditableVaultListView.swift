@@ -79,7 +79,6 @@ struct EditableVaultListView: View {
     @State private var containerNameConfirmation = ""
     @State private var isShowingEmptyTrashAlert = false
     private let onChangeMode: (EditableVaultListViewModel.Mode) -> Void
-    @Namespace private var contentNamespace
 
     init(onChangeMode: @escaping (EditableVaultListViewModel.Mode) -> Void) {
         self.onChangeMode = onChangeMode
