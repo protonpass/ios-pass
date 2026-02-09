@@ -29,11 +29,8 @@ final class CreateEditItemCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
-    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-
     private weak var createEditItemDelegate: (any CreateEditLoginViewModelDelegate)?
-
     private var currentViewModel: BaseCreateEditItemViewModel?
 
     init(createEditItemDelegate: (any CreateEditLoginViewModelDelegate)?) {
@@ -96,10 +93,6 @@ extension CreateEditItemCoordinator {
 // MARK: - Private APIs
 
 private extension CreateEditItemCoordinator {
-    var vaults: [Share] {
-        appContentManager.getAllSharesLinkToVault()
-    }
-
     func present(_ view: any View, dismissable: Bool) {
         router.navigate(to: .createEdit(view: view, dismissible: dismissable))
     }

@@ -49,7 +49,7 @@ public struct UpdateFolderRequest: Sendable, Encodable {
     }
 }
 
-public struct UpdateFolderRequestPayload: Sendable, Encodable {
+struct UpdateFolderRequestPayload: Sendable, Encodable {
     /// RotationID used to encrypt the folder contents
     let keyRotation: Int64
     /// Encrypted folder content encoded in Base64
@@ -57,16 +57,16 @@ public struct UpdateFolderRequestPayload: Sendable, Encodable {
     /// Version of the content format used to create the folder
     let contentFormatVersion: Int
 
-    public init(keyRotation: Int64,
-                content: String,
-                contentFormatVersion: Int) {
+    init(keyRotation: Int64,
+         content: String,
+         contentFormatVersion: Int) {
         self.keyRotation = keyRotation
         self.content = content
         self.contentFormatVersion = contentFormatVersion
     }
 
-    public init(encryptionKey: any CryptographicKeyProtocol,
-                folderContent: FolderContent) throws {
+    init(encryptionKey: any CryptographicKeyProtocol,
+         folderContent: FolderContent) throws {
         let updatedContent = try AES.GCM.seal(folderContent.data(),
                                               key: encryptionKey.keyData,
                                               associatedData: .folderContent)

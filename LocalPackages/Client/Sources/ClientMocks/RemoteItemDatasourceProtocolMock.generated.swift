@@ -259,11 +259,11 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var closureSameShareMove: () -> () = {}
     public var invokedSameShareMovefunction = false
     public var invokedSameShareMoveCount = 0
-    public var invokedSameShareMoveParameters: (userId: String, shareId: String, request: InternalMoveItemsRequest)?
-    public var invokedSameShareMoveParametersList = [(userId: String, shareId: String, request: InternalMoveItemsRequest)]()
+    public var invokedSameShareMoveParameters: (userId: String, shareId: String, request: InternalShareMoveItemsRequest)?
+    public var invokedSameShareMoveParametersList = [(userId: String, shareId: String, request: InternalShareMoveItemsRequest)]()
     public nonisolated(unsafe) var stubbedSameShareMoveResult: [ModifiedItem]!
 
-    public func sameShareMove(userId: String, shareId: String, request: InternalMoveItemsRequest) async throws -> [ModifiedItem] {
+    public func sameShareMove(userId: String, shareId: String, request: InternalShareMoveItemsRequest) async throws -> [ModifiedItem] {
         invokedSameShareMovefunction = true
         invokedSameShareMoveCount += 1
         invokedSameShareMoveParameters = (userId, shareId, request)

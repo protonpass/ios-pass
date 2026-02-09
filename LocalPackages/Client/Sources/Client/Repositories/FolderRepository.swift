@@ -180,8 +180,7 @@ public extension FolderRepository {
                       parentFolderId: String?,
                       folderContent: FolderContent) async throws -> Folder {
         logger.trace("Creating folder for user \(userId)")
-        let containerKey = try await passKeyManager.getContainerKey(userId: userId,
-                                                                    containerId: parentFolderId ?? shareId,
+        let containerKey = try await passKeyManager.getContainerKey(containerId: parentFolderId ?? shareId,
                                                                     keyRotation: nil)
         let request = try CreateFolderRequest(encryptionKey: containerKey,
                                               folderContent: folderContent,
@@ -199,8 +198,7 @@ public extension FolderRepository {
 
     func edit(userId: String, shareId: String, folderId: String, folderContent: FolderContent) async throws {
         logger.trace("Editing folder \(folderId) for user \(userId)")
-        let folderKey = try await passKeyManager.getContainerKey(userId: userId,
-                                                                 containerId: folderId,
+        let folderKey = try await passKeyManager.getContainerKey(containerId: folderId,
                                                                  keyRotation: nil)
         let requestPayload = try UpdateFolderRequestPayload(encryptionKey: folderKey, folderContent: folderContent)
         let request = UpdateFolderRequest(content: requestPayload)
@@ -219,12 +217,10 @@ public extension FolderRepository {
     func move(userId: String, shareId: String, folderId: String, destinationId: String?) async throws {
         logger.trace("Move folder \(folderId) to destination \(destinationId ?? shareId)")
         logger.trace("Fetching destination container key")
-        let destinationKey = try await passKeyManager.getContainerKey(userId: userId,
-                                                                      containerId: destinationId ?? shareId,
+        let destinationKey = try await passKeyManager.getContainerKey(containerId: destinationId ?? shareId,
                                                                       keyRotation: nil)
         logger.trace("Fetching source folder key")
-        let currentFolderKey = try await passKeyManager.getContainerKey(userId: userId,
-                                                                        containerId: folderId,
+        let currentFolderKey = try await passKeyManager.getContainerKey(containerId: folderId,
                                                                         keyRotation: nil)
         logger.trace("Re-encrypting folder key for destination")
         let encryptedItemKey = try AES.GCM.seal(currentFolderKey.keyData,
@@ -256,8 +252,7 @@ private extension FolderRepository {
                               folderRevision: Folder) async throws -> SymmetricallyEncryptedFolder {
         let symmetricKey = try await symmetricKey
 
-        let containerKey = try await passKeyManager.getContainerKey(userId: userId,
-                                                                    containerId: folderRevision.id,
+        let containerKey = try await passKeyManager.getContainerKey(containerId: folderRevision.id,
                                                                     keyRotation: folderRevision.keyRotation)
 
         let contentProtobuf = try folderRevision.getContent(parentKey: containerKey)
