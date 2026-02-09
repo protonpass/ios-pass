@@ -182,6 +182,10 @@ final class EmailGroupSelectionViewModel: ObservableObject {
             suggestions = await fetchOrganizationsRecommendation(shouldFetchMore: true)
         }
     }
+
+    func clearHighlightedRecommendation() {
+        highlightedRecommendation = nil
+    }
 }
 
 private extension EmailGroupSelectionViewModel {
