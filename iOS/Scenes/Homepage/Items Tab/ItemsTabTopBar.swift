@@ -40,7 +40,6 @@ enum ItemsTabTopBarActions {
 }
 
 struct ItemsTabTopBar: View {
-    @Environment(\.accessibilityShowButtonShapes) private var showButtonShapes
     @StateObject private var viewModel = ItemsTabTopBarViewModel()
 
     @Binding var searchMode: SearchMode?
