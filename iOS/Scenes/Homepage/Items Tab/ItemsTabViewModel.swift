@@ -96,7 +96,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     var noVaults: Bool {
         if case let .loaded(data) = appContentManager.state,
-           data.isEmpty, organization?.settings?.vaultCreateMode == .adminsOnly {
+           data.isEmpty, organization?.settings?.vaultCreateMode == .onlyOrgAdmins {
             return true
         }
         return false

@@ -49,7 +49,7 @@ extension LocalOrganizationDatasourceTests {
                                                 forceLockSeconds: 100,
                                                 exportMode: .admins,
                                                 passwordPolicy: PasswordPolicy.default,
-                                                vaultCreateMode: .anyUser))
+                                                vaultCreateMode: .allowed))
 
         // When
         try await sut.upsertOrganization(org1, userId: userId)
@@ -67,7 +67,7 @@ extension LocalOrganizationDatasourceTests {
                                                 forceLockSeconds: 300,
                                                 exportMode: .anyone,
                                                 passwordPolicy:  PasswordPolicy.default,
-                                                vaultCreateMode: .adminsOnly))
+                                                vaultCreateMode: .onlyOrgAdmins))
 
         // When
         try await sut.upsertOrganization(org2, userId: userId)
@@ -87,7 +87,7 @@ extension LocalOrganizationDatasourceTests {
                                                 forceLockSeconds: 100,
                                                 exportMode: .admins,
                                                 passwordPolicy: PasswordPolicy.default,
-                                                vaultCreateMode: .adminsOnly))
+                                                vaultCreateMode: .onlyOrgAdmins))
 
         // When
         try await sut.upsertOrganization(org1, userId: userId)

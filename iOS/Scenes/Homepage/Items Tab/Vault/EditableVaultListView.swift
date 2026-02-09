@@ -204,7 +204,7 @@ private extension EditableVaultListView {
                                fontWeight: .semibold,
                                action: viewModel.createNewVault)
                 .fixedSize(horizontal: true, vertical: true)
-                .hidden(viewModel.organization?.settings?.vaultCreateMode == .adminsOnly)
+                .hidden(viewModel.organization?.settings?.vaultCreateMode != .allowed)
 
             Spacer()
 
@@ -214,10 +214,8 @@ private extension EditableVaultListView {
                                    titleColor: PassColor.interactionNormMajor2,
                                    backgroundColor: PassColor.interactionNormMinor1,
                                    fontWeight: .semibold,
-                                   action: {
-                                       viewModel.updateMode(.organise)
-                                   })
-                                   .fixedSize(horizontal: true, vertical: true)
+                                   action: { viewModel.updateMode(.organise) })
+                    .fixedSize(horizontal: true, vertical: true)
             }
         }
         .padding([.bottom, .horizontal])

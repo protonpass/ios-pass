@@ -216,7 +216,7 @@ struct AliasDetailView: View {
                     RetryableErrorView(mode: .defaultHorizontal,
                                        tintColor: iconTintColor,
                                        error: error,
-                                       onRetry: viewModel.refresh)
+                                       onRetry: { viewModel.refresh() })
                 } else {
                     Text("Forwarding to")
                         .sectionTitleText()
