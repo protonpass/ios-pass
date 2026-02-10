@@ -88,25 +88,7 @@
             reference = "container:TestPlans/iOSUI.xctestplan">
          </TestPlanReference>
          <TestPlanReference
-            reference = "container:TestPlans/Core.xctestplan">
-         </TestPlanReference>
-         <TestPlanReference
-            reference = "container:TestPlans/Client.xctestplan">
-         </TestPlanReference>
-         <TestPlanReference
-            reference = "container:TestPlans/DesignSystem.xctestplan">
-         </TestPlanReference>
-         <TestPlanReference
-            reference = "container:TestPlans/UseCasesTests.xctestplan">
-         </TestPlanReference>
-         <TestPlanReference
-            reference = "container:TestPlans/Macro.xctestplan">
-         </TestPlanReference>
-         <TestPlanReference
             reference = "container:TestPlans/iOSUIPayments.xctestplan">
-         </TestPlanReference>
-         <TestPlanReference
-            reference = "container:TestPlans/Entities.xctestplan">
          </TestPlanReference>
       </TestPlans>
       <Testables>
