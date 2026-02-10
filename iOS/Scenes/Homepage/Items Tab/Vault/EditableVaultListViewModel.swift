@@ -153,6 +153,13 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
     deinit { print(deinitMessage) }
 
+    var hideShowVaultCreation: Bool {
+        guard let organization else {
+            return false
+        }
+        return organization.settings?.vaultCreateMode != .allowed
+    }
+
     func select(_ selection: ShareSelection) {
         appContentManager.select(selection)
     }
