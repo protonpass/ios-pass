@@ -31,10 +31,12 @@ public protocol AppContentManagerProtocol: Sendable {
     func refresh(userId: String) async throws
     func fullSync(userId: String) async
     func localFullSync(userId: String) async throws
+    // periphery:ignore:all
     func getItems(for shareId: String, containerId: String?) -> [ItemUiModel]
     func getAllItems(for shareId: String) -> [ItemUiModel]
 
     func delete(userId: String, shareId: String) async throws
+    // periphery:ignore
     func delete(userId: String, shareId: String, folderId: String) async throws
     func getOldestOwnedVault() async -> Share?
     func reset() async
