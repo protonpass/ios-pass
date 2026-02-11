@@ -279,7 +279,7 @@ private extension ShareCoordinator {
             do {
                 let userId = try await userManager.getActiveUserId()
                 if appContentManager.getAllSharesContent().isEmpty {
-                    try await appContentManager.refresh(userId: userId)
+                    await appContentManager.refresh(userId: userId)
                 }
                 let title = content.title(for: type)
 

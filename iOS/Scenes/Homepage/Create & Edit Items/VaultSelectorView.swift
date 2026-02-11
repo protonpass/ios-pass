@@ -136,7 +136,6 @@ private extension VaultSelectorView {
             selectedContainer = ShareSelectionPayload(share: vaultInfos.share, folder: nil)
             dismiss()
         }, label: {
-            // TODO: update view to take into account folder
             VaultRow(thumbnail: { VaultThumbnail(vaultContent: vaultContent) },
                      title: vaultContent.name,
                      itemCount: vaultInfos.itemCount,

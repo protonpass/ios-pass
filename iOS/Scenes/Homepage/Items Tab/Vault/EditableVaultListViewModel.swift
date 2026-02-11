@@ -248,7 +248,7 @@ extension EditableVaultListViewModel {
                                                                 folder: nil)))
                     }
                 }
-                try await appContentManager.refresh(userId: userId)
+                await appContentManager.refresh(userId: userId)
                 router.display(element: .infosMessage(#localized("%@ « %@ » deleted",
                                                                  container.isVault ? "Vault" : "Folder",
                                                                  container.name ?? "unknown")))

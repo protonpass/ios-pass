@@ -79,7 +79,7 @@ private extension ASCredentialIdentityStore {
         case .save:
             try await saveCredentialIdentities(domainCredentials)
         case .replace:
-            try await replaceCredentialIdentities(with: domainCredentials)
+            try await replaceCredentialIdentities(domainCredentials)
         case .remove:
             try await removeCredentialIdentities(domainCredentials)
         }

@@ -63,7 +63,6 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
     @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
-    @LazyInjected(\SharedUseCasesContainer.getUserPreferences) private var getUserPreferences
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
@@ -601,16 +600,13 @@ extension CredentialProviderCoordinator: AutoFillViewModelDelegate {
         Task { [weak self] in
             guard let self else { return }
             do {
-                let lastCreateItemVault = info.vaults
-                    .first { $0.shareId == self.getUserPreferences().lastCreatedItemShareId }
-
                 // Temporarily switch the on-memory active user and reload the vaults contents
                 // This is to work-around the fact that many of our repositories, use cases, view models
                 // still depend on the active user instead of dynamically take a userID
                 // especially when creating new login items we need to check some limitations
                 // (login with 2FA, custom fields...)
                 try await userManager.switchActiveUser(with: info.userId, onMemory: true)
-                try await appContentManager.refresh(userId: info.userId)
+                await appContentManager.refresh(userId: info.userId)
 
                 switch info.data {
                 case let .login(url, passkeyCredentialRequest):

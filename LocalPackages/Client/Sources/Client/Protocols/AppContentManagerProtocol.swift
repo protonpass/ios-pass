@@ -31,8 +31,9 @@ public protocol AppContentManagerProtocol: Sendable {
     func refresh(userId: String) async throws
     func fullSync(userId: String) async
     func localFullSync(userId: String) async throws
-    // periphery:ignore:all
+    // periphery:ignore
     func getItems(for shareId: String, containerId: String?) -> [ItemUiModel]
+    // periphery:ignore
     func getAllItems(for shareId: String) -> [ItemUiModel]
 
     func delete(userId: String, shareId: String) async throws
