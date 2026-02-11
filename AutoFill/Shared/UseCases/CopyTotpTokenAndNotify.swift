@@ -35,7 +35,7 @@ extension CopyTotpTokenAndNotifyUseCase {
     }
 }
 
-final class CopyTotpTokenAndNotify: @unchecked Sendable, CopyTotpTokenAndNotifyUseCase {
+final class CopyTotpTokenAndNotify: Sendable, CopyTotpTokenAndNotifyUseCase {
     private let logger: Logger
     private let generateTotpToken: any GenerateTotpTokenUseCase
     private let getSharedPreferences: any GetSharedPreferencesUseCase
