@@ -111,6 +111,13 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
             filteredOrderedVaults.contains(where: \.hidden)
     }
 
+    var shouldHideVaultCreation: Bool {
+        guard let organization else {
+            return false
+        }
+        return organization.settings?.vaultCreateMode != .allowed
+    }
+
     var hasTrashItems: Bool {
         count.trashed > 0
     }
@@ -152,13 +159,6 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     }
 
     deinit { print(deinitMessage) }
-
-    var hideShowVaultCreation: Bool {
-        guard let organization else {
-            return false
-        }
-        return organization.settings?.vaultCreateMode != .allowed
-    }
 
     func select(_ selection: ShareSelection) {
         appContentManager.select(selection)

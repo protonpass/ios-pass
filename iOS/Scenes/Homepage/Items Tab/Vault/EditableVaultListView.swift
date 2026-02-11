@@ -147,7 +147,7 @@ private extension EditableVaultListView {
                                    fontWeight: .semibold,
                                    action: viewModel.createNewVault)
                     .fixedSize(horizontal: true, vertical: true)
-                    .hidden(viewModel.hideShowVaultCreation)
+                    .hidden(viewModel.shouldHideVaultCreation)
 
                 Spacer()
 
