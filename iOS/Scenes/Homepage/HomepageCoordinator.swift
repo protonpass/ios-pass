@@ -350,7 +350,7 @@ private extension HomepageCoordinator {
             guard let self else { return }
             do {
                 let userId = try await userManager.getActiveUserId()
-                try await appContentManager.refresh(userId: userId)
+                await appContentManager.refresh(userId: userId)
                 eventLoop.forceSync()
                 eventLoop.start()
             } catch {
@@ -1702,7 +1702,7 @@ extension HomepageCoordinator {
                     }
                 }
                 let userId = try await userManager.getActiveUserId()
-                try await appContentManager.refresh(userId: userId)
+                await appContentManager.refresh(userId: userId)
                 homepageTabDelegate?.change(tab: .items)
                 increaseCreatedItemsCountAndAskForReviewIfNecessary()
 
@@ -1730,7 +1730,7 @@ extension HomepageCoordinator {
                 }
                 addNewEvent(type: .update(type))
                 let userId = try await userManager.getActiveUserId()
-                try await appContentManager.refresh(userId: userId)
+                await appContentManager.refresh(userId: userId)
                 dismissTopMostViewController { [weak self] in
                     guard let self else { return }
                     bannerManager.displayBottomInfoMessage(type.updateMessage)
@@ -1792,7 +1792,7 @@ extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
                     bannerManager.displayBottomInfoMessage(#localized("Vault updated"))
                 }
                 let userId = try await userManager.getActiveUserId()
-                try await appContentManager.refresh(userId: userId)
+                await appContentManager.refresh(userId: userId)
             } catch {
                 bannerManager.displayTopErrorMessage(error)
             }

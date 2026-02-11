@@ -57,6 +57,8 @@ enum AppContentState: Equatable {
     }
 }
 
+// swiftlint:disable file_length
+
 @MainActor
 final class AppContentManager: ObservableObject, DeinitPrintable, AppContentManagerProtocol {
     deinit { print(deinitMessage) }
@@ -124,7 +126,7 @@ final class AppContentManager: ObservableObject, DeinitPrintable, AppContentMana
 // MARK: - Data loading Public APIs
 
 extension AppContentManager {
-    func refresh(userId: String) async throws {
+    func refresh(userId: String) async {
         guard !isRefreshing else { return }
         defer { isRefreshing = false }
         do {
@@ -359,6 +361,7 @@ extension AppContentManager {
         return sharesData.shares.values.flatMap(\.allItems)
     }
 
+    // periphery:ignore
     func getContent(for shareId: String, containerId: String?) -> [ShareContentElement] {
         guard let sharesData = state.loadedContent,
               let shareContent = sharesData.shares[shareId] else { return [] }
@@ -366,6 +369,7 @@ extension AppContentManager {
         return shareContent.elements(for: containerId ?? shareId) ?? []
     }
 
+    // periphery:ignore
     func getItems(for shareId: String, containerId: String?) -> [ItemUiModel] {
         guard let sharesData = state.loadedContent,
               let shareContent = sharesData.shares[shareId] else { return [] }
@@ -757,3 +761,5 @@ extension AppContentManager {
         try await localFullSync(userId: userId)
     }
 }
+
+// swiftlint:enable file_length

@@ -50,6 +50,8 @@ public final class RemoveUserLocalData: Sendable, RemoveUserLocalDataUseCase {
     private let passwordDatasource: any LocalPasswordDatasourceProtocol
     private let userInviteDatasource: any LocalInviteDatasourceProtocol
     private let userEventIdDatasource: any LocalUserEventIdDatasourceProtocol
+    private let folderDatasource: any LocalFolderDatasourceProtocol
+    private let folderKeysDatasource: any LocalFolderKeyDatasourceProtocol
 
     public init(accessDatasource: any LocalAccessDatasourceProtocol,
                 itemDatasource: any LocalItemDatasourceProtocol,
@@ -66,7 +68,9 @@ public final class RemoveUserLocalData: Sendable, RemoveUserLocalDataUseCase {
                 inAppNotificationDatasource: any LocalInAppNotificationDatasourceProtocol,
                 passwordDatasource: any LocalPasswordDatasourceProtocol,
                 userInviteDatasource: any LocalInviteDatasourceProtocol,
-                userEventIdDatasource: any LocalUserEventIdDatasourceProtocol) {
+                userEventIdDatasource: any LocalUserEventIdDatasourceProtocol,
+                folderDatasource: any LocalFolderDatasourceProtocol,
+                folderKeysDatasource: any LocalFolderKeyDatasourceProtocol) {
         self.accessDatasource = accessDatasource
         self.itemDatasource = itemDatasource
         self.itemReadEventDatasource = itemReadEventDatasource
@@ -83,6 +87,8 @@ public final class RemoveUserLocalData: Sendable, RemoveUserLocalDataUseCase {
         self.passwordDatasource = passwordDatasource
         self.userInviteDatasource = userInviteDatasource
         self.userEventIdDatasource = userEventIdDatasource
+        self.folderKeysDatasource = folderKeysDatasource
+        self.folderDatasource = folderDatasource
     }
 }
 
@@ -105,6 +111,8 @@ public extension RemoveUserLocalData {
         async let removePasswords: () = passwordDatasource.deleteAllPasswords(userId: userId)
         async let removeInvites: () = userInviteDatasource.removeAllInvites(userId: userId)
         async let removeLastEventId: () = userEventIdDatasource.removeLastEventId(userId: userId)
+        async let removeFolders: () = folderDatasource.removeAllFolders(userId: userId)
+        async let removeFoldersKeys: () = folderKeysDatasource.removeAllKeys(userId: userId)
 
         _ = try await (removeAccess,
                        removeItems,
@@ -121,6 +129,8 @@ public extension RemoveUserLocalData {
                        removeInAppNotifications,
                        removePasswords,
                        removeInvites,
-                       removeLastEventId)
+                       removeLastEventId,
+                       removeFolders,
+                       removeFoldersKeys)
     }
 }
