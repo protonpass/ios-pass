@@ -18,8 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// periphery:ignore:all
-
 // swiftlint:disable:next todo
 // TODO: Either refactor or delete as no more used by new upsell flow
 
@@ -74,84 +72,84 @@ public nonisolated struct UpsellingViewConfiguration: @unchecked Sendable, Hasha
     }
 }
 
-public struct UpsellingView: View {
-    @Environment(\.dismiss) private var dismiss
-    private let onUpgrade: () -> Void
-    private let configuration: UpsellingViewConfiguration
+// public struct UpsellingView: View {
+//    @Environment(\.dismiss) private var dismiss
+//    private let onUpgrade: () -> Void
+//    private let configuration: UpsellingViewConfiguration
+//
+//    public init(configuration: UpsellingViewConfiguration, onUpgrade: @escaping () -> Void) {
+//        self.onUpgrade = onUpgrade
+//        self.configuration = configuration
+//    }
+//
+//    public var body: some View {
+//        mainContainer
+//            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+//            .padding()
+//            .foregroundStyle(PassColor.textNorm)
+//            .background(PassColor.backgroundNorm)
+//            .edgesIgnoringSafeArea(.top)
+//    }
+// }
 
-    public init(configuration: UpsellingViewConfiguration, onUpgrade: @escaping () -> Void) {
-        self.onUpgrade = onUpgrade
-        self.configuration = configuration
-    }
-
-    public var body: some View {
-        mainContainer
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-            .padding()
-            .foregroundStyle(PassColor.textNorm)
-            .background(PassColor.backgroundNorm)
-            .edgesIgnoringSafeArea(.top)
-    }
-}
-
-private extension UpsellingView {
-    var mainContainer: some View {
-        GeometryReader { proxy in
-            VStack(alignment: .center) {
-                Spacer()
-                configuration.icon
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: proxy.size.width * 0.75)
-
-                Text(configuration.title)
-                    .font(.title.bold())
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(PassColor.textNorm)
-
-                Text(configuration.description)
-                    .padding(.bottom)
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(PassColor.textWeak)
-
-                VStack(spacing: 16) {
-                    ForEach(configuration.upsellElements) { element in
-                        perkRow(element: element)
-                    }
-                }
-                .padding(.vertical, DesignConstant.sectionPadding)
-                .padding(.horizontal, DesignConstant.sectionPadding * 2)
-                .roundedDetailSection()
-                Spacer()
-
-                CapsuleTextButton(title: configuration.ctaTitle,
-                                  titleColor: PassColor.textInvert,
-                                  backgroundColor: PassColor.interactionNormMajor2,
-                                  height: 48,
-                                  action: onUpgrade)
-                    .padding(.horizontal, DesignConstant.sectionPadding)
-
-                CapsuleTextButton(title: #localized("Not now", bundle: .module),
-                                  titleColor: PassColor.interactionNormMajor2,
-                                  backgroundColor: .clear,
-                                  height: 48,
-                                  action: dismiss.callAsFunction)
-                    .padding(.horizontal, DesignConstant.sectionPadding)
-            }
-        }
-    }
-
-    func perkRow(element: UpsellElement) -> some View {
-        Label(title: {
-            Text(element.title)
-        }, icon: {
-            element.icon
-                .renderingMode(element.color != nil ? .template : .original)
-                .resizable()
-                .scaledToFit()
-                .frame(maxWidth: 20)
-                .foregroundStyle(element.color ?? PassColor.interactionNormMajor2)
-        })
-        .frame(maxWidth: .infinity, alignment: .leading)
-    }
-}
+// private extension UpsellingView {
+//    var mainContainer: some View {
+//        GeometryReader { proxy in
+//            VStack(alignment: .center) {
+//                Spacer()
+//                configuration.icon
+//                    .resizable()
+//                    .scaledToFit()
+//                    .frame(maxWidth: proxy.size.width * 0.75)
+//
+//                Text(configuration.title)
+//                    .font(.title.bold())
+//                    .multilineTextAlignment(.center)
+//                    .foregroundStyle(PassColor.textNorm)
+//
+//                Text(configuration.description)
+//                    .padding(.bottom)
+//                    .multilineTextAlignment(.center)
+//                    .foregroundStyle(PassColor.textWeak)
+//
+//                VStack(spacing: 16) {
+//                    ForEach(configuration.upsellElements) { element in
+//                        perkRow(element: element)
+//                    }
+//                }
+//                .padding(.vertical, DesignConstant.sectionPadding)
+//                .padding(.horizontal, DesignConstant.sectionPadding * 2)
+//                .roundedDetailSection()
+//                Spacer()
+//
+//                CapsuleTextButton(title: configuration.ctaTitle,
+//                                  titleColor: PassColor.textInvert,
+//                                  backgroundColor: PassColor.interactionNormMajor2,
+//                                  height: 48,
+//                                  action: onUpgrade)
+//                    .padding(.horizontal, DesignConstant.sectionPadding)
+//
+//                CapsuleTextButton(title: #localized("Not now", bundle: .module),
+//                                  titleColor: PassColor.interactionNormMajor2,
+//                                  backgroundColor: .clear,
+//                                  height: 48,
+//                                  action: dismiss.callAsFunction)
+//                    .padding(.horizontal, DesignConstant.sectionPadding)
+//            }
+//        }
+//    }
+//
+//    func perkRow(element: UpsellElement) -> some View {
+//        Label(title: {
+//            Text(element.title)
+//        }, icon: {
+//            element.icon
+//                .renderingMode(element.color != nil ? .template : .original)
+//                .resizable()
+//                .scaledToFit()
+//                .frame(maxWidth: 20)
+//                .foregroundStyle(element.color ?? PassColor.interactionNormMajor2)
+//        })
+//        .frame(maxWidth: .infinity, alignment: .leading)
+//    }
+// }

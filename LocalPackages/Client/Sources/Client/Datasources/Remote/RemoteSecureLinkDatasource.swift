@@ -18,16 +18,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// swiftlint:disable:next todo
-// TODO: Remove later on
-// periphery:ignore:all
-
 import Entities
 
 public protocol RemoteSecureLinkDatasourceProtocol: Sendable {
     func createLink(userId: String, configuration: SecureLinkCreationConfiguration) async throws -> NewSecureLink
     func deleteLink(userId: String, linkId: String) async throws
     func getAllLinks(userId: String) async throws -> [SecureLink]
+    // periphery:ignore
     func getLinkContent(userId: String, linkToken: String) async throws -> SecureLinkContent
     func deleteAllInactiveLinks(userId: String) async throws
 }

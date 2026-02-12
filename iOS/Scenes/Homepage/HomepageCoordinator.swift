@@ -959,7 +959,7 @@ extension HomepageCoordinator {
         }
     }
 
-    // periphery:ignore
+    // periphery:ignore:parameters configuration,dismissal
     func startUpsellingFlow(configuration: UpsellingViewConfiguration, dismissal: SheetDismissal) {
         // We are skipping the intermediate feature explanation screens in upsell flow
         // This is temporary until we have the new designs for these steps

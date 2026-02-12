@@ -42,7 +42,6 @@ final class PaymentsManager: Sendable {
     private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
 
     // Strongly reference to make the payment page responsive during payment flow
-    // periphery:ignore
     private nonisolated(unsafe) var paymentsUI: PaymentsUI?
     private let logger = resolve(\SharedToolingContainer.logger)
     private let theme = resolve(\SharedToolingContainer.theme)
