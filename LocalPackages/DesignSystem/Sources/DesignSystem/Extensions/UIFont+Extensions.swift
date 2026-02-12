@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// periphery:ignore:all
 import UIKit
 
 public extension UIFont {
@@ -34,21 +33,22 @@ public extension UIFont {
 }
 
 public extension UIFont {
-    static let caption2: UIFont = .preferredFont(forTextStyle: .caption2)
-    static let caption: UIFont = .preferredFont(forTextStyle: .caption1)
-    static let footnote: UIFont = .preferredFont(forTextStyle: .footnote)
-    static let callout: UIFont = .preferredFont(forTextStyle: .callout)
+    ///    static let caption2: UIFont = .preferredFont(forTextStyle: .caption2)
+    ///    static let caption: UIFont = .preferredFont(forTextStyle: .caption1)
+    ///    static let footnote: UIFont = .preferredFont(forTextStyle: .footnote)
+    ///    static let callout: UIFont = .preferredFont(forTextStyle: .callout)
     static let body: UIFont = .preferredFont(forTextStyle: .body)
-    static let subheadline: UIFont = .preferredFont(forTextStyle: .subheadline)
-    static let headline: UIFont = .preferredFont(forTextStyle: .headline)
-    static let title3: UIFont = .preferredFont(forTextStyle: .title3)
-    static let title2: UIFont = .preferredFont(forTextStyle: .title2)
+    ///    static let subheadline: UIFont = .preferredFont(forTextStyle: .subheadline)
+    ///    static let headline: UIFont = .preferredFont(forTextStyle: .headline)
+    ///    static let title3: UIFont = .preferredFont(forTextStyle: .title3)
+    ///    static let title2: UIFont = .preferredFont(forTextStyle: .title2)
     static let title: UIFont = .preferredFont(forTextStyle: .title1)
-    static let largeTitle: UIFont = .preferredFont(forTextStyle: .largeTitle)
+//    static let largeTitle: UIFont = .preferredFont(forTextStyle: .largeTitle)
 }
 
 // swiftlint:disable force_unwrapping
 public extension UIFont {
+    // periphery:ignore
     enum Leading {
         case loose
         case tight
@@ -58,6 +58,7 @@ public extension UIFont {
         UIFont(descriptor: fontDescriptor.addingAttributes(attributes), size: pointSize)
     }
 
+    // periphery:ignore
     static func system(size: CGFloat,
                        weight: UIFont.Weight,
                        design: UIFontDescriptor.SystemDesign = .default) -> UIFont {
@@ -70,6 +71,7 @@ public extension UIFont {
         return UIFont(descriptor: descriptor, size: size)
     }
 
+    // periphery:ignore
     static func system(_ style: UIFont.TextStyle, design: UIFontDescriptor.SystemDesign = .default) -> UIFont {
         let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style).withDesign(design)!
         return UIFont(descriptor: descriptor, size: 0)
@@ -83,23 +85,28 @@ public extension UIFont {
         ])
     }
 
+    // periphery:ignore
     func italic() -> UIFont {
         let descriptor = fontDescriptor.withSymbolicTraits(.traitItalic)!
         return UIFont(descriptor: descriptor, size: 0)
     }
 
+    // periphery:ignore
     func bold() -> UIFont {
         let descriptor = fontDescriptor.withSymbolicTraits(.traitBold)!
         return UIFont(descriptor: descriptor, size: 0)
     }
 
+    // periphery:ignore
     func leading(_ leading: Leading) -> UIFont {
         let descriptor = fontDescriptor
-            .withSymbolicTraits(leading == .loose ? .traitLooseLeading : .traitTightLeading)!
+            .withSymbolicTraits(leading == .loose ? .traitLooseLeading :
+                .traitTightLeading)!
         return UIFont(descriptor: descriptor, size: 0)
     }
 
-    func smallCaps() -> UIFont {
+    // periphery:ignore
+    var smallCaps: UIFont {
         addingAttributes([
             .featureSettings: [
                 [
@@ -114,7 +121,8 @@ public extension UIFont {
         ])
     }
 
-    func lowercaseSmallCaps() -> UIFont {
+    // periphery:ignore
+    var lowercaseSmallCaps: UIFont {
         addingAttributes([
             .featureSettings: [
                 [
@@ -125,7 +133,8 @@ public extension UIFont {
         ])
     }
 
-    func uppercaseSmallCaps() -> UIFont {
+    // periphery:ignore
+    var uppercaseSmallCaps: UIFont {
         addingAttributes([
             .featureSettings: [
                 [
@@ -136,7 +145,8 @@ public extension UIFont {
         ])
     }
 
-    func monospacedDigit() -> UIFont {
+    // periphery:ignore
+    var monospacedDigit: UIFont {
         addingAttributes([
             .featureSettings: [
                 [

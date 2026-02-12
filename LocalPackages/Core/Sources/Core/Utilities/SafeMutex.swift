@@ -18,8 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// periphery:ignore:all
-
 import Foundation
 import os
 import Synchronization
@@ -30,6 +28,7 @@ public protocol MutexProtected<Value>: Sendable {
 
     var value: Value { get }
 
+    // periphery:ignore
     func withLock<T: Sendable>(_ block: @Sendable (Value) throws -> T) rethrows -> T
 
     @discardableResult
@@ -48,6 +47,7 @@ private final class LegacyMutex<Value: Sendable>: MutexProtected {
         lock.withLock { $0 }
     }
 
+    // periphery:ignore
     func withLock<T: Sendable>(_ block: @Sendable (Value) throws -> T) rethrows -> T {
         try lock.withLock { value in
             try block(value)
@@ -74,6 +74,7 @@ private final class NativeMutex<Value: Sendable>: MutexProtected {
         mutex.withLock { $0 }
     }
 
+    // periphery:ignore
     func withLock<T: Sendable>(_ block: @Sendable (Value) throws -> T) rethrows -> T {
         try mutex.withLock { value in
             try block(value)

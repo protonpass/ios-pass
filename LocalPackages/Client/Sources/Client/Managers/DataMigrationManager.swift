@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// periphery:ignore:all
 import Foundation
 
 public struct MigrationType: OptionSet, Sendable {
@@ -32,6 +31,7 @@ public struct MigrationType: OptionSet, Sendable {
     public static let credentialsAppData = MigrationType(rawValue: 1 << 1)
 
     /// Obsolete and removed in September 2025 but we keep it for the record
+    // periphery:ignore
     public static let userIdInItemsSearchEntriesAndShareKeys = MigrationType(rawValue: 1 << 2)
 
     public static let credentialsForActionExtension = MigrationType(rawValue: 1 << 3)
@@ -44,8 +44,10 @@ public struct MigrationType: OptionSet, Sendable {
 
 public protocol DataMigrationManagerProtocol: Sendable {
     func addMigration(_ migration: MigrationType) async
+    // periphery:ignore
     func hasMigrationOccurred(_ migration: MigrationType) async -> Bool
     func missingMigrations(_ migrations: [MigrationType]) async -> [MigrationType]
+    // periphery:ignore
     func revertMigration(_ migration: MigrationType) async
 }
 

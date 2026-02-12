@@ -18,8 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// Remove later
-// periphery:ignore:all
 import Entities
 import Foundation
 
@@ -90,10 +88,12 @@ public struct FolderEvent: Sendable, Decodable, Equatable {
 
     /// Seemingly redundant but we need to keep `shareID` and `itemID`
     /// with capitalized D in order to not break the decoding process
+    // periphery:ignore
     public var shareId: String {
         shareID
     }
 
+    // periphery:ignore
     public var folderId: String {
         folderID
     }

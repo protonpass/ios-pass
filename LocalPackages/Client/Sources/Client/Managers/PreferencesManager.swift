@@ -19,9 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-// swiftlint:disable:next todo
-// TODO: remove periphery ignore
-// periphery:ignore:all
 @preconcurrency import Combine
 import Core
 import Entities
@@ -65,6 +62,7 @@ public protocol PreferencesManagerProtocol: Sendable, TelemetryThresholdProvider
 
     func updateAppPreferences<T: Sendable>(_ keyPath: WritableKeyPath<AppPreferences, T>,
                                            value: T) async throws
+    // periphery:ignore
     func removeAppPreferences() async
 
     // Shared preferences
@@ -73,6 +71,7 @@ public protocol PreferencesManagerProtocol: Sendable, TelemetryThresholdProvider
 
     func updateSharedPreferences<T: Sendable>(_ keyPath: WritableKeyPath<SharedPreferences, T>,
                                               value: T) async throws
+    // periphery:ignore
     func removeSharedPreferences() async throws
 
     // User's preferences
@@ -83,6 +82,7 @@ public protocol PreferencesManagerProtocol: Sendable, TelemetryThresholdProvider
 
     func updateUserPreferences<T: Sendable>(_ keyPath: WritableKeyPath<UserPreferences, T>,
                                             value: T) async throws
+    // periphery:ignore
     func removeUserPreferences() async throws
 }
 

@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// periphery:ignore:all
 import SwiftUI
 
 public struct RightIconLabelStyle: LabelStyle {
@@ -31,6 +30,7 @@ public struct RightIconLabelStyle: LabelStyle {
 }
 
 public struct BelowIconLabelStyle: LabelStyle {
+    // periphery:ignore
     public func makeBody(configuration: Configuration) -> some View {
         VStack {
             configuration.title
@@ -44,6 +44,7 @@ public extension LabelStyle where Self == RightIconLabelStyle {
         RightIconLabelStyle()
     }
 
+    // periphery:ignore
     static var belowIcon: BelowIconLabelStyle {
         BelowIconLabelStyle()
     }

@@ -20,8 +20,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-// periphery:ignore:all
-
 import Core
 import Foundation
 import ProtonCoreFeatureFlags
