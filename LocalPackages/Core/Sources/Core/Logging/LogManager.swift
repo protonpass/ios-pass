@@ -18,17 +18,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// periphery:ignore:all
 import Foundation
 
 // sourcery: AutoMockable
 public protocol LogManagerProtocol: Actor {
+    // periphery:ignore
     var shouldLog: Bool { get }
 
     func log(entry: LogEntry)
     func getLogEntries() async throws -> [LogEntry]
+    // periphery:ignore
     func removeAllLogs()
     func saveAllLogs()
+    // periphery:ignore
     func toggleLogging(shouldLog: Bool)
 }
 

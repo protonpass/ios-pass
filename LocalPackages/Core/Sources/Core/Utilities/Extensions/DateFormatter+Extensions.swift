@@ -18,10 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// periphery:ignore:all
 import Foundation
 
 public extension DateFormatter {
+    // periphery:ignore
     convenience init(format: String,
                      locale: Locale = .current,
                      timeStyle: DateFormatter.Style = .short,
@@ -34,6 +34,7 @@ public extension DateFormatter {
         setLocalizedDateFormatFromTemplate(format)
     }
 
+    // periphery:ignore
     static var fullDateNoTime: DateFormatter {
         let formatter = DateFormatter()
         formatter.dateStyle = .full

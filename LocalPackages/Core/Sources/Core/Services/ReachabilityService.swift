@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// periphery:ignore:all
 @preconcurrency import Combine
 import Network
 
@@ -34,11 +33,11 @@ public enum NerworkType {
 
 /// Protocol containing the current device network states and informations
 public protocol ReachabilityServicing: Sendable {
-    /// All NWpath informations
+    // periphery:ignore
     var reachabilityInfos: CurrentValueSubject<NWPath?, Never> { get }
     /// Is network currently available
     var isNetworkAvailable: CurrentValueSubject<Bool, Never> { get }
-    /// Type of current connection
+    // periphery:ignore
     var typeOfCurrentConnection: CurrentValueSubject<NerworkType, Never> { get }
 }
 
@@ -56,6 +55,7 @@ public final class ReachabilityService: ReachabilityServicing {
         setUp()
     }
 
+    // periphery:ignore
     public init(with interFaceType: NWInterface.InterfaceType) {
         monitor = NWPathMonitor(requiredInterfaceType: interFaceType)
         setUp()

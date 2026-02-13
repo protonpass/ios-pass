@@ -142,8 +142,6 @@ final class PathRouter: ObservableObject {
         path.append(destination)
     }
 
-    // periphery:ignore
-
     func popToRoot() {
         path = NavigationPath()
     }
