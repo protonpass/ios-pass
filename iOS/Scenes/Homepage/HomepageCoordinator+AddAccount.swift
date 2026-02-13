@@ -48,7 +48,8 @@ extension HomepageCoordinator {
                      apiService: apiManager.getUnauthApiService(),
                      minimumAccountType: .external,
                      paymentsAvailability: .notAvailable,
-                     signupAvailability: .available(parameters: params))
+                     signupAvailability: .available(parameters: params),
+                     ssoCallbackScheme: "protonpass")
     }
 }
 
