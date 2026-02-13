@@ -26,7 +26,6 @@ import Foundation
 public protocol LocalOrganizationDatasourceProtocol: Sendable {
     func getOrganization(userId: String) async throws -> Organization?
     func upsertOrganization(_ organization: Organization, userId: String) async throws
-    // periphery:ignore
     func removeOrganization(userId: String) async throws
 }
 
