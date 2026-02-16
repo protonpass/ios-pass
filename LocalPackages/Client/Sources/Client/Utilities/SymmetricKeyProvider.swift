@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-// periphery:ignore:all
 import Core
 @preconcurrency import CryptoKit
 import Entities

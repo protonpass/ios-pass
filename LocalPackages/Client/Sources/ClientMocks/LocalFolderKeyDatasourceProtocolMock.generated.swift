@@ -79,8 +79,27 @@ public final class LocalFolderKeyDatasourceProtocolMock: @unchecked Sendable, Lo
         }
         closureUpsertFolderKeys()
     }
+    // MARK: - getFolderKeys
+    public var getFolderKeysUserIdShareIdFolderIdThrowableError4: Error?
+    public var closureGetFolderKeys: () -> () = {}
+    public var invokedGetFolderKeysfunction = false
+    public var invokedGetFolderKeysCount = 0
+    public var invokedGetFolderKeysParameters: (userId: String, shareId: String, folderId: String)?
+    public var invokedGetFolderKeysParametersList = [(userId: String, shareId: String, folderId: String)]()
+    public nonisolated(unsafe) var stubbedGetFolderKeysResult: [SymmetricallyEncryptedFolderKey]!
+
+    public func getFolderKeys(userId: String, shareId: String, folderId: String) async throws -> [SymmetricallyEncryptedFolderKey] {
+        invokedGetFolderKeysfunction = true
+        invokedGetFolderKeysCount += 1
+        invokedGetFolderKeysParameters = (userId, shareId, folderId)
+        if let error = getFolderKeysUserIdShareIdFolderIdThrowableError4 {
+            throw error
+        }
+        closureGetFolderKeys()
+        return stubbedGetFolderKeysResult
+    }
     // MARK: - removeAllKeys
-    public var removeAllKeysUserIdThrowableError4: Error?
+    public var removeAllKeysUserIdThrowableError5: Error?
     public var closureRemoveAllKeys: () -> () = {}
     public var invokedRemoveAllKeysfunction = false
     public var invokedRemoveAllKeysCount = 0
@@ -91,7 +110,7 @@ public final class LocalFolderKeyDatasourceProtocolMock: @unchecked Sendable, Lo
         invokedRemoveAllKeysfunction = true
         invokedRemoveAllKeysCount += 1
         invokedRemoveAllKeysParameters = (userId, ())
-        if let error = removeAllKeysUserIdThrowableError4 {
+        if let error = removeAllKeysUserIdThrowableError5 {
             throw error
         }
         closureRemoveAllKeys()

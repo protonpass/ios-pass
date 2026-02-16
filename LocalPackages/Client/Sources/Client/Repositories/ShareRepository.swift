@@ -171,19 +171,16 @@ public extension ShareRepository {
             let hasUndecryptableShares = StateHolder(initialValue: false)
             let shares = try await remoteDatasource.getShares(userId: userId)
             logger.trace("Decrypting \(shares.count) remote shares for user \(userId)")
-            let decryptedShares: [Share] = try await shares
+            let decryptedShares: [Share] = await shares
                 .compactParallelMap(parallelism: 5) { [weak self] in
                     guard let self else { return nil }
                     do {
                         return try await decryptVaultContent(userId: userId, $0)
                     } catch {
-                        if error.isInactiveUserKey {
-                            logger.warning(error.localizedDebugDescription)
-                            await hasUndecryptableShares.update(true)
-                            return nil
-                        } else {
-                            throw error
-                        }
+                        logger
+                            .error("Share with id: \($0.shareId) decryption failed with error: \(error.localizedDebugDescription)") // swiftlint:disable:this line_length
+                        await hasUndecryptableShares.update(true)
+                        return nil
                     }
                 }
             logger

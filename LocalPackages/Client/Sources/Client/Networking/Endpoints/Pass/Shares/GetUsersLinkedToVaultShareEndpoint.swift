@@ -21,12 +21,14 @@
 import Entities
 import ProtonCoreNetworking
 
-// periphery:ignore
 public struct PaginatedUsersLinkedToShare: Decodable, Sendable {
     public let shares: [UserShareInfos]
+    // periphery:ignore
     public let total: Int
+    // periphery:ignore
     public let lastToken: String?
 
+    // periphery:ignore
     public init(shares: [UserShareInfos], total: Int, lastToken: String?) {
         self.shares = shares
         self.total = total

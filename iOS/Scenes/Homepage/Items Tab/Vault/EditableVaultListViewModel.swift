@@ -135,6 +135,13 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
         getFeatureFlagStatus(for: FeatureFlagType.passFolder)
     }
 
+    var shouldHideVaultCreation: Bool {
+        guard let organization else {
+            return false
+        }
+        return organization.settings?.vaultCreateMode != .allowed
+    }
+
     var hasTrashItems: Bool {
         count.trashed > 0
     }

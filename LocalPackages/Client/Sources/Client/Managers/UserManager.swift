@@ -19,8 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-// Remove later
-// periphery:ignore:all
 @preconcurrency import Combine
 import Core
 import Entities
@@ -44,7 +42,6 @@ public protocol UserManagerProtocol: Sendable, UserManagerProvider {
     func getAllUsers() async throws -> [UserData]
     func remove(userId: String) async throws
     func cleanAllUsers() async throws
-    nonisolated func setUserData(_ userData: UserData)
 }
 
 public extension UserManagerProtocol {
@@ -178,21 +175,6 @@ private extension UserManager {
     @MainActor
     func publishNewActiveUser(_ user: UserData?) {
         currentActiveUser.send(user)
-    }
-}
-
-public extension UserManager {
-    nonisolated func setUserData(_ userData: UserData) {
-        Task { @MainActor [weak self] in
-            guard let self else {
-                return
-            }
-            do {
-                try await upsertAndMarkAsActive(userData: userData)
-            } catch {
-                logger.error(error)
-            }
-        }
     }
 }
 

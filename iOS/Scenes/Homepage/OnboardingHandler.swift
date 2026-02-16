@@ -157,7 +157,7 @@ extension OnboardingHandler: OnboardingDelegate {
         router.navigate(to: .urlPage(urlString: ProtonLink.youtubeTutorial))
     }
 
-    // periphery:ignore
+    // periphery:ignore:parameters payload
     func createFirstLogin(payload: OnboardFirstLoginPayload) async throws {}
 
     func markAsOnboarded() async {

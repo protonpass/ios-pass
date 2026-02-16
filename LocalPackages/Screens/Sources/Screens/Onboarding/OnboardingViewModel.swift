@@ -90,7 +90,7 @@ public protocol OnboardingDelegate: Sendable, AnyObject {
     func enableBiometric() async throws
     func enableAutoFill() async -> Bool
     func openTutorialVideo() async
-    // periphery:ignore
+    // periphery:ignore:parameters payload
     func createFirstLogin(payload: OnboardFirstLoginPayload) async throws
     func markAsOnboarded() async
     func add(event: TelemetryEventType) async

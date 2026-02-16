@@ -25,8 +25,13 @@ import Foundation
 // sourcery: AutoMockable
 public protocol LocalFolderKeyDatasourceProtocol: Sendable {
     func getAllFolderKeys() async throws -> [SymmetricallyEncryptedFolderKey]
+    // periphery:ignore
     func getAllFolderKeys(userId: String) async throws -> [SymmetricallyEncryptedFolderKey]
     func upsertFolderKeys(_ keys: [SymmetricallyEncryptedFolderKey]) async throws
+    // periphery:ignore
+    func getFolderKeys(userId: String,
+                       shareId: String,
+                       folderId: String) async throws -> [SymmetricallyEncryptedFolderKey]
     func removeAllKeys(userId: String) async throws
 }
 

@@ -19,8 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-// Remove later
-// periphery:ignore:all
 import CoreData
 import CryptoKit
 import Foundation
@@ -33,6 +31,7 @@ public protocol LocalUserDataDatasourceProtocol: Sendable {
     func remove(userId: String) async throws
     func upsert(_ userData: UserData) async throws
     func updateNewActiveUser(userId: String) async throws
+    // periphery:ignore
     func getActiveUser() async throws -> UserProfile?
     func removeAll() async throws
 }
