@@ -56,14 +56,15 @@ struct EmailGroupSelectionView: View {
             .navigationStackEmbeded($router.path)
             .environmentObject(router)
             .ignoresSafeArea(.keyboard)
-            .sheet(isPresented: $viewModel.showGroupMembers) {
-                if let reco = viewModel.highlightedRecommendation,
-                   case let .group(infos) = reco {
-                    GroupUsersInformationView(groupInfo: infos, rights: nil)
-                        .presentationDetents([.medium, .large])
-                        .presentationDragIndicator(.visible)
-                }
-            }
+            .sheet(isPresented: $viewModel.showGroupMembers,
+                   onDismiss: { viewModel.clearHighlightedRecommendation() },
+                   content: { if let reco = viewModel.highlightedRecommendation,
+                                 case let .group(infos) = reco {
+                           GroupUsersInformationView(groupInfo: infos, rights: nil)
+                               .presentationDetents([.medium, .large])
+                               .presentationDragIndicator(.visible)
+                       }
+                   })
     }
 }
 

@@ -71,7 +71,6 @@ public protocol LocalItemDatasourceProtocol: Sendable {
     /// Permanently delete items with given ids
     func deleteItems(itemIds: [String], shareId: String) async throws
 
-    // periphery:ignore
     /// Nuke items of all shares
     func removeAllItems() async throws
 

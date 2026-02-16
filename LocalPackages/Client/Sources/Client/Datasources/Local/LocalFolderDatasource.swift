@@ -24,8 +24,10 @@ import Entities
 // sourcery: AutoMockable
 public protocol LocalFolderDatasourceProtocol: Sendable {
     func getAllFolders(userId: String) async throws -> [SymmetricallyEncryptedFolder]
+    // periphery:ignore
     func getFolder(shareId: String, folderId: String) async throws -> SymmetricallyEncryptedFolder?
     func upsertFolders(_ folders: [SymmetricallyEncryptedFolder], userId: String) async throws
+    // periphery:ignore
     func removeAllFolders() async throws
     func removeAllFolders(userId: String) async throws
     func removeAllFolders(shareId: String) async throws

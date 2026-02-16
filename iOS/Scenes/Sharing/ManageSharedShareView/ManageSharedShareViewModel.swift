@@ -205,8 +205,7 @@ final class ManageSharedShareViewModel: ObservableObject {
                 case let .updateRole(shareId, role):
                     try await execute(await updateUserShareRole(userShareId: shareId,
                                                                 shareId: share.shareId,
-                                                                shareRole: role),
-                                      shouldForceSync: false)
+                                                                shareRole: role))
 
                 case let .revokeAccess(shareId):
                     try await execute(await revokeUserShareAccess(with: shareId,

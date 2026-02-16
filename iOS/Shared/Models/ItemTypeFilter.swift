@@ -41,7 +41,6 @@ extension ItemTypeFilterOption {
 }
 
 struct ItemTypeFilterOptionUiModel {
-    // periphery:ignore
     let icon: Image
     let title: String
     let count: Int

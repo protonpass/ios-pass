@@ -27,7 +27,6 @@ public protocol APIManagerProtocol: Sendable {
     var apiServiceWereUpdated: PassthroughSubject<any APIService, Never> { get }
 
     func getApiService(userId: String) throws -> any APIService
-    // periphery:ignore
     func getUnauthApiService() -> any APIService
     func reset()
     func removeApiService(for userId: String)

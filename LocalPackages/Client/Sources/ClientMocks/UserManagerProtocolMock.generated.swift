@@ -168,17 +168,4 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
         }
         closureCleanAllUsers()
     }
-    // MARK: - setUserData
-    public var closureSetUserData: () -> () = {}
-    public var invokedSetUserDatafunction = false
-    public var invokedSetUserDataCount = 0
-    public var invokedSetUserDataParameters: (userData: UserData, Void)?
-    public var invokedSetUserDataParametersList = [(userData: UserData, Void)]()
-
-    public func setUserData(_ userData: UserData) {
-        invokedSetUserDatafunction = true
-        invokedSetUserDataCount += 1
-        invokedSetUserDataParameters = (userData, ())
-        closureSetUserData()
-    }
 }
