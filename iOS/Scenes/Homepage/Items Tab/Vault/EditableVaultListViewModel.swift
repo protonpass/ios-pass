@@ -70,9 +70,18 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var hiddenShareIds = Set<String>()
     @Published private(set) var mode: Mode = .view
     @Published private var plan: Plan?
-    @Published private(set) var containersExtended = Set<String>() {
+    @Published var containersExtended = Set<String>() {
         didSet {
             persist()
+        }
+    }
+
+    @Published var shareSelection = ShareSelectionPayload.default {
+        didSet {
+            guard shareSelection != .default else {
+                return
+            }
+            select(.precise(shareSelection))
         }
     }
 
@@ -187,6 +196,9 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     }
 
     func select(_ selection: ShareSelection) {
+        guard !appContentManager.isSelected(selection) else {
+            return
+        }
         appContentManager.select(selection)
     }
 
@@ -472,6 +484,10 @@ private extension EditableVaultListViewModel {
     func setUp() {
         if let userId = userManager.activeUserId {
             containersExtended = Self.loadSet(for: userId)
+        }
+
+        if case let .precise(payload) = appContentManager.shareSelection {
+            shareSelection = payload
         }
 
         appContentManager.$state

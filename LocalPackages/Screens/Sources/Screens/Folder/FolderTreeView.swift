@@ -23,13 +23,14 @@ import Entities
 import ProtonCoreUIFoundations
 import SwiftUI
 
-public struct FolderTreeView: View {
+public struct FolderTreeView<Content: View>: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) private var colorScheme
     let content: ShareContent
     let share: Share
     let folders: [FolderUiModel]
     let shouldDismissOnSelection: Bool
+    private var trailingView: (FolderUiModel, ShareContent) -> Content
     @Binding var containersExtended: Set<String>
     @Binding var selectedContainer: ShareSelectionPayload
 
@@ -38,17 +39,19 @@ public struct FolderTreeView: View {
                 folders: [FolderUiModel],
                 shouldDismissOnSelection: Bool,
                 containersExtended: Binding<Set<String>>,
-                selectedContainer: Binding<ShareSelectionPayload>) {
+                selectedContainer: Binding<ShareSelectionPayload>,
+                @ViewBuilder trailingView: @escaping (FolderUiModel, ShareContent) -> Content) {
         self.content = content
         self.share = share
         self.folders = folders
         self.shouldDismissOnSelection = shouldDismissOnSelection
+        self.trailingView = trailingView
         _containersExtended = containersExtended
         _selectedContainer = selectedContainer
     }
 
     public var body: some View {
-        VStack(spacing: 0) {
+        VStack(alignment: .leading, spacing: 0) {
             ForEach(folders) { folder in
                 row(for: folder)
                     .padding(.vertical, 12)
@@ -60,11 +63,12 @@ public struct FolderTreeView: View {
                                    folders: subFolders,
                                    shouldDismissOnSelection: shouldDismissOnSelection,
                                    containersExtended: $containersExtended,
-                                   selectedContainer: $selectedContainer)
+                                   selectedContainer: $selectedContainer,
+                                   trailingView: { folder, content in trailingView(folder, content) })
                 }
             }
         }
-        .padding(.leading, 8)
+        .padding(.leading, 36)
     }
 
     private func toggleDisplayContainerContent(containerId: String) {
@@ -78,7 +82,7 @@ public struct FolderTreeView: View {
 
 private extension FolderTreeView {
     func row(for folder: FolderUiModel) -> some View {
-        HStack {
+        HStack(spacing: 16) {
             disclosureButton(for: folder)
             folderButton(for: folder)
         }
@@ -88,12 +92,7 @@ private extension FolderTreeView {
         Button {
             toggleDisplayContainerContent(containerId: folder.id)
         } label: {
-            (containersExtended.contains(folder.id)
-                ? IconProvider.chevronDownFilled
-                : IconProvider.chevronRightFilled)
-                .resizable()
-                .frame(width: 30, height: 30)
-                .foregroundStyle(PassColor.textWeak)
+            ExpandRowButtonDisplay(expanded: containersExtended.contains(folder.id))
         }
         .buttonStyle(.plain)
         .opacity(containsSubfolder(folder) ? 1 : 0)
@@ -130,6 +129,7 @@ private extension FolderTreeView {
                     }
 
                     Text(folder.content.name)
+                        .lineLimit(1)
                         .foregroundStyle(PassColor.textNorm)
                         .frame(maxWidth: .infinity, alignment: .topLeading)
                 }
@@ -137,6 +137,8 @@ private extension FolderTreeView {
             .buttonStyle(.plain)
 
             Spacer()
+
+            trailingView(folder, content)
         }
     }
 
@@ -149,5 +151,22 @@ private extension FolderTreeView {
             return false
         }
         return true
+    }
+}
+
+public extension FolderTreeView where Content == EmptyView {
+    init(content: ShareContent,
+         share: Share,
+         folders: [FolderUiModel],
+         shouldDismissOnSelection: Bool,
+         containersExtended: Binding<Set<String>>,
+         selectedContainer: Binding<ShareSelectionPayload>) {
+        self.init(content: content,
+                  share: share,
+                  folders: folders,
+                  shouldDismissOnSelection: shouldDismissOnSelection,
+                  containersExtended: containersExtended,
+                  selectedContainer: selectedContainer,
+                  trailingView: { _, _ in EmptyView() })
     }
 }

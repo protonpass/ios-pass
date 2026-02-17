@@ -115,7 +115,7 @@ private extension ItemMoveVaultListView {
     @ViewBuilder
     func fullRow(content: ShareContent) -> some View {
         if let vaultContent = content.share.vaultContent {
-            HStack {
+            HStack(spacing: 16) {
                 expandVaultRow(content: content)
                 vaultRow(for: content, vaultContent: vaultContent)
             }
@@ -128,11 +128,7 @@ private extension ItemMoveVaultListView {
         if viewModel.folderSupported,
            let folders = content.folders(in: content.id), !folders.isEmpty {
             Button { viewModel.toggleDisplayContainerContent(containerId: content.id) } label: {
-                (viewModel.containersExtended.contains(content.id) ?
-                    IconProvider.chevronDownFilled : IconProvider.chevronRightFilled)
-                    .resizable()
-                    .frame(width: 30, height: 30)
-                    .foregroundStyle(PassColor.textWeak)
+                ExpandRowButtonDisplay(expanded: viewModel.containersExtended.contains(content.id))
             }
             .buttonStyle(.plain)
         }

@@ -140,6 +140,7 @@ public extension PassIcon {
     // swiftlint:enable identifier_name
 
     static let trash = Image(.trash)
+    static let chevronRightFilled = Image(.chevronRightFilled)
 
     static let trial2FA = Image(.trial2FA)
     static let trialCustomFields = Image(.trialCustomFields)
