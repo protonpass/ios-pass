@@ -165,7 +165,12 @@ public extension InviteRepository {
     func refreshAllInvites(userId: String) async throws {
         let userInvites = try await updateUserInvite(userId)
         //  The following should fail silently as only org admins have the right to fetch group invites
-        let groupInvites = try? await updateGroupInvite(userId)
+        var groupInvites: [GroupInvite]?
+        do {
+            groupInvites = try await updateGroupInvite(userId)
+        } catch {
+            logger.error("Group invite fetch failed: \(error)")
+        }
 
         updateCurrentInvites(groupInvites: groupInvites ?? [], userInvites: userInvites)
     }
