@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "" : {
-
-    },
     "?" : {
       "comment" : "Element of button that showcase a information screen ",
       "localizations" : {

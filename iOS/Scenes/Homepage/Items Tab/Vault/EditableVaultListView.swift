@@ -138,6 +138,7 @@ struct EditableVaultListView: View {
         ZStack {
             if viewModel.mode.isView {
                 mainListView
+                    .background(.blue)
             } else {
                 OrganizeVaultListView(viewModel: viewModel)
             }
@@ -236,11 +237,7 @@ private extension EditableVaultListView {
                     HStack(spacing: 16) {
                         if viewModel.folderSupported {
                             Button { viewModel.toggleDisplayContainerContent(containerId: content.id) } label: {
-                                (viewModel.containersExtended.contains(content.id) ?
-                                    IconProvider.chevronDownFilled : IconProvider.chevronRightFilled)
-                                    .resizable()
-                                    .frame(width: 30, height: 30)
-                                    .foregroundStyle(PassColor.textWeak)
+                                ExpandRowButtonDisplay(expanded: viewModel.containersExtended.contains(content.id))
                             }
                             .buttonStyle(.plain)
                         }
@@ -249,38 +246,16 @@ private extension EditableVaultListView {
 
                     if viewModel.containersExtended.contains(content.id) {
                         if let folders = content.folders(in: content.id), !folders.isEmpty {
-                            FolderTreeRow(content: content,
-                                          share: content.share,
-                                          folders: folders,
-                                          viewModel: viewModel)
-                        } else {
-                            HStack {
-                                Button {
-                                    viewModel.folderAction = .createNewFolder(content.share, parentFolderId: nil)
-                                } label: {
-                                    HStack(spacing: 10) {
-                                        IconProvider.folderPlus
-                                            .resizable()
-                                            .scaledToFit()
-                                            .foregroundStyle(PassColor.interactionNormMajor2)
-                                            .frame(height: 20)
-                                        Text("Create folder")
-                                            .font(.callout)
-                                            .fontWeight(.semibold)
-                                            .foregroundStyle(PassColor.interactionNormMajor2)
-                                            .padding(.horizontal, 6)
-                                            .padding(.vertical, 2)
-                                    }
-                                }
-                                .padding(.vertical, 10)
-                                .padding(.horizontal, 16)
-                                .background(PassColor.interactionNormMinor1)
-                                .cornerRadius(20)
-                                .buttonStyle(.plain)
-                                Spacer()
+                            FolderTreeView(content: content,
+                                           share: content.share,
+                                           folders: folders,
+                                           shouldDismissOnSelection: true,
+                                           containersExtended: $viewModel.containersExtended,
+                                           selectedContainer: $viewModel.shareSelection) { folder, content in
+                                FolderMenuView(folder: folder, content: content, viewModel: viewModel)
                             }
-                            .padding(.leading, 46)
-                            .padding(.bottom, 16)
+                        } else {
+                            createFolderButton(content)
                         }
                     }
                     PassDivider()
@@ -340,7 +315,7 @@ private extension EditableVaultListView {
             case .all, .sharedByMe, .sharedWithMe:
                 EmptyView()
             case let .precise(selection):
-                vaultTrailingView(selection.share, haveItems: itemCount > 0)
+                vaultTrailingMenuView(selection.share, haveItems: itemCount > 0)
             case .trash:
                 trashTrailingView
             }
@@ -355,7 +330,7 @@ private extension EditableVaultListView {
             .foregroundStyle(PassColor.textWeak)
     }
 
-    func vaultTrailingView(_ vault: Share, haveItems: Bool) -> some View {
+    func vaultTrailingMenuView(_ vault: Share, haveItems: Bool) -> some View {
         Menu(content: {
             if viewModel.canEdit(vault: vault) {
                 Button(action: {
@@ -491,159 +466,96 @@ private extension EditableVaultListView {
                     })
         }
     }
+
+    func createFolderButton(_ content: ShareContent) -> some View {
+        HStack {
+            Button {
+                viewModel.folderAction = .createNewFolder(content.share, parentFolderId: nil)
+            } label: {
+                HStack(spacing: 10) {
+                    IconProvider.folderPlus
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundStyle(PassColor.interactionNormMajor2)
+                        .frame(height: 20)
+                    Text("Create folder")
+                        .font(.callout)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(PassColor.interactionNormMajor2)
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                }
+            }
+            .padding(.vertical, 10)
+            .padding(.horizontal, 16)
+            .background(PassColor.interactionNormMinor1)
+            .cornerRadius(20)
+            .buttonStyle(.plain)
+            Spacer()
+        }
+        .padding(.leading, 36)
+        .padding(.bottom, 16)
+    }
 }
 
-// MARK: folder tree
-
-struct FolderTreeRow: View {
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.colorScheme) private var colorScheme
-
+private struct FolderMenuView: View {
+    let folder: FolderUiModel
     let content: ShareContent
-    let share: Share
-    let folders: [FolderUiModel]
-    @ObservedObject var viewModel: EditableVaultListViewModel
+    let viewModel: EditableVaultListViewModel
 
     var body: some View {
-        VStack(spacing: 0) {
-            ForEach(folders) { folder in
-                row(for: folder)
-                    .padding(.vertical, 12)
-
-                if shouldShowSubfolders(of: folder),
-                   let subFolders = content.folders(in: folder.id) {
-                    FolderTreeRow(content: content,
-                                  share: share,
-                                  folders: subFolders,
-                                  viewModel: viewModel)
-                }
-            }
-        }
-        .padding(.leading, 8)
-    }
-}
-
-private extension FolderTreeRow {
-    func row(for folder: FolderUiModel) -> some View {
-        HStack {
-            disclosureButton(for: folder)
-            folderButton(for: folder)
-        }
-    }
-
-    @ViewBuilder
-    func disclosureButton(for folder: FolderUiModel) -> some View {
-        if let subfolders = content.folders(in: folder.id), !subfolders.isEmpty {
-            Button {
-                viewModel.toggleDisplayContainerContent(containerId: folder.id)
-            } label: {
-                (viewModel.containersExtended.contains(folder.id)
-                    ? IconProvider.chevronDownFilled
-                    : IconProvider.chevronRightFilled)
-                    .resizable()
-                    .frame(width: 30, height: 30)
-                    .foregroundStyle(PassColor.textWeak)
-            }
-            .buttonStyle(.plain)
-        } else {
-            Text("")
-                .frame(width: 30, height: 30)
-        }
-    }
-
-    func folderButton(for folder: FolderUiModel) -> some View {
-        HStack {
-            Button {
-                dismiss()
-                viewModel.select(.precise(.init(share: content.share, folder: folder)))
-            } label: {
-                HStack {
-                    ZStack(alignment: .bottomTrailing) {
-                        IconProvider.foldersFilled
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                            .foregroundStyle(PassColor.folderIcon)
-
-                        if viewModel.isSelected(.precise(.init(share: share, folder: folder))) {
-                            IconProvider.checkmark
-                                .resizable()
-                                .scaledToFit()
-                                .foregroundStyle(PassColor.textInvert)
-                                .padding(1)
-                                .background(colorScheme == .dark ?
-                                    PassColor.interactionNormMajor2 : PassColor.interactionNorm)
-                                .frame(height: 15)
-                                .clipShape(Circle())
-                                .offset(x: 5, y: 5)
-                        }
-                    }
-
-                    Text(folder.content.name)
-                        .foregroundStyle(PassColor.textNorm)
-                        .frame(maxWidth: .infinity, alignment: .topLeading)
-                }
-            }
-            .buttonStyle(.plain)
-
-            Spacer()
-
-            Menu {
-                Button(action: {
-                    viewModel.folderToMove = FolderToMove(folder: folder, shareContent: content)
-                }, label: {
-                    Label(title: {
-                        Text("Move folder")
-                    }, icon: {
-                        IconProvider.folderArrowIn
-                            .renderingMode(.template)
-                            .foregroundStyle(PassColor.textWeak)
-                    })
+        Menu {
+            Button(action: {
+                viewModel.folderToMove = FolderToMove(folder: folder, shareContent: content)
+            }, label: {
+                Label(title: {
+                    Text("Move folder")
+                }, icon: {
+                    IconProvider.folderArrowIn
+                        .renderingMode(.template)
+                        .foregroundStyle(PassColor.textWeak)
                 })
+            })
 
-                Button(action: {
-                    viewModel.folderAction = .createNewFolder(share, parentFolderId: folder.id)
-                }, label: {
-                    Label(title: {
-                        Text("Create sub-folder")
-                    }, icon: {
-                        IconProvider.folderPlus
-                            .renderingMode(.template)
-                            .foregroundStyle(PassColor.textWeak)
-                    })
+            Button(action: {
+                viewModel.folderAction = .createNewFolder(content.share, parentFolderId: folder.id)
+            }, label: {
+                Label(title: {
+                    Text("Create sub-folder")
+                }, icon: {
+                    IconProvider.folderPlus
+                        .renderingMode(.template)
+                        .foregroundStyle(PassColor.textWeak)
                 })
+            })
 
-                Button(action: {
-                    viewModel.folderAction = .edit(folder)
-                }, label: {
-                    Label(title: {
-                        Text("Rename")
-                    }, icon: {
-                        IconProvider.pencil
-                            .renderingMode(.template)
-                            .foregroundStyle(PassColor.textWeak)
-                    })
+            Button(action: {
+                viewModel.folderAction = .edit(folder)
+            }, label: {
+                Label(title: {
+                    Text("Rename")
+                }, icon: {
+                    IconProvider.pencil
+                        .renderingMode(.template)
+                        .foregroundStyle(PassColor.textWeak)
                 })
+            })
 
-                Divider()
+            Divider()
 
-                Button(role: .destructive,
-                       action: {
-                           viewModel.containerToDelete = .folder(folder)
-                       }, label: {
-                           Label("Delete folder",
-                                 uiImage: IconProvider.trash)
-                       })
-            } label: {
-                IconProvider.threeDotsVertical
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 24, height: 24)
-                    .foregroundStyle(PassColor.textWeak)
-            }
+            Button(role: .destructive,
+                   action: {
+                       viewModel.containerToDelete = .folder(folder)
+                   }, label: {
+                       Label("Delete folder",
+                             uiImage: IconProvider.trash)
+                   })
+        } label: {
+            IconProvider.threeDotsVertical
+                .resizable()
+                .scaledToFit()
+                .frame(width: 24, height: 24)
+                .foregroundStyle(PassColor.textWeak)
         }
-    }
-
-    func shouldShowSubfolders(of folder: FolderUiModel) -> Bool {
-        viewModel.containersExtended.contains(folder.id)
     }
 }
