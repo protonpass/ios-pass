@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24411" systemVersion="24G325" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24512" systemVersion="24G419" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
     <entity name="AccessEntity" representedClassName="AccessEntity" syncable="YES">
         <attribute name="aliasLimit" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="aliasSyncEnabled" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
@@ -55,7 +55,7 @@
         <attribute name="targetType" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="userID" attributeType="String"/>
         <relationship name="keys" toMany="YES" deletionRule="Cascade" destinationEntity="InviteKeyEntity" inverseName="groupInvite" inverseEntity="InviteKeyEntity"/>
-        <relationship name="vaultData" maxCount="1" deletionRule="Cascade" destinationEntity="VaultDataEntity" inverseName="groupInvite" inverseEntity="VaultDataEntity"/>
+        <relationship name="vaultData" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="VaultDataEntity" inverseName="groupInvite" inverseEntity="VaultDataEntity"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="userID"/>
