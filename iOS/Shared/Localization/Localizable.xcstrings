@@ -992,6 +992,16 @@
         }
       }
     },
+    "%@ wants to share an item with the group %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ wants to share an item with the group %2$@."
+          }
+        }
+      }
+    },
     "%@ wants to share an item with you." : {
       "localizations" : {
         "be" : {
@@ -18333,6 +18343,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "接受並檢視該項目"
+          }
+        }
+      }
+    },
+    "Accept invitation" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accept invitation"
           }
         }
       }
@@ -92306,6 +92326,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "邀請更多使用者到此保管庫"
+          }
+        }
+      }
+    },
+    "invites the group %@ to access items in" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "invites the group %@ to access items in"
           }
         }
       }
