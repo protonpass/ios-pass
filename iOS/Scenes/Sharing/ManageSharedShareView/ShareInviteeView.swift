@@ -27,6 +27,7 @@ import SwiftUI
 struct ShareInviteeView: View {
     @State private var isExpanded = false
     let invitee: any ShareInvitee
+    let title: String
     let isManager: Bool
     let managerAsAdmin: Bool
     let isCurrentUser: Bool
@@ -56,7 +57,7 @@ private extension ShareInviteeView {
                               tintColor: ItemType.login.tintColor,
                               backgroundColor: ItemType.login.backgroundColor)
             VStack(alignment: .leading, spacing: 4) {
-                Text(invitee.email)
+                Text(title)
                     .foregroundStyle(PassColor.textNorm)
                     .lineLimit(isExpanded ? nil : 1)
                     .onTapGesture {
