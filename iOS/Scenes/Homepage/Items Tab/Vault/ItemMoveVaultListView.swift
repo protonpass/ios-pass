@@ -162,6 +162,7 @@ private extension ItemMoveVaultListView {
                            shouldDismissOnSelection: false,
                            containersExtended: $viewModel.containersExtended,
                            selectedContainer: $viewModel.selectedContainer)
+                .padding(.leading, 30)
         }
     }
 }

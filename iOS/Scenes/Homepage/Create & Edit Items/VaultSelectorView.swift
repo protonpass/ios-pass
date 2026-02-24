@@ -91,7 +91,7 @@ struct VaultSelectorView: View {
 private extension VaultSelectorView {
     var mainScrollView: some View {
         ScrollView {
-            VStack(spacing: 0) {
+            VStack(alignment: .leading, spacing: 0) {
                 ForEach(shares) { shareContent in
                     fullRow(content: shareContent)
                         .padding(.horizontal)
@@ -107,7 +107,7 @@ private extension VaultSelectorView {
     @ViewBuilder
     private func fullRow(content: ShareContent) -> some View {
         if let vaultContent = content.share.vaultContent {
-            HStack {
+            HStack(spacing: 16) {
                 expandVaultRow(content: content)
                 vaultRow(for: content, vaultContent: vaultContent)
             }
@@ -121,11 +121,7 @@ private extension VaultSelectorView {
         if getFeatureFlagStatus(for: FeatureFlagType.passFolder), let folders = content.folders(in: content.id),
            !folders.isEmpty {
             Button { toggleDisplayContainerContent(containerId: content.id) } label: {
-                (containersExtended.contains(content.id) ?
-                    IconProvider.chevronDownFilled : IconProvider.chevronRightFilled)
-                    .resizable()
-                    .frame(width: 30, height: 30)
-                    .foregroundStyle(PassColor.textWeak)
+                ExpandRowButtonDisplay(expanded: containersExtended.contains(content.id))
             }
             .buttonStyle(.plain)
         }
@@ -159,6 +155,7 @@ private extension VaultSelectorView {
                            shouldDismissOnSelection: true,
                            containersExtended: $containersExtended,
                            selectedContainer: $selectedContainer)
+                .padding(.leading, 30)
         }
     }
 }

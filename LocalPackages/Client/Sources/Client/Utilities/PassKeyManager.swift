@@ -215,6 +215,11 @@ public extension PassKeyManager {
             getLatestCachedKey(id: containerId)
         }
 
+        if key == nil {
+            try await refreshShareKeys(shareId: containerId)
+            return try await getContainerKey(containerId: containerId, keyRotation: keyRotation)
+        }
+
         guard let key else {
             throw PassError.keysNotFound(shareID: containerId)
         }
@@ -224,12 +229,17 @@ public extension PassKeyManager {
 
     func decryptAndStoreFolderKeys(shareId: String, folders: [Folder]) async throws {
         guard !folders.isEmpty else { return }
+        let shareKey = getLatestCachedKey(id: shareId)
+        let userId = try await userManager.getActiveUserId()
 
-        guard let shareKey = getLatestCachedKey(id: shareId) else {
-            throw PassError.keysNotFound(shareID: shareId)
+        if shareKey == nil {
+            try await refreshShareKeys(shareId: shareId)
+            return try await decryptAndStoreFolderKeys(shareId: shareId, folders: folders)
         }
 
-        let userId = try await userManager.getActiveUserId()
+        guard let shareKey else {
+            throw PassError.keysNotFound(shareID: shareId)
+        }
 
         // Build adjacency map for O(1) child lookup
         let adjacencyMap = Dictionary(grouping: folders, by: \.parentFolderID)
@@ -474,5 +484,20 @@ private extension PassKeyManager {
             throw PassError.crypto(.failedToBase64Decode)
         }
         return key.buildKey(with: decryptedKeyData)
+    }
+
+    func refreshShareKeys(shareId: String) async throws {
+        let userId = try await userManager.getActiveUserId()
+        let refreshKeys = try await shareKeyRepository.refreshKeys(userId: userId, shareId: shareId)
+
+        try await withThrowingTaskGroup(of: Void.self) { taskGroup in
+            for encryptedShareKey in refreshKeys {
+                taskGroup.addTask { [weak self] in
+                    guard let self else { return }
+                    _ = try await symmetricDecryptAndCache(encryptedShareKey)
+                }
+            }
+            try await taskGroup.waitForAll()
+        }
     }
 }

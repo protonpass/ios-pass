@@ -155,6 +155,7 @@ private extension FolderMoveListView {
                            shouldDismissOnSelection: false,
                            containersExtended: $viewModel.containersExtended,
                            selectedContainer: $viewModel.selectedContainer)
+                .padding(.leading, 30)
         }
     }
 }
