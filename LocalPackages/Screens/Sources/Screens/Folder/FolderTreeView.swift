@@ -68,7 +68,6 @@ public struct FolderTreeView<Content: View>: View {
                 }
             }
         }
-        .padding(.leading, 36)
     }
 
     private func toggleDisplayContainerContent(containerId: String) {

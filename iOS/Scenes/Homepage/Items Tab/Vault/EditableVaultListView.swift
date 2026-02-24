@@ -254,6 +254,7 @@ private extension EditableVaultListView {
                                            selectedContainer: $viewModel.shareSelection) { folder, content in
                                 FolderMenuView(folder: folder, content: content, viewModel: viewModel)
                             }
+                            .padding(.leading, 30)
                         } else {
                             createFolderButton(content)
                         }
