@@ -34,6 +34,6 @@ public final class SanitizeTotpUriForEditing: SanitizeTotpUriForEditingUseCase {
     public init() {}
 
     public func execute(_ uri: String) -> String {
-        TotpUriSanitizer().uriForEditing(originalUri: uri)
+        TotpUriSanitizer().uriForEditing(uriOrSecret: uri)
     }
 }
