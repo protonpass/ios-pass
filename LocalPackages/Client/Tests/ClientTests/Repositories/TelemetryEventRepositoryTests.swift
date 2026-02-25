@@ -297,8 +297,11 @@ extension TelemetryEventRepositoryTests {
 
         let threshold = await telemetryScheduler.getThreshold()
         let newThreshold = try #require(threshold)
+        
         let intervalInSeconds = newThreshold.timeIntervalSince(givenCurrentDate)
-        let differenceInHours = intervalInSeconds / 3600
+
+        // Round to nearest second to avoid sub-second noise.
+        let roundedSeconds = Int(intervalInSeconds.rounded())
 
         // Then
         #expect(sendResult == .allEventsSent(userIds: [userId3, userId1]))
@@ -309,7 +312,10 @@ extension TelemetryEventRepositoryTests {
 
         let minInterval = await telemetryScheduler.minIntervalInHours
         let maxInterval = await telemetryScheduler.maxIntervalInHours
-        #expect((Double(minInterval)...Double(maxInterval)).contains(differenceInHours))
+        let minSeconds = minInterval * 3600
+        let maxSeconds = maxInterval * 3600
+
+        #expect((minSeconds...maxSeconds).contains(roundedSeconds))
         #expect(itemReadEventRepository.invokedSendAllEventsCount == 1)
     }
 
