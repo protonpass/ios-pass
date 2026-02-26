@@ -349,7 +349,11 @@ private extension EditableVaultListView {
 
             if viewModel.folderSupported {
                 Button(action: {
-                    viewModel.folderAction = .createNewFolder(vault, parentFolderId: nil)
+                    if viewModel.shouldUpsell {
+                        viewModel.upgradeSubscription()
+                    } else {
+                        viewModel.folderAction = .createNewFolder(vault, parentFolderId: nil)
+                    }
                 }, label: {
                     Label(title: {
                         Text("Create folder")
@@ -471,7 +475,11 @@ private extension EditableVaultListView {
     func createFolderButton(_ content: ShareContent) -> some View {
         HStack {
             Button {
-                viewModel.folderAction = .createNewFolder(content.share, parentFolderId: nil)
+                if viewModel.shouldUpsell {
+                    viewModel.upgradeSubscription()
+                } else {
+                    viewModel.folderAction = .createNewFolder(content.share, parentFolderId: nil)
+                }
             } label: {
                 HStack(spacing: 10) {
                     IconProvider.folderPlus
@@ -485,6 +493,12 @@ private extension EditableVaultListView {
                         .foregroundStyle(PassColor.interactionNormMajor2)
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
+                    if viewModel.shouldUpsell {
+                        PassIcon.passSubscriptionBadge
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 24)
+                    }
                 }
             }
             .padding(.vertical, 10)
@@ -519,7 +533,11 @@ private struct FolderMenuView: View {
             })
 
             Button(action: {
-                viewModel.folderAction = .createNewFolder(content.share, parentFolderId: folder.id)
+                if viewModel.shouldUpsell {
+                    viewModel.upgradeSubscription()
+                } else {
+                    viewModel.folderAction = .createNewFolder(content.share, parentFolderId: folder.id)
+                }
             }, label: {
                 Label(title: {
                     Text("Create sub-folder")
