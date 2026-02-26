@@ -331,23 +331,34 @@ public extension ItemRepository {
         logger.trace("Encrypting \(itemRevisions.count) remote items for share \(shareId)")
         var encryptedItems = [SymmetricallyEncryptedItem]()
 
+        var failedItemDecryption = [Item]()
         let symmetricKey = try await getSymmetricKey()
         for (index, itemRevision) in itemRevisions.enumerated() {
-            let encryptedItem = try await symmetricallyEncrypt(itemRevision: itemRevision,
-                                                               shareId: shareId,
-                                                               userId: userId,
-                                                               symmetricKey: symmetricKey)
-            eventStream?.send(.decryptItems(.init(shareId: shareId,
-                                                  total: itemRevisions.count,
-                                                  decrypted: index + 1)))
-            encryptedItems.append(encryptedItem)
+            do {
+                let encryptedItem = try await symmetricallyEncrypt(itemRevision: itemRevision,
+                                                                   shareId: shareId,
+                                                                   userId: userId,
+                                                                   symmetricKey: symmetricKey)
+                eventStream?.send(.decryptItems(.init(shareId: shareId,
+                                                      total: itemRevisions.count,
+                                                      decrypted: index + 1)))
+                encryptedItems.append(encryptedItem)
+            } catch {
+                failedItemDecryption.append(itemRevision)
+                logger.error("Failed to decrypt item \(itemRevision.itemID)")
+            }
+        }
+
+        if !failedItemDecryption.isEmpty {
+            logger
+                .error("Failed to decrypt \(failedItemDecryption.count) items with ids: \(failedItemDecryption.map(\.itemID))")
         }
 
         logger.trace("Removing all local old items if any for share \(shareId)")
         try await localDatasource.removeAllItems(shareId: shareId)
         logger.trace("Removed all local old items for share \(shareId)")
 
-        logger.trace("Saving \(itemRevisions.count) remote item revisions to local database")
+        logger.trace("Saving \(encryptedItems.count) remote item revisions to local database")
         try await localDatasource.upsertItems(encryptedItems)
         logger.trace("Saved \(encryptedItems.count) remote item revisions to local database")
 
@@ -355,6 +366,7 @@ public extension ItemRepository {
         try await shareEventIDRepository.getLastEventId(forceRefresh: true,
                                                         userId: userId,
                                                         shareId: shareId)
+
         try await refreshPinnedItemDataStream()
         logger.trace("Refreshed last event ID for share \(shareId)")
     }
