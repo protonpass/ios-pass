@@ -351,7 +351,7 @@ public extension ItemRepository {
 
         if !failedItemDecryption.isEmpty {
             logger
-                .error("Failed to decrypt \(failedItemDecryption.count) items with ids: \(failedItemDecryption.map(\.itemID))")
+                .error("Failed to decrypt \(failedItemDecryption.count) items with ids: \(failedItemDecryption.map(\.itemID))") // swiftlint:disable:this line_length
         }
 
         logger.trace("Removing all local old items if any for share \(shareId)")
