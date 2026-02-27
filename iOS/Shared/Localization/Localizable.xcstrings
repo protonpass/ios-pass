@@ -18,9 +18,6 @@
         }
       }
     },
-    "..." : {
-
-    },
     "\"%1$@\" is copied to clipboard. Expiring in %2$lld seconds." : {
       "comment" : "First placeholder is the 6-digit code. The 2nd one is the number of second remaining.",
       "localizations" : {
@@ -656,14 +653,11 @@
         }
       }
     },
-    "%@" : {
-
-    },
     "%@ « %@ » deleted" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "%1$@ « %2$@ » deleted"
           }
         }
@@ -158152,7 +158146,7 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Show %1$@ %2$@"
           }
         }
@@ -173499,7 +173493,7 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "This will permanently delete the %1$@ « %2$@ » and all its contents. Enter the %3$@ name to confirm deletion."
           }
         }
