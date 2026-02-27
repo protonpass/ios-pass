@@ -34,8 +34,6 @@ import UseCases
 
 typealias ScanResponsePublisher = PassthroughSubject<(any ScanResult)?, any Error>
 
-extension ItemContent: @retroactive FullItemIdentifiable {}
-
 enum ItemMode: Equatable, Hashable {
     case create(type: ItemCreationType)
     case clone(ItemContent)

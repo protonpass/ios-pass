@@ -76,20 +76,16 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         closureSelect()
     }
     // MARK: - refresh
-    public var refreshUserIdThrowableError2: Error?
     public var closureRefresh: () -> () = {}
     public var invokedRefreshfunction = false
     public var invokedRefreshCount = 0
     public var invokedRefreshParameters: (userId: String, Void)?
     public var invokedRefreshParametersList = [(userId: String, Void)]()
 
-    public func refresh(userId: String) async throws {
+    public func refresh(userId: String) async {
         invokedRefreshfunction = true
         invokedRefreshCount += 1
         invokedRefreshParameters = (userId, ())
-        if let error = refreshUserIdThrowableError2 {
-            throw error
-        }
         closureRefresh()
     }
     // MARK: - fullSync
@@ -207,5 +203,23 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         invokedResetfunction = true
         invokedResetCount += 1
         closureReset()
+    }
+    // MARK: - moveFolder
+    public var moveFolderThrowableError: Error?
+    public var closureMoveFolder: () -> () = {}
+    public var invokedMoveFolderfunction = false
+    public var invokedMoveFolderCount = 0
+    public var invokedMoveFolderParameters: (userId: String, shareId: String, folderId: String, newParentFolderId: String?)?
+    public var invokedMoveFolderParametersList = [(userId: String, shareId: String, folderId: String, newParentFolderId: String?)]()
+
+    public func moveFolder(userId: String, shareId: String, folderId: String, newParentFolderId: String?) async throws {
+        invokedMoveFolderfunction = true
+        invokedMoveFolderCount += 1
+        invokedMoveFolderParameters = (userId, shareId, folderId, newParentFolderId)
+        invokedMoveFolderParametersList.append((userId, shareId, folderId, newParentFolderId))
+        if let error = moveFolderThrowableError {
+            throw error
+        }
+        closureMoveFolder()
     }
 }

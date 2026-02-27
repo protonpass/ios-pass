@@ -208,37 +208,22 @@ public extension PassKeyManager {
     func getContainerKey(containerId: String,
                          keyRotation: Int64? = nil) async throws -> any CryptographicKeyProtocol {
         try await loadKeysIfNeeded()
-
-        let key: (any CryptographicKeyProtocol)? = if let keyRotation {
-            getCachedKey(id: containerId, keyRotation: keyRotation)
-        } else {
-            getLatestCachedKey(id: containerId)
-        }
-
-        if key == nil {
-            try await refreshShareKeys(shareId: containerId)
-            return try await getContainerKey(containerId: containerId, keyRotation: keyRotation)
-        }
-
-        guard let key else {
-            throw PassError.keysNotFound(shareID: containerId)
-        }
-
-        return key
+        return try await getContainerKey(containerId: containerId, keyRotation: keyRotation, refreshed: false)
     }
 
     func decryptAndStoreFolderKeys(shareId: String, folders: [Folder]) async throws {
         guard !folders.isEmpty else { return }
-        let shareKey = getLatestCachedKey(id: shareId)
         let userId = try await userManager.getActiveUserId()
 
-        if shareKey == nil {
+        let shareKey: any CryptographicKeyProtocol
+        if let cachedKey = getLatestCachedKey(id: shareId) {
+            shareKey = cachedKey
+        } else {
             try await refreshShareKeys(shareId: shareId)
-            return try await decryptAndStoreFolderKeys(shareId: shareId, folders: folders)
-        }
-
-        guard let shareKey else {
-            throw PassError.keysNotFound(shareID: shareId)
+            guard let refreshedKey = getLatestCachedKey(id: shareId) else {
+                throw PassError.keysNotFound(shareID: shareId)
+            }
+            shareKey = refreshedKey
         }
 
         // Build adjacency map for O(1) child lookup
@@ -289,6 +274,26 @@ public extension PassKeyManager {
 // MARK: - Private Helpers
 
 private extension PassKeyManager {
+    /// Guarded variant that prevents infinite recursion: refreshes remote keys at most once.
+    func getContainerKey(containerId: String,
+                         keyRotation: Int64?,
+                         refreshed: Bool) async throws -> any CryptographicKeyProtocol {
+        let key: (any CryptographicKeyProtocol)? = if let keyRotation {
+            getCachedKey(id: containerId, keyRotation: keyRotation)
+        } else {
+            getLatestCachedKey(id: containerId)
+        }
+
+        if let key { return key }
+
+        guard !refreshed else {
+            throw PassError.keysNotFound(shareID: containerId)
+        }
+
+        try await refreshShareKeys(shareId: containerId)
+        return try await getContainerKey(containerId: containerId, keyRotation: keyRotation, refreshed: true)
+    }
+
     func symmetricDecryptAndCache(_ encryptedKey: SymmetricallyEncryptedKeyType) async throws
         -> any CryptographicKeyProtocol {
         let containerId = encryptedKey.id
@@ -325,7 +330,8 @@ private extension PassKeyManager {
     func decryptItemKey(_ itemKey: ItemKey,
                         parentId: String,
                         itemId: String) throws -> DecryptedItemKey {
-        guard let parentKey = getLatestCachedKey(id: parentId) else {
+        // we replaced getLatestCachedKey to take into account keyRotation if issue we could revert
+        guard let parentKey = getCachedKey(id: parentId, keyRotation: itemKey.keyRotation) else {
             throw PassError.keysNotFound(shareID: parentId)
         }
 

@@ -36,21 +36,23 @@ final class FolderMoveListViewModel {
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     private(set) var loading: Bool = false
+    private(set) var moveCompleted = false
+    @ObservationIgnored private var moveTask: Task<Void, Never>?
     var selectedContainer: ShareSelectionPayload = .default
     var containersExtended = Set<String>()
     var folderSupported: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passFolder)
     }
 
-    func move(currentFolderId: String) {
-        guard selectedContainer != .default, !loading else {
-            return
-        }
-        Task {
-            defer {
-                loading = false
-            }
+    deinit {
+        moveTask?.cancel()
+    }
 
+    func move(currentFolderId: String) {
+        guard selectedContainer != .default, !loading else { return }
+        moveTask?.cancel()
+        moveTask = Task {
+            defer { loading = false }
             do {
                 loading = true
                 let userId = try await userManager.getActiveUserId()
@@ -58,6 +60,7 @@ final class FolderMoveListViewModel {
                                                        shareId: selectedContainer.share.id,
                                                        folderId: currentFolderId,
                                                        newParentFolderId: selectedContainer.folder?.id)
+                moveCompleted = true
             } catch {
                 router.display(element: .displayErrorBanner(error))
             }
