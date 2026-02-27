@@ -128,10 +128,9 @@ private extension AcceptRejectInviteViewModel {
             }
             do {
                 vaultInfos = try await decodeShareVaultInformation(with: invite)
-                if case let .group(invite) = invite,
-                   let userId = try? await userManager.getActiveUserId(),
-                   let group = try? await groupRepository
-                   .getGroup(userId: userId, groupId: invite.invitedGroupID) {
+                if case let .group(invite) = invite {
+                    let userId = try await userManager.getActiveUserId()
+                    let group = try await groupRepository.getGroup(userId: userId, groupId: invite.invitedGroupID)
                     invitedGroupName = group.name
                 }
             } catch {
