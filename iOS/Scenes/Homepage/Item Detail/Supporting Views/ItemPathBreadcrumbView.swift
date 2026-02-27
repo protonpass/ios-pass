@@ -68,7 +68,7 @@ private extension ItemPathBreadcrumbView {
                     .resizable()
                     .foregroundStyle(PassColor.textWeak)
                     .frame(width: 16, height: 16)
-                Text("...")
+                Text(verbatim: "...")
                     .foregroundStyle(PassColor.textWeak)
             }
             IconProvider.chevronRight

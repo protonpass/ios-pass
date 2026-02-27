@@ -132,13 +132,13 @@ private struct ViewModeView: View {
                         .font(.footnote)
                     Spacer()
                 }
-                Text("\(viewModel.shareSelection.title)")
+                Text(verbatim: "\(viewModel.shareSelection.title)")
                     .font(.title3)
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity)
             }
         } else {
-            Text("\(viewModel.shareSelection.title)")
+            Text(verbatim: "\(viewModel.shareSelection.title)")
                 .font(.title2)
                 .fontWeight(.bold)
                 .frame(maxWidth: .infinity)

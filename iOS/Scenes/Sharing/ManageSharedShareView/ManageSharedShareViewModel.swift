@@ -42,6 +42,8 @@ final class ManageSharedShareViewModel: ObservableObject {
     @Published private(set) var itemSharingAllowed = false
     @Published var newOwner: NewOwner?
 
+    private var groups = [String: String]()
+
     private let getVaultItemCount = resolve(\UseCasesContainer.getVaultItemCount)
     private let getUsersLinkedToShare = resolve(\UseCasesContainer.getUsersLinkedToShare)
     private let getPendingInvitationsForShare = resolve(\UseCasesContainer.getPendingInvitationsForShare)
@@ -63,6 +65,7 @@ final class ManageSharedShareViewModel: ObservableObject {
     private var fetchingTask: Task<Void, Never>?
     @LazyInjected(\SharedRepositoryContainer.organizationRepository)
     private var organizationRepository
+    @LazyInjected(\SharedRepositoryContainer.groupRepository) private var groupRepository
 
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
@@ -233,6 +236,10 @@ final class ManageSharedShareViewModel: ObservableObject {
     func upgrade() {
         router.present(for: .upgradeFlow)
     }
+
+    func inviteName(_ invite: any ShareInvitee) -> String {
+        groups[invite.email] ?? invite.email
+    }
 }
 
 private extension ManageSharedShareViewModel {
@@ -299,6 +306,13 @@ private extension ManageSharedShareViewModel {
             do {
                 let userId = try await userManager.getActiveUserId()
                 let plan = try await accessRepository.getPlan(userId: userId)
+                if let userGroups = try? await groupRepository.getGroups(userId: userId) {
+                    for group in userGroups {
+                        if let address = group.address {
+                            groups[address.email] = group.name
+                        }
+                    }
+                }
                 isFreeUser = plan.isFreeUser
                 isBusinessUser = plan.isBusinessUser
                 if isBusinessUser,
