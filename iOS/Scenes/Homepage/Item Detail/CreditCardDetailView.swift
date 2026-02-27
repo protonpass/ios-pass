@@ -126,11 +126,12 @@ private extension CreditCardDetailView {
                 Text("Cardholder name")
                     .sectionTitleText()
 
-                UpsellableDetailText(text: viewModel.cardholderName,
-                                     placeholder: #localized("Empty"),
-                                     shouldUpgrade: false,
-                                     upgradeTextColor: tintColor) {
-                    viewModel.upgrade()
+                if viewModel.cardholderName.isEmpty {
+                    Text("Empty")
+                        .placeholderText()
+                } else {
+                    Text(viewModel.cardholderName)
+                        .sectionContentText()
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -139,7 +140,7 @@ private extension CreditCardDetailView {
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .contextMenu {
-            if !viewModel.isFreeUser, !viewModel.cardholderName.isEmpty {
+            if !viewModel.cardholderName.isEmpty {
                 Button { viewModel.copyCardholderName() } label: {
                     Text("Copy")
                 }
@@ -155,7 +156,7 @@ private extension CreditCardDetailView {
 
     @ViewBuilder
     var cardNumberRow: some View {
-        let shouldShowOptions = viewModel.creditCardsAllowed && !viewModel.cardNumber.isEmpty
+        let shouldShowOptions = !viewModel.cardNumber.isEmpty
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.creditCard, color: tintColor)
 
@@ -163,13 +164,16 @@ private extension CreditCardDetailView {
                 Text("Card number")
                     .sectionTitleText()
 
-                UpsellableDetailText(text: isShowingCardNumber ?
-                    viewModel.cardNumber.toCreditCardNumber() : viewModel.cardNumber.toMaskedCreditCardNumber(),
-                    placeholder: #localized("Empty"),
-                    shouldUpgrade: !viewModel.creditCardsAllowed,
-                    upgradeTextColor: tintColor,
-                    onUpgrade: { viewModel.upgrade() })
-                    .animation(.default, value: isShowingCardNumber)
+                if viewModel.cardNumber.isEmpty {
+                    Text("Empty")
+                        .placeholderText()
+                } else {
+                    Text(isShowingCardNumber ?
+                        viewModel.cardNumber.toCreditCardNumber() : viewModel.cardNumber
+                        .toMaskedCreditCardNumber())
+                        .sectionContentText()
+                        .animation(.default, value: isShowingCardNumber)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
@@ -207,7 +211,7 @@ private extension CreditCardDetailView {
 
     @ViewBuilder
     var verificationNumberRow: some View {
-        let shouldShowOptions = !viewModel.isFreeUser && !viewModel.verificationNumber.isEmpty
+        let shouldShowOptions = !viewModel.verificationNumber.isEmpty
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: PassIcon.shieldCheck, color: tintColor)
 
@@ -215,13 +219,15 @@ private extension CreditCardDetailView {
                 Text("Security code")
                     .sectionTitleText()
 
-                UpsellableDetailText(text: isShowingVerificationNumber ?
-                    viewModel.verificationNumber :
-                    String(repeating: "•", count: viewModel.verificationNumber.count),
-                    placeholder: #localized("Empty"),
-                    shouldUpgrade: false,
-                    upgradeTextColor: tintColor,
-                    onUpgrade: { viewModel.upgrade() })
+                if viewModel.verificationNumber.isEmpty {
+                    Text("Empty")
+                        .placeholderText()
+                } else {
+                    Text(isShowingVerificationNumber ?
+                        viewModel.verificationNumber :
+                        String(repeating: "•", count: viewModel.verificationNumber.count))
+                        .sectionContentText()
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
@@ -261,7 +267,7 @@ private extension CreditCardDetailView {
 
     @ViewBuilder
     var pinRow: some View {
-        let shouldShowOptions = !viewModel.isFreeUser && !viewModel.pin.isEmpty
+        let shouldShowOptions = !viewModel.pin.isEmpty
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.grid3, color: tintColor)
 
@@ -269,12 +275,7 @@ private extension CreditCardDetailView {
                 Text("PIN number")
                     .sectionTitleText()
 
-                UpsellableDetailText(text: isShowingPIN ?
-                    viewModel.pin : String(repeating: "•", count: viewModel.pin.count),
-                    placeholder: nil,
-                    shouldUpgrade: false,
-                    upgradeTextColor: tintColor,
-                    onUpgrade: { viewModel.upgrade() })
+                Text(isShowingPIN ? viewModel.pin : String(repeating: "•", count: viewModel.pin.count))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
@@ -314,11 +315,12 @@ private extension CreditCardDetailView {
                 Text("Expiration date")
                     .sectionTitleText()
 
-                UpsellableDetailText(text: viewModel.expirationDate,
-                                     placeholder: #localized("Empty"),
-                                     shouldUpgrade: false,
-                                     upgradeTextColor: tintColor) {
-                    viewModel.upgrade()
+                if viewModel.expirationDate.isEmpty {
+                    Text("Empty")
+                        .placeholderText()
+                } else {
+                    Text(viewModel.expirationDate)
+                        .sectionContentText()
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -327,7 +329,7 @@ private extension CreditCardDetailView {
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .contextMenu {
-            if !viewModel.isFreeUser {
+            if !viewModel.expirationDate.isEmpty {
                 Button(action: {
                     viewModel.copyExpirationDate()
                 }, label: {
