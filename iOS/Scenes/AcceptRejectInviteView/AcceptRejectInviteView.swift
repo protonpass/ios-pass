@@ -76,14 +76,28 @@ private extension AcceptRejectInviteView {
             if viewModel.invite.isVault {
                 Text(viewModel.invite.inviterEmail)
                     .fontWeight(.bold)
-                Text("invites you to access items in")
+                switch viewModel.invite {
+                case .user:
+                    Text("invites you to access items in")
+                case .group:
+                    Text("invites the group \(viewModel.invitedGroupName) to access items in")
+                }
             } else {
                 Text("Shared item invitation")
-                    .font(.title)
+                    .font(.title2)
+                    .fontWeight(.bold)
                     .padding(.bottom, 16)
-                Text("\(viewModel.invite.inviterEmail) wants to share an item with you.")
-                    .multilineTextAlignment(.center)
-                    .padding(.bottom, 16)
+                switch viewModel.invite {
+                case .user:
+                    Text("\(viewModel.invite.inviterEmail) wants to share an item with you.")
+                        .multilineTextAlignment(.center)
+                        .padding(.bottom, 16)
+                case .group:
+                    // swiftlint:disable:next line_length
+                    Text("\(viewModel.invite.inviterEmail) wants to share an item with the group \(viewModel.invitedGroupName).")
+                        .multilineTextAlignment(.center)
+                        .padding(.bottom, 16)
+                }
             }
         }
         .foregroundStyle(PassColor.textNorm)
@@ -138,8 +152,13 @@ private extension AcceptRejectInviteView {
 
 private extension Invite {
     var acceptButtonTitle: String {
-        isVault ? fromNewUser ? #localized("See the shared vault") : #localized("Join shared vault") :
-            #localized("Accept and view the item")
+        switch self {
+        case .user:
+            isVault ? fromNewUser ? #localized("See the shared vault") : #localized("Join shared vault") :
+                #localized("Accept and view the item")
+        case .group:
+            #localized("Accept invitation")
+        }
     }
 
     var rejectButtonTitle: String {

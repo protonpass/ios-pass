@@ -82,7 +82,7 @@
         <attribute name="targetType" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="userID" attributeType="String"/>
         <relationship name="keys" toMany="YES" deletionRule="Cascade" destinationEntity="InviteKeyEntity" inverseName="groupInvite" inverseEntity="InviteKeyEntity"/>
-        <relationship name="vaultData" maxCount="1" deletionRule="Cascade" destinationEntity="VaultDataEntity" inverseName="groupInvite" inverseEntity="VaultDataEntity"/>
+        <relationship name="vaultData" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="VaultDataEntity" inverseName="groupInvite" inverseEntity="VaultDataEntity"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="userID"/>

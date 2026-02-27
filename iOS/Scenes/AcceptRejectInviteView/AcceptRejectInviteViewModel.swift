@@ -32,6 +32,7 @@ final class AcceptRejectInviteViewModel: ObservableObject {
     @Published private(set) var vaultInfos: VaultContent?
     @Published private(set) var executingAction = false
     @Published private(set) var shouldCloseSheet = false
+    private(set) var invitedGroupName = ""
 
     private let rejectInvitation = resolve(\UseCasesContainer.rejectInvitation)
     private let acceptInvitation = resolve(\UseCasesContainer.acceptInvitation)
@@ -41,6 +42,8 @@ final class AcceptRejectInviteViewModel: ObservableObject {
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\SharedRepositoryContainer.groupRepository) private var groupRepository
     private var cancellables = Set<AnyCancellable>()
 
     init(invite: Invite) {
@@ -80,6 +83,7 @@ final class AcceptRejectInviteViewModel: ObservableObject {
                 await updateCachedInvitations(for: invite.inviteToken)
                 syncEventLoop.forceSync()
                 if case .group = invite {
+                    executingAction = false
                     shouldCloseSheet = true
                 }
             } catch {
@@ -125,6 +129,11 @@ private extension AcceptRejectInviteViewModel {
             }
             do {
                 vaultInfos = try await decodeShareVaultInformation(with: invite)
+                if case let .group(invite) = invite {
+                    let userId = try await userManager.getActiveUserId()
+                    let group = try await groupRepository.getGroup(userId: userId, groupId: invite.invitedGroupID)
+                    invitedGroupName = group.name
+                }
             } catch {
                 logger.error(message: "Could not decode vault content from invitation", error: error)
                 display(error: error)
