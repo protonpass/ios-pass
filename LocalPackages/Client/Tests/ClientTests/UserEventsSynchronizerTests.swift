@@ -27,7 +27,8 @@ import Testing
 import TestingToolkit
 import Entities
 
-@Suite(.tags(.synchronizer))
+@Suite(.serialized, .tags(.synchronizer))
+@MainActor
 struct UserEventsSynchronizerTests {
     let localItemDatasource = LocalItemDatasourceProtocolMock()
     let localUserEventIdDatasource = LocalUserEventIdDatasourceProtocolMock()
