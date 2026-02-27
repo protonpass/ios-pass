@@ -167,6 +167,7 @@ private extension ManageSharedShareView {
                 }
                 ForEach(Array(invitees.enumerated()), id: \.element.id) { index, invitee in
                     ShareInviteeView(invitee: invitee,
+                                     title: viewModel.inviteName(invitee),
                                      isManager: canExecuteActions,
                                      managerAsAdmin: viewModel.managerAsAdmin,
                                      isCurrentUser: viewModel.isCurrentUser(invitee),
