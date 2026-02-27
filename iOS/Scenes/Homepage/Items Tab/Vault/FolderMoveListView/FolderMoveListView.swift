@@ -44,6 +44,12 @@ struct FolderMoveListView: View {
         .task(id: folderToMove.id) {
             viewModel.load(folderInfos: folderToMove)
         }
+        .onChange(of: viewModel.moveCompleted) { _, completed in
+            if completed {
+                onDismiss()
+                dismiss()
+            }
+        }
     }
 }
 
@@ -54,13 +60,13 @@ private extension FolderMoveListView {
                 .font(.title3)
                 .fontWeight(.bold)
                 .foregroundStyle(PassColor.textNorm)
-            Label("You cannot move a folder to on of his child folders", systemImage: "info.circle.fill")
+            Label("You cannot move a folder to one of its child folders", systemImage: "info.circle.fill")
                 .font(.callout)
                 .foregroundStyle(PassColor.textWeak)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
                 .background(PassColor.backgroundNorm)
-                .cornerRadius(12)
+                .clipShape(.rect(cornerRadius: 12))
             Divider()
                 .padding(.top, 12)
         }
@@ -98,8 +104,6 @@ private extension FolderMoveListView {
                                         height: 44,
                                         action: {
                                             viewModel.move(currentFolderId: folderToMove.folder.id)
-                                            onDismiss()
-                                            dismiss()
                                         })
         }
         .padding([.bottom, .horizontal])

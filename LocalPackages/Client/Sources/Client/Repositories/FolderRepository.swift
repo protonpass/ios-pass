@@ -46,7 +46,7 @@ public protocol FolderRepositoryProtocol: Sendable {
     func refreshFolders(userId: String, foldersIds: [any ElementIdentifiable]) async throws
 }
 
-public final class FolderRepository: FolderRepositoryProtocol {
+public final class FolderRepository: FolderRepositoryProtocol, Sendable {
     private let remoteDatasource: any RemoteFolderDatasourceProtocol
     private let localDatasource: any LocalFolderDatasourceProtocol
     private let symmetricKeyProvider: any SymmetricKeyProvider
@@ -129,12 +129,16 @@ public extension FolderRepository {
             }
         }
 
+        // Remote returned no folders: the share has no folders, clear any stale local data.
+        guard !folders.isEmpty else {
+            logger.trace("No remote folders for share \(shareId), clearing local folders")
+            try await localDatasource.removeAllFolders(shareId: shareId)
+            return
+        }
+
         let symmetricallyEncryptedFolders = try await batchSymmetricDecrypt(userId: userId,
                                                                             shareId: shareId,
                                                                             folders: folders)
-        guard !symmetricallyEncryptedFolders.isEmpty else {
-            return
-        }
 
         logger.trace("Removing all local old folders if any for share \(shareId)")
         try await localDatasource.removeAllFolders(shareId: shareId)

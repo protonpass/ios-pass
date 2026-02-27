@@ -88,14 +88,15 @@ private extension FolderTreeView {
     }
 
     func disclosureButton(for folder: FolderUiModel) -> some View {
-        Button {
+        let hasSubfolders = containsSubfolder(folder)
+        return Button {
             toggleDisplayContainerContent(containerId: folder.id)
         } label: {
             ExpandRowButtonDisplay(expanded: containersExtended.contains(folder.id))
         }
         .buttonStyle(.plain)
-        .opacity(containsSubfolder(folder) ? 1 : 0)
-        .disabled(!containsSubfolder(folder))
+        .opacity(hasSubfolders ? 1 : 0)
+        .disabled(!hasSubfolders)
     }
 
     func folderButton(for folder: FolderUiModel) -> some View {

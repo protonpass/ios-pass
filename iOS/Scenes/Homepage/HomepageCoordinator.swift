@@ -418,7 +418,7 @@ private extension HomepageCoordinator {
                 itemsTabViewModel?.isEditMode = false
             }
 
-            // This call to refresh reload data to most
+            // Refresh to reload data after item creation or edits.
             itemsTabViewModel?.refresh()
             createEditItemCoordinator?.refresh()
         }

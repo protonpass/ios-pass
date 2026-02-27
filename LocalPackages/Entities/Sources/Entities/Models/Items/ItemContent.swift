@@ -135,6 +135,8 @@ extension ItemContent: ItemIdentifiable {
     }
 }
 
+extension ItemContent: FullItemIdentifiable {}
+
 extension ItemContent: ItemTypeIdentifiable {
     public var type: ItemContentType {
         contentData.type
