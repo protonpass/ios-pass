@@ -164,10 +164,16 @@ private extension CreditCardDetailView {
                 Text("Card number")
                     .sectionTitleText()
 
-                Text(isShowingCardNumber ?
-                    viewModel.cardNumber.toCreditCardNumber() : viewModel.cardNumber.toMaskedCreditCardNumber())
-                    .sectionContentText()
-                    .animation(.default, value: isShowingCardNumber)
+                if viewModel.cardNumber.isEmpty {
+                    Text("Empty")
+                        .placeholderText()
+                } else {
+                    Text(isShowingCardNumber ?
+                        viewModel.cardNumber.toCreditCardNumber() : viewModel.cardNumber
+                        .toMaskedCreditCardNumber())
+                        .sectionContentText()
+                        .animation(.default, value: isShowingCardNumber)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
@@ -213,10 +219,15 @@ private extension CreditCardDetailView {
                 Text("Security code")
                     .sectionTitleText()
 
-                Text(isShowingVerificationNumber ?
-                    viewModel.verificationNumber :
-                    String(repeating: "•", count: viewModel.verificationNumber.count))
-                    .sectionContentText()
+                if viewModel.verificationNumber.isEmpty {
+                    Text("Empty")
+                        .placeholderText()
+                } else {
+                    Text(isShowingVerificationNumber ?
+                        viewModel.verificationNumber :
+                        String(repeating: "•", count: viewModel.verificationNumber.count))
+                        .sectionContentText()
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
