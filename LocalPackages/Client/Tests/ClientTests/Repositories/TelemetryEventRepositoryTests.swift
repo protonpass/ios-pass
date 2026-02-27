@@ -377,18 +377,21 @@ extension TelemetryEventRepositoryTests {
         let events = try await localDatasource.getOldestEvents(count: 100, userId: userId)
         let threshold = await telemetryScheduler.getThreshold()
         let newThreshold = try #require(threshold)
-        let difference = Calendar.current.dateComponents([.hour],
-                                                         from: givenCurrentDate,
-                                                         to: newThreshold)
-        let differenceInHours = try #require(difference.hour)
+        
+        let intervalInSeconds = newThreshold.timeIntervalSince(givenCurrentDate)
+
+        // Round to nearest second to avoid sub-second noise.
+        let roundedSeconds = Int(intervalInSeconds.rounded())
 
         // Then
         #expect(sendResult == .allEventsSent(userIds: []))
         #expect(events.isEmpty) // No more events left in local db
         let minInterval = await telemetryScheduler.minIntervalInHours
         let maxInterval = await telemetryScheduler.maxIntervalInHours
-        #expect(differenceInHours >= minInterval)
-        #expect(differenceInHours <= maxInterval)
+        let minSeconds = minInterval * 3600
+        let maxSeconds = maxInterval * 3600
+        #expect(roundedSeconds >= minSeconds)
+        #expect(roundedSeconds <= maxSeconds)
         #expect(!itemReadEventRepository.invokedSendAllEventsfunction)
     }
 
