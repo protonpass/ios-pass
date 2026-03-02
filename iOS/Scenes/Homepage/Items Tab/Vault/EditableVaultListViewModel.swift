@@ -141,7 +141,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     }
 
     var folderSupported: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passFolder)
+        getFeatureFlagStatus(for: FeatureFlagType.passFolder) && (plan?.folderAllowed ?? true)
     }
 
     var shouldHideVaultCreation: Bool {
