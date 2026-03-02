@@ -46,6 +46,7 @@ public struct Plan: Decodable, Hashable, Sendable {
     public let storageAllowed: Bool
     public let storageUsed: Int
     public let storageQuota: Int
+    public let folderAllowed: Bool
 
     /// Enum representation of `type`
     public enum PlanType {
@@ -96,7 +97,8 @@ public struct Plan: Decodable, Hashable, Sendable {
                 totpLimit: Int? = nil,
                 storageAllowed: Bool,
                 storageUsed: Int,
-                storageQuota: Int) {
+                storageQuota: Int,
+                folderAllowed: Bool) {
         self.type = type
         self.internalName = internalName
         self.displayName = displayName
@@ -109,5 +111,6 @@ public struct Plan: Decodable, Hashable, Sendable {
         self.storageAllowed = storageAllowed
         self.storageUsed = storageUsed
         self.storageQuota = storageQuota
+        self.folderAllowed = folderAllowed
     }
 }
