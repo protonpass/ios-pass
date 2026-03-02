@@ -42,7 +42,8 @@ final class CheckAccessResponseTests: XCTestCase {
          "TotpLimit":3,
          "StorageAllowed":false,
          "StorageUsed":1,
-         "StorageQuota":2
+         "StorageQuota":2,
+        "FolderAllowed": true
       },
       "Monitor":{
          "ProtonAddress": true,
@@ -70,7 +71,8 @@ final class CheckAccessResponseTests: XCTestCase {
                                                        totpLimit: 3,
                                                        storageAllowed: false,
                                                        storageUsed: 1,
-                                                       storageQuota: 2),
+                                                       storageQuota: 2,
+                                                       folderAllowed: true),
                                            monitor: .init(protonAddress: true, aliases: false),
                                            pendingInvites: 3,
                                            waitingNewUserInvites: 0,

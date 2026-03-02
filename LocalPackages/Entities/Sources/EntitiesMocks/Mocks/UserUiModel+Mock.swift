@@ -32,6 +32,7 @@ public extension UserUiModel {
                           manageAlias: false,
                           storageAllowed: false,
                           storageUsed: 1,
-                          storageQuota: 2))
+                          storageQuota: 2,
+                          folderAllowed: false))
     }
 }

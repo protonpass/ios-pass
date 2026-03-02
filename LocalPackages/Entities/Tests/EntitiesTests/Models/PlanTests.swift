@@ -35,7 +35,8 @@ final class PlanTests: XCTestCase {
                             totpLimit: nil,
                             storageAllowed: true,
                             storageUsed: 1,
-                            storageQuota: 2)
+                            storageQuota: 2,
+                            folderAllowed: false)
         XCTAssertEqual(plusPlan.planType, .plus)
 
         // Free
@@ -50,7 +51,8 @@ final class PlanTests: XCTestCase {
                             totpLimit: nil,
                             storageAllowed: false,
                             storageUsed: 1,
-                            storageQuota: 2)
+                            storageQuota: 2,
+                            folderAllowed: false)
         XCTAssertEqual(freePlan.planType, .free)
 
         // Trial
@@ -65,7 +67,8 @@ final class PlanTests: XCTestCase {
                              totpLimit: nil,
                              storageAllowed: false,
                              storageUsed: 1,
-                             storageQuota: 2)
+                             storageQuota: 2,
+                             folderAllowed: false)
         XCTAssertEqual(trialPlan.planType, .trial)
     }
 }
