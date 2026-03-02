@@ -40,6 +40,7 @@ public protocol AppContentManagerProtocol: Sendable {
     func delete(userId: String, shareId: String, folderId: String) async throws
     func getOldestOwnedVault() async -> Share?
     func reset() async
+    // periphery:ignore
     func moveFolder(userId: String, shareId: String, folderId: String, newParentFolderId: String?) async throws
 }
 
