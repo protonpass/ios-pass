@@ -102,8 +102,10 @@ struct ProfileTabView: View {
                 aliasesSection
                     .padding(.top)
 
-                secureLinkSection
-                    .padding(.top)
+                if viewModel.publicLinkAllowed {
+                    secureLinkSection
+                        .padding(.top)
+                }
 
                 settingsSection
                     .padding(.top)

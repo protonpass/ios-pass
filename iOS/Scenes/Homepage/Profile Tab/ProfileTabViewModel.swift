@@ -74,6 +74,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedUseCasesContainer.switchUser) private var switchUser
+    @LazyInjected(\SharedRepositoryContainer.organizationRepository)
+    private var organizationRepository
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private var supportedLocalAuthenticationMethods = [LocalAuthenticationMethodUiModel]()
@@ -94,6 +96,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     // Accounts management
     @Published private var currentActiveUser: UserData?
     @Published private(set) var isEasyDeviceMigrationEnabled = false
+    @Published private(set) var publicLinkAllowed = true
 
     var activeAccountDetail: AccountCellDetail? {
         if let currentActiveUser {
@@ -470,6 +473,11 @@ private extension ProfileTabViewModel {
                 let qrLoginFeatureDisabled = getFeatureFlagStatus(for: CoreFeatureFlagType
                     .easyDeviceMigrationDisabled)
 
+                let organization = try await organizationRepository.getOrganization(userId: userId)
+                if let settings = organization?.settings {
+                    publicLinkAllowed = settings.publicLinkMode == .enabled
+                }
+                
                 let isDeviceSecured: Bool = {
                     #if targetEnvironment(simulator)
                     return true
