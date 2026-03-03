@@ -113,11 +113,26 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
             filteredOrderedVaults.contains(where: \.hidden)
     }
 
-    var shouldHideVaultCreation: Bool {
+    var vaultCreationAllowed: Bool {
+        // If user is admin => we ignore vault policy => user can always create vaults
         guard let organization, let userData, userData.user.safeRole != .admin else {
-            return false
+            return true
         }
-        return organization.settings?.vaultCreateMode != .allowed
+
+        return switch organization.settings?.vaultCreateMode {
+        case .allowed:
+            // Explicitly allowed
+            true
+        case .onlyOrgAdmins:
+            // Explicitly disallowed
+            false
+        case .onlyOrgAdminsAndPersonalVault:
+            // Only possible when no vaults
+            (appContentManager.state.loadedContent?.vaultCount ?? 0) == 0
+        default:
+            // Implicitly allowed
+            true
+        }
     }
 
     var hasTrashItems: Bool {
