@@ -21,7 +21,9 @@
 
 import CoreData
 import CryptoKit
+import Entities
 import Foundation
+import ProtonCoreDataModel
 import ProtonCoreLogin
 
 // sourcery: AutoMockable
@@ -111,5 +113,12 @@ public extension LocalUserDataDatasource {
         let context = newTaskContext(type: .delete)
         let request = NSFetchRequest<any NSFetchRequestResult>(entityName: "UserProfileEntity")
         try await execute(batchDeleteRequest: .init(fetchRequest: request), context: context)
+    }
+}
+
+public extension User {
+    /// Type safe role for `role` property
+    var safeRole: UserRole {
+        .init(rawValue: role)
     }
 }
