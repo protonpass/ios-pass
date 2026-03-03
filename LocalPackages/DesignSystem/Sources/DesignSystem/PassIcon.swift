@@ -35,6 +35,7 @@ public extension PassIcon {
     static let brandReddit = Image(.brandReddit)
     static let brandTwitter = Image(.brandTwitter)
     static let magnifyingGlass = Image(.magnifyingGlass)
+    static let noVaults = Image(.noVaults)
 
     static let clearHistory = Image(.clearHistory)
     static let coverScreenLogo = Image(.coverScreenLogo)

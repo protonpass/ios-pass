@@ -51,7 +51,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published var isEditMode = false
     @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)?
     @Published private(set) var sectionedItems: FetchableObject<[SectionedItemUiModel]> = .fetching
-    @Published private var organization: Organization?
+    @Published private(set) var organization: Organization?
     @Published private(set) var refreshSearchResult = false
     @Published private(set) var showPromoBadge = false
 
