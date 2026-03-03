@@ -40,6 +40,14 @@ struct ItemsTabView: View {
     @AppStorage(Constants.QA.useSwiftUIList, store: kSharedUserDefaults)
     private var useSwiftUIList = false
 
+    private let onCreateVault: () -> Void
+
+    init(viewModel: ItemsTabViewModel,
+         onCreateVault: @escaping () -> Void) {
+        _viewModel = .init(wrappedValue: viewModel)
+        self.onCreateVault = onCreateVault
+    }
+
     var body: some View {
         ZStack {
             switch viewModel.sectionedItems {
@@ -89,17 +97,6 @@ struct ItemsTabView: View {
 
     private var fullSyncProgressView: some View {
         FullSyncProgressView(mode: .logIn)
-    }
-
-    private var noVaultsView: some View {
-        VStack {
-            Text("You don't have any vault")
-                .font(.title3.bold())
-                .foregroundStyle(PassColor.textNorm)
-            Text("Please contact your organization support team.")
-                .foregroundStyle(PassColor.textWeak)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
     }
 
     private func vaultContent(_ sections: [SectionedItemUiModel]) -> some View {
@@ -155,7 +152,7 @@ struct ItemsTabView: View {
                 }
 
                 if viewModel.noVaults {
-                    noVaultsView
+                    NoVaultsView(mode: viewModel.organization == nil ? .b2c(onCreate: onCreateVault) : .b2b)
                 } else if sections.isEmpty {
                     emptySections
                 } else {

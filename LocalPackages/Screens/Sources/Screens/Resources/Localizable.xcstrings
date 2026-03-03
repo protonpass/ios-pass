@@ -7738,6 +7738,16 @@
         }
       }
     },
+    "Create new vault" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create new vault"
+          }
+        }
+      }
+    },
     "Create passkey" : {
       "localizations" : {
         "be" : {
@@ -19598,6 +19608,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "暫緩存取分享的資料"
+          }
+        }
+      }
+    },
+    "Please contact your administrator." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please contact your administrator."
           }
         }
       }
@@ -31658,6 +31678,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "你可以附加檔案到項目以便更好地組織機構"
+          }
+        }
+      }
+    },
+    "You don't have any vaults." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You don't have any vaults."
           }
         }
       }
