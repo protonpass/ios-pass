@@ -25,6 +25,7 @@ import Entities
 import FactoryKit
 import Foundation
 import Macro
+import ProtonCoreLogin
 
 private extension EditableVaultListViewModel {
     struct VaultCount: Sendable {
@@ -66,9 +67,10 @@ private extension EditableVaultListViewModel {
 final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var loading = false
     @Published private(set) var state = AppContentState.loading
-    @Published private(set) var organization: Organization?
+    @Published private(set) var organization: Entities.Organization?
     @Published private(set) var hiddenShareIds = Set<String>()
     @Published private(set) var mode: Mode = .view
+    @Published private(set) var userData: UserData?
     @Published private var plan: Plan?
 
     private var count: Count
@@ -112,7 +114,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     }
 
     var shouldHideVaultCreation: Bool {
-        guard let organization else {
+        guard let organization, let userData, userData.user.safeRole != .admin else {
             return false
         }
         return organization.settings?.vaultCreateMode != .allowed
@@ -209,10 +211,11 @@ private extension EditableVaultListViewModel {
         Task { [weak self] in
             guard let self else { return }
             do {
-                let userId = try await userManager.getActiveUserId()
+                let userData = try await userManager.getUnwrappedActiveUserData()
                 if accessRepository.access.value?.access.plan.isBusinessUser == true {
-                    organization = try await organizationRepository.getOrganization(userId: userId)
+                    organization = try await organizationRepository.getOrganization(userId: userData.user.ID)
                 }
+                self.userData = userData
             } catch {
                 handle(error)
             }
