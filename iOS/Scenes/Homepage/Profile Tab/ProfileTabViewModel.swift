@@ -381,6 +381,7 @@ extension ProfileTabViewModel {
 // MARK: - Private APIs
 
 private extension ProfileTabViewModel {
+    // swiftlint:disable function_body_length cyclomatic_complexity
     func setUp() {
         preferencesManager
             .sharedPreferencesUpdates
@@ -477,7 +478,7 @@ private extension ProfileTabViewModel {
                 if let settings = organization?.settings {
                     publicLinkAllowed = settings.publicLinkMode == .enabled
                 }
-                
+
                 let isDeviceSecured: Bool = {
                     #if targetEnvironment(simulator)
                     return true
@@ -496,6 +497,8 @@ private extension ProfileTabViewModel {
             }
         }
     }
+
+    // swiftlint:enable function_body_length cyclomatic_complexity
 
     func refreshLocalAuthenticationMethod() {
         switch getSharedPreferences().localAuthenticationMethod {
