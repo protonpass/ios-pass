@@ -79,4 +79,8 @@ public struct SharesData: Hashable, Sendable {
             itemsSharedByMe.isEmpty &&
             itemsSharedWithMe.isEmpty
     }
+
+    public var vaultCount: Int {
+        shares.count(where: \.share.isVaultRepresentation)
+    }
 }
