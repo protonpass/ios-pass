@@ -35,10 +35,6 @@ extension HomepageCoordinator: HomepageTabBarControllerDelegate {
             profileTab()
         }
     }
-
-    func onCreateVault() {
-        router.present(for: .vaultCreateEdit(vault: nil))
-    }
 }
 
 private extension HomepageCoordinator {
