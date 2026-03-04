@@ -57,7 +57,7 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
         self.init(from: itemContent, allVaults: allVaults)
     }
 
-    // swiftlint:disable:next function_body_length
+    // swiftlint:disable:next function_body_length cyclomatic_complexity
     public init(from itemContent: ItemContent,
                 allVaults: [Share]) {
         itemId = itemContent.item.itemID
@@ -158,14 +158,24 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
         }
 
         let customFields = itemContent.customFields + extraCustomFields
-        for field in customFields where field.type == .text {
-            optionalExtras.append("\(field.title): \(field.content)")
+        for field in customFields {
+            switch field.type {
+            case .text:
+                optionalExtras.append("\(field.title): \(field.content)")
+            default:
+                optionalExtras.append(field.title)
+            }
         }
 
         for section in customSections {
             optionalExtras.append(section.title)
-            for field in section.content where field.type == .text {
-                optionalExtras.append("\(field.title): \(field.content)")
+            for field in section.content {
+                switch field.type {
+                case .text:
+                    optionalExtras.append("\(field.title): \(field.content)")
+                default:
+                    optionalExtras.append(field.title)
+                }
             }
         }
 
@@ -287,6 +297,7 @@ public extension [SearchableItem] {
     /// While this function has no async operations but they're quite resource demanding
     /// when dealing with a large amount of data
     /// so we make it async in order to execute it concurrently out of the main thread
+    @concurrent
     func result(for term: String) async throws -> [ItemSearchResult] {
         try compactMap {
             #if DEBUG
