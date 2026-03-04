@@ -443,7 +443,7 @@ private extension ProfileTabViewModel {
             .receive(on: DispatchQueue.main)
             .removeDuplicates()
             .sink { [weak self] newLinks in
-                guard let self, secureLinks != newLinks else { return }
+                guard let self, publicLinkAllowed, secureLinks != newLinks else { return }
                 secureLinks = newLinks
             }
             .store(in: &cancellables)
