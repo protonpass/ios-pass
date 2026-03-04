@@ -96,6 +96,10 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
                                     vaultCount: appContentManager.getVaultsCount())
     }
 
+    var noVaults: Bool {
+        appContentManager.getVaultsCount() == 0
+    }
+
     private var cancellables = Set<AnyCancellable>()
 
     /// `PullToRefreshable` conformance

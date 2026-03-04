@@ -115,7 +115,7 @@ struct ItemsTabView: View {
                                onDisableAliases: { viewModel.disableSelectedAliases() },
                                onEnableAliases: { viewModel.enableSelectedAliases() },
                                onPromoBadgeTapped: { viewModel.showNotification() })
-                    .hidden(!viewModel.vaultCreationAllowed && viewModel.appContentManager.getVaultsCount() == 0)
+                    .hidden(!viewModel.vaultCreationAllowed && viewModel.noVaults)
 
                 if viewModel.showingUpgradeAppBanner {
                     Button(action: { viewModel.openAppOnAppStore() },
@@ -193,7 +193,7 @@ private extension ItemsTabView {
     var emptySections: some View {
         switch viewModel.appContentManager.shareSelection {
         case .all:
-            if viewModel.appContentManager.getVaultsCount() == 0 {
+            if viewModel.noVaults {
                 NoVaultsView(canCreate: viewModel.vaultCreationAllowed,
                              onCreate: viewModel.createVault)
             } else {

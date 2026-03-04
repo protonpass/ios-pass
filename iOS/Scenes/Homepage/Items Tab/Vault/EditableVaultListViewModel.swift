@@ -70,7 +70,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var organization: Entities.Organization?
     @Published private(set) var hiddenShareIds = Set<String>()
     @Published private(set) var mode: Mode = .view
-    @Published private(set) var userData: UserData?
+    @Published private var userData: UserData?
     @Published private var plan: Plan?
 
     private var count: Count
