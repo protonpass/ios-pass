@@ -24,15 +24,12 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 public struct NoVaultsView: View {
-    let mode: Mode
+    let canCreate: Bool
+    let onCreate: () -> Void
 
-    public enum Mode {
-        case b2b
-        case b2c(onCreate: () -> Void)
-    }
-
-    public init(mode: Mode) {
-        self.mode = mode
+    public init(canCreate: Bool, onCreate: @escaping () -> Void) {
+        self.canCreate = canCreate
+        self.onCreate = onCreate
     }
 
     public var body: some View {
@@ -45,20 +42,18 @@ public struct NoVaultsView: View {
                 .font(.title3.bold())
                 .foregroundStyle(PassColor.textNorm)
 
-            switch mode {
-            case .b2b:
-                Label("Please contact your administrator.", systemImage: "questionmark.circle")
-                    .foregroundStyle(PassColor.textWeak)
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 12)
-                    .overlay(Capsule().strokeBorder(ColorProvider.InteractionWeak, lineWidth: 1))
-
-            case let .b2c(onCreate):
+            if canCreate {
                 CapsuleTextButton(title: #localized("Create new vault", bundle: .module),
                                   titleColor: PassColor.interactionNormMajor2,
                                   backgroundColor: PassColor.interactionNormMinor1,
                                   maxWidth: nil,
                                   action: onCreate)
+            } else {
+                Label("Please contact your administrator.", systemImage: "questionmark.circle")
+                    .foregroundStyle(PassColor.textWeak)
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 12)
+                    .overlay(Capsule().strokeBorder(ColorProvider.InteractionWeak, lineWidth: 1))
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)

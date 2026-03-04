@@ -330,6 +330,10 @@ extension UseCasesContainer {
         self { ReorganizeVaults(userManager: self.userManager,
                                 shareRepository: self.shareRepository) }
     }
+
+    var checkVaultCreationAllowance: Factory<any CheckVaultCreationAllowanceUseCase> {
+        self { CheckVaultCreationAllowance() }
+    }
 }
 
 // MARK: Spotlight

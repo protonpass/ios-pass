@@ -98,6 +98,9 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     @LazyInjected(\SharedRepositoryContainer.itemRepository)
     private var itemRepository
 
+    @LazyInjected(\UseCasesContainer.checkVaultCreationAllowance)
+    private var checkVaultCreationAllowance
+
     private var cancellables = Set<AnyCancellable>()
 
     var filteredOrderedVaults: [Share] {
@@ -114,25 +117,9 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     }
 
     var vaultCreationAllowed: Bool {
-        // If user is admin => we ignore vault policy => user can always create vaults
-        guard let organization, let userData, userData.user.safeRole != .admin else {
-            return true
-        }
-
-        return switch organization.settings?.vaultCreateMode {
-        case .allowed:
-            // Explicitly allowed
-            true
-        case .onlyOrgAdmins:
-            // Explicitly disallowed
-            false
-        case .onlyOrgAdminsAndPersonalVault:
-            // Only possible when no vaults
-            (appContentManager.state.loadedContent?.vaultCount ?? 0) == 0
-        default:
-            // Implicitly allowed
-            true
-        }
+        checkVaultCreationAllowance(userData: userData,
+                                    organization: organization,
+                                    vaultCount: appContentManager.getVaultsCount())
     }
 
     var hasTrashItems: Bool {

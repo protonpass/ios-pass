@@ -25,6 +25,7 @@ import Core
 import Entities
 import FactoryKit
 import Macro
+import ProtonCoreLogin
 import SwiftUI
 
 @MainActor
@@ -51,9 +52,10 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published var isEditMode = false
     @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)?
     @Published private(set) var sectionedItems: FetchableObject<[SectionedItemUiModel]> = .fetching
-    @Published private(set) var organization: Organization?
+    @Published private(set) var organization: Entities.Organization?
     @Published private(set) var refreshSearchResult = false
     @Published private(set) var showPromoBadge = false
+    @Published private var userData: UserData?
 
     let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
     @LazyInjected(\SharedServiceContainer.appContentManager) var appContentManager
@@ -79,11 +81,20 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @LazyInjected(\SharedRepositoryContainer.organizationRepository)
     private var organizationRepository
 
+    @LazyInjected(\UseCasesContainer.checkVaultCreationAllowance)
+    private var checkVaultCreationAllowance
+
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let itemTypeSelection = resolve(\DataStreamContainer.itemTypeSelection)
 
     weak var delegate: (any ItemsTabViewModelDelegate)?
     private var sortTask: Task<Void, Never>?
+
+    var vaultCreationAllowed: Bool {
+        checkVaultCreationAllowance(userData: userData,
+                                    organization: organization,
+                                    vaultCount: appContentManager.getVaultsCount())
+    }
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -300,10 +311,11 @@ extension ItemsTabViewModel {
             await filterAndSortItemsAsync(sortType: sortType)
 
             do {
-                let userId = try await userManager.getActiveUserId()
+                let userData = try await userManager.getUnwrappedActiveUserData()
                 if accessRepository.access.value?.access.plan.isBusinessUser == true {
-                    organization = try await organizationRepository.getOrganization(userId: userId)
+                    organization = try await organizationRepository.getOrganization(userId: userData.user.ID)
                 }
+                self.userData = userData
             } catch {
                 handle(error: error)
             }
