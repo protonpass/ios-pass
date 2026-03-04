@@ -126,6 +126,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @Published private var accesses = [UserAccess]()
 
     private var currentUserTask: Task<Void, Never>?
+    private var accessesTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any ProfileTabViewModelDelegate)?
 
@@ -381,26 +382,60 @@ extension ProfileTabViewModel {
 // MARK: - Private APIs
 
 private extension ProfileTabViewModel {
-    // swiftlint:disable function_body_length cyclomatic_complexity
     func setUp() {
-        preferencesManager
-            .sharedPreferencesUpdates
-            .receive(on: DispatchQueue.main)
-            .filter(\.appLockTime)
-            .sink { [weak self] newValue in
-                guard let self else { return }
-                appLockTime = newValue
-            }
-            .store(in: &cancellables)
+        setupTask()
+        publisherSetup()
+    }
 
+    func setupTask() {
+        Task {
+            do {
+                let userId = try await userManager.getActiveUserId()
+                let userSettings = await userSettingsRepository.getSettings(for: userId)
+                let qrLoginOptedOut = userSettings.flags.edmOptOut == .optedOut
+                let qrLoginFeatureDisabled = getFeatureFlagStatus(for: CoreFeatureFlagType
+                    .easyDeviceMigrationDisabled)
+
+                let organization = try await organizationRepository.getOrganization(userId: userId)
+                if let settings = organization?.settings {
+                    publicLinkAllowed = settings.publicLinkMode == .enabled
+                }
+
+                let isDeviceSecured: Bool = {
+                    #if targetEnvironment(simulator)
+                    return true
+                    #else
+                    let context = LAContext()
+                    var error: NSError?
+
+                    return context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error)
+                    #endif
+                }()
+
+                isEasyDeviceMigrationEnabled = !qrLoginFeatureDisabled && !qrLoginOptedOut && isDeviceSecured
+            } catch {
+                isEasyDeviceMigrationEnabled = false
+                handle(error: error)
+            }
+        }
+    }
+
+    // swiftlint:disable cyclomatic_complexity
+    func publisherSetup() {
         preferencesManager
             .sharedPreferencesUpdates
             .receive(on: DispatchQueue.main)
-            .filter(\.localAuthenticationMethod)
-            .sink { [weak self] _ in
+            .sink { [weak self] preference in
                 guard let self else { return }
-                refreshLocalAuthenticationMethod()
-                showAutomaticCopyTotpCodeExplanation = false
+
+                if preference.keyPath == \SharedPreferences.localAuthenticationMethod {
+                    refreshLocalAuthenticationMethod()
+                    showAutomaticCopyTotpCodeExplanation = false
+                }
+                if preference.keyPath == \SharedPreferences.appLockTime,
+                   let value = preference.value as? AppLockTime {
+                    appLockTime = value
+                }
             }
             .store(in: &cancellables)
 
@@ -435,7 +470,9 @@ private extension ProfileTabViewModel {
                         return
                     }
                     await refreshPlan()
-                    await fetchSecureLinks()
+                    if publicLinkAllowed {
+                        await fetchSecureLinks()
+                    }
                 }
             }
             .store(in: &cancellables)
@@ -445,7 +482,9 @@ private extension ProfileTabViewModel {
             .sink { [weak self] accesses in
                 guard let self else { return }
                 self.accesses = accesses
-                Task { [weak self] in
+                accessesTask?.cancel()
+                accessesTask = nil
+                accessesTask = Task { [weak self] in
                     guard let self else {
                         return
                     }
@@ -465,40 +504,9 @@ private extension ProfileTabViewModel {
                 plan = userAccess.access.plan
             }
             .store(in: &cancellables)
-
-        Task {
-            do {
-                let userId = try await userManager.getActiveUserId()
-                let userSettings = await userSettingsRepository.getSettings(for: userId)
-                let qrLoginOptedOut = userSettings.flags.edmOptOut == .optedOut
-                let qrLoginFeatureDisabled = getFeatureFlagStatus(for: CoreFeatureFlagType
-                    .easyDeviceMigrationDisabled)
-
-                let organization = try await organizationRepository.getOrganization(userId: userId)
-                if let settings = organization?.settings {
-                    publicLinkAllowed = settings.publicLinkMode == .enabled
-                }
-
-                let isDeviceSecured: Bool = {
-                    #if targetEnvironment(simulator)
-                    return true
-                    #else
-                    let context = LAContext()
-                    var error: NSError?
-
-                    return context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error)
-                    #endif
-                }()
-
-                isEasyDeviceMigrationEnabled = !qrLoginFeatureDisabled && !qrLoginOptedOut && isDeviceSecured
-            } catch {
-                isEasyDeviceMigrationEnabled = false
-                handle(error: error)
-            }
-        }
     }
 
-    // swiftlint:enable function_body_length cyclomatic_complexity
+    // swiftlint:enable cyclomatic_complexity
 
     func refreshLocalAuthenticationMethod() {
         switch getSharedPreferences().localAuthenticationMethod {
