@@ -126,6 +126,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @Published private var accesses = [UserAccess]()
 
     private var currentUserTask: Task<Void, Never>?
+    private var accessesTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any ProfileTabViewModelDelegate)?
 
@@ -381,91 +382,12 @@ extension ProfileTabViewModel {
 // MARK: - Private APIs
 
 private extension ProfileTabViewModel {
-    // swiftlint:disable function_body_length cyclomatic_complexity
     func setUp() {
-        preferencesManager
-            .sharedPreferencesUpdates
-            .receive(on: DispatchQueue.main)
-            .filter(\.appLockTime)
-            .sink { [weak self] newValue in
-                guard let self else { return }
-                appLockTime = newValue
-            }
-            .store(in: &cancellables)
+        setupTask()
+        publisherSetup()
+    }
 
-        preferencesManager
-            .sharedPreferencesUpdates
-            .receive(on: DispatchQueue.main)
-            .filter(\.localAuthenticationMethod)
-            .sink { [weak self] _ in
-                guard let self else { return }
-                refreshLocalAuthenticationMethod()
-                showAutomaticCopyTotpCodeExplanation = false
-            }
-            .store(in: &cancellables)
-
-        secureLinkManager.currentSecureLinks
-            .receive(on: DispatchQueue.main)
-            .removeDuplicates()
-            .sink { [weak self] newLinks in
-                guard let self, secureLinks != newLinks else { return }
-                secureLinks = newLinks
-            }
-            .store(in: &cancellables)
-
-        userManager
-            .allUserAccounts
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] accounts in
-                guard let self else { return }
-                userAccounts = accounts
-            }
-            .store(in: &cancellables)
-
-        userManager
-            .currentActiveUser
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] user in
-                guard let self else { return }
-                currentActiveUser = user
-                currentUserTask?.cancel()
-                currentUserTask = nil
-                currentUserTask = Task { [weak self] in
-                    guard let self else {
-                        return
-                    }
-                    await refreshPlan()
-                    await fetchSecureLinks()
-                }
-            }
-            .store(in: &cancellables)
-
-        accessRepository.accesses
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] accesses in
-                guard let self else { return }
-                self.accesses = accesses
-                Task { [weak self] in
-                    guard let self else {
-                        return
-                    }
-                    await updateSupportedLocalAuthenticationMethods()
-                }
-            }
-            .store(in: &cancellables)
-
-        accessRepository.access
-            .receive(on: DispatchQueue.main)
-            .compactMap(\.self)
-            .removeDuplicates()
-            .sink { [weak self] userAccess in
-                guard let self,
-                      let currentActiveUser,
-                      currentActiveUser.userId == userAccess.userId else { return }
-                plan = userAccess.access.plan
-            }
-            .store(in: &cancellables)
-
+    func setupTask() {
         Task {
             do {
                 let userId = try await userManager.getActiveUserId()
@@ -498,7 +420,93 @@ private extension ProfileTabViewModel {
         }
     }
 
-    // swiftlint:enable function_body_length cyclomatic_complexity
+    // swiftlint:disable cyclomatic_complexity
+    func publisherSetup() {
+        preferencesManager
+            .sharedPreferencesUpdates
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] preference in
+                guard let self else { return }
+
+                if preference.keyPath == \SharedPreferences.localAuthenticationMethod {
+                    refreshLocalAuthenticationMethod()
+                    showAutomaticCopyTotpCodeExplanation = false
+                }
+                if preference.keyPath == \SharedPreferences.appLockTime,
+                   let value = preference.value as? AppLockTime {
+                    appLockTime = value
+                }
+            }
+            .store(in: &cancellables)
+
+        secureLinkManager.currentSecureLinks
+            .receive(on: DispatchQueue.main)
+            .removeDuplicates()
+            .sink { [weak self] newLinks in
+                guard let self, publicLinkAllowed, secureLinks != newLinks else { return }
+                secureLinks = newLinks
+            }
+            .store(in: &cancellables)
+
+        userManager
+            .allUserAccounts
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] accounts in
+                guard let self else { return }
+                userAccounts = accounts
+            }
+            .store(in: &cancellables)
+
+        userManager
+            .currentActiveUser
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] user in
+                guard let self else { return }
+                currentActiveUser = user
+                currentUserTask?.cancel()
+                currentUserTask = nil
+                currentUserTask = Task { [weak self] in
+                    guard let self else {
+                        return
+                    }
+                    await refreshPlan()
+                    if publicLinkAllowed {
+                        await fetchSecureLinks()
+                    }
+                }
+            }
+            .store(in: &cancellables)
+
+        accessRepository.accesses
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] accesses in
+                guard let self else { return }
+                self.accesses = accesses
+                accessesTask?.cancel()
+                accessesTask = nil
+                accessesTask = Task { [weak self] in
+                    guard let self else {
+                        return
+                    }
+                    await updateSupportedLocalAuthenticationMethods()
+                }
+            }
+            .store(in: &cancellables)
+
+        accessRepository.access
+            .receive(on: DispatchQueue.main)
+            .compactMap(\.self)
+            .removeDuplicates()
+            .sink { [weak self] userAccess in
+                guard let self,
+                      let currentActiveUser,
+                      currentActiveUser.userId == userAccess.userId else { return }
+                plan = userAccess.access.plan
+            }
+            .store(in: &cancellables)
+    }
+
+    // swiftlint:enable cyclomatic_complexity
 
     func refreshLocalAuthenticationMethod() {
         switch getSharedPreferences().localAuthenticationMethod {
