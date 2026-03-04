@@ -91,14 +91,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
     let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
 
-    var noVaults: Bool {
-        if case let .loaded(data) = appContentManager.state,
-           data.isEmpty, organization?.settings?.vaultCreateMode == .onlyOrgAdmins {
-            return true
-        }
-        return false
-    }
-
     init() {
         setUp()
     }
@@ -296,6 +288,10 @@ private extension ItemsTabViewModel {
 // MARK: - Public APIs
 
 extension ItemsTabViewModel {
+    func createVault() {
+        router.present(for: .vaultCreateEdit(vault: nil))
+    }
+
     func filterAndSortItems(sortType: SortType? = nil) {
         let sortType = sortType ?? selectedSortType
         sortTask?.cancel()

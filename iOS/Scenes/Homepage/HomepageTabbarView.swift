@@ -131,9 +131,7 @@ struct HomepageTabbarView: UIViewControllerRepresentable {
     }
 
     func makeUIViewController(context: Context) -> HomepageTabBarController {
-        let controller = HomepageTabBarController(itemsTabView: .init(viewModel: itemsTabViewModel,
-                                                                      onCreateVault: { delegate?.onCreateVault()
-                                                                      }),
+        let controller = HomepageTabBarController(itemsTabView: .init(viewModel: itemsTabViewModel),
                                                   profileTabView: .init(viewModel: profileTabViewModel),
                                                   passMonitorView: .init(viewModel: passMonitorViewModel))
         controller.homepageTabBarControllerDelegate = delegate
@@ -173,7 +171,6 @@ struct HomepageTabbarView: UIViewControllerRepresentable {
 @MainActor
 protocol HomepageTabBarControllerDelegate: AnyObject {
     func selected(tab: HomepageTab)
-    func onCreateVault()
 }
 
 @MainActor
