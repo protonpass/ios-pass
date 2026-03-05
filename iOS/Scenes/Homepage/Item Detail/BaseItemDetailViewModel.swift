@@ -49,6 +49,8 @@ class BaseItemDetailViewModel: ObservableObject {
     @Published var showingVaultMoveAlert = false
 
     private var superBindValuesCalled = false
+    private var publicLinkAllowed = true
+    private var itemSharingAllowed = true
 
     var fileUiModels: [FileAttachmentUiModel] {
         guard case let .fetched(files) = files else {
@@ -109,6 +111,7 @@ class BaseItemDetailViewModel: ObservableObject {
     @LazyInjected(\SharedUseCasesContainer.generateFileTempUrl) private var generateFileTempUrl
     @LazyInjected(\SharedUseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
     @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
+    @LazyInjected(\SharedRepositoryContainer.organizationRepository) private var organizationRepository
 
     var isAllowedToEdit: Bool {
         guard let vault else {
@@ -134,7 +137,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     var canShareItem: Bool {
-        vault?.vault.shareRole != .read && !itemContent.isAlias
+        vault?.vault.shareRole != .read && !itemContent.isAlias && (publicLinkAllowed || itemSharingAllowed)
     }
 
     var canViewItemHistory: Bool {
@@ -170,6 +173,7 @@ class BaseItemDetailViewModel: ObservableObject {
 
         bindValues()
         checkIfFreeUser()
+        setup()
         addItemReadEvent(itemContent)
         assert(superBindValuesCalled, "bindValues must be overridden with call to super")
     }
@@ -391,6 +395,22 @@ private extension BaseItemDetailViewModel {
         Task {
             guard #available(iOS 17, *) else { return }
             await ItemForceTouchTip.didPerformEligibleQuickAction.donate()
+        }
+    }
+
+    func setup() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let userId = try await userManager.getActiveUserId()
+                let organization = try await organizationRepository.getOrganization(userId: userId)
+                if let settings = organization?.settings {
+                    itemSharingAllowed = settings.itemShareMode == .enabled
+                    publicLinkAllowed = settings.publicLinkMode == .enabled
+                }
+            } catch {
+                handle(error)
+            }
         }
     }
 }
