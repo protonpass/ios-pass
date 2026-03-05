@@ -78,17 +78,18 @@ private extension CreditCardDetailView {
                 Text("Cardholder name")
                     .sectionTitleText()
 
-                UpsellableDetailText(text: viewModel.cardholderName,
-                                     placeholder: #localized("Empty"),
-                                     shouldUpgrade: false,
-                                     upgradeTextColor: tintColor) {
-                    viewModel.upgrade()
+                if viewModel.cardholderName.isEmpty {
+                    Text("Empty")
+                        .placeholderText()
+                } else {
+                    Text(viewModel.cardholderName)
+                        .sectionContentText()
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
             .onTapGesture {
-                if !viewModel.isFreeUser, !viewModel.cardholderName.isEmpty {
+                if !viewModel.cardholderName.isEmpty {
                     viewModel.autofill(viewModel.cardholderName)
                 }
             }
@@ -98,7 +99,7 @@ private extension CreditCardDetailView {
 
     @ViewBuilder
     var cardNumberRow: some View {
-        let shouldShowOptions = !viewModel.isFreeUser && !viewModel.cardNumber.isEmpty
+        let shouldShowOptions = !viewModel.cardNumber.isEmpty
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.creditCard, color: tintColor)
 
@@ -106,19 +107,16 @@ private extension CreditCardDetailView {
                 Text("Card number")
                     .sectionTitleText()
 
-                UpsellableDetailText(text: showCardNumber ?
+                Text(showCardNumber ?
                     viewModel.cardNumber.toCreditCardNumber() :
-                    viewModel.cardNumber.toMaskedCreditCardNumber(),
-                    placeholder: #localized("Empty"),
-                    shouldUpgrade: viewModel.isFreeUser,
-                    upgradeTextColor: tintColor,
-                    onUpgrade: { viewModel.upgrade() })
+                    viewModel.cardNumber.toMaskedCreditCardNumber())
+                    .sectionContentText()
                     .animation(.default, value: showCardNumber)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
             .onTapGesture {
-                if !viewModel.isFreeUser, !viewModel.cardNumber.isEmpty {
+                if shouldShowOptions {
                     viewModel.autofill(viewModel.cardNumber)
                 }
             }
@@ -140,7 +138,7 @@ private extension CreditCardDetailView {
 
     @ViewBuilder
     var verificationNumberRow: some View {
-        let shouldShowOptions = !viewModel.isFreeUser && !viewModel.verificationNumber.isEmpty
+        let shouldShowOptions = !viewModel.verificationNumber.isEmpty
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: PassIcon.shieldCheck, color: tintColor)
 
@@ -148,18 +146,15 @@ private extension CreditCardDetailView {
                 Text("Security code")
                     .sectionTitleText()
 
-                UpsellableDetailText(text: showVerificationNumber ?
+                Text(showVerificationNumber ?
                     viewModel.verificationNumber :
-                    String(repeating: "•", count: viewModel.verificationNumber.count),
-                    placeholder: #localized("Empty"),
-                    shouldUpgrade: viewModel.isFreeUser,
-                    upgradeTextColor: tintColor,
-                    onUpgrade: { viewModel.upgrade() })
+                    String(repeating: "•", count: viewModel.verificationNumber.count))
+                    .sectionContentText()
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
             .onTapGesture {
-                if !viewModel.isFreeUser, !viewModel.verificationNumber.isEmpty {
+                if shouldShowOptions {
                     viewModel.autofill(viewModel.verificationNumber)
                 }
             }
@@ -183,7 +178,7 @@ private extension CreditCardDetailView {
 
     @ViewBuilder
     var pinRow: some View {
-        let shouldShowOptions = !viewModel.isFreeUser && !viewModel.pin.isEmpty
+        let shouldShowOptions = !viewModel.pin.isEmpty
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.grid3, color: tintColor)
 
@@ -191,12 +186,7 @@ private extension CreditCardDetailView {
                 Text("PIN number")
                     .sectionTitleText()
 
-                UpsellableDetailText(text: showPIN ?
-                    viewModel.pin : String(repeating: "•", count: viewModel.pin.count),
-                    placeholder: nil,
-                    shouldUpgrade: false,
-                    upgradeTextColor: tintColor,
-                    onUpgrade: { viewModel.upgrade() })
+                Text(showPIN ? viewModel.pin : String(repeating: "•", count: viewModel.pin.count))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
@@ -225,17 +215,18 @@ private extension CreditCardDetailView {
                 Text("Expiration date")
                     .sectionTitleText()
 
-                UpsellableDetailText(text: viewModel.expirationDate,
-                                     placeholder: nil,
-                                     shouldUpgrade: viewModel.isFreeUser,
-                                     upgradeTextColor: tintColor) {
-                    viewModel.upgrade()
+                if viewModel.expirationDate.isEmpty {
+                    Text("Empty")
+                        .placeholderText()
+                } else {
+                    Text(viewModel.expirationDate)
+                        .sectionContentText()
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
             .onTapGesture {
-                if !viewModel.isFreeUser, !viewModel.expirationDate.isEmpty {
+                if !viewModel.expirationDate.isEmpty {
                     viewModel.autofill(viewModel.expirationDate)
                 }
             }

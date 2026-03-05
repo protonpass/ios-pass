@@ -90,4 +90,8 @@ public struct SharesData: Hashable, Sendable {
     public var visibleShareContents: [ShareContent] {
         shares.values.filter { !$0.share.hidden }
     }
+
+    public var vaultCount: Int {
+        shares.values.count(where: \.share.isVaultRepresentation)
+    }
 }

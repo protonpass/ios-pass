@@ -25,6 +25,7 @@ import Core
 import Entities
 import FactoryKit
 import Macro
+import ProtonCoreLogin
 import SwiftUI
 
 @MainActor
@@ -51,9 +52,10 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published var isEditMode = false
     @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)?
     @Published private(set) var sectionedItems: FetchableObject<[SectionedItemUiModel]> = .fetching
-    @Published private var organization: Organization?
+    @Published private(set) var organization: Entities.Organization?
     @Published private(set) var refreshSearchResult = false
     @Published private(set) var showPromoBadge = false
+    @Published private var userData: UserData?
     @Published var searchMode: SearchMode?
     @Published var showSharedItemsAlert = false
 
@@ -81,6 +83,9 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @LazyInjected(\SharedRepositoryContainer.organizationRepository)
     private var organizationRepository
 
+    @LazyInjected(\UseCasesContainer.checkVaultCreationAllowance)
+    private var checkVaultCreationAllowance
+
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let itemTypeSelection = resolve(\DataStreamContainer.itemTypeSelection)
 
@@ -88,19 +93,21 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private var sortTask: Task<Void, Never>?
     private var refreshTask: Task<Void, Never>?
 
+    var vaultCreationAllowed: Bool {
+        checkVaultCreationAllowance(userData: userData,
+                                    organization: organization,
+                                    vaultCount: appContentManager.getVaultsCount())
+    }
+
+    var noVaults: Bool {
+        appContentManager.getVaultsCount() == 0
+    }
+
     private var cancellables = Set<AnyCancellable>()
 
     /// `PullToRefreshable` conformance
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
     let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
-
-    var noVaults: Bool {
-        if case let .loaded(data) = appContentManager.state,
-           data.isEmpty, organization?.settings?.vaultCreateMode == .onlyOrgAdmins {
-            return true
-        }
-        return false
-    }
 
     init() {
         setUp()
@@ -338,6 +345,10 @@ private extension ItemsTabViewModel {
 // MARK: - Public APIs
 
 extension ItemsTabViewModel {
+    func createVault() {
+        router.present(for: .vaultCreateEdit(vault: nil))
+    }
+
     func filterAndSortItems() {
         sortTask?.cancel()
         sortTask = Task { [weak self] in
@@ -345,10 +356,11 @@ extension ItemsTabViewModel {
             await filterAndSortItemsAsync(sortType: selectedSortType)
 
             do {
-                let userId = try await userManager.getActiveUserId()
+                let userData = try await userManager.getUnwrappedActiveUserData()
                 if accessRepository.access.value?.access.plan.isBusinessUser == true {
-                    organization = try await organizationRepository.getOrganization(userId: userId)
+                    organization = try await organizationRepository.getOrganization(userId: userData.user.ID)
                 }
+                self.userData = userData
             } catch {
                 handle(error: error)
             }

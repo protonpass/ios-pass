@@ -503,7 +503,7 @@ extension AppContentManager: LimitationCounterProtocol {
 
     func getVaultsCount() -> Int {
         guard let sharesData = state.loadedContent else { return 0 }
-        return sharesData.filteredOrderedVaults.count
+        return sharesData.vaultCount
     }
 }
 

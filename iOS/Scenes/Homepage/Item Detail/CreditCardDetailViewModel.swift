@@ -36,19 +36,8 @@ final class CreditCardDetailViewModel: BaseItemDetailViewModel, DeinitPrintable 
     @Published private(set) var year: Int = 0
     @Published private(set) var note = ""
 
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
-    private var getFeatureFlagStatus
-
     var expirationDate: String {
         CreditCardData.expirationDate(month: month, year: year)
-    }
-
-    var creditCardsAllowed: Bool {
-        if isFreeUser {
-            getFeatureFlagStatus(for: FeatureFlagType.passAllowCreditCardFreeUsers)
-        } else {
-            true
-        }
     }
 
     override func bindValues() {
@@ -77,7 +66,7 @@ extension CreditCardDetailViewModel {
     }
 
     func copyCardNumber() {
-        guard creditCardsAllowed, !cardNumber.isEmpty else { return }
+        guard !cardNumber.isEmpty else { return }
         copyToClipboard(text: cardNumber, message: #localized("Card number copied"))
     }
 
