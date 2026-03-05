@@ -1,7 +1,7 @@
 //
-// FeatureFlagType.swift
-// Proton Pass - Created on 04/10/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// UserRole.swift
+// Proton Pass - Created on 03/03/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,17 +17,25 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import ProtonCoreFeatureFlags
+public enum UserRole: Int, Sendable {
+    case free, member, admin, unknown
 
-/// Should be activated when new feature flags are added to the project
-/// following is how a flag should be added:
-/// Example:
-///    case passSharingV1 = "PassSharingV1"
-public enum FeatureFlagType: String, CaseIterable, FeatureFlagTypeProtocol {
-    case passRenameAdminToManager = "PassRenameAdminToManager"
-    case passHideShowVault = "PassHideShowVault"
-    case passUserEventsV1 = "PassUserEventsV1"
-    case passGroupSharingV1 = "PassGroupInvitesV1"
-    case passFolder = "PassFolder"
+    public var isAdmin: Bool {
+        if case .admin = self {
+            true
+        } else {
+            false
+        }
+    }
+
+    public init(rawValue: Int) {
+        self = switch rawValue {
+        case 0: .free
+        case 1: .member
+        case 2: .admin
+        default: .unknown
+        }
+    }
 }

@@ -1,15 +1,18 @@
 repos:
-  - repo: https://github.com/realm/SwiftLint
-    rev: 0.59.1
-    hooks:
-      - id: swiftlint
-        args: [lint]
-        files: \.swift$
-
-  - repo: https://github.com/nicklockwood/SwiftFormat
-    rev: 0.57.2
+  - repo: local
     hooks:
       - id: swiftformat
-        files: \.swift$
+        name: SwiftFormat
         entry: swiftformat
-        language: swift
+        language: system
+        types: [swift]
+        pass_filenames: true
+        
+      - id: swiftlint-local
+        name: SwiftLint
+        entry: swiftlint lint --quiet --strict --config .swiftlint.yml
+        language: system
+        types: [swift]
+        pass_filenames: false
+
+exclude: ^\.build/

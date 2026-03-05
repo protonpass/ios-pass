@@ -60,18 +60,14 @@ private extension CreateEditCreditCardView {
         ScrollViewReader { proxy in
             ScrollView {
                 VStack {
-                    if viewModel.shouldUpgrade {
-                        upsellBanner
-                    } else {
-                        FileAttachmentsBanner(isShown: !viewModel.dismissedFileAttachmentsBanner,
-                                              onTap: {
-                                                  viewModel.dismissFileAttachmentsBanner()
-                                                  DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
-                                                      proxy.scrollTo(fileAttachmentsID, anchor: .bottom)
-                                                  }
-                                              },
-                                              onClose: { viewModel.dismissFileAttachmentsBanner() })
-                    }
+                    FileAttachmentsBanner(isShown: !viewModel.dismissedFileAttachmentsBanner,
+                                          onTap: {
+                                              viewModel.dismissFileAttachmentsBanner()
+                                              DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                                                  proxy.scrollTo(fileAttachmentsID, anchor: .bottom)
+                                              }
+                                          },
+                                          onClose: { viewModel.dismissFileAttachmentsBanner() })
 
                     CreateEditItemTitleSection(title: $viewModel.title,
                                                focusedField: $focusedField,
@@ -131,15 +127,6 @@ private extension CreateEditCreditCardView {
                 }
             }
         }
-    }
-
-    var upsellBanner: some View {
-        Text("Upgrade to create credit cards")
-            .padding()
-            .foregroundStyle(PassColor.textNorm)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(PassColor.cardInteractionNormMinor1)
-            .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 }
 

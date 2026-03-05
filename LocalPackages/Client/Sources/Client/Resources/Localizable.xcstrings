@@ -1979,7 +1979,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "In %@ suchen..."
+            "value" : "%@ durchsuchen …"
           }
         },
         "el" : {
@@ -2006,28 +2006,10 @@
             "value" : "Buscar en %@..."
           }
         },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Etsi holvista %@..."
-          }
-        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rechercher dans %@…"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Keresés: %@..."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cari di %@..."
           }
         },
         "it" : {
@@ -2036,22 +2018,10 @@
             "value" : "Cerca in %@..."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ 内を検索..."
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@-ში ძებნა..."
-          }
-        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@에서 검색..."
+            "value" : "%@ 에서 검색..."
           }
         },
         "nb" : {
@@ -2066,18 +2036,6 @@
             "value" : "Zoeken in %@..."
           }
         },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Przeszukaj sejf %@..."
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pesquisar em %@..."
-          }
-        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2090,22 +2048,10 @@
             "value" : "Căutare în %@..."
           }
         },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Поиск в %@..."
-          }
-        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hľadať v %@..."
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Iskanje v %@ ..."
           }
         },
         "sv" : {
@@ -2120,28 +2066,10 @@
             "value" : "%@ içinde ara..."
           }
         },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Пошук у %@..."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tìm trong %@..."
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "在 %@ 中搜索..."
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "於 %@ 中搜尋..."
           }
         }
       }
@@ -2163,7 +2091,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hledání ve všech položkách..."
+            "value" : "Hledat ve všech položkách..."
           }
         },
         "da" : {
@@ -2353,7 +2281,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hledání v položkách sdílených mnou"
+            "value" : "Hledat v položkách sdílených mnou"
           }
         },
         "da" : {
@@ -2543,7 +2471,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hledání v položkách sdílených se mnou"
+            "value" : "Hledat v položkách sdílených se mnou"
           }
         },
         "da" : {

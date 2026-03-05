@@ -87,17 +87,6 @@ struct ItemsTabView: View {
         FullSyncProgressView(mode: .logIn)
     }
 
-    private var noVaultsView: some View {
-        VStack {
-            Text("You don't have any vault")
-                .font(.title3.bold())
-                .foregroundStyle(PassColor.textNorm)
-            Text("Please contact your organization support team.")
-                .foregroundStyle(PassColor.textWeak)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-    }
-
     private func vaultContent(_ sections: [SectionedItemUiModel]) -> some View {
         GeometryReader { proxy in
             VStack(spacing: 0) {
@@ -108,7 +97,7 @@ struct ItemsTabView: View {
                     viewModel.topBarActionTriggered(action)
                 }
 
-                .hidden(viewModel.noVaults)
+                .hidden(!viewModel.vaultCreationAllowed && viewModel.noVaults)
 
                 if viewModel.showingUpgradeAppBanner {
                     Button(action: { viewModel.openAppOnAppStore() },
@@ -136,9 +125,7 @@ struct ItemsTabView: View {
                     Divider()
                 }
 
-                if viewModel.noVaults {
-                    noVaultsView
-                } else if sections.isEmpty {
+                if sections.isEmpty {
                     emptySections
                 } else {
                     itemList(sections)
@@ -188,15 +175,23 @@ private extension ItemsTabView {
     var emptySections: some View {
         switch viewModel.appContentManager.shareSelection {
         case .all:
-            EmptyVaultView(canCreateItems: !viewModel.appContentManager.getAllEditableVaultContents().isEmpty,
-                           onCreate: { viewModel.createNewItem(type: $0) })
-                .padding(.bottom, safeAreaInsets.bottom)
+            if viewModel.noVaults {
+                NoVaultsView(canCreate: viewModel.vaultCreationAllowed,
+                             onCreate: viewModel.createVault)
+            } else {
+                EmptyVaultView(canCreateItems: !viewModel.appContentManager.getAllEditableVaultContents().isEmpty,
+                               onCreate: { viewModel.createNewItem(type: $0) })
+                    .padding(.bottom, safeAreaInsets.bottom)
+            }
+
         case let .precise(selection):
             EmptyVaultView(canCreateItems: selection.share.canEdit,
                            onCreate: { viewModel.createNewItem(type: $0) })
+
         case .trash:
             EmptyTrashView()
                 .padding(.bottom, safeAreaInsets.bottom)
+
         case .sharedByMe, .sharedWithMe:
             VStack {
                 Spacer()

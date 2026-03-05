@@ -231,7 +231,9 @@ private extension HomepageCoordinator {
                 guard let self else { return }
                 itemDetailCoordinator?.refresh(onItemNotFound: { [weak self] in
                     guard let self else { return }
-                    push(itemDetailPlaceholderView, animated: false, hidesBackButton: false)
+                    if UIDevice.current.isIpad {
+                        push(itemDetailPlaceholderView, animated: false, hidesBackButton: false)
+                    }
                 })
             }
             .store(in: &cancellables)

@@ -11,9 +11,10 @@ Improvements:
 - Fixed crypto error when logging with QR code
 
 Others:
+- Remove "PassAllowCreditCardFreeUsers" flag
 - B2B: personal vault policy
 - Core libraries upgraded from 34.2.2 to 35.0.3
-- Rust library upgraded from 0.28.4 to 0.28.8
+- Rust library upgraded from 0.28.4 to 1.1.2
 
 # Version 1.17.11
 - Reworded "Clone" to "Duplicate"

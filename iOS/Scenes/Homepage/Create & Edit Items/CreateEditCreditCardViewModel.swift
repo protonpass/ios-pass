@@ -36,9 +36,6 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
     @Published var month: Int?
     @Published var year: Int?
 
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
-    private var getFeatureFlagStatus
-
     /// For swapping section title color purpose
     /// We're only interested in the emptiness of the string, not the format
     var monthYear: String {
@@ -51,14 +48,6 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
 
     override var itemContentType: ItemContentType {
         .creditCard
-    }
-
-    override var shouldUpgrade: Bool {
-        // Free users can not create more credit cards but can only update
-        if case .create = mode, isFreeUser {
-            return !getFeatureFlagStatus(for: FeatureFlagType.passAllowCreditCardFreeUsers)
-        }
-        return false
     }
 
     override init(mode: ItemMode,
