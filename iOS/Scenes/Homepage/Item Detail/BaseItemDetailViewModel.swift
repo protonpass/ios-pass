@@ -137,7 +137,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     var canShareItem: Bool {
-        vault?.vault.shareRole != .read && !itemContent.isAlias && publicLinkAllowed && itemSharingAllowed
+        vault?.vault.shareRole != .read && !itemContent.isAlias && (publicLinkAllowed || itemSharingAllowed)
     }
 
     var canViewItemHistory: Bool {
