@@ -1,6 +1,11 @@
 # Version 1.18.0
 SSH key generator: You can now generate an SSH key by focusing on the public or private key field and selecting "Generate SSH key".
 
+Features:
+- User events: added a new data sync mechanism (behind feature flag)
+- Ability to hide/show vaults (behind feature flag)
+- Added support for searching SimpleLogin notes (behind feature flag)
+
 Improvements:
 - Reduced spacing between items on the homepage
 - Handle missing credit card expiration date
@@ -9,10 +14,12 @@ Improvements:
 - Fixed jumping cursor in text custom fields
 - Fixed file picker not appearing in some cases
 - Fixed crypto error when logging with QR code
+- Fixed an issue where free users could not reveal credit details
 
 Others:
 - Remove "PassAllowCreditCardFreeUsers" flag
 - B2B: personal vault policy
+- B2B: secure link policy
 - Core libraries upgraded from 34.2.2 to 35.0.3
 - Rust library upgraded from 0.28.4 to 1.1.2
 
