@@ -74,8 +74,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedUseCasesContainer.switchUser) private var switchUser
-    @LazyInjected(\SharedRepositoryContainer.organizationRepository)
-    private var organizationRepository
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private var supportedLocalAuthenticationMethods = [LocalAuthenticationMethodUiModel]()
@@ -96,7 +94,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     // Accounts management
     @Published private var currentActiveUser: UserData?
     @Published private(set) var isEasyDeviceMigrationEnabled = false
-    @Published private(set) var publicLinkAllowed = true
 
     var activeAccountDetail: AccountCellDetail? {
         if let currentActiveUser {
@@ -396,11 +393,6 @@ private extension ProfileTabViewModel {
                 let qrLoginFeatureDisabled = getFeatureFlagStatus(for: CoreFeatureFlagType
                     .easyDeviceMigrationDisabled)
 
-                let organization = try await organizationRepository.getOrganization(userId: userId)
-                if let settings = organization?.settings {
-                    publicLinkAllowed = settings.publicLinkMode == .enabled
-                }
-
                 let isDeviceSecured: Bool = {
                     #if targetEnvironment(simulator)
                     return true
@@ -420,7 +412,6 @@ private extension ProfileTabViewModel {
         }
     }
 
-    // swiftlint:disable cyclomatic_complexity
     func publisherSetup() {
         preferencesManager
             .sharedPreferencesUpdates
@@ -443,7 +434,7 @@ private extension ProfileTabViewModel {
             .receive(on: DispatchQueue.main)
             .removeDuplicates()
             .sink { [weak self] newLinks in
-                guard let self, publicLinkAllowed, secureLinks != newLinks else { return }
+                guard let self, secureLinks != newLinks else { return }
                 secureLinks = newLinks
             }
             .store(in: &cancellables)
@@ -470,9 +461,7 @@ private extension ProfileTabViewModel {
                         return
                     }
                     await refreshPlan()
-                    if publicLinkAllowed {
-                        await fetchSecureLinks()
-                    }
+                    await fetchSecureLinks()
                 }
             }
             .store(in: &cancellables)
@@ -505,8 +494,6 @@ private extension ProfileTabViewModel {
             }
             .store(in: &cancellables)
     }
-
-    // swiftlint:enable cyclomatic_complexity
 
     func refreshLocalAuthenticationMethod() {
         switch getSharedPreferences().localAuthenticationMethod {
