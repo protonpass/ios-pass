@@ -2037,6 +2037,12 @@
             "value" : "ログを共有する"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ჟურნალის გაზიარება"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
