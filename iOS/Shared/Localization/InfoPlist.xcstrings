@@ -135,6 +135,12 @@
             "value" : "2要素認証コード、クレジットカード、手書きメモ、およびQRコードをスキャンする"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაასკანერეთ 2FA კოდი, საკრედიტო ბარათი, ხელნაწერი შენიშვნა და QR კოდი"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",

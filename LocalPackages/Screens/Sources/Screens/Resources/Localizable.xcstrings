@@ -69,6 +69,18 @@
             "value" : "(%lld membres)"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(%lld membri)"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(%lld წევრი)"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -188,6 +200,18 @@
             "value" : "%@/mois"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@/mese"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@/თვეში"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -305,6 +329,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ sur %2$@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ di %2$@"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@-დან"
           }
         },
         "nb" : {
@@ -563,6 +599,42 @@
             }
           }
         },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alias presente in SimpleLogin ma mancante in Proton Pass."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alias presenti in SimpleLogin ma mancanti in Proton Pass."
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ფსევდონიმი არსებობს SimpleLogin-ში, მაგრამ არაა Proton Pass-ში"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ფსევდონიმი არსებობს SimpleLogin-ში, მაგრამ არაა Proton Pass-ში"
+                }
+              }
+            }
+          }
+        },
         "nb" : {
           "variations" : {
             "plural" : {
@@ -723,6 +795,36 @@
     },
     "%lld files" : {
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld файлы"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld файлаў"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld файл"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld файлаў"
+                }
+              }
+            }
+          }
+        },
         "ca" : {
           "variations" : {
             "plural" : {
@@ -915,6 +1017,42 @@
             }
           }
         },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld file"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld file"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ფაილი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ფაილი"
+                }
+              }
+            }
+          }
+        },
         "nb" : {
           "variations" : {
             "plural" : {
@@ -1075,6 +1213,42 @@
     },
     "%lld item(s)" : {
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элементы"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элементаў"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элемент"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элементаў"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элемент"
+                }
+              }
+            }
+          }
+        },
         "ca" : {
           "variations" : {
             "plural" : {
@@ -1351,6 +1525,30 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ელემენტი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ელემენტი"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ელემენტი"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -1578,6 +1776,36 @@
     "%lld logins imported" : {
       "comment" : "Message of the alert after successfully importing items",
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld запісы ўваходу імпартаваны"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld запісаў уваходу імпартаваны"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld запіс уваходу імпартаваны"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld запісаў уваходу імпартаваны"
+                }
+              }
+            }
+          }
+        },
         "ca" : {
           "variations" : {
             "plural" : {
@@ -1765,6 +1993,42 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld identifiants ont bien été importés."
+                }
+              }
+            }
+          }
+        },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld login importato"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld login importati"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "შემოტანილია %lld მომხმარებელი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "შემოტანილია %lld მომხმარებელი"
                 }
               }
             }
@@ -2021,6 +2285,12 @@
             "value" : "10 GB"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "10 გბ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2210,6 +2480,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "500 GB"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "500 გბ"
           }
         },
         "ko" : {
@@ -3580,6 +3856,12 @@
             "value" : "セクションを追加"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "სექციის დამატება"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4284,6 +4566,42 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Tous les comptes (%lld)"
+                }
+              }
+            }
+          }
+        },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Tutti gli account (%lld)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Tutti gli account (%lld)"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "ყველა ანგარიში (%lld)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "ყველა ანგარიში (%lld)"
                 }
               }
             }
@@ -5104,6 +5422,18 @@
             "value" : "Le renouvellement automatique a lieu tous les ans au prix de %@."
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si rinnova automaticamente a %@ ogni anno"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ავტომატურად განახლდება წელიწადში ერთხელ: %@"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5245,6 +5575,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "自動入力 パスキー"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "წვდომის გასაღების ავტოშევსება"
           }
         },
         "ko" : {
@@ -5417,6 +5753,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Safariやその他のアプリで、 パスワード を非常に速く簡単に入力できます。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შეიყვანეთ თქვენი პაროლები Safari-სა და სხვა აპებში ავტომატურად, ძალიან სწრაფად და მარტივად."
           }
         },
         "ko" : {
@@ -5595,6 +5937,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "内蔵の2要素認証"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ჩაშენებული 2FA"
           }
         },
         "ko" : {
@@ -6554,6 +6902,12 @@
             "value" : "履歴を消去"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ისტორიის გასუფთავება"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7296,6 +7650,18 @@
             "value" : "Aucun résultat n'a été trouvé pour « %@ »."
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossibile trovare \"%@\""
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%@\" ვერ ვიპოვე"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7740,10 +8106,124 @@
     },
     "Create new vault" : {
       "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creeu una caixa forta nova"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vytvořit nový trezor"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opret ny boks"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neuen Tresor erstellen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Δημιουργία νέας κρύπτης"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Create new vault"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crear caja fuerte nueva"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crear nueva bóveda"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Luo uusi holvi"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Créer un nouveau coffre-fort"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crea nuova cassaforte"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ახალი საცავის შექმნა"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opprett nytt hvelv"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nieuwe kluis aanmaken"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Criar um cofre"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creare seif"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vytvoriť nový trezor"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skapa nytt valv"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yeni kasa oluştur"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新建保险库"
           }
         }
       }
@@ -8034,6 +8514,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "はじめてのログインを作成しましょう"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შექმენით თქვენი პირველი ავტორიზაციის დეტალები"
           }
         },
         "ko" : {
@@ -9570,6 +10056,12 @@
             "value" : "例：LinkedIn"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მაგ: LinkedIn"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9752,6 +10244,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "セクションのタイトルを編集"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "განყოფილები სათაურის ჩასწორება"
           }
         },
         "ko" : {
@@ -10518,6 +11016,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Optic ID を有効にする"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Optic ID-ის ჩართვა"
           }
         },
         "ko" : {
@@ -11678,6 +12182,12 @@
             "value" : "追加のメールアドレス"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დამატებითი ელფოსტის მისამართები"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12050,6 +12560,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "最初のログインが作成されました"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "პირველი შესვლის ანგარიში შეიქმნა"
           }
         },
         "ko" : {
@@ -12819,6 +13335,12 @@
             "value" : "無料"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13009,6 +13531,12 @@
             "value" : "生成されたパスワード"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გენერირებული პაროლები"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13197,6 +13725,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "生成されたパスワードは 2 週間保存されます。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გენერირებული პაროლები შეინახება 2 კვირის განმავლობაში."
           }
         },
         "ko" : {
@@ -13757,6 +14291,12 @@
             "value" : "Proton Unlimitedを入手"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Unlimited-ის მიღება"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13939,6 +14479,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "始めましょう"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაიწყეთ"
           }
         },
         "ko" : {
@@ -14703,6 +15249,12 @@
             "value" : "最高速"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "უმაღლესი"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14892,6 +15444,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "フィールドにパスワードを自動入力する方法"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "როგორ შეავსოთ ველები პაროლით"
           }
         },
         "ko" : {
@@ -15436,6 +15994,18 @@
             "value" : "Importation des identifiants en cours (%1$lld/%2$lld)"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importa login (%1$lld/%2$lld)"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მომხმარებლების შემოტანა (%1$lld/%2$lld)"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15963,6 +16533,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton Passの利用方法"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ისწავლეთ Proton Pass-ის გამოყენება"
           }
         },
         "ko" : {
@@ -16542,6 +17118,12 @@
             "value" : "中"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საშუალო"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16727,6 +17309,12 @@
             "value" : "新"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ახალი"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16909,6 +17497,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "履歴はありません"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ისტორიის გარეშე"
           }
         },
         "ko" : {
@@ -17099,6 +17693,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "パスキーでのログインは見つかりません"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "წვდომის გასაღების შემცველი მომხმარებლები აღმოჩენილი არაა"
           }
         },
         "ko" : {
@@ -17652,6 +18252,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "なし"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "არცერთი"
           }
         },
         "ko" : {
@@ -19169,6 +19775,18 @@
             "value" : "Ouvrir le tableau de bord web"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apri il pannello di controllo web"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "სამუშაო ვებპანელის გახსნა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19614,10 +20232,124 @@
     },
     "Please contact your administrator." : {
       "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poseu-vos en contacte amb el vostre administrador."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontaktujte prosím svého správce."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontakt din administrator."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bitte kontaktiere deinen Administrator."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Παρακαλούμε επικοινωνήστε με τον διαχειριστή σας."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Please contact your administrator."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contacta con tu administrador."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contáctese con su administración."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ota yhteyttä ylläpitäjääsi."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Veuillez contacter votre administrateur."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contatta il tuo amministratore."
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაუკავშირდით თქვენს ადმინისტრატორს."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ta kontakt med administratoren din."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neem contact op met uw beheerder."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entre em contato com seu administrador."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contactați-vă administratorul."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontaktujte svojho správcu, prosím."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontakta din administratör."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lütfen yöneticinizle görüşün."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请联系您的管理员"
           }
         }
       }
@@ -20265,6 +20997,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Veuillez plutôt utiliser notre tableau de bord de compte web."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usa la nostra dashboard dell'account web in alternativa"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გამოიყენეთ ჩვენი ვებ ანგარიშის მართვის პანელი"
           }
         },
         "ko" : {
@@ -21181,6 +21925,12 @@
             "value" : "履歴から削除"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ისტორიიდან წაშლა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21357,6 +22107,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "セクションを削除"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "სექციის წაშლა"
           }
         },
         "ko" : {
@@ -23284,6 +24040,12 @@
             "value" : "サービス"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "სერვისი"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23466,6 +24228,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton Pass を顔や指紋でロック解除できるように設定して、あなただけのスペースにしましょう。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დააყენეთ Proton Pass-ში, რომ განბლოკოს თქვენი სახით ან ანაბეჭდით, რათა წვდომა, მხოლოდ, თქვენ გქონდეთ."
           }
         },
         "ko" : {
@@ -25582,6 +26350,12 @@
             "value" : "本当のメールアドレスを共有するのはやめ、Proton Pass 専用のエイリアスを代わりに使用することで安全を守りましょう。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შეწყვიტეთ თქვენი რეალური მისამართის გაზიარება. უმჯობესია - დამალოთ ის ელფოსტის ფსევდონიმით, რაც, მხოლოდ, Proton Pass-ს შეუძლია."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -27306,6 +28080,12 @@
             "value" : "1つのサブスクリプションで最高のProtonを。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton-ის საუკეთესო ფუნქციები ერთი გამოწერით."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28268,6 +29048,12 @@
             "value" : "プレミアム機能を解除。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "განბლოკეთ ფასიანი ფუნქციები."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28996,6 +29782,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Upgrade non disponibile su mobile"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მობილურზე განახლება ხელმიუწვდომელია"
           }
         },
         "ko" : {
@@ -29901,6 +30693,12 @@
             "value" : "保管庫、アイテム、リンクの共有"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საცავის, ელემენტის და ბმულის გაზიარება"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -30078,6 +30876,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "VPNデバイス"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VPN მოწყობილობები"
           }
         },
         "ko" : {
@@ -30268,6 +31072,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "VPN速度"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VPN-ის სიჩქარე"
           }
         },
         "ko" : {
@@ -30587,6 +31397,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Abbiamo rilevato che hai %lld alias presenti in SimpleLogin ma mancanti in Proton Pass. Vuoi importarli?"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "აღმოვაჩინეთ, რომ გაქვთ %lld ფსევდონიმი, რომელიც არსებობს SimpleLogin-ში, მაგრამ არა Proton Pass-ში. გნებავთ მათი შემოტანა?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "აღმოვაჩინეთ, რომ გაქვთ %lld ფსევდონიმი, რომელიც არსებობს SimpleLogin-ში, მაგრამ არა Proton Pass-ში. გნებავთ მათი შემოტანა?"
                 }
               }
             }
@@ -31050,6 +31878,12 @@
             "value" : "内容"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "რას მოიცავს"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -31234,6 +32068,12 @@
             "value" : "どのサービスに使うログインですか？"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "რომელი სერვისისთვის გსურთ მომხმარებლის შექმნა?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -31410,6 +32250,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "これで Proton Pass を最大限に活用する準備ができました。魔法のような自動入力、安全を守ってくれるエイリアスなど、さまざまな機能をご利用いただけます。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თქვენ მზად ბრძანდებით, მაქსიმალურად გამოიყენოთ Proton Pass: ავტოშევსების ჯადოქრობა, ფსევდონიმების კონფიდენციალობა და მრავალი სხვა."
           }
         },
         "ko" : {
@@ -31684,10 +32530,124 @@
     },
     "You don't have any vaults." : {
       "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No teniu caixes fortes."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nemáte žádné trezory."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har ikke nogen bokse."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du hast keine Tresore."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Δεν έχετε κρύπτες."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "You don't have any vaults."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No tienes ninguna caja fuerte."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No tiene ninguna bóveda."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sinulla ei ole holveja."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous n'avez aucun coffre-fort."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non hai casseforti."
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საცავები არ გაქვთ."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har ingen hvelv."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "U heeft geen kluizen."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Você não tem nenhum cofre."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nu aveți seifuri."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nemáte žiadne trezory."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har inga valv."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Henüz bir kasanız yok."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您还没有任何保险库"
           }
         }
       }
