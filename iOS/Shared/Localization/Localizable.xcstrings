@@ -243,6 +243,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "\"%1$@\" დაკოპირდა ბუფერში. ვადა იწურება %2$lld წამში."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "\"%1$@\" დაკოპირდა ბუფერში. ვადა იწურება %2$lld წამში."
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -405,7 +423,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "\"%1$@\" 已复制到剪贴板，将在 %2$lld 秒后失效。"
+                  "value" : "已复制“%1$@”到剪贴板，有效期剩余 %2$lld 秒。"
                 }
               }
             }
@@ -496,6 +514,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ (copiato)"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (დაკოპირდა)"
           }
         },
         "ko" : {
@@ -628,6 +652,12 @@
             "value" : "%@ copiato"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ დაკოპირდა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -686,10 +716,28 @@
     },
     "%@ wants to share an item with the group %@." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ хоча абагуліць элемент з групай %@."
+          }
+        },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ vol compartir un element amb el grup %@."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ chce sdílet položku se skupinou %@."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ ønsker at dele et element med gruppen %@."
           }
         },
         "de" : {
@@ -698,10 +746,106 @@
             "value" : "%@ möchte einen Eintrag mit der Gruppe %@ teilen."
           }
         },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ο %@ θέλει να μοιραστεί ένα στοιχείο με την ομάδα %@."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ wants to share an item with the group %@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ quiere compartir un elemento con el grupo %@."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ quiere compartir un elemento con el grupo %@."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ haluaa jakaa kohteen ryhmälle %@."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ souhaite partager un élément avec le groupe %@."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ vuole condividere un elemento con il gruppo %@."
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@-ს უნდა, გაუზიაროს ელემენტი ჯგუფს %@."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ ønsker å dele et element med gruppen %@."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ wil een item delen met de groep %@."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ deseja compartilhar um item com o grupo %@."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ dorește să partajeze un element cu grupul %@."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ chce zdieľať položku so skupinou %@."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ vill dela ett objekt med gruppen %@."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@, %@ grubuyla bir öge paylaşmak istiyor."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 希望与群组 %@ 共享一个项目。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 想與群組 %@ 分享項目。"
           }
         }
       }
@@ -772,6 +916,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ vuole condividere un elemento con te."
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ უნდა, ელემენტი გაგიზიაროთ."
           }
         },
         "ko" : {
@@ -904,6 +1054,12 @@
             "value" : "Decrittografato al %@%%"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გაშიფრულია %@%%..."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1034,6 +1190,12 @@
             "value" : "scaricato al %@%%..."
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@%% გადმოწერილია..."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1159,6 +1321,12 @@
             "value" : "%1$@, %2$@, %3$@ negli ultimi 14 giorni."
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@, %3$@ ბოლო 14 დღეში."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1217,6 +1385,36 @@
     },
     "%lld aliases" : {
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псеўданімы"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псеўданімаў"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псеўданім"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псеўданімаў"
+                }
+              }
+            }
+          }
+        },
         "ca" : {
           "variations" : {
             "plural" : {
@@ -1427,6 +1625,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ფსევდონიმი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ფსევდონიმი"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -1599,6 +1815,36 @@
     },
     "%lld aliases disabled" : {
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псеўданімы адключаны"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псеўданімаў адключаны"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псеўданім адключаны"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псеўданімаў адключаны"
+                }
+              }
+            }
+          }
+        },
         "ca" : {
           "variations" : {
             "plural" : {
@@ -1809,6 +2055,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ფსევდონიმი გათიშულია"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ფსევდონიმი გათიშულია"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -1981,6 +2245,36 @@
     },
     "%lld aliases enabled" : {
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псеўданімы ўключаны"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псеўданімаў уключаны"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псеўданім уключаны"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псеўданімаў уключаны"
+                }
+              }
+            }
+          }
+        },
         "ca" : {
           "variations" : {
             "plural" : {
@@ -2191,6 +2485,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ფსევდონიმი ჩართულია"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ფსევდონიმი ჩართულია"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -2364,6 +2676,36 @@
     "%lld blocked" : {
       "comment" : "Number of emails blocked",
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld заблакіравана"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld заблакіравана"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld заблакіраваны"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld заблакіравана"
+                }
+              }
+            }
+          }
+        },
         "ca" : {
           "variations" : {
             "plural" : {
@@ -2574,6 +2916,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld დაბლოკილი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld დაბლოკილი"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -2747,6 +3107,36 @@
     "%lld blocks" : {
       "comment" : "Number of email blocked",
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld блакіроўкі"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld блакіровак"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld блакіроўка"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld блакіровак"
+                }
+              }
+            }
+          }
+        },
         "ca" : {
           "variations" : {
             "plural" : {
@@ -2957,6 +3347,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld დაბლოკილი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld დაბლოკილი"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -3129,6 +3537,36 @@
     },
     "%lld characters" : {
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld сімвалы"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld сімвалаў"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld сімвал"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld сімвалаў"
+                }
+              }
+            }
+          }
+        },
         "ca" : {
           "variations" : {
             "plural" : {
@@ -3339,6 +3777,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld სიმბოლო"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld სიმბოლო"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -3511,6 +3967,36 @@
     },
     "%lld day(s)" : {
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld дні"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld дзён"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld дзень"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld дзён"
+                }
+              }
+            }
+          }
+        },
         "ca" : {
           "variations" : {
             "plural" : {
@@ -3721,6 +4207,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld დღე"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld დღე"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -3894,6 +4398,36 @@
     "%lld forwarded" : {
       "comment" : "Number of emails forwarded",
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld перасылкі"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld перасылак"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld перасылка"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld перасылак"
+                }
+              }
+            }
+          }
+        },
         "ca" : {
           "variations" : {
             "plural" : {
@@ -4086,6 +4620,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld გადაგზავნილია"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld გადაგზავნილია"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -4258,6 +4810,36 @@
     },
     "%lld forwards" : {
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld перасылкі"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld перасылак"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld перасылка"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld перасылак"
+                }
+              }
+            }
+          }
+        },
         "ca" : {
           "variations" : {
             "plural" : {
@@ -4450,6 +5032,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld გადაგზავნილია"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld გადაგზავნილია"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -4570,6 +5170,24 @@
             }
           }
         },
+        "sv" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vidarebefordrad"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vidarebefordrade"
+                }
+              }
+            }
+          }
+        },
         "tr" : {
           "variations" : {
             "plural" : {
@@ -4604,6 +5222,36 @@
     },
     "%lld hour(s)" : {
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld гадзіны"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld гадзін"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld гадзіну"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld гадзін"
+                }
+              }
+            }
+          }
+        },
         "ca" : {
           "variations" : {
             "plural" : {
@@ -4814,6 +5462,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld საათი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld საათი"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -4986,6 +5652,36 @@
     },
     "%lld invite remaining" : {
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld запрашэнні засталося"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld запрашэнняў засталося"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld запрашэнне засталося"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld запрашэнняў засталося"
+                }
+              }
+            }
+          }
+        },
         "ca" : {
           "variations" : {
             "plural" : {
@@ -5196,6 +5892,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "დარჩენილია %lld მოსაწვევი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "დარჩენილია %lld მოსაწვევი"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -5368,6 +6082,42 @@
     },
     "%lld item(s)" : {
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элементы"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элементаў"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элемент"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элементаў"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элемент"
+                }
+              }
+            }
+          }
+        },
         "ca" : {
           "variations" : {
             "plural" : {
@@ -5644,6 +6394,30 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ელემენტი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ელემენტი"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ელემენტი"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -5870,6 +6644,36 @@
     },
     "%lld items moved to trash" : {
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элементы перамешчаны ў сметніцу"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элементаў перамешчаны ў сметніцу"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элемент перамешчаны ў сметніцу"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элементаў перамешчаны ў сметніцу"
+                }
+              }
+            }
+          }
+        },
         "ca" : {
           "variations" : {
             "plural" : {
@@ -6080,6 +6884,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ელემენტი გადატანილია ნაგვის ყუთში"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ელემენტი გადატანილია ნაგვის ყუთში"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -6252,6 +7074,36 @@
     },
     "%lld items moved to vault « %@ »" : {
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld элементы перамешчаны ў сховішча «%2$@»"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld элементаў перамешчаны ў сховішча «%2$@»"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld элемент перамешчаны ў сховішча «%2$@»"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld элементаў перамешчаны ў сховішча «%2$@»"
+                }
+              }
+            }
+          }
+        },
         "ca" : {
           "variations" : {
             "plural" : {
@@ -6462,6 +7314,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld ელემენტი გადატანილია საცავში « %2$@ »"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld ელემენტი გადატანილია საცავში « %2$@ »"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -6634,6 +7504,36 @@
     },
     "%lld items successfully pinned" : {
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элементы паспяхова замацаваны"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элементаў паспяхова замацаваны"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элемент паспяхова замацаваны"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элементаў паспяхова замацаваны"
+                }
+              }
+            }
+          }
+        },
         "ca" : {
           "variations" : {
             "plural" : {
@@ -6844,6 +7744,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ელემენტი წარმატებით იქნა მიმაგრებული"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ელემენტი წარმატებით იქნა მიმაგრებული"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -6998,6 +7916,36 @@
     },
     "%lld items successfully unpinned" : {
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элементы паспяхова адмацаваны"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элементаў паспяхова адмацаваны"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элемент паспяхова адмацаваны"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элементаў паспяхова адмацаваны"
+                }
+              }
+            }
+          }
+        },
         "ca" : {
           "variations" : {
             "plural" : {
@@ -7208,6 +8156,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ელემენტი წარმატებით მოიხსნა"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ელემენტი წარმატებით მოიხსნა"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -7362,6 +8328,36 @@
     },
     "%lld member(s)" : {
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld удзельнікі"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld удзельнікаў"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld удзельнік"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld удзельнікаў"
+                }
+              }
+            }
+          }
+        },
         "ca" : {
           "variations" : {
             "plural" : {
@@ -7572,6 +8568,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld წევრი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld წევრი"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -7744,6 +8758,36 @@
     },
     "%lld other logins use this password" : {
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld іншыя запісы ўваходу выкарыстоўваюць гэты пароль"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld іншых запісаў уваходу выкарыстоўваюць гэты пароль"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld іншы запіс уваходу выкарыстоўвае гэты пароль"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld іншых запісаў уваходу выкарыстоўваюць гэты пароль"
+                }
+              }
+            }
+          }
+        },
         "ca" : {
           "variations" : {
             "plural" : {
@@ -7936,6 +8980,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "ამ პაროლს კიდევ %lld სხვა ავტორიზაციის დეტალები იყენებს"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "ამ პაროლს კიდევ %lld სხვა ავტორიზაციის დეტალები იყენებს"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -8108,6 +9170,36 @@
     },
     "%lld remaining attempt(s)" : {
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Засталося %lld спробы"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Засталося %lld спроб"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Засталася %lld спроба"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Засталося %lld спроб"
+                }
+              }
+            }
+          }
+        },
         "ca" : {
           "variations" : {
             "plural" : {
@@ -8318,6 +9410,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld დარჩენილი მცდელობა"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld დარჩენილი ცდა"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -8491,6 +9601,36 @@
     "%lld replies" : {
       "comment" : "Number of replies from an alias",
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld адказы"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld адказаў"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld адказ"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld адказаў"
+                }
+              }
+            }
+          }
+        },
         "ca" : {
           "variations" : {
             "plural" : {
@@ -8701,6 +9841,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld პასუხი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld პასუხი"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -8873,6 +10031,36 @@
     },
     "%lld search result(s)" : {
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld вынікі"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld вынікаў"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld вынік"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld вынікаў"
+                }
+              }
+            }
+          }
+        },
         "ca" : {
           "variations" : {
             "plural" : {
@@ -9083,6 +10271,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld შედეგი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld შედეგი"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -9255,6 +10461,36 @@
     },
     "%lld time(s)" : {
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld разы"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld разоў"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld раз"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld разоў"
+                }
+              }
+            }
+          }
+        },
         "ca" : {
           "variations" : {
             "plural" : {
@@ -9465,6 +10701,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld-ჯერ"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ჯერ"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -9637,6 +10891,36 @@
     },
     "%lld view" : {
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld прагляды"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld праглядаў"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld прагляд"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld праглядаў"
+                }
+              }
+            }
+          }
+        },
         "ca" : {
           "variations" : {
             "plural" : {
@@ -9829,6 +11113,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ხედი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ხედი"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -10001,6 +11303,36 @@
     },
     "%lld word(s)" : {
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld словы"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld слоў"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld слова"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld слоў"
+                }
+              }
+            }
+          }
+        },
         "ca" : {
           "variations" : {
             "plural" : {
@@ -10206,6 +11538,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld parole"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld სიტყვა"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld სიტყვა"
                 }
               }
             }
@@ -11233,6 +12583,12 @@
             "value" : "Viene creato un contatto per ogni indirizzo email che invia o riceve email da %@"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "კონტაქტი შეიქმნება თითოეული ელფოტის მისამართისთვის, რომელიც აგზავნის ელფოსტებს, ან იღებს მათ %@-დან"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11553,6 +12909,12 @@
             "value" : "Verrà creata una chiave di accesso per il login \"%@\"."
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "წვდომის გასაღები შეიქმნება \"%@\" შესვლის დეტალებისთვის."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11598,7 +12960,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "将为 \"%@\" 登录项创建通行密钥"
+            "value" : "将为“%@”登录项创建通行密钥"
           }
         }
       }
@@ -11801,10 +13163,28 @@
     },
     "Accept invitation" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прыняць запрашэнне"
+          }
+        },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Accepteu la invitació"
+            "value" : "Acceptar la invitació"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přijmout pozvánku"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acceptér invitation"
           }
         },
         "de" : {
@@ -11813,10 +13193,106 @@
             "value" : "Einladung annehmen"
           }
         },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αποδοχή πρόσκλησης"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Accept invitation"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceptar la invitacion"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceptar la invitacion"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hyväksy kutsu"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accepter l'invitation"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accetta l'invito"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მოსაწვევის მიღება"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Godta invitasjonen"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accepteer uitnodiging"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceitar convite"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acceptare invitație"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prijať pozvánku"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acceptera inbjudan"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daveti kabul et"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "接受邀请"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "接受邀請"
           }
         }
       }
@@ -12308,6 +13784,12 @@
             "value" : "口座番号"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ანგარიშის ნომერი"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12497,6 +13979,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "口座種別"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ანგარიშის ტიპი"
           }
         },
         "ko" : {
@@ -15434,6 +16922,12 @@
             "value" : "名前を追加 (SSID)"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "სახელის (SSID) დამატება"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16016,6 +17510,12 @@
             "value" : "秘密鍵を追加"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "პირადი გასაღების დამატება"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16204,6 +17704,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "公開鍵を追加"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საჯარო გასაღების დამატება"
           }
         },
         "ko" : {
@@ -16590,6 +18096,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "アドレス"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მისამართი"
           }
         },
         "ko" : {
@@ -18109,6 +19621,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld საათის შემდეგ"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld საათის შემდეგ"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -18516,6 +20046,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Dopo %lld minuti"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld წუთის შემდეგ"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld წუთის შემდეგ"
                 }
               }
             }
@@ -19155,6 +20703,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alias \"%@\" spostato nel Cestino"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ფსევდონიმი \"%@\" გადატანილია ნაგვის ყუთში"
           }
         },
         "ko" : {
@@ -21636,6 +23190,12 @@
             "value" : "Alias ​​dell'elemento di accesso \"%@\""
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შესვლის დეტალების ელემენტის \"%@\" ფსევდონიმი"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23125,6 +24685,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Verranno eliminati anche tutti gli alias che utilizzano la casella email **%@**. Per continuare a ricevere email trasferisci questi alias in una casella email diversa:"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ასევე წაიშლება ყველა ფსევდონიმი, რომელიც საფოსტო ყუთს **%@** იყენებს. ელფოსტის მიღების შესანარჩუნებლად გადაიტანეთ ეს ფსევდონიმები სხვა საფოსტო ყუთში."
           }
         },
         "ko" : {
@@ -25428,6 +26994,12 @@
             "value" : "API認証情報"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API-ის ავტორიზაციის დეტალები"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25616,6 +27188,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "API キー"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API-ის გასაღები"
           }
         },
         "ko" : {
@@ -25980,6 +27558,12 @@
             "value" : "Sei sicuro di voler aggiungere un segreto 2FA a \"%@\"?"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დარწმუნებული ბრძანდებით, რომ გნებავთ დაამატოთ 2FA საიდუმლო \"%@\"-ს?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -26102,6 +27686,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sei sicuro di voler eliminare la seguente sezione \"%@\"?"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დარწმუნებული ბრძანდებით, რომ გნებავთ, წაშალოთ სექცია \"%@\"?"
           }
         },
         "ko" : {
@@ -26227,6 +27817,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sei sicuro di voler uscire dall'account %@?"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დარწმუნებული ბრძანდებით, რომ გნებავთ, გახვიდეთ %@-დან?"
           }
         },
         "ko" : {
@@ -28923,6 +30519,12 @@
             "value" : "銀行口座"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საბანკო ანგარიში"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -29112,6 +30714,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "銀行名"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ბანკის სახელი"
           }
         },
         "ko" : {
@@ -36163,6 +37771,12 @@
             "value" : "クラス"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "კლასი"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -43020,6 +44634,12 @@
             "value" : "SSID をコピー"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSID-ის კოპირება"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -43405,6 +45025,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "国"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ქვეყანა"
           }
         },
         "ko" : {
@@ -44576,6 +46202,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "カスタムアイテムを作成"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მორგებული ელემენტის შექმნა"
           }
         },
         "ko" : {
@@ -46536,6 +48168,12 @@
             "value" : "Creato %@"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შექმნის დრო: %@"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -47861,6 +49499,12 @@
             "value" : "暗号通貨ウォレット"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "კრიპტო საფულე"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48245,6 +49889,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "この保管庫"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მიმდინარე საცავი"
           }
         },
         "ko" : {
@@ -49406,6 +51056,12 @@
             "value" : "カスタムアイテム"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მომხმარებლის ელემენტი"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49594,6 +51250,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "カスタムアイテムを作成しました"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მორგებული ელემენტი შეიქმნა"
           }
         },
         "ko" : {
@@ -49786,6 +51448,12 @@
             "value" : "カスタムアイテムをゴミ箱に移動しました"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მორგებული ელემენტი გადატანილია ნაგვის ყუთში"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49968,6 +51636,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "カスタムアイテムが完全に削除されました"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მორგებული ელემენტი სამუდამოდ წაიშალა"
           }
         },
         "ko" : {
@@ -50154,6 +51828,12 @@
             "value" : "カスタムアイテムを復元しました"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მორგებული ელემენტი აღდგა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -50338,6 +52018,12 @@
             "value" : "カスタムアイテムを更新しました"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მორგებული ელემენტი განახლდა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -50520,6 +52206,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "カスタムアイテム"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მომხმარებლის ელემენტები"
           }
         },
         "ko" : {
@@ -51497,6 +53189,12 @@
             "value" : "データベース"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მონაცემთა ბაზა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -51686,6 +53384,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "データベースタイプ"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მონაცემთა ბაზის ტიპი"
           }
         },
         "ko" : {
@@ -51878,6 +53582,12 @@
             "value" : "日付"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თარიღი"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -52068,6 +53778,12 @@
             "value" : "日付のカスタムフィールド"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მორგებული თარიღის ველი"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -52256,6 +53972,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "生年月日"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაბადების თარიღი"
           }
         },
         "ko" : {
@@ -53214,6 +54936,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Elimina %@"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@-ის წაშლა"
           }
         },
         "ko" : {
@@ -56122,6 +57850,12 @@
             "value" : "医者"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ექიმი"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -56509,6 +58243,12 @@
             "value" : "次回から通知しない"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "აღარ შემახსენო"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -56673,6 +58413,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "完了"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მზადაა"
           }
         },
         "ko" : {
@@ -57252,6 +58998,12 @@
             "value" : "運転免許証"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მართვის მოწმობა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -57435,6 +59187,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "複製"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დუბლირება"
           }
         },
         "ko" : {
@@ -59929,6 +61687,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Invia un'email a questo indirizzo e sembrerà che sia stato inviato da %@."
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მისწერეთ ამ მისამართს ელფოსტა და ის გამოჩნდება, როგორც გაგზავნილი მისამართიდან %@."
           }
         },
         "ko" : {
@@ -62827,6 +64591,12 @@
             "value" : "Inserisci un nuovo nome per « %@ »"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შეიყვანეთ ახალი სახელი „%@“-სთვის"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -64905,6 +66675,12 @@
             "value" : "Espandi editor"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "რედაქტორის ჩამოშლა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -65428,6 +67204,12 @@
             "value" : "Scaduto %@"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ვადაგასულია %@"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -65557,6 +67339,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Scade %@"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ვადა იწურება %@"
           }
         },
         "ko" : {
@@ -65901,6 +67689,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "有効期限"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ვადა"
           }
         },
         "ko" : {
@@ -66808,6 +68602,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "La password aggiuntiva deve essere composta da almeno %lld caratteri"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "დამატებით პაროლს, სულ ცოტა, %lld სიმბოლო უნდა ჰქონდეს"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "დამატებით პაროლს, სულ ცოტა, %lld სიმბოლო უნდა ჰქონდეს"
                 }
               }
             }
@@ -69238,6 +71050,12 @@
             "value" : "カスタムアイテムでフィルターされています。ゴミ箱にあるアイテムは表示されません。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გაფილტრულია მორგებული ელემენტით. ნაგვის ყუთში გადატანილი ელემენტები ნაჩვენები არაა."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -69990,6 +71808,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "金融"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ფინანსები"
           }
         },
         "ko" : {
@@ -71736,6 +73560,12 @@
             "value" : "Dal tuo alias <%@>"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თქვენი ფსევდონიმიდან <%@>"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -73043,6 +74873,12 @@
             "value" : "Genera chiave SSH"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH გასაღების გენერაცია"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -73581,6 +75417,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "生成されたパスワード"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გენერირებული პაროლები"
           }
         },
         "ko" : {
@@ -76120,6 +77962,12 @@
             "value" : "非公開の保管庫"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დამალული საცავები"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -78437,6 +80285,12 @@
             "value" : "所有者名"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მფლობელის სახელი"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -78625,6 +80479,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "病院"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საავადმყოფო"
           }
         },
         "ko" : {
@@ -78818,6 +80678,12 @@
             "value" : "ホスト"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ჰოსტი"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -79007,6 +80873,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ホスト名"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ჰოსტის სახელი"
           }
         },
         "ko" : {
@@ -79587,6 +81459,12 @@
           }
         },
         "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IBAN"
+          }
+        },
+        "ka" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "IBAN"
@@ -84398,10 +86276,28 @@
     },
     "invites the group %@ to access items in" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "запрашае групу %@ атрымаць доступ да элементаў у"
+          }
+        },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "convida el grup %@ a accedir a elements a"
+            "value" : "convida el grup %@ a accedir als elements de"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "zve skupinu %@ k přístupu k položkám v"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "inviterer gruppen %@ til at få adgang til elementer i"
           }
         },
         "de" : {
@@ -84410,10 +86306,94 @@
             "value" : "Lädt die Gruppe %@ ein, auf Einträge zuzugreifen in"
           }
         },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "καλεί την ομάδα %@ να έχει πρόσβαση σε στοιχεία στο"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "invites the group %@ to access items in"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "invita al grupo %@ a acceder a elementos de"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "invita al grupo %@ a acceder a elementos de"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kutsuu ryhmän %@ käyttämään kohteita"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "invite le groupe %@ à accéder aux éléments dans"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "invita il gruppo %@ ad accedere agli elementi in"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "იწვევს ჯგუფს %@ ელემენტებზე წვდომაზე"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "inviterer gruppen %@ til å få tilgang til elementer i"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "nodigt de groep %@ uit om toegang te krijgen tot items in"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "invită grupul %@ să acceseze articolele din"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "pozýva skupinu %@ na prístup k položkám v"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "bjuder in gruppen %@ att komma åt objekt i"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ grubunu şu kasadaki ögelere erişmeye davet ediyor:"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "邀请群组 %@ 访问以下项目："
           }
         }
       }
@@ -84707,6 +86687,12 @@
             "value" : "IPアドレス"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IP მისამართი"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -84897,6 +86883,12 @@
             "value" : "発行機関"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გამცემი ორგანო"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -85079,6 +87071,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "発行国"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გამომცემელი ქვეყანა"
           }
         },
         "ko" : {
@@ -85269,6 +87267,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "発行州/国"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გამომცენელი შტატი/ქვეყანა"
           }
         },
         "ko" : {
@@ -86429,6 +88433,12 @@
             "value" : "共有保管庫内のアイテム"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ელემენტი გაზიარებულ საცავში"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -86773,6 +88783,12 @@
             "value" : "Elemento spostato nella cassaforte « %@ »"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ელემენტი გადატანილია საცავში \"%@\""
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -87048,6 +89064,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Condivisione elemento: %lld utenti"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "ელემენტის გაზიარება: %lld მომხმარებელი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "ელემენტის გაზიარება: %lld მომხმარებელი"
                 }
               }
             }
@@ -88278,6 +90312,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Elementi di « %@ » spostati nella cassaforte « %@ »"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ელემენტები \"%@\"-დან გადატანილია საცავში \"%@\""
           }
         },
         "ko" : {
@@ -91346,6 +93386,12 @@
             "value" : "Ultima violazione di dati il %@"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "უახლესი გაჟონვის თარიღი %@"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -92473,6 +94519,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ライセンスキー"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ლიცენზიის გასაღები"
           }
         },
         "ko" : {
@@ -93649,6 +95701,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Login per %@"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შესვლის დეტალები %@-სთვის"
           }
         },
         "ko" : {
@@ -97114,6 +99172,12 @@
             "value" : "管理者"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მმართველი"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -97691,6 +99755,12 @@
             "value" : "医療状況"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "სამედიცინო მაჩვენებლები"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -97880,6 +99950,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "医療記録"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "სამედიცინო ჩანაწერი"
           }
         },
         "ko" : {
@@ -98073,6 +100149,12 @@
             "value" : "薬"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მედიკამენტები"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -98261,6 +100343,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "メンバーID"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "წევრის ID"
           }
         },
         "ko" : {
@@ -98648,6 +100736,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "メンバー名"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "წევრის სახელი"
           }
         },
         "ko" : {
@@ -99038,6 +101132,12 @@
             "value" : "メンバーシップ"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "წევრობა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -99226,6 +101326,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "メンバーシップID"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "წევრობის ID"
           }
         },
         "ko" : {
@@ -101158,6 +103264,12 @@
             "value" : "Monitoraggio sospeso per %@"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მონიტორინგი შეჩერებულია %@-სთვის"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -101280,6 +103392,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Monitoraggio ripreso per %@"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მონიტორინგი გაგრძელდა %@-სთვის"
           }
         },
         "ko" : {
@@ -101429,6 +103547,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "さらに表示"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მეტი"
           }
         },
         "ko" : {
@@ -103015,6 +105139,12 @@
             "value" : "名前 (SSID)"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "სახელი (SSID)"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -103401,6 +105531,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ネットワーク"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ქსელი"
           }
         },
         "ko" : {
@@ -105532,6 +107668,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nessun log per %@"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@-სთვის ჟურნალის გარეშე"
           }
         },
         "ko" : {
@@ -107804,6 +109946,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nota per %@"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შენიშვნა %@-სთვის"
           }
         },
         "ko" : {
@@ -110699,6 +112847,12 @@
             "value" : "カスタムアイテムを開く"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მორგებული ელემენტის გახსნა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -111667,6 +113821,12 @@
             "value" : "SSHキーを開く"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH გასაღების გახსნა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -112051,6 +114211,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wi-Fiネットワークを開く"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wi-Fi ქსელის გახსნა"
           }
         },
         "ko" : {
@@ -112967,6 +115133,12 @@
             "value" : "組織名"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ორგანიზაციის სახელი"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -113158,6 +115330,12 @@
             "value" : "保管庫を整理する"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საცავების დალაგება"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -113323,6 +115501,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "OS"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ოს"
           }
         },
         "ko" : {
@@ -114489,6 +116673,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "パスポート"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "პასპორტი"
           }
         },
         "ko" : {
@@ -116053,6 +118243,12 @@
             "value" : "貼り付け"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ბუფერიდან ჩასმა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -116242,6 +118438,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "患者名"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "პაციენტის სახელი"
           }
         },
         "ko" : {
@@ -117369,6 +119571,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "სამუდამოდ წაიშალა %lld ელემენტი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "სამუდამოდ წაიშალა %lld ელემენტი"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -117630,6 +119850,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "アクセス許可"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "წვდომები"
           }
         },
         "ko" : {
@@ -120153,6 +122379,12 @@
             "value" : "Controlla se nella posta indesiderata è presente un'e-mail denominata \"Conferma la tua casella di posta %@\"\n\nSe non riesci a trovare questa email, puoi [richiedere un nuovo codice](https://proton.me)."
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შეამოწმეთ სპამის საქაღალდე ელფოსტაზე სახელად \"დაადასტურეთ თქვენი ელფოსტის მისამართი %@\"\n\nთუ ასეთი ელფოსტა ვერ იპოვეთ, შეგიძლიათ [ახალი კოდი გამოითხოვოთ](https://proton.me)."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -122222,6 +124454,12 @@
             "value" : "ポイント残高"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ქულების რაოდენობა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -122411,6 +124649,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ポート"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "პორტი"
           }
         },
         "ko" : {
@@ -123976,6 +126220,12 @@
             "value" : "秘密鍵"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "პირადი გასაღები"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -124165,6 +126415,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "製品"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "პროდუქტი"
           }
         },
         "ko" : {
@@ -124553,6 +126809,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "プログラム名"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "პროგრამის სახელი"
           }
         },
         "ko" : {
@@ -126426,6 +128688,12 @@
             "value" : "公開鍵"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საჯარო გასაღები"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -127792,6 +130060,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "医療記録番号"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ჩანაწერის ნომერი"
           }
         },
         "ko" : {
@@ -134003,6 +136277,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "აღდგენილია %lld ელემენტი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "აღდგენილია %lld ელემენტი"
+                }
+              }
+            }
+          }
+        },
         "nb" : {
           "variations" : {
             "plural" : {
@@ -134950,6 +137242,42 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Réutilisés %lld fois"
+                }
+              }
+            }
+          }
+        },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Riutilizzato %lld volta"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Riutilizzato %lld volte"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "გამოყენებულია %lld-ხელ"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "გამოყენებულია %lld-ჯერ"
                 }
               }
             }
@@ -135992,6 +138320,12 @@
             "value" : "報酬プログラム"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაჯილდოების პროგრამა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -136181,6 +138515,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "支店名"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "რაუტინგის ნომერი"
           }
         },
         "ko" : {
@@ -136540,6 +138880,18 @@
             "value" : "Analyser %@"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scansiona %@"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@-ის სკანირება"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -136681,6 +139033,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "QRコードをスキャンして参加できます"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შესაერთებლად დაასკანერეთ QR კოდი"
           }
         },
         "ko" : {
@@ -137260,6 +139618,12 @@
             "value" : "すべてのアイテムを検索"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ძებნა ყველა ელემენტში"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -137548,6 +139912,42 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Chercher dans %lld comptes"
+                }
+              }
+            }
+          }
+        },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Cerca nell'account %lld"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Cerca negli account %lld"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "ძებნა %lld ანგარიშში"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "ძებნა %lld ანგარიშში"
                 }
               }
             }
@@ -138783,6 +141183,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "秘密"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საიდუმლო"
           }
         },
         "ko" : {
@@ -140545,6 +142951,12 @@
             "value" : "セキュリティの種類"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "უსაფრთხოების ტიპი"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -141314,6 +143726,12 @@
             "value" : "シードフレーズ"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seed-ფრაზა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -141891,6 +144309,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sélectionnez un type de clé SSH"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seleziona un tipo di chiave SSH"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "აირჩიეთ SSH გასაღების ტიპი"
           }
         },
         "nb" : {
@@ -143605,6 +146035,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "サーバー"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "სერვერი"
           }
         },
         "ko" : {
@@ -145957,6 +148393,12 @@
             "value" : "共有ID"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ID-ის გაზიარება"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -146140,6 +148582,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "共有IDがコピーされました"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გაზიარების ID დაკოპირდა"
           }
         },
         "ko" : {
@@ -147504,6 +149952,12 @@
             "value" : "共有済みアイテム"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გაზიარებული ელემენტი"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -148423,6 +150877,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Afficher le coffre-fort %@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra la cassaforte %@"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ საცავის ჩვენება"
           }
         },
         "nb" : {
@@ -149742,6 +152208,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ネットワークのQRコードを表示"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ქსელის QR კოდის ჩვენება"
           }
         },
         "ko" : {
@@ -151479,6 +153951,12 @@
             "value" : "ほかのデバイスでサインイン"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შესვლა სხვა მოწყობილობით"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -151830,6 +154308,18 @@
             "value" : "Connecté en tant que %@"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accesso effettuato come %@"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შეხვედით, როგორც %@"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -152166,6 +154656,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SimpleLoginのメモはエイリアスと同じ場所に保存され、保存時には暗号化されます。しかし、エンドツーエンド暗号化はしていないので、SimpleLoginデータベースにアクセスできる人なら誰でもメモを読むことができます。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SimpleLogin-ის შენიშვნა შენახულია მისამართის ფსევდონიმთან ერთად ერთსა და იმავე ადგილას და მიუხედავად იმისა, რომ დაცულია დაშიფვრით, არ არის გამჭოლად დაშიფრული, რაც ნიშნავს, რომ ნებისმიერს, ვისაც აქვს წვდომა SimpleLogin-ის მონაცემთა ბაზაზე, შეუძლია მისი წაკითხვა."
           }
         },
         "ko" : {
@@ -152751,6 +155247,12 @@
             "value" : "社会保障番号"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "სოციალური უსაფრთხოების ნომერი"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -152934,6 +155436,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ソフトウェアライセンス"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "პროგრამული უზრუნველყოფის ლიცენზია"
           }
         },
         "ko" : {
@@ -153124,6 +155632,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "パスワード初期化により、一部の保管庫にアクセスできなくなりました。アカウント鍵を再度有効化して、アクセスを回復しましょう。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "პაროლის ჩამოყრის გამო ზოგიერთი საცავი ხელმისაწვდომი აღარაა. წვდომის დასაბრუნებლად თავიდან გაააქტიურეთ ანგარიშის გასაღებები."
           }
         },
         "ko" : {
@@ -153899,6 +156413,12 @@
             "value" : "Spotlight"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ფრთხილად"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -154087,6 +156607,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SSH キー"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH გასაღები"
           }
         },
         "ko" : {
@@ -154280,6 +156806,12 @@
             "value" : "SSH キー"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH გასაღები"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -154470,6 +157002,12 @@
             "value" : "SSHキーが作成されました"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH გასაღები შეიქმნა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -154652,6 +157190,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SSHキーをゴミ箱に移動しました"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH გასაღები გადატანილია ნაგვის ყუთში"
           }
         },
         "ko" : {
@@ -154838,6 +157382,12 @@
             "value" : "SSH キーは完全に削除されました"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH გასაღები სამუდამოდ წაიშალა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -155020,6 +157570,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SSHキーが復元されました"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH გასაღები აღდგა"
           }
         },
         "ko" : {
@@ -155206,6 +157762,12 @@
             "value" : "SSH キーが更新されました"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH გასაღები განახლდა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -155388,6 +157950,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SSH キー"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH გასაღებები"
           }
         },
         "ko" : {
@@ -155578,6 +158146,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SSID をコピーしました"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSID დაკოპირდა"
           }
         },
         "ko" : {
@@ -155965,6 +158539,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ゼロから始める"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ნულიდან დაწყება"
           }
         },
         "ko" : {
@@ -157523,6 +160103,12 @@
             "value" : "候補"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შეთავაზებები"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -157646,6 +160232,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Suggestions pour %@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggerimenti per %@"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მინიშნებები %@-სთვის"
           }
         },
         "nb" : {
@@ -157786,6 +160384,12 @@
           }
         },
         "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SWIFT/BIC"
+          }
+        },
+        "ka" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "SWIFT/BIC"
@@ -158147,6 +160751,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Basculé vers %@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sei passato a %@"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გადაერთეთ %@-ზე"
           }
         },
         "nb" : {
@@ -159659,6 +162275,12 @@
             "value" : "技術"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ტექნოლოგია"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -161009,6 +163631,12 @@
             "value" : "グループは保管庫に招待されています。詳細 をタップしてください。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ჯგუფს ეპატიჟებიან საცავში. დეტალებისთვის დაატყაპუნეთ."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -161939,6 +164567,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "これらの保管庫にはアクセスできなくなり、そのコンテンツは検索や自動入力で利用できなくなります。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ეს საცავები ხელმისაწვდომი არ იქნება და მათი შემცველობა არ იქნება გამოყენებული ძებნისა და ავტოშევსებისას."
           }
         },
         "ko" : {
@@ -163634,6 +166268,18 @@
             "value" : "Ceci supprimera définitivement le coffre-fort « %@ » et tout son contenu. Saisissez le nom du coffre-fort pour confirmer la suppression."
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questo eliminerà definitivamente la cassaforte « %@ » e tutti i suoi contenuti. Inserisci il nome della cassaforte per confermare l'eliminazione."
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ეს სამუდამოდ წაშლის საცავს „%@“ და მის შემცველობას. წაშლის დასადასტურებლად შეიყვანეთ საცავის სახელი."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -163973,6 +166619,12 @@
             "value" : "階級/レベル"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დონე"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -164156,6 +166808,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "階級/ステータス"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დონე/სტატუსი"
           }
         },
         "ko" : {
@@ -166843,6 +169501,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Transférer la propriété de ce coffre-fort à %@ ?"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sei sicuro di voler trasferire la proprietà di questa cassaforte a %@?"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გადაეცეს ამ საცავის ფლობის უფლება %@-ს?"
           }
         },
         "nb" : {
@@ -170310,6 +172980,12 @@
             "value" : "未指定"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მითითებული არაა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -172646,6 +175322,12 @@
             "value" : "アップグレードしてカスタムアイテムを作成"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მორგებული ელემენტების შესაქმნელად ასწიეთ სატარიფო გეგმა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -172830,6 +175512,12 @@
             "value" : "Pass Plus へアップグレード"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "განახლება Pass Plus-ზე"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -172970,6 +175658,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Utiliser %@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usa %@"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@-ის გამოყენება"
           }
         },
         "nb" : {
@@ -174012,6 +176712,42 @@
             }
           }
         },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Utilizzato in %lld login"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Utilizzato in %lld login"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "გამოიყენება %lld შესვლის ჩანაწერში"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "გამოიყენება %lld შესვლის ჩანაწერში"
+                }
+              }
+            }
+          }
+        },
         "nb" : {
           "variations" : {
             "plural" : {
@@ -175022,6 +177758,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Le coffre-fort « %@ » a été supprimé."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cassaforte « %@ » eliminata"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საცავი „%@“ წაიშალა"
           }
         },
         "nb" : {
@@ -176134,6 +178882,12 @@
             "value" : "あなたが管理するグループと共有された保管庫"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საცავი, გაზიარებული ჯგუფთან, რომლის ადმინისტრირებასაც თქვენ ახდენთ"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -176790,6 +179544,42 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Partage de coffre-fort : %lld utilisateurs"
+                }
+              }
+            }
+          }
+        },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Condivisione cassaforte: %lld membro"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Condivisione cassaforte: %lld membri"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "საცავის გაზიარება: %lld წევრი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "საცავის გაზიარება: %lld წევრი"
                 }
               }
             }
@@ -177805,6 +180595,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Version %@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versione %@"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ვერსია %@"
           }
         },
         "nb" : {
@@ -179708,6 +182510,12 @@
             "value" : "公開の保管庫"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ხილული საცავები"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -180268,6 +183076,12 @@
             "value" : "ウォレット名"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საფულის სახელი"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -180812,6 +183626,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nous avons envoyé un code de vérification à %@. Veuillez le saisir ci-dessous :"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abbiamo inviato un codice di verifica a %@. Inseriscilo qui sotto:"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გადამოწმების კოდი გაგზავნილია მისამართზე %@. შეიყვანეთ ის ქვემოთ:"
           }
         },
         "nb" : {
@@ -182715,6 +185541,12 @@
             "value" : "WiFiの詳細、SSH、カスタムアイテムなど"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi-ის დეტალები, SSH, მორგებული ელემენტები და სხვა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -182891,6 +185723,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wi-Fiネットワーク"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wi-Fi ქსელი"
           }
         },
         "ko" : {
@@ -183084,6 +185922,12 @@
             "value" : "Wi-Fiネットワーク"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi ქსელი"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -183274,6 +186118,12 @@
             "value" : "Wi-Fiネットワークが作成されました"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi ქსელი შეიქმნა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -183456,6 +186306,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wi-Fiネットワークをゴミ箱に移動しました"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi ქსელი გადატანილია ნაგვის ყუთში"
           }
         },
         "ko" : {
@@ -183642,6 +186498,12 @@
             "value" : "Wi-Fiネットワークが完全に削除されました"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi ქსელი სამუდამოდ წაიშალა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -183818,6 +186680,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "W-iFiネットワークが復元されました"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi ქსელი აღდგენილია"
           }
         },
         "ko" : {
@@ -183998,6 +186866,12 @@
             "value" : "Wi-Fiネットワークが更新されました"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi ქსელი განახლდა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -184174,6 +187048,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wi-Fiネットワーク"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wi-Fi ქსელები"
           }
         },
         "ko" : {
@@ -184358,6 +187238,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wi-Fiパスワードをコピーしました"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi-ის პაროლი დაკოპირდა"
           }
         },
         "ko" : {
@@ -185493,6 +188379,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Voulez-vous associer « %1$@ » à « %2$@ » ?"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vuoi associare \"%1$@\" a \"%2$@\"?"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გნებავთ \"%1$@\"-ს ასოცირება \"%2$@\"-სთან?"
           }
         },
         "nb" : {
@@ -187158,6 +190056,42 @@
             }
           }
         },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Stai per eliminare definitivamente %lld alias"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Stai per eliminare definitivamente %lld alias"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "აპირებთ, სამუდამოდ წაშალოთ %lld ფსევდონიმი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "აპირებთ, სამუდამოდ წაშალოთ %lld ფსევდონიმი"
+                }
+              }
+            }
+          }
+        },
         "nb" : {
           "variations" : {
             "plural" : {
@@ -187408,6 +190342,12 @@
             "value" : "共有済みの保管庫内でアイテムを作ると、メンバーの人はすぐこのアイテムにアクセスできるようになります。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თქვენ ქმნით ელემენტს გაზიარებულ საცავში. წევრები დაუყოვნებლივ მიიღებენ ამ ელემენტზე წვდომას."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -187572,6 +190512,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "編集中のアイテムは共有済みです。変更内容は直ちに共有されます。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თქვენ რედაქტირებთ გაზიარებულ ელემენტს. ცვლილებები დაუყოვნებლივ იქნება ხილული ყველასთვის, ვისთანაც ის გაზიარებულია."
           }
         },
         "ko" : {
@@ -187849,6 +190795,42 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "La suppression de %lld éléments ne pourra pas être annulée. Voulez-vous vraiment les supprimer ?"
+                }
+              }
+            }
+          }
+        },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Stai per eliminare definitivamente %lld elemento. Sei sicuro?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Stai per eliminare definitivamente %lld elementi. Sei sicuro?"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "აპირებთ, %lld ელემენტი შეუქცევადად წაშალოთ. დარწმუნებული ბრძანდებით?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "აპირებთ, %lld ელემენტი შეუქცევადად წაშალოთ. დარწმუნებული ბრძანდებით?"
                 }
               }
             }
@@ -190224,6 +193206,18 @@
             "value" : "Vous devez basculer vers %@ pour pouvoir le gérer."
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Devi passare a %@ per poterlo gestire"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "სამართავად %@-ზე უნდა გადახვიდეთ"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -191116,6 +194110,18 @@
             "value" : "Vous êtes déconnecté de %@."
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sei stato disconnesso da %@"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თქვენ გახვედით %@-დან"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -191423,6 +194429,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Le document actuel reviendra à la version du %@."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il tuo documento attuale verrà ripristinato alla versione del %@"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თქვენი მიმდინარე დოკუმენტი დაბრუნდება ვერსიაზე %@-დან"
           }
         },
         "nb" : {
@@ -192073,6 +195091,42 @@
             }
           }
         },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Il tuo indirizzo email è stato reso pubblico in %lld violazione di dati"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Il tuo indirizzo email è stato reso pubblico in %lld violazioni di dati"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "თქვენი ელფოსტის მისამართი გაჟონილია %lld გაჟონვაში"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "თქვენი ელფოსტის მისამართი გაჟონილია %lld გაჟონვაში"
+                }
+              }
+            }
+          }
+        },
         "nb" : {
           "variations" : {
             "plural" : {
@@ -192683,6 +195737,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vos informations ont été trouvées dans une fuite de données venant de **%@**."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le tue informazioni sono finite in una violazione di dati e sono state trovate il **%@**"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თქვენი ინფორმაცია აღმოჩენილია გაჟონვაში.პოვნის დროა **%@**"
           }
         },
         "nb" : {

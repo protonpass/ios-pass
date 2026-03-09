@@ -293,6 +293,7 @@ private extension HomepageCoordinator {
                         sendAllEventsIfApplicable()
                         eventLoop.start()
                         eventLoop.forceSync()
+                        refreshOrganizationAndOverrideSecuritySettings()
                         refreshAccessAndMonitorStateSync()
                         refreshSettings()
                         refreshFeatureFlags()
