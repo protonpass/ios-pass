@@ -178,6 +178,7 @@ private extension ItemsTabView {
             if viewModel.noVaults {
                 NoVaultsView(canCreate: viewModel.vaultCreationAllowed,
                              onCreate: viewModel.createVault)
+                    .padding(.bottom, safeAreaInsets.bottom)
             } else {
                 EmptyVaultView(canCreateItems: !viewModel.appContentManager.getAllEditableVaultContents().isEmpty,
                                onCreate: { viewModel.createNewItem(type: $0) })
