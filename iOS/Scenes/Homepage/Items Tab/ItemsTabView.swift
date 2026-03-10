@@ -115,7 +115,9 @@ struct ItemsTabView: View {
                                onDisableAliases: { viewModel.disableSelectedAliases() },
                                onEnableAliases: { viewModel.enableSelectedAliases() },
                                onPromoBadgeTapped: { viewModel.showNotification() })
-                    .hidden(!viewModel.vaultCreationAllowed && viewModel.noVaults)
+                    .hidden(!viewModel.vaultCreationAllowed &&
+                        viewModel.noVaults &&
+                        viewModel.isEmpty)
 
                 if viewModel.showingUpgradeAppBanner {
                     Button(action: { viewModel.openAppOnAppStore() },
