@@ -51,6 +51,7 @@ public struct FolderUiModel: PrecomputedHashable, Equatable, Sendable, Identifia
         self.folder = folder
         var hasher = Hasher()
         hasher.combine(shareId)
+        hasher.combine(folder)
         hasher.combine(lastUseTime)
         hasher.combine(content)
         hasher.combine(folder)
