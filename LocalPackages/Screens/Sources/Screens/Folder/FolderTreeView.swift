@@ -65,6 +65,7 @@ public struct FolderTreeView<Content: View>: View {
                                    containersExtended: $containersExtended,
                                    selectedContainer: $selectedContainer,
                                    trailingView: { folder, content in trailingView(folder, content) })
+                        .padding(.leading, 16)
                 }
             }
         }

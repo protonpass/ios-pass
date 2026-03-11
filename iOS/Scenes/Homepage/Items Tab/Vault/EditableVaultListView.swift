@@ -536,7 +536,7 @@ private struct FolderMenuView: View {
                 if viewModel.shouldUpsell {
                     viewModel.upgradeSubscription()
                 } else {
-                    viewModel.folderAction = .createNewFolder(content.share, parentFolderId: folder.id)
+                    viewModel.folderAction = .createNewFolder(content.share, parentFolderId: folder.folderId)
                 }
             }, label: {
                 Label(title: {

@@ -261,9 +261,9 @@ extension EditableVaultListViewModel {
                 case let .vault(vault):
                     try await appContentManager.delete(vault: vault)
                 case let .folder(folder):
-                    try await appContentManager.delete(userId: userId,
-                                                       shareId: folder.shareId,
-                                                       folderId: folder.id)
+                    try await appContentManager.deleteFolder(userId: userId,
+                                                             shareId: folder.shareId,
+                                                             folderId: folder.folderId)
                     // If the folder is currently
                     if let preciseSelectionPayload = appContentManager.shareSelection.preciseSelectionPayload,
                        preciseSelectionPayload.folder == folder {
@@ -444,7 +444,7 @@ extension EditableVaultListViewModel {
         let userId = try await userManager.getActiveUserId()
         try await appContentManager.editFolder(userId: userId,
                                                shareId: folder.shareId,
-                                               folderId: folder.id,
+                                               folderId: folder.folderId,
                                                name: folderName)
     }
 
