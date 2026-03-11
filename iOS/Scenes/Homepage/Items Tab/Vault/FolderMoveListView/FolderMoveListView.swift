@@ -103,7 +103,7 @@ private extension FolderMoveListView {
                                         disabled: viewModel.selectedContainer == .default,
                                         height: 44,
                                         action: {
-                                            viewModel.move(currentFolderId: folderToMove.folder.id)
+                                            viewModel.move(currentFolderId: folderToMove.folder.folderId)
                                         })
         }
         .padding([.bottom, .horizontal])
