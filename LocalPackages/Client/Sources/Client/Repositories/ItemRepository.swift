@@ -147,7 +147,7 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
 
     /// Delete all local items for current active user
     /// This should only be used for a complete nuke of local data for all users
-    func deleteAllCurrentUserItemsLocally(userId: String) async throws
+    func deleteAllUserItemsLocally(userId: String) async throws
 
     /// Delete items locally after sync events
     func deleteAllItemsLocally(shareId: String) async throws
@@ -628,7 +628,7 @@ public extension ItemRepository {
         logger.trace("Deleted all items locally")
     }
 
-    func deleteAllCurrentUserItemsLocally(userId: String) async throws {
+    func deleteAllUserItemsLocally(userId: String) async throws {
         logger.trace("Deleting all items locally")
         try await localDatasource.removeAllItems(userId: userId)
         try await refreshPinnedItemDataStream()

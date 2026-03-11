@@ -34,14 +34,13 @@ public protocol AppContentManagerProtocol: Sendable {
     // periphery:ignore
     func getItems(for shareId: String, containerId: String?) -> [ItemUiModel]
     func getAllItems(for shareId: String) -> [ItemUiModel]
-
     func delete(userId: String, shareId: String) async throws
-    // periphery:ignore
-    func delete(userId: String, shareId: String, folderId: String) async throws
     func getOldestOwnedVault() async -> Share?
     func reset() async
     // periphery:ignore
     func moveFolder(userId: String, shareId: String, folderId: String, newParentFolderId: String?) async throws
+    // periphery:ignore
+    func deleteFolder(userId: String, shareId: String, folderId: String) async throws
 }
 
 public extension AppContentManagerProtocol {

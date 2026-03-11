@@ -39,7 +39,7 @@ public protocol ShareKeyRepositoryProtocol: Sendable {
     @discardableResult
     func refreshKeys(userId: String, shareId: String) async throws -> [SymmetricallyEncryptedShareKey]
 
-    func deleteAllCurrentUserShareKeysLocally(userId: String) async throws
+    func deleteAllUserShareKeysLocally(userId: String) async throws
 }
 
 public actor ShareKeyRepository: ShareKeyRepositoryProtocol {
@@ -110,7 +110,7 @@ public extension ShareKeyRepository {
         return encryptedKeys
     }
 
-    func deleteAllCurrentUserShareKeysLocally(userId: String) async throws {
+    func deleteAllUserShareKeysLocally(userId: String) async throws {
         logger.trace("Deleting all local share keys of user \(userId)")
         try await localDatasource.removeAllKeys(userId: userId)
         logger.trace("Deleted all local share keys")
