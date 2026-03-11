@@ -33,6 +33,7 @@ public struct ShareSelectionPayload: Hashable, Sendable, Identifiable {
     }
 
     public init(share: Share, folder: FolderUiModel?) {
+        assert(share.isVaultRepresentation, "Share must be a vault")
         self.share = share
         self.folder = folder
     }
