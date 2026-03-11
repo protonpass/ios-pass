@@ -56,10 +56,10 @@ public final class DeleteLocalDataBeforeFullSync: DeleteLocalDataBeforeFullSyncU
     }
 
     public func execute(userId: String) async throws {
-        async let deletingLocalItems: Void = itemRepository.deleteAllCurrentUserItemsLocally(userId: userId)
-        async let deletingLocalShares: Void = shareRepository.deleteAllCurrentUserSharesLocally(userId: userId)
+        async let deletingLocalItems: Void = itemRepository.deleteAllUserItemsLocally(userId: userId)
+        async let deletingLocalShares: Void = shareRepository.deleteAllUserSharesLocally(userId: userId)
         async let deletingLocalShareKeys: Void = shareKeyRepository
-            .deleteAllCurrentUserShareKeysLocally(userId: userId)
+            .deleteAllUserShareKeysLocally(userId: userId)
         async let deletingLocalFolderKeys: Void = folderKeyDatasource.removeAllKeys(userId: userId)
         async let deletingLocalFolders: Void = folderRepository.deleteAllLocalFolders(userId: userId)
         _ = try await (deletingLocalItems, deletingLocalShares, deletingLocalShareKeys, deletingLocalFolderKeys,

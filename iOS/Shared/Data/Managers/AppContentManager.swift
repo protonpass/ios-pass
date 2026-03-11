@@ -311,7 +311,7 @@ extension AppContentManager {
         logger.info("Deleted vault \(shareId)")
     }
 
-    func delete(userId: String, shareId: String, folderId: String) async throws {
+    func deleteFolder(userId: String, shareId: String, folderId: String) async throws {
         guard let sharesData = state.loadedContent,
               let shareContent = sharesData.shares[shareId] else { return }
 

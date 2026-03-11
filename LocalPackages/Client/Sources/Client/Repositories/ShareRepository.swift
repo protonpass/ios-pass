@@ -40,7 +40,7 @@ public protocol ShareRepositoryProtocol: Sendable, Actor {
     func getDecryptedRemoteShares(userId: String) async throws -> DecryptedRemoteShares
 
     /// Delete all local shares
-    func deleteAllCurrentUserSharesLocally(userId: String) async throws
+    func deleteAllUserSharesLocally(userId: String) async throws
 
     /// Delete locally a given share
     func deleteShareLocally(userId: String, shareId: String) async throws
@@ -193,7 +193,7 @@ public extension ShareRepository {
         }
     }
 
-    func deleteAllCurrentUserSharesLocally(userId: String) async throws {
+    func deleteAllUserSharesLocally(userId: String) async throws {
         logger.trace("Deleting all local shares for user \(userId)")
         try await localDatasource.removeAllShares(userId: userId)
         logger.trace("Deleted all local shares for user \(userId)")
