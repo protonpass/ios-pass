@@ -23,7 +23,7 @@ import Entities
 import Foundation
 import ProtonCoreNetworking
 
-struct InternalShareMoveItemsResponse: Decodable, Sendable {
+struct InternalShareMoveItemsResponse: Decodable {
     let items: [ModifiedItem]
 }
 
@@ -38,7 +38,7 @@ public struct InternalShareMoveItemsRequest: Encodable, Sendable {
     }
 }
 
-struct InternalItemToBeMoved: Codable, Sendable {
+struct InternalItemToBeMoved: Codable {
     let itemId: String
     let itemKeys: [ItemKey]
 

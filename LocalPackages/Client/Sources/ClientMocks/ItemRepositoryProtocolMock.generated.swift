@@ -631,22 +631,22 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         }
         closureDeleteAllItemsLocallyAsync32()
     }
-    // MARK: - deleteAllCurrentUserItemsLocally
-    public var deleteAllCurrentUserItemsLocallyUserIdThrowableError33: Error?
-    public var closureDeleteAllCurrentUserItemsLocally: () -> () = {}
-    public var invokedDeleteAllCurrentUserItemsLocallyfunction = false
-    public var invokedDeleteAllCurrentUserItemsLocallyCount = 0
-    public var invokedDeleteAllCurrentUserItemsLocallyParameters: (userId: String, Void)?
-    public var invokedDeleteAllCurrentUserItemsLocallyParametersList = [(userId: String, Void)]()
+    // MARK: - deleteAllUserItemsLocally
+    public var deleteAllUserItemsLocallyUserIdThrowableError33: Error?
+    public var closureDeleteAllUserItemsLocally: () -> () = {}
+    public var invokedDeleteAllUserItemsLocallyfunction = false
+    public var invokedDeleteAllUserItemsLocallyCount = 0
+    public var invokedDeleteAllUserItemsLocallyParameters: (userId: String, Void)?
+    public var invokedDeleteAllUserItemsLocallyParametersList = [(userId: String, Void)]()
 
-    public func deleteAllCurrentUserItemsLocally(userId: String) async throws {
-        invokedDeleteAllCurrentUserItemsLocallyfunction = true
-        invokedDeleteAllCurrentUserItemsLocallyCount += 1
-        invokedDeleteAllCurrentUserItemsLocallyParameters = (userId, ())
-        if let error = deleteAllCurrentUserItemsLocallyUserIdThrowableError33 {
+    public func deleteAllUserItemsLocally(userId: String) async throws {
+        invokedDeleteAllUserItemsLocallyfunction = true
+        invokedDeleteAllUserItemsLocallyCount += 1
+        invokedDeleteAllUserItemsLocallyParameters = (userId, ())
+        if let error = deleteAllUserItemsLocallyUserIdThrowableError33 {
             throw error
         }
-        closureDeleteAllCurrentUserItemsLocally()
+        closureDeleteAllUserItemsLocally()
     }
     // MARK: - deleteAllItemsLocallyShareId
     public var deleteAllItemsLocallyShareIdThrowableError34: Error?

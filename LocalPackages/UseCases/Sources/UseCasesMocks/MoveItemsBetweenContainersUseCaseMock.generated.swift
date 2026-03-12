@@ -21,7 +21,7 @@
 import UseCases
 import Client
 
-public final class MoveItemsBetweenVaultsUseCaseMock: @unchecked Sendable, MoveItemsBetweenContainersUseCase {
+public final class MoveItemsBetweenContainersUseCaseMock: @unchecked Sendable, MoveItemsBetweenContainersUseCase {
 
     public init() {}
 

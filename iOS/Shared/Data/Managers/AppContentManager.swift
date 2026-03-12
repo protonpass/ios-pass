@@ -319,7 +319,7 @@ extension AppContentManager {
         try await folderRepository.delete(userId: userId, shareId: shareId, folderIds: [folderId])
         logger.trace("Deleting local active items of folder and subfolders \(folderId)")
         let itemIds = shareContent.flattenedItems(from: folderId).map(\.itemId)
-        let folderIds = shareContent.flattenedFolders(from: folderId).map(\.id)
+        let folderIds = shareContent.flattenedFolders(from: folderId).map(\.folderId)
         async let deletingFolders: Void = folderIds.isEmpty ? () : folderRepository
             .deleteLocalFolder(userId: userId,
                                shareId: shareId,
@@ -414,7 +414,7 @@ extension AppContentManager {
             sharesData.visibleShareContents.flatMap(\.allItems)
         case let .precise(selection):
             if let shareContent = sharesData.shares[selection.share.id] {
-                shareContent.flattenedItems(from: selection.folder?.id ?? selection.share.shareId)
+                shareContent.flattenedItems(from: selection.folder?.folderId ?? selection.share.shareId)
             } else {
                 []
             }
