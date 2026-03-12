@@ -650,6 +650,8 @@ extension HomepageCoordinator {
                     displayUndecryptableSharesBanner(dismissTopSheetBeforeShowing)
                 case let .shareLogs(url):
                     presentShareSheet(for: url)
+                case let .moveFolder(folderToMove):
+                    moveFolder(folderToMove: folderToMove)
                 }
             }
             .store(in: &cancellables)
@@ -1470,6 +1472,19 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         let viewController = UIHostingController(rootView: view)
         sheetPresentationController = viewController.sheetPresentationController
 
+        viewController.setDetentType(.large,
+                                     parentViewController: rootViewController)
+
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
+        present(viewController)
+    }
+
+    func moveFolder(folderToMove: FolderToMove) {
+        let view = FolderMoveListView(selectedContainer: .init(share: folderToMove.shareContent.share,
+                                                               folder: folderToMove.folder),
+                                      folderToMove: folderToMove)
+
+        let viewController = UIHostingController(rootView: view)
         viewController.setDetentType(.large,
                                      parentViewController: rootViewController)
 

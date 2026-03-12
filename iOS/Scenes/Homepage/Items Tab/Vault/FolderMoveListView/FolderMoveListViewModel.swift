@@ -38,7 +38,6 @@ final class FolderMoveListViewModel {
     private(set) var loading: Bool = false
     private(set) var moveCompleted = false
     @ObservationIgnored private var moveTask: Task<Void, Never>?
-    var selectedContainer: ShareSelectionPayload = .default
     var containersExtended = Set<String>()
     var folderSupported: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passFolder)
@@ -48,8 +47,10 @@ final class FolderMoveListViewModel {
         moveTask?.cancel()
     }
 
-    func move(currentFolderId: String) {
-        guard selectedContainer != .default, !loading else { return }
+    init() {}
+
+    func move(selectedContainer: ShareSelectionPayload, currentFolderId: String) {
+        guard !loading else { return }
         moveTask?.cancel()
         moveTask = Task {
             defer { loading = false }
@@ -68,7 +69,6 @@ final class FolderMoveListViewModel {
     }
 
     func load(folderInfos: FolderToMove) {
-        selectedContainer = .init(share: folderInfos.shareContent.share, folder: folderInfos.folder)
         containersExtended.insert(folderInfos.shareContent.share.id)
         for folder in folderInfos.shareContent.allFolders {
             containersExtended.insert(folder.id)

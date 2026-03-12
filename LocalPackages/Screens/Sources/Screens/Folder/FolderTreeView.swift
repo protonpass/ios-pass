@@ -32,14 +32,14 @@ public struct FolderTreeView<Content: View>: View {
     let shouldDismissOnSelection: Bool
     private var trailingView: (FolderUiModel, ShareContent) -> Content
     @Binding var containersExtended: Set<String>
-    @Binding var selectedContainer: ShareSelectionPayload
+    @Binding var selectedContainer: ShareSelectionPayload?
 
     public init(content: ShareContent,
                 share: Share,
                 folders: [FolderUiModel],
                 shouldDismissOnSelection: Bool,
                 containersExtended: Binding<Set<String>>,
-                selectedContainer: Binding<ShareSelectionPayload>,
+                selectedContainer: Binding<ShareSelectionPayload?>,
                 @ViewBuilder trailingView: @escaping (FolderUiModel, ShareContent) -> Content) {
         self.content = content
         self.share = share
@@ -115,7 +115,7 @@ private extension FolderTreeView {
                             .frame(width: 20, height: 20)
                             .foregroundStyle(PassColor.folderIcon)
 
-                        if selectedContainer.folder == folder {
+                        if selectedContainer?.folder == folder {
                             IconProvider.checkmark
                                 .resizable()
                                 .scaledToFit()
@@ -161,7 +161,7 @@ public extension FolderTreeView where Content == EmptyView {
          folders: [FolderUiModel],
          shouldDismissOnSelection: Bool,
          containersExtended: Binding<Set<String>>,
-         selectedContainer: Binding<ShareSelectionPayload>) {
+         selectedContainer: Binding<ShareSelectionPayload?>) {
         self.init(content: content,
                   share: share,
                   folders: folders,

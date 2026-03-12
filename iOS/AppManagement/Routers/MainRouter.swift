@@ -113,6 +113,7 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case signInToAnotherDevice
     case undecryptableSharesBanner(dismissTopSheetBeforeShowing: Bool)
     case shareLogs(URL)
+    case moveFolder(FolderToMove)
 }
 
 enum ItemDestination {

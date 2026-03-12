@@ -144,11 +144,6 @@ struct EditableVaultListView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-        .sheet(item: $viewModel.folderToMove) { folder in
-            FolderMoveListView(folderToMove: folder) {
-                viewModel.dismissMoveFolder()
-            }
-        }
     }
 
     var mainListView: some View {
@@ -521,7 +516,7 @@ private struct FolderMenuView: View {
     var body: some View {
         Menu {
             Button(action: {
-                viewModel.folderToMove = FolderToMove(folder: folder, shareContent: content)
+                viewModel.selectedFolderToMove(folderToMove: FolderToMove(folder: folder, shareContent: content))
             }, label: {
                 Label(title: {
                     Text("Move folder")
