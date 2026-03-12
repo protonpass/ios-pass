@@ -25,7 +25,7 @@ public protocol CryptographicKeyProtocol: Hashable, Sendable {
     var keyData: Data { get }
 }
 
-public protocol SymmetricallyEncryptedKeyType {
+public protocol SymmetricallyEncryptedKeyTypeProtocol {
     var id: String { get }
     var keyRotation: Int64 { get }
     var encryptedKey: String { get }

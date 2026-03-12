@@ -70,6 +70,10 @@ public struct ItemEvent: Sendable, Decodable, Equatable, ItemIdentifiable {
     public var itemId: String {
         itemID
     }
+
+    public var folderId: String? {
+        nil
+    }
 }
 
 public struct ShareEvent: Sendable, Decodable, Equatable {

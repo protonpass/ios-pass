@@ -45,20 +45,20 @@ public protocol FileAttachmentRepositoryProtocol: Sendable {
                                file: PendingFileAttachment,
                                newName: String) async throws -> Bool
     func updateItemFileName(userId: String,
-                            item: any FullItemIdentifiable,
+                            item: any ItemIdentifiable,
                             file: ItemFile,
                             newName: String) async throws -> ItemFile
     func linkFilesToItem(userId: String,
                          pendingFilesToAdd: [PendingFileAttachment],
                          existingFileIdsToRemove: [String],
-                         item: any FullItemIdentifiable) async throws
-    func getActiveItemFiles(userId: String, item: any FullItemIdentifiable, share: Share) async throws
+                         item: any ItemIdentifiable) async throws
+    func getActiveItemFiles(userId: String, item: any ItemIdentifiable, share: Share) async throws
         -> [ItemFile]
     func getItemFilesForAllRevisions(userId: String,
-                                     item: any FullItemIdentifiable,
+                                     item: any ItemIdentifiable,
                                      share: Share) async throws -> [ItemFile]
     func restoreFiles(userId: String,
-                      item: any FullItemIdentifiable,
+                      item: any ItemIdentifiable,
                       files: [ItemFile]) async throws
 }
 
@@ -166,7 +166,7 @@ public extension FileAttachmentRepository {
     }
 
     func updateItemFileName(userId: String,
-                            item: any FullItemIdentifiable,
+                            item: any ItemIdentifiable,
                             file: ItemFile,
                             newName: String) async throws -> ItemFile {
         guard let mimeType = file.mimeType else {
@@ -204,7 +204,7 @@ public extension FileAttachmentRepository {
     func linkFilesToItem(userId: String,
                          pendingFilesToAdd: [PendingFileAttachment],
                          existingFileIdsToRemove: [String],
-                         item: any FullItemIdentifiable) async throws {
+                         item: any ItemIdentifiable) async throws {
         let keys = try await getShareKeys(userId: userId, item: item)
         guard let itemKey = keys.max(by: { $0.keyRotation > $1.keyRotation }) else {
             throw PassError.keysNotFound(shareID: item.shareId)
@@ -249,7 +249,7 @@ public extension FileAttachmentRepository {
     }
 
     func getActiveItemFiles(userId: String,
-                            item: any FullItemIdentifiable,
+                            item: any ItemIdentifiable,
                             share: Share) async throws -> [ItemFile] {
         try await getAllFiles(userId: userId, share: share, item: item) { [weak self] lastId in
             guard let self else {
@@ -262,7 +262,7 @@ public extension FileAttachmentRepository {
     }
 
     func getItemFilesForAllRevisions(userId: String,
-                                     item: any FullItemIdentifiable,
+                                     item: any ItemIdentifiable,
                                      share: Share) async throws -> [ItemFile] {
         try await getAllFiles(userId: userId, share: share, item: item) { [weak self] lastId in
             guard let self else {
@@ -275,7 +275,7 @@ public extension FileAttachmentRepository {
     }
 
     func restoreFiles(userId: String,
-                      item: any FullItemIdentifiable,
+                      item: any ItemIdentifiable,
                       files: [ItemFile]) async throws {
         let keys = try await getShareKeys(userId: userId, item: item)
         guard let latestKey = keys.max(by: { $0.keyRotation > $1.keyRotation }) else {
@@ -323,7 +323,7 @@ public extension FileAttachmentRepository {
 private extension FileAttachmentRepository {
     func getAllFiles(userId: String,
                      share: Share,
-                     item: any FullItemIdentifiable,
+                     item: any ItemIdentifiable,
                      getFiles: (_ lastId: String?) async throws -> PaginatedItemFiles) async throws
         -> [ItemFile] {
         var lastId: String?
@@ -381,7 +381,7 @@ private extension FileAttachmentRepository {
     }
 
     func getShareKeys(userId: String,
-                      item: any FullItemIdentifiable) async throws -> [any CryptographicKeyProtocol] {
+                      item: any ItemIdentifiable) async throws -> [any CryptographicKeyProtocol] {
         guard let share = try await shareRepository.getShare(shareId: item.shareId) else {
             throw PassError.shareNotFoundInLocalDB(shareID: item.shareId)
         }

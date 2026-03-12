@@ -26,6 +26,15 @@ import Foundation
 public protocol ItemIdentifiable: Sendable, CustomDebugStringConvertible, Equatable {
     var shareId: String { get }
     var itemId: String { get }
+    var folderId: String? { get }
+
+    var parentId: String { get }
+}
+
+public extension ItemIdentifiable {
+    var parentId: String {
+        folderId ?? shareId
+    }
 }
 
 public extension ItemIdentifiable {

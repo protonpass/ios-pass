@@ -35,7 +35,7 @@ public protocol PassKeyManagerProtocol: Sendable, AnyObject {
 
     func getShareKeys(userId: String,
                       share: Share,
-                      item: any FullItemIdentifiable) async throws -> [any CryptographicKeyProtocol]
+                      item: any ItemIdentifiable) async throws -> [any CryptographicKeyProtocol]
 
     func getLatestItemKey(userId: String,
                           shareId: String,
@@ -125,7 +125,7 @@ public extension PassKeyManager {
 
     func getShareKeys(userId: String,
                       share: Share,
-                      item: any FullItemIdentifiable) async throws -> [any CryptographicKeyProtocol] {
+                      item: any ItemIdentifiable) async throws -> [any CryptographicKeyProtocol] {
         try await loadKeysIfNeeded()
 
         switch share.shareType {
@@ -133,7 +133,7 @@ public extension PassKeyManager {
             return try await getItemKeys(userId: userId,
                                          shareId: item.shareId,
                                          parentId: item.parentId,
-                                         itemId: item.item.itemID)
+                                         itemId: item.itemId)
 
         case .item:
             let allEncryptedShareKeys = try await shareKeyRepository.getKeys(userId: userId,
@@ -294,7 +294,7 @@ private extension PassKeyManager {
         return try await getContainerKey(containerId: containerId, keyRotation: keyRotation, refreshed: true)
     }
 
-    func symmetricDecryptAndCache(_ encryptedKey: SymmetricallyEncryptedKeyType) async throws
+    func symmetricDecryptAndCache(_ encryptedKey: SymmetricallyEncryptedKeyTypeProtocol) async throws
         -> any CryptographicKeyProtocol {
         let containerId = encryptedKey.id
         let keyRotation = encryptedKey.keyRotation
@@ -314,7 +314,7 @@ private extension PassKeyManager {
         return decryptedContainerKey
     }
 
-    func decryptAndCacheAll(_ encryptedKeys: [SymmetricallyEncryptedKeyType]) async throws
+    func decryptAndCacheAll(_ encryptedKeys: [SymmetricallyEncryptedKeyTypeProtocol]) async throws
         -> [any CryptographicKeyProtocol] {
         var decryptedKeys = [any CryptographicKeyProtocol]()
         decryptedKeys.reserveCapacity(encryptedKeys.count)
@@ -483,7 +483,7 @@ private extension PassKeyManager {
         keysLoaded = true
     }
 
-    func decryptSymmetricKey(_ key: SymmetricallyEncryptedKeyType,
+    func decryptSymmetricKey(_ key: SymmetricallyEncryptedKeyTypeProtocol,
                              using symmetricKey: SymmetricKey) throws -> any CryptographicKeyProtocol {
         let decryptedKey = try symmetricKey.decrypt(key.encryptedKey)
         guard let decryptedKeyData = try decryptedKey.base64Decode() else {

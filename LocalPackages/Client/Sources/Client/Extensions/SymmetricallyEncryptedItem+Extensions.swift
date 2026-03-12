@@ -48,5 +48,3 @@ public extension SymmetricallyEncryptedItem {
         return itemContent.toItemUiModel
     }
 }
-
-extension SymmetricallyEncryptedItem: @retroactive FullItemIdentifiable {}

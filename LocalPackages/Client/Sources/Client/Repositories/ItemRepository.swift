@@ -1007,7 +1007,7 @@ public extension ItemRepository {
 }
 
 private extension ItemRepository {
-    func parallelMove(items: [any FullItemIdentifiable],
+    func parallelMove(items: [any ItemIdentifiable],
                       to toShareId: String,
                       destinationFolderId: String?) async throws {
         let splitArray = items.chunked(into: 10)
@@ -1019,8 +1019,8 @@ private extension ItemRepository {
                     }
 
                     for contentToFetch in splitArray {
-                        var sameFolderMove: [any FullItemIdentifiable] = []
-                        var otherFolderMove: [any FullItemIdentifiable] = []
+                        var sameFolderMove: [any ItemIdentifiable] = []
+                        var otherFolderMove: [any ItemIdentifiable] = []
                         for item in contentToFetch {
                             if item.shareId == toShareId {
                                 sameFolderMove.append(item)
@@ -1052,7 +1052,7 @@ private extension ItemRepository {
     }
 
     @discardableResult
-    func doMove(items: [any FullItemIdentifiable],
+    func doMove(items: [any ItemIdentifiable],
                 toShareId: String,
                 destinationFolderId: String?) async throws -> [SymmetricallyEncryptedItem] {
         guard let fromSharedId = items.first?.shareId else {
@@ -1070,9 +1070,8 @@ private extension ItemRepository {
             // Get all decrypted item keys
             let decryptedItemKeys = try await passKeyManager.getItemKeys(userId: userId,
                                                                          shareId: item.shareId,
-                                                                         parentId: item.item.folderID ?? item
-                                                                             .shareId,
-                                                                         itemId: item.item.itemID)
+                                                                         parentId: item.parentId,
+                                                                         itemId: item.itemId)
             // Re-encrypt all those item keys with the destination vault key
             var encryptedItemKeys = [ItemKey]()
             for itemKey in decryptedItemKeys {
@@ -1082,7 +1081,7 @@ private extension ItemRepository {
                 encryptedItemKeys.append(.init(key: encryptedItemKey.base64EncodedString(),
                                                keyRotation: itemKey.keyRotation))
             }
-            itemsToBeMoved.append(.init(itemId: item.item.itemID,
+            itemsToBeMoved.append(.init(itemId: item.itemId,
                                         destinationFolderID: destinationFolderId,
                                         itemKeys: encryptedItemKeys))
         }
@@ -1099,7 +1098,7 @@ private extension ItemRepository {
                                                      userId: userId,
                                                      symmetricKey: symmetricKey)
             }.compactMap(\.self)
-        try await localDatasource.deleteItems(itemIds: items.map(\.item.itemID),
+        try await localDatasource.deleteItems(itemIds: items.map(\.itemId),
                                               shareId: fromSharedId)
         try await localDatasource.upsertItems(newEncryptedItems)
         return newEncryptedItems
