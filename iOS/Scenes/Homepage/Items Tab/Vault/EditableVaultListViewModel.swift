@@ -484,6 +484,16 @@ private extension EditableVaultListViewModel {
             shareSelection = payload
         }
 
+        $shareSelection
+            .receive(on: DispatchQueue.main)
+            .compactMap(\.self)
+            .removeDuplicates()
+            .sink { [weak self] shareSelection in
+                guard let self else { return }
+                select(.precise(shareSelection))
+            }
+            .store(in: &cancellables)
+
         appContentManager.$state
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newState in

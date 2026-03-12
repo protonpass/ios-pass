@@ -126,22 +126,22 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
         closureGetDecryptedRemoteShares()
         return stubbedGetDecryptedRemoteSharesResult
     }
-    // MARK: - deleteAllCurrentUserSharesLocally
-    public var deleteAllCurrentUserSharesLocallyUserIdThrowableError6: Error?
-    public var closureDeleteAllCurrentUserSharesLocally: () -> () = {}
-    public var invokedDeleteAllCurrentUserSharesLocallyfunction = false
-    public var invokedDeleteAllCurrentUserSharesLocallyCount = 0
-    public var invokedDeleteAllCurrentUserSharesLocallyParameters: (userId: String, Void)?
-    public var invokedDeleteAllCurrentUserSharesLocallyParametersList = [(userId: String, Void)]()
+    // MARK: - deleteAllUserSharesLocally
+    public var deleteAllUserSharesLocallyUserIdThrowableError6: Error?
+    public var closureDeleteAllUserSharesLocally: () -> () = {}
+    public var invokedDeleteAllUserSharesLocallyfunction = false
+    public var invokedDeleteAllUserSharesLocallyCount = 0
+    public var invokedDeleteAllUserSharesLocallyParameters: (userId: String, Void)?
+    public var invokedDeleteAllUserSharesLocallyParametersList = [(userId: String, Void)]()
 
-    public func deleteAllCurrentUserSharesLocally(userId: String) async throws {
-        invokedDeleteAllCurrentUserSharesLocallyfunction = true
-        invokedDeleteAllCurrentUserSharesLocallyCount += 1
-        invokedDeleteAllCurrentUserSharesLocallyParameters = (userId, ())
-        if let error = deleteAllCurrentUserSharesLocallyUserIdThrowableError6 {
+    public func deleteAllUserSharesLocally(userId: String) async throws {
+        invokedDeleteAllUserSharesLocallyfunction = true
+        invokedDeleteAllUserSharesLocallyCount += 1
+        invokedDeleteAllUserSharesLocallyParameters = (userId, ())
+        if let error = deleteAllUserSharesLocallyUserIdThrowableError6 {
             throw error
         }
-        closureDeleteAllCurrentUserSharesLocally()
+        closureDeleteAllUserSharesLocally()
     }
     // MARK: - deleteShareLocally
     public var deleteShareLocallyUserIdShareIdThrowableError7: Error?

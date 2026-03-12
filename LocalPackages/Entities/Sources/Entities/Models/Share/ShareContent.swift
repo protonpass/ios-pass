@@ -54,7 +54,7 @@ public struct ShareContent: Identifiable, Hashable, Sendable {
 
             case let .folder(folder):
                 foldersByContainer[element.containerId, default: []].append(folder)
-                foldersById[folder.id] = folder
+                foldersById[folder.folderId] = folder
             }
         }
 

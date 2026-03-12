@@ -31,7 +31,6 @@ public struct FolderUiModel: PrecomputedHashable, Equatable, Sendable, Identifia
         folder.folderID
     }
 
-    ///
     public var id: String {
         folderId + shareId
     }
@@ -41,7 +40,7 @@ public struct FolderUiModel: PrecomputedHashable, Equatable, Sendable, Identifia
     }
 
     public var parentId: String {
-        "\(folder.parentFolderID ?? "")\(shareId)"
+        folder.parentFolderID ?? shareId
     }
 
     public init(shareId: String, folder: Folder, content: FolderContent, lastUseTime: Int64? = nil) {

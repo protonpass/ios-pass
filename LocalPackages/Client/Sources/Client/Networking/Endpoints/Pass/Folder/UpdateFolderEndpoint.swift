@@ -49,7 +49,7 @@ public struct UpdateFolderRequest: Sendable, Encodable {
     }
 }
 
-struct UpdateFolderRequestPayload: Sendable, Encodable {
+struct UpdateFolderRequestPayload: Encodable {
     /// RotationID used to encrypt the folder contents
     let keyRotation: Int64
     /// Encrypted folder content encoded in Base64

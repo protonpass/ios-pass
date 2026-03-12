@@ -108,7 +108,7 @@ struct ShareRepositoryTests {
         userManager.stubbedGetActiveUserDataResult = user
         
         // Act
-        try await sut.deleteAllCurrentUserSharesLocally(userId: user.user.ID)
+        try await sut.deleteAllUserSharesLocally(userId: user.user.ID)
         
         // Assert
         #expect(localDatasourceMock.invokedRemoveAllSharesfunction)

@@ -57,7 +57,7 @@ public struct FolderTreeView<Content: View>: View {
                     .padding(.vertical, 12)
 
                 if shouldShowSubfolders(of: folder),
-                   let subFolders = content.folders(in: folder.id) {
+                   let subFolders = content.folders(in: folder.folderId) {
                     FolderTreeView(content: content,
                                    share: share,
                                    folders: subFolders,
@@ -148,7 +148,7 @@ private extension FolderTreeView {
     }
 
     func containsSubfolder(_ folder: FolderUiModel) -> Bool {
-        guard let subfolders = content.folders(in: folder.id), !subfolders.isEmpty else {
+        guard let subfolders = content.folders(in: folder.folderId), !subfolders.isEmpty else {
             return false
         }
         return true

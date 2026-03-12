@@ -81,18 +81,18 @@ final class ShareKeyRepositoryProtocolMock: @unchecked Sendable, ShareKeyReposit
 
     // MARK: - deleteAllCurrentUserShareKeysLocally
 
-    var deleteAllCurrentUserShareKeysLocallyThrowableError: Error?
-    var invokedDeleteAllCurrentUserShareKeysLocally = false
-    var invokedDeleteAllCurrentUserShareKeysLocallyCount = 0
-    var invokedDeleteAllCurrentUserShareKeysLocallyParameters: (userId: String, Void)?
-    var invokedDeleteAllCurrentUserShareKeysLocallyParametersList: [(userId: String, Void)] = []
+    var deleteAllUserShareKeysLocallyThrowableError: Error?
+    var invokedDeleteAllUserShareKeysLocally = false
+    var invokedDeleteAllUserShareKeysLocallyCount = 0
+    var invokedDeleteAllUserShareKeysLocallyParameters: (userId: String, Void)?
+    var invokedDeleteAllUserShareKeysLocallyParametersList: [(userId: String, Void)] = []
 
-    func deleteAllCurrentUserShareKeysLocally(userId: String) async throws {
-        invokedDeleteAllCurrentUserShareKeysLocally = true
-        invokedDeleteAllCurrentUserShareKeysLocallyCount += 1
-        invokedDeleteAllCurrentUserShareKeysLocallyParameters = (userId, ())
-        invokedDeleteAllCurrentUserShareKeysLocallyParametersList.append((userId, ()))
-        if let error = deleteAllCurrentUserShareKeysLocallyThrowableError {
+    func deleteAllUserShareKeysLocally(userId: String) async throws {
+        invokedDeleteAllUserShareKeysLocally = true
+        invokedDeleteAllUserShareKeysLocallyCount += 1
+        invokedDeleteAllUserShareKeysLocallyParameters = (userId, ())
+        invokedDeleteAllUserShareKeysLocallyParametersList.append((userId, ()))
+        if let error = deleteAllUserShareKeysLocallyThrowableError {
             throw error
         }
     }
