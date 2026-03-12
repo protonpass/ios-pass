@@ -45,8 +45,4 @@ public struct ShareSelectionPayload: Hashable, Sendable, Identifiable {
     public var title: String {
         folder?.content.name ?? share.vaultContent?.name ?? ""
     }
-
-    public static var `default`: ShareSelectionPayload {
-        .init(share: .empty, folder: nil)
-    }
 }

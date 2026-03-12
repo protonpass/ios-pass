@@ -78,20 +78,10 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
         }
     }
 
-    @Published var shareSelection = ShareSelectionPayload.default {
-        didSet {
-            guard shareSelection != .default else {
-                return
-            }
-            select(.precise(shareSelection))
-        }
-    }
-
+    @Published var shareSelection: ShareSelectionPayload?
     @Published var containerToDelete: ActionnableContainer?
     @Published var folderAction: FolderAction?
     @Published var folderName: String = ""
-
-    var folderToMove: FolderToMove?
 
     let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
@@ -281,8 +271,8 @@ extension EditableVaultListViewModel {
         }
     }
 
-    func dismissMoveFolder() {
-        folderToMove = nil
+    func selectedFolderToMove(folderToMove: FolderToMove) {
+        router.present(for: .moveFolder(folderToMove))
     }
 
     func createNewVault() {

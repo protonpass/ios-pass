@@ -34,23 +34,23 @@ public extension CreateAndMoveItemToNewVaultUseCase {
 
 public final class CreateAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCase {
     private let createVault: any CreateVaultUseCase
-    private let moveItemsBetweenVaults: any MoveItemsBetweenVaultsUseCase
+    private let moveItemsBetweenContainers: any MoveItemsBetweenContainersUseCase
     private let appContentManager: any AppContentManagerProtocol
 
     public init(createVault: any CreateVaultUseCase,
-                moveItemsBetweenVaults: any MoveItemsBetweenVaultsUseCase,
+                moveItemsBetweenContainers: any MoveItemsBetweenContainersUseCase,
                 appContentManager: any AppContentManagerProtocol) {
         self.createVault = createVault
-        self.moveItemsBetweenVaults = moveItemsBetweenVaults
+        self.moveItemsBetweenContainers = moveItemsBetweenContainers
         self.appContentManager = appContentManager
     }
 
     public func execute(userId: String, vault: VaultContent, itemContent: ItemContent) async throws -> Share {
         do {
             if let vault = try await createVault(userId: userId, with: vault) {
-                try await moveItemsBetweenVaults(context: .singleItem(itemContent),
-                                                 to: vault.shareId,
-                                                 destinationFolderId: nil)
+                try await moveItemsBetweenContainers(context: .singleItem(itemContent),
+                                                     to: vault.shareId,
+                                                     destinationFolderId: nil)
                 await appContentManager.refresh(userId: userId)
                 return vault
             } else {

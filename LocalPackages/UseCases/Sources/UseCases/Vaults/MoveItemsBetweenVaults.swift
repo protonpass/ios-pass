@@ -23,17 +23,17 @@
 import Client
 
 // sourcery: AutoMockable
-public protocol MoveItemsBetweenVaultsUseCase: Sendable {
+public protocol MoveItemsBetweenContainersUseCase: Sendable {
     func execute(context: MovingContext, to shareId: ShareID, destinationFolderId: String?) async throws
 }
 
-public extension MoveItemsBetweenVaultsUseCase {
+public extension MoveItemsBetweenContainersUseCase {
     func callAsFunction(context: MovingContext, to shareId: ShareID, destinationFolderId: String?) async throws {
         try await execute(context: context, to: shareId, destinationFolderId: destinationFolderId)
     }
 }
 
-public final class MoveItemsBetweenVaults: MoveItemsBetweenVaultsUseCase {
+public final class MoveItemsBetweenContainers: MoveItemsBetweenContainersUseCase {
     private let repository: any ItemRepositoryProtocol
 
     public init(repository: any ItemRepositoryProtocol) {

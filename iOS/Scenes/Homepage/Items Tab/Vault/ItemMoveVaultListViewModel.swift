@@ -32,7 +32,7 @@ final class ItemMoveVaultListViewModel: ObservableObject, DeinitPrintable {
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let moveItemsBetweenVaults = resolve(\UseCasesContainer.moveItemsBetweenVaults)
+    private let moveItemsBetweenContainers = resolve(\UseCasesContainer.moveItemsBetweenContainers)
     private let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
     @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
@@ -40,8 +40,7 @@ final class ItemMoveVaultListViewModel: ObservableObject, DeinitPrintable {
 
     @Published private(set) var isFreeUser = false
     @Published private(set) var showWarning = false
-    @Published var selectedContainer = ShareSelectionPayload.default
-
+    @Published var selectedContainer: ShareSelectionPayload?
     @Published var containersExtended = Set<String>()
 
     let allSharesContent: [ShareContent]
@@ -92,7 +91,8 @@ final class ItemMoveVaultListViewModel: ObservableObject, DeinitPrintable {
     }
 
     func doMove() {
-        guard selectedContainer.share.isVaultRepresentation, selectedContainer != .default else {
+        guard let selectedContainer,
+              selectedContainer.share.isVaultRepresentation else {
             assertionFailure("Should have a selected vault")
             return
         }
@@ -101,9 +101,9 @@ final class ItemMoveVaultListViewModel: ObservableObject, DeinitPrintable {
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
                 router.display(element: .globalLoading(shouldShow: true))
-                try await moveItemsBetweenVaults(context: context,
-                                                 to: selectedContainer.share.shareId,
-                                                 destinationFolderId: selectedContainer.folder?.id)
+                try await moveItemsBetweenContainers(context: context,
+                                                     to: selectedContainer.share.shareId,
+                                                     destinationFolderId: selectedContainer.folder?.id)
                 router.display(element: successMessage(toVaultName: selectedContainer.title))
                 currentSelectedItems.send([])
             } catch {

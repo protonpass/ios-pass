@@ -154,7 +154,7 @@ private extension VaultSelectorView {
                            folders: folders,
                            shouldDismissOnSelection: true,
                            containersExtended: $containersExtended,
-                           selectedContainer: $selectedContainer)
+                           selectedContainer: $selectedContainer.asOptional())
                 .padding(.leading, 30)
         }
     }

@@ -28,9 +28,9 @@ import SwiftUI
 struct FolderMoveListView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var viewModel = FolderMoveListViewModel()
+    @State var selectedContainer: ShareSelectionPayload
 
     let folderToMove: FolderToMove
-    let onDismiss: () -> Void
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -46,7 +46,6 @@ struct FolderMoveListView: View {
         }
         .onChange(of: viewModel.moveCompleted) { _, completed in
             if completed {
-                onDismiss()
                 dismiss()
             }
         }
@@ -91,7 +90,6 @@ private extension FolderMoveListView {
                               backgroundColor: PassColor.textDisabled,
                               height: 44,
                               action: {
-                                  onDismiss()
                                   dismiss()
                               })
 
@@ -100,10 +98,11 @@ private extension FolderMoveListView {
                                         disableTitleColor: PassColor.textHint,
                                         backgroundColor: PassColor.interactionNormMajor1,
                                         disableBackgroundColor: PassColor.interactionNormMinor1,
-                                        disabled: viewModel.selectedContainer == .default,
+                                        disabled: selectedContainer.folder == folderToMove.folder,
                                         height: 44,
                                         action: {
-                                            viewModel.move(currentFolderId: folderToMove.folder.folderId)
+                                            viewModel.move(selectedContainer: selectedContainer,
+                                                           currentFolderId: folderToMove.folder.folderId)
                                         })
         }
         .padding([.bottom, .horizontal])
@@ -133,15 +132,14 @@ private extension FolderMoveListView {
 
     func vaultRow(for vaultInfos: ShareContent, vaultContent: VaultContent) -> some View {
         Button(action: {
-            viewModel
-                .selectedContainer = ShareSelectionPayload(share: vaultInfos.share,
-                                                           folder: nil)
+            selectedContainer = ShareSelectionPayload(share: vaultInfos.share,
+                                                      folder: nil)
         }, label: {
             VaultRow(thumbnail: { VaultThumbnail(vaultContent: vaultContent) },
                      title: vaultContent.name,
                      itemCount: vaultInfos.itemCount,
-                     mode: .view(isSelected: viewModel.selectedContainer.share == vaultInfos.share && viewModel
-                         .selectedContainer.folder == nil,
+                     mode: .view(isSelected: selectedContainer.share == vaultInfos.share && selectedContainer
+                         .folder == nil,
                          isHidden: vaultInfos.share.hidden,
                          action: nil),
                      height: 74)
@@ -158,7 +156,7 @@ private extension FolderMoveListView {
                            folders: folders,
                            shouldDismissOnSelection: false,
                            containersExtended: $viewModel.containersExtended,
-                           selectedContainer: $viewModel.selectedContainer)
+                           selectedContainer: $selectedContainer.asOptional())
                 .padding(.leading, 30)
         }
     }

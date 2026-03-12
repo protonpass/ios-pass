@@ -105,7 +105,7 @@ private extension ItemMoveVaultListView {
                                         disableTitleColor: PassColor.textHint,
                                         backgroundColor: PassColor.interactionNormMajor1,
                                         disableBackgroundColor: PassColor.interactionNormMinor1,
-                                        disabled: viewModel.selectedContainer == .default,
+                                        disabled: viewModel.selectedContainer == nil,
                                         height: 44,
                                         action: { dismiss(); viewModel.doMove() })
         }
@@ -143,8 +143,8 @@ private extension ItemMoveVaultListView {
             VaultRow(thumbnail: { VaultThumbnail(vaultContent: vaultContent) },
                      title: vaultContent.name,
                      itemCount: vaultInfos.itemCount,
-                     mode: .view(isSelected: viewModel.selectedContainer.share == vaultInfos.share && viewModel
-                         .selectedContainer.folder == nil,
+                     mode: .view(isSelected: viewModel.selectedContainer?.share == vaultInfos.share && viewModel
+                         .selectedContainer?.folder == nil,
                          isHidden: vaultInfos.share.hidden,
                          action: nil),
                      height: 74)

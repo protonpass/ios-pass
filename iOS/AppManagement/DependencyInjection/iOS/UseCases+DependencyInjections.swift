@@ -142,7 +142,7 @@ extension UseCasesContainer {
 extension UseCasesContainer {
     var createAndMoveItemToNewVault: Factory<any CreateAndMoveItemToNewVaultUseCase> {
         self { CreateAndMoveItemToNewVault(createVault: self.createVault(),
-                                           moveItemsBetweenVaults: self.moveItemsBetweenVaults(),
+                                           moveItemsBetweenContainers: self.moveItemsBetweenContainers(),
                                            appContentManager: self.appContentManager) }
     }
 
@@ -305,8 +305,8 @@ extension UseCasesContainer {
         self { TransferVaultOwnership(repository: self.shareRepository) }
     }
 
-    var moveItemsBetweenVaults: Factory<any MoveItemsBetweenVaultsUseCase> {
-        self { MoveItemsBetweenVaults(repository: self.itemRepository) }
+    var moveItemsBetweenContainers: Factory<any MoveItemsBetweenContainersUseCase> {
+        self { MoveItemsBetweenContainers(repository: self.itemRepository) }
     }
 
     var trashSelectedItems: Factory<any TrashSelectedItemsUseCase> {

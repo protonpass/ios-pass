@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct FolderToMove: Identifiable, Equatable, Hashable {
+public struct FolderToMove: Identifiable, Equatable, Hashable, Sendable {
     public let id = UUID().uuidString
     public let folder: FolderUiModel
     public let shareContent: ShareContent
