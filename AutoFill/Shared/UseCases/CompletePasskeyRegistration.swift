@@ -47,10 +47,6 @@ final class CompletePasskeyRegistration: CompletePasskeyRegistrationUseCase {
 
     func execute(_ response: CreatePasskeyResponse,
                  context: ASCredentialProviderExtensionContext) {
-        guard #available(iOS 17, *) else {
-            assertionFailure("Should be called on iOS 17 and above")
-            return
-        }
         // Add telemetry event before completing on purpose
         // because after completing the extension is dismissed
         addTelemetryEvent(with: .passkeyCreate)

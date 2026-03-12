@@ -211,11 +211,11 @@ private extension ManageSharedShareView {
     var vaultLimitReachedMessage: some View {
         ZStack {
             Text("You have reached the limit of users in this vault.")
-                .adaptiveForegroundStyle(PassColor.textNorm) +
+                .foregroundStyle(PassColor.textNorm) +
                 Text(verbatim: " ") +
                 Text("Upgrade now to share with more people")
                 .underline(color: PassColor.interactionNormMajor1)
-                .adaptiveForegroundStyle(PassColor.interactionNormMajor1)
+                .foregroundStyle(PassColor.interactionNormMajor1)
         }
         .padding()
         .background(PassColor.interactionNormMinor1)

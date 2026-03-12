@@ -27,7 +27,6 @@ import FactoryKit
 import StoreKit
 import SwiftUI
 
-@available(iOS 17, *)
 struct InAppNotificationSection: View {
     var onDismiss: () -> Void
 
@@ -37,7 +36,6 @@ struct InAppNotificationSection: View {
     }
 }
 
-@available(iOS 17, *)
 private struct InAppNotificationView: View {
     var onDismiss: () -> Void
     @State private var viewModel = InAppNotificationViewModel()
@@ -237,7 +235,6 @@ private enum QACTAType: String, CaseIterable {
     case internalNavigation = "internal_navigation"
 }
 
-@available(iOS 17, *)
 @MainActor
 @Observable
 private final class InAppNotificationViewModel {

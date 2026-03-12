@@ -131,10 +131,10 @@ private extension MonitorAliasesView {
     func seeAllText(count: Int) -> some View {
         Text("See all")
             .font(.callout)
-            .adaptiveForegroundStyle(PassColor.interactionNormMajor2) +
+            .foregroundStyle(PassColor.interactionNormMajor2) +
             Text(verbatim: " (\(count))")
             .font(.callout)
-            .adaptiveForegroundStyle(PassColor.interactionNormMajor2)
+            .foregroundStyle(PassColor.interactionNormMajor2)
     }
 
     func select(_ info: AliasMonitorInfo) {

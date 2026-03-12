@@ -76,18 +76,12 @@ final class GenerateAuthorizationCredential: GenerateAuthorizationCredentialUseC
             let response = try resolvePasskeyChallenge(serviceIdentifier: serviceId,
                                                        clientDataHash: credentialRequest.clientDataHash,
                                                        passkey: key.content)
-            if #available(iOS 17.0, *) {
-                credential = ASPasskeyAssertionCredential(userHandle: key.userHandle,
-                                                          relyingParty: key.rpID,
-                                                          signature: response.signature,
-                                                          clientDataHash: response.clientDataHash,
-                                                          authenticatorData: response.authenticatorData,
-                                                          credentialID: response.credentialId)
-            } else {
-                assertionFailure("Should be on iOS 17 and above when entering this case")
-                credential = ASPasswordCredential(user: logInData.authIdentifier,
-                                                  password: logInData.password)
-            }
+            credential = ASPasskeyAssertionCredential(userHandle: key.userHandle,
+                                                      relyingParty: key.rpID,
+                                                      signature: response.signature,
+                                                      clientDataHash: response.clientDataHash,
+                                                      authenticatorData: response.authenticatorData,
+                                                      credentialID: response.credentialId)
 
         case .oneTimeCode:
             if #available(iOS 18, *) {

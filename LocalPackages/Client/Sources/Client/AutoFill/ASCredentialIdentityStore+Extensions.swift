@@ -28,17 +28,6 @@ extension ASCredentialIdentityStore {
     }
 
     func performAction(_ action: Action, on credentials: [CredentialIdentity]) async throws {
-        if #available(iOS 17, *) {
-            try await performActionWithPasskeys(action, on: credentials)
-        } else {
-            try await performActionWithoutPasskeys(action, on: credentials)
-        }
-    }
-}
-
-private extension ASCredentialIdentityStore {
-    @available(iOS 17.0, *)
-    func performActionWithPasskeys(_ action: Action, on credentials: [CredentialIdentity]) async throws {
         let domainCredentials: [any ASCredentialIdentity] = try credentials.compactMap { creds in
             switch creds {
             case let .password(identity):
@@ -60,26 +49,6 @@ private extension ASCredentialIdentityStore {
             try await saveCredentialIdentities(domainCredentials)
         case .replace:
             try await replaceCredentialIdentities(domainCredentials)
-        case .remove:
-            try await removeCredentialIdentities(domainCredentials)
-        }
-    }
-
-    func performActionWithoutPasskeys(_ action: Action,
-                                      on credentials: [CredentialIdentity]) async throws {
-        let domainCredentials: [ASPasswordCredentialIdentity] = try credentials.compactMap {
-            switch $0 {
-            case let .password(identity):
-                try identity.toASPasswordCredentialIdentity()
-            case .oneTimeCode, .passkey:
-                nil
-            }
-        }
-        switch action {
-        case .save:
-            try await saveCredentialIdentities(domainCredentials)
-        case .replace:
-            try await replaceCredentialIdentities(with: domainCredentials)
         case .remove:
             try await removeCredentialIdentities(domainCredentials)
         }
@@ -109,7 +78,6 @@ private extension OneTimeCodeIdentity {
     }
 }
 
-@available(iOS 17.0, *)
 private extension PasskeyCredentialIdentity {
     func toASPasskeyCredentialIdentity() throws -> ASPasskeyCredentialIdentity {
         try ASPasskeyCredentialIdentity(relyingPartyIdentifier: relyingPartyIdentifier,

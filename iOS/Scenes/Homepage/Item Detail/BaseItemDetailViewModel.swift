@@ -393,7 +393,6 @@ private extension BaseItemDetailViewModel {
 
     func donateToItemForceTouchTip() {
         Task {
-            guard #available(iOS 17, *) else { return }
             await ItemForceTouchTip.didPerformEligibleQuickAction.donate()
         }
     }

@@ -60,11 +60,6 @@ final class AutoFillPasskey: AutoFillPasskeyUseCase {
                  identifiers: [ASCredentialServiceIdentifier],
                  params: any PasskeyRequestParametersProtocol,
                  context: ASCredentialProviderExtensionContext) async throws {
-        guard #available(iOS 17, *) else {
-            assertionFailure("Should be called on iOS 17 and above")
-            return
-        }
-
         let response = try resolveChallenge(serviceIdentifier: params.relyingPartyIdentifier,
                                             clientDataHash: params.clientDataHash,
                                             passkey: passkey.content)

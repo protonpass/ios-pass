@@ -21,7 +21,6 @@
 import DesignSystem
 import TipKit
 
-@available(iOS 17, *)
 public struct SpotlightTip: Tip {
     public var id: String {
         PassTip.spotlight.id
