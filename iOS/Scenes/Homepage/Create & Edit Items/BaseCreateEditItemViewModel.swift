@@ -580,7 +580,7 @@ private extension BaseCreateEditItemViewModel {
             return edited
         }
 
-        var updatedItem: any FullItemIdentifiable = oldItem
+        var updatedItem: any ItemIdentifiable = oldItem
         if !oldItemContent.protobuf.isLooselyEqual(to: newItemContent) {
             updatedItem = try await itemRepository.updateItem(userId: oldItem.userId,
                                                               oldItem: oldItem.item,
@@ -596,7 +596,7 @@ private extension BaseCreateEditItemViewModel {
         return edited
     }
 
-    func linkFiles(to item: any FullItemIdentifiable) async throws -> Bool {
+    func linkFiles(to item: any ItemIdentifiable) async throws -> Bool {
         let attachedFiles = attachedFiles?.fetchedObject ?? []
 
         let filesToLink = getFilesToLink(attachedFiles: attachedFiles, updatedFiles: files)

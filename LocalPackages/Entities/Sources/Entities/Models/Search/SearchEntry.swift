@@ -21,29 +21,25 @@
 import Foundation
 
 public struct SearchEntry: Hashable, Sendable {
-    public let itemID: String
-    public let shareID: String
+    public let itemId: String
+    public let shareId: String
     public let time: Int64
 
-    public init(itemID: String, shareID: String, time: Int64) {
-        self.itemID = itemID
-        self.shareID = shareID
+    public init(itemId: String, shareId: String, time: Int64) {
+        self.itemId = itemId
+        self.shareId = shareId
         self.time = time
     }
 
     public init(item: any ItemIdentifiable, date: Date = .now) {
-        itemID = item.itemId
-        shareID = item.shareId
+        itemId = item.itemId
+        shareId = item.shareId
         time = Int64(date.timeIntervalSince1970)
     }
 }
 
 extension SearchEntry: ItemIdentifiable {
-    public var shareId: String {
-        shareID
-    }
-
-    public var itemId: String {
-        itemID
+    public var folderId: String? {
+        nil
     }
 }

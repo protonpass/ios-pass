@@ -44,4 +44,8 @@ extension SecureLink: ItemIdentifiable {
     public var itemId: String {
         itemID
     }
+
+    public var folderId: String? {
+        nil
+    }
 }

@@ -77,6 +77,7 @@ public struct ItemSearchResult: Sendable, ItemTypeIdentifiable, Identifiable, Pi
 
     public let shareId: String
     public let itemId: String
+    public let folderId: String?
     public let type: ItemContentType
     public let aliasEmail: String?
     public let aliasEnabled: Bool
@@ -100,6 +101,7 @@ public struct ItemSearchResult: Sendable, ItemTypeIdentifiable, Identifiable, Pi
 
     public init(shareId: String,
                 itemId: String,
+                folderId: String?,
                 type: ItemContentType,
                 aliasEmail: String?,
                 aliasEnabled: Bool,
@@ -122,6 +124,9 @@ public struct ItemSearchResult: Sendable, ItemTypeIdentifiable, Identifiable, Pi
 
         self.itemId = itemId
         hasher.combine(itemId)
+
+        self.folderId = folderId
+        hasher.combine(type)
 
         self.type = type
         hasher.combine(type)

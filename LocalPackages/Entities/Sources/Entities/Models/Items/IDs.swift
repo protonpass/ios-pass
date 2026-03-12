@@ -31,3 +31,9 @@ public struct IDs: CodableBase64, ItemIdentifiable, Sendable, Hashable {
         self.itemId = itemId
     }
 }
+
+public extension IDs {
+    var folderId: String? {
+        nil
+    }
+}

@@ -130,12 +130,14 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
 }
 
 extension ItemContent: ItemIdentifiable {
+    public var folderId: String? {
+        item.folderID
+    }
+
     public var itemId: String {
         item.itemID
     }
 }
-
-extension ItemContent: FullItemIdentifiable {}
 
 extension ItemContent: ItemTypeIdentifiable {
     public var type: ItemContentType {

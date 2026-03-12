@@ -144,7 +144,7 @@ private extension SearchViewModel {
 
         history = searchEntries.compactMap { entry in
             guard let item = searchableItems.first(where: {
-                $0.shareId == entry.shareID && $0.itemId == entry.itemID
+                $0.shareId == entry.shareId && $0.itemId == entry.itemId
             }) else {
                 return nil
             }

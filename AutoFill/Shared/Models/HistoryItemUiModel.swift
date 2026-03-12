@@ -32,4 +32,8 @@ struct HistoryItemUiModel: Hashable, Equatable, ItemIdentifiable {
     var itemId: String {
         value.itemId
     }
+
+    var folderId: String? {
+        value.folderId
+    }
 }
