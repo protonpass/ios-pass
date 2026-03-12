@@ -26,7 +26,7 @@ import Core
 import Entities
 import ProtonCoreNetworking
 
-struct GetListOfFolderResponse: Decodable, Sendable {
+struct GetListOfFolderResponse: Decodable {
     let folders: PaginatedFolders
 }
 

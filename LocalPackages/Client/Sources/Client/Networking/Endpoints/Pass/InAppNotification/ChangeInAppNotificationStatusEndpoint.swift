@@ -20,7 +20,7 @@
 
 import ProtonCoreNetworking
 
-struct ChangeInAppNotificationStatusRequest: Encodable, Sendable {
+struct ChangeInAppNotificationStatusRequest: Encodable {
     let state: Int
 
     enum CodingKeys: String, CodingKey {

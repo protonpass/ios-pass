@@ -84,7 +84,7 @@ private extension SimpleLoginAliasActivationViewModel {
             if let userAliasSyncData, let shareId = userAliasSyncData.defaultShareID {
                 guard let selectedVault = vaults.first(where: { $0.vault.shareId == shareId }) else {
                     let mainVault = await getMainVault()
-                    self.selectedVault = vaults.first(where: { $0.vault.shareId == mainVault?.shareId })
+                    selectedVault = vaults.first(where: { $0.vault.shareId == mainVault?.shareId })
                     return
                 }
                 self.selectedVault = selectedVault

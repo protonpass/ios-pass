@@ -23,13 +23,13 @@ import ProtonCoreKeyManager
 import ProtonCoreNetworking
 
 /// For endpoints that have no body like GET ones
-struct EmptyRequest: Encodable, Sendable {}
+struct EmptyRequest: Encodable {}
 
 /// For octet-stream endpoints
-struct EmptyResponse: Decodable, Sendable {}
+struct EmptyResponse: Decodable {}
 
 /// Holds responses that only have `code` field
-struct CodeOnlyResponse: Decodable, Sendable {
+struct CodeOnlyResponse: Decodable {
     let code: Int
     var isSuccessful: Bool {
         code == 1_000

@@ -21,7 +21,7 @@
 import Entities
 import ProtonCoreNetworking
 
-struct GetAllSecureLinksResponse: Decodable, Equatable, Sendable {
+struct GetAllSecureLinksResponse: Decodable, Equatable {
     let publicLinks: [SecureLink]
 }
 

@@ -21,7 +21,7 @@
 import Entities
 import ProtonCoreNetworking
 
-struct GetPassUserInformationsResponse: Decodable, Equatable, Sendable {
+struct GetPassUserInformationsResponse: Decodable, Equatable {
     let data: PassUserInformations
 }
 

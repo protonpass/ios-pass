@@ -21,11 +21,11 @@
 import Entities
 import ProtonCoreNetworking
 
-struct CreateSecureLinkResponse: Decodable, Equatable, Sendable {
+struct CreateSecureLinkResponse: Decodable, Equatable {
     let publicLink: NewSecureLink
 }
 
-struct CreateSecureLinkRequest: Encodable, Sendable {
+struct CreateSecureLinkRequest: Encodable {
     /// Last revision of the item
     let revision: Int
 

@@ -32,8 +32,8 @@ struct GetFilesToLinkTests {
         sut = GetFilesToLink()
     }
 
-    @Test("Get file to add and remove")
-    func get() {
+    @Test
+    func `Get file to add and remove`() {
         // Given
         let attachedFiles: [ItemFile] = [
             .random(fileID: "attached_0"),

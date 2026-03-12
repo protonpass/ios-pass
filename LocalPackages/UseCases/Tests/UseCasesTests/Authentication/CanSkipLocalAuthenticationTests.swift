@@ -41,14 +41,14 @@ struct CanSkipLocalAuthenticationTests {
         sut = CanSkipLocalAuthentication(currentDateProvider: currentDateProvider)
     }
 
-    @Test("Can not skip when no lastActiveTimestamp")
-    func canNotSkipWhenNoLastActiveTimestamp() {
+    @Test
+    func `Can not skip when no lastActiveTimestamp`() {
         let canSkip = sut.execute(appLockTime: .oneHour, lastActiveTimestamp: nil)
         #expect(!canSkip)
     }
 
-    @Test("Can not skip when inactive for too long")
-    mutating func canNotSkipWhenInactiveForTooLong() {
+    @Test
+    mutating func `Can not skip when inactive for too long`() {
         // Given
         let now = Date.now
         let threeMinutesAgo = now.timeIntervalSince1970 - 3 * 60
@@ -62,8 +62,8 @@ struct CanSkipLocalAuthenticationTests {
         #expect(!canSkip)
     }
 
-    @Test("Can skip when recently active")
-    mutating func canSkipWhenRecentlyActive() {
+    @Test
+    mutating func `Can skip when recently active`() {
         // Given
         let now = Date.now
         let oneMinutesAgo = now.timeIntervalSince1970 - 60

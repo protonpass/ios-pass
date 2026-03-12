@@ -28,7 +28,7 @@ import Macro
 import ProtonCoreLogin
 
 private extension EditableVaultListViewModel {
-    struct VaultCount: Sendable {
+    struct VaultCount {
         let shareId: String
         let value: Int
     }

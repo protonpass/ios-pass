@@ -29,8 +29,8 @@ struct ParseCsvLoginsTests {
         sut = ParseCsvLogins()
     }
 
-    @Test("Invalid number of column")
-    func invalidNumberOfColumn() async throws {
+    @Test
+    func `Invalid number of column`() async throws {
         // Given
         let csv = """
         name,url,username,password,other,column
@@ -45,8 +45,8 @@ struct ParseCsvLoginsTests {
         }
     }
 
-    @Test("Unexpected column name")
-    func unexpectedColumName() async throws {
+    @Test
+    func `Unexpected column name`() async throws {
         // Given
         let csv = """
         name,url,email,password
@@ -63,8 +63,8 @@ struct ParseCsvLoginsTests {
         }
     }
 
-    @Test("Invalid row")
-    func invalidRow() async throws {
+    @Test
+    func `Invalid row`() async throws {
         // Given
         let csv = """
         name,url,username,password
@@ -79,8 +79,8 @@ struct ParseCsvLoginsTests {
         }
     }
 
-    @Test("Success without note column")
-    func successWithoutNoteColumn() async throws {
+    @Test
+    func `Success without note column`() async throws {
         // Given
         let csv = """
         name,url,username,password
@@ -125,8 +125,8 @@ struct ParseCsvLoginsTests {
         #expect(logins[3].note.isEmpty)
     }
 
-    @Test("Success with note column")
-    func successWithNoteColumn() async throws {
+    @Test
+    func `Success with note column`() async throws {
         // Given
         let csv = """
         name,url,username,password,note

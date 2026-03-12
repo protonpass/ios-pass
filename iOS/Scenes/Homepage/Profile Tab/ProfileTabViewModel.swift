@@ -38,7 +38,7 @@ protocol ProfileTabViewModelDelegate: AnyObject {
     func profileTabViewModelWantsToShowFeedback()
 }
 
-struct StorageUiModel: Sendable {
+struct StorageUiModel {
     let used: Int
     let total: Int
 }

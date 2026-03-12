@@ -21,7 +21,7 @@
 import Entities
 import Foundation
 
-struct ItemCreationInfo: Sendable {
+struct ItemCreationInfo {
     enum Data {
         case login(URL?, PasskeyCredentialRequest?)
         case alias

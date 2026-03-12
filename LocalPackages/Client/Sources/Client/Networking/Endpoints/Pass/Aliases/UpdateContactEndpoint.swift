@@ -33,7 +33,7 @@ public struct UpdateContactRequest: Sendable, Encodable {
     }
 }
 
-struct CreateALiteContactResponse: Decodable, Sendable {
+struct CreateALiteContactResponse: Decodable {
     let contact: AliasContactLite
 }
 

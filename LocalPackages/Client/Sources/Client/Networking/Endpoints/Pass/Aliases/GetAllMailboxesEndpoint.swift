@@ -22,7 +22,7 @@ import Entities
 import Foundation
 import ProtonCoreNetworking
 
-struct GetAllMailboxesResponse: Decodable, Sendable {
+struct GetAllMailboxesResponse: Decodable {
     let mailboxes: [Mailbox]
 }
 

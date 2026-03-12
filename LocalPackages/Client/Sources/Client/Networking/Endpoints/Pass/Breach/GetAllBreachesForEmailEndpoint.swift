@@ -21,7 +21,7 @@
 import Entities
 import ProtonCoreNetworking
 
-struct BreachesForCustomEmailResponse: Decodable, Equatable, Sendable {
+struct BreachesForCustomEmailResponse: Decodable, Equatable {
     let breaches: EmailBreaches
 }
 

@@ -21,7 +21,7 @@
 
 import ProtonCoreNetworking
 
-struct UpdateAliasSlNoteRequest: Encodable, Sendable {
+struct UpdateAliasSlNoteRequest: Encodable {
     let note: String?
 
     enum CodingKeys: String, CodingKey {

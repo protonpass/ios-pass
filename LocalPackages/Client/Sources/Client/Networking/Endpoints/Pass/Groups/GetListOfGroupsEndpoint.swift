@@ -21,7 +21,7 @@
 import Entities
 import ProtonCoreNetworking
 
-struct GetListOfGroupsResponse: Decodable, Sendable {
+struct GetListOfGroupsResponse: Decodable {
     let groups: [Group]
     let total: Int
 }

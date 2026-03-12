@@ -21,7 +21,7 @@
 import Entities
 import ProtonCoreNetworking
 
-struct PinItemResponse: Decodable, Sendable {
+struct PinItemResponse: Decodable {
     let item: Item
 }
 

@@ -31,8 +31,8 @@ struct FormatFileAttachmentSizeTests {
         sut = FormatFileAttachmentSize()
     }
 
-    @Test("Get the correct size of file")
-    func returnCorrectSize() {
+    @Test
+    func `Get the correct size of file`() {
         let size = sut(1_048_576)
         #expect(size == "1 MB")
     }

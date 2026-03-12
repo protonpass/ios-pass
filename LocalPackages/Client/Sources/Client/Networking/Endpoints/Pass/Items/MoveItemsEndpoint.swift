@@ -23,7 +23,7 @@ import Entities
 import Foundation
 import ProtonCoreNetworking
 
-struct MoveItemsResponse: Decodable, Sendable {
+struct MoveItemsResponse: Decodable {
     let items: [Item]
 }
 
@@ -38,7 +38,7 @@ public struct MoveItemsRequest: Encodable, Sendable {
     }
 }
 
-struct ItemToBeMoved: Codable, Sendable {
+struct ItemToBeMoved: Codable {
     let itemId: String
     let itemKeys: [ItemKey]
 
