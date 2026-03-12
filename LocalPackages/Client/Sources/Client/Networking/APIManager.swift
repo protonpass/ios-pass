@@ -35,7 +35,7 @@ import ProtonCoreHumanVerification
 @preconcurrency import ProtonCoreObservability
 @preconcurrency import ProtonCoreServices
 
-private struct APIManagerElements: Sendable {
+private struct APIManagerElements {
     let apiService: any APIService
     let humanVerification: any HumanVerifyDelegate
     let isAuthenticated: Bool

@@ -21,11 +21,11 @@
 import Entities
 import ProtonCoreNetworking
 
-struct LinkPendingFilesResponse: Decodable, Sendable {
+struct LinkPendingFilesResponse: Decodable {
     let item: Item
 }
 
-struct LinkPendingFilesRequest: Encodable, Sendable {
+struct LinkPendingFilesRequest: Encodable {
     let itemRevision: Int64
     let filesToAdd: [FileToAdd]
     let filesToRemove: [String]

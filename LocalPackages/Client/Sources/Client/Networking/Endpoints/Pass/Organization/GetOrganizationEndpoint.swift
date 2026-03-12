@@ -22,7 +22,7 @@
 import Entities
 import ProtonCoreNetworking
 
-struct GetOrganizationResponse: Sendable, Decodable {
+struct GetOrganizationResponse: Decodable {
     let organization: Organization?
 }
 

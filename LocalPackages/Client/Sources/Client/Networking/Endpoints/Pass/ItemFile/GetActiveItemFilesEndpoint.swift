@@ -22,7 +22,7 @@
 import Entities
 import ProtonCoreNetworking
 
-struct GetItemFilesResponse: Decodable, Sendable {
+struct GetItemFilesResponse: Decodable {
     let files: PaginatedItemFiles
 }
 

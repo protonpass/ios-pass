@@ -20,7 +20,7 @@
 
 import Entities
 
-struct ModifyItemRequest: Encodable, Sendable {
+struct ModifyItemRequest: Encodable {
     /// Pairs of item IDs with their latest revision
     let items: [ItemToBeModified]
 
@@ -43,12 +43,12 @@ struct ModifyItemRequest: Encodable, Sendable {
     }
 }
 
-struct ModifyItemResponse: Decodable, Sendable {
+struct ModifyItemResponse: Decodable {
     let items: [ModifiedItem]
 }
 
 /// To be deleted/trashed/untrashed
-struct ItemToBeModified: Encodable, Sendable {
+struct ItemToBeModified: Encodable {
     let itemID: String
     let revision: Int64
 

@@ -21,7 +21,7 @@
 import Entities
 import ProtonCoreNetworking
 
-struct GetInAppNotificationsResponse: Decodable, Sendable, Equatable {
+struct GetInAppNotificationsResponse: Decodable, Equatable {
     let notifications: PaginatedInAppNotifications
 }
 

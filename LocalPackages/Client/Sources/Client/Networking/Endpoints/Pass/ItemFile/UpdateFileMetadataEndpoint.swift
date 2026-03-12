@@ -21,7 +21,7 @@
 import Entities
 import ProtonCoreNetworking
 
-struct UpdateFileMetadataRequest: Encodable, Sendable {
+struct UpdateFileMetadataRequest: Encodable {
     let metadata: String
 
     enum CodingKeys: String, CodingKey {
@@ -29,7 +29,7 @@ struct UpdateFileMetadataRequest: Encodable, Sendable {
     }
 }
 
-struct UpdateFileMetadataResponse: Decodable, Sendable {
+struct UpdateFileMetadataResponse: Decodable {
     let file: ItemFile
 }
 

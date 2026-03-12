@@ -84,8 +84,8 @@ struct SendUserMonitoringStatsTests {
                                       storage: userDefaults)
     }
 
-    @Test("Should not send stats if less than 24 hours since last sent")
-    func shouldNotSendStatsAsTimeNotValid() async throws {
+    @Test
+    func `Should not send stats if less than 24 hours since last sent`() async throws {
         // Arrange: Store a recent timestamp
         let recentTime = Date().addingTimeInterval(-60 * 60 * 2) // 2 hours ago
         userDefaults.set(recentTime, forKey: lastSavedTimestampKey)
@@ -96,8 +96,8 @@ struct SendUserMonitoringStatsTests {
         #expect(passMonitorRepository.invokedSendUserMonitorStatsfunction == false)
     }
 
-    @Test("Should not send stats as more than 24 hours has passed since last sent but plan is not business")
-    func shouldSendStatsAsPlanNotValid() async throws {
+    @Test
+    func `Should not send stats as more than 24 hours has passed since last sent but plan is not business`() async throws {
         // Arrange: Store a timestamp 25 hours ago
         let oldTime = Date().addingTimeInterval(-60 * 60 * 25) // 25 hours ago
         userDefaults.set(oldTime, forKey: lastSavedTimestampKey)
@@ -108,8 +108,8 @@ struct SendUserMonitoringStatsTests {
         #expect(passMonitorRepository.invokedSendUserMonitorStatsfunction == false)
     }
 
-    @Test("Should send stats as more than 24 hours has passed since last sent and plan is business")
-    func shouldSendStats() async throws {
+    @Test
+    func `Should send stats as more than 24 hours has passed since last sent and plan is business`() async throws {
         // Arrange: Store a timestamp 25 hours ago
         let oldTime = Date().addingTimeInterval(-60 * 60 * 25) // 25 hours ago
         userDefaults.set(oldTime, forKey: lastSavedTimestampKey)
@@ -120,8 +120,8 @@ struct SendUserMonitoringStatsTests {
         #expect(passMonitorRepository.invokedSendUserMonitorStatsfunction == true)
     }
 
-    @Test("Should send as stats never sent and plan is business")
-    func shouldSendStatsAsNoTimestamp() async throws {
+    @Test
+    func `Should send as stats never sent and plan is business`() async throws {
         userDefaults.removeObject(forKey: lastSavedTimestampKey)
 
         passMonitorRepository.invokedSendUserMonitorStatsfunction = false
@@ -133,8 +133,8 @@ struct SendUserMonitoringStatsTests {
         #expect(passMonitorRepository.invokedSendUserMonitorStatsfunction == true)
     }
 
-    @Test("Should update timestamp")
-    func shouldUpdateTimestamp() async throws {
+    @Test
+    func `Should update timestamp`() async throws {
         // Arrange: 25 hours have passed
         let oldTime = Date().addingTimeInterval(-60 * 60 * 25) // 25 hours ago
         userDefaults.set(oldTime, forKey: lastSavedTimestampKey)

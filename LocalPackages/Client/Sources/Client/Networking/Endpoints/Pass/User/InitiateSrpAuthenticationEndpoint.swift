@@ -22,7 +22,7 @@
 import Entities
 import ProtonCoreNetworking
 
-struct InitiateSrpAuthenticationResponse: Decodable, Sendable {
+struct InitiateSrpAuthenticationResponse: Decodable {
     let srpData: SrpAuthenticationData
 
     enum CodingKeys: String, CodingKey {

@@ -48,7 +48,7 @@ struct CreateEditIdentitySection: Hashable, Identifiable {
     }
 }
 
-struct HiddenStringValue: Sendable {
+struct HiddenStringValue {
     var value: String
     var shouldShow: Bool
 

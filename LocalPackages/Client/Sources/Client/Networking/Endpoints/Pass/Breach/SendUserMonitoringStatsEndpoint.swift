@@ -20,7 +20,7 @@
 
 import ProtonCoreNetworking
 
-struct SendUserMonitoringStatsRequest: Encodable, Sendable {
+struct SendUserMonitoringStatsRequest: Encodable {
     let reusedPasswords: Int
     let inactive2FA: Int
     let excludedItems: Int

@@ -22,7 +22,7 @@ import Core
 import Entities
 import ProtonCoreNetworking
 
-struct GetItemRevisionsResponse: Decodable, Sendable {
+struct GetItemRevisionsResponse: Decodable {
     let revisions: ItemsPaginated
 }
 

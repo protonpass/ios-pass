@@ -51,7 +51,7 @@ public nonisolated struct KnownService: Sendable, Decodable, Equatable {
     let favIconUrl: String
     let loginType: LoginType
 
-    enum LoginType: String, Sendable, Decodable {
+    enum LoginType: String, Decodable {
         case email, username, both
     }
 }
@@ -97,7 +97,7 @@ public protocol OnboardingDelegate: Sendable, AnyObject {
     func handle(error: any Error) async
 }
 
-nonisolated enum OnboardStep: Sendable, Equatable {
+nonisolated enum OnboardStep: Equatable {
     case payment(PassPlans)
     case biometric(LABiometryType)
     case autofill

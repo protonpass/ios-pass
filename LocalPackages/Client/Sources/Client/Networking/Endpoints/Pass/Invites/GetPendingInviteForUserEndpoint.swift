@@ -21,7 +21,7 @@
 import Entities
 import ProtonCoreNetworking
 
-struct GetPendingInviteForUserResponse: Decodable, Sendable {
+struct GetPendingInviteForUserResponse: Decodable {
     let invites: [UserInvite]
 }
 

@@ -21,7 +21,7 @@
 import Entities
 import ProtonCoreNetworking
 
-struct GetPendingInvitesForShareResponse: Decodable, Equatable, Sendable {
+struct GetPendingInvitesForShareResponse: Decodable, Equatable {
     let invites: [ShareExistingUserInvite]
     let newUserInvites: [ShareNewUserInvite]
 }

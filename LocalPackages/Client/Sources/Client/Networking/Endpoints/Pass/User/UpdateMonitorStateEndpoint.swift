@@ -22,7 +22,7 @@
 import Entities
 import ProtonCoreNetworking
 
-struct UpdateMonitorStateResponse: Decodable, Equatable, Sendable {
+struct UpdateMonitorStateResponse: Decodable, Equatable {
     let monitor: Access.Monitor
 }
 

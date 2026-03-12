@@ -37,7 +37,7 @@ public extension AddressFlagable {
     }
 }
 
-private struct AddressFlags: Sendable, OptionSet {
+private struct AddressFlags: OptionSet {
     let rawValue: Int
     static let monitoringDisabled = AddressFlags(rawValue: 1 << 0)
 }
