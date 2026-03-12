@@ -21,7 +21,7 @@
 import Entities
 import ProtonCoreNetworking
 
-struct GetAliasSyncStatusResponse: Decodable, Sendable {
+struct GetAliasSyncStatusResponse: Decodable {
     let syncStatus: AliasSyncStatus
 }
 

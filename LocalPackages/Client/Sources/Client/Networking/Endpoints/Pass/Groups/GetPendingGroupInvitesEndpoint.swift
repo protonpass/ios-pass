@@ -27,7 +27,7 @@ public struct PaginatedGroupInvites: Decodable, Sendable {
     public let lastID: String?
 }
 
-struct GetPendingGroupInvitesResponse: Decodable, Sendable {
+struct GetPendingGroupInvitesResponse: Decodable {
     let invites: PaginatedGroupInvites
 }
 

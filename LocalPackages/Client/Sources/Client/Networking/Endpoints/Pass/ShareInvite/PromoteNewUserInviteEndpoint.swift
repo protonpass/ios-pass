@@ -39,7 +39,7 @@ struct PromoteNewUserInviteEndpoint: Endpoint {
     }
 }
 
-struct PromoteNewUserInviteRequest: Encodable, Sendable {
+struct PromoteNewUserInviteRequest: Encodable {
     let keys: [ItemKey]
 
     enum CodingKeys: String, CodingKey {

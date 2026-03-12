@@ -21,7 +21,7 @@
 import Entities
 import ProtonCoreNetworking
 
-struct CreatePendingFileRequest: Encodable, Sendable {
+struct CreatePendingFileRequest: Encodable {
     let metadata: String
     let chunkCount: Int
     let encryptionVersion: Int
@@ -33,7 +33,7 @@ struct CreatePendingFileRequest: Encodable, Sendable {
     }
 }
 
-struct CreatePendingFileResponse: Decodable, Sendable {
+struct CreatePendingFileResponse: Decodable {
     let file: RemotePendingFile
 }
 

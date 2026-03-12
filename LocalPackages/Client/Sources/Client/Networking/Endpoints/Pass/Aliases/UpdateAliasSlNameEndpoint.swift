@@ -20,7 +20,7 @@
 
 import ProtonCoreNetworking
 
-struct UpdateAliasSlNameRequest: Encodable, Sendable {
+struct UpdateAliasSlNameRequest: Encodable {
     let name: String?
 
     enum CodingKeys: String, CodingKey {

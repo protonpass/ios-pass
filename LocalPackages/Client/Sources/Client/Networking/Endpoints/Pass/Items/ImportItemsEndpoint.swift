@@ -24,15 +24,15 @@ import Entities
 import Foundation
 import ProtonCoreNetworking
 
-struct ImportItemsResponse: Decodable, Sendable {
+struct ImportItemsResponse: Decodable {
     let revisions: Items
 }
 
-struct Items: Decodable, Sendable {
+struct Items: Decodable {
     let revisionsData: [Item]
 }
 
-struct ImportItemsRequest: Encodable, Sendable {
+struct ImportItemsRequest: Encodable {
     let items: [ItemToImport]
 
     enum CodingKeys: String, CodingKey {

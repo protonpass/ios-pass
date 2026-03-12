@@ -21,7 +21,7 @@
 
 import ProtonCoreNetworking
 
-struct ForkSessionResponse: Decodable, Sendable {
+struct ForkSessionResponse: Decodable {
     let selector: String
 }
 

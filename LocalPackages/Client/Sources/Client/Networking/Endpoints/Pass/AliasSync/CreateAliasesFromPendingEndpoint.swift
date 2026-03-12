@@ -21,7 +21,7 @@
 import Entities
 import ProtonCoreNetworking
 
-struct CreateAliasesFromPendingResponse: Decodable, Sendable {
+struct CreateAliasesFromPendingResponse: Decodable {
     let revisions: CreateAliasesData
 
     struct CreateAliasesData: Decodable {
@@ -39,7 +39,7 @@ public struct CreateAliasesFromPendingRequest: Encodable, Sendable {
     }
 }
 
-struct AliasesItemPendingInfo: Encodable, Sendable {
+struct AliasesItemPendingInfo: Encodable {
     let pendingAliasID: String
     let item: CreateItemRequest
 

@@ -39,7 +39,7 @@ struct CheckAddressEndpoint: Endpoint {
     }
 }
 
-struct CheckAddressRequest: Sendable, Encodable {
+struct CheckAddressRequest: Encodable {
     let emails: [String]
 
     enum CodingKeys: String, CodingKey {
@@ -47,7 +47,7 @@ struct CheckAddressRequest: Sendable, Encodable {
     }
 }
 
-struct CheckAddressResponse: Sendable, Decodable {
+struct CheckAddressResponse: Decodable {
     /// Optional array because otherwise decode process would fail
     /// when receiving an empty array instead of null
     let emails: [String]?

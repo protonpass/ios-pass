@@ -26,7 +26,7 @@ import Entities
 import PhotosUI
 import SwiftUI
 
-enum CapturedPhoto: Sendable {
+enum CapturedPhoto {
     case png(Data?)
     case jpeg(Data?)
 

@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-struct ChangeMailboxesRequest: Encodable, Sendable {
+struct ChangeMailboxesRequest: Encodable {
     let mailboxIDs: [Int]
 
     enum CodingKeys: String, CodingKey {

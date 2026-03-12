@@ -21,7 +21,7 @@
 
 import Foundation
 
-struct GetLastUserEventIdResponse: Decodable, Sendable {
+struct GetLastUserEventIdResponse: Decodable {
     let eventID: String
 }
 

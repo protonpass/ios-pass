@@ -21,11 +21,11 @@
 import Entities
 import ProtonCoreNetworking
 
-struct GetAllCustomEmailForUserResponse: Decodable, Equatable, Sendable {
+struct GetAllCustomEmailForUserResponse: Decodable, Equatable {
     let emails: Emails
 }
 
-struct Emails: Decodable, Equatable, Sendable {
+struct Emails: Decodable, Equatable {
     let customEmails: [CustomEmail]
 }
 
