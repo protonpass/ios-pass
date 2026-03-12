@@ -28,15 +28,6 @@ public extension Text {
             self = self + text
         }
     }
-
-    func adaptiveForegroundStyle(_ color: Color) -> Text {
-        if #available(iOS 17, *) {
-            foregroundStyle(color)
-        } else {
-            // swiftlint:disable:next deprecated_foregroundcolor_modifier
-            foregroundColor(color)
-        }
-    }
 }
 
 public enum TextContent {

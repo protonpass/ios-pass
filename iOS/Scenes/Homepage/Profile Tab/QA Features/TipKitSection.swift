@@ -23,7 +23,6 @@ import DesignSystem
 import SwiftUI
 import TipKit
 
-@available(iOS 17, *)
 struct TipKitSection: View {
     @AppStorage(Constants.QA.resetTipsStateOnLaunch)
     private var resetTipsStateOnLaunch = false

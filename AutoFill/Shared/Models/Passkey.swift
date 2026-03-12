@@ -28,7 +28,6 @@ protocol PasskeyRequestParametersProtocol: Sendable {
     var clientDataHash: Data { get }
 }
 
-@available(iOS 17.0, *)
 extension ASPasskeyCredentialRequestParameters: PasskeyRequestParametersProtocol {}
 
 struct SelectPasskeySheetInformation {

@@ -21,7 +21,6 @@
 import AuthenticationServices
 import Entities
 
-@available(iOS 17.0, *)
 extension ASCredentialRequest {
     var passwordCredentialIdentity: ASPasswordCredentialIdentity? {
         guard let request = self as? ASPasswordCredentialRequest,

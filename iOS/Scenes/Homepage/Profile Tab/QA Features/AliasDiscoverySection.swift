@@ -24,7 +24,6 @@ import FactoryKit
 import Observation
 import SwiftUI
 
-@available(iOS 17, *)
 struct AliasDiscoverySection: View {
     @State private var viewModel = AliasDiscoverySectionViewModel()
 
@@ -49,7 +48,6 @@ struct AliasDiscoverySection: View {
     }
 }
 
-@available(iOS 17, *)
 @MainActor
 @Observable
 private final class AliasDiscoverySectionViewModel {

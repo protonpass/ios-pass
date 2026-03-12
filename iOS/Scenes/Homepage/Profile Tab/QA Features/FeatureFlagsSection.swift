@@ -25,7 +25,6 @@ import Foundation
 import Observation
 import SwiftUI
 
-@available(iOS 17, *)
 struct FeatureFlagsSection: View {
     @State private var viewModel = FeatureFlagsSectionModel()
 
@@ -48,7 +47,6 @@ struct FeatureFlagsSection: View {
     }
 }
 
-@available(iOS 17.0, *)
 @MainActor @Observable
 private final class FeatureFlagsSectionModel {
     private(set) var activatedFlags = Set<String>()

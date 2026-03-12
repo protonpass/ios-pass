@@ -108,15 +108,11 @@ private extension SortFilterItemsMenu {
             }
         }, label: {
             Label(title: {
-                if #available(iOS 17, *) {
-                    // Use Button to trick SwiftUI into rendering option with title and subtitle
-                    Button(action: {}, label: {
-                        Text("Show")
-                        text(for: selectedOption.uiModel(from: itemCount))
-                    })
-                } else {
+                // Use Button to trick SwiftUI into rendering option with title and subtitle
+                Button(action: {}, label: {
+                    Text("Show")
                     text(for: selectedOption.uiModel(from: itemCount))
-                }
+                })
             }, icon: {
                 !selectedOption.isDefault ? PassIcon.filterFilled : IconProvider.filter
             })
@@ -161,14 +157,10 @@ private extension SortFilterItemsMenu {
             }
         }, label: {
             Label(title: {
-                if #available(iOS 17, *) {
-                    Button(action: {}, label: {
-                        Text("Sort By")
-                        Text(verbatim: selectedType.title)
-                    })
-                } else {
+                Button(action: {}, label: {
+                    Text("Sort By")
                     Text(verbatim: selectedType.title)
-                }
+                })
             }, icon: {
                 IconProvider.arrowDownArrowUp
             })

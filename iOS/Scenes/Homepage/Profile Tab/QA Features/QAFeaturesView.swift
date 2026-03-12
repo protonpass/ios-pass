@@ -39,9 +39,7 @@ struct QAFeaturesView: View {
         NavigationStack {
             Form {
                 OnboardSection()
-                if #available(iOS 17, *) {
-                    FeatureFlagsSection()
-                }
+                FeatureFlagsSection()
                 HapticFeedbacksSection()
                 Section {
                     AccountSwitcherSection()
@@ -55,9 +53,7 @@ struct QAFeaturesView: View {
                     FeatureDiscoverySection()
                     DismissibleUIElementsSection()
 
-                    if #available(iOS 17, *) {
-                        InAppNotificationSection(onDismiss: dismiss.callAsFunction)
-                    }
+                    InAppNotificationSection(onDismiss: dismiss.callAsFunction)
                     Toggle(isOn: $displayUpgradeAppBanner) {
                         Text(verbatim: "Display upgrade app banner")
                     }
@@ -84,10 +80,8 @@ struct QAFeaturesView: View {
 
                 UpsellSection()
 
-                if #available(iOS 17, *) {
-                    AliasDiscoverySection()
-                    TipKitSection()
-                }
+                AliasDiscoverySection()
+                TipKitSection()
             }
             .navigationTitle(Text(verbatim: "QA Features"))
             .toolbar {

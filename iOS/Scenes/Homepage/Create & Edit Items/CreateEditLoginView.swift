@@ -371,18 +371,11 @@ private extension CreateEditLoginView {
 
     var expandableEmailIcon: some View {
         ZStack(alignment: .topTrailing) {
-            if #available(iOS 17, *) {
-                ItemDetailSectionIcon(icon: IconProvider.envelope)
-                    .buttonEmbeded {
-                        viewModel.expandEmailAndUsername()
-                    }
-                    .popoverTip(UsernameTip())
-            } else {
-                ItemDetailSectionIcon(icon: IconProvider.envelope)
-                    .buttonEmbeded {
-                        viewModel.expandEmailAndUsername()
-                    }
-            }
+            ItemDetailSectionIcon(icon: IconProvider.envelope)
+                .buttonEmbeded {
+                    viewModel.expandEmailAndUsername()
+                }
+                .popoverTip(UsernameTip())
 
             IconProvider.plus
                 .resizable()

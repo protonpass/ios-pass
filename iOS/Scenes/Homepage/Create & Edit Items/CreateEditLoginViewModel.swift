@@ -388,9 +388,7 @@ private extension CreateEditLoginViewModel {
             }
             .store(in: &cancellables)
 
-        if #available(iOS 17, *) {
-            UsernameTip.enabled = true
-        }
+        UsernameTip.enabled = true
     }
 }
 

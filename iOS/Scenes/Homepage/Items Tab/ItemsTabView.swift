@@ -70,10 +70,10 @@ struct ItemsTabView: View {
         .animation(.default, value: viewModel.shouldShowSyncProgress)
         .background(PassColor.backgroundNorm)
         .navigationBarHidden(true)
-        .onChange(of: viewModel.filterOption) { _ in
+        .onChange(of: viewModel.filterOption) { _, _ in
             viewModel.filterAndSortItems()
         }
-        .onChange(of: viewModel.selectedSortType) { type in
+        .onChange(of: viewModel.selectedSortType) { _, type in
             viewModel.filterAndSortItems(sortType: type)
         }
         .alert("Moving items", isPresented: $showSharedItemsAlert) {
@@ -432,17 +432,14 @@ private struct ItemsTabsSkeleton: View {
 }
 
 private extension ItemsTabView {
-    @ViewBuilder
     var itemForceTouchTip: some View {
-        if #available(iOS 17, *) {
-            VStack {
-                Spacer()
-                TipView(ItemForceTouchTip())
-                    .passTipView()
-                    .padding()
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        VStack {
+            Spacer()
+            TipView(ItemForceTouchTip())
+                .passTipView()
+                .padding()
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 

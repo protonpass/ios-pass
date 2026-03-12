@@ -253,9 +253,7 @@ private extension ItemContextMenuHandler {
                                                                                 itemId: item.itemId) else {
                     throw PassError.itemNotFound(item)
                 }
-                if #available(iOS 17, *) {
-                    ItemForceTouchTip().invalidate(reason: .actionPerformed)
-                }
+                ItemForceTouchTip().invalidate(reason: .actionPerformed)
                 try await handler(itemContent)
             } catch {
                 logger.error(error)

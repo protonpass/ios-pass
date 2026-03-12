@@ -105,7 +105,6 @@ private extension AppDelegate {
     }
 
     func configureTipKit() {
-        guard #available(iOS 17, *) else { return }
         do {
             if userDefaults.bool(forKey: Constants.QA.forceShowTips) {
                 Tips.showAllTipsForTesting()

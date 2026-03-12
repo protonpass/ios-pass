@@ -115,10 +115,10 @@ private struct CounterChip: View {
             if let maxValue {
                 Text(verbatim: "\(value)")
                     .fontWeight(.bold)
-                    .adaptiveForegroundStyle(PassColor.textNorm) +
+                    .foregroundStyle(PassColor.textNorm) +
                     Text(verbatim: "/\(maxValue)")
                     .fontWeight(.bold)
-                    .adaptiveForegroundStyle(PassColor.textWeak)
+                    .foregroundStyle(PassColor.textWeak)
             } else {
                 Text(verbatim: "\(value)")
                     .fontWeight(.bold)

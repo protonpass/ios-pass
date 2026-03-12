@@ -47,13 +47,11 @@ public nonisolated enum PassTipAction: String {
         }
     }
 
-    @available(iOS 17, *)
     public func toAction() -> Tip.Action {
         .init(id: id, title: title)
     }
 }
 
-@available(iOS 17, *)
 public extension Tip.Action {
     func `is`(_ action: PassTipAction) -> Bool {
         id == action.id
