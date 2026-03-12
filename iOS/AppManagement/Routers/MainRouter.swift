@@ -47,7 +47,7 @@ struct NavigationConfiguration {
     }
 }
 
-enum RouterDestination: Hashable, Sendable {
+enum RouterDestination: Hashable {
     case urlPage(urlString: String)
     case openSettings
 }
@@ -58,7 +58,7 @@ enum SheetDismissal {
     case all
 }
 
-enum SheetDestination: Equatable, Hashable, Sendable {
+enum SheetDestination: Equatable, Hashable {
     case alert(UIAlertController)
     case sharingFlow(SheetDismissal)
     case manageSharedShare(ManageSharedDisplay, SheetDismissal)
@@ -121,7 +121,7 @@ enum ItemDestination {
     case detail(view: any View, asSheet: Bool)
 }
 
-enum UIElementDisplay: Sendable {
+enum UIElementDisplay {
     case globalLoading(shouldShow: Bool)
     case displayErrorBanner(any Error)
     case errorMessage(String)
@@ -134,11 +134,11 @@ enum UIElementDisplay: Sendable {
                       config: NavigationConfiguration? = nil)
 }
 
-enum AlertDestination: Sendable {
+enum AlertDestination {
     case bulkPermanentDeleteConfirmation(itemCount: Int, aliasCount: Int)
 }
 
-enum ActionDestination: Sendable {
+enum ActionDestination {
     case copyToClipboard(text: String, message: String)
     case back(isShownAsSheet: Bool)
     case manage(userId: String)
@@ -147,13 +147,13 @@ enum ActionDestination: Sendable {
     case screenDismissal(SheetDismissal)
 }
 
-enum DeeplinkDestination: Sendable {
+enum DeeplinkDestination {
     case totp(String)
     case spotlightItemDetail(ItemContent)
     case error(any Error)
 }
 
-enum GenericDestination: Sendable {
+enum GenericDestination {
     case sheet(any View)
     case fullScreen(any View)
 }

@@ -21,11 +21,11 @@
 import Entities
 import ProtonCoreNetworking
 
-struct AddEmailToBreachMonitoringResponse: Decodable, Equatable, Sendable {
+struct AddEmailToBreachMonitoringResponse: Decodable, Equatable {
     let email: CustomEmail
 }
 
-struct AddEmailToBreachMonitoringRequest: Encodable, Sendable {
+struct AddEmailToBreachMonitoringRequest: Encodable {
     let email: String
 
     enum CodingKeys: String, CodingKey {

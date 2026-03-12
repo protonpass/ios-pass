@@ -200,7 +200,7 @@ extension AppContentManager {
             }
 
             // 3. Create default vault if no vaults
-            if remoteShares.shares.isEmpty {
+            if remoteShares.shares.representingVaults.isEmpty {
                 do {
                     try await createDefaultVault()
                 } catch {

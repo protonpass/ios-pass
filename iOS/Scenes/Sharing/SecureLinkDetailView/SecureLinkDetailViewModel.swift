@@ -23,7 +23,7 @@ import FactoryKit
 import Foundation
 import Macro
 
-struct SecureLinkDetailUiModel: Sendable {
+struct SecureLinkDetailUiModel {
     let secureLinkID: String
     let itemContent: ItemContent
     let url: String
@@ -32,7 +32,7 @@ struct SecureLinkDetailUiModel: Sendable {
     let maxReadCount: Int?
     let mode: Mode
 
-    enum Mode: Sendable {
+    enum Mode {
         case create, edit
     }
 

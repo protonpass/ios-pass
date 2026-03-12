@@ -26,7 +26,7 @@ import FactoryKit
 import Foundation
 import Macro
 
-struct DetailMonitoredItemUiModel: Sendable, Hashable {
+struct DetailMonitoredItemUiModel: Hashable {
     let email: String
     let unresolvedBreaches: [Breach]
     let resolvedBreaches: [Breach]

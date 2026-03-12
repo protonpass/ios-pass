@@ -42,7 +42,7 @@ struct SearchDataDisplayContainer: Equatable {
     let all: SearchDataDisplay?
 }
 
-enum SearchViewState: Sendable {
+enum SearchViewState {
     /// Indexing items
     case initializing
     /// No history, empty search query

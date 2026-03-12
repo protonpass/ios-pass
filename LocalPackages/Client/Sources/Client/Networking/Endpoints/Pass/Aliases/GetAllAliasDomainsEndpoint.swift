@@ -22,7 +22,7 @@ import Entities
 import Foundation
 import ProtonCoreNetworking
 
-struct GetAllAliasDomainsResponse: Decodable, Sendable {
+struct GetAllAliasDomainsResponse: Decodable {
     let domains: [Domain]
 }
 

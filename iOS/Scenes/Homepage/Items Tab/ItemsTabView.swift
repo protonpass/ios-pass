@@ -97,7 +97,7 @@ struct ItemsTabView: View {
                     viewModel.topBarActionTriggered(action)
                 }
 
-                .hidden(!viewModel.vaultCreationAllowed && viewModel.noVaults)
+                .hidden(!viewModel.vaultCreationAllowed && viewModel.noVaults && viewModel.isEmpty)
 
                 if viewModel.showingUpgradeAppBanner {
                     Button(action: { viewModel.openAppOnAppStore() },

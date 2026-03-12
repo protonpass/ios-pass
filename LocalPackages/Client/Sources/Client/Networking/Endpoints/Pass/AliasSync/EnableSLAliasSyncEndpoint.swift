@@ -20,7 +20,7 @@
 
 import ProtonCoreNetworking
 
-struct EnableSLAliasSyncRequest: Encodable, Sendable {
+struct EnableSLAliasSyncRequest: Encodable {
     let defaultShareID: String?
 
     enum CodingKeys: String, CodingKey {

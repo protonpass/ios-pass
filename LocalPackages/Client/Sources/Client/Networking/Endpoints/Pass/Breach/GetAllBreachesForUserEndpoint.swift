@@ -21,7 +21,7 @@
 import Entities
 import ProtonCoreNetworking
 
-struct GetAllBreachesForUserResponse: Decodable, Equatable, Sendable {
+struct GetAllBreachesForUserResponse: Decodable, Equatable {
     let breaches: UserBreaches
 }
 

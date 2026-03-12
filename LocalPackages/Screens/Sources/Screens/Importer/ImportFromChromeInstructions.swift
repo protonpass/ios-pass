@@ -23,7 +23,7 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
-private enum ImportFromChromeStep: Sendable, CaseIterable, Identifiable {
+private enum ImportFromChromeStep: CaseIterable, Identifiable {
     case first, second, third, fourth
 
     var id: String {

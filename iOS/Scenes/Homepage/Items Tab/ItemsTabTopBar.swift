@@ -329,7 +329,7 @@ private struct EditModeView: View {
     }
 }
 
-private struct VautlSelectionUiModel: Sendable {
+private struct VautlSelectionUiModel {
     let icon: Image
     let iconColor: Color
     let backgroundColor: Color

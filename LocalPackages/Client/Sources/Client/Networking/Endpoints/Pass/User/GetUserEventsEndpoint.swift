@@ -21,7 +21,7 @@
 
 import Foundation
 
-struct GetUserEventsResponse: Decodable, Sendable {
+struct GetUserEventsResponse: Decodable {
     let events: UserEvents
 }
 

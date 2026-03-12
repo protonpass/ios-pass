@@ -21,7 +21,7 @@
 
 import Foundation
 
-struct ForkSessionRequest: Sendable, Encodable {
+struct ForkSessionRequest: Encodable {
     let payload: String?
     let childClientId: String
     let independent: Int

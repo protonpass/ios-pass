@@ -21,7 +21,7 @@
 import Entities
 import Foundation
 
-struct SendEventsRequest: Encodable, Sendable {
+struct SendEventsRequest: Encodable {
     let eventInfo: [EventInfo]
 
     enum CodingKeys: String, CodingKey {
@@ -30,7 +30,7 @@ struct SendEventsRequest: Encodable, Sendable {
 }
 
 typealias DimensionsValue = Encodable & Sendable
-struct Dimensions: Encodable, Sendable {
+struct Dimensions: Encodable {
     var properties: [String: any DimensionsValue]
 
     /// Custom encode function to handle dynamic keys and types

@@ -21,7 +21,7 @@
 import Entities
 import ProtonCoreNetworking
 
-struct GetAliasDetailsInBulkBody: Encodable, Sendable {
+struct GetAliasDetailsInBulkBody: Encodable {
     let itemIds: [String]
 
     enum CodingKeys: String, CodingKey {
@@ -29,7 +29,7 @@ struct GetAliasDetailsInBulkBody: Encodable, Sendable {
     }
 }
 
-struct GetAliasDetailsInBulkResponse: Decodable, Sendable {
+struct GetAliasDetailsInBulkResponse: Decodable {
     let aliases: [Alias]
 }
 

@@ -20,7 +20,7 @@
 
 import ProtonCoreNetworking
 
-struct ChangeAliasStatusRequest: Encodable, Sendable {
+struct ChangeAliasStatusRequest: Encodable {
     let enable: Bool
 
     enum CodingKeys: String, CodingKey {

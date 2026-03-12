@@ -21,7 +21,7 @@
 import Foundation
 
 /// Proton Pass core module related errors.
-enum PPCoreError: Error, CustomDebugStringConvertible, Sendable {
+enum PPCoreError: Error, CustomDebugStringConvertible {
     case biometryTypeNotInitialized
     case failedToRandomizeData
 

@@ -20,7 +20,7 @@
 
 import ProtonCoreNetworking
 
-struct GetAliasOptionsResponse: Decodable, Sendable {
+struct GetAliasOptionsResponse: Decodable {
     let options: AliasOptions
 }
 

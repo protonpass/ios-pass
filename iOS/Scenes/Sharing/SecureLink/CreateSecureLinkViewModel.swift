@@ -26,7 +26,7 @@ import Foundation
 import Macro
 import UIKit
 
-enum SecureLinkExpiration: Sendable, Hashable, Identifiable {
+enum SecureLinkExpiration: Hashable, Identifiable {
     case hour(Int)
     case day(Int)
 

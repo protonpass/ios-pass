@@ -37,8 +37,8 @@ struct ClearCacheForLoggedOutUsersTests {
         sut = ClearCacheForLoggedOutUsers(datasource: datasource)
     }
 
-    @Test("Clear cached files for logged out users")
-    func clear() async throws {
+    @Test
+    func `Clear cached files for logged out users`() async throws {
         // Given
         let fileManager = FileManager.default
         let user1 = UserData.random()
