@@ -21,7 +21,7 @@
 import Foundation
 
 extension HomepageCoordinator {
-    enum UniqueSheet: Int, Sendable {
+    enum UniqueSheet: Int {
         case reusedPasswordList = 100
         case inAppNotificationDisplay = 200
     }

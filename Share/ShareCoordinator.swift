@@ -30,7 +30,7 @@ import Screens
 @preconcurrency import SwiftUI
 import UniformTypeIdentifiers
 
-enum SharedContent: Sendable {
+enum SharedContent {
     case url(URL)
     case text(String)
     case textWithUrl(String, URL)

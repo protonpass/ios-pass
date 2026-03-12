@@ -21,7 +21,7 @@
 import Entities
 import ProtonCoreNetworking
 
-struct GetPublicKeysResponse: Decodable, Sendable {
+struct GetPublicKeysResponse: Decodable {
     let address: PublicKeys
 }
 

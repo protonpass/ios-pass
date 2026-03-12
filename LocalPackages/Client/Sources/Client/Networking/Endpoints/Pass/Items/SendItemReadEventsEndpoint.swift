@@ -23,7 +23,7 @@ import Entities
 import Foundation
 import ProtonCoreNetworking
 
-struct ItemTime: Sendable, Encodable {
+struct ItemTime: Encodable {
     let itemID: String
     let timestamp: Int
 
@@ -33,7 +33,7 @@ struct ItemTime: Sendable, Encodable {
     }
 }
 
-struct SendItemReadEventsRequest: Sendable, Encodable {
+struct SendItemReadEventsRequest: Encodable {
     let itemTimes: [ItemTime]
 
     enum CodingKeys: String, CodingKey {

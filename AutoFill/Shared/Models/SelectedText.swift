@@ -22,7 +22,7 @@ import Combine
 import Entities
 import Foundation
 
-struct SelectedText: Sendable {
+struct SelectedText {
     let value: String
     let item: any ItemIdentifiable
 }

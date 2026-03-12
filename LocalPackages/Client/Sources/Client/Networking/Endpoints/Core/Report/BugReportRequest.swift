@@ -23,7 +23,7 @@ import Foundation
 import ProtonCoreLogin
 import UIKit
 
-struct BugReportRequest: Sendable {
+struct BugReportRequest {
     let os: String // iOS, MacOS
     let osVersion: String
     let client: String

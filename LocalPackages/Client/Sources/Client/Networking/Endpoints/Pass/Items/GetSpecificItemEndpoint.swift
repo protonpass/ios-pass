@@ -20,7 +20,7 @@
 
 import Entities
 
-struct GetSpecificItemResponse: Decodable, Sendable {
+struct GetSpecificItemResponse: Decodable {
     let item: Item
 }
 

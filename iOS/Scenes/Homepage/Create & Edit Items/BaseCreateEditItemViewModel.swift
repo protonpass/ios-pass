@@ -106,17 +106,17 @@ enum ItemCreationType: Equatable, Hashable {
     }
 }
 
-private struct PendingFileNameUpdate: Sendable {
+private struct PendingFileNameUpdate {
     let fileId: String
     let newName: String
 }
 
-struct AddCustomFieldPayload: Sendable {
+struct AddCustomFieldPayload {
     /// `id` of the section that the field belongs to. `nil` when the field is stand alone.
     let sectionId: String?
 }
 
-struct AdditionalItemEditResult: Sendable {
+struct AdditionalItemEditResult {
     let edited: Bool
     let slNote: String?
 

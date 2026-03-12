@@ -30,7 +30,7 @@ import Macro
 import Screens
 import UIKit
 
-struct AliasContactsModel: Sendable, Hashable {
+struct AliasContactsModel: Hashable {
     let activeContacts: [AliasContact]
     let blockContacts: [AliasContact]
 

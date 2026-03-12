@@ -21,7 +21,7 @@
 @preconcurrency import AuthenticationServices
 import Entities
 
-enum AutoFillRequest: Sendable {
+enum AutoFillRequest {
     case password(ASPasswordCredentialIdentity)
     case passkey(PasskeyCredentialRequest)
     case oneTimeCode(OneTimeCodeCredentialIdentity)
@@ -83,6 +83,6 @@ enum AutoFillMode {
     }
 }
 
-enum CredentialsMode: Sendable {
+enum CredentialsMode {
     case passwords, oneTimeCodes
 }

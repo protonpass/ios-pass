@@ -21,11 +21,11 @@
 import Entities
 import ProtonCoreNetworking
 
-struct GetItemKeysResponse: Decodable, Sendable {
+struct GetItemKeysResponse: Decodable {
     let keys: ItemKeys
 }
 
-struct ItemKeys: Decodable, Equatable, Hashable, Sendable {
+struct ItemKeys: Decodable, Equatable, Hashable {
     let keys: [ItemKey]
 }
 

@@ -20,7 +20,7 @@
 
 import ProtonCoreNetworking
 
-struct ToggleMonitoringRequest: Encodable, Sendable {
+struct ToggleMonitoringRequest: Encodable {
     let monitor: Bool
 
     enum CodingKeys: String, CodingKey {

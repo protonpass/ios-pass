@@ -22,7 +22,7 @@ import Entities
 import Foundation
 import ProtonCoreNetworking
 
-struct GetListOfGroupMembersResponse: Decodable, Sendable {
+struct GetListOfGroupMembersResponse: Decodable {
     let members: [GroupMember]
     let total: Int
 }

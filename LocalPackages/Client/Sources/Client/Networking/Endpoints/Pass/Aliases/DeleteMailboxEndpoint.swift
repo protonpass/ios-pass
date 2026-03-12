@@ -20,7 +20,7 @@
 
 import ProtonCoreNetworking
 
-struct DeleteMailboxRequest: Encodable, Sendable {
+struct DeleteMailboxRequest: Encodable {
     let transferMailboxID: Int?
 
     enum CodingKeys: String, CodingKey {

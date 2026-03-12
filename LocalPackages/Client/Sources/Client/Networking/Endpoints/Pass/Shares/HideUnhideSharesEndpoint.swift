@@ -21,7 +21,7 @@
 import Entities
 import ProtonCoreNetworking
 
-struct HideUnhideSharesRequest: Sendable, Encodable {
+struct HideUnhideSharesRequest: Encodable {
     let sharesToHide: [String]
     let sharesToUnhide: [String]
 
@@ -31,7 +31,7 @@ struct HideUnhideSharesRequest: Sendable, Encodable {
     }
 }
 
-struct HideUnhideSharesResponse: Sendable, Decodable {
+struct HideUnhideSharesResponse: Decodable {
     let shares: [Share]
 }
 

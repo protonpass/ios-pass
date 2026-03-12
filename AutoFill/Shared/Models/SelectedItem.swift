@@ -20,7 +20,7 @@
 
 import Entities
 
-struct SelectedItem: Sendable {
+struct SelectedItem {
     let userId: String
     let content: ItemContent
     let vault: Share

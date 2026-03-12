@@ -25,7 +25,7 @@ private let kAnimationThreshold = 500
 private let kHeaderId = "header"
 private let kCellId = "cell"
 
-private nonisolated struct PassSectionIdentifier: Sendable, Hashable {
+private nonisolated struct PassSectionIdentifier: Hashable {
     let id: Int
     let title: String
 
@@ -93,14 +93,14 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
         }
     }
 
-    let sections: [Section]
-    let configuration: TableViewConfiguration
-    let itemView: (Item) -> ItemView
+    private let sections: [Section]
+    private let configuration: TableViewConfiguration
+    private let itemView: (Item) -> ItemView
     /// Custom header view, pass `nil` to use the default text header
-    let headerView: (_ sectionIndex: Int) -> HeaderView?
+    private let headerView: (_ sectionIndex: Int) -> HeaderView?
 
-    let refreshControl = UIRefreshControl()
-    let onRefresh: (() async -> Void)?
+    private let refreshControl = UIRefreshControl()
+    private let onRefresh: (() async -> Void)?
 
     /// Set `id` to force refreshing the table because relying on `UITableViewDiffableDataSource`
     /// is not enough in some cases, e.g 2 snapshots may be completely different but the first visible items are
@@ -110,7 +110,7 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
     /// When listing all items,  switching between `All accounts` and precise account might result
     /// in the same visible first items but we want to render the items differently (show or not show user's email)
     /// So we need to force refresh the UI even though visible items stay unchanged.
-    let id: Int?
+    private let id: Int?
 
     public init(sections: [Section],
                 configuration: TableViewConfiguration,
