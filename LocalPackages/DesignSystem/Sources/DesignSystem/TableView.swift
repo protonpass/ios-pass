@@ -25,18 +25,6 @@ private let kAnimationThreshold = 500
 private let kHeaderId = "header"
 private let kCellId = "cell"
 
-/// Wraps an async closure in a reference type to avoid a crash on iOS 16.
-/// SwiftUI's AttributeGraph metadata visitor cannot resolve the type metadata for
-/// `Optional<@Sendable @async () -> Void>` on iOS 16, causing a null pointer dereference.
-@available(iOS, deprecated: 17.0, message: "Remove when deprecating iOS 16")
-private final class AsyncAction: Sendable {
-    let action: () async -> Void
-
-    init(_ action: @escaping () async -> Void) {
-        self.action = action
-    }
-}
-
 private nonisolated struct PassSectionIdentifier: Hashable {
     let id: Int
     let title: String
@@ -112,7 +100,7 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
     private let headerView: (_ sectionIndex: Int) -> HeaderView?
 
     private let refreshControl = UIRefreshControl()
-    private let onRefresh: AsyncAction?
+    private let onRefresh: (() async -> Void)?
 
     /// Set `id` to force refreshing the table because relying on `UITableViewDiffableDataSource`
     /// is not enough in some cases, e.g 2 snapshots may be completely different but the first visible items are
@@ -135,11 +123,7 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
         self.id = id
         self.itemView = itemView
         self.headerView = headerView
-        if let onRefresh {
-            self.onRefresh = AsyncAction(onRefresh)
-        } else {
-            self.onRefresh = nil
-        }
+        self.onRefresh = onRefresh
     }
 
     public func makeCoordinator() -> Coordinator {
@@ -264,7 +248,7 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
 
         @objc
         func handleRefresh() {
-            guard let onRefresh = parent.onRefresh?.action else { return }
+            guard let onRefresh = parent.onRefresh else { return }
             Task { [weak self] in
                 guard let self else { return }
                 await onRefresh()
