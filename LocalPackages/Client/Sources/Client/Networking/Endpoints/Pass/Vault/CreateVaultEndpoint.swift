@@ -21,7 +21,7 @@
 import Entities
 import ProtonCoreNetworking
 
-struct CreateVaultResponse: Decodable, Sendable {
+struct CreateVaultResponse: Decodable {
     let share: Share
 }
 

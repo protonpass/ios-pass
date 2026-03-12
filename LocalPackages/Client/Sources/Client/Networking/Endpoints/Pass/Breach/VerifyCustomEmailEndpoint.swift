@@ -20,7 +20,7 @@
 
 import ProtonCoreNetworking
 
-struct VerifyCustomEmailRequest: Encodable, Sendable {
+struct VerifyCustomEmailRequest: Encodable {
     let code: String
 
     enum CodingKeys: String, CodingKey {

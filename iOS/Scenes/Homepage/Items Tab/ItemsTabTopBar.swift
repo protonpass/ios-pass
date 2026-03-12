@@ -224,7 +224,7 @@ private extension ItemsTabTopBar {
     }
 }
 
-private struct VautlSelectionUiModel: Sendable {
+private struct VautlSelectionUiModel {
     let icon: Image
     let iconColor: Color
     let backgroundColor: Color

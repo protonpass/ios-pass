@@ -23,7 +23,7 @@ import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 
-private enum TrimState: Sendable {
+private enum TrimState {
     case unknown, trimmed, notTrimmed
 
     var isTrimmed: Bool {

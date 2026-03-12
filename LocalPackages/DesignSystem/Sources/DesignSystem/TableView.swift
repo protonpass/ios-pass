@@ -37,7 +37,7 @@ private final class AsyncAction: Sendable {
     }
 }
 
-private nonisolated struct PassSectionIdentifier: Sendable, Hashable {
+private nonisolated struct PassSectionIdentifier: Hashable {
     let id: Int
     let title: String
 

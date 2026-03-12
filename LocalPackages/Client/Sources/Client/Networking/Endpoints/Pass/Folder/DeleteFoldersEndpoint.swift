@@ -42,7 +42,7 @@ struct DeleteFoldersEndpoint: Endpoint {
     }
 }
 
-struct DeleteFolderRequest: Sendable, Encodable {
+struct DeleteFolderRequest: Encodable {
     let folderIDs: [String]
 
     enum CodingKeys: String, CodingKey {

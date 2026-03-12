@@ -29,7 +29,7 @@ protocol AliasCreationLiteInfoDelegate: AnyObject {
     func aliasLiteCreationInfo(_ info: AliasCreationLiteInfo)
 }
 
-struct AliasCreationLiteInfo: Sendable {
+struct AliasCreationLiteInfo {
     let prefix: String
     let suffix: Suffix
     let mailboxes: [AliasLinkedMailbox]

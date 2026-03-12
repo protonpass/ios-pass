@@ -22,7 +22,7 @@ import Entities
 import Foundation
 import ProtonCoreNetworking
 
-struct UpdateLastUseTimeResponse: Decodable, Sendable {
+struct UpdateLastUseTimeResponse: Decodable {
     let revision: Item
 }
 

@@ -36,7 +36,7 @@ public struct CreateAContactRequest: Sendable, Encodable {
     }
 }
 
-struct CreateAContactResponse: Decodable, Sendable {
+struct CreateAContactResponse: Decodable {
     let contact: AliasContact
 }
 

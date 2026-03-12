@@ -21,7 +21,7 @@
 import Entities
 import ProtonCoreNetworking
 
-struct GetAliasesPendingToSyncResponse: Decodable, Sendable {
+struct GetAliasesPendingToSyncResponse: Decodable {
     let pendingAliases: PaginatedPendingAliases
 }
 

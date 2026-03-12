@@ -20,7 +20,7 @@
 
 @preconcurrency import ProtonCoreDataModel
 
-struct GetUserResponse: Decodable, Sendable {
+struct GetUserResponse: Decodable {
     let user: User
 }
 

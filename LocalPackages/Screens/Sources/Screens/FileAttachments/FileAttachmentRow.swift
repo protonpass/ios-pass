@@ -32,7 +32,7 @@ struct FileAttachmentRow: View {
     private let primaryTintColor: Color
     private let secondaryTintColor: Color
 
-    enum Mode: Sendable {
+    enum Mode {
         case view(onOpen: @MainActor () -> Void,
                   onSave: @MainActor () -> Void,
                   onShare: @MainActor () -> Void)
