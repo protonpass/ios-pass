@@ -73,11 +73,11 @@ public final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManag
     public var closureGetShareKeys: () -> () = {}
     public var invokedGetShareKeysfunction = false
     public var invokedGetShareKeysCount = 0
-    public var invokedGetShareKeysParameters: (userId: String, share: Share, item: any FullItemIdentifiable)?
-    public var invokedGetShareKeysParametersList = [(userId: String, share: Share, item: any FullItemIdentifiable)]()
+    public var invokedGetShareKeysParameters: (userId: String, share: Share, item: any ItemIdentifiable)?
+    public var invokedGetShareKeysParametersList = [(userId: String, share: Share, item: any ItemIdentifiable)]()
     public nonisolated(unsafe) var stubbedGetShareKeysResult: ([any CryptographicKeyProtocol])!
 
-    public func getShareKeys(userId: String, share: Share, item: any FullItemIdentifiable) async throws -> [any CryptographicKeyProtocol] {
+    public func getShareKeys(userId: String, share: Share, item: any ItemIdentifiable) async throws -> [any CryptographicKeyProtocol] {
         invokedGetShareKeysfunction = true
         invokedGetShareKeysCount += 1
         invokedGetShareKeysParameters = (userId, share, item)
