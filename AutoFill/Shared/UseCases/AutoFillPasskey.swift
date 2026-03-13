@@ -27,7 +27,7 @@ protocol AutoFillPasskeyUseCase: Sendable {
     func execute(_ passkey: Passkey,
                  itemContent: ItemContent,
                  identifiers: [ASCredentialServiceIdentifier],
-                 params: any PasskeyRequestParametersProtocol,
+                 params: ASPasskeyCredentialRequestParameters,
                  context: ASCredentialProviderExtensionContext) async throws
 }
 
@@ -35,7 +35,7 @@ extension AutoFillPasskeyUseCase {
     func callAsFunction(_ passkey: Passkey,
                         itemContent: ItemContent,
                         identifiers: [ASCredentialServiceIdentifier],
-                        params: any PasskeyRequestParametersProtocol,
+                        params: ASPasskeyCredentialRequestParameters,
                         context: ASCredentialProviderExtensionContext) async throws {
         try await execute(passkey,
                           itemContent: itemContent,
@@ -58,7 +58,7 @@ final class AutoFillPasskey: AutoFillPasskeyUseCase {
     func execute(_ passkey: Passkey,
                  itemContent: ItemContent,
                  identifiers: [ASCredentialServiceIdentifier],
-                 params: any PasskeyRequestParametersProtocol,
+                 params: ASPasskeyCredentialRequestParameters,
                  context: ASCredentialProviderExtensionContext) async throws {
         let response = try resolveChallenge(serviceIdentifier: params.relyingPartyIdentifier,
                                             clientDataHash: params.clientDataHash,

@@ -30,13 +30,13 @@ import UseCases
 protocol FetchCredentialsUseCase: Sendable {
     func execute(userId: String,
                  identifiers: [ASCredentialServiceIdentifier],
-                 params: (any PasskeyRequestParametersProtocol)?) async throws -> CredentialsFetchResult
+                 params: ASPasskeyCredentialRequestParameters?) async throws -> CredentialsFetchResult
 }
 
 extension FetchCredentialsUseCase {
     func callAsFunction(userId: String,
                         identifiers: [ASCredentialServiceIdentifier],
-                        params: (any PasskeyRequestParametersProtocol)?) async throws -> CredentialsFetchResult {
+                        params: ASPasskeyCredentialRequestParameters?) async throws -> CredentialsFetchResult {
         try await execute(userId: userId, identifiers: identifiers, params: params)
     }
 }
@@ -68,7 +68,7 @@ final class FetchCredentials: FetchCredentialsUseCase {
 
     func execute(userId: String,
                  identifiers: [ASCredentialServiceIdentifier],
-                 params: (any PasskeyRequestParametersProtocol)?) async throws -> CredentialsFetchResult {
+                 params: ASPasskeyCredentialRequestParameters?) async throws -> CredentialsFetchResult {
         async let symmetricKey = symmetricKeyProvider.getSymmetricKey()
         async let plan = accessRepository.getPlan(userId: userId)
         async let shares = shareRepository.getDecryptedShares(userId: userId)
@@ -159,7 +159,7 @@ private extension FetchCredentials {
 private extension FetchCredentials {
     // swiftlint:disable:next function_parameter_count
     func fetchPasskeys(userId: String,
-                       params: any PasskeyRequestParametersProtocol,
+                       params: ASPasskeyCredentialRequestParameters,
                        symmetricKey: SymmetricKey,
                        vaults: [Share],
                        encryptedItems: [SymmetricallyEncryptedItem],
