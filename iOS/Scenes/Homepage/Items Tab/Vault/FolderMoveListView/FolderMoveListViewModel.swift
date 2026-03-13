@@ -60,7 +60,7 @@ final class FolderMoveListViewModel {
                 try await appContentManager.moveFolder(userId: userId,
                                                        shareId: selectedContainer.share.id,
                                                        folderId: currentFolderId,
-                                                       newParentFolderId: selectedContainer.folder?.id)
+                                                       newParentFolderId: selectedContainer.folder?.folderId)
                 moveCompleted = true
             } catch {
                 router.display(element: .displayErrorBanner(error))

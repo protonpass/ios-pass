@@ -103,7 +103,7 @@ final class ItemMoveVaultListViewModel: ObservableObject, DeinitPrintable {
                 router.display(element: .globalLoading(shouldShow: true))
                 try await moveItemsBetweenContainers(context: context,
                                                      to: selectedContainer.share.shareId,
-                                                     destinationFolderId: selectedContainer.folder?.id)
+                                                     destinationFolderId: selectedContainer.folder?.folderId)
                 router.display(element: successMessage(toVaultName: selectedContainer.title))
                 currentSelectedItems.send([])
             } catch {

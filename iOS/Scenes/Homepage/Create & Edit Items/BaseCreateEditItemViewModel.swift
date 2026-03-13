@@ -531,7 +531,7 @@ private extension BaseCreateEditItemViewModel {
                                                             info: aliasCreationInfo,
                                                             itemContent: itemContent,
                                                             shareId: shareId,
-                                                            folderId: selectedContainer.folder?.id)
+                                                            folderId: selectedContainer.folder?.folderId)
             } else {
                 assertionFailure("aliasCreationInfo should not be null")
                 logger.warning("Can not create alias because creation info is empty")
@@ -547,7 +547,7 @@ private extension BaseCreateEditItemViewModel {
                                              aliasItemContent: aliasItemContent,
                                              otherItemContent: itemContent,
                                              shareId: shareId,
-                                             folderId: selectedContainer.folder?.id)
+                                             folderId: selectedContainer.folder?.folderId)
                 return createdLoginItem
             }
 
@@ -558,7 +558,7 @@ private extension BaseCreateEditItemViewModel {
         return try await itemRepository.createItem(userId: userId,
                                                    itemContent: itemContent,
                                                    shareId: shareId,
-                                                   folderId: selectedContainer.folder?.id)
+                                                   folderId: selectedContainer.folder?.folderId)
     }
 
     /// Return `true` if item is edited, `false` otherwise

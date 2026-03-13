@@ -236,7 +236,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                                              info: aliasCreationInfo,
                                              itemContent: aliasItemContent,
                                              shareId: selectedContainer.share.shareId,
-                                             folderId: selectedContainer.folder?.id)
+                                             folderId: selectedContainer.folder?.folderId)
         return .init(edited: true, slNote: nil)
     }
 
