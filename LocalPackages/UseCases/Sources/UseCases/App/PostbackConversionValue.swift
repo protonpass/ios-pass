@@ -55,7 +55,6 @@ public final class PostbackConversionValue: PostbackConversionValueUseCase {
     public func execute(_ fineValue: Int,
                         coarseValue: CoarseConversionValue,
                         lockPostback: Bool) async throws {
-        guard #available(iOS 16.1, *) else { return }
         // swiftlint:disable:next todo
         // TODO: Use AdAttributionKit instead of StoreKit's SKAdNetwork
 
@@ -73,7 +72,6 @@ public final class PostbackConversionValue: PostbackConversionValueUseCase {
 }
 
 private extension CoarseConversionValue {
-    @available(iOS 16.1, *)
     var skAdNetworkValue: SKAdNetwork.CoarseConversionValue {
         switch self {
         case .low: .low

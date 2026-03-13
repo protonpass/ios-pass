@@ -167,7 +167,7 @@ private extension CredentialProviderCoordinator {
     func handleShowAllLoginsMode(mode: CredentialsMode,
                                  users: [UserUiModel],
                                  identifiers: [ASCredentialServiceIdentifier],
-                                 passkeyRequestParams: (any PasskeyRequestParametersProtocol)?) {
+                                 passkeyRequestParams: ASPasskeyCredentialRequestParameters?) {
         guard let context else { return }
 
         guard userManager.activeUserId != nil else {
