@@ -160,7 +160,7 @@ private extension SearchEntry {
     static func random(itemID: String = .random(),
                        shareID: String = .random(),
                        time: Int64 = .random(in: 1_000_000...2_000_000)) -> SearchEntry {
-        .init(itemID: itemID, shareID: shareID, time: time)
+        .init(itemId: itemID, shareId: shareID, time: time)
     }
 }
 
