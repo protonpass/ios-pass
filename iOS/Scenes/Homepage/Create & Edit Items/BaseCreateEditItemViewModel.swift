@@ -142,7 +142,7 @@ struct ItemEditionAlertContent {
 class BaseCreateEditItemViewModel: ObservableObject {
     @Published var title = ""
     @Published var note = ""
-    @Published var selectedContainer: ShareSelectionPayload!
+    @Published var selectedContainer: ShareSelectionPayload
     @Published private(set) var isFreeUser = false
     @Published private(set) var isSaving = false
     @Published private(set) var canAddMoreCustomFields = true
@@ -187,11 +187,12 @@ class BaseCreateEditItemViewModel: ObservableObject {
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     let upgradeChecker: any UpgradeCheckerProtocol
     let logger = resolve(\SharedToolingContainer.logger)
+    let userManager = resolve(\SharedServiceContainer.userManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
     private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
     private let updateUserPreferences = resolve(\SharedUseCasesContainer.updateUserPreferences)
-    @LazyInjected(\SharedServiceContainer.userManager) var userManager
+    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
     @LazyInjected(\SharedRepositoryContainer.fileAttachmentRepository) private var fileRepository
     @LazyInjected(\SharedUseCasesContainer.generateDatedFileName) private var generateDatedFileName
@@ -203,7 +204,6 @@ class BaseCreateEditItemViewModel: ObservableObject {
     @LazyInjected(\SharedUseCasesContainer.getFilesToLink) private var getFilesToLink
     @LazyInjected(\SharedUseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
     @LazyInjected(\SharedUseCasesContainer.checkCameraPermission) private var checkCameraPermission
-    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
 
     var isFetchingAttachedFiles: Bool {
         attachedFiles?.isFetching == true
