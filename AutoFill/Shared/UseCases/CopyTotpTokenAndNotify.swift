@@ -82,7 +82,8 @@ final class CopyTotpTokenAndNotify: Sendable, CopyTotpTokenAndNotifyUseCase {
             return
         }
         let totpData = try generateTotpToken(uri: data.totpUri)
-        copyToClipboard(totpData.code)
+        let expiration = Date().addingTimeInterval(Double(totpData.timerData.remaining))
+        copyToClipboard(totpData.code, expirationDate: expiration)
         logger.trace("Copied TOTP token \(itemContent.debugDescription)")
 
         let content = UNMutableNotificationContent()
