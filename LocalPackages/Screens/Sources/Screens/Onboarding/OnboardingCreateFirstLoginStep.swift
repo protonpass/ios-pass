@@ -61,7 +61,7 @@ struct OnboardingCreateFirstLoginStep: View {
         .tint(PassColor.interactionNorm)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.bottom, DesignConstant.onboardingPadding)
-        .onChange(of: viewModel.selectedService) { _, _ in
+        .onChange(of: viewModel.selectedService) {
             if let selectedService = viewModel.selectedService {
                 topBar = .createFirstLogin(selectedService,
                                            onClose: { viewModel.selectedService = nil },

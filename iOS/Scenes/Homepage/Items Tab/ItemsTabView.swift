@@ -70,7 +70,7 @@ struct ItemsTabView: View {
         .animation(.default, value: viewModel.shouldShowSyncProgress)
         .background(PassColor.backgroundNorm)
         .navigationBarHidden(true)
-        .onChange(of: viewModel.filterOption) { _, _ in
+        .onChange(of: viewModel.filterOption) {
             viewModel.filterAndSortItems()
         }
         .onChange(of: viewModel.selectedSortType) { _, type in
