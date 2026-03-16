@@ -22,8 +22,6 @@ import Client
 import Core
 import FactoryKit
 import ProtonCoreAuthentication
-import ProtonCorePayments
-import ProtonCorePaymentsUI
 import ProtonCorePushNotifications
 import Screens
 
