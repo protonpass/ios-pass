@@ -38,7 +38,7 @@ let package = Package(name: "TestingToolkit",
                       dependencies: [
                           // Dependencies declare other packages that this package depends on.
                           .package(name: "Entities", path: "../Entities"),
-                          .package(url: "https://github.com/ProtonMail/protoncore_ios", from: "36.0.0")
+                          .package(url: "https://github.com/ProtonMail/protoncore_ios", from: "36.0.3")
                       ],
                       targets: [
                           // Targets are the basic building blocks of a package. A target can define a module or a
