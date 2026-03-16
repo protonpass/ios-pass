@@ -94,7 +94,7 @@ private extension OnboardingView {
                 topBar = .none
             }
         }
-        .onChange(of: viewModel.finished) { _, _ in
+        .onChange(of: viewModel.finished) {
             dismiss()
         }
     }

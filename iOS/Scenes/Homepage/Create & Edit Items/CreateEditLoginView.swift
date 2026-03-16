@@ -146,7 +146,7 @@ struct CreateEditLoginView: View {
                     }
                 }
                 // swiftformat:enable all
-                .onChange(of: viewModel.recentlyAddedOrEditedField) { _, _ in
+                .onChange(of: viewModel.recentlyAddedOrEditedField) {
                     withAnimation {
                         proxy.scrollTo(bottomID, anchor: .bottom)
                     }
@@ -157,7 +157,7 @@ struct CreateEditLoginView: View {
                     focusedField = nil
                 }
             }
-            .onChange(of: viewModel.emailUsernameExpanded) { _, _ in
+            .onChange(of: viewModel.emailUsernameExpanded) {
                 if !viewModel.username.isEmpty {
                     focusedField = .username
                 } else {
@@ -622,7 +622,7 @@ private struct WebsiteSection<Field: Hashable>: View {
                                 Text(verbatim: "https://")
                             }
                             .focused(focusedField, equals: field)
-                            .onChange(of: viewModel.urls) { _, _ in
+                            .onChange(of: viewModel.urls) {
                                 viewModel.invalidURLs.removeAll()
                             }
                             .keyboardType(.URL)
