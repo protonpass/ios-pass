@@ -4394,25 +4394,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld перасылкі"
+                  "value" : "%lld пераслана"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld перасылак"
+                  "value" : "%lld пераслана"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld перасылка"
+                  "value" : "%lld пераслана"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld перасылак"
+                  "value" : "%lld пераслана"
                 }
               }
             }
