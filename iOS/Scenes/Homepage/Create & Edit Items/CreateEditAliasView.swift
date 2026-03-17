@@ -78,9 +78,25 @@ struct CreateEditAliasView: View {
                isPresented: $isShowingSlNoteExplanation,
                actions: { Button("OK", action: {}) },
                message: { Text(verbatim: simpleLoginNoteExplanationMessage) })
-    }
+        .alert("Copy new alias address automatically?",
+               isPresented: $viewModel.showCopyAfterCreatingAlert,
+               actions: {
+                   Button(action: { viewModel.dismissCopyAfterCreatingTip(optIn: true) },
+                          label: { Text("Yes") })
 
-    private var closeButtonToolbar: some ToolbarContent {
+                   Button(action: { viewModel.dismissCopyAfterCreatingTip(optIn: false) },
+                          label: { Text("No") })
+
+                   Button("Cancel", role: .cancel, action: {})
+               },
+               message: {
+                   Text("You can change this anytime in Settings")
+               })
+    }
+}
+
+private extension CreateEditAliasView {
+    var closeButtonToolbar: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
             CircleButton(icon: IconProvider.cross,
                          iconColor: ItemContentType.alias.normMajor2Color,
@@ -90,7 +106,7 @@ struct CreateEditAliasView: View {
         }
     }
 
-    private var content: some View {
+    var content: some View {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(spacing: 8) {
@@ -264,7 +280,7 @@ struct CreateEditAliasView: View {
         .roundedEditableSection()
     }
 
-    private var aliasReadonlySection: some View {
+    var aliasReadonlySection: some View {
         HStack {
             ItemDetailSectionIcon(icon: IconProvider.alias, color: tintColor)
 
@@ -292,7 +308,7 @@ struct CreateEditAliasView: View {
         .roundedDetailSection()
     }
 
-    private var aliasPreviewSection: some View {
+    var aliasPreviewSection: some View {
         HStack {
             ItemDetailSectionIcon(icon: IconProvider.alias, color: tintColor)
 
@@ -340,14 +356,12 @@ struct CreateEditAliasView: View {
         .roundedDetailSection()
     }
 
-    private var advancedOptionsTipBanner: some View {
+    var advancedOptionsTipBanner: some View {
         TipBanner(configuration: .init(arrowMode: .topRight(padding: 0),
                                        description: "Tap the gear icon to customize the alias the way you want."),
                   onDismiss: viewModel.dismissAdvancedOptionsTipBanner)
     }
-}
 
-private extension CreateEditAliasView {
     var simpleLoginNoteSection: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.note)
@@ -392,9 +406,7 @@ private extension CreateEditAliasView {
         return [phrase1, phrase2, phrase3].joined(separator: " ")
         // swiftlint:enable line_length
     }
-}
 
-private extension CreateEditAliasView {
     var mailboxSelectionTitle: String {
         (viewModel.mode.isEditMode ? MailboxSection.Mode.edit : MailboxSection.Mode.create).title
     }
