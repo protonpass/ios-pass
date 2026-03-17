@@ -28,7 +28,6 @@ import Foundation
 import ProtonCoreFeatureFlags
 import ProtonCoreLogin
 @preconcurrency import ProtonCorePayments
-import ProtonCorePaymentsUI
 import ProtonCorePaymentsUIV2
 import ProtonCorePaymentsV2
 
@@ -39,12 +38,7 @@ final class PaymentsManager: Sendable {
     private let userManager = resolve(\SharedServiceContainer.userManager)
     private let authManager = resolve(\SharedToolingContainer.authManager)
     private let mainKeyProvider = resolve(\SharedToolingContainer.mainKeyProvider)
-    private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
-
-    // Strongly reference to make the payment page responsive during payment flow
-    private nonisolated(unsafe) var paymentsUI: PaymentsUI?
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let theme = resolve(\SharedToolingContainer.theme)
     private let inMemoryTokenStorage: any PaymentTokenStorage
     private let storage: UserDefaults
     private let paymentsV2 = PaymentsV2()
@@ -69,32 +63,14 @@ final class PaymentsManager: Sendable {
             return
         }
         do {
-            if featureFlagsRepository.isEnabled(CoreFeatureFlagType.paymentsV2) {
-                try createPaymentsV2UI(hideCurrentPlan: isUpgrading, completion: completion)
-            } else {
-                let paymentsUI = try createPaymentsUI()
-                if isUpgrading {
-                    paymentsUI
-                        .showUpgradePlan(presentationType: .modal, backendFetch: true) { [weak self] reason in
-                            guard let self else { return }
-                            handlePaymentsResponse(result: reason, completion: completion)
-                        }
-                } else {
-                    paymentsUI
-                        .showCurrentPlan(presentationType: .modal, backendFetch: true) { [weak self] result in
-                            guard let self else { return }
-                            handlePaymentsResponse(result: result, completion: completion)
-                        }
-                }
-            }
+            try createPaymentsV2UI(hideCurrentPlan: isUpgrading, completion: completion)
         } catch {
             completion(.failure(error))
         }
     }
 
     func restorePurchases() async throws {
-        guard !Bundle.main.isBetaBuild,
-              featureFlagsRepository.isEnabled(CoreFeatureFlagType.paymentsV2) else { return }
+        guard !Bundle.main.isBetaBuild else { return }
         let userID = try await userManager.getActiveUserId()
         let apiService = try apiManager.getApiService(userId: userID)
         _ = try await paymentsV2.restorePurchases(apiService: apiService)
@@ -118,16 +94,6 @@ private extension PaymentsManager {
                 handleTransactionObserver(userData: userData)
             }
             .store(in: &cancellables)
-    }
-
-    func createPaymentsUI() throws -> PaymentsUI {
-        let payments = try initializePaymentsStack()
-        let ui = PaymentsUI(payments: payments,
-                            clientApp: PaymentsConstants.clientApp,
-                            shownPlanNames: PaymentsConstants.shownPlanNames,
-                            customization: .init(inAppTheme: { [theme] in theme.inAppTheme }))
-        paymentsUI = ui
-        return ui
     }
 
     func createPaymentsV2UI(hideCurrentPlan: Bool = false,
@@ -160,65 +126,6 @@ private extension PaymentsManager {
                 }
             }
             .store(in: &cancellables)
-    }
-
-    func initializePaymentsStack() throws -> Payments {
-        guard let userId = userManager.activeUserId,
-              let apiService = try? apiManager.getApiService(userId: userId) else {
-            throw PassError.payments(.couldNotCreatePaymentStack)
-        }
-        let persistentDataStorage = UserDefaultsServicePlanDataStorage(storage: storage)
-
-        let payments = Payments(inAppPurchaseIdentifiers: PaymentsConstants.inAppPurchaseIdentifiers,
-                                apiService: apiService,
-                                localStorage: persistentDataStorage,
-                                reportBugAlertHandler: nil)
-
-        switch payments.planService {
-        case let .left(service):
-            service.currentSubscriptionChangeDelegate = self
-        default:
-            break
-        }
-
-        payments.storeKitManager.delegate = self
-
-        if !featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan) {
-            payments.storeKitManager.updateAvailableProductsList { _ in
-                payments.storeKitManager.subscribeToPaymentQueue()
-            }
-        } else {
-            payments.storeKitManager.subscribeToPaymentQueue()
-        }
-        return payments
-    }
-
-    func handlePaymentsResponse(result: PaymentsUIResultReason,
-                                completion: @escaping (Result<Bool, any Error>) -> Void) {
-        switch result {
-        case let .purchasedPlan(accountPlan: plan):
-            logger.trace("Purchased plan: \(plan.protonName)")
-            completion(.success(true))
-        case .open:
-            break
-        case let .planPurchaseProcessingInProgress(accountPlan: plan):
-            logger.trace("Purchasing \(plan.protonName)")
-        case .close:
-            logger.trace("Payments closed")
-            completion(.success(true))
-        case let .purchaseError(error: error):
-            logger.trace("Purchase failed with error \(error)")
-            completion(.failure(error))
-        case .toppedUpCredits:
-            logger.trace("Credits topped up")
-            completion(.success(true))
-        case let .apiMightBeBlocked(message, originalError: error):
-            logger.trace("\(message), error \(error)")
-            completion(.failure(error))
-        case let .planAlreadyPurchased(error: error):
-            logger.trace("Purchase failed with error \(error)")
-            completion(.failure(error))
-        }
     }
 
     func handleTransactionObserver(userData: UserData) {

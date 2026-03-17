@@ -26,7 +26,7 @@ let package = Package(name: "Core",
                                    targets: ["CoreMocks"])
                       ],
                       dependencies: [
-                          .package(url: "https://github.com/ProtonMail/protoncore_ios", from: "35.0.3"),
+                          .package(url: "https://github.com/ProtonMail/protoncore_ios", from: "36.0.3"),
                           .package(name: "Entities", path: "../Entities"),
                           .package(name: "DesignSystem", path: "../DesignSystem"),
                           .package(name: "Macro", path: "../Macro")

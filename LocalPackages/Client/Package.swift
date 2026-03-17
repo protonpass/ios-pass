@@ -31,7 +31,7 @@ let package = Package(name: "Client",
                           .package(name: "Entities", path: "../Entities"),
                           .package(name: "Macro", path: "../Macro"),
                           .package(name: "TestingToolkit", path: "../TestingToolkit"),
-                          .package(url: "https://github.com/ProtonMail/protoncore_ios", from: "35.0.3"),
+                          .package(url: "https://github.com/ProtonMail/protoncore_ios", from: "36.0.3"),
                           .package(name: "PassRustCore", path: "../PassRustCore"),
                       ],
                       targets: [
