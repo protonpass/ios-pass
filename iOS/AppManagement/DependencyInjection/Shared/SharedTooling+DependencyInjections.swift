@@ -113,11 +113,6 @@ extension SharedToolingContainer {
 // MARK: User centric tools
 
 extension SharedToolingContainer {
-    var theme: Factory<Theme> {
-        self { self.preferencesManager().sharedPreferences.unwrapped().theme }
-            .unique
-    }
-
     var currentDateProvider: Factory<any CurrentDateProviderProtocol> {
         self { CurrentDateProvider() }
     }

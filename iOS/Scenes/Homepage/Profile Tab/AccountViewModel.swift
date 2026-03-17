@@ -70,9 +70,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     }
 
     var canRestorePurchases: Bool {
-        !Bundle.main.isBetaBuild &&
-            plan?.isBusinessUser == false &&
-            featureFlagsRepository.isEnabled(CoreFeatureFlagType.paymentsV2)
+        !Bundle.main.isBetaBuild && plan?.isBusinessUser == false
     }
 
     var isSSOUser: Bool {
