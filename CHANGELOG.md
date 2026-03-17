@@ -1,3 +1,6 @@
+# Version 1.18.1
+Fixed crashes on iOS 17
+
 # Version 1.18.0
 SSH key generator: You can now generate an SSH key by focusing on the public or private key field and selecting "Generate SSH key".
 
