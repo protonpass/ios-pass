@@ -22524,6 +22524,16 @@
         }
       }
     },
+    "Alias created and copied" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias created and copied"
+          }
+        }
+      }
+    },
     "Alias disabled" : {
       "localizations" : {
         "be" : {
@@ -42375,6 +42385,16 @@
         }
       }
     },
+    "Copy alias address after creation" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy alias address after creation"
+          }
+        }
+      }
+    },
     "Copy and close" : {
       "localizations" : {
         "be" : {
@@ -43939,6 +43959,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "複製連結"
+          }
+        }
+      }
+    },
+    "Copy new alias address automatically?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy new alias address automatically?"
           }
         }
       }
@@ -106513,6 +106543,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "新驗證碼已傳送"
+          }
+        }
+      }
+    },
+    "No" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No"
           }
         }
       }
@@ -189494,6 +189534,16 @@
         }
       }
     },
+    "Yes" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yes"
+          }
+        }
+      }
+    },
     "Yesterday" : {
       "localizations" : {
         "be" : {
@@ -191437,6 +191487,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "您的指示將刪除的訊息是無法復原, 您確定嗎？"
+          }
+        }
+      }
+    },
+    "You can change this anytime in Settings" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can change this anytime in Settings"
           }
         }
       }

@@ -318,7 +318,7 @@ private extension CredentialProviderCoordinator {
                 switch destination {
                 case .upgradeFlow:
                     startUpgradeFlow()
-                case let .createItem(item, type, response):
+                case let .createItem(item, type, _, response):
                     handleItemCreation(item, type: type, response: response)
                 default:
                     break
