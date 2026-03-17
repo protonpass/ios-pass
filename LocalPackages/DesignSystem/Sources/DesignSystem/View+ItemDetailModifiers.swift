@@ -42,41 +42,39 @@ public extension Text {
     func editableSectionTitleText(for text: String? = nil,
                                   isValid: Bool = true) -> some View {
         font(.footnote)
-            // swiftformat:disable all
-            .adaptiveForegroundStyle(isValid ?
+            .foregroundStyle(isValid ?
                 (text?.isEmpty == true ? PassColor.textNorm : PassColor.textWeak) :
                 PassColor.signalDanger)
-            // swiftformat:enable all
             .animation(.default, value: isValid)
             .animation(.default, value: text?.isEmpty)
     }
 
     func sectionTitleText() -> Text {
         font(.footnote)
-            .adaptiveForegroundStyle(PassColor.textWeak)
+            .foregroundStyle(PassColor.textWeak)
     }
 
     func sectionContentText() -> Text {
-        adaptiveForegroundStyle(PassColor.textNorm)
+        foregroundStyle(PassColor.textNorm)
     }
 
     func sectionHeaderText() -> Text {
-        adaptiveForegroundStyle(PassColor.textWeak)
+        foregroundStyle(PassColor.textWeak)
     }
 
     /// Used for placeholder `Text`s like `Empty notes`, `No items`...
     func placeholderText() -> Text {
-        font(.body.italic()).adaptiveForegroundStyle(PassColor.textWeak)
+        font(.body.italic()).foregroundStyle(PassColor.textWeak)
     }
 
     func navigationTitleText() -> Text {
         font(.callout.bold())
-            .adaptiveForegroundStyle(PassColor.textNorm)
+            .foregroundStyle(PassColor.textNorm)
     }
 
     func monitorSectionTitleText(maxWidth: CGFloat? = .infinity) -> some View {
         font(.callout.bold())
-            .adaptiveForegroundStyle(PassColor.textNorm)
+            .foregroundStyle(PassColor.textNorm)
             .frame(maxWidth: maxWidth, alignment: .leading)
     }
 }

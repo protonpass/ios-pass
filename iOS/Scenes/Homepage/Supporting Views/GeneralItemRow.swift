@@ -118,12 +118,12 @@ struct GeneralItemRow<ThumbnailView: View>: View {
     var titleTexts: [Text] {
         var result = [Text]()
         let titleText = Text(title)
-            .adaptiveForegroundStyle(isEnabled ? PassColor.textNorm : PassColor.textWeak)
+            .foregroundStyle(isEnabled ? PassColor.textNorm : PassColor.textWeak)
         result.append(titleText)
         if let secondaryTitle {
             result.append(Text(verbatim: " "))
             let secondaryText = Text(secondaryTitle)
-                .adaptiveForegroundStyle(isEnabled ?
+                .foregroundStyle(isEnabled ?
                     (secondaryTitleColor ?? PassColor.textNorm) : PassColor.textWeak)
             result.append(secondaryText)
         }

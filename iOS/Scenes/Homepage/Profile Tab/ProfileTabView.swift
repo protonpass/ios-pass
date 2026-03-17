@@ -492,19 +492,14 @@ private extension View {
 @MainActor
 struct SentinelSheetView: View {
     @Binding var isPresented: Bool
-    let noBackgroundSheet: Bool
     let sentinelActive: Bool
     let mainAction: () -> Void
     let secondaryAction: () -> Void
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            if noBackgroundSheet {
-                background
-                    .clipShape(RoundedRectangle(cornerRadius: 24))
-            } else {
-                background
-            }
+            background
+                .clipShape(RoundedRectangle(cornerRadius: 24))
 
             ViewThatFits(in: .vertical) {
                 mainSentinelSheet.padding()

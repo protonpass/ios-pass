@@ -89,20 +89,10 @@ public struct AccountSwitchModifier: ViewModifier {
 
 private extension AccountSwitchModifier {
     func toggleSwitcher(_ completion: @autoclosure @escaping () -> Void) {
-        if #available(iOS 17.0, *) {
-            withAnimation {
-                showSwitcher.toggle()
-            } completion: {
-                completion()
-            }
-        } else {
-            let duration = DesignConstant.animationDuration
-            withAnimation(.linear(duration: duration)) {
-                showSwitcher.toggle()
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
-                completion()
-            }
+        withAnimation {
+            showSwitcher.toggle()
+        } completion: {
+            completion()
         }
     }
 }

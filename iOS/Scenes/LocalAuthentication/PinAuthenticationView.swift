@@ -64,10 +64,10 @@ struct PinAuthenticationView: View {
 
             case let .remainingAttempts(count):
                 Text("Incorrect PIN code.")
-                    .adaptiveForegroundStyle(PassColor.signalDanger) +
+                    .foregroundStyle(PassColor.signalDanger) +
                     Text(verbatim: " ") +
                     Text("\(count) remaining attempt(s)")
-                    .adaptiveForegroundStyle(PassColor.signalDanger)
+                    .foregroundStyle(PassColor.signalDanger)
 
             case .lastAttempt:
                 Text("This is your last attempt. You will be logged out after failing to authenticate again.")
