@@ -152,7 +152,7 @@ private extension ShareCoordinator {
             .sink { [weak self] destination in
                 guard let self else { return }
                 switch destination {
-                case let .createItem(_, type, _):
+                case let .createItem(_, type, _, _):
                     handleItemCreation(type: type)
                 default:
                     break

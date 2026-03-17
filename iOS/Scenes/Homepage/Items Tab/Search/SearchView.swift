@@ -73,17 +73,15 @@ private extension SearchView {
                       .matchedGeometryEffect(id: SearchEffectID.searchbar.id,
                                              in: animationNamespace)
 
-            if #available(iOS 17, *) {
-                let tip = SpotlightTip()
-                TipView(tip) { action in
-                    if action.is(.openSettings) {
-                        tip.invalidate(reason: .actionPerformed)
-                        viewModel.openSettings()
-                    }
+            let tip = SpotlightTip()
+            TipView(tip) { action in
+                if action.is(.openSettings) {
+                    tip.invalidate(reason: .actionPerformed)
+                    viewModel.openSettings()
                 }
-                .passTipView()
-                .padding([.horizontal, .bottom])
             }
+            .passTipView()
+            .padding([.horizontal, .bottom])
 
             switch viewModel.state {
             case .filteringResults, .initializing, .searching:

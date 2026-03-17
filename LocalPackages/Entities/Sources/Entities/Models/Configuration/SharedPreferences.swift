@@ -63,6 +63,9 @@ public struct SharedPreferences: Codable, Equatable, Sendable {
     /// Always display username field when creating or editing login items
     public var alwaysShowUsernameField: Bool
 
+    /// Automatically copy alias address after creating
+    public var copyAfterCreatingAlias: Bool
+
     /// The timestamp of the last usage (host app or any extensions)
     /// This is used as an additional information to decide whether to ask for local authentication or not
     public var lastActiveTimestamp: TimeInterval?
@@ -87,6 +90,7 @@ public struct SharedPreferences: Codable, Equatable, Sendable {
                 clipboardExpiration: ClipboardExpiration,
                 shareClipboard: Bool,
                 alwaysShowUsernameField: Bool,
+                copyAfterCreatingAlias: Bool,
                 lastActiveTimestamp: TimeInterval?,
                 aliasDiscovery: AliasDiscovery) {
         self.quickTypeBar = quickTypeBar
@@ -102,6 +106,7 @@ public struct SharedPreferences: Codable, Equatable, Sendable {
         self.clipboardExpiration = clipboardExpiration
         self.shareClipboard = shareClipboard
         self.alwaysShowUsernameField = alwaysShowUsernameField
+        self.copyAfterCreatingAlias = copyAfterCreatingAlias
         self.lastActiveTimestamp = lastActiveTimestamp
         self.aliasDiscovery = aliasDiscovery
     }
@@ -122,6 +127,7 @@ private extension SharedPreferences {
         static let clipboardExpiration: ClipboardExpiration = .default
         static let shareClipboard = false
         static let alwaysShowUsernameField = false
+        static let copyAfterCreatingAlias = false
         static let lastActiveTimestamp: TimeInterval? = nil
         static let aliasDiscovery: AliasDiscovery = []
     }
@@ -140,6 +146,7 @@ private extension SharedPreferences {
         case clipboardExpiration
         case shareClipboard
         case alwaysShowUsernameField
+        case copyAfterCreatingAlias
         case lastActiveTimestamp
         case aliasDiscovery
     }
@@ -164,6 +171,7 @@ public extension SharedPreferences {
                                                                 forKey: .clipboardExpiration)
         let shareClipboard = try container.decodeIfPresent(Bool.self, forKey: .shareClipboard)
         let alwaysShowUsernameField = try container.decodeIfPresent(Bool.self, forKey: .alwaysShowUsernameField)
+        let copyAfterCreatingAlias = try container.decodeIfPresent(Bool.self, forKey: .copyAfterCreatingAlias)
         let lastActiveTimestamp = try container.decodeIfPresent(TimeInterval.self, forKey: .lastActiveTimestamp)
 
         let aliasDiscovery: AliasDiscovery = if let value = try container.decodeIfPresent(Int.self,
@@ -185,6 +193,7 @@ public extension SharedPreferences {
                   clipboardExpiration: clipboardExpiration ?? Default.clipboardExpiration,
                   shareClipboard: shareClipboard ?? Default.shareClipboard,
                   alwaysShowUsernameField: alwaysShowUsernameField ?? Default.alwaysShowUsernameField,
+                  copyAfterCreatingAlias: copyAfterCreatingAlias ?? Default.copyAfterCreatingAlias,
                   lastActiveTimestamp: lastActiveTimestamp ?? Default.lastActiveTimestamp,
                   aliasDiscovery: aliasDiscovery)
     }
@@ -205,6 +214,7 @@ extension SharedPreferences: Defaultable {
               clipboardExpiration: Default.clipboardExpiration,
               shareClipboard: Default.shareClipboard,
               alwaysShowUsernameField: Default.alwaysShowUsernameField,
+              copyAfterCreatingAlias: Default.copyAfterCreatingAlias,
               lastActiveTimestamp: Default.lastActiveTimestamp,
               aliasDiscovery: Default.aliasDiscovery)
     }

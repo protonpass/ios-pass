@@ -21,7 +21,6 @@
 import DesignSystem
 import TipKit
 
-@available(iOS 17, *)
 public nonisolated struct UsernameTip: Tip {
     private let bundle: Bundle
     public var id: String {

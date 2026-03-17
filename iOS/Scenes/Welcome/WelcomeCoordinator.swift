@@ -161,7 +161,8 @@ private extension WelcomeCoordinator {
                      apiService: apiService,
                      minimumAccountType: .external,
                      paymentsAvailability: .notAvailable,
-                     signupAvailability: .available(parameters: signUpParameters))
+                     signupAvailability: .available(parameters: signUpParameters),
+                     ssoCallbackScheme: "protonpass")
     }
 }
 

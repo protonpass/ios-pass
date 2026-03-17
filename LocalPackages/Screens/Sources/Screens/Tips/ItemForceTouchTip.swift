@@ -21,7 +21,6 @@
 import DesignSystem
 import TipKit
 
-@available(iOS 17, *)
 public struct ItemForceTouchTip: Tip {
     private let bundle: Bundle
 

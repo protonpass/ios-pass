@@ -166,7 +166,7 @@ private extension CredentialProviderCoordinator {
     func handleShowAllLoginsMode(mode: CredentialsMode,
                                  users: [UserUiModel],
                                  identifiers: [ASCredentialServiceIdentifier],
-                                 passkeyRequestParams: (any PasskeyRequestParametersProtocol)?) {
+                                 passkeyRequestParams: ASPasskeyCredentialRequestParameters?) {
         guard let context else { return }
 
         guard userManager.activeUserId != nil else {
@@ -317,7 +317,7 @@ private extension CredentialProviderCoordinator {
                 switch destination {
                 case .upgradeFlow:
                     startUpgradeFlow()
-                case let .createItem(item, type, response):
+                case let .createItem(item, type, _, response):
                     handleItemCreation(item, type: type, response: response)
                 default:
                     break

@@ -126,8 +126,8 @@ public struct InAppModalView: View {
         .interactiveDismissDisabled()
         .onAppear(perform: onAppear)
         .onDisappear(perform: onDisappear)
-        .onChange(of: contentHeight) {
-            viewModel.updateSheetHeight(contentHeight)
+        .onChange(of: contentHeight) { _, value in
+            viewModel.updateSheetHeight(value)
         }
     }
 }

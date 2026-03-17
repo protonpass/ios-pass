@@ -66,7 +66,7 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
     @LazyInjected(\AutoFillUseCaseContainer.autoFillPasskey) private var autoFillPasskey
 
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
-    private let passkeyRequestParams: (any PasskeyRequestParametersProtocol)?
+    private let passkeyRequestParams: ASPasskeyCredentialRequestParameters?
     private let urls: [URL]
     private let mapServiceIdentifierToURL = resolve(\AutoFillUseCaseContainer.mapServiceIdentifierToURL)
     let mode: CredentialsMode
@@ -93,7 +93,7 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
     init(mode: CredentialsMode,
          users: [UserUiModel],
          serviceIdentifiers: [ASCredentialServiceIdentifier],
-         passkeyRequestParams: (any PasskeyRequestParametersProtocol)?,
+         passkeyRequestParams: ASPasskeyCredentialRequestParameters?,
          context: ASCredentialProviderExtensionContext,
          userForNewItemSubject: UserForNewItemSubject) {
         self.mode = mode
@@ -268,7 +268,7 @@ private extension CredentialsViewModel {
     }
 
     func handlePasskeySelection(for item: any ItemIdentifiable,
-                                params: any PasskeyRequestParametersProtocol,
+                                params: ASPasskeyCredentialRequestParameters,
                                 skipUrlAssociationCheck: Bool) async throws {
         guard let context else { return }
         guard let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
