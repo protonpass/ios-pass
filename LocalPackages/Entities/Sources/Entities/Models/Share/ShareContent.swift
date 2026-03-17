@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-typealias ContainerId = String
+private typealias ContainerId = String
 
 public struct ShareContent: Identifiable, Hashable, Sendable {
     public let share: Share

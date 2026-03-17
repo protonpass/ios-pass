@@ -369,17 +369,14 @@ extension AppContentManager {
         return shareContent.elements(for: containerId ?? shareId) ?? []
     }
 
-    // periphery:ignore
     func getItems(for shareId: String, containerId: String?) -> [ItemUiModel] {
         guard let sharesData = state.loadedContent,
               let shareContent = sharesData.shares[shareId] else { return [] }
-        return shareContent.flattenedItems(from: containerId ?? shareId)
-    }
-
-    func getAllItems(for shareId: String) -> [ItemUiModel] {
-        guard let sharesData = state.loadedContent,
-              let shareContent = sharesData.shares[shareId] else { return [] }
-        return shareContent.allItems
+        return if let containerId {
+            shareContent.flattenedItems(from: containerId)
+        } else {
+            shareContent.allItems
+        }
     }
 
     func getItemContent(shareId: String, itemId: String) async throws -> ItemContent? {

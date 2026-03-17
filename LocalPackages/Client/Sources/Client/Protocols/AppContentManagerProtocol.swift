@@ -31,9 +31,7 @@ public protocol AppContentManagerProtocol: Sendable {
     func refresh(userId: String) async
     func fullSync(userId: String) async
     func localFullSync(userId: String) async throws
-    // periphery:ignore
     func getItems(for shareId: String, containerId: String?) -> [ItemUiModel]
-    func getAllItems(for shareId: String) -> [ItemUiModel]
     func delete(userId: String, shareId: String) async throws
     func getOldestOwnedVault() async -> Share?
     func reset() async
@@ -46,5 +44,9 @@ public protocol AppContentManagerProtocol: Sendable {
 public extension AppContentManagerProtocol {
     func select(_ selection: ShareSelection) {
         select(selection, filterOption: nil)
+    }
+
+    func getItems(for shareId: String, containerId: String? = nil) -> [ItemUiModel] {
+        getItems(for: shareId, containerId: containerId)
     }
 }
