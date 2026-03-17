@@ -256,19 +256,6 @@ private extension CreateEditAliasViewModel {
             }
         }
     }
-
-    func dismissCopyAfterCreatingTip() async {
-        var aliasDiscovery = aliasDiscovery
-        guard !aliasDiscovery.contains(.copyAfterCreating) else { return }
-        aliasDiscovery.flip(.copyAfterCreating)
-        do {
-            try await preferencesManager.updateSharedPreferences(\.aliasDiscovery,
-                                                                 value: aliasDiscovery)
-        } catch {
-            // Do not resurface errors to not prevent further actions
-            logger.error(error.localizedDescription)
-        }
-    }
 }
 
 // MARK: - Public actions
@@ -335,24 +322,32 @@ extension CreateEditAliasViewModel {
         router.navigate(to: .urlPage(urlString: "https://pass.proton.me/settings#aliases"))
     }
 
-    func ignoreCopyAfterCreatingAndProceed() {
+    func dismissCopyAfterCreatingTip(optIn: Bool) {
         Task { [weak self] in
             guard let self else { return }
-            await dismissCopyAfterCreatingTip()
-            checkAndSave()
-        }
-    }
 
-    func optInCopyAfterCreatingAndProceed() {
-        Task { [weak self] in
-            guard let self else { return }
-            await dismissCopyAfterCreatingTip()
+            // First dismiss the tip
+            var aliasDiscovery = aliasDiscovery
+            guard !aliasDiscovery.contains(.copyAfterCreating) else { return }
+            aliasDiscovery.flip(.copyAfterCreating)
             do {
-                try await updateSharedPreferences(\.copyAfterCreatingAlias, value: true)
+                try await preferencesManager.updateSharedPreferences(\.aliasDiscovery,
+                                                                     value: aliasDiscovery)
             } catch {
                 // Do not resurface errors to not prevent further actions
                 logger.error(error.localizedDescription)
             }
+
+            // Then optionally opt-in
+            if optIn {
+                do {
+                    try await updateSharedPreferences(\.copyAfterCreatingAlias, value: true)
+                } catch {
+                    // Do not resurface errors to not prevent further actions
+                    logger.error(error.localizedDescription)
+                }
+            }
+
             checkAndSave()
         }
     }

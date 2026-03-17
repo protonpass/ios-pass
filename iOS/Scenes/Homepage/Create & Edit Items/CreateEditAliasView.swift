@@ -81,13 +81,11 @@ struct CreateEditAliasView: View {
         .alert("Copy new alias address automatically?",
                isPresented: $viewModel.showCopyAfterCreatingAlert,
                actions: {
-                   Button(action: viewModel.optInCopyAfterCreatingAndProceed) {
-                       Text("Yes")
-                   }
+                   Button(action: { viewModel.dismissCopyAfterCreatingTip(optIn: true) },
+                          label: { Text("Yes") })
 
-                   Button(action: viewModel.ignoreCopyAfterCreatingAndProceed) {
-                       Text("No")
-                   }
+                   Button(action: { viewModel.dismissCopyAfterCreatingTip(optIn: false) },
+                          label: { Text("No") })
 
                    Button("Cancel", role: .cancel, action: {})
                },
