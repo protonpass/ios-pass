@@ -131,16 +131,7 @@ private extension ItemCreateEditSetUpModifier {
         let showAddCustomFieldAlert: () -> Void = {
             addCustomFieldTypePayload = .init(type: type, payload: payload)
         }
-        if #available(iOS 17, *) {
-            showAddCustomFieldAlert()
-        } else {
-            // Manually dismiss custom field type picker
-            // Wait for 0.5 sec to make sure it's fully dismissed before showing add custom field alert
-            viewModel.addCustomFieldPayload = nil
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                showAddCustomFieldAlert()
-            }
-        }
+        showAddCustomFieldAlert()
     }
 }
 
@@ -178,12 +169,11 @@ private extension View {
                          },
                          label: { Text("Cancel") })
 
-                  adaptiveDisabledButton(title: "Add",
-                                         disabled: title.wrappedValue.isEmpty,
-                                         action: {
-                                             onAdd(title.wrappedValue)
-                                             title.wrappedValue = ""
-                                         })
+                  Button("Add", role: nil, action: {
+                      onAdd(title.wrappedValue)
+                      title.wrappedValue = ""
+                  })
+                  .disabled(title.wrappedValue.isEmpty)
               },
               message: { Text("Enter a section title") })
     }
@@ -244,20 +234,6 @@ private extension View {
         }
     }
 
-    /// Only iOS 17+ support disabling alert's buttons
-    @ViewBuilder
-    func adaptiveDisabledButton(title: LocalizedStringKey,
-                                disabled: Bool,
-                                action: @escaping () -> Void) -> some View {
-        let button = Button(title, role: nil, action: action)
-        if #available(iOS 17, *) {
-            button
-                .disabled(disabled)
-        } else {
-            button
-        }
-    }
-
     func addCustomFieldAlert(payload: Binding<AddCustomFieldTypePayload?>,
                              title: Binding<String>,
                              onAdd: @escaping (AddCustomFieldTypePayload) -> Void) -> some View {
@@ -266,9 +242,8 @@ private extension View {
               actions: {
                   if let payload = payload.wrappedValue {
                       TextField(payload.type.placeholder, text: title)
-                      adaptiveDisabledButton(title: "Add",
-                                             disabled: title.wrappedValue.isEmpty,
-                                             action: { onAdd(payload) })
+                      Button("Add", role: nil, action: { onAdd(payload) })
+                          .disabled(title.wrappedValue.isEmpty)
                   }
 
                   Button("Cancel", role: .cancel, action: { title.wrappedValue = "" })
@@ -288,9 +263,8 @@ private extension View {
               actions: {
                   if let field = field.wrappedValue {
                       TextField(field.type.placeholder, text: title)
-                      adaptiveDisabledButton(title: "Save",
-                                             disabled: title.wrappedValue.isEmpty,
-                                             action: { onEdit(field) })
+                      Button("Save", role: nil, action: { onEdit(field) })
+                          .disabled(title.wrappedValue.isEmpty)
                   }
 
                   Button("Cancel", role: .cancel, action: { title.wrappedValue = "" })

@@ -52,7 +52,7 @@ enum AutoFillRequest {
 /// Possible entry points when autofilling
 enum AutoFillMode {
     /// User wants to manually select an item to autofill username/password
-    case showAllLogins([ASCredentialServiceIdentifier], (any PasskeyRequestParametersProtocol)?)
+    case showAllLogins([ASCredentialServiceIdentifier], ASPasskeyCredentialRequestParameters?)
 
     /// When user picks a proposed email from QuickType bar
     /// Check if user has local authentication enabled (Face ID/Touch ID/PIN)

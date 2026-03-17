@@ -38,21 +38,6 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
         resetFactory()
     }
 
-    /// Can be removed onced dropped iOS 16
-    override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        coordinator.setUpAndStart(mode: .showAllLogins(serviceIdentifiers, nil))
-    }
-
-    /// Can be removed onced dropped iOS 16
-    override func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
-        coordinator.setUpAndStart(mode: .checkAndAutoFill(.password(credentialIdentity)))
-    }
-
-    /// Can be removed onced dropped iOS 16
-    override func prepareInterfaceToProvideCredential(for credentialIdentity: ASPasswordCredentialIdentity) {
-        coordinator.setUpAndStart(mode: .authenticateAndAutofill(.password(credentialIdentity)))
-    }
-
     /// Passkey-agnostic, must always implement this function
     override func prepareInterfaceForExtensionConfiguration() {
         coordinator.setUpAndStart(mode: .configuration)
@@ -65,14 +50,7 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
     override func prepareInterfaceForUserChoosingTextToInsert() {
         coordinator.setUpAndStart(mode: .arbitraryTextInsertion)
     }
-}
 
-/* Other callbacks are superseded by these new callbacks on iOS 17 in the below extension */
-
-// MARK: Passkey support
-
-@available(iOSApplicationExtension 17.0, *)
-extension CredentialProviderViewController {
     override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier],
                                         requestParameters: ASPasskeyCredentialRequestParameters) {
         coordinator.setUpAndStart(mode: .showAllLogins(serviceIdentifiers, requestParameters))

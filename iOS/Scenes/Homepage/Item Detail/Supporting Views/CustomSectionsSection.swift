@@ -44,7 +44,7 @@ private extension CustomSectionsSection {
             if section.content.isEmpty {
                 Text("Empty section")
                     .font(.callout.italic())
-                    .adaptiveForegroundStyle(PassColor.textWeak)
+                    .foregroundStyle(PassColor.textWeak)
                     .frame(maxWidth: .infinity, alignment: .leading)
             } else {
                 CustomFieldSections(itemContentType: contentType,
