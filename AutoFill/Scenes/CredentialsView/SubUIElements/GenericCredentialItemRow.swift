@@ -92,7 +92,7 @@ private extension GenericCredentialItemRow {
         if let secondaryTitle {
             [
                 Text(verbatim: " "),
-                Text(secondaryTitle).adaptiveForegroundStyle(PassColor.textWeak)
+                Text(secondaryTitle).foregroundStyle(PassColor.textWeak)
             ]
         } else {
             []

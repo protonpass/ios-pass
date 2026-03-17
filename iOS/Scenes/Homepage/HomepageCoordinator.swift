@@ -580,10 +580,17 @@ extension HomepageCoordinator {
                     presentSecurityKeys()
                 case .settingsMenu:
                     profileTabViewModelWantsToShowSettingsMenu()
-                case let .createEditLogin(item):
-                    presentCreateEditLoginView(mode: item)
-                case let .createItem(item, type, _):
-                    handleItemCreation(item: item, type: type)
+                case let .createEditLogin(item, dismissAllSheets):
+                    if dismissAllSheets {
+                        dismissAllViewControllers(animated: true) { [weak self] in
+                            guard let self else { return }
+                            presentCreateEditLoginView(mode: item)
+                        }
+                    } else {
+                        presentCreateEditLoginView(mode: item)
+                    }
+                case let .createItem(item, type, aliasToCopy, _):
+                    handleItemCreation(item: item, type: type, aliasToCopy: aliasToCopy)
                 case let .editItem(itemContent):
                     presentEditItemView(for: itemContent)
                 case let .cloneItem(itemContent):
@@ -1688,7 +1695,9 @@ extension HomepageCoordinator {
 }
 
 extension HomepageCoordinator {
-    func handleItemCreation(item: SymmetricallyEncryptedItem, type: ItemContentType) {
+    func handleItemCreation(item: SymmetricallyEncryptedItem,
+                            type: ItemContentType,
+                            aliasToCopy: String?) {
         Task { [weak self] in
             guard let self else {
                 return
@@ -1698,10 +1707,15 @@ extension HomepageCoordinator {
                 let itemContent = try item.getItemContent(symmetricKey: symmetricKey)
                 let displayToastMessage: () -> Void = { [weak self] in
                     guard let self else { return }
+                    var message = type.creationMessage
+                    if let aliasToCopy {
+                        copyToClipboard(aliasToCopy)
+                        message = #localized("Alias created and copied")
+                    }
                     if appContentManager.isItemVisible(item, type: type) {
-                        bannerManager.displayBottomInfoMessage(type.creationMessage)
+                        bannerManager.displayBottomInfoMessage(message)
                     } else {
-                        bannerManager.displayBottomInfoMessage(type.creationMessage,
+                        bannerManager.displayBottomInfoMessage(message,
                                                                dismissButtonTitle: type
                                                                    .openMessage) { [weak self] _ in
                             guard let self else { return }

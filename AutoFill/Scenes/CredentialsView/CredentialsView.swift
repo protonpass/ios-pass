@@ -224,10 +224,10 @@ private extension CredentialsView {
                             Text("Other items")
                                 .font(.callout)
                                 .fontWeight(.bold)
-                                .adaptiveForegroundStyle(PassColor.textNorm) +
+                                .foregroundStyle(PassColor.textNorm) +
                                 Text(verbatim: " (\(itemCount))")
                                 .font(.callout)
-                                .adaptiveForegroundStyle(PassColor.textWeak)
+                                .foregroundStyle(PassColor.textWeak)
 
                             Spacer()
 
@@ -344,11 +344,11 @@ struct MainVaultsOnlyBanner: View {
     var body: some View {
         ZStack {
             Text("Your plan only allows to use items from your first 2 vaults for autofill purposes.")
-                .adaptiveForegroundStyle(PassColor.textNorm) +
+                .foregroundStyle(PassColor.textNorm) +
                 Text(verbatim: " ") +
                 Text("Upgrade now")
                 .underline(color: PassColor.interactionNormMajor1)
-                .adaptiveForegroundStyle(PassColor.interactionNormMajor1)
+                .foregroundStyle(PassColor.interactionNormMajor1)
         }
         .padding()
         .background(PassColor.interactionNormMinor1)

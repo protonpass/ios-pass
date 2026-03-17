@@ -716,17 +716,10 @@ private extension CreateEditIdentityView {
     }
 
     func dismissSectionSheet(completion: @escaping () -> Void) {
-        if #available(iOS 17.0, *) {
-            withAnimation {
-                sheetState = nil
-            } completion: {
-                completion()
-            }
-        } else {
+        withAnimation {
             sheetState = nil
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
-                completion()
-            }
+        } completion: {
+            completion()
         }
     }
 }

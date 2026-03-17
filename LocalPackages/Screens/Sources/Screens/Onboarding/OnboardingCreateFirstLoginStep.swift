@@ -71,8 +71,8 @@ struct OnboardingCreateFirstLoginStep: View {
                 topBar = .notNowButton
             }
         }
-        .onChange(of: viewModel.saveable) {
-            saveable = viewModel.saveable
+        .onChange(of: viewModel.saveable) { _, newValue in
+            saveable = newValue
         }
         .onAppear {
             focusedServiceName = true

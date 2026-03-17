@@ -316,9 +316,7 @@ extension SearchViewModel {
                     try await refreshSearchHistory()
                     addTelemetryEvent(with: .searchClick)
                     router.present(for: .itemDetail(itemContent, automaticDisplay: true))
-                    if #available(iOS 17, *) {
-                        await SpotlightTip.didPerformSearch.donate()
-                    }
+                    await SpotlightTip.didPerformSearch.donate()
                 }
             } catch {
                 router.display(element: .displayErrorBanner(error))
@@ -396,9 +394,7 @@ private extension SearchViewModel {
             }
             .store(in: &cancellables)
 
-        if #available(iOS 17, *) {
-            SpotlightTip.spotlightEnabled = getUserPreferences().spotlightEnabled
-        }
+        SpotlightTip.spotlightEnabled = getUserPreferences().spotlightEnabled
 
         addTelemetryEvent(with: .searchTriggered)
     }

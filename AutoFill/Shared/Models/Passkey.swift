@@ -21,20 +21,10 @@
 import AuthenticationServices
 import Entities
 
-/// Wrap `ASPasskeyCredentialRequestParameters` as it's iOS 17 only
-/// This protocol can be removed once iOS 16 is dropped
-protocol PasskeyRequestParametersProtocol: Sendable {
-    var relyingPartyIdentifier: String { get }
-    var clientDataHash: Data { get }
-}
-
-@available(iOS 17.0, *)
-extension ASPasskeyCredentialRequestParameters: PasskeyRequestParametersProtocol {}
-
 struct SelectPasskeySheetInformation {
     let itemContent: ItemContent
     let identifiers: [ASCredentialServiceIdentifier]
-    let params: any PasskeyRequestParametersProtocol
+    let params: ASPasskeyCredentialRequestParameters
     let passkeys: [Passkey]
 }
 

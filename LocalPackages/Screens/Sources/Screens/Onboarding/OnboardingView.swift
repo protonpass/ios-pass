@@ -68,8 +68,8 @@ public struct OnboardingView: View {
         }
         .showSpinner(viewModel.isPurchasing)
         .task { await viewModel.setUp() }
-        .onChange(of: viewModel.shouldDismiss) {
-            guard viewModel.shouldDismiss else {
+        .onChange(of: viewModel.shouldDismiss) { _, value in
+            guard value else {
                 return
             }
             dismiss()
@@ -89,8 +89,8 @@ private extension OnboardingView {
                 .animation(.default, value: viewModel.currentStep)
         }
         .background(background(for: step))
-        .onChange(of: viewModel.isSaving) {
-            if !viewModel.isSaving {
+        .onChange(of: viewModel.isSaving) { _, newValue in
+            if !newValue {
                 topBar = .none
             }
         }

@@ -55,6 +55,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published private(set) var aliasCount: Int?
     @Published var mailboxSelection: AliasLinkedMailboxSelection = .defaultEmpty
     @Published var suffixSelection: SuffixSelection = .defaultEmpty
+    @Published var showCopyAfterCreatingAlert = false
 
     override var shouldUpgrade: Bool {
         if case .create = mode {
@@ -83,6 +84,8 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @LazyInjected(\SharedRepositoryContainer.localItemDatasource) private var localItemDatasource
     @LazyInjected(\SharedUseCasesContainer.validateAliasPrefix) private var validateAliasPrefix
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
+    @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
+    @LazyInjected(\SharedUseCasesContainer.updateSharedPreferences) private var updateSharedPreferences
 
     let module = resolve(\SharedToolingContainer.module)
 
@@ -214,6 +217,15 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         return .init(edited: edited, slNote: simpleLoginNote)
     }
 
+    override func checkAndSave() {
+        if !aliasDiscovery.contains(.copyAfterCreating),
+           !getSharedPreferences().copyAfterCreatingAlias {
+            showCopyAfterCreatingAlert = true
+        } else {
+            super.checkAndSave()
+        }
+    }
+
     private func validatePrefix() {
         do {
             try validateAliasPrefix(prefix: prefix)
@@ -306,6 +318,36 @@ extension CreateEditAliasViewModel {
 
     func addDomain() {
         router.navigate(to: .urlPage(urlString: "https://pass.proton.me/settings#aliases"))
+    }
+
+    func dismissCopyAfterCreatingTip(optIn: Bool) {
+        Task { [weak self] in
+            guard let self else { return }
+
+            // First dismiss the tip
+            var aliasDiscovery = aliasDiscovery
+            guard !aliasDiscovery.contains(.copyAfterCreating) else { return }
+            aliasDiscovery.flip(.copyAfterCreating)
+            do {
+                try await preferencesManager.updateSharedPreferences(\.aliasDiscovery,
+                                                                     value: aliasDiscovery)
+            } catch {
+                // Do not resurface errors to not prevent further actions
+                logger.error(error.localizedDescription)
+            }
+
+            // Then optionally opt-in
+            if optIn {
+                do {
+                    try await updateSharedPreferences(\.copyAfterCreatingAlias, value: true)
+                } catch {
+                    // Do not resurface errors to not prevent further actions
+                    logger.error(error.localizedDescription)
+                }
+            }
+
+            checkAndSave()
+        }
     }
 }
 

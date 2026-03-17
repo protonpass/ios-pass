@@ -24,12 +24,11 @@ import FactoryKit
 import Observation
 import SwiftUI
 
-@available(iOS 17, *)
 struct AliasDiscoverySection: View {
     @State private var viewModel = AliasDiscoverySectionViewModel()
 
     var body: some View {
-        Section {
+        Section(content: {
             StaticToggle(.verbatim("Showed advanced options tip"),
                          isOn: viewModel.showedAdvancedOptions,
                          action: { viewModel.toggle(.advancedOptions) })
@@ -45,11 +44,16 @@ struct AliasDiscoverySection: View {
             StaticToggle(.verbatim("Showed contact tip"),
                          isOn: viewModel.showedContacts,
                          action: { viewModel.toggle(.contacts) })
-        }
+
+            StaticToggle(.verbatim("Asked for copy after creating"),
+                         isOn: viewModel.askedForCopyAfterCreating,
+                         action: { viewModel.toggle(.copyAfterCreating) })
+        }, header: {
+            Text(verbatim: "Alias discovery")
+        })
     }
 }
 
-@available(iOS 17, *)
 @MainActor
 @Observable
 private final class AliasDiscoverySectionViewModel {
@@ -57,6 +61,7 @@ private final class AliasDiscoverySectionViewModel {
     private(set) var showedCustomDomains = false
     private(set) var showedMailboxes = false
     private(set) var showedContacts = false
+    private(set) var askedForCopyAfterCreating = false
 
     @ObservationIgnored
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
@@ -74,6 +79,7 @@ private final class AliasDiscoverySectionViewModel {
         showedCustomDomains = discovery.contains(.customDomains)
         showedMailboxes = discovery.contains(.mailboxes)
         showedContacts = discovery.contains(.contacts)
+        askedForCopyAfterCreating = discovery.contains(.copyAfterCreating)
     }
 
     func toggle(_ option: AliasDiscovery) {

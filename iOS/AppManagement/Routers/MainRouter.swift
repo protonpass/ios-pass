@@ -78,9 +78,10 @@ enum SheetDestination: Equatable, Hashable {
     case tutorial
     case accountSettings
     case settingsMenu
-    case createEditLogin(mode: ItemMode)
+    case createEditLogin(mode: ItemMode, dismissAllSheets: Bool)
     case createItem(item: SymmetricallyEncryptedItem,
                     type: ItemContentType,
+                    aliasToCopy: String?,
                     createPasskeyResponse: CreatePasskeyResponse?)
     case editItem(ItemContent)
     case cloneItem(ItemContent)

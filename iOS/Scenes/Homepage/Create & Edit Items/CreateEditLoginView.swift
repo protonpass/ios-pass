@@ -129,7 +129,7 @@ struct CreateEditLoginView: View {
                     .showSpinner(viewModel.loading)
                 }
                 // swiftformat:disable all
-                .onChange(of: focusedField) {
+                .onChange(of: focusedField) { _, focusedField in
                     let id: Namespace.ID?
                     switch focusedField {
                     case .title: id = viewModel.emailUsernameExpanded ? emailID : emailOrUsernameID
@@ -152,8 +152,8 @@ struct CreateEditLoginView: View {
                     }
                 }
             }
-            .onChange(of: viewModel.isSaving) {
-                if viewModel.isSaving {
+            .onChange(of: viewModel.isSaving) { _, isSaving in
+                if isSaving {
                     focusedField = nil
                 }
             }
@@ -188,8 +188,8 @@ struct CreateEditLoginView: View {
                                      onConfirm: { viewModel.password = $0 })
                     .environment(\.colorScheme, colorScheme)
             }
-            .onChange(of: showPasswordGenerator) {
-                if !showPasswordGenerator {
+            .onChange(of: showPasswordGenerator) { _, newValue in
+                if !newValue {
                     focusedField = lastFocusedField
                 }
             }
@@ -371,18 +371,11 @@ private extension CreateEditLoginView {
 
     var expandableEmailIcon: some View {
         ZStack(alignment: .topTrailing) {
-            if #available(iOS 17, *) {
-                ItemDetailSectionIcon(icon: IconProvider.envelope)
-                    .buttonEmbeded {
-                        viewModel.expandEmailAndUsername()
-                    }
-                    .popoverTip(UsernameTip())
-            } else {
-                ItemDetailSectionIcon(icon: IconProvider.envelope)
-                    .buttonEmbeded {
-                        viewModel.expandEmailAndUsername()
-                    }
-            }
+            ItemDetailSectionIcon(icon: IconProvider.envelope)
+                .buttonEmbeded {
+                    viewModel.expandEmailAndUsername()
+                }
+                .popoverTip(UsernameTip())
 
             IconProvider.plus
                 .resizable()

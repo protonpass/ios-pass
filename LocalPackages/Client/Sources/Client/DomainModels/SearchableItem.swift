@@ -58,7 +58,7 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
         self.init(from: itemContent, allVaults: allVaults)
     }
 
-    // swiftlint:disable:next function_body_length
+    // swiftlint:disable:next function_body_length cyclomatic_complexity
     public init(from itemContent: ItemContent,
                 allVaults: [Share]) {
         itemId = itemContent.item.itemID
@@ -160,14 +160,24 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
         }
 
         let customFields = itemContent.customFields + extraCustomFields
-        for field in customFields where field.type == .text {
-            optionalExtras.append("\(field.title): \(field.content)")
+        for field in customFields {
+            switch field.type {
+            case .text:
+                optionalExtras.append("\(field.title): \(field.content)")
+            default:
+                optionalExtras.append(field.title)
+            }
         }
 
         for section in customSections {
             optionalExtras.append(section.title)
-            for field in section.content where field.type == .text {
-                optionalExtras.append("\(field.title): \(field.content)")
+            for field in section.content {
+                switch field.type {
+                case .text:
+                    optionalExtras.append("\(field.title): \(field.content)")
+                default:
+                    optionalExtras.append(field.title)
+                }
             }
         }
 

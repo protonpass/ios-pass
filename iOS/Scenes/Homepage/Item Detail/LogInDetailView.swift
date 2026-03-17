@@ -445,7 +445,7 @@ private extension LogInDetailView {
             let reuseText: () -> Text = {
                 Text("\(reusedItems.count) other logins use this password")
                     .fontWeight(.bold)
-                    .adaptiveForegroundStyle(rowType.iconColor)
+                    .foregroundStyle(rowType.iconColor)
             }
             if reusedItems.count > 5 {
                 reuseText()

@@ -22,19 +22,25 @@
 import Client
 import Foundation
 import UIKit
+import UniformTypeIdentifiers
 
 /// Copy `text` to clipboard and optionally display a banner message
 public protocol CopyToClipboardUseCase: Sendable {
     func execute(_ text: String,
+                 expirationDate: Date?,
                  bannerMessage: String?,
                  bannerDisplay: (any BannerDisplayProtocol)?)
 }
 
 public extension CopyToClipboardUseCase {
     func callAsFunction(_ text: String,
+                        expirationDate: Date? = nil,
                         bannerMessage: String? = nil,
                         bannerDisplay: (any BannerDisplayProtocol)? = nil) {
-        execute(text, bannerMessage: bannerMessage, bannerDisplay: bannerDisplay)
+        execute(text,
+                expirationDate: expirationDate,
+                bannerMessage: bannerMessage,
+                bannerDisplay: bannerDisplay)
     }
 }
 
@@ -46,12 +52,26 @@ public final class CopyToClipboard: CopyToClipboardUseCase {
     }
 
     public func execute(_ text: String,
+                        expirationDate: Date?,
                         bannerMessage: String?,
                         bannerDisplay: (any BannerDisplayProtocol)?) {
         let preferences = getSharedPreferences()
-        UIPasteboard.general.setObjects([NSString(string: text)],
-                                        localOnly: !preferences.shareClipboard,
-                                        expirationDate: preferences.clipboardExpiration.expirationDate)
+
+        // Use setItems with raw Data instead of setObjects with NSItemProviderWriting.
+        // setObjects creates data-loading blocks that become unreadable when the
+        // extension process terminates (e.g. AutoFill). Providing Data directly
+        // ensures the content persists and expiration is tracked by the system.
+        let items: [[String: Any]] = [[UTType.utf8PlainText.identifier: Data(text.utf8)]]
+        var options: [UIPasteboard.OptionsKey: Any] = [
+            .localOnly: !preferences.shareClipboard
+        ]
+        // Use caller-provided expiration if set, otherwise fall back to user preference
+        let effectiveExpiration = expirationDate ?? preferences.clipboardExpiration.expirationDate
+        if let effectiveExpiration {
+            options[.expirationDate] = effectiveExpiration
+        }
+        UIPasteboard.general.setItems(items, options: options)
+
         if let bannerMessage {
             assert(bannerDisplay != nil, "Banner display should be set to display banner message")
             bannerDisplay?.displayBottomInfoMessage(bannerMessage)

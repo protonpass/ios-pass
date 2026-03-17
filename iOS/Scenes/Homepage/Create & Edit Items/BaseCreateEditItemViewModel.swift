@@ -72,6 +72,7 @@ enum ItemCreationType: Equatable, Hashable {
     case alias
     // swiftlint:disable:next enum_case_associated_values_count
     case login(title: String? = nil,
+               email: String? = nil,
                password: String? = nil,
                url: String? = nil,
                note: String? = nil,
@@ -204,6 +205,7 @@ class BaseCreateEditItemViewModel: ObservableObject {
     @LazyInjected(\SharedUseCasesContainer.getFilesToLink) private var getFilesToLink
     @LazyInjected(\SharedUseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
     @LazyInjected(\SharedUseCasesContainer.checkCameraPermission) private var checkCameraPermission
+    @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
 
     var isFetchingAttachedFiles: Bool {
         attachedFiles?.isFetching == true
@@ -736,8 +738,14 @@ extension BaseCreateEditItemViewModel {
                         _ = try await processPendingFileNameUpdates()
                         _ = try await linkFiles(to: createdItem)
                         let passkey = try await newPasskey()
+                        var aliasToCopy: String?
+                        if type == .alias,
+                           getSharedPreferences().copyAfterCreatingAlias {
+                            aliasToCopy = createdItem.item.aliasEmail
+                        }
                         router.present(for: .createItem(item: createdItem,
                                                         type: type,
+                                                        aliasToCopy: aliasToCopy,
                                                         createPasskeyResponse: passkey))
                     }
                     try await updateUserPreferences(\.lastCreatedItemShareId,

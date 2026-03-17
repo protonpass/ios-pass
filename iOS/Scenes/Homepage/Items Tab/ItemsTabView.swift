@@ -413,17 +413,14 @@ private struct ItemsTabsSkeleton: View {
 }
 
 private extension ItemsTabView {
-    @ViewBuilder
     var itemForceTouchTip: some View {
-        if #available(iOS 17, *) {
-            VStack {
-                Spacer()
-                TipView(ItemForceTouchTip())
-                    .passTipView()
-                    .padding()
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        VStack {
+            Spacer()
+            TipView(ItemForceTouchTip())
+                .passTipView()
+                .padding()
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
