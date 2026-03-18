@@ -25,7 +25,7 @@ import SwiftUI
 
 /// Not to be used directly but via `localAuthentication` view modifier
 struct LocalAuthenticationView: View {
-    @StateObject private var viewModel: LocalAuthenticationViewModel
+    @State private var viewModel: LocalAuthenticationViewModel
     private let logOutButtonMode: LogOutButtonMode
 
     enum LogOutButtonMode {
