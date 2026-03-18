@@ -217,7 +217,7 @@ private extension CreateEditLoginView {
     }
 
     var emailTextFieldToolbar: some View {
-        ScrollView(.horizontal) {
+        ScrollView(.horizontal, showsIndicators: false) {
             HStack {
                 ToolbarButton("Hide my email",
                               titleBundle: .main,
