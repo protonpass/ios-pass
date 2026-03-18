@@ -53,11 +53,14 @@ extension ItemContentType {
 @MainActor
 final class ItemTypeListViewModel: NSObject, ObservableObject {
     @Published private(set) var limitation: AliasLimitation?
+    @Published private(set) var aliasAllowed = true
     let onSelect: (ItemType) -> Void
 
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedToolingContainer.logger) private var logger
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
+    @LazyInjected(\SharedUseCasesContainer.getOrgSettingsAndPerform)
+    private var getOrgSettingsAndPerform
 
     enum Mode {
         case hostApp, autoFillExtension
@@ -83,6 +86,9 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
             guard let self else { return }
             do {
                 limitation = try await upgradeChecker.aliasLimitation()
+                try await getOrgSettingsAndPerform { settings in
+                    aliasAllowed = settings.aliasCreateMode == .allowedForAllMembers
+                }
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))
