@@ -31,18 +31,24 @@ enum LocalAuthenticationState: Equatable {
     case lastAttempt
 }
 
+@Observable
 @MainActor
-final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
+final class LocalAuthenticationViewModel: DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let delayed: Bool
+    @ObservationIgnored
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
+    @ObservationIgnored
     private let logger = resolve(\SharedToolingContainer.logger)
     private let onSuccess: () async throws -> Void
     private let onFailure: (String?) -> Void
     private var cancellables = Set<AnyCancellable>()
+    @ObservationIgnored
     private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
+    @ObservationIgnored
     private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
+    @ObservationIgnored
     private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
     let mode: Mode
 
@@ -52,7 +58,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     let manuallyAvoidKeyboard: Bool
     let onAuth: () -> Void
 
-    @Published private(set) var state: LocalAuthenticationState = .noAttempts
+    private(set) var state: LocalAuthenticationState = .noAttempts
 
     var delayedTime: DispatchTimeInterval {
         delayed ? .milliseconds(200) : .milliseconds(0)
