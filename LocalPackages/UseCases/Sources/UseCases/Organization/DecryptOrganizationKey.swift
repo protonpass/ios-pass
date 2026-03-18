@@ -1,5 +1,4 @@
 //
-//
 // DecryptOrganizationKey.swift
 // Proton Pass - Created on 29/09/2025.
 // Copyright (c) 2025 Proton Technologies AG
