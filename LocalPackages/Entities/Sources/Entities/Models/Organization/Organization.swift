@@ -81,6 +81,11 @@ public extension Organization {
         case onlyOrgAdminsAndPersonalVault = 2
     }
 
+    enum AliasCreateMode: Int, Sendable, Decodable, Equatable {
+        case allowedForAllMembers = 0
+        case nobody = 1
+    }
+
     struct Settings: Sendable, Decodable, Equatable {
         public let shareMode: ShareMode
 
@@ -97,13 +102,16 @@ public extension Organization {
 
         public let vaultCreateMode: VaultCreateMode?
 
+        public let aliasCreateMode: AliasCreateMode?
+
         public init(shareMode: ShareMode,
                     itemShareMode: ItemShareMode,
                     publicLinkMode: PublicLinkMode,
                     forceLockSeconds: Int,
                     exportMode: ExportMode,
                     passwordPolicy: PasswordPolicy?,
-                    vaultCreateMode: VaultCreateMode?) {
+                    vaultCreateMode: VaultCreateMode?,
+                    aliasCreateMode: AliasCreateMode?) {
             self.shareMode = shareMode
             self.itemShareMode = itemShareMode
             self.publicLinkMode = publicLinkMode
@@ -111,6 +119,7 @@ public extension Organization {
             self.exportMode = exportMode
             self.passwordPolicy = passwordPolicy
             self.vaultCreateMode = vaultCreateMode
+            self.aliasCreateMode = aliasCreateMode
         }
     }
 }
