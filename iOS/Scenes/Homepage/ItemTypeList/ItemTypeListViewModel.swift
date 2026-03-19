@@ -53,7 +53,7 @@ extension ItemContentType {
 @MainActor
 final class ItemTypeListViewModel: NSObject, ObservableObject {
     @Published private(set) var limitation: AliasLimitation?
-    @Published private(set) var aliasAllowed = true
+    @Published private(set) var aliasesAllowed = true
     let onSelect: (ItemType) -> Void
 
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
@@ -71,7 +71,12 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
     var supportedTypes: [ItemType] {
         switch mode {
         case .hostApp:
-            ItemType.allCases
+            if aliasesAllowed {
+                ItemType.allCases
+            } else {
+                ItemType.allCases.filter { $0 != .alias }
+            }
+
         case .autoFillExtension:
             [.login, .alias]
         }
@@ -82,17 +87,17 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
         self.mode = mode
         self.onSelect = onSelect
         super.init()
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                limitation = try await upgradeChecker.aliasLimitation()
-                try await getOrgSettingsAndPerform { settings in
-                    aliasAllowed = settings.aliasCreateMode == .allowedForAllMembers
-                }
-            } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
+    }
+
+    func applyAliasLimitation() async {
+        do {
+            limitation = try await upgradeChecker.aliasLimitation()
+            try await getOrgSettingsAndPerform { settings in
+                aliasesAllowed = settings.aliasCreateMode == .allowedForAllMembers
             }
+        } catch {
+            logger.error(error)
+            router.display(element: .displayErrorBanner(error))
         }
     }
 
