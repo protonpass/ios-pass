@@ -25,13 +25,9 @@ import Macro
 import SwiftUI
 
 struct PinAuthenticationView: View {
-    @ObservedObject private var viewModel: LocalAuthenticationViewModel
+    @Bindable var viewModel: LocalAuthenticationViewModel
     @FocusState private var isFocused
     @State private var pinCode = ""
-
-    init(viewModel: LocalAuthenticationViewModel) {
-        _viewModel = .init(wrappedValue: viewModel)
-    }
 
     var body: some View {
         VStack(alignment: .center) {

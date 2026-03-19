@@ -39,7 +39,7 @@ let package = Package(name: "DesignSystem",
                                   resources: [.process("Resources")],
                                   swiftSettings: [
                                     .defaultIsolation(MainActor.self),
-                                    .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
+//                                    .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
                                     .enableUpcomingFeature("InferIsolatedConformances")
                                   ]
                                  )
