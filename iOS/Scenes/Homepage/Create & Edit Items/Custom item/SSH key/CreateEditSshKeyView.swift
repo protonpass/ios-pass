@@ -141,28 +141,31 @@ private extension CreateEditSshKeyView {
         ToolbarItemGroup(placement: .keyboard) {
             switch focusedField {
             case .privateKey, .publicKey:
-                HStack {
-                    ToolbarButton("Generate SSH key",
-                                  titleBundle: .main,
-                                  image: IconProvider.arrowsRotate,
-                                  action: {
-                                      lastFocusedField = focusedField
-                                      focusedField = nil
-                                      showKeyTypeAlert = true
-                                  })
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack {
+                        ToolbarButton("Generate SSH key",
+                                      titleBundle: .main,
+                                      image: IconProvider.arrowsRotate,
+                                      action: {
+                                          lastFocusedField = focusedField
+                                          focusedField = nil
+                                          showKeyTypeAlert = true
+                                      })
 
-                    Divider()
+                        Divider()
 
-                    ToolbarButton("Expand editor",
-                                  titleBundle: .main,
-                                  image: IconProvider.pencil,
-                                  action: {
-                                      lastFocusedField = focusedField
-                                      focusedField = nil
-                                      selectedKeyComponent = focusedField == .publicKey
-                                          ? .publicKey : .privateKey
-                                  })
+                        ToolbarButton("Expand editor",
+                                      titleBundle: .main,
+                                      image: IconProvider.pencil,
+                                      action: {
+                                          lastFocusedField = focusedField
+                                          focusedField = nil
+                                          selectedKeyComponent = focusedField == .publicKey
+                                              ? .publicKey : .privateKey
+                                      })
+                    }
                 }
+
             default:
                 EmptyView()
             }
