@@ -339,9 +339,9 @@ extension SharedUseCasesContainer {
         self { DedupShare() }
     }
 
-    var getOrgSettingsAndPerform: Factory<any GetOrgSettingsAndPerformUseCase> {
-        self { GetOrgSettingsAndPerform(accessRepository: self.accessRepository,
-                                        organizationRepository: self.organizationRepository) }
+    var getOrganizationSettings: Factory<any GetOrganizationSettingsUseCase> {
+        self { GetOrganizationSettings(accessRepository: self.accessRepository,
+                                       organizationRepository: self.organizationRepository) }
     }
 }
 

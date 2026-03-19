@@ -121,8 +121,8 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     @LazyInjected(\SharedToolingContainer.logger) private var logger
     @LazyInjected(\SharedRepositoryContainer.passwordHistoryRepository)
     private var passwordHistoryRepository
-    @LazyInjected(\SharedUseCasesContainer.getOrgSettingsAndPerform)
-    private var getOrgSettingsAndPerform
+    @LazyInjected(\SharedUseCasesContainer.getOrganizationSettings)
+    private var getOrganizationSettings
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -193,7 +193,7 @@ private extension GeneratePasswordViewModel {
             guard let self else { return }
 
             do {
-                try await getOrgSettingsAndPerform { settings in
+                if let settings = try await getOrganizationSettings() {
                     if qaPasswordPolicyOverride,
                        let string = UserDefaults.standard.string(forKey: Constants.QA.passwordPolicy) {
                         passwordPolicy = PasswordPolicy(rawValue: string)
