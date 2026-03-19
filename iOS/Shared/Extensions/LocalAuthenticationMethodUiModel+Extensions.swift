@@ -40,7 +40,7 @@ extension LocalAuthenticationMethodUiModel {
                 return ""
             }
         case .pin:
-            return #localized("PIN Code")
+            return #localized("PIN code")
         }
     }
 

@@ -146,7 +146,7 @@ private extension DetailHistoryView {
             ItemDetailSectionIcon(icon: IconProvider.grid3, color: viewModel.currentRevision.type.normColor)
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text("PIN number")
+                Text("PIN code")
                     .sectionTitleText()
 
                 Text(isShowingPIN ? creditCardItem.pin :
