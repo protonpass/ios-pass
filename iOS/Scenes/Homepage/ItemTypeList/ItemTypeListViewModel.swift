@@ -59,8 +59,8 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedToolingContainer.logger) private var logger
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
-    @LazyInjected(\SharedUseCasesContainer.getOrgSettingsAndPerform)
-    private var getOrgSettingsAndPerform
+    @LazyInjected(\SharedUseCasesContainer.getOrganizationSettings)
+    private var getOrganizationSettings
 
     enum Mode {
         case hostApp, autoFillExtension
@@ -78,7 +78,11 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
             }
 
         case .autoFillExtension:
-            [.login, .alias]
+            if aliasesAllowed {
+                [.login, .alias]
+            } else {
+                [.login]
+            }
         }
     }
 
@@ -91,9 +95,13 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
 
     func applyAliasLimitation() async {
         do {
-            limitation = try await upgradeChecker.aliasLimitation()
-            try await getOrgSettingsAndPerform { settings in
-                aliasesAllowed = settings.aliasCreateMode == .allowedForAllMembers
+            async let limitationAsync = upgradeChecker.aliasLimitation()
+            async let settingsAsync = getOrganizationSettings()
+            let (limitation, settings) = try await (limitationAsync, settingsAsync)
+
+            self.limitation = limitation
+            if let settings {
+                aliasesAllowed = settings.aliasCreateMode != .nobody
             }
         } catch {
             logger.error(error)

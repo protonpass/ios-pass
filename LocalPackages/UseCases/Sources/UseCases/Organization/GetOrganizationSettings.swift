@@ -1,5 +1,5 @@
 //
-// GetOrgSettingsAndPerform.swift
+// GetOrganizationSettings.swift
 // Proton Pass - Created on 18/03/2026.
 // Copyright (c) 2026 Proton Technologies AG
 //
@@ -22,17 +22,17 @@
 import Client
 import Entities
 
-public protocol GetOrgSettingsAndPerformUseCase: Sendable {
-    func execute(perform: (Organization.Settings) async throws -> Void) async throws
+public protocol GetOrganizationSettingsUseCase: Sendable {
+    func execute() async throws -> Organization.Settings?
 }
 
-public extension GetOrgSettingsAndPerformUseCase {
-    func callAsFunction(perform: (Organization.Settings) async throws -> Void) async throws {
-        try await execute(perform: perform)
+public extension GetOrganizationSettingsUseCase {
+    func callAsFunction() async throws -> Organization.Settings? {
+        try await execute()
     }
 }
 
-public final class GetOrgSettingsAndPerform: GetOrgSettingsAndPerformUseCase {
+public final class GetOrganizationSettings: GetOrganizationSettingsUseCase {
     private let accessRepository: any AccessRepositoryProtocol
     private let organizationRepository: any OrganizationRepositoryProtocol
 
@@ -42,12 +42,11 @@ public final class GetOrgSettingsAndPerform: GetOrgSettingsAndPerformUseCase {
         self.organizationRepository = organizationRepository
     }
 
-    public func execute(perform: (Organization.Settings) async throws -> Void) async throws {
-        if let access = accessRepository.access.value, access.access.plan.planType == .business {
-            let organization = try await organizationRepository.getOrganization(userId: access.userId)
-            if let settings = organization?.settings {
-                try await perform(settings)
-            }
+    public func execute() async throws -> Organization.Settings? {
+        if let access = accessRepository.access.value, access.access.plan.planType == .business,
+           let organization = try await organizationRepository.getOrganization(userId: access.userId) {
+            return organization.settings
         }
+        return nil
     }
 }

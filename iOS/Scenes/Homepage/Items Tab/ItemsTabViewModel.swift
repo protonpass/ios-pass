@@ -77,8 +77,8 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let unpinItems = resolve(\SharedUseCasesContainer.unpinItems)
     @LazyInjected(\SharedServiceContainer.inAppNotificationManager) var inAppNotificationManager
 
-    @LazyInjected(\SharedUseCasesContainer.getOrgSettingsAndPerform)
-    private var getOrgSettingsAndPerform
+    @LazyInjected(\SharedUseCasesContainer.getOrganizationSettings)
+    private var getOrganizationSettings
 
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
@@ -120,8 +120,8 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     func applyAliasLimitation() async {
         do {
-            try await getOrgSettingsAndPerform { settings in
-                aliasesAllowed = settings.aliasCreateMode == .allowedForAllMembers
+            if let settings = try await getOrganizationSettings() {
+                aliasesAllowed = settings.aliasCreateMode != .nobody
             }
         } catch {
             handle(error: error)

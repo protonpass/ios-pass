@@ -82,8 +82,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private let createPasskey = resolve(\SharedUseCasesContainer.createPasskey)
     private let validateEmail = resolve(\SharedUseCasesContainer.validateEmail)
     private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
-    @LazyInjected(\SharedUseCasesContainer.getOrgSettingsAndPerform)
-    private var getOrgSettingsAndPerform
+    @LazyInjected(\SharedUseCasesContainer.getOrganizationSettings)
+    private var getOrganizationSettings
 
     weak var delegate: (any CreateEditLoginViewModelDelegate)?
 
@@ -264,8 +264,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     func applyAliasPolicy() async {
         do {
-            try await getOrgSettingsAndPerform { settings in
-                aliasesAllowed = settings.aliasCreateMode == .allowedForAllMembers
+            if let settings = try await getOrganizationSettings() {
+                aliasesAllowed = settings.aliasCreateMode != .nobody
             }
         } catch {
             handle(error)
