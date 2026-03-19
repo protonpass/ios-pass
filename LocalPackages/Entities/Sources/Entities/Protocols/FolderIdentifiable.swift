@@ -1,5 +1,5 @@
 //
-// ElementIdentifiable.swift
+// FolderIdentifiable.swift
 // Proton Pass - Created on 02/02/2026.
 // Copyright (c) 2026 Proton Technologies AG
 //
@@ -20,13 +20,13 @@
 
 import Foundation
 
-public protocol ElementIdentifiable: Sendable, Equatable, CustomDebugStringConvertible {
+public protocol FolderIdentifiable: Sendable, Equatable, CustomDebugStringConvertible {
     var shareId: String { get }
-    var elementId: String { get }
+    var folderId: String { get }
 }
 
-public extension ElementIdentifiable {
+public extension FolderIdentifiable {
     var debugDescription: String {
-        "Element \(elementId) - Share \(shareId)"
+        "Folder id \(folderId) - Share id \(shareId)"
     }
 }

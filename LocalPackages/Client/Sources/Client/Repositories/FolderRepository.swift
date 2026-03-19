@@ -30,7 +30,7 @@ public protocol FolderRepositoryProtocol: Sendable {
     func getAllLocalFolders(userId: String) async throws -> [SymmetricallyEncryptedFolder]
     func deleteAllLocalFolders(userId: String) async throws
     func deleteLocalFolder(userId: String, shareId: String, folderIds: [String]) async throws
-    func deleteLocal(folders: [any ElementIdentifiable], userId: String) async throws
+    func deleteLocal(folders: [any FolderIdentifiable], userId: String) async throws
 
     // MARK: - CRUD
 
@@ -43,7 +43,7 @@ public protocol FolderRepositoryProtocol: Sendable {
                       folderContent: FolderContent) async throws -> Folder
     func edit(userId: String, shareId: String, folderId: String, folderContent: FolderContent) async throws
     func move(userId: String, shareId: String, folderId: String, destinationId: String?) async throws
-    func refreshFolders(userId: String, foldersIds: [any ElementIdentifiable]) async throws
+    func refreshFolders(userId: String, foldersIds: [any FolderIdentifiable]) async throws
 }
 
 public final class FolderRepository: FolderRepositoryProtocol, Sendable {
@@ -95,7 +95,7 @@ public extension FolderRepository {
         logger.trace("Deleted all local folder")
     }
 
-    func deleteLocal(folders: [any ElementIdentifiable], userId: String) async throws {
+    func deleteLocal(folders: [any FolderIdentifiable], userId: String) async throws {
         logger.trace("Deleting \(folders.count) local folders of user \(userId)")
         try await localDatasource.deleteFolders(userId: userId, folders: folders)
         logger.trace("Deleted all local folder")
@@ -149,7 +149,7 @@ public extension FolderRepository {
         logger.trace("Saved \(symmetricallyEncryptedFolders.count) remote folders revisions to local database")
     }
 
-    func refreshFolders(userId: String, foldersIds: [any ElementIdentifiable]) async throws {
+    func refreshFolders(userId: String, foldersIds: [any FolderIdentifiable]) async throws {
         let foldersByShare = Dictionary(grouping: foldersIds, by: { $0.shareId })
 
         try await withThrowingTaskGroup(of: Void.self) { [weak self] taskGroup in
@@ -269,7 +269,7 @@ private extension FolderRepository {
 
     func refreshFolders(userId: String,
                         shareId: String,
-                        foldersIds: [any ElementIdentifiable]) async throws {
+                        foldersIds: [any FolderIdentifiable]) async throws {
         var folders = [Folder]()
         for batch in foldersIds.chunked(into: 20) {
             let batch = try await withThrowingTaskGroup(of: Folder.self,
@@ -283,7 +283,7 @@ private extension FolderRepository {
                         }
                         return try await remoteDatasource.getFolder(userId: userId,
                                                                     shareId: folderIds.shareId,
-                                                                    folderId: folderIds.elementId)
+                                                                    folderId: folderIds.folderId)
                     }
                 }
                 var encryptedFolders = [Folder]()

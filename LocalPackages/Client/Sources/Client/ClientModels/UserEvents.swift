@@ -85,7 +85,7 @@ public struct ChangeEvent: Sendable, Decodable, Equatable {
     public let eventToken: String
 }
 
-public struct FolderEvent: Sendable, Decodable, Equatable, ElementIdentifiable {
+public struct FolderEvent: Sendable, Decodable, Equatable, FolderIdentifiable {
     public let shareID: String
     public let folderID: String
     public let eventToken: String
@@ -99,10 +99,6 @@ public struct FolderEvent: Sendable, Decodable, Equatable, ElementIdentifiable {
 
     // periphery:ignore
     public var folderId: String {
-        folderID
-    }
-
-    public var elementId: String {
         folderID
     }
 }

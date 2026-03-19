@@ -76,7 +76,9 @@ public extension LocalFolderKeyDatasource {
                                                      keys.map(\.shareId),
                                                      keys.map(\.userId)),
                          isEqual: { key, entity in
-                             key.folderId == entity.folderId && key.userId == entity.userId
+                             key.folderId == entity.folderId &&
+                                 key.userId == entity.userId &&
+                                 key.shareId == entity.shareId
                          }, hydrate: { folder, entity in
                              entity.hydrate(from: folder)
                          })
