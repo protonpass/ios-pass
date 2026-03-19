@@ -134,10 +134,10 @@ public final class LocalFolderDatasourceProtocolMock: @unchecked Sendable, Local
     public var closureDeleteFoldersUserIdFoldersAsync7: () -> () = {}
     public var invokedDeleteFoldersUserIdFoldersAsync7 = false
     public var invokedDeleteFoldersUserIdFoldersAsyncCount7 = 0
-    public var invokedDeleteFoldersUserIdFoldersAsyncParameters7: (userId: String, folders: [any ElementIdentifiable])?
-    public var invokedDeleteFoldersUserIdFoldersAsyncParametersList7 = [(userId: String, folders: [any ElementIdentifiable])]()
+    public var invokedDeleteFoldersUserIdFoldersAsyncParameters7: (userId: String, folders: [any FolderIdentifiable])?
+    public var invokedDeleteFoldersUserIdFoldersAsyncParametersList7 = [(userId: String, folders: [any FolderIdentifiable])]()
 
-    public func deleteFolders(userId: String, folders: [any ElementIdentifiable]) async throws {
+    public func deleteFolders(userId: String, folders: [any FolderIdentifiable]) async throws {
         invokedDeleteFoldersUserIdFoldersAsync7 = true
         invokedDeleteFoldersUserIdFoldersAsyncCount7 += 1
         invokedDeleteFoldersUserIdFoldersAsyncParameters7 = (userId, folders)

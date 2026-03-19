@@ -133,23 +133,8 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         closureGetItems()
         return stubbedGetItemsResult
     }
-    // MARK: - getAllItems
-    public var closureGetAllItems: () -> () = {}
-    public var invokedGetAllItemsfunction = false
-    public var invokedGetAllItemsCount = 0
-    public var invokedGetAllItemsParameters: (shareId: String, Void)?
-    public var invokedGetAllItemsParametersList = [(shareId: String, Void)]()
-    public nonisolated(unsafe) var stubbedGetAllItemsResult: [ItemUiModel]!
-
-    public func getAllItems(for shareId: String) -> [ItemUiModel] {
-        invokedGetAllItemsfunction = true
-        invokedGetAllItemsCount += 1
-        invokedGetAllItemsParameters = (shareId, ())
-        closureGetAllItems()
-        return stubbedGetAllItemsResult
-    }
     // MARK: - delete
-    public var deleteUserIdShareIdThrowableError7: Error?
+    public var deleteUserIdShareIdThrowableError6: Error?
     public var closureDelete: () -> () = {}
     public var invokedDeletefunction = false
     public var invokedDeleteCount = 0
@@ -160,7 +145,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         invokedDeletefunction = true
         invokedDeleteCount += 1
         invokedDeleteParameters = (userId, shareId)
-        if let error = deleteUserIdShareIdThrowableError7 {
+        if let error = deleteUserIdShareIdThrowableError6 {
             throw error
         }
         closureDelete()
@@ -188,7 +173,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         closureReset()
     }
     // MARK: - moveFolder
-    public var moveFolderUserIdShareIdFolderIdNewParentFolderIdThrowableError10: Error?
+    public var moveFolderUserIdShareIdFolderIdNewParentFolderIdThrowableError9: Error?
     public var closureMoveFolder: () -> () = {}
     public var invokedMoveFolderfunction = false
     public var invokedMoveFolderCount = 0
@@ -199,13 +184,13 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         invokedMoveFolderfunction = true
         invokedMoveFolderCount += 1
         invokedMoveFolderParameters = (userId, shareId, folderId, newParentFolderId)
-        if let error = moveFolderUserIdShareIdFolderIdNewParentFolderIdThrowableError10 {
+        if let error = moveFolderUserIdShareIdFolderIdNewParentFolderIdThrowableError9 {
             throw error
         }
         closureMoveFolder()
     }
     // MARK: - deleteFolder
-    public var deleteFolderUserIdShareIdFolderIdThrowableError11: Error?
+    public var deleteFolderUserIdShareIdFolderIdThrowableError10: Error?
     public var closureDeleteFolder: () -> () = {}
     public var invokedDeleteFolderfunction = false
     public var invokedDeleteFolderCount = 0
@@ -216,7 +201,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         invokedDeleteFolderfunction = true
         invokedDeleteFolderCount += 1
         invokedDeleteFolderParameters = (userId, shareId, folderId)
-        if let error = deleteFolderUserIdShareIdFolderIdThrowableError11 {
+        if let error = deleteFolderUserIdShareIdFolderIdThrowableError10 {
             throw error
         }
         closureDeleteFolder()
