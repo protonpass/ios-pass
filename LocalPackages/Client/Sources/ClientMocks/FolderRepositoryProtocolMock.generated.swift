@@ -86,10 +86,10 @@ public final class FolderRepositoryProtocolMock: @unchecked Sendable, FolderRepo
     public var closureDeleteLocal: () -> () = {}
     public var invokedDeleteLocalfunction = false
     public var invokedDeleteLocalCount = 0
-    public var invokedDeleteLocalParameters: (folders: [any ElementIdentifiable], userId: String)?
-    public var invokedDeleteLocalParametersList = [(folders: [any ElementIdentifiable], userId: String)]()
+    public var invokedDeleteLocalParameters: (folders: [any FolderIdentifiable], userId: String)?
+    public var invokedDeleteLocalParametersList = [(folders: [any FolderIdentifiable], userId: String)]()
 
-    public func deleteLocal(folders: [any ElementIdentifiable], userId: String) async throws {
+    public func deleteLocal(folders: [any FolderIdentifiable], userId: String) async throws {
         invokedDeleteLocalfunction = true
         invokedDeleteLocalCount += 1
         invokedDeleteLocalParameters = (folders, userId)
@@ -190,10 +190,10 @@ public final class FolderRepositoryProtocolMock: @unchecked Sendable, FolderRepo
     public var closureRefreshFoldersUserIdFoldersIdsAsync10: () -> () = {}
     public var invokedRefreshFoldersUserIdFoldersIdsAsync10 = false
     public var invokedRefreshFoldersUserIdFoldersIdsAsyncCount10 = 0
-    public var invokedRefreshFoldersUserIdFoldersIdsAsyncParameters10: (userId: String, foldersIds: [any ElementIdentifiable])?
-    public var invokedRefreshFoldersUserIdFoldersIdsAsyncParametersList10 = [(userId: String, foldersIds: [any ElementIdentifiable])]()
+    public var invokedRefreshFoldersUserIdFoldersIdsAsyncParameters10: (userId: String, foldersIds: [any FolderIdentifiable])?
+    public var invokedRefreshFoldersUserIdFoldersIdsAsyncParametersList10 = [(userId: String, foldersIds: [any FolderIdentifiable])]()
 
-    public func refreshFolders(userId: String, foldersIds: [any ElementIdentifiable]) async throws {
+    public func refreshFolders(userId: String, foldersIds: [any FolderIdentifiable]) async throws {
         invokedRefreshFoldersUserIdFoldersIdsAsync10 = true
         invokedRefreshFoldersUserIdFoldersIdsAsyncCount10 += 1
         invokedRefreshFoldersUserIdFoldersIdsAsyncParameters10 = (userId, foldersIds)
