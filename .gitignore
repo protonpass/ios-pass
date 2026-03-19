@@ -31,6 +31,7 @@ Temporary Items
 
 ## Build generated
 build/
+.claude/
 DerivedData/
 **/*build/
 
