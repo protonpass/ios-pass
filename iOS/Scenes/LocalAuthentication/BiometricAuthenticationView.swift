@@ -23,11 +23,7 @@ import FactoryKit
 import SwiftUI
 
 struct BiometricAuthenticationView: View {
-    @ObservedObject private var viewModel: LocalAuthenticationViewModel
-
-    init(viewModel: LocalAuthenticationViewModel) {
-        _viewModel = .init(wrappedValue: viewModel)
-    }
+    @Bindable var viewModel: LocalAuthenticationViewModel
 
     var body: some View {
         GeometryReader { proxy in
