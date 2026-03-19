@@ -31,7 +31,7 @@ public protocol LocalFolderDatasourceProtocol: Sendable {
     func removeAllFolders() async throws
     func removeAllFolders(userId: String) async throws
     func removeAllFolders(shareId: String) async throws
-    func deleteFolders(userId: String, folders: [any ElementIdentifiable]) async throws
+    func deleteFolders(userId: String, folders: [any FolderIdentifiable]) async throws
     func deleteFolders(userId: String, folderIds: [String], shareId: String) async throws
 }
 
@@ -43,7 +43,7 @@ public extension LocalFolderDatasource {
         let fetchRequest = FolderEntity.fetchRequest()
         fetchRequest.predicate = .init(format: "userID = %@", userId)
         let folderEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
-        return try folderEntities.map { try $0.toEncryptedFolder() }
+        return folderEntities.map { $0.toEncryptedFolder() }
     }
 
     func getFolder(shareId: String, folderId: String) async throws -> SymmetricallyEncryptedFolder? {
@@ -54,7 +54,7 @@ public extension LocalFolderDatasource {
             .init(format: "folderID = %@", folderId)
         ])
         let folderEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
-        return try folderEntities.first?.toEncryptedFolder()
+        return folderEntities.first?.toEncryptedFolder()
     }
 
     func upsertFolders(_ folders: [SymmetricallyEncryptedFolder], userId: String) async throws {
@@ -68,14 +68,14 @@ public extension LocalFolderDatasource {
                              folder.shareId == entity.shareID && folder.folderId == entity.folderID
                          },
                          hydrate: { folder, entity in
-                             try entity.hydrate(from: folder)
+                             entity.hydrate(from: folder)
                          })
     }
 
-    func deleteFolders(userId: String, folders: [any ElementIdentifiable]) async throws {
+    func deleteFolders(userId: String, folders: [any FolderIdentifiable]) async throws {
         let foldersByShare = Dictionary(grouping: folders) { $0.shareId }
         for (shareId, folders) in foldersByShare {
-            try await deleteFolders(userId: userId, folderIds: folders.map(\.elementId), shareId: shareId)
+            try await deleteFolders(userId: userId, folderIds: folders.map(\.folderId), shareId: shareId)
         }
     }
 

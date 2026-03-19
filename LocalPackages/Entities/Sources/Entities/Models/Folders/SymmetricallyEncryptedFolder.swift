@@ -48,8 +48,4 @@ public struct SymmetricallyEncryptedFolder: Equatable, Sendable, Hashable {
     }
 }
 
-extension SymmetricallyEncryptedFolder: ElementIdentifiable {
-    public var elementId: String {
-        folderId
-    }
-}
+extension SymmetricallyEncryptedFolder: FolderIdentifiable {}

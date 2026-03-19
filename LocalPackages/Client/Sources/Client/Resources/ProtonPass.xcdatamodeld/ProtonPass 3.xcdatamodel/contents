@@ -41,11 +41,16 @@
         </uniquenessConstraints>
     </entity>
     <entity name="FolderEntity" representedClassName="FolderEntity" syncable="YES">
-        <attribute name="folderData" attributeType="Binary"/>
+        <attribute name="content" attributeType="String"/>
+        <attribute name="contentFormatVersion" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="folderID" attributeType="String"/>
+        <attribute name="folderKey" attributeType="String"/>
+        <attribute name="keyRotation" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="parentFolderID" optional="YES" attributeType="String"/>
         <attribute name="shareID" attributeType="String"/>
         <attribute name="symmetricallyEncryptedContent" attributeType="String"/>
         <attribute name="userID" attributeType="String"/>
+        <attribute name="vaultID" attributeType="String"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="folderID"/>

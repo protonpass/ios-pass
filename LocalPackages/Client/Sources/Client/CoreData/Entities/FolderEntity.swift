@@ -35,14 +35,24 @@ extension FolderEntity {
     @NSManaged var shareID: String
     @NSManaged var userID: String
     @NSManaged var folderID: String
-    @NSManaged var folderData: Data
+    @NSManaged var vaultID: String
+    @NSManaged var parentFolderID: String?
+    @NSManaged var keyRotation: Int64
+    @NSManaged var folderKey: String
+    @NSManaged var contentFormatVersion: Int64
+    @NSManaged var content: String
     @NSManaged var symmetricallyEncryptedContent: String
 }
 
 extension FolderEntity {
-    func toEncryptedFolder() throws -> SymmetricallyEncryptedFolder {
-        let decoder = JSONDecoder()
-        let folder = try decoder.decode(Folder.self, from: folderData)
+    func toEncryptedFolder() -> SymmetricallyEncryptedFolder {
+        let folder = Folder(vaultID: vaultID,
+                            folderID: folderID,
+                            parentFolderID: parentFolderID,
+                            keyRotation: keyRotation,
+                            folderKey: folderKey,
+                            contentFormatVersion: Int(contentFormatVersion),
+                            content: content)
 
         return SymmetricallyEncryptedFolder(shareId: shareID,
                                             userId: userID,
@@ -50,11 +60,16 @@ extension FolderEntity {
                                             encryptedContent: symmetricallyEncryptedContent)
     }
 
-    func hydrate(from encryptedItem: SymmetricallyEncryptedFolder) throws {
-        folderData = try JSONEncoder().encode(encryptedItem.folder)
-        shareID = encryptedItem.shareId
-        userID = encryptedItem.userId
-        folderID = encryptedItem.folderId
-        symmetricallyEncryptedContent = encryptedItem.encryptedContent
+    func hydrate(from encryptedFolder: SymmetricallyEncryptedFolder) {
+        shareID = encryptedFolder.shareId
+        userID = encryptedFolder.userId
+        folderID = encryptedFolder.folderId
+        vaultID = encryptedFolder.folder.vaultID
+        parentFolderID = encryptedFolder.folder.parentFolderID
+        keyRotation = encryptedFolder.folder.keyRotation
+        folderKey = encryptedFolder.folder.folderKey
+        contentFormatVersion = Int64(encryptedFolder.folder.contentFormatVersion)
+        content = encryptedFolder.folder.content
+        symmetricallyEncryptedContent = encryptedFolder.encryptedContent
     }
 }
