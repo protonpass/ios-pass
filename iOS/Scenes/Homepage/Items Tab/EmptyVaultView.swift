@@ -27,14 +27,17 @@ import SwiftUI
 
 struct EmptyVaultView: View {
     private let columns = [GridItem(.flexible()), GridItem(.flexible())]
+    private let canCreateAliases: Bool
     private let canCreateItems: Bool
     private let onCreate: (ItemContentType) -> Void
 
     @AppStorage(Constants.filterTypeKey, store: kSharedUserDefaults)
     private(set) var filterOption = ItemTypeFilterOption.all
 
-    init(canCreateItems: Bool,
+    init(canCreateAliases: Bool,
+         canCreateItems: Bool,
          onCreate: @escaping (ItemContentType) -> Void) {
+        self.canCreateAliases = canCreateAliases
         self.canCreateItems = canCreateItems
         self.onCreate = onCreate
     }
@@ -87,7 +90,10 @@ private extension EmptyVaultView {
 private extension EmptyVaultView {
     func isSupported(_ type: ItemContentType) -> Bool {
         switch type {
-        case .alias, .creditCard, .custom, .identity, .login, .note:
+        case .alias:
+            canCreateAliases
+
+        case .creditCard, .custom, .identity, .login, .note:
             true
 
         case .sshKey, .wifi:

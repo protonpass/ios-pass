@@ -99,6 +99,6 @@ extension LocalOrganizationDatasourceTests {
         try await sut.removeOrganization(userId: userId)
 
         // Then
-        #expect(await sut.getOrganization(userId: userId) == nil)
+        try #expect(await sut.getOrganization(userId: userId) == nil)
     }
 }
