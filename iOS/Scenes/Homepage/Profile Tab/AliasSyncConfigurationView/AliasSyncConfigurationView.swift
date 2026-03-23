@@ -36,7 +36,7 @@ private enum AliasSyncConfigurationSheetState {
 struct AliasSyncConfigurationView: View {
     @StateObject private var viewModel = AliasSyncConfigurationViewModel()
     @Environment(\.dismiss) private var dismiss
-    @StateObject var router = resolve(\RouterContainer.darkWebRouter)
+    @State private var router = PathRouter()
 
     @State private var sheetState: AliasSyncConfigurationSheetState?
     @State private var mailboxToDelete: Mailbox?

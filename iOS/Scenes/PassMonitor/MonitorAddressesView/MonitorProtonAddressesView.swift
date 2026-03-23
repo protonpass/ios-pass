@@ -27,7 +27,7 @@ import SwiftUI
 struct MonitorProtonAddressesView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: MonitorProtonAddressesViewModel
-    @EnvironmentObject private var router: PathRouter
+    @Environment(PathRouter.self) private var router: PathRouter
 
     var body: some View {
         LazyVStack {

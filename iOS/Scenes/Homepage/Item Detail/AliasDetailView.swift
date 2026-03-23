@@ -30,7 +30,7 @@ struct AliasDetailView: View {
     @StateObject private var viewModel: AliasDetailViewModel
     @Namespace private var bottomID
     @State private var animate = false
-    @StateObject var router = resolve(\RouterContainer.darkWebRouter)
+    @State private var router = PathRouter()
     @Environment(\.dismiss) private var dismiss
 
     private var iconTintColor: Color {

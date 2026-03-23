@@ -29,7 +29,7 @@ import SwiftUI
 
 struct UserPermissionView: View {
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var router: PathRouter
+    @Environment(PathRouter.self) private var router: PathRouter
     @StateObject private var viewModel = UserPermissionViewModel()
     @State private var showMember: GroupInfo?
 
