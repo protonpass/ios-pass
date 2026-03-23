@@ -122,6 +122,7 @@ private extension SecurityWeaknessDetailViewModel {
 
                 for (key, value) in logins {
                     data[key.toSecuritySectionHeaderKey] = value
+                        .sorted(by: { $0.title.lowercased() < $1.title.lowercased() })
                 }
                 state = .fetched(data)
             }
