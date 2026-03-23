@@ -305,7 +305,8 @@ private extension ShareCoordinator {
                                                               autofill: false)
                     let viewModel =
                         try CreateEditLoginViewModel(mode: .create(shareId: shareId, type: creationType),
-                                                     upgradeChecker: upgradeChecker, vaults: vaults)
+                                                     upgradeChecker: upgradeChecker,
+                                                     vaults: vaults)
                     viewModel.delegate = self
                     createEditItemViewModel = viewModel
                     let view = CreateEditLoginView(viewModel: viewModel)
