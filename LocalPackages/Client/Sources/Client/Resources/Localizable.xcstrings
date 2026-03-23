@@ -154,6 +154,12 @@
             "value" : "Záznamy akcií rozšírenia"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dnevniki razširitev dejanj"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2060,6 +2066,12 @@
             "value" : "Hľadať v %@..."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iskanje v %@ ..."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2230,6 +2242,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hľadať vo všetkých položkách…"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Išči v vseh predmetih…"
           }
         },
         "sv" : {
@@ -2422,6 +2440,12 @@
             "value" : "Hľadať v mnou zdieľaných položkách"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Išči po predmetih v moji skupni rabi"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2610,6 +2634,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hľadať v položkách zdieľaných so mnou"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Išči po predmetih v skupni rabi z mano"
           }
         },
         "sv" : {
