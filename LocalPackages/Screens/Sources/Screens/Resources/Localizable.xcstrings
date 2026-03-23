@@ -111,6 +111,12 @@
             "value" : "(%lld členov)"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(%lld članov)"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -242,6 +248,12 @@
             "value" : "%@/mesiac"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@/mesec"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -371,6 +383,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ z %2$@"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ od %2$@"
           }
         },
         "sv" : {
@@ -738,6 +756,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld aliasov sa nachádza v SimpleLogin, ale chýba v Proton Pass."
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vzdevka so prisotni v SimpleLogin, a manjkajo v Proton Pass."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vzdevek je prisoten v SimpleLogin, a manjka v Proton Pass."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vzdevka je prisotnih v SimpleLogin, a manjkajo v Proton Pass."
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vzdevka sta prisotna v SimpleLogin, a manjkata v Proton Pass."
                 }
               }
             }
@@ -1156,6 +1204,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld súborov"
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld datoteke"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld datoteka"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld datotek"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld datoteki"
                 }
               }
             }
@@ -1705,6 +1783,42 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld predmeti"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld predmet"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld predmetov"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld predmeta"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld predmet"
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -2137,6 +2251,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld prihlásení importovaných"
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld prijave uvožene"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld prijava uvožena"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld prijav uvoženih"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld prijavi uvoženi"
                 }
               }
             }
@@ -4715,6 +4859,36 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Vsi računi (%lld)"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Vsi računi (%lld)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Vsi računi (%lld)"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Vsi računi (%lld)"
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -5464,6 +5638,12 @@
             "value" : "Automatické obnovenie každoročne za %@"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se vsako leto samodejno podaljša za %@"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5629,6 +5809,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Automatické vypĺňanie Prístupových kľúčov"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Samodejno izpolnjevanje identifikacijskega ključa"
           }
         },
         "tr" : {
@@ -5813,6 +5999,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Automatické zadávanie hesiel v Safari a iných aplikáciách naozaj rýchlym a jednoduchým spôsobom."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Samodejno vnašanje gesel v Safari in druge aplikacije na zelo hiter in preprost način."
           }
         },
         "sv" : {
@@ -6582,6 +6774,12 @@
             "value" : "Vyberte súbor"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izberite datoteko"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6772,6 +6970,12 @@
             "value" : "Vyberte fotografiu alebo video"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izberite fotografijo ali videoposnetek"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6960,6 +7164,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vymazať históriu"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Počisti zgodovino"
           }
         },
         "sv" : {
@@ -7692,6 +7902,12 @@
             "value" : "Nepodarilo sa nájsť \"%@\""
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ni bilo mogoče najti \"%@\""
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8206,6 +8422,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vytvoriť nový trezor"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ustvari nov trezor"
           }
         },
         "sv" : {
@@ -9158,6 +9380,12 @@
             "value" : "Predvolený trezor SimpleLogin"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privzeti SimpleLogin trezor"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9740,6 +9968,12 @@
             "value" : "Vymazať všetky prílohy?"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izbriši vse priponke?"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9923,6 +10157,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vedeli ste?"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ali ste vedeli?"
           }
         },
         "sv" : {
@@ -10116,6 +10356,12 @@
             "value" : "Napr. LinkedIn"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Na primer LinkedIn"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10304,6 +10550,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Upraviť názov sekcie"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Urejanje naslova odseka"
           }
         },
         "sv" : {
@@ -11076,6 +11328,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Povoliť Optic ID"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Omogoči Optic ID"
           }
         },
         "sv" : {
@@ -12242,6 +12500,12 @@
             "value" : "Ďalšie emailové adresy"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodatni e-poštni naslovi"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12620,6 +12884,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Prvé prihlásenie vytvorené"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ustvarjena prva prijava"
           }
         },
         "sv" : {
@@ -13787,6 +14057,12 @@
             "value" : "Vygenerované heslá budú uložené na 2 týždne."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ustvarjena gesla bodo shranjena 2 tedna."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13969,6 +14245,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dostávajte upozornenia, keď sa váš email nájde na Dark webe."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prejmite obvestila, ko je vaša e-pošta najdena na temnem spletu."
           }
         },
         "sv" : {
@@ -14351,6 +14633,12 @@
             "value" : "Získajte Proton Unlimited"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pridobite Proton Unlimited"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14730,6 +15018,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Prejdite na položku **Správca hesiel** a ťuknite na **Nastavenia**."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pojdite v **Upravitelj gesel ** in tapnite na **Nastavitve**"
           }
         },
         "sv" : {
@@ -15500,6 +15794,12 @@
             "value" : "Ako automaticky vyplniť polia heslom"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kako samodejno izpolniti polja z geslom"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16042,6 +16342,12 @@
             "value" : "Importovať prihlásenia (%1$lld/%2$lld)"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uvozi prijave (%1$lld/%2$lld)"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16213,6 +16519,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Import bol úspešný"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uspešno uvoženo"
           }
         },
         "sv" : {
@@ -16593,6 +16905,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Naučte sa, ako používať Proton Pass"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Naučite se uporabljati Proton Pass"
           }
         },
         "sv" : {
@@ -17369,6 +17687,12 @@
             "value" : "NOVÉ"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NOVO"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17747,6 +18071,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Neboli nájdené žiadne prihlásenia pomocou Passkeys"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ni najdenih postopkov prijave z identifikacijskim ključem"
           }
         },
         "sv" : {
@@ -18128,6 +18458,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nenašiel sa žiadny text"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Besedilo ni najdeno"
           }
         },
         "sv" : {
@@ -18896,6 +19232,12 @@
             "value" : "Po synchronizácii sa odstránením aliasov v Pass odstránia aj v SimpleLogin."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ko je enkrat sinhronizirano, brisanje prijave v Proton Pass izbriše to prijavo tudi v SimpleLogin."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19281,6 +19623,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Otvoriť menu **Chrome**"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odpri **Chrome** meni"
           }
         },
         "sv" : {
@@ -19823,6 +20171,12 @@
             "value" : "Otvoriť webovú nástenku"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odpri spletno nadzorno ploščo"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20334,6 +20688,12 @@
             "value" : "Kontaktujte svojho správcu, prosím."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prosimo, obrnite se na skrbnika."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20505,6 +20865,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ak chcete používať rozšírenie Proton Pass Action, prihláste sa, prosím"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Za uporabo razširitve Proton Pass Action se prijavite"
           }
         },
         "sv" : {
@@ -21047,6 +21413,12 @@
             "value" : "Namiesto toho použite náš webový panel účtu, prosím."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Namesto tega uporabite spletno nadzorno ploščo"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21407,6 +21779,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chráňte svoju doručenú poštu."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zaščitite svojo prejeto e-pošto"
           }
         },
         "sv" : {
@@ -21983,6 +22361,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Odstrániť z histórie"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odstrani iz zgodovine"
           }
         },
         "sv" : {
@@ -22947,6 +23331,12 @@
             "value" : "Skenovať dokumenty"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skeniranje dokumentov"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23720,6 +24110,12 @@
             "value" : "Vyberte **Importovať do Proton Pass**"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izberite **Uvozi v Proton Pass**"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -24290,6 +24686,12 @@
             "value" : "Nastavte Proton Pass na odomknutie tvárou alebo odtlačkom prsta, aby ste iba vy mali k nemu prístup."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastavite Proton Pass za odklepanje z obrazom ali prstnim odtisom, tako da imate samo vi dostop."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -24668,6 +25070,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zdieľajte aliasy s ostatnými pridaním ich schránky ako ďalšej schránky."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delite vzdevke z drugimi tako, da njihov nabiralnik dodate kot dodaten nabiralnik."
           }
         },
         "sv" : {
@@ -26410,6 +26818,12 @@
             "value" : "Prestaňte zdieľať svoju skutočnú emailovú adresu. Namiesto toho ju skryte pomocou emailových aliasov – exkluzívne v službe Proton Pass."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nehajte deliti svoj pravi e-poštni naslov. Namesto tega ga skrijte z e-poštnimi vzdevki, ekskluzivnimi za Proton Pass."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -27373,6 +27787,12 @@
             "value" : "Synchronizujte svoje aliasy z aplikácie SimpleLogin"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sinhronizirajte svoje vzdevke iz SimpleLogin"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -27760,6 +28180,12 @@
             "value" : "Ťuknite na **Exportovať heslá**"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tapnite **Izvozi gesla**"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28138,6 +28564,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "To najlepšie z Protonu s jedným predplatným."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Najboljše od Protona z eno naročnino."
           }
         },
         "sv" : {
@@ -29108,6 +29540,12 @@
             "value" : "Odomknite prémiové funkcie."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odklenite premijske funkcije."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -29684,6 +30122,12 @@
             "value" : "Upgradujte a zvýšte kapacitu úložiska."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nadgradite, da povečate velikost svoje shrambe."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -29824,6 +30268,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Na mobilných zariadeniach je navýšenie úrovne nedostupné."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nadgradnja ni na voljo na prenosnih napravah"
           }
         },
         "sv" : {
@@ -29996,6 +30446,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nahrávanie zlyhalo"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nalaganje ni bilo uspešno"
           }
         },
         "sv" : {
@@ -30180,6 +30636,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nahrajte súbory z vášho zariadenia"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Naloži datoteke iz vaše naprave"
           }
         },
         "sv" : {
@@ -30370,6 +30832,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Používajte Hide-My-Email aliasy proti phishingovým hrozbám."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uporabite vzdevke Hide-My-Email za zaščito pred lažnim predstavljanjem."
           }
         },
         "sv" : {
@@ -30751,6 +31219,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zdieľanie trezoru, položiek a odkazov"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skupna raba trezorja, predmeta in povezave"
           }
         },
         "sv" : {
@@ -31540,6 +32014,36 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zaznali smo, da imate %lld vzdevke, ki so prisotni v SimpleLogin, a jih v programu Proton Pass ni. Jih želite uvoziti?"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zaznali smo, da imate %lld vzdevek, ki je prisoten v SimpleLogin, vendar manjka v Proton Pass. Ali ga želite uvoziti?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zaznali smo, da imate v SimpleLogin %lld vzdevkov, ki manjkajo v programu Proton Pass. Jih želite uvoziti?"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zaznali smo, da imate %lld vzdevka, ki sta v SimpleLogin, vendar ju ni v Proton Pass. Ju želite uvoziti?"
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -31938,6 +32442,12 @@
             "value" : "Čo obsahuje"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kaj je vključeno"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -32128,6 +32638,12 @@
             "value" : "Pre ktorú službu chcete vytvoriť prihlásenie?"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Za katero storitev želite ustvariti prijavo?"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -32312,6 +32828,12 @@
             "value" : "Vyťažte z aplikácie Proton Pass maximum: čaro funkcie AutoFill, súkromie aliasov a mnoho ďalšieho."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pripravljeni ste, da kar najbolje izkoristite Proton Pass: čarobnost samodejnega izpolnjevanja, zasebnost vzdevkov in še veliko več."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -32490,6 +33012,12 @@
             "value" : "Pre lepšiu organizáciu môžete k položkám pripojiť súbory"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Za boljšo organizacijo lahko premetom priložite datoteke"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -32630,6 +33158,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nemáte žiadne trezory."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nimate nobenih trezorjev."
           }
         },
         "sv" : {
