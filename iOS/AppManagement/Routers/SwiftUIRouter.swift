@@ -143,6 +143,7 @@ final class PathRouter {
         path.append(destination)
     }
 
+    // periphery:ignore
     func popToRoot() {
         path = NavigationPath()
     }
