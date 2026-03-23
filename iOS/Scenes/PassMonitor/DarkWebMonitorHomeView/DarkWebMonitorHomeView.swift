@@ -34,7 +34,7 @@ struct DarkWebMonitorHomeView: View {
     @State private var showDataSecurityExplanation = false
     @State private var showNoBreachesAlert = false
     @State private var showBreachesFoundAlert = false
-    @EnvironmentObject private var router: PathRouter
+    @Environment(PathRouter.self) private var router: PathRouter
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
 
     var body: some View {

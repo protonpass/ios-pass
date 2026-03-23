@@ -30,7 +30,7 @@ import SwiftUI
 struct EmailGroupSelectionView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = EmailGroupSelectionViewModel()
-    @StateObject private var router = PathRouter()
+    @State private var router = PathRouter()
     @State private var isFocused = false
 
     var body: some View {
@@ -54,7 +54,7 @@ struct EmailGroupSelectionView: View {
             .toolbar { toolbarContent }
             .routingProvided
             .navigationStackEmbeded($router.path)
-            .environmentObject(router)
+            .environment(router)
             .ignoresSafeArea(.keyboard)
             .sheet(isPresented: $viewModel.showGroupMembers,
                    onDismiss: { viewModel.clearHighlightedRecommendation() },

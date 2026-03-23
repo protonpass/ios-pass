@@ -39,11 +39,6 @@ extension RouterContainer {
                                       getItemContentFromBase64IDs: UseCasesContainer.shared
                                           .getItemContentFromBase64IDs()) }
     }
-
-    var darkWebRouter: Factory<PathRouter> {
-        self { @MainActor in PathRouter() }
-            .unique
-    }
 }
 
 extension RouterContainer {

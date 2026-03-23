@@ -27,7 +27,7 @@ import SwiftUI
 struct MonitorAliasesView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: MonitorAliasesViewModel
-    @EnvironmentObject private var router: PathRouter
+    @Environment(PathRouter.self) private var router: PathRouter
 
     var body: some View {
         LazyVStack {
