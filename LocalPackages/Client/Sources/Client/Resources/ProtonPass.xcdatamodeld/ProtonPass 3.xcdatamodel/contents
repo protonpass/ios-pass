@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24512" systemVersion="24G419" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24512" systemVersion="24G517" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
     <entity name="AccessEntity" representedClassName="AccessEntity" syncable="YES">
         <attribute name="aliasLimit" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="aliasSyncEnabled" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
@@ -154,6 +154,7 @@
         </uniquenessConstraints>
     </entity>
     <entity name="OrganizationEntity" representedClassName="OrganizationEntity" syncable="YES">
+        <attribute name="aliasCreateMode" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="canUpdate" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="exportMode" attributeType="Integer 64" defaultValueString="1" usesScalarValueType="YES"/>
         <attribute name="forceLockSeconds" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>

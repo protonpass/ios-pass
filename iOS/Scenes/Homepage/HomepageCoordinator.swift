@@ -317,6 +317,8 @@ private extension HomepageCoordinator {
         }
     }
 
+    // swiftlint:disable:next todo
+    // TODO: Make sure accesses and user profiles are loaded before starting
     func start() {
         let itemsTabViewModel = ItemsTabViewModel()
         itemsTabViewModel.delegate = self

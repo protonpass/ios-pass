@@ -118,12 +118,11 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     private let generatePassphrase = resolve(\SharedUseCasesContainer.generatePassphrase)
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    @LazyInjected(\SharedRepositoryContainer.organizationRepository) private var organizationRepository
-    @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\SharedToolingContainer.logger) private var logger
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedRepositoryContainer.passwordHistoryRepository)
     private var passwordHistoryRepository
+    @LazyInjected(\SharedUseCasesContainer.getOrganizationSettings)
+    private var getOrganizationSettings
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -193,21 +192,17 @@ private extension GeneratePasswordViewModel {
         Task { [weak self] in
             guard let self else { return }
 
-            if let plan = accessRepository.access.value?.access.plan, plan.planType == .business {
-                do {
+            do {
+                if let settings = try await getOrganizationSettings() {
                     if qaPasswordPolicyOverride,
                        let string = UserDefaults.standard.string(forKey: Constants.QA.passwordPolicy) {
                         passwordPolicy = PasswordPolicy(rawValue: string)
-                    } else {
-                        let userId = try await userManager.getActiveUserId()
-                        let organization = try await organizationRepository.getOrganization(userId: userId)
-                        if let newPasswordPolicy = organization?.settings?.passwordPolicy {
-                            passwordPolicy = newPasswordPolicy
-                        }
+                    } else if let newPasswordPolicy = settings.passwordPolicy {
+                        passwordPolicy = newPasswordPolicy
                     }
-                } catch {
-                    logger.error(error)
                 }
+            } catch {
+                logger.error(error)
             }
             setPasswordLimitations()
             subscribeToChanges()

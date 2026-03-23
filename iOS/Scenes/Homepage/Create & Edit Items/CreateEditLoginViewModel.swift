@@ -57,6 +57,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var invalidURLs = [String]()
 
     @Published private(set) var loading = false
+    @Published private(set) var aliasesAllowed = true
 
     private var allowedAndroidApps: [AllowedAndroidApp] = []
 
@@ -81,6 +82,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private let createPasskey = resolve(\SharedUseCasesContainer.createPasskey)
     private let validateEmail = resolve(\SharedUseCasesContainer.validateEmail)
     private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
+    @LazyInjected(\SharedUseCasesContainer.getOrganizationSettings)
+    private var getOrganizationSettings
 
     weak var delegate: (any CreateEditLoginViewModelDelegate)?
 
@@ -256,6 +259,16 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     override func checkAndSave() {
         if validateURLs() {
             super.checkAndSave()
+        }
+    }
+
+    func applyAliasPolicy() async {
+        do {
+            if let settings = try await getOrganizationSettings() {
+                aliasesAllowed = settings.aliasCreateMode != .nobody
+            }
+        } catch {
+            handle(error)
         }
     }
 
