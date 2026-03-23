@@ -183,7 +183,7 @@ private extension CreditCardDetailView {
             ItemDetailSectionIcon(icon: IconProvider.grid3, color: tintColor)
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text("PIN number")
+                Text("PIN code")
                     .sectionTitleText()
 
                 Text(showPIN ? viewModel.pin : String(repeating: "•", count: viewModel.pin.count))

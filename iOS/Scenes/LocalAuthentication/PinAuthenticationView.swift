@@ -44,7 +44,7 @@ struct PinAuthenticationView: View {
 
             Spacer()
 
-            SecureField("PIN Code", text: $pinCode)
+            SecureField("PIN code", text: $pinCode)
                 .labelsHidden()
                 .foregroundStyle(PassColor.textNorm)
                 .font(.title.bold())
