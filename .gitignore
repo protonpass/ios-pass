@@ -32,6 +32,9 @@ Temporary Items
 ## Build generated
 build/
 DerivedData/
+.claude/config.local.json
+.claude/settings.local.json
+
 
 ## Various settings
 *.pbxuser
