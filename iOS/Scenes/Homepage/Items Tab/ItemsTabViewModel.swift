@@ -56,6 +56,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published private(set) var refreshSearchResult = false
     @Published private(set) var showPromoBadge = false
     @Published private var userData: UserData?
+    @Published private(set) var aliasesAllowed = true
 
     let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
     @LazyInjected(\SharedServiceContainer.appContentManager) var appContentManager
@@ -75,6 +76,9 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let pinItems = resolve(\SharedUseCasesContainer.pinItems)
     private let unpinItems = resolve(\SharedUseCasesContainer.unpinItems)
     @LazyInjected(\SharedServiceContainer.inAppNotificationManager) var inAppNotificationManager
+
+    @LazyInjected(\SharedUseCasesContainer.getOrganizationSettings)
+    private var getOrganizationSettings
 
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
@@ -112,6 +116,16 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     init() {
         setUp()
+    }
+
+    func applyAliasLimitation() async {
+        do {
+            if let settings = try await getOrganizationSettings() {
+                aliasesAllowed = settings.aliasCreateMode != .nobody
+            }
+        } catch {
+            handle(error: error)
+        }
     }
 
     func loadPinnedItems() async {

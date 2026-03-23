@@ -100,6 +100,10 @@ private extension SharedUseCasesContainer {
     var shareRepository: any ShareRepositoryProtocol {
         SharedRepositoryContainer.shared.shareRepository()
     }
+
+    var organizationRepository: any OrganizationRepositoryProtocol {
+        SharedRepositoryContainer.shared.organizationRepository()
+    }
 }
 
 // MARK: App
@@ -138,8 +142,7 @@ extension SharedUseCasesContainer {
     var getLocalAuthenticationMethods: Factory<any GetLocalAuthenticationMethodsUseCase> {
         self { GetLocalAuthenticationMethods(checkBiometryType: self.checkBiometryType(),
                                              accessRepository: self.accessRepository,
-                                             organizationRepository: SharedRepositoryContainer.shared
-                                                 .organizationRepository()) }
+                                             organizationRepository: self.organizationRepository) }
     }
 
     var saveAllLogs: Factory<any SaveAllLogsUseCase> {
@@ -325,7 +328,7 @@ extension SharedUseCasesContainer {
     }
 
     var decryptOrganizationKey: Factory<any DecryptOrganizationKeyUseCase> {
-        self { DecryptOrganizationKey(repository: SharedRepositoryContainer.shared.organizationRepository()) }
+        self { DecryptOrganizationKey(repository: self.organizationRepository) }
     }
 
     var decryptGroupKey: Factory<any DecryptGroupKeyUseCase> {
@@ -334,6 +337,11 @@ extension SharedUseCasesContainer {
 
     var dedupShare: Factory<any DedupShareUseCase> {
         self { DedupShare() }
+    }
+
+    var getOrganizationSettings: Factory<any GetOrganizationSettingsUseCase> {
+        self { GetOrganizationSettings(accessRepository: self.accessRepository,
+                                       organizationRepository: self.organizationRepository) }
     }
 }
 

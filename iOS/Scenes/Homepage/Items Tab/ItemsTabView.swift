@@ -200,13 +200,11 @@ private extension ItemsTabView {
                              onCreate: viewModel.createVault)
                     .padding(.bottom, safeAreaInsets.bottom)
             } else {
-                EmptyVaultView(canCreateItems: !viewModel.appContentManager.getAllEditableVaultContents().isEmpty,
-                               onCreate: { viewModel.createNewItem(type: $0) })
+                emptyVaultView(canCreateItems: !viewModel.appContentManager.getAllEditableVaultContents().isEmpty)
             }
 
         case let .precise(vault):
-            EmptyVaultView(canCreateItems: vault.canEdit,
-                           onCreate: { viewModel.createNewItem(type: $0) })
+            emptyVaultView(canCreateItems: vault.canEdit)
 
         case .trash:
             EmptyTrashView()
@@ -227,6 +225,15 @@ private extension ItemsTabView {
             .padding(.horizontal)
             .padding(.bottom, safeAreaInsets.bottom)
         }
+    }
+
+    func emptyVaultView(canCreateItems: Bool) -> some View {
+        EmptyVaultView(canCreateAliases: viewModel.aliasesAllowed,
+                       canCreateItems: canCreateItems,
+                       onCreate: { viewModel.createNewItem(type: $0) })
+            .task {
+                await viewModel.applyAliasLimitation()
+            }
     }
 
     @ViewBuilder
