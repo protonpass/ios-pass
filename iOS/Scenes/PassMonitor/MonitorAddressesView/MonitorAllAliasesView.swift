@@ -27,7 +27,7 @@ import SwiftUI
 @MainActor
 struct MonitorAllAliasesView: View {
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var router: PathRouter
+    @Environment(PathRouter.self) private var router: PathRouter
     let infos: [AliasMonitorInfo]
     let monitored: Bool
 
