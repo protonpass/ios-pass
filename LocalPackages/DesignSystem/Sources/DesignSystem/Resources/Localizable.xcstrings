@@ -154,6 +154,12 @@
             "value" : "Fotoaparát nedostupný"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kamera ni na voljo"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2095,6 +2101,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zdieľať logy"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delite dnevnike"
           }
         },
         "sv" : {
