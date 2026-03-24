@@ -56,9 +56,6 @@ final class CreateContactViewModel {
     @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
 
     @ObservationIgnored
-    @LazyInjected(\SharedUseCasesContainer.updateSharedPreferences) private var updateSharedPreferences
-
-    @ObservationIgnored
     private var aliasDiscovery: AliasDiscovery {
         preferencesManager.sharedPreferences.unwrapped().aliasDiscovery
     }
@@ -98,12 +95,13 @@ final class CreateContactViewModel {
             guard let self else { return }
 
             // First dismiss the tip
-            var aliasDiscovery = aliasDiscovery
-            aliasDiscovery.flip(.copyContactAfterCreating)
-
             await performIgnoringError {
-                try await preferencesManager.updateSharedPreferences(\.aliasDiscovery,
-                                                                     value: aliasDiscovery)
+                var aliasDiscovery = aliasDiscovery
+                if !aliasDiscovery.contains(.copyContactAfterCreating) {
+                    aliasDiscovery.flip(.copyContactAfterCreating)
+                    try await preferencesManager.updateSharedPreferences(\.aliasDiscovery,
+                                                                         value: aliasDiscovery)
+                }
             }
 
             // Then optionally opt-in
