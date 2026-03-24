@@ -44153,6 +44153,16 @@
         }
       }
     },
+    "Copy contact's forwarding address after creation" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy contact's forwarding address after creation"
+          }
+        }
+      }
+    },
     "Copy email" : {
       "localizations" : {
         "be" : {

@@ -45,9 +45,13 @@ struct AliasDiscoverySection: View {
                          isOn: viewModel.showedContacts,
                          action: { viewModel.toggle(.contacts) })
 
-            StaticToggle(.verbatim("Asked for copy after creating"),
-                         isOn: viewModel.askedForCopyAfterCreating,
-                         action: { viewModel.toggle(.copyAfterCreating) })
+            StaticToggle(.verbatim("Asked for copy alias address after creating"),
+                         isOn: viewModel.askedForCopyAliasAfterCreating,
+                         action: { viewModel.toggle(.copyAliasAfterCreating) })
+
+            StaticToggle(.verbatim("Asked for copy contact reverse-alias after creating"),
+                         isOn: viewModel.askedForCopyContactAfterCreating,
+                         action: { viewModel.toggle(.copyContactAfterCreating) })
         }, header: {
             Text(verbatim: "Alias discovery")
         })
@@ -61,7 +65,8 @@ private final class AliasDiscoverySectionViewModel {
     private(set) var showedCustomDomains = false
     private(set) var showedMailboxes = false
     private(set) var showedContacts = false
-    private(set) var askedForCopyAfterCreating = false
+    private(set) var askedForCopyAliasAfterCreating = false
+    private(set) var askedForCopyContactAfterCreating = false
 
     @ObservationIgnored
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
@@ -79,7 +84,8 @@ private final class AliasDiscoverySectionViewModel {
         showedCustomDomains = discovery.contains(.customDomains)
         showedMailboxes = discovery.contains(.mailboxes)
         showedContacts = discovery.contains(.contacts)
-        askedForCopyAfterCreating = discovery.contains(.copyAfterCreating)
+        askedForCopyAliasAfterCreating = discovery.contains(.copyAliasAfterCreating)
+        askedForCopyContactAfterCreating = discovery.contains(.copyContactAfterCreating)
     }
 
     func toggle(_ option: AliasDiscovery) {
