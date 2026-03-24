@@ -139,7 +139,7 @@ enum AlertDestination {
 }
 
 enum ActionDestination {
-    case copyToClipboard(text: String, message: String)
+    case copyToClipboard(text: String, message: String? = nil)
     case back(isShownAsSheet: Bool)
     case manage(userId: String)
     case signOut(userId: String)

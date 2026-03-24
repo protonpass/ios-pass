@@ -100,6 +100,7 @@ final class AliasContactsViewModel: ObservableObject {
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedToolingContainer.logger) private var logger
     @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
+    @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -218,6 +219,17 @@ final class AliasContactsViewModel: ObservableObject {
             } catch {
                 handle(error)
             }
+        }
+    }
+
+    func handleNewlyCreatedContact(_ contact: AliasContactLite) {
+        if getSharedPreferences().copyAfterCreatingContact {
+            router.display(element: .infosMessage(#localized("Contact created and copied"),
+                                                  config: .init(dismissBeforeShowing: true)))
+            router.action(.copyToClipboard(text: contact.reverseAlias))
+        } else {
+            router.display(element: .infosMessage(#localized("Contact created"),
+                                                  config: .init(dismissBeforeShowing: true)))
         }
     }
 }

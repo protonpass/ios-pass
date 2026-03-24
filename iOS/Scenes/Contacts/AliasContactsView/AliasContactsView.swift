@@ -181,7 +181,8 @@ private extension AliasContactsView {
     func sheetContent(for state: AliasContactsSheetState) -> some View {
         switch state {
         case .creation:
-            CreateContactView(viewModel: .init(itemIds: viewModel.itemIds))
+            CreateContactView(itemIds: viewModel.itemIds,
+                              onCreate: viewModel.handleNewlyCreatedContact)
         case .explanation:
             AliasExplanationView(email: viewModel.displayName)
         }

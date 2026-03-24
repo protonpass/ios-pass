@@ -42265,6 +42265,26 @@
         }
       }
     },
+    "Contact created" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact created"
+          }
+        }
+      }
+    },
+    "Contact created and copied" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact created and copied"
+          }
+        }
+      }
+    },
     "Contact details" : {
       "localizations" : {
         "be" : {
@@ -45257,6 +45277,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "自動複製新的別名位址？"
+          }
+        }
+      }
+    },
+    "Copy new contact's forwarding address automatically?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy new contact's forwarding address automatically?"
           }
         }
       }
