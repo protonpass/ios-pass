@@ -66,6 +66,9 @@ public struct SharedPreferences: Codable, Equatable, Sendable {
     /// Automatically copy alias address after creating
     public var copyAfterCreatingAlias: Bool
 
+    /// Automatically copy contact's reverse-alias after creating
+    public var copyAfterCreatingContact: Bool
+
     /// The timestamp of the last usage (host app or any extensions)
     /// This is used as an additional information to decide whether to ask for local authentication or not
     public var lastActiveTimestamp: TimeInterval?
@@ -91,6 +94,7 @@ public struct SharedPreferences: Codable, Equatable, Sendable {
                 shareClipboard: Bool,
                 alwaysShowUsernameField: Bool,
                 copyAfterCreatingAlias: Bool,
+                copyAfterCreatingContact: Bool,
                 lastActiveTimestamp: TimeInterval?,
                 aliasDiscovery: AliasDiscovery) {
         self.quickTypeBar = quickTypeBar
@@ -107,6 +111,7 @@ public struct SharedPreferences: Codable, Equatable, Sendable {
         self.shareClipboard = shareClipboard
         self.alwaysShowUsernameField = alwaysShowUsernameField
         self.copyAfterCreatingAlias = copyAfterCreatingAlias
+        self.copyAfterCreatingContact = copyAfterCreatingContact
         self.lastActiveTimestamp = lastActiveTimestamp
         self.aliasDiscovery = aliasDiscovery
     }
@@ -128,6 +133,7 @@ private extension SharedPreferences {
         static let shareClipboard = false
         static let alwaysShowUsernameField = false
         static let copyAfterCreatingAlias = false
+        static let copyAfterCreatingContact = false
         static let lastActiveTimestamp: TimeInterval? = nil
         static let aliasDiscovery: AliasDiscovery = []
     }
@@ -147,6 +153,7 @@ private extension SharedPreferences {
         case shareClipboard
         case alwaysShowUsernameField
         case copyAfterCreatingAlias
+        case copyAfterCreatingContact
         case lastActiveTimestamp
         case aliasDiscovery
     }
@@ -172,6 +179,7 @@ public extension SharedPreferences {
         let shareClipboard = try container.decodeIfPresent(Bool.self, forKey: .shareClipboard)
         let alwaysShowUsernameField = try container.decodeIfPresent(Bool.self, forKey: .alwaysShowUsernameField)
         let copyAfterCreatingAlias = try container.decodeIfPresent(Bool.self, forKey: .copyAfterCreatingAlias)
+        let copyAfterCreatingContact = try container.decodeIfPresent(Bool.self, forKey: .copyAfterCreatingContact)
         let lastActiveTimestamp = try container.decodeIfPresent(TimeInterval.self, forKey: .lastActiveTimestamp)
 
         let aliasDiscovery: AliasDiscovery = if let value = try container.decodeIfPresent(Int.self,
@@ -194,6 +202,7 @@ public extension SharedPreferences {
                   shareClipboard: shareClipboard ?? Default.shareClipboard,
                   alwaysShowUsernameField: alwaysShowUsernameField ?? Default.alwaysShowUsernameField,
                   copyAfterCreatingAlias: copyAfterCreatingAlias ?? Default.copyAfterCreatingAlias,
+                  copyAfterCreatingContact: copyAfterCreatingContact ?? Default.copyAfterCreatingContact,
                   lastActiveTimestamp: lastActiveTimestamp ?? Default.lastActiveTimestamp,
                   aliasDiscovery: aliasDiscovery)
     }
@@ -215,6 +224,7 @@ extension SharedPreferences: Defaultable {
               shareClipboard: Default.shareClipboard,
               alwaysShowUsernameField: Default.alwaysShowUsernameField,
               copyAfterCreatingAlias: Default.copyAfterCreatingAlias,
+              copyAfterCreatingContact: Default.copyAfterCreatingContact,
               lastActiveTimestamp: Default.lastActiveTimestamp,
               aliasDiscovery: Default.aliasDiscovery)
     }
