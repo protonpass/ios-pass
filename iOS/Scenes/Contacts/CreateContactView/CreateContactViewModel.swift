@@ -25,6 +25,7 @@ import Combine
 import Entities
 import FactoryKit
 import Foundation
+import Macro
 
 @MainActor
 @Observable
@@ -59,6 +60,9 @@ final class CreateContactViewModel {
     private var aliasDiscovery: AliasDiscovery {
         preferencesManager.sharedPreferences.unwrapped().aliasDiscovery
     }
+
+    @ObservationIgnored
+    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
 
     @ObservationIgnored
     private let itemIds: IDs
@@ -115,6 +119,17 @@ final class CreateContactViewModel {
             await doCreate()
         }
     }
+
+    func handleNewlyCreatedContact(_ contact: AliasContactLite) {
+        if getSharedPreferences().copyAfterCreatingContact {
+            router.display(element: .infosMessage(#localized("Contact created and copied"),
+                                                  config: .init(dismissBeforeShowing: true)))
+            router.action(.copyToClipboard(text: contact.reverseAlias))
+        } else {
+            router.display(element: .infosMessage(#localized("Contact created"),
+                                                  config: .init(dismissBeforeShowing: true)))
+        }
+    }
 }
 
 private extension CreateContactViewModel {
@@ -128,6 +143,9 @@ private extension CreateContactViewModel {
                                                                      shareId: itemIds.shareId,
                                                                      itemId: itemIds.itemId,
                                                                      request: request)
+            if let createdContact {
+                handleNewlyCreatedContact(createdContact)
+            }
         } catch {
             logger.error(error)
             self.error = error

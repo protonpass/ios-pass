@@ -31,11 +31,9 @@ struct CreateContactView: View {
     @State private var viewModel: CreateContactViewModel
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focused
-    let onCreate: (AliasContactLite) -> Void
 
-    init(itemIds: IDs, onCreate: @escaping (AliasContactLite) -> Void) {
+    init(itemIds: IDs) {
         _viewModel = .init(wrappedValue: .init(itemIds: itemIds))
-        self.onCreate = onCreate
     }
 
     var body: some View {
@@ -54,11 +52,6 @@ struct CreateContactView: View {
         .padding(.horizontal)
         .toolbar { toolbarContent }
         .background(PassColor.backgroundNorm)
-        .onChange(of: viewModel.createdContact) { _, createdContact in
-            if let createdContact {
-                onCreate(createdContact)
-            }
-        }
         .alert("Error occurred",
                isPresented: $viewModel.error.mappedToBool(),
                actions: { Button(action: {}, label: { Text("OK") }) },
