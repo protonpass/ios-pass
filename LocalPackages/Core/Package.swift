@@ -29,7 +29,7 @@ let package = Package(name: "Core",
                           .package(url: "https://github.com/ProtonMail/protoncore_ios", from: "36.0.3"),
                           .package(name: "Entities", path: "../Entities"),
                           .package(name: "DesignSystem", path: "../DesignSystem"),
-                          .package(name: "Macro", path: "../Macro")
+                          .package(url: "https://github.com/protonpass/swift-macro", exact: "1.0.0")
                       ],
                       targets: [
                           // Targets are the basic building blocks of a package. A target can define a module or a
@@ -47,7 +47,7 @@ let package = Package(name: "Core",
                                       .product(name: "ProtonCoreSettings", package: "protoncore_ios"),
                                       .product(name: "Entities", package: "Entities"),
                                       .product(name: "DesignSystem", package: "DesignSystem"),
-                                      .product(name: "Macro", package: "Macro")
+                                      .product(name: "Macro", package: "swift-macro")
                                   ],
                                   swiftSettings: swiftSettings
                                  ),
