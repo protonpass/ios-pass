@@ -34,7 +34,6 @@ final class CreateContactViewModel {
     var name = ""
     var error: (any Error)?
     private(set) var loading = false
-    private(set) var createdContact: AliasContactLite?
     var showCopyAfterCreatingAlert = false
 
     var canCreate: Bool {
@@ -139,13 +138,11 @@ private extension CreateContactViewModel {
             loading = true
             let userId = try await userManager.getActiveUserId()
             let request = CreateAContactRequest(email: email, name: name.nilIfEmpty)
-            createdContact = try await aliasRepository.createContact(userId: userId,
-                                                                     shareId: itemIds.shareId,
-                                                                     itemId: itemIds.itemId,
-                                                                     request: request)
-            if let createdContact {
-                handleNewlyCreatedContact(createdContact)
-            }
+            let createdContact = try await aliasRepository.createContact(userId: userId,
+                                                                         shareId: itemIds.shareId,
+                                                                         itemId: itemIds.itemId,
+                                                                         request: request)
+            handleNewlyCreatedContact(createdContact)
         } catch {
             logger.error(error)
             self.error = error
