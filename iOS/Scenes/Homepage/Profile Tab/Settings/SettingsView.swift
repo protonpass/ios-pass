@@ -126,6 +126,14 @@ private extension SettingsView {
                              isOn: viewModel.copyAfterCreatingAlias,
                              action: { viewModel.toggleCopyAfterCreatingAlias() })
             }
+
+            PassSectionDivider()
+
+            OptionRow(height: .tall) {
+                StaticToggle(.localized("Copy contact's forwarding address after creation"),
+                             isOn: viewModel.copyAfterCreatingContact,
+                             action: { viewModel.toggleCopyAfterCreatingContact() })
+            }
         }
         .roundedEditableSection()
     }

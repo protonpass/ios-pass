@@ -25,7 +25,8 @@ public struct AliasDiscovery: OptionSet, Sendable, Codable {
     public static let customDomains = AliasDiscovery(rawValue: 1 << 1)
     public static let mailboxes = AliasDiscovery(rawValue: 1 << 2)
     public static let contacts = AliasDiscovery(rawValue: 1 << 3)
-    public static let copyAfterCreating = AliasDiscovery(rawValue: 1 << 4)
+    public static let copyAliasAfterCreating = AliasDiscovery(rawValue: 1 << 4)
+    public static let copyContactAfterCreating = AliasDiscovery(rawValue: 1 << 5)
 
     public init(rawValue: Int) {
         self.rawValue = rawValue
