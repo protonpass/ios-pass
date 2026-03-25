@@ -79,6 +79,7 @@ struct PreferencesTests {
             shareClipboard: true, 
             alwaysShowUsernameField: false,
             copyAfterCreatingAlias: false,
+            copyAfterCreatingContact: false,
             lastActiveTimestamp: nil,
             aliasDiscovery: [])
         try decodeAndAssert(SharedPreferences.self, json: json, expectation: expectation)

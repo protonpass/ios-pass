@@ -37,6 +37,7 @@ extension SharedPreferences {
               shareClipboard: .random(),
               alwaysShowUsernameField: .random(),
               copyAfterCreatingAlias: .random(),
+              copyAfterCreatingContact: .random(),
               lastActiveTimestamp: .random(in: 1...1000),
               aliasDiscovery: [])
     }
