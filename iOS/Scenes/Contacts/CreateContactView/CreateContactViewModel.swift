@@ -25,6 +25,7 @@ import Combine
 import Entities
 import FactoryKit
 import Foundation
+import Macro
 
 @MainActor
 @Observable
@@ -33,7 +34,6 @@ final class CreateContactViewModel {
     var name = ""
     var error: (any Error)?
     private(set) var loading = false
-    private(set) var createdContact: AliasContactLite?
     var showCopyAfterCreatingAlert = false
 
     var canCreate: Bool {
@@ -59,6 +59,9 @@ final class CreateContactViewModel {
     private var aliasDiscovery: AliasDiscovery {
         preferencesManager.sharedPreferences.unwrapped().aliasDiscovery
     }
+
+    @ObservationIgnored
+    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
 
     @ObservationIgnored
     private let itemIds: IDs
@@ -115,6 +118,17 @@ final class CreateContactViewModel {
             await doCreate()
         }
     }
+
+    func handleNewlyCreatedContact(_ contact: AliasContactLite) {
+        if getSharedPreferences().copyAfterCreatingContact {
+            router.display(element: .infosMessage(#localized("Contact created and copied"),
+                                                  config: .init(dismissBeforeShowing: true)))
+            router.action(.copyToClipboard(text: contact.reverseAlias))
+        } else {
+            router.display(element: .infosMessage(#localized("Contact created"),
+                                                  config: .init(dismissBeforeShowing: true)))
+        }
+    }
 }
 
 private extension CreateContactViewModel {
@@ -124,10 +138,11 @@ private extension CreateContactViewModel {
             loading = true
             let userId = try await userManager.getActiveUserId()
             let request = CreateAContactRequest(email: email, name: name.nilIfEmpty)
-            createdContact = try await aliasRepository.createContact(userId: userId,
-                                                                     shareId: itemIds.shareId,
-                                                                     itemId: itemIds.itemId,
-                                                                     request: request)
+            let createdContact = try await aliasRepository.createContact(userId: userId,
+                                                                         shareId: itemIds.shareId,
+                                                                         itemId: itemIds.itemId,
+                                                                         request: request)
+            handleNewlyCreatedContact(createdContact)
         } catch {
             logger.error(error)
             self.error = error
