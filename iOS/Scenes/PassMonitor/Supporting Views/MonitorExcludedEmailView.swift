@@ -50,10 +50,10 @@ private extension MonitorExcludedEmailView {
         VStack(alignment: .leading) {
             Text(address.email)
                 .foregroundStyle(PassColor.textNorm)
-            if let lastBreachDate = address.lastBreachDate {
-                Text("Latest breach on \(lastBreachDate)")
+            if address.isBreached {
+                Text("Breaches detected")
                     .font(.callout)
-                    .foregroundStyle(PassColor.textWeak)
+                    .foregroundStyle(PassColor.passwordInteractionNormMajor2)
             } else {
                 Text("No breaches detected")
                     .font(.callout)
