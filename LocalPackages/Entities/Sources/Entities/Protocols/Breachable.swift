@@ -28,9 +28,16 @@ public protocol Breachable {
 }
 
 public extension Breachable {
-    var lastBreachDate: String? {
-        guard let lastBreachTime else { return nil }
-        let date = Date(timeIntervalSince1970: TimeInterval(lastBreachTime))
-        return date.formatted(date: .abbreviated, time: .omitted)
+    // Temporarily disable because BE sends back last update date instead of last breach date
+//    var lastBreachDate: String? {
+//        guard let lastBreachTime else { return nil }
+//        let date = Date(timeIntervalSince1970: TimeInterval(lastBreachTime))
+//        return date.formatted(date: .abbreviated, time: .omitted)
+//    }
+
+    // swiftlint:disable:next todo
+    // TODO: Should update Breachable protocol to not only rely on breach count but more towards flags
+    var isBreached: Bool {
+        breachCounter > 0
     }
 }
