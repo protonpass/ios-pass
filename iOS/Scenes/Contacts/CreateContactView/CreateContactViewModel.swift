@@ -25,64 +25,135 @@ import Combine
 import Entities
 import FactoryKit
 import Foundation
+import Macro
 
 @MainActor
-final class CreateContactViewModel: ObservableObject {
-    @Published var email = ""
-    @Published var name = ""
-    @Published private(set) var canSave = false
-    @Published var creationError: (any Error)?
-    @Published private(set) var loading = false
-    @Published private(set) var finishedSaving = false
+@Observable
+final class CreateContactViewModel {
+    var email = ""
+    var name = ""
+    var error: (any Error)?
+    private(set) var loading = false
+    var showCopyAfterCreatingAlert = false
 
+    var canCreate: Bool {
+        email.isValidEmail()
+    }
+
+    @ObservationIgnored
     @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
+
+    @ObservationIgnored
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+
+    @ObservationIgnored
+    @LazyInjected(\SharedToolingContainer.preferencesManager) private var preferencesManager
+
+    @ObservationIgnored
     @LazyInjected(\SharedToolingContainer.logger) private var logger
 
-    private var cancellables = Set<AnyCancellable>()
+    @ObservationIgnored
+    @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
+
+    @ObservationIgnored
+    private var aliasDiscovery: AliasDiscovery {
+        preferencesManager.sharedPreferences.unwrapped().aliasDiscovery
+    }
+
+    @ObservationIgnored
+    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
+
+    @ObservationIgnored
     private let itemIds: IDs
+
+    @ObservationIgnored
+    private var task: Task<Void, any Error>?
 
     init(itemIds: IDs) {
         self.itemIds = itemIds
-        setUp()
     }
 
-    func saveContact() {
-        guard !email.isEmpty else {
+    func create() {
+        guard canCreate else {
             return
         }
-        Task { [weak self] in
-            guard let self else {
-                return
+
+        let discovered = aliasDiscovery.contains(.copyContactAfterCreating)
+        let enabled = getSharedPreferences().copyAfterCreatingContact
+        if !enabled, !discovered {
+            showCopyAfterCreatingAlert = true
+            return
+        }
+
+        task?.cancel()
+        task = Task { [weak self] in
+            guard let self else { return }
+            await doCreate()
+        }
+    }
+
+    func dismissCopyAfterCreatingTip(optIn: Bool) {
+        task?.cancel()
+        task = Task { [weak self] in
+            guard let self else { return }
+
+            // First dismiss the tip
+            await performIgnoringError {
+                var aliasDiscovery = aliasDiscovery
+                if !aliasDiscovery.contains(.copyContactAfterCreating) {
+                    aliasDiscovery.flip(.copyContactAfterCreating)
+                    try await preferencesManager.updateSharedPreferences(\.aliasDiscovery,
+                                                                         value: aliasDiscovery)
+                }
             }
-            defer { loading = false }
-            do {
-                loading = true
-                let userId = try await userManager.getActiveUserId()
-                let request = CreateAContactRequest(email: email, name: name.nilIfEmpty)
-                try await aliasRepository.createContact(userId: userId,
-                                                        shareId: itemIds.shareId,
-                                                        itemId: itemIds.itemId,
-                                                        request: request)
-                finishedSaving = true
-            } catch {
-                logger.error(error)
-                creationError = error
+
+            // Then optionally opt-in
+            await performIgnoringError {
+                if optIn {
+                    try await preferencesManager.updateSharedPreferences(\.copyAfterCreatingContact,
+                                                                         value: true)
+                }
             }
+
+            await doCreate()
+        }
+    }
+
+    func handleNewlyCreatedContact(_ contact: AliasContactLite) {
+        if getSharedPreferences().copyAfterCreatingContact {
+            router.display(element: .infosMessage(#localized("Contact created and copied"),
+                                                  config: .init(dismissBeforeShowing: true)))
+            router.action(.copyToClipboard(text: contact.reverseAlias))
+        } else {
+            router.display(element: .infosMessage(#localized("Contact created"),
+                                                  config: .init(dismissBeforeShowing: true)))
         }
     }
 }
 
 private extension CreateContactViewModel {
-    func setUp() {
-        $email
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] email in
-                guard let self else {
-                    return
-                }
-                canSave = email.isValidEmail()
-            }
-            .store(in: &cancellables)
+    func doCreate() async {
+        defer { loading = false }
+        do {
+            loading = true
+            let userId = try await userManager.getActiveUserId()
+            let request = CreateAContactRequest(email: email, name: name.nilIfEmpty)
+            let createdContact = try await aliasRepository.createContact(userId: userId,
+                                                                         shareId: itemIds.shareId,
+                                                                         itemId: itemIds.itemId,
+                                                                         request: request)
+            handleNewlyCreatedContact(createdContact)
+        } catch {
+            logger.error(error)
+            self.error = error
+        }
+    }
+
+    func performIgnoringError(block: () async throws -> Void, function: String = #function) async {
+        do {
+            try await block()
+        } catch {
+            logger.error(error, function: function)
+        }
     }
 }

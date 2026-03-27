@@ -218,7 +218,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     override func checkAndSave() {
-        if !aliasDiscovery.contains(.copyAfterCreating),
+        if !aliasDiscovery.contains(.copyAliasAfterCreating),
            !getSharedPreferences().copyAfterCreatingAlias {
             showCopyAfterCreatingAlert = true
         } else {
@@ -326,8 +326,8 @@ extension CreateEditAliasViewModel {
 
             // First dismiss the tip
             var aliasDiscovery = aliasDiscovery
-            guard !aliasDiscovery.contains(.copyAfterCreating) else { return }
-            aliasDiscovery.flip(.copyAfterCreating)
+            guard !aliasDiscovery.contains(.copyAliasAfterCreating) else { return }
+            aliasDiscovery.flip(.copyAliasAfterCreating)
             do {
                 try await preferencesManager.updateSharedPreferences(\.aliasDiscovery,
                                                                      value: aliasDiscovery)

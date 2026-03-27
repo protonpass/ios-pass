@@ -172,6 +172,11 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "exportMode", on: sut, hasType: .integer64)
         verifyAttribute(named: "forceLockSeconds", on: sut, hasType: .integer64)
         verifyAttribute(named: "shareMode", on: sut, hasType: .integer64)
+        verifyAttribute(named: "itemShareMode", on: sut, hasType: .integer64)
+        verifyAttribute(named: "publicLinkMode", on: sut, hasType: .integer64)
+        verifyAttribute(named: "passwordPolicyData", on: sut, hasType: .binaryData)
+        verifyAttribute(named: "vaultCreateMode", on: sut, hasType: .integer64)
+        verifyAttribute(named: "aliasCreateMode", on: sut, hasType: .integer64)
         verifyAttribute(named: "userID", on: sut, hasType: .string)
     }
 

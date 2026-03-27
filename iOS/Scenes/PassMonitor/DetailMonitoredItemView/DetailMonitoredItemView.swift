@@ -30,7 +30,7 @@ import SwiftUI
 struct DetailMonitoredItemView: View {
     @StateObject var viewModel: DetailMonitoredItemViewModel
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var router: PathRouter
+    @Environment(PathRouter.self) private var router: PathRouter
     @State private var showResolveExplanation = false
 
     var body: some View {

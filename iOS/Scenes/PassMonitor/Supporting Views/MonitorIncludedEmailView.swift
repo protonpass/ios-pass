@@ -42,12 +42,11 @@ private extension MonitorIncludedEmailView {
     var leadingView: some View {
         VStack(alignment: .leading) {
             Text(address.email)
-                .foregroundStyle(address.isBreached ?
-                    PassColor.passwordInteractionNormMajor2 : PassColor.textNorm)
-            if let lastBreachDate = address.lastBreachDate {
-                Text("Latest breach on \(lastBreachDate)")
+                .foregroundStyle(PassColor.textNorm)
+            if address.isBreached {
+                Text("Breaches detected")
                     .font(.callout)
-                    .foregroundStyle(PassColor.textNorm)
+                    .foregroundStyle(PassColor.passwordInteractionNormMajor2)
             } else {
                 Text("No breaches detected")
                     .font(.callout)
@@ -68,13 +67,5 @@ private extension MonitorIncludedEmailView {
                               color: address.isBreached ?
                                   PassColor.passwordInteractionNormMajor2 : PassColor.textWeak,
                               width: 15)
-    }
-}
-
-private extension Breachable {
-    // swiftlint:disable:next todo
-    // TODO: Should update Breachable protocol to not only rely on breach count but more towards flags
-    var isBreached: Bool {
-        breachCounter > 0
     }
 }

@@ -8,6 +8,8 @@
 included: # paths to include during linting. `--path` is ignored if present.
   - iOS
   - AutoFill
+  - Share
+  - Action
   - LocalPackages/Client/Sources
   - LocalPackages/Core/Sources
   - LocalPackages/DesignSystem/Sources
@@ -15,7 +17,6 @@ included: # paths to include during linting. `--path` is ignored if present.
   - LocalPackages/Macro/Sources
   - LocalPackages/Screens/Sources
   - LocalPackages/UseCases/Sources
-  - Keyboard
   
 ################
 #Excluded Folder & Files#

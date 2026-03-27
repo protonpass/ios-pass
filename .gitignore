@@ -33,6 +33,9 @@ Temporary Items
 build/
 .claude/
 DerivedData/
+.claude/config.local.json
+.claude/settings.local.json
+
 **/*build/
 
 ## Various settings

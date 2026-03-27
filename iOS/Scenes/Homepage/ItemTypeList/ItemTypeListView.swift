@@ -34,7 +34,7 @@ struct ItemTypeListView: View {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(viewModel.supportedTypes, id: \.self) { type in
-                        if type != ItemType.allCases.first {
+                        if type != viewModel.supportedTypes.first {
                             PassDivider()
                                 .padding(.horizontal)
                         }
@@ -51,6 +51,9 @@ struct ItemTypeListView: View {
                         .navigationTitleText()
                 }
             }
+        }
+        .task {
+            await viewModel.applyAliasLimitation()
         }
     }
 

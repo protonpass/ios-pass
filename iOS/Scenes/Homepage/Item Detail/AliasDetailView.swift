@@ -30,7 +30,7 @@ struct AliasDetailView: View {
     @StateObject private var viewModel: AliasDetailViewModel
     @Namespace private var bottomID
     @State private var animate = false
-    @StateObject var router = resolve(\RouterContainer.darkWebRouter)
+    @State private var router = PathRouter()
     @Environment(\.dismiss) private var dismiss
 
     private var iconTintColor: Color {
@@ -136,8 +136,6 @@ struct AliasDetailView: View {
             await viewModel.loadContact()
         }
         .onFirstAppear {
-            // Reset the navigation path because it could be modified by a previous alias' detail page
-            router.popToRoot()
             viewModel.getAlias()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 animate = true

@@ -53,11 +53,14 @@ extension ItemContentType {
 @MainActor
 final class ItemTypeListViewModel: NSObject, ObservableObject {
     @Published private(set) var limitation: AliasLimitation?
+    @Published private(set) var aliasesAllowed = true
     let onSelect: (ItemType) -> Void
 
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedToolingContainer.logger) private var logger
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
+    @LazyInjected(\SharedUseCasesContainer.getOrganizationSettings)
+    private var getOrganizationSettings
 
     enum Mode {
         case hostApp, autoFillExtension
@@ -68,9 +71,18 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
     var supportedTypes: [ItemType] {
         switch mode {
         case .hostApp:
-            ItemType.allCases
+            if aliasesAllowed {
+                ItemType.allCases
+            } else {
+                ItemType.allCases.filter { $0 != .alias }
+            }
+
         case .autoFillExtension:
-            [.login, .alias]
+            if aliasesAllowed {
+                [.login, .alias]
+            } else {
+                [.login]
+            }
         }
     }
 
@@ -79,14 +91,21 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
         self.mode = mode
         self.onSelect = onSelect
         super.init()
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                limitation = try await upgradeChecker.aliasLimitation()
-            } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
+    }
+
+    func applyAliasLimitation() async {
+        do {
+            async let limitationAsync = upgradeChecker.aliasLimitation()
+            async let settingsAsync = getOrganizationSettings()
+            let (limitation, settings) = try await (limitationAsync, settingsAsync)
+
+            self.limitation = limitation
+            if let settings {
+                aliasesAllowed = settings.aliasCreateMode != .nobody
             }
+        } catch {
+            logger.error(error)
+            router.display(element: .displayErrorBanner(error))
         }
     }
 

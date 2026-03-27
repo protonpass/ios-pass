@@ -225,7 +225,7 @@ private extension CreateEditCreditCardView {
             ItemDetailSectionIcon(icon: IconProvider.grid3)
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text("PIN Code")
+                Text("PIN code")
                     .editableSectionTitleText(for: viewModel.pin)
 
                 SensitiveTextField(text: $viewModel.pin,

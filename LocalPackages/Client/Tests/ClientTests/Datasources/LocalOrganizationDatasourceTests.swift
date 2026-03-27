@@ -21,24 +21,20 @@
 
 import Client
 import Entities
-import XCTest
+import Testing
 
-final class LocalOrganizationDatasourceTests: XCTestCase {
-    var sut: LocalOrganizationDatasourceProtocol!
+@Suite(.tags(.localDatasource))
+struct LocalOrganizationDatasourceTests {
+    let sut: LocalOrganizationDatasourceProtocol
 
-    override func setUp() {
-        super.setUp()
+    init() {
         sut = LocalOrganizationDatasource(databaseService: DatabaseService(inMemory: true))
-    }
-
-    override func tearDown() {
-        sut = nil
-        super.tearDown()
     }
 }
 
 extension LocalOrganizationDatasourceTests {
-    func testUpsertOrganizations() async throws {
+    @Test
+    func `Upsert organizations`() async throws {
         // Given
         // Insert organization for the first time
         let userId = String.random()
@@ -49,14 +45,15 @@ extension LocalOrganizationDatasourceTests {
                                                 forceLockSeconds: 100,
                                                 exportMode: .admins,
                                                 passwordPolicy: PasswordPolicy.default,
-                                                vaultCreateMode: .allowed))
+                                                vaultCreateMode: .allowed,
+                                                aliasCreateMode: .allowedForAllMembers))
 
         // When
         try await sut.upsertOrganization(org1, userId: userId)
-        let result1 = try await XCTUnwrapAsync(await sut.getOrganization(userId: userId))
+        let result1 = try #require(await sut.getOrganization(userId: userId))
 
         // Then
-        XCTAssertEqual(result1, org1)
+        #expect(result1 == org1)
 
         // Given
         // Override the organization
@@ -67,17 +64,19 @@ extension LocalOrganizationDatasourceTests {
                                                 forceLockSeconds: 300,
                                                 exportMode: .anyone,
                                                 passwordPolicy:  PasswordPolicy.default,
-                                                vaultCreateMode: .onlyOrgAdmins))
+                                                vaultCreateMode: .onlyOrgAdmins,
+                                                aliasCreateMode: .nobody))
 
         // When
         try await sut.upsertOrganization(org2, userId: userId)
-        let result2 = try await XCTUnwrapAsync(await sut.getOrganization(userId: userId))
+        let result2 = try #require(await sut.getOrganization(userId: userId))
 
         // Then
-        XCTAssertEqual(result2, org2)
+        #expect(result2 == org2)
     }
 
-    func testRemoveOrganizations() async throws {
+    @Test
+    func `Remove organization`() async throws {
         // Given
         let userId = String.random()
         let org1 = Organization(canUpdate: true,
@@ -87,18 +86,19 @@ extension LocalOrganizationDatasourceTests {
                                                 forceLockSeconds: 100,
                                                 exportMode: .admins,
                                                 passwordPolicy: PasswordPolicy.default,
-                                                vaultCreateMode: .onlyOrgAdmins))
+                                                vaultCreateMode: .onlyOrgAdmins,
+                                                aliasCreateMode: .allowedForAllMembers))
 
         // When
         try await sut.upsertOrganization(org1, userId: userId)
 
         // Then
-        try await XCTAssertEqualAsync(await sut.getOrganization(userId: userId), org1)
+        try #expect(await sut.getOrganization(userId: userId) == org1)
 
         // When
         try await sut.removeOrganization(userId: userId)
 
         // Then
-        try await XCTAssertNilAsync(await sut.getOrganization(userId: userId))
+        try #expect(await sut.getOrganization(userId: userId) == nil)
     }
 }
