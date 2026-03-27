@@ -154,7 +154,7 @@ enum SecureRowType {
 
 struct PassMonitorView: View {
     @StateObject var viewModel: PassMonitorViewModel
-    @StateObject var router = resolve(\RouterContainer.darkWebRouter)
+    @State private var router = PathRouter()
 
     private enum ElementSizes {
         static let cellHeight: CGFloat = 75
@@ -185,7 +185,7 @@ struct PassMonitorView: View {
             .routingProvided
             .sheetDestinations(sheetDestination: $router.presentedSheet)
             .navigationStackEmbeded($router.path)
-            .environmentObject(router)
+            .environment(router)
             .task {
                 await viewModel.refresh(fromView: true)
             }

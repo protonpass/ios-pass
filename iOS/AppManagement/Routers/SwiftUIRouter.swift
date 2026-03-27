@@ -131,10 +131,11 @@ extension View {
     }
 }
 
+@Observable
 @MainActor
-final class PathRouter: ObservableObject {
-    @Published var path = NavigationPath()
-    @Published var presentedSheet: GeneralSheetDestination?
+final class PathRouter {
+    var path = NavigationPath()
+    var presentedSheet: GeneralSheetDestination?
 
     init() {}
 
@@ -142,6 +143,7 @@ final class PathRouter: ObservableObject {
         path.append(destination)
     }
 
+    // periphery:ignore
     func popToRoot() {
         path = NavigationPath()
     }

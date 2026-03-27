@@ -34,7 +34,7 @@ struct DarkWebMonitorHomeView: View {
     @State private var showDataSecurityExplanation = false
     @State private var showNoBreachesAlert = false
     @State private var showBreachesFoundAlert = false
-    @EnvironmentObject private var router: PathRouter
+    @Environment(PathRouter.self) private var router: PathRouter
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
 
     var body: some View {
@@ -181,12 +181,10 @@ private extension DarkWebMonitorHomeView {
         VStack(spacing: DesignConstant.sectionPadding) {
             ForEach(viewModel.topBreachedAddresses) { item in
                 darkWebMonitorHomeRow(title: item.email,
-                                      subTitle: item
-                                          .breached ? "Latest breach on \(item.lastBreachDate ?? "")" :
-                                          "No breaches detected",
+                                      subTitle: item.breached ?
+                                          #localized("Breaches detected") : #localized("No breaches detected"),
                                       count: item.breached ? item.breachCounter : nil,
                                       hasBreaches: item.breached,
-                                      isDetail: false,
                                       action: { router.navigate(to: .breachDetail(.protonAddress(item))) })
                 if item != viewModel.topBreachedAddresses.last {
                     PassDivider()
@@ -291,11 +289,10 @@ private extension DarkWebMonitorHomeView {
             ForEach(infos.topBreaches) { item in
                 let unresolvedBreaches = item.breachCounter > 0
                 darkWebMonitorHomeRow(title: item.email,
-                                      subTitle: unresolvedBreaches ? item
-                                          .latestBreach : "No breaches detected",
+                                      subTitle: unresolvedBreaches ?
+                                          item.latestBreach : #localized("No breaches detected"),
                                       count: unresolvedBreaches ? item.breachCounter : nil,
                                       hasBreaches: unresolvedBreaches,
-                                      isDetail: false,
                                       action: { router.navigate(to: .breachDetail(.alias(item))) })
             }
         }
@@ -484,39 +481,21 @@ private extension DarkWebMonitorHomeView {
 // MARK: - Utils
 
 private extension DarkWebMonitorHomeView {
-    func colorOfTitle(hasBreaches: Bool, isDetail: Bool) -> Color {
-        if isDetail {
-            hasBreaches ? PassColor.passwordInteractionNormMajor2 : PassColor
-                .textNorm
-        } else {
-            PassColor.textNorm
-        }
-    }
-
-    func colorOfSubtitle(hasBreaches: Bool, isDetail: Bool) -> Color {
-        if isDetail {
-            PassColor.textNorm
-        } else {
-            hasBreaches ? PassColor.passwordInteractionNormMajor2 : PassColor
-                .cardInteractionNormMajor1
-        }
-    }
-
     func darkWebMonitorHomeRow(title: String,
                                subTitle: String?,
                                count: Int? = nil,
                                hasBreaches: Bool,
-                               isDetail: Bool,
                                action: @escaping () -> Void) -> some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(title)
-                    .foregroundStyle(colorOfTitle(hasBreaches: hasBreaches, isDetail: isDetail))
+                    .foregroundStyle(PassColor.textNorm)
 
                 if let subTitle {
                     Text(subTitle)
                         .font(.callout)
-                        .foregroundStyle(colorOfSubtitle(hasBreaches: hasBreaches, isDetail: isDetail))
+                        .foregroundStyle(hasBreaches ? PassColor.passwordInteractionNormMajor2 :
+                            PassColor.cardInteractionNormMajor1)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)

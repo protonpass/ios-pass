@@ -23,7 +23,7 @@ let package = Package(name: "DesignSystem",
                           // Dependencies declare other packages that this package depends on.
                         .package(url: "https://github.com/ProtonMail/protoncore_ios", from: "36.0.3"),
                         .package(url: "https://github.com/jdg/MBProgressHUD", exact: "1.2.0"),
-                        .package(name: "Macro", path: "../Macro")
+                        .package(url: "https://github.com/protonpass/swift-macro", exact: "1.0.0")
                       ],
                       targets: [
                           // Targets are the basic building blocks of a package. A target can define a module or a
@@ -34,7 +34,7 @@ let package = Package(name: "DesignSystem",
                                   dependencies: [
                                     .product(name: "ProtonCoreLoginUI", package: "protoncore_ios"),
                                     .product(name: "MBProgressHUD", package: "MBProgressHUD"),
-                                    .product(name: "Macro", package: "Macro")
+                                    .product(name: "Macro", package: "swift-macro")
                                   ],
                                   resources: [.process("Resources")],
                                   swiftSettings: [

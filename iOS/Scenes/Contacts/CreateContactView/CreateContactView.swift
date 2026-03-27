@@ -28,10 +28,13 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct CreateContactView: View {
-    @StateObject var viewModel: CreateContactViewModel
+    @State private var viewModel: CreateContactViewModel
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focused
-    @State private var showErrorAlert = false
+
+    init(itemIds: IDs) {
+        _viewModel = .init(wrappedValue: .init(itemIds: itemIds))
+    }
 
     var body: some View {
         VStack(spacing: DesignConstant.sectionPadding * 2) {
@@ -49,26 +52,25 @@ struct CreateContactView: View {
         .padding(.horizontal)
         .toolbar { toolbarContent }
         .background(PassColor.backgroundNorm)
-        .onChange(of: viewModel.finishedSaving) {
-            guard viewModel.finishedSaving else {
-                return
-            }
-            dismiss()
-        }
-        .onReceive(viewModel.$creationError) { error in
-            showErrorAlert = error != nil
-        }
         .alert("Error occurred",
-               isPresented: $showErrorAlert,
+               isPresented: $viewModel.error.mappedToBool(),
+               actions: { Button(action: {}, label: { Text("OK") }) },
+               message: {
+                   Text(verbatim: viewModel.error?.localizedDescription ?? "")
+               })
+        .alert("Copy new contact's forwarding address automatically?",
+               isPresented: $viewModel.showCopyAfterCreatingAlert,
                actions: {
-                   Button { viewModel.creationError = nil } label: {
-                       Text("OK")
-                   }
+                   Button(action: { viewModel.dismissCopyAfterCreatingTip(optIn: true) },
+                          label: { Text("Yes") })
+
+                   Button(action: { viewModel.dismissCopyAfterCreatingTip(optIn: false) },
+                          label: { Text("No") })
+
+                   Button("Cancel", role: .cancel, action: {})
                },
                message: {
-                   if let message = viewModel.creationError?.localizedDescription {
-                       Text(message)
-                   }
+                   Text("You can change this anytime in Settings")
                })
         .onAppear { focused = true }
         .navigationTitle("Create contact")
@@ -89,15 +91,15 @@ private extension CreateContactView {
         }
 
         ToolbarItem(placement: .topBarTrailing) {
-            DisablableCapsuleTextButton(title: #localized("Save"),
+            DisablableCapsuleTextButton(title: #localized("Create"),
                                         titleColor: PassColor.textInvert,
                                         disableTitleColor: PassColor.textHint,
                                         backgroundColor: PassColor.aliasInteractionNormMajor1,
                                         disableBackgroundColor: PassColor.aliasInteractionNormMinor1,
-                                        disabled: !viewModel.canSave,
+                                        disabled: !viewModel.canCreate,
                                         height: 44,
-                                        action: { viewModel.saveContact() })
-                .accessibilityLabel("Save")
+                                        action: { viewModel.create() })
+                .accessibilityLabel("Create")
         }
     }
 }

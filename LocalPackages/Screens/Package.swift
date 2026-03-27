@@ -26,7 +26,7 @@ let package = Package(
         .package(name: "Entities", path: "../Entities"),
         .package(name: "UseCases", path: "../UseCases"),
         .package(name: "DesignSystem", path: "../DesignSystem"),
-        .package(name: "Macro", path: "../Macro"),
+        .package(url: "https://github.com/protonpass/swift-macro", exact: "1.0.0"),
         .package(url: "https://github.com/ProtonMail/protoncore_ios", from: "36.0.3"),
         .package(url: "https://github.com/protonpass/DocScanner", .upToNextMajor(from: "0.2.3"))
 
@@ -42,7 +42,7 @@ let package = Package(
                 .product(name: "Entities", package: "Entities"),
                 .product(name: "UseCases", package: "UseCases"),
                 .product(name: "DesignSystem", package: "DesignSystem"),
-                .product(name: "Macro", package: "Macro"),
+                .product(name: "Macro", package: "swift-macro"),
                 .product(name: "DocScanner", package: "DocScanner"),
                 .product(name: "ProtonCoreLoginUI", package: "protoncore_ios"),
                 .product(name: "ProtonCoreUIFoundations", package: "protoncore_ios"),

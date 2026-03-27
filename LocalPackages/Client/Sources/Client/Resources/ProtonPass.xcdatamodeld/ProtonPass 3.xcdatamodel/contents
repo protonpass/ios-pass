@@ -188,6 +188,7 @@
         </uniquenessConstraints>
     </entity>
     <entity name="OrganizationEntity" representedClassName="OrganizationEntity" syncable="YES">
+        <attribute name="aliasCreateMode" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="canUpdate" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="exportMode" attributeType="Integer 64" defaultValueString="1" usesScalarValueType="YES"/>
         <attribute name="forceLockSeconds" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>

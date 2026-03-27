@@ -381,6 +381,36 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "»%1$@« je kopiran v odložišče. Poteče čez %2$lld sekunde."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "»%1$@« je kopiran v odložišče. Poteče čez %2$lld sekundo."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "»%1$@« je kopiran v odložišče. Poteče čez %2$lld sekund."
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "»%1$@« je kopiran v odložišče. Poteče čez %2$lld sekundi."
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -558,6 +588,12 @@
             "value" : "%@ (skopírované)"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (kopirano)"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -694,6 +730,12 @@
             "value" : "%@ skopírované"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (kopirano)"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -822,6 +864,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ chce zdieľať položku so skupinou %@."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ želi deliti predmet s skupino %@."
           }
         },
         "sv" : {
@@ -960,6 +1008,12 @@
             "value" : "%@ s vami chce zdieľať položku."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ želi dati predmet v skupno rabo z vami."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1094,6 +1148,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@%% dešifrovaných..."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@%% dešifrirano ..."
           }
         },
         "sv" : {
@@ -1232,6 +1292,12 @@
             "value" : "%@%% stiahnutých..."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@%% preneseno ..."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1361,6 +1427,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@, %2$@, %3$@ za posledných 14 dní."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@, %3$@ v zadnjih 14. dneh."
           }
         },
         "sv" : {
@@ -1758,6 +1830,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld aliasov"
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vzdevki"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vzdevek"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vzdevkov"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vzdevka"
                 }
               }
             }
@@ -2193,6 +2295,36 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vzdeveki onemogočeni"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vzdevek onemogočen"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vzdevkov onemogočenih"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vzdevka onemogočena"
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -2618,6 +2750,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld aliasov povolených"
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vzdevki omogočeni"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vzdevek omogočen"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vzdevkov omogočenih"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vzdevka omogočena"
                 }
               }
             }
@@ -3054,6 +3216,36 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld blokirani"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld blokiran"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld blokiranih"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld blokirana"
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -3480,6 +3672,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld blokovaní"
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld blokirani"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld blokiran"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld blokiranih"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld blokirana"
                 }
               }
             }
@@ -3915,6 +4137,36 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld znaki"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld znak"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld znakov"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld znaka"
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -4345,6 +4597,36 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld dnevi"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld dan"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld dni"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld dneva"
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -4758,6 +5040,36 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld posredovana"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld posredovano"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld posredovanih"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld posredovani"
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -5165,6 +5477,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld preposlaní"
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld posredovani"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld posredovan"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld posredovanih"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld posredovana"
                 }
               }
             }
@@ -5600,6 +5942,36 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ure"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ura"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ur"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld uri"
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -6025,6 +6397,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "zostáva %lld pozvánok"
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Preostala so še %lld vabila"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Preostalo je še %lld vabilo"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Preostalo je še %lld vabil"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Preostali sta še %lld vabili"
                 }
               }
             }
@@ -6574,6 +6976,42 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld predmeti"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld predmet"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld predmetov"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld predmeta"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld predmet"
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -7022,6 +7460,36 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld predmeti premaknjeni v smetnjak"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld predmet premaknjen v smetnjak"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld predmetov premaknjenih v smetnjak"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld predmeta premaknjena v smetnjak"
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -7447,6 +7915,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%1$lld položiek bolo presunutých do trezora « %2$@ »"
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld predmeti premaknjeni v trezor « %2$@ »"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld predmet premaknjen v trezor « %2$@ »"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld predmetov premaknjenih v trezor « %2$@ »"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld predmeta premaknjena v trezor « %2$@ »"
                 }
               }
             }
@@ -7882,6 +8380,36 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld predmeti so bili uspešno pripeti"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld predmet je bil uspešno pripet"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld predmetov je bilo uspešno pripetih"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld predmeta sta bila uspešno pripeta"
+                }
+              }
+            }
+          }
+        },
         "tr" : {
           "variations" : {
             "plural" : {
@@ -8289,6 +8817,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld položiek bolo úspešne odopnutých"
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld predmeti so bili uspešno odpeti"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld predmet je bil uspešno odpet"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld predmetov je bilo uspešno odpetih"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld predmeta sta bila uspešno odpeta"
                 }
               }
             }
@@ -8706,6 +9264,36 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld člani"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld član"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld članov"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld člana"
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -9113,6 +9701,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld iných prihlasovaní už používa toto heslo"
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld druge prijave uporabljajo to geslo"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld druga prijava uporablja to geslo"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld drugih prijav uporablja to geslo"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld drugi prijavi uporabljata to geslo"
                 }
               }
             }
@@ -9543,6 +10161,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Zostáva %lld pokusov"
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Še %lld preostali poskusi"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Še %lld preostal poskus"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Še %lld preostalih poskusov"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Še %lld preostala poskusa"
                 }
               }
             }
@@ -9979,6 +10627,36 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld odgovori"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld odgovor"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld odgovorov"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld odgovora"
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -10404,6 +11082,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld výsledkov"
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld rezultati"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld rezultat"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld rezultatov"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld rezultata"
                 }
               }
             }
@@ -10839,6 +11547,36 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld-krat"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld-krat"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld-krat"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld-krat"
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -11246,6 +11984,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld zobrazení"
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ogledi"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ogled"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ogledov"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ogleda"
                 }
               }
             }
@@ -11676,6 +12444,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld slov"
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld besede"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld beseda"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld besed"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld besedi"
                 }
               }
             }
@@ -12625,6 +13423,12 @@
             "value" : "Pre každú emailovú adresu, na ktorú sa odosielajú alebo prijímajú emaily z %@, sa vytvorí kontakt."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Za vsak e-poštni naslov, s katerega se pošiljajo ali prejemajo e-poštna sporočila s %@, je ustvarjen stik"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12951,6 +13755,12 @@
             "value" : "Pre prihlásenie \"%@\" sa vytvorí prístupový kľúč."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Za prijavo \"%@\" bo ustvarjen identifikacijski ključ."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13269,6 +14079,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Prijať pozvánku"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprejmi povabilo"
           }
         },
         "sv" : {
@@ -19759,6 +20575,36 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Po %lld urah"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Po %lld uri"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Po %lld urah"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Po %lld urah"
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -20184,6 +21030,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Po %lld minútach"
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Po %lld minutah"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Po %lld minuti"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Po %lld minutah"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Po %lld minutah"
                 }
               }
             }
@@ -20745,6 +21621,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alias \"%@\" presunutý do koša"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vzdevek \"%@\" je premaknjen v smetnjak"
           }
         },
         "sv" : {
@@ -22536,10 +23418,130 @@
     },
     "Alias created and copied" : {
       "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S'ha creat i copiat l'àlies"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias vytvořen a zkopírován"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias oprettet og kopieret"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias erstellt und kopiert"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το ψευδώνυμο δημιουργήθηκε και αντιγράφηκε"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alias created and copied"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias creado y copiado"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias creado y copiado"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'alias a été créé et copié."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias creato e copiato"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias opprettet og kopiert"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias aangemaakt en gekopieerd"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias utworzony i skopiowany"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias criado e copiado"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias creat și copiat"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias vytvorený a skopírovaný"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vzdevek ustvarjen in kopiran"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias ​​skapat och kopierat"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Takma ad oluşturuldu ve kopyalandı"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "别名已创建并复制"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已建立別名並複製"
           }
         }
       }
@@ -23240,6 +24242,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alias prihlasovacej položky \"%@\""
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vzdevek predmeta prijave \"%@\""
           }
         },
         "sv" : {
@@ -24198,6 +25206,12 @@
             "value" : "Aliasy v koši budú aj naďalej preposielať emaily. Ak chcete prestať dostávať emaily na túto adresu, vypnite ju."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vzdevki v smeteh bodo še naprej posredovali e-pošto. Če želite prenehati prejemati e-pošto na ta naslov, ga raje onemogočite."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -24737,6 +25751,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Všetky aliasy používajúce poštovú schránku **%@** budú tiež vymazané. Ak chcete naďalej prijímať emaily, presuňte tieto aliasy do inej schránky:"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vsi vzdevki, ki uporabljajo poštni predal **%@**, bodo prav tako izbrisani. Če želite še naprej prejemati e-pošto, prenesite te vzdevke v drug poštni predal:"
           }
         },
         "sv" : {
@@ -26873,6 +27893,12 @@
             "value" : "Vždy zobrazovať pole s používateľským menom"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vedno prikaži polje za uporabniško ime"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -27610,6 +28636,12 @@
             "value" : "Naozaj chcete pridať 2FA tajný kľúč k \"%@\"?"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ali ste prepričani, da želite dodati skrivni ključ 2FA v \"%@\"?"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -27738,6 +28770,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Naozaj chcete vymazať nasledujúcu sekciu „%@“?"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ali ste prepričani, da želite izbrisati naslednji odsek \"%@\"?"
           }
         },
         "sv" : {
@@ -27869,6 +28907,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Naozaj sa chcete odhlásiť z %@?"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ali ste prepričani, da se želite izpisati %@?"
           }
         },
         "sv" : {
@@ -28825,6 +29869,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aspoň jedna z vybraných položiek je aktuálne zdieľaná. Jej presunutím do iného trezora sa zruší prístup pre všetkých ostatných používateľov."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vsaj en izbran predmet je trenutno v skupni rabi. Premik v drug trezor bo odstranil dostop za vse ostale uporabnike."
           }
         },
         "sv" : {
@@ -36474,6 +37524,12 @@
             "value" : "Zmeniť email poštovej schránky"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spremeni e-poštni naslov v nabiralniku"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -41219,6 +42275,26 @@
         }
       }
     },
+    "Contact created" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact created"
+          }
+        }
+      }
+    },
+    "Contact created and copied" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact created and copied"
+          }
+        }
+      }
+    },
     "Contact details" : {
       "localizations" : {
         "be" : {
@@ -42397,10 +43473,124 @@
     },
     "Copy alias address after creation" : {
       "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copieu l'adreça de l'àlies després de crear-lo"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zkopírovat adresu aliasu po vytvoření"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiér aliasadresse efter oprettelse"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-Mail-Adresse des Alias nach der Erstellung kopieren"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αντιγραφή διεύθυνσης ψευδωνύμου μετά τη δημιουργία"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Copy alias address after creation"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar dirección de alias tras la creación"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar dirección de alias tras la creación"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copier l'adresse de l'alias après la création"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copia l'indirizzo alias dopo la creazione"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopier aliasadresse etter oppretting"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopieer aliasadres na aanmaak"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar endereço do alias após a criação"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiere alias după crearea acestuia"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skopírovať adresu aliasu po vytvorení"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Po ustvarjanju kopirajte naslov vzdevka"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiera aliasadress efter skapande"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oluşturulduktan sonra takma ad adresini kopyala"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "创建后复制别名地址"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "待建立位址後複製別名"
           }
         }
       }
@@ -42989,6 +44179,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "持卡人姓名"
+          }
+        }
+      }
+    },
+    "Copy contact's forwarding address after creation" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy contact's forwarding address after creation"
           }
         }
       }
@@ -43975,10 +45175,128 @@
     },
     "Copy new alias address automatically?" : {
       "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voleu copiar l'adreça del nou àlies automàticament?"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zkopírovat novou adresu aliasu automaticky?"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopier ny aliasadresse automatisk?"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neue E-Mail-Adresse des Alias automatisch kopieren?"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αντιγραφή νέας διεύθυνσης ψευδωνύμου αυτόματα;"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Copy new alias address automatically?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Copiar automáticamente la nueva dirección de alias?"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Copiar automáticamente la nueva dirección de alias?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copier automatiquement la nouvelle adresse de l'alias ?"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiere ny aliasadresse automatisk?"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nieuw aliasadres automatisch kopiëren?"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar novo endereço de alias automaticamente?"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiați automat noua adresă alias?"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skopírovať novú aliasovú adresu automaticky?"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Samodejno kopiraj nov naslov vzdevka?"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiera ny aliasadress automatiskt?"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yeni takma ad adresi otomatik olarak kopyalansın mı?"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自动复制新的别名地址？"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自動複製新的別名位址？"
+          }
+        }
+      }
+    },
+    "Copy new contact's forwarding address automatically?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy new contact's forwarding address automatically?"
           }
         }
       }
@@ -48240,6 +49558,12 @@
             "value" : "Vytvorené %@"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ustvarjeno %@"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49975,6 +51299,12 @@
             "value" : "Aktuálny trezor"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trenutni trezor"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -51538,6 +52868,12 @@
             "value" : "Vlastná položka presunutá do koša"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Predmet po meri je premaknjen v smetnjak"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -51726,6 +53062,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vlastná položka trvalo vymazaná"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Predmet po meri je trajno izbrisan"
           }
         },
         "sv" : {
@@ -51918,6 +53260,12 @@
             "value" : "Vlastná položka obnovená"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Predmet po meri je obnovljen"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -52106,6 +53454,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vlastná položka aktualizovaná"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Predmet po meri je posodobljen"
           }
         },
         "sv" : {
@@ -55010,6 +56364,12 @@
             "value" : "Vymazať %@"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izbriši %@"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -55592,6 +56952,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vymazať, nikdy ho nebudem potrebovať"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izbriši, nikoli ga ne bom potreboval/a"
           }
         },
         "sv" : {
@@ -58321,6 +59687,12 @@
             "value" : "Už nepripomínať"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ne opominjaj me več"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -58503,6 +59875,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hotovo"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Končano"
           }
         },
         "sv" : {
@@ -59265,6 +60643,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Duplikovať"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podvoji"
           }
         },
         "sv" : {
@@ -61759,6 +63143,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pošlite email na túto adresu a zobrazí sa, že bol odoslaný z %@."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pošljite e-pošto na ta naslov in prikazalo se bo, kot da je bila poslana z %@."
           }
         },
         "sv" : {
@@ -64663,6 +66053,12 @@
             "value" : "Zadajte nový názov pre « %@ »"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vnesite novo ime za « %@ »"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -65029,6 +66425,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zadajte adresu, na ktorú chcete poslať email."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vnesite naslov, na katerega želite poslati e-pošto."
           }
         },
         "sv" : {
@@ -65807,6 +67209,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zakaždým, keď váš alias dostane od niekoho email, automaticky sa vytvorí nový kontakt."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vsakič, ko vaš vzdevek prejme e-pošto od nekoga, se samodejno ustvari nov stik."
           }
         },
         "sv" : {
@@ -66747,6 +68155,12 @@
             "value" : "Rozšíriť editor"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Razširi urejevalnik"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -67276,6 +68690,12 @@
             "value" : "Platnosť vypršala %@"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poteklo %@"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -67411,6 +68831,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Platnosť skončí %@"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poteče %@"
           }
         },
         "sv" : {
@@ -68770,6 +70196,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Dodatočné heslo musí mať aspoň %lld znakov"
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Dodatno geslo mora vsebovati vsaj %lld znake"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Dodatno geslo mora vsebovati vsaj %lld znak"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Dodatno geslo mora vsebovati vsaj %lld znakov"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Dodatno geslo mora vsebovati vsaj %lld znaka"
                 }
               }
             }
@@ -70374,6 +71830,12 @@
             "value" : "Súbory s prílohami sú k dostupné v službe Pass Plus. Upgradujte a získajte okamžitý prístup."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodajanje priponk je na voljo v paketu Proton Pass Plus. Nadgradite za takojšen dostop."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -70760,6 +72222,12 @@
             "value" : "Filtrované podľa aliasov. Položky v koši nie sú zobrazené."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtrirano po vzdevkih. Predmeti v smetnjaku niso prikazani."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -70948,6 +72416,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Filtrované podľa platobných kariet. Položky v koši nie sú zobrazené."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtrirano po kreditnih karticah. Predmeti v smetnjaku niso prikazani."
           }
         },
         "sv" : {
@@ -71140,6 +72614,12 @@
             "value" : "Filtrované podľa vlastných položiek. Položky v koši nie sú zobrazené."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtrirano po predmetih po meri. Predmeti v smetnjaku niso prikazani."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -71328,6 +72808,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Filtrované podľa identít. Položky v koši nie sú zobrazené."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtrirano po identitetah. Predmeti v smetnjaku niso prikazani."
           }
         },
         "sv" : {
@@ -71520,6 +73006,12 @@
             "value" : "Filtrované podľa prihlásenia. Položky v koši nie sú zobrazené."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtrirano po prijavah. Predmeti v smetnjaku niso prikazni."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -71708,6 +73200,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Filtrované podľa poznámok. Položky v koši nie sú zobrazené."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtrirano po opombah. Predmeti v smetnjaku niso prikazani."
           }
         },
         "sv" : {
@@ -73632,6 +75130,12 @@
             "value" : "Z vášho aliasu <%@>"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iz vašega vzdevka <%@>"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -74943,6 +76447,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vygenerovať SSH kľúč"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ustvari SSH ključ"
           }
         },
         "sv" : {
@@ -77274,6 +78784,12 @@
             "value" : "Funguje to takto:"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tako deluje:"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -78038,6 +79554,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Skryté trezory"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skiti trezorji"
           }
         },
         "sv" : {
@@ -79398,6 +80920,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ukryť rodné číslo (číslo sociálneho poistenia)"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skrij številko socialnega zavarovanja"
           }
         },
         "sv" : {
@@ -83516,6 +85044,12 @@
             "value" : "Importovať z iných zdrojov"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uvozi iz drugih virov"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -83900,6 +85434,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "V aplikácii Pass je poznámka k položke zašifrovaná pomocou šifrovacieho kľúča položky a poznámku môžu zobraziť len používatelia, ktorí majú prístup k položke."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "V Proton Pass je zapisek o premetu šifriran s ključem za šifriranje premeta in si ga lahko ogledajo le uporabniki, ki imajo dostop do predmeta."
           }
         },
         "sv" : {
@@ -86076,6 +87616,12 @@
             "value" : "Pozvite k položke ďalších používateľov"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Povabi več uporabnikov k temu predmetu"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -86266,6 +87812,12 @@
             "value" : "Pozvite do trezora ďalších používateľov"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Povabi več uporabnikov v trezor"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -86406,6 +87958,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "pozýva skupinu %@ na prístup k položkám v"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "povabi skupino %@, naj dostopa do predmetov v"
           }
         },
         "sv" : {
@@ -86973,6 +88531,12 @@
             "value" : "Vydávajúci orgán"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organ izdaje"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -87357,6 +88921,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Štát/Krajina vydania"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Država/zvezna država Izdajateljica"
           }
         },
         "sv" : {
@@ -87941,6 +89511,12 @@
             "value" : "História položky bola úspešne resetovaná"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zgodovina predmeta je bila uspešno ponastavljena"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -88511,6 +90087,12 @@
             "value" : "Položka v zdieľanom terzore"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Predmet v skupnem trezorju"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -88853,6 +90435,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Položka bola presunutá do trezora « %@ »"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Predmet premaknjen v trezor \"%@\""
           }
         },
         "sv" : {
@@ -89232,6 +90820,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Zdieľanie položky: %lld používateľov"
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Deljenje predmetov: %lld uporabniki"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Deljenje predmetov: %lld uporabnik"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Deljenje predmetov: %lld uporabnikov"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Deljenje predmetov: %lld uporabnika"
                 }
               }
             }
@@ -90384,6 +92002,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Položky z trezora « %@ » boli presunuté do trezora « %@ »"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Predmeti iz \"%@\" premaknjeni v trezor \"%@\""
           }
         },
         "sv" : {
@@ -93458,6 +95082,12 @@
             "value" : "Posledný únik údajov dňa %@"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zadnja kršitev dne %@"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -95775,6 +97405,12 @@
             "value" : "Prihlásenie pre %@"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prijava za %@"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -97129,6 +98765,12 @@
             "value" : "Prihlásenia pomocou 2FA"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prijave z 2FA"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -97712,6 +99354,12 @@
             "value" : "Ponuka akcií poštovej schránky"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meni za urejanje poštnega predala"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -97900,6 +99548,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Do poštovej schránky sa preposielajú emaily odoslané na alias. Je to vaša bežná poštová schránka, napr. Gmail, Outlook, Proton Mail atď."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poštni predal je mesto, kamor se posreduje e-pošta, poslana na vzdevek. To je vaš običajni poštni predal, npr. Gmail, Outlook, Proton Mail itd."
           }
         },
         "sv" : {
@@ -99070,6 +100724,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Spravujte svoje aliasy"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upravljajte svoje vzdevke"
           }
         },
         "sv" : {
@@ -103336,6 +104996,12 @@
             "value" : "Monitorovanie pre %@ pozastavené"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spremljanje je začasno ustavljeno za %@"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -103464,6 +105130,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Monitorovanie pre %@ obnovené"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spremljanje se nadaljuje za %@"
           }
         },
         "sv" : {
@@ -106267,10 +107939,124 @@
     },
     "No" : {
       "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ne"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nej"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nein"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Όχι"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "No"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nei"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nee"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nu"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ne"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nej"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hayır"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "否"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "否"
           }
         }
       }
@@ -107211,6 +108997,12 @@
             "value" : "Nie sú s vami zdieľané žiadne položky"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noben predmet ni v skupni rabi z vami"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -107750,6 +109542,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Žiadne záznamy pre %@"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ni dnevnikov za %@"
           }
         },
         "sv" : {
@@ -108906,6 +110704,12 @@
             "value" : "Nevidí ju ani Proton alebo SimpleLogin."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niti Proton niti SimpleLogin ga ne moreta videti."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -109095,6 +110899,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nevybraté"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ni izbrano"
           }
         },
         "sv" : {
@@ -110028,6 +111838,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Poznámka pre %@"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opomba za %@"
           }
         },
         "sv" : {
@@ -113535,6 +115351,12 @@
             "value" : "Otvoriť poznámku"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odpri beležko"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -115418,6 +117240,12 @@
             "value" : "Usporiadať trezory"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organizirajte trezorje"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -115598,6 +117426,12 @@
           }
         },
         "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OS"
+          }
+        },
+        "sl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "OS"
@@ -119749,6 +121583,36 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Trajno izbrisani %lld predmeti"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Trajno izbrisan %lld predmet"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Trajno izbrisani %lld predmeti"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Trajno izbrisana %lld predmeta"
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -120978,198 +122842,12 @@
         }
       }
     },
-    "PIN Code" : {
+    "PIN code" : {
       "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN-код"
-          }
-        },
-        "ca" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Codi PIN"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN kód"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pinkode"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN-Code"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Κωδικός PIN"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PIN Code"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Código PIN"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Código PIN"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN-koodi"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Code PIN"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN kód"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kode PIN"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Codice PIN"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN コード"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN კოდი"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN 코드"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN-kode"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pincode"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kod PIN"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Código PIN"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Código PIN"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cod PIN"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN-код"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN kód"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN koda"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN-kod"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN kodu"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN-код"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mã PIN"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "解锁密码"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN 碼"
+            "value" : "PIN code"
           }
         }
       }
@@ -121366,202 +123044,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "PIN 碼設定"
-          }
-        }
-      }
-    },
-    "PIN number" : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN-код"
-          }
-        },
-        "ca" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Número de PIN"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Číslo PIN"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN-nummer"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN-Code"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Αριθμός PIN"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN number"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Código PIN"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Código PIN"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN-koodi"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Code PIN"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN-kód"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nomor PIN"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Codice PIN"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN コード"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN კოდი"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN 번호"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN-nummer"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pincode"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kod PIN"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Código PIN"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Código PIN"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cod PIN"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ПИН-код"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN kód"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Številka PIN"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN-nummer"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN kodu"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN-код"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mã PIN"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PIN 码"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "個人識別號碼"
           }
         }
       }
@@ -122453,6 +123935,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Skontrolujte, či sa vo vašom spame nenachádza email s názvom „Potvrďte, prosím, svoju emailovú adresu %@“.\n\nAk takýto email nenájdete, môžete [požiadať o nový kód](https://proton.me)."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "V mapi z neželeno pošto preverite, ali ste prejeli e-pošto z naslovom ''Potrdite svoj poštni predal %@''.\n\nČe ne najdete takšne e-pošte, lahko [zahtevate novo kodo](https://proton.me)."
           }
         },
         "tr" : {
@@ -123405,6 +124893,12 @@
             "value" : "Upozorňujeme, že po vymazaní sa alias nedá obnoviť. Nechcete alias radšej deaktivovať?"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upoštevajte, da ko je vzdevek izbrisan, ga ni mogoče obnoviti. Morda ga želite raje onemogočiti?"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -123791,6 +125285,12 @@
             "value" : "Upozorňujeme, že po odstránení nie je možné aliasy obnoviť."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upoštevajte, da ko so vzdevki izbrisani, jih ni mogoče obnoviti."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -123979,6 +125479,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Upozorňujeme, že po vymazaní sa aliasy nedajú obnoviť."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upoštevajte, da vzdevkov, ko so enkrat izbrisani, ni mogoče obnoviti."
           }
         },
         "sv" : {
@@ -124172,6 +125678,12 @@
             "value" : "Do popisu uveďte viac podrobností, prosím"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prosimo, navedite več podrobnosti v opisu."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -124361,6 +125873,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vyberte dôvod, prosím"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izberite razlog"
           }
         },
         "sv" : {
@@ -128087,6 +129605,12 @@
             "value" : "Proton Pass vygeneruje adresu pre preposielanie (označovanú tiež ako reverzný alias)."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Pass bo ustvaril posredni naslov (imenovan tudi povratni vzdevek)."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -131354,6 +132878,12 @@
             "value" : "Odstránenie dočasne uložených príloh z predchádzajúcich sťahovaní"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odstranite predpomnjene priponke iz prejšnjih prenosov"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -134486,6 +136016,12 @@
             "value" : "Resetovať históriu"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ponastavi zgodovino"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -134676,6 +136212,12 @@
             "value" : "Resetovať históriu tejto položky?"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ponastavi zgodovino za ta predmet?"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -134864,6 +136406,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Resetovanie histórie natrvalo vymaže všetky predchádzajúce verzie a nie je možné vrátiť ich späť."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ponastavitev zgodovine bo trajno izbrisala vse pretekle različice in je ni mogoče razveljaviti."
           }
         },
         "sv" : {
@@ -135841,6 +137389,12 @@
             "value" : "Obnoviť nákupy"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obnovi nakup"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -136438,6 +137992,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Obnovených %lld položiek"
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Obnovljeni %lld predmeti"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Obnovljen %lld predmet"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Obnovljeni %lld predmeti"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Obnovljena %lld predmeta"
                 }
               }
             }
@@ -137426,6 +139010,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Použité %lld-krát"
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ponovno uporabljeni %lld-krat"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ponovno uporabljen %lld-krat"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ponovno uporabljeni %lld-krat"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ponovno uporabljena %lld-krat"
                 }
               }
             }
@@ -138617,6 +140231,12 @@
             "value" : "Smerový kód banky"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usmerjevalna številka"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -138962,6 +140582,12 @@
             "value" : "Skenovať %@"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odčitaj %@"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -139133,6 +140759,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Naskenujte QR kód pre prihlásenie"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odčitaj QR kodo za pridružitev"
           }
         },
         "sv" : {
@@ -139712,6 +141344,12 @@
             "value" : "Hľadať vo všetkých položkách"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Išči po vseh predmetih"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -140096,6 +141734,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Hľadať v %lld účtoch"
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Išči v %lld računih"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Iskanje v računu %lld"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Išči v %lld računih"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Išči v %lld računih"
                 }
               }
             }
@@ -143051,6 +144719,12 @@
             "value" : "Typ zabezpečenia"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vrsta varnosti"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -143436,6 +145110,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pozrite si prehľad členov a povolení"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oglejte si pregled članov in dovoljenj"
           }
         },
         "sv" : {
@@ -144391,6 +146071,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vyberte typ SSH kľúča"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izberite vrsto ključa SSH"
           }
         },
         "sv" : {
@@ -148493,6 +150179,12 @@
             "value" : "ID zdieľania"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deli ID"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -148682,6 +150374,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ID zdieľania skopírované"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ID za skupno rabo kopiran"
           }
         },
         "sv" : {
@@ -150040,6 +151738,12 @@
             "value" : "Zdieľaná položka"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Predmet v skupni rabi"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -150222,6 +151926,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pozvánka ku zdieľanej položke"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Povabilo k skupnem predmetu"
           }
         },
         "sv" : {
@@ -150959,6 +152669,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zobraziť %@ trezor"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaži %@ trezor"
           }
         },
         "sv" : {
@@ -152310,6 +154026,12 @@
             "value" : "Zobraziť QR kód siete"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaži QR kodo omrežja"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -153088,6 +154810,12 @@
             "value" : "Zobraziť mnou zdieľané"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaži, kaj dajem v skupno rabo drugim"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -153278,6 +155006,12 @@
             "value" : "Zobraziť pre mňa zdieľané"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaži, kaj je v skupni rabi z mano"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -153466,6 +155200,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zobraziť rodné číslo (číslo sociálneho poistenia)"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prikaži številko socialnega zavarovanja"
           }
         },
         "sv" : {
@@ -154051,6 +155791,12 @@
             "value" : "Prihlásiť sa do iného zariadenia"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prijava v drugo napravo"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -154388,6 +156134,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Prihlásený ako %@"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prijavljen kot %@"
           }
         },
         "sv" : {
@@ -155347,6 +157099,12 @@
             "value" : "Rodné číslo (číslo sociálneho poistenia)"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Številka socialnega zavarovanja"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -155732,6 +157490,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Niektoré trezory už nie sú prístupné z dôvodu obnovenia hesla. Ak chcete opätovne získať prístup, znovu aktivujte kľúče svojho účtu."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nekateri trezorji niso več dostopni zaradi ponastavitve gesla. Ponovno aktivirajte ključe računa, da ponovno pridobite dostop."
           }
         },
         "sv" : {
@@ -157102,6 +158866,12 @@
             "value" : "SSH kľúč vytvorený"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ključ SSH ustvarjen"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -157290,6 +159060,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SSH kľúč presunutý do koša"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ključ SSH premaknjen v koš"
           }
         },
         "sv" : {
@@ -157482,6 +159258,12 @@
             "value" : "SSH kľúč natrvalo vymazaný"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ključ SSH je trajno izbrisan"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -157672,6 +159454,12 @@
             "value" : "SSH kľúč obnovený"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ključ SSH je obnovljen"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -157860,6 +159648,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SSH kľúč aktualizovaný"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ključ SSH posodobljen"
           }
         },
         "sv" : {
@@ -158639,6 +160433,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Začať úplne od začiatku"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Začni iz nič"
           }
         },
         "sv" : {
@@ -160185,6 +161985,12 @@
             "value" : "Návrhy"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Predlogi"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -160314,6 +162120,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Návrhy pre %@"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Namigi za %@"
           }
         },
         "sv" : {
@@ -160833,6 +162645,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Prepnuté na %@"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preklopi na %@"
           }
         },
         "sv" : {
@@ -161658,7 +163476,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Systémové výchozí"
+            "value" : "Systémový výchozí"
           }
         },
         "da" : {
@@ -161987,6 +163805,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ťuknite pre viac informácií"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tapnite tukaj za podrobnosti"
           }
         },
         "sv" : {
@@ -163553,6 +165377,12 @@
             "value" : "Meno, ktoré sa zobrazí pri odosielaní emailu z tohto aliasu."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prikazno ime pri pošiljanju e-pošte s tega vzdevka."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -163711,6 +165541,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Skupina je pozvaná na zdieľanie trezoru. Kliknite pre detaily."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skupina je povabljena v trezor. Dotaknite se za podrobnosti."
           }
         },
         "sv" : {
@@ -163889,6 +165725,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vybraný súbor prekračuje limit veľkosti. Vyberte súbor menší ako 100 MB."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izbrana datoteka presega omejitev velikosti. Izberite datoteko, manjšo od 100 MB."
           }
         },
         "sv" : {
@@ -164657,6 +166499,12 @@
             "value" : "Tieto trezory nebudú prístupné a ich obsah nebude dostupný pre Hľadanie alebo Automatické dopĺňanie."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do teh trezorjev ne bo mogoče dostopati in njihova vsebina ne bo na voljo za iskanje ali samodejno izpolnjevanje."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -165234,6 +167082,12 @@
             "value" : "Táto položka je v súčasnosti zdieľaná. Jej odstránením sa zruší prístup pre všetkých ostatných používateľov."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ta element je trenutno v skupni rabi. Če ga izbrišete, boste vsem drugim uporabnikom onemogočili dostop."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -165422,6 +167276,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Táto položka je v súčasnosti zdieľaná. Jej presunutím do iného trezora sa zruší prístup pre všetkých ostatných používateľov."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ta predmet je trenutno v skupni rabi. Premik v drug trezor bo odstranil dostop za vse druge uporabnike."
           }
         },
         "sv" : {
@@ -166350,6 +168210,12 @@
             "value" : "Týmto sa natrvalo odstráni trezor « %@ » a celý jeho obsah. Pre potvrdenie vymazania zadajte názov trezora."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S tem boste trajno izbrisali trezor »%@« in vso njegovo vsebino. Vnesite ime trezorja, da potrdite izbris."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -166717,6 +168583,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Úroveň členstva"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stopnja/raven"
           }
         },
         "sv" : {
@@ -167890,6 +169762,12 @@
             "value" : "Ak chcete, aby vaša osobná emailová adresa zostala skrytá, môžete si vytvoriť alias kontaktu, ktorý vašu adresu zamaskuje."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Če želite skriti svoj osebni e-poštni naslov, lahko ustvarite kontakt z vzdevkom, ki prikrije vaš naslov."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -168079,6 +169957,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Do poštovej schránky"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "V poštni predal"
           }
         },
         "sv" : {
@@ -168465,6 +170349,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Príliš veľa chybných pokusov"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preveč napačnih poskusov"
           }
         },
         "sv" : {
@@ -169245,6 +171135,12 @@
             "value" : "Presunúť a vymazať poštovú schránku"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prenesi in izbriši poštni predal"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -169583,6 +171479,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Preniesť vlastníctvo tohto trezora na %@?"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Želite prenesti lastništvo tega trezorja na %@?"
           }
         },
         "sv" : {
@@ -170934,6 +172836,12 @@
             "value" : "Odblokovať kontakt"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odblokiraj stik"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -171318,6 +173226,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rozumiem, nikdy ich nebudem potrebovať"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Razumem, nikoli jih ne bom potreboval/a"
           }
         },
         "sv" : {
@@ -173864,6 +175778,12 @@
             "value" : "Neoverená poštová schránka"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nepreverjen poštni predal"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -174052,6 +175972,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Neoverená zmena poštovej schránky"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprememba nepreverjenega poštnega predala"
           }
         },
         "sv" : {
@@ -175422,6 +177348,12 @@
             "value" : "Navýšte predplatné pre vytváranie vlastných položiek"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nadgradite za ustvarjanje predmetov po meri"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -175600,6 +177532,12 @@
             "value" : "Zvýšte úroveň na Pass Plus"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nadgradi na Pass Plus"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -175740,6 +177678,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Použiť %@"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uporabi %@"
           }
         },
         "sv" : {
@@ -176896,6 +178840,36 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Uporablja se pri %lld prijavah"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Uporablja se pri %lld prijavi"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Uporablja se pri %lld prijavah"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Uporablja se pri %lld prijavah"
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -177840,6 +179814,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Trezor « %@ » bol vymazaný"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trezor »%@« izbrisan"
           }
         },
         "sv" : {
@@ -178964,6 +180944,12 @@
             "value" : "Trezor zdieľaný so skupinou, ktorú spravujete"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trezor je v skupni rabi s skupino, ki jo upravljate"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -179728,6 +181714,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Zdieľanie trezora: %lld členov"
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Deljenje trezorja: %lld članov"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Deljenje trezorja: %lld član"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Deljenje trezorja: %lld članov"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Deljenje trezorja: %lld člana"
                 }
               }
             }
@@ -180679,6 +182695,12 @@
             "value" : "Verzia %@"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Različica %@"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -181437,6 +183459,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zobraziť všetky vaše bezpečné odkazy"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ogled vseh vaših varnih povezav"
           }
         },
         "sv" : {
@@ -182598,6 +184626,12 @@
             "value" : "Viditeľné trezory"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vidni trezorji"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -183568,6 +185602,12 @@
             "value" : "Zistili sme zmenu vo vašich nastaveniach biometrického overovania. Z bezpečnostných dôvodov došlo k odhláseniu."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zaznali smo spremembo v vaših nastavitvah biometričnega preverjanja pristnosti. Iz varnostnih razlogov ste bili odjavljeni."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -183708,6 +185748,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Odoslali sme overovací kód na %@. Zadajte ho nižšie:"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poslali smo kodo za preverjanje na %@. Vnesite jo spodaj:"
           }
         },
         "sv" : {
@@ -185059,6 +187105,12 @@
             "value" : "Čo je poznámka SimpleLogin?"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kaj je opomba SimpleLogin?"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -185633,6 +187685,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Podrobnosti o WiFi, SSH, vlastné položky a ďalšie"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podrobnosti Wi-Fi, SSH, predmeti po meri in še več"
           }
         },
         "sv" : {
@@ -186218,6 +188276,12 @@
             "value" : "WiFi sieť vytvorená"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Omrežje Wi-Fi ustvarjeno"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -186406,6 +188470,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "WiFi sieť presunutá do koša"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Omrežje Wi-Fi premaknjeno v smetnjak"
           }
         },
         "sv" : {
@@ -186598,6 +188668,12 @@
             "value" : "WiFi sieť natrvalo vymazaná"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Omrežje Wi-Fi je bilo trajno izbrisano"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -186780,6 +188856,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "WiFi sieť obnovená"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Omrežje Wi-Fi je obnovljeno"
           }
         },
         "sv" : {
@@ -186966,6 +189048,12 @@
             "value" : "WiFi sieť aktualizovaná"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Omrežje Wi-Fi je posodobljeno"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -187148,6 +189236,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "WiFi siete"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Omrežja Wi-Fi"
           }
         },
         "sv" : {
@@ -187338,6 +189432,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Heslo WiFi skopírované"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wi-Fi geslo je bilo kopirano"
           }
         },
         "sv" : {
@@ -188463,6 +190563,12 @@
             "value" : "Chcete spojiť \"%1$@\" s \"%2$@\"?"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ali želite povezati »%1$@« z »%2$@«?"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -188829,6 +190935,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nesprávne dodatočné heslo"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Napačno dodatno geslo"
           }
         },
         "sv" : {
@@ -189285,10 +191397,124 @@
     },
     "Yes" : {
       "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sí"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ano"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ja"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ja"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ναι"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yes"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sí"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sí"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oui"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ja"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ja"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sim"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Da"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Áno"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Da"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ja"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Evet"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "是"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "是"
           }
         }
       }
@@ -190250,6 +192476,36 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ste pred tem, da trajno izbrišete vzdevke %lld"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ste pred tem, da trajno izbrišete vzdevek %lld"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ste pred tem, da trajno izbrišete vzdevke %lld"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ste pred tem, da trajno izbrišete vzdevka %lld"
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -190440,6 +192696,12 @@
             "value" : "Vytvárate položku v zdieľanom trezore a členovia získajú k tejto položke okamžitý prístup."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ustvarjate predmet v skupnem trezorju in člani bodo takoj dobili dostop do tega elementa."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -190610,6 +192872,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Upravujete zdieľanú položku. Zmeny budú okamžite viditeľné pre všetkých, s ktorými je zdieľaná."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Urejate deljeni predmet. Spremembe bodo takoj vidne vsem, s katerimi je deljen."
           }
         },
         "sv" : {
@@ -190994,6 +193262,36 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Nepovratno boste izbrisali %lld elemente. Ste prepričani?"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Nepovratno boste izbrisali %lld predmet. Ste prepričani?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Nepovratno boste izbrisali %lld elemente. Ste prepričani?"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Nepovratno boste izbrisali %lld predmeta. Ste prepričani?"
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -191242,10 +193540,112 @@
     },
     "You can change this anytime in Settings" : {
       "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podeu canviar-ho en qualsevol moment a les preferències"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toto můžete později změnit v nastavení"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du kan altid ændre dette i Indstillinger"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dies kann jederzeit in den Einstellungen geändert werden"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Μπορείτε να το αλλάξετε αυτό οποιαδήποτε στιγμή στις Ρυθμίσεις"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "You can change this anytime in Settings"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puedes cambiar esto en cualquier momento en Ajustes"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puede cambiar esto en cualquier momento en Ajustes"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous pouvez modifier ceci à tout moment dans les paramètres"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puoi cambiarlo in qualunque momento nelle impostazioni"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du kan endre dette når som helst i innstillinger"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "U kunt dit op elk gewenst moment wijzigen in Instellingen"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Você pode alterar isso a qualquer momento nas configurações"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puteți modifica aceasta oricând în setări"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toto môžete kedykoľvek zmeniť v Nastaveniach"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To lahko kadarkoli spremenite v nastavitvah"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bunu Ayarlardan istediğiniz zaman değiştirebilirsiniz"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您可以随时在设置中更改此选项"
           }
         }
       }
@@ -191606,6 +194006,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "V súčasnosti nemáte žiadne bezpečné odkazy"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trenutno nimate nobenih varnih povezav"
           }
         },
         "sv" : {
@@ -191992,6 +194398,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "V súčasnosti nemáte žiadne prihlasovacie položky s tajným kľúčom 2FA (TOTP)"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trenutno nimate prijavnih elementov s tajnim ključem 2FA (TOTP)."
           }
         },
         "sv" : {
@@ -192574,6 +194986,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nezdieľali ste žiadne položky"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niste dali v skupno rabo nobenih predmetov"
           }
         },
         "sv" : {
@@ -193308,6 +195726,12 @@
             "value" : "Pre správu sa musíte prepnúť na %@"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Za upravljanje morate preklopiti na %@"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -193872,6 +196296,12 @@
             "value" : "Stratíte prístup k tejto položke a jej údajom. Chcete pokračovať?"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izgubili boste dostop do tega predmeta in do njegovih podrobnosti. Ali želite nadaljevati"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -194212,6 +196642,12 @@
             "value" : "Ste odhlásený z %@"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odjavljeni ste iz %@"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -194531,6 +196967,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Váš aktuálny dokument sa vráti na verziu z %@"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaš trenutni dokument bo povrnjen na različico iz %@"
           }
         },
         "sv" : {
@@ -195295,6 +197737,36 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Vaš e-poštni naslov je pricurljal v %lld kršitvah."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Vaš e-poštni naslov je pricurljal v %lld kršitvi."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Vaš e-poštni naslov je pricurljal v %lld kršitvah."
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Vaš e-poštni naslov je pricurljal v %lld kršitvah."
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -195841,6 +198313,12 @@
             "value" : "Vaše údaje boli vystavené úniku dát a boli nájdené na **%@**"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaši podatki so bili vpleteni v kršitev varnosti podatkov in so bili najdeni na **%@**"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -196208,6 +198686,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Váš plán umožňuje používať na automatické vypĺňanie iba položky z prvých 2 trezorov."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaš paket dovoljuje uporabo samo predmetov iz prvih dveh trezorjev za namene samodejnega izpolnjevanja."
           }
         },
         "sv" : {

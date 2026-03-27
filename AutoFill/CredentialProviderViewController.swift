@@ -38,6 +38,10 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
         resetFactory()
     }
 
+    override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier]) {
+        coordinator.setUpAndStart(mode: .showAllLogins(serviceIdentifiers, nil))
+    }
+
     /// Passkey-agnostic, must always implement this function
     override func prepareInterfaceForExtensionConfiguration() {
         coordinator.setUpAndStart(mode: .configuration)

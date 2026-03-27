@@ -169,6 +169,9 @@ struct CreateEditLoginView: View {
                     focusedField = .title
                 }
             }
+            .task {
+                await viewModel.applyAliasPolicy()
+            }
             .toolbar { keyboardToolbar }
             .itemCreateEditSetUp(viewModel)
             .sheet(isPresented: $viewModel.isShowingCodeScanner) {
@@ -204,6 +207,7 @@ private extension CreateEditLoginView {
             switch focusedField {
             case .email, .emailOrUsername:
                 emailTextFieldToolbar
+                    .animationsDisabled() // Disable animation when switching between toolbars
             case .totp:
                 totpTextFieldToolbar
             case let .custom(value) where value?.type == .totp:
@@ -216,32 +220,39 @@ private extension CreateEditLoginView {
         }
     }
 
+    @ViewBuilder
     var emailTextFieldToolbar: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack {
-                ToolbarButton("Hide my email",
-                              titleBundle: .main,
-                              image: IconProvider.alias,
-                              action: { viewModel.generateAlias() })
+        if viewModel.aliasesAllowed {
+            ScrollView(.horizontal, showsIndicators: true) {
+                HStack {
+                    ToolbarButton("Hide my email",
+                                  titleBundle: .main,
+                                  image: IconProvider.alias,
+                                  action: { viewModel.generateAlias() })
 
-                PassDivider()
-                    .padding(.horizontal)
+                    PassDivider()
+                        .padding(.horizontal)
 
-                Button(action: {
-                    viewModel.useRealEmailAddress()
-                    if viewModel.password.isEmpty {
-                        focusedField = .password
-                    } else {
-                        focusedField = nil
-                    }
-                }, label: {
-                    Text("Use \(viewModel.emailAddress)")
-                        .minimumScaleFactor(0.5)
-                })
-                .frame(maxWidth: .infinity, alignment: .center)
+                    useCurrentEmailButton
+                }
             }
-            .animationsDisabled() // Disable animation when switching between toolbars
+        } else {
+            useCurrentEmailButton
         }
+    }
+
+    var useCurrentEmailButton: some View {
+        Button(action: {
+            viewModel.useRealEmailAddress()
+            if viewModel.password.isEmpty {
+                focusedField = .password
+            } else {
+                focusedField = nil
+            }
+        }, label: {
+            Text("Use \(viewModel.emailAddress)")
+        })
+        .frame(maxWidth: .infinity, alignment: .center)
     }
 
     var totpTextFieldToolbar: some View {
