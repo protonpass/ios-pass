@@ -53,7 +53,7 @@ public struct FolderTreeView<Content: View>: View {
                 row(for: folder)
                     .padding(.vertical, 12)
 
-                if shouldShowSubfolders(of: folder),
+                if expandedContainerIds.contains(folder.id),
                    let subFolders = content.folders(in: folder.folderId) {
                     FolderTreeView(content: content,
                                    folders: subFolders,
@@ -83,7 +83,7 @@ private extension FolderTreeView {
     }
 
     func disclosureButton(for folder: FolderUiModel) -> some View {
-        let hasSubfolders = containsSubfolder(folder)
+        let hasSubfolders = content.containsSubfolders(containerId: folder.folderId)
         return Button {
             toggleDisplayContainerContent(containerId: folder.id)
         } label: {
@@ -118,7 +118,7 @@ private extension FolderTreeView {
                                 .background(colorScheme == .dark ?
                                     PassColor.interactionNormMajor2 : PassColor.interactionNorm)
                                 .frame(height: 15)
-                                .clipShape(Circle())
+                                .clipShape(.circle)
                                 .offset(x: 5, y: 5)
                         }
                     }
@@ -135,17 +135,6 @@ private extension FolderTreeView {
 
             trailingView(folder, content)
         }
-    }
-
-    func shouldShowSubfolders(of folder: FolderUiModel) -> Bool {
-        expandedContainerIds.contains(folder.id)
-    }
-
-    func containsSubfolder(_ folder: FolderUiModel) -> Bool {
-        guard let subfolders = content.folders(in: folder.folderId), !subfolders.isEmpty else {
-            return false
-        }
-        return true
     }
 }
 

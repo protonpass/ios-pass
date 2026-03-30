@@ -50,7 +50,7 @@ public extension LocalFolderKeyDatasource {
     func getAllFolderKeys(userId: String) async throws -> [SymmetricallyEncryptedFolderKey] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = FolderKeyEntity.fetchRequest()
-        fetchRequest.predicate = .init(format: "userId = %@", userId)
+        fetchRequest.predicate = .init(format: "userID = %@", userId)
         let folderEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return folderEntities.map { $0.toSymmetricallyEncryptedKey() }
     }
@@ -61,9 +61,9 @@ public extension LocalFolderKeyDatasource {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = FolderKeyEntity.fetchRequest()
         fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-            .init(format: "shareId = %@", shareId),
-            .init(format: "userId = %@", userId),
-            .init(format: "folderId = %@", folderId)
+            .init(format: "shareID = %@", shareId),
+            .init(format: "userID = %@", userId),
+            .init(format: "folderID = %@", folderId)
         ])
         let folderEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return folderEntities.map { $0.toSymmetricallyEncryptedKey() }
@@ -90,7 +90,7 @@ public extension LocalFolderKeyDatasource {
     func removeAllKeys(userId: String) async throws {
         let taskContext = newTaskContext(type: .delete)
         let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "FolderKeyEntity")
-        fetchRequest.predicate = .init(format: "userId = %@", userId)
+        fetchRequest.predicate = .init(format: "userID = %@", userId)
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
     }
