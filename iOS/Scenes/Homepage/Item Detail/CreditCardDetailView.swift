@@ -52,8 +52,8 @@ private extension CreditCardDetailView {
         ScrollViewReader { proxy in
             ScrollView {
                 VStack(spacing: 0) {
-                    if let share = viewModel.shareContent?.share {
-                        ItemPathBreadcrumbView(share: share, itemPath: viewModel.path)
+                    if let vaultContent = viewModel.shareContent?.share.vaultContent {
+                        ItemPathBreadcrumbView(vaultContent: vaultContent, path: viewModel.path)
                     }
 
                     ItemDetailTitleView(itemContent: viewModel.itemContent,
