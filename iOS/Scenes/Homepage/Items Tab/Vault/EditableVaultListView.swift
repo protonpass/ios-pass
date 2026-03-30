@@ -139,29 +139,43 @@ private extension EditableVaultListView {
     @ViewBuilder
     var bottomView: some View {
         if viewModel.mode.isView {
-            HStack {
-                CapsuleLabelButton(icon: IconProvider.plus,
-                                   title: #localized("Create vault"),
-                                   titleColor: PassColor.interactionNormMajor2,
-                                   backgroundColor: PassColor.interactionNormMinor1,
-                                   fontWeight: .semibold,
-                                   action: viewModel.createNewVault)
-                    .fixedSize(horizontal: true, vertical: true)
-                    .hidden(!viewModel.vaultCreationAllowed)
+            ViewThatFits {
+                HStack {
+                    createVaultButton(fixedSize: true)
+                    Spacer()
+                    organizeVaultsButton(fixedSize: true)
+                }
 
-                Spacer()
-
-                if viewModel.hideShowVaultSupported {
-                    CapsuleLabelButton(icon: IconProvider.listBullets,
-                                       title: #localized("Organize vaults"),
-                                       titleColor: PassColor.interactionNormMajor2,
-                                       backgroundColor: PassColor.interactionNormMinor1,
-                                       fontWeight: .semibold,
-                                       action: { viewModel.updateMode(.organise) })
-                        .fixedSize(horizontal: true, vertical: true)
+                VStack {
+                    createVaultButton(fixedSize: false)
+                    organizeVaultsButton(fixedSize: false)
                 }
             }
             .padding([.bottom, .horizontal])
+        }
+    }
+
+    func createVaultButton(fixedSize: Bool) -> some View {
+        CapsuleLabelButton(icon: IconProvider.plus,
+                           title: #localized("Create vault"),
+                           titleColor: PassColor.interactionNormMajor2,
+                           backgroundColor: PassColor.interactionNormMinor1,
+                           fontWeight: .semibold,
+                           action: viewModel.createNewVault)
+            .fixedSize(horizontal: fixedSize, vertical: fixedSize)
+            .hidden(!viewModel.vaultCreationAllowed)
+    }
+
+    @ViewBuilder
+    func organizeVaultsButton(fixedSize: Bool) -> some View {
+        if viewModel.hideShowVaultSupported {
+            CapsuleLabelButton(icon: IconProvider.listBullets,
+                               title: #localized("Organize vaults"),
+                               titleColor: PassColor.interactionNormMajor2,
+                               backgroundColor: PassColor.interactionNormMinor1,
+                               fontWeight: .semibold,
+                               action: { viewModel.updateMode(.organise) })
+                .fixedSize(horizontal: fixedSize, vertical: fixedSize)
         }
     }
 
