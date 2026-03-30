@@ -52,6 +52,6 @@ public extension Item {
               revisionTime: .random(in: 0...1_000_000),
               flags: flags,
               shareCount: shareCount,
-              folderID: nil)
+              folderID: .random())
     }
 }

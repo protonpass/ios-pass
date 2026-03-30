@@ -25,10 +25,10 @@ public protocol CryptographicKeyProtocol: Hashable, Sendable {
     var keyData: Data { get }
 }
 
-public protocol SymmetricallyEncryptedKeyTypeProtocol {
+public protocol SymmetricallyEncryptedKeyProtocol {
     var id: String { get }
     var keyRotation: Int64 { get }
     var encryptedKey: String { get }
 
-    func buildKey(with decryptedKeyData: Data) -> any CryptographicKeyProtocol
+    func buildKey(with decryptedKey: Data) -> any CryptographicKeyProtocol
 }

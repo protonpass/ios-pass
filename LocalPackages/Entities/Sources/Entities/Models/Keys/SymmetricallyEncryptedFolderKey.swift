@@ -39,7 +39,7 @@ public struct SymmetricallyEncryptedFolderKey: Hashable, Sendable {
     }
 }
 
-extension SymmetricallyEncryptedFolderKey: SymmetricallyEncryptedKeyTypeProtocol {
+extension SymmetricallyEncryptedFolderKey: SymmetricallyEncryptedKeyProtocol {
     public var id: String {
         folderId
     }

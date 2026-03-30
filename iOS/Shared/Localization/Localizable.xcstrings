@@ -187345,7 +187345,11 @@
         }
       }
     },
+    "When moving items between containers we will preserve up to the last 50 modifications performed to each item" : {
+
+    },
     "When moving items between vaults we will preserve up to the last 50 modifications performed to each item" : {
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {

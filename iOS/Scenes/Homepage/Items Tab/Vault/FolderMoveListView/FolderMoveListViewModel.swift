@@ -38,7 +38,7 @@ final class FolderMoveListViewModel {
     private(set) var loading: Bool = false
     private(set) var moveCompleted = false
     @ObservationIgnored private var moveTask: Task<Void, Never>?
-    var containersExtended = Set<String>()
+    var expandedContainerIds = Set<String>()
     var folderSupported: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passFolder)
     }
@@ -69,17 +69,15 @@ final class FolderMoveListViewModel {
     }
 
     func load(folderInfos: FolderToMove) {
-        containersExtended.insert(folderInfos.shareContent.share.id)
+        expandedContainerIds.insert(folderInfos.shareContent.share.id)
         for folder in folderInfos.shareContent.allFolders {
-            containersExtended.insert(folder.id)
+            expandedContainerIds.insert(folder.id)
         }
     }
 
     func toggleDisplayContainerContent(containerId: String) {
-        if containersExtended.contains(containerId) {
-            containersExtended.remove(containerId)
-        } else {
-            containersExtended.insert(containerId)
+        if expandedContainerIds.remove(containerId) == nil {
+            expandedContainerIds.insert(containerId)
         }
     }
 }
