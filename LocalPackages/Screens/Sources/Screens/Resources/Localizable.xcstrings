@@ -8322,6 +8322,12 @@
     },
     "Create new vault" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Стварыць новае сховішча"
+          }
+        },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20586,6 +20592,12 @@
     },
     "Please contact your administrator." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Звярніцеся да свайго адміністратара."
+          }
+        },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
@@ -33058,6 +33070,12 @@
     },
     "You don't have any vaults." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "У вас няма сховішчаў."
+          }
+        },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
