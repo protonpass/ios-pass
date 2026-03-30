@@ -119,7 +119,7 @@ private extension SharingSummaryView {
                                   tintColor: ItemType.login.tintColor,
                                   backgroundColor: ItemType.login.backgroundColor)
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(infos.email)
+                    Text(infos.destinationName)
                         .foregroundStyle(PassColor.textNorm)
                 }
             }
