@@ -155,7 +155,7 @@ struct EditableVaultListView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         .background(PassColor.backgroundWeak)
         .showSpinner(viewModel.loading)
-        .animation(.default, value: viewModel.containersExtended)
+        .animation(.default, value: viewModel.expandedContainerIds)
     }
 }
 
@@ -232,20 +232,20 @@ private extension EditableVaultListView {
                     HStack(spacing: 16) {
                         if viewModel.folderSupported {
                             Button { viewModel.toggleDisplayContainerContent(containerId: content.id) } label: {
-                                ExpandRowButtonDisplay(expanded: viewModel.containersExtended.contains(content.id))
+                                ExpandRowButtonDisplay(expanded: viewModel.expandedContainerIds
+                                    .contains(content.id))
                             }
                             .buttonStyle(.plain)
                         }
                         vaultRow(for: .precise(.init(share: content.share, folder: nil)))
                     }
 
-                    if viewModel.containersExtended.contains(content.id) {
+                    if viewModel.expandedContainerIds.contains(content.id) {
                         if let folders = content.folders(in: content.id), !folders.isEmpty {
                             FolderTreeView(content: content,
-                                           share: content.share,
                                            folders: folders,
                                            shouldDismissOnSelection: true,
-                                           containersExtended: $viewModel.containersExtended,
+                                           expandedContainerIds: $viewModel.expandedContainerIds,
                                            selectedContainer: $viewModel.shareSelection) { folder, content in
                                 FolderMenuView(folder: folder, content: content, viewModel: viewModel)
                             }

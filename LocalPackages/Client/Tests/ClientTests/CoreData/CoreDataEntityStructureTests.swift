@@ -224,9 +224,9 @@ final class CoreDataEntityStructureTests: XCTestCase {
 
     func testFolderKeyEntity() {
         let sut = entity(byName: "FolderKeyEntity")
-        verifyAttribute(named: "folderId", on: sut, hasType: .string)
-        verifyAttribute(named: "shareId", on: sut, hasType: .string)
-        verifyAttribute(named: "userId", on: sut, hasType: .string)
+        verifyAttribute(named: "folderID", on: sut, hasType: .string)
+        verifyAttribute(named: "shareID", on: sut, hasType: .string)
+        verifyAttribute(named: "userID", on: sut, hasType: .string)
         verifyAttribute(named: "keyRotation", on: sut, hasType: .integer64)
         verifyAttribute(named: "encryptedKey", on: sut, hasType: .string)
     }

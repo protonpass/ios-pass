@@ -124,7 +124,7 @@ private extension FolderMoveListView {
     func expandVaultRow(content: ShareContent) -> some View {
         if viewModel.folderSupported, let folders = content.folders(in: content.id), !folders.isEmpty {
             Button { viewModel.toggleDisplayContainerContent(containerId: content.id) } label: {
-                ExpandRowButtonDisplay(expanded: viewModel.containersExtended.contains(content.id))
+                ExpandRowButtonDisplay(expanded: viewModel.expandedContainerIds.contains(content.id))
             }
             .buttonStyle(.plain)
         }
@@ -150,12 +150,11 @@ private extension FolderMoveListView {
     @ViewBuilder
     func folderRow(content: ShareContent) -> some View {
         if viewModel.folderSupported, let folders = content.folders(in: content.id),
-           !folders.isEmpty, viewModel.containersExtended.contains(content.id) {
+           !folders.isEmpty, viewModel.expandedContainerIds.contains(content.id) {
             FolderTreeView(content: content,
-                           share: content.share,
                            folders: folders,
                            shouldDismissOnSelection: false,
-                           containersExtended: $viewModel.containersExtended,
+                           expandedContainerIds: $viewModel.expandedContainerIds,
                            selectedContainer: $selectedContainer.asOptional())
                 .padding(.leading, 30)
         }

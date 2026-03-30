@@ -35,7 +35,7 @@ import UseCases
 typealias ScanResponsePublisher = PassthroughSubject<(any ScanResult)?, any Error>
 
 enum ItemMode: Equatable, Hashable {
-    case create(type: ItemCreationType)
+    case create(ItemCreationType)
     case clone(ItemContent)
     case edit(ItemContent)
 
@@ -282,11 +282,9 @@ class BaseCreateEditItemViewModel: ObservableObject {
 
         switch mode {
         case .create:
-            container = if let selection = appContentManager.shareSelection.preciseSelectionPayload,
-                           selection.share.canEdit {
-                selection
-            } else {
-                nil
+            if let selection = appContentManager.shareSelection.preciseSelectionPayload,
+               selection.share.canEdit {
+                container = selection
             }
         case let .clone(itemContent), let .edit(itemContent):
             if let shareContent = shareContents.shares[itemContent.shareId] {

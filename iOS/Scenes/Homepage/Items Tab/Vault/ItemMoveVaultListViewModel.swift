@@ -41,7 +41,7 @@ final class ItemMoveVaultListViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var isFreeUser = false
     @Published private(set) var showWarning = false
     @Published var selectedContainer: ShareSelectionPayload?
-    @Published var containersExtended = Set<String>()
+    @Published var expandedContainerIds = Set<String>()
 
     let allSharesContent: [ShareContent]
     private let context: MovingContext
@@ -93,7 +93,7 @@ final class ItemMoveVaultListViewModel: ObservableObject, DeinitPrintable {
     func doMove() {
         guard let selectedContainer,
               selectedContainer.share.isVaultRepresentation else {
-            assertionFailure("Should have a selected vault")
+            assertionFailure("Should have a selected container")
             return
         }
         Task { [weak self] in
@@ -114,10 +114,8 @@ final class ItemMoveVaultListViewModel: ObservableObject, DeinitPrintable {
     }
 
     func toggleDisplayContainerContent(containerId: String) {
-        if containersExtended.contains(containerId) {
-            containersExtended.remove(containerId)
-        } else {
-            containersExtended.insert(containerId)
+        if expandedContainerIds.remove(containerId) == nil {
+            expandedContainerIds.insert(containerId)
         }
     }
 }

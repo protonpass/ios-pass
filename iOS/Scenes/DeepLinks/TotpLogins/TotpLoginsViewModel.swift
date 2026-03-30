@@ -119,7 +119,7 @@ final class TotpLoginsViewModel: ObservableObject {
             }
 
             let creationType = ItemCreationType.login(totpUri: totpUri, autofill: false)
-            router.present(for: .createEditLogin(mode: .create(type: creationType), dismissAllSheets: false))
+            router.present(for: .createEditLogin(mode: .create(creationType), dismissAllSheets: false))
         }
     }
 

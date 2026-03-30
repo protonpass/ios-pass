@@ -39,7 +39,7 @@ public struct SymmetricallyEncryptedShareKey: Hashable, Sendable {
     }
 }
 
-extension SymmetricallyEncryptedShareKey: SymmetricallyEncryptedKeyTypeProtocol {
+extension SymmetricallyEncryptedShareKey: SymmetricallyEncryptedKeyProtocol {
     public var id: String {
         shareId
     }

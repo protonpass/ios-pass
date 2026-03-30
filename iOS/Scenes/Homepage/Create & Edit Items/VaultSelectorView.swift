@@ -32,7 +32,7 @@ struct VaultSelectorView: View {
     let isFreeUser: Bool
     let onUpgrade: () -> Void
 
-    @State private var containersExtended = Set<String>()
+    @State private var expandedContainerIds = Set<String>()
 
     private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
@@ -67,19 +67,17 @@ struct VaultSelectorView: View {
     }
 
     private func toggleDisplayContainerContent(containerId: String) {
-        if containersExtended.contains(containerId) {
-            containersExtended.remove(containerId)
-        } else {
-            containersExtended.insert(containerId)
+        if expandedContainerIds.remove(containerId) == nil {
+            expandedContainerIds.insert(containerId)
         }
     }
 
     func load() {
         if selectedContainer.isFolderSelected {
-            containersExtended.insert(selectedContainer.share.id)
+            expandedContainerIds.insert(selectedContainer.share.id)
             if let shareContent = appContentManager.getShareContent(for: selectedContainer.share.id) {
                 for folder in shareContent.flattenedFolders(from: selectedContainer.share.id) {
-                    containersExtended.insert(folder.id)
+                    expandedContainerIds.insert(folder.id)
                 }
             }
         }
@@ -121,7 +119,7 @@ private extension VaultSelectorView {
         if getFeatureFlagStatus(for: FeatureFlagType.passFolder), let folders = content.folders(in: content.id),
            !folders.isEmpty {
             Button { toggleDisplayContainerContent(containerId: content.id) } label: {
-                ExpandRowButtonDisplay(expanded: containersExtended.contains(content.id))
+                ExpandRowButtonDisplay(expanded: expandedContainerIds.contains(content.id))
             }
             .buttonStyle(.plain)
         }
@@ -148,12 +146,11 @@ private extension VaultSelectorView {
     func folderRow(content: ShareContent) -> some View {
         if getFeatureFlagStatus(for: FeatureFlagType.passFolder),
            let folders = content.folders(in: content.id),
-           !folders.isEmpty, containersExtended.contains(content.id) {
+           !folders.isEmpty, expandedContainerIds.contains(content.id) {
             FolderTreeView(content: content,
-                           share: content.share,
                            folders: folders,
                            shouldDismissOnSelection: true,
-                           containersExtended: $containersExtended,
+                           expandedContainerIds: $expandedContainerIds,
                            selectedContainer: $selectedContainer.asOptional())
                 .padding(.leading, 30)
         }

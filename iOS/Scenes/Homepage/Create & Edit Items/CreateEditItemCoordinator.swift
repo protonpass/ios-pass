@@ -73,17 +73,17 @@ extension CreateEditItemCoordinator {
         switch itemType {
         case .login:
             let logInType = ItemCreationType.login(autofill: false)
-            try presentCreateEditLoginView(mode: .create(type: logInType))
+            try presentCreateEditLoginView(mode: .create(logInType))
         case .alias:
-            try presentCreateEditAliasView(mode: .create(type: .alias))
+            try presentCreateEditAliasView(mode: .create(.alias))
         case .creditCard:
-            try presentCreateEditCreditCardView(mode: .create(type: .creditCard))
+            try presentCreateEditCreditCardView(mode: .create(.creditCard))
         case .note:
-            try presentCreateEditNoteView(mode: .create(type: .note(title: "", note: "")))
+            try presentCreateEditNoteView(mode: .create(.note(title: "", note: "")))
         case .password:
             assertionFailure("Should be handled outside of this coordinator")
         case .identity:
-            try presentCreateEditIdentityView(mode: .create(type: .identity))
+            try presentCreateEditIdentityView(mode: .create(.identity))
         case .custom:
             try presentCustomItemList(onError: onError)
         }
@@ -182,11 +182,11 @@ private extension CreateEditItemCoordinator {
     func handle(template: CustomItemTemplate) throws {
         switch template {
         case .sshKey:
-            try presentCreateEditSshKeyView(mode: .create(type: .sshKey))
+            try presentCreateEditSshKeyView(mode: .create(.sshKey))
         case .wifi:
-            try presentCreateEditWifiView(mode: .create(type: .wifi))
+            try presentCreateEditWifiView(mode: .create(.wifi))
         default:
-            try presentCreateEditCustomView(mode: .create(type: .custom(template)))
+            try presentCreateEditCustomView(mode: .create(.custom(template)))
         }
     }
 }

@@ -32,26 +32,26 @@ extension FolderKeyEntity {
         NSFetchRequest<FolderKeyEntity>(entityName: "FolderKeyEntity")
     }
 
-    @NSManaged var shareId: String
-    @NSManaged var folderId: String
+    @NSManaged var shareID: String
+    @NSManaged var folderID: String
     @NSManaged var keyRotation: Int64
     @NSManaged var encryptedKey: String
-    @NSManaged var userId: String
+    @NSManaged var userID: String
 }
 
 extension FolderKeyEntity {
     func toSymmetricallyEncryptedKey() -> SymmetricallyEncryptedFolderKey {
-        SymmetricallyEncryptedFolderKey(shareId: shareId,
+        SymmetricallyEncryptedFolderKey(shareId: shareID,
                                         encryptedKey: encryptedKey,
-                                        folderId: folderId,
-                                        userId: userId,
+                                        folderId: folderID,
+                                        userId: userID,
                                         keyRotation: keyRotation)
     }
 
     func hydrate(from symmetricallyEncryptedKey: SymmetricallyEncryptedFolderKey) {
-        shareId = symmetricallyEncryptedKey.shareId
-        userId = symmetricallyEncryptedKey.userId
-        folderId = symmetricallyEncryptedKey.folderId
+        shareID = symmetricallyEncryptedKey.shareId
+        userID = symmetricallyEncryptedKey.userId
+        folderID = symmetricallyEncryptedKey.folderId
         encryptedKey = symmetricallyEncryptedKey.encryptedKey
         keyRotation = symmetricallyEncryptedKey.keyRotation
     }

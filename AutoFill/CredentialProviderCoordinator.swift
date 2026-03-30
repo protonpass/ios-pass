@@ -461,7 +461,7 @@ private extension CredentialProviderCoordinator {
                                                       url: url?.schemeAndHost,
                                                       autofill: true,
                                                       passkeyCredentialRequest: request)
-            let viewModel = try CreateEditLoginViewModel(mode: .create(type: creationType),
+            let viewModel = try CreateEditLoginViewModel(mode: .create(creationType),
                                                          upgradeChecker: upgradeChecker)
             viewModel.delegate = self
             present(CreateEditLoginView(viewModel: viewModel), dismissBeforePresenting: true)
@@ -474,7 +474,7 @@ private extension CredentialProviderCoordinator {
 
     func presentCreateAliasView() {
         do {
-            let viewModel = try CreateEditAliasViewModel(mode: .create(type: .alias),
+            let viewModel = try CreateEditAliasViewModel(mode: .create(.alias),
                                                          upgradeChecker: upgradeChecker)
             present(CreateEditAliasView(viewModel: viewModel), dismissBeforePresenting: true)
             currentCreateEditItemViewModel = viewModel

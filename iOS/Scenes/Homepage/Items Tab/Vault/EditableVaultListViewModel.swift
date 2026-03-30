@@ -72,7 +72,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var mode: Mode = .view
     @Published private var userData: UserData?
     @Published private var plan: Plan?
-    @Published var containersExtended = Set<String>() {
+    @Published var expandedContainerIds = Set<String>() {
         didSet {
             persist()
         }
@@ -224,10 +224,8 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     }
 
     func toggleDisplayContainerContent(containerId: String) {
-        if containersExtended.contains(containerId) {
-            containersExtended.remove(containerId)
-        } else {
-            containersExtended.insert(containerId)
+        if expandedContainerIds.remove(containerId) == nil {
+            expandedContainerIds.insert(containerId)
         }
     }
 
@@ -444,7 +442,7 @@ extension EditableVaultListViewModel {
                                                  shareId: share.id,
                                                  parentFolderId: parentFolderId,
                                                  name: name)
-        containersExtended.insert(parentFolderId ?? share.id)
+        expandedContainerIds.insert(parentFolderId ?? share.id)
     }
 
     func folderCreateAndEdition() {
@@ -477,7 +475,7 @@ extension EditableVaultListViewModel {
 private extension EditableVaultListViewModel {
     func setUp() {
         if let userId = userManager.activeUserId {
-            containersExtended = Self.loadSet(for: userId)
+            expandedContainerIds = Self.loadSet(for: userId)
         }
 
         if case let .precise(payload) = appContentManager.shareSelection {
@@ -535,7 +533,7 @@ private extension EditableVaultListViewModel {
 
     func persist() {
         if let userId = userManager.activeUserId {
-            Self.saveSet(containersExtended,
+            Self.saveSet(expandedContainerIds,
                          for: userId)
         }
     }

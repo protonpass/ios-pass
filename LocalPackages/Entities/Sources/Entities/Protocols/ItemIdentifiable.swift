@@ -27,8 +27,6 @@ public protocol ItemIdentifiable: Sendable, CustomDebugStringConvertible, Equata
     var shareId: String { get }
     var itemId: String { get }
     var folderId: String? { get }
-
-    var parentId: String { get }
 }
 
 public extension ItemIdentifiable {

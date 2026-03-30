@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24512" systemVersion="24G517" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24837" systemVersion="25E246" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
     <entity name="AccessEntity" representedClassName="AccessEntity" syncable="YES">
         <attribute name="aliasLimit" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="aliasSyncEnabled" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
@@ -60,15 +60,15 @@
     </entity>
     <entity name="FolderKeyEntity" representedClassName="FolderKeyEntity" syncable="YES">
         <attribute name="encryptedKey" attributeType="String"/>
-        <attribute name="folderId" attributeType="String"/>
+        <attribute name="folderID" attributeType="String"/>
         <attribute name="keyRotation" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="shareId" attributeType="String"/>
-        <attribute name="userId" attributeType="String"/>
+        <attribute name="shareID" attributeType="String"/>
+        <attribute name="userID" attributeType="String"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
-                <constraint value="folderId"/>
+                <constraint value="folderID"/>
                 <constraint value="keyRotation"/>
-                <constraint value="shareId"/>
+                <constraint value="shareID"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>

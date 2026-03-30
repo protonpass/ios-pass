@@ -27,26 +27,23 @@ public struct FolderTreeView<Content: View>: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) private var colorScheme
     let content: ShareContent
-    let share: Share
     let folders: [FolderUiModel]
     let shouldDismissOnSelection: Bool
     private var trailingView: (FolderUiModel, ShareContent) -> Content
-    @Binding var containersExtended: Set<String>
+    @Binding var expandedContainerIds: Set<String>
     @Binding var selectedContainer: ShareSelectionPayload?
 
     public init(content: ShareContent,
-                share: Share,
                 folders: [FolderUiModel],
                 shouldDismissOnSelection: Bool,
-                containersExtended: Binding<Set<String>>,
+                expandedContainerIds: Binding<Set<String>>,
                 selectedContainer: Binding<ShareSelectionPayload?>,
                 @ViewBuilder trailingView: @escaping (FolderUiModel, ShareContent) -> Content) {
         self.content = content
-        self.share = share
         self.folders = folders
         self.shouldDismissOnSelection = shouldDismissOnSelection
         self.trailingView = trailingView
-        _containersExtended = containersExtended
+        _expandedContainerIds = expandedContainerIds
         _selectedContainer = selectedContainer
     }
 
@@ -59,10 +56,9 @@ public struct FolderTreeView<Content: View>: View {
                 if shouldShowSubfolders(of: folder),
                    let subFolders = content.folders(in: folder.folderId) {
                     FolderTreeView(content: content,
-                                   share: share,
                                    folders: subFolders,
                                    shouldDismissOnSelection: shouldDismissOnSelection,
-                                   containersExtended: $containersExtended,
+                                   expandedContainerIds: $expandedContainerIds,
                                    selectedContainer: $selectedContainer,
                                    trailingView: { folder, content in trailingView(folder, content) })
                         .padding(.leading, 16)
@@ -72,10 +68,8 @@ public struct FolderTreeView<Content: View>: View {
     }
 
     private func toggleDisplayContainerContent(containerId: String) {
-        if containersExtended.contains(containerId) {
-            containersExtended.remove(containerId)
-        } else {
-            containersExtended.insert(containerId)
+        if expandedContainerIds.remove(containerId) == nil {
+            expandedContainerIds.insert(containerId)
         }
     }
 }
@@ -93,7 +87,7 @@ private extension FolderTreeView {
         return Button {
             toggleDisplayContainerContent(containerId: folder.id)
         } label: {
-            ExpandRowButtonDisplay(expanded: containersExtended.contains(folder.id))
+            ExpandRowButtonDisplay(expanded: expandedContainerIds.contains(folder.id))
         }
         .buttonStyle(.plain)
         .opacity(hasSubfolders ? 1 : 0)
@@ -106,7 +100,7 @@ private extension FolderTreeView {
                 if shouldDismissOnSelection {
                     dismiss()
                 }
-                selectedContainer = ShareSelectionPayload(share: share, folder: folder)
+                selectedContainer = ShareSelectionPayload(share: content.share, folder: folder)
             } label: {
                 HStack {
                     ZStack(alignment: .bottomTrailing) {
@@ -144,7 +138,7 @@ private extension FolderTreeView {
     }
 
     func shouldShowSubfolders(of folder: FolderUiModel) -> Bool {
-        containersExtended.contains(folder.id)
+        expandedContainerIds.contains(folder.id)
     }
 
     func containsSubfolder(_ folder: FolderUiModel) -> Bool {
@@ -157,16 +151,14 @@ private extension FolderTreeView {
 
 public extension FolderTreeView where Content == EmptyView {
     init(content: ShareContent,
-         share: Share,
          folders: [FolderUiModel],
          shouldDismissOnSelection: Bool,
-         containersExtended: Binding<Set<String>>,
+         expandedContainerIds: Binding<Set<String>>,
          selectedContainer: Binding<ShareSelectionPayload?>) {
         self.init(content: content,
-                  share: share,
                   folders: folders,
                   shouldDismissOnSelection: shouldDismissOnSelection,
-                  containersExtended: containersExtended,
+                  expandedContainerIds: expandedContainerIds,
                   selectedContainer: selectedContainer,
                   trailingView: { _, _ in EmptyView() })
     }

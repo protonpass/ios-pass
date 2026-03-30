@@ -52,7 +52,7 @@ private extension ItemMoveVaultListView {
 
             if viewModel.showWarning {
                 // swiftlint:disable:next line_length
-                Label("When moving items between vaults we will preserve up to the last 50 modifications performed to each item",
+                Label("When moving items between containers we will preserve up to the last 50 modifications performed to each item",
                       systemImage: "info.circle.fill")
                     .font(.callout)
                     .foregroundStyle(PassColor.textWeak)
@@ -128,7 +128,7 @@ private extension ItemMoveVaultListView {
         if viewModel.folderSupported,
            let folders = content.folders(in: content.id), !folders.isEmpty {
             Button { viewModel.toggleDisplayContainerContent(containerId: content.id) } label: {
-                ExpandRowButtonDisplay(expanded: viewModel.containersExtended.contains(content.id))
+                ExpandRowButtonDisplay(expanded: viewModel.expandedContainerIds.contains(content.id))
             }
             .buttonStyle(.plain)
         }
@@ -136,9 +136,8 @@ private extension ItemMoveVaultListView {
 
     func vaultRow(for vaultInfos: ShareContent, vaultContent: VaultContent) -> some View {
         Button(action: {
-            viewModel
-                .selectedContainer = ShareSelectionPayload(share: vaultInfos.share,
-                                                           folder: nil)
+            viewModel.selectedContainer = ShareSelectionPayload(share: vaultInfos.share,
+                                                                folder: nil)
         }, label: {
             VaultRow(thumbnail: { VaultThumbnail(vaultContent: vaultContent) },
                      title: vaultContent.name,
@@ -154,13 +153,12 @@ private extension ItemMoveVaultListView {
 
     @ViewBuilder
     func folderRow(content: ShareContent) -> some View {
-        if viewModel.folderSupported, let folders = content.folders(in: content.id),
-           !folders.isEmpty, viewModel.containersExtended.contains(content.id) {
+        if viewModel.folderSupported, viewModel.expandedContainerIds.contains(content.id),
+           let folders = content.folders(in: content.id), !folders.isEmpty {
             FolderTreeView(content: content,
-                           share: content.share,
                            folders: folders,
                            shouldDismissOnSelection: false,
-                           containersExtended: $viewModel.containersExtended,
+                           expandedContainerIds: $viewModel.expandedContainerIds,
                            selectedContainer: $viewModel.selectedContainer)
                 .padding(.leading, 30)
         }

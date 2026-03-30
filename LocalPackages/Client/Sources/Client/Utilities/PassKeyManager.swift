@@ -294,7 +294,7 @@ private extension PassKeyManager {
         return try await getContainerKey(containerId: containerId, keyRotation: keyRotation, refreshed: true)
     }
 
-    func symmetricDecryptAndCache(_ encryptedKey: SymmetricallyEncryptedKeyTypeProtocol) async throws
+    func symmetricDecryptAndCache(_ encryptedKey: SymmetricallyEncryptedKeyProtocol) async throws
         -> any CryptographicKeyProtocol {
         let containerId = encryptedKey.id
         let keyRotation = encryptedKey.keyRotation
@@ -314,7 +314,7 @@ private extension PassKeyManager {
         return decryptedContainerKey
     }
 
-    func decryptAndCacheAll(_ encryptedKeys: [SymmetricallyEncryptedKeyTypeProtocol]) async throws
+    func decryptAndCacheAll(_ encryptedKeys: [SymmetricallyEncryptedKeyProtocol]) async throws
         -> [any CryptographicKeyProtocol] {
         var decryptedKeys = [any CryptographicKeyProtocol]()
         decryptedKeys.reserveCapacity(encryptedKeys.count)
@@ -483,7 +483,7 @@ private extension PassKeyManager {
         keysLoaded = true
     }
 
-    func decryptSymmetricKey(_ key: SymmetricallyEncryptedKeyTypeProtocol,
+    func decryptSymmetricKey(_ key: SymmetricallyEncryptedKeyProtocol,
                              using symmetricKey: SymmetricKey) throws -> any CryptographicKeyProtocol {
         let decryptedKey = try symmetricKey.decrypt(key.encryptedKey)
         guard let decryptedKeyData = try decryptedKey.base64Decode() else {
