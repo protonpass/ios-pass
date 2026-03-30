@@ -112,7 +112,7 @@ public extension RemoveUserLocalData {
         async let removeInvites: () = userInviteDatasource.removeAllInvites(userId: userId)
         async let removeLastEventId: () = userEventIdDatasource.removeLastEventId(userId: userId)
         async let removeFolders: () = folderDatasource.removeAllFolders(userId: userId)
-        async let removeFoldersKeys: () = folderKeysDatasource.removeAllKeys(userId: userId)
+        async let removeFolderKeys: () = folderKeysDatasource.removeAllKeys(userId: userId)
 
         _ = try await (removeAccess,
                        removeItems,
@@ -131,6 +131,6 @@ public extension RemoveUserLocalData {
                        removeInvites,
                        removeLastEventId,
                        removeFolders,
-                       removeFoldersKeys)
+                       removeFolderKeys)
     }
 }
