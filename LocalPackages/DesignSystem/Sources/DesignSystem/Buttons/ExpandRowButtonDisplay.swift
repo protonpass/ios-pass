@@ -30,9 +30,9 @@ public struct ExpandRowButtonDisplay: View {
     }
 
     public var body: some View {
-        (expanded ?
-            IconProvider.chevronDownFilled : PassIcon.chevronRightFilled)
+        IconProvider.chevronRightFilled
             .resizable()
+            .rotationEffect(expanded ? .degrees(90) : .degrees(0))
             .frame(width: 20, height: 20)
             .foregroundStyle(PassColor.textWeak)
     }

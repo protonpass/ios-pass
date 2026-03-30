@@ -178,4 +178,11 @@ public extension ShareContent {
         path.reverse()
         return path
     }
+
+    func containsSubfolders(containerId: String) -> Bool {
+        guard let subfolders = foldersByContainer[containerId] else {
+            return false
+        }
+        return !subfolders.isEmpty
+    }
 }
