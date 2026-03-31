@@ -33,7 +33,6 @@ let package = Package(name: "Client",
                           .package(url: "https://github.com/ProtonMail/protoncore_ios", from: "36.0.3"),
                           .package(url: "https://github.com/protonpass/swift-macro", exact: "1.0.0"),
                           .package(name: "PassRustCore", path: "../PassRustCore"),
-                          .package(url: "https://github.com/apple/swift-collections.git", from: "1.3.0")
                       ],
                       targets: [
                           // Targets are the basic building blocks of a package. A target can define a module or a
@@ -57,7 +56,6 @@ let package = Package(name: "Client",
                                       .product(name: "Entities", package: "Entities"),
                                       .product(name: "PassRustCore", package: "PassRustCore"),
                                       .product(name: "Macro", package: "swift-macro"),
-                                      .product(name: "Collections", package: "swift-collections")
                                   ],
                                   resources: [.process("Resources")],
                                   swiftSettings: swiftSettings

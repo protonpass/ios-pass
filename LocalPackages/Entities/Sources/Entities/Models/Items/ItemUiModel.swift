@@ -23,7 +23,7 @@ import Foundation
 public typealias SectionedItemUiModel = SectionedObjects<ItemUiModel>
 public typealias SectionedShareContentElement = SectionedObjects<ShareContentElement>
 
-public struct ItemUiModel: PrecomputedHashable, Equatable, Sendable, Pinnable {
+public struct ItemUiModel: PrecomputedHashable, Equatable, Sendable, Pinnable, ItemIdentifiable {
     // Existing properties
     public let itemId: String
     public let shareId: String
@@ -48,10 +48,6 @@ public struct ItemUiModel: PrecomputedHashable, Equatable, Sendable, Pinnable {
 
     public var hasTotpUri: Bool {
         totpUri?.isEmpty == false
-    }
-
-    public var parentId: String {
-        folderId ?? shareId
     }
 
     public let precomputedHash: Int
@@ -154,5 +150,3 @@ extension ItemUiModel: Identifiable {
         !aliasEnabled
     }
 }
-
-extension ItemUiModel: ItemIdentifiable {}

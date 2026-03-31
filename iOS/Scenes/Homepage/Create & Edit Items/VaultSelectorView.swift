@@ -100,6 +100,7 @@ private extension VaultSelectorView {
                 }
             }
         }
+        .animation(.default, value: expandedContainerIds)
     }
 
     @ViewBuilder

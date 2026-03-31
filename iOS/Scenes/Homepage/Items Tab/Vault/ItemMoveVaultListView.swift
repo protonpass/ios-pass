@@ -80,7 +80,7 @@ private extension ItemMoveVaultListView {
 
     var mainScrollView: some View {
         ScrollView {
-            VStack(spacing: 0) {
+            LazyVStack(spacing: 0) {
                 ForEach(viewModel.allSharesContent) { shareContent in
                     fullRow(content: shareContent)
                     if shareContent != viewModel.allSharesContent.last {

@@ -126,7 +126,7 @@ public struct ItemSearchResult: Sendable, ItemTypeIdentifiable, Identifiable, Pi
         hasher.combine(itemId)
 
         self.folderId = folderId
-        hasher.combine(type)
+        hasher.combine(folderId)
 
         self.type = type
         hasher.combine(type)

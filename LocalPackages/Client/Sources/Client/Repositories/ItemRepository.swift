@@ -840,7 +840,7 @@ public extension ItemRepository {
                                                   itemUuid: UUID().uuidString,
                                                   data: loginData,
                                                   customFields: [])
-                return try .init(parentKey: vaultKey, itemContent: content)
+                return try .init(containerKey: vaultKey, itemContent: content)
             }
             logger.debug("Bulk importing \(itemsToImport.count) logins")
             let items = try await remoteDatasource.importItems(userId: userId,
@@ -968,9 +968,11 @@ private extension ItemRepository {
     func createItemRequest(itemContent: any ProtobufableItemContentProtocol,
                            shareId: String,
                            folderId: String?) async throws -> CreateItemRequest {
-        let latestParentKey = try await passKeyManager.getContainerKey(containerId: folderId ?? shareId,
-                                                                       keyRotation: nil)
-        return try CreateItemRequest(parentKey: latestParentKey, itemContent: itemContent, folderId: folderId)
+        let latestContainerKey = try await passKeyManager.getContainerKey(containerId: folderId ?? shareId,
+                                                                          keyRotation: nil)
+        return try CreateItemRequest(containerKey: latestContainerKey,
+                                     itemContent: itemContent,
+                                     folderId: folderId)
     }
 }
 
@@ -1132,7 +1134,7 @@ private extension ItemRepository {
                                         itemKeys: encryptedItemKeys))
         }
 
-        let request = InternalShareMoveItemsRequest(folderId: toContainerId, items: itemsToBeMoved)
+        let request = MoveItemsInSameShareRequest(folderId: toContainerId, items: itemsToBeMoved)
 
         let modifiedItems = try await remoteDatasource.sameShareMove(userId: userId,
                                                                      shareId: shareId,

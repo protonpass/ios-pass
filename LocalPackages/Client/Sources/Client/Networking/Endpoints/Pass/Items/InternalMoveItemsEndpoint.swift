@@ -23,11 +23,11 @@ import Entities
 import Foundation
 import ProtonCoreNetworking
 
-struct InternalShareMoveItemsResponse: Decodable {
+struct MoveItemsInSameShareResponse: Decodable {
     let items: [ModifiedItem]
 }
 
-public struct InternalShareMoveItemsRequest: Encodable, Sendable {
+public struct MoveItemsInSameShareRequest: Encodable, Sendable {
     /// Encrypted ID of the destination folder
     let folderId: String?
     let items: [InternalItemToBeMoved]
@@ -49,15 +49,15 @@ struct InternalItemToBeMoved: Codable {
 }
 
 struct InternalShareMoveItemsEndpoint: Endpoint {
-    typealias Body = InternalShareMoveItemsRequest
-    typealias Response = InternalShareMoveItemsResponse
+    typealias Body = MoveItemsInSameShareRequest
+    typealias Response = MoveItemsInSameShareResponse
 
     var debugDescription: String
     var path: String
     var method: HTTPMethod
-    var body: InternalShareMoveItemsRequest?
+    var body: MoveItemsInSameShareRequest?
 
-    init(request: InternalShareMoveItemsRequest, shareId: String) {
+    init(request: MoveItemsInSameShareRequest, shareId: String) {
         debugDescription = "Move items internally in share"
         path = "/pass/v1/share/\(shareId)/item/folder"
         method = .put
