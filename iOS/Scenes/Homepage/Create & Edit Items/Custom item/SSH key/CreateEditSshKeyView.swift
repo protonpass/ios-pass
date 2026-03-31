@@ -141,34 +141,41 @@ private extension CreateEditSshKeyView {
         ToolbarItemGroup(placement: .keyboard) {
             switch focusedField {
             case .privateKey, .publicKey:
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack {
-                        ToolbarButton("Generate SSH key",
-                                      titleBundle: .main,
-                                      image: IconProvider.arrowsRotate,
-                                      action: {
-                                          lastFocusedField = focusedField
-                                          focusedField = nil
-                                          showKeyTypeAlert = true
-                                      })
-
-                        Divider()
-
-                        ToolbarButton("Expand editor",
-                                      titleBundle: .main,
-                                      image: IconProvider.pencil,
-                                      action: {
-                                          lastFocusedField = focusedField
-                                          focusedField = nil
-                                          selectedKeyComponent = focusedField == .publicKey
-                                              ? .publicKey : .privateKey
-                                      })
+                ViewThatFits {
+                    keyboardToolbarContent
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        keyboardToolbarContent
                     }
                 }
 
             default:
                 EmptyView()
             }
+        }
+    }
+
+    var keyboardToolbarContent: some View {
+        HStack {
+            ToolbarButton("Generate SSH key",
+                          titleBundle: .main,
+                          image: IconProvider.arrowsRotate,
+                          action: {
+                              lastFocusedField = focusedField
+                              focusedField = nil
+                              showKeyTypeAlert = true
+                          })
+
+            Divider()
+
+            ToolbarButton("Expand editor",
+                          titleBundle: .main,
+                          image: IconProvider.pencil,
+                          action: {
+                              lastFocusedField = focusedField
+                              focusedField = nil
+                              selectedKeyComponent = focusedField == .publicKey
+                                  ? .publicKey : .privateKey
+                          })
         }
     }
 
