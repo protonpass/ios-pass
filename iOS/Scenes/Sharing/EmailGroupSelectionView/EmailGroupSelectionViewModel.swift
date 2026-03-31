@@ -159,6 +159,7 @@ final class EmailGroupSelectionViewModel: ObservableObject {
 
     func loadData() async {
         loading = true
+        displayType = .suggestion
         await fetchGroupsInfos()
         async let fetchSuggestions = fetchSuggestions()
         async let fetchingOrganizationsRecommendation = fetchOrganizationsRecommendation(shouldFetchMore: true)
