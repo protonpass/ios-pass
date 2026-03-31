@@ -52,8 +52,9 @@ public protocol FileAttachmentRepositoryProtocol: Sendable {
                          pendingFilesToAdd: [PendingFileAttachment],
                          existingFileIdsToRemove: [String],
                          item: any ItemIdentifiable) async throws
-    func getActiveItemFiles(userId: String, item: any ItemIdentifiable, share: Share) async throws
-        -> [ItemFile]
+    func getActiveItemFiles(userId: String,
+                            item: any ItemIdentifiable,
+                            share: Share) async throws -> [ItemFile]
     func getItemFilesForAllRevisions(userId: String,
                                      item: any ItemIdentifiable,
                                      share: Share) async throws -> [ItemFile]

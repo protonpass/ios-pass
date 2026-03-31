@@ -52,7 +52,7 @@ extension CreateItemRequest: Encodable {
 }
 
 extension CreateItemRequest {
-    init(parentKey: any CryptographicKeyProtocol,
+    init(containerKey: any CryptographicKeyProtocol,
          itemContent: any ProtobufableItemContentProtocol,
          folderId: String?) throws {
         let itemKey = try Data.random()
@@ -61,10 +61,10 @@ extension CreateItemRequest {
                                                 associatedData: .itemContent)
 
         let encryptedItemKey = try AES.GCM.seal(itemKey,
-                                                key: parentKey.keyData,
+                                                key: containerKey.keyData,
                                                 associatedData: .itemKey)
 
-        self.init(keyRotation: parentKey.keyRotation,
+        self.init(keyRotation: containerKey.keyRotation,
                   contentFormatVersion: Int16(Constants.ContentFormatVersion.item),
                   content: encryptedContent.base64EncodedString(),
                   itemKey: encryptedItemKey.base64EncodedString(),
