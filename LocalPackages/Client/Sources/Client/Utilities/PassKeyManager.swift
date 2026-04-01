@@ -73,6 +73,12 @@ public actor PassKeyManager: PassKeyManagerProtocol {
     private var keysLoaded = false
     private var loadingTask: Task<Void, Error>?
 
+    private var symmetricKey: SymmetricKey {
+        get async throws {
+            try await symmetricKeyProvider.getSymmetricKey()
+        }
+    }
+
     public init(shareKeyRepository: any ShareKeyRepositoryProtocol,
                 itemKeyDatasource: any RemoteItemKeyDatasourceProtocol,
                 folderKeyDatasource: any LocalFolderKeyDatasourceProtocol,
@@ -301,12 +307,8 @@ private extension PassKeyManager {
 
         logger.trace("Decrypting container key \(keyDescription)")
 
-        let decryptedKey = try await symmetricKeyProvider.getSymmetricKey().decrypt(encryptedKey.encryptedKey)
-        guard let decryptedKeyData = try decryptedKey.base64Decode() else {
-            throw PassError.crypto(.failedToBase64Decode)
-        }
+        let decryptedContainerKey = try await encryptedKey.decrypt(with: symmetricKey)
 
-        let decryptedContainerKey = encryptedKey.buildKey(with: decryptedKeyData)
         cacheKey(decryptedContainerKey, id: containerId)
 
         logger.info("Decrypted & cached container key \(keyDescription)")
@@ -467,28 +469,19 @@ private extension PassKeyManager {
         async let folderKeysRequest = folderKeyDatasource.getAllFolderKeys()
         let (shareKeys, folderKeys) = try await (shareKeysRequest, folderKeysRequest)
 
-        let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
+        let symmetricKey = try await symmetricKey
 
         for key in shareKeys {
-            let decryptedKey = try decryptSymmetricKey(key, using: symmetricKey)
+            let decryptedKey = try key.decrypt(with: symmetricKey)
             cacheKey(decryptedKey, id: key.id)
         }
 
         for key in folderKeys {
-            let decryptedKey = try decryptSymmetricKey(key, using: symmetricKey)
+            let decryptedKey = try key.decrypt(with: symmetricKey)
             cacheKey(decryptedKey, id: key.id)
         }
 
         keysLoaded = true
-    }
-
-    func decryptSymmetricKey(_ key: SymmetricallyEncryptedKeyProtocol,
-                             using symmetricKey: SymmetricKey) throws -> any CryptographicKeyProtocol {
-        let decryptedKey = try symmetricKey.decrypt(key.encryptedKey)
-        guard let decryptedKeyData = try decryptedKey.base64Decode() else {
-            throw PassError.crypto(.failedToBase64Decode)
-        }
-        return key.buildKey(with: decryptedKeyData)
     }
 
     func refreshShareKeys(shareId: String) async throws {
@@ -504,5 +497,15 @@ private extension PassKeyManager {
             }
             try await taskGroup.waitForAll()
         }
+    }
+}
+
+private extension SymmetricallyEncryptedKeyProtocol {
+    func decrypt(with encryptionKey: SymmetricKey) throws -> any CryptographicKeyProtocol {
+        let decryptedKey = try encryptionKey.decrypt(encryptedKey)
+        guard let decryptedKeyData = try decryptedKey.base64Decode() else {
+            throw PassError.crypto(.failedToBase64Decode)
+        }
+        return buildKey(with: decryptedKeyData)
     }
 }
