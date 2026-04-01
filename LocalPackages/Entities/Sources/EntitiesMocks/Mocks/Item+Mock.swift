@@ -28,6 +28,7 @@ public extension ItemState {
 
 public extension Item {
     static func random(itemId: String? = nil,
+                       folderId: String? = nil,
                        state: ItemState? = nil,
                        aliasEmail: String? = nil,
                        pinned: Bool = false,
@@ -52,6 +53,6 @@ public extension Item {
               revisionTime: .random(in: 0...1_000_000),
               flags: flags,
               shareCount: shareCount,
-              folderID: .random())
+              folderID: folderId ?? .random())
     }
 }

@@ -342,7 +342,7 @@ private extension PassKeyManager {
                                                     key: parentKey.keyData,
                                                     associatedData: .itemKey)
 
-        return DecryptedItemKey(parentId: parentId,
+        return DecryptedItemKey(containerId: parentId,
                                 itemId: itemId,
                                 keyRotation: itemKey.keyRotation,
                                 keyData: decryptedItemKeyData)

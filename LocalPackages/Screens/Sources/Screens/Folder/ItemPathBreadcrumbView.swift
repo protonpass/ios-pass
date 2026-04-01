@@ -47,12 +47,21 @@ public struct ItemPathBreadcrumbView: View {
     }
 
     public var body: some View {
-        Button { expanded.toggle() } label: {
-            breadcrumb
+        content
+    }
+
+    @ViewBuilder
+    var content: some View {
+        if path.isEmpty {
+            EmptyView()
+        } else {
+            Button { expanded.toggle() } label: {
+                breadcrumb
+            }
+            .padding(DesignConstant.sectionPadding)
+            .roundedDetailSection()
+            .animation(.default, value: expanded)
         }
-        .padding(DesignConstant.sectionPadding)
-        .roundedDetailSection()
-        .animation(.default, value: expanded)
     }
 }
 

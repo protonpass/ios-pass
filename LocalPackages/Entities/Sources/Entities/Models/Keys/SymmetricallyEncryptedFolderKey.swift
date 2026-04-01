@@ -41,7 +41,7 @@ public struct SymmetricallyEncryptedFolderKey: Hashable, Sendable {
 
 extension SymmetricallyEncryptedFolderKey: SymmetricallyEncryptedKeyProtocol {
     public var id: String {
-        folderId
+        folderId + shareId
     }
 
     public func buildKey(with decryptedKeyData: Data) -> any CryptographicKeyProtocol {

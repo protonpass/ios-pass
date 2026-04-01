@@ -189,7 +189,7 @@ public extension RemoteItemDatasource {
     func sameShareMove(userId: String,
                        shareId: String,
                        request: MoveItemsInSameShareRequest) async throws -> [ModifiedItem] {
-        let endpoint = InternalShareMoveItemsEndpoint(request: request, shareId: shareId)
+        let endpoint = MoveItemsInSameShareEndpoint(request: request, shareId: shareId)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.items
     }

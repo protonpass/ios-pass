@@ -31,8 +31,17 @@ public protocol LocalFolderDatasourceProtocol: Sendable {
     func removeAllFolders() async throws
     func removeAllFolders(userId: String) async throws
     func removeAllFolders(shareId: String) async throws
-    func deleteFolders(userId: String, folders: [any FolderIdentifiable]) async throws
     func deleteFolders(userId: String, folderIds: [String], shareId: String) async throws
+    func deleteFolders(shareId: String, userId: String) async throws
+}
+
+extension LocalFolderDatasourceProtocol {
+    func deleteFolders(userId: String, folders: [any FolderIdentifiable]) async throws {
+        let foldersByShare = Dictionary(grouping: folders) { $0.shareId }
+        for (shareId, folders) in foldersByShare {
+            try await deleteFolders(userId: userId, folderIds: folders.map(\.folderId), shareId: shareId)
+        }
+    }
 }
 
 public final class LocalFolderDatasource: LocalDatasource, LocalFolderDatasourceProtocol, @unchecked Sendable {}
@@ -72,13 +81,6 @@ public extension LocalFolderDatasource {
                          })
     }
 
-    func deleteFolders(userId: String, folders: [any FolderIdentifiable]) async throws {
-        let foldersByShare = Dictionary(grouping: folders) { $0.shareId }
-        for (shareId, folders) in foldersByShare {
-            try await deleteFolders(userId: userId, folderIds: folders.map(\.folderId), shareId: shareId)
-        }
-    }
-
     func deleteFolders(userId: String, folderIds: [String], shareId: String) async throws {
         let taskContext = newTaskContext(type: .delete)
         let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "FolderEntity")
@@ -86,6 +88,17 @@ public extension LocalFolderDatasource {
             .init(format: "shareID = %@", shareId),
             .init(format: "userID = %@", userId),
             .init(format: "folderID in %@", folderIds)
+        ])
+        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+                          context: taskContext)
+    }
+
+    func deleteFolders(shareId: String, userId: String) async throws {
+        let taskContext = newTaskContext(type: .delete)
+        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "FolderEntity")
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            .init(format: "shareID = %@", shareId),
+            .init(format: "userID = %@", userId)
         ])
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)

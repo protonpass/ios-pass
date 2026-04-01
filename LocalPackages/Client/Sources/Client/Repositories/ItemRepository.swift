@@ -940,7 +940,7 @@ private extension ItemRepository {
         let shareKey = try await passKeyManager.getContainerKey(containerId: itemRevision.folderID ?? shareId,
                                                                 keyRotation: nil)
 
-        let contentProtobuf = try itemRevision.getContentProtobuf(parentKey: shareKey)
+        let contentProtobuf = try itemRevision.getContentProtobuf(containerKey: shareKey)
 
         let encryptedContent = try contentProtobuf.encrypt(symmetricKey: symmetricKey)
 
@@ -1177,7 +1177,7 @@ private extension ItemRepository {
     func decrypt(userId: String, item: Item, shareId: String) async throws -> ItemContent {
         let containerKey = try await passKeyManager.getContainerKey(containerId: item.folderID ?? shareId,
                                                                     keyRotation: nil)
-        let contentProtobuf = try item.getContentProtobuf(parentKey: containerKey)
+        let contentProtobuf = try item.getContentProtobuf(containerKey: containerKey)
         return ItemContent(userId: userId,
                            shareId: shareId,
                            item: item,

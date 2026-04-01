@@ -229,28 +229,6 @@ public extension Share {
     var vaultName: String? {
         vaultContent?.name
     }
-
-    static let empty = Share(shareID: "",
-                             vaultID: "",
-                             addressID: "",
-                             targetType: 0,
-                             targetID: "",
-                             permission: 0,
-                             shareRoleID: "",
-                             targetMembers: 0,
-                             targetMaxMembers: 0,
-                             pendingInvites: 0,
-                             newUserInvitesReady: 0,
-                             owner: false,
-                             shared: false,
-                             content: nil,
-                             contentKeyRotation: nil,
-                             contentFormatVersion: nil,
-                             groupID: nil,
-                             expireTime: nil,
-                             createTime: 0,
-                             canAutoFill: false,
-                             flags: 0)
 }
 
 public extension [Share] {

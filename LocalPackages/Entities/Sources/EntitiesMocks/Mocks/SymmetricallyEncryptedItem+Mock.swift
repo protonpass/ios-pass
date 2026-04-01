@@ -23,13 +23,14 @@ import Entities
 public extension SymmetricallyEncryptedItem {
     static func random(shareId: String? = nil,
                        userId: String? = nil,
+                       folderId: String? = nil,
                        item: Item? = nil,
                        encryptedContent: String? = nil,
                        isLogInItem: Bool = .random(),
                        encryptedSimpleLoginNote: String? = nil) -> SymmetricallyEncryptedItem {
         .init(shareId: shareId ?? .random(),
               userId: userId ?? .random(),
-              folderId: .random(),
+              folderId: folderId ?? .random(),
               item: item ?? .random(),
               encryptedContent: encryptedContent ?? .random(),
               isLogInItem: isLogInItem,

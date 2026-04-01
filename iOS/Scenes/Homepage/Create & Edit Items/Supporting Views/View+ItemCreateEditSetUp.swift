@@ -90,7 +90,6 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                 VaultSelectorView(selectedContainer: $viewModel.selectedContainer,
                                   isFreeUser: viewModel.isFreeUser,
                                   onUpgrade: { viewModel.upgrade() })
-                    .presentationDetents([.large])
                     .environment(\.colorScheme, colorScheme)
             }
             .fullScreenCover(item: $viewModel.filePreviewMode) { mode in

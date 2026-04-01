@@ -33,8 +33,8 @@ public protocol LocalItemDatasourceProtocol: Sendable {
     func getItems(userId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem]
 
     /// Get items by state
-    func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem]
-    func getItems(shareId: String, folderId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem]
+    func getItems(shareId: String, folderId: String?, state: ItemState) async throws
+        -> [SymmetricallyEncryptedItem]
 
     /// Get items by ShareID and ItemID
     func getItems(_ ids: [any ItemIdentifiable]) async throws -> [SymmetricallyEncryptedItem]
@@ -88,6 +88,12 @@ public protocol LocalItemDatasourceProtocol: Sendable {
     func getItems(for items: [any ItemIdentifiable]) async throws -> [SymmetricallyEncryptedItem]
 }
 
+extension LocalItemDatasourceProtocol {
+    func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
+        try await getItems(shareId: shareId, folderId: nil, state: state)
+    }
+}
+
 public final class LocalItemDatasource: LocalDatasource, LocalItemDatasourceProtocol, @unchecked Sendable {}
 
 public extension LocalItemDatasource {
@@ -125,28 +131,23 @@ public extension LocalItemDatasource {
         return try itemEntities.map { try $0.toEncryptedItem() }
     }
 
-    func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
-        let taskContext = newTaskContext(type: .fetch)
-        let fetchRequest = ItemEntity.fetchRequest()
-        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-            .init(format: "shareID = %@", shareId),
-            .init(format: "state = %d", state.rawValue)
-        ])
-        fetchRequest.sortDescriptors = [.init(key: "modifyTime", ascending: false)]
-        let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
-        return try itemEntities.map { try $0.toEncryptedItem() }
-    }
-
     func getItems(shareId: String,
-                  folderId: String,
+                  folderId: String?,
                   state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ItemEntity.fetchRequest()
-        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-            .init(format: "shareID = %@", shareId),
-            .init(format: "folderID = %@", folderId),
-            .init(format: "state = %d", state.rawValue)
-        ])
+        fetchRequest.predicate = if let folderId {
+            NSCompoundPredicate(andPredicateWithSubpredicates: [
+                .init(format: "shareID = %@", shareId),
+                .init(format: "folderID = %@", folderId),
+                .init(format: "state = %d", state.rawValue)
+            ])
+        } else {
+            NSCompoundPredicate(andPredicateWithSubpredicates: [
+                .init(format: "shareID = %@", shareId),
+                .init(format: "state = %d", state.rawValue)
+            ])
+        }
         fetchRequest.sortDescriptors = [.init(key: "modifyTime", ascending: false)]
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return try itemEntities.map { try $0.toEncryptedItem() }

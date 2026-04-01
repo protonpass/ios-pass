@@ -48,20 +48,17 @@ public actor ShareKeyRepository: ShareKeyRepositoryProtocol {
     private let cryptoService: any CryptoServiceProtocol
     private let logger: Logger
     private let symmetricKeyProvider: any SymmetricKeyProvider
-    private let userManager: any UserManagerProtocol
 
     public init(localDatasource: any LocalShareKeyDatasourceProtocol,
                 remoteDatasource: any RemoteShareKeyDatasourceProtocol,
                 cryptoService: any CryptoServiceProtocol,
                 logManager: any LogManagerProtocol,
-                symmetricKeyProvider: any SymmetricKeyProvider,
-                userManager: any UserManagerProtocol) {
+                symmetricKeyProvider: any SymmetricKeyProvider) {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         logger = .init(manager: logManager)
         self.cryptoService = cryptoService
         self.symmetricKeyProvider = symmetricKeyProvider
-        self.userManager = userManager
     }
 }
 

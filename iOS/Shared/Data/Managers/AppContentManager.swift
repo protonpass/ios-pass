@@ -321,13 +321,12 @@ extension AppContentManager {
         let itemIds = shareContent.flattenedItems(from: folderId).map(\.itemId)
         let folderIds = shareContent.flattenedFolders(from: folderId).map(\.folderId)
         async let deletingFolders: Void = folderIds.isEmpty ? () : folderRepository
-            .deleteLocalFolder(userId: userId,
-                               shareId: shareId,
-                               folderIds: folderIds)
+            .deleteLocalFolders(userId: userId,
+                                shareId: shareId,
+                                folderIds: folderIds)
         async let deletingItems: Void = itemIds.isEmpty ? () : itemRepository.deleteItemsLocally(itemIds: itemIds,
                                                                                                  shareId: shareId)
         _ = try await (deletingFolders, deletingItems)
-        // Delete local items of the vault
         logger.info("Deleted folder \(folderId)")
     }
 
@@ -337,7 +336,7 @@ extension AppContentManager {
         try await shareRepository.deleteShareLocally(userId: userId, shareId: shareId)
         logger.trace("Deleting local active items of share \(shareId)")
         try await itemRepository.deleteAllItemsLocally(shareId: shareId)
-        logger.info("Deleted vault \(shareId)")
+        logger.info("Deleted share \(shareId)")
     }
 
     func getOldestOwnedVault() -> Share? {
@@ -369,7 +368,7 @@ extension AppContentManager {
         return shareContent.elements(for: containerId ?? shareId) ?? []
     }
 
-    func getItems(for shareId: String, containerId: String?) -> [ItemUiModel] {
+    func getItems(shareId: String, containerId: String?) -> [ItemUiModel] {
         guard let sharesData = state.loadedContent,
               let shareContent = sharesData.shares[shareId] else { return [] }
         return if let containerId {

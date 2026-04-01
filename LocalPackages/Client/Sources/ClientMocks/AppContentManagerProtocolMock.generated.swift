@@ -126,7 +126,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
     public var invokedGetItemsParametersList = [(shareId: String, containerId: String?)]()
     public nonisolated(unsafe) var stubbedGetItemsResult: [ItemUiModel]!
 
-    public func getItems(for shareId: String, containerId: String?) -> [ItemUiModel] {
+    public func getItems(shareId: String, containerId: String?) -> [ItemUiModel] {
         invokedGetItemsfunction = true
         invokedGetItemsCount += 1
         invokedGetItemsParameters = (shareId, containerId)
