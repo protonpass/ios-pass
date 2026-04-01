@@ -21,13 +21,13 @@
 import Foundation
 
 public struct DecryptedItemKey: CryptographicKeyProtocol {
-    public let parentId: String
+    public let containerId: String
     public let itemId: String
     public let keyRotation: Int64
     public let keyData: Data
 
-    public init(parentId: String, itemId: String, keyRotation: Int64, keyData: Data) {
-        self.parentId = parentId
+    public init(containerId: String, itemId: String, keyRotation: Int64, keyData: Data) {
+        self.containerId = containerId
         self.itemId = itemId
         self.keyRotation = keyRotation
         self.keyData = keyData

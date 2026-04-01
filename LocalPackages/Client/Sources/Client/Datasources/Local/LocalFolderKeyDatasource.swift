@@ -22,7 +22,6 @@ import CoreData
 import Entities
 import Foundation
 
-// swiftlint:disable line_length
 // sourcery: AutoMockable
 public protocol LocalFolderKeyDatasourceProtocol: Sendable {
     func getAllFolderKeys() async throws -> [SymmetricallyEncryptedFolderKey]
@@ -72,7 +71,7 @@ public extension LocalFolderKeyDatasource {
     func upsertFolderKeys(_ keys: [SymmetricallyEncryptedFolderKey]) async throws {
         try await upsert(keys,
                          entityType: FolderKeyEntity.self,
-                         fetchPredicate: NSPredicate(format: "folderID IN %@ AND shareID IN %@ AND userID IN %@ AND keyRotation IN %@",
+                         fetchPredicate: NSPredicate(format: "folderID IN %@ AND shareID IN %@ AND userID IN %@ AND keyRotation IN %@", // swiftlint:disable:this line_length
                                                      keys.map(\.folderId),
                                                      keys.map(\.shareId),
                                                      keys.map(\.userId),
@@ -95,5 +94,3 @@ public extension LocalFolderKeyDatasource {
                           context: taskContext)
     }
 }
-
-// swiftlint:enable line_length

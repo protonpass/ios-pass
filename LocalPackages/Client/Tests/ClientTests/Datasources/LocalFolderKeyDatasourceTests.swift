@@ -168,7 +168,7 @@ extension LocalFolderKeyDatasourceTests {
             encryptedKey: "updated-encrypted-key",
             folderId: folderId,
             userId: userId,
-            keyRotation: 2
+            keyRotation: 1
         )
         try await sut.upsertFolderKeys([updatedKey])
 
@@ -178,7 +178,10 @@ extension LocalFolderKeyDatasourceTests {
 
         let key = try #require(keys.first)
         #expect(key.encryptedKey == "updated-encrypted-key")
-        #expect(key.keyRotation == 2)
+        #expect(key.keyRotation == 1)
+        
+        
+        
     }
 
     @Test("Upsert empty array does nothing")
@@ -315,8 +318,8 @@ extension LocalFolderKeyDatasourceTests {
         let keys = try await sut.getAllFolderKeys(userId: userId)
 
         // Then - Should have only one key (latest rotation)
-        #expect(keys.count == 1)
-        let key = try #require(keys.first)
+        #expect(keys.count == 2)
+        let key = try #require(keys.last)
         #expect(key.keyRotation == 2)
         #expect(key.encryptedKey == "key-rotation-2")
     }

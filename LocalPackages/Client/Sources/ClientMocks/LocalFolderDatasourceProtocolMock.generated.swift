@@ -129,38 +129,38 @@ public final class LocalFolderDatasourceProtocolMock: @unchecked Sendable, Local
         }
         closureRemoveAllFoldersShareIdAsync6()
     }
-    // MARK: - deleteFoldersUserIdFolders
-    public var deleteFoldersUserIdFoldersThrowableError7: Error?
-    public var closureDeleteFoldersUserIdFoldersAsync7: () -> () = {}
-    public var invokedDeleteFoldersUserIdFoldersAsync7 = false
-    public var invokedDeleteFoldersUserIdFoldersAsyncCount7 = 0
-    public var invokedDeleteFoldersUserIdFoldersAsyncParameters7: (userId: String, folders: [any FolderIdentifiable])?
-    public var invokedDeleteFoldersUserIdFoldersAsyncParametersList7 = [(userId: String, folders: [any FolderIdentifiable])]()
-
-    public func deleteFolders(userId: String, folders: [any FolderIdentifiable]) async throws {
-        invokedDeleteFoldersUserIdFoldersAsync7 = true
-        invokedDeleteFoldersUserIdFoldersAsyncCount7 += 1
-        invokedDeleteFoldersUserIdFoldersAsyncParameters7 = (userId, folders)
-        if let error = deleteFoldersUserIdFoldersThrowableError7 {
-            throw error
-        }
-        closureDeleteFoldersUserIdFoldersAsync7()
-    }
     // MARK: - deleteFoldersUserIdFolderIdsShareId
-    public var deleteFoldersUserIdFolderIdsShareIdThrowableError8: Error?
-    public var closureDeleteFoldersUserIdFolderIdsShareIdAsync8: () -> () = {}
-    public var invokedDeleteFoldersUserIdFolderIdsShareIdAsync8 = false
-    public var invokedDeleteFoldersUserIdFolderIdsShareIdAsyncCount8 = 0
-    public var invokedDeleteFoldersUserIdFolderIdsShareIdAsyncParameters8: (userId: String, folderIds: [String], shareId: String)?
-    public var invokedDeleteFoldersUserIdFolderIdsShareIdAsyncParametersList8 = [(userId: String, folderIds: [String], shareId: String)]()
+    public var deleteFoldersUserIdFolderIdsShareIdThrowableError7: Error?
+    public var closureDeleteFoldersUserIdFolderIdsShareIdAsync7: () -> () = {}
+    public var invokedDeleteFoldersUserIdFolderIdsShareIdAsync7 = false
+    public var invokedDeleteFoldersUserIdFolderIdsShareIdAsyncCount7 = 0
+    public var invokedDeleteFoldersUserIdFolderIdsShareIdAsyncParameters7: (userId: String, folderIds: [String], shareId: String)?
+    public var invokedDeleteFoldersUserIdFolderIdsShareIdAsyncParametersList7 = [(userId: String, folderIds: [String], shareId: String)]()
 
     public func deleteFolders(userId: String, folderIds: [String], shareId: String) async throws {
-        invokedDeleteFoldersUserIdFolderIdsShareIdAsync8 = true
-        invokedDeleteFoldersUserIdFolderIdsShareIdAsyncCount8 += 1
-        invokedDeleteFoldersUserIdFolderIdsShareIdAsyncParameters8 = (userId, folderIds, shareId)
-        if let error = deleteFoldersUserIdFolderIdsShareIdThrowableError8 {
+        invokedDeleteFoldersUserIdFolderIdsShareIdAsync7 = true
+        invokedDeleteFoldersUserIdFolderIdsShareIdAsyncCount7 += 1
+        invokedDeleteFoldersUserIdFolderIdsShareIdAsyncParameters7 = (userId, folderIds, shareId)
+        if let error = deleteFoldersUserIdFolderIdsShareIdThrowableError7 {
             throw error
         }
-        closureDeleteFoldersUserIdFolderIdsShareIdAsync8()
+        closureDeleteFoldersUserIdFolderIdsShareIdAsync7()
+    }
+    // MARK: - deleteFoldersShareIdUserId
+    public var deleteFoldersShareIdUserIdThrowableError8: Error?
+    public var closureDeleteFoldersShareIdUserIdAsync8: () -> () = {}
+    public var invokedDeleteFoldersShareIdUserIdAsync8 = false
+    public var invokedDeleteFoldersShareIdUserIdAsyncCount8 = 0
+    public var invokedDeleteFoldersShareIdUserIdAsyncParameters8: (shareId: String, userId: String)?
+    public var invokedDeleteFoldersShareIdUserIdAsyncParametersList8 = [(shareId: String, userId: String)]()
+
+    public func deleteFolders(shareId: String, userId: String) async throws {
+        invokedDeleteFoldersShareIdUserIdAsync8 = true
+        invokedDeleteFoldersShareIdUserIdAsyncCount8 += 1
+        invokedDeleteFoldersShareIdUserIdAsyncParameters8 = (shareId, userId)
+        if let error = deleteFoldersShareIdUserIdThrowableError8 {
+            throw error
+        }
+        closureDeleteFoldersShareIdUserIdAsync8()
     }
 }

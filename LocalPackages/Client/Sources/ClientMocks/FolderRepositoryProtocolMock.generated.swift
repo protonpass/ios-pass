@@ -64,22 +64,22 @@ public final class FolderRepositoryProtocolMock: @unchecked Sendable, FolderRepo
         }
         closureDeleteAllLocalFolders()
     }
-    // MARK: - deleteLocalFolder
-    public var deleteLocalFolderUserIdShareIdFolderIdsThrowableError3: Error?
-    public var closureDeleteLocalFolder: () -> () = {}
-    public var invokedDeleteLocalFolderfunction = false
-    public var invokedDeleteLocalFolderCount = 0
-    public var invokedDeleteLocalFolderParameters: (userId: String, shareId: String, folderIds: [String])?
-    public var invokedDeleteLocalFolderParametersList = [(userId: String, shareId: String, folderIds: [String])]()
+    // MARK: - deleteLocalFolders
+    public var deleteLocalFoldersUserIdShareIdFolderIdsThrowableError3: Error?
+    public var closureDeleteLocalFolders: () -> () = {}
+    public var invokedDeleteLocalFoldersfunction = false
+    public var invokedDeleteLocalFoldersCount = 0
+    public var invokedDeleteLocalFoldersParameters: (userId: String, shareId: String, folderIds: [String])?
+    public var invokedDeleteLocalFoldersParametersList = [(userId: String, shareId: String, folderIds: [String])]()
 
-    public func deleteLocalFolder(userId: String, shareId: String, folderIds: [String]) async throws {
-        invokedDeleteLocalFolderfunction = true
-        invokedDeleteLocalFolderCount += 1
-        invokedDeleteLocalFolderParameters = (userId, shareId, folderIds)
-        if let error = deleteLocalFolderUserIdShareIdFolderIdsThrowableError3 {
+    public func deleteLocalFolders(userId: String, shareId: String, folderIds: [String]) async throws {
+        invokedDeleteLocalFoldersfunction = true
+        invokedDeleteLocalFoldersCount += 1
+        invokedDeleteLocalFoldersParameters = (userId, shareId, folderIds)
+        if let error = deleteLocalFoldersUserIdShareIdFolderIdsThrowableError3 {
             throw error
         }
-        closureDeleteLocalFolder()
+        closureDeleteLocalFolders()
     }
     // MARK: - deleteLocal
     public var deleteLocalFoldersUserIdThrowableError4: Error?
@@ -98,25 +98,42 @@ public final class FolderRepositoryProtocolMock: @unchecked Sendable, FolderRepo
         }
         closureDeleteLocal()
     }
-    // MARK: - refreshFoldersUserIdShareId
-    public var refreshFoldersUserIdShareIdThrowableError5: Error?
-    public var closureRefreshFoldersUserIdShareIdAsync5: () -> () = {}
-    public var invokedRefreshFoldersUserIdShareIdAsync5 = false
-    public var invokedRefreshFoldersUserIdShareIdAsyncCount5 = 0
-    public var invokedRefreshFoldersUserIdShareIdAsyncParameters5: (userId: String, shareId: String)?
-    public var invokedRefreshFoldersUserIdShareIdAsyncParametersList5 = [(userId: String, shareId: String)]()
+    // MARK: - deleteAllFoldersLocally
+    public var deleteAllFoldersLocallyShareIdUserIdThrowableError5: Error?
+    public var closureDeleteAllFoldersLocally: () -> () = {}
+    public var invokedDeleteAllFoldersLocallyfunction = false
+    public var invokedDeleteAllFoldersLocallyCount = 0
+    public var invokedDeleteAllFoldersLocallyParameters: (shareId: String, userId: String)?
+    public var invokedDeleteAllFoldersLocallyParametersList = [(shareId: String, userId: String)]()
 
-    public func refreshFolders(userId: String, shareId: String) async throws {
-        invokedRefreshFoldersUserIdShareIdAsync5 = true
-        invokedRefreshFoldersUserIdShareIdAsyncCount5 += 1
-        invokedRefreshFoldersUserIdShareIdAsyncParameters5 = (userId, shareId)
-        if let error = refreshFoldersUserIdShareIdThrowableError5 {
+    public func deleteAllFoldersLocally(shareId: String, userId: String) async throws {
+        invokedDeleteAllFoldersLocallyfunction = true
+        invokedDeleteAllFoldersLocallyCount += 1
+        invokedDeleteAllFoldersLocallyParameters = (shareId, userId)
+        if let error = deleteAllFoldersLocallyShareIdUserIdThrowableError5 {
             throw error
         }
-        closureRefreshFoldersUserIdShareIdAsync5()
+        closureDeleteAllFoldersLocally()
+    }
+    // MARK: - refreshFoldersUserIdShareId
+    public var refreshFoldersUserIdShareIdThrowableError6: Error?
+    public var closureRefreshFoldersUserIdShareIdAsync6: () -> () = {}
+    public var invokedRefreshFoldersUserIdShareIdAsync6 = false
+    public var invokedRefreshFoldersUserIdShareIdAsyncCount6 = 0
+    public var invokedRefreshFoldersUserIdShareIdAsyncParameters6: (userId: String, shareId: String)?
+    public var invokedRefreshFoldersUserIdShareIdAsyncParametersList6 = [(userId: String, shareId: String)]()
+
+    public func refreshFolders(userId: String, shareId: String) async throws {
+        invokedRefreshFoldersUserIdShareIdAsync6 = true
+        invokedRefreshFoldersUserIdShareIdAsyncCount6 += 1
+        invokedRefreshFoldersUserIdShareIdAsyncParameters6 = (userId, shareId)
+        if let error = refreshFoldersUserIdShareIdThrowableError6 {
+            throw error
+        }
+        closureRefreshFoldersUserIdShareIdAsync6()
     }
     // MARK: - delete
-    public var deleteUserIdShareIdFolderIdsThrowableError6: Error?
+    public var deleteUserIdShareIdFolderIdsThrowableError7: Error?
     public var closureDelete: () -> () = {}
     public var invokedDeletefunction = false
     public var invokedDeleteCount = 0
@@ -127,13 +144,13 @@ public final class FolderRepositoryProtocolMock: @unchecked Sendable, FolderRepo
         invokedDeletefunction = true
         invokedDeleteCount += 1
         invokedDeleteParameters = (userId, shareId, folderIds)
-        if let error = deleteUserIdShareIdFolderIdsThrowableError6 {
+        if let error = deleteUserIdShareIdFolderIdsThrowableError7 {
             throw error
         }
         closureDelete()
     }
     // MARK: - createFolder
-    public var createFolderUserIdShareIdParentFolderIdFolderContentThrowableError7: Error?
+    public var createFolderUserIdShareIdParentFolderIdFolderContentThrowableError8: Error?
     public var closureCreateFolder: () -> () = {}
     public var invokedCreateFolderfunction = false
     public var invokedCreateFolderCount = 0
@@ -145,14 +162,14 @@ public final class FolderRepositoryProtocolMock: @unchecked Sendable, FolderRepo
         invokedCreateFolderfunction = true
         invokedCreateFolderCount += 1
         invokedCreateFolderParameters = (userId, shareId, parentFolderId, folderContent)
-        if let error = createFolderUserIdShareIdParentFolderIdFolderContentThrowableError7 {
+        if let error = createFolderUserIdShareIdParentFolderIdFolderContentThrowableError8 {
             throw error
         }
         closureCreateFolder()
         return stubbedCreateFolderResult
     }
     // MARK: - edit
-    public var editUserIdShareIdFolderIdFolderContentThrowableError8: Error?
+    public var editUserIdShareIdFolderIdFolderContentThrowableError9: Error?
     public var closureEdit: () -> () = {}
     public var invokedEditfunction = false
     public var invokedEditCount = 0
@@ -163,13 +180,13 @@ public final class FolderRepositoryProtocolMock: @unchecked Sendable, FolderRepo
         invokedEditfunction = true
         invokedEditCount += 1
         invokedEditParameters = (userId, shareId, folderId, folderContent)
-        if let error = editUserIdShareIdFolderIdFolderContentThrowableError8 {
+        if let error = editUserIdShareIdFolderIdFolderContentThrowableError9 {
             throw error
         }
         closureEdit()
     }
     // MARK: - move
-    public var moveUserIdShareIdFolderIdDestinationIdThrowableError9: Error?
+    public var moveUserIdShareIdFolderIdDestinationIdThrowableError10: Error?
     public var closureMove: () -> () = {}
     public var invokedMovefunction = false
     public var invokedMoveCount = 0
@@ -180,26 +197,26 @@ public final class FolderRepositoryProtocolMock: @unchecked Sendable, FolderRepo
         invokedMovefunction = true
         invokedMoveCount += 1
         invokedMoveParameters = (userId, shareId, folderId, destinationId)
-        if let error = moveUserIdShareIdFolderIdDestinationIdThrowableError9 {
+        if let error = moveUserIdShareIdFolderIdDestinationIdThrowableError10 {
             throw error
         }
         closureMove()
     }
     // MARK: - refreshFoldersUserIdFoldersIds
-    public var refreshFoldersUserIdFoldersIdsThrowableError10: Error?
-    public var closureRefreshFoldersUserIdFoldersIdsAsync10: () -> () = {}
-    public var invokedRefreshFoldersUserIdFoldersIdsAsync10 = false
-    public var invokedRefreshFoldersUserIdFoldersIdsAsyncCount10 = 0
-    public var invokedRefreshFoldersUserIdFoldersIdsAsyncParameters10: (userId: String, foldersIds: [any FolderIdentifiable])?
-    public var invokedRefreshFoldersUserIdFoldersIdsAsyncParametersList10 = [(userId: String, foldersIds: [any FolderIdentifiable])]()
+    public var refreshFoldersUserIdFoldersIdsThrowableError11: Error?
+    public var closureRefreshFoldersUserIdFoldersIdsAsync11: () -> () = {}
+    public var invokedRefreshFoldersUserIdFoldersIdsAsync11 = false
+    public var invokedRefreshFoldersUserIdFoldersIdsAsyncCount11 = 0
+    public var invokedRefreshFoldersUserIdFoldersIdsAsyncParameters11: (userId: String, foldersIds: [any FolderIdentifiable])?
+    public var invokedRefreshFoldersUserIdFoldersIdsAsyncParametersList11 = [(userId: String, foldersIds: [any FolderIdentifiable])]()
 
     public func refreshFolders(userId: String, foldersIds: [any FolderIdentifiable]) async throws {
-        invokedRefreshFoldersUserIdFoldersIdsAsync10 = true
-        invokedRefreshFoldersUserIdFoldersIdsAsyncCount10 += 1
-        invokedRefreshFoldersUserIdFoldersIdsAsyncParameters10 = (userId, foldersIds)
-        if let error = refreshFoldersUserIdFoldersIdsThrowableError10 {
+        invokedRefreshFoldersUserIdFoldersIdsAsync11 = true
+        invokedRefreshFoldersUserIdFoldersIdsAsyncCount11 += 1
+        invokedRefreshFoldersUserIdFoldersIdsAsyncParameters11 = (userId, foldersIds)
+        if let error = refreshFoldersUserIdFoldersIdsThrowableError11 {
             throw error
         }
-        closureRefreshFoldersUserIdFoldersIdsAsync10()
+        closureRefreshFoldersUserIdFoldersIdsAsync11()
     }
 }

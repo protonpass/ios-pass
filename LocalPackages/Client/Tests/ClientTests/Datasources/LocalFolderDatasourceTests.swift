@@ -32,8 +32,8 @@ struct LocalFolderDatasourceTests {
 // MARK: - getAllFolders Tests
 
 extension LocalFolderDatasourceTests {
-    @Test("Get all folders by user returns only folders for that user")
-    func getAllFoldersByUser() async throws {
+    @Test
+    func `Get all folders by user returns only folders for that user`() async throws {
         // Given
         let userId = String.random()
         let givenFolders = [
@@ -59,8 +59,8 @@ extension LocalFolderDatasourceTests {
         #expect(folderIds == givenFolderIds)
     }
 
-    @Test("Get all folders returns empty when no folders exist for user")
-    func getAllFoldersReturnsEmptyForNonExistentUser() async throws {
+    @Test
+    func `Get all folders returns empty when no folders exist for user`() async throws {
         // Given
         let userId = String.random()
         try await sut.upsertFolders([.random()], userId: .random())
@@ -76,8 +76,8 @@ extension LocalFolderDatasourceTests {
 // MARK: - getFolder Tests
 
 extension LocalFolderDatasourceTests {
-    @Test("Get specific folder by shareId and folderId")
-    func getFolder() async throws {
+    @Test
+    func `Get specific folder by shareId and folderId`() async throws {
         // Given
         let shareId = String.random()
         let folderId = String.random()
@@ -105,8 +105,8 @@ extension LocalFolderDatasourceTests {
         #expect(result.shareId == shareId)
     }
 
-    @Test("Get folder returns nil when folder does not exist")
-    func getFolderReturnsNilWhenNotFound() async throws {
+    @Test
+    func `Get folder returns nil when folder does not exist`() async throws {
         // Given
         try await sut.upsertFolders([.random()], userId: .random())
 
@@ -121,8 +121,8 @@ extension LocalFolderDatasourceTests {
 // MARK: - upsertFolders Tests
 
 extension LocalFolderDatasourceTests {
-    @Test("Insert multiple folders")
-    func insertFolders() async throws {
+    @Test
+    func `Insert multiple folders`() async throws {
         // Given
         let userId = String.random()
         let shareId = String.random()
@@ -149,8 +149,8 @@ extension LocalFolderDatasourceTests {
         #expect(retrievedFolderIds == allGivenFolderIds)
     }
 
-    @Test("Update existing folder")
-    func updateFolder() async throws {
+    @Test
+    func `Update existing folder`() async throws {
         // Given
         let userId = String.random()
         let shareId = String.random()
@@ -188,8 +188,8 @@ extension LocalFolderDatasourceTests {
 // MARK: - deleteFolders Tests
 
 extension LocalFolderDatasourceTests {
-    @Test("Delete folders by ElementIdentifiable")
-    func deleteFoldersByElementIdentifiable() async throws {
+    @Test
+    func `Delete folders by FolderIdentifiable`() async throws {
         // Given
         let userId = String.random()
         let shareId = String.random()
@@ -216,8 +216,8 @@ extension LocalFolderDatasourceTests {
         #expect(remainingIds.contains(folder3.folderId))
     }
 
-    @Test("Delete folders by folderIds and shareId")
-    func deleteFoldersByIds() async throws {
+    @Test
+    func `Delete folders by folderIds and shareId`() async throws {
         // Given
         let userId = String.random()
         let shareId = String.random()
@@ -245,8 +245,8 @@ extension LocalFolderDatasourceTests {
 // MARK: - removeAllFolders Tests
 
 extension LocalFolderDatasourceTests {
-    @Test("Remove all folders globally")
-    func removeAllFoldersGlobally() async throws {
+    @Test
+    func `Remove all folders globally`() async throws {
         // Given
         let userId1 = String.random()
         let userId2 = String.random()
@@ -269,8 +269,8 @@ extension LocalFolderDatasourceTests {
         #expect(user2Folders.isEmpty)
     }
 
-    @Test("Remove all folders by userId")
-    func removeAllFoldersByUserId() async throws {
+    @Test
+    func `Remove all folders by userId`() async throws {
         // Given
         let userId1 = String.random()
         let userId2 = String.random()
@@ -288,8 +288,8 @@ extension LocalFolderDatasourceTests {
         #expect(user2Folders.count == 2)
     }
 
-    @Test("Remove all folders by shareId")
-    func removeAllFoldersByShareId() async throws {
+    @Test
+    func `Remove all folders by shareId`() async throws {
         // Given
         let userId = String.random()
         let shareId1 = String.random()
@@ -325,8 +325,8 @@ extension LocalFolderDatasourceTests {
 // MARK: - Edge Cases
 
 extension LocalFolderDatasourceTests {
-    @Test("Upsert empty array does nothing")
-    func upsertEmptyArray() async throws {
+    @Test
+    func `Upsert empty array does nothing`() async throws {
         // Given
         let userId = String.random()
 
@@ -338,8 +338,8 @@ extension LocalFolderDatasourceTests {
         #expect(folders.isEmpty)
     }
 
-    @Test("Folder with parent folder relationship")
-    func folderWithParentRelationship() async throws {
+    @Test
+    func `Folder with parent folder relationship`() async throws {
         // Given
         let userId = String.random()
         let shareId = String.random()

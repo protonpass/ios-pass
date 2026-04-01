@@ -29,8 +29,9 @@ public protocol FolderRepositoryProtocol: Sendable {
 
     func getAllLocalFolders(userId: String) async throws -> [SymmetricallyEncryptedFolder]
     func deleteAllLocalFolders(userId: String) async throws
-    func deleteLocalFolder(userId: String, shareId: String, folderIds: [String]) async throws
+    func deleteLocalFolders(userId: String, shareId: String, folderIds: [String]) async throws
     func deleteLocal(folders: [any FolderIdentifiable], userId: String) async throws
+    func deleteAllFoldersLocally(shareId: String, userId: String) async throws
 
     // MARK: - CRUD
 
@@ -82,7 +83,7 @@ public extension FolderRepository {
         try await localDatasource.getAllFolders(userId: userId)
     }
 
-    func deleteLocalFolder(userId: String, shareId: String, folderIds: [String]) async throws {
+    func deleteLocalFolders(userId: String, shareId: String, folderIds: [String]) async throws {
         // Local deletion
         logger.trace("Deleting \(folderIds.count) local folders in share: \(shareId) for user \(userId)")
         try await localDatasource.deleteFolders(userId: userId, folderIds: folderIds, shareId: shareId)
@@ -90,15 +91,21 @@ public extension FolderRepository {
     }
 
     func deleteAllLocalFolders(userId: String) async throws {
-        logger.trace("Deleting all local folder of user \(userId)")
+        logger.trace("Deleting all local folders of user \(userId)")
         try await localDatasource.removeAllFolders(userId: userId)
-        logger.trace("Deleted all local folder")
+        logger.trace("Deleted all local folders of user \(userId)")
     }
 
     func deleteLocal(folders: [any FolderIdentifiable], userId: String) async throws {
         logger.trace("Deleting \(folders.count) local folders of user \(userId)")
         try await localDatasource.deleteFolders(userId: userId, folders: folders)
-        logger.trace("Deleted all local folder")
+        logger.trace("Deleted \(folders.count) local folders of user \(userId)")
+    }
+
+    func deleteAllFoldersLocally(shareId: String, userId: String) async throws {
+        logger.trace("Deleting all folders locally for share \(shareId) of user \(userId)")
+        try await localDatasource.deleteFolders(shareId: shareId, userId: userId)
+        logger.trace("Deleted all folders locally for share \(shareId)")
     }
 }
 
@@ -125,6 +132,7 @@ public extension FolderRepository {
                 }
                 sinceToken = paginatedFolders.lastToken
             } catch {
+                logger.error(message: "Failed to fetch folders for share \(shareId): \(error)", error: error)
                 throw error
             }
         }
@@ -136,17 +144,14 @@ public extension FolderRepository {
             return
         }
 
-        let symmetricallyEncryptedFolders = try await batchSymmetricDecrypt(userId: userId,
+        let symmetricallyEncryptedFolders = try await batchSymmetricEncrypt(userId: userId,
                                                                             shareId: shareId,
                                                                             folders: folders)
 
-        logger.trace("Removing all local old folders if any for share \(shareId)")
         try await localDatasource.removeAllFolders(shareId: shareId)
-        logger.trace("Removed all local old folders for share \(shareId)")
-
-        logger.trace("Saving \(symmetricallyEncryptedFolders.count) remote folders revisions to local database")
+        logger.trace("Saving \(symmetricallyEncryptedFolders.count) remote folders to local database")
         try await localDatasource.upsertFolders(symmetricallyEncryptedFolders, userId: userId)
-        logger.trace("Saved \(symmetricallyEncryptedFolders.count) remote folders revisions to local database")
+        logger.trace("Saved \(symmetricallyEncryptedFolders.count) remote folders to local database")
     }
 
     func refreshFolders(userId: String, foldersIds: [any FolderIdentifiable]) async throws {
@@ -169,14 +174,12 @@ public extension FolderRepository {
     func delete(userId: String, shareId: String, folderIds: [String]) async throws {
         // Remote deletion
         logger.trace("Deleting remote folders \(folderIds) for user \(userId)")
-        try await remoteDatasource.delete(userId: userId, shareId: shareId, folderId: folderIds)
+        try await remoteDatasource.delete(userId: userId, shareId: shareId, folderIds: folderIds)
         logger.trace("Deleted remote folders \(folderIds) for user \(userId)")
         // Local deletion
-        logger.trace("Deleting local vault \(shareId) for user \(userId)")
+        logger.trace("Deleting local folders \(folderIds) for user \(userId)")
         try await localDatasource.deleteFolders(userId: userId, folderIds: folderIds, shareId: shareId)
-        logger.trace("Deleted local folders \(folderIds) for user \(userId)")
-
-        logger.trace("Finished deleting folders \(folderIds) for user \(userId)")
+        logger.trace("Finished deleting folders \(folderIds) in share \(shareId) for user \(userId)")
     }
 
     func createFolder(userId: String,
@@ -193,7 +196,7 @@ public extension FolderRepository {
         try await passKeyManager.decryptAndStoreFolderKeys(shareId: shareId, folders: [newFolder])
         let encryptedFolder = try await symmetricallyEncrypt(userId: userId,
                                                              shareId: shareId,
-                                                             folderRevision: newFolder)
+                                                             folder: newFolder)
         logger.trace("Saving newly created folder to local for user \(userId)")
         try await localDatasource.upsertFolders([encryptedFolder], userId: userId)
         logger.trace("Created folder for user \(userId)")
@@ -213,20 +216,17 @@ public extension FolderRepository {
         logger.trace("Saving updated folder \(folderId) to local for user \(userId)")
         let encryptedFolder = try await symmetricallyEncrypt(userId: userId,
                                                              shareId: shareId,
-                                                             folderRevision: updatedFolder)
+                                                             folder: updatedFolder)
         try await localDatasource.upsertFolders([encryptedFolder], userId: userId)
         logger.trace("Updated folder \(encryptedFolder.folderId) for user \(userId)")
     }
 
     func move(userId: String, shareId: String, folderId: String, destinationId: String?) async throws {
         logger.trace("Move folder \(folderId) to destination \(destinationId ?? shareId)")
-        logger.trace("Fetching destination container key")
         let destinationKey = try await passKeyManager.getContainerKey(containerId: destinationId ?? shareId,
                                                                       keyRotation: nil)
-        logger.trace("Fetching source folder key")
         let currentFolderKey = try await passKeyManager.getContainerKey(containerId: folderId,
                                                                         keyRotation: nil)
-        logger.trace("Re-encrypting folder key for destination")
         let encryptedItemKey = try AES.GCM.seal(currentFolderKey.keyData,
                                                 key: destinationKey.keyData,
                                                 associatedData: .folderKey)
@@ -234,15 +234,13 @@ public extension FolderRepository {
         let request = MoveFolderRequest(parentFolderID: destinationId,
                                         folderKeys: [.init(folderKey: encryptedItemKey.base64EncodedString(),
                                                            keyRotation: Int(currentFolderKey.keyRotation))])
-        logger.trace("Sending move request to remote datasource")
         let updatedFolder = try await remoteDatasource.move(userId: userId,
                                                             shareId: shareId,
                                                             folderId: folderId,
                                                             request: request)
-        logger.trace("Encrypting updated folder for local persistence")
         let encryptedFolder = try await symmetricallyEncrypt(userId: userId,
                                                              shareId: shareId,
-                                                             folderRevision: updatedFolder)
+                                                             folder: updatedFolder)
         logger.trace("Updating local datasource")
         try await localDatasource.deleteFolders(userId: userId, folderIds: [folderId], shareId: shareId)
         try await localDatasource.upsertFolders([encryptedFolder], userId: userId)
@@ -253,17 +251,17 @@ public extension FolderRepository {
 private extension FolderRepository {
     func symmetricallyEncrypt(userId: String,
                               shareId: String,
-                              folderRevision: Folder) async throws -> SymmetricallyEncryptedFolder {
+                              folder: Folder) async throws -> SymmetricallyEncryptedFolder {
         let symmetricKey = try await symmetricKey
 
-        let containerKey = try await passKeyManager.getContainerKey(containerId: folderRevision.id,
-                                                                    keyRotation: folderRevision.keyRotation)
+        let containerKey = try await passKeyManager.getContainerKey(containerId: folder.id,
+                                                                    keyRotation: folder.keyRotation)
 
-        let contentProtobuf = try folderRevision.getContent(parentKey: containerKey)
+        let contentProtobuf = try folder.getContent(parentKey: containerKey)
         let encryptedContent = try contentProtobuf.encrypt(symmetricKey: symmetricKey)
         return SymmetricallyEncryptedFolder(shareId: shareId,
                                             userId: userId,
-                                            folder: folderRevision,
+                                            folder: folder,
                                             encryptedContent: encryptedContent)
     }
 
@@ -297,7 +295,7 @@ private extension FolderRepository {
             folders.append(contentsOf: batch)
         }
 
-        let symmetricallyEncryptedFolders = try await batchSymmetricDecrypt(userId: userId,
+        let symmetricallyEncryptedFolders = try await batchSymmetricEncrypt(userId: userId,
                                                                             shareId: shareId,
                                                                             folders: folders)
 
@@ -310,11 +308,10 @@ private extension FolderRepository {
         logger.trace("Saved \(symmetricallyEncryptedFolders.count) remote folders revisions to local database")
     }
 
-    func batchSymmetricDecrypt(userId: String,
+    func batchSymmetricEncrypt(userId: String,
                                shareId: String,
                                folders: [Folder]) async throws -> [SymmetricallyEncryptedFolder] {
-        if folders.isEmpty {
-            logger.trace("Encrypted folders are empty nothing to save locally")
+        guard !folders.isEmpty else {
             return []
         }
         try await passKeyManager.decryptAndStoreFolderKeys(shareId: shareId, folders: folders)
@@ -333,7 +330,7 @@ private extension FolderRepository {
                         }
                         return try await symmetricallyEncrypt(userId: userId,
                                                               shareId: shareId,
-                                                              folderRevision: folder)
+                                                              folder: folder)
                     }
                 }
                 var encryptedFolders = [SymmetricallyEncryptedFolder]()

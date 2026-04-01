@@ -33,7 +33,7 @@ public protocol RemoteFolderDatasourceProtocol: Sendable {
     func create(userId: String, shareId: String, request: CreateFolderRequest) async throws -> Folder
     func delete(userId: String,
                 shareId: String,
-                folderId: [String]) async throws
+                folderIds: [String]) async throws
     func update(userId: String, shareId: String, folderId: String, request: UpdateFolderRequest) async throws
         -> Folder
     func move(userId: String, shareId: String, folderId: String, request: MoveFolderRequest) async throws -> Folder
@@ -76,8 +76,8 @@ public extension RemoteFolderDatasource {
 
     func delete(userId: String,
                 shareId: String,
-                folderId: [String]) async throws {
-        let endpoint = DeleteFoldersEndpoint(shareId: shareId, folderIds: folderId)
+                folderIds: [String]) async throws {
+        let endpoint = DeleteFoldersEndpoint(shareId: shareId, folderIds: folderIds)
         _ = try await exec(userId: userId, endpoint: endpoint)
     }
 

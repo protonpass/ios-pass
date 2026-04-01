@@ -32,7 +32,7 @@ struct CustomDetailView: View {
     var body: some View {
         ScrollViewReader { proxy in
             LazyVStack(spacing: 0) {
-                if let vaultContent = viewModel.shareContent?.share.vaultContent {
+                if viewModel.folderSupported, let vaultContent = viewModel.shareContent?.share.vaultContent {
                     ItemPathBreadcrumbView(vaultContent: vaultContent, path: viewModel.path)
                 }
 

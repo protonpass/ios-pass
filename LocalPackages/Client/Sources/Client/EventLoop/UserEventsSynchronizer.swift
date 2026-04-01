@@ -265,6 +265,8 @@ private extension UserEventsSynchronizer {
                         if let localShare = try await shareRepository.getShare(shareId: newShare.shareID) {
                             try await shareRepository.deleteShareLocally(userId: userId,
                                                                          shareId: localShare.shareID)
+                            try await folderRepository.deleteAllFoldersLocally(shareId: localShare.shareID,
+                                                                               userId: userId)
                             try await itemRepository.deleteAllItemsLocally(shareId: localShare.shareID)
                         }
                         try await shareRepository.refreshShare(userId: userId,

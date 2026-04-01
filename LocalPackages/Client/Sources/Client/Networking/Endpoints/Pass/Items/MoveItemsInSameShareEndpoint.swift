@@ -1,5 +1,5 @@
 //
-// InternalMoveItemsEndpoint.swift
+// MoveItemsInSameShareEndpoint.swift
 // Proton Pass - Created on 29/03/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -48,7 +48,7 @@ struct InternalItemToBeMoved: Codable {
     }
 }
 
-struct InternalShareMoveItemsEndpoint: Endpoint {
+struct MoveItemsInSameShareEndpoint: Endpoint {
     typealias Body = MoveItemsInSameShareRequest
     typealias Response = MoveItemsInSameShareResponse
 
