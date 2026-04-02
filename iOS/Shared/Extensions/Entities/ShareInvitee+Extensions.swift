@@ -66,6 +66,10 @@ extension UserShareInfos: @retroactive ShareInvitee {
 }
 
 extension ShareExistingUserInvite: @retroactive ShareInvitee {
+    public var isGroupShare: Bool {
+        false
+    }
+
     public var owner: Bool {
         false
     }
@@ -95,6 +99,10 @@ extension ShareExistingUserInvite: @retroactive ShareInvitee {
 }
 
 extension ShareNewUserInvite: @retroactive ShareInvitee {
+    public var isGroupShare: Bool {
+        false
+    }
+
     public var owner: Bool {
         false
     }

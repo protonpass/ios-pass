@@ -70,6 +70,14 @@ struct ManageSharedShareView: View {
                        .isFreeUser ? "Vaults can’t contain more than 3 users with a free plan." :
                        "Vaults can’t contain more than 10 users.")
                })
+        .sheet(isPresented: $viewModel.groupInfo.mappedToBool(),
+               content: {
+                   if let infos = viewModel.groupInfo {
+                       GroupUsersInformationView(groupInfo: infos, rights: nil)
+                           .presentationDetents([.medium, .large])
+                           .presentationDragIndicator(.visible)
+                   }
+               })
         .navigationStackEmbeded()
     }
 

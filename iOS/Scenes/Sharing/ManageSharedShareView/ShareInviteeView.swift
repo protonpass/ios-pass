@@ -60,9 +60,6 @@ private extension ShareInviteeView {
                 Text(title)
                     .foregroundStyle(PassColor.textNorm)
                     .lineLimit(isExpanded ? nil : 1)
-                    .onTapGesture {
-                        isExpanded = true
-                    }
                     .animation(.default, value: isExpanded)
 
                 HStack {
@@ -87,6 +84,14 @@ private extension ShareInviteeView {
 
             if isManager, !isCurrentUser, !invitee.owner {
                 trailingView
+            }
+        }
+        .contentShape(.rect)
+        .onTapGesture {
+            if invitee.isGroupShare {
+                onSelect(.showGroup(invitee))
+            } else {
+                isExpanded = true
             }
         }
     }
