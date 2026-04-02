@@ -46,7 +46,7 @@ public enum ShareInviteeOption: Identifiable, Sendable {
     case confirmTransferOwnership(NewOwner)
     /// Do the transfer
     case transferOwnership(NewOwner)
-    case showGroup(any ShareInvitee)
+    case showGroupMembers(any ShareInvitee)
 
     public var id: String {
         switch self {
@@ -66,7 +66,7 @@ public enum ShareInviteeOption: Identifiable, Sendable {
             "confirmTransfer_\(owner.shareId)"
         case let .transferOwnership(owner):
             "transfer_\(owner.shareId)"
-        case let .showGroup(invitee):
+        case let .showGroupMembers(invitee):
             "show_group_\(invitee.id)"
         }
     }

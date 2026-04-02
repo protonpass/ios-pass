@@ -56,8 +56,8 @@ struct EmailGroupSelectionView: View {
             .navigationStackEmbeded($router.path)
             .environment(router)
             .ignoresSafeArea(.keyboard)
-            .alert("Group selected",
-                   isPresented: $viewModel.isGroupSelected,
+            .alert("Group \(viewModel.groupNameSelected ?? "selected")",
+                   isPresented: $viewModel.groupNameSelected.mappedToBool(),
                    actions: {
                        Button {
                            viewModel.setGroupInfos()
@@ -72,18 +72,13 @@ struct EmailGroupSelectionView: View {
                        Button(role: .cancel) {
                            Text("Cancel")
                        }
-                   },
-                   message: {
-                       Text("What do you want to do with the selected group?")
                    })
-            .sheet(isPresented: $viewModel.groupInfo.mappedToBool(),
+            .sheet(item: $viewModel.selectedGroupInfo,
                    onDismiss: { viewModel.clearHighlightedRecommendation() },
-                   content: {
-                       if let infos = viewModel.groupInfo {
-                           GroupUsersInformationView(groupInfo: infos, rights: nil)
-                               .presentationDetents([.medium, .large])
-                               .presentationDragIndicator(.visible)
-                       }
+                   content: { infos in
+                       GroupUsersInformationView(groupInfo: infos, rights: nil)
+                           .presentationDetents([.medium, .large])
+                           .presentationDragIndicator(.visible)
                    })
     }
 }
@@ -300,6 +295,7 @@ private extension EmailGroupSelectionView {
                                                 Task {
                                                     if await viewModel.continue() {
                                                         router.navigate(to: .userSharePermission)
+                                                        viewModel.displayType = .suggestion
                                                     }
                                                 }
                                             })
