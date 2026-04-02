@@ -99,8 +99,10 @@ struct ProfileTabView: View {
                 passwordHistorySection
                     .padding(.top)
 
-                aliasesSection
-                    .padding(.top)
+                if viewModel.aliasesAllowed {
+                    aliasesSection
+                        .padding(.top)
+                }
 
                 secureLinkSection
                     .padding(.top)
