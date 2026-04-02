@@ -461,6 +461,16 @@
         }
       }
     },
+    "%@ (%lld members)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$lld members)"
+          }
+        }
+      }
+    },
     "%@ (copied)" : {
       "comment" : "Default title when duplicating items. Placeholder is the original title.",
       "localizations" : {
@@ -78872,6 +78882,16 @@
         }
       }
     },
+    "Group %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Group %@"
+          }
+        }
+      }
+    },
     "Haven't received the code?" : {
       "localizations" : {
         "be" : {
@@ -154779,6 +154799,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "提示作法"
+          }
+        }
+      }
+    },
+    "Show Members" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show Members"
           }
         }
       }

@@ -64,6 +64,7 @@ final class SendShareInviteTests: XCTestCase {
         userManager.stubbedGetActiveUserDataResult = .preview
         let infos = SharingInfos(shareElement: .vault(.random()),
                                  email: "Test@test.com",
+                                 destinationName: "Test",
                                  role: .read,
                                  receiverPublicKeys: [PublicKey(value: "")],
                                  itemsNum: 100)
