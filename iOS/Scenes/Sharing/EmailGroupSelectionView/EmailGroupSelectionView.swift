@@ -56,14 +56,29 @@ struct EmailGroupSelectionView: View {
             .navigationStackEmbeded($router.path)
             .environment(router)
             .ignoresSafeArea(.keyboard)
-            .sheet(isPresented: $viewModel.showGroupMembers,
-                   onDismiss: { viewModel.clearHighlightedRecommendation() },
-                   content: { if let reco = viewModel.highlightedRecommendation,
-                                 case let .group(infos) = reco {
-                           GroupUsersInformationView(groupInfo: infos, rights: nil)
-                               .presentationDetents([.medium, .large])
-                               .presentationDragIndicator(.visible)
+            .alert("Group \(viewModel.groupNameSelected ?? "selected")",
+                   isPresented: $viewModel.groupNameSelected.mappedToBool(),
+                   actions: {
+                       Button {
+                           viewModel.setGroupInfos()
+                       } label: {
+                           Text("Show Members")
                        }
+                       if let selectedGroup = viewModel.highlightedRecommendation {
+                           Button { viewModel.deselect(selectedGroup) } label: {
+                               Text("Remove")
+                           }
+                       }
+                       Button(role: .cancel) {
+                           Text("Cancel")
+                       }
+                   })
+            .sheet(item: $viewModel.selectedGroupInfo,
+                   onDismiss: { viewModel.clearHighlightedRecommendation() },
+                   content: { infos in
+                       GroupUsersInformationView(groupInfo: infos, rights: nil)
+                           .presentationDetents([.medium, .large])
+                           .presentationDragIndicator(.visible)
                    })
     }
 }
@@ -280,6 +295,7 @@ private extension EmailGroupSelectionView {
                                                 Task {
                                                     if await viewModel.continue() {
                                                         router.navigate(to: .userSharePermission)
+                                                        viewModel.displayType = .suggestion
                                                     }
                                                 }
                                             })
