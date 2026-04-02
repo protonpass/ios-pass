@@ -40,7 +40,7 @@ final class ManageSharedShareViewModel: ObservableObject {
     @Published private(set) var isBusinessUser = false
     @Published private(set) var itemSharingAllowed = false
     @Published var newOwner: NewOwner?
-    @Published var groupInfo: GroupInfo?
+    @Published var selectedGroupInfo: GroupInfo?
 
     private var groups = [String: GroupInfo]()
 
@@ -224,8 +224,8 @@ final class ManageSharedShareViewModel: ObservableObject {
                                                                    shareId: share.shareId),
                                       elementDisplay: element)
 
-                case let .showGroup(invitee):
-                    selectGroupInfo(for: invitee)
+                case let .showGroupMembers(invitee):
+                    selectedGroupInfo = groups[invitee.email]
                 }
             } catch {
                 logger.error(error)
@@ -241,10 +241,10 @@ final class ManageSharedShareViewModel: ObservableObject {
         router.present(for: .upgradeFlow)
     }
 
-    func inviteName(_ invite: any ShareInvitee) -> String {
+    func inviteTitle(_ invite: any ShareInvitee) -> String {
         if let groupInfo = groups[invite.email] {
             if let members = groupInfo.members {
-                "\(groupInfo.group.name) (\(members.count) members)"
+                #localized("%@ (%lld members)", groupInfo.group.name, members.count)
             } else {
                 groupInfo.group.name
             }
@@ -257,7 +257,11 @@ final class ManageSharedShareViewModel: ObservableObject {
         guard let info = groups[invite.email] else {
             return
         }
-        groupInfo = info
+        selectedGroupInfo = info
+    }
+
+    func totalNumberOfMembers() -> Int {
+        vaultMembers.reduce(0) { $0 + (groups[$1.email]?.members?.count ?? 1) }
     }
 }
 

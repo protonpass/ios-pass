@@ -89,7 +89,7 @@ private extension ShareInviteeView {
         .contentShape(.rect)
         .onTapGesture {
             if invitee.isGroupShare {
-                onSelect(.showGroup(invitee))
+                onSelect(.showGroupMembers(invitee))
             } else {
                 isExpanded = true
             }

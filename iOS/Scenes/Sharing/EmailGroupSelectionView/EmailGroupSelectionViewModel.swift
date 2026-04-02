@@ -38,14 +38,14 @@ final class EmailGroupSelectionViewModel: ObservableObject {
     @Published var email = ""
     @Published var selectedRecommendations: [InviteRecommendationType] = []
     @Published var highlightedRecommendation: InviteRecommendationType?
-    @Published var isGroupSelected = false
+    @Published var groupNameSelected: String?
     @Published private(set) var invalidEmails: [String] = []
     @Published private(set) var canContinue = false
     @Published private(set) var element: SharingElementData?
     @Published private(set) var isChecking = false
     @Published private(set) var isFetchingMore = false
     @Published private(set) var loading = false
-    @Published var groupInfo: GroupInfo?
+    @Published var selectedGroupInfo: GroupInfo?
     @Published var displayType = SuggestionsDisplayType.suggestion
     @Published private(set) var suggestions: [InviteRecommendationType] = []
     @Published private var cachedOrgRecommendations: OrganizationInviteRecommendations?
@@ -100,21 +100,21 @@ final class EmailGroupSelectionViewModel: ObservableObject {
             highlightedRecommendation = nil
         } else {
             highlightedRecommendation = recommendation
-            isGroupSelected = recommendation.hasMembers
+            groupNameSelected = recommendation.name
         }
     }
 
     func setGroupInfos() {
         if let reco = highlightedRecommendation,
            case let .group(infos) = reco {
-            groupInfo = infos
+            selectedGroupInfo = infos
         }
-        isGroupSelected = false
+        groupNameSelected = nil
     }
 
     func deselect(_ recommendation: InviteRecommendationType) {
-        groupInfo = nil
-        isGroupSelected = false
+        selectedGroupInfo = nil
+        groupNameSelected = nil
         selectedRecommendations.removeAll { $0 == recommendation }
     }
 
@@ -168,9 +168,7 @@ final class EmailGroupSelectionViewModel: ObservableObject {
 
     func loadData() async {
         loading = true
-        if displayType != .suggestion {
-            displayType = .suggestion
-        }
+
         await fetchGroupsInfos()
         async let fetchSuggestions = fetchSuggestions()
         async let fetchingOrganizationsRecommendation = fetchOrganizationsRecommendation(shouldFetchMore: true)

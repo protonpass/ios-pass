@@ -461,6 +461,16 @@
         }
       }
     },
+    "%@ (%lld members)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$lld members)"
+          }
+        }
+      }
+    },
     "%@ (copied)" : {
       "comment" : "Default title when duplicating items. Placeholder is the original title.",
       "localizations" : {
@@ -78872,12 +78882,12 @@
         }
       }
     },
-    "Group selected" : {
+    "Group %@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Group selected"
+            "value" : "Group %@"
           }
         }
       }
@@ -187868,16 +187878,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "網站複製"
-          }
-        }
-      }
-    },
-    "What do you want to do with the selected group?" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "What do you want to do with the selected group?"
           }
         }
       }
