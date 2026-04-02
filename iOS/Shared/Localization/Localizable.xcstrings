@@ -78872,6 +78872,16 @@
         }
       }
     },
+    "Group selected" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Group selected"
+          }
+        }
+      }
+    },
     "Haven't received the code?" : {
       "localizations" : {
         "be" : {
@@ -154783,6 +154793,16 @@
         }
       }
     },
+    "Show Members" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show Members"
+          }
+        }
+      }
+    },
     "Show Network QR Code" : {
       "comment" : "Title of the button that show a QR code in order to share Wifi password",
       "localizations" : {
@@ -187848,6 +187868,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "網站複製"
+          }
+        }
+      }
+    },
+    "What do you want to do with the selected group?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What do you want to do with the selected group?"
           }
         }
       }

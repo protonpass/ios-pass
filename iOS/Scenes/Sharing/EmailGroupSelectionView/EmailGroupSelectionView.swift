@@ -56,10 +56,30 @@ struct EmailGroupSelectionView: View {
             .navigationStackEmbeded($router.path)
             .environment(router)
             .ignoresSafeArea(.keyboard)
-            .sheet(isPresented: $viewModel.showGroupMembers,
+            .alert("Group selected",
+                   isPresented: $viewModel.isGroupSelected,
+                   actions: {
+                       Button {
+                           viewModel.setGroupInfos()
+                       } label: {
+                           Text("Show Members")
+                       }
+                       if let selectedGroup = viewModel.highlightedRecommendation {
+                           Button { viewModel.deselect(selectedGroup) } label: {
+                               Text("Remove")
+                           }
+                       }
+                       Button(role: .cancel) {
+                           Text("Cancel")
+                       }
+                   },
+                   message: {
+                       Text("What do you want to do with the selected group?")
+                   })
+            .sheet(isPresented: $viewModel.groupInfo.mappedToBool(),
                    onDismiss: { viewModel.clearHighlightedRecommendation() },
-                   content: { if let reco = viewModel.highlightedRecommendation,
-                                 case let .group(infos) = reco {
+                   content: {
+                       if let infos = viewModel.groupInfo {
                            GroupUsersInformationView(groupInfo: infos, rights: nil)
                                .presentationDetents([.medium, .large])
                                .presentationDragIndicator(.visible)

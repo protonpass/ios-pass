@@ -38,13 +38,14 @@ final class EmailGroupSelectionViewModel: ObservableObject {
     @Published var email = ""
     @Published var selectedRecommendations: [InviteRecommendationType] = []
     @Published var highlightedRecommendation: InviteRecommendationType?
+    @Published var isGroupSelected = false
     @Published private(set) var invalidEmails: [String] = []
     @Published private(set) var canContinue = false
     @Published private(set) var element: SharingElementData?
     @Published private(set) var isChecking = false
     @Published private(set) var isFetchingMore = false
     @Published private(set) var loading = false
-    @Published var showGroupMembers = false
+    @Published var groupInfo: GroupInfo?
     @Published var displayType = SuggestionsDisplayType.suggestion
     @Published private(set) var suggestions: [InviteRecommendationType] = []
     @Published private var cachedOrgRecommendations: OrganizationInviteRecommendations?
@@ -57,7 +58,7 @@ final class EmailGroupSelectionViewModel: ObservableObject {
     private let userManager = resolve(\SharedServiceContainer.userManager)
     @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\SharedRepositoryContainer.groupRepository) private var groupRepository
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var currentTask: Task<Void, Never>?
@@ -99,13 +100,21 @@ final class EmailGroupSelectionViewModel: ObservableObject {
             highlightedRecommendation = nil
         } else {
             highlightedRecommendation = recommendation
-            if recommendation.hasMembers {
-                showGroupMembers = !recommendation.isEmail
-            }
+            isGroupSelected = recommendation.hasMembers
         }
     }
 
+    func setGroupInfos() {
+        if let reco = highlightedRecommendation,
+           case let .group(infos) = reco {
+            groupInfo = infos
+        }
+        isGroupSelected = false
+    }
+
     func deselect(_ recommendation: InviteRecommendationType) {
+        groupInfo = nil
+        isGroupSelected = false
         selectedRecommendations.removeAll { $0 == recommendation }
     }
 
@@ -159,7 +168,9 @@ final class EmailGroupSelectionViewModel: ObservableObject {
 
     func loadData() async {
         loading = true
-        displayType = .suggestion
+        if displayType != .suggestion {
+            displayType = .suggestion
+        }
         await fetchGroupsInfos()
         async let fetchSuggestions = fetchSuggestions()
         async let fetchingOrganizationsRecommendation = fetchOrganizationsRecommendation(shouldFetchMore: true)

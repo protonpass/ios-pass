@@ -31,6 +31,7 @@ public struct UserShareInfos: Codable, Hashable, Identifiable, Sendable {
     public let shareRoleID: String
     public let expireTime: Int?
     public let createTime: Int?
+    public let isGroupShare: Bool
 
     public var shareRole: ShareRole {
         .init(rawValue: shareRoleID) ?? .read

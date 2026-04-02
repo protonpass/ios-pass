@@ -21,7 +21,7 @@
 
 import Foundation
 
-public protocol ShareInvitee: Identifiable, Equatable {
+public protocol ShareInvitee: Identifiable, Equatable, Sendable {
     var id: String { get }
     var email: String { get }
     var isPending: Bool { get }
@@ -30,6 +30,7 @@ public protocol ShareInvitee: Identifiable, Equatable {
     var shareRole: ShareRole { get }
     var shareType: TargetType { get }
     var options: [ShareInviteeOption] { get }
+    var isGroupShare: Bool { get }
 
     func subtitle(managerAsAdmin: Bool) -> String
 }
@@ -45,6 +46,7 @@ public enum ShareInviteeOption: Identifiable, Sendable {
     case confirmTransferOwnership(NewOwner)
     /// Do the transfer
     case transferOwnership(NewOwner)
+    case showGroup(any ShareInvitee)
 
     public var id: String {
         switch self {
@@ -64,6 +66,8 @@ public enum ShareInviteeOption: Identifiable, Sendable {
             "confirmTransfer_\(owner.shareId)"
         case let .transferOwnership(owner):
             "transfer_\(owner.shareId)"
+        case let .showGroup(invitee):
+            "show_group_\(invitee.id)"
         }
     }
 
