@@ -253,13 +253,6 @@ final class ManageSharedShareViewModel: ObservableObject {
         }
     }
 
-    func selectGroupInfo(for invite: any ShareInvitee) {
-        guard let info = groups[invite.email] else {
-            return
-        }
-        selectedGroupInfo = info
-    }
-
     func totalNumberOfMembers() -> Int {
         vaultMembers.reduce(0) { $0 + (groups[$1.email]?.members?.count ?? 1) }
     }
