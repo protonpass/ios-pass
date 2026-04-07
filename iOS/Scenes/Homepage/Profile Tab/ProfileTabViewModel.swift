@@ -74,6 +74,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedUseCasesContainer.switchUser) private var switchUser
+    @LazyInjected(\SharedUseCasesContainer.getOrganizationSettings)
+    private var getOrganizationSettings
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private var supportedLocalAuthenticationMethods = [LocalAuthenticationMethodUiModel]()
@@ -90,6 +92,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var showAutomaticCopyTotpCodeExplanation = false
     @Published private(set) var plan: Entities.Plan?
     @Published private(set) var secureLinks: [SecureLink]?
+    @Published private(set) var aliasesAllowed = true
 
     // Accounts management
     @Published private var currentActiveUser: UserData?
@@ -190,6 +193,9 @@ extension ProfileTabViewModel {
         do {
             let access = try await accessRepository.refreshAccess(userId: nil).access
             plan = access.plan
+            if access.plan.isBusinessUser, let settings = try await getOrganizationSettings() {
+                aliasesAllowed = settings.aliasCreateMode != .nobody
+            }
         } catch {
             logger.error(error)
         }
