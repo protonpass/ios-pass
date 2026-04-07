@@ -93,12 +93,15 @@ extension LocalFolderKeyDatasourceTests {
         }
 
         // When
-        let keys = try await sut.getAllFolderKeys(userId: userId)
+        let userKeys = try await sut.getAllFolderKeys(userId: userId)
+        let allKeys = try await sut.getAllFolderKeys()
+
 
         // Then
-        #expect(keys.count == givenKeys.count)
+        #expect(userKeys.count == givenKeys.count)
+        #expect(allKeys.count != givenKeys.count)
 
-        let folderIds = Set(keys.map(\.folderId))
+        let folderIds = Set(userKeys.map(\.folderId))
         let givenFolderIds = Set(givenKeys.map(\.folderId))
         #expect(folderIds == givenFolderIds)
     }
@@ -179,9 +182,6 @@ extension LocalFolderKeyDatasourceTests {
         let key = try #require(keys.first)
         #expect(key.encryptedKey == "updated-encrypted-key")
         #expect(key.keyRotation == 1)
-        
-        
-        
     }
 
     @Test("Upsert empty array does nothing")
@@ -194,7 +194,7 @@ extension LocalFolderKeyDatasourceTests {
         #expect(keys.isEmpty)
     }
 
-    @Test("Upsert keys with same folderId but different userId")
+    @Test("Upsert keys with same folderId and shareId but different userId")
     func upsertKeysWithSameFolderIdDifferentUserId() async throws {
         // Given
         let folderId = String.random()
@@ -317,7 +317,6 @@ extension LocalFolderKeyDatasourceTests {
         // When
         let keys = try await sut.getAllFolderKeys(userId: userId)
 
-        // Then - Should have only one key (latest rotation)
         #expect(keys.count == 2)
         let key = try #require(keys.last)
         #expect(key.keyRotation == 2)

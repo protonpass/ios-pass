@@ -47,11 +47,6 @@ public struct ItemPathBreadcrumbView: View {
     }
 
     public var body: some View {
-        content
-    }
-
-    @ViewBuilder
-    var content: some View {
         if path.isEmpty {
             EmptyView()
         } else {

@@ -27,15 +27,8 @@ public extension FolderUiModel {
         shareId: String,
         parentFolderId: String? = nil
     ) -> FolderUiModel {
-        let folder = Folder(
-            vaultID: shareId,
-            folderID: folderId,
-            parentFolderID: parentFolderId,
-            keyRotation: 1,
-            folderKey: "key",
-            contentFormatVersion: 1,
-            content: "content"
-        )
+        let folder = Folder.random(vaultId: shareId, folderId: folderId, parentFolderId: parentFolderId)
+
         return FolderUiModel(
             shareId: shareId,
             folder: folder,

@@ -27,5 +27,3 @@ struct SelectPasskeySheetInformation {
     let params: ASPasskeyCredentialRequestParameters
     let passkeys: [Passkey]
 }
-
-extension ASCredentialServiceIdentifier: @unchecked @retroactive Sendable {}

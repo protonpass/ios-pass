@@ -61,7 +61,7 @@ public struct SharesData: Hashable, Sendable {
 
     public var filteredOrderedVaults: [ShareContent] {
         shares.values
-            .filter { $0.share.vaultName != nil }
+            .filter(\.share.isVaultRepresentation)
             .sorted { lhs, rhs in
                 guard let lhsName = lhs.share.vaultName,
                       let rhsName = rhs.share.vaultName else { return false }

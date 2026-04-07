@@ -94,9 +94,8 @@ struct ItemsTabView: View {
                                animationNamespace: animationNamespace,
                                isEditMode: $viewModel.isEditMode,
                                showPromoBadge: viewModel.showPromoBadge) { action in
-                    viewModel.topBarActionTriggered(action)
+                    viewModel.handleTopbarAction(action)
                 }
-
                 .hidden(!viewModel.vaultCreationAllowed && viewModel.noVaults && viewModel.isEmpty)
 
                 if viewModel.showingUpgradeAppBanner {

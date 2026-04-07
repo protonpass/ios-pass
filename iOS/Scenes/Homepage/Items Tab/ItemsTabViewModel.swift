@@ -176,7 +176,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     }
 
     // swiftlint:disable:next cyclomatic_complexity
-    func topBarActionTriggered(_ action: ItemsTabTopBarActions) {
+    func handleTopbarAction(_ action: ItemsTabTopBarAction) {
         switch action {
         case .onSearch:
             searchMode = .all(appContentManager.shareSelection)
