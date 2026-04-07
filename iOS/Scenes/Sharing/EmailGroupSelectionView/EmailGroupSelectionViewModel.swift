@@ -73,6 +73,10 @@ final class EmailGroupSelectionViewModel: ObservableObject {
         cachedOrgRecommendations?.canFetchMore ?? true
     }
 
+    private var filteredCacherGroupInfos: [InviteRecommendationType]? {
+        email.isEmpty ? cachedGroupInfos : cachedGroupInfos?.filter { $0.name.contains(email) }
+    }
+
     init() {
         setUp()
     }
@@ -100,7 +104,9 @@ final class EmailGroupSelectionViewModel: ObservableObject {
             highlightedRecommendation = nil
         } else {
             highlightedRecommendation = recommendation
-            groupNameSelected = recommendation.name
+            if recommendation.hasMembers {
+                groupNameSelected = recommendation.name
+            }
         }
     }
 
@@ -196,6 +202,12 @@ final class EmailGroupSelectionViewModel: ObservableObject {
     func clearHighlightedRecommendation() {
         highlightedRecommendation = nil
     }
+
+    func clear() {
+        selectedGroupInfo = nil
+        groupNameSelected = nil
+        highlightedRecommendation = nil
+    }
 }
 
 private extension EmailGroupSelectionViewModel {
@@ -287,7 +299,7 @@ private extension EmailGroupSelectionViewModel {
             var invitations: [InviteRecommendationType] = []
             for element in content {
                 if element.isGroup,
-                   let groupInvite = cachedGroupInfos?.first(where: { element.email == $0.emailAddress }) {
+                   let groupInvite = filteredCacherGroupInfos?.first(where: { element.email == $0.emailAddress }) {
                     invitations.append(groupInvite)
                 } else {
                     invitations.append(.email(element.email))
@@ -329,7 +341,8 @@ private extension EmailGroupSelectionViewModel {
             guard let cachedOrgRecommendations else {
                 return []
             }
-            var recommendation = cachedGroupInfos ?? []
+            var recommendation = filteredCacherGroupInfos ?? []
+
             for entry in cachedOrgRecommendations.entries {
                 recommendation.append(.email(entry.email))
             }
