@@ -173,7 +173,7 @@ private extension ManageSharedShareView {
                 ForEach(Array(invitees.enumerated()), id: \.element.id) { index, invitee in
                     ShareInviteeView(invitee: invitee,
                                      title: viewModel.inviteTitle(invitee),
-                                     isManager: canExecuteActions,
+                                     isManager: invitee.isGroupShare ? displayAction(invitee) : canExecuteActions,
                                      managerAsAdmin: viewModel.managerAsAdmin,
                                      isCurrentUser: viewModel.isCurrentUser(invitee),
                                      canSeeAccessLevel: canSeeAccessLevel,
@@ -189,6 +189,13 @@ private extension ManageSharedShareView {
             .roundedEditableSection()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+    }
+
+    func displayAction(_ invitee: any ShareInvitee) -> Bool {
+        if invitee.shareType == .item || (invitee.shareType == .vault && invitee.isManager && !invitee.owner) {
+            return false
+        }
+        return true
     }
 }
 
