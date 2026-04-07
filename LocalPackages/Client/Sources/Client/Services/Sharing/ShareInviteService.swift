@@ -72,6 +72,7 @@ public extension ShareInviteService {
             if let role = invitesAndRole[invite], let email = invite.emailAddress {
                 let info = SharingInfos(shareElement: element,
                                         email: email,
+                                        destinationName: invite.name,
                                         role: role,
                                         receiverPublicKeys: keys,
                                         itemsNum: currentSelectedVaultItems ?? 0)

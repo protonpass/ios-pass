@@ -138,7 +138,6 @@ struct EditableVaultListView: View {
         ZStack {
             if viewModel.mode.isView {
                 mainListView
-                    .background(.blue)
             } else {
                 OrganizeVaultListView(viewModel: viewModel)
             }
@@ -190,30 +189,49 @@ private extension EditableVaultListView {
         }
     }
 
+    @ViewBuilder
     var bottomView: some View {
-        HStack {
-            CapsuleLabelButton(icon: IconProvider.plus,
-                               title: #localized("Create vault"),
+        if viewModel.mode.isView {
+            ViewThatFits {
+                HStack {
+                    createVaultButton(fixedSize: true)
+                    if viewModel.hideShowVaultSupported {
+                        Spacer()
+                    }
+                    organizeVaultsButton(fixedSize: true)
+                }
+
+                VStack {
+                    createVaultButton(fixedSize: false)
+                    organizeVaultsButton(fixedSize: false)
+                }
+            }
+            .padding([.bottom, .horizontal])
+        }
+    }
+
+    func createVaultButton(fixedSize: Bool) -> some View {
+        CapsuleLabelButton(icon: IconProvider.plus,
+                           title: #localized("Create vault"),
+                           titleColor: PassColor.interactionNormMajor2,
+                           backgroundColor: PassColor.interactionNormMinor1,
+                           fontWeight: .semibold,
+                           action: viewModel.createNewVault)
+            .fixedSize(horizontal: fixedSize, vertical: fixedSize)
+            .hidden(!viewModel.vaultCreationAllowed)
+    }
+
+    @ViewBuilder
+    func organizeVaultsButton(fixedSize: Bool) -> some View {
+        if viewModel.hideShowVaultSupported {
+            CapsuleLabelButton(icon: IconProvider.listBullets,
+                               title: #localized("Organize vaults"),
                                titleColor: PassColor.interactionNormMajor2,
                                backgroundColor: PassColor.interactionNormMinor1,
                                fontWeight: .semibold,
-                               action: viewModel.createNewVault)
-                .fixedSize(horizontal: true, vertical: true)
-                .hidden(!viewModel.vaultCreationAllowed)
-
-            Spacer()
-
-            if viewModel.hideShowVaultSupported {
-                CapsuleLabelButton(icon: IconProvider.listBullets,
-                                   title: #localized("Organize vaults"),
-                                   titleColor: PassColor.interactionNormMajor2,
-                                   backgroundColor: PassColor.interactionNormMinor1,
-                                   fontWeight: .semibold,
-                                   action: { viewModel.updateMode(.organise) })
-                    .fixedSize(horizontal: true, vertical: true)
-            }
+                               action: { viewModel.updateMode(.organise) })
+                .fixedSize(horizontal: fixedSize, vertical: fixedSize)
         }
-        .padding([.bottom, .horizontal])
     }
 
     var vaultsScrollView: some View {

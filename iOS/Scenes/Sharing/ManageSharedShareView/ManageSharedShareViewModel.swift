@@ -34,15 +34,15 @@ final class ManageSharedShareViewModel: ObservableObject {
     @Published private(set) var invitations = ShareInvites.default
     @Published private(set) var vaultMembers: [any ShareInvitee] = []
     @Published private(set) var itemMembers: [any ShareInvitee] = []
-
     @Published private(set) var fetching = false
     @Published private(set) var loading = false
     @Published private(set) var isFreeUser = true
     @Published private(set) var isBusinessUser = false
     @Published private(set) var itemSharingAllowed = false
     @Published var newOwner: NewOwner?
+    @Published var selectedGroupInfo: GroupInfo?
 
-    private var groups = [String: String]()
+    private var groups = [String: GroupInfo]()
 
     private let getVaultItemCount = resolve(\UseCasesContainer.getVaultItemCount)
     private let getUsersLinkedToShare = resolve(\UseCasesContainer.getUsersLinkedToShare)
@@ -57,7 +57,6 @@ final class ManageSharedShareViewModel: ObservableObject {
     private let canUserTransferVaultOwnership = resolve(\UseCasesContainer.canUserTransferVaultOwnership)
     private let promoteNewUserInvite = resolve(\UseCasesContainer.promoteNewUserInvite)
     private let userManager = resolve(\SharedServiceContainer.userManager)
-
     private let logger = resolve(\SharedToolingContainer.logger)
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -177,6 +176,7 @@ final class ManageSharedShareViewModel: ObservableObject {
     }
 
     // swiftformat:disable hoistAwait
+    // swiftlint:disable cyclomatic_complexity
     func handle(option: ShareInviteeOption) {
         Task { [weak self] in
             guard let self else { return }
@@ -223,6 +223,9 @@ final class ManageSharedShareViewModel: ObservableObject {
                     try await execute(await transferVaultOwnership(newOwnerID: newOwner.shareId,
                                                                    shareId: share.shareId),
                                       elementDisplay: element)
+
+                case let .showGroupMembers(invitee):
+                    selectedGroupInfo = groups[invitee.email]
                 }
             } catch {
                 logger.error(error)
@@ -231,14 +234,27 @@ final class ManageSharedShareViewModel: ObservableObject {
         }
     }
 
+    // swiftlint:enable cyclomatic_complexity
     // swiftformat:enable hoistAwait
 
     func upgrade() {
         router.present(for: .upgradeFlow)
     }
 
-    func inviteName(_ invite: any ShareInvitee) -> String {
-        groups[invite.email] ?? invite.email
+    func inviteTitle(_ invite: any ShareInvitee) -> String {
+        if let groupInfo = groups[invite.email] {
+            if let members = groupInfo.members {
+                #localized("%@ (%lld members)", groupInfo.group.name, members.count)
+            } else {
+                groupInfo.group.name
+            }
+        } else {
+            invite.email
+        }
+    }
+
+    func totalNumberOfMembers() -> Int {
+        vaultMembers.reduce(0) { $0 + (groups[$1.email]?.members?.count ?? 1) }
     }
 }
 
@@ -306,10 +322,10 @@ private extension ManageSharedShareViewModel {
             do {
                 let userId = try await userManager.getActiveUserId()
                 let plan = try await accessRepository.getPlan(userId: userId)
-                if let userGroups = try? await groupRepository.getGroups(userId: userId) {
-                    for group in userGroups {
-                        if let address = group.address {
-                            groups[address.email] = group.name
+                if let userGroupInfos = try? await groupRepository.getGroupsInfos(userId: userId) {
+                    for groupInfo in userGroupInfos {
+                        if let address = groupInfo.group.address {
+                            groups[address.email] = groupInfo
                         }
                     }
                 }

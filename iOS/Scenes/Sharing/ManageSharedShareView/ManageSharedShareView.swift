@@ -70,6 +70,11 @@ struct ManageSharedShareView: View {
                        .isFreeUser ? "Vaults can’t contain more than 3 users with a free plan." :
                        "Vaults can’t contain more than 10 users.")
                })
+        .sheet(item: $viewModel.selectedGroupInfo) { groupInfo in
+            GroupUsersInformationView(groupInfo: groupInfo, rights: nil)
+                .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.visible)
+        }
         .navigationStackEmbeded()
     }
 
@@ -101,7 +106,7 @@ private extension ManageSharedShareView {
                                 canExecuteActions: viewModel.share.shareRole == .manager &&
                                     viewModel.share.isVaultRepresentation,
                                 canSeeAccessLevel: viewModel.share.isVaultRepresentation,
-                                title: "Vault sharing: \(viewModel.vaultMembers.count) members")
+                                title: "Vault sharing: \(viewModel.totalNumberOfMembers()) members")
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -167,7 +172,7 @@ private extension ManageSharedShareView {
                 }
                 ForEach(Array(invitees.enumerated()), id: \.element.id) { index, invitee in
                     ShareInviteeView(invitee: invitee,
-                                     title: viewModel.inviteName(invitee),
+                                     title: viewModel.inviteTitle(invitee),
                                      isManager: canExecuteActions,
                                      managerAsAdmin: viewModel.managerAsAdmin,
                                      isCurrentUser: viewModel.isCurrentUser(invitee),
