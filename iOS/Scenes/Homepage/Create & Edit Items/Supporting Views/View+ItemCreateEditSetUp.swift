@@ -106,8 +106,7 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                       canChangeVault: viewModel.mode.canChangeVault,
                                       itemContentType: viewModel.itemContentType,
                                       shouldUpgrade: viewModel.shouldUpgrade,
-                                      isPhone: viewModel.isPhone,
-                                      onSelectVault: { viewModel.isShowingVaultSelector.toggle() },
+                                      onSelectContainer: { viewModel.isShowingVaultSelector.toggle() },
                                       onGoBack: { viewModel.isShowingDiscardAlert.toggle() },
                                       onUpgrade: {
                                           if viewModel.shouldUpgrade {

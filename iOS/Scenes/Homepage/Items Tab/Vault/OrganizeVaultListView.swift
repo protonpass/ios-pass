@@ -69,18 +69,15 @@ struct OrganizeVaultListView: View {
     var vaultsScrollView: some View {
         LazyVStack(spacing: 0) {
             if case .loaded = viewModel.state {
-                if viewModel.visibleVaults.count != viewModel.hiddenShareIds.count {
-                    Text("Visible vaults")
-                        .fontWeight(.semibold)
-                        .foregroundStyle(PassColor.textNorm)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.bottom)
-                }
+                Text("Visible vaults")
+                    .fontWeight(.semibold)
+                    .foregroundStyle(PassColor.textNorm)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.bottom)
 
                 ForEach(viewModel.visibleVaults) { content in
                     vaultRow(for: .precise(.init(share: content.share, folder: nil)))
-                    if viewModel.mode.isView ||
-                        (viewModel.mode.isOrganise && !viewModel.isLastVisibleVault(content.share)) {
+                    if !viewModel.isLastVisibleVault(content.share) {
                         PassDivider()
                     }
                 }

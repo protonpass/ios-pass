@@ -62,7 +62,10 @@ public final class DeleteLocalDataBeforeFullSync: DeleteLocalDataBeforeFullSyncU
             .deleteAllUserShareKeysLocally(userId: userId)
         async let deletingLocalFolderKeys: Void = folderKeyDatasource.removeAllKeys(userId: userId)
         async let deletingLocalFolders: Void = folderRepository.deleteAllLocalFolders(userId: userId)
-        _ = try await (deletingLocalItems, deletingLocalShares, deletingLocalShareKeys, deletingLocalFolderKeys,
+        _ = try await (deletingLocalItems,
+                       deletingLocalShares,
+                       deletingLocalShareKeys,
+                       deletingLocalFolderKeys,
                        deletingLocalFolders)
     }
 }

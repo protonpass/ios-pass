@@ -25,7 +25,7 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
-enum ItemsTabTopBarActions {
+enum ItemsTabTopBarAction {
     case onSearch
     case onShowVaultList
     case onPin
@@ -46,22 +46,22 @@ struct ItemsTabTopBar: View {
     let animationNamespace: Namespace.ID
     @Binding var isEditMode: Bool
     let showPromoBadge: Bool
-    let action: (ItemsTabTopBarActions) -> Void
+    let action: (ItemsTabTopBarAction) -> Void
 
     var body: some View {
         ZStack {
             if isEditMode {
-                EditModeView(viewModel: viewModel, isEditMode: $isEditMode) { triggeredAction in
-                    action(triggeredAction)
-                }.frame(height: 60)
+                EditModeView(viewModel: viewModel,
+                             isEditMode: $isEditMode,
+                             action: action)
+                    .frame(height: 60)
             } else {
                 ViewModeView(viewModel: viewModel,
                              searchMode: $searchMode,
                              isEditMode: $isEditMode,
                              showPromoBadge: showPromoBadge,
-                             animationNamespace: animationNamespace) { triggeredAction in
-                    action(triggeredAction)
-                }
+                             animationNamespace: animationNamespace,
+                             action: action)
             }
         }
         .animation(.default, value: isEditMode)
@@ -75,7 +75,7 @@ private struct ViewModeView: View {
     @Binding var isEditMode: Bool
     let showPromoBadge: Bool
     let animationNamespace: Namespace.ID
-    let action: (ItemsTabTopBarActions) -> Void
+    let action: (ItemsTabTopBarAction) -> Void
 
     var body: some View {
         VStack {
@@ -184,7 +184,6 @@ private struct ViewModeView: View {
     @ViewBuilder
     var searchBar: some View {
         if searchMode == nil {
-            // Search bar
             Button { action(.onSearch) } label: {
                 ZStack {
                     PassColor.backgroundStrong
@@ -222,7 +221,7 @@ private struct ViewModeView: View {
 private struct EditModeView: View {
     @ObservedObject var viewModel: ItemsTabTopBarViewModel
     @Binding var isEditMode: Bool
-    let action: (ItemsTabTopBarActions) -> Void
+    let action: (ItemsTabTopBarAction) -> Void
 
     var body: some View {
         editModeView

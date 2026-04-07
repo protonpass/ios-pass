@@ -27,7 +27,7 @@ public enum ShareContentElement: Sendable, Equatable, Hashable, Identifiable {
     public var id: String {
         switch self {
         case let .item(content): content.id
-        case let .folder(folder): folder.folderId
+        case let .folder(folder): folder.id
         }
     }
 

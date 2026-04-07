@@ -24,7 +24,6 @@ import Testing
 
 // MARK: - ShareContentTests
 
-@Suite("ShareContent Tests")
 struct ShareContentTests {
     let shareId = "share-1"
     let share: Share

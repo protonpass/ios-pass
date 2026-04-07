@@ -33,8 +33,7 @@ struct CreateEditItemToolbar: ToolbarContent {
     let canChangeVault: Bool
     let itemContentType: ItemContentType
     let shouldUpgrade: Bool
-    let isPhone: Bool
-    let onSelectVault: () -> Void
+    let onSelectContainer: () -> Void
     let onGoBack: () -> Void
     let onUpgrade: () -> Void
     let onScan: () -> Void
@@ -129,7 +128,7 @@ private extension CreateEditItemToolbar {
         .padding(.horizontal, DesignConstant.sectionPadding)
         .background(vaultContent.backgroundColor)
         .clipShape(Capsule())
-        .buttonEmbeded(action: onSelectVault)
+        .buttonEmbeded(action: onSelectContainer)
     }
 
     func folderButton(folderName: String) -> some View {
@@ -150,6 +149,6 @@ private extension CreateEditItemToolbar {
         .padding(.horizontal, DesignConstant.sectionPadding)
         .background(PassColor.interactionNormMinor1)
         .clipShape(Capsule())
-        .buttonEmbeded(action: onSelectVault)
+        .buttonEmbeded(action: onSelectContainer)
     }
 }

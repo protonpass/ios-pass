@@ -60,7 +60,7 @@ public struct FolderTreeView<Content: View>: View {
                                    shouldDismissOnSelection: shouldDismissOnSelection,
                                    expandedContainerIds: $expandedContainerIds,
                                    selectedContainer: $selectedContainer,
-                                   trailingView: { folder, content in trailingView(folder, content) })
+                                   trailingView: trailingView)
                         .padding(.leading, 16)
                 }
             }
@@ -90,8 +90,7 @@ private extension FolderTreeView {
             ExpandRowButtonDisplay(expanded: expandedContainerIds.contains(folder.id))
         }
         .buttonStyle(.plain)
-        .opacity(hasSubfolders ? 1 : 0)
-        .disabled(!hasSubfolders)
+        .opacityReduced(!hasSubfolders, reducedOpacity: 0)
     }
 
     func folderButton(for folder: FolderUiModel) -> some View {
