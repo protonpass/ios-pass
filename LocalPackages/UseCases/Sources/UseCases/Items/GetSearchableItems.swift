@@ -40,15 +40,18 @@ public final class GetSearchableItems: GetSearchableItemsUseCase {
     private let itemRepository: any ItemRepositoryProtocol
     private let shareRepository: any ShareRepositoryProtocol
     private let getAllPinnedItems: any GetAllPinnedItemsUseCase
+    private let dedupShare: any DedupShareUseCase
     private let symmetricKeyProvider: any SymmetricKeyProvider
 
     public init(itemRepository: any ItemRepositoryProtocol,
                 shareRepository: any ShareRepositoryProtocol,
                 getAllPinnedItems: any GetAllPinnedItemsUseCase,
+                dedupShare: any DedupShareUseCase,
                 symmetricKeyProvider: any SymmetricKeyProvider) {
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
         self.getAllPinnedItems = getAllPinnedItems
+        self.dedupShare = dedupShare
         self.symmetricKeyProvider = symmetricKeyProvider
     }
 
@@ -58,8 +61,9 @@ public final class GetSearchableItems: GetSearchableItemsUseCase {
         async let getSymmetricKey = symmetricKeyProvider.getSymmetricKey()
         let (vaults, items, symmetricKey) = try await (getShares, getItems, getSymmetricKey)
 
-        let hiddenShareIds = vaults.hiddenShareIds
-        let filteredItems = items.filter { !hiddenShareIds.contains($0.shareId) }
+        let deduplicatedVaults = dedupShare(shares: vaults, filterHidden: true)
+        let applicableShareIds = deduplicatedVaults.map(\.shareId)
+        let filteredItems = items.filter { applicableShareIds.contains($0.shareId) }
 
         return try await withThrowingTaskGroup(of: [SearchableItem].self,
                                                returning: [SearchableItem].self) { @Sendable group in
@@ -72,7 +76,7 @@ public final class GetSearchableItems: GetSearchableItemsUseCase {
                         try Task.checkCancellation()
                         return try SearchableItem(from: $0,
                                                   symmetricKey: symmetricKey,
-                                                  allVaults: vaults)
+                                                  allVaults: deduplicatedVaults)
                     }
                 }
             }
