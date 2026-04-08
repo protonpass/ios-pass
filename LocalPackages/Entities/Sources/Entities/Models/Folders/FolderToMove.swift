@@ -21,7 +21,10 @@
 import Foundation
 
 public struct FolderToMove: Identifiable, Equatable, Hashable, Sendable {
-    public let id = UUID().uuidString
+    public var id: String {
+        folder.id
+    }
+
     public let folder: FolderUiModel
     public let shareContent: ShareContent
 

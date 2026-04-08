@@ -29,7 +29,6 @@ struct FolderMoveListView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var viewModel = FolderMoveListViewModel()
     @State var selectedContainer: ShareSelectionPayload
-
     let folderToMove: FolderToMove
 
     var body: some View {
@@ -41,7 +40,7 @@ struct FolderMoveListView: View {
         .background(PassColor.backgroundWeak)
         .frame(maxWidth: .infinity, alignment: .leading)
         .showSpinner(viewModel.loading)
-        .task(id: folderToMove.id) {
+        .task {
             viewModel.load(folderInfos: folderToMove)
         }
         .onChange(of: viewModel.moveCompleted) { _, completed in
@@ -70,13 +69,12 @@ private extension FolderMoveListView {
                 .padding(.top, 12)
         }
         .frame(maxWidth: .infinity)
-        .padding(.horizontal)
         .padding(.top, 30)
     }
 
     var mainScrollView: some View {
         ScrollView {
-            VStack(spacing: 0) {
+            LazyVStack(spacing: 0) {
                 fullRow(content: folderToMove.shareContent)
             }
             .padding(.horizontal)
@@ -112,8 +110,8 @@ private extension FolderMoveListView {
     func fullRow(content: ShareContent) -> some View {
         if let vaultContent = content.share.vaultContent {
             HStack(spacing: 16) {
-                expandVaultRow(content: content)
-                vaultRow(for: content, vaultContent: vaultContent)
+                expandRowButton(content: content)
+                vaultInfo(for: content, vaultContent: vaultContent)
             }
 
             folderRow(content: content)
@@ -121,8 +119,8 @@ private extension FolderMoveListView {
     }
 
     @ViewBuilder
-    func expandVaultRow(content: ShareContent) -> some View {
-        if viewModel.folderSupported, let folders = content.folders(in: content.id), !folders.isEmpty {
+    func expandRowButton(content: ShareContent) -> some View {
+        if let folders = content.folders(in: content.id), !folders.isEmpty {
             Button { viewModel.toggleDisplayContainerContent(containerId: content.id) } label: {
                 ExpandRowButtonDisplay(expanded: viewModel.expandedContainerIds.contains(content.id))
             }
@@ -130,7 +128,7 @@ private extension FolderMoveListView {
         }
     }
 
-    func vaultRow(for vaultInfos: ShareContent, vaultContent: VaultContent) -> some View {
+    func vaultInfo(for vaultInfos: ShareContent, vaultContent: VaultContent) -> some View {
         Button(action: {
             selectedContainer = ShareSelectionPayload(share: vaultInfos.share,
                                                       folder: nil)
@@ -138,8 +136,8 @@ private extension FolderMoveListView {
             VaultRow(thumbnail: { VaultThumbnail(vaultContent: vaultContent) },
                      title: vaultContent.name,
                      itemCount: vaultInfos.itemCount,
-                     mode: .view(isSelected: selectedContainer.share == vaultInfos.share && selectedContainer
-                         .folder == nil,
+                     mode: .view(isSelected: selectedContainer.share == vaultInfos.share &&
+                         selectedContainer.folder == nil,
                          isHidden: vaultInfos.share.hidden,
                          action: nil),
                      height: 74)
@@ -149,7 +147,7 @@ private extension FolderMoveListView {
 
     @ViewBuilder
     func folderRow(content: ShareContent) -> some View {
-        if viewModel.folderSupported, let folders = content.folders(in: content.id),
+        if let folders = content.folders(in: content.id),
            !folders.isEmpty, viewModel.expandedContainerIds.contains(content.id) {
             FolderTreeView(content: content,
                            folders: folders,

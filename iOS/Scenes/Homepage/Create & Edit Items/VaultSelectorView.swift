@@ -134,8 +134,8 @@ private extension VaultSelectorView {
             VaultRow(thumbnail: { VaultThumbnail(vaultContent: vaultContent) },
                      title: vaultContent.name,
                      itemCount: vaultInfos.itemCount,
-                     mode: .view(isSelected: selectedContainer.share == vaultInfos.share && selectedContainer
-                         .isFolderSelected == false,
+                     mode: .view(isSelected: selectedContainer.share == vaultInfos.share &&
+                         selectedContainer.isFolderSelected == false,
                          isHidden: vaultInfos.share.hidden,
                          action: nil),
                      height: 74)
