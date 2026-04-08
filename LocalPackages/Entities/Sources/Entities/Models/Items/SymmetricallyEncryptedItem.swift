@@ -43,6 +43,14 @@ public struct SymmetricallyEncryptedItem: Equatable, ItemIdentifiable, Sendable,
     /// Only applicable to aliases
     public let encryptedSimpleLoginNote: String?
 
+    public var fullParentId: String {
+        if let folderId {
+            return folderId + shareId
+        }
+
+        return shareId
+    }
+
     public init(shareId: String,
                 userId: String,
                 folderId: String?,

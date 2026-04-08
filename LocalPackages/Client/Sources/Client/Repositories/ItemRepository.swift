@@ -666,13 +666,17 @@ public extension ItemRepository {
                     slNote: String?) async throws -> SymmetricallyEncryptedItem {
         let itemId = oldItem.itemID
         logger.trace("Updating item \(itemId) for share \(shareId)")
-
+        let fullParentId = if let folderId = oldItem.folderID {
+            folderId + shareId
+        } else {
+            shareId
+        }
         let latestItemKey: any CryptographicKeyProtocol = if oldItem.isASharedWithMeItem {
             try await passKeyManager.getLatestShareKey(userId: userId, shareId: shareId)
         } else {
             try await passKeyManager.getLatestItemKey(userId: userId,
                                                       shareId: shareId,
-                                                      parentId: oldItem.folderID ?? shareId,
+                                                      parentId: fullParentId,
                                                       itemId: itemId)
         }
 
@@ -937,7 +941,12 @@ private extension ItemRepository {
                               userId: String,
                               symmetricKey: SymmetricKey,
                               slNote: String? = nil) async throws -> SymmetricallyEncryptedItem {
-        let shareKey = try await passKeyManager.getContainerKey(containerId: itemRevision.folderID ?? shareId,
+        let fullContainerKey = if let folderID = itemRevision.folderID {
+            folderID + shareId
+        } else {
+            shareId
+        }
+        let shareKey = try await passKeyManager.getContainerKey(containerId: fullContainerKey,
                                                                 keyRotation: nil)
 
         let contentProtobuf = try itemRevision.getContentProtobuf(containerKey: shareKey)
@@ -968,7 +977,12 @@ private extension ItemRepository {
     func createItemRequest(itemContent: any ProtobufableItemContentProtocol,
                            shareId: String,
                            folderId: String?) async throws -> CreateItemRequest {
-        let latestContainerKey = try await passKeyManager.getContainerKey(containerId: folderId ?? shareId,
+        let fullContainerKey = if let folderId {
+            folderId + shareId
+        } else {
+            shareId
+        }
+        let latestContainerKey = try await passKeyManager.getContainerKey(containerId: fullContainerKey,
                                                                           keyRotation: nil)
         return try CreateItemRequest(containerKey: latestContainerKey,
                                      itemContent: itemContent,
@@ -1063,16 +1077,21 @@ private extension ItemRepository {
         let userId = try await userManager.getActiveUserId()
         let symmetricKey = try await getSymmetricKey()
 
-        let destinationShareKey = try await passKeyManager.getContainerKey(containerId: destinationFolderId ??
-            toShareId,
-            keyRotation: nil)
+        let fullDestinationId = if let destinationFolderId {
+            destinationFolderId + toShareId
+        } else {
+            toShareId
+        }
+
+        let destinationShareKey = try await passKeyManager.getContainerKey(containerId: fullDestinationId,
+                                                                           keyRotation: nil)
 
         var itemsToBeMoved = [ItemToBeMoved]()
         for item in items {
             // Get all decrypted item keys
             let decryptedItemKeys = try await passKeyManager.getItemKeys(userId: userId,
                                                                          shareId: item.shareId,
-                                                                         parentId: item.parentId,
+                                                                         parentId: item.fullParentId,
                                                                          itemId: item.itemId)
             // Re-encrypt all those item keys with the destination vault key
             var encryptedItemKeys = [ItemKey]()
@@ -1110,7 +1129,13 @@ private extension ItemRepository {
                          shareId: String,
                          toContainerId: String?) async throws {
         let userId = try await userManager.getActiveUserId()
-        let destinationShareKey = try await passKeyManager.getContainerKey(containerId: toContainerId ?? shareId,
+        let fullContainerId = if let toContainerId {
+            toContainerId + shareId
+        } else {
+            shareId
+        }
+
+        let destinationShareKey = try await passKeyManager.getContainerKey(containerId: fullContainerId,
                                                                            keyRotation: nil)
 
         var itemsToBeMoved = [InternalItemToBeMoved]()
@@ -1118,8 +1143,7 @@ private extension ItemRepository {
             // Get all decrypted item keys
             let decryptedItemKeys = try await passKeyManager.getItemKeys(userId: userId,
                                                                          shareId: item.shareId,
-                                                                         parentId: item.item.folderID ?? item
-                                                                             .shareId,
+                                                                         parentId: item.fullParentId,
                                                                          itemId: item.item.itemID)
             // Re-encrypt all those item keys with the destination vault key
             var encryptedItemKeys = [ItemKey]()
@@ -1175,7 +1199,12 @@ private extension ItemRepository {
 
 private extension ItemRepository {
     func decrypt(userId: String, item: Item, shareId: String) async throws -> ItemContent {
-        let containerKey = try await passKeyManager.getContainerKey(containerId: item.folderID ?? shareId,
+        let fullContainerId = if let folderId = item.folderID {
+            folderId + shareId
+        } else {
+            shareId
+        }
+        let containerKey = try await passKeyManager.getContainerKey(containerId: fullContainerId,
                                                                     keyRotation: nil)
         let contentProtobuf = try item.getContentProtobuf(containerKey: containerKey)
         return ItemContent(userId: userId,
