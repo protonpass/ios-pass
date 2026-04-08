@@ -33,6 +33,13 @@ public extension ItemIdentifiable {
     var parentId: String {
         folderId ?? shareId
     }
+
+    var fullParentId: String {
+        if let folderId {
+            return folderId + shareId
+        }
+        return shareId
+    }
 }
 
 public extension ItemIdentifiable {

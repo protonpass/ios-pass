@@ -249,7 +249,8 @@ public extension PassKeyManager {
                     let startKey: any CryptographicKeyProtocol
 
                     if let parentId = root.parentFolderID {
-                        guard let cachedKey = await self.getLatestCachedKey(id: parentId) else {
+                        let fullParentId = parentId + shareId
+                        guard let cachedKey = await self.getLatestCachedKey(id: fullParentId) else {
                             throw PassError.crypto(.missingKeys)
                         }
                         startKey = cachedKey
@@ -371,7 +372,8 @@ private extension PassKeyManager {
                      parentKey: any CryptographicKeyProtocol,
                      adjacencyMap: [String?: [Folder]]) async throws -> [DecryptedFolderKey] {
         let currentDecryptedKey = try decryptFolderKey(shareId: shareId, folder: folder, parentKey: parentKey)
-        cacheKey(currentDecryptedKey, id: folder.id)
+        let uniqueFolderId = folder.id + shareId
+        cacheKey(currentDecryptedKey, id: uniqueFolderId)
 
         guard let children = adjacencyMap[folder.id], !children.isEmpty else {
             return [currentDecryptedKey]

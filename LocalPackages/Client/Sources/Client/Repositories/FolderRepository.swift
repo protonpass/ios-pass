@@ -188,7 +188,12 @@ public extension FolderRepository {
                       folderContent: FolderContent) async throws -> Folder {
         logger.trace("Creating folder for user \(userId)")
         let symmetricKey = try await symmetricKey
-        let containerKey = try await passKeyManager.getContainerKey(containerId: parentFolderId ?? shareId,
+        let completeContainerKey = if let parentFolderId {
+            parentFolderId + shareId
+        } else {
+            shareId
+        }
+        let containerKey = try await passKeyManager.getContainerKey(containerId: completeContainerKey,
                                                                     keyRotation: nil)
         let request = try CreateFolderRequest(encryptionKey: containerKey,
                                               folderContent: folderContent,
@@ -208,7 +213,8 @@ public extension FolderRepository {
     func edit(userId: String, shareId: String, folderId: String, folderContent: FolderContent) async throws {
         logger.trace("Editing folder \(folderId) for user \(userId)")
         let symmetricKey = try await symmetricKey
-        let folderKey = try await passKeyManager.getContainerKey(containerId: folderId,
+        let completeContainerKey = folderId + shareId
+        let folderKey = try await passKeyManager.getContainerKey(containerId: completeContainerKey,
                                                                  keyRotation: nil)
         let requestPayload = try UpdateFolderRequestPayload(encryptionKey: folderKey, folderContent: folderContent)
         let request = UpdateFolderRequest(content: requestPayload)
@@ -228,9 +234,14 @@ public extension FolderRepository {
     func move(userId: String, shareId: String, folderId: String, destinationId: String?) async throws {
         logger.trace("Move folder \(folderId) to destination \(destinationId ?? shareId)")
         let symmetricKey = try await symmetricKey
-        let destinationKey = try await passKeyManager.getContainerKey(containerId: destinationId ?? shareId,
+        let completeDestinationKey = if let destinationId {
+            destinationId + shareId
+        } else {
+            shareId
+        }
+        let destinationKey = try await passKeyManager.getContainerKey(containerId: completeDestinationKey,
                                                                       keyRotation: nil)
-        let currentFolderKey = try await passKeyManager.getContainerKey(containerId: folderId,
+        let currentFolderKey = try await passKeyManager.getContainerKey(containerId: folderId + shareId,
                                                                         keyRotation: nil)
         let encryptedFolderKey = try AES.GCM.seal(currentFolderKey.keyData,
                                                   key: destinationKey.keyData,
@@ -248,7 +259,6 @@ public extension FolderRepository {
                                                              folder: updatedFolder,
                                                              symmetricKey: symmetricKey)
         logger.trace("Updating local folder with id: \(folderId), deleting local entity and inserting new one")
-        try await localDatasource.deleteFolders(userId: userId, folderIds: [folderId], shareId: shareId)
         try await localDatasource.upsertFolders([encryptedFolder], userId: userId)
         logger.trace("Folder with id: \(folderId) move completed successfully")
     }
@@ -259,7 +269,7 @@ private extension FolderRepository {
                               shareId: String,
                               folder: Folder,
                               symmetricKey: SymmetricKey) async throws -> SymmetricallyEncryptedFolder {
-        let containerKey = try await passKeyManager.getContainerKey(containerId: folder.id,
+        let containerKey = try await passKeyManager.getContainerKey(containerId: folder.id + shareId,
                                                                     keyRotation: folder.keyRotation)
 
         let contentProtobuf = try folder.getContent(parentKey: containerKey)
