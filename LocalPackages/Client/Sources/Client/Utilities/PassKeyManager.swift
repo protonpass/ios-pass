@@ -331,7 +331,6 @@ private extension PassKeyManager {
     func decryptItemKey(_ itemKey: ItemKey,
                         parentId: String,
                         itemId: String) throws -> DecryptedItemKey {
-        // we replaced getLatestCachedKey to take into account keyRotation if issue we could revert
         guard let parentKey = getCachedKey(id: parentId, keyRotation: itemKey.keyRotation) else {
             throw PassError.keysNotFound(shareID: parentId)
         }
@@ -449,7 +448,7 @@ private extension PassKeyManager {
         // Create task that calls back into actor-isolated method
         let task = Task { [weak self] in
             guard let self else { throw PassError.deallocatedSelf }
-            try await performKeyLoading()
+            try await performKeysLoading()
         }
 
         loadingTask = task
@@ -464,7 +463,7 @@ private extension PassKeyManager {
         }
     }
 
-    func performKeyLoading() async throws {
+    func performKeysLoading() async throws {
         async let shareKeysRequest = shareKeyRepository.getAllLocalKeys()
         async let folderKeysRequest = folderKeyDatasource.getAllFolderKeys()
         let (shareKeys, folderKeys) = try await (shareKeysRequest, folderKeysRequest)
@@ -486,10 +485,10 @@ private extension PassKeyManager {
 
     func refreshShareKeys(shareId: String) async throws {
         let userId = try await userManager.getActiveUserId()
-        let refreshKeys = try await shareKeyRepository.refreshKeys(userId: userId, shareId: shareId)
+        let refreshedKeys = try await shareKeyRepository.refreshKeys(userId: userId, shareId: shareId)
 
         try await withThrowingTaskGroup(of: Void.self) { taskGroup in
-            for encryptedShareKey in refreshKeys {
+            for encryptedShareKey in refreshedKeys {
                 taskGroup.addTask { [weak self] in
                     guard let self else { return }
                     _ = try await symmetricDecryptAndCache(encryptedShareKey)

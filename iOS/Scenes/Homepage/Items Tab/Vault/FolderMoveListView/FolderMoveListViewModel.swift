@@ -34,14 +34,13 @@ final class FolderMoveListViewModel {
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
     @ObservationIgnored
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
+    @ObservationIgnored
+    @LazyInjected(\SharedToolingContainer.logger) private var logger
 
-    private(set) var loading: Bool = false
+    private(set) var loading = false
     private(set) var moveCompleted = false
     @ObservationIgnored private var moveTask: Task<Void, Never>?
     var expandedContainerIds = Set<String>()
-    var folderSupported: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passFolder)
-    }
 
     deinit {
         moveTask?.cancel()
@@ -63,6 +62,7 @@ final class FolderMoveListViewModel {
                                                        newParentFolderId: selectedContainer.folder?.folderId)
                 moveCompleted = true
             } catch {
+                logger.error(message: "Failed to move folder", error: error)
                 router.display(element: .displayErrorBanner(error))
             }
         }

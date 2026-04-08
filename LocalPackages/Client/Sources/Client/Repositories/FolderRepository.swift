@@ -132,7 +132,7 @@ public extension FolderRepository {
                 }
                 sinceToken = paginatedFolders.lastToken
             } catch {
-                logger.error(message: "Failed to fetch folders for share \(shareId): \(error)", error: error)
+                logger.error(message: "Failed to fetch folders for share \(shareId)", error: error)
                 throw error
             }
         }
@@ -187,6 +187,7 @@ public extension FolderRepository {
                       parentFolderId: String?,
                       folderContent: FolderContent) async throws -> Folder {
         logger.trace("Creating folder for user \(userId)")
+        let symmetricKey = try await symmetricKey
         let containerKey = try await passKeyManager.getContainerKey(containerId: parentFolderId ?? shareId,
                                                                     keyRotation: nil)
         let request = try CreateFolderRequest(encryptionKey: containerKey,
@@ -196,7 +197,8 @@ public extension FolderRepository {
         try await passKeyManager.decryptAndStoreFolderKeys(shareId: shareId, folders: [newFolder])
         let encryptedFolder = try await symmetricallyEncrypt(userId: userId,
                                                              shareId: shareId,
-                                                             folder: newFolder)
+                                                             folder: newFolder,
+                                                             symmetricKey: symmetricKey)
         logger.trace("Saving newly created folder to local for user \(userId)")
         try await localDatasource.upsertFolders([encryptedFolder], userId: userId)
         logger.trace("Created folder for user \(userId)")
@@ -205,6 +207,7 @@ public extension FolderRepository {
 
     func edit(userId: String, shareId: String, folderId: String, folderContent: FolderContent) async throws {
         logger.trace("Editing folder \(folderId) for user \(userId)")
+        let symmetricKey = try await symmetricKey
         let folderKey = try await passKeyManager.getContainerKey(containerId: folderId,
                                                                  keyRotation: nil)
         let requestPayload = try UpdateFolderRequestPayload(encryptionKey: folderKey, folderContent: folderContent)
@@ -216,23 +219,25 @@ public extension FolderRepository {
         logger.trace("Saving updated folder \(folderId) to local for user \(userId)")
         let encryptedFolder = try await symmetricallyEncrypt(userId: userId,
                                                              shareId: shareId,
-                                                             folder: updatedFolder)
+                                                             folder: updatedFolder,
+                                                             symmetricKey: symmetricKey)
         try await localDatasource.upsertFolders([encryptedFolder], userId: userId)
         logger.trace("Updated folder \(encryptedFolder.folderId) for user \(userId)")
     }
 
     func move(userId: String, shareId: String, folderId: String, destinationId: String?) async throws {
         logger.trace("Move folder \(folderId) to destination \(destinationId ?? shareId)")
+        let symmetricKey = try await symmetricKey
         let destinationKey = try await passKeyManager.getContainerKey(containerId: destinationId ?? shareId,
                                                                       keyRotation: nil)
         let currentFolderKey = try await passKeyManager.getContainerKey(containerId: folderId,
                                                                         keyRotation: nil)
-        let encryptedItemKey = try AES.GCM.seal(currentFolderKey.keyData,
-                                                key: destinationKey.keyData,
-                                                associatedData: .folderKey)
+        let encryptedFolderKey = try AES.GCM.seal(currentFolderKey.keyData,
+                                                  key: destinationKey.keyData,
+                                                  associatedData: .folderKey)
 
         let request = MoveFolderRequest(parentFolderID: destinationId,
-                                        folderKeys: [.init(folderKey: encryptedItemKey.base64EncodedString(),
+                                        folderKeys: [.init(folderKey: encryptedFolderKey.base64EncodedString(),
                                                            keyRotation: Int(currentFolderKey.keyRotation))])
         let updatedFolder = try await remoteDatasource.move(userId: userId,
                                                             shareId: shareId,
@@ -240,20 +245,20 @@ public extension FolderRepository {
                                                             request: request)
         let encryptedFolder = try await symmetricallyEncrypt(userId: userId,
                                                              shareId: shareId,
-                                                             folder: updatedFolder)
-        logger.trace("Updating local datasource")
+                                                             folder: updatedFolder,
+                                                             symmetricKey: symmetricKey)
+        logger.trace("Updating local folder with id: \(folderId), deleting local entity and inserting new one")
         try await localDatasource.deleteFolders(userId: userId, folderIds: [folderId], shareId: shareId)
         try await localDatasource.upsertFolders([encryptedFolder], userId: userId)
-        logger.trace("Folder move completed successfully")
+        logger.trace("Folder with id: \(folderId) move completed successfully")
     }
 }
 
 private extension FolderRepository {
     func symmetricallyEncrypt(userId: String,
                               shareId: String,
-                              folder: Folder) async throws -> SymmetricallyEncryptedFolder {
-        let symmetricKey = try await symmetricKey
-
+                              folder: Folder,
+                              symmetricKey: SymmetricKey) async throws -> SymmetricallyEncryptedFolder {
         let containerKey = try await passKeyManager.getContainerKey(containerId: folder.id,
                                                                     keyRotation: folder.keyRotation)
 
@@ -295,13 +300,13 @@ private extension FolderRepository {
             folders.append(contentsOf: batch)
         }
 
+        guard !folders.isEmpty else {
+            return
+        }
+
         let symmetricallyEncryptedFolders = try await batchSymmetricEncrypt(userId: userId,
                                                                             shareId: shareId,
                                                                             folders: folders)
-
-        guard !symmetricallyEncryptedFolders.isEmpty else {
-            return
-        }
 
         logger.trace("Saving \(symmetricallyEncryptedFolders.count) remote folders revisions to local database")
         try await localDatasource.upsertFolders(symmetricallyEncryptedFolders, userId: userId)
@@ -314,6 +319,7 @@ private extension FolderRepository {
         guard !folders.isEmpty else {
             return []
         }
+        let symmetricKey = try await symmetricKey
         try await passKeyManager.decryptAndStoreFolderKeys(shareId: shareId, folders: folders)
 
         var encryptedFolders = [SymmetricallyEncryptedFolder]()
@@ -330,7 +336,8 @@ private extension FolderRepository {
                         }
                         return try await symmetricallyEncrypt(userId: userId,
                                                               shareId: shareId,
-                                                              folder: folder)
+                                                              folder: folder,
+                                                              symmetricKey: symmetricKey)
                     }
                 }
                 var encryptedFolders = [SymmetricallyEncryptedFolder]()

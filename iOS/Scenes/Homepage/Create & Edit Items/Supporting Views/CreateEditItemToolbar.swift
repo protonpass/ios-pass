@@ -61,9 +61,9 @@ struct CreateEditItemToolbar: ToolbarContent {
                 Group {
                     if canChangeVault {
                         if container.isFolderSelected {
-                            folderButton(folderName: container.title)
+                            containerButton(.folder(container.title))
                         } else if let vaultContent = container.share.vaultContent {
-                            vaultButton(vaultContent: vaultContent)
+                            containerButton(.vault(vaultContent))
                         }
                     } else {
                         EmptyView()
@@ -111,44 +111,65 @@ private extension CreateEditItemToolbar {
         }
     }
 
-    func vaultButton(vaultContent: VaultContent) -> some View {
+    func containerButton(_ containerType: ContainerType) -> some View {
         HStack {
-            vaultContent.vaultBigIcon
-                .resizable()
+            containerType.icon
                 .scaledToFit()
                 .frame(width: 18)
-            Text(vaultContent.name)
+            Text(containerType.title)
             Image(systemName: "chevron.down")
                 .resizable()
                 .scaledToFit()
                 .frame(width: 12)
         }
         .frame(height: 40)
-        .foregroundStyle(vaultContent.mainColor)
+        .foregroundStyle(containerType.forground)
         .padding(.horizontal, DesignConstant.sectionPadding)
-        .background(vaultContent.backgroundColor)
+        .background(containerType.background)
         .clipShape(Capsule())
         .buttonEmbeded(action: onSelectContainer)
     }
+}
 
-    func folderButton(folderName: String) -> some View {
-        HStack {
+private enum ContainerType {
+    case folder(String)
+    case vault(VaultContent)
+
+    @ViewBuilder
+    var icon: some View {
+        switch self {
+        case .folder:
             IconProvider.foldersFilled
                 .resizable()
                 .foregroundStyle(PassColor.folderIcon)
-                .scaledToFit()
-                .frame(width: 18)
-            Text(folderName)
-            Image(systemName: "chevron.down")
+        case let .vault(content):
+            content.vaultBigIcon
                 .resizable()
-                .scaledToFit()
-                .frame(width: 12)
         }
-        .frame(height: 40)
-        .foregroundStyle(PassColor.textNorm)
-        .padding(.horizontal, DesignConstant.sectionPadding)
-        .background(PassColor.interactionNormMinor1)
-        .clipShape(Capsule())
-        .buttonEmbeded(action: onSelectContainer)
+    }
+
+    var title: String {
+        switch self {
+        case let .folder(name): name
+        case let .vault(content): content.name
+        }
+    }
+
+    var forground: Color {
+        switch self {
+        case .folder:
+            PassColor.textNorm
+        case let .vault(content):
+            content.mainColor
+        }
+    }
+
+    var background: Color {
+        switch self {
+        case .folder:
+            PassColor.interactionNormMinor1
+        case let .vault(content):
+            content.backgroundColor
+        }
     }
 }
