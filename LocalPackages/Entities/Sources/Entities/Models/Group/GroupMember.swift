@@ -26,11 +26,43 @@ public enum GroupMemberType: Int, Decodable, Sendable {
     case internalTypeExternal = 2
 }
 
-public enum GroupMemberPermission: Int, Decodable, Sendable {
-    case none = 0
-    case send = 1
-    case leave = 2
-    case sendAndLeave = 3
+public struct GroupMemberPermission: OptionSet, Sendable, Decodable {
+    public let rawValue: Int
+
+    // MARK: - Init
+
+    public init(rawValue: Int) {
+        self.rawValue = rawValue
+    }
+
+    // MARK: - Options
+
+    public static let none: Self = []
+    public static let send = Self(rawValue: 1 << 0)
+    public static let leave = Self(rawValue: 1 << 1)
+    public static let owner = Self(rawValue: 1 << 2)
+    public static let ownerWithKeys = Self(rawValue: 1 << 3)
+
+    // MARK: - Derived Semantics
+
+    /// True if the member is an owner (with or without keys)
+    public var isOwner: Bool {
+        contains(.owner)
+    }
+
+    /// True if the member is an owner AND has keys
+    public var hasOwnerKeys: Bool {
+        contains([.owner, .ownerWithKeys])
+    }
+
+    /// Validates the invariant:
+    /// `.ownerWithKeys` cannot exist without `.owner`
+    public var isValid: Bool {
+        if contains(.ownerWithKeys), !contains(.owner) {
+            return false
+        }
+        return true
+    }
 }
 
 public enum GroupMemberState: Int, Decodable, Sendable {
@@ -49,11 +81,15 @@ public struct GroupMember: Decodable, Sendable, Equatable, Hashable, Identifiabl
     public let type: GroupMemberType
     public let addressID: String?
     public let email: String?
-    public let permissions: GroupMemberPermission
+    public let permissions: Int
 
     public var id: String {
         // swiftformat:disable:next redundantSelf
         self.ID
+    }
+
+    public var groupPermissions: GroupMemberPermission {
+        GroupMemberPermission(rawValue: permissions)
     }
 
     public init(ID: String,
@@ -63,7 +99,7 @@ public struct GroupMember: Decodable, Sendable, Equatable, Hashable, Identifiabl
                 type: GroupMemberType,
                 addressID: String?,
                 email: String?,
-                permissions: GroupMemberPermission) {
+                permissions: Int) {
         self.ID = ID
         self.createTime = createTime
         self.groupID = groupID
