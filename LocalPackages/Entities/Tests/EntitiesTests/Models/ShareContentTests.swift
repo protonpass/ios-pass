@@ -171,7 +171,7 @@ struct ShareContentTests {
 
         let result = content.element(in: shareId, for: "folder-1")
         #expect(result != nil)
-        #expect(result?.id == "folder-1")
+        #expect(result?.id == "folder-1share-1")
         #expect(result?.isFolder == true)
     }
 
@@ -328,7 +328,7 @@ struct ShareContentTests {
 
         let rootIds = rootElements.map { $0.id }
         #expect(rootIds.contains(itemAtRoot.id))
-        #expect(rootIds.contains("folder-1"))
+        #expect(rootIds.contains("folder-1share-1"))
         #expect(!rootIds.contains(itemInFolder.id))
     }
 
@@ -341,7 +341,7 @@ struct ShareContentTests {
 
         let rootElements = content.rootElements
         #expect(rootElements.count == 1)
-        #expect(rootElements.first?.id == "folder-1")
+        #expect(rootElements.first?.id == "folder-1share-1")
     }
 
     // MARK: - flattenedItems(from:) Tests

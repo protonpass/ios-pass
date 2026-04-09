@@ -172,38 +172,4 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         invokedResetCount += 1
         closureReset()
     }
-    // MARK: - moveFolder
-    public var moveFolderUserIdShareIdFolderIdNewParentFolderIdThrowableError9: Error?
-    public var closureMoveFolder: () -> () = {}
-    public var invokedMoveFolderfunction = false
-    public var invokedMoveFolderCount = 0
-    public var invokedMoveFolderParameters: (userId: String, shareId: String, folderId: String, newParentFolderId: String?)?
-    public var invokedMoveFolderParametersList = [(userId: String, shareId: String, folderId: String, newParentFolderId: String?)]()
-
-    public func moveFolder(userId: String, shareId: String, folderId: String, newParentFolderId: String?) async throws {
-        invokedMoveFolderfunction = true
-        invokedMoveFolderCount += 1
-        invokedMoveFolderParameters = (userId, shareId, folderId, newParentFolderId)
-        if let error = moveFolderUserIdShareIdFolderIdNewParentFolderIdThrowableError9 {
-            throw error
-        }
-        closureMoveFolder()
-    }
-    // MARK: - deleteFolder
-    public var deleteFolderUserIdShareIdFolderIdThrowableError10: Error?
-    public var closureDeleteFolder: () -> () = {}
-    public var invokedDeleteFolderfunction = false
-    public var invokedDeleteFolderCount = 0
-    public var invokedDeleteFolderParameters: (userId: String, shareId: String, folderId: String)?
-    public var invokedDeleteFolderParametersList = [(userId: String, shareId: String, folderId: String)]()
-
-    public func deleteFolder(userId: String, shareId: String, folderId: String) async throws {
-        invokedDeleteFolderfunction = true
-        invokedDeleteFolderCount += 1
-        invokedDeleteFolderParameters = (userId, shareId, folderId)
-        if let error = deleteFolderUserIdShareIdFolderIdThrowableError10 {
-            throw error
-        }
-        closureDeleteFolder()
-    }
 }

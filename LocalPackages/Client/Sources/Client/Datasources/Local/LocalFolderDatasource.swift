@@ -27,8 +27,6 @@ public protocol LocalFolderDatasourceProtocol: Sendable {
     // periphery:ignore
     func getFolder(shareId: String, folderId: String) async throws -> SymmetricallyEncryptedFolder?
     func upsertFolders(_ folders: [SymmetricallyEncryptedFolder], userId: String) async throws
-    // periphery:ignore
-    func removeAllFolders() async throws
     func removeAllFolders(userId: String) async throws
     func removeAllFolders(shareId: String) async throws
     func deleteFolders(userId: String, folderIds: [String], shareId: String) async throws
@@ -100,13 +98,6 @@ public extension LocalFolderDatasource {
             .init(format: "shareID = %@", shareId),
             .init(format: "userID = %@", userId)
         ])
-        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
-                          context: taskContext)
-    }
-
-    func removeAllFolders() async throws {
-        let taskContext = newTaskContext(type: .delete)
-        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "FolderEntity")
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
     }

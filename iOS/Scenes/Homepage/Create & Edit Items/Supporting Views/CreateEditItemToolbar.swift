@@ -123,7 +123,7 @@ private extension CreateEditItemToolbar {
                 .frame(width: 12)
         }
         .frame(height: 40)
-        .foregroundStyle(containerType.forground)
+        .foregroundStyle(containerType.foreground)
         .padding(.horizontal, DesignConstant.sectionPadding)
         .background(containerType.background)
         .clipShape(Capsule())
@@ -155,7 +155,7 @@ private enum ContainerType {
         }
     }
 
-    var forground: Color {
+    var foreground: Color {
         switch self {
         case .folder:
             PassColor.textNorm

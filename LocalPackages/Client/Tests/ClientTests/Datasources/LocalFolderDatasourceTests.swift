@@ -245,29 +245,6 @@ extension LocalFolderDatasourceTests {
 // MARK: - removeAllFolders Tests
 
 extension LocalFolderDatasourceTests {
-    @Test
-    func `Remove all folders globally`() async throws {
-        // Given
-        let userId1 = String.random()
-        let userId2 = String.random()
-
-        try await sut.upsertFolders([.random(userId: userId1), .random(userId: userId1)], userId: userId1)
-        try await sut.upsertFolders([.random(userId: userId2), .random(userId: userId2)], userId: userId2)
-
-        let initialUser1Folders = try await sut.getAllFolders(userId: userId1)
-        let initialUser2Folders = try await sut.getAllFolders(userId: userId2)
-        #expect(initialUser1Folders.count == 2)
-        #expect(initialUser2Folders.count == 2)
-
-        // When
-        try await sut.removeAllFolders()
-
-        // Then
-        let user1Folders = try await sut.getAllFolders(userId: userId1)
-        let user2Folders = try await sut.getAllFolders(userId: userId2)
-        #expect(user1Folders.isEmpty)
-        #expect(user2Folders.isEmpty)
-    }
 
     @Test
     func `Remove all folders by userId`() async throws {
