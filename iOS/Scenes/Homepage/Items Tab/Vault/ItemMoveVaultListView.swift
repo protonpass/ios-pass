@@ -90,6 +90,7 @@ private extension ItemMoveVaultListView {
             }
             .padding(.horizontal)
         }
+        .animation(.default, value: viewModel.expandedContainerIds)
     }
 
     var bottomActionsBar: some View {

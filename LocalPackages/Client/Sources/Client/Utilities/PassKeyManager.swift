@@ -455,11 +455,12 @@ private extension PassKeyManager {
 
         loadingTask = task
 
+        defer {
+            loadingTask = nil
+        }
         do {
             try await task.value
-            loadingTask = nil
         } catch {
-            loadingTask = nil
             logger.error(error)
             throw error
         }

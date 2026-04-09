@@ -81,86 +81,72 @@ public final class LocalFolderDatasourceProtocolMock: @unchecked Sendable, Local
         }
         closureUpsertFolders()
     }
-    // MARK: - removeAllFolders
-    public var removeAllFoldersThrowableError4: Error?
-    public var closureRemoveAllFoldersAsync4: () -> () = {}
-    public var invokedRemoveAllFoldersAsync4 = false
-    public var invokedRemoveAllFoldersAsyncCount4 = 0
-
-    public func removeAllFolders() async throws {
-        invokedRemoveAllFoldersAsync4 = true
-        invokedRemoveAllFoldersAsyncCount4 += 1
-        if let error = removeAllFoldersThrowableError4 {
-            throw error
-        }
-        closureRemoveAllFoldersAsync4()
-    }
     // MARK: - removeAllFoldersUserId
-    public var removeAllFoldersUserIdThrowableError5: Error?
-    public var closureRemoveAllFoldersUserIdAsync5: () -> () = {}
-    public var invokedRemoveAllFoldersUserIdAsync5 = false
-    public var invokedRemoveAllFoldersUserIdAsyncCount5 = 0
-    public var invokedRemoveAllFoldersUserIdAsyncParameters5: (userId: String, Void)?
-    public var invokedRemoveAllFoldersUserIdAsyncParametersList5 = [(userId: String, Void)]()
+    public var removeAllFoldersUserIdThrowableError4: Error?
+    public var closureRemoveAllFoldersUserIdAsync4: () -> () = {}
+    public var invokedRemoveAllFoldersUserIdAsync4 = false
+    public var invokedRemoveAllFoldersUserIdAsyncCount4 = 0
+    public var invokedRemoveAllFoldersUserIdAsyncParameters4: (userId: String, Void)?
+    public var invokedRemoveAllFoldersUserIdAsyncParametersList4 = [(userId: String, Void)]()
 
     public func removeAllFolders(userId: String) async throws {
-        invokedRemoveAllFoldersUserIdAsync5 = true
-        invokedRemoveAllFoldersUserIdAsyncCount5 += 1
-        invokedRemoveAllFoldersUserIdAsyncParameters5 = (userId, ())
-        if let error = removeAllFoldersUserIdThrowableError5 {
+        invokedRemoveAllFoldersUserIdAsync4 = true
+        invokedRemoveAllFoldersUserIdAsyncCount4 += 1
+        invokedRemoveAllFoldersUserIdAsyncParameters4 = (userId, ())
+        if let error = removeAllFoldersUserIdThrowableError4 {
             throw error
         }
-        closureRemoveAllFoldersUserIdAsync5()
+        closureRemoveAllFoldersUserIdAsync4()
     }
     // MARK: - removeAllFoldersShareId
-    public var removeAllFoldersShareIdThrowableError6: Error?
-    public var closureRemoveAllFoldersShareIdAsync6: () -> () = {}
-    public var invokedRemoveAllFoldersShareIdAsync6 = false
-    public var invokedRemoveAllFoldersShareIdAsyncCount6 = 0
-    public var invokedRemoveAllFoldersShareIdAsyncParameters6: (shareId: String, Void)?
-    public var invokedRemoveAllFoldersShareIdAsyncParametersList6 = [(shareId: String, Void)]()
+    public var removeAllFoldersShareIdThrowableError5: Error?
+    public var closureRemoveAllFoldersShareIdAsync5: () -> () = {}
+    public var invokedRemoveAllFoldersShareIdAsync5 = false
+    public var invokedRemoveAllFoldersShareIdAsyncCount5 = 0
+    public var invokedRemoveAllFoldersShareIdAsyncParameters5: (shareId: String, Void)?
+    public var invokedRemoveAllFoldersShareIdAsyncParametersList5 = [(shareId: String, Void)]()
 
     public func removeAllFolders(shareId: String) async throws {
-        invokedRemoveAllFoldersShareIdAsync6 = true
-        invokedRemoveAllFoldersShareIdAsyncCount6 += 1
-        invokedRemoveAllFoldersShareIdAsyncParameters6 = (shareId, ())
-        if let error = removeAllFoldersShareIdThrowableError6 {
+        invokedRemoveAllFoldersShareIdAsync5 = true
+        invokedRemoveAllFoldersShareIdAsyncCount5 += 1
+        invokedRemoveAllFoldersShareIdAsyncParameters5 = (shareId, ())
+        if let error = removeAllFoldersShareIdThrowableError5 {
             throw error
         }
-        closureRemoveAllFoldersShareIdAsync6()
+        closureRemoveAllFoldersShareIdAsync5()
     }
     // MARK: - deleteFoldersUserIdFolderIdsShareId
-    public var deleteFoldersUserIdFolderIdsShareIdThrowableError7: Error?
-    public var closureDeleteFoldersUserIdFolderIdsShareIdAsync7: () -> () = {}
-    public var invokedDeleteFoldersUserIdFolderIdsShareIdAsync7 = false
-    public var invokedDeleteFoldersUserIdFolderIdsShareIdAsyncCount7 = 0
-    public var invokedDeleteFoldersUserIdFolderIdsShareIdAsyncParameters7: (userId: String, folderIds: [String], shareId: String)?
-    public var invokedDeleteFoldersUserIdFolderIdsShareIdAsyncParametersList7 = [(userId: String, folderIds: [String], shareId: String)]()
+    public var deleteFoldersUserIdFolderIdsShareIdThrowableError6: Error?
+    public var closureDeleteFoldersUserIdFolderIdsShareIdAsync6: () -> () = {}
+    public var invokedDeleteFoldersUserIdFolderIdsShareIdAsync6 = false
+    public var invokedDeleteFoldersUserIdFolderIdsShareIdAsyncCount6 = 0
+    public var invokedDeleteFoldersUserIdFolderIdsShareIdAsyncParameters6: (userId: String, folderIds: [String], shareId: String)?
+    public var invokedDeleteFoldersUserIdFolderIdsShareIdAsyncParametersList6 = [(userId: String, folderIds: [String], shareId: String)]()
 
     public func deleteFolders(userId: String, folderIds: [String], shareId: String) async throws {
-        invokedDeleteFoldersUserIdFolderIdsShareIdAsync7 = true
-        invokedDeleteFoldersUserIdFolderIdsShareIdAsyncCount7 += 1
-        invokedDeleteFoldersUserIdFolderIdsShareIdAsyncParameters7 = (userId, folderIds, shareId)
-        if let error = deleteFoldersUserIdFolderIdsShareIdThrowableError7 {
+        invokedDeleteFoldersUserIdFolderIdsShareIdAsync6 = true
+        invokedDeleteFoldersUserIdFolderIdsShareIdAsyncCount6 += 1
+        invokedDeleteFoldersUserIdFolderIdsShareIdAsyncParameters6 = (userId, folderIds, shareId)
+        if let error = deleteFoldersUserIdFolderIdsShareIdThrowableError6 {
             throw error
         }
-        closureDeleteFoldersUserIdFolderIdsShareIdAsync7()
+        closureDeleteFoldersUserIdFolderIdsShareIdAsync6()
     }
     // MARK: - deleteFoldersShareIdUserId
-    public var deleteFoldersShareIdUserIdThrowableError8: Error?
-    public var closureDeleteFoldersShareIdUserIdAsync8: () -> () = {}
-    public var invokedDeleteFoldersShareIdUserIdAsync8 = false
-    public var invokedDeleteFoldersShareIdUserIdAsyncCount8 = 0
-    public var invokedDeleteFoldersShareIdUserIdAsyncParameters8: (shareId: String, userId: String)?
-    public var invokedDeleteFoldersShareIdUserIdAsyncParametersList8 = [(shareId: String, userId: String)]()
+    public var deleteFoldersShareIdUserIdThrowableError7: Error?
+    public var closureDeleteFoldersShareIdUserIdAsync7: () -> () = {}
+    public var invokedDeleteFoldersShareIdUserIdAsync7 = false
+    public var invokedDeleteFoldersShareIdUserIdAsyncCount7 = 0
+    public var invokedDeleteFoldersShareIdUserIdAsyncParameters7: (shareId: String, userId: String)?
+    public var invokedDeleteFoldersShareIdUserIdAsyncParametersList7 = [(shareId: String, userId: String)]()
 
     public func deleteFolders(shareId: String, userId: String) async throws {
-        invokedDeleteFoldersShareIdUserIdAsync8 = true
-        invokedDeleteFoldersShareIdUserIdAsyncCount8 += 1
-        invokedDeleteFoldersShareIdUserIdAsyncParameters8 = (shareId, userId)
-        if let error = deleteFoldersShareIdUserIdThrowableError8 {
+        invokedDeleteFoldersShareIdUserIdAsync7 = true
+        invokedDeleteFoldersShareIdUserIdAsyncCount7 += 1
+        invokedDeleteFoldersShareIdUserIdAsyncParameters7 = (shareId, userId)
+        if let error = deleteFoldersShareIdUserIdThrowableError7 {
             throw error
         }
-        closureDeleteFoldersShareIdUserIdAsync8()
+        closureDeleteFoldersShareIdUserIdAsync7()
     }
 }
