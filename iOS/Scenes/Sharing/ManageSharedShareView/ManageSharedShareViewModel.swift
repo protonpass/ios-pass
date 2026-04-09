@@ -127,6 +127,15 @@ final class ManageSharedShareViewModel: ObservableObject {
         userManager.currentActiveUser.value?.user.email == invitee.email
     }
 
+    func isInCurrentGroup(_ invitee: any ShareInvitee) -> Bool {
+        guard let currentEmail = userManager.currentActiveUser.value?.user.email,
+              let members = groups[invitee.email]?.members else {
+            return false
+        }
+
+        return members.compactMap(\.email).contains(currentEmail)
+    }
+
     func shareWithMorePeople(iSharingVault: Bool) {
         let typeOfSharing: SharingElementData
         if iSharingVault {
@@ -225,7 +234,11 @@ final class ManageSharedShareViewModel: ObservableObject {
                                       elementDisplay: element)
 
                 case let .showGroupMembers(invitee):
-                    selectedGroupInfo = groups[invitee.email]
+                    guard let groupInfo = groups[invitee.email], let members = groupInfo.members,
+                          !members.isEmpty else {
+                        return
+                    }
+                    selectedGroupInfo = groupInfo
                 }
             } catch {
                 logger.error(error)
