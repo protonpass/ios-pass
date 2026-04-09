@@ -136,7 +136,7 @@ private extension ShareInviteeView {
                     }
 
                 case .confirmTransferOwnership:
-                    if canTransferOwnership {
+                    if canTransferOwnership, !invitee.isGroupShare {
                         button(option: option,
                                title: "Transfer ownership",
                                image: IconProvider.shieldHalfFilled)
