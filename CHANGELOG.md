@@ -1,3 +1,18 @@
+# Version 1.19.0
+Improvements:
+- Create a login from an alias via the "Create login" button below the alias address
+- Fixed vault list overflow in some languages
+- Hidden, date, and TOTP custom fields are now searchable by title
+- Option to copy alias and contact address after creation
+- Pass Monitor items are now sorted alphabetically
+- Scrollable toolbar for SSH key keyboard
+
+Others:
+- B2B: Group sharing (behind feature flag)
+- B2B: Alias policy (behind feature flag)
+- Core libraries upgraded from 35.0.3 to 36.0.3
+- Dropped support for iOS 16
+
 # Version 1.18.1
 Fixed crashes on iOS 17
 
