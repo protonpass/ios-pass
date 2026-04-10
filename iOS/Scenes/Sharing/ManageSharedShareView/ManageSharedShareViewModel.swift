@@ -34,6 +34,8 @@ final class ManageSharedShareViewModel: ObservableObject {
     @Published private(set) var invitations = ShareInvites.default
     @Published private(set) var vaultMembers: [any ShareInvitee] = []
     @Published private(set) var itemMembers: [any ShareInvitee] = []
+    @Published private(set) var totalNumberOfVaultMembers = 0
+    @Published private(set) var totalNumberOfItemMembers = 0
     @Published private(set) var fetching = false
     @Published private(set) var loading = false
     @Published private(set) var isFreeUser = true
@@ -265,10 +267,6 @@ final class ManageSharedShareViewModel: ObservableObject {
             invite.email
         }
     }
-
-    func totalNumberOfMembers() -> Int {
-        vaultMembers.reduce(0) { $0 + (groups[$1.email]?.members?.count ?? 1) }
-    }
 }
 
 private extension ManageSharedShareViewModel {
@@ -325,6 +323,13 @@ private extension ManageSharedShareViewModel {
 
         itemMembers = itemMembers.sorted { $0.email > $1.email }
         vaultMembers = vaultMembers.sorted { $0.email > $1.email }
+
+        setTotalNumberOfMembers()
+    }
+
+    func setTotalNumberOfMembers() {
+        totalNumberOfVaultMembers = vaultMembers.reduce(0) { $0 + (groups[$1.email]?.members?.count ?? 1) }
+        totalNumberOfItemMembers = itemMembers.reduce(0) { $0 + (groups[$1.email]?.members?.count ?? 1) }
     }
 }
 
