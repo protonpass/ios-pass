@@ -159,7 +159,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     var sharedItemWithGroup: Bool {
-        vault?.vault.shareType == .item && vault?.vault.groupID == nil
+        vault?.vault.shareType == .item && vault?.vault.groupID != nil
     }
 
     weak var delegate: (any ItemDetailViewModelDelegate)?
