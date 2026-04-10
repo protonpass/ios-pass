@@ -62,7 +62,6 @@ public extension GroupRepository {
         logger.trace("Fetching members for groupId \(groupId)")
         let members = try await remoteDatasource.getMembers(groupId: groupId, userId: userId)
         logger.info("Found \(members.count) members for groupId \(groupId)")
-        // Retrun only active members
         return members.filter { $0.state == .active }
     }
 
