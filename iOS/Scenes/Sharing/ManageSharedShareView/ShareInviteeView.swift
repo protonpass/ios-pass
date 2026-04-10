@@ -28,7 +28,7 @@ struct ShareInviteeView: View {
     @State private var isExpanded = false
     let invitee: any ShareInvitee
     let title: String
-    let isManager: Bool
+    let showAction: Bool
     let managerAsAdmin: Bool
     let isCurrentUser: Bool
     let canSeeAccessLevel: Bool
@@ -82,7 +82,7 @@ private extension ShareInviteeView {
 
             Spacer()
 
-            if isManager, !isCurrentUser, !invitee.owner {
+            if showAction {
                 trailingView
             }
         }

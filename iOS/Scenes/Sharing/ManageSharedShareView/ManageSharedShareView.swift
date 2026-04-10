@@ -173,8 +173,11 @@ private extension ManageSharedShareView {
                 ForEach(Array(invitees.enumerated()), id: \.element.id) { index, invitee in
                     ShareInviteeView(invitee: invitee,
                                      title: viewModel.inviteTitle(invitee),
-                                     isManager: invitee.isGroupShare ?
-                                         displayAction(invitee) && canExecuteActions : canExecuteActions,
+                                     showAction: displayAction(isVaultSelection: isVaultSection,
+                                                               canAdmin: canExecuteActions,
+                                                               invitee),
+//                                        invitee.isGroupShare ?
+//                                         displayAction(invitee) && canExecuteActions : canExecuteActions,
                                      managerAsAdmin: viewModel.managerAsAdmin,
                                      isCurrentUser: viewModel.isCurrentUser(invitee),
                                      canSeeAccessLevel: canSeeAccessLevel,
@@ -192,15 +195,46 @@ private extension ManageSharedShareView {
         }
     }
 
-    func displayAction(_ invitee: any ShareInvitee) -> Bool {
-        if invitee.shareType == .item ||
-            (invitee.shareType == .vault &&
-                invitee.isManager &&
-                !invitee.owner &&
-                viewModel.isInCurrentGroup(invitee)) {
-            return false
+    ///    func displayAction(_ invitee: any ShareInvitee) -> Bool {
+    ///        print("woot invitee: \(invitee)")
+    ///        if (invitee.shareType == .item && (!viewModel.share.isManager || !viewModel.share.isOwner)) ||
+    ///            (invitee.shareType == .vault &&
+    ///                invitee.isManager &&
+    ///                !invitee.owner &&
+    ///                viewModel.isInCurrentGroup(invitee)) {
+    ///            print("woot invitee: not allowed")
+    ///
+    ///            return false
+    ///        }
+    ///        print("woot invitee: allowed")
+    ///
+    ///        return true
+    ///    }
+    ///
+    ///
+    func displayAction(isVaultSelection: Bool, canAdmin: Bool, _ invitee: any ShareInvitee) -> Bool {
+        if isVaultSelection, invitee.isPending {
+            return true
         }
-        return true
+
+        return canAdmin &&
+            !invitee.owner &&
+            !viewModel.isCurrentUser(invitee) &&
+            !viewModel.isInCurrentGroup(invitee)
+
+//        if !isVaultSelection {
+//            canAdmin &&
+//            !invitee.owner &&
+//            !viewModel.isCurrentUser(invitee) &&
+//            !viewModel.isInCurrentGroup(invitee)
+//        } else {
+//            if invitee.isPending {
+//                true
+//            } else {
+//                canAdmin && !invitee.owner && !viewModel.isCurrentUser(invitee) && !viewModel
+//                    .isInCurrentGroup(invitee)
+//            }
+//        }
     }
 }
 
