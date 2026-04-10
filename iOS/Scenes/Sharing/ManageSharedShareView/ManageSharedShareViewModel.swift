@@ -236,7 +236,8 @@ final class ManageSharedShareViewModel: ObservableObject {
                                       elementDisplay: element)
 
                 case let .showGroupMembers(invitee):
-                    guard let groupInfo = groups[invitee.email], let members = groupInfo.members,
+                    guard let groupInfo = groups[invitee.email],
+                          let members = groupInfo.members,
                           !members.isEmpty else {
                         return
                     }

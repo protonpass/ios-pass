@@ -73,7 +73,7 @@ final class EmailGroupSelectionViewModel: ObservableObject {
         cachedOrgRecommendations?.canFetchMore ?? true
     }
 
-    private var filteredCacherGroupInfos: [InviteRecommendationType]? {
+    private var filteredCachedGroupInfos: [InviteRecommendationType]? {
         email.isEmpty ? cachedGroupInfos : cachedGroupInfos?.filter { $0.name.contains(email) }
     }
 
@@ -299,7 +299,7 @@ private extension EmailGroupSelectionViewModel {
             var invitations: [InviteRecommendationType] = []
             for element in content {
                 if element.isGroup,
-                   let groupInvite = filteredCacherGroupInfos?.first(where: { element.email == $0.emailAddress }) {
+                   let groupInvite = filteredCachedGroupInfos?.first(where: { element.email == $0.emailAddress }) {
                     invitations.append(groupInvite)
                 } else {
                     invitations.append(.email(element.email))
@@ -341,7 +341,7 @@ private extension EmailGroupSelectionViewModel {
             guard let cachedOrgRecommendations else {
                 return []
             }
-            var recommendation = filteredCacherGroupInfos ?? []
+            var recommendation = filteredCachedGroupInfos ?? []
 
             for entry in cachedOrgRecommendations.entries {
                 recommendation.append(.email(entry.email))
