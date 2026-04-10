@@ -464,9 +464,21 @@
     "%@ (%lld members)" : {
       "localizations" : {
         "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$@ (%2$lld members)"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$@ (%2$lld member)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$@ (%2$lld members)"
+                }
+              }
+            }
           }
         }
       }

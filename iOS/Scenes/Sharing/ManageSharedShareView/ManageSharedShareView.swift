@@ -97,7 +97,7 @@ private extension ManageSharedShareView {
                                 isVaultSection: false,
                                 canExecuteActions: viewModel.share.shareRole == .manager,
                                 canSeeAccessLevel: viewModel.share.shareRole != .read,
-                                title: "Item sharing: \(viewModel.itemMembers.count) users")
+                                title: "Item sharing: \(viewModel.totalNumberOfItemMembers) users")
             }
 
             if !viewModel.vaultMembers.isEmpty {
@@ -106,7 +106,7 @@ private extension ManageSharedShareView {
                                 canExecuteActions: viewModel.share.shareRole == .manager &&
                                     viewModel.share.isVaultRepresentation,
                                 canSeeAccessLevel: viewModel.share.isVaultRepresentation,
-                                title: "Vault sharing: \(viewModel.totalNumberOfMembers()) members")
+                                title: "Vault sharing: \(viewModel.totalNumberOfVaultMembers) members")
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
