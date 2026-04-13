@@ -67,8 +67,6 @@ struct UserPermissionView: View {
             Circle()
                 .fill(PassColor.interactionNormMajor1)
                 .frame(width: 15, height: 15)
-        } else {
-            EmptyView()
         }
     }
 }

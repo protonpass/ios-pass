@@ -154,8 +154,6 @@ private extension AccountCell {
             Text(verbatim: planName)
                 .font(.caption)
                 .foregroundStyle(detail.isPremium ? PassColor.noteInteractionNormMajor2 : PassColor.textNorm)
-        } else {
-            EmptyView()
         }
     }
 
