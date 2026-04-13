@@ -197,11 +197,17 @@ private extension ManageSharedShareView {
         if isVaultSelection, invitee.isPending {
             return true
         }
-
-        return canAdmin &&
-            !invitee.owner &&
-            !viewModel.isCurrentUser(invitee) &&
-            !viewModel.isInCurrentGroup(invitee)
+        if isVaultSelection {
+            return canAdmin &&
+                !invitee.owner &&
+                !viewModel.isCurrentUser(invitee) &&
+                (!viewModel.isInCurrentGroup(invitee) || !invitee.isManager)
+        } else {
+            return canAdmin &&
+                !invitee.owner &&
+                !viewModel.isCurrentUser(invitee) &&
+                (!viewModel.isInCurrentGroup(invitee) || viewModel.currentUserHasDirectMembership())
+        }
     }
 }
 
