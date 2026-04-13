@@ -363,6 +363,7 @@ extension UseCasesContainer {
         self { GetSearchableItems(itemRepository: self.itemRepository,
                                   shareRepository: self.shareRepository,
                                   getAllPinnedItems: self.getAllPinnedItems(),
+                                  dedupShare: SharedUseCasesContainer.shared.dedupShare(),
                                   symmetricKeyProvider: self.symmetricKeyProvider) }
     }
 

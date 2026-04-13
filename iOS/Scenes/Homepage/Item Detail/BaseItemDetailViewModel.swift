@@ -165,6 +165,10 @@ class BaseItemDetailViewModel: ObservableObject {
         vault?.vault.isVaultRepresentation ?? false
     }
 
+    var sharedItemWithGroup: Bool {
+        vault?.vault.shareType == .item && vault?.vault.groupID != nil
+    }
+
     weak var delegate: (any ItemDetailViewModelDelegate)?
     var cancellables = Set<AnyCancellable>()
 
