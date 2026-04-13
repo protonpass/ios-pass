@@ -164,6 +164,9 @@ private extension EmailGroupSelectionView {
                                 onBackspace: { viewModel.highlightLast() },
                                 onReturn: { _ = viewModel.appendCurrentEmail() })
             .frame(width: width, height: 32)
+            .simultaneousGesture(TapGesture().onEnded {
+                viewModel.clear()
+            })
             .clipped()
     }
 

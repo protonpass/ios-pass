@@ -62,7 +62,7 @@ public extension GroupRepository {
         logger.trace("Fetching members for groupId \(groupId)")
         let members = try await remoteDatasource.getMembers(groupId: groupId, userId: userId)
         logger.info("Found \(members.count) members for groupId \(groupId)")
-        return members
+        return members.filter { $0.state == .active }
     }
 
     func getGroupsInfos(userId: String) async throws -> [GroupInfo] {

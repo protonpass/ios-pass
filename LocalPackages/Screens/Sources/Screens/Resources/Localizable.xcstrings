@@ -75,6 +75,12 @@
             "value" : "(%lld membri)"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(%lld 人のメンバー)"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -212,6 +218,12 @@
             "value" : "%@/mese"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@/月"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -347,6 +359,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ di %2$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@/%2$@"
           }
         },
         "ka" : {
@@ -630,6 +648,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld alias presenti in SimpleLogin ma mancanti in Proton Pass."
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 個のエイリアスがSimpleLoginにはありますが、Proton Passには存在しません。"
                 }
               }
             }
@@ -1078,6 +1108,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld file"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 個のファイル"
                 }
               }
             }
@@ -1598,6 +1640,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld elemento"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 個のアイテム"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 個のアイテム"
                 }
               }
             }
@@ -2125,6 +2185,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld login importati"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 件のログイン情報をインポートしました"
                 }
               }
             }
@@ -4733,6 +4805,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "全てのアカウント(%lld)"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -5600,6 +5684,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Si rinnova automaticamente a %@ ogni anno"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "毎年%@で自動更新されます"
           }
         },
         "ka" : {
@@ -7866,6 +7956,12 @@
             "value" : "Impossibile trovare \"%@\""
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "「%@」が見つかりませんでした"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8331,7 +8427,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Creeu una caixa forta nova"
+            "value" : "Crea una caixa forta"
           }
         },
         "cs" : {
@@ -8392,6 +8488,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Crea nuova cassaforte"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新しい保管庫を作成"
           }
         },
         "ka" : {
@@ -16306,6 +16408,12 @@
             "value" : "Importa login (%1$lld/%2$lld)"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ログイン情報のインポート (%1$lld/%2$lld)"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20072,7 +20180,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Obriu el tauler de control web"
+            "value" : "Obre el tauler de control web"
           }
         },
         "cs" : {
@@ -20133,6 +20241,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Apri il pannello di controllo web"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ウェブダッシュボードを開く"
           }
         },
         "ka" : {
@@ -20601,7 +20715,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Poseu-vos en contacte amb el vostre administrador."
+            "value" : "Poseu-vos en contacte amb l'administrador."
           }
         },
         "cs" : {
@@ -20662,6 +20776,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Contatta il tuo amministratore."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "管理者に連絡してください。"
           }
         },
         "ka" : {
@@ -21381,6 +21501,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Usa la nostra dashboard dell'account web in alternativa"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "代わりに私たちのウェブアカウントダッシュボードをご利用ください"
           }
         },
         "ka" : {
@@ -30183,7 +30309,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La millora no està disponible en dispositius mòbils"
+            "value" : "La millora no està disponible al mòbil."
           }
         },
         "cs" : {
@@ -30238,6 +30364,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Upgrade non disponibile su mobile"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "モバイルではアップグレードできません"
           }
         },
         "ka" : {
@@ -31888,6 +32020,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "SimpleLogin に存在し Proton Pass に存在しないエイリアスが、%lld 件検知されました。インポートしますか？"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -33140,6 +33284,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Non hai casseforti."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保管庫がありません。"
           }
         },
         "ka" : {

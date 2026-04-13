@@ -1967,7 +1967,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cerca en %@..."
+            "value" : "Cerca a %@..."
           }
         },
         "cs" : {
@@ -2022,6 +2022,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cerca in %@..."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 内を検索..."
           }
         },
         "ka" : {

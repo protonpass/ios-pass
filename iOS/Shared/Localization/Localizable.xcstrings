@@ -243,6 +243,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "「%1$@」はクリップボードにコピーされました。%2$lld秒後に期限が切れます。"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -473,10 +485,142 @@
     },
     "%@ (%lld members)" : {
       "localizations" : {
-        "en" : {
+        "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ (%2$lld members)"
+            "value" : "%1$@ (%2$lld удзельнікаў)"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$lld membres)"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$lld členů)"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$lld medlemmer)"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$lld Mitglieder)"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$lld μέλη)"
+          }
+        },
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$@ (%2$lld member)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$@ (%2$lld members)"
+                }
+              }
+            }
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$lld miembros)"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$lld miembros)"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$lld jäsentä)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$lld membres)"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$lld membri)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$lldメンバー)"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$lld medlemmer)"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$lld/ leden)"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$lld membros)"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$lld membri)"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$lld/ členov)"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$lld medlemmar)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$lld üye)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$lld 位成员)"
           }
         }
       }
@@ -554,6 +698,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ (copiato)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (コピーしました)"
           }
         },
         "ka" : {
@@ -698,6 +848,12 @@
             "value" : "%@ copiato"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@がコピーされました"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -838,6 +994,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ vuole condividere un elemento con il gruppo %@."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@がグループ%@でアイテムを共有したいようです。"
           }
         },
         "ka" : {
@@ -982,6 +1144,12 @@
             "value" : "%@ vuole condividere un elemento con te."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@があなたにアイテムを共有したいようです。"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1122,6 +1290,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Decrittografato al %@%%"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@%% が復号化されました..."
           }
         },
         "ka" : {
@@ -1266,6 +1440,12 @@
             "value" : "scaricato al %@%%..."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@%% がダウンロードされました..."
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1401,6 +1581,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@, %2$@, %3$@ negli ultimi 14 giorni."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "過去 14 日間の%1$@、 %2$@、 %3$@"
           }
         },
         "ka" : {
@@ -1713,6 +1899,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld個のエイリアス"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -1975,7 +2173,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "S'han deshabilitat %lld àlies"
+                  "value" : "S'han desactivat %lld àlies"
                 }
               }
             }
@@ -2168,6 +2366,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld alias disabilitati"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld個のエイリアスが無効化されました"
                 }
               }
             }
@@ -2633,6 +2843,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld個のエイリアスが有効化されました"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -2890,13 +3112,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Se n'ha bloquejat %lld"
+                  "value" : "%lld blocat"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Se n'han bloquejat %lld"
+                  "value" : "%lld blocats"
                 }
               }
             }
@@ -3089,6 +3311,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld bloccati"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 個がブロックされました"
                 }
               }
             }
@@ -3555,6 +3789,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld件のブロック"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -4010,6 +4256,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld personaggi"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 文字"
                 }
               }
             }
@@ -4475,6 +4733,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 日"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -4918,6 +5188,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 件の転送済み"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -5355,6 +5637,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld inoltra"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld件の転送"
                 }
               }
             }
@@ -5820,6 +6114,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 時間"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -6275,6 +6581,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld inviti rimanenti"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 件の招待が残っています"
                 }
               }
             }
@@ -6812,6 +7130,24 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 個のアイテム"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 個のアイテム"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -7338,6 +7674,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 個のアイテムがごみ箱に移動されました"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -7793,6 +8141,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%1$lld elementi spostati nella cassaforte « %2$@ »"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld 個のアイテムが 保管庫 « %2$@ » に移動されました"
                 }
               }
             }
@@ -8258,6 +8618,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld個のアイテムが正しくピンされました"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -8695,6 +9067,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld elementi sbloccati con successo"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld個のアイテムが正しくピン解除されました"
                 }
               }
             }
@@ -9142,6 +9526,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 人のメンバー"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -9579,6 +9975,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld altri login utilizzano questa password"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 個の他のログインがこのパスワードを使用しています"
                 }
               }
             }
@@ -10039,6 +10447,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld tentativi rimanenti"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "残りの試行回数は %lld 回です"
                 }
               }
             }
@@ -10505,6 +10925,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld件の返信"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -10960,6 +11392,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld risultati"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 件の結果"
                 }
               }
             }
@@ -11425,6 +11869,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 回"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -11862,6 +12318,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld visualizzazioni"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld件の表示"
                 }
               }
             }
@@ -12322,6 +12790,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld parole"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 語"
                 }
               }
             }
@@ -13397,6 +13877,12 @@
             "value" : "Viene creato un contatto per ogni indirizzo email che invia o riceve email da %@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "連絡先は、%@にメールを送信または受信するすべてのメールアドレスに対して作成されます"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13729,6 +14215,12 @@
             "value" : "Verrà creata una chiave di accesso per il login \"%@\"."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "「%@」ログイン用のパスキーが作成されます。"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13998,7 +14490,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Acceptar la invitació"
+            "value" : "Accepta la invitació"
           }
         },
         "cs" : {
@@ -14059,6 +14551,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Accetta l'invito"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "招待を承認"
           }
         },
         "ka" : {
@@ -20459,6 +20957,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld時間後"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -20914,6 +21424,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Dopo %lld minuti"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld分後"
                 }
               }
             }
@@ -21601,6 +22123,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alias \"%@\" spostato nel Cestino"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エイリアス「%@」をごみ箱に移動しました"
           }
         },
         "ka" : {
@@ -23494,6 +24022,12 @@
             "value" : "Alias creado y copiado"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias luotiin ja kopioitiin"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23504,6 +24038,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alias creato e copiato"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エイリアスを作成してコピーしました"
           }
         },
         "ka" : {
@@ -24240,6 +24780,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alias ​​dell'elemento di accesso \"%@\""
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ログイン項目「%@」のエイリアス"
           }
         },
         "ka" : {
@@ -25749,6 +26295,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Verranno eliminati anche tutti gli alias che utilizzano la casella email **%@**. Per continuare a ricevere email trasferisci questi alias in una casella email diversa:"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**%@**のメールボックスを使っている全てのエイリアスも削除されます。これらのエイリアスを別のメールボックスに転送して、メールを受信し続けてください："
           }
         },
         "ka" : {
@@ -28634,6 +29186,12 @@
             "value" : "Sei sicuro di voler aggiungere un segreto 2FA a \"%@\"?"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本当に「%@」に2要素認証シークレットを追加したいのですか？"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28768,6 +29326,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sei sicuro di voler eliminare la seguente sezione \"%@\"?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次のセクション「%@」を本当に削除してもよろしいですか？"
           }
         },
         "ka" : {
@@ -28905,6 +29469,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sei sicuro di voler uscire dall'account %@?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ から本当にサインアウトしますか？"
           }
         },
         "ka" : {
@@ -42383,6 +42953,18 @@
             "value" : "Le contact a été créé."
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contatto creato"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "連絡先が作成されました"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -42393,6 +42975,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "연락처 작성됨"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontakt opprettet"
           }
         },
         "nl" : {
@@ -42513,6 +43101,18 @@
             "value" : "Le contact a été créé et copié"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contatto creato e copiato"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "連絡先を作成してコピーしました"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -42523,6 +43123,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "연락처 작성 및 복사됨"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontakt opprettet og kopiert"
           }
         },
         "nl" : {
@@ -43762,7 +44368,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Copieu l'adreça de l'àlies després de crear-lo"
+            "value" : "Copia l'adreça de l'àlies després de crear-lo"
           }
         },
         "cs" : {
@@ -43817,6 +44423,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Copia l'indirizzo alias dopo la creazione"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "作成後にエイリアスアドレスをコピー"
           }
         },
         "ka" : {
@@ -44549,16 +45161,40 @@
             "value" : "Copier l'adresse de transfert du contact après la création"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copia l'indirizzo di inoltro del contatto dopo la creazione"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "作成後に連絡先の転送アドレスコピー"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "კონტაქტის გადამისამართების მისამართის კოპირება შექმნის შემდეგ"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopier kontaktens videresendingsadresse etter opprettelse"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Doorstuuradres van contact kopiëren na aanmaak"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar o endereço de encaminhamento do contato após a criação"
           }
         },
         "ro" : {
@@ -45641,6 +46277,18 @@
             "value" : "Copier automatiquement la nouvelle adresse de l'alias ?"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiare automaticamente il nuovo indirizzo alias?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自動で新しいエイリアスアドレスをコピーしますか？"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -45726,7 +46374,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kopírovat přeposílací adresu nového kontaktu automaticky?"
+            "value" : "Kopírovat novou přeposílací adresu kontaktu automaticky?"
           }
         },
         "da" : {
@@ -45777,16 +46425,40 @@
             "value" : "Copier automatiquement l'adresse de transfert du nouveau contact ?"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiare automaticamente l'indirizzo di inoltro dei nuovi contatti?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自動で新しい連絡先の転送アドレスをコピーしますか？"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "დაკოპირდეს ახალი კონტაქტის გადამისამართების მისამართი ავტომატურად?"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiere videresendingsadressen til den nye kontakten automatisk?"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Doorstuuradres van nieuwe contact automatisch kopiëren?"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar automaticamente o endereço de encaminhamento do novo contato?"
           }
         },
         "ro" : {
@@ -50026,6 +50698,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Creato %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@が作成されました"
           }
         },
         "ka" : {
@@ -56832,6 +57510,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Elimina %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@を削除"
           }
         },
         "ka" : {
@@ -63798,6 +64482,12 @@
             "value" : "Invia un'email a questo indirizzo e sembrerà che sia stato inviato da %@."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このアドレスにメールを送信すると、%@から送信されたように表示されます。"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -66692,6 +67382,12 @@
             "value" : "Inserisci un nuovo nome per « %@ »"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "« %@ » の新しい名前を入力してください"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -68794,6 +69490,12 @@
             "value" : "Espandi editor"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エディタを拡張"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -69329,6 +70031,12 @@
             "value" : "Scaduto %@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@に期限切れ"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -69470,6 +70178,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Scade %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@に期限切れ"
           }
         },
         "ka" : {
@@ -70739,6 +71453,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "La password aggiuntiva deve essere composta da almeno %lld caratteri"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "追加のパスワードは最低%lld文字である必要があります"
                 }
               }
             }
@@ -75750,6 +76476,12 @@
             "value" : "De su alias <%@>"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliakseltasi <%@>"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -75760,6 +76492,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dal tuo alias <%@>"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エイリアス<%@>から"
           }
         },
         "ka" : {
@@ -77018,7 +77756,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Genereu una clau SSH"
+            "value" : "Genera una clau SSH"
           }
         },
         "cs" : {
@@ -77079,6 +77817,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Genera chiave SSH"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSHキーの生成"
           }
         },
         "ka" : {
@@ -78916,10 +79660,130 @@
     },
     "Group %@" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Група %@"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grup %@"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skupina %@"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gruppe %@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gruppe %@"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ομάδα (%@"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Group %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grupo %@"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grupo %@"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ryhmä %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Groupe %@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gruppo %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "グループ %@"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gruppe %@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Groep %@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grupo %@"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grupul %@"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skupina %@"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grupp %@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ grubu"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 群组"
           }
         }
       }
@@ -88614,6 +89478,12 @@
             "value" : "invita il gruppo %@ ad accedere agli elementi in"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "グループ%@にアイテムへのアクセスを招待します"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -88630,6 +89500,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "nodigt de groep %@ uit om toegang te krijgen tot items in"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "convida o grupo %@ a acessar os itens em"
           }
         },
         "ro" : {
@@ -91079,6 +91955,12 @@
             "value" : "Elemento spostato nella cassaforte « %@ »"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アイテムは保管庫« %@ »に移動しました"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -91366,6 +92248,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Condivisione elemento: %lld utenti"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "アイテムが共有されています: %lld人のユーザー"
                 }
               }
             }
@@ -92644,6 +93538,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Elementi di « %@ » spostati nella cassaforte « %@ »"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "« %@ » のアイテムが « %@ » に移動されました"
           }
         },
         "ka" : {
@@ -95724,6 +96624,12 @@
             "value" : "Ultima violazione di dati il %@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@の最新の侵害"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -98045,6 +98951,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Login per %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ のログイン"
           }
         },
         "ka" : {
@@ -105638,6 +106550,12 @@
             "value" : "Monitoraggio sospeso per %@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@の監視が停止されました"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -105772,6 +106690,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Monitoraggio ripreso per %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@の監視が再開されました"
           }
         },
         "ka" : {
@@ -108853,6 +109777,12 @@
             "value" : "No"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ei"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -108863,6 +109793,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "いいえ"
           }
         },
         "ka" : {
@@ -110372,6 +111308,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nessun log per %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@のログがありません"
           }
         },
         "ka" : {
@@ -112668,6 +113610,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nota per %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ のメモ"
           }
         },
         "ka" : {
@@ -122317,6 +123265,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld個のアイテムが完全に削除されました"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -123782,6 +124742,12 @@
             "value" : "Code PIN"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Codice PIN"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -123792,6 +124758,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "PIN-კოდი"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PIN-kode"
           }
         },
         "nl" : {
@@ -124891,6 +125863,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Controlla se nella posta indesiderata è presente un'e-mail denominata \"Conferma la tua casella di posta %@\"\n\nSe non riesci a trovare questa email, puoi [richiedere un nuovo codice](https://proton.me)."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "「受信箱%@を確認してください」というメールを迷惑メールで確認してください。\n\nそのようなメールが見つからない場合には、[新しいコードをリクエスト](https://proton.me)することができます。"
           }
         },
         "ka" : {
@@ -138863,6 +139841,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld個のアイテムが復元されました"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -139876,6 +140866,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Riutilizzato %lld volte"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 回再利用されました"
                 }
               }
             }
@@ -141538,6 +142540,12 @@
             "value" : "Scansiona %@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@をスキャン"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -142600,6 +143608,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Cerca negli account %lld"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lldアカウント内を検索"
                 }
               }
             }
@@ -147013,6 +148033,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Seleziona un tipo di chiave SSH"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSHキー種類を選択"
           }
         },
         "ka" : {
@@ -153561,7 +154587,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mostreu la caixa forta %@"
+            "value" : "Mostra la caixa forta %@"
           }
         },
         "cs" : {
@@ -153622,6 +154648,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mostra la cassaforte %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 保管庫を表示"
           }
         },
         "ka" : {
@@ -154864,10 +155896,130 @@
     },
     "Show Members" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Паказаць Удзельнікаў"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra els membres"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zobrazit členy"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vis medlemmer"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mitglieder anzeigen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Προβολή Μελών"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Show Members"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar Miembros"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar miembros"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Näytä jäsenet"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher les membres"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra membri"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メンバーを表示"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vis medlemmer"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toon leden"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar membros"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afișare membri"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zobraziť členov"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visa medlemmar"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Üyeleri görüntüle"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "显示成员"
           }
         }
       }
@@ -157097,6 +158249,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Accesso effettuato come %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ としてサインインしました"
           }
         },
         "ka" : {
@@ -163078,6 +164236,12 @@
             "value" : "Suggerimenti per %@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ への提案"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -163601,6 +164765,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sei passato a %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@に切り替えました"
           }
         },
         "ka" : {
@@ -169177,6 +170347,12 @@
             "value" : "Questo eliminerà definitivamente la cassaforte « %@ » e tutti i suoi contenuti. Inserisci il nome della cassaforte per confermare l'eliminazione."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "これにより、保管庫 « %@ » とそのすべての内容が完全に削除されます。保管庫名を入力して削除を確認します。"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -172446,6 +173622,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sei sicuro di voler trasferire la proprietà di questa cassaforte a %@?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "この保管庫の所有権を%@に移転しますか？"
           }
         },
         "ka" : {
@@ -178647,6 +179829,12 @@
             "value" : "Usa %@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ を使用"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -179717,6 +180905,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 個のログインで使用されています"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -180781,6 +181981,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cassaforte « %@ » eliminata"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保管庫« %@ » が削除されました"
           }
         },
         "ka" : {
@@ -182596,6 +183802,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "保管庫共有中： %lld 人のメンバー"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -183660,6 +184878,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Versione %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "バージョン %@"
           }
         },
         "ka" : {
@@ -186715,6 +187939,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Abbiamo inviato un codice di verifica a %@. Inseriscilo qui sotto:"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "確認コードを %@ に送信しました。以下に入力してください。"
           }
         },
         "ka" : {
@@ -191534,6 +192764,12 @@
             "value" : "Vuoi associare \"%1$@\" a \"%2$@\"?"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "「 %1$@ 」を「 %2$@ 」に関連付けますか？"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -192458,6 +193694,12 @@
             "value" : "Sí"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kyllä"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -192468,6 +193710,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Si"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "はい"
           }
         },
         "ka" : {
@@ -193369,6 +194617,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld個のエイリアスを完全に削除しようとしています"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -194155,6 +195415,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 個のアイテムを元に戻せないように削除します。本当によろしいですか？"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -194623,6 +195895,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Puoi cambiarlo in qualunque momento nelle impostazioni"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "この設定はいつでも変更できます。"
           }
         },
         "ka" : {
@@ -196720,6 +197998,12 @@
             "value" : "Devi passare a %@ per poterlo gestire"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "管理するためには%@に切り替える必要があります"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -197636,6 +198920,12 @@
             "value" : "Sei stato disconnesso da %@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@からログアウトしました"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -197967,6 +199257,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Il tuo documento attuale verrà ripristinato alla versione del %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "現在のドキュメントは %@ のバージョンに戻ります"
           }
         },
         "ka" : {
@@ -198647,6 +199943,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "あなたのメール アドレスが %lld 件の侵害で漏洩しました"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -199311,6 +200619,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Le tue informazioni sono finite in una violazione di dati e sono state trovate il **%@**"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あなたの情報はデータ侵害に遭い、**%@** で発見されました。"
           }
         },
         "ka" : {
