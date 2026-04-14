@@ -125,7 +125,7 @@ private extension SharingSummaryView {
                                   tintColor: ItemType.login.tintColor,
                                   backgroundColor: ItemType.login.backgroundColor)
                 ViewThatFits {
-                    HStack(spacing: 0) {
+                    HStack {
                         Text(infos.destinationName)
                             .foregroundStyle(PassColor.textNorm)
                         membersView(info: infos)
@@ -182,11 +182,20 @@ private extension SharingSummaryView {
                                               tintColor: ItemType.login.tintColor,
                                               backgroundColor: ItemType.login.backgroundColor)
                             VStack(alignment: .leading, spacing: 4) {
-                                HStack(spacing: 0) {
-                                    Text(info.destinationName)
-                                        .foregroundStyle(PassColor.textNorm)
-                                    membersView(info: info)
+                                ViewThatFits {
+                                    HStack {
+                                        Text(info.destinationName)
+                                            .foregroundStyle(PassColor.textNorm)
+                                        membersView(info: info)
+                                    }
+
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text(info.destinationName)
+                                            .foregroundStyle(PassColor.textNorm)
+                                        membersView(info: info)
+                                    }
                                 }
+
                                 HStack {
                                     Text(info.role.title(managerAsAdmin: viewModel.managerAsAdmin))
                                         .foregroundStyle(PassColor.textWeak)
@@ -204,13 +213,13 @@ private extension SharingSummaryView {
 
     @ViewBuilder
     func membersView(info: SharingInfos) -> some View {
-        if let currentGroupInfo = info.groupInfo, let members = currentGroupInfo.members {
-            Text(verbatim: " (")
-            Button { groupInfo = currentGroupInfo } label: {
-                Text(#localized("%lld member(s)", members.count))
-                    .foregroundStyle(PassColor.interactionNormMajor2)
-            }.buttonStyle(.plain)
-            Text(verbatim: ")")
+        if let currentGroupInfo = info.groupInfo,
+           let members = currentGroupInfo.members {
+            ParenthesizedText(content: #localized("%lld member(s)", members.count),
+                              contentColor: PassColor.interactionNormMajor2)
+                .onTapGesture {
+                    groupInfo = currentGroupInfo
+                }
         }
     }
 }
