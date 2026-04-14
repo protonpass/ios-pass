@@ -45,6 +45,7 @@ final class EmailGroupSelectionViewModel: ObservableObject {
     @Published private(set) var isChecking = false
     @Published private(set) var isFetchingMore = false
     @Published private(set) var loading = false
+    @Published private(set) var currentUserEmail: String?
     @Published var selectedGroupInfo: GroupInfo?
     @Published var displayType = SuggestionsDisplayType.suggestion
     @Published private(set) var suggestions: [InviteRecommendationType] = []
@@ -174,6 +175,10 @@ final class EmailGroupSelectionViewModel: ObservableObject {
 
     func loadData() async {
         loading = true
+
+        if let userData = try? await userManager.getActiveUserData() {
+            currentUserEmail = userData.user.email
+        }
 
         await fetchGroupsInfos()
         async let fetchSuggestions = fetchSuggestions()

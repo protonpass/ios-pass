@@ -41,6 +41,7 @@ final class ManageSharedShareViewModel: ObservableObject {
     @Published private(set) var isFreeUser = true
     @Published private(set) var isBusinessUser = false
     @Published private(set) var itemSharingAllowed = false
+    @Published private(set) var currentUserEmail: String?
     @Published var newOwner: NewOwner?
     @Published var selectedGroupInfo: GroupInfo?
 
@@ -128,7 +129,9 @@ final class ManageSharedShareViewModel: ObservableObject {
         defer { loading = false }
         loading = true
         do {
-            let userId = try await userManager.getActiveUserId()
+            let userData = try await userManager.getUnwrappedActiveUserData()
+            currentUserEmail = userData.user.email
+            let userId = userData.user.ID
             let plan = try await accessRepository.getPlan(userId: userId)
 
             isFreeUser = plan.isFreeUser

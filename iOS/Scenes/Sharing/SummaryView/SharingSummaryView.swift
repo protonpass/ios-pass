@@ -65,12 +65,16 @@ struct SharingSummaryView: View {
         .background(PassColor.backgroundNorm)
         .toolbar { toolbarContent }
         .showSpinner(viewModel.sendingInvite)
+        .task {
+            await viewModel.setUp()
+        }
         .alert("Error occurred",
                isPresented: $viewModel.showContactSupportAlert,
                actions: { Button(role: .cancel, label: { Text("OK") }) },
                message: { Text("Please contact us to investigate the issue") })
         .sheet(item: $groupInfo) { info in
-            GroupUsersInformationView(groupInfo: info, rights: nil)
+            GroupUsersInformationView(groupInfo: info,
+                                      currentUserEmail: viewModel.currentUserEmail)
                 .presentationDetents([.medium, .large])
                 .presentationDragIndicator(.visible)
         }

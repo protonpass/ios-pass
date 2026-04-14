@@ -30,9 +30,11 @@ final class UserPermissionViewModel: ObservableObject {
     @Published private(set) var selectedUserRole: ShareRole = .read
     @Published private(set) var invites = [InviteRecommendationType: ShareRole]()
     @Published private(set) var canContinue = false
+    @Published private(set) var currentUserEmail: String?
 
     private let setShareInviteRole = resolve(\UseCasesContainer.setShareInviteRole)
     private let shareInviteService = resolve(\ServiceContainer.shareInviteService)
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
@@ -49,8 +51,18 @@ final class UserPermissionViewModel: ObservableObject {
         shareInviteService.currentSelectedElement.value?.isItem ?? false
     }
 
-    init() {
-        setUp()
+    init() {}
+
+    func setUp() async {
+        for invite in shareInviteService.getAllInvites() {
+            invites[invite] = .read
+            setShareInviteRole(with: invites)
+        }
+        canContinue = true
+
+        if let userData = try? await userManager.getActiveUserData() {
+            currentUserEmail = userData.user.email
+        }
     }
 
     func updateRole(for invite: InviteRecommendationType, with newRole: ShareRole) {
@@ -66,15 +78,5 @@ final class UserPermissionViewModel: ObservableObject {
             invites[invite] = role
         }
         setShareInviteRole(with: invites)
-    }
-}
-
-private extension UserPermissionViewModel {
-    func setUp() {
-        for invite in shareInviteService.getAllInvites() {
-            invites[invite] = .read
-            setShareInviteRole(with: invites)
-        }
-        canContinue = true
     }
 }

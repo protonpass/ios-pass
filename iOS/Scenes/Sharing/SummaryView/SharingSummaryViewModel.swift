@@ -30,6 +30,7 @@ import Macro
 final class SharingSummaryViewModel: ObservableObject {
     @Published private(set) var infos = [SharingInfos]()
     @Published private(set) var sendingInvite = false
+    @Published private(set) var currentUserEmail: String?
     @Published var showContactSupportAlert = false
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -40,6 +41,8 @@ final class SharingSummaryViewModel: ObservableObject {
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
 
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+
     private var lastTask: Task<Void, Never>?
     private var plan: Plan?
 
@@ -47,8 +50,13 @@ final class SharingSummaryViewModel: ObservableObject {
         getFeatureFlagStatus(for: FeatureFlagType.passRenameAdminToManager)
     }
 
-    init() {
-        setUp()
+    init() {}
+
+    func setUp() async {
+        infos = getShareInviteInfos()
+        if let userData = try? await userManager.getActiveUserData() {
+            currentUserEmail = userData.user.email
+        }
     }
 
     var hasSingleInvite: Bool {
@@ -106,11 +114,5 @@ final class SharingSummaryViewModel: ObservableObject {
                 }
             }
         }
-    }
-}
-
-private extension SharingSummaryViewModel {
-    func setUp() {
-        infos = getShareInviteInfos()
     }
 }
