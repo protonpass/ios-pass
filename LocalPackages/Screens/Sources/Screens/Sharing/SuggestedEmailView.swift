@@ -66,7 +66,7 @@ public struct SuggestedEmailView: View {
             guard let memberCounts = recommendation.memberCount else {
                 return recommendation.name
             }
-            return recommendation.name + " " + #localized("(%lld members)", memberCounts)
+            return recommendation.name + " " + #localized("(%lld members)", bundle: .module, memberCounts)
         }
     }
 }
