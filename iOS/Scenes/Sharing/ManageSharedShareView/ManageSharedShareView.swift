@@ -72,7 +72,8 @@ struct ManageSharedShareView: View {
                        "Vaults can’t contain more than 10 users.")
                })
         .sheet(item: $viewModel.selectedGroupInfo) { groupInfo in
-            GroupUsersInformationView(groupInfo: groupInfo, rights: nil)
+            GroupUsersInformationView(groupInfo: groupInfo,
+                                      currentUserEmail: viewModel.currentUserEmail)
                 .presentationDetents([.medium, .large])
                 .presentationDragIndicator(.visible)
         }

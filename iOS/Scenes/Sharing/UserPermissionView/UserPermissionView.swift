@@ -54,8 +54,12 @@ struct UserPermissionView: View {
         .navigationBarTitleDisplayMode(.inline)
         .background(PassColor.backgroundNorm)
         .toolbar { toolbarContent }
+        .task {
+            await viewModel.setUp()
+        }
         .sheet(item: $showMember) { infos in
-            GroupUsersInformationView(groupInfo: infos, rights: nil)
+            GroupUsersInformationView(groupInfo: infos,
+                                      currentUserEmail: viewModel.currentUserEmail)
                 .presentationDetents([.medium, .large])
                 .presentationDragIndicator(.visible)
         }
