@@ -47,6 +47,7 @@ struct ManageSharedShareView: View {
         }
         .animation(.default, value: viewModel.fetching)
         .task {
+            await viewModel.setUp()
             viewModel.fetchShareInformation(displayFetchingLoader: true)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
