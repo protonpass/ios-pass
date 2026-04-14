@@ -44,7 +44,7 @@ final class ManageSharedShareViewModel: ObservableObject {
     @Published var newOwner: NewOwner?
     @Published var selectedGroupInfo: GroupInfo?
 
-    private var groups = [String: GroupInfo]()
+    @Published private var groups = [String: GroupInfo]()
 
     private let getVaultItemCount = resolve(\UseCasesContainer.getVaultItemCount)
     private let getUsersLinkedToShare = resolve(\UseCasesContainer.getUsersLinkedToShare)
@@ -122,7 +122,34 @@ final class ManageSharedShareViewModel: ObservableObject {
 
     init(display: ManageSharedDisplay) {
         displayType = display
-        setUp()
+    }
+
+    func setUp() async {
+        defer { loading = false }
+        loading = true
+        do {
+            let userId = try await userManager.getActiveUserId()
+            let plan = try await accessRepository.getPlan(userId: userId)
+
+            isFreeUser = plan.isFreeUser
+            isBusinessUser = plan.isBusinessUser
+            if isBusinessUser,
+               let org = try await organizationRepository.getOrganization(userId: userId),
+               let itemShareMode = org.settings?.itemShareMode {
+                itemSharingAllowed = itemShareMode == .enabled
+            }
+
+            if let userGroupInfos = try? await groupRepository.getGroupsInfos(userId: userId) {
+                for groupInfo in userGroupInfos {
+                    if let address = groupInfo.group.address {
+                        groups[address.email] = groupInfo
+                    }
+                }
+            }
+        } catch {
+            logger.error(error)
+            display(error: error)
+        }
     }
 
     func isCurrentUser(_ invitee: any ShareInvitee) -> Bool {
@@ -339,34 +366,6 @@ private extension ManageSharedShareViewModel {
 }
 
 private extension ManageSharedShareViewModel {
-    func setUp() {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                let userId = try await userManager.getActiveUserId()
-                let plan = try await accessRepository.getPlan(userId: userId)
-                if let userGroupInfos = try? await groupRepository.getGroupsInfos(userId: userId) {
-                    for groupInfo in userGroupInfos {
-                        if let address = groupInfo.group.address {
-                            groups[address.email] = groupInfo
-                        }
-                    }
-                }
-                isFreeUser = plan.isFreeUser
-                isBusinessUser = plan.isBusinessUser
-                if isBusinessUser,
-                   let org = try await organizationRepository.getOrganization(userId: userId),
-                   org.settings?.itemShareMode == .disabled {
-                    return
-                }
-                itemSharingAllowed = true
-            } catch {
-                logger.error(error)
-                display(error: error)
-            }
-        }
-    }
-
     func display(error: any Error) {
         router.display(element: .displayErrorBanner(error))
     }
