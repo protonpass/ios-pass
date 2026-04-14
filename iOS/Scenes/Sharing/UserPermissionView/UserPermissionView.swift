@@ -235,22 +235,33 @@ private extension UserPermissionView {
 
     @ViewBuilder
     func rowName(invite: InviteRecommendationType) -> some View {
-        if case let .group(infos) = invite {
-            HStack(spacing: 0) {
-                Text(invite.name)
-                if let members = invite.memberCount {
-                    Text(verbatim: " (")
-                    Button { showMember = infos } label: {
-                        Text(#localized("%lld member(s)", members))
-                            .foregroundStyle(PassColor.interactionNormMajor2)
-                    }.buttonStyle(.plain)
-                    Text(verbatim: ")")
+        if case let .group(info) = invite {
+            ViewThatFits {
+                HStack {
+                    Text(invite.name)
+                    memberCountText(invite: invite, info: info)
+                }
+
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(invite.name)
+                    memberCountText(invite: invite, info: info)
                 }
             }
             .foregroundStyle(PassColor.textNorm)
         } else {
             Text(invite.name)
                 .foregroundStyle(PassColor.textNorm)
+        }
+    }
+
+    @ViewBuilder
+    func memberCountText(invite: InviteRecommendationType, info: GroupInfo) -> some View {
+        if let members = invite.memberCount {
+            ParenthesizedText(content: #localized("%lld member(s)", members),
+                              contentColor: PassColor.interactionNormMajor2)
+                .onTapGesture {
+                    showMember = info
+                }
         }
     }
 }
