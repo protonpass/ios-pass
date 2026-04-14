@@ -341,8 +341,6 @@ private extension CreateEditLoginView {
             }
             .padding(DesignConstant.sectionPadding)
             .roundedEditableSection(backgroundColor: PassColor.backgroundMedium)
-        } else {
-            EmptyView()
         }
     }
 }

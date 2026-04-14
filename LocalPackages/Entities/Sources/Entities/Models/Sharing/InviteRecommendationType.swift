@@ -75,4 +75,13 @@ public enum InviteRecommendationType: Sendable, Equatable, Hashable, Identifiabl
             return false
         }
     }
+
+    public var groupInfo: GroupInfo? {
+        switch self {
+        case let .group(info):
+            info
+        default:
+            nil
+        }
+    }
 }

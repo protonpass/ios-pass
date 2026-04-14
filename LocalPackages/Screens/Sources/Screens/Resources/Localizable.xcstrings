@@ -4,75 +4,243 @@
     "(%lld members)" : {
       "localizations" : {
         "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(удзельнікаў: %lld)"
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(удзельнікаў: %lld)"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(удзельнікаў: %lld)"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(удзельнікаў: %lld)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(удзельнікаў: %lld)"
+                }
+              }
+            }
           }
         },
         "ca" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(%lld membres)"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(%lld membres)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld membres)"
+                }
+              }
+            }
           }
         },
         "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(%lld členů)"
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(%lld členů)"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(%lld členů)"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(%lld členů)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld členů)"
+                }
+              }
+            }
           }
         },
         "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(%lld medlemmer)"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(%lld medlemmer)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld medlemmer)"
+                }
+              }
+            }
           }
         },
         "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(%lld Mitglieder)"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(%lld Mitglieder)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld Mitglieder)"
+                }
+              }
+            }
           }
         },
         "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(%lld μέλη)"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(%lld μέλη)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld μέλη)"
+                }
+              }
+            }
           }
         },
         "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(%lld members)"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld member)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld members)"
+                }
+              }
+            }
           }
         },
         "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(%lld miembros)"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(%lld miembros)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld miembros)"
+                }
+              }
+            }
           }
         },
         "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(%lld miembros)"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(%lld miembros)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld miembros)"
+                }
+              }
+            }
           }
         },
         "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(%lld jäsentä)"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(%lld jäsentä)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld jäsentä)"
+                }
+              }
+            }
           }
         },
         "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(%lld membres)"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(%lld membres)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld membres)"
+                }
+              }
+            }
           }
         },
         "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(%lld membri)"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(%lld membri)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld membri)"
+                }
+              }
+            }
           }
         },
         "ja" : {
@@ -82,63 +250,207 @@
           }
         },
         "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(%lld წევრი)"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(%lld წევრი)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld წევრი)"
+                }
+              }
+            }
           }
         },
         "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(%lld medlemmer)"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(%lld medlemmer)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld medlemmer)"
+                }
+              }
+            }
           }
         },
         "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(%lld leden)"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(%lld leden)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld leden)"
+                }
+              }
+            }
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(%lld membros)"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(%lld membros)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld membros)"
+                }
+              }
+            }
           }
         },
         "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(%lld membri)"
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(%lld membri)"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(%lld membri)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld membri)"
+                }
+              }
+            }
           }
         },
         "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(%lld členov)"
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(%lld členov)"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(%lld členov)"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(%lld členov)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld členov)"
+                }
+              }
+            }
           }
         },
         "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(%lld članov)"
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(%lld članov)"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(%lld članov)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld članov)"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(%lld članov)"
+                }
+              }
+            }
           }
         },
         "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(%lld medlemmar)"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(%lld medlemmar)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld medlemmar)"
+                }
+              }
+            }
           }
         },
         "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(%lld üye)"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "(%lld üye)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld üye)"
+                }
+              }
+            }
           }
         },
         "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "（%lld 位成员）"
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "（%lld 位成员）"
+                }
+              }
+            }
           }
         }
       }

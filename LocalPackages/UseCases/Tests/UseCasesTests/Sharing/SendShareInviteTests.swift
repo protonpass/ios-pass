@@ -65,6 +65,7 @@ final class SendShareInviteTests: XCTestCase {
         let infos = SharingInfos(shareElement: .vault(.random()),
                                  email: "Test@test.com",
                                  destinationName: "Test",
+                                 groupInfo: nil,
                                  role: .read,
                                  receiverPublicKeys: [PublicKey(value: "")],
                                  itemsNum: 100)

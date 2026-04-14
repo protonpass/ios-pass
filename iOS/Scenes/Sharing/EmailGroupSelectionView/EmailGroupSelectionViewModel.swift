@@ -74,7 +74,7 @@ final class EmailGroupSelectionViewModel: ObservableObject {
     }
 
     private var filteredCachedGroupInfos: [InviteRecommendationType]? {
-        email.isEmpty ? cachedGroupInfos : cachedGroupInfos?.filter { $0.name.contains(email) }
+        email.isEmpty ? cachedGroupInfos : cachedGroupInfos?.filter { $0.name.lowercased().contains(email) }
     }
 
     init() {

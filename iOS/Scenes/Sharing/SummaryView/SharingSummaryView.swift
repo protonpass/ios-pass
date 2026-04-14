@@ -32,6 +32,7 @@ import SwiftUI
 struct SharingSummaryView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = SharingSummaryViewModel()
+    @State private var groupInfo: GroupInfo?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 26) {
@@ -68,6 +69,11 @@ struct SharingSummaryView: View {
                isPresented: $viewModel.showContactSupportAlert,
                actions: { Button(role: .cancel, label: { Text("OK") }) },
                message: { Text("Please contact us to investigate the issue") })
+        .sheet(item: $groupInfo) { info in
+            GroupUsersInformationView(groupInfo: info, rights: nil)
+                .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.visible)
+        }
     }
 }
 
@@ -118,9 +124,18 @@ private extension SharingSummaryView {
                 SquircleThumbnail(data: .initials(infos.email.initials()),
                                   tintColor: ItemType.login.tintColor,
                                   backgroundColor: ItemType.login.backgroundColor)
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(infos.destinationName)
-                        .foregroundStyle(PassColor.textNorm)
+                ViewThatFits {
+                    HStack(spacing: 0) {
+                        Text(infos.destinationName)
+                            .foregroundStyle(PassColor.textNorm)
+                        membersView(info: infos)
+                    }
+
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(infos.destinationName)
+                            .foregroundStyle(PassColor.textNorm)
+                        membersView(info: infos)
+                    }
                 }
             }
             .frame(height: 60)
@@ -167,8 +182,11 @@ private extension SharingSummaryView {
                                               tintColor: ItemType.login.tintColor,
                                               backgroundColor: ItemType.login.backgroundColor)
                             VStack(alignment: .leading, spacing: 4) {
-                                Text(info.destinationName)
-                                    .foregroundStyle(PassColor.textNorm)
+                                HStack(spacing: 0) {
+                                    Text(info.destinationName)
+                                        .foregroundStyle(PassColor.textNorm)
+                                    membersView(info: info)
+                                }
                                 HStack {
                                     Text(info.role.title(managerAsAdmin: viewModel.managerAsAdmin))
                                         .foregroundStyle(PassColor.textWeak)
@@ -181,6 +199,18 @@ private extension SharingSummaryView {
                     .listRowSeparator(.hidden)
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    func membersView(info: SharingInfos) -> some View {
+        if let currentGroupInfo = info.groupInfo, let members = currentGroupInfo.members {
+            Text(verbatim: " (")
+            Button { groupInfo = currentGroupInfo } label: {
+                Text(#localized("%lld member(s)", members.count))
+                    .foregroundStyle(PassColor.interactionNormMajor2)
+            }.buttonStyle(.plain)
+            Text(verbatim: ")")
         }
     }
 }

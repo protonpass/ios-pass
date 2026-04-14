@@ -129,6 +129,10 @@ final class ManageSharedShareViewModel: ObservableObject {
         userManager.currentActiveUser.value?.user.email == invitee.email
     }
 
+    func currentUserHasDirectMembership() -> Bool {
+        vaultMembers.contains { $0.email == userManager.currentActiveUser.value?.user.email }
+    }
+
     func isInCurrentGroup(_ invitee: any ShareInvitee) -> Bool {
         guard let currentEmail = userManager.currentActiveUser.value?.user.email,
               let members = groups[invitee.email]?.members else {
