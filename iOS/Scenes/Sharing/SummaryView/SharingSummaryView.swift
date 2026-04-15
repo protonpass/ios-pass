@@ -218,11 +218,14 @@ private extension SharingSummaryView {
     @ViewBuilder
     func membersView(info: SharingInfos) -> some View {
         if let currentGroupInfo = info.groupInfo,
-           let members = currentGroupInfo.members {
-            ParenthesizedText(content: #localized("%lld member(s)", members.count),
-                              contentColor: PassColor.interactionNormMajor2)
+           let memberCount = currentGroupInfo.memberCounts {
+            ParenthesizedText(content: #localized("%lld member(s)", memberCount),
+                              contentColor: memberCount == 0 ?
+                                  PassColor.textNorm : PassColor.interactionNormMajor2)
                 .onTapGesture {
-                    groupInfo = currentGroupInfo
+                    if memberCount > 0 {
+                        groupInfo = currentGroupInfo
+                    }
                 }
         }
     }

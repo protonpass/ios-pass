@@ -260,11 +260,14 @@ private extension UserPermissionView {
 
     @ViewBuilder
     func memberCountText(invite: InviteRecommendationType, info: GroupInfo) -> some View {
-        if let members = invite.memberCount {
-            ParenthesizedText(content: #localized("%lld member(s)", members),
-                              contentColor: PassColor.interactionNormMajor2)
+        if let memberCount = invite.memberCount {
+            ParenthesizedText(content: #localized("%lld member(s)", memberCount),
+                              contentColor: memberCount == 0 ?
+                                  PassColor.textNorm : PassColor.interactionNormMajor2)
                 .onTapGesture {
-                    showMember = info
+                    if memberCount > 0 {
+                        showMember = info
+                    }
                 }
         }
     }
