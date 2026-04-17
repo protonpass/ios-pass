@@ -36,7 +36,11 @@ public extension RemoteUserDataDatasource {
         let authenticator = Authenticator(api: apiService)
         let updatedUser = try await authenticator.getUserInfo()
         let updatedAddresses = try await authenticator.getAddresses()
-        let updatedKeySalts = try await authenticator.getKeySalts()
+
+        let oldSaltsByID = Dictionary(uniqueKeysWithValues: oldUserData.salts.map { ($0.ID, $0) })
+        let updatedKeySalts = updatedUser.keys.map { key in
+            oldSaltsByID[key.keyID] ?? KeySalt(ID: key.keyID, keySalt: nil)
+        }
 
         var updatedPassphrases: [String: String] = [:]
 
