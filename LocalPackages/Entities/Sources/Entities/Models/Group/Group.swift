@@ -111,7 +111,7 @@ public struct GroupAddressKey: Codable, Sendable, Equatable, Hashable {
 public struct SignedKeyList: Codable, Sendable, Equatable, Hashable {
     public let minEpochID: Int?
     public let maxEpochID: Int?
-    public let expectedMinEpochID: Int
+    public let expectedMinEpochID: Int?
     public let data: String
     public let obsolescenceToken: String?
     public let revision: Int
