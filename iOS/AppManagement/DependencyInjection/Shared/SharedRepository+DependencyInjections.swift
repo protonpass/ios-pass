@@ -238,6 +238,10 @@ extension SharedRepositoryContainer {
     var remoteGroupDatasource: Factory<any RemoteGroupDatasourceProtocol> {
         self { RemoteGroupDatasource(apiServicing: self.apiManager) }
     }
+
+    var remoteUserDataDatasource: Factory<any RemoteUserDataDatasourceProtocol> {
+        self { RemoteUserDataDatasource(apiServicing: self.apiManager) }
+    }
 }
 
 // MARK: Repositories
