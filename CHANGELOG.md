@@ -1,3 +1,6 @@
+# Version 1.19.1
+B2B: Group sharing improvements
+
 # Version 1.19.0
 Improvements:
 - Create a login from an alias via the "Create login" button below the alias address

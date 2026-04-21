@@ -475,6 +475,11 @@ extension SharedUseCasesContainer {
                                             remoteDatasource: container.remoteUserEventsDatasource())
         }
     }
+
+    var refreshUserData: Factory<any RefreshUserDataUseCase> {
+        self { RefreshUserData(remoteDatasource: SharedRepositoryContainer.shared.remoteUserDataDatasource(),
+                               userManager: self.userManager) }
+    }
 }
 
 // MARK: Passkey

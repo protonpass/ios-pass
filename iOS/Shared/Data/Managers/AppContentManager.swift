@@ -97,6 +97,8 @@ final class AppContentManager: ObservableObject, DeinitPrintable, AppContentMana
     private var getFeatureFlagStatus
     @LazyInjected(\SharedUseCasesContainer.dedupShare)
     private var dedupShare
+    @LazyInjected(\SharedUseCasesContainer.refreshUserData)
+    private var refreshUserData
 
     private var cancellables = Set<AnyCancellable>()
     private var isRefreshing: Bool = false
@@ -166,6 +168,9 @@ extension AppContentManager {
         incompleteFullSyncUserId = userId
         var hasUndecryptableShares = false
         do {
+            // 0. Refresh user data to handle account changes like added address keys
+            try await refreshUserData(userId: userId)
+
             // 1. Delete all local data
             try await deleteLocalDataBeforeFullSync()
 

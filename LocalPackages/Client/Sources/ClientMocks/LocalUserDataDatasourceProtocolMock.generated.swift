@@ -21,7 +21,9 @@
 import Client
 import CoreData
 import CryptoKit
+import Entities
 import Foundation
+import ProtonCoreDataModel
 import ProtonCoreLogin
 
 public final class LocalUserDataDatasourceProtocolMock: @unchecked Sendable, LocalUserDataDatasourceProtocol {
