@@ -59,10 +59,14 @@ public nonisolated struct KnownService: Sendable, Decodable, Equatable {
 public typealias OnboardingHandling = OnboardingDatasource & OnboardingDelegate
 
 public nonisolated struct PassPlans: Sendable, Equatable {
+    let foldersEnabled: Bool
     let plus: PlanUiModel?
     let unlimited: PlanUiModel?
 
-    public init(plus: PlanUiModel?, unlimited: PlanUiModel?) {
+    public init(foldersEnabled: Bool,
+                plus: PlanUiModel?,
+                unlimited: PlanUiModel?) {
+        self.foldersEnabled = foldersEnabled
         self.plus = plus
         self.unlimited = unlimited
     }

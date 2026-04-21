@@ -24,7 +24,9 @@ import SwiftUI
 
 nonisolated struct OnboardingPassPlusView: View {
     let detailColumnWidth: CGFloat = 86
-    let features: [FeatureUiModel] =
+    let foldersEnabled: Bool
+
+    private var features: [FeatureUiModel] {
         [
             .init(description: "Hide-my-email aliases",
                   lowerPerk: .number(10),
@@ -35,16 +37,19 @@ nonisolated struct OnboardingPassPlusView: View {
             .init(description: "Vault, item & link sharing",
                   lowerPerk: .unavailable,
                   higherPerk: .available),
-            .init(description: "Credit cards",
-                  lowerPerk: .unavailable,
-                  higherPerk: .infinite),
+
+            foldersEnabled ? .init(description: "Folders",
+                                   lowerPerk: .unavailable,
+                                   higherPerk: .available) : nil,
+
             .init(description: "Dark Web Monitoring",
                   lowerPerk: .unavailable,
                   higherPerk: .available),
             .init(description: "File attachments",
                   lowerPerk: .unavailable,
                   higherPerk: .available)
-        ]
+        ].compactMap(\.self)
+    }
 
     var body: some View {
         ZStack {

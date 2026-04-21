@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
 import Entities
 import FactoryKit
@@ -63,6 +64,9 @@ final class OnboardingHandler {
     @LazyInjected(\SharedToolingContainer.apiManager)
     private var apiManager
 
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private var getFeatureFlagStatus
+
     private let transactionsObserver: TransactionsObserverProviding
     private var plansManager: ProtonPlansManager?
     private let logger: Logger
@@ -84,7 +88,7 @@ extension OnboardingHandler: OnboardingDatasource {
 
     func getPassPlans() async throws -> PassPlans {
         guard !Bundle.main.isBetaBuild, let manager = try await getPlansManager() else {
-            return .init(plus: nil, unlimited: nil)
+            return .init(foldersEnabled: false, plus: nil, unlimited: nil)
         }
         let plans = try await manager.getAvailablePlans()
         let plusId = "iospass_pass2023_12_usd_auto_renewing"
@@ -111,7 +115,10 @@ extension OnboardingHandler: OnboardingDatasource {
             }
         }
 
-        return .init(plus: plusPlan, unlimited: unlimitedPlan)
+        let foldersEnabled = getFeatureFlagStatus(for: FeatureFlagType.passFolder)
+        return .init(foldersEnabled: foldersEnabled,
+                     plus: plusPlan,
+                     unlimited: unlimitedPlan)
     }
 
     func getBiometryType() async throws -> LABiometryType? {
