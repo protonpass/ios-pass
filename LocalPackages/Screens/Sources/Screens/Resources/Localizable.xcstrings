@@ -8,26 +8,26 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "(удзельнікаў: %lld)"
+                  "state" : "translated",
+                  "value" : "(%lld удзельнікі)"
                 }
               },
               "many" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "(удзельнікаў: %lld)"
+                  "state" : "translated",
+                  "value" : "(%lld удзельнікаў)"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "(удзельнікаў: %lld)"
+                  "state" : "translated",
+                  "value" : "(%lld удзельнік)"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "(удзельнікаў: %lld)"
+                  "value" : "(%lld удзельнікаў)"
                 }
               }
             }
@@ -38,8 +38,8 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "(%lld membres)"
+                  "state" : "translated",
+                  "value" : "(%lld membre)"
                 }
               },
               "other" : {
@@ -56,20 +56,20 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "(%lld členů)"
+                  "state" : "translated",
+                  "value" : "(%lld členové)"
                 }
               },
               "many" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "(%lld členů)"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "(%lld členů)"
+                  "state" : "translated",
+                  "value" : "(%lld člen)"
                 }
               },
               "other" : {
@@ -86,8 +86,8 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "(%lld medlemmer)"
+                  "state" : "translated",
+                  "value" : "(%lld medlem)"
                 }
               },
               "other" : {
@@ -104,8 +104,8 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "(%lld Mitglieder)"
+                  "state" : "translated",
+                  "value" : "(%lld Mitglied)"
                 }
               },
               "other" : {
@@ -122,8 +122,8 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "(%lld μέλη)"
+                  "state" : "translated",
+                  "value" : "(%lld μέλος)"
                 }
               },
               "other" : {
@@ -158,8 +158,8 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "(%lld miembros)"
+                  "state" : "translated",
+                  "value" : "(%lld miembro)"
                 }
               },
               "other" : {
@@ -176,8 +176,8 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "(%lld miembros)"
+                  "state" : "translated",
+                  "value" : "(%lld miembro)"
                 }
               },
               "other" : {
@@ -194,8 +194,8 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "(%lld jäsentä)"
+                  "state" : "translated",
+                  "value" : "(%lld jäsen)"
                 }
               },
               "other" : {
@@ -212,8 +212,8 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "(%lld membres)"
+                  "state" : "translated",
+                  "value" : "(%lld membre)"
                 }
               },
               "other" : {
@@ -230,38 +230,14 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "(%lld membri)"
+                  "state" : "translated",
+                  "value" : "(%lld membro)"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "(%lld membri)"
-                }
-              }
-            }
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(%lld 人のメンバー)"
-          }
-        },
-        "ka" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "(%lld წევრი)"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "(%lld წევრი)"
                 }
               }
             }
@@ -272,8 +248,8 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "(%lld medlemmer)"
+                  "state" : "translated",
+                  "value" : "(%lld medlem)"
                 }
               },
               "other" : {
@@ -290,8 +266,8 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "(%lld leden)"
+                  "state" : "translated",
+                  "value" : "(%lld lid)"
                 }
               },
               "other" : {
@@ -308,8 +284,8 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "(%lld membros)"
+                  "state" : "translated",
+                  "value" : "(%lld membro)"
                 }
               },
               "other" : {
@@ -326,20 +302,20 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "(%lld membri)"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "(%lld membri)"
+                  "state" : "translated",
+                  "value" : "(%lld membru)"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "(%lld membri)"
+                  "value" : "(%lld de membri)"
                 }
               }
             }
@@ -350,56 +326,26 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "(%lld členov)"
+                  "state" : "translated",
+                  "value" : "(%lld členovia)"
                 }
               },
               "many" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "(%lld členov)"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "(%lld členov)"
+                  "state" : "translated",
+                  "value" : "(%lld člen)"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "(%lld členov)"
-                }
-              }
-            }
-          }
-        },
-        "sl" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "(%lld članov)"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "(%lld članov)"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "(%lld članov)"
-                }
-              },
-              "two" : {
-                "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "(%lld članov)"
                 }
               }
             }
@@ -410,8 +356,8 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "(%lld medlemmar)"
+                  "state" : "translated",
+                  "value" : "(%lld medlem)"
                 }
               },
               "other" : {
@@ -428,7 +374,7 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "(%lld üye)"
                 }
               },
@@ -447,7 +393,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "（%lld 位成员）"
+                  "value" : "(%lld 位成员)"
                 }
               }
             }
