@@ -154,7 +154,7 @@ struct ItemDetailToolbar: ToolbarContent {
 private extension ItemDetailToolbar {
     @ViewBuilder
     var leaveButton: some View {
-        if !viewModel.sharedItemWithGroup {
+        if viewModel.sharedItem {
             Label("Leave", image: IconProvider.arrowOutFromRectangle)
                 .buttonEmbeded {
                     viewModel.showingLeaveShareAlert.toggle()
