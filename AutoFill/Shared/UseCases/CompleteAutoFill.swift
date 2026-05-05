@@ -129,7 +129,7 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
 }
 
 private extension CompleteAutoFill {
-    func update(item: ItemContent, identifiers: [ASCredentialServiceIdentifier]) {
+    func update(item: sending ItemContent, identifiers: sending [ASCredentialServiceIdentifier]) {
         Task { [weak self] in
             guard let self else { return }
             do {
