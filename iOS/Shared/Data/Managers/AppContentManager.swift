@@ -187,8 +187,11 @@ extension AppContentManager {
                 for share in remoteShares.shares {
                     taskGroup.addTask { [weak self] in
                         guard let self else { return }
-                        try await folderRepository.refreshFolders(userId: userId,
-                                                                  shareId: share.shareID)
+                        if share.shareType == .vault {
+                            try await folderRepository.refreshFolders(userId: userId,
+                                                                      shareId: share.shareID)
+                        }
+
                         try await itemRepository.refreshItems(userId: userId,
                                                               shareId: share.shareID,
                                                               eventStream: vaultSyncEventStream)

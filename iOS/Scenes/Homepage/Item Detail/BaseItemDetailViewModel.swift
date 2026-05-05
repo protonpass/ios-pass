@@ -34,6 +34,7 @@ protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToShowFullScreen(_ data: FullScreenData)
 }
 
+// swiftlint:disable type_body_length
 @MainActor
 class BaseItemDetailViewModel: ObservableObject {
     @Published private(set) var isFreeUser = false
@@ -511,3 +512,5 @@ extension BaseItemDetailViewModel: FileAttachmentPreviewHandler {
                                                 file: file)
     }
 }
+
+// swiftlint:enable type_body_length
