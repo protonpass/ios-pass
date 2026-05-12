@@ -261,10 +261,6 @@ class BaseCreateEditItemViewModel: ObservableObject {
         false
     }
 
-    var isPhone: Bool {
-        UIDevice.current.userInterfaceIdiom == .phone
-    }
-
     var cancellables = Set<AnyCancellable>()
 
     private var uploadFileTask: Task<Void, Never>?
