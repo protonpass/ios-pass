@@ -33,8 +33,6 @@ final class FolderMoveListViewModel {
     @ObservationIgnored
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
     @ObservationIgnored
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
-    @ObservationIgnored
     @LazyInjected(\SharedToolingContainer.logger) private var logger
 
     private(set) var loading = false
