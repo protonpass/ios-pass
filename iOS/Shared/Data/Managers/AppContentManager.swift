@@ -105,6 +105,12 @@ final class AppContentManager: ObservableObject, DeinitPrintable, AppContentMana
     /// The filter option after switching vaults
     private var pendingItemTypeFilterOption: ItemTypeFilterOption?
 
+    var hasEditableContainers: Bool {
+        getAllShares().contains {
+            $0.shareType != .item && $0.canEdit
+        }
+    }
+
     init() {
         setUp()
     }
