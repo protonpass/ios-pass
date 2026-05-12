@@ -246,6 +246,10 @@ extension SharedRepositoryContainer {
     var localCoreEventIdDatasource: Factory<any LocalCoreEventIdDatasourceProtocol> {
         self { LocalCoreEventIdDatasource(databaseService: self.databaseService) }
     }
+
+    var remoteCoreEventIdDatasource: Factory<any RemoteCoreEventIdDatasourceProtocol> {
+        self { RemoteCoreEventIdDatasource(apiServicing: self.apiManager) }
+    }
 }
 
 // MARK: Repositories
