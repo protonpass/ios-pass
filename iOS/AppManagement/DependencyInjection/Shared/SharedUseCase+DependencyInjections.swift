@@ -429,7 +429,8 @@ extension SharedUseCasesContainer {
                                        inAppNotificationDatasource: container.localInAppNotificationDatasource(),
                                        passwordDatasource: container.localPasswordDatasource(),
                                        userInviteDatasource: container.localInviteDatasource(),
-                                       userEventIdDatasource: container.localUserEventIdDatasource())
+                                       userEventIdDatasource: container.localUserEventIdDatasource(),
+                                       coreEventIdDatasource: container.localCoreEventIdDatasource())
         }
     }
 
