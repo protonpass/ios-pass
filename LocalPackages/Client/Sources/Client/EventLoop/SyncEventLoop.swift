@@ -133,6 +133,7 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, @unche
     // Injected params
     private let synchronizer: any EventSynchronizerProtocol
     private let userEventsSynchronizer: any UserEventsSynchronizerProtocol
+    private let coreEventsSynchronizer: any CoreEventsSynchronizerProtocol
     private let logger: Logger
 
     public weak var delegate: (any SyncEventLoopDelegate)?
@@ -143,12 +144,14 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, @unche
     public init(currentDateProvider: any CurrentDateProviderProtocol,
                 synchronizer: any EventSynchronizerProtocol,
                 userEventsSynchronizer: any UserEventsSynchronizerProtocol,
+                coreEventsSynchronizer: any CoreEventsSynchronizerProtocol,
                 userManager: any UserManagerProtocol,
                 logManager: any LogManagerProtocol,
                 reachability: any ReachabilityServicing) {
         backOffManager = BackOffManager(currentDateProvider: currentDateProvider)
         self.synchronizer = synchronizer
         self.userEventsSynchronizer = userEventsSynchronizer
+        self.coreEventsSynchronizer = coreEventsSynchronizer
         logger = .init(manager: logManager)
         self.reachability = reachability
         self.userManager = userManager
@@ -284,6 +287,8 @@ private extension SyncEventLoop {
             delegate?.syncEventLoopDidBeginNewLoop(userId: userId)
             let userEventsEnabled = await delegate?.syncEventLoopShouldUseUserEvents()
             if Task.isCancelled { return }
+
+            try await coreEventsSynchronizer.sync(userId: userId)
 
             let hasNewEvents: Bool
             if userEventsEnabled == true {
