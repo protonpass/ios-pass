@@ -245,8 +245,7 @@ private extension HomepageCoordinator {
                 var createButtonDisabled = false
                 switch selection {
                 case .all, .trash:
-                    let vaults = appContentManager.getAllShares()
-                    createButtonDisabled = !vaults.contains(where: \.canEdit)
+                    createButtonDisabled = !appContentManager.hasEditableContainers
                 case let .precise(vault):
                     createButtonDisabled = !vault.canEdit
                 default:
