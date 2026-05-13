@@ -97,10 +97,22 @@ extension SharedServiceContainer {
         }
     }
 
+    var coreEventsSynchronizer: Factory<any CoreEventsSynchronizerProtocol> {
+        self {
+            let container = SharedRepositoryContainer.shared
+            return CoreEventsSynchronizer(localDatasource: container.localCoreEventIdDatasource(),
+                                          remoteDatasource: container.remoteCoreEventIdDatasource(),
+                                          remoteUserDataSource: container.remoteUserDataDatasource(),
+                                          userManager: self.userManager(),
+                                          logManager: self.logManager)
+        }
+    }
+
     var syncEventLoop: Factory<SyncEventLoop> {
         self { SyncEventLoop(currentDateProvider: self.currentDateProvider,
                              synchronizer: self.eventSynchronizer(),
                              userEventsSynchronizer: self.userEventsSynchronizer(),
+                             coreEventsSynchronizer: self.coreEventsSynchronizer(),
                              userManager: self.userManager(),
                              logManager: self.logManager,
                              reachability: SharedServiceContainer.shared.reachabilityService()) }
