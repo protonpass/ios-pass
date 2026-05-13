@@ -27,7 +27,7 @@ import FactoryKit
 import ProtonCoreUIFoundations
 import SwiftUI
 
-enum HomepageTab: CaseIterable, Hashable {
+enum HomepageTab: String, CaseIterable, Hashable {
     case items, itemCreation, passMonitor, profile
 
     var image: UIImage {
@@ -53,15 +53,6 @@ enum HomepageTab: CaseIterable, Hashable {
             "Pass Monitor tab"
         case .profile:
             "Profile tab"
-        }
-    }
-
-    var identifier: String? {
-        switch self {
-        case .profile:
-            "HomepageTabBarController_profileTabView"
-        default:
-            nil
         }
     }
 }
@@ -242,7 +233,6 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
         let createItemViewController = UIViewController()
         createItemViewController.tabBarItem.image = HomepageTab.itemCreation.image
         createItemViewController.tabBarItem.accessibilityLabel = HomepageTab.itemCreation.hint
-        controllers.append(createItemViewController)
         self.createItemViewController = createItemViewController
         tabIndexes[.itemCreation] = currentIndex
         currentIndex += 1
@@ -259,12 +249,41 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
         let profileTabViewController = UIHostingController(rootView: profileTabView)
         profileTabViewController.tabBarItem.image = HomepageTab.profile.image
         profileTabViewController.tabBarItem.accessibilityLabel = HomepageTab.profile.hint
-        profileTabViewController.tabBarItem.accessibilityIdentifier = HomepageTab.profile.identifier
+        profileTabViewController.tabBarItem.accessibilityIdentifier = HomepageTab.profile.rawValue
         self.profileTabViewController = profileTabViewController
         controllers.append(profileTabViewController)
         tabIndexes[.profile] = currentIndex
 
-        viewControllers = controllers
+        if #available(iOS 26, *) {
+            tabs = [
+                UITab(title: "",
+                      image: HomepageTab.items.image,
+                      identifier: HomepageTab.items.rawValue,
+                      viewControllerProvider: { _ in
+                          itemsTabViewController
+                      }),
+                UITab(title: "",
+                      image: MonitorState.default.icon(selected: false),
+                      identifier: HomepageTab.passMonitor.rawValue,
+                      viewControllerProvider: { _ in
+                          passMonitorViewController
+                      }),
+                UITab(title: "",
+                      image: HomepageTab.profile.image,
+                      identifier: HomepageTab.profile.rawValue,
+                      viewControllerProvider: { _ in
+                          profileTabViewController
+                      }),
+                UISearchTab(title: "",
+                            image: HomepageTab.itemCreation.image,
+                            identifier: HomepageTab.itemCreation.rawValue,
+                            viewControllerProvider: { _ in
+                                UIViewController()
+                            })
+            ]
+        } else {
+            viewControllers = controllers
+        }
 
         let tabBarAppearance = UITabBarAppearance()
         tabBarAppearance.configureWithTransparentBackground()
@@ -362,5 +381,17 @@ extension HomepageTabBarController: UITabBarControllerDelegate {
         }
 
         return false
+    }
+
+    @available(iOS 18.0, *)
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelectTab tab: UITab) -> Bool {
+        guard let homepageTab = HomepageTab(rawValue: tab.identifier) else {
+            return false
+        }
+        if case .itemCreation = homepageTab {
+            homepageTabBarControllerDelegate?.selected(tab: .itemCreation)
+            return false
+        }
+        return true
     }
 }
