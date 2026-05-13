@@ -33,8 +33,8 @@ public struct CoreEvents: Decodable, Sendable {
         let action: Action
     }
 
-    let users: [Event]
-    let addresses: [Event]
+    let users: [Event]?
+    let addresses: [Event]?
 }
 
 struct GetCoreEventsEndpoint: Endpoint {
