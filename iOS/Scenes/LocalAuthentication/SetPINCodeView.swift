@@ -26,9 +26,7 @@ import SwiftUI
 struct SetPINCodeView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isFocused: Bool
-    @StateObject private var viewModel: SetPINCodeViewModel = .init()
-
-    init() {}
+    @StateObject private var viewModel = SetPINCodeViewModel()
 
     var body: some View {
         NavigationStack {
@@ -44,7 +42,7 @@ struct SetPINCodeView: View {
                 SecureField(viewModel.state.placeholder,
                             text: viewModel.state == .definition ?
                                 $viewModel.definedPIN : $viewModel.confirmedPIN)
-                    .keyboardType(.numberPad)
+                    .keyboardType(UIDevice.current.isIpad ? .default : .numberPad)
                     .font(.title)
                     .foregroundStyle(PassColor.textNorm)
                     .padding(.top, 50)
