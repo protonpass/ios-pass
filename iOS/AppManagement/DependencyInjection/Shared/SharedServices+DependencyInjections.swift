@@ -103,7 +103,8 @@ extension SharedServiceContainer {
             return CoreEventsSynchronizer(localDatasource: container.localCoreEventIdDatasource(),
                                           remoteDatasource: container.remoteCoreEventIdDatasource(),
                                           remoteUserDataSource: container.remoteUserDataDatasource(),
-                                          userManager: self.userManager())
+                                          userManager: self.userManager(),
+                                          logManager: self.logManager)
         }
     }
 
