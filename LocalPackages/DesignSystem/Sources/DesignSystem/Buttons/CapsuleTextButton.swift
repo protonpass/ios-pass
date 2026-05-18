@@ -30,7 +30,7 @@ public struct CapsuleTextButton: View {
     let height: CGFloat
     let maxWidth: CGFloat?
     let horizontalPadding: CGFloat?
-    let action: (() -> Void)?
+    let action: () -> Void
 
     public init(title: String,
                 titleColor: Color,
@@ -49,16 +49,21 @@ public struct CapsuleTextButton: View {
         self.height = height
         self.maxWidth = maxWidth
         self.horizontalPadding = horizontalPadding
-        self.action = action
+        self.action = action ?? {}
     }
 
     public var body: some View {
-        if let action {
+        if #available(iOS 26.0, *) {
             Button(action: action) {
                 realBody
             }
+            .tint(backgroundColor)
+            .buttonStyle(.glassProminent)
         } else {
-            realBody
+            Button(action: action) {
+                realBody
+                    .background(backgroundColor, in: .capsule)
+            }
         }
     }
 }
@@ -72,8 +77,6 @@ private extension CapsuleTextButton {
             .frame(height: height)
             .frame(maxWidth: maxWidth)
             .padding(.horizontal, horizontalPadding)
-            .background(backgroundColor)
-            .clipShape(Capsule())
     }
 }
 
