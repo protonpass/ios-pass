@@ -173,31 +173,46 @@ private extension EditableVaultListView {
     @ViewBuilder
     var upsellRow: some View {
         if viewModel.shouldUpsell {
-            HStack(alignment: .center, spacing: 16) {
-                PassIcon.diamond
-                    .resizable()
-                    .frame(width: 20, height: 20)
-                    .scaledToFit()
-                    .foregroundStyle(PassColor.interactionNormMajor2)
-                Text("Upgrade to Pass Plus")
-                    .foregroundStyle(PassColor.textNorm)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                IconProvider.chevronRight
-                    .resizable()
-                    .frame(width: 16, height: 16)
-                    .foregroundStyle(PassColor.interactionNormMajor2)
+            Group {
+                if #available(iOS 26.0, *) {
+                    Button(action: viewModel.upgradeSubscription) {
+                        upsellRowContent
+                    }
+                    .glassEffect(in: RoundedRectangle(cornerRadius: 16))
+                } else {
+                    Button(action: viewModel.upgradeSubscription) {
+                        upsellRowContent
+                            .cornerRadius(16)
+                            .overlay(RoundedRectangle(cornerRadius: 16)
+                                .inset(by: 0.5)
+                                .stroke(PassColor.inputBorderNorm, lineWidth: 1))
+                    }
+                }
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 15)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .cornerRadius(16)
-            .overlay(RoundedRectangle(cornerRadius: 16)
-                .inset(by: 0.5)
-                .stroke(PassColor.inputBorderNorm, lineWidth: 1))
             .padding(.horizontal)
             .padding(.top, 25)
-            .buttonEmbeded(action: viewModel.upgradeSubscription)
         }
+    }
+
+    var upsellRowContent: some View {
+        HStack(alignment: .center, spacing: 16) {
+            PassIcon.diamond
+                .resizable()
+                .frame(width: 20, height: 20)
+                .scaledToFit()
+                .foregroundStyle(PassColor.interactionNormMajor2)
+            Text("Upgrade to Pass Plus")
+                .foregroundStyle(PassColor.textNorm)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            IconProvider.chevronRight
+                .resizable()
+                .frame(width: 16, height: 16)
+                .foregroundStyle(PassColor.interactionNormMajor2)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 15)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .contentShape(.rect)
     }
 
     @ViewBuilder
@@ -269,7 +284,8 @@ private extension EditableVaultListView {
                         vaultRow(for: .precise(.init(share: content.share, folder: nil)))
                     }
 
-                    if viewModel.expandedContainerIds.contains(content.id) {
+                    if viewModel.folderSupported,
+                       viewModel.expandedContainerIds.contains(content.id) {
                         if let folders = content.folders(in: content.id), !folders.isEmpty {
                             FolderTreeView(content: content,
                                            folders: folders,
