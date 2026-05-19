@@ -114,18 +114,36 @@ public struct DisablableCapsuleTextButton: View {
     }
 
     public var body: some View {
-        Button(action: action) {
-            Text(title)
-                .font(.callout)
-                .foregroundStyle(disabled ? disableTitleColor : titleColor)
-                .frame(height: height)
-                .frame(maxWidth: maxWidth)
-                .padding(.horizontal, 16)
-                .background(disabled ? disableBackgroundColor : backgroundColor)
-                .clipShape(Capsule())
+        if #available(iOS 26.0, *) {
+            Button(action: action) {
+                text
+                    .frame(maxWidth: maxWidth, maxHeight: .infinity)
+            }
+            .tint(disabled ? disableBackgroundColor : backgroundColor)
+            .buttonStyle(.glassProminent)
+            .frame(height: height)
+            .disabled(disabled)
+            .animation(.default, value: disabled)
+        } else {
+            Button(action: action) {
+                text
+                    .padding(.horizontal, 16)
+                    .frame(height: height)
+                    .frame(maxWidth: maxWidth)
+                    .background(disabled ? disableBackgroundColor : backgroundColor)
+                    .clipShape(.capsule)
+            }
+            .disabled(disabled)
+            .animation(.default, value: disabled)
         }
-        .disabled(disabled)
-        .animation(.default, value: disabled)
+    }
+}
+
+private extension DisablableCapsuleTextButton {
+    var text: some View {
+        Text(title)
+            .font(.callout)
+            .foregroundStyle(disabled ? disableTitleColor : titleColor)
     }
 }
 
