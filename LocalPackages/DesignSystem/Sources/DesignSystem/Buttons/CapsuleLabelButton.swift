@@ -81,6 +81,7 @@ public struct CapsuleLabelButton: View {
         } else {
             Button(action: action) {
                 content
+                    .padding(.horizontal)
                     .frame(height: height)
                     .frame(maxWidth: maxWidth)
                     .background(backgroundColor.opacity(isDisabled ? 0.4 : 1.0))
@@ -118,7 +119,6 @@ private extension CapsuleLabelButton {
                 }
             }
         }
-        .padding(.horizontal)
         .foregroundStyle(titleColor)
         .fontWeight(fontWeight)
     }
