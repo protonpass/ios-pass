@@ -55,13 +55,17 @@ public struct CapsuleTextButton: View {
     public var body: some View {
         if #available(iOS 26.0, *) {
             Button(action: action) {
-                realBody
+                text
+                    .frame(maxWidth: maxWidth, maxHeight: .infinity)
             }
             .tint(backgroundColor)
             .buttonStyle(.glassProminent)
+            .frame(height: height)
         } else {
             Button(action: action) {
-                realBody
+                text
+                    .frame(height: height)
+                    .frame(maxWidth: maxWidth)
                     .background(backgroundColor, in: .capsule)
             }
         }
@@ -69,13 +73,11 @@ public struct CapsuleTextButton: View {
 }
 
 private extension CapsuleTextButton {
-    var realBody: some View {
+    var text: some View {
         Text(title)
             .font(font)
             .fontWeight(fontWeight)
             .foregroundStyle(titleColor)
-            .frame(height: height)
-            .frame(maxWidth: maxWidth)
             .padding(.horizontal, horizontalPadding)
     }
 }
