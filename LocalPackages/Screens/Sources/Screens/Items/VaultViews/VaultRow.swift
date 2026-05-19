@@ -128,45 +128,64 @@ public struct VaultRow<Thumbnail: View>: View {
             }
 
             if mode.isView, let share {
-                HStack(spacing: 4) {
-                    IconProvider.usersPlus
-                        .resizable()
-                        .scaledToFit()
-                        .foregroundStyle(PassColor.interactionNormMajor2)
-                        .frame(maxHeight: 20)
-                    if share.newUserInvitesReady > 0 {
-                        IconProvider.exclamationCircleFilled
-                            .resizable()
-                            .scaledToFit()
-                            .foregroundStyle(PassColor.signalDanger)
-                            .frame(maxHeight: 16)
-                            .offset(y: -10)
-                    }
-                    if share.shared {
-                        Text(verbatim: "\(share.members)")
-                            .font(.caption)
-                            .fontWeight(.medium)
-                            .foregroundStyle(PassColor.interactionNormMinor1)
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 2)
-                            .background(PassColor.interactionNormMajor2)
-                            .cornerRadius(20)
-                    }
+                if #available(iOS 26.0, *) {
+                    Button(action: {
+                        if case let .view(_, _, action) = mode {
+                            action?(share)
+                        }
+                    }, label: {
+                        shareButtonContent(share: share)
+                    })
+                    .tint(PassColor.interactionNormMinor1)
+                    .buttonStyle(.glassProminent)
+                    .buttonBorderShape(share.newUserInvitesReady > 0 || share.shared ?
+                        .capsule : .circle)
+                } else {
+                    Button(action: {
+                        if case let .view(_, _, action) = mode {
+                            action?(share)
+                        }
+                    }, label: {
+                        shareButtonContent(share: share)
+                            .padding(10)
+                    })
+                    .background(PassColor.interactionNormMinor1)
+                    .cornerRadius(20)
+                    .buttonStyle(.plain)
                 }
-                .padding(10)
-                .background(PassColor.interactionNormMinor1)
-                .cornerRadius(20)
-                .buttonEmbeded {
-                    if case let .view(_, _, action) = mode {
-                        action?(share)
-                    }
-                }
-                .buttonStyle(.plain)
             }
         }
         .frame(maxWidth: maxWidth)
         .frame(height: height)
         .contentShape(.rect)
         .animation(.default, value: mode)
+    }
+
+    private func shareButtonContent(share: Share) -> some View {
+        HStack(spacing: 4) {
+            IconProvider.usersPlus
+                .resizable()
+                .scaledToFit()
+                .foregroundStyle(PassColor.interactionNormMajor2)
+                .frame(maxHeight: 20)
+            if share.newUserInvitesReady > 0 {
+                IconProvider.exclamationCircleFilled
+                    .resizable()
+                    .scaledToFit()
+                    .foregroundStyle(PassColor.signalDanger)
+                    .frame(maxHeight: 16)
+                    .offset(y: -10)
+            }
+            if share.shared {
+                Text(verbatim: "\(share.members)")
+                    .font(.caption)
+                    .fontWeight(.medium)
+                    .foregroundStyle(PassColor.interactionNormMinor1)
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 2)
+                    .background(PassColor.interactionNormMajor2)
+                    .cornerRadius(20)
+            }
+        }
     }
 }
