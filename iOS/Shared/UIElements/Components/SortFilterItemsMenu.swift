@@ -80,7 +80,8 @@ struct SortFilterItemsMenu: View {
         }, label: {
             CircleButton(icon: IconProvider.threeDotsVertical,
                          iconColor: highlighted ? PassColor.textInvert : PassColor.interactionNormMajor2,
-                         backgroundColor: highlighted ? PassColor.interactionNormMajor1 : .clear)
+                         backgroundColor: highlighted ? PassColor.interactionNormMajor1 : .clear,
+                         action: {}) // Explicit empty action to render liquid glass effect
         })
         .accessibilityLabel(Text("Items filtering and sort menu"))
     }

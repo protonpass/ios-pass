@@ -48,7 +48,7 @@ public enum CircleButtonType {
     }
 }
 
-/// A cirle button with an icon inside.
+/// A cirle button with an icon inside. Only rendered as liquid glass button if action closure is provided.
 public struct CircleButton: View {
     @Environment(\.isEnabled) private var isEnabled
     let icon: Image
@@ -79,30 +79,54 @@ public struct CircleButton: View {
     }
 
     public var body: some View {
-        if let action {
-            Button(action: action) {
-                realBody
+        Group {
+            if let action {
+                if #available(iOS 26.0, *) {
+                    Button(action: action) {
+                        iconOnly
+                    }
+                    .frame(width: type.width, height: type.width)
+                    .tint(isEnabled ? backgroundColor : backgroundDisabledColor)
+                    .buttonStyle(.glassProminent)
+                    .buttonBorderShape(.circle)
+                } else {
+                    Button(action: action) {
+                        iconWithBackground
+                    }
+                }
+            } else {
+                iconWithBackground
             }
-        } else {
-            realBody
         }
-    }
-
-    private var realBody: some View {
-        ZStack {
-            (isEnabled ? backgroundColor : backgroundDisabledColor)
-                .clipShape(Circle())
-
-            icon
-                .resizable()
-                .renderingMode(.template)
-                .scaledToFit()
-                .foregroundStyle(isEnabled ? iconColor : iconDisabledColor)
-                .frame(width: type.iconWidth, height: type.iconWidth)
-        }
-        .frame(width: type.width, height: type.width)
         .if(accessibilityLabel) { view, label in
             view.accessibilityLabel(label)
         }
+    }
+}
+
+private extension CircleButton {
+    var iconOnly: some View {
+        ZStack {
+            iconView
+        }
+        .frame(width: type.width, height: type.width)
+    }
+
+    var iconWithBackground: some View {
+        ZStack {
+            (isEnabled ? backgroundColor : backgroundDisabledColor)
+                .clipShape(.circle)
+            iconView
+        }
+        .frame(width: type.width, height: type.width)
+    }
+
+    var iconView: some View {
+        icon
+            .resizable()
+            .renderingMode(.template)
+            .scaledToFit()
+            .foregroundStyle(isEnabled ? iconColor : iconDisabledColor)
+            .frame(width: type.iconWidth, height: type.iconWidth)
     }
 }
