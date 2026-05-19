@@ -69,6 +69,18 @@ public struct CapsuleLabelButton: View {
     }
 
     public var body: some View {
+        if #available(iOS 26.0, *) {
+            content
+                .tint(backgroundColor)
+                .buttonStyle(.glassProminent)
+        } else {
+            content
+        }
+    }
+}
+
+private extension CapsuleLabelButton {
+    var content: some View {
         Button(action: action) {
             Group {
                 if leadingIcon {
@@ -105,9 +117,7 @@ public struct CapsuleLabelButton: View {
         }
         .disabled(isDisabled)
     }
-}
 
-private extension CapsuleLabelButton {
     var iconView: some View {
         icon
             .resizable()

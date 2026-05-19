@@ -280,7 +280,21 @@ private extension EditableVaultListView {
                             }
                             .padding(.leading, 30)
                         } else if content.canAddFolder(in: content.id, limits: viewModel.folderLimits) {
-                            createFolderButton(content)
+                            HStack {
+                                if #available(iOS 26.0, *) {
+                                    createFolderButton(content)
+                                        .tint(PassColor.interactionNormMinor1)
+                                        .buttonStyle(.glassProminent)
+                                } else {
+                                    createFolderButton(content)
+                                        .clipShape(.capsule)
+                                        .background(PassColor.interactionNormMinor1)
+                                        .buttonStyle(.plain)
+                                }
+                                Spacer()
+                            }
+                            .padding(.leading, 36)
+                            .padding(.bottom, 16)
                         }
                     }
                     PassDivider()
@@ -371,7 +385,7 @@ private extension EditableVaultListView {
                 })
             }
 
-            if viewModel.folderSupported, viewModel.canAddFolderAtVaultRoot(for: vault) {
+            if viewModel.folderSupported {
                 Button(action: {
                     if viewModel.shouldUpsell {
                         viewModel.upgradeSubscription()
@@ -418,7 +432,7 @@ private extension EditableVaultListView {
                     viewModel.router.present(for: .moveItemsBetweenVaults(.allItems(vault)))
                 }, label: {
                     Label(title: {
-                        Text("Move all items")
+                        Text("Move all items to another vault")
                     }, icon: {
                         IconProvider.folderArrowIn
                     })
@@ -497,43 +511,34 @@ private extension EditableVaultListView {
     }
 
     func createFolderButton(_ content: ShareContent) -> some View {
-        HStack {
-            Button {
+        Button(action: {
+            if viewModel.shouldUpsell {
+                viewModel.upgradeSubscription()
+            } else {
+                viewModel.folderAction = .createNewFolder(content.share, parentFolderId: nil)
+            }
+        }, label: {
+            HStack(spacing: 8) {
+                IconProvider.folderPlus
+                    .resizable()
+                    .scaledToFit()
+                    .foregroundStyle(PassColor.interactionNormMajor2)
+                    .frame(height: 20)
+                Text("Create folder")
+                    .font(.callout)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(PassColor.interactionNormMajor2)
+                    .padding(.vertical, 2)
                 if viewModel.shouldUpsell {
-                    viewModel.upgradeSubscription()
-                } else {
-                    viewModel.folderAction = .createNewFolder(content.share, parentFolderId: nil)
-                }
-            } label: {
-                HStack(spacing: 10) {
-                    IconProvider.folderPlus
+                    PassIcon.passSubscriptionBadge
                         .resizable()
                         .scaledToFit()
-                        .foregroundStyle(PassColor.interactionNormMajor2)
-                        .frame(height: 20)
-                    Text("Create folder")
-                        .font(.callout)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(PassColor.interactionNormMajor2)
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                    if viewModel.shouldUpsell {
-                        PassIcon.passSubscriptionBadge
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 24)
-                    }
+                        .frame(height: 24)
                 }
             }
-            .padding(.vertical, 10)
-            .padding(.horizontal, 16)
-            .background(PassColor.interactionNormMinor1)
-            .cornerRadius(20)
-            .buttonStyle(.plain)
-            Spacer()
-        }
-        .padding(.leading, 36)
-        .padding(.bottom, 16)
+        })
+        .padding(.vertical, 10)
+        .padding(.horizontal, 16)
     }
 }
 
@@ -556,23 +561,21 @@ private struct FolderMenuView: View {
                 })
             })
 
-            if viewModel.canAddSubFolder(in: folder, content: content) {
-                Button(action: {
-                    if viewModel.shouldUpsell {
-                        viewModel.upgradeSubscription()
-                    } else {
-                        viewModel.folderAction = .createNewFolder(content.share, parentFolderId: folder.folderId)
-                    }
-                }, label: {
-                    Label(title: {
-                        Text("Create sub-folder")
-                    }, icon: {
-                        IconProvider.folderPlus
-                            .renderingMode(.template)
-                            .foregroundStyle(PassColor.textWeak)
-                    })
+            Button(action: {
+                if viewModel.shouldUpsell {
+                    viewModel.upgradeSubscription()
+                } else {
+                    viewModel.folderAction = .createNewFolder(content.share, parentFolderId: folder.folderId)
+                }
+            }, label: {
+                Label(title: {
+                    Text("Create sub-folder")
+                }, icon: {
+                    IconProvider.folderPlus
+                        .renderingMode(.template)
+                        .foregroundStyle(PassColor.textWeak)
                 })
-            }
+            })
 
             Button(action: {
                 viewModel.folderAction = .edit(folder)
@@ -585,20 +588,6 @@ private struct FolderMenuView: View {
                         .foregroundStyle(PassColor.textWeak)
                 })
             })
-
-            if viewModel.canMoveItems(folder: folder) {
-                Button(action: {
-                    viewModel.moveAllItemsInFolder(folder)
-                }, label: {
-                    Label(title: {
-                        Text("Move all items")
-                    }, icon: {
-                        IconProvider.folderArrowIn
-                            .renderingMode(.template)
-                            .foregroundStyle(PassColor.textWeak)
-                    })
-                })
-            }
 
             Divider()
 
