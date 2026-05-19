@@ -233,6 +233,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
         let createItemViewController = UIViewController()
         createItemViewController.tabBarItem.image = HomepageTab.itemCreation.image
         createItemViewController.tabBarItem.accessibilityLabel = HomepageTab.itemCreation.hint
+        controllers.append(createItemViewController)
         self.createItemViewController = createItemViewController
         tabIndexes[.itemCreation] = currentIndex
         currentIndex += 1
