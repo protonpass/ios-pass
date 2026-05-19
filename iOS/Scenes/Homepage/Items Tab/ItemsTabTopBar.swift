@@ -154,20 +154,32 @@ private struct ViewModeView: View {
                 .frame(maxWidth: 46)
                 .buttonEmbeded { action(.onPromoBadgeTapped) }
         } else if viewModel.shouldUpsell {
-            PassIcon.diamond
-                .resizable()
-                .frame(width: 20, height: 20)
-                .scaledToFit()
-                .padding(.horizontal, 12)
-                .padding(.vertical, 6)
-                .frame(height: 44, alignment: .leading)
-                .cornerRadius(10)
-                .foregroundStyle(PassColor.interactionNormMajor2)
-                .overlay(RoundedRectangle(cornerRadius: 10)
-                    .inset(by: 0.5)
-                    .stroke(PassColor.interactionNormMinor1, lineWidth: 1))
-                .buttonEmbeded(action: viewModel.upgradeSubscription)
+            if #available(iOS 26.0, *) {
+                Button(action: viewModel.upgradeSubscription) {
+                    upsellIcon
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
+                .frame(maxWidth: 40, maxHeight: 40)
+                .buttonStyle(.glass)
+                .buttonBorderShape(.roundedRectangle(radius: 10))
+            } else {
+                Button(action: viewModel.upgradeSubscription) {
+                    upsellIcon
+                        .frame(width: 40, height: 40)
+                        .overlay(RoundedRectangle(cornerRadius: 10)
+                            .inset(by: 0.5)
+                            .stroke(PassColor.interactionNormMinor1, lineWidth: 1))
+                }
+            }
         }
+    }
+
+    var upsellIcon: some View {
+        PassIcon.diamond
+            .resizable()
+            .frame(width: 20, height: 20)
+            .scaledToFit()
+            .foregroundStyle(PassColor.interactionNormMajor2)
     }
 
     var sortAndFilterMenu: some View {
