@@ -303,8 +303,8 @@ private extension EditableVaultListView {
                                         .buttonStyle(.glassProminent)
                                 } else {
                                     createFolderButton(content)
-                                        .clipShape(.capsule)
                                         .background(PassColor.interactionNormMinor1)
+                                        .clipShape(.capsule)
                                         .buttonStyle(.plain)
                                 }
                                 Spacer()
