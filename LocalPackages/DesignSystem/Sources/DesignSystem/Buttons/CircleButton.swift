@@ -83,13 +83,15 @@ public struct CircleButton: View {
             if let action {
                 if #available(iOS 26.0, *) {
                     Button(action: action) {
-                        iconView
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        ZStack {
+                            iconView
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
+                    .frame(maxWidth: type.width, maxHeight: type.width)
                     .tint(isEnabled ? backgroundColor : backgroundDisabledColor)
                     .buttonStyle(.glassProminent)
                     .buttonBorderShape(.circle)
-                    .frame(width: type.width, height: type.width)
                 } else {
                     Button(action: action) {
                         iconWithBackground
