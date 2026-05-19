@@ -177,27 +177,44 @@ public struct CapsuleTextBorderedButton: View {
     }
 
     public var body: some View {
-        if let action {
-            Button(action: action) {
-                realBody
+        if #available(iOS 26.0, *) {
+            if let action {
+                Button(action: action) {
+                    text
+                        .frame(maxWidth: maxWidth, maxHeight: .infinity)
+                }
+                .tint(borderColor)
+                .buttonStyle(.glass)
+                .frame(height: height)
+            } else {
+                borderedText
             }
         } else {
-            realBody
+            if let action {
+                Button(action: action) {
+                    borderedText
+                }
+            } else {
+                borderedText
+            }
         }
     }
 }
 
 private extension CapsuleTextBorderedButton {
-    var realBody: some View {
+    var text: some View {
         Text(title)
             .font(font)
             .foregroundStyle(titleColor)
+            .padding(.horizontal, 16)
+    }
+
+    var borderedText: some View {
+        text
             .frame(height: height)
             .frame(maxWidth: maxWidth)
-            .padding(.horizontal, 16)
             .background(.clear)
-            .clipShape(Capsule())
-            .overlay(Capsule()
-                .stroke(borderColor, lineWidth: borderWidth))
+            .clipShape(.capsule)
+            .overlay(Capsule().stroke(borderColor, lineWidth: borderWidth))
     }
 }
