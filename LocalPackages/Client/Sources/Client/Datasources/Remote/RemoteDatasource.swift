@@ -29,6 +29,10 @@ public class RemoteDatasource: @unchecked Sendable {
         self.apiServicing = apiServicing
     }
 
+    func getApiService(userId: String) throws -> any APIService {
+        try apiServicing.getApiService(userId: userId)
+    }
+
     func exec<E: Endpoint>(userId: String, endpoint: E) async throws -> E.Response {
         try await apiServicing.getApiService(userId: userId).exec(endpoint: endpoint)
     }

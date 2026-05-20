@@ -98,7 +98,7 @@ private extension OnboardingPaymentStep {
             ScrollView(showsIndicators: false) {
                 switch selection {
                 case .plus:
-                    OnboardingPassPlusView()
+                    OnboardingPassPlusView(foldersEnabled: plans.foldersEnabled)
                 case .unlimited:
                     OnboardingProtonUnlimitedView()
                 }

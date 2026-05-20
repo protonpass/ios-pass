@@ -78,6 +78,7 @@ public struct SharingInfos: Sendable, Identifiable {
     /// No public keys means external user
     public let receiverPublicKeys: [PublicKey]?
     public let itemsNum: Int
+    public let groupInfo: GroupInfo?
     public var name: String {
         shareElement.name
     }
@@ -103,12 +104,14 @@ public struct SharingInfos: Sendable, Identifiable {
     public init(shareElement: SharingElementData,
                 email: String,
                 destinationName: String,
+                groupInfo: GroupInfo?,
                 role: ShareRole,
                 receiverPublicKeys: [PublicKey]?,
                 itemsNum: Int) {
         self.shareElement = shareElement
         self.email = email
         self.destinationName = destinationName
+        self.groupInfo = groupInfo
         self.role = role
         self.receiverPublicKeys = receiverPublicKeys
         self.itemsNum = itemsNum

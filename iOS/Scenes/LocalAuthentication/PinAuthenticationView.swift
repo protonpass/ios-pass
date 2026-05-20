@@ -50,7 +50,7 @@ struct PinAuthenticationView: View {
                 .font(.title.bold())
                 .focused($isFocused)
                 .multilineTextAlignment(.center)
-                .keyboardType(.numberPad)
+                .keyboardType(UIDevice.current.isIpad ? .default : .numberPad)
 
             Spacer()
 

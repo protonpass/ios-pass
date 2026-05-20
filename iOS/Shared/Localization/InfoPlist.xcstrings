@@ -435,6 +435,18 @@
           }
         }
       }
+    },
+    "NSLocalNetworkUsageDescription" : {
+      "comment" : "Privacy - Local Network Usage Description",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atlantis would use Bonjour Service to discover Proxyman app from your local network. Atlantis uses it to transfer the data from your iOS app to Proxyman macOS for debugging purposes."
+          }
+        }
+      },
+      "shouldTranslate" : false
     }
   },
   "version" : "1.0"

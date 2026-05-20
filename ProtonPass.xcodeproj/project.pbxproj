@@ -475,6 +475,7 @@
 		539182CC2D7F2C9100815D7F /* SshDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539182CB2D7F2C8F00815D7F /* SshDetailViewModel.swift */; };
 		539182CF2D7F3EB500815D7F /* CustomDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539182CE2D7F3EAF00815D7F /* CustomDetailView.swift */; };
 		539182D12D7F3ED100815D7F /* CustomDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539182D02D7F3ECF00815D7F /* CustomDetailViewModel.swift */; };
+		53A195292FB36B5F008C3BDC /* Atlantis in Frameworks */ = {isa = PBXBuildFile; productRef = 53A195282FB36B5F008C3BDC /* Atlantis */; };
 		53A2EB092D6F538A008A4A0C /* CustomItemTemplatesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53A2EB072D6F5381008A4A0C /* CustomItemTemplatesList.swift */; };
 		53A732B12F1F8AB100EC4A16 /* UpsellSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53A732B02F1F8AA300EC4A16 /* UpsellSection.swift */; };
 		53ABE2D62E842FD500C7355B /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 53ABE2D52E842FD500C7355B /* AppIcon.icon */; };
@@ -1316,6 +1317,7 @@
 				5B8D20A42AA74A4600457CA3 /* Core in Frameworks */,
 				353518292AE14FB700574991 /* Screens in Frameworks */,
 				356A34C82978630100969BA2 /* CodeScanner in Frameworks */,
+				53A195292FB36B5F008C3BDC /* Atlantis in Frameworks */,
 				8B7078642BD1205A00E920D7 /* ProtonCorePasswordChange in Frameworks */,
 				57D3314B2AE5BEFD00F0EB17 /* ProtonCoreAccountDeletion in Frameworks */,
 				5B1453672A6033F60048B022 /* Entities in Frameworks */,
@@ -3008,6 +3010,7 @@
 				8B7078632BD1205A00E920D7 /* ProtonCorePasswordChange */,
 				40EC90952D1AE426004FCA37 /* ProtonCorePaymentsV2 */,
 				53C81EC92DDB6E0F00A367C1 /* FactoryKit */,
+				53A195282FB36B5F008C3BDC /* Atlantis */,
 			);
 			productName = "Proton Key (iOS)";
 			productReference = 35E5063B286F819F00A3F6EA /* Proton Pass.app */;
@@ -3182,6 +3185,7 @@
 				57459FC02AE5A72100280A10 /* XCRemoteSwiftPackageReference "protoncore_ios" */,
 				575D3C232AE9100D0012434B /* XCRemoteSwiftPackageReference "TrustKit" */,
 				5351589B2F740108005A2156 /* XCRemoteSwiftPackageReference "swift-macro" */,
+				53A195272FB36B5F008C3BDC /* XCRemoteSwiftPackageReference "atlantis" */,
 			);
 			productRefGroup = 35E5063C286F819F00A3F6EA /* Products */;
 			projectDirPath = "";
@@ -4141,7 +4145,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.19.0;
+				MARKETING_VERSION = 1.19.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -4224,7 +4228,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.19.0;
+				MARKETING_VERSION = 1.19.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -4305,7 +4309,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.19.0;
+				MARKETING_VERSION = 1.19.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -4378,7 +4382,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.19.0;
+				MARKETING_VERSION = 1.19.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -4485,7 +4489,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.19.0;
+				MARKETING_VERSION = 1.19.2;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
@@ -4558,7 +4562,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.19.0;
+				MARKETING_VERSION = 1.19.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -4627,7 +4631,7 @@
 				INFOPLIST_FILE = iOSUITests/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.19.0;
+				MARKETING_VERSION = 1.19.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -4706,7 +4710,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.19.0;
+				MARKETING_VERSION = 1.19.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -4750,7 +4754,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.19.0;
+				MARKETING_VERSION = 1.19.2;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.macos;
 				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = macosx;
@@ -4848,7 +4852,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.19.0;
+				MARKETING_VERSION = 1.19.2;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
@@ -4921,7 +4925,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.19.0;
+				MARKETING_VERSION = 1.19.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -4990,7 +4994,7 @@
 				INFOPLIST_FILE = iOSUITests/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.19.0;
+				MARKETING_VERSION = 1.19.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -5069,7 +5073,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.19.0;
+				MARKETING_VERSION = 1.19.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -5113,7 +5117,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.19.0;
+				MARKETING_VERSION = 1.19.2;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.macos;
 				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = macosx;
@@ -5193,7 +5197,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.19.0;
+				MARKETING_VERSION = 1.19.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -5237,7 +5241,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.19.0;
+				MARKETING_VERSION = 1.19.2;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5279,7 +5283,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.19.0;
+				MARKETING_VERSION = 1.19.2;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5321,7 +5325,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.19.0;
+				MARKETING_VERSION = 1.19.2;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5431,7 +5435,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.19.0;
+				MARKETING_VERSION = 1.19.2;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
@@ -5473,7 +5477,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.19.0;
+				MARKETING_VERSION = 1.19.2;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.macos;
 				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = macosx;
@@ -5571,7 +5575,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.19.0;
+				MARKETING_VERSION = 1.19.2;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
@@ -5612,7 +5616,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.19.0;
+				MARKETING_VERSION = 1.19.2;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.macos;
 				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = macosx;
@@ -5690,7 +5694,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.19.0;
+				MARKETING_VERSION = 1.19.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -5732,7 +5736,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.19.0;
+				MARKETING_VERSION = 1.19.2;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.action;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5772,7 +5776,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.19.0;
+				MARKETING_VERSION = 1.19.2;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.action;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5812,7 +5816,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.19.0;
+				MARKETING_VERSION = 1.19.2;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.action;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5884,7 +5888,7 @@
 				INFOPLIST_FILE = iOSUITests/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.19.0;
+				MARKETING_VERSION = 1.19.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -5953,7 +5957,7 @@
 				INFOPLIST_FILE = iOSUITests/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.19.0;
+				MARKETING_VERSION = 1.19.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -6087,6 +6091,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.0.0;
+			};
+		};
+		53A195272FB36B5F008C3BDC /* XCRemoteSwiftPackageReference "atlantis" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ProxymanApp/atlantis";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.35.0;
 			};
 		};
 		57459FC02AE5A72100280A10 /* XCRemoteSwiftPackageReference "protoncore_ios" */ = {
@@ -6305,6 +6317,11 @@
 		537FC0742D59EC3300011AEA /* DesignSystem */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DesignSystem;
+		};
+		53A195282FB36B5F008C3BDC /* Atlantis */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 53A195272FB36B5F008C3BDC /* XCRemoteSwiftPackageReference "atlantis" */;
+			productName = Atlantis;
 		};
 		53C81EC92DDB6E0F00A367C1 /* FactoryKit */ = {
 			isa = XCSwiftPackageProductDependency;

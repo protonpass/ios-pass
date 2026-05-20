@@ -40,6 +40,15 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
+    <entity name="CoreEventIDEntity" representedClassName="CoreEventIDEntity" syncable="YES">
+        <attribute name="lastEventID" attributeType="String"/>
+        <attribute name="userID" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="userID"/>
+        </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
     <entity name="FolderEntity" representedClassName="FolderEntity" syncable="YES">
         <attribute name="content" attributeType="String"/>
         <attribute name="contentFormatVersion" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>

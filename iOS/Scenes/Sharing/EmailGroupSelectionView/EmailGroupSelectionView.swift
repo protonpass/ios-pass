@@ -76,7 +76,8 @@ struct EmailGroupSelectionView: View {
             .sheet(item: $viewModel.selectedGroupInfo,
                    onDismiss: { viewModel.clearHighlightedRecommendation() },
                    content: { infos in
-                       GroupUsersInformationView(groupInfo: infos, rights: nil)
+                       GroupUsersInformationView(groupInfo: infos,
+                                                 currentUserEmail: viewModel.currentUserEmail)
                            .presentationDetents([.medium, .large])
                            .presentationDragIndicator(.visible)
                    })
@@ -311,7 +312,7 @@ private extension EmailGroupSelectionView {
 
 struct GroupUsersInformationView: View {
     let groupInfo: GroupInfo
-    let rights: String?
+    let currentUserEmail: String?
 
     var body: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
@@ -324,10 +325,11 @@ struct GroupUsersInformationView: View {
                 LazyVStack(spacing: 24) {
                     ForEach(groupInfo.members ?? []) { member in
                         if let email = member.email {
-                            HStack(spacing: DesignConstant.sectionPadding) {
+                            HStack(spacing: 0) {
                                 ZStack {
                                     PassColor.interactionNormMinor1
-                                        .clipShape(RoundedRectangle(cornerRadius: 40 / 2.5, style: .continuous))
+                                        .clipShape(RoundedRectangle(cornerRadius: 40 / 2.5,
+                                                                    style: .continuous))
                                     Text(String(email.prefix(2).uppercased()))
                                         .font(.system(size: 40 / 3))
                                         .fontWeight(.medium)
@@ -335,17 +337,24 @@ struct GroupUsersInformationView: View {
                                 }
                                 .frame(width: 40, height: 40)
 
-                                VStack {
-                                    Text(email)
+                                Spacer()
+                                    .frame(width: DesignConstant.sectionPadding)
+
+                                if email == currentUserEmail {
+                                    Text("You")
                                         .foregroundStyle(PassColor.textNorm)
-                                        .lineLimit(1)
-                                    if let rights {
-                                        Text(rights)
-                                            .foregroundStyle(PassColor.textWeak)
-                                    }
-                                }.frame(maxWidth: .infinity, alignment: .leading)
+                                        .padding(.vertical, 2)
+                                        .padding(.horizontal, 8)
+                                        .background(Capsule().fill(PassColor.interactionNorm))
+                                        .padding(.trailing, DesignConstant.sectionPadding / 2)
+                                }
+
+                                Text(email)
+                                    .foregroundStyle(PassColor.textNorm)
+                                    .lineLimit(2)
                             }
                             .contentShape(.rect)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                         }
                     }
                 }

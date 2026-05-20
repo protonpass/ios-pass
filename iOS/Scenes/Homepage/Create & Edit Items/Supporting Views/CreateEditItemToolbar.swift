@@ -65,8 +65,6 @@ struct CreateEditItemToolbar: ToolbarContent {
                         } else if let vaultContent = container.share.vaultContent {
                             containerButton(.vault(vaultContent))
                         }
-                    } else {
-                        EmptyView()
                     }
                 }
             }

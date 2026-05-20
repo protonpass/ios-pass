@@ -1,3 +1,11 @@
+# Version 1.19.2
+- Added handling for newly added account keys during an active session
+- Fixed the logic for displaying the "Leave" button on item detail page
+- Updated the upselling table
+
+# Version 1.19.1
+B2B: Group sharing improvements
+
 # Version 1.19.0
 Improvements:
 - Create a login from an alias via the "Create login" button below the alias address

@@ -38,6 +38,8 @@ public extension PassError {
         case failedToEncode(String)
         case failedToAESEncrypt
         case failedToVerifyContent(String)
+        case failedToBuildPassphrases
+        case userKeyNotFound(userKeyId: String)
         case inactiveUserKey(userKeyId: String) // Caused by "forgot password"
         case addressNotFound(addressID: String)
         case corruptedShareContent(shareID: String)
@@ -78,6 +80,10 @@ public extension PassError {
                 "Failed to encode \"\(string)\""
             case .failedToAESEncrypt:
                 "Failed to AES encrypt"
+            case .failedToBuildPassphrases:
+                "Failed to build passphrases"
+            case let .userKeyNotFound(userKeyId):
+                "User key not found \(userKeyId)"
             case let .inactiveUserKey(userKeyId):
                 "Inactive user key \(userKeyId)"
             case let .addressNotFound(addressID):

@@ -34,7 +34,7 @@ struct InviteSuggestionsSection: View {
 
             suggestionPicker
 
-            emailList()
+            emailList
 
             if viewModel.isFetchingMore {
                 emailSkeleton
@@ -60,7 +60,7 @@ struct InviteSuggestionsSection: View {
 }
 
 private extension InviteSuggestionsSection {
-    func emailList() -> some View {
+    var emailList: some View {
         ForEach(viewModel.suggestions) { recommendation in
             SuggestedEmailView(recommendation: recommendation,
                                isSelected: viewModel.selectedRecommendations.contains(recommendation)) {
