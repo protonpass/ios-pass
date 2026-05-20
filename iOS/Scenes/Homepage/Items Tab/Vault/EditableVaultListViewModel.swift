@@ -139,6 +139,19 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
         getFeatureFlagStatus(for: FeatureFlagType.passFolder)
     }
 
+    func shareContent(for shareId: String) -> ShareContent? {
+        orderedVaults.first { $0.share.id == shareId }
+    }
+
+    func canAddFolderAtVaultRoot(for vault: Share) -> Bool {
+        guard let content = shareContent(for: vault.id) else { return false }
+        return content.canAddFolder(in: vault.id)
+    }
+
+    func canAddSubFolder(in folder: FolderUiModel, content: ShareContent) -> Bool {
+        content.canAddFolder(in: folder.folderId)
+    }
+
     var vaultCreationAllowed: Bool {
         checkVaultCreationAllowance(userData: userData,
                                     organization: organization,

@@ -14067,6 +14067,9 @@
         }
       }
     },
+    "A folder can contain at most %lld sub-folders" : {
+
+    },
     "A contact is created for every email address that sends emails to or receives emails from %@" : {
       "localizations" : {
         "be" : {
@@ -75500,6 +75503,9 @@
       }
     },
     "Folder name" : {
+
+    },
+    "Folders cannot be nested more than %lld levels deep" : {
 
     },
     "Follow these simple steps to get the best experience:" : {
@@ -170529,6 +170535,9 @@
           }
         }
       }
+    },
+    "This vault already contains the maximum of %lld folders" : {
+
     },
     "This will permanently delete the %@ « %@ » and all its contents. Enter the %@ name to confirm deletion." : {
       "localizations" : {
