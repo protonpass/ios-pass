@@ -127,12 +127,10 @@ public struct VaultRow<Thumbnail: View>: View {
                 Spacer()
             }
 
-            if mode.isView, let share {
+            if mode.isView, let share, let viewAction {
                 if #available(iOS 26.0, *) {
                     Button(action: {
-                        if case let .view(_, _, action) = mode {
-                            action?(share)
-                        }
+                        viewAction(share)
                     }, label: {
                         shareButtonContent(share: share)
                     })
@@ -142,9 +140,7 @@ public struct VaultRow<Thumbnail: View>: View {
                         .capsule : .circle)
                 } else {
                     Button(action: {
-                        if case let .view(_, _, action) = mode {
-                            action?(share)
-                        }
+                        viewAction(share)
                     }, label: {
                         shareButtonContent(share: share)
                             .padding(10)
@@ -159,6 +155,14 @@ public struct VaultRow<Thumbnail: View>: View {
         .frame(height: height)
         .contentShape(.rect)
         .animation(.default, value: mode)
+    }
+
+    private var viewAction: ((Share) -> Void)? {
+        if case let .view(_, _, action) = mode {
+            action
+        } else {
+            nil
+        }
     }
 
     private func shareButtonContent(share: Share) -> some View {
