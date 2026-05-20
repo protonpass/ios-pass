@@ -118,6 +118,21 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         }
         closureLocalFullSync()
     }
+    // MARK: - getShareContent
+    public var closureGetShareContent: () -> () = {}
+    public var invokedGetShareContentfunction = false
+    public var invokedGetShareContentCount = 0
+    public var invokedGetShareContentParameters: (shareId: String, Void)?
+    public var invokedGetShareContentParametersList = [(shareId: String, Void)]()
+    public nonisolated(unsafe) var stubbedGetShareContentResult: ShareContent?
+
+    public func getShareContent(for shareId: String) -> ShareContent? {
+        invokedGetShareContentfunction = true
+        invokedGetShareContentCount += 1
+        invokedGetShareContentParameters = (shareId, ())
+        closureGetShareContent()
+        return stubbedGetShareContentResult
+    }
     // MARK: - getItems
     public var closureGetItems: () -> () = {}
     public var invokedGetItemsfunction = false
@@ -134,7 +149,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         return stubbedGetItemsResult
     }
     // MARK: - delete
-    public var deleteUserIdShareIdThrowableError6: Error?
+    public var deleteUserIdShareIdThrowableError7: Error?
     public var closureDelete: () -> () = {}
     public var invokedDeletefunction = false
     public var invokedDeleteCount = 0
@@ -145,7 +160,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         invokedDeletefunction = true
         invokedDeleteCount += 1
         invokedDeleteParameters = (userId, shareId)
-        if let error = deleteUserIdShareIdThrowableError6 {
+        if let error = deleteUserIdShareIdThrowableError7 {
             throw error
         }
         closureDelete()
