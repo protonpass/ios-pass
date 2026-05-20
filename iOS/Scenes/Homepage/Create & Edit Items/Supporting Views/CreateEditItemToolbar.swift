@@ -58,15 +58,7 @@ struct CreateEditItemToolbar: ToolbarContent {
             }
         } else {
             ToolbarItem(placement: .principal) {
-                Group {
-                    if canChangeVault {
-                        if container.isFolderSelected {
-                            containerButton(.folder(container.title))
-                        } else if let vaultContent = container.share.vaultContent {
-                            containerButton(.vault(vaultContent))
-                        }
-                    }
-                }
+                containerButton
             }
 
             ToolbarItem(placement: .topBarTrailing) {
@@ -109,7 +101,27 @@ private extension CreateEditItemToolbar {
         }
     }
 
-    func containerButton(_ containerType: ContainerType) -> some View {
+    @ViewBuilder
+    var containerButton: some View {
+        if canChangeVault, let containerType {
+            if #available(iOS 26.0, *) {
+                Button(action: onSelectContainer) {
+                    containerButtonContent(containerType)
+                }
+                .buttonStyle(.plain)
+                .glassEffect(.regular.tint(containerType.background), in: .capsule)
+                .buttonStyle(.glass)
+            } else {
+                Button(action: onSelectContainer) {
+                    containerButtonContent(containerType)
+                        .background(containerType.background)
+                        .clipShape(.capsule)
+                }
+            }
+        }
+    }
+
+    func containerButtonContent(_ containerType: ContainerType) -> some View {
         HStack {
             containerType.icon
                 .scaledToFit()
@@ -123,9 +135,16 @@ private extension CreateEditItemToolbar {
         .frame(height: 40)
         .foregroundStyle(containerType.foreground)
         .padding(.horizontal, DesignConstant.sectionPadding)
-        .background(containerType.background)
-        .clipShape(Capsule())
-        .buttonEmbeded(action: onSelectContainer)
+    }
+
+    var containerType: ContainerType? {
+        if container.isFolderSelected {
+            .folder(container.title)
+        } else if let vaultContent = container.share.vaultContent {
+            .vault(vaultContent)
+        } else {
+            nil
+        }
     }
 }
 
