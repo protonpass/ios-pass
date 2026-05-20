@@ -107809,8 +107809,12 @@
         }
       }
     },
+    "Move all items" : {
+
+    },
     "Move all items to another vault" : {
       "comment" : "Item moving to other vault",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {

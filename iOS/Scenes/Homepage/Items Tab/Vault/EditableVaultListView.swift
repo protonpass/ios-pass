@@ -407,7 +407,7 @@ private extension EditableVaultListView {
                     viewModel.router.present(for: .moveItemsBetweenVaults(.allItems(vault)))
                 }, label: {
                     Label(title: {
-                        Text("Move all items to another vault")
+                        Text("Move all items")
                     }, icon: {
                         IconProvider.folderArrowIn
                     })
