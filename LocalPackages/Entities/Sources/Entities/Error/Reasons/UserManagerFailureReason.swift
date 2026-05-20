@@ -30,6 +30,7 @@ public extension PassError {
         case noInactiveUserFound
         case noAccessFound(String)
         case noUserFound(shareId: String, itemId: String)
+        case userNotFound(userId: String)
 
         public var debugDescription: String {
             switch self {
@@ -47,6 +48,8 @@ public extension PassError {
                 "No access found for user \(userId)"
             case let .noUserFound(shareId, itemId):
                 "No user found for share \(shareId), item \(itemId)"
+            case let .userNotFound(userId):
+                "User not found for id \(userId)"
             }
         }
     }

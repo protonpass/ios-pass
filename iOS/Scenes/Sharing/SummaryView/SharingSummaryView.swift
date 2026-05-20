@@ -32,6 +32,7 @@ import SwiftUI
 struct SharingSummaryView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = SharingSummaryViewModel()
+    @State private var groupInfo: GroupInfo?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 26) {
@@ -64,10 +65,19 @@ struct SharingSummaryView: View {
         .background(PassColor.backgroundNorm)
         .toolbar { toolbarContent }
         .showSpinner(viewModel.sendingInvite)
+        .task {
+            await viewModel.setUp()
+        }
         .alert("Error occurred",
                isPresented: $viewModel.showContactSupportAlert,
                actions: { Button(role: .cancel, label: { Text("OK") }) },
                message: { Text("Please contact us to investigate the issue") })
+        .sheet(item: $groupInfo) { info in
+            GroupUsersInformationView(groupInfo: info,
+                                      currentUserEmail: viewModel.currentUserEmail)
+                .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.visible)
+        }
     }
 }
 
@@ -118,9 +128,18 @@ private extension SharingSummaryView {
                 SquircleThumbnail(data: .initials(infos.email.initials()),
                                   tintColor: ItemType.login.tintColor,
                                   backgroundColor: ItemType.login.backgroundColor)
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(infos.destinationName)
-                        .foregroundStyle(PassColor.textNorm)
+                ViewThatFits {
+                    HStack {
+                        Text(infos.destinationName)
+                            .foregroundStyle(PassColor.textNorm)
+                        membersView(info: infos)
+                    }
+
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(infos.destinationName)
+                            .foregroundStyle(PassColor.textNorm)
+                        membersView(info: infos)
+                    }
                 }
             }
             .frame(height: 60)
@@ -167,8 +186,20 @@ private extension SharingSummaryView {
                                               tintColor: ItemType.login.tintColor,
                                               backgroundColor: ItemType.login.backgroundColor)
                             VStack(alignment: .leading, spacing: 4) {
-                                Text(info.destinationName)
-                                    .foregroundStyle(PassColor.textNorm)
+                                ViewThatFits {
+                                    HStack {
+                                        Text(info.destinationName)
+                                            .foregroundStyle(PassColor.textNorm)
+                                        membersView(info: info)
+                                    }
+
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text(info.destinationName)
+                                            .foregroundStyle(PassColor.textNorm)
+                                        membersView(info: info)
+                                    }
+                                }
+
                                 HStack {
                                     Text(info.role.title(managerAsAdmin: viewModel.managerAsAdmin))
                                         .foregroundStyle(PassColor.textWeak)
@@ -181,6 +212,21 @@ private extension SharingSummaryView {
                     .listRowSeparator(.hidden)
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    func membersView(info: SharingInfos) -> some View {
+        if let currentGroupInfo = info.groupInfo,
+           let memberCount = currentGroupInfo.memberCounts {
+            ParenthesizedText(content: #localized("%lld member(s)", memberCount),
+                              contentColor: memberCount == 0 ?
+                                  PassColor.textNorm : PassColor.interactionNormMajor2)
+                .onTapGesture {
+                    if memberCount > 0 {
+                        groupInfo = currentGroupInfo
+                    }
+                }
         }
     }
 }

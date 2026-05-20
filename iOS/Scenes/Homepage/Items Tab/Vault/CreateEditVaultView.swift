@@ -197,8 +197,6 @@ private struct VaultColorView: View {
             Circle()
                 .strokeBorder(PassColor.textHint,
                               style: StrokeStyle(lineWidth: size.width / 20))
-        } else {
-            EmptyView()
         }
     }
 }
@@ -235,8 +233,6 @@ private struct VaultIconView: View {
             Circle()
                 .strokeBorder(PassColor.textHint,
                               style: StrokeStyle(lineWidth: size.width / 20))
-        } else {
-            EmptyView()
         }
     }
 }

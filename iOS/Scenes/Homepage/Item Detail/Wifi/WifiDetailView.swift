@@ -157,9 +157,8 @@ private extension WifiDetailView {
                         .placeholderText()
                 } else {
                     if showPassword {
-                        Text(viewModel.password)
+                        Text(viewModel.password.coloredPassword())
                             .font(.body.monospaced())
-                            .sectionContentText()
                     } else {
                         Text(String(repeating: "•", count: 12))
                             .sectionContentText()

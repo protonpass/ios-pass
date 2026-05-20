@@ -18,6 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+#if DEBUG
+import Atlantis
+#endif
 import BackgroundTasks
 import Core
 import FactoryKit
@@ -48,6 +51,9 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         setCoreLoggerEnvironment()
         configureTipKit()
         FeatureFlagsRepository.shared.setFlagOverride(CoreFeatureFlagType.externalSSO, true)
+        #if DEBUG
+        Atlantis.start()
+        #endif
         return true
     }
 

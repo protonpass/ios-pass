@@ -54,8 +54,12 @@ struct UserPermissionView: View {
         .navigationBarTitleDisplayMode(.inline)
         .background(PassColor.backgroundNorm)
         .toolbar { toolbarContent }
+        .task {
+            await viewModel.setUp()
+        }
         .sheet(item: $showMember) { infos in
-            GroupUsersInformationView(groupInfo: infos, rights: nil)
+            GroupUsersInformationView(groupInfo: infos,
+                                      currentUserEmail: viewModel.currentUserEmail)
                 .presentationDetents([.medium, .large])
                 .presentationDragIndicator(.visible)
         }
@@ -67,8 +71,6 @@ struct UserPermissionView: View {
             Circle()
                 .fill(PassColor.interactionNormMajor1)
                 .frame(width: 15, height: 15)
-        } else {
-            EmptyView()
         }
     }
 }
@@ -237,22 +239,36 @@ private extension UserPermissionView {
 
     @ViewBuilder
     func rowName(invite: InviteRecommendationType) -> some View {
-        if case let .group(infos) = invite {
-            HStack(spacing: 0) {
-                Text(invite.name)
-                if let members = invite.memberCount {
-                    Text(verbatim: " (")
-                    Button { showMember = infos } label: {
-                        Text(#localized("%lld member(s)", members))
-                            .foregroundStyle(PassColor.interactionNormMajor2)
-                    }.buttonStyle(.plain)
-                    Text(verbatim: ")")
+        if case let .group(info) = invite {
+            ViewThatFits {
+                HStack {
+                    Text(invite.name)
+                    memberCountText(invite: invite, info: info)
+                }
+
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(invite.name)
+                    memberCountText(invite: invite, info: info)
                 }
             }
             .foregroundStyle(PassColor.textNorm)
         } else {
             Text(invite.name)
                 .foregroundStyle(PassColor.textNorm)
+        }
+    }
+
+    @ViewBuilder
+    func memberCountText(invite: InviteRecommendationType, info: GroupInfo) -> some View {
+        if let memberCount = invite.memberCount {
+            ParenthesizedText(content: #localized("%lld member(s)", memberCount),
+                              contentColor: memberCount == 0 ?
+                                  PassColor.textNorm : PassColor.interactionNormMajor2)
+                .onTapGesture {
+                    if memberCount > 0 {
+                        showMember = info
+                    }
+                }
         }
     }
 }

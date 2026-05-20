@@ -434,6 +434,7 @@ extension SharedUseCasesContainer {
                                        passwordDatasource: container.localPasswordDatasource(),
                                        userInviteDatasource: container.localInviteDatasource(),
                                        userEventIdDatasource: container.localUserEventIdDatasource(),
+                                       coreEventIdDatasource: container.localCoreEventIdDatasource(),
                                        folderDatasource: container.localFolderDatasource(),
                                        folderKeysDatasource: container.localFolderKeyDatasource())
         }
@@ -480,6 +481,11 @@ extension SharedUseCasesContainer {
             return GetLastEventIdIfNotExist(localDatasource: container.localUserEventIdDatasource(),
                                             remoteDatasource: container.remoteUserEventsDatasource())
         }
+    }
+
+    var refreshUserData: Factory<any RefreshUserDataUseCase> {
+        self { RefreshUserData(remoteDatasource: SharedRepositoryContainer.shared.remoteUserDataDatasource(),
+                               userManager: self.userManager) }
     }
 }
 

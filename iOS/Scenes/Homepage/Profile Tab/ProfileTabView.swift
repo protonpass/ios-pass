@@ -144,8 +144,6 @@ struct ProfileTabView: View {
                                    titleColor: PassColor.interactionNorm,
                                    backgroundColor: PassColor.interactionNormMinor2,
                                    action: { viewModel.upgrade() })
-            } else {
-                EmptyView()
             }
         }
     }
