@@ -69,32 +69,49 @@ private struct ItemCountChip: View {
     let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
-            HStack(alignment: .center, spacing: 6) {
-                if let icon {
-                    icon
-                        .resizable()
-                        .scaledToFit()
-                        .foregroundStyle(isSelected ? PassColor.textInvert : PassColor.interactionNormMajor2)
-                        .frame(width: 16, height: 16)
-                }
-
-                Text(title)
-                    .foregroundStyle(isSelected ? PassColor.textInvert : PassColor.textNorm)
-
-                Text(verbatim: "(\(count))")
-                    .foregroundStyle(isSelected ? PassColor.textInvert : PassColor.textNorm)
+        if #available(iOS 26.0, *) {
+            Button(action: action) {
+                content
             }
-            .padding(.vertical, 8)
-            .padding(.horizontal, 12)
-            .background(isSelected ?
-                PassColor.interactionNormMajor1 : .clear)
-            .clipShape(Capsule())
-            .overlay(Capsule()
-                .stroke(PassColor.interactionNormMinor1, lineWidth: 1))
-            .animation(.default, value: isSelected)
+            .glassEffect(.regular.tint(backgroundColor), in: .capsule)
+        } else {
+            Button(action: action) {
+                content
+                    .background(backgroundColor)
+                    .clipShape(.capsule)
+                    .overlay(Capsule()
+                        .stroke(PassColor.interactionNormMinor1, lineWidth: 1))
+                    .animation(.default, value: isSelected)
+            }
+            .buttonStyle(.plain)
         }
-        .buttonStyle(.plain)
+    }
+}
+
+private extension ItemCountChip {
+    var backgroundColor: Color {
+        isSelected ? PassColor.interactionNormMajor1 : .clear
+    }
+
+    var content: some View {
+        HStack(alignment: .center, spacing: 6) {
+            if let icon {
+                icon
+                    .resizable()
+                    .scaledToFit()
+                    .foregroundStyle(isSelected ?
+                        PassColor.textInvert : PassColor.interactionNormMajor2)
+                    .frame(width: 16, height: 16)
+            }
+
+            Text(title)
+                .foregroundStyle(isSelected ? PassColor.textInvert : PassColor.textNorm)
+
+            Text(verbatim: "(\(count))")
+                .foregroundStyle(isSelected ? PassColor.textInvert : PassColor.textNorm)
+        }
+        .padding(.vertical, 8)
+        .padding(.horizontal, 12)
         .animationsDisabled()
     }
 }
