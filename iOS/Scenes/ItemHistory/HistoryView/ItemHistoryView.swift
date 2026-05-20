@@ -226,9 +226,8 @@ private extension ItemHistoryView {
             CircleButton(icon: IconProvider.chevronDown,
                          iconColor: viewModel.item.contentData.type.normMajor2Color,
                          backgroundColor: viewModel.item.contentData.type.normMinor1Color,
-                         accessibilityLabel: "Close") {
-                dismiss()
-            }
+                         accessibilityLabel: "Close",
+                         action: dismiss.callAsFunction)
         }
 
         ToolbarItem(placement: .topBarTrailing) {
@@ -241,7 +240,8 @@ private extension ItemHistoryView {
                 CircleButton(icon: IconProvider.threeDotsVertical,
                              iconColor: viewModel.item.type.normMajor2Color,
                              backgroundColor: viewModel.item.type.normMinor1Color,
-                             accessibilityLabel: "Item's action Menu")
+                             accessibilityLabel: "Item's action Menu",
+                             action: {}) // Explicit empty action to force liquid glass effect
             })
         }
     }
