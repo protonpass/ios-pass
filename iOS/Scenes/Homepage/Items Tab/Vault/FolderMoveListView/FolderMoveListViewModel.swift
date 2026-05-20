@@ -22,6 +22,7 @@ import Client
 import Entities
 import FactoryKit
 import Foundation
+import Macro
 
 @MainActor
 @Observable
@@ -38,6 +39,7 @@ final class FolderMoveListViewModel {
     private(set) var loading = false
     private(set) var moveCompleted = false
     @ObservationIgnored private var moveTask: Task<Void, Never>?
+    @ObservationIgnored private var folderToMove: FolderToMove?
     var expandedContainerIds = Set<String>()
 
     deinit {
@@ -48,6 +50,20 @@ final class FolderMoveListViewModel {
 
     func move(selectedContainer: ShareSelectionPayload, currentFolderId: String) {
         guard !loading else { return }
+
+        if let folderToMove {
+            do {
+                try folderToMove.shareContent.validateMove(folderId: currentFolderId,
+                                                           to: selectedContainer.folder?.folderId)
+            } catch let PassError.folder(reason) {
+                router.display(element: .errorMessage(reason.userFacingMessage))
+                return
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+                return
+            }
+        }
+
         moveTask?.cancel()
         moveTask = Task {
             defer { loading = false }
@@ -67,6 +83,7 @@ final class FolderMoveListViewModel {
     }
 
     func load(folderInfos: FolderToMove) {
+        folderToMove = folderInfos
         expandedContainerIds.insert(folderInfos.shareContent.share.id)
         for folder in folderInfos.shareContent.allFolders {
             expandedContainerIds.insert(folder.id)
@@ -76,6 +93,22 @@ final class FolderMoveListViewModel {
     func toggleDisplayContainerContent(containerId: String) {
         if expandedContainerIds.remove(containerId) == nil {
             expandedContainerIds.insert(containerId)
+        }
+    }
+}
+
+private extension PassError.FolderFailureReason {
+    var userFacingMessage: String {
+        switch self {
+        case .layerFull:
+            #localized("A folder can contain at most %lld sub-folders",
+                       FolderLimits.maxFoldersPerLayer)
+        case .depthExceeded:
+            #localized("Folders cannot be nested more than %lld levels deep",
+                       FolderLimits.maxFolderDepth)
+        case .vaultFull:
+            #localized("This vault already contains the maximum of %lld folders",
+                       FolderLimits.maxFoldersPerVault)
         }
     }
 }

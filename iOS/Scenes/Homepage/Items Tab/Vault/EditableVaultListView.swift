@@ -268,7 +268,7 @@ private extension EditableVaultListView {
                                 FolderMenuView(folder: folder, content: content, viewModel: viewModel)
                             }
                             .padding(.leading, 30)
-                        } else {
+                        } else if content.canAddFolder(in: content.id) {
                             createFolderButton(content)
                         }
                     }
@@ -360,7 +360,7 @@ private extension EditableVaultListView {
                 })
             }
 
-            if viewModel.folderSupported {
+            if viewModel.folderSupported, viewModel.canAddFolderAtVaultRoot(for: vault) {
                 Button(action: {
                     if viewModel.shouldUpsell {
                         viewModel.upgradeSubscription()
@@ -545,21 +545,23 @@ private struct FolderMenuView: View {
                 })
             })
 
-            Button(action: {
-                if viewModel.shouldUpsell {
-                    viewModel.upgradeSubscription()
-                } else {
-                    viewModel.folderAction = .createNewFolder(content.share, parentFolderId: folder.folderId)
-                }
-            }, label: {
-                Label(title: {
-                    Text("Create sub-folder")
-                }, icon: {
-                    IconProvider.folderPlus
-                        .renderingMode(.template)
-                        .foregroundStyle(PassColor.textWeak)
+            if viewModel.canAddSubFolder(in: folder, content: content) {
+                Button(action: {
+                    if viewModel.shouldUpsell {
+                        viewModel.upgradeSubscription()
+                    } else {
+                        viewModel.folderAction = .createNewFolder(content.share, parentFolderId: folder.folderId)
+                    }
+                }, label: {
+                    Label(title: {
+                        Text("Create sub-folder")
+                    }, icon: {
+                        IconProvider.folderPlus
+                            .renderingMode(.template)
+                            .foregroundStyle(PassColor.textWeak)
+                    })
                 })
-            })
+            }
 
             Button(action: {
                 viewModel.folderAction = .edit(folder)
