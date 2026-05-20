@@ -278,7 +278,7 @@ No new error paths are introduced. Failures bubble up to the existing `catch` in
 
 Uses Swift Testing (project standard).
 
-**Use case tests** — `LocalPackages/UseCases/Tests/UseCasesTests/Vaults/MoveItemsBetweenVaultsTests.swift` (extend or create):
+**Use case tests** — new file at `LocalPackages/UseCases/Tests/UseCasesTests/Vaults/MoveItemsBetweenVaultsTests.swift` (directory exists; sibling tests live alongside `CanUserPerformActionOnVaultTests.swift`):
 
 - `.allItemsInFolder` with items directly in folder → `repository.move(items:...)` called with those items.
 - `.allItemsInFolder` with items only in subfolders → flattened set passed.
@@ -289,12 +289,12 @@ Uses Swift Testing (project standard).
 
 Uses auto-generated `AppContentManagerProtocolMock` and `ItemRepositoryProtocolMock`.
 
-**Picker tests** — `iOSTests/Homepage/ItemMoveVaultListViewModelTests.swift` (extend if exists):
+**Picker tests** — new file under `iOSTests/` (the `iOSTests/Homepage/` subdirectory does not exist yet; the new test file should be placed in a subdirectory mirroring the production path `iOS/Scenes/Homepage/Items Tab/Vault/` or in a flat layout consistent with the rest of `iOSTests/`):
 
 - Init with `.allItemsInFolder(folder)` preselects share matching `folder.shareId`.
 - Success message: parameterized over `(MovingContext source × hasFolderDestination) → expected key`, covering all 8 combinations.
 
-**Source view model tests** — `EditableVaultListViewModelTests`:
+**Source view model tests** — new `EditableVaultListViewModelTests.swift` under `iOSTests/` (same placement note as the picker tests above):
 
 - `canMoveItems(folder:)` returns true for editable share with non-empty folder.
 - Returns false when share is not editable.
@@ -328,5 +328,6 @@ UI/snapshot tests for `FolderMenuView` are out of scope per project testing stra
 | `iOS/Scenes/Homepage/Items Tab/Vault/EditableVaultListViewModel.swift` | `canMoveItems(folder:)` + `moveAllItemsInFolder(_:)` |
 | `iOS/Scenes/Homepage/Items Tab/Vault/EditableVaultListView.swift` | New menu entry in `FolderMenuView` |
 | `iOS/Shared/Localization/Localizable.xcstrings` | Five new strings |
-| `LocalPackages/UseCases/Tests/UseCasesTests/Vaults/MoveItemsBetweenVaultsTests.swift` | New test cases |
-| `iOSTests/...` | New / extended tests for picker and source view model |
+| `LocalPackages/UseCases/Tests/UseCasesTests/Vaults/MoveItemsBetweenVaultsTests.swift` | New file — use-case test cases |
+| `iOSTests/.../ItemMoveVaultListViewModelTests.swift` | New file — picker tests (path determined by the implementation plan) |
+| `iOSTests/.../EditableVaultListViewModelTests.swift` | New file — source view-model tests (path determined by the implementation plan) |
