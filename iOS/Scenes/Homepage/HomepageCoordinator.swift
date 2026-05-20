@@ -474,7 +474,7 @@ private extension HomepageCoordinator {
                 try await updateAppPreferences(\.createdItemsCount, value: currentCount + 1)
                 // Only ask for reviews when not in macOS because macOS doesn't respect 3 times per year limit
                 if !ProcessInfo.processInfo.isiOSAppOnMac,
-                   currentCount >= 10,
+                   currentCount >= 5,
                    let windowScene = rootViewController.view.window?.windowScene {
                     AppStore.requestReview(in: windowScene)
                 }
