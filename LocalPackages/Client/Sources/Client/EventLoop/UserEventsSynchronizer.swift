@@ -101,6 +101,7 @@ private extension UserEventsSynchronizer {
         var result: UserEventsSyncResult = []
         var currentCycle = 0
 
+        var lastEventId = lastEventId
         while currentCycle <= maxPerRoundFetchCycle {
             let events = try await remoteUserEventsDatasource.getUserEvents(userId: userId,
                                                                             lastEventId: lastEventId)
@@ -116,6 +117,7 @@ private extension UserEventsSynchronizer {
 
             try await localUserEventIdDatasource.upsertLastEventId(userId: userId,
                                                                    lastEventId: events.lastEventID)
+            lastEventId = events.lastEventID
 
             guard events.eventsPending else { break }
             currentCycle += 1
