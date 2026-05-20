@@ -442,7 +442,12 @@ extension EditableVaultListViewModel {
                                                  shareId: share.id,
                                                  parentFolderId: parentFolderId,
                                                  name: name)
-        expandedContainerIds.insert(parentFolderId ?? share.id)
+        let completeParentId = if let parentFolderId {
+            "\(parentFolderId)\(share.id)"
+        } else {
+            share.id
+        }
+        expandedContainerIds.insert(completeParentId)
     }
 
     func folderCreateAndEdition() {
