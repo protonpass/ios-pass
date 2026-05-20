@@ -310,7 +310,9 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
 
 extension HomepageTabBarController {
     func select(tab: HomepageTab) {
-        if let index = tabIndexes[tab] {
+        if #available(iOS 26.0, *) {
+            selectedTab = tabs.first { $0.identifier == tab.rawValue }
+        } else if let index = tabIndexes[tab] {
             selectedViewController = viewControllers?[index]
         }
     }
