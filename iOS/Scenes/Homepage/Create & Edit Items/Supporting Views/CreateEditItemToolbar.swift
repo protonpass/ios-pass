@@ -62,15 +62,14 @@ struct CreateEditItemToolbar: ToolbarContent {
             }
 
             ToolbarItem(placement: .topBarTrailing) {
-                Group {
-                    if isSaving {
-                        ProgressView()
-                    } else {
-                        buttons
-                    }
+                if isSaving {
+                    ProgressView()
                 }
-                .animation(.default, value: isSaving)
             }
+
+            scanButton
+
+            saveButton
         }
     }
 }
@@ -78,7 +77,7 @@ struct CreateEditItemToolbar: ToolbarContent {
 private extension CreateEditItemToolbar {
     var buttons: some View {
         HStack {
-            if !ProcessInfo.processInfo.isiOSAppOnMac, canScanDocuments {
+            if !ProcessInfo.processInfo.isiOSAppOnMac {
                 switch itemContentType {
                 case .creditCard, .note:
                     CircleButton(icon: PassIcon.scanner,
@@ -90,14 +89,39 @@ private extension CreateEditItemToolbar {
                     EmptyView()
                 }
             }
+        }
+    }
 
-            DisablableCapsuleTextButton(title: saveButtonTitle,
-                                        titleColor: PassColor.textInvert,
-                                        disableTitleColor: PassColor.textHint,
-                                        backgroundColor: itemContentType.normMajor1Color,
-                                        disableBackgroundColor: itemContentType.normMinor1Color,
-                                        disabled: !isSaveable,
-                                        action: onSave)
+    @ToolbarContentBuilder
+    var scanButton: some ToolbarContent {
+        ToolbarItem(placement: .topBarTrailing) {
+            if !isSaving, !ProcessInfo.processInfo.isiOSAppOnMac, canScanDocuments {
+                switch itemContentType {
+                case .creditCard, .note:
+                    CircleButton(icon: PassIcon.scanner,
+                                 iconColor: itemContentType.normMajor2Color,
+                                 backgroundColor: itemContentType.normMinor1Color,
+                                 accessibilityLabel: "Scan \(itemContentType == .note ? "document" : "credit card")",
+                                 action: onScan)
+                default:
+                    EmptyView()
+                }
+            }
+        }
+    }
+
+    @ToolbarContentBuilder
+    var saveButton: some ToolbarContent {
+        ToolbarItem(placement: .topBarTrailing) {
+            if !isSaving {
+                DisablableCapsuleTextButton(title: saveButtonTitle,
+                                            titleColor: PassColor.textInvert,
+                                            disableTitleColor: PassColor.textHint,
+                                            backgroundColor: itemContentType.normMajor1Color,
+                                            disableBackgroundColor: itemContentType.normMinor1Color,
+                                            disabled: !isSaveable,
+                                            action: onSave)
+            }
         }
     }
 
