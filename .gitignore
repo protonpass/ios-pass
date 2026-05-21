@@ -31,11 +31,7 @@ Temporary Items
 
 ## Build generated
 build/
-.claude/
 DerivedData/
-.claude/config.local.json
-.claude/settings.local.json
-
 **/*build/
 
 ## Various settings
@@ -48,6 +44,7 @@ DerivedData/
 *.perspectivev3
 !default.perspectivev3
 xcuserdata/
+
 
 ## Other
 *.moved-aside
@@ -71,3 +68,12 @@ Carthage/
 
 tmp/
 LocalPackages/PassRustCore
+
+# ==================================================================
+# AI files
+# ==================================================================
+
+.claude/
+.claude/config.local.json
+.claude/settings.local.json
+docs/superpowers
