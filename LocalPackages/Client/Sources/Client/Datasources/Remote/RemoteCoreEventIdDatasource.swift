@@ -18,8 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Entities
-
 public protocol RemoteCoreEventIdDatasourceProtocol: Sendable {
     func getLatestCoreEventId(userId: String) async throws -> String
     func getCoreEvents(userId: String, lastEventId: String) async throws -> CoreEvents
