@@ -58,6 +58,8 @@ final class ItemMoveVaultListViewModel: ObservableObject, DeinitPrintable {
             item.shareId
         case let .allItems(vault):
             vault.shareId
+        case let .allItemsInFolder(folder):
+            folder.shareId
         case .selectedItems:
             nil
         }
@@ -129,6 +131,10 @@ private extension ItemMoveVaultListViewModel {
         case let .allItems(fromVault):
             let message = #localized("Items from « %@ » moved to vault « %@ »", fromVault.vaultName ?? "",
                                      toVaultName)
+            return .successMessage(message, config: .dismissAndRefresh)
+        case let .allItemsInFolder(folder):
+            let message = #localized("Items from folder « %@ » moved to vault « %@ »",
+                                     folder.content.name, toVaultName)
             return .successMessage(message, config: .dismissAndRefresh)
         case let .selectedItems(items):
             let message = #localized("%lld items moved to vault « %@ »", items.count, toVaultName)
