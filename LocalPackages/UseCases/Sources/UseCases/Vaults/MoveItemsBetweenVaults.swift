@@ -48,6 +48,9 @@ public final class MoveItemsBetweenContainers: MoveItemsBetweenContainersUseCase
             try await repository.move(currentShareId: fromVault.shareId,
                                       toShareId: shareId,
                                       destinationFolderId: destinationFolderId)
+        case .allItemsInFolder:
+            // Implemented in the next task once appContentManager is wired in.
+            break
         case let .selectedItems(items):
             try await repository.move(items: items, toShareId: shareId, destinationFolderId: destinationFolderId)
         }
