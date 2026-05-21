@@ -2,6 +2,7 @@
 - Added handling for newly added account keys during an active session
 - Fixed the logic for displaying the "Leave" button on item detail page
 - Updated the upselling table
+- Fixed handling of multi-page user events that were not processed correctly
 
 # Version 1.19.1
 B2B: Group sharing improvements
