@@ -306,7 +306,10 @@ extension UseCasesContainer {
     }
 
     var moveItemsBetweenContainers: Factory<any MoveItemsBetweenContainersUseCase> {
-        self { MoveItemsBetweenContainers(repository: self.itemRepository) }
+        self { @MainActor in
+            MoveItemsBetweenContainers(repository: self.itemRepository,
+                                       appContentManager: self.appContentManager)
+        }
     }
 
     var trashSelectedItems: Factory<any TrashSelectedItemsUseCase> {
