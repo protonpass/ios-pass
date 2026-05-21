@@ -237,7 +237,8 @@ private extension DetailMonitoredItemView {
                     CircleButton(icon: IconProvider.threeDotsVertical,
                                  iconColor: PassColor.interactionNormMajor2,
                                  backgroundColor: PassColor.interactionNormMinor1,
-                                 accessibilityLabel: "Breach detail action menu")
+                                 accessibilityLabel: "Breach detail action menu",
+                                 action: {})
                 })
             }
         }
