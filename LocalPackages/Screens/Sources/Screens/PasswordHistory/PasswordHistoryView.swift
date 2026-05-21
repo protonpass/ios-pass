@@ -90,7 +90,8 @@ private extension PasswordHistoryView {
                 }, label: {
                     CircleButton(icon: IconProvider.threeDotsVertical,
                                  iconColor: PassColor.passwordInteractionNormMajor2,
-                                 backgroundColor: PassColor.passwordInteractionNormMinor1)
+                                 backgroundColor: PassColor.passwordInteractionNormMinor1,
+                                 action: {})
                 })
             }
         }

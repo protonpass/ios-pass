@@ -99,19 +99,34 @@ private extension AliasContactsView {
                 .font(.title.bold())
                 .foregroundStyle(PassColor.textNorm)
         }, icon: {
-            Button(action: { sheetState = .explanation }, label: {
-                Text("?")
-                    .fontWeight(.medium)
-                    .padding(.vertical, 4)
-                    .padding(.horizontal, 11)
-                    .foregroundStyle(PassColor.aliasInteractionNormMajor2)
-                    .background(PassColor.aliasInteractionNormMinor1)
-                    .clipShape(Capsule())
-            })
-            .buttonStyle(.plain)
+            if #available(iOS 26.0, *) {
+                Button(action: { sheetState = .explanation }, label: {
+                    Text("?")
+                        .fontWeight(.medium)
+                        .foregroundStyle(PassColor.aliasInteractionNormMajor2)
+                })
+                .tint(PassColor.aliasInteractionNormMinor1)
+                .buttonStyle(.glassProminent)
+                .buttonBorderShape(.circle)
+            } else {
+                Button(action: { sheetState = .explanation }, label: {
+                    questionMarkButtonContent
+                        .padding(.vertical, 4)
+                        .padding(.horizontal, 11)
+                        .background(PassColor.aliasInteractionNormMinor1)
+                        .clipShape(.capsule)
+                })
+                .buttonStyle(.plain)
+            }
         })
         .labelStyle(.rightIcon)
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    var questionMarkButtonContent: some View {
+        Text("?")
+            .fontWeight(.medium)
+            .foregroundStyle(PassColor.aliasInteractionNormMajor2)
     }
 }
 
