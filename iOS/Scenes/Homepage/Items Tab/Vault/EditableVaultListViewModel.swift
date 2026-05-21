@@ -225,6 +225,12 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
         canUserPerformActionOnVault(for: vault)
     }
 
+    func canMoveItems(folder: FolderUiModel) -> Bool {
+        guard let content = shareContent(for: folder.shareId),
+              canUserPerformActionOnVault(for: content.share) else { return false }
+        return !content.flattenedItems(from: folder.folderId).isEmpty
+    }
+
     func canSelectVault(selection: ShareSelection) -> Bool {
         guard selection == .sharedByMe || selection == .sharedWithMe else {
             return true
@@ -284,6 +290,10 @@ extension EditableVaultListViewModel {
 
     func selectedFolderToMove(folderToMove: FolderToMove) {
         router.present(for: .moveFolder(folderToMove))
+    }
+
+    func moveAllItemsInFolder(_ folder: FolderUiModel) {
+        router.present(for: .moveItemsBetweenVaults(.allItemsInFolder(folder)))
     }
 
     func createNewVault() {
