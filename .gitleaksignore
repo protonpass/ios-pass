@@ -1,0 +1,23 @@
+# False positives.
+# The rule mis-fires on:
+#   - the Apple Info.plist key identifier `INFOPLIST_KEY_ITSAppUsesNonExemptEncryption` in project.pbxproj
+#   - TrustKit public-key pinning hashes (SHA-256 of public TLS keys, public by design) in ObfuscatedConstants.swift
+# Each fingerprint is `<commit>:<file>:<rule>:<line>` and silences only that exact finding.
+
+577280c62e106df1df6a9ef51616ae956e4437ed:ProtonPass.xcodeproj/project.pbxproj:proton-aead-jwt-signing-key:4477
+577280c62e106df1df6a9ef51616ae956e4437ed:ProtonPass.xcodeproj/project.pbxproj:proton-aead-jwt-signing-key:4840
+577280c62e106df1df6a9ef51616ae956e4437ed:ProtonPass.xcodeproj/project.pbxproj:proton-aead-jwt-signing-key:5423
+577280c62e106df1df6a9ef51616ae956e4437ed:ProtonPass.xcodeproj/project.pbxproj:proton-aead-jwt-signing-key:5563
+577280c62e106df1df6a9ef51616ae956e4437ed:misc/internal/ObfuscatedConstants.swift:proton-aead-jwt-signing-key:43
+577280c62e106df1df6a9ef51616ae956e4437ed:misc/internal/ObfuscatedConstants.swift:proton-aead-jwt-signing-key:56
+577280c62e106df1df6a9ef51616ae956e4437ed:misc/internal/ObfuscatedConstants.swift:proton-aead-jwt-signing-key:69
+577280c62e106df1df6a9ef51616ae956e4437ed:misc/internal/ObfuscatedConstants.swift:proton-aead-jwt-signing-key:83
+577280c62e106df1df6a9ef51616ae956e4437ed:misc/internal/ObfuscatedConstants.swift:proton-aead-jwt-signing-key:84
+577280c62e106df1df6a9ef51616ae956e4437ed:misc/internal/ObfuscatedConstants.swift:proton-aead-jwt-signing-key:97
+577280c62e106df1df6a9ef51616ae956e4437ed:misc/internal/ObfuscatedConstants.swift:proton-aead-jwt-signing-key:110
+577280c62e106df1df6a9ef51616ae956e4437ed:misc/internal/ObfuscatedConstants.swift:proton-aead-jwt-signing-key:123
+577280c62e106df1df6a9ef51616ae956e4437ed:misc/internal/ObfuscatedConstants.swift:proton-aead-jwt-signing-key:136
+577280c62e106df1df6a9ef51616ae956e4437ed:misc/internal/ObfuscatedConstants.swift:proton-aead-jwt-signing-key:137
+577280c62e106df1df6a9ef51616ae956e4437ed:misc/internal/ObfuscatedConstants.swift:proton-aead-jwt-signing-key:150
+577280c62e106df1df6a9ef51616ae956e4437ed:misc/internal/ObfuscatedConstants.swift:proton-aead-jwt-signing-key:180
+577280c62e106df1df6a9ef51616ae956e4437ed:misc/internal/ObfuscatedConstants.swift:proton-aead-jwt-signing-key:181
