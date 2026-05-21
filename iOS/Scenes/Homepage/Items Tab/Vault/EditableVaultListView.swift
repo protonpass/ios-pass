@@ -575,6 +575,20 @@ private struct FolderMenuView: View {
                 })
             })
 
+            if viewModel.canMoveItems(folder: folder) {
+                Button(action: {
+                    viewModel.moveAllItemsInFolder(folder)
+                }, label: {
+                    Label(title: {
+                        Text("Move all items")
+                    }, icon: {
+                        IconProvider.folderArrowIn
+                            .renderingMode(.template)
+                            .foregroundStyle(PassColor.textWeak)
+                    })
+                })
+            }
+
             Divider()
 
             Button(role: .destructive,
