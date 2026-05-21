@@ -64,6 +64,7 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                 onRemove: viewModel.removeCustomSection(_:))
             .pickCustomFieldTypeSheet(payload: $viewModel.addCustomFieldPayload,
                                       suppportedTypes: viewModel.supportedCustomFieldTypes,
+                                      colorScheme: colorScheme,
                                       onAdd: { handleAddCustomField(type: $0) })
             .addCustomFieldAlert(payload: $addCustomFieldTypePayload,
                                  title: $customFieldTitle,
@@ -223,11 +224,13 @@ private extension View {
 private extension View {
     func pickCustomFieldTypeSheet(payload: Binding<AddCustomFieldPayload?>,
                                   suppportedTypes: [CustomFieldType],
+                                  colorScheme: ColorScheme,
                                   onAdd: @escaping (CustomFieldType) -> Void) -> some View {
         sheet(isPresented: payload.mappedToBool()) {
             CustomFieldTypesView(supportedTypes: suppportedTypes,
                                  onSelect: onAdd)
                 .presentationDetents([.height(OptionRowHeight.short.value * CGFloat(suppportedTypes.count))])
+                .environment(\.colorScheme, colorScheme)
         }
     }
 
