@@ -21,6 +21,7 @@
 import UseCases
 import Client
 
+@MainActor
 public final class MoveItemsBetweenContainersUseCaseMock: @unchecked Sendable, MoveItemsBetweenContainersUseCase {
 
     public init() {}
