@@ -106,7 +106,12 @@ final class ItemMoveVaultListViewModel: ObservableObject, DeinitPrintable {
                 try await moveItemsBetweenContainers(context: context,
                                                      to: selectedContainer.share.shareId,
                                                      destinationFolderId: selectedContainer.folder?.folderId)
-                router.display(element: successMessage(toVaultName: selectedContainer.title))
+                let destination: MoveDestination = if let folder = selectedContainer.folder {
+                    .folder(name: folder.content.name)
+                } else {
+                    .vault(name: selectedContainer.share.vaultName ?? "")
+                }
+                router.display(element: successMessage(destination: destination))
                 currentSelectedItems.send([])
             } catch {
                 logger.error(error)
@@ -123,22 +128,59 @@ final class ItemMoveVaultListViewModel: ObservableObject, DeinitPrintable {
 }
 
 private extension ItemMoveVaultListViewModel {
-    func successMessage(toVaultName: String) -> UIElementDisplay {
+    enum MoveDestination {
+        case vault(name: String)
+        case folder(name: String)
+    }
+
+    func successMessage(destination: MoveDestination) -> UIElementDisplay {
         switch context {
         case let .singleItem(item):
-            let message = #localized("Item moved to vault « %@ »", toVaultName)
-            return .successMessage(message, config: .dismissAndRefresh(with: .update(item.type)))
+            .successMessage(singleItemMessage(destination: destination),
+                            config: .dismissAndRefresh(with: .update(item.type)))
         case let .allItems(fromVault):
-            let message = #localized("Items from « %@ » moved to vault « %@ »", fromVault.vaultName ?? "",
-                                     toVaultName)
-            return .successMessage(message, config: .dismissAndRefresh)
+            .successMessage(allItemsMessage(fromVaultName: fromVault.vaultName ?? "",
+                                            destination: destination),
+                            config: .dismissAndRefresh)
         case let .allItemsInFolder(folder):
-            let message = #localized("Items from folder « %@ » moved to vault « %@ »",
-                                     folder.content.name, toVaultName)
-            return .successMessage(message, config: .dismissAndRefresh)
+            .successMessage(allItemsInFolderMessage(fromFolderName: folder.content.name,
+                                                    destination: destination),
+                            config: .dismissAndRefresh)
         case let .selectedItems(items):
-            let message = #localized("%lld items moved to vault « %@ »", items.count, toVaultName)
-            return .successMessage(message, config: .dismissAndRefresh)
+            .successMessage(selectedItemsMessage(count: items.count, destination: destination),
+                            config: .dismissAndRefresh)
+        }
+    }
+
+    func singleItemMessage(destination: MoveDestination) -> String {
+        switch destination {
+        case let .vault(name): #localized("Item moved to vault « %@ »", name)
+        case let .folder(name): #localized("Item moved to folder « %@ »", name)
+        }
+    }
+
+    func allItemsMessage(fromVaultName: String, destination: MoveDestination) -> String {
+        switch destination {
+        case let .vault(name):
+            #localized("Items from « %@ » moved to vault « %@ »", fromVaultName, name)
+        case let .folder(name):
+            #localized("Items from « %@ » moved to folder « %@ »", fromVaultName, name)
+        }
+    }
+
+    func allItemsInFolderMessage(fromFolderName: String, destination: MoveDestination) -> String {
+        switch destination {
+        case let .vault(name):
+            #localized("Items from folder « %@ » moved to vault « %@ »", fromFolderName, name)
+        case let .folder(name):
+            #localized("Items from folder « %@ » moved to folder « %@ »", fromFolderName, name)
+        }
+    }
+
+    func selectedItemsMessage(count: Int, destination: MoveDestination) -> String {
+        switch destination {
+        case let .vault(name): #localized("%lld items moved to vault « %@ »", count, name)
+        case let .folder(name): #localized("%lld items moved to folder « %@ »", count, name)
         }
     }
 }

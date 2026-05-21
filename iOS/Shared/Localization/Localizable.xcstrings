@@ -8162,6 +8162,17 @@
         }
       }
     },
+    "%lld items moved to folder « %@ »" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld items moved to folder « %@ »"
+          }
+        }
+      }
+    },
     "%lld items moved to vault « %@ »" : {
       "localizations" : {
         "be" : {
@@ -14067,9 +14078,6 @@
         }
       }
     },
-    "A folder can contain at most %lld sub-folders" : {
-
-    },
     "A contact is created for every email address that sends emails to or receives emails from %@" : {
       "localizations" : {
         "be" : {
@@ -14211,6 +14219,9 @@
           }
         }
       }
+    },
+    "A folder can contain at most %lld sub-folders" : {
+
     },
     "A log is a type of file that shows us the actions you took that led to an error. We'll only ever use them to help our engineers fix bugs." : {
       "localizations" : {
@@ -92145,6 +92156,17 @@
         }
       }
     },
+    "Item moved to folder « %@ »" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item moved to folder « %@ »"
+          }
+        }
+      }
+    },
     "Item moved to vault « %@ »" : {
       "localizations" : {
         "be" : {
@@ -93730,6 +93752,17 @@
         }
       }
     },
+    "Items from « %@ » moved to folder « %@ »" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Items from « %@ » moved to folder « %@ »"
+          }
+        }
+      }
+    },
     "Items from « %@ » moved to vault « %@ »" : {
       "localizations" : {
         "be" : {
@@ -93874,6 +93907,27 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "来自 « %@ » 的项目已移至保险库 « %@ »"
+          }
+        }
+      }
+    },
+    "Items from folder « %@ » moved to folder « %@ »" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Items from folder « %@ » moved to folder « %@ »"
+          }
+        }
+      }
+    },
+    "Items from folder « %@ » moved to vault « %@ »" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Items from folder « %1$@ » moved to vault « %2$@ »"
           }
         }
       }
