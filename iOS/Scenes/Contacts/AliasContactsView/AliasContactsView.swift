@@ -101,9 +101,7 @@ private extension AliasContactsView {
         }, icon: {
             if #available(iOS 26.0, *) {
                 Button(action: { sheetState = .explanation }, label: {
-                    Text("?")
-                        .fontWeight(.medium)
-                        .foregroundStyle(PassColor.aliasInteractionNormMajor2)
+                    questionMarkButtonContent
                 })
                 .tint(PassColor.aliasInteractionNormMinor1)
                 .buttonStyle(.glassProminent)
