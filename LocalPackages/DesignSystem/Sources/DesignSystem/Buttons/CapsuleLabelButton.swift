@@ -72,6 +72,7 @@ public struct CapsuleLabelButton: View {
         if #available(iOS 26.0, *) {
             Button(action: action) {
                 content
+                    .padding(.horizontal, 6)
                     .frame(maxWidth: maxWidth, maxHeight: .infinity)
             }
             .tint(backgroundColor)
