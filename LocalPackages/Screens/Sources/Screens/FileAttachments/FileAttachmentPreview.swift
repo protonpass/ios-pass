@@ -68,7 +68,7 @@ public struct FileAttachmentPreview: View {
                              .padding()
 
             case let .fetched(url):
-                if #available(iOS 26, *) {
+                if #available(iOS 26.0, *) {
                     WebView(url: url)
                         .padding(.top, 8)
                         .ignoresSafeArea(edges: .bottom)

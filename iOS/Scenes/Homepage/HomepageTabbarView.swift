@@ -255,7 +255,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
         controllers.append(profileTabViewController)
         tabIndexes[.profile] = currentIndex
 
-        if #available(iOS 26, *) {
+        if #available(iOS 26.0, *) {
             tabs = [
                 UITab(title: "",
                       image: HomepageTab.items.image,
