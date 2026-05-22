@@ -75,23 +75,6 @@ struct CreateEditItemToolbar: ToolbarContent {
 }
 
 private extension CreateEditItemToolbar {
-    var buttons: some View {
-        HStack {
-            if !ProcessInfo.processInfo.isiOSAppOnMac {
-                switch itemContentType {
-                case .creditCard, .note:
-                    CircleButton(icon: PassIcon.scanner,
-                                 iconColor: itemContentType.normMajor2Color,
-                                 backgroundColor: itemContentType.normMinor1Color,
-                                 accessibilityLabel: "Scan \(itemContentType == .note ? "document" : "credit card")",
-                                 action: onScan)
-                default:
-                    EmptyView()
-                }
-            }
-        }
-    }
-
     @ToolbarContentBuilder
     var scanButton: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
@@ -132,7 +115,6 @@ private extension CreateEditItemToolbar {
                 Button(action: onSelectContainer) {
                     containerButtonContent(containerType)
                 }
-                .buttonStyle(.plain)
                 .glassEffect(.regular.tint(containerType.background), in: .capsule)
                 .buttonStyle(.glass)
             } else {

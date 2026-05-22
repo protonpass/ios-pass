@@ -40,7 +40,7 @@ public struct CapsuleTextButton: View {
                 height: CGFloat = 40,
                 maxWidth: CGFloat? = .infinity,
                 horizontalPadding: CGFloat? = DesignConstant.sectionPadding,
-                action: (() -> Void)? = nil) {
+                action: @escaping () -> Void = {}) {
         self.title = title
         self.titleColor = titleColor
         self.font = font
@@ -49,7 +49,7 @@ public struct CapsuleTextButton: View {
         self.height = height
         self.maxWidth = maxWidth
         self.horizontalPadding = horizontalPadding
-        self.action = action ?? {}
+        self.action = action
     }
 
     public var body: some View {

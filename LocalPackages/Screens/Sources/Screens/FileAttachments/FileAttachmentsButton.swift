@@ -129,7 +129,7 @@ struct FileAttachmentsButton: View {
         }
     }
 
-    private func attachFileButton(_ action: (() -> Void)? = nil) -> some View {
+    private func attachFileButton(_ action: @escaping () -> Void = {}) -> some View {
         CapsuleTextButton(title: #localized("Attach a file", bundle: .module),
                           titleColor: handler.fileAttachmentsSectionPrimaryColor,
                           backgroundColor: handler.fileAttachmentsSectionSecondaryColor,
