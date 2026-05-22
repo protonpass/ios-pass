@@ -1,6 +1,6 @@
 //
-// FolderLimits.swift
-// Proton Pass - Created on 20/05/2026.
+// FolderLimits+Extensions.swift
+// Proton Pass - Created on 22/05/2026.
 // Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,16 +18,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import Core
+import Entities
 
-public struct FolderLimits {
-    public let maxFoldersPerVault: Int
-    public let maxFoldersPerLayer: Int
-    public let maxFolderDepth: Int
-
-    public init(maxFoldersPerVault: Int, maxFoldersPerLayer: Int, maxFolderDepth: Int) {
-        self.maxFoldersPerVault = maxFoldersPerVault
-        self.maxFoldersPerLayer = maxFoldersPerLayer
-        self.maxFolderDepth = maxFolderDepth
+extension FolderLimits {
+    static var `default`: Self {
+        Self(maxFoldersPerVault: Constants.FolderDefaultLimits.maxFoldersPerVault,
+             maxFoldersPerLayer: Constants.FolderDefaultLimits.maxFoldersPerLayer,
+             maxFolderDepth: Constants.FolderDefaultLimits.maxFolderDepth)
     }
 }

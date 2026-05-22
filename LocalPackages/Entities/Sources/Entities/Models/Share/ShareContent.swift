@@ -194,8 +194,8 @@ public extension ShareContent {
         foldersById.count
     }
 
-    var isVaultFolderLimitReached: Bool {
-        totalFolderCount >= FolderLimits.maxFoldersPerVault
+    func isVaultFolderLimitReached(limits: FolderLimits) -> Bool {
+        totalFolderCount >= limits.maxFoldersPerVault
     }
 
     /// Layer of a container relative to the vault (vault = 0, root folders = 1, …).
@@ -204,10 +204,10 @@ public extension ShareContent {
     }
 
     /// `true` when a new folder can be added directly under `parentId` (vault id or folder id).
-    func canAddFolder(in parentId: String) -> Bool {
-        guard !isVaultFolderLimitReached else { return false }
-        guard depth(of: parentId) < FolderLimits.maxFolderDepth else { return false }
-        return (foldersByContainer[parentId]?.count ?? 0) < FolderLimits.maxFoldersPerLayer
+    func canAddFolder(in parentId: String, limits: FolderLimits) -> Bool {
+        guard !isVaultFolderLimitReached(limits: limits) else { return false }
+        guard depth(of: parentId) < limits.maxFolderDepth else { return false }
+        return (foldersByContainer[parentId]?.count ?? 0) < limits.maxFoldersPerLayer
     }
 
     /// Maximum depth (in layers) of the subtree rooted at `folderId`, relative to `folderId`.
@@ -224,21 +224,22 @@ public extension ShareContent {
 
     /// Validates that `folderId` can be moved under `newParentId` (use `nil` to move to the vault root).
     /// Throws `PassError.folder(...)` describing the first broken rule.
-    func validateMove(folderId: String, to newParentId: String?) throws {
+    func validateMove(folderId: String, to newParentId: String?, limits: FolderLimits) throws {
         let destinationId = newParentId ?? share.id
         let destinationDepth = depth(of: destinationId)
         let movedSubtreeDepth = subtreeDepth(from: folderId)
+        let destinationName = foldersById[destinationId]?.content.name ?? share.vaultName ?? ""
 
-        if destinationDepth + 1 + movedSubtreeDepth > FolderLimits.maxFolderDepth {
-            throw PassError.folder(.depthExceeded)
+        if destinationDepth + 1 + movedSubtreeDepth > limits.maxFolderDepth {
+            throw PassError.folder(.depthExceeded(container: destinationName, limit: limits.maxFolderDepth))
         }
 
         let currentParentId = foldersById[folderId]?.parentId
         let isSameParent = currentParentId == destinationId
         let destinationChildren = foldersByContainer[destinationId]?.count ?? 0
 
-        if !isSameParent, destinationChildren >= FolderLimits.maxFoldersPerLayer {
-            throw PassError.folder(.layerFull)
+        if !isSameParent, destinationChildren >= limits.maxFoldersPerLayer {
+            throw PassError.folder(.layerFull(container: destinationName, limit: limits.maxFoldersPerLayer))
         }
     }
 }

@@ -88,6 +88,12 @@ public enum Constants {
         public static let fetchBatchSize = 200
     }
 
+    public enum FolderDefaultLimits {
+        public static let maxFoldersPerVault = 100
+        public static let maxFoldersPerLayer = 10
+        public static let maxFolderDepth = 5
+    }
+
     // swiftlint:disable:next type_name
     public enum QA {
         public static let forceDisplayUpgradeAppBanner = "forceDisplayUpgradeAppBanner"

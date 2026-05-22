@@ -20,18 +20,18 @@ import Foundation
 
 public extension PassError {
     enum FolderFailureReason: CustomDebugStringConvertible, Sendable {
-        case layerFull
-        case depthExceeded
-        case vaultFull
+        case layerFull(container: String, limit: Int)
+        case depthExceeded(container: String, limit: Int)
+        case vaultFull(container: String, limit: Int)
 
         public var debugDescription: String {
             switch self {
-            case .layerFull:
-                "Destination folder already contains \(FolderLimits.maxFoldersPerLayer) folders"
-            case .depthExceeded:
-                "Folders cannot be nested more than \(FolderLimits.maxFolderDepth) levels deep"
-            case .vaultFull:
-                "Vault already contains the maximum of \(FolderLimits.maxFoldersPerVault) folders"
+            case let .layerFull(containerName, limit):
+                "\(containerName) has reached the limit of \(limit) sub-folders"
+            case let .depthExceeded(containerName, limit):
+                "\(containerName) cannot be nest more than \(limit) levels deep"
+            case let .vaultFull(containerName, limit):
+                "\(containerName) has reached the limit of \(limit) folders"
             }
         }
     }

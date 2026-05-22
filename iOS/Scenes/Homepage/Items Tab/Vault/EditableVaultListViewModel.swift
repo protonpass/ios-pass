@@ -106,7 +106,9 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
     @LazyInjected(\UseCasesContainer.checkVaultCreationAllowance)
     private var checkVaultCreationAllowance
-
+    // swiftlint:disable:next todo
+    // TODO: fetch from BE
+    private(set) var folderLimits = FolderLimits.default
     private var count: Count
     private var cancellables = Set<AnyCancellable>()
 
@@ -145,11 +147,11 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
     func canAddFolderAtVaultRoot(for vault: Share) -> Bool {
         guard let content = shareContent(for: vault.id) else { return false }
-        return content.canAddFolder(in: vault.id)
+        return content.canAddFolder(in: vault.id, limits: folderLimits)
     }
 
     func canAddSubFolder(in folder: FolderUiModel, content: ShareContent) -> Bool {
-        content.canAddFolder(in: folder.folderId)
+        content.canAddFolder(in: folder.folderId, limits: folderLimits)
     }
 
     var vaultCreationAllowed: Bool {
