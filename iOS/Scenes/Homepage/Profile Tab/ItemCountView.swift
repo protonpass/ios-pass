@@ -104,6 +104,36 @@ private struct CounterChip: View {
     }
 
     var body: some View {
+        Group {
+            if #available(iOS 26.0, *) {
+                Button(action: action) {
+                    content
+                        .frame(maxHeight: .infinity)
+                }
+                .frame(height: kChipHeight)
+                .buttonStyle(.glass)
+                .buttonBorderShape(.capsule)
+            } else {
+                content
+                    .padding(10)
+                    .frame(height: kChipHeight)
+                    .overlay(Capsule().strokeBorder(PassColor.inputBorderNorm, lineWidth: 1))
+                    .contentShape(.rect)
+                    .onTapGesture(perform: action)
+            }
+        }
+        .padding(.vertical)
+    }
+}
+
+private extension CounterChip {
+    func action() {
+        if value > 0 {
+            onSelect()
+        }
+    }
+
+    var content: some View {
         HStack {
             CircleButton(icon: configuration.icon,
                          iconColor: configuration.iconTint,
@@ -127,16 +157,7 @@ private struct CounterChip: View {
 
             Spacer()
         }
-        .padding(10)
-        .frame(height: kChipHeight)
         .frame(minWidth: 103)
-        .overlay(Capsule().strokeBorder(PassColor.inputBorderNorm, lineWidth: 1))
-        .contentShape(.rect)
-        .onTapGesture {
-            if value > 0 {
-                onSelect()
-            }
-        }
     }
 }
 
