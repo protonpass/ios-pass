@@ -62,7 +62,6 @@ private extension ItemDetailToolbar {
                                    title: #localized("Edit"),
                                    titleColor: PassColor.textInvert,
                                    backgroundColor: itemContentType.normMajor1Color,
-                                   maxWidth: nil,
                                    isDisabled: !viewModel.isAllowedToEdit,
                                    action: { viewModel.edit() })
             }

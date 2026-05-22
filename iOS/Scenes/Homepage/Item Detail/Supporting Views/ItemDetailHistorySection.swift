@@ -80,6 +80,7 @@ struct ItemDetailHistorySection: View {
                 CapsuleTextButton(title: #localized("View item history"),
                                   titleColor: item.contentData.type.normMajor2Color,
                                   backgroundColor: item.contentData.type.normMinor1Color,
+                                  height: 48,
                                   action: action)
                     .padding(.horizontal, DesignConstant.sectionPadding)
             }
