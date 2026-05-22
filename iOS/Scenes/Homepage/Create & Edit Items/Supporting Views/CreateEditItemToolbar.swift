@@ -115,8 +115,8 @@ private extension CreateEditItemToolbar {
                 Button(action: onSelectContainer) {
                     containerButtonContent(containerType)
                 }
+                .buttonStyle(.plain)
                 .glassEffect(.regular.tint(containerType.background), in: .capsule)
-                .buttonStyle(.glass)
             } else {
                 Button(action: onSelectContainer) {
                     containerButtonContent(containerType)
