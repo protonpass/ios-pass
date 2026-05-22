@@ -42,6 +42,10 @@ final class FolderMoveListViewModel {
     @ObservationIgnored private var folderToMove: FolderToMove?
     var expandedContainerIds = Set<String>()
 
+    // swiftlint:disable:next todo
+    // TODO: fetch from BE
+    private var folderLimits = FolderLimits.default
+
     deinit {
         moveTask?.cancel()
     }
@@ -54,9 +58,10 @@ final class FolderMoveListViewModel {
         if let folderToMove {
             do {
                 try folderToMove.shareContent.validateMove(folderId: currentFolderId,
-                                                           to: selectedContainer.folder?.folderId)
+                                                           to: selectedContainer.folder?.folderId,
+                                                           limits: folderLimits)
             } catch let PassError.folder(reason) {
-                router.display(element: .errorMessage(reason.userFacingMessage))
+                router.display(element: .errorMessage(reason.userFacingMessage(limits: folderLimits)))
                 return
             } catch {
                 router.display(element: .displayErrorBanner(error))
@@ -98,17 +103,17 @@ final class FolderMoveListViewModel {
 }
 
 private extension PassError.FolderFailureReason {
-    var userFacingMessage: String {
+    func userFacingMessage(limits: FolderLimits) -> String {
         switch self {
         case .layerFull:
             #localized("A folder can contain at most %lld sub-folders",
-                       FolderLimits.maxFoldersPerLayer)
+                       limits.maxFoldersPerLayer)
         case .depthExceeded:
             #localized("Folders cannot be nested more than %lld levels deep",
-                       FolderLimits.maxFolderDepth)
+                       limits.maxFolderDepth)
         case .vaultFull:
             #localized("This vault already contains the maximum of %lld folders",
-                       FolderLimits.maxFoldersPerVault)
+                       limits.maxFoldersPerVault)
         }
     }
 }

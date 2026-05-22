@@ -20,8 +20,14 @@
 
 import Foundation
 
-public enum FolderLimits {
-    public static let maxFoldersPerVault = 100
-    public static let maxFoldersPerLayer = 10
-    public static let maxFolderDepth = 5
+public struct FolderLimits {
+    public let maxFoldersPerVault: Int
+    public let maxFoldersPerLayer: Int
+    public let maxFolderDepth: Int
+
+    public init(maxFoldersPerVault: Int, maxFoldersPerLayer: Int, maxFolderDepth: Int) {
+        self.maxFoldersPerVault = maxFoldersPerVault
+        self.maxFoldersPerLayer = maxFoldersPerLayer
+        self.maxFolderDepth = maxFolderDepth
+    }
 }

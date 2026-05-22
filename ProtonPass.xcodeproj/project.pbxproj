@@ -622,6 +622,7 @@
 		5BC03E992C175FE50028516E /* HomepageCoordinator+Sharing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC03E982C175FE50028516E /* HomepageCoordinator+Sharing.swift */; };
 		5BC20BB52E9CED1E0094388C /* DismissibleUIElementsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC20BB42E9CED1E0094388C /* DismissibleUIElementsSection.swift */; };
 		5BC4F6782CE639F6005D49FC /* InAppNotificationSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4F6772CE639E9005D49FC /* InAppNotificationSection.swift */; };
+		5BC527462FC06B5B00189148 /* FolderLimits+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC527452FC06B5B00189148 /* FolderLimits+Extensions.swift */; };
 		5BCB2EA52B1F89E80072345F /* PinnedItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCB2EA42B1F89E80072345F /* PinnedItemsView.swift */; };
 		5BCF619F2ABB1171002AD351 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5BCF619E2ABB1171002AD351 /* Localizable.xcstrings */; };
 		5BCF61A02ABB1171002AD351 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5BCF619E2ABB1171002AD351 /* Localizable.xcstrings */; };
@@ -1154,6 +1155,7 @@
 		5BC03E982C175FE50028516E /* HomepageCoordinator+Sharing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+Sharing.swift"; sourceTree = "<group>"; };
 		5BC20BB42E9CED1E0094388C /* DismissibleUIElementsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissibleUIElementsSection.swift; sourceTree = "<group>"; };
 		5BC4F6772CE639E9005D49FC /* InAppNotificationSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppNotificationSection.swift; sourceTree = "<group>"; };
+		5BC527452FC06B5B00189148 /* FolderLimits+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FolderLimits+Extensions.swift"; sourceTree = "<group>"; };
 		5BCB2EA42B1F89E80072345F /* PinnedItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItemsView.swift; sourceTree = "<group>"; };
 		5BCF619E2ABB1171002AD351 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		5BD4A8F92B10C1B100C44C08 /* CancelAutoFill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelAutoFill.swift; sourceTree = "<group>"; };
@@ -1225,27 +1227,8 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		538548E92D58ACF300AEFB66 /* Action */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				538548F92D58ACF300AEFB66 /* PBXFileSystemSynchronizedBuildFileExceptionSet */,
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Action;
-			sourceTree = "<group>";
-		};
-		5B24897F2F3261CE0046097D /* FolderMoveListView */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = FolderMoveListView;
-			sourceTree = "<group>";
-		};
+		538548E92D58ACF300AEFB66 /* Action */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (538548F92D58ACF300AEFB66 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Action; sourceTree = "<group>"; };
+		5B24897F2F3261CE0046097D /* FolderMoveListView */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = FolderMoveListView; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2489,6 +2472,7 @@
 				5BD6138C2C202B0E00968E0F /* UpsellEntry+Extensions.swift */,
 				531A48112D80852500DDC7FB /* SshKeyComponent+Extensions.swift */,
 				5BBC742E2F18ED4200043297 /* ShareSelection+Extensions.swift */,
+				5BC527452FC06B5B00189148 /* FolderLimits+Extensions.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -3799,6 +3783,7 @@
 				1F4276222D649B1300DF8EB7 /* ParentAccessibilityBranchKey.swift in Sources */,
 				1F4276232D649B1300DF8EB7 /* AccessibilityIdentifierLeafModifier.swift in Sources */,
 				1F4276242D649B1300DF8EB7 /* AccessibilityIdentifierBranchModifier.swift in Sources */,
+				5BC527462FC06B5B00189148 /* FolderLimits+Extensions.swift in Sources */,
 				5BB403792BF64B18005BF271 /* CreateSecureLinkView.swift in Sources */,
 				5BB4037A2BF64B18005BF271 /* CreateSecureLinkViewModel.swift in Sources */,
 				3561C9F629E6CDFA00D6E518 /* VaultSelectorView.swift in Sources */,
