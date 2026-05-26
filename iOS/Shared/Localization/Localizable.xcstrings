@@ -50359,6 +50359,16 @@
         }
       }
     },
+    "Create new item button" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create new item button"
+          }
+        }
+      }
+    },
     "Create passkey" : {
       "localizations" : {
         "be" : {
@@ -83880,6 +83890,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "持有人姓名"
+          }
+        }
+      }
+    },
+    "Homepage tab" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Homepage tab"
           }
         }
       }
@@ -120146,6 +120166,16 @@
         }
       }
     },
+    "Pass Monitor tab" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pass Monitor tab"
+          }
+        }
+      }
+    },
     "Passkey" : {
       "localizations" : {
         "be" : {
@@ -130308,6 +130338,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "個人檔案"
+          }
+        }
+      }
+    },
+    "Profile tab" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profile tab"
           }
         }
       }
@@ -144286,6 +144326,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在最舊的 2 個保管庫中搜尋"
+          }
+        }
+      }
+    },
+    "Search tab" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search tab"
           }
         }
       }
