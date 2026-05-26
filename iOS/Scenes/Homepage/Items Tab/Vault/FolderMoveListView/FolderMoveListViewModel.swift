@@ -103,17 +103,17 @@ final class FolderMoveListViewModel {
 }
 
 private extension PassError.FolderFailureReason {
-    func userFacingMessage(limits: FolderLimits) -> String {
+    var userFacingMessage: String {
         switch self {
-        case .layerFull:
-            #localized("A folder can contain at most %lld sub-folders",
-                       limits.maxFoldersPerLayer)
-        case .depthExceeded:
-            #localized("Folders cannot be nested more than %lld levels deep",
-                       limits.maxFolderDepth)
-        case .vaultFull:
-            #localized("This vault already contains the maximum of %lld folders",
-                       limits.maxFoldersPerVault)
+        case let .layerFull(containerName, limit):
+            #localized("%@ has reached the limit of %lld sub-folders", containerName,
+                       limit)
+        case let .depthExceeded(containerName, limit):
+            #localized("%@ cannot be nest more than %lld levels deep", containerName,
+                       limit)
+        case let .vaultFull(containerName, limit):
+            #localized("%@ has reached the limit of %lld folders", containerName,
+                       limit)
         }
     }
 }
