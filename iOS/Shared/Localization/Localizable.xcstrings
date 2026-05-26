@@ -473,16 +473,6 @@
         }
       }
     },
-    "%@ « %@ » deleted" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$@ « %2$@ » deleted"
-          }
-        }
-      }
-    },
     "%@ (%lld members)" : {
       "localizations" : {
         "be" : {
@@ -57928,16 +57918,6 @@
         }
       }
     },
-    "Delete %@?" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Delete %@?"
-          }
-        }
-      }
-    },
     "Delete account" : {
       "localizations" : {
         "be" : {
@@ -58336,6 +58316,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Delete folder"
+          }
+        }
+      }
+    },
+    "Delete folder?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete folder?"
           }
         }
       }
@@ -59512,6 +59502,203 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "刪除保管庫"
+          }
+        }
+      }
+    },
+    "Delete vault?" : {
+      "extractionState" : "translated",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выдаліць сховішча?"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elimina la caixa forta?"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Smazat trezor?"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slet boks?"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tresor löschen?"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Διαγραφή κρύπτης;"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete vault?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Eliminar la caja fuerte?"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Eliminar bóveda?"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poistetaanko holvi?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer le coffre-fort ?"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tároló törlése?"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hapus brankas?"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminare la cassaforte?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保管庫を削除?"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "წავშალო საცავი?"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "금고를 삭제하시겠어요?"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slett hvelv?"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kluis verwijderen?"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usunąć sejf?"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar o cofre?"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Excluir cofre?"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ștergeți seiful?"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалить хранилище?"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odstrániť trezor?"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izbriši trezor?"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ta bort valv?"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kasa silinsin mi?"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Видалити сховище?"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xóa két sắt?"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "要删除保险库吗?"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "刪除保管庫?"
           }
         }
       }
@@ -75410,6 +75597,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "樓層"
+          }
+        }
+      }
+    },
+    "Folder « %@ » deleted" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folder « %@ » deleted"
           }
         }
       }
@@ -154448,12 +154645,22 @@
         }
       }
     },
-    "Show %@ %@" : {
+    "Show %@ folder" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Show %1$@ %2$@"
+            "value" : "Show %@ folder"
+          }
+        }
+      }
+    },
+    "Show %@ vault" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show %@ vault"
           }
         }
       }
@@ -170027,12 +170234,22 @@
         }
       }
     },
-    "This will permanently delete the %@ « %@ » and all its contents. Enter the %@ name to confirm deletion." : {
+    "This will permanently delete the folder « %@ » and all its contents. Enter the folder name to confirm deletion." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This will permanently delete the %1$@ « %2$@ » and all its contents. Enter the %3$@ name to confirm deletion."
+            "value" : "This will permanently delete the folder « %@ » and all its contents. Enter the folder name to confirm deletion."
+          }
+        }
+      }
+    },
+    "This will permanently delete the vault « %@ » and all its contents. Enter the vault name to confirm deletion." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This will permanently delete the vault « %@ » and all its contents. Enter the vault name to confirm deletion."
           }
         }
       }
@@ -181526,6 +181743,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "保管庫"
+          }
+        }
+      }
+    },
+    "Vault « %@ » deleted" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vault « %@ » deleted"
           }
         }
       }
