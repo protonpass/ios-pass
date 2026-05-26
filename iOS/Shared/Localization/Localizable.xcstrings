@@ -477,7 +477,7 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "%1$@ « %2$@ » deleted"
           }
         }
@@ -1054,7 +1054,7 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "%1$@ cannot be nest more than %2$lld levels deep"
           }
         }
@@ -1212,7 +1212,7 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "%1$@ has reached the limit of %2$lld folders"
           }
         }
@@ -1222,7 +1222,7 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "%1$@ has reached the limit of %2$lld sub-folders"
           }
         }
@@ -93844,7 +93844,7 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Items from folder « %1$@ » moved to vault « %2$@ »"
           }
         }
@@ -154456,7 +154456,7 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Show %1$@ %2$@"
           }
         }
@@ -170035,7 +170035,7 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "This will permanently delete the %1$@ « %2$@ » and all its contents. Enter the %3$@ name to confirm deletion."
           }
         }
