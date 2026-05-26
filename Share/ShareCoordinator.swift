@@ -78,7 +78,6 @@ final class ShareCoordinator {
 
     @LazyInjected(\SharedToolingContainer.logger) private var logger
     @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
-    @LazyInjected(\SharedUseCasesContainer.getMainVault) private var getMainVault
     @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) private var logOutAllAccounts
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
@@ -280,20 +279,16 @@ private extension ShareCoordinator {
             do {
                 let userId = try await userManager.getActiveUserId()
                 if appContentManager.getAllSharesContent().isEmpty {
-                    try await appContentManager.refresh(userId: userId)
+                    await appContentManager.refresh(userId: userId)
                 }
-                let shareId = await getMainVault()?.shareId ?? ""
-                let vaults = appContentManager.getAllShares()
                 let title = content.title(for: type)
 
                 let viewController: UIViewController
                 switch type {
                 case .note:
                     let creationType = ItemCreationType.note(title: title, note: content.note)
-                    let viewModel = try CreateEditNoteViewModel(mode: .create(shareId: shareId,
-                                                                              type: creationType),
-                                                                upgradeChecker: upgradeChecker,
-                                                                vaults: vaults)
+                    let viewModel = try CreateEditNoteViewModel(mode: .create(creationType),
+                                                                upgradeChecker: upgradeChecker)
                     createEditItemViewModel = viewModel
                     let view = CreateEditNoteView(viewModel: viewModel)
                     viewController = UIHostingController(rootView: view)
@@ -304,9 +299,8 @@ private extension ShareCoordinator {
                                                               note: content.note,
                                                               autofill: false)
                     let viewModel =
-                        try CreateEditLoginViewModel(mode: .create(shareId: shareId, type: creationType),
-                                                     upgradeChecker: upgradeChecker,
-                                                     vaults: vaults)
+                        try CreateEditLoginViewModel(mode: .create(creationType),
+                                                     upgradeChecker: upgradeChecker)
                     viewModel.delegate = self
                     createEditItemViewModel = viewModel
                     let view = CreateEditLoginView(viewModel: viewModel)

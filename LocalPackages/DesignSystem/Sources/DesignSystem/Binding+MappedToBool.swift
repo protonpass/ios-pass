@@ -40,3 +40,15 @@ public extension Binding {
         Binding<Bool>(bindingOptional: self)
     }
 }
+
+public extension Binding {
+    /// Converts a `Binding<Value>` into `Binding<Value?>`
+    func asOptional() -> Binding<Value?> {
+        Binding<Value?>(get: { wrappedValue },
+                        set: { newValue in
+                            if let newValue {
+                                wrappedValue = newValue
+                            }
+                        })
+    }
+}

@@ -48,9 +48,9 @@ private extension EditableVaultListViewModel {
             }
             var all = 0
             var vaultCounts = [VaultCount]()
-            let hiddenShareIds = sharesData.shares.compactMap(\.share).hiddenShareIds
+            let hiddenShareIds = sharesData.hiddenSharesIds
 
-            for shareContent in sharesData.shares where shareContent.share.vaultContent != nil {
+            for shareContent in sharesData.visibleShareContents where shareContent.share.vaultContent != nil {
                 if !shareContent.share.hidden {
                     all += shareContent.itemCount
                 }
@@ -72,8 +72,16 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var mode: Mode = .view
     @Published private var userData: UserData?
     @Published private var plan: Plan?
+    @Published var expandedContainerIds = Set<String>() {
+        didSet {
+            persist()
+        }
+    }
 
-    private var count: Count
+    @Published var shareSelection: ShareSelectionPayload?
+    @Published var containerToDelete: ActionnableContainer?
+    @Published var folderAction: FolderAction?
+    @Published var folderName: String = ""
 
     let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
@@ -91,19 +99,20 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     private var organizationRepository
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
-
     @LazyInjected(\UseCasesContainer.reorganizeVaults)
     private var reorganizeVaults
-
     @LazyInjected(\SharedRepositoryContainer.itemRepository)
     private var itemRepository
 
     @LazyInjected(\UseCasesContainer.checkVaultCreationAllowance)
     private var checkVaultCreationAllowance
-
+    // swiftlint:disable:next todo
+    // TODO: fetch from BE
+    private(set) var folderLimits = FolderLimits.default
+    private var count: Count
     private var cancellables = Set<AnyCancellable>()
 
-    var filteredOrderedVaults: [Share] {
+    private var orderedVaults: [ShareContent] {
         if case let .loaded(data) = state {
             data.filteredOrderedVaults
         } else {
@@ -111,9 +120,38 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
         }
     }
 
+    var visibleVaults: [ShareContent] {
+        if mode == .view {
+            orderedVaults.filter { !$0.share.hidden }
+        } else {
+            orderedVaults.filter { !hiddenShareIds.contains($0.id) }
+        }
+    }
+
+    var hiddenVaults: [ShareContent] {
+        orderedVaults.filter { hiddenShareIds.contains($0.id) }
+    }
+
     var hideShowVaultSupported: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passHideShowVault) ||
-            filteredOrderedVaults.contains(where: \.hidden)
+            orderedVaults.contains(where: \.share.hidden)
+    }
+
+    var folderSupported: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passFolder)
+    }
+
+    func shareContent(for shareId: String) -> ShareContent? {
+        orderedVaults.first { $0.share.id == shareId }
+    }
+
+    func canAddFolderAtVaultRoot(for vault: Share) -> Bool {
+        guard let content = shareContent(for: vault.id) else { return false }
+        return content.canAddFolder(in: vault.id, limits: folderLimits)
+    }
+
+    func canAddSubFolder(in folder: FolderUiModel, content: ShareContent) -> Bool {
+        content.canAddFolder(in: folder.folderId, limits: folderLimits)
     }
 
     var vaultCreationAllowed: Bool {
@@ -134,7 +172,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
         guard let sharesDatas = appContentManager.state.loadedContent else {
             return 0
         }
-        return sharesDatas.trashedItems.filter(\.isAlias).count
+        return sharesDatas.trashedItems.count
     }
 
     enum Mode {
@@ -162,9 +200,14 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
         setUp()
     }
 
-    deinit { print(deinitMessage) }
+    deinit {
+        print(deinitMessage)
+    }
 
     func select(_ selection: ShareSelection) {
+        guard !appContentManager.isSelected(selection) else {
+            return
+        }
         appContentManager.select(selection)
     }
 
@@ -184,6 +227,12 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
         canUserPerformActionOnVault(for: vault)
     }
 
+    func canMoveItems(folder: FolderUiModel) -> Bool {
+        guard let content = shareContent(for: folder.shareId),
+              canUserPerformActionOnVault(for: content.share) else { return false }
+        return !content.flattenedItems(from: folder.folderId).isEmpty
+    }
+
     func canSelectVault(selection: ShareSelection) -> Bool {
         guard selection == .sharedByMe || selection == .sharedWithMe else {
             return true
@@ -194,70 +243,57 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     func upgradeSubscription() {
         router.present(for: .upgradeFlow)
     }
-}
 
-// MARK: - Private APIs
-
-private extension EditableVaultListViewModel {
-    func setUp() {
-        appContentManager.$state
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] newState in
-                guard let self else { return }
-                state = newState
-                count = .init(appContentManager: appContentManager)
-                refreshHiddenShareIds()
-            }
-            .store(in: &cancellables)
-
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                let userData = try await userManager.getUnwrappedActiveUserData()
-                if accessRepository.access.value?.access.plan.isBusinessUser == true {
-                    organization = try await organizationRepository.getOrganization(userId: userData.user.ID)
-                }
-                self.userData = userData
-            } catch {
-                handle(error)
-            }
+    func toggleDisplayContainerContent(containerId: String) {
+        if expandedContainerIds.remove(containerId) == nil {
+            expandedContainerIds.insert(containerId)
         }
-
-        accessRepository.access
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] updatedAccess in
-                guard let self else {
-                    return
-                }
-                plan = updatedAccess?.access.plan
-            }
-            .store(in: &cancellables)
     }
 
-    func handle(_ error: any Error) {
-        logger.error(error)
-        router.display(element: .displayErrorBanner(error))
+    func cleanActions() {
+        folderAction = nil
+        folderName = ""
     }
 }
 
 // MARK: - Public APIs
 
 extension EditableVaultListViewModel {
-    func delete(vault: Share) {
-        guard let vaultContent = vault.vaultContent else { return }
+    func delete(container: ActionnableContainer) {
         Task { [weak self] in
             guard let self else { return }
             defer { loading = false }
             do {
                 loading = true
                 let userId = try await userManager.getActiveUserId()
-                try await appContentManager.delete(vault: vault)
-                try await appContentManager.refresh(userId: userId)
-                router.display(element: .infosMessage(#localized("Vault « %@ » deleted", vaultContent.name)))
+                switch container {
+                case let .vault(vault):
+                    try await appContentManager.delete(vault: vault)
+                case let .folder(folder):
+                    try await appContentManager.deleteFolder(userId: userId,
+                                                             shareId: folder.shareId,
+                                                             folderId: folder.folderId)
+                    // If the folder is currently
+                    if let preciseSelectionPayload = appContentManager.shareSelection.preciseSelectionPayload,
+                       preciseSelectionPayload.folder == folder {
+                        appContentManager.select(.precise(.init(share: preciseSelectionPayload.share,
+                                                                folder: nil)))
+                    }
+                }
+                await appContentManager.refresh(userId: userId)
+                router.display(element: .infosMessage(infoMessage(for: container)))
             } catch {
                 handle(error)
             }
         }
+    }
+
+    func selectedFolderToMove(folderToMove: FolderToMove) {
+        router.present(for: .moveFolder(folderToMove))
+    }
+
+    func moveAllItemsInFolder(_ folder: FolderUiModel) {
+        router.present(for: .moveItemsBetweenVaults(.allItemsInFolder(folder)))
     }
 
     func createNewVault() {
@@ -333,8 +369,8 @@ extension EditableVaultListViewModel {
         return switch selection {
         case .all:
             count.all + activeItemsSharedWithMeCount
-        case let .precise(vault):
-            count.vaultCounts.first { $0.shareId == vault.shareId }?.value ?? 0
+        case let .precise(selection):
+            count.vaultCounts.first { $0.shareId == selection.share.shareId }?.value ?? 0
         case .sharedWithMe:
             itemsSharedWithMe.count
         case .sharedByMe:
@@ -347,7 +383,7 @@ extension EditableVaultListViewModel {
     func refreshHiddenShareIds() {
         // Remove stale shareID from hidden shareID set
         if case let .loaded(data) = state {
-            let applicableShareIds = data.shares.map(\.share.shareId)
+            let applicableShareIds = data.shares.values.map(\.share.shareId)
             for shareId in hiddenShareIds where !applicableShareIds.contains(shareId) {
                 hiddenShareIds.remove(shareId)
             }
@@ -355,16 +391,17 @@ extension EditableVaultListViewModel {
     }
 
     func isLastVisibleVault(_ share: Share) -> Bool {
-        if let lastVivisbleVault = filteredOrderedVaults.last(where: { !hiddenShareIds.contains($0.shareId) }) {
-            lastVivisbleVault.shareId == share.shareId
+        if let lastVisibleVault = visibleVaults
+            .last(where: { !hiddenShareIds.contains($0.share.shareId) }) {
+            lastVisibleVault.share.shareId == share.shareId
         } else {
             false
         }
     }
 
     func isLastHiddenVault(_ share: Share) -> Bool {
-        if let lastHiddenVault = filteredOrderedVaults.last(where: { hiddenShareIds.contains($0.shareId) }) {
-            lastHiddenVault.shareId == share.shareId
+        if let lastHiddenVault = hiddenVaults.last(where: { hiddenShareIds.contains($0.share.shareId) }) {
+            lastHiddenVault.share.shareId == share.shareId
         } else {
             false
         }
@@ -381,7 +418,10 @@ extension EditableVaultListViewModel {
 
     func updateMode(_ mode: Mode) {
         if mode.isOrganise {
-            hiddenShareIds = Set(filteredOrderedVaults.filter(\.hidden).map(\.shareId))
+            hiddenShareIds = Set(orderedVaults.compactMap { content in
+                guard content.share.hidden else { return nil }
+                return content.share.shareId
+            })
         }
         self.mode = mode
     }
@@ -390,21 +430,167 @@ extension EditableVaultListViewModel {
         guard case let .loaded(data) = state else { return }
         Task { [weak self] in
             guard let self else { return }
-            defer {
-                loading = false
-                updateMode(.view)
-            }
             loading = true
             do {
-                if try await reorganizeVaults(currentShares: data.shares.map(\.share),
+                if try await reorganizeVaults(currentShares: data.shares.map(\.value.share),
                                               hiddenShareIds: hiddenShareIds) {
                     let userId = try await userManager.getActiveUserId()
                     try await appContentManager.localFullSync(userId: userId)
                     try await itemRepository.refreshPinnedItemDataStream()
                 }
+                loading = false
+                updateMode(.view)
+            } catch {
+                loading = false
+                handle(error)
+            }
+        }
+    }
+}
+
+// MARK: - Folder actions
+
+extension EditableVaultListViewModel {
+    func editFolder(_ folder: FolderUiModel) async throws {
+        let userId = try await userManager.getActiveUserId()
+        try await appContentManager.editFolder(userId: userId,
+                                               shareId: folder.shareId,
+                                               folderId: folder.folderId,
+                                               name: folderName)
+    }
+
+    func createFolder(share: Share, parentFolderId: String?, name: String) async throws {
+        let userId = try await userManager.getActiveUserId()
+        try await appContentManager.createFolder(userId: userId,
+                                                 shareId: share.id,
+                                                 parentFolderId: parentFolderId,
+                                                 name: name)
+        let completeParentId = if let parentFolderId {
+            "\(parentFolderId)\(share.id)"
+        } else {
+            share.id
+        }
+        expandedContainerIds.insert(completeParentId)
+    }
+
+    func folderCreateAndEdition() {
+        guard let folderAction,
+              !folderName.isEmpty else { return }
+        // should not alow creation why other is not finished
+        Task { [weak self] in
+            guard let self else { return }
+            defer {
+                loading = false
+                cleanActions()
+            }
+            loading = true
+            do {
+                switch folderAction {
+                case let .createNewFolder(share, parentFolderId):
+                    try await createFolder(share: share, parentFolderId: parentFolderId, name: folderName)
+                case let .edit(folder):
+                    try await editFolder(folder)
+                }
             } catch {
                 handle(error)
             }
         }
+    }
+}
+
+// MARK: - Private APIs
+
+private extension EditableVaultListViewModel {
+    func setUp() {
+        if let userId = userManager.activeUserId {
+            expandedContainerIds = Self.loadSet(for: userId)
+        }
+
+        if case let .precise(payload) = appContentManager.shareSelection {
+            shareSelection = payload
+        }
+
+        $shareSelection
+            .receive(on: DispatchQueue.main)
+            .compactMap(\.self)
+            .removeDuplicates()
+            .sink { [weak self] shareSelection in
+                guard let self else { return }
+                select(.precise(shareSelection))
+            }
+            .store(in: &cancellables)
+
+        appContentManager.$state
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newState in
+                guard let self else { return }
+                state = newState
+                count = .init(appContentManager: appContentManager)
+                refreshHiddenShareIds()
+            }
+            .store(in: &cancellables)
+
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let userData = try await userManager.getUnwrappedActiveUserData()
+                if accessRepository.access.value?.access.plan.isBusinessUser == true {
+                    organization = try await organizationRepository.getOrganization(userId: userData.user.ID)
+                }
+                self.userData = userData
+            } catch {
+                handle(error)
+            }
+        }
+
+        accessRepository.access
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] updatedAccess in
+                guard let self else {
+                    return
+                }
+                plan = updatedAccess?.access.plan
+            }
+            .store(in: &cancellables)
+    }
+
+    func handle(_ error: any Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
+    }
+
+    func persist() {
+        if let userId = userManager.activeUserId {
+            Self.saveSet(expandedContainerIds,
+                         for: userId)
+        }
+    }
+
+    func infoMessage(for container: ActionnableContainer) -> String {
+        if container.isVault {
+            #localized("Vault « %@ » deleted", container.name ?? "unknown")
+        } else {
+            #localized("Folder « %@ » deleted", container.name ?? "unknown")
+        }
+    }
+}
+
+private extension EditableVaultListViewModel {
+    static let keyPrefix = "me.pass.editablevaultlistviewmodel.set"
+
+    static func loadSet(for userId: String) -> Set<String> {
+        let key = makeKey(for: userId)
+        let array = kSharedUserDefaults.stringArray(forKey: key) ?? []
+        return Set(array)
+    }
+
+    static func saveSet(_ value: Set<String>,
+                        for userId: String) {
+        let key = makeKey(for: userId)
+        kSharedUserDefaults.set(Array(value), forKey: key)
+    }
+
+    static func makeKey(for userId: String) -> String {
+        "\(keyPrefix).\(userId)"
     }
 }

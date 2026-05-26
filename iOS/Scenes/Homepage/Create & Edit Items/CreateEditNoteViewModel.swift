@@ -29,11 +29,9 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
     deinit { print(deinitMessage) }
 
     override init(mode: ItemMode,
-                  upgradeChecker: any UpgradeCheckerProtocol,
-                  vaults: [Share]) throws {
+                  upgradeChecker: any UpgradeCheckerProtocol) throws {
         try super.init(mode: mode,
-                       upgradeChecker: upgradeChecker,
-                       vaults: vaults)
+                       upgradeChecker: upgradeChecker)
 
         scanResponsePublisher
             .receive(on: DispatchQueue.main)
@@ -51,7 +49,7 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
     override func bindValues() {
         super.bindValues()
         switch mode {
-        case let .create(_, type):
+        case let .create(type):
             if case let .note(title, note) = type {
                 self.title = title
                 self.note = note

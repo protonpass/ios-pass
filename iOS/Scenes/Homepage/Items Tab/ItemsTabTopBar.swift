@@ -21,54 +21,170 @@
 import Client
 import DesignSystem
 import Entities
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
+enum ItemsTabTopBarAction {
+    case onSearch
+    case onShowVaultList
+    case onPin
+    case onUnpin
+    case onMove
+    case onTrash
+    case onRestore
+    case onPermanentlyDelete
+    case onDisableAliases
+    case onEnableAliases
+    case onPromoBadgeTapped
+}
+
 struct ItemsTabTopBar: View {
-    @Environment(\.accessibilityShowButtonShapes) private var showButtonShapes
+    @StateObject private var viewModel = ItemsTabTopBarViewModel()
+
     @Binding var searchMode: SearchMode?
     let animationNamespace: Namespace.ID
-    @StateObject private var viewModel = ItemsTabTopBarViewModel()
     @Binding var isEditMode: Bool
     let showPromoBadge: Bool
-    let onSearch: () -> Void
-    let onShowVaultList: () -> Void
-    let onPin: () -> Void
-    let onUnpin: () -> Void
-    let onMove: () -> Void
-    let onTrash: () -> Void
-    let onRestore: () -> Void
-    let onPermanentlyDelete: () -> Void
-    let onDisableAliases: () -> Void
-    let onEnableAliases: () -> Void
-    let onPromoBadgeTapped: () -> Void
+    let action: (ItemsTabTopBarAction) -> Void
 
     var body: some View {
         ZStack {
             if isEditMode {
-                editModeView
+                EditModeView(viewModel: viewModel,
+                             isEditMode: $isEditMode,
+                             action: action)
+                    .frame(height: 60)
             } else {
-                viewModeView
+                ViewModeView(viewModel: viewModel,
+                             searchMode: $searchMode,
+                             isEditMode: $isEditMode,
+                             showPromoBadge: showPromoBadge,
+                             animationNamespace: animationNamespace,
+                             action: action)
             }
         }
         .animation(.default, value: isEditMode)
-        .frame(height: 60)
     }
 }
 
-private extension ItemsTabTopBar {
-    var viewModeView: some View {
+private struct ViewModeView: View {
+    @Environment(\.accessibilityShowButtonShapes) private var showButtonShapes
+    @ObservedObject var viewModel: ItemsTabTopBarViewModel
+    @Binding var searchMode: SearchMode?
+    @Binding var isEditMode: Bool
+    let showPromoBadge: Bool
+    let animationNamespace: Namespace.ID
+    let action: (ItemsTabTopBarAction) -> Void
+
+    var body: some View {
+        VStack {
+            mainHeaderRow
+            searchBar
+        }
+    }
+
+    var mainHeaderRow: some View {
         HStack {
-            // Vault selector button
+            leadingIconContainerButton
+                .accessibilityLabel(viewModel.shareSelection.accessibilityLabel)
+            titleView
+            upsellView
+            sortAndFilterMenu
+        }
+        .frame(height: 48)
+        .padding(.horizontal, showButtonShapes ? 0 : nil)
+        .padding(.vertical, 16)
+        .animation(.default, value: viewModel.shouldUpsell)
+    }
+
+    @ViewBuilder
+    var leadingIconContainerButton: some View {
+        if viewModel.shareSelection.isFolderSelection {
+            CircleButton(icon: IconProvider.folderFilled,
+                         iconColor: PassColor.folderIcon,
+                         backgroundColor: PassColor.interactionNormMinor1) {
+                action(.onShowVaultList)
+            }
+        } else {
             let uiModel = viewModel.shareSelection.uiModel
             CircleButton(icon: uiModel.icon,
                          iconColor: uiModel.iconColor,
-                         backgroundColor: uiModel.backgroundColor,
-                         action: onShowVaultList)
-                .accessibilityLabel(viewModel.shareSelection.accessibilityLabel)
+                         backgroundColor: uiModel.backgroundColor) {
+                action(.onShowVaultList)
+            }
+        }
+    }
 
-            if searchMode == nil {
-                // Search bar
+    @ViewBuilder
+    var titleView: some View {
+        if viewModel.shareSelection.isFolderSelection {
+            let uiModel = viewModel.shareSelection.uiModel
+            let title = viewModel.shareSelection.preciseSelectionPayload?.share.vaultContent?.name ?? ""
+            VStack {
+                HStack(alignment: .center) {
+                    Spacer()
+                    uiModel.icon
+                        .resizable()
+                        .frame(width: 12, height: 12)
+                        .foregroundStyle(uiModel.iconColor)
+                    Text(title)
+                        .font(.footnote)
+                    Spacer()
+                }
+                Text(verbatim: "\(viewModel.shareSelection.title)")
+                    .font(.title3)
+                    .fontWeight(.bold)
+                    .frame(maxWidth: .infinity)
+            }
+        } else {
+            Text(verbatim: "\(viewModel.shareSelection.title)")
+                .font(.title2)
+                .fontWeight(.bold)
+                .frame(maxWidth: .infinity)
+        }
+    }
+
+    @ViewBuilder
+    var upsellView: some View {
+        if showPromoBadge {
+            PassIcon.promoBadge
+                .resizable()
+                .scaledToFit()
+                .frame(maxWidth: 46)
+                .buttonEmbeded { action(.onPromoBadgeTapped) }
+        } else if viewModel.shouldUpsell {
+            PassIcon.diamond
+                .resizable()
+                .frame(width: 20, height: 20)
+                .scaledToFit()
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .frame(height: 44, alignment: .leading)
+                .cornerRadius(10)
+                .foregroundStyle(PassColor.interactionNormMajor2)
+                .overlay(RoundedRectangle(cornerRadius: 10)
+                    .inset(by: 0.5)
+                    .stroke(PassColor.interactionNormMinor1, lineWidth: 1))
+                .buttonEmbeded(action: viewModel.upgradeSubscription)
+        }
+    }
+
+    var sortAndFilterMenu: some View {
+        SortFilterItemsMenu(options: [
+            .selectItems { isEditMode.toggle() },
+            .filter(viewModel.selectedFilterOption, viewModel.itemCount, viewModel.update(_:)),
+            .sort(viewModel.selectedSortType) { viewModel.selectedSortType = $0 },
+            .resetFilters { viewModel.resetFilters() }
+        ],
+        highlighted: viewModel.highlighted,
+        selectable: viewModel.selectable)
+    }
+
+    @ViewBuilder
+    var searchBar: some View {
+        if searchMode == nil {
+            Button { action(.onSearch) } label: {
                 ZStack {
                     PassColor.backgroundStrong
                     HStack {
@@ -89,50 +205,28 @@ private extension ItemsTabTopBar {
                                        in: animationNamespace)
                 .contentShape(.rect)
                 .frame(height: DesignConstant.searchBarHeight)
-                .onTapGesture(perform: onSearch)
-            } else {
-                Spacer()
-                    .frame(maxWidth: .infinity)
+                .frame(height: 48)
+                .padding(.bottom, 8)
+                .padding(.horizontal, 16)
             }
-
-            if showPromoBadge {
-                PassIcon.promoBadge
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: 46)
-                    .buttonEmbeded(action: onPromoBadgeTapped)
-            } else if viewModel.shouldUpsell {
-                PassIcon.diamond
-                    .resizable()
-                    .frame(width: 20, height: 20)
-                    .scaledToFit()
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
-                    .frame(height: 44, alignment: .leading)
-                    .cornerRadius(10)
-                    .foregroundStyle(PassColor.interactionNormMajor2)
-                    .overlay(RoundedRectangle(cornerRadius: 10)
-                        .inset(by: 0.5)
-                        .stroke(PassColor.interactionNormMinor1, lineWidth: 1))
-                    .buttonEmbeded(action: viewModel.upgradeSubscription)
-            }
-
-            SortFilterItemsMenu(options: [
-                .selectItems { isEditMode.toggle() },
-                .filter(viewModel.selectedFilterOption, viewModel.itemCount, viewModel.update(_:)),
-                .sort(viewModel.selectedSortType) { viewModel.selectedSortType = $0 },
-                .resetFilters { viewModel.resetFilters() }
-            ],
-            highlighted: viewModel.highlighted,
-            selectable: viewModel.selectable)
+            .buttonStyle(.plain)
+            .accessibilityLabel("Start search")
+        } else {
+            Spacer()
+                .frame(maxWidth: .infinity)
         }
-        .padding(.horizontal, showButtonShapes ? 0 : nil)
-        .animation(.default, value: showPromoBadge)
-        .animation(.default, value: viewModel.shouldUpsell)
     }
 }
 
-private extension ItemsTabTopBar {
+private struct EditModeView: View {
+    @ObservedObject var viewModel: ItemsTabTopBarViewModel
+    @Binding var isEditMode: Bool
+    let action: (ItemsTabTopBarAction) -> Void
+
+    var body: some View {
+        editModeView
+    }
+
     var editModeView: some View {
         VStack(spacing: 0) {
             Spacer()
@@ -155,39 +249,9 @@ private extension ItemsTabTopBar {
 
                 Spacer()
 
-                switch viewModel.shareSelection {
-                case .all, .precise:
-                    button(action: onMove, icon: IconProvider.folderArrowIn)
-                        .padding(.horizontal)
-                    button(action: onTrash, icon: IconProvider.trash)
+                mainActions
 
-                case .trash:
-                    button(action: onRestore, icon: IconProvider.clockRotateLeft)
-                        .padding(.horizontal)
-                    button(action: onPermanentlyDelete,
-                           icon: IconProvider.trashCross,
-                           color: PassColor.signalDanger)
-
-                default:
-                    EmptyView()
-                }
-
-                if !viewModel.extraOptions.isEmpty {
-                    Menu(content: {
-                        ForEach(viewModel.extraOptions, id: \.self) { option in
-                            Section {
-                                Button(action: { handle(extraOption: option) },
-                                       label: {
-                                           Label(option.title, image: option.icon)
-                                       })
-                            }
-                        }
-                    }, label: {
-                        CircleButton(icon: IconProvider.threeDotsVertical,
-                                     iconColor: PassColor.textNorm,
-                                     backgroundColor: .clear)
-                    })
-                }
+                extraOptionsMenu
             }
             .padding(.horizontal)
             .animation(.default, value: viewModel.selectedItemsCount)
@@ -196,6 +260,46 @@ private extension ItemsTabTopBar {
             Spacer()
 
             PassDivider()
+        }
+    }
+
+    @ViewBuilder
+    var mainActions: some View {
+        switch viewModel.shareSelection {
+        case .all, .precise:
+            button(action: { action(.onMove) }, icon: IconProvider.folderArrowIn)
+                .padding(.horizontal)
+            button(action: { action(.onTrash) }, icon: IconProvider.trash)
+
+        case .trash:
+            button(action: { action(.onRestore) }, icon: IconProvider.clockRotateLeft)
+                .padding(.horizontal)
+            button(action: { action(.onPermanentlyDelete) },
+                   icon: IconProvider.trashCross,
+                   color: PassColor.signalDanger)
+
+        default:
+            EmptyView()
+        }
+    }
+
+    @ViewBuilder
+    var extraOptionsMenu: some View {
+        if !viewModel.extraOptions.isEmpty {
+            Menu(content: {
+                ForEach(viewModel.extraOptions, id: \.self) { option in
+                    Section {
+                        Button(action: { handle(extraOption: option) },
+                               label: {
+                                   Label(option.title, image: option.icon)
+                               })
+                    }
+                }
+            }, label: {
+                CircleButton(icon: IconProvider.threeDotsVertical,
+                             iconColor: PassColor.textNorm,
+                             backgroundColor: .clear)
+            })
         }
     }
 
@@ -213,13 +317,13 @@ private extension ItemsTabTopBar {
     func handle(extraOption: ExtraBulkActionOption) {
         switch extraOption {
         case .pin:
-            onPin()
+            action(.onPin)
         case .unpin:
-            onUnpin()
+            action(.onUnpin)
         case .disableAliases:
-            onDisableAliases()
+            action(.onDisableAliases)
         case .enableAliases:
-            onEnableAliases()
+            action(.onEnableAliases)
         }
     }
 }
@@ -248,8 +352,8 @@ private extension ShareSelection {
                   iconColor: ShareSelection.all.color,
                   backgroundColor: ShareSelection.all.color.opacity(0.16))
 
-        case let .precise(vault):
-            if let vaultContent = vault.vaultContent {
+        case let .precise(selection):
+            if let vaultContent = selection.share.vaultContent {
                 .init(icon: vaultContent.vaultBigIcon,
                       iconColor: vaultContent.mainColor,
                       backgroundColor: vaultContent.backgroundColor)

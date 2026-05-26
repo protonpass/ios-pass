@@ -40,10 +40,12 @@ public struct MoveItemsRequest: Encodable, Sendable {
 
 struct ItemToBeMoved: Codable {
     let itemId: String
+    let destinationFolderID: String?
     let itemKeys: [ItemKey]
 
     enum CodingKeys: String, CodingKey {
         case itemId = "ItemID"
+        case destinationFolderID = "DestinationFolderID"
         case itemKeys = "ItemKeys"
     }
 }

@@ -44,6 +44,10 @@ enum CredentialItem: TitledItemIdentifiable {
         item.itemId
     }
 
+    var folderId: String? {
+        item.folderId
+    }
+
     var item: any ItemIdentifiable {
         switch self {
         case let .uiModel(uiModel):

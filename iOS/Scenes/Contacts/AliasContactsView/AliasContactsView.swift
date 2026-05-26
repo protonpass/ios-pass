@@ -40,8 +40,8 @@ struct AliasContactsView: View {
 
     var body: some View {
         mainContainer
-            .onChange(of: viewModel.showExplanation) { value in
-                guard value else {
+            .onChange(of: viewModel.showExplanation) {
+                guard viewModel.showExplanation else {
                     return
                 }
                 sheetState = .explanation

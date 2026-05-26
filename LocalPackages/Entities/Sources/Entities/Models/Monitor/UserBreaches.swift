@@ -66,4 +66,10 @@ public struct UserBreaches: Decodable, Equatable, Sendable, Hashable {
     public var monitoredAddresses: [ProtonAddress] {
         addresses.filter { !$0.monitoringDisabled }
     }
+
+    public func topBreachedAddresses(numberOfItems: Int = 5) -> [ProtonAddress] {
+        Array(monitoredAddresses
+            .sorted { $0.breachCounter > $1.breachCounter }
+            .prefix(numberOfItems))
+    }
 }

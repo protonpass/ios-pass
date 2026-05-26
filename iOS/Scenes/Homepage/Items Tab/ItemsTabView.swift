@@ -31,11 +31,7 @@ struct ItemsTabView: View {
     @StateObject var viewModel: ItemsTabViewModel
     @State private var safeAreaInsets = EdgeInsets.zero
     @Namespace private var animationNamespace
-    @State private var searchMode: SearchMode?
-
     @State private var aliasToTrash: (any ItemTypeIdentifiable)?
-
-    @State private var showSharedItemsAlert = false
 
     @AppStorage(Constants.QA.useSwiftUIList, store: kSharedUserDefaults)
     private var useSwiftUIList = false
@@ -73,10 +69,10 @@ struct ItemsTabView: View {
         .onChange(of: viewModel.filterOption) {
             viewModel.filterAndSortItems()
         }
-        .onChange(of: viewModel.selectedSortType) { _, type in
-            viewModel.filterAndSortItems(sortType: type)
+        .onChange(of: viewModel.selectedSortType) {
+            viewModel.filterAndSortItems()
         }
-        .alert("Moving items", isPresented: $showSharedItemsAlert) {
+        .alert("Moving items", isPresented: $viewModel.showSharedItemsAlert) {
             Button("Cancel", role: .cancel) {}
             Button("Move") {
                 viewModel.presentVaultListToMoveSelectedItems()
@@ -94,30 +90,13 @@ struct ItemsTabView: View {
     private func vaultContent(_ sections: [SectionedItemUiModel]) -> some View {
         GeometryReader { proxy in
             VStack(spacing: 0) {
-                ItemsTabTopBar(searchMode: $searchMode,
+                ItemsTabTopBar(searchMode: $viewModel.searchMode,
                                animationNamespace: animationNamespace,
                                isEditMode: $viewModel.isEditMode,
-                               showPromoBadge: viewModel.showPromoBadge,
-                               onSearch: { searchMode = .all(viewModel.appContentManager.shareSelection) },
-                               onShowVaultList: { viewModel.presentVaultList() },
-                               onPin: { viewModel.pinSelectedItems() },
-                               onUnpin: { viewModel.unpinSelectedItems() },
-                               onMove: {
-                                   if viewModel.hasSharedItems() {
-                                       showSharedItemsAlert.toggle()
-                                   } else {
-                                       viewModel.presentVaultListToMoveSelectedItems()
-                                   }
-                               },
-                               onTrash: { viewModel.trashSelectedItems() },
-                               onRestore: { viewModel.restoreSelectedItems() },
-                               onPermanentlyDelete: { viewModel.askForBulkPermanentDeleteConfirmation() },
-                               onDisableAliases: { viewModel.disableSelectedAliases() },
-                               onEnableAliases: { viewModel.enableSelectedAliases() },
-                               onPromoBadgeTapped: { viewModel.showNotification() })
-                    .hidden(!viewModel.vaultCreationAllowed &&
-                        viewModel.noVaults &&
-                        viewModel.isEmpty)
+                               showPromoBadge: viewModel.showPromoBadge) { action in
+                    viewModel.handleTopbarAction(action)
+                }
+                .hidden(!viewModel.vaultCreationAllowed && viewModel.noVaults && viewModel.isEmpty)
 
                 if viewModel.showingUpgradeAppBanner {
                     Button(action: { viewModel.openAppOnAppStore() },
@@ -140,7 +119,7 @@ struct ItemsTabView: View {
                 if let pinnedItems = viewModel.pinnedItems, !pinnedItems.isEmpty, !viewModel.isEditMode,
                    viewModel.appContentManager.shareSelection != .trash {
                     PinnedItemsView(pinnedItems: pinnedItems,
-                                    onSearch: { searchMode = .pinned },
+                                    onSearch: { viewModel.searchMode = .pinned },
                                     action: { viewModel.viewDetail(of: $0) })
                     Divider()
                 }
@@ -184,7 +163,7 @@ struct ItemsTabView: View {
                                                     onDisableAlias: { viewModel.disableAlias() },
                                                     onDelete: { viewModel.permanentlyDelete() }))
         }
-        .searchScreen(searchMode: $searchMode,
+        .searchScreen(searchMode: $viewModel.searchMode,
                       refreshResults: viewModel.refreshSearchResult,
                       animationNamespace: animationNamespace)
     }
@@ -203,8 +182,8 @@ private extension ItemsTabView {
                 emptyVaultView(canCreateItems: !viewModel.appContentManager.getAllEditableVaultContents().isEmpty)
             }
 
-        case let .precise(vault):
-            emptyVaultView(canCreateItems: vault.canEdit)
+        case let .precise(selection):
+            emptyVaultView(canCreateItems: selection.share.canEdit)
 
         case .trash:
             EmptyTrashView()

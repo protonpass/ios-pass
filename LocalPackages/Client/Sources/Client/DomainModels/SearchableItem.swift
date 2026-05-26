@@ -27,6 +27,7 @@ import Foundation
 public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
     public let shareId: String
     public let itemId: String
+    public let folderId: String?
     public let vault: Share? // Optional because we only show vault when there're more than 1 vault
     public let type: ItemContentType
     public let owner: Bool
@@ -62,6 +63,7 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
                 allVaults: [Share]) {
         itemId = itemContent.item.itemID
         shareId = itemContent.shareId
+        folderId = itemContent.folderId
 
         let linkedVault = allVaults.first { $0.shareId == itemContent.shareId }
         vault = allVaults.count > 1 ? linkedVault : nil
@@ -244,6 +246,7 @@ private extension SearchableItem {
 
         return .init(shareId: shareId,
                      itemId: itemId,
+                     folderId: folderId,
                      type: type,
                      aliasEmail: aliasEmail,
                      aliasEnabled: aliasEnabled,
@@ -264,6 +267,7 @@ private extension SearchableItem {
     var toItemSearchResult: ItemSearchResult {
         ItemSearchResult(shareId: shareId,
                          itemId: itemId,
+                         folderId: folderId,
                          type: type,
                          aliasEmail: aliasEmail,
                          aliasEnabled: aliasEnabled,
@@ -286,6 +290,7 @@ public extension SearchableItem {
     var toSearchEntryUiModel: SearchEntryUiModel {
         SearchEntryUiModel(itemId: itemId,
                            shareId: shareId,
+                           folderId: folderId,
                            type: type,
                            title: name,
                            url: url,

@@ -63,7 +63,6 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
     @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
-    @LazyInjected(\SharedUseCasesContainer.getUserPreferences) private var getUserPreferences
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
@@ -455,19 +454,15 @@ private extension CredentialProviderCoordinator {
         showView(view)
     }
 
-    func presentCreateLoginView(shareId: String,
-                                vaults: [Share],
-                                url: URL?,
+    func presentCreateLoginView(url: URL?,
                                 request: PasskeyCredentialRequest?) {
         do {
             let creationType = ItemCreationType.login(title: url?.host,
                                                       url: url?.schemeAndHost,
                                                       autofill: true,
                                                       passkeyCredentialRequest: request)
-            let viewModel = try CreateEditLoginViewModel(mode: .create(shareId: shareId,
-                                                                       type: creationType),
-                                                         upgradeChecker: upgradeChecker,
-                                                         vaults: vaults)
+            let viewModel = try CreateEditLoginViewModel(mode: .create(creationType),
+                                                         upgradeChecker: upgradeChecker)
             viewModel.delegate = self
             present(CreateEditLoginView(viewModel: viewModel), dismissBeforePresenting: true)
             currentCreateEditItemViewModel = viewModel
@@ -477,12 +472,10 @@ private extension CredentialProviderCoordinator {
         }
     }
 
-    func presentCreateAliasView(shareId: String, vaults: [Share]) {
+    func presentCreateAliasView() {
         do {
-            let viewModel = try CreateEditAliasViewModel(mode: .create(shareId: shareId,
-                                                                       type: .alias),
-                                                         upgradeChecker: upgradeChecker,
-                                                         vaults: vaults)
+            let viewModel = try CreateEditAliasViewModel(mode: .create(.alias),
+                                                         upgradeChecker: upgradeChecker)
             present(CreateEditAliasView(viewModel: viewModel), dismissBeforePresenting: true)
             currentCreateEditItemViewModel = viewModel
         } catch {
@@ -607,26 +600,20 @@ extension CredentialProviderCoordinator: AutoFillViewModelDelegate {
         Task { [weak self] in
             guard let self else { return }
             do {
-                let lastCreateItemVault = info.vaults
-                    .first { $0.shareId == self.getUserPreferences().lastCreatedItemShareId }
-                let shareId = (lastCreateItemVault ?? info.vaults.oldestOwned)?.shareId ?? ""
-
                 // Temporarily switch the on-memory active user and reload the vaults contents
                 // This is to work-around the fact that many of our repositories, use cases, view models
                 // still depend on the active user instead of dynamically take a userID
                 // especially when creating new login items we need to check some limitations
                 // (login with 2FA, custom fields...)
                 try await userManager.switchActiveUser(with: info.userId, onMemory: true)
-                try await appContentManager.refresh(userId: info.userId)
+                await appContentManager.refresh(userId: info.userId)
 
                 switch info.data {
                 case let .login(url, passkeyCredentialRequest):
-                    presentCreateLoginView(shareId: shareId,
-                                           vaults: info.vaults,
-                                           url: url,
+                    presentCreateLoginView(url: url,
                                            request: passkeyCredentialRequest)
                 case .alias:
-                    presentCreateAliasView(shareId: shareId, vaults: info.vaults)
+                    presentCreateAliasView()
                 }
             } catch {
                 logger.error(error)

@@ -29,6 +29,8 @@ public struct SymmetricallyEncryptedItem: Equatable, ItemIdentifiable, Sendable,
 
     public var userId: String
 
+    public var folderId: String?
+
     /// Original item revision object as returned by the server
     public let item: Item
 
@@ -41,14 +43,24 @@ public struct SymmetricallyEncryptedItem: Equatable, ItemIdentifiable, Sendable,
     /// Only applicable to aliases
     public let encryptedSimpleLoginNote: String?
 
+    public var fullParentId: String {
+        if let folderId {
+            return folderId + shareId
+        }
+
+        return shareId
+    }
+
     public init(shareId: String,
                 userId: String,
+                folderId: String?,
                 item: Item,
                 encryptedContent: String,
                 isLogInItem: Bool,
                 encryptedSimpleLoginNote: String?) {
         self.shareId = shareId
         self.item = item
+        self.folderId = folderId
         self.userId = userId
         self.encryptedContent = encryptedContent
         self.isLogInItem = isLogInItem

@@ -90,7 +90,7 @@ public enum CryptoUtils {
     public static func encryptKeyForSharing(addressId: String,
                                             publicReceiverKey: PublicKey,
                                             userData: UserData,
-                                            key: any ShareKeyProtocol) throws -> ItemKey {
+                                            key: any CryptographicKeyProtocol) throws -> ItemKey {
         guard let addressKey = try CryptoUtils.unlockAddressKeys(addressID: addressId,
                                                                  userData: userData).first else {
             throw PassError.crypto(.addressNotFound(addressID: addressId))

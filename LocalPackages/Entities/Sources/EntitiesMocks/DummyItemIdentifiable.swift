@@ -22,11 +22,14 @@
 import Entities
 
 public struct DummyItemIdentifiable: ItemIdentifiable, Hashable, Equatable {
+    public var folderId: String?
+    
     public let itemId: String
     public let shareId: String
 
-    public init(itemId: String, shareId: String) {
+    public init(itemId: String, shareId: String, folderId: String? = nil) {
         self.itemId = itemId
         self.shareId = shareId
+        self.folderId = folderId
     }
 }

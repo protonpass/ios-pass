@@ -34,8 +34,7 @@ extension HomepageCoordinator {
     func presentCreateEditLoginView(mode: ItemMode) {
         do {
             let viewModel = try CreateEditLoginViewModel(mode: mode,
-                                                         upgradeChecker: upgradeChecker,
-                                                         vaults: appContentManager.getAllShares())
+                                                         upgradeChecker: upgradeChecker)
             viewModel.delegate = self
             let view = CreateEditLoginView(viewModel: viewModel)
             present(view)

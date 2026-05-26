@@ -35,7 +35,7 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var invokedGetItemsCount = 0
     public var invokedGetItemsParameters: (userId: String, shareId: String, eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?)?
     public var invokedGetItemsParametersList = [(userId: String, shareId: String, eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?)]()
-    public var stubbedGetItemsResult: [Item]!
+    public nonisolated(unsafe) var stubbedGetItemsResult: [Item]!
 
     public func getItems(userId: String, shareId: String, eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws -> [Item] {
         invokedGetItemsfunction = true
@@ -54,7 +54,7 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var invokedGetItemRevisionsCount = 0
     public var invokedGetItemRevisionsParameters: (userId: String, shareId: String, itemId: String, lastToken: String?)?
     public var invokedGetItemRevisionsParametersList = [(userId: String, shareId: String, itemId: String, lastToken: String?)]()
-    public var stubbedGetItemRevisionsResult: Paginated<Item>!
+    public nonisolated(unsafe) var stubbedGetItemRevisionsResult: Paginated<Item>!
 
     public func getItemRevisions(userId: String, shareId: String, itemId: String, lastToken: String?) async throws -> Paginated<Item> {
         invokedGetItemRevisionsfunction = true
@@ -73,7 +73,7 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var invokedGetItemCount = 0
     public var invokedGetItemParameters: (userId: String, shareId: String, itemId: String, eventToken: String)?
     public var invokedGetItemParametersList = [(userId: String, shareId: String, itemId: String, eventToken: String)]()
-    public var stubbedGetItemResult: Item!
+    public nonisolated(unsafe) var stubbedGetItemResult: Item!
 
     public func getItem(userId: String, shareId: String, itemId: String, eventToken: String) async throws -> Item {
         invokedGetItemfunction = true
@@ -92,7 +92,7 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var invokedCreateItemCount = 0
     public var invokedCreateItemParameters: (userId: String, shareId: String, request: CreateItemRequest)?
     public var invokedCreateItemParametersList = [(userId: String, shareId: String, request: CreateItemRequest)]()
-    public var stubbedCreateItemResult: Item!
+    public nonisolated(unsafe) var stubbedCreateItemResult: Item!
 
     public func createItem(userId: String, shareId: String, request: CreateItemRequest) async throws -> Item {
         invokedCreateItemfunction = true
@@ -111,7 +111,7 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var invokedCreateAliasCount = 0
     public var invokedCreateAliasParameters: (userId: String, shareId: String, request: CreateCustomAliasRequest)?
     public var invokedCreateAliasParametersList = [(userId: String, shareId: String, request: CreateCustomAliasRequest)]()
-    public var stubbedCreateAliasResult: Item!
+    public nonisolated(unsafe) var stubbedCreateAliasResult: Item!
 
     public func createAlias(userId: String, shareId: String, request: CreateCustomAliasRequest) async throws -> Item {
         invokedCreateAliasfunction = true
@@ -130,7 +130,7 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var invokedCreateAliasAndAnotherItemCount = 0
     public var invokedCreateAliasAndAnotherItemParameters: (userId: String, shareId: String, request: CreateAliasAndAnotherItemRequest)?
     public var invokedCreateAliasAndAnotherItemParametersList = [(userId: String, shareId: String, request: CreateAliasAndAnotherItemRequest)]()
-    public var stubbedCreateAliasAndAnotherItemResult: CreateAliasAndAnotherItemResponse.Bundle!
+    public nonisolated(unsafe) var stubbedCreateAliasAndAnotherItemResult: CreateAliasAndAnotherItemResponse.Bundle!
 
     public func createAliasAndAnotherItem(userId: String, shareId: String, request: CreateAliasAndAnotherItemRequest) async throws -> CreateAliasAndAnotherItemResponse.Bundle {
         invokedCreateAliasAndAnotherItemfunction = true
@@ -149,7 +149,7 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var invokedTrashItemCount = 0
     public var invokedTrashItemParameters: (items: [Item], shareId: String, userId: String)?
     public var invokedTrashItemParametersList = [(items: [Item], shareId: String, userId: String)]()
-    public var stubbedTrashItemResult: [ModifiedItem]!
+    public nonisolated(unsafe) var stubbedTrashItemResult: [ModifiedItem]!
 
     public func trashItem(_ items: [Item], shareId: String, userId: String) async throws -> [ModifiedItem] {
         invokedTrashItemfunction = true
@@ -168,7 +168,7 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var invokedUntrashItemCount = 0
     public var invokedUntrashItemParameters: (items: [Item], shareId: String, userId: String)?
     public var invokedUntrashItemParametersList = [(items: [Item], shareId: String, userId: String)]()
-    public var stubbedUntrashItemResult: [ModifiedItem]!
+    public nonisolated(unsafe) var stubbedUntrashItemResult: [ModifiedItem]!
 
     public func untrashItem(_ items: [Item], shareId: String, userId: String) async throws -> [ModifiedItem] {
         invokedUntrashItemfunction = true
@@ -204,7 +204,7 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var invokedUpdateItemCount = 0
     public var invokedUpdateItemParameters: (userId: String, shareId: String, itemId: String, request: UpdateItemRequest)?
     public var invokedUpdateItemParametersList = [(userId: String, shareId: String, itemId: String, request: UpdateItemRequest)]()
-    public var stubbedUpdateItemResult: Item!
+    public nonisolated(unsafe) var stubbedUpdateItemResult: Item!
 
     public func updateItem(userId: String, shareId: String, itemId: String, request: UpdateItemRequest) async throws -> Item {
         invokedUpdateItemfunction = true
@@ -223,7 +223,7 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var invokedUpdateLastUseTimeCount = 0
     public var invokedUpdateLastUseTimeParameters: (userId: String, shareId: String, itemId: String, lastUseTime: TimeInterval)?
     public var invokedUpdateLastUseTimeParametersList = [(userId: String, shareId: String, itemId: String, lastUseTime: TimeInterval)]()
-    public var stubbedUpdateLastUseTimeResult: Item!
+    public nonisolated(unsafe) var stubbedUpdateLastUseTimeResult: Item!
 
     public func updateLastUseTime(userId: String, shareId: String, itemId: String, lastUseTime: TimeInterval) async throws -> Item {
         invokedUpdateLastUseTimefunction = true
@@ -242,7 +242,7 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var invokedMoveCount = 0
     public var invokedMoveParameters: (userId: String, fromShareId: String, request: MoveItemsRequest)?
     public var invokedMoveParametersList = [(userId: String, fromShareId: String, request: MoveItemsRequest)]()
-    public var stubbedMoveResult: [Item]!
+    public nonisolated(unsafe) var stubbedMoveResult: [Item]!
 
     public func move(userId: String, fromShareId: String, request: MoveItemsRequest) async throws -> [Item] {
         invokedMovefunction = true
@@ -254,134 +254,153 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         closureMove()
         return stubbedMoveResult
     }
+    // MARK: - sameShareMove
+    public var sameShareMoveUserIdShareIdRequestThrowableError13: Error?
+    public var closureSameShareMove: () -> () = {}
+    public var invokedSameShareMovefunction = false
+    public var invokedSameShareMoveCount = 0
+    public var invokedSameShareMoveParameters: (userId: String, shareId: String, request: MoveItemsInSameShareRequest)?
+    public var invokedSameShareMoveParametersList = [(userId: String, shareId: String, request: MoveItemsInSameShareRequest)]()
+    public nonisolated(unsafe) var stubbedSameShareMoveResult: [ModifiedItem]!
+
+    public func sameShareMove(userId: String, shareId: String, request: MoveItemsInSameShareRequest) async throws -> [ModifiedItem] {
+        invokedSameShareMovefunction = true
+        invokedSameShareMoveCount += 1
+        invokedSameShareMoveParameters = (userId, shareId, request)
+        if let error = sameShareMoveUserIdShareIdRequestThrowableError13 {
+            throw error
+        }
+        closureSameShareMove()
+        return stubbedSameShareMoveResult
+    }
     // MARK: - pin
-    public var pinUserIdItemThrowableError13: Error?
+    public var pinUserIdItemThrowableError14: Error?
     public var closurePin: () -> () = {}
     public var invokedPinfunction = false
     public var invokedPinCount = 0
     public var invokedPinParameters: (userId: String, item: any ItemIdentifiable)?
     public var invokedPinParametersList = [(userId: String, item: any ItemIdentifiable)]()
-    public var stubbedPinResult: Item!
+    public nonisolated(unsafe) var stubbedPinResult: Item!
 
     public func pin(userId: String, item: any ItemIdentifiable) async throws -> Item {
         invokedPinfunction = true
         invokedPinCount += 1
         invokedPinParameters = (userId, item)
-        if let error = pinUserIdItemThrowableError13 {
+        if let error = pinUserIdItemThrowableError14 {
             throw error
         }
         closurePin()
         return stubbedPinResult
     }
     // MARK: - unpin
-    public var unpinUserIdItemThrowableError14: Error?
+    public var unpinUserIdItemThrowableError15: Error?
     public var closureUnpin: () -> () = {}
     public var invokedUnpinfunction = false
     public var invokedUnpinCount = 0
     public var invokedUnpinParameters: (userId: String, item: any ItemIdentifiable)?
     public var invokedUnpinParametersList = [(userId: String, item: any ItemIdentifiable)]()
-    public var stubbedUnpinResult: Item!
+    public nonisolated(unsafe) var stubbedUnpinResult: Item!
 
     public func unpin(userId: String, item: any ItemIdentifiable) async throws -> Item {
         invokedUnpinfunction = true
         invokedUnpinCount += 1
         invokedUnpinParameters = (userId, item)
-        if let error = unpinUserIdItemThrowableError14 {
+        if let error = unpinUserIdItemThrowableError15 {
             throw error
         }
         closureUnpin()
         return stubbedUnpinResult
     }
     // MARK: - updateItemFlags
-    public var updateItemFlagsUserIdItemIdShareIdRequestThrowableError15: Error?
+    public var updateItemFlagsUserIdItemIdShareIdRequestThrowableError16: Error?
     public var closureUpdateItemFlags: () -> () = {}
     public var invokedUpdateItemFlagsfunction = false
     public var invokedUpdateItemFlagsCount = 0
     public var invokedUpdateItemFlagsParameters: (userId: String, itemId: String, shareId: String, request: UpdateItemFlagsRequest)?
     public var invokedUpdateItemFlagsParametersList = [(userId: String, itemId: String, shareId: String, request: UpdateItemFlagsRequest)]()
-    public var stubbedUpdateItemFlagsResult: Item!
+    public nonisolated(unsafe) var stubbedUpdateItemFlagsResult: Item!
 
     public func updateItemFlags(userId: String, itemId: String, shareId: String, request: UpdateItemFlagsRequest) async throws -> Item {
         invokedUpdateItemFlagsfunction = true
         invokedUpdateItemFlagsCount += 1
         invokedUpdateItemFlagsParameters = (userId, itemId, shareId, request)
-        if let error = updateItemFlagsUserIdItemIdShareIdRequestThrowableError15 {
+        if let error = updateItemFlagsUserIdItemIdShareIdRequestThrowableError16 {
             throw error
         }
         closureUpdateItemFlags()
         return stubbedUpdateItemFlagsResult
     }
     // MARK: - createPendingAliasesItem
-    public var createPendingAliasesItemUserIdShareIdRequestThrowableError16: Error?
+    public var createPendingAliasesItemUserIdShareIdRequestThrowableError17: Error?
     public var closureCreatePendingAliasesItem: () -> () = {}
     public var invokedCreatePendingAliasesItemfunction = false
     public var invokedCreatePendingAliasesItemCount = 0
     public var invokedCreatePendingAliasesItemParameters: (userId: String, shareId: String, request: CreateAliasesFromPendingRequest)?
     public var invokedCreatePendingAliasesItemParametersList = [(userId: String, shareId: String, request: CreateAliasesFromPendingRequest)]()
-    public var stubbedCreatePendingAliasesItemResult: [Item]!
+    public nonisolated(unsafe) var stubbedCreatePendingAliasesItemResult: [Item]!
 
     public func createPendingAliasesItem(userId: String, shareId: String, request: CreateAliasesFromPendingRequest) async throws -> [Item] {
         invokedCreatePendingAliasesItemfunction = true
         invokedCreatePendingAliasesItemCount += 1
         invokedCreatePendingAliasesItemParameters = (userId, shareId, request)
-        if let error = createPendingAliasesItemUserIdShareIdRequestThrowableError16 {
+        if let error = createPendingAliasesItemUserIdShareIdRequestThrowableError17 {
             throw error
         }
         closureCreatePendingAliasesItem()
         return stubbedCreatePendingAliasesItemResult
     }
     // MARK: - toggleAliasStatus
-    public var toggleAliasStatusUserIdShareIdItemIdEnabledThrowableError17: Error?
+    public var toggleAliasStatusUserIdShareIdItemIdEnabledThrowableError18: Error?
     public var closureToggleAliasStatus: () -> () = {}
     public var invokedToggleAliasStatusfunction = false
     public var invokedToggleAliasStatusCount = 0
     public var invokedToggleAliasStatusParameters: (userId: String, shareId: String, itemId: String, enabled: Bool)?
     public var invokedToggleAliasStatusParametersList = [(userId: String, shareId: String, itemId: String, enabled: Bool)]()
-    public var stubbedToggleAliasStatusResult: Item!
+    public nonisolated(unsafe) var stubbedToggleAliasStatusResult: Item!
 
     public func toggleAliasStatus(userId: String, shareId: String, itemId: String, enabled: Bool) async throws -> Item {
         invokedToggleAliasStatusfunction = true
         invokedToggleAliasStatusCount += 1
         invokedToggleAliasStatusParameters = (userId, shareId, itemId, enabled)
-        if let error = toggleAliasStatusUserIdShareIdItemIdEnabledThrowableError17 {
+        if let error = toggleAliasStatusUserIdShareIdItemIdEnabledThrowableError18 {
             throw error
         }
         closureToggleAliasStatus()
         return stubbedToggleAliasStatusResult
     }
     // MARK: - resetHistory
-    public var resetHistoryUserIdShareIdItemIdThrowableError18: Error?
+    public var resetHistoryUserIdShareIdItemIdThrowableError19: Error?
     public var closureResetHistory: () -> () = {}
     public var invokedResetHistoryfunction = false
     public var invokedResetHistoryCount = 0
     public var invokedResetHistoryParameters: (userId: String, shareId: String, itemId: String)?
     public var invokedResetHistoryParametersList = [(userId: String, shareId: String, itemId: String)]()
-    public var stubbedResetHistoryResult: Item!
+    public nonisolated(unsafe) var stubbedResetHistoryResult: Item!
 
     public func resetHistory(userId: String, shareId: String, itemId: String) async throws -> Item {
         invokedResetHistoryfunction = true
         invokedResetHistoryCount += 1
         invokedResetHistoryParameters = (userId, shareId, itemId)
-        if let error = resetHistoryUserIdShareIdItemIdThrowableError18 {
+        if let error = resetHistoryUserIdShareIdItemIdThrowableError19 {
             throw error
         }
         closureResetHistory()
         return stubbedResetHistoryResult
     }
     // MARK: - importItems
-    public var importItemsUserIdShareIdItemsThrowableError19: Error?
+    public var importItemsUserIdShareIdItemsThrowableError20: Error?
     public var closureImportItems: () -> () = {}
     public var invokedImportItemsfunction = false
     public var invokedImportItemsCount = 0
     public var invokedImportItemsParameters: (userId: String, shareId: String, items: [ItemToImport])?
     public var invokedImportItemsParametersList = [(userId: String, shareId: String, items: [ItemToImport])]()
-    public var stubbedImportItemsResult: [Item]!
+    public nonisolated(unsafe) var stubbedImportItemsResult: [Item]!
 
     public func importItems(userId: String, shareId: String, items: [ItemToImport]) async throws -> [Item] {
         invokedImportItemsfunction = true
         invokedImportItemsCount += 1
         invokedImportItemsParameters = (userId, shareId, items)
-        if let error = importItemsUserIdShareIdItemsThrowableError19 {
+        if let error = importItemsUserIdShareIdItemsThrowableError20 {
             throw error
         }
         closureImportItems()

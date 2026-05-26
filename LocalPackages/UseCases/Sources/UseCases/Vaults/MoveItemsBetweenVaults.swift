@@ -23,31 +23,45 @@
 import Client
 
 // sourcery: AutoMockable
-public protocol MoveItemsBetweenVaultsUseCase: Sendable {
-    func execute(context: MovingContext, to shareId: ShareID) async throws
+@MainActor
+public protocol MoveItemsBetweenContainersUseCase: Sendable {
+    func execute(context: MovingContext, to shareId: ShareID, destinationFolderId: String?) async throws
 }
 
-public extension MoveItemsBetweenVaultsUseCase {
-    func callAsFunction(context: MovingContext, to shareId: ShareID) async throws {
-        try await execute(context: context, to: shareId)
+public extension MoveItemsBetweenContainersUseCase {
+    func callAsFunction(context: MovingContext, to shareId: ShareID, destinationFolderId: String?) async throws {
+        try await execute(context: context, to: shareId, destinationFolderId: destinationFolderId)
     }
 }
 
-public final class MoveItemsBetweenVaults: MoveItemsBetweenVaultsUseCase {
+@MainActor
+public final class MoveItemsBetweenContainers: MoveItemsBetweenContainersUseCase {
     private let repository: any ItemRepositoryProtocol
+    private let appContentManager: any AppContentManagerProtocol
 
-    public init(repository: any ItemRepositoryProtocol) {
+    public init(repository: any ItemRepositoryProtocol,
+                appContentManager: any AppContentManagerProtocol) {
         self.repository = repository
+        self.appContentManager = appContentManager
     }
 
-    public func execute(context: MovingContext, to shareId: ShareID) async throws {
+    public func execute(context: MovingContext, to shareId: ShareID, destinationFolderId: String?) async throws {
         switch context {
         case let .singleItem(item):
-            try await repository.move(items: [item], toShareId: shareId)
+            try await repository.move(items: [item], toShareId: shareId, destinationFolderId: destinationFolderId)
         case let .allItems(fromVault):
-            try await repository.move(currentShareId: fromVault.shareId, toShareId: shareId)
+            try await repository.move(currentShareId: fromVault.shareId,
+                                      toShareId: shareId,
+                                      destinationFolderId: destinationFolderId)
+        case let .allItemsInFolder(folder):
+            guard let shareContent = appContentManager.getShareContent(for: folder.shareId) else { return }
+            let items = shareContent.flattenedItems(from: folder.folderId)
+            guard !items.isEmpty else { return }
+            try await repository.move(items: items,
+                                      toShareId: shareId,
+                                      destinationFolderId: destinationFolderId)
         case let .selectedItems(items):
-            try await repository.move(items: items, toShareId: shareId)
+            try await repository.move(items: items, toShareId: shareId, destinationFolderId: destinationFolderId)
         }
     }
 }

@@ -46,7 +46,6 @@ final class TotpLoginsViewModel: ObservableObject {
         }
     }
 
-    @LazyInjected(\SharedUseCasesContainer.getMainVault) private var getMainVault
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     private let getActiveLoginItems = resolve(\SharedUseCasesContainer.getActiveLoginItems)
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
@@ -119,10 +118,8 @@ final class TotpLoginsViewModel: ObservableObject {
                 return
             }
 
-            let shareId = await getMainVault()?.shareId ?? ""
             let creationType = ItemCreationType.login(totpUri: totpUri, autofill: false)
-            router.present(for: .createEditLogin(mode: .create(shareId: shareId, type: creationType),
-                                                 dismissAllSheets: false))
+            router.present(for: .createEditLogin(mode: .create(creationType), dismissAllSheets: false))
         }
     }
 

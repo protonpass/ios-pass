@@ -1,0 +1,10 @@
+scanners:
+  semgrep:
+    enable: false
+  semgrep-swift:
+    ignorePaths:
+      - "LocalPackages/Client/Tests/ClientTests/"
+      - "LocalPackages/Core/Sources/Core/Utilities/Constants.swift"
+    ignoreRules:
+      - hardcoded_secret
+

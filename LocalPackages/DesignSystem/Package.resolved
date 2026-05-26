@@ -1,5 +1,5 @@
 {
-  "originHash" : "93c33f4ab7f58d32b0efd706db16088766cc82283f4cc3346e3c4a60696431e6",
+  "originHash" : "c08360a6935911b8cdfb8d8eecdf8380be41c87190cfe4c677ecee0b1c428ced",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ProtonMail/apple-fusion",
       "state" : {
-        "revision" : "5f680d98dadbddab36a207b436a6291d86a5523a",
-        "version" : "2.1.2"
+        "revision" : "4df5ec5ce3605e9c364803c28cd06730fdb7fac4",
+        "version" : "2.1.5"
       }
     },
     {
@@ -24,17 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krzyzanowskim/CryptoSwift",
       "state" : {
-        "revision" : "729e01bc9b9dab466ac85f21fb9ee2bc1c61b258",
-        "version" : "1.8.4"
-      }
-    },
-    {
-      "identity" : "ellipticcurvekeypair",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/agens-no/EllipticCurveKeyPair",
-      "state" : {
-        "revision" : "944ae5c89ca045e9f1a113b736706c73fc51d1c2",
-        "version" : "2.0.0"
+        "revision" : "e45a26384239e028ec87fbcc788f513b67e10d8f",
+        "version" : "1.9.0"
       }
     },
     {
@@ -69,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ProtonMail/protoncore_ios",
       "state" : {
-        "revision" : "5db27855771df2e570646d587b60af2886ba4578",
-        "version" : "29.0.9"
+        "revision" : "40e92cbe6d9b9d9bb75b9c3bb3dccb913b19e693",
+        "version" : "36.0.3"
       }
     },
     {
@@ -96,8 +87,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/getsentry/sentry-cocoa.git",
       "state" : {
-        "revision" : "0c34e4da899a1dd9183db04082d1ceb6e9c2b301",
-        "version" : "8.44.0"
+        "revision" : "3a22ecd00ad1398747bfd587e44df82716908dd3",
+        "version" : "9.10.0"
       }
     },
     {
@@ -105,8 +96,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-custom-dump",
       "state" : {
-        "revision" : "82645ec760917961cfa08c9c0c7104a57a0fa4b1",
-        "version" : "1.3.3"
+        "revision" : "06c57924455064182d6b217f06ebc05d00cb2990",
+        "version" : "1.5.0"
+      }
+    },
+    {
+      "identity" : "swift-macro",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/protonpass/swift-macro",
+      "state" : {
+        "revision" : "26e5d500f15d487de17ebbb51917e268bd1b1fb2",
+        "version" : "1.0.0"
       }
     },
     {
@@ -114,17 +114,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-snapshot-testing",
       "state" : {
-        "revision" : "f5bfff796ee8e3bc9a685b7ffba1bf20663eb370",
-        "version" : "1.18.0"
+        "revision" : "ad5e3190cc63dc288f28546f9c6827efc1e9d495",
+        "version" : "1.19.2"
       }
     },
     {
       "identity" : "swift-syntax",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-syntax.git",
+      "location" : "https://github.com/swiftlang/swift-syntax.git",
       "state" : {
-        "revision" : "0687f71944021d616d34d922343dcef086855920",
-        "version" : "600.0.1"
+        "revision" : "4799286537280063c85a32f09884cfbca301b1a1",
+        "version" : "602.0.0"
       }
     },
     {
@@ -150,8 +150,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
       "state" : {
-        "revision" : "9243488728a70a457f15651fdea44cacf12ee4ff",
-        "version" : "1.5.0"
+        "revision" : "dfd70507def84cb5fb821278448a262c6ff2bbad",
+        "version" : "1.9.0"
       }
     },
     {
@@ -159,8 +159,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/jpsim/Yams.git",
       "state" : {
-        "revision" : "3036ba9d69cf1fd04d433527bc339dc0dc75433d",
-        "version" : "5.1.3"
+        "revision" : "3d6871d5b4a5cd519adf233fbb576e0a2af71c17",
+        "version" : "5.4.0"
       }
     }
   ],

@@ -22,31 +22,46 @@ import Foundation
 
 public enum ShareSelection: Hashable, Sendable {
     case all
-    case precise(Share)
+    case precise(ShareSelectionPayload)
     case sharedWithMe
     case sharedByMe
     case trash
 
     public var shared: Bool {
-        if case let .precise(share) = self {
-            return share.shared
+        if case let .precise(selection) = self {
+            return selection.share.shared
         }
         return false
     }
 
-    public var preciseShare: Share? {
-        if case let .precise(share) = self {
-            return share
+    public var selectedShareId: String? {
+        if case let .precise(selection) = self {
+            return selection.share.shareId
         }
         return nil
+    }
+
+    public var preciseSelectionPayload: ShareSelectionPayload? {
+        switch self {
+        case let .precise(selection): selection
+        default: nil
+        }
+    }
+
+    public var isFolderSelection: Bool {
+        switch self {
+        case let .precise(selection):
+            selection.isFolderSelected
+        default: false
+        }
     }
 
     public var preferenceKey: String? {
         switch self {
         case .all:
             nil
-        case let .precise(share):
-            share.shareId
+        case let .precise(selection):
+            selection.id
         case .sharedWithMe:
             "sharedWithMe"
         case .sharedByMe:

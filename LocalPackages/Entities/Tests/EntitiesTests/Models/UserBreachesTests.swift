@@ -22,6 +22,78 @@
 import XCTest
 
 final class UserBreachesTests: XCTestCase {
+    var userBreachData = UserBreaches(emailsCount: 3,
+                                      domainsPeek: [],
+                                      addresses: [
+                                        ProtonAddress(addressID: "testid",
+                                                      email: "verified@proton.me",
+                                                      breachCounter: 1,
+                                                      flags: 2,
+                                                      lastBreachTime: 1),
+                                        ProtonAddress(addressID: "testid",
+                                                      email: "verified@proton.me",
+                                                      breachCounter: 10,
+                                                      flags: 2,
+                                                      lastBreachTime: 2),
+                                        ProtonAddress(addressID: "testid",
+                                                      email: "verified@proton.me",
+                                                      breachCounter: 40,
+                                                      flags: 2,
+                                                      lastBreachTime: 5),
+                                        ProtonAddress(addressID: "testid",
+                                                      email: "verified@proton.me",
+                                                      breachCounter: 20,
+                                                      flags: 2,
+                                                      lastBreachTime: 3),
+                                        ProtonAddress(addressID: "testid",
+                                                      email: "verified@proton.me",
+                                                      breachCounter: 30,
+                                                      flags: 2,
+                                                      lastBreachTime: 4),
+                                        ProtonAddress(addressID: "testid",
+                                                      email: "verified@proton.me",
+                                                      breachCounter: 50,
+                                                      flags: 2,
+                                                      lastBreachTime: 6),
+                                        ProtonAddress(addressID: "testid",
+                                                      email: "verified@proton.me",
+                                                      breachCounter: 60,
+                                                      flags: 2,
+                                                      lastBreachTime: 7),
+                                        ProtonAddress(addressID: "testid",
+                                                      email: "verified@proton.me",
+                                                      breachCounter: 70,
+                                                      flags: 2,
+                                                      lastBreachTime: 8),
+                                        ProtonAddress(addressID: "testid",
+                                                      email: "verified@proton.me",
+                                                      breachCounter: 90,
+                                                      flags: 2,
+                                                      lastBreachTime: 10),
+                                        ProtonAddress(addressID: "testid",
+                                                      email: "verified@proton.me",
+                                                      breachCounter: 100,
+                                                      flags: 1,
+                                                      lastBreachTime: 11),
+                                        ProtonAddress(addressID: "testid",
+                                                      email: "verified@proton.me",
+                                                      breachCounter: 15,
+                                                      flags: 2,
+                                                      lastBreachTime: 11),
+                                        ProtonAddress(addressID: "testid",
+                                                      email: "verified@proton.me",
+                                                      breachCounter: 80,
+                                                      flags: 2,
+                                                      lastBreachTime: 9),
+                                        ProtonAddress(addressID: "testid",
+                                                      email: "verified@proton.me",
+                                                      breachCounter: 0,
+                                                      flags: 2,
+                                                      lastBreachTime: nil)
+                                      ],
+                                      customEmails: [],
+                                      hasCustomDomains: false)
+    
     func testUserBreaches() {
         let latestbreach = BreachedDomain(domain: "test3", breachTime: 3)
         
@@ -54,5 +126,39 @@ final class UserBreachesTests: XCTestCase {
         XCTAssertEqual(userBreaches.verifiedCustomEmails.count, 2)
         XCTAssertEqual(userBreaches.unverifiedCustomEmails.count, 1)
     }
+    
+    func testTopMostBreachedProtonAddresses() throws {
+        let comparableArray = [
+            ProtonAddress(addressID: "testid",
+                          email: "verified@proton.me",
+                          breachCounter: 90,
+                          flags: 2,
+                          lastBreachTime: 10),
+            ProtonAddress(addressID: "testid",
+                          email: "verified@proton.me",
+                          breachCounter: 80,
+                          flags: 2,
+                          lastBreachTime: 9),
+            ProtonAddress(addressID: "testid",
+                          email: "verified@proton.me",
+                          breachCounter: 70,
+                          flags: 2,
+                          lastBreachTime: 8),
+            ProtonAddress(addressID: "testid",
+                          email: "verified@proton.me",
+                          breachCounter: 60,
+                          flags: 2,
+                          lastBreachTime: 7),
+            ProtonAddress(addressID: "testid",
+                          email: "verified@proton.me",
+                          breachCounter: 50,
+                          flags: 2,
+                          lastBreachTime: 6)
+        ]
+        let topBreachedAddresses = userBreachData.topBreachedAddresses()
+        XCTAssertEqual(topBreachedAddresses.count, 5)
+        XCTAssertEqual(topBreachedAddresses.first?.breachCounter, 90)
+        XCTAssertEqual(topBreachedAddresses.last?.breachCounter, 50)
+        XCTAssertEqual(topBreachedAddresses, comparableArray)
+    }
 }
-

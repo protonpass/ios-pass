@@ -32,7 +32,7 @@ public final class ShareEventIDRepositoryProtocolMock: @unchecked Sendable, Shar
     public var invokedGetLastEventIdCount = 0
     public var invokedGetLastEventIdParameters: (forceRefresh: Bool, userId: String, shareId: String)?
     public var invokedGetLastEventIdParametersList = [(forceRefresh: Bool, userId: String, shareId: String)]()
-    public var stubbedGetLastEventIdResult: String!
+    public nonisolated(unsafe) var stubbedGetLastEventIdResult: String!
 
     public func getLastEventId(forceRefresh: Bool, userId: String, shareId: String) async throws -> String {
         invokedGetLastEventIdfunction = true

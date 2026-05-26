@@ -91,8 +91,6 @@ public struct LogInItemData: Sendable, Equatable, Hashable {
     }
 }
 
-extension LogInItemData: UsernameEmailContainer {}
-
 // MARK: - Credit card
 
 public struct CreditCardData: Sendable, Equatable, Hashable {

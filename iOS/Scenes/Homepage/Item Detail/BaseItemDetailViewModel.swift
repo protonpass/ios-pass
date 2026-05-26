@@ -34,6 +34,7 @@ protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToShowFullScreen(_ data: FullScreenData)
 }
 
+// swiftlint:disable type_body_length
 @MainActor
 class BaseItemDetailViewModel: ObservableObject {
     @Published private(set) var isFreeUser = false
@@ -91,6 +92,7 @@ class BaseItemDetailViewModel: ObservableObject {
 
     private(set) var customFields: [CustomField]
     let vault: VaultListUiModel?
+    let shareContent: ShareContent?
     let logger = resolve(\SharedToolingContainer.logger)
 
     private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
@@ -112,6 +114,12 @@ class BaseItemDetailViewModel: ObservableObject {
     @LazyInjected(\SharedUseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
     @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
     @LazyInjected(\SharedRepositoryContainer.organizationRepository) private var organizationRepository
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private var getFeatureFlagStatus
+
+    var folderSupported: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passFolder)
+    }
 
     var isAllowedToEdit: Bool {
         guard let vault else {
@@ -165,6 +173,13 @@ class BaseItemDetailViewModel: ObservableObject {
     weak var delegate: (any ItemDetailViewModelDelegate)?
     var cancellables = Set<AnyCancellable>()
 
+    var path: [FolderUiModel] {
+        guard let shareContent, let folderId = itemContent.item.folderID else {
+            return []
+        }
+        return shareContent.getPathOfElement(containerId: folderId)
+    }
+
     init(isShownAsSheet: Bool,
          itemContent: ItemContent,
          upgradeChecker: any UpgradeCheckerProtocol) {
@@ -172,8 +187,8 @@ class BaseItemDetailViewModel: ObservableObject {
         self.itemContent = itemContent
         customFields = itemContent.customFields
         self.upgradeChecker = upgradeChecker
-
-        vault = appContentManager.getShareContent(for: itemContent.shareId)?.toVaultListUiModel
+        shareContent = appContentManager.getShareContent(for: itemContent.shareId)
+        vault = shareContent?.toVaultListUiModel
 
         bindValues()
         checkIfFreeUser()
@@ -497,3 +512,5 @@ extension BaseItemDetailViewModel: FileAttachmentPreviewHandler {
                                                 file: file)
     }
 }
+
+// swiftlint:enable type_body_length

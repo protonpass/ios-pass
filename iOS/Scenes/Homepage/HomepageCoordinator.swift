@@ -246,8 +246,8 @@ private extension HomepageCoordinator {
                 switch selection {
                 case .all, .trash:
                     createButtonDisabled = !appContentManager.hasEditableContainers
-                case let .precise(vault):
-                    createButtonDisabled = !vault.canEdit
+                case let .precise(selection):
+                    createButtonDisabled = !selection.share.canEdit
                 default:
                     createButtonDisabled = true
                 }
@@ -354,7 +354,7 @@ private extension HomepageCoordinator {
             guard let self else { return }
             do {
                 let userId = try await userManager.getActiveUserId()
-                try await appContentManager.refresh(userId: userId)
+                await appContentManager.refresh(userId: userId)
                 eventLoop.forceSync()
                 eventLoop.start()
             } catch {
@@ -421,6 +421,8 @@ private extension HomepageCoordinator {
             if exitEditMode {
                 itemsTabViewModel?.isEditMode = false
             }
+
+            // Refresh to reload data after item creation or edits.
             itemsTabViewModel?.refresh()
             createEditItemCoordinator?.refresh()
         }
@@ -656,6 +658,8 @@ extension HomepageCoordinator {
                     displayUndecryptableSharesBanner(dismissTopSheetBeforeShowing)
                 case let .shareLogs(url):
                     presentShareSheet(for: url)
+                case let .moveFolder(folderToMove):
+                    moveFolder(folderToMove: folderToMove)
                 }
             }
             .store(in: &cancellables)
@@ -976,31 +980,6 @@ extension HomepageCoordinator {
         // This is temporary until we have the new designs for these steps
         // We are redirecting the user directly to the payment screen.
         startUpgradeFlow()
-//        let view = UpsellingView(configuration: configuration) { [weak self] in
-//            guard let self else {
-//                return
-//            }
-//            startUpgradeFlow()
-//        }
-//
-//        let completion: () -> Void = { [weak self] in
-//            guard let self else {
-//                return
-//            }
-//            let viewController = UIHostingController(rootView: view)
-//
-//            viewController.sheetPresentationController?.prefersGrabberVisible = false
-//            present(viewController)
-//        }
-//
-//        switch dismissal {
-//        case .none:
-//            present(view)
-//        case .topMost:
-//            dismissTopMostViewController(animated: true, completion: completion)
-//        case .all:
-//            dismissAllViewControllers(animated: true, completion: completion)
-//        }
     }
 
     func displaySuccessBanner(with message: String?, and config: NavigationConfiguration?) {
@@ -1038,12 +1017,11 @@ extension HomepageCoordinator {
         guard !allVaults.isEmpty else {
             return
         }
-        let viewModel = MoveVaultListViewModel(allVaults: allVaults, context: context)
-        let view = MoveVaultListView(viewModel: viewModel)
+        let viewModel = ItemMoveVaultListViewModel(allVaults: allVaults, context: context)
+        let view = ItemMoveVaultListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
 
-        let customHeight = 66 * allVaults.count + 300
-        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
+        viewController.setDetentType(.large,
                                      parentViewController: rootViewController)
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
@@ -1124,9 +1102,8 @@ extension HomepageCoordinator {
             guard let self else { return }
             dismissTopMostViewController(animated: true) { [weak self] in
                 guard let self else { return }
-                presentCreateEditLoginView(mode: .create(shareId: nil,
-                                                         type: .login(password: clearPassword,
-                                                                      autofill: false)))
+                presentCreateEditLoginView(mode: .create(.login(password: clearPassword,
+                                                                autofill: false)))
             }
         }
         let view = PasswordHistoryView(repository: passwordHistoryRepository,
@@ -1502,10 +1479,20 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         let viewController = UIHostingController(rootView: view)
         sheetPresentationController = viewController.sheetPresentationController
 
-        // Num of vaults + all items + trash + create vault button
-        let rowHeight = 74
-        let customHeight = rowHeight * appContentManager.getSharesCount() + (rowHeight * 4) + 120
-        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
+        viewController.setDetentType(.large,
+                                     parentViewController: rootViewController)
+
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
+        present(viewController)
+    }
+
+    func moveFolder(folderToMove: FolderToMove) {
+        let view = FolderMoveListView(selectedContainer: .init(share: folderToMove.shareContent.share,
+                                                               folder: folderToMove.folder),
+                                      folderToMove: folderToMove)
+
+        let viewController = UIHostingController(rootView: view)
+        viewController.setDetentType(.large,
                                      parentViewController: rootViewController)
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
@@ -1747,7 +1734,7 @@ extension HomepageCoordinator {
                     }
                 }
                 let userId = try await userManager.getActiveUserId()
-                try await appContentManager.refresh(userId: userId)
+                await appContentManager.refresh(userId: userId)
                 homepageTabDelegate?.change(tab: .items)
                 increaseCreatedItemsCountAndAskForReviewIfNecessary()
 
@@ -1775,7 +1762,7 @@ extension HomepageCoordinator {
                 }
                 addNewEvent(type: .update(type))
                 let userId = try await userManager.getActiveUserId()
-                try await appContentManager.refresh(userId: userId)
+                await appContentManager.refresh(userId: userId)
                 dismissTopMostViewController { [weak self] in
                     guard let self else { return }
                     bannerManager.displayBottomInfoMessage(type.updateMessage)
@@ -1837,7 +1824,7 @@ extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
                     bannerManager.displayBottomInfoMessage(#localized("Vault updated"))
                 }
                 let userId = try await userManager.getActiveUserId()
-                try await appContentManager.refresh(userId: userId)
+                await appContentManager.refresh(userId: userId)
             } catch {
                 bannerManager.displayTopErrorMessage(error)
             }

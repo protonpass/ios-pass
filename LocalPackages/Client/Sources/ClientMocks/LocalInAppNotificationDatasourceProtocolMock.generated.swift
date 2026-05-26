@@ -33,7 +33,7 @@ public final class LocalInAppNotificationDatasourceProtocolMock: @unchecked Send
     public var invokedGetAllNotificationsByPriorityCount = 0
     public var invokedGetAllNotificationsByPriorityParameters: (userId: String, Void)?
     public var invokedGetAllNotificationsByPriorityParametersList = [(userId: String, Void)]()
-    public var stubbedGetAllNotificationsByPriorityResult: [InAppNotification]!
+    public nonisolated(unsafe) var stubbedGetAllNotificationsByPriorityResult: [InAppNotification]!
 
     public func getAllNotificationsByPriority(userId: String) async throws -> [InAppNotification] {
         invokedGetAllNotificationsByPriorityfunction = true

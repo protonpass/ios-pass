@@ -29,12 +29,11 @@ struct CreateEditItemToolbar: ToolbarContent {
     let isSaveable: Bool
     let isSaving: Bool
     let canScanDocuments: Bool
-    let vault: Share
+    let container: ShareSelectionPayload
     let canChangeVault: Bool
     let itemContentType: ItemContentType
     let shouldUpgrade: Bool
-    let isPhone: Bool
-    let onSelectVault: () -> Void
+    let onSelectContainer: () -> Void
     let onGoBack: () -> Void
     let onUpgrade: () -> Void
     let onScan: () -> Void
@@ -51,21 +50,35 @@ struct CreateEditItemToolbar: ToolbarContent {
                 .disabled(isSaving)
         }
 
-        ToolbarItem(placement: .topBarTrailing) {
-            Group {
-                if shouldUpgrade {
-                    UpgradeButton(backgroundColor: itemContentType.normMajor1Color,
-                                  action: onUpgrade)
-                        .disabled(isSaving)
-                } else {
+        if shouldUpgrade {
+            ToolbarItem(placement: .topBarTrailing) {
+                UpgradeButton(backgroundColor: itemContentType.normMajor1Color,
+                              action: onUpgrade)
+                    .disabled(isSaving)
+            }
+        } else {
+            ToolbarItem(placement: .principal) {
+                Group {
+                    if canChangeVault {
+                        if container.isFolderSelected {
+                            containerButton(.folder(container.title))
+                        } else if let vaultContent = container.share.vaultContent {
+                            containerButton(.vault(vaultContent))
+                        }
+                    }
+                }
+            }
+
+            ToolbarItem(placement: .topBarTrailing) {
+                Group {
                     if isSaving {
                         ProgressView()
                     } else {
                         buttons
                     }
                 }
+                .animation(.default, value: isSaving)
             }
-            .animation(.default, value: isSaving)
         }
     }
 }
@@ -73,10 +86,6 @@ struct CreateEditItemToolbar: ToolbarContent {
 private extension CreateEditItemToolbar {
     var buttons: some View {
         HStack {
-            if canChangeVault, let vaultContent = vault.vaultContent {
-                vaultButton(vaultContent: vaultContent)
-            }
-
             if !ProcessInfo.processInfo.isiOSAppOnMac, canScanDocuments {
                 switch itemContentType {
                 case .creditCard, .note:
@@ -100,27 +109,65 @@ private extension CreateEditItemToolbar {
         }
     }
 
-    func vaultButton(vaultContent: VaultContent) -> some View {
+    func containerButton(_ containerType: ContainerType) -> some View {
         HStack {
-            vaultContent.vaultBigIcon
-                .resizable()
+            containerType.icon
                 .scaledToFit()
                 .frame(width: 18)
-            Text(vaultContent.name)
+            Text(containerType.title)
             Image(systemName: "chevron.down")
                 .resizable()
                 .scaledToFit()
                 .frame(width: 12)
         }
         .frame(height: 40)
-        .foregroundStyle(vaultContent.mainColor)
+        .foregroundStyle(containerType.foreground)
         .padding(.horizontal, DesignConstant.sectionPadding)
-        .background(vaultContent.backgroundColor)
+        .background(containerType.background)
         .clipShape(Capsule())
-        .if(isPhone) { view in
-            view.frame(maxWidth: 150, alignment: .trailing)
+        .buttonEmbeded(action: onSelectContainer)
+    }
+}
+
+private enum ContainerType {
+    case folder(String)
+    case vault(VaultContent)
+
+    @ViewBuilder
+    var icon: some View {
+        switch self {
+        case .folder:
+            IconProvider.foldersFilled
+                .resizable()
+                .foregroundStyle(PassColor.folderIcon)
+        case let .vault(content):
+            content.vaultBigIcon
+                .resizable()
         }
-        .fixedSize(horizontal: false, vertical: false)
-        .buttonEmbeded(action: onSelectVault)
+    }
+
+    var title: String {
+        switch self {
+        case let .folder(name): name
+        case let .vault(content): content.name
+        }
+    }
+
+    var foreground: Color {
+        switch self {
+        case .folder:
+            PassColor.textNorm
+        case let .vault(content):
+            content.mainColor
+        }
+    }
+
+    var background: Color {
+        switch self {
+        case .folder:
+            PassColor.interactionNormMinor1
+        case let .vault(content):
+            content.backgroundColor
+        }
     }
 }

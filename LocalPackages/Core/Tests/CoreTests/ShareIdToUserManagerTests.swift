@@ -28,6 +28,8 @@ final class ShareIdToUserManagerTests: XCTestCase {
     var sut: ShareIdToUserManager!
 
     private struct Item: ItemIdentifiable {
+        var folderId: String?
+        
         let shareId: String
         let itemId: String
 

@@ -21,6 +21,8 @@
 import Entities
 
 struct TestItem: ItemIdentifiable {
+    var folderId: String?
+
     var shareId: String
     var itemId: String
 }

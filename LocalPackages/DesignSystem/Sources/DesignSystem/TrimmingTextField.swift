@@ -36,8 +36,8 @@ public struct TrimmingTextField: View {
 
     public var body: some View {
         TextField(placeholder, text: $text)
-            .onChange(of: text) { newValue in
-                text = newValue.trimmingCharacters(in: trimmedCharacterSet)
+            .onChange(of: text) {
+                text = text.trimmingCharacters(in: trimmedCharacterSet)
             }
     }
 }

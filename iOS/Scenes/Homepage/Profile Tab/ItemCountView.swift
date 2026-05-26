@@ -168,7 +168,9 @@ private final class ItemCountViewModel: ObservableObject {
                     task?.cancel()
                     task = Task { [weak self] in
                         guard let self else { return }
-                        await refreshAsync(uiModel)
+                        if let result = await refreshAsync(uiModel) {
+                            object = result
+                        }
                     }
                 case let .error(error):
                     object = .error(error)
@@ -180,17 +182,14 @@ private final class ItemCountViewModel: ObservableObject {
 
 private extension ItemCountViewModel {
     @concurrent
-    func refreshAsync(_ sharesData: SharesData) async {
-        if Task.isCancelled { return }
-        let hiddenShareIds = sharesData.shares.compactMap(\.share).hiddenShareIds
-        let activeItems = sharesData.shares.flatMap(\.items).filter { !hiddenShareIds.contains($0.shareId) }
+    func refreshAsync(_ sharesData: SharesData) async -> FetchableObject<ItemCount>? {
+        if Task.isCancelled { return nil }
+        let hiddenShareIds = sharesData.hiddenSharesIds
+        let activeItems = sharesData.visibleShareContents.flatMap(\.allItems)
         let allItems = activeItems + sharesData.trashedItems.filter { !hiddenShareIds.contains($0.shareId) }
         let itemCount = ItemCount(items: allItems,
                                   sharedByMe: sharesData.itemsSharedByMe.count,
                                   sharedWithMe: sharesData.itemsSharedWithMe.count)
-        await MainActor.run { [weak self] in
-            guard let self else { return }
-            object = .fetched(itemCount)
-        }
+        return .fetched(itemCount)
     }
 }

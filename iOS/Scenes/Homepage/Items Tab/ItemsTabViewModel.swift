@@ -56,6 +56,8 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published private(set) var refreshSearchResult = false
     @Published private(set) var showPromoBadge = false
     @Published private var userData: UserData?
+    @Published var searchMode: SearchMode?
+    @Published var showSharedItemsAlert = false
     @Published private(set) var aliasesAllowed = true
 
     let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
@@ -93,6 +95,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     weak var delegate: (any ItemsTabViewModelDelegate)?
     private var sortTask: Task<Void, Never>?
+    private var refreshTask: Task<Void, Never>?
 
     var vaultCreationAllowed: Bool {
         checkVaultCreationAllowance(userData: userData,
@@ -141,13 +144,20 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     }
 
     func refresh() {
-        Task { [weak self] in
+        guard refreshTask == nil else {
+            return
+        }
+        refreshTask = Task { [weak self] in
+            defer {
+                // swiftlint:disable:next discouraged_optional_self
+                self?.refreshTask = nil
+            }
             guard let self else {
                 return
             }
             do {
                 let userId = try await userManager.getActiveUserId()
-                try await appContentManager.refresh(userId: userId)
+                await appContentManager.refresh(userId: userId)
                 refreshSearchResult.toggle()
             } catch {
                 handle(error: error)
@@ -162,6 +172,38 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
                 router.present(for: .fullSync)
                 await appContentManager.fullSync(userId: userId)
             }
+        }
+    }
+
+    // swiftlint:disable:next cyclomatic_complexity
+    func handleTopbarAction(_ action: ItemsTabTopBarAction) {
+        switch action {
+        case .onSearch:
+            searchMode = .all(appContentManager.shareSelection)
+        case .onShowVaultList:
+            presentVaultList()
+        case .onPin:
+            pinSelectedItems()
+        case .onUnpin:
+            unpinSelectedItems()
+        case .onMove:
+            if hasSharedItems() {
+                showSharedItemsAlert.toggle()
+            } else {
+                presentVaultListToMoveSelectedItems()
+            }
+        case .onTrash:
+            trashSelectedItems()
+        case .onRestore:
+            restoreSelectedItems()
+        case .onPermanentlyDelete:
+            askForBulkPermanentDeleteConfirmation()
+        case .onDisableAliases:
+            disableSelectedAliases()
+        case .onEnableAliases:
+            enableSelectedAliases()
+        case .onPromoBadgeTapped:
+            showNotification()
         }
     }
 }
@@ -325,12 +367,11 @@ extension ItemsTabViewModel {
         router.present(for: .vaultCreateEdit(vault: nil))
     }
 
-    func filterAndSortItems(sortType: SortType? = nil) {
-        let sortType = sortType ?? selectedSortType
+    func filterAndSortItems() {
         sortTask?.cancel()
         sortTask = Task { [weak self] in
             guard let self else { return }
-            await filterAndSortItemsAsync(sortType: sortType)
+            await filterAndSortItemsAsync(sortType: selectedSortType)
 
             do {
                 let userData = try await userManager.getUnwrappedActiveUserData()

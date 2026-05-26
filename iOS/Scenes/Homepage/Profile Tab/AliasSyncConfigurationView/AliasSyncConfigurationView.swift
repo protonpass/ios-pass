@@ -167,8 +167,8 @@ struct AliasSyncConfigurationView: View {
         .showSpinner(viewModel.loading || viewModel.changingMailboxEmail)
         .sheetDestinations(sheetDestination: $router.presentedSheet)
         .navigationStackEmbeded($router.path)
-        .onChange(of: viewModel.defaultDomain) { domain in
-            guard let domain, domain.isPremium, !viewModel.canManageAliases else {
+        .onChange(of: viewModel.defaultDomain) {
+            guard let domain = viewModel.defaultDomain, domain.isPremium, !viewModel.canManageAliases else {
                 return
             }
             viewModel.defaultDomain = nil

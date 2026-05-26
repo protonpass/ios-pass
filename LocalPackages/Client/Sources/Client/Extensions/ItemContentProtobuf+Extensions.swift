@@ -18,25 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import CryptoKit
 import Entities
 import Foundation
 
 // MARK: - Symmetric encryption/decryption
 
-public extension ItemContentProtobuf {
-    /// Symmetrically encrypt and base 64 the binary data
-    func encrypt(symmetricKey: SymmetricKey) throws -> String {
-        let clearData = try data()
-        let cypherData = try symmetricKey.encrypt(clearData)
-        return cypherData.base64EncodedString()
-    }
-
-    init(base64: String, symmetricKey: SymmetricKey) throws {
-        guard let cypherData = try base64.base64Decode() else {
-            throw PassError.crypto(.failedToBase64Decode)
-        }
-        let clearData = try symmetricKey.decrypt(cypherData)
-        try self.init(data: clearData)
-    }
-}
+extension ItemContentProtobuf: SymmetricEncryptableElement {}

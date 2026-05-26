@@ -88,11 +88,9 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     weak var delegate: (any CreateEditLoginViewModelDelegate)?
 
     override init(mode: ItemMode,
-                  upgradeChecker: any UpgradeCheckerProtocol,
-                  vaults: [Share]) throws {
+                  upgradeChecker: any UpgradeCheckerProtocol) throws {
         try super.init(mode: mode,
-                       upgradeChecker: upgradeChecker,
-                       vaults: vaults)
+                       upgradeChecker: upgradeChecker)
         emailAddress = userManager.currentActiveUser.value?.addresses.first?.email ?? ""
 
         setUp()
@@ -122,7 +120,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 }
             }
 
-        case let .create(_, type):
+        case let .create(type):
             if case let .login(title, email, password, url, note, totpUri, _, request) = type {
                 passkeyRequest = request
                 self.title = title ?? request?.relyingPartyIdentifier ?? ""
@@ -156,7 +154,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     override func saveButtonTitle() -> String {
-        guard case let .create(_, type) = mode,
+        guard case let .create(type) = mode,
               case let .login(_, _, _, _, _, _, autofill, _) = type,
               autofill else {
             return super.saveButtonTitle()
@@ -241,7 +239,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         try await itemRepository.createAlias(userId: userId,
                                              info: aliasCreationInfo,
                                              itemContent: aliasItemContent,
-                                             shareId: selectedVault.shareId)
+                                             shareId: selectedContainer.share.shareId,
+                                             folderId: selectedContainer.folder?.folderId)
         return .init(edited: true, slNote: nil)
     }
 
@@ -279,7 +278,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             do {
                 loading = true
                 if aliasOptions == nil {
-                    aliasOptions = try await aliasRepository.getAliasOptions(shareId: selectedVault.shareId)
+                    aliasOptions = try await aliasRepository
+                        .getAliasOptions(shareId: selectedContainer.share.shareId)
                 }
                 if let aliasOptions,
                    let firstSuffix = aliasOptions.suffixes.first,
@@ -368,8 +368,8 @@ private extension CreateEditLoginViewModel {
     func setUp() {
         bindValues()
 
-        $selectedVault
-            .receive(on: RunLoop.main)
+        $selectedContainer
+            .receive(on: DispatchQueue.main)
             .removeDuplicates()
             .sink { [weak self] _ in
                 guard let self else { return }

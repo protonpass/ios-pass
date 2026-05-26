@@ -101,8 +101,8 @@ struct AddCustomEmailView: View {
         .animation(.default, value: showResendCodeButton)
         .toolbar { toolbarContent }
         .background(PassColor.backgroundNorm)
-        .onChange(of: viewModel.finishedVerification) { isVerificationFinished in
-            guard isVerificationFinished else {
+        .onChange(of: viewModel.finishedVerification) {
+            guard viewModel.finishedVerification else {
                 return
             }
             dismiss()

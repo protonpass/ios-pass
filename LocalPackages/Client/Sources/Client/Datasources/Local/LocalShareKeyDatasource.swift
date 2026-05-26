@@ -19,8 +19,11 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import CoreData
+import Entities
 
 public protocol LocalShareKeyDatasourceProtocol: Sendable {
+    func getAllKeys() async throws -> [SymmetricallyEncryptedShareKey]
+
     /// Get keys of a share
     func getKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey]
 
@@ -35,6 +38,13 @@ public final class LocalShareKeyDatasource: LocalDatasource, LocalShareKeyDataso
     @unchecked Sendable {}
 
 public extension LocalShareKeyDatasource {
+    func getAllKeys() async throws -> [SymmetricallyEncryptedShareKey] {
+        let taskContext = newTaskContext(type: .fetch)
+        let fetchRequest = ShareKeyEntity.fetchRequest()
+        let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
+        return entities.map { $0.toSymmetricallyEncryptedShareKey() }
+    }
+
     func getKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ShareKeyEntity.fetchRequest()

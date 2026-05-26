@@ -18,10 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// swiftlint:disable:next todo
-// TODO: remove with folder implementation
-// periphery:ignore:all
-
 import Core
 import Entities
 import ProtonCoreNetworking
@@ -42,7 +38,7 @@ struct GetListOfFolderEndpoint: Endpoint, @unchecked Sendable {
          sinceToken: String? = nil,
          pageSize: Int = Constants.Utils.defaultPageSize) {
         debugDescription = "Get list of folders for share with id: \(shareId)"
-        path = "pass/v1/share/\(shareId)/folder"
+        path = "/pass/v1/share/\(shareId)/folder"
 
         var queries: [String: Any] = ["PageSize": pageSize]
         if let sinceToken {

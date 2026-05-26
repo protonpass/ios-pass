@@ -51,15 +51,22 @@ public final class GetSecureLinkKeys: GetSecureLinkKeysUseCase {
     public func execute(item: ItemContent, share: Share) async throws -> SecureLinkKeys {
         let userId = try await userManager.getActiveUserId()
 
-        let itemKeyInfo: any ShareKeyProtocol = if share.shareType == .vault {
+        let fullParentId = if item.shareId != item.parentId {
+            item.parentId + share.shareId
+        } else {
+            share.shareId
+        }
+
+        let itemKeyInfo = if share.shareType == .vault {
             try await passKeyManager.getLatestItemKey(userId: userId,
                                                       shareId: item.shareId,
+                                                      parentId: fullParentId,
                                                       itemId: item.itemId)
         } else {
             try await passKeyManager.getLatestShareKey(userId: userId, shareId: item.shareId)
         }
 
-        let shareKeyInfo = try await passKeyManager.getLatestShareKey(userId: userId, shareId: item.shareId)
+        let shareKeyInfo = try await passKeyManager.getContainerKey(containerId: fullParentId, keyRotation: nil)
 
         let linkKey = try Data.random()
 

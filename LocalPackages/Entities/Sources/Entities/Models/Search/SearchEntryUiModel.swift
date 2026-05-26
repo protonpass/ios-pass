@@ -21,6 +21,7 @@
 public struct SearchEntryUiModel: ItemIdentifiable {
     public let itemId: String
     public let shareId: String
+    public let folderId: String?
     public let type: ItemContentType
     public let title: String
     public let url: String?
@@ -28,12 +29,14 @@ public struct SearchEntryUiModel: ItemIdentifiable {
 
     public init(itemId: String,
                 shareId: String,
+                folderId: String?,
                 type: ItemContentType,
                 title: String,
                 url: String?,
                 description: String?) {
         self.itemId = itemId
         self.shareId = shareId
+        self.folderId = folderId
         self.type = type
         self.title = title
         self.url = url

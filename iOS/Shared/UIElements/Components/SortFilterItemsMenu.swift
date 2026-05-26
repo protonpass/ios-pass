@@ -54,6 +54,7 @@ struct SortFilterItemsMenu: View {
                                 IconProvider.checkmarkCircle
                             })
                         }
+                        Divider()
                     }
 
                 case let .filter(selectedOption, itemCount, onSelect):

@@ -24,12 +24,14 @@ import SwiftUI
 struct EmptySearchView: View {
     var body: some View {
         VStack(spacing: 40) {
+            Spacer()
             PassIcon.magnifyingGlass
             Text("Search across all items")
                 .fontWeight(.semibold)
                 .foregroundStyle(PassColor.textNorm)
             Spacer()
         }
+        .frame(maxHeight: .infinity)
         .padding()
         .padding(.top, 100)
     }

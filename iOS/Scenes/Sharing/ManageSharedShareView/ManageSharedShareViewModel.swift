@@ -324,7 +324,7 @@ private extension ManageSharedShareViewModel {
     }
 
     func doFetchShareInformation() async throws {
-        itemsNumber = getVaultItemCount(for: share)
+        itemsNumber = getVaultItemCount(for: share.id)
         if Task.isCancelled {
             return
         }
