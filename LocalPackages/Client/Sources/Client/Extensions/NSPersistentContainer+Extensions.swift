@@ -18,16 +18,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import CoreData
+@preconcurrency import CoreData
+import os
 
 public extension NSPersistentContainer {
+    private static let modelCache = OSAllocatedUnfairLock<[String: NSManagedObjectModel]>(uncheckedState: [:])
+
     static func model(for name: String) -> NSManagedObjectModel {
-        guard let url = Bundle.module.url(forResource: name, withExtension: "momd")
-        else { fatalError("Could not get URL for model: \(name)") }
+        modelCache.withLock { cache in
+            if let cached = cache[name] { return cached }
 
-        guard let model = NSManagedObjectModel(contentsOf: url)
-        else { fatalError("Could not get model for: \(url)") }
+            guard let url = Bundle.module.url(forResource: name, withExtension: "momd")
+            else { fatalError("Could not get URL for model: \(name)") }
 
-        return model
+            guard let model = NSManagedObjectModel(contentsOf: url)
+            else { fatalError("Could not get model for: \(url)") }
+
+            cache[name] = model
+            return model
+        }
     }
 }

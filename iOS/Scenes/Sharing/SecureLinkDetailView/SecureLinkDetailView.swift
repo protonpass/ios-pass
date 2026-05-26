@@ -101,7 +101,7 @@ struct SecureLinkDetailView: View {
         .showSpinner(viewModel.loading)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(PassColor.backgroundNorm)
-        .onChange(of: viewModel.finishedDeleting) { _ in
+        .onChange(of: viewModel.finishedDeleting) {
             dismiss()
         }
     }

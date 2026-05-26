@@ -153,6 +153,11 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "defaultShareID", on: sut, hasType: .string)
         verifyAttribute(named: "aliasSyncEnabled", on: sut, hasType: .boolean)
         verifyAttribute(named: "pendingAliasToSync", on: sut, hasType: .integer64)
+        verifyAttribute(named: "manageAlias", on: sut, hasType: .boolean)
+        verifyAttribute(named: "storageAllowed", on: sut, hasType: .boolean)
+        verifyAttribute(named: "storageUsed", on: sut, hasType: .integer64)
+        verifyAttribute(named: "storageQuota", on: sut, hasType: .integer64)
+        verifyAttribute(named: "folderAllowed", on: sut, hasType: .boolean)
     }
 
     func testSpotlightVaultEntity() {
@@ -201,5 +206,28 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "encryptedData", on: sut, hasType: .binaryData)
         verifyAttribute(named: "module", on: sut, hasType: .string)
         verifyAttribute(named: "userID", on: sut, hasType: .string)
+    }
+
+    func testFolderEntity() {
+        let sut = entity(byName: "FolderEntity")
+        verifyAttribute(named: "folderID", on: sut, hasType: .string)
+        verifyAttribute(named: "shareID", on: sut, hasType: .string)
+        verifyAttribute(named: "userID", on: sut, hasType: .string)
+        verifyAttribute(named: "vaultID", on: sut, hasType: .string)
+        verifyAttribute(named: "parentFolderID", on: sut, hasType: .string)
+        verifyAttribute(named: "keyRotation", on: sut, hasType: .integer64)
+        verifyAttribute(named: "folderKey", on: sut, hasType: .string)
+        verifyAttribute(named: "contentFormatVersion", on: sut, hasType: .integer64)
+        verifyAttribute(named: "content", on: sut, hasType: .string)
+        verifyAttribute(named: "symmetricallyEncryptedContent", on: sut, hasType: .string)
+    }
+
+    func testFolderKeyEntity() {
+        let sut = entity(byName: "FolderKeyEntity")
+        verifyAttribute(named: "folderID", on: sut, hasType: .string)
+        verifyAttribute(named: "shareID", on: sut, hasType: .string)
+        verifyAttribute(named: "userID", on: sut, hasType: .string)
+        verifyAttribute(named: "keyRotation", on: sut, hasType: .integer64)
+        verifyAttribute(named: "encryptedKey", on: sut, hasType: .string)
     }
 }

@@ -27,7 +27,8 @@ import Testing
 import TestingToolkit
 import Entities
 
-@Suite(.tags(.synchronizer))
+@Suite(.serialized, .tags(.synchronizer))
+@MainActor
 struct UserEventsSynchronizerTests {
     let localItemDatasource = LocalItemDatasourceProtocolMock()
     let localUserEventIdDatasource = LocalUserEventIdDatasourceProtocolMock()
@@ -40,6 +41,8 @@ struct UserEventsSynchronizerTests {
     let aliasRepository = AliasRepositoryProtocolMock()
     let passMonitorRepository = PassMonitorRepositoryProtocolMock()
     let organizationRepository = OrganizationRepositoryProtocolMock()
+    let folderRepositoryProtocolMock = FolderRepositoryProtocolMock()
+
     var sut: (any UserEventsSynchronizerProtocol)!
 
     init() {
@@ -58,6 +61,7 @@ struct UserEventsSynchronizerTests {
                                      shareRepository: shareRepository,
                                      accessRepository: accessRespository,
                                      inviteRepository: inviteRepository,
+                                     folderRepository: folderRepositoryProtocolMock,
                                      aliasRepository: aliasRepository,
                                      passMonitorRepository: passMonitorRepository,
                                      organizationRepository: organizationRepository,
@@ -224,7 +228,7 @@ private extension UserEventsSynchronizerTests {
         }
 
         if let deleteItemsInvokeCount = args.deleteItemsInvokeCount {
-            #expect(itemRepository.invokedDeleteItemsLocallyItemsAsyncCount35 == deleteItemsInvokeCount)
+            #expect(itemRepository.invokedDeleteItemsLocallyItemsAsyncCount36 == deleteItemsInvokeCount)
         }
 
         if let refreshShareInvokeCount = args.refreshShareInvokeCount {

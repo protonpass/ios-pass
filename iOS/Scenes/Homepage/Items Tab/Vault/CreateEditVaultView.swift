@@ -59,13 +59,13 @@ struct CreateEditVaultView: View {
         .onAppear {
             isFocusedOnTitle = true
         }
-        .onChange(of: viewModel.selectedIcon) { _ in
+        .onChange(of: viewModel.selectedIcon) {
             isFocusedOnTitle = false
         }
-        .onChange(of: viewModel.selectedColor) { _ in
+        .onChange(of: viewModel.selectedColor) {
             isFocusedOnTitle = false
         }
-        .onChange(of: viewModel.finishSaving) { _ in
+        .onChange(of: viewModel.finishSaving) {
             dismiss()
         }
     }

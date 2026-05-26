@@ -245,7 +245,7 @@ private extension SearchResultsView {
             .listStyle(.plain)
             .animation(.default, value: viewModel.results.hashValue)
             .simultaneousGesture(DragGesture().onChanged { _ in onScroll() })
-            .onChange(of: selectedType) { _ in
+            .onChange(of: selectedType) {
                 proxy.scrollTo(uuid)
             }
             .overlay {

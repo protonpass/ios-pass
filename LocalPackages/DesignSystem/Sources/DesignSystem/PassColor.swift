@@ -115,6 +115,10 @@ public extension PassColor {
     static let vaultWaterLeaf = Color.vaultWaterLeaf
 }
 
+public extension PassColor {
+    static let folderIcon = Color.folderIcon
+}
+
 public nonisolated enum PassUIColor: Sendable {}
 
 public extension PassUIColor {

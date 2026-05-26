@@ -89,6 +89,7 @@ extension SharedServiceContainer {
                                           shareRepository: container.shareRepository(),
                                           accessRepository: container.accessRepository(),
                                           inviteRepository: container.inviteRepository(),
+                                          folderRepository: container.folderRepository(),
                                           aliasRepository: container.aliasRepository(),
                                           passMonitorRepository: container.passMonitorRepository(),
                                           organizationRepository: container.organizationRepository(),
@@ -197,7 +198,8 @@ extension SharedServiceContainer {
                           groupRepository: SharedRepositoryContainer.shared.groupRepository(),
                           logManager: self.logManager,
                           publicKeyRepository: SharedRepositoryContainer.shared.publicKeyRepository(),
-                          symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider())
+                          symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider(),
+                          userManager: self.userManager())
         }
     }
 }

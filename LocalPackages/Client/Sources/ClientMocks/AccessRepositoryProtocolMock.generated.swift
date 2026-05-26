@@ -34,16 +34,10 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
     public var invokedAccessList = [CurrentValueSubject<UserAccess?, Never>?]()
     public var invokedAccessGetter = false
     public var invokedAccessGetterCount = 0
-    public var stubbedAccess: CurrentValueSubject<UserAccess?, Never>!
+    public nonisolated(unsafe) var stubbedAccess: CurrentValueSubject<UserAccess?, Never>!
+
     public var access: CurrentValueSubject<UserAccess?, Never> {
-        set {
-            invokedAccessSetter = true
-            invokedAccessSetterCount += 1
-            invokedAccess = newValue
-            invokedAccessList.append(newValue)
-        } get {
-            invokedAccessGetter = true
-            invokedAccessGetterCount += 1
+         get {
             return stubbedAccess
         }
     }
@@ -54,16 +48,10 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
     public var invokedAccessesList = [CurrentValueSubject<[UserAccess], Never>?]()
     public var invokedAccessesGetter = false
     public var invokedAccessesGetterCount = 0
-    public var stubbedAccesses: CurrentValueSubject<[UserAccess], Never>!
+    public nonisolated(unsafe) var stubbedAccesses: CurrentValueSubject<[UserAccess], Never>!
+
     public var accesses: CurrentValueSubject<[UserAccess], Never> {
-        set {
-            invokedAccessesSetter = true
-            invokedAccessesSetterCount += 1
-            invokedAccesses = newValue
-            invokedAccessesList.append(newValue)
-        } get {
-            invokedAccessesGetter = true
-            invokedAccessesGetterCount += 1
+         get {
             return stubbedAccesses
         }
     }
@@ -75,6 +63,7 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
     public var invokedDidUpdateToNewPlanGetter = false
     public var invokedDidUpdateToNewPlanGetterCount = 0
     public var stubbedDidUpdateToNewPlan: PassthroughSubject<Void, Never>!
+
     public var didUpdateToNewPlan: PassthroughSubject<Void, Never> {
         set {
             invokedDidUpdateToNewPlanSetter = true
@@ -94,7 +83,7 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
     public var invokedGetAccessCount = 0
     public var invokedGetAccessParameters: (userId: String?, Void)?
     public var invokedGetAccessParametersList = [(userId: String?, Void)]()
-    public var stubbedGetAccessResult: UserAccess!
+    public nonisolated(unsafe) var stubbedGetAccessResult: UserAccess!
 
     public func getAccess(userId: String?) async throws -> UserAccess {
         invokedGetAccessfunction = true
@@ -113,7 +102,7 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
     public var invokedRefreshAccessCount = 0
     public var invokedRefreshAccessParameters: (userId: String?, Void)?
     public var invokedRefreshAccessParametersList = [(userId: String?, Void)]()
-    public var stubbedRefreshAccessResult: UserAccess!
+    public nonisolated(unsafe) var stubbedRefreshAccessResult: UserAccess!
 
     public func refreshAccess(userId: String?) async throws -> UserAccess {
         invokedRefreshAccessfunction = true
@@ -180,7 +169,7 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
     public var invokedGetPassUserInformationCount = 0
     public var invokedGetPassUserInformationParameters: (userId: String, Void)?
     public var invokedGetPassUserInformationParametersList = [(userId: String, Void)]()
-    public var stubbedGetPassUserInformationResult: PassUserInformations!
+    public nonisolated(unsafe) var stubbedGetPassUserInformationResult: PassUserInformations!
 
     public func getPassUserInformation(userId: String) async throws -> PassUserInformations {
         invokedGetPassUserInformationfunction = true

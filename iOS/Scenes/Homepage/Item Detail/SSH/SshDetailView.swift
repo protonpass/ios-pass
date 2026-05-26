@@ -36,9 +36,13 @@ struct SshDetailView: View {
     var body: some View {
         ScrollViewReader { proxy in
             LazyVStack(spacing: 0) {
+                if let vaultContent = viewModel.shareContent?.share.vaultContent {
+                    ItemPathBreadcrumbView(vaultContent: vaultContent, path: viewModel.path)
+                }
+
                 ItemDetailTitleView(itemContent: viewModel.itemContent,
                                     vault: viewModel.vault?.vault)
-                    .padding(.bottom, 40)
+                    .padding(.vertical, 16)
 
                 keysSection
 
@@ -83,7 +87,7 @@ struct SshDetailView: View {
                     .id(bottomID)
             }
             .padding()
-            .onChange(of: viewModel.moreInfoSectionExpanded) { _ in
+            .onChange(of: viewModel.moreInfoSectionExpanded) {
                 withAnimation { proxy.scrollTo(bottomID, anchor: .bottom) }
             }
             .scrollViewEmbeded()

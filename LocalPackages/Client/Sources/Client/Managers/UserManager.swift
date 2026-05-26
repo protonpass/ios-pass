@@ -75,7 +75,6 @@ public extension UserManagerProtocol {
 public actor UserManager: UserManagerProtocol {
     public nonisolated let currentActiveUser = CurrentValueSubject<UserData?, Never>(nil)
     public nonisolated let allUserAccounts: CurrentValueSubject<[UserData], Never> = .init([])
-
     private var userProfiles = [UserProfile]()
     private let userDataDatasource: any LocalUserDataDatasourceProtocol
     private let logger: Logger

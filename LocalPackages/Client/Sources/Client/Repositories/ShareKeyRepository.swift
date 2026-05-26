@@ -30,6 +30,8 @@ typealias Encryptor = ProtonCoreCrypto.Encryptor
 
 /// This repository is not offline first because without keys, the app is not functional.
 public protocol ShareKeyRepositoryProtocol: Sendable {
+    func getAllLocalKeys() async throws -> [SymmetricallyEncryptedShareKey]
+
     /// Get share keys of a share with `shareId`. Not offline first.
     func getKeys(userId: String, shareId: String) async throws -> [SymmetricallyEncryptedShareKey]
 
@@ -37,7 +39,7 @@ public protocol ShareKeyRepositoryProtocol: Sendable {
     @discardableResult
     func refreshKeys(userId: String, shareId: String) async throws -> [SymmetricallyEncryptedShareKey]
 
-    func deleteAllCurrentUserShareKeysLocally() async throws
+    func deleteAllUserShareKeysLocally(userId: String) async throws
 }
 
 public actor ShareKeyRepository: ShareKeyRepositoryProtocol {
@@ -46,24 +48,28 @@ public actor ShareKeyRepository: ShareKeyRepositoryProtocol {
     private let cryptoService: any CryptoServiceProtocol
     private let logger: Logger
     private let symmetricKeyProvider: any SymmetricKeyProvider
-    private let userManager: any UserManagerProtocol
 
     public init(localDatasource: any LocalShareKeyDatasourceProtocol,
                 remoteDatasource: any RemoteShareKeyDatasourceProtocol,
                 cryptoService: any CryptoServiceProtocol,
                 logManager: any LogManagerProtocol,
-                symmetricKeyProvider: any SymmetricKeyProvider,
-                userManager: any UserManagerProtocol) {
+                symmetricKeyProvider: any SymmetricKeyProvider) {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         logger = .init(manager: logManager)
         self.cryptoService = cryptoService
         self.symmetricKeyProvider = symmetricKeyProvider
-        self.userManager = userManager
     }
 }
 
 public extension ShareKeyRepository {
+    func getAllLocalKeys() async throws -> [SymmetricallyEncryptedShareKey] {
+        logger.trace("Getting all local share keys")
+        let keys = try await localDatasource.getAllKeys()
+        logger.trace("Got \(keys.count) local keys")
+        return keys
+    }
+
     func getKeys(userId: String, shareId: String) async throws -> [SymmetricallyEncryptedShareKey] {
         logger.trace("Getting keys for share \(shareId)")
         let keys = try await localDatasource.getKeys(shareId: shareId)
@@ -84,12 +90,8 @@ public extension ShareKeyRepository {
         let keys = try await remoteDatasource.getKeys(userId: userId, shareId: shareId)
         logger.trace("Got \(keys.count) keys from remote for share \(shareId)")
 
-        guard let userData = try await userManager.getUserData(userId) else {
-            throw PassError.userManager(.noUserDataFound)
-        }
-
         let encryptedKeys = try await keys.asyncCompactMap { key in
-            let decryptedKey = try await cryptoService.decryptShareKey(key, userData: userData, shareId: shareId)
+            let decryptedKey = try await cryptoService.decryptShareKey(key, userId: userId, shareId: shareId)
             let encryptedKeyBase64 = decryptedKey.encodeBase64()
             let symmetricallyEncryptedKey = try await getSymmetricKey().encrypt(encryptedKeyBase64)
             return SymmetricallyEncryptedShareKey(encryptedKey: symmetricallyEncryptedKey,
@@ -105,8 +107,7 @@ public extension ShareKeyRepository {
         return encryptedKeys
     }
 
-    func deleteAllCurrentUserShareKeysLocally() async throws {
-        let userId = try await userManager.getActiveUserId()
+    func deleteAllUserShareKeysLocally(userId: String) async throws {
         logger.trace("Deleting all local share keys of user \(userId)")
         try await localDatasource.removeAllKeys(userId: userId)
         logger.trace("Deleted all local share keys")

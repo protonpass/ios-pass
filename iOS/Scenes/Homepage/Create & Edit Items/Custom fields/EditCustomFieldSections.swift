@@ -44,8 +44,8 @@ struct EditCustomFieldSections<Field: CustomFieldTypes>: View {
                                 onEditTitle: { onEditTitle(field) },
                                 onRemove: { fields.remove(field) })
         }
-        .onChange(of: focusedCustomField) { newValue in
-            focusedField.wrappedValue = .custom(newValue)
+        .onChange(of: focusedCustomField) {
+            focusedField.wrappedValue = .custom(focusedCustomField)
         }
 
         if canAddMore {

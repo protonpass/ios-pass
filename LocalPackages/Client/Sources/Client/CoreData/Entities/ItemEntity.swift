@@ -53,6 +53,7 @@ extension ItemEntity {
     @NSManaged var flags: Int64
     @NSManaged var shareCount: Int64
     @NSManaged var userID: String
+    @NSManaged var folderID: String?
 }
 
 extension ItemEntity {
@@ -81,10 +82,12 @@ extension ItemEntity {
                         lastUseTime: lastUseTime == 0 ? nil : lastUseTime,
                         revisionTime: revisionTime,
                         flags: Int(flags),
-                        shareCount: Int(shareCount))
+                        shareCount: Int(shareCount),
+                        folderID: folderID)
 
         return .init(shareId: shareID,
                      userId: userID,
+                     folderId: folderID,
                      item: item,
                      encryptedContent: symmetricallyEncryptedContent,
                      isLogInItem: isLogInItem,
@@ -109,6 +112,7 @@ extension ItemEntity {
         revisionTime = item.revisionTime
         shareID = symmetricallyEncryptedItem.shareId
         userID = symmetricallyEncryptedItem.userId
+        folderID = symmetricallyEncryptedItem.folderId
         state = item.state
         symmetricallyEncryptedContent = symmetricallyEncryptedItem.encryptedContent
         flags = Int64(item.flags)

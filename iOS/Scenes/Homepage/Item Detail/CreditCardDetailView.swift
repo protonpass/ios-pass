@@ -52,9 +52,13 @@ private extension CreditCardDetailView {
         ScrollViewReader { proxy in
             ScrollView {
                 VStack(spacing: 0) {
+                    if let vaultContent = viewModel.shareContent?.share.vaultContent {
+                        ItemPathBreadcrumbView(vaultContent: vaultContent, path: viewModel.path)
+                    }
+
                     ItemDetailTitleView(itemContent: viewModel.itemContent,
                                         vault: viewModel.vault?.vault)
-                        .padding(.bottom, 40)
+                        .padding(.vertical, 16)
 
                     detailSection
 
@@ -90,7 +94,7 @@ private extension CreditCardDetailView {
                         .id(bottomID)
                 }
                 .padding()
-                .onChange(of: viewModel.moreInfoSectionExpanded) { _ in
+                .onChange(of: viewModel.moreInfoSectionExpanded) {
                     withAnimation { proxy.scrollTo(bottomID, anchor: .bottom) }
                 }
             }

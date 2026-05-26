@@ -51,9 +51,13 @@ struct AliasDetailView: View {
         ScrollViewReader { value in
             ScrollView {
                 VStack(spacing: 0) {
+                    if let vaultContent = viewModel.shareContent?.share.vaultContent {
+                        ItemPathBreadcrumbView(vaultContent: vaultContent, path: viewModel.path)
+                    }
+
                     ItemDetailTitleView(itemContent: viewModel.itemContent,
                                         vault: viewModel.vault?.vault)
-                        .padding(.bottom, 40)
+                        .padding(.vertical, 16)
 
                     aliasMailboxesSection
                         .padding(.bottom, 8)
@@ -123,7 +127,7 @@ struct AliasDetailView: View {
             .animation(.default, value: viewModel.aliasInfos)
             .animation(.default, value: viewModel.contacts)
             .animation(.default, value: viewModel.showContactsTip)
-            .onChange(of: viewModel.moreInfoSectionExpanded) { _ in
+            .onChange(of: viewModel.moreInfoSectionExpanded) {
                 withAnimation { value.scrollTo(bottomID, anchor: .bottom) }
             }
         }

@@ -31,7 +31,7 @@ public final class UserSettingsRepositoryProtocolMock: @unchecked Sendable, User
     public var invokedGetSettingsCount = 0
     public var invokedGetSettingsParameters: (id: String, Void)?
     public var invokedGetSettingsParametersList = [(id: String, Void)]()
-    public var stubbedGetSettingsResult: UserSettings!
+    public nonisolated(unsafe) var stubbedGetSettingsResult: UserSettings!
 
     public func getSettings(for id: String) async -> UserSettings {
         invokedGetSettingsfunction = true
@@ -64,7 +64,7 @@ public final class UserSettingsRepositoryProtocolMock: @unchecked Sendable, User
     public var invokedToggleSentinelCount = 0
     public var invokedToggleSentinelParameters: (id: String, Void)?
     public var invokedToggleSentinelParametersList = [(id: String, Void)]()
-    public var stubbedToggleSentinelResult: Bool!
+    public nonisolated(unsafe) var stubbedToggleSentinelResult: Bool!
 
     public func toggleSentinel(for id: String) async throws -> Bool {
         invokedToggleSentinelfunction = true

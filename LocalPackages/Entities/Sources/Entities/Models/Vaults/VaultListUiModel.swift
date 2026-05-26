@@ -33,7 +33,7 @@ public struct VaultListUiModel: Hashable, Sendable, Identifiable {
 
     public init(vaultContent: ShareContent) {
         vault = vaultContent.share
-        itemCount = vaultContent.items.count
+        itemCount = vaultContent.itemCount
     }
 }
 

@@ -70,6 +70,10 @@ public struct ItemEvent: Sendable, Decodable, Equatable, ItemIdentifiable {
     public var itemId: String {
         itemID
     }
+
+    public var folderId: String? {
+        nil
+    }
 }
 
 public struct ShareEvent: Sendable, Decodable, Equatable {
@@ -81,7 +85,7 @@ public struct ChangeEvent: Sendable, Decodable, Equatable {
     public let eventToken: String
 }
 
-public struct FolderEvent: Sendable, Decodable, Equatable {
+public struct FolderEvent: Sendable, Decodable, Equatable, FolderIdentifiable {
     public let shareID: String
     public let folderID: String
     public let eventToken: String
@@ -89,7 +93,6 @@ public struct FolderEvent: Sendable, Decodable, Equatable {
     // Seemingly redundant but we need to keep `shareID` and `itemID`
     // with capitalized D in order to not break the decoding process
 
-    // periphery:ignore
     public var shareId: String {
         shareID
     }

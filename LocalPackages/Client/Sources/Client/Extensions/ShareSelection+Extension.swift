@@ -26,8 +26,8 @@ public extension ShareSelection {
         switch self {
         case .all:
             #localized("Search in all items...", bundle: .module)
-        case let .precise(share):
-            #localized("Search in %@...", bundle: .module, share.vaultContent?.name ?? "")
+        case let .precise(selection):
+            #localized("Search in %@...", bundle: .module, selection.title)
         case .trash:
             #localized("Search in Trash...", bundle: .module)
         case .sharedByMe:

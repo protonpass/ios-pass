@@ -65,9 +65,13 @@ private extension NoteDetailView {
         ScrollViewReader { value in
             ScrollView {
                 VStack(spacing: 0) {
+                    if let vaultContent = viewModel.shareContent?.share.vaultContent {
+                        ItemPathBreadcrumbView(vaultContent: vaultContent, path: viewModel.path)
+                    }
+
                     ItemDetailTitleView(itemContent: viewModel.itemContent,
                                         vault: viewModel.vault?.vault)
-                        .padding(.bottom, 40)
+                        .padding(.vertical, 16)
 
                     if viewModel.note.isEmpty {
                         Text("Empty note")
@@ -105,7 +109,7 @@ private extension NoteDetailView {
                 .padding()
                 .animation(.default, value: viewModel.moreInfoSectionExpanded)
             }
-            .onChange(of: viewModel.moreInfoSectionExpanded) { _ in
+            .onChange(of: viewModel.moreInfoSectionExpanded) {
                 withAnimation { value.scrollTo(bottomID, anchor: .bottom) }
             }
         }

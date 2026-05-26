@@ -57,6 +57,7 @@ public extension ItemContent {
 
         return .init(itemId: item.itemID,
                      shareId: shareId,
+                     folderId: item.folderID,
                      type: contentData.type,
                      aliasEmail: item.aliasEmail,
                      aliasEnabled: aliasEnabled,

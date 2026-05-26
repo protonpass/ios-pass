@@ -135,8 +135,8 @@ private extension SearchViewModel {
         }
 
         let searchEntries: [SearchEntry]
-        if case let .precise(vault) = shareSelection {
-            searchEntries = try await searchEntryDatasource.getAllEntries(shareId: vault.shareId)
+        if case let .precise(selection) = shareSelection {
+            searchEntries = try await searchEntryDatasource.getAllEntries(shareId: selection.share.shareId)
         } else {
             let userId = try await userManager.getActiveUserId()
             searchEntries = try await searchEntryDatasource.getAllEntries(userId: userId)
@@ -144,7 +144,7 @@ private extension SearchViewModel {
 
         history = searchEntries.compactMap { entry in
             guard let item = searchableItems.first(where: {
-                $0.shareId == entry.shareID && $0.itemId == entry.itemID
+                $0.shareId == entry.shareId && $0.itemId == entry.itemId
             }) else {
                 return nil
             }
@@ -341,8 +341,8 @@ extension SearchViewModel {
             guard let self, let shareSelection = searchMode.shareSelection else { return }
 
             do {
-                if case let .precise(share) = shareSelection {
-                    try await searchEntryDatasource.removeAllEntries(shareId: share.shareId)
+                if case let .precise(selection) = shareSelection {
+                    try await searchEntryDatasource.removeAllEntries(shareId: selection.share.shareId)
                 } else {
                     let userId = try await userManager.getActiveUserId()
                     try await searchEntryDatasource.removeAllEntries(userId: userId)

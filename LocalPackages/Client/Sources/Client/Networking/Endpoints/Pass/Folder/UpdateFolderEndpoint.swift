@@ -18,10 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// swiftlint:disable:next todo
-// TODO: remove with folder implementation
-// periphery:ignore:all
-
 import Core
 import CryptoKit
 import Entities
@@ -46,32 +42,36 @@ struct UpdateFolderEndpoint: Endpoint {
 }
 
 public struct UpdateFolderRequest: Sendable, Encodable {
-    /// RotationID used to encrypt the item contents
+    let content: UpdateFolderRequestPayload
+
+    private enum CodingKeys: String, CodingKey {
+        case content = "Content"
+    }
+}
+
+struct UpdateFolderRequestPayload: Encodable {
+    /// RotationID used to encrypt the folder contents
     let keyRotation: Int64
-
-    /// Encrypted item content encoded in Base64
+    /// Encrypted folder content encoded in Base64
     let content: String
-
-    /// Version of the content format used to create the item
+    /// Version of the content format used to create the folder
     let contentFormatVersion: Int
 
-    public init(keyRotation: Int64,
-                content: String,
-                contentFormatVersion: Int) {
+    init(keyRotation: Int64,
+         content: String,
+         contentFormatVersion: Int) {
         self.keyRotation = keyRotation
         self.content = content
         self.contentFormatVersion = contentFormatVersion
     }
 
-    public init(key: Data,
-                keyRotation: Int64,
-                folderContent: Folder) throws {
-        let data = try JSONEncoder().encode(folderContent)
-        let updatedContent = try AES.GCM.seal(data,
-                                              key: key,
+    init(encryptionKey: any CryptographicKeyProtocol,
+         folderContent: FolderContent) throws {
+        let updatedContent = try AES.GCM.seal(folderContent.data(),
+                                              key: encryptionKey.keyData,
                                               associatedData: .folderContent)
 
-        self.init(keyRotation: keyRotation,
+        self.init(keyRotation: encryptionKey.keyRotation,
                   content: updatedContent.base64EncodedString(),
                   contentFormatVersion: Constants.ContentFormatVersion.folder)
     }

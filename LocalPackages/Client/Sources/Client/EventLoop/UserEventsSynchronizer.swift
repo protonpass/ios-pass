@@ -48,6 +48,7 @@ public final class UserEventsSynchronizer: UserEventsSynchronizerProtocol {
     private let accessRepository: any AccessRepositoryProtocol
     private let inviteRepository: any FullInviteRepositoryProtocol
     private let aliasRepository: any AliasRepositoryProtocol
+    private let folderRepository: any FolderRepositoryProtocol
     private let passMonitorRepository: any PassMonitorRepositoryProtocol
     private let simpleLoginNoteSynchronizer: any SimpleLoginNoteSynchronizerProtocol
     private let organizationRepository: any OrganizationRepositoryProtocol
@@ -62,6 +63,7 @@ public final class UserEventsSynchronizer: UserEventsSynchronizerProtocol {
                 shareRepository: any ShareRepositoryProtocol,
                 accessRepository: any AccessRepositoryProtocol,
                 inviteRepository: any FullInviteRepositoryProtocol,
+                folderRepository: any FolderRepositoryProtocol,
                 aliasRepository: any AliasRepositoryProtocol,
                 passMonitorRepository: any PassMonitorRepositoryProtocol,
                 organizationRepository: any OrganizationRepositoryProtocol,
@@ -74,6 +76,7 @@ public final class UserEventsSynchronizer: UserEventsSynchronizerProtocol {
         self.accessRepository = accessRepository
         self.inviteRepository = inviteRepository
         self.aliasRepository = aliasRepository
+        self.folderRepository = folderRepository
         self.simpleLoginNoteSynchronizer = simpleLoginNoteSynchronizer
         self.passMonitorRepository = passMonitorRepository
         self.organizationRepository = organizationRepository
@@ -133,9 +136,7 @@ private extension UserEventsSynchronizer {
         async let aliasNotesChanged: () = processAliasNoteChangedItems(events.aliasNoteChanged, userId: userId)
         async let updatedShares: () = processUpdatedShares(events.sharesUpdated, userId: userId)
         async let deletedShares: () = processDeletedShares(events.sharesDeleted, userId: userId)
-        // swiftlint:disable:next todo
-        // TODO: folder to be implemented in the folder ticket mr
-//        async let foldersDeleted: () = processInviteChanges(inviteChanges: events.foldersDeleted, userId: userId)
+        async let foldersDeleted: () = processDeletedFolder(events.foldersDeleted, userId: userId)
         async let invites: () = processUserInviteChanges(events.invitesChanged, userId: userId)
         async let groupInvites: () = processGroupInviteChanges(events.groupInvitesChanged, userId: userId)
         async let newShareWithInvites: () = processNewShareWithInviteChanges(events.sharesWithInvitesToCreate,
@@ -144,9 +145,7 @@ private extension UserEventsSynchronizer {
         async let pendingAliasToCreate: () = processPendingAliasToCreateChanged(events.pendingAliasToCreateChanged,
                                                                                 userId: userId)
         async let breachUpdate: () = processBreachesChanges(events.breachUpdate)
-
         async let organizationUpdate: () = processOrgaChanges(events.organizationUpdate, userId: userId)
-
         async let userChange: () = processUserChanged(events.refreshUser, userId: userId)
 
         _ = try await (serializedParsing,
@@ -158,6 +157,7 @@ private extension UserEventsSynchronizer {
                        userChange,
                        invites,
                        groupInvites,
+                       foldersDeleted,
                        newShareWithInvites,
                        breachUpdate,
                        organizationUpdate)
@@ -168,10 +168,26 @@ private extension UserEventsSynchronizer {
     /// Will have an update on the key decryption process
     func serializeCreationUpdateParsing(events: UserEvents, for userId: String) async throws {
         try await processCreatedShares(events.sharesCreated, userId: userId)
-        // swiftlint:disable:next todo
-        // TODO: add folder processing after shares and before items
-        //        async let foldersUpdated: () = processSharesToCreate(events.foldersUpdated, userId: userId)
+        try await processUpdatedFolder(events.foldersUpdated, userId: userId)
         try await processUpdatedItems(events.itemsUpdated, userId: userId)
+    }
+
+    func processUpdatedFolder(_ updatedFolders: [FolderEvent], userId: String) async throws {
+        guard !updatedFolders.isEmpty else {
+            logger.trace("No updated folders for user \(userId)")
+            return
+        }
+        logger.trace("Refreshing \(updatedFolders.count) updated folder for user \(userId)")
+        try await folderRepository.refreshFolders(userId: userId, foldersIds: updatedFolders)
+    }
+
+    func processDeletedFolder(_ deletedFolders: [FolderEvent], userId: String) async throws {
+        guard !deletedFolders.isEmpty else {
+            logger.trace("No deleted folders for user \(userId)")
+            return
+        }
+        logger.trace("Deleting \(deletedFolders.count) folders for user \(userId)")
+        try await folderRepository.deleteLocal(folders: deletedFolders, userId: userId)
     }
 
     func processUpdatedItems(_ updatedItems: [ItemEvent], userId: String) async throws {
@@ -246,16 +262,19 @@ private extension UserEventsSynchronizer {
         for batch in createdShares.chunked(into: maxConcurrentShareCreations) {
             try await withThrowingTaskGroup(of: Void.self) { taskGroup in
                 for newShare in batch {
-                    taskGroup.addTask { [shareRepository, itemRepository, userId] in
+                    taskGroup.addTask { [shareRepository, folderRepository, itemRepository, userId] in
                         // We need to start for a fresh data state
                         if let localShare = try await shareRepository.getShare(shareId: newShare.shareID) {
                             try await shareRepository.deleteShareLocally(userId: userId,
                                                                          shareId: localShare.shareID)
+                            try await folderRepository.deleteAllFoldersLocally(shareId: localShare.shareID,
+                                                                               userId: userId)
                             try await itemRepository.deleteAllItemsLocally(shareId: localShare.shareID)
                         }
                         try await shareRepository.refreshShare(userId: userId,
                                                                shareId: newShare.shareID,
                                                                eventToken: newShare.eventToken)
+                        try await folderRepository.refreshFolders(userId: userId, shareId: newShare.shareID)
                         try await itemRepository.refreshItems(userId: userId, shareId: newShare.shareID)
                     }
                 }
@@ -382,6 +401,7 @@ private extension UserEventsSynchronizer {
 
             let result = try await itemRepository.createPendingAliasesItem(userId: userId,
                                                                            shareId: shareId,
+                                                                           folderId: nil,
                                                                            itemsContent: itemsContent)
             logger.trace("Created \(result.count) aliases for user \(userId)")
 

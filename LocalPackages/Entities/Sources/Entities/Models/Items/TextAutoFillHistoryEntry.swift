@@ -37,3 +37,9 @@ public struct TextAutoFillHistoryEntry: Sendable, Equatable, ItemIdentifiable {
         self.userId = userId
     }
 }
+
+public extension TextAutoFillHistoryEntry {
+    var folderId: String? {
+        nil
+    }
+}

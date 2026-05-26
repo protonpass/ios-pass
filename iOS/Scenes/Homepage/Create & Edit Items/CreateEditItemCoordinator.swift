@@ -29,11 +29,8 @@ final class CreateEditItemCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
-    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-
     private weak var createEditItemDelegate: (any CreateEditLoginViewModelDelegate)?
-
     private var currentViewModel: BaseCreateEditItemViewModel?
 
     init(createEditItemDelegate: (any CreateEditLoginViewModelDelegate)?) {
@@ -73,23 +70,22 @@ extension CreateEditItemCoordinator {
 
     func presentCreateItemView(for itemType: ItemType,
                                onError: @escaping (any Error) -> Void) async throws {
-        let shareId = appContentManager.shareSelection.preciseShare?.shareId
         switch itemType {
         case .login:
             let logInType = ItemCreationType.login(autofill: false)
-            try presentCreateEditLoginView(mode: .create(shareId: shareId, type: logInType))
+            try presentCreateEditLoginView(mode: .create(logInType))
         case .alias:
-            try presentCreateEditAliasView(mode: .create(shareId: shareId, type: .alias))
+            try presentCreateEditAliasView(mode: .create(.alias))
         case .creditCard:
-            try presentCreateEditCreditCardView(mode: .create(shareId: shareId, type: .creditCard))
+            try presentCreateEditCreditCardView(mode: .create(.creditCard))
         case .note:
-            try presentCreateEditNoteView(mode: .create(shareId: shareId, type: .note(title: "", note: "")))
+            try presentCreateEditNoteView(mode: .create(.note(title: "", note: "")))
         case .password:
             assertionFailure("Should be handled outside of this coordinator")
         case .identity:
-            try presentCreateEditIdentityView(mode: .create(shareId: shareId, type: .identity))
+            try presentCreateEditIdentityView(mode: .create(.identity))
         case .custom:
-            try presentCustomItemList(shareId: shareId, onError: onError)
+            try presentCustomItemList(onError: onError)
         }
     }
 }
@@ -97,18 +93,13 @@ extension CreateEditItemCoordinator {
 // MARK: - Private APIs
 
 private extension CreateEditItemCoordinator {
-    var vaults: [Share] {
-        appContentManager.getAllSharesLinkToVault()
-    }
-
     func present(_ view: any View, dismissable: Bool) {
         router.navigate(to: .createEdit(view: view, dismissible: dismissable))
     }
 
     func presentCreateEditLoginView(mode: ItemMode) throws {
         let viewModel = try CreateEditLoginViewModel(mode: mode,
-                                                     upgradeChecker: upgradeChecker,
-                                                     vaults: vaults)
+                                                     upgradeChecker: upgradeChecker)
         viewModel.delegate = createEditItemDelegate
         let view = CreateEditLoginView(viewModel: viewModel)
         present(view, dismissable: false)
@@ -117,8 +108,7 @@ private extension CreateEditItemCoordinator {
 
     func presentCreateEditAliasView(mode: ItemMode) throws {
         let viewModel = try CreateEditAliasViewModel(mode: mode,
-                                                     upgradeChecker: upgradeChecker,
-                                                     vaults: appContentManager.getAllShares())
+                                                     upgradeChecker: upgradeChecker)
         let view = CreateEditAliasView(viewModel: viewModel)
         present(view, dismissable: false)
         currentViewModel = viewModel
@@ -126,8 +116,7 @@ private extension CreateEditItemCoordinator {
 
     func presentCreateEditCreditCardView(mode: ItemMode) throws {
         let viewModel = try CreateEditCreditCardViewModel(mode: mode,
-                                                          upgradeChecker: upgradeChecker,
-                                                          vaults: appContentManager.getAllShares())
+                                                          upgradeChecker: upgradeChecker)
         let view = CreateEditCreditCardView(viewModel: viewModel)
         present(view, dismissable: false)
         currentViewModel = viewModel
@@ -135,8 +124,7 @@ private extension CreateEditItemCoordinator {
 
     func presentCreateEditNoteView(mode: ItemMode) throws {
         let viewModel = try CreateEditNoteViewModel(mode: mode,
-                                                    upgradeChecker: upgradeChecker,
-                                                    vaults: appContentManager.getAllShares())
+                                                    upgradeChecker: upgradeChecker)
         let view = CreateEditNoteView(viewModel: viewModel)
         present(view, dismissable: false)
         currentViewModel = viewModel
@@ -144,8 +132,7 @@ private extension CreateEditItemCoordinator {
 
     func presentCreateEditIdentityView(mode: ItemMode) throws {
         let viewModel = try CreateEditIdentityViewModel(mode: mode,
-                                                        upgradeChecker: upgradeChecker,
-                                                        vaults: appContentManager.getAllShares())
+                                                        upgradeChecker: upgradeChecker)
         let view = CreateEditIdentityView(viewModel: viewModel)
         present(view, dismissable: false)
         currentViewModel = viewModel
@@ -153,8 +140,7 @@ private extension CreateEditItemCoordinator {
 
     func presentCreateEditSshKeyView(mode: ItemMode) throws {
         let viewModel = try CreateEditSshKeyViewModel(mode: mode,
-                                                      upgradeChecker: upgradeChecker,
-                                                      vaults: appContentManager.getAllShares())
+                                                      upgradeChecker: upgradeChecker)
         let view = CreateEditSshKeyView(viewModel: viewModel)
         present(view, dismissable: false)
         currentViewModel = viewModel
@@ -162,8 +148,7 @@ private extension CreateEditItemCoordinator {
 
     func presentCreateEditWifiView(mode: ItemMode) throws {
         let viewModel = try CreateEditWifiViewModel(mode: mode,
-                                                    upgradeChecker: upgradeChecker,
-                                                    vaults: appContentManager.getAllShares())
+                                                    upgradeChecker: upgradeChecker)
         let view = CreateEditWifiView(viewModel: viewModel)
         present(view, dismissable: false)
         currentViewModel = viewModel
@@ -171,8 +156,7 @@ private extension CreateEditItemCoordinator {
 
     func presentCreateEditCustomView(mode: ItemMode) throws {
         let viewModel = try CreateEditCustomItemViewModel(mode: mode,
-                                                          upgradeChecker: upgradeChecker,
-                                                          vaults: appContentManager.getAllShares())
+                                                          upgradeChecker: upgradeChecker)
         let view = CreateEditCustomItemView(viewModel: viewModel)
         present(view, dismissable: false)
         currentViewModel = viewModel
@@ -182,11 +166,11 @@ private extension CreateEditItemCoordinator {
 // MARK: - Custom item
 
 private extension CreateEditItemCoordinator {
-    func presentCustomItemList(shareId: String?, onError: @escaping (any Error) -> Void) throws {
+    func presentCustomItemList(onError: @escaping (any Error) -> Void) throws {
         let view = CustomItemTemplatesList { [weak self] template in
             guard let self else { return }
             do {
-                try handle(template: template, shareId: shareId)
+                try handle(template: template)
             } catch {
                 onError(error)
             }
@@ -195,14 +179,14 @@ private extension CreateEditItemCoordinator {
         present(view, dismissable: true)
     }
 
-    func handle(template: CustomItemTemplate, shareId: String?) throws {
+    func handle(template: CustomItemTemplate) throws {
         switch template {
         case .sshKey:
-            try presentCreateEditSshKeyView(mode: .create(shareId: shareId, type: .sshKey))
+            try presentCreateEditSshKeyView(mode: .create(.sshKey))
         case .wifi:
-            try presentCreateEditWifiView(mode: .create(shareId: shareId, type: .wifi))
+            try presentCreateEditWifiView(mode: .create(.wifi))
         default:
-            try presentCreateEditCustomView(mode: .create(shareId: shareId, type: .custom(template)))
+            try presentCreateEditCustomView(mode: .create(.custom(template)))
         }
     }
 }

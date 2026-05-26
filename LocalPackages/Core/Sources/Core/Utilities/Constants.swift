@@ -70,7 +70,6 @@ public enum Constants {
     public enum ContentFormatVersion {
         public static let item = 7
         public static let vault = 1
-        // periphery:ignore
         public static let folder = 1
     }
 
@@ -87,6 +86,12 @@ public enum Constants {
     public enum Database {
         public static let encryptedSlNotePlaceholder = "NULL"
         public static let fetchBatchSize = 200
+    }
+
+    public enum FolderDefaultLimits {
+        public static let maxFoldersPerVault = 100
+        public static let maxFoldersPerLayer = 10
+        public static let maxFolderDepth = 5
     }
 
     // swiftlint:disable:next type_name

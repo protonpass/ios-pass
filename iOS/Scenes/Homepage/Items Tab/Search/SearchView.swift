@@ -46,7 +46,7 @@ struct SearchView: View {
                 }
             }
             .animation(.default, value: viewModel.state)
-            .onChange(of: refreshResults) { _ in
+            .onChange(of: refreshResults) {
                 viewModel.refreshResults()
             }
             .onFirstAppear {
@@ -121,8 +121,8 @@ private extension SearchView {
             Spacer()
         }
         .ignoresSafeArea(edges: .bottom)
-        .onChange(of: viewModel.state) { state in
-            if state != .initializing {
+        .onChange(of: viewModel.state) {
+            if viewModel.state != .initializing {
                 isFocusedOnSearchBar = true
             }
         }

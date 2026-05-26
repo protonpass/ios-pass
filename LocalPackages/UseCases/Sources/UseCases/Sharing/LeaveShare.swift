@@ -41,6 +41,6 @@ public final class LeaveShare: @unchecked Sendable, LeaveShareUseCase {
 
     public func execute(userId: String, with shareId: String) async throws {
         try await appContentManager.delete(userId: userId, shareId: shareId)
-        try await appContentManager.refresh(userId: userId)
+        await appContentManager.refresh(userId: userId)
     }
 }

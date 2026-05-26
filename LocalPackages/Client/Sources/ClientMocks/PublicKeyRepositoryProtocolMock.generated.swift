@@ -33,7 +33,7 @@ public final class PublicKeyRepositoryProtocolMock: @unchecked Sendable, PublicK
     public var invokedGetPublicKeysCount = 0
     public var invokedGetPublicKeysParameters: (email: String, Void)?
     public var invokedGetPublicKeysParametersList = [(email: String, Void)]()
-    public var stubbedGetPublicKeysResult: [PublicKey]!
+    public nonisolated(unsafe) var stubbedGetPublicKeysResult: [PublicKey]!
 
     public func getPublicKeys(email: String) async throws -> [PublicKey] {
         invokedGetPublicKeysfunction = true

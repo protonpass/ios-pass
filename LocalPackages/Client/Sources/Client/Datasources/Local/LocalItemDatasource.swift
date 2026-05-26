@@ -33,7 +33,8 @@ public protocol LocalItemDatasourceProtocol: Sendable {
     func getItems(userId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem]
 
     /// Get items by state
-    func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem]
+    func getItems(shareId: String, folderId: String?, state: ItemState) async throws
+        -> [SymmetricallyEncryptedItem]
 
     /// Get items by ShareID and ItemID
     func getItems(_ ids: [any ItemIdentifiable]) async throws -> [SymmetricallyEncryptedItem]
@@ -87,6 +88,12 @@ public protocol LocalItemDatasourceProtocol: Sendable {
     func getItems(for items: [any ItemIdentifiable]) async throws -> [SymmetricallyEncryptedItem]
 }
 
+extension LocalItemDatasourceProtocol {
+    func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
+        try await getItems(shareId: shareId, folderId: nil, state: state)
+    }
+}
+
 public final class LocalItemDatasource: LocalDatasource, LocalItemDatasourceProtocol, @unchecked Sendable {}
 
 public extension LocalItemDatasource {
@@ -124,13 +131,23 @@ public extension LocalItemDatasource {
         return try itemEntities.map { try $0.toEncryptedItem() }
     }
 
-    func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
+    func getItems(shareId: String,
+                  folderId: String?,
+                  state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ItemEntity.fetchRequest()
-        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-            .init(format: "shareID = %@", shareId),
-            .init(format: "state = %d", state.rawValue)
-        ])
+        fetchRequest.predicate = if let folderId {
+            NSCompoundPredicate(andPredicateWithSubpredicates: [
+                .init(format: "shareID = %@", shareId),
+                .init(format: "folderID = %@", folderId),
+                .init(format: "state = %d", state.rawValue)
+            ])
+        } else {
+            NSCompoundPredicate(andPredicateWithSubpredicates: [
+                .init(format: "shareID = %@", shareId),
+                .init(format: "state = %d", state.rawValue)
+            ])
+        }
         fetchRequest.sortDescriptors = [.init(key: "modifyTime", ascending: false)]
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return try itemEntities.map { try $0.toEncryptedItem() }
@@ -156,7 +173,7 @@ public extension LocalItemDatasource {
         ])
         fetchRequest.fetchLimit = 1
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
-        return try itemEntities.first.map { try $0.toEncryptedItem() }
+        return try itemEntities.first?.toEncryptedItem()
     }
 
     func getAliasItem(email: String, shareId: String) async throws -> SymmetricallyEncryptedItem? {
@@ -168,7 +185,7 @@ public extension LocalItemDatasource {
         ])
         fetchRequest.fetchLimit = 1
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
-        return try itemEntities.first.map { try $0.toEncryptedItem() }
+        return try itemEntities.first?.toEncryptedItem()
     }
 
     // periphery:ignore
@@ -266,9 +283,11 @@ public extension LocalItemDatasource {
                                        lastUseTime: item.item.lastUseTime,
                                        revisionTime: modifiedItem.revisionTime,
                                        flags: modifiedItem.flags,
-                                       shareCount: item.item.shareCount)
+                                       shareCount: item.item.shareCount,
+                                       folderID: modifiedItem.folderID)
                 itemsToUpsert.append(.init(shareId: item.shareId,
                                            userId: item.userId,
+                                           folderId: modifiedItem.folderID,
                                            item: updatedItem,
                                            encryptedContent: item.encryptedContent,
                                            isLogInItem: item.isLogInItem,

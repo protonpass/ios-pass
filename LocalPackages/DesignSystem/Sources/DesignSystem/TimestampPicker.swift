@@ -62,8 +62,8 @@ public struct TimestampPicker: View {
                 Spacer()
             }
         }
-        .onChange(of: date) { newValue in
-            value = String(Int(newValue.timeIntervalSince1970))
+        .onChange(of: date) {
+            value = String(Int(date.timeIntervalSince1970))
         }
     }
 }

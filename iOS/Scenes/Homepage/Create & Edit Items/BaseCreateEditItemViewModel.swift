@@ -35,7 +35,7 @@ import UseCases
 typealias ScanResponsePublisher = PassthroughSubject<(any ScanResult)?, any Error>
 
 enum ItemMode: Equatable, Hashable {
-    case create(shareId: String?, type: ItemCreationType)
+    case create(ItemCreationType)
     case clone(ItemContent)
     case edit(ItemContent)
 
@@ -143,7 +143,7 @@ struct ItemEditionAlertContent {
 class BaseCreateEditItemViewModel: ObservableObject {
     @Published var title = ""
     @Published var note = ""
-    @Published var selectedVault: Share
+    @Published var selectedContainer: ShareSelectionPayload
     @Published private(set) var isFreeUser = false
     @Published private(set) var isSaving = false
     @Published private(set) var canAddMoreCustomFields = true
@@ -188,12 +188,12 @@ class BaseCreateEditItemViewModel: ObservableObject {
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     let upgradeChecker: any UpgradeCheckerProtocol
     let logger = resolve(\SharedToolingContainer.logger)
-    let vaults: [Share]
+    let userManager = resolve(\SharedServiceContainer.userManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
     private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
     private let updateUserPreferences = resolve(\SharedUseCasesContainer.updateUserPreferences)
-    @LazyInjected(\SharedServiceContainer.userManager) var userManager
+    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
     @LazyInjected(\SharedRepositoryContainer.fileAttachmentRepository) private var fileRepository
     @LazyInjected(\SharedUseCasesContainer.generateDatedFileName) private var generateDatedFileName
@@ -261,46 +261,54 @@ class BaseCreateEditItemViewModel: ObservableObject {
         false
     }
 
-    var isPhone: Bool {
-        UIDevice.current.userInterfaceIdiom == .phone
-    }
-
     var cancellables = Set<AnyCancellable>()
 
     private var uploadFileTask: Task<Void, Never>?
 
     init(mode: ItemMode,
-         upgradeChecker: any UpgradeCheckerProtocol,
-         vaults: [Share]) throws {
-        let vaultShareId: String?
+         upgradeChecker: any UpgradeCheckerProtocol) throws {
+        self.mode = mode
+        self.upgradeChecker = upgradeChecker
+
+        guard let shareContents = appContentManager.state.loadedContent else {
+            throw PassError.vault(.vaultsNotFound(userId: userManager.activeUserId ?? "Unknown"))
+        }
+
+        var container: ShareSelectionPayload?
+
         switch mode {
-        case let .create(shareId, _):
-            vaultShareId = shareId
+        case .create:
+            if let selection = appContentManager.shareSelection.preciseSelectionPayload,
+               selection.share.canEdit {
+                container = selection
+            }
         case let .clone(itemContent), let .edit(itemContent):
-            vaultShareId = itemContent.shareId
+            if let shareContent = shareContents.shares[itemContent.shareId] {
+                let folder: FolderUiModel? = if let folderId = itemContent.item.folderID {
+                    shareContent.folder(for: folderId)
+                } else {
+                    nil
+                }
+                container = ShareSelectionPayload(share: shareContent.share, folder: folder)
+            }
+
             customFields = itemContent.customFields
         }
 
-        let lastCreatedItemVault: Share? = if let shareId = getUserPreferences().lastCreatedItemShareId {
-            vaults.first { $0.shareId == shareId && $0.canEdit }
-        } else {
-            nil
+        if container == nil {
+            if let shareId = getUserPreferences().lastCreatedItemShareId,
+               let share = shareContents.shares[shareId]?.share, share.canEdit {
+                container = ShareSelectionPayload(share: share, folder: nil)
+            } else if let oldestShare = appContentManager.getOldestOwnedVault() {
+                container = ShareSelectionPayload(share: oldestShare, folder: nil)
+            }
         }
 
-        let editableVault = vaults.first { $0.shareId == vaultShareId && $0.canEdit }
-        let oldestOwnedVault = vaults.autofillAllowedVaults.oldestOwned
-
-        guard let vault = editableVault ??
-            lastCreatedItemVault ??
-            oldestOwnedVault ??
-            vaults.first(where: \.canEdit) else {
+        guard let container else {
             throw PassError.vault(.noEditableVault)
         }
 
-        selectedVault = vault
-        self.mode = mode
-        self.upgradeChecker = upgradeChecker
-        self.vaults = vaults
+        selectedContainer = container
         bindValues()
         setUp()
     }
@@ -375,9 +383,10 @@ class BaseCreateEditItemViewModel: ObservableObject {
     }
 
     func fetchAttachedFiles() async {
-        guard mode.isEditMode, // Do not fetch attachments when cloning items
-              let itemContent = mode.itemContent,
-              itemContent.item.hasFiles else {
+        guard
+            mode.isEditMode, // Do not fetch attachments when cloning items
+            let itemContent = mode.itemContent,
+            itemContent.item.hasFiles else {
             attachedFiles = nil
             return
         }
@@ -386,7 +395,7 @@ class BaseCreateEditItemViewModel: ObservableObject {
             let userId = try await userManager.getActiveUserId()
             let files = try await fileRepository.getActiveItemFiles(userId: userId,
                                                                     item: itemContent,
-                                                                    share: selectedVault)
+                                                                    share: selectedContainer.share)
             attachedFiles = .fetched(files)
             for file in files {
                 self.files.upsert(file)
@@ -505,7 +514,7 @@ private extension BaseCreateEditItemViewModel {
     }
 
     func createItem(for type: ItemContentType) async throws -> SymmetricallyEncryptedItem? {
-        let shareId = selectedVault.shareId
+        let shareId = selectedContainer.share.shareId
         guard let itemContent = await generateItemContent() else {
             logger.warning("No item content")
             return nil
@@ -517,7 +526,8 @@ private extension BaseCreateEditItemViewModel {
                 return try await itemRepository.createAlias(userId: userId,
                                                             info: aliasCreationInfo,
                                                             itemContent: itemContent,
-                                                            shareId: shareId)
+                                                            shareId: shareId,
+                                                            folderId: selectedContainer.folder?.folderId)
             } else {
                 assertionFailure("aliasCreationInfo should not be null")
                 logger.warning("Can not create alias because creation info is empty")
@@ -532,7 +542,8 @@ private extension BaseCreateEditItemViewModel {
                                              info: aliasCreationInfo,
                                              aliasItemContent: aliasItemContent,
                                              otherItemContent: itemContent,
-                                             shareId: shareId)
+                                             shareId: shareId,
+                                             folderId: selectedContainer.folder?.folderId)
                 return createdLoginItem
             }
 
@@ -540,7 +551,10 @@ private extension BaseCreateEditItemViewModel {
             break
         }
 
-        return try await itemRepository.createItem(userId: userId, itemContent: itemContent, shareId: shareId)
+        return try await itemRepository.createItem(userId: userId,
+                                                   itemContent: itemContent,
+                                                   shareId: shareId,
+                                                   folderId: selectedContainer.folder?.folderId)
     }
 
     /// Return `true` if item is edited, `false` otherwise
@@ -658,7 +672,7 @@ extension BaseCreateEditItemViewModel {
         } else {
             false
         }
-        let isSharedVault = selectedVault.shared
+        let isSharedVault = selectedContainer.share.shared
 
         if shouldShowSharedItemAlert, isSharedItem || isSharedVault {
             let title = isSharedVault ? #localized("Item in a shared vault") : #localized("Shared item")
@@ -728,11 +742,12 @@ extension BaseCreateEditItemViewModel {
                                                         aliasToCopy: aliasToCopy,
                                                         createPasskeyResponse: passkey))
                     }
-                    try await updateUserPreferences(\.lastCreatedItemShareId, value: selectedVault.shareId)
+                    try await updateUserPreferences(\.lastCreatedItemShareId,
+                                                    value: selectedContainer.share.shareId)
                 }
 
                 switch mode {
-                case let .create(_, type):
+                case let .create(type):
                     try await handleCreation(type.itemContentType)
 
                 case let .clone(itemContent):

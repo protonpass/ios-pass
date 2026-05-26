@@ -36,16 +36,10 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
     public var invokedCurrentActiveUserList = [CurrentValueSubject<UserData?, Never>?]()
     public var invokedCurrentActiveUserGetter = false
     public var invokedCurrentActiveUserGetterCount = 0
-    public var stubbedCurrentActiveUser: CurrentValueSubject<UserData?, Never>!
+    public nonisolated(unsafe) var stubbedCurrentActiveUser: CurrentValueSubject<UserData?, Never>!
+
     public var currentActiveUser: CurrentValueSubject<UserData?, Never> {
-        set {
-            invokedCurrentActiveUserSetter = true
-            invokedCurrentActiveUserSetterCount += 1
-            invokedCurrentActiveUser = newValue
-            invokedCurrentActiveUserList.append(newValue)
-        } get {
-            invokedCurrentActiveUserGetter = true
-            invokedCurrentActiveUserGetterCount += 1
+         get {
             return stubbedCurrentActiveUser
         }
     }
@@ -56,16 +50,10 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
     public var invokedAllUserAccountsList = [CurrentValueSubject<[UserData], Never>?]()
     public var invokedAllUserAccountsGetter = false
     public var invokedAllUserAccountsGetterCount = 0
-    public var stubbedAllUserAccounts: CurrentValueSubject<[UserData], Never>!
+    public nonisolated(unsafe) var stubbedAllUserAccounts: CurrentValueSubject<[UserData], Never>!
+
     public var allUserAccounts: CurrentValueSubject<[UserData], Never> {
-        set {
-            invokedAllUserAccountsSetter = true
-            invokedAllUserAccountsSetterCount += 1
-            invokedAllUserAccounts = newValue
-            invokedAllUserAccountsList.append(newValue)
-        } get {
-            invokedAllUserAccountsGetter = true
-            invokedAllUserAccountsGetterCount += 1
+         get {
             return stubbedAllUserAccounts
         }
     }
@@ -88,7 +76,7 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
     public var closureGetActiveUserData: () -> () = {}
     public var invokedGetActiveUserDatafunction = false
     public var invokedGetActiveUserDataCount = 0
-    public var stubbedGetActiveUserDataResult: UserData?
+    public nonisolated(unsafe) var stubbedGetActiveUserDataResult: UserData?
 
     public func getActiveUserData() async throws -> UserData? {
         invokedGetActiveUserDatafunction = true
@@ -155,7 +143,7 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
     public var closureGetAllUsers: () -> () = {}
     public var invokedGetAllUsersfunction = false
     public var invokedGetAllUsersCount = 0
-    public var stubbedGetAllUsersResult: [UserData]!
+    public nonisolated(unsafe) var stubbedGetAllUsersResult: [UserData]!
 
     public func getAllUsers() async throws -> [UserData] {
         invokedGetAllUsersfunction = true

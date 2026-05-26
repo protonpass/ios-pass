@@ -34,7 +34,7 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
     public var invokedGetAllItemsCount = 0
     public var invokedGetAllItemsParameters: (userId: String, Void)?
     public var invokedGetAllItemsParametersList = [(userId: String, Void)]()
-    public var stubbedGetAllItemsResult: [SymmetricallyEncryptedItem]!
+    public nonisolated(unsafe) var stubbedGetAllItemsResult: [SymmetricallyEncryptedItem]!
 
     public func getAllItems(userId: String) async throws -> [SymmetricallyEncryptedItem] {
         invokedGetAllItemsfunction = true
@@ -53,7 +53,7 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
     public var invokedGetAllPinnedItemsCount = 0
     public var invokedGetAllPinnedItemsParameters: (userId: String, Void)?
     public var invokedGetAllPinnedItemsParametersList = [(userId: String, Void)]()
-    public var stubbedGetAllPinnedItemsResult: [SymmetricallyEncryptedItem]!
+    public nonisolated(unsafe) var stubbedGetAllPinnedItemsResult: [SymmetricallyEncryptedItem]!
 
     public func getAllPinnedItems(userId: String) async throws -> [SymmetricallyEncryptedItem] {
         invokedGetAllPinnedItemsfunction = true
@@ -84,24 +84,24 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
         closureGetItemsUserIdStateAsync3()
         return stubbedGetItemsUserIdStateAsyncResult3
     }
-    // MARK: - getItemsShareIdState
-    public var getItemsShareIdStateThrowableError4: Error?
-    public var closureGetItemsShareIdStateAsync4: () -> () = {}
-    public var invokedGetItemsShareIdStateAsync4 = false
-    public var invokedGetItemsShareIdStateAsyncCount4 = 0
-    public var invokedGetItemsShareIdStateAsyncParameters4: (shareId: String, state: ItemState)?
-    public var invokedGetItemsShareIdStateAsyncParametersList4 = [(shareId: String, state: ItemState)]()
-    public var stubbedGetItemsShareIdStateAsyncResult4: [SymmetricallyEncryptedItem]!
+    // MARK: - getItemsShareIdFolderIdState
+    public var getItemsShareIdFolderIdStateThrowableError4: Error?
+    public var closureGetItemsShareIdFolderIdStateAsync4: () -> () = {}
+    public var invokedGetItemsShareIdFolderIdStateAsync4 = false
+    public var invokedGetItemsShareIdFolderIdStateAsyncCount4 = 0
+    public var invokedGetItemsShareIdFolderIdStateAsyncParameters4: (shareId: String, folderId: String?, state: ItemState)?
+    public var invokedGetItemsShareIdFolderIdStateAsyncParametersList4 = [(shareId: String, folderId: String?, state: ItemState)]()
+    public var stubbedGetItemsShareIdFolderIdStateAsyncResult4: [SymmetricallyEncryptedItem]!
 
-    public func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
-        invokedGetItemsShareIdStateAsync4 = true
-        invokedGetItemsShareIdStateAsyncCount4 += 1
-        invokedGetItemsShareIdStateAsyncParameters4 = (shareId, state)
-        if let error = getItemsShareIdStateThrowableError4 {
+    public func getItems(shareId: String, folderId: String?, state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
+        invokedGetItemsShareIdFolderIdStateAsync4 = true
+        invokedGetItemsShareIdFolderIdStateAsyncCount4 += 1
+        invokedGetItemsShareIdFolderIdStateAsyncParameters4 = (shareId, folderId, state)
+        if let error = getItemsShareIdFolderIdStateThrowableError4 {
             throw error
         }
-        closureGetItemsShareIdStateAsync4()
-        return stubbedGetItemsShareIdStateAsyncResult4
+        closureGetItemsShareIdFolderIdStateAsync4()
+        return stubbedGetItemsShareIdFolderIdStateAsyncResult4
     }
     // MARK: - getItemsIds
     public var getItemsThrowableError5: Error?
@@ -129,7 +129,7 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
     public var invokedGetItemCount = 0
     public var invokedGetItemParameters: (shareId: String, itemId: String)?
     public var invokedGetItemParametersList = [(shareId: String, itemId: String)]()
-    public var stubbedGetItemResult: SymmetricallyEncryptedItem?
+    public nonisolated(unsafe) var stubbedGetItemResult: SymmetricallyEncryptedItem?
 
     public func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem? {
         invokedGetItemfunction = true
@@ -148,7 +148,7 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
     public var invokedGetAliasItemCount = 0
     public var invokedGetAliasItemParameters: (email: String, shareId: String)?
     public var invokedGetAliasItemParametersList = [(email: String, shareId: String)]()
-    public var stubbedGetAliasItemResult: SymmetricallyEncryptedItem?
+    public nonisolated(unsafe) var stubbedGetAliasItemResult: SymmetricallyEncryptedItem?
 
     public func getAliasItem(email: String, shareId: String) async throws -> SymmetricallyEncryptedItem? {
         invokedGetAliasItemfunction = true
@@ -167,7 +167,7 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
     public var invokedGetItemCountCount = 0
     public var invokedGetItemCountParameters: (shareId: String, Void)?
     public var invokedGetItemCountParametersList = [(shareId: String, Void)]()
-    public var stubbedGetItemCountResult: Int!
+    public nonisolated(unsafe) var stubbedGetItemCountResult: Int!
 
     public func getItemCount(shareId: String) async throws -> Int {
         invokedGetItemCountfunction = true
@@ -186,7 +186,7 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
     public var invokedGetAliasCountCount = 0
     public var invokedGetAliasCountParameters: (userId: String, Void)?
     public var invokedGetAliasCountParametersList = [(userId: String, Void)]()
-    public var stubbedGetAliasCountResult: Int!
+    public nonisolated(unsafe) var stubbedGetAliasCountResult: Int!
 
     public func getAliasCount(userId: String) async throws -> Int {
         invokedGetAliasCountfunction = true
@@ -205,7 +205,7 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
     public var invokedGetUnsyncedSimpleLoginNoteAliasesCount = 0
     public var invokedGetUnsyncedSimpleLoginNoteAliasesParameters: (userId: String, Void)?
     public var invokedGetUnsyncedSimpleLoginNoteAliasesParametersList = [(userId: String, Void)]()
-    public var stubbedGetUnsyncedSimpleLoginNoteAliasesResult: [SymmetricallyEncryptedItem]!
+    public nonisolated(unsafe) var stubbedGetUnsyncedSimpleLoginNoteAliasesResult: [SymmetricallyEncryptedItem]!
 
     public func getUnsyncedSimpleLoginNoteAliases(userId: String) async throws -> [SymmetricallyEncryptedItem] {
         invokedGetUnsyncedSimpleLoginNoteAliasesfunction = true
@@ -374,7 +374,7 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
     public var invokedGetActiveLogInItemsCount = 0
     public var invokedGetActiveLogInItemsParameters: (userId: String, Void)?
     public var invokedGetActiveLogInItemsParametersList = [(userId: String, Void)]()
-    public var stubbedGetActiveLogInItemsResult: [SymmetricallyEncryptedItem]!
+    public nonisolated(unsafe) var stubbedGetActiveLogInItemsResult: [SymmetricallyEncryptedItem]!
 
     public func getActiveLogInItems(userId: String) async throws -> [SymmetricallyEncryptedItem] {
         invokedGetActiveLogInItemsfunction = true

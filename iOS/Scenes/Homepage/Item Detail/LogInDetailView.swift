@@ -56,9 +56,13 @@ private extension LogInDetailView {
                                 .padding(.vertical)
                         }
 
+                        if let vaultContent = viewModel.shareContent?.share.vaultContent {
+                            ItemPathBreadcrumbView(vaultContent: vaultContent, path: viewModel.path)
+                        }
+
                         ItemDetailTitleView(itemContent: viewModel.itemContent,
                                             vault: viewModel.vault?.vault)
-                            .padding(.bottom, 40)
+                            .padding(.vertical, 16)
 
                         if !viewModel.passkeys.isEmpty {
                             ForEach(viewModel.passkeys, id: \.keyID) { passkey in
@@ -109,7 +113,7 @@ private extension LogInDetailView {
                     .padding()
                 }
                 .animation(.default, value: viewModel.moreInfoSectionExpanded)
-                .onChange(of: viewModel.moreInfoSectionExpanded) { _ in
+                .onChange(of: viewModel.moreInfoSectionExpanded) {
                     withAnimation { value.scrollTo(bottomID, anchor: .bottom) }
                 }
             }

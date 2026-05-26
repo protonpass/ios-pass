@@ -185,8 +185,9 @@ extension LocalItemDatasourceTests {
         let givenShareId = String.random()
         let givenItem = try await sut.givenInsertedItem(itemId: givenItemId,
                                                         shareId: givenShareId)
-        let updatedItemRevision = Item.random(itemId: givenItemId)
+        let updatedItemRevision = Item.random(itemId: givenItemId, folderId: givenItem.folderId)
         let updatedItem = SymmetricallyEncryptedItem.random(shareId: givenShareId,
+                                                            folderId: givenItem.folderId,
                                                             item: updatedItemRevision,
                                                             isLogInItem: givenItem.isLogInItem)
 
@@ -213,6 +214,7 @@ extension LocalItemDatasourceTests {
 
         // When
         let modifiedItem = ModifiedItem(itemID: insertedItem.item.itemID,
+                                        folderID: nil,
                                         revision: insertedItem.item.revision,
                                         state: ItemState.trashed.rawValue,
                                         modifyTime: insertedItem.item.modifyTime,
@@ -238,6 +240,7 @@ extension LocalItemDatasourceTests {
         
         // When
         let modifiedItem = ModifiedItem(itemID: insertedItem.item.itemID,
+                                        folderID: nil,
                                         revision: insertedItem.item.revision,
                                         state: ItemState.active.rawValue,
                                         modifyTime: insertedItem.item.modifyTime,
@@ -544,6 +547,7 @@ private extension LocalItemDatasource {
         let encryptedContent = encryptedContent ?? .random()
         let item = SymmetricallyEncryptedItem(shareId: shareId, 
                                               userId: userId ?? .random(),
+                                              folderId: itemRevision.folderID,
                                               item: itemRevision,
                                               encryptedContent: encryptedContent,
                                               isLogInItem: isLogInItem,

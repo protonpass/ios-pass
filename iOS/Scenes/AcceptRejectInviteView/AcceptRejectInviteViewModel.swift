@@ -106,12 +106,13 @@ private extension AcceptRejectInviteViewModel {
             .sink { [weak self] state in
                 guard let self,
                       let sharesData = state.loadedContent,
-                      let shareContent = sharesData.shares
+                      let shareContent = sharesData.shares.values
                       .first(where: { $0.share.targetID == self.invite.targetID })
                 else {
                     return
                 }
-                if !shareContent.share.isVaultRepresentation, shareContent.items.isEmpty {
+                if !shareContent.share.isVaultRepresentation,
+                   shareContent.flattenedItems(from: shareContent.id).isEmpty {
                     return
                 }
                 guard case .user = invite else {
@@ -146,7 +147,7 @@ private extension AcceptRejectInviteViewModel {
 
     func displayItemPage(shareContent: ShareContent) {
         guard !invite.isVault,
-              let item = shareContent.items.first else {
+              let item = shareContent.allItems.first else {
             cleanup()
             return
         }

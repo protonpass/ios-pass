@@ -18,21 +18,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import DesignSystem
 import Entities
 import FactoryKit
+import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 
 struct VaultSelectorView: View {
     @Environment(\.dismiss) private var dismiss
-    @Binding var selectedVault: Share
+    @Binding var selectedContainer: ShareSelectionPayload
     let isFreeUser: Bool
     let onUpgrade: () -> Void
 
-    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
+    @State private var expandedContainerIds = Set<String>()
 
-    private var vaults: [ShareContent] {
+    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+
+    private var shares: [ShareContent] {
         appContentManager
             .getAllEditableVaultContents()
             .sortedByHidden()
@@ -46,19 +51,7 @@ struct VaultSelectorView: View {
                         .padding([.horizontal, .top])
                 }
 
-                ScrollView {
-                    VStack(spacing: 0) {
-                        ForEach(vaults) { vault in
-                            if let vaultContent = vault.share.vaultContent {
-                                view(for: vault, vaultContent: vaultContent)
-                            }
-                            if vault != vaults.last {
-                                PassDivider()
-                                    .padding(.horizontal)
-                            }
-                        }
-                    }
-                }
+                mainScrollView
             }
             .navigationBarTitleDisplayMode(.inline)
             .background(PassColor.backgroundWeak)
@@ -68,23 +61,99 @@ struct VaultSelectorView: View {
                         .navigationTitleText()
                 }
             }
+        }.task(id: selectedContainer.id) {
+            load()
         }
     }
 
-    private func view(for vaultInfos: ShareContent, vaultContent: VaultContent) -> some View {
+    private func toggleDisplayContainerContent(containerId: String) {
+        if expandedContainerIds.remove(containerId) == nil {
+            expandedContainerIds.insert(containerId)
+        }
+    }
+
+    func load() {
+        if selectedContainer.isFolderSelected {
+            expandedContainerIds.insert(selectedContainer.share.id)
+            if let shareContent = appContentManager.getShareContent(for: selectedContainer.share.id) {
+                for folder in shareContent.flattenedFolders(from: selectedContainer.share.id) {
+                    expandedContainerIds.insert(folder.id)
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Views
+
+private extension VaultSelectorView {
+    var mainScrollView: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 0) {
+                ForEach(shares) { shareContent in
+                    fullRow(content: shareContent)
+                        .padding(.horizontal)
+                    if shareContent != shares.last {
+                        PassDivider()
+                            .padding(.horizontal)
+                    }
+                }
+            }
+        }
+        .animation(.default, value: expandedContainerIds)
+    }
+
+    @ViewBuilder
+    private func fullRow(content: ShareContent) -> some View {
+        if let vaultContent = content.share.vaultContent {
+            HStack(spacing: 16) {
+                expandVaultRow(content: content)
+                vaultRow(for: content, vaultContent: vaultContent)
+            }
+
+            folderRow(content: content)
+        }
+    }
+
+    @ViewBuilder
+    func expandVaultRow(content: ShareContent) -> some View {
+        if getFeatureFlagStatus(for: FeatureFlagType.passFolder), let folders = content.folders(in: content.id),
+           !folders.isEmpty {
+            Button { toggleDisplayContainerContent(containerId: content.id) } label: {
+                ExpandRowButtonDisplay(expanded: expandedContainerIds.contains(content.id))
+            }
+            .buttonStyle(.plain)
+        }
+    }
+
+    func vaultRow(for vaultInfos: ShareContent, vaultContent: VaultContent) -> some View {
         Button(action: {
-            selectedVault = vaultInfos.share
+            selectedContainer = ShareSelectionPayload(share: vaultInfos.share, folder: nil)
             dismiss()
         }, label: {
             VaultRow(thumbnail: { VaultThumbnail(vaultContent: vaultContent) },
                      title: vaultContent.name,
                      itemCount: vaultInfos.itemCount,
-                     mode: .view(isSelected: selectedVault == vaultInfos.share,
-                                 isHidden: vaultInfos.share.hidden,
-                                 action: nil),
+                     mode: .view(isSelected: selectedContainer.share == vaultInfos.share &&
+                         selectedContainer.isFolderSelected == false,
+                         isHidden: vaultInfos.share.hidden,
+                         action: nil),
                      height: 74)
-                .padding(.horizontal)
         })
         .buttonStyle(.plain)
+    }
+
+    @ViewBuilder
+    func folderRow(content: ShareContent) -> some View {
+        if getFeatureFlagStatus(for: FeatureFlagType.passFolder),
+           let folders = content.folders(in: content.id),
+           !folders.isEmpty, expandedContainerIds.contains(content.id) {
+            FolderTreeView(content: content,
+                           folders: folders,
+                           shouldDismissOnSelection: true,
+                           expandedContainerIds: $expandedContainerIds,
+                           selectedContainer: $selectedContainer.asOptional())
+                .padding(.leading, 30)
+        }
     }
 }

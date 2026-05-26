@@ -70,14 +70,22 @@ public final class SendShareInvite: Sendable, SendShareInviteUseCase {
         let userData = try await userManager.getUnwrappedActiveUserData()
         let userId = userData.user.ID
         let share = try await getShare(userId: userId, from: baseInfo)
-        let itemId = getItemId(from: baseInfo)
-        let key: any ShareKeyProtocol = if baseInfo.shareTargetType == .vault {
+        let item = getItem(from: baseInfo)
+
+        let fullParentId = if let item, item.shareId != item.parentId {
+            item.parentId + share.shareId
+        } else {
+            share.shareId
+        }
+
+        let key: any CryptographicKeyProtocol = if baseInfo.shareTargetType == .vault {
             try await passKeyManager.getLatestShareKey(userId: userId, shareId: share.id)
-        } else if let itemId {
+        } else if let item {
             if share.shareType == .vault {
                 try await passKeyManager.getLatestItemKey(userId: userId,
                                                           shareId: share.id,
-                                                          itemId: itemId)
+                                                          parentId: fullParentId,
+                                                          itemId: item.itemId)
             } else {
                 try await passKeyManager.getLatestShareKey(userId: userId, shareId: share.id)
             }
@@ -92,7 +100,7 @@ public final class SendShareInvite: Sendable, SendShareInviteUseCase {
 
         let invited = try await shareInviteRepository.sendInvites(userId: userId,
                                                                   shareId: share.id,
-                                                                  itemId: itemId,
+                                                                  itemId: item?.itemId,
                                                                   inviteesData: inviteesData,
                                                                   targetType: baseInfo.shareTargetType)
 
@@ -118,10 +126,10 @@ private extension SendShareInvite {
         }
     }
 
-    func getItemId(from info: SharingInfos) -> String? {
+    func getItem(from info: SharingInfos) -> ItemContent? {
         switch info.shareElement {
         case let .item(item, _):
-            item.itemId
+            item
         default:
             nil
         }
@@ -130,7 +138,7 @@ private extension SendShareInvite {
     func generateInviteeData(userData: UserData,
                              from info: SharingInfos,
                              share: Share,
-                             shareKey: any ShareKeyProtocol) async throws -> InviteeData {
+                             shareKey: any CryptographicKeyProtocol) async throws -> InviteeData {
         let email = info.email
         if let key = info.receiverPublicKeys?.first {
             let signedKey = try CryptoUtils.encryptKeyForSharing(addressId: share.addressId,
@@ -148,7 +156,7 @@ private extension SendShareInvite {
     }
 
     func createAndSignSignature(addressId: String,
-                                shareKey: any ShareKeyProtocol,
+                                shareKey: any CryptographicKeyProtocol,
                                 email: String,
                                 userData: UserData) throws -> String {
         guard let addressKey = try CryptoUtils.unlockAddressKeys(addressID: addressId,

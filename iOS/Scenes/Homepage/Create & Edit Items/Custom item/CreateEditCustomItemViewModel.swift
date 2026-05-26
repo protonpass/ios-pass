@@ -59,7 +59,7 @@ final class CreateEditCustomItemViewModel: BaseCreateEditItemViewModel, DeinitPr
     override func bindValues() {
         super.bindValues()
         switch mode {
-        case let .create(_, type):
+        case let .create(type):
             if case let .custom(template) = type {
                 assert(template != .sshKey && template != .wifi,
                        "SSH key and Wifi are not supported as custom item")

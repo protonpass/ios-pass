@@ -40,7 +40,7 @@ extension SearchEntryEntity {
 
 extension SearchEntryEntity {
     func toSearchEntry() -> SearchEntry {
-        .init(itemID: itemID, shareID: shareID, time: time)
+        .init(itemId: itemID, shareId: shareID, time: time)
     }
 
     func hydrate(from item: any ItemIdentifiable, userId: String, date: Date) {

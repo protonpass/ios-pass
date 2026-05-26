@@ -75,6 +75,7 @@ public actor DownloadAndDecryptFile: DownloadAndDecryptFileUseCase {
                 continuation.finish()
             }
         }
+
         guard let share = try await shareRepository.getShare(shareId: item.shareId) else {
             throw PassError.shareNotFoundInLocalDB(shareID: item.shareId)
         }

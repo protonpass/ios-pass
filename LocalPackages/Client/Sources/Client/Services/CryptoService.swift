@@ -25,7 +25,7 @@ import ProtonCoreCrypto
 @preconcurrency import ProtonCoreLogin
 
 public protocol CryptoServiceProtocol: Sendable {
-    func decryptShareKey(_ encryptedKey: ShareKey, userData: UserData, shareId: String) async throws -> Data
+    func decryptShareKey(_ encryptedKey: ShareKey, userId: String, shareId: String) async throws -> Data
 }
 
 public final class CryptoService: CryptoServiceProtocol {
@@ -35,24 +35,31 @@ public final class CryptoService: CryptoServiceProtocol {
     private let logger: Logger
     private let symmetricKeyProvider: any SymmetricKeyProvider
     private let publicKeyRepository: any PublicKeyRepositoryProtocol
+    private let userManager: any UserManagerProtocol
 
     public init(remoteDatasource: any RemoteShareDatasourceProtocol,
                 localDatasource: any LocalShareDatasourceProtocol,
                 groupRepository: any GroupRepositoryProtocol,
                 logManager: any LogManagerProtocol,
                 publicKeyRepository: any PublicKeyRepositoryProtocol,
-                symmetricKeyProvider: any SymmetricKeyProvider) {
+                symmetricKeyProvider: any SymmetricKeyProvider,
+                userManager: any UserManagerProtocol) {
         self.remoteDatasource = remoteDatasource
         self.groupRepository = groupRepository
         logger = .init(manager: logManager)
         self.publicKeyRepository = publicKeyRepository
         self.symmetricKeyProvider = symmetricKeyProvider
         self.localDatasource = localDatasource
+        self.userManager = userManager
     }
 
     public func decryptShareKey(_ encryptedKey: ShareKey,
-                                userData: UserData,
+                                userId: String,
                                 shareId: String) async throws -> Data {
+        guard let userData = try await userManager.getUserData(userId) else {
+            throw PassError.userManager(.noUserDataFound)
+        }
+
         let share = try await getShare(shareId: shareId, userData: userData)
         let keyDescription = "shareId \"\(shareId)\", keyRotation: \"\(encryptedKey.keyRotation)\""
         logger.trace("Decrypting share key \(keyDescription)")

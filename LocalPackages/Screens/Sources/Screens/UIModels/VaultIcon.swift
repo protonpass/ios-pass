@@ -19,6 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+
+// periphery:ignore
 import Entities
 import SwiftUI
 

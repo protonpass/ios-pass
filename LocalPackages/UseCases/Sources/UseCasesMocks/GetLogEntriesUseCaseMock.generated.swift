@@ -33,7 +33,7 @@ public final class GetLogEntriesUseCaseMock: @unchecked Sendable, GetLogEntriesU
     public var invokedExecuteCount = 0
     public var invokedExecuteParameters: (module: PassModule, Void)?
     public var invokedExecuteParametersList = [(module: PassModule, Void)]()
-    public var stubbedExecuteResult: [LogEntry]!
+    public nonisolated(unsafe) var stubbedExecuteResult: [LogEntry]!
 
     public func execute(for module: PassModule) async throws -> [LogEntry] {
         invokedExecutefunction = true

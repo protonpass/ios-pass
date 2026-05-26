@@ -23,6 +23,8 @@ import Entities
 import Foundation
 
 struct ItemMock: ItemIdentifiable {
+    var folderId: String?
+    
     let shareId: String
     let itemId: String
 }

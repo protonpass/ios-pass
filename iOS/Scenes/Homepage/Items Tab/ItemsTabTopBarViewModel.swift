@@ -28,23 +28,6 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
-extension ShareSelection {
-    var accessibilityLabel: String {
-        switch self {
-        case .all:
-            #localized("Show all vaults")
-        case let .precise(vault):
-            #localized("Show %@ vault", vault.vaultName ?? "")
-        case .trash:
-            #localized("Show trash")
-        case .sharedByMe:
-            #localized("Show shared by me")
-        case .sharedWithMe:
-            #localized("Show shared with me")
-        }
-    }
-}
-
 enum ExtraBulkActionOption {
     case pin
     case unpin
@@ -114,8 +97,8 @@ final class ItemsTabTopBarViewModel: ObservableObject {
         switch appContentManager.shareSelection {
         case .all, .sharedByMe, .sharedWithMe, .trash:
             true
-        case let .precise(vault):
-            vault.canEdit
+        case let .precise(selection):
+            selection.share.canEdit
         }
     }
 

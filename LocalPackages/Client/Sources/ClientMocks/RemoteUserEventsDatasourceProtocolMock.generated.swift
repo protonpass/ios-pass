@@ -31,7 +31,7 @@ public final class RemoteUserEventsDatasourceProtocolMock: @unchecked Sendable, 
     public var invokedGetLastEventIdCount = 0
     public var invokedGetLastEventIdParameters: (userId: String, Void)?
     public var invokedGetLastEventIdParametersList = [(userId: String, Void)]()
-    public var stubbedGetLastEventIdResult: String!
+    public nonisolated(unsafe) var stubbedGetLastEventIdResult: String!
 
     public func getLastEventId(userId: String) async throws -> String {
         invokedGetLastEventIdfunction = true
@@ -50,7 +50,7 @@ public final class RemoteUserEventsDatasourceProtocolMock: @unchecked Sendable, 
     public var invokedGetUserEventsCount = 0
     public var invokedGetUserEventsParameters: (userId: String, lastEventId: String)?
     public var invokedGetUserEventsParametersList = [(userId: String, lastEventId: String)]()
-    public var stubbedGetUserEventsResult: UserEvents!
+    public nonisolated(unsafe) var stubbedGetUserEventsResult: UserEvents!
 
     public func getUserEvents(userId: String, lastEventId: String) async throws -> UserEvents {
         invokedGetUserEventsfunction = true

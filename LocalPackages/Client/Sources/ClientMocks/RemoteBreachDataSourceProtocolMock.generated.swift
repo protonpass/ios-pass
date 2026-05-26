@@ -32,7 +32,7 @@ public final class RemoteBreachDataSourceProtocolMock: @unchecked Sendable, Remo
     public var invokedGetAllBreachesForUserCount = 0
     public var invokedGetAllBreachesForUserParameters: (userId: String, Void)?
     public var invokedGetAllBreachesForUserParametersList = [(userId: String, Void)]()
-    public var stubbedGetAllBreachesForUserResult: UserBreaches!
+    public nonisolated(unsafe) var stubbedGetAllBreachesForUserResult: UserBreaches!
 
     public func getAllBreachesForUser(userId: String) async throws -> UserBreaches {
         invokedGetAllBreachesForUserfunction = true
@@ -51,7 +51,7 @@ public final class RemoteBreachDataSourceProtocolMock: @unchecked Sendable, Remo
     public var invokedGetAllCustomEmailForUserCount = 0
     public var invokedGetAllCustomEmailForUserParameters: (userId: String, Void)?
     public var invokedGetAllCustomEmailForUserParametersList = [(userId: String, Void)]()
-    public var stubbedGetAllCustomEmailForUserResult: [CustomEmail]!
+    public nonisolated(unsafe) var stubbedGetAllCustomEmailForUserResult: [CustomEmail]!
 
     public func getAllCustomEmailForUser(userId: String) async throws -> [CustomEmail] {
         invokedGetAllCustomEmailForUserfunction = true
@@ -70,7 +70,7 @@ public final class RemoteBreachDataSourceProtocolMock: @unchecked Sendable, Remo
     public var invokedAddEmailToBreachMonitoringCount = 0
     public var invokedAddEmailToBreachMonitoringParameters: (userId: String, email: String)?
     public var invokedAddEmailToBreachMonitoringParametersList = [(userId: String, email: String)]()
-    public var stubbedAddEmailToBreachMonitoringResult: CustomEmail!
+    public nonisolated(unsafe) var stubbedAddEmailToBreachMonitoringResult: CustomEmail!
 
     public func addEmailToBreachMonitoring(userId: String, email: String) async throws -> CustomEmail {
         invokedAddEmailToBreachMonitoringfunction = true
@@ -106,7 +106,7 @@ public final class RemoteBreachDataSourceProtocolMock: @unchecked Sendable, Remo
     public var invokedGetAllBreachesForEmailCount = 0
     public var invokedGetAllBreachesForEmailParameters: (userId: String, emailId: String)?
     public var invokedGetAllBreachesForEmailParametersList = [(userId: String, emailId: String)]()
-    public var stubbedGetAllBreachesForEmailResult: EmailBreaches!
+    public nonisolated(unsafe) var stubbedGetAllBreachesForEmailResult: EmailBreaches!
 
     public func getAllBreachesForEmail(userId: String, emailId: String) async throws -> EmailBreaches {
         invokedGetAllBreachesForEmailfunction = true
@@ -125,7 +125,7 @@ public final class RemoteBreachDataSourceProtocolMock: @unchecked Sendable, Remo
     public var invokedGetAllBreachesForProtonAddressCount = 0
     public var invokedGetAllBreachesForProtonAddressParameters: (userId: String, addressId: String)?
     public var invokedGetAllBreachesForProtonAddressParametersList = [(userId: String, addressId: String)]()
-    public var stubbedGetAllBreachesForProtonAddressResult: EmailBreaches!
+    public nonisolated(unsafe) var stubbedGetAllBreachesForProtonAddressResult: EmailBreaches!
 
     public func getAllBreachesForProtonAddress(userId: String, addressId: String) async throws -> EmailBreaches {
         invokedGetAllBreachesForProtonAddressfunction = true
@@ -161,7 +161,7 @@ public final class RemoteBreachDataSourceProtocolMock: @unchecked Sendable, Remo
     public var invokedGetBreachesForAliasCount = 0
     public var invokedGetBreachesForAliasParameters: (userId: String, sharedId: String, itemId: String)?
     public var invokedGetBreachesForAliasParametersList = [(userId: String, sharedId: String, itemId: String)]()
-    public var stubbedGetBreachesForAliasResult: EmailBreaches!
+    public nonisolated(unsafe) var stubbedGetBreachesForAliasResult: EmailBreaches!
 
     public func getBreachesForAlias(userId: String, sharedId: String, itemId: String) async throws -> EmailBreaches {
         invokedGetBreachesForAliasfunction = true
@@ -231,7 +231,7 @@ public final class RemoteBreachDataSourceProtocolMock: @unchecked Sendable, Remo
     public var invokedMarkCustomEmailAsResolvedCount = 0
     public var invokedMarkCustomEmailAsResolvedParameters: (userId: String, email: CustomEmail)?
     public var invokedMarkCustomEmailAsResolvedParametersList = [(userId: String, email: CustomEmail)]()
-    public var stubbedMarkCustomEmailAsResolvedResult: CustomEmail!
+    public nonisolated(unsafe) var stubbedMarkCustomEmailAsResolvedResult: CustomEmail!
 
     public func markCustomEmailAsResolved(userId: String, email: CustomEmail) async throws -> CustomEmail {
         invokedMarkCustomEmailAsResolvedfunction = true

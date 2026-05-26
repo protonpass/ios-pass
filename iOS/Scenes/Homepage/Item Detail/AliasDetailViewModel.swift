@@ -199,9 +199,8 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     }
 
     func createLogin() {
-        router.present(for: .createEditLogin(mode: .create(shareId: itemContent.shareId,
-                                                           type: .login(email: aliasEmail,
-                                                                        autofill: false)),
+        router.present(for: .createEditLogin(mode: .create(.login(email: aliasEmail,
+                                                                  autofill: false)),
                                              dismissAllSheets: true))
     }
 }

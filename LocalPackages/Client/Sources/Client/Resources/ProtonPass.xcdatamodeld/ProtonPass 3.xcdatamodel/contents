@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24512" systemVersion="25E246" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24837" systemVersion="25E246" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
     <entity name="AccessEntity" representedClassName="AccessEntity" syncable="YES">
         <attribute name="aliasLimit" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="aliasSyncEnabled" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="defaultShareID" optional="YES" attributeType="String"/>
         <attribute name="displayName" attributeType="String"/>
+        <attribute name="folderAllowed" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="hideUpgrade" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="internalName" attributeType="String"/>
         <attribute name="manageAlias" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
@@ -45,6 +46,38 @@
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="userID"/>
+        </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="FolderEntity" representedClassName="FolderEntity" syncable="YES">
+        <attribute name="content" attributeType="String"/>
+        <attribute name="contentFormatVersion" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="folderID" attributeType="String"/>
+        <attribute name="folderKey" attributeType="String"/>
+        <attribute name="keyRotation" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="parentFolderID" optional="YES" attributeType="String"/>
+        <attribute name="shareID" attributeType="String"/>
+        <attribute name="symmetricallyEncryptedContent" attributeType="String"/>
+        <attribute name="userID" attributeType="String"/>
+        <attribute name="vaultID" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="folderID"/>
+                <constraint value="shareID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="FolderKeyEntity" representedClassName="FolderKeyEntity" syncable="YES">
+        <attribute name="encryptedKey" attributeType="String"/>
+        <attribute name="folderID" attributeType="String"/>
+        <attribute name="keyRotation" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="shareID" attributeType="String"/>
+        <attribute name="userID" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="folderID"/>
+                <constraint value="keyRotation"/>
+                <constraint value="shareID"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
@@ -119,6 +152,7 @@
         <attribute name="createTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="encryptedSimpleLoginNote" optional="YES" attributeType="String"/>
         <attribute name="flags" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="folderID" optional="YES" attributeType="String"/>
         <attribute name="isLogInItem" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="itemID" attributeType="String" defaultValueString=""/>
         <attribute name="itemKey" optional="YES" attributeType="String"/>

@@ -33,7 +33,7 @@ public final class ExtractLogsToFileUseCaseMock: @unchecked Sendable, ExtractLog
     public var invokedExecuteCount = 0
     public var invokedExecuteParameters: (entries: [LogEntry], fileName: String)?
     public var invokedExecuteParametersList = [(entries: [LogEntry], fileName: String)]()
-    public var stubbedExecuteResult: URL?
+    public nonisolated(unsafe) var stubbedExecuteResult: URL?
 
     public func execute(for entries: [LogEntry], in fileName: String) async throws -> URL? {
         invokedExecutefunction = true
