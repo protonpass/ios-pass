@@ -1032,6 +1032,16 @@
         }
       }
     },
+    "%@ cannot be nest more than %lld levels deep" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ cannot be nest more than %2$lld levels deep"
+          }
+        }
+      }
+    },
     "%@ copied" : {
       "localizations" : {
         "be" : {
@@ -1176,6 +1186,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ 已复制"
+          }
+        }
+      }
+    },
+    "%@ has reached the limit of %lld folders" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ has reached the limit of %2$lld folders"
+          }
+        }
+      }
+    },
+    "%@ has reached the limit of %lld sub-folders" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ has reached the limit of %2$lld sub-folders"
           }
         }
       }
@@ -7690,6 +7720,17 @@
         }
       }
     },
+    "%lld items moved to folder « %@ »" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld items moved to folder « %@ »"
+          }
+        }
+      }
+    },
     "%lld items moved to trash" : {
       "localizations" : {
         "be" : {
@@ -8158,17 +8199,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "%lld items moved to folder « %@ »" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld items moved to folder « %@ »"
           }
         }
       }
@@ -14219,9 +14249,6 @@
           }
         }
       }
-    },
-    "A folder can contain at most %lld sub-folders" : {
-
     },
     "A log is a type of file that shows us the actions you took that led to an error. We'll only ever use them to help our engineers fix bugs." : {
       "localizations" : {
@@ -75514,9 +75541,6 @@
       }
     },
     "Folder name" : {
-
-    },
-    "Folders cannot be nested more than %lld levels deep" : {
 
     },
     "Follow these simple steps to get the best experience:" : {
@@ -170589,9 +170613,6 @@
           }
         }
       }
-    },
-    "This vault already contains the maximum of %lld folders" : {
-
     },
     "This will permanently delete the %@ « %@ » and all its contents. Enter the %@ name to confirm deletion." : {
       "localizations" : {

@@ -61,7 +61,7 @@ final class FolderMoveListViewModel {
                                                            to: selectedContainer.folder?.folderId,
                                                            limits: folderLimits)
             } catch let PassError.folder(reason) {
-                router.display(element: .errorMessage(reason.userFacingMessage(limits: folderLimits)))
+                router.display(element: .errorMessage(reason.userFacingMessage))
                 return
             } catch {
                 router.display(element: .displayErrorBanner(error))
