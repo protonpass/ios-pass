@@ -7739,7 +7739,6 @@
       }
     },
     "%lld items moved to folder « %@ »" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -92075,7 +92074,6 @@
       }
     },
     "Item moved to folder « %@ »" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -93671,7 +93669,6 @@
       }
     },
     "Items from « %@ » moved to folder « %@ »" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -93830,7 +93827,6 @@
       }
     },
     "Items from folder « %@ » moved to folder « %@ »" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
