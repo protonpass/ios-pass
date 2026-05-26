@@ -92,7 +92,7 @@ struct EditableVaultListView: View {
             .onChange(of: viewModel.mode) {
                 onChangeMode(viewModel.mode)
             }
-            .alert("Delete \(viewModel.containerToDelete?.isVault ?? true ? "vault" : "folder")?",
+            .alert(viewModel.containerToDelete?.isVault ?? true ? "Delete vault?" : "Delete folder?",
                    isPresented: $viewModel.containerToDelete.mappedToBool(),
                    presenting: viewModel.containerToDelete,
                    actions: { container in
@@ -109,8 +109,7 @@ struct EditableVaultListView: View {
                        Button("Cancel", role: .cancel, action: { containerNameConfirmation = "" })
                    },
                    message: { container in
-                       // swiftlint:disable:next line_length
-                       Text("This will permanently delete the \(container.isVault ? "vault" : "folder") « \(container.name ?? "") » and all its contents. Enter the \(container.isVault ? "vault" : "folder") name to confirm deletion.")
+                       Text(verbatim: deleteMessage(for: container))
                    })
 
             .alert(viewModel.folderAction?.title ?? "New folder",
@@ -156,6 +155,18 @@ struct EditableVaultListView: View {
         .showSpinner(viewModel.loading)
         .animation(.default, value: viewModel.expandedContainerIds)
     }
+
+    // swiftlint:disable line_length
+    func deleteMessage(for container: ActionnableContainer) -> String {
+        if container.isVault {
+            #localized("This will permanently delete the vault « %@ » and all its contents. Enter the vault name to confirm deletion.",
+                       container.name ?? "")
+        } else {
+            #localized("This will permanently delete the folder « %@ » and all its contents. Enter the folder name to confirm deletion.",
+                       container.name ?? "")
+        }
+    }
+    // swiftlint:enable line_length
 }
 
 private extension EditableVaultListView {

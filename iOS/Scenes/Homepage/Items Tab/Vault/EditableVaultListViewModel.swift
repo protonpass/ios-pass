@@ -281,9 +281,7 @@ extension EditableVaultListViewModel {
                     }
                 }
                 await appContentManager.refresh(userId: userId)
-                router.display(element: .infosMessage(#localized("%@ « %@ » deleted",
-                                                                 container.isVault ? "Vault" : "Folder",
-                                                                 container.name ?? "unknown")))
+                router.display(element: .infosMessage(infoMessage(for: container)))
             } catch {
                 handle(error)
             }
@@ -565,6 +563,14 @@ private extension EditableVaultListViewModel {
         if let userId = userManager.activeUserId {
             Self.saveSet(expandedContainerIds,
                          for: userId)
+        }
+    }
+
+    func infoMessage(for container: ActionnableContainer) -> String {
+        if container.isVault {
+            #localized("Vault « %@ » deleted", container.name ?? "unknown")
+        } else {
+            #localized("Folder « %@ » deleted", container.name ?? "unknown")
         }
     }
 }

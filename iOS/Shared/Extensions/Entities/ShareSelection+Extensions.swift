@@ -80,7 +80,11 @@ extension ShareSelection {
         case .all:
             #localized("Show all vaults")
         case let .precise(selection):
-            #localized("Show %@ %@", selection.title, selection.isFolderSelected ? "folder" : "vault")
+            if selection.isFolderSelected {
+                #localized("Show %@ folder", selection.title)
+            } else {
+                #localized("Show %@ vault", selection.title)
+            }
         case .trash:
             #localized("Show trash")
         case .sharedByMe:
