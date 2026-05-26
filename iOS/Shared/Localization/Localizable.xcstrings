@@ -50164,7 +50164,14 @@
       }
     },
     "Create folder" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create folder"
+          }
+        }
+      }
     },
     "Create login" : {
       "comment" : "AutoFill extension",
@@ -50560,7 +50567,14 @@
       }
     },
     "Create sub-folder" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create sub-folder"
+          }
+        }
+      }
     },
     "Create vault" : {
       "localizations" : {
@@ -57916,7 +57930,14 @@
       }
     },
     "Delete %@?" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete %@?"
+          }
+        }
+      }
     },
     "Delete account" : {
       "localizations" : {
@@ -58311,7 +58332,14 @@
       }
     },
     "Delete folder" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete folder"
+          }
+        }
+      }
     },
     "Delete it, I will never need it" : {
       "localizations" : {
@@ -59485,203 +59513,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "刪除保管庫"
-          }
-        }
-      }
-    },
-    "Delete vault?" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Выдаліць сховішча?"
-          }
-        },
-        "ca" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Elimina la caixa forta?"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Smazat trezor?"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Slet boks?"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tresor löschen?"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Διαγραφή κρύπτης;"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Delete vault?"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "¿Eliminar la caja fuerte?"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "¿Eliminar bóveda?"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Poistetaanko holvi?"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Supprimer le coffre-fort ?"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tároló törlése?"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hapus brankas?"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eliminare la cassaforte?"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "保管庫を削除?"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "წავშალო საცავი?"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "금고를 삭제하시겠어요?"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Slett hvelv?"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kluis verwijderen?"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Usunąć sejf?"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eliminar o cofre?"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Excluir cofre?"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ștergeți seiful?"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Удалить хранилище?"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Odstrániť trezor?"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Izbriši trezor?"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ta bort valv?"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kasa silinsin mi?"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Видалити сховище?"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Xóa két sắt?"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "要删除保险库吗?"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "刪除保管庫?"
           }
         }
       }
@@ -67239,7 +67070,14 @@
       }
     },
     "Enter a folder title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter a folder title"
+          }
+        }
+      }
     },
     "Enter a new section title" : {
       "localizations" : {
@@ -67634,7 +67472,14 @@
       }
     },
     "Enter new folder title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter new folder title"
+          }
+        }
+      }
     },
     "Enter new name for « %@ »" : {
       "comment" : "Message shown when editing custom field's title. Placeholder is the old title.",
@@ -75571,7 +75416,14 @@
       }
     },
     "Folder name" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folder name"
+          }
+        }
+      }
     },
     "Follow these simple steps to get the best experience:" : {
       "localizations" : {
@@ -107936,208 +107788,24 @@
       }
     },
     "Move all items" : {
-
-    },
-    "Move all items to another vault" : {
-      "comment" : "Item moving to other vault",
-      "extractionState" : "stale",
       "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Перамясціць усе элементы ў іншае сховішча"
-          }
-        },
-        "ca" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mou tots els elements a una altra caixa forta"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Přesunout všechny položky do jiného trezoru"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Flyt alle elementer til en anden boks"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alle Einträge in einen anderen Tresor verschieben"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Μετακίνηση όλων των στοιχείων σε άλλη κρύπτη"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Move all items to another vault"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mover todos los elementos a otra caja fuerte"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mover todos los elementos a otra bóveda"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Siirrä kaikki kohteet toiseen holviin"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Déplacer tous les éléments vers un autre coffre-fort"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Összes elem áthelyezése egy másik tárolóba"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pindahkan seluruh item ke brankas lain"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sposta tutti gli elementi in un'altra cassaforte"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "すべてのアイテムを別の保管庫に移動"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ყველა ელემენტის სხვა საცავში გადატანა"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "다른 금고로 모든 항목 이동"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Flytt alle elementene til et annet hvelv"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verplaats alle items naar een andere kluis"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Przenieś wszystkie elementy do innego sejfu"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mover todos os itens para outro cofre"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mover todos os itens para outro cofre"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mutare toate articolele în alt seif"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Переместить все элементы в другое хранилище"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Presunúť všetky položky do iného trezoru"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Premaknite vse predmete v drug trezor"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Flytta alla objekt till annat valv"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tüm ögeleri başka kasaya taşı"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Перемістити всі елементи до іншого сховища"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Chuyển tất cả nội dung sang két sắt khác"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "将所有项目移至另一个保险库"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "將全部項目移至保管庫"
+            "value" : "Move all items"
           }
         }
       }
     },
     "Move folder" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move folder"
+          }
+        }
+      }
     },
     "Move this item" : {
       "localizations" : {
@@ -108336,201 +108004,11 @@
       }
     },
     "Move to another container" : {
-
-    },
-    "Move to another vault" : {
-      "extractionState" : "stale",
       "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Перамясціць у іншае сховішча"
-          }
-        },
-        "ca" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mou a una altra caixa forta"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Přesunout do jiného trezoru"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Flyt til en anden boks"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "In einen anderen Tresor verschieben"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Μετακίνηση σε άλλη κρύπτη"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Move to another vault"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mover a otra caja fuerte"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mover a otra bóveda"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Siirrä toiseen holviin"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Déplacer vers un autre coffre-fort"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Áthelyezés másik tárolóba"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pindahkan ke brankas lainnya"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sposta in un'altra cassaforte"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "別の保管庫に移動"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "სხვა საცავში გადატანა"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "다른 금고로 이동"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Flytt til annet hvelv"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verplaatsen naar andere kluis"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Przenieś do innego sejfu"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mover para outro cofre"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mover para outro cofre"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mutare în alt seif"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Переместить в другое хранилище"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Presunúť do iného trezoru"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Premakni se v drug trezor"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Flytta till annat valv"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Başka kasaya taşı"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Перемістити в інше сховище"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Chuyển đến két sắt khác"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "移至另一个保险库"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "移動到另一個保管庫"
+            "value" : "Move to another container"
           }
         }
       }
@@ -109715,7 +109193,14 @@
       }
     },
     "New folder" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New folder"
+          }
+        }
+      }
     },
     "New title" : {
       "localizations" : {
@@ -147951,10 +147436,24 @@
       }
     },
     "Select a container" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select a container"
+          }
+        }
+      }
     },
     "Select a destination" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select a destination"
+          }
+        }
+      }
     },
     "Select a vault" : {
       "localizations" : {
@@ -154959,149 +154458,6 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Show %1$@ %2$@"
-          }
-        }
-      }
-    },
-    "Show %@ vault" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Паказаць сховішча %@"
-          }
-        },
-        "ca" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mostra la caixa forta %@"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zobrazit trezor %@"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vis %@ boks"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ Tresor anzeigen"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Εμφάνιση %@ κρύπτη"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Show %@ vault"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mostrar la caja fuerte « %@ »"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mostrar bóveda %@"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Näytä holvi %@"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Afficher le coffre-fort %@"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mostra la cassaforte %@"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ 保管庫を表示"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ საცავის ჩვენება"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vis hvelvet %@"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Toon %@ kluis"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mostrar cofre %@"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Afișare %@ seif"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zobraziť %@ trezor"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pokaži %@ trezor"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Visa %@ valv"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ kasasını görüntüle"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "显示 %@ 保险库"
           }
         }
       }
@@ -163037,7 +162393,14 @@
       }
     },
     "Start search" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start search"
+          }
+        }
+      }
     },
     "State or province" : {
       "localizations" : {
@@ -170674,143 +170037,6 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "This will permanently delete the %1$@ « %2$@ » and all its contents. Enter the %3$@ name to confirm deletion."
-          }
-        }
-      }
-    },
-    "This will permanently delete the vault « %@ » and all its contents. Enter the vault name to confirm deletion." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Гэта дзеянне прывядзе да выдалення сховішча з назвай « %@ » і ўсяго яго змесціва. Увядзіце назву сховішча, каб пацвердзіць выдаленне."
-          }
-        },
-        "ca" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Això eliminarà permanentment la caixa forta «%@» i tot el seu contingut. Introduïu el nom de la caixa forta per confirmar-ne l'eliminació."
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Toto trvale smaže trezor « %@ » a veškerý jeho obsah. Zadejte název trezoru pro potvrzení smazání."
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dette vil permanent slette boksen « %@ » og alt dens indhold. Indtast boksens navn for at bekræfte sletningen."
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dadurch werden der Tresor „%@“ und sein gesamter Inhalt dauerhaft gelöscht. Bitte gib den Namen des Tresors ein, um den Löschvorgang zu bestätigen."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Αυτό θα διαγράψει οριστικά την κρύπτη « %@ » και όλα τα περιεχόμενά της. Εισαγάγετε το όνομα της κρύπτης για να επιβεβαιώσετε τη διαγραφή."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This will permanently delete the vault « %@ » and all its contents. Enter the vault name to confirm deletion."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Esta acción eliminará de forma permanente la caja fuerte « %@ » y todo su contenido. Introduce el nombre de la caja fuerte para confirmar que quieres borrarla."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Esto eliminará permanentemente la bóveda «%@» y todo su contenido. Escriba el nombre de la bóveda para confirmar la eliminación."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ceci supprimera définitivement le coffre-fort « %@ » et tout son contenu. Saisissez le nom du coffre-fort pour confirmer la suppression."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Questo eliminerà definitivamente la cassaforte « %@ » e tutti i suoi contenuti. Inserisci il nome della cassaforte per confermare l'eliminazione."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "これにより、保管庫 « %@ » とそのすべての内容が完全に削除されます。保管庫名を入力して削除を確認します。"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ეს სამუდამოდ წაშლის საცავს „%@“ და მის შემცველობას. წაშლის დასადასტურებლად შეიყვანეთ საცავის სახელი."
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dette vil permanent slette hvelvet \"%@\" og alt dets innhold. Skriv inn hvelvnavnet for å bekrefte slettingen."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hiermee wordt de kluis « %@ » en de volledige inhoud permanent verwijderd. Voer de kluis naam in om de verwijdering te bevestigen."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Isso irá excluir permanentemente o cofre \"%@\" e todo o seu conteúdo. Insira o nome do cofre para confirmar a exclusão."
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aceasta va șterge permanent seiful « %@ » și tot conținutul acestuia. Introduceți numele seifului pentru a confirma ștergerea."
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Týmto sa natrvalo odstráni trezor « %@ » a celý jeho obsah. Pre potvrdenie vymazania zadajte názov trezora."
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "S tem boste trajno izbrisali trezor »%@« in vso njegovo vsebino. Vnesite ime trezorja, da potrdite izbris."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Detta kommer ta bort valvet « %@ » och allt dess innehåll permanent. Ange valvets namn för att bekräfta borttagning."
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bu işlem « %@ » kasasını ve içindekileri kalıcı olarak silecek. Silme işlemini onaylamak için kasa adını yazın."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "这将永久删除保险库 « %@ » 及其所有内容。输入保险库名称以确认删除。"
           }
         }
       }
@@ -182308,149 +181534,6 @@
         }
       }
     },
-    "Vault « %@ » deleted" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Сховішча « %@ » выдалена"
-          }
-        },
-        "ca" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "S'ha eliminat la caixa forta «%@»"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Trezor « %@ » smazán"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Boks « %@ » slettet"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tresor „%@“ gelöscht"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Η κρύπτη « %@ » διαγράφηκε"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vault « %@ » deleted"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Se ha eliminado la caja fuerte «%@»."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bóveda «%@» eliminada"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Holvi \"%@\" poistettiin"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Le coffre-fort « %@ » a été supprimé."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cassaforte « %@ » eliminata"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "保管庫« %@ » が削除されました"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "საცავი „%@“ წაიშალა"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hvelv \"%@\" slettet"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vault « %@ » verwijderd"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "O cofre « %@ » foi excluído"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Seiful „%@” a fost șters."
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Trezor « %@ » bol vymazaný"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Trezor »%@« izbrisan"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Valv « %@ » borttaget"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "« %@ » kasası silindi"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "保险库 « %@ » 已删除"
-          }
-        }
-      }
-    },
     "Vault created" : {
       "localizations" : {
         "be" : {
@@ -189979,201 +189062,11 @@
       }
     },
     "When moving items between containers we will preserve up to the last 50 modifications performed to each item" : {
-
-    },
-    "When moving items between vaults we will preserve up to the last 50 modifications performed to each item" : {
-      "extractionState" : "stale",
       "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Калі элементы перамяшчаюцца паміж сховішчамі, то сістэма захавае да 50 змяненняў, якія выкананы для кожнага элемента"
-          }
-        },
-        "ca" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "En moure elements entre caixes fortes, conservarem fins a les últimes 50 modificacions realitzades a cada element"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Při přesouvání položek mezi trezory uchováme až 50 posledních úprav provedených na každé položce"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Når vi flytter elementer mellem bokse, bevarer vi op til de sidste 50 ændringer, der er foretaget på hvert element."
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Beim Verschieben von Einträgen zwischen Tresoren bewahren wir bis zu 50 der letzten Änderungen an jedes Eintrags auf."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Κατά τη μετακίνηση αντικειμένων μεταξύ κρυπτών, θα διατηρήσουμε έως και τις τελευταίες 50 τροποποιήσεις που πραγματοποιήθηκαν σε κάθε αντικείμενο"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "When moving items between vaults we will preserve up to the last 50 modifications performed to each item"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Al mover elementos entre cajas fuertes conservaremos hasta las últimas 50 modificaciones realizadas de cada elemento."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Al mover elementos entre bóvedas conservaremos hasta las últimas 50 modificaciones realizadas de cada elemento"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kun kohteita siirretään holvien välillä, säilytetään enintään 50 viimeisintä kuhunkin kohteeseen tehtyä muokkausta."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Quand des éléments sont déplacés d'un coffre-fort à l'autre, nous conservons jusqu'aux 50 dernières modifications apportées à chaque élément."
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Az elemek tárolók közti mozgatásakor minden elem legutóbbi maximum 50 módosítása marad meg"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pada saat memindahkan item antar brankas, kami akan menyimpan hingga 50 perubahan terakhir yang diberlakukan kepada masing-masing item"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Spostando gli elementi tra le casseforti, conserveremo fino alle ultime 50 modifiche apportate a ciascun elemento"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "保管庫間でアイテムを移動する場合、各アイテムの直近50回以内の変更のみ保持します。"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "სათავსოებს შორის ნივთების გადაადგილებისას ჩვენ შევინარჩუნებთ თითოეულ ნივთზე შესრულებულ ბოლო 50 მოდიფიკაციას"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "금고 사이로 항목을 이동할 때 각 항목에 대해 이동된 마지막 50개의 수정 사항이 유지됩니다."
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Når du flytter elementer mellom hvelv, vil vi bevare opptil de siste 50 modifikasjonene som er utført på hvert element."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bij het verplaatsen van items tussen kluizen bewaren we tot de laatste 50 wijzigingen uitgevoerd op elk item"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Podczas przenoszenia elementów między sejfami zachowamy historię do 50 ostatnich modyfikacji elementów"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ao mover itens entre cofres, manteremos até as últimas 50 modificações realizadas em cada item."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Quando movendo itens entre cofres, nós preservaremos as últimas 50 modificações feitas em cada item."
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La mutarea articolelor între seifuri, vom păstra până la ultimele 50 de modificări efectuate fiecărui articol."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "При перемещении элементов между хранилищами мы сохраним до 50 последних изменений, выполненных для каждого элемента"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pri presúvaní položiek medzi trezormi zachováme až posledných 50 vykonaných úprav pre každú položku"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pri premikanju predmetov med trezorji bomo ohranili do zadnjih 50 sprememb, izvedenih na vsakem predmetu."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vid flyttning av objekt mellan valv kommer vi att bevara upp till de senaste 50 ändringarna som gjorts av varje objekt"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ögeleri kasalar arasında taşırken, her öge üzerinde yapılmış son 50 değişikliği koruruz"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "При переміщенні об'єктів між сховищами ми збережемо до 50 останніх змін, виконаних для кожного елемента"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Khi di chuyển nội dung giữa các két sắt, chúng tôi chỉ giữ lại 50 phiên bản gần nhất của từng mục."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "在保险库之间移动项目时，我们将最多保留对每个项目进行 50 此修改。"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "在保管庫之間移動項目時，我們將保留對每個項目執行的最近 50 次修改。"
+            "value" : "When moving items between containers we will preserve up to the last 50 modifications performed to each item"
           }
         }
       }
@@ -196562,7 +195455,14 @@
       }
     },
     "You cannot move a folder to one of its child folders" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You cannot move a folder to one of its child folders"
+          }
+        }
+      }
     },
     "You currently don't have any secure links" : {
       "localizations" : {
