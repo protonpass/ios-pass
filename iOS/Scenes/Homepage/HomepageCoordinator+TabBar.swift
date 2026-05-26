@@ -33,6 +33,8 @@ extension HomepageCoordinator: HomepageTabBarControllerDelegate {
             passMonitor()
         case .profile:
             profileTab()
+        case .search:
+            break
         }
     }
 }

@@ -24,11 +24,12 @@ import Core
 import DesignSystem
 import Entities
 import FactoryKit
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
 enum HomepageTab: String, CaseIterable, Hashable {
-    case items, itemCreation, passMonitor, profile
+    case items, itemCreation, passMonitor, profile, search
 
     var image: UIImage {
         switch self {
@@ -40,19 +41,23 @@ enum HomepageTab: String, CaseIterable, Hashable {
             IconProvider.shield
         case .profile:
             IconProvider.user
+        case .search:
+            UIImage(systemName: "magnifyingglass") ?? IconProvider.magnifier
         }
     }
 
     var hint: String {
         switch self {
         case .items:
-            "Homepage tab"
+            #localized("Homepage tab")
         case .itemCreation:
-            "Create new item button"
+            #localized("Create new item button")
         case .passMonitor:
-            "Pass Monitor tab"
+            #localized("Pass Monitor tab")
         case .profile:
-            "Profile tab"
+            #localized("Profile tab")
+        case .search:
+            #localized("Search tab")
         }
     }
 }
@@ -256,6 +261,14 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
         tabIndexes[.profile] = currentIndex
 
         if #available(iOS 26.0, *) {
+            let searchTab = UISearchTab(title: "",
+                                        image: HomepageTab.search.image,
+                                        identifier: HomepageTab.search.rawValue,
+                                        viewControllerProvider: { _ in
+                                            UIViewController()
+                                        })
+            searchTab.automaticallyActivatesSearch = true
+            searchTab.accessibilityLabel = HomepageTab.search.hint
             tabs = [
                 UITab(title: "",
                       image: HomepageTab.items.image,
@@ -275,12 +288,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
                       viewControllerProvider: { _ in
                           profileTabViewController
                       }),
-                UISearchTab(title: "",
-                            image: HomepageTab.itemCreation.image,
-                            identifier: HomepageTab.itemCreation.rawValue,
-                            viewControllerProvider: { _ in
-                                UIViewController()
-                            })
+                searchTab
             ]
         } else {
             viewControllers = controllers
@@ -384,17 +392,5 @@ extension HomepageTabBarController: UITabBarControllerDelegate {
         }
 
         return false
-    }
-
-    @available(iOS 18.0, *)
-    func tabBarController(_ tabBarController: UITabBarController, shouldSelectTab tab: UITab) -> Bool {
-        guard let homepageTab = HomepageTab(rawValue: tab.identifier) else {
-            return false
-        }
-        if case .itemCreation = homepageTab {
-            homepageTabBarControllerDelegate?.selected(tab: .itemCreation)
-            return false
-        }
-        return true
     }
 }
