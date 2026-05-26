@@ -725,6 +725,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$@ (%2$lld წევრი)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$@ (%2$lld წევრი)"
+                }
+              }
+            }
+          }
+        },
         "nb" : {
           "variations" : {
             "plural" : {
@@ -1027,7 +1045,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@（已复制）"
+            "value" : "%@ (已复制)"
           }
         }
       }
@@ -10553,7 +10571,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Us queden %lld intents"
+                  "value" : "Queden %lld intents"
                 }
               }
             }
@@ -43306,6 +43324,12 @@
             "value" : "Kontakt bol vytvorený"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stik ustvarjen"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -43452,6 +43476,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kontakt vytvorený a skopírovaný"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stik ustvarjen in kopiran"
           }
         },
         "sv" : {
@@ -45403,7 +45433,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Copiar l'adreça de reenviaments del contacte després de crear-la"
+            "value" : "Copia l'adreça de reenviaments del contacte després de crear-la"
           }
         },
         "cs" : {
@@ -55762,7 +55792,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dark Web Monitoring 通过付费计划提供。升级后可立即访问。"
+            "value" : "暗网监测通过付费套餐提供。立即升级，即刻访问。"
           }
         },
         "zh-Hant" : {
@@ -69132,7 +69162,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Выключана з назірання"
+            "value" : "Выключаныя з назірання"
           }
         },
         "ca" : {
@@ -80037,6 +80067,12 @@
             "value" : "グループ %@"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ჯგუფი %@"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -80062,6 +80098,12 @@
           }
         },
         "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skupina %@"
+          }
+        },
+        "sl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Skupina %@"
@@ -129418,7 +129460,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "прэміяльны дамен"
+            "value" : "Прэміяльны дамен"
           }
         },
         "ca" : {
@@ -142823,7 +142865,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Escanegeu-ho %@"
+            "value" : "Escaneja %@"
           }
         },
         "cs" : {
@@ -143773,13 +143815,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Cerqueu a %lld compte"
+                  "value" : "Cerqueu en %lld compte"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Cerqueu a %lld comptes"
+                  "value" : "Cerqueu en %lld comptes"
                 }
               }
             }
@@ -156320,6 +156362,12 @@
             "value" : "メンバーを表示"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "წევრების ჩვენება"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -156348,6 +156396,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zobraziť členov"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaži člane"
           }
         },
         "sv" : {
@@ -170636,7 +170690,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Això eliminarà permanentment la caixa forta \"%@\" i tot el seu contingut. Introduïu el nom de la caixa forta per confirmar-ne l'eliminació."
+            "value" : "Això eliminarà permanentment la caixa forta «%@» i tot el seu contingut. Introduïu el nom de la caixa forta per confirmar-ne l'eliminació."
           }
         },
         "cs" : {
@@ -182266,7 +182320,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "S'ha eliminat la caixa forta \"%@\""
+            "value" : "S'ha eliminat la caixa forta «%@»"
           }
         },
         "cs" : {
@@ -198287,7 +198341,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Heu de canviar a %@ per poder gestionar-ho"
+            "value" : "Heu de canviar a %@ per a poder gestionar-ho"
           }
         },
         "cs" : {
