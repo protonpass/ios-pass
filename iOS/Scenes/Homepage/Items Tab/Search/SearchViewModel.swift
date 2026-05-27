@@ -83,9 +83,9 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private let getSearchableItems = resolve(\UseCasesContainer.getSearchableItems)
     private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\DataStreamContainer.currentSearchMode) private var currentSearchMode
     @LazyInjected(\SharedUseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
 
-    private let searchMode: SearchMode
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
 
     private var lastSearchQuery = ""
@@ -101,11 +101,10 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private var refreshResultsTask: Task<Void, Never>?
 
     var searchBarPlaceholder: String {
-        searchMode.searchBarPlacehoder
+        currentSearchMode.value.searchBarPlacehoder
     }
 
-    init(searchMode: SearchMode) {
-        self.searchMode = searchMode
+    init() {
         setup()
     }
 }
@@ -119,8 +118,8 @@ private extension SearchViewModel {
                 state = .initializing
             }
             let userId = try await userManager.getActiveUserId()
-            searchableItems = try await getSearchableItems(userId: userId, for: searchMode)
-            if searchMode.isSpecificSelection {
+            searchableItems = try await getSearchableItems(userId: userId, for: currentSearchMode.value)
+            if currentSearchMode.value.isSpecificSelection {
                 allSearchableItems = try await getSearchableItems(userId: userId, for: .all(.all))
             }
             try await refreshSearchHistory()
@@ -130,7 +129,7 @@ private extension SearchViewModel {
     }
 
     func refreshSearchHistory() async throws {
-        guard let shareSelection = searchMode.shareSelection else {
+        guard let shareSelection = currentSearchMode.value.shareSelection else {
             return
         }
 
@@ -165,7 +164,7 @@ private extension SearchViewModel {
 
     func doSearch(query: String) {
         lastSearchQuery = query
-        switch searchMode {
+        switch currentSearchMode.value {
         case .pinned:
             if query.isEmpty {
                 results = searchableItems.toItemSearchResults
@@ -236,7 +235,7 @@ private extension SearchViewModel {
             let current = try await parse(results: results)
 
             var all: SearchDataDisplay?
-            if searchMode.isSpecificSelection {
+            if await currentSearchMode.value.isSpecificSelection {
                 all = try await parse(results: allResults)
             }
 
@@ -281,7 +280,7 @@ private extension SearchViewModel {
     }
 
     func isSearchEmpty(results: [ItemSearchResult]) -> Bool {
-        if searchMode.isSpecificSelection {
+        if currentSearchMode.value.isSpecificSelection {
             results.isEmpty && allResults.isEmpty
         } else {
             results.isEmpty
@@ -292,6 +291,10 @@ private extension SearchViewModel {
 // MARK: - Public APIs
 
 extension SearchViewModel {
+    func resetState() {
+        state = .initializing
+    }
+
     func refreshResults() {
         refreshResultsTask?.cancel()
         refreshResultsTask = Task { [weak self] in
@@ -338,7 +341,7 @@ extension SearchViewModel {
 
     func removeAllSearchHistory() {
         Task { [weak self] in
-            guard let self, let shareSelection = searchMode.shareSelection else { return }
+            guard let self, let shareSelection = currentSearchMode.value.shareSelection else { return }
 
             do {
                 if case let .precise(selection) = shareSelection {

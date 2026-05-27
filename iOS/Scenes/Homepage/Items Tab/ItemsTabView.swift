@@ -90,7 +90,7 @@ struct ItemsTabView: View {
     private func vaultContent(_ sections: [SectionedItemUiModel]) -> some View {
         GeometryReader { proxy in
             VStack(spacing: 0) {
-                ItemsTabTopBar(searchMode: $viewModel.searchMode,
+                ItemsTabTopBar(showSearch: $viewModel.showSearch,
                                animationNamespace: animationNamespace,
                                isEditMode: $viewModel.isEditMode,
                                showPromoBadge: viewModel.showPromoBadge) { action in
@@ -116,10 +116,12 @@ struct ItemsTabView: View {
                         .padding()
                 }
 
-                if let pinnedItems = viewModel.pinnedItems, !pinnedItems.isEmpty, !viewModel.isEditMode,
+                if let pinnedItems = viewModel.pinnedItems,
+                   !pinnedItems.isEmpty,
+                   !viewModel.isEditMode,
                    viewModel.appContentManager.shareSelection != .trash {
                     PinnedItemsView(pinnedItems: pinnedItems,
-                                    onSearch: { viewModel.searchMode = .pinned },
+                                    onSearch: { viewModel.handleTopbarAction(.onSearchPinnedItems) },
                                     action: { viewModel.viewDetail(of: $0) })
                     Divider()
                 }
@@ -163,9 +165,9 @@ struct ItemsTabView: View {
                                                     onDisableAlias: { viewModel.disableAlias() },
                                                     onDelete: { viewModel.permanentlyDelete() }))
         }
-        .searchScreen(searchMode: $viewModel.searchMode,
-                      refreshResults: viewModel.refreshSearchResult,
-                      animationNamespace: animationNamespace)
+        .searchScreen(showSearch: viewModel.showSearch,
+                      animationNamespace: animationNamespace,
+                      onCancel: { viewModel.showSearch = false })
     }
 }
 

@@ -45,4 +45,12 @@ extension DataStreamContainer {
     var itemTypeSelection: Factory<PassthroughSubject<ItemContentType, Never>> {
         self { .init() }
     }
+
+    var activateSearchStream: Factory<PassthroughSubject<Void, Never>> {
+        self { .init() }
+    }
+
+    var currentSearchMode: Factory<CurrentValueSubject<SearchMode, Never>> {
+        self { .init(.all(.all)) }
+    }
 }

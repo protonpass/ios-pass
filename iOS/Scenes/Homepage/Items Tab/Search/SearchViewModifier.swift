@@ -31,26 +31,26 @@ enum SearchEffectID: String {
 }
 
 extension View {
-    func searchScreen(searchMode: Binding<SearchMode?>,
-                      refreshResults: Bool,
-                      animationNamespace: Namespace.ID) -> some View {
-        modifier(SearchViewModifier(searchMode: searchMode,
-                                    refreshResults: refreshResults,
-                                    animationNamespace: animationNamespace))
+    func searchScreen(showSearch: Bool,
+                      animationNamespace: Namespace.ID,
+                      onCancel: @escaping () -> Void) -> some View {
+        modifier(SearchViewModifier(showSearch: showSearch,
+                                    animationNamespace: animationNamespace,
+                                    onCancel: onCancel))
     }
 }
 
 struct SearchViewModifier: ViewModifier {
-    @Binding private var searchMode: SearchMode?
-    private let refreshResults: Bool
+    private let showSearch: Bool
     private let animationNamespace: Namespace.ID
+    private let onCancel: () -> Void
 
-    init(searchMode: Binding<SearchMode?>,
-         refreshResults: Bool,
-         animationNamespace: Namespace.ID) {
-        _searchMode = searchMode
-        self.refreshResults = refreshResults
+    init(showSearch: Bool,
+         animationNamespace: Namespace.ID,
+         onCancel: @escaping () -> Void) {
+        self.showSearch = showSearch
         self.animationNamespace = animationNamespace
+        self.onCancel = onCancel
     }
 
     func body(content: Content) -> some View {
@@ -58,16 +58,13 @@ struct SearchViewModifier: ViewModifier {
             .overlay {
                 overlayContent
             }
-            .animation(.easeInOut(duration: 0.2), value: searchMode)
+            .animation(.easeInOut(duration: 0.2), value: showSearch)
     }
 
     @MainActor @ViewBuilder
     var overlayContent: some View {
-        if let searchMode {
-            SearchView(searchMode: $searchMode,
-                       animationNamespace: animationNamespace,
-                       viewModel: SearchViewModel(searchMode: searchMode),
-                       refreshResults: refreshResults)
+        if showSearch {
+            SearchView(animationNamespace: animationNamespace, onCancel: onCancel)
         }
     }
 }
