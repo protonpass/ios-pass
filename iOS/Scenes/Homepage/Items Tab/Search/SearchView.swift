@@ -26,18 +26,17 @@ import SwiftUI
 import TipKit
 
 struct SearchView: View {
-    @Binding var searchMode: SearchMode?
     let animationNamespace: Namespace.ID
     @FocusState private var isFocusedOnSearchBar
-    @StateObject var viewModel: SearchViewModel
+    @StateObject var viewModel = SearchViewModel()
     @State private var safeAreaInsets = EdgeInsets.zero
-    let refreshResults: Bool
+    let onCancel: () -> Void
 
     var body: some View {
         if #available(iOS 26.0, *) {
             NavigationStack {
                 content(showCustomSearchBar: false)
-                    .searchable(text: $viewModel.query)
+                    .searchable(text: $viewModel.query, prompt: viewModel.searchBarPlaceholder)
             }
         } else {
             GeometryReader { proxy in
@@ -63,10 +62,18 @@ private extension SearchView {
                           canEdit: viewModel.state != .initializing,
                           onCancel: {
                               viewModel.cancelRefreshing()
-                              searchMode = nil
+                              onCancel()
                           })
                           .matchedGeometryEffect(id: SearchEffectID.searchbar.id,
                                                  in: animationNamespace)
+            } else {
+                Text("Search")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal)
+                    .padding(.vertical, 8)
+                    .animationsDisabled()
             }
 
             let tip = SpotlightTip()
@@ -81,9 +88,10 @@ private extension SearchView {
 
             switch viewModel.state {
             case .filteringResults, .initializing, .searching:
-                ProgressView()
-                    .padding(.top)
                 Spacer()
+                ProgressView()
+                    .controlSize(.extraLarge)
+                    .padding(.top)
 
             case .empty:
                 EmptySearchView()
@@ -105,7 +113,6 @@ private extension SearchView {
                                   vaultSearchSelection: $viewModel.vaultSearchSelection,
                                   itemContextMenuHandler: viewModel.itemContextMenuHandler,
                                   results: results,
-                                  mode: searchMode,
                                   safeAreaInsets: safeAreaInsets,
                                   onScroll: { isFocusedOnSearchBar = false },
                                   onSelectItem: { viewModel.viewDetail(of: $0) })
@@ -118,15 +125,13 @@ private extension SearchView {
         }
         .fullSheetBackground(PassColor.backgroundNorm)
         .animation(.default, value: viewModel.state)
-        .onChange(of: refreshResults) {
-            viewModel.refreshResults()
-        }
         .onChange(of: viewModel.state) {
             if viewModel.state != .initializing {
                 isFocusedOnSearchBar = true
             }
         }
-        .onAppear {
+        .task {
+            viewModel.resetState()
             viewModel.refreshResults()
         }
     }

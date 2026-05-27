@@ -34,6 +34,7 @@ final class SearchResultsViewModel: ObservableObject {
     @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)?
     private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
+    private let currentSearchMode = resolve(\DataStreamContainer.currentSearchMode)
 
     private var vaultSearchSelection: VaultSearchSelection = .current
 
@@ -53,15 +54,14 @@ final class SearchResultsViewModel: ObservableObject {
         return vaultSearchSelection == .current ? fullResults.current.searchResults : all.searchResults
     }
 
-    let mode: SearchMode?
     let fullResults: SearchDataDisplayContainer
 
     var isTrash: Bool {
-        mode?.shareSelection == .trash
+        currentSearchMode.value.shareSelection == .trash
     }
 
     var currentSelectionTitle: String {
-        switch mode?.shareSelection {
+        switch currentSearchMode.value.shareSelection {
         case .sharedWithMe:
             #localized("Shared with me")
         case .sharedByMe:
@@ -75,12 +75,10 @@ final class SearchResultsViewModel: ObservableObject {
 
     init(itemContextMenuHandler: ItemContextMenuHandler,
          results: SearchDataDisplayContainer,
-         vaultSearchSelection: VaultSearchSelection,
-         mode: SearchMode?) {
+         vaultSearchSelection: VaultSearchSelection) {
         self.itemContextMenuHandler = itemContextMenuHandler
         fullResults = results
         self.vaultSearchSelection = vaultSearchSelection
-        self.mode = mode
     }
 }
 

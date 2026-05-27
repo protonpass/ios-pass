@@ -56,7 +56,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published private(set) var refreshSearchResult = false
     @Published private(set) var showPromoBadge = false
     @Published private var userData: UserData?
-    @Published var searchMode: SearchMode?
+    @Published var showSearch = false
     @Published var showSharedItemsAlert = false
     @Published private(set) var aliasesAllowed = true
 
@@ -89,6 +89,12 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     @LazyInjected(\UseCasesContainer.checkVaultCreationAllowance)
     private var checkVaultCreationAllowance
+
+    @LazyInjected(\DataStreamContainer.currentSearchMode)
+    private var currentSearchMode
+
+    @LazyInjected(\DataStreamContainer.activateSearchStream)
+    private var activateSearchStream
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let itemTypeSelection = resolve(\DataStreamContainer.itemTypeSelection)
@@ -158,7 +164,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
             do {
                 let userId = try await userManager.getActiveUserId()
                 await appContentManager.refresh(userId: userId)
-                refreshSearchResult.toggle()
             } catch {
                 handle(error: error)
             }
@@ -178,8 +183,20 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     // swiftlint:disable:next cyclomatic_complexity
     func handleTopbarAction(_ action: ItemsTabTopBarAction) {
         switch action {
-        case .onSearch:
-            searchMode = .all(appContentManager.shareSelection)
+        case .onSearchAllItems:
+            currentSearchMode.send(.all(appContentManager.shareSelection))
+            if #available(iOS 26.0, *) {
+                activateSearchStream.send(())
+            } else {
+                showSearch = true
+            }
+        case .onSearchPinnedItems:
+            currentSearchMode.send(.pinned)
+            if #available(iOS 26.0, *) {
+                activateSearchStream.send(())
+            } else {
+                showSearch = true
+            }
         case .onShowVaultList:
             presentVaultList()
         case .onPin:
@@ -231,9 +248,10 @@ private extension ItemsTabViewModel {
         appContentManager.$shareSelection
             .receive(on: DispatchQueue.main)
             .dropFirst()
-            .sink { [weak self] _ in
+            .sink { [weak self] shareSelection in
                 guard let self else { return }
                 filterAndSortItems()
+                currentSearchMode.send(.all(shareSelection))
             }
             .store(in: &cancellables)
 
