@@ -79,17 +79,27 @@ private struct ViewModeView: View {
     let action: (ItemsTabTopBarAction) -> Void
 
     var body: some View {
-        VStack {
-            mainHeaderRow
-            searchBar
-        }
-    }
-
-    var mainHeaderRow: some View {
         HStack {
             leadingIconContainerButton
                 .accessibilityLabel(viewModel.shareSelection.accessibilityLabel)
-            titleView
+            if #available(iOS 26.0, *) {
+                title
+            } else {
+                HStack {
+                    searchIcon
+                    title
+                    searchIcon.opacity(0)
+                }
+                .frame(height: DesignConstant.searchBarHeight)
+                .matchedGeometryEffect(id: SearchEffectID.searchbar.id,
+                                       in: animationNamespace)
+                .padding(.horizontal, 16)
+                .background(PassColor.backgroundStrong)
+                .clipShape(.capsule)
+                .buttonEmbeded {
+                    action(.onSearchAllItems)
+                }
+            }
             upsellView
             sortAndFilterMenu
         }
@@ -117,33 +127,19 @@ private struct ViewModeView: View {
         }
     }
 
-    @ViewBuilder
-    var titleView: some View {
-        if viewModel.shareSelection.isFolderSelection {
-            let uiModel = viewModel.shareSelection.uiModel
-            let title = viewModel.shareSelection.preciseSelectionPayload?.share.vaultContent?.name ?? ""
-            VStack {
-                HStack(alignment: .center) {
-                    Spacer()
-                    uiModel.icon
-                        .resizable()
-                        .frame(width: 12, height: 12)
-                        .foregroundStyle(uiModel.iconColor)
-                    Text(title)
-                        .font(.footnote)
-                    Spacer()
-                }
-                Text(verbatim: "\(viewModel.shareSelection.title)")
-                    .font(.title3)
-                    .fontWeight(.bold)
-                    .frame(maxWidth: .infinity)
-            }
-        } else {
-            Text(verbatim: "\(viewModel.shareSelection.title)")
-                .font(.title2)
-                .fontWeight(.bold)
-                .frame(maxWidth: .infinity)
-        }
+    var searchIcon: some View {
+        IconProvider.magnifier
+            .resizable()
+            .scaledToFit()
+            .frame(width: 20)
+            .foregroundStyle(PassColor.textWeak)
+    }
+
+    var title: some View {
+        Text(verbatim: "\(viewModel.shareSelection.title)")
+            .font(.title2)
+            .fontWeight(.bold)
+            .frame(maxWidth: .infinity)
     }
 
     @ViewBuilder
@@ -194,40 +190,34 @@ private struct ViewModeView: View {
         selectable: viewModel.selectable)
     }
 
-    @ViewBuilder
     var searchBar: some View {
-        if !showSearch {
-            Button { action(.onSearchAllItems) } label: {
-                ZStack {
-                    PassColor.backgroundStrong
-                    HStack {
-                        IconProvider.magnifier
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 20, height: 20)
-                        Text(viewModel.shareSelection.searchBarPlaceholder)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.75)
-                    }
-                    .foregroundStyle(PassColor.textWeak)
-                    .padding(.horizontal)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+        Button { action(.onSearchAllItems) } label: {
+            ZStack {
+                PassColor.backgroundStrong
+                HStack {
+                    IconProvider.magnifier
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20, height: 20)
+                    Text(viewModel.shareSelection.searchBarPlaceholder)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.75)
                 }
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-                .matchedGeometryEffect(id: SearchEffectID.searchbar.id,
-                                       in: animationNamespace)
-                .contentShape(.rect)
-                .frame(height: DesignConstant.searchBarHeight)
-                .frame(height: 48)
-                .padding(.bottom, 8)
-                .padding(.horizontal, 16)
+                .foregroundStyle(PassColor.textWeak)
+                .padding(.horizontal)
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .buttonStyle(.plain)
-            .accessibilityLabel("Start search")
-        } else {
-            Spacer()
-                .frame(maxWidth: .infinity)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .matchedGeometryEffect(id: SearchEffectID.searchbar.id,
+                                   in: animationNamespace)
+            .contentShape(.rect)
+            .frame(height: DesignConstant.searchBarHeight)
+            .frame(height: 48)
+            .padding(.bottom, 8)
+            .padding(.horizontal, 16)
         }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Start search")
     }
 }
 
