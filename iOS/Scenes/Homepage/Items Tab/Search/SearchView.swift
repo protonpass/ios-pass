@@ -34,44 +34,40 @@ struct SearchView: View {
     let refreshResults: Bool
 
     var body: some View {
-        GeometryReader { proxy in
-            ZStack {
-                PassColor.backgroundNorm
-                    .ignoresSafeArea(edges: .all)
-                switch viewModel.state {
-                case let .error(error):
-                    RetryableErrorView(error: error, onRetry: viewModel.refreshResults)
-                default:
-                    content
-                }
+        if #available(iOS 26.0, *) {
+            NavigationStack {
+                content(showCustomSearchBar: false)
+                    .searchable(text: $viewModel.query)
             }
-            .animation(.default, value: viewModel.state)
-            .onChange(of: refreshResults) {
-                viewModel.refreshResults()
-            }
-            .onFirstAppear {
-                safeAreaInsets = proxy.safeAreaInsets
-                isFocusedOnSearchBar = true
-                viewModel.refreshResults()
+        } else {
+            GeometryReader { proxy in
+                content(showCustomSearchBar: true)
+                    .ignoresSafeArea(edges: .bottom)
+                    .onFirstAppear {
+                        safeAreaInsets = proxy.safeAreaInsets
+                        isFocusedOnSearchBar = true
+                    }
             }
         }
     }
 }
 
 private extension SearchView {
-    var content: some View {
+    func content(showCustomSearchBar: Bool) -> some View {
         VStack(spacing: 0) {
-            SearchBar(query: $viewModel.query,
-                      isFocused: $isFocusedOnSearchBar,
-                      placeholder: viewModel.searchBarPlaceholder,
-                      cancelMode: .always,
-                      canEdit: viewModel.state != .initializing,
-                      onCancel: {
-                          viewModel.cancelRefreshing()
-                          searchMode = nil
-                      })
-                      .matchedGeometryEffect(id: SearchEffectID.searchbar.id,
-                                             in: animationNamespace)
+            if showCustomSearchBar {
+                SearchBar(query: $viewModel.query,
+                          isFocused: $isFocusedOnSearchBar,
+                          placeholder: viewModel.searchBarPlaceholder,
+                          cancelMode: .always,
+                          canEdit: viewModel.state != .initializing,
+                          onCancel: {
+                              viewModel.cancelRefreshing()
+                              searchMode = nil
+                          })
+                          .matchedGeometryEffect(id: SearchEffectID.searchbar.id,
+                                                 in: animationNamespace)
+            }
 
             let tip = SpotlightTip()
             TipView(tip) { action in
@@ -120,11 +116,18 @@ private extension SearchView {
 
             Spacer()
         }
-        .ignoresSafeArea(edges: .bottom)
+        .fullSheetBackground(PassColor.backgroundNorm)
+        .animation(.default, value: viewModel.state)
+        .onChange(of: refreshResults) {
+            viewModel.refreshResults()
+        }
         .onChange(of: viewModel.state) {
             if viewModel.state != .initializing {
                 isFocusedOnSearchBar = true
             }
+        }
+        .onAppear {
+            viewModel.refreshResults()
         }
     }
 }

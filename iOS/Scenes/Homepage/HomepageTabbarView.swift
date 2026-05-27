@@ -107,6 +107,19 @@ protocol HomepageTabDelegate: AnyObject {
     func disableCreateButton(_ isDisabled: Bool)
 }
 
+@available(iOS 26.0, *)
+private struct SearchTabView: View {
+    @Namespace private var namespace
+    let searchMode: SearchMode = .all(.all)
+
+    var body: some View {
+        SearchView(searchMode: .constant(searchMode),
+                   animationNamespace: namespace,
+                   viewModel: SearchViewModel(searchMode: searchMode),
+                   refreshResults: true)
+    }
+}
+
 struct HomepageTabbarView: UIViewControllerRepresentable {
     let itemsTabViewModel: ItemsTabViewModel
     let profileTabViewModel: ProfileTabViewModel
@@ -265,7 +278,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
                                         image: HomepageTab.search.image,
                                         identifier: HomepageTab.search.rawValue,
                                         viewControllerProvider: { _ in
-                                            UIViewController()
+                                            UIHostingController(rootView: SearchTabView())
                                         })
             searchTab.automaticallyActivatesSearch = true
             searchTab.accessibilityLabel = HomepageTab.search.hint
