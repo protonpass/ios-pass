@@ -182,15 +182,8 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     // swiftlint:disable:next cyclomatic_complexity
     func handleTopbarAction(_ action: ItemsTabTopBarAction) {
         switch action {
-        case .onSearchAllItems:
+        case .onSearch:
             currentSearchMode.send(.all(appContentManager.shareSelection))
-            if #available(iOS 26.0, *) {
-                activateSearchStream.send(())
-            } else {
-                showSearch = true
-            }
-        case .onSearchPinnedItems:
-            currentSearchMode.send(.pinned)
             if #available(iOS 26.0, *) {
                 activateSearchStream.send(())
             } else {
@@ -220,6 +213,15 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
             enableSelectedAliases()
         case .onPromoBadgeTapped:
             showNotification()
+        }
+    }
+
+    func searchPinnedItems() {
+        currentSearchMode.send(.pinned)
+        if #available(iOS 26.0, *) {
+            activateSearchStream.send(())
+        } else {
+            showSearch = true
         }
     }
 

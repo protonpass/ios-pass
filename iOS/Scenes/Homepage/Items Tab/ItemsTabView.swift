@@ -121,7 +121,7 @@ struct ItemsTabView: View {
                    !viewModel.isEditMode,
                    viewModel.appContentManager.shareSelection != .trash {
                     PinnedItemsView(pinnedItems: pinnedItems,
-                                    onSearch: { viewModel.handleTopbarAction(.onSearchPinnedItems) },
+                                    onSearch: { viewModel.searchPinnedItems() },
                                     action: { viewModel.viewDetail(of: $0) })
                     Divider()
                 }
@@ -191,7 +191,8 @@ private extension ItemsTabView {
         .frame(width: 60, height: 60)
         .tint(PassColor.interactionNorm)
         .buttonStyle(.glassProminent)
-        .padding([.trailing, .bottom])
+        .padding(.bottom)
+        .padding(.trailing, 22)
     }
 
     @ViewBuilder
