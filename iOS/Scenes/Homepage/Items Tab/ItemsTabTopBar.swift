@@ -99,6 +99,7 @@ private struct ViewModeView: View {
                 .buttonEmbeded {
                     action(.onSearchAllItems)
                 }
+                .accessibilityLabel("Start search")
             }
             upsellView
             sortAndFilterMenu
@@ -188,36 +189,6 @@ private struct ViewModeView: View {
         ],
         highlighted: viewModel.highlighted,
         selectable: viewModel.selectable)
-    }
-
-    var searchBar: some View {
-        Button { action(.onSearchAllItems) } label: {
-            ZStack {
-                PassColor.backgroundStrong
-                HStack {
-                    IconProvider.magnifier
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 20, height: 20)
-                    Text(viewModel.shareSelection.searchBarPlaceholder)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.75)
-                }
-                .foregroundStyle(PassColor.textWeak)
-                .padding(.horizontal)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            }
-            .clipShape(RoundedRectangle(cornerRadius: 16))
-            .matchedGeometryEffect(id: SearchEffectID.searchbar.id,
-                                   in: animationNamespace)
-            .contentShape(.rect)
-            .frame(height: DesignConstant.searchBarHeight)
-            .frame(height: 48)
-            .padding(.bottom, 8)
-            .padding(.horizontal, 16)
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel("Start search")
     }
 }
 
