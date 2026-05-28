@@ -165,6 +165,11 @@ struct ItemsTabView: View {
                                                     onDisableAlias: { viewModel.disableAlias() },
                                                     onDelete: { viewModel.permanentlyDelete() }))
         }
+        .overlay(alignment: .bottomTrailing) {
+            if #available(iOS 26.0, *) {
+                createButton
+            }
+        }
         .searchScreen(showSearch: viewModel.showSearch,
                       animationNamespace: animationNamespace,
                       onCancel: { viewModel.showSearch = false })
@@ -172,6 +177,23 @@ struct ItemsTabView: View {
 }
 
 private extension ItemsTabView {
+    @available(iOS 26.0, *)
+    var createButton: some View {
+        Button(action: viewModel.createNewItem) {
+            ZStack {
+                IconProvider.plus
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 24)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .frame(width: 60, height: 60)
+        .tint(PassColor.interactionNorm)
+        .buttonStyle(.glassProminent)
+        .padding([.trailing, .bottom])
+    }
+
     @ViewBuilder
     var emptySections: some View {
         switch viewModel.appContentManager.shareSelection {

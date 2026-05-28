@@ -50,6 +50,25 @@ private extension HomepageCoordinator {
         }
     }
 
+    func passMonitor() {
+        guard !isCollapsed() else {
+            return
+        }
+        let placeholderView = ItemDetailPlaceholderView { [weak self] in
+            guard let self else { return }
+            popTopViewController(animated: true)
+        }
+        push(placeholderView)
+    }
+
+    func profileTab() {
+        if !isCollapsed() {
+            showAccountMenu()
+        }
+    }
+}
+
+extension HomepageCoordinator {
     func createNewItem() {
         let viewModel = ItemTypeListViewModel(mode: .hostApp) { [weak self] type in
             guard let self else { return }
@@ -71,22 +90,5 @@ private extension HomepageCoordinator {
         viewController.sheetPresentationController?.detents = [detent]
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
-    }
-
-    func passMonitor() {
-        guard !isCollapsed() else {
-            return
-        }
-        let placeholderView = ItemDetailPlaceholderView { [weak self] in
-            guard let self else { return }
-            popTopViewController(animated: true)
-        }
-        push(placeholderView)
-    }
-
-    func profileTab() {
-        if !isCollapsed() {
-            showAccountMenu()
-        }
     }
 }

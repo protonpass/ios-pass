@@ -590,6 +590,8 @@ extension HomepageCoordinator {
                     } else {
                         presentCreateEditLoginView(mode: item)
                     }
+                case .createNewItem:
+                    createNewItem()
                 case let .createItem(item, type, aliasToCopy, _):
                     handleItemCreation(item: item, type: type, aliasToCopy: aliasToCopy)
                 case let .editItem(itemContent):
