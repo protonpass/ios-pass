@@ -116,6 +116,8 @@ enum SheetDestination: Equatable, Hashable {
     case undecryptableSharesBanner(dismissTopSheetBeforeShowing: Bool)
     case shareLogs(URL)
     case moveFolder(FolderToMove)
+    /// iOS 26+ only
+    case searchPinnedItems
 }
 
 enum ItemDestination {

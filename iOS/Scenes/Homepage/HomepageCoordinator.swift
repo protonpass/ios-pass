@@ -662,6 +662,8 @@ extension HomepageCoordinator {
                     presentShareSheet(for: url)
                 case let .moveFolder(folderToMove):
                     moveFolder(folderToMove: folderToMove)
+                case .searchPinnedItems:
+                    homepageTabDelegate?.change(tab: .search)
                 }
             }
             .store(in: &cancellables)
