@@ -36,7 +36,10 @@ final class PlanTests: XCTestCase {
                             storageAllowed: true,
                             storageUsed: 1,
                             storageQuota: 2,
-                            folderAllowed: false)
+                            folderAllowed: false,
+                            folderMaxCount: 5,
+                            folderMaxChildren: 5,
+                            folderMaxDepth: 5)
         XCTAssertEqual(plusPlan.planType, .plus)
 
         // Free
@@ -52,7 +55,10 @@ final class PlanTests: XCTestCase {
                             storageAllowed: false,
                             storageUsed: 1,
                             storageQuota: 2,
-                            folderAllowed: false)
+                            folderAllowed: false,
+                            folderMaxCount: 5,
+                            folderMaxChildren: 5,
+                            folderMaxDepth: 5)
         XCTAssertEqual(freePlan.planType, .free)
 
         // Trial
@@ -68,7 +74,10 @@ final class PlanTests: XCTestCase {
                              storageAllowed: false,
                              storageUsed: 1,
                              storageQuota: 2,
-                             folderAllowed: false)
+                             folderAllowed: false,
+                             folderMaxCount: 5,
+                             folderMaxChildren: 5,
+                             folderMaxDepth: 5)
         XCTAssertEqual(trialPlan.planType, .trial)
     }
 }

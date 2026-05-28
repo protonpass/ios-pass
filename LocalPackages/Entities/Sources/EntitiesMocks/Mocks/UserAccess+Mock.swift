@@ -34,7 +34,10 @@ public extension Plan {
         storageAllowed: Bool = false,
         storageUsed: Int = 100,
         storageQuota: Int = 200,
-        folderAllowed: Bool = false
+        folderAllowed: Bool = false,
+        folderMaxCount: Int =  5,
+        folderMaxChildren: Int = 10,
+        folderMaxDepth: Int = 10
     ) -> Plan {
         Plan(
             type: type,
@@ -49,7 +52,10 @@ public extension Plan {
             storageAllowed: storageAllowed,
             storageUsed: storageUsed,
             storageQuota: storageQuota,
-            folderAllowed: folderAllowed
+            folderAllowed: folderAllowed,
+            folderMaxCount: folderMaxCount,
+            folderMaxChildren: folderMaxChildren,
+            folderMaxDepth: folderMaxDepth
         )
     }
     static let mockBusinessPlan: Plan = .mock(type: "business")
