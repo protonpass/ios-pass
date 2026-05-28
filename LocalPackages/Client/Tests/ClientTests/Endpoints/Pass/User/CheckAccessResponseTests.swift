@@ -43,7 +43,10 @@ final class CheckAccessResponseTests: XCTestCase {
          "StorageAllowed":false,
          "StorageUsed":1,
          "StorageQuota":2,
-        "FolderAllowed": true
+        "FolderAllowed": true,
+                          "FolderMaxCount": 5,
+                          "FolderMaxChildren": 5,
+                          "FolderMaxDepth": 5
       },
       "Monitor":{
          "ProtonAddress": true,
@@ -72,7 +75,10 @@ final class CheckAccessResponseTests: XCTestCase {
                                                        storageAllowed: false,
                                                        storageUsed: 1,
                                                        storageQuota: 2,
-                                                       folderAllowed: true),
+                                                       folderAllowed: true,
+                                                       folderMaxCount: 5,
+                                                       folderMaxChildren: 5,
+                                                       folderMaxDepth: 5),
                                            monitor: .init(protonAddress: true, aliases: false),
                                            pendingInvites: 3,
                                            waitingNewUserInvites: 0,

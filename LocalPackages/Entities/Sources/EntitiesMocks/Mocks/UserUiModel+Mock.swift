@@ -33,6 +33,9 @@ public extension UserUiModel {
                           storageAllowed: false,
                           storageUsed: 1,
                           storageQuota: 2,
-                          folderAllowed: false))
+                          folderAllowed: false,
+                          folderMaxCount: 5,
+                          folderMaxChildren: 5,
+                          folderMaxDepth: 5))
     }
 }
