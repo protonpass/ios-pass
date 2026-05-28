@@ -223,6 +223,10 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
             showNotification()
         }
     }
+
+    func createNewItem() {
+        router.present(for: .createNewItem)
+    }
 }
 
 // MARK: - Private APIs
