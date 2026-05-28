@@ -102,6 +102,7 @@ private extension MonitorState {
 @MainActor
 protocol HomepageTabDelegate: AnyObject {
     func change(tab: HomepageTab)
+    func activateSearch(pinnedItems: Bool)
     func refreshTabIcons()
     func hideTabbar(_ isHidden: Bool)
     func disableCreateButton(_ isDisabled: Bool)
@@ -110,9 +111,12 @@ protocol HomepageTabDelegate: AnyObject {
 @available(iOS 26.0, *)
 private struct SearchTabView: View {
     @Namespace private var namespace
+    let viewModel: SearchViewModel
 
     var body: some View {
-        SearchView(animationNamespace: namespace, onCancel: { /* No op */ })
+        SearchView(animationNamespace: namespace,
+                   viewModel: viewModel,
+                   onCancel: { /* No op */ })
     }
 }
 
@@ -159,6 +163,10 @@ struct HomepageTabbarView: UIViewControllerRepresentable {
             homepageTabBarController?.select(tab: tab)
         }
 
+        func activateSearch(pinnedItems: Bool) {
+            homepageTabBarController?.activateSearch(pinnedItems: pinnedItems)
+        }
+
         func refreshTabIcons() {
             homepageTabBarController?.refreshTabBarIcons()
         }
@@ -188,6 +196,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
     private let passMonitorView: PassMonitorView
     private var passMonitorViewController: UIViewController?
     private var profileTabViewController: UIViewController?
+    private var searchViewModel: SearchViewModel?
 
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let monitorStateStream = resolve(\DataStreamContainer.monitorStateStream)
@@ -270,11 +279,14 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
         tabIndexes[.profile] = currentIndex
 
         if #available(iOS 26.0, *) {
+            let searchViewModel = SearchViewModel(searchMode: .all(.all))
+            let searchView = SearchTabView(viewModel: searchViewModel)
+            self.searchViewModel = searchViewModel
             let searchTab = UISearchTab(title: "",
                                         image: HomepageTab.search.image,
                                         identifier: HomepageTab.search.rawValue,
                                         viewControllerProvider: { _ in
-                                            UIHostingController(rootView: SearchTabView())
+                                            UIHostingController(rootView: searchView)
                                         })
             searchTab.automaticallyActivatesSearch = true
             searchTab.accessibilityLabel = HomepageTab.search.hint
@@ -332,6 +344,11 @@ extension HomepageTabBarController {
         } else if let index = tabIndexes[tab] {
             selectedViewController = viewControllers?[index]
         }
+    }
+
+    func activateSearch(pinnedItems: Bool) {
+        searchViewModel?.resetStateAndSearchMode(pinnedItems: pinnedItems)
+        select(tab: .search)
     }
 
     func refreshTabBarIcons() {
@@ -401,5 +418,13 @@ extension HomepageTabBarController: UITabBarControllerDelegate {
         }
 
         return false
+    }
+
+    @available(iOS 18.0, *)
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelectTab tab: UITab) -> Bool {
+        if tab.identifier == HomepageTab.search.rawValue {
+            activateSearch(pinnedItems: false)
+        }
+        return true
     }
 }

@@ -90,8 +90,7 @@ struct ItemsTabView: View {
     private func vaultContent(_ sections: [SectionedItemUiModel]) -> some View {
         GeometryReader { proxy in
             VStack(spacing: 0) {
-                ItemsTabTopBar(showSearch: $viewModel.showSearch,
-                               animationNamespace: animationNamespace,
+                ItemsTabTopBar(animationNamespace: animationNamespace,
                                isEditMode: $viewModel.isEditMode,
                                showPromoBadge: viewModel.showPromoBadge) { action in
                     viewModel.handleTopbarAction(action)
@@ -170,9 +169,8 @@ struct ItemsTabView: View {
                 createButton
             }
         }
-        .searchScreen(showSearch: viewModel.showSearch,
-                      animationNamespace: animationNamespace,
-                      onCancel: { viewModel.showSearch = false })
+        .searchScreen(searchMode: $viewModel.searchMode,
+                      animationNamespace: animationNamespace)
     }
 }
 

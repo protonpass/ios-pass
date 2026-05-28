@@ -65,6 +65,7 @@ enum SearchViewState {
 final class SearchViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
+    @Published private(set) var searchMode: SearchMode
     @Published private(set) var state = SearchViewState.initializing
     @Published var selectedType: ItemContentType?
     @Published var query = ""
@@ -83,7 +84,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private let getSearchableItems = resolve(\UseCasesContainer.getSearchableItems)
     private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\DataStreamContainer.currentSearchMode) private var currentSearchMode
+    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
     @LazyInjected(\SharedUseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
 
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
@@ -101,10 +102,11 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private var refreshResultsTask: Task<Void, Never>?
 
     var searchBarPlaceholder: String {
-        currentSearchMode.value.searchBarPlacehoder
+        searchMode.searchBarPlacehoder
     }
 
-    init() {
+    init(searchMode: SearchMode) {
+        self.searchMode = searchMode
         setup()
     }
 }
@@ -118,8 +120,8 @@ private extension SearchViewModel {
                 state = .initializing
             }
             let userId = try await userManager.getActiveUserId()
-            searchableItems = try await getSearchableItems(userId: userId, for: currentSearchMode.value)
-            if currentSearchMode.value.isSpecificSelection {
+            searchableItems = try await getSearchableItems(userId: userId, for: searchMode)
+            if searchMode.isSpecificSelection {
                 allSearchableItems = try await getSearchableItems(userId: userId, for: .all(.all))
             }
             try await refreshSearchHistory()
@@ -129,7 +131,7 @@ private extension SearchViewModel {
     }
 
     func refreshSearchHistory() async throws {
-        guard let shareSelection = currentSearchMode.value.shareSelection else {
+        guard let shareSelection = searchMode.shareSelection else {
             return
         }
 
@@ -164,7 +166,7 @@ private extension SearchViewModel {
 
     func doSearch(query: String) {
         lastSearchQuery = query
-        switch currentSearchMode.value {
+        switch searchMode {
         case .pinned:
             if query.isEmpty {
                 results = searchableItems.toItemSearchResults
@@ -235,7 +237,7 @@ private extension SearchViewModel {
             let current = try await parse(results: results)
 
             var all: SearchDataDisplay?
-            if await currentSearchMode.value.isSpecificSelection {
+            if await searchMode.isSpecificSelection {
                 all = try await parse(results: allResults)
             }
 
@@ -280,7 +282,7 @@ private extension SearchViewModel {
     }
 
     func isSearchEmpty(results: [ItemSearchResult]) -> Bool {
-        if currentSearchMode.value.isSpecificSelection {
+        if searchMode.isSpecificSelection {
             results.isEmpty && allResults.isEmpty
         } else {
             results.isEmpty
@@ -291,8 +293,14 @@ private extension SearchViewModel {
 // MARK: - Public APIs
 
 extension SearchViewModel {
-    func resetState() {
+    /// Reset state and search mode depending on the entry point of the search context
+    func resetStateAndSearchMode(pinnedItems: Bool) {
         state = .initializing
+        if pinnedItems {
+            searchMode = .pinned
+        } else {
+            searchMode = .all(appContentManager.shareSelection)
+        }
     }
 
     func refreshResults() {
@@ -341,7 +349,7 @@ extension SearchViewModel {
 
     func removeAllSearchHistory() {
         Task { [weak self] in
-            guard let self, let shareSelection = currentSearchMode.value.shareSelection else { return }
+            guard let self, let shareSelection = searchMode.shareSelection else { return }
 
             do {
                 if case let .precise(selection) = shareSelection {

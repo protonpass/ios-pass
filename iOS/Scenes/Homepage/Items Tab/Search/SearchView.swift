@@ -28,7 +28,7 @@ import TipKit
 struct SearchView: View {
     let animationNamespace: Namespace.ID
     @FocusState private var isFocusedOnSearchBar
-    @StateObject var viewModel = SearchViewModel()
+    @StateObject var viewModel: SearchViewModel
     @State private var safeAreaInsets = EdgeInsets.zero
     let onCancel: () -> Void
 
@@ -113,6 +113,7 @@ private extension SearchView {
                                   vaultSearchSelection: $viewModel.vaultSearchSelection,
                                   itemContextMenuHandler: viewModel.itemContextMenuHandler,
                                   results: results,
+                                  mode: viewModel.searchMode,
                                   safeAreaInsets: safeAreaInsets,
                                   onScroll: { isFocusedOnSearchBar = false },
                                   onSelectItem: { viewModel.viewDetail(of: $0) })
@@ -131,7 +132,6 @@ private extension SearchView {
             }
         }
         .task {
-            viewModel.resetState()
             viewModel.refreshResults()
         }
     }

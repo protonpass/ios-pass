@@ -42,7 +42,6 @@ enum ItemsTabTopBarAction {
 struct ItemsTabTopBar: View {
     @StateObject private var viewModel = ItemsTabTopBarViewModel()
 
-    @Binding var showSearch: Bool
     let animationNamespace: Namespace.ID
     @Binding var isEditMode: Bool
     let showPromoBadge: Bool
@@ -57,7 +56,6 @@ struct ItemsTabTopBar: View {
                     .frame(height: 60)
             } else {
                 ViewModeView(viewModel: viewModel,
-                             showSearch: $showSearch,
                              isEditMode: $isEditMode,
                              showPromoBadge: showPromoBadge,
                              animationNamespace: animationNamespace,
@@ -71,7 +69,6 @@ struct ItemsTabTopBar: View {
 private struct ViewModeView: View {
     @Environment(\.accessibilityShowButtonShapes) private var showButtonShapes
     @ObservedObject var viewModel: ItemsTabTopBarViewModel
-    @Binding var showSearch: Bool
     @Binding var isEditMode: Bool
     let showPromoBadge: Bool
     let animationNamespace: Namespace.ID
