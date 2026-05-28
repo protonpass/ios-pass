@@ -142,7 +142,8 @@ private extension FileAttachmentPreview {
                 }, label: {
                     CircleButton(icon: IconProvider.threeDotsVertical,
                                  iconColor: primaryTintColor,
-                                 backgroundColor: secondaryTintColor)
+                                 backgroundColor: secondaryTintColor,
+                                 action: {})
                 })
             }
         }
