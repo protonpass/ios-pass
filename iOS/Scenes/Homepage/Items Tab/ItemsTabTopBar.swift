@@ -26,8 +26,7 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 enum ItemsTabTopBarAction {
-    case onSearchAllItems
-    case onSearchPinnedItems
+    case onSearch
     case onShowVaultList
     case onPin
     case onUnpin
@@ -97,7 +96,7 @@ private struct ViewModeView: View {
                 .background(PassColor.backgroundStrong)
                 .clipShape(.capsule)
                 .buttonEmbeded {
-                    action(.onSearchAllItems)
+                    action(.onSearch)
                 }
                 .accessibilityLabel("Start search")
             }
