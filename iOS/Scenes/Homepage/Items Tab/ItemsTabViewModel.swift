@@ -92,9 +92,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @LazyInjected(\DataStreamContainer.currentSearchMode)
     private var currentSearchMode
 
-    @LazyInjected(\DataStreamContainer.activateSearchStream)
-    private var activateSearchStream
-
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let itemTypeSelection = resolve(\DataStreamContainer.itemTypeSelection)
 
@@ -184,11 +181,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
         switch action {
         case .onSearch:
             currentSearchMode.send(.all(appContentManager.shareSelection))
-            if #available(iOS 26.0, *) {
-                activateSearchStream.send(())
-            } else {
-                showSearch = true
-            }
+            showSearch = true
         case .onShowVaultList:
             presentVaultList()
         case .onPin:
@@ -219,7 +212,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     func searchPinnedItems() {
         currentSearchMode.send(.pinned)
         if #available(iOS 26.0, *) {
-            activateSearchStream.send(())
+            router.present(for: .searchPinnedItems)
         } else {
             showSearch = true
         }

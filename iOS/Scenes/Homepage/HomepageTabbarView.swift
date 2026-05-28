@@ -192,7 +192,6 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let monitorStateStream = resolve(\DataStreamContainer.monitorStateStream)
     private let itemTypeSelection = resolve(\DataStreamContainer.itemTypeSelection)
-    private let activateSearchStream = resolve(\DataStreamContainer.activateSearchStream)
     private let logger = resolve(\SharedToolingContainer.logger)
     weak var homepageTabBarControllerDelegate: (any HomepageTabBarControllerDelegate)?
 
@@ -222,14 +221,6 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
             .sink { [weak self] _ in
                 guard let self else { return }
                 select(tab: .items)
-            }
-            .store(in: &cancellables)
-
-        activateSearchStream
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                guard let self else { return }
-                select(tab: .search)
             }
             .store(in: &cancellables)
     }
