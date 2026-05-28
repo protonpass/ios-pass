@@ -49,12 +49,14 @@ struct SearchResultsView: View {
          vaultSearchSelection: Binding<VaultSearchSelection>,
          itemContextMenuHandler: ItemContextMenuHandler,
          results: SearchDataDisplayContainer,
+         mode: SearchMode,
          safeAreaInsets: EdgeInsets,
          onScroll: @escaping () -> Void,
          onSelectItem: @escaping (ItemSearchResult) -> Void) {
         _viewModel = .init(wrappedValue: .init(itemContextMenuHandler: itemContextMenuHandler,
                                                results: results,
-                                               vaultSearchSelection: vaultSearchSelection.wrappedValue))
+                                               vaultSearchSelection: vaultSearchSelection.wrappedValue,
+                                               mode: mode))
         _selectedType = selectedType
         _selectedSortType = selectedSortType
         _vaultSearchSelection = vaultSearchSelection

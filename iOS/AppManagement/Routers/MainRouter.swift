@@ -78,6 +78,7 @@ enum SheetDestination: Equatable, Hashable {
     case tutorial
     case accountSettings
     case settingsMenu
+    /// iOS 26+ only
     case createNewItem
     case createEditLogin(mode: ItemMode, dismissAllSheets: Bool)
     case createItem(item: SymmetricallyEncryptedItem,

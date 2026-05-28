@@ -663,7 +663,7 @@ extension HomepageCoordinator {
                 case let .moveFolder(folderToMove):
                     moveFolder(folderToMove: folderToMove)
                 case .searchPinnedItems:
-                    homepageTabDelegate?.change(tab: .search)
+                    homepageTabDelegate?.activateSearch(pinnedItems: true)
                 }
             }
             .store(in: &cancellables)

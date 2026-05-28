@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import Foundation
 import SwiftUI
 
@@ -30,26 +31,21 @@ enum SearchEffectID: String {
 }
 
 extension View {
-    func searchScreen(showSearch: Bool,
-                      animationNamespace: Namespace.ID,
-                      onCancel: @escaping () -> Void) -> some View {
-        modifier(SearchViewModifier(showSearch: showSearch,
-                                    animationNamespace: animationNamespace,
-                                    onCancel: onCancel))
+    func searchScreen(searchMode: Binding<SearchMode?>,
+                      animationNamespace: Namespace.ID) -> some View {
+        modifier(SearchViewModifier(searchMode: searchMode,
+                                    animationNamespace: animationNamespace))
     }
 }
 
 struct SearchViewModifier: ViewModifier {
-    private let showSearch: Bool
+    @Binding private var searchMode: SearchMode?
     private let animationNamespace: Namespace.ID
-    private let onCancel: () -> Void
 
-    init(showSearch: Bool,
-         animationNamespace: Namespace.ID,
-         onCancel: @escaping () -> Void) {
-        self.showSearch = showSearch
+    init(searchMode: Binding<SearchMode?>,
+         animationNamespace: Namespace.ID) {
+        _searchMode = searchMode
         self.animationNamespace = animationNamespace
-        self.onCancel = onCancel
     }
 
     func body(content: Content) -> some View {
@@ -57,13 +53,15 @@ struct SearchViewModifier: ViewModifier {
             .overlay {
                 overlayContent
             }
-            .animation(.easeInOut(duration: 0.2), value: showSearch)
+            .animation(.easeInOut(duration: 0.2), value: searchMode)
     }
 
     @MainActor @ViewBuilder
     var overlayContent: some View {
-        if showSearch {
-            SearchView(animationNamespace: animationNamespace, onCancel: onCancel)
+        if let searchMode {
+            SearchView(animationNamespace: animationNamespace,
+                       viewModel: .init(searchMode: searchMode),
+                       onCancel: { self.searchMode = nil })
         }
     }
 }
