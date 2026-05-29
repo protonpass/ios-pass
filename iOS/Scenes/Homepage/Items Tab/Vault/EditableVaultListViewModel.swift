@@ -514,7 +514,7 @@ private extension EditableVaultListViewModel {
             shareSelection = payload
         }
 
-        if let newFolderLimits = accessRepository.access.value?.access.plan.folderLimit {
+        if let newFolderLimits = accessRepository.access.value?.access.plan.folderLimits {
             folderLimits = newFolderLimits
         }
 
@@ -558,7 +558,7 @@ private extension EditableVaultListViewModel {
                     return
                 }
                 plan = updatedAccess?.access.plan
-                if let newFolderLimits = accessRepository.access.value?.access.plan.folderLimit,
+                if let newFolderLimits = accessRepository.access.value?.access.plan.folderLimits,
                    newFolderLimits != folderLimits {
                     folderLimits = newFolderLimits
                 }
