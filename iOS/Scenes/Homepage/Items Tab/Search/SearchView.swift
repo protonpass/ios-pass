@@ -66,7 +66,7 @@ private extension SearchView {
                           })
                           .matchedGeometryEffect(id: SearchEffectID.searchbar.id,
                                                  in: animationNamespace)
-            } else {
+            } else if UIDevice.current.userInterfaceIdiom == .phone {
                 Text("Search")
                     .font(.largeTitle)
                     .fontWeight(.bold)
