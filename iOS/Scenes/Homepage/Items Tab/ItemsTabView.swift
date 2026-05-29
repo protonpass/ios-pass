@@ -164,8 +164,9 @@ struct ItemsTabView: View {
                                                     onDisableAlias: { viewModel.disableAlias() },
                                                     onDelete: { viewModel.permanentlyDelete() }))
         }
+        .animation(.default, value: viewModel.isEditMode)
         .overlay(alignment: .bottomTrailing) {
-            if #available(iOS 26.0, *) {
+            if #available(iOS 26.0, *), !viewModel.createButtonHidden, !viewModel.isEditMode {
                 createButton
             }
         }

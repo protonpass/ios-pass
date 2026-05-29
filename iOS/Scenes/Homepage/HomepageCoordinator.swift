@@ -252,6 +252,7 @@ private extension HomepageCoordinator {
                     createButtonDisabled = true
                 }
                 homepageTabDelegate?.disableCreateButton(createButtonDisabled)
+                itemsTabViewModel?.hideCreateButton(createButtonDisabled)
             }
             .store(in: &cancellables)
 

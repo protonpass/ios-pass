@@ -191,7 +191,6 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
     deinit { print(deinitMessage) }
 
     private let itemsTabView: ItemsTabView
-    private var createItemViewController: UIViewController?
     private let profileTabView: ProfileTabView
     private let passMonitorView: PassMonitorView
     private var passMonitorViewController: UIViewController?
@@ -257,7 +256,6 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
         createItemViewController.tabBarItem.image = HomepageTab.itemCreation.image
         createItemViewController.tabBarItem.accessibilityLabel = HomepageTab.itemCreation.hint
         controllers.append(createItemViewController)
-        self.createItemViewController = createItemViewController
         tabIndexes[.itemCreation] = currentIndex
         currentIndex += 1
 
