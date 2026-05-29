@@ -53,17 +53,21 @@ struct SearchRecentResultsView: View {
             }
             .padding(.horizontal)
 
-            List {
-                ForEach(results) { result in
-                    SearchEntryView(uiModel: result,
-                                    onSelect: { onSelect(result) },
-                                    onRemove: { onRemove(result) })
-                        .plainListRow()
-                        .padding(.horizontal)
-                }
-            }
-            .listStyle(.plain)
-            .animation(.default, value: results)
+            let sections: [TableView<SearchEntryUiModel, SearchEntryView, EmptyView>.Section] = [
+                .init(type: "", title: "", items: results)
+            ]
+
+            TableView(sections: sections,
+                      configuration: .init(),
+                      id: results.hashValue,
+                      itemView: { result in
+                          SearchEntryView(uiModel: result,
+                                          onSelect: { onSelect(result) },
+                                          onRemove: { onRemove(result) })
+                      },
+                      headerView: { _ in
+                          nil
+                      })
         }
     }
 }
