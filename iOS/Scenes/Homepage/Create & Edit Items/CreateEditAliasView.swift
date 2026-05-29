@@ -343,17 +343,29 @@ private extension CreateEditAliasView {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
                 if !isShowingAdvancedOptions {
-                    ItemDetailSectionIcon(icon: IconProvider.cogWheel, color: PassColor.textWeak)
-                        .buttonEmbeded {
-                            isShowingAdvancedOptions.toggle()
-                            viewModel.dismissAdvancedOptionsTipBanner()
-                        }
+                    if #available(iOS 26.0, *) {
+                        advancedOptionsButton
+                            .buttonStyle(.glass)
+                            .buttonBorderShape(.circle)
+                    } else {
+                        advancedOptionsButton
+                            .buttonStyle(.plain)
+                    }
                 }
             }
         }
         .animation(.default, value: viewModel.prefixError)
         .padding(DesignConstant.sectionPadding)
         .roundedDetailSection()
+    }
+
+    var advancedOptionsButton: some View {
+        Button(action: {
+            isShowingAdvancedOptions.toggle()
+            viewModel.dismissAdvancedOptionsTipBanner()
+        }, label: {
+            ItemDetailSectionIcon(icon: IconProvider.cogWheel, color: PassColor.textWeak)
+        })
     }
 
     var advancedOptionsTipBanner: some View {
