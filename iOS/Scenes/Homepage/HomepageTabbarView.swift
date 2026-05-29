@@ -422,6 +422,7 @@ extension HomepageTabBarController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, shouldSelectTab tab: UITab) -> Bool {
         if tab.identifier == HomepageTab.search.rawValue {
             activateSearch(pinnedItems: false)
+            return false
         }
         return true
     }
