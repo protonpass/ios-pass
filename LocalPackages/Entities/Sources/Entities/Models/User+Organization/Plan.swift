@@ -89,7 +89,7 @@ public struct Plan: Decodable, Hashable, Sendable {
         isFreeUser && !hideUpgrade
     }
 
-    public var folderLimit: FolderLimits {
+    public var folderLimits: FolderLimits {
         FolderLimits(maxFoldersPerVault: folderMaxCount,
                      maxFoldersPerLayer: folderMaxChildren,
                      maxFolderDepth: folderMaxDepth)

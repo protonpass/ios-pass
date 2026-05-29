@@ -43,10 +43,10 @@ final class CheckAccessResponseTests: XCTestCase {
          "StorageAllowed":false,
          "StorageUsed":1,
          "StorageQuota":2,
-        "FolderAllowed": true,
-                          "FolderMaxCount": 5,
-                          "FolderMaxChildren": 5,
-                          "FolderMaxDepth": 5
+         "FolderAllowed": true,
+         "FolderMaxCount": 5,
+         "FolderMaxChildren": 5,
+         "FolderMaxDepth": 5
       },
       "Monitor":{
          "ProtonAddress": true,

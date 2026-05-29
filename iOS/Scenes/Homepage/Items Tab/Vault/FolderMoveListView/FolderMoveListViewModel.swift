@@ -110,7 +110,7 @@ final class FolderMoveListViewModel {
 
 private extension FolderMoveListViewModel {
     func setup() {
-        if let newFolderLimits = accessRepository.access.value?.access.plan.folderLimit {
+        if let newFolderLimits = accessRepository.access.value?.access.plan.folderLimits {
             folderLimits = newFolderLimits
         }
 
@@ -120,7 +120,7 @@ private extension FolderMoveListViewModel {
             .compactMap(\.self)
             .sink { [weak self] _ in
                 guard let self,
-                      let newFolderLimits = accessRepository.access.value?.access.plan.folderLimit,
+                      let newFolderLimits = accessRepository.access.value?.access.plan.folderLimits,
                       newFolderLimits != folderLimits else {
                     return
                 }
