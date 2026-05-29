@@ -51,7 +51,6 @@ private extension SettingsView {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .navigationTitle("Settings")
         .navigationBarBackButtonHidden()
-        .navigationBarHidden(false)
         .navigationBarTitleDisplayMode(.large)
         .background(PassColor.backgroundNorm)
         .toolbar { toolbarContent }
