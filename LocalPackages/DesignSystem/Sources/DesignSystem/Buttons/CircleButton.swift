@@ -79,33 +79,36 @@ public struct CircleButton: View {
     }
 
     public var body: some View {
-        Group {
-            if let action {
-                if #available(iOS 26.0, *) {
-                    Button(action: action) {
-                        iconView
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    }
-                    .frame(maxWidth: type.width, maxHeight: type.width)
-                    .tint(isEnabled ? backgroundColor : backgroundDisabledColor)
-                    .buttonStyle(.glassProminent)
-                    .buttonBorderShape(.circle)
-                } else {
-                    Button(action: action) {
-                        iconWithBackground
-                    }
-                }
-            } else {
-                iconWithBackground
+        content
+            .if(accessibilityLabel) { view, label in
+                view.accessibilityLabel(label)
             }
-        }
-        .if(accessibilityLabel) { view, label in
-            view.accessibilityLabel(label)
-        }
     }
 }
 
 private extension CircleButton {
+    @ViewBuilder
+    var content: some View {
+        if let action {
+            if #available(iOS 26.0, *) {
+                Button(action: action) {
+                    iconView
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
+                .frame(maxWidth: type.width, maxHeight: type.width)
+                .tint(isEnabled ? backgroundColor : backgroundDisabledColor)
+                .buttonStyle(.glassProminent)
+                .buttonBorderShape(.circle)
+            } else {
+                Button(action: action) {
+                    iconWithBackground
+                }
+            }
+        } else {
+            iconWithBackground
+        }
+    }
+
     var iconWithBackground: some View {
         ZStack {
             (isEnabled ? backgroundColor : backgroundDisabledColor)
