@@ -140,17 +140,21 @@ private extension OnboardingPaymentStep {
         .padding(.vertical, 8)
         .background(GeometryReader { proxy in
             if plans.onePlanAvailable {
-                Color.white
-                    .clipShape(.capsule)
+                whiteCapsule
             } else {
                 HStack {
                     if selection == .unlimited {
                         Spacer()
                     }
 
-                    Color.white
-                        .clipShape(.capsule)
-                        .frame(maxWidth: proxy.size.width / 2)
+                    if #available(iOS 26.0, *) {
+                        whiteCapsule
+                            .frame(maxWidth: proxy.size.width / 2)
+                            .glassEffect(in: .capsule)
+                    } else {
+                        whiteCapsule
+                            .frame(maxWidth: proxy.size.width / 2)
+                    }
 
                     if selection == .plus {
                         Spacer()
@@ -161,6 +165,11 @@ private extension OnboardingPaymentStep {
         .padding(4)
         .background(ThemedColor(dark: Color.black,
                                 light: Color.white).opacity(0.3).clipShape(.capsule))
+    }
+
+    var whiteCapsule: some View {
+        Color.white
+            .clipShape(.capsule)
     }
 
     func planDetail(name: String,

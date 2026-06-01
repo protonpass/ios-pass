@@ -113,10 +113,40 @@ private extension CustomItemTemplatesList {
         })
     }
 
+    @ViewBuilder
     func row(for template: CustomItemTemplate,
              alignment: Alignment,
              primaryColor: Color,
              secondaryColor: Color) -> some View {
+        let action = {
+            dismiss()
+            onSelect(template)
+        }
+        if #available(iOS 26.0, *) {
+            Button(action: action) {
+                rowContent(for: template,
+                           alignment: alignment,
+                           primaryColor: primaryColor)
+            }
+            .frame(height: 56)
+            .tint(secondaryColor)
+            .buttonStyle(.glassProminent)
+        } else {
+            Button(action: action) {
+                rowContent(for: template,
+                           alignment: alignment,
+                           primaryColor: primaryColor)
+                    .padding(.horizontal)
+                    .background(secondaryColor)
+                    .frame(height: 56)
+                    .clipShape(.capsule)
+            }
+        }
+    }
+
+    func rowContent(for template: CustomItemTemplate,
+                    alignment: Alignment,
+                    primaryColor: Color) -> some View {
         HStack {
             template.uiModel.icon
                 .renderingMode(.template)
@@ -129,14 +159,6 @@ private extension CustomItemTemplatesList {
                 .foregroundStyle(PassColor.textNorm)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: alignment)
-        .frame(height: 56)
-        .padding(.horizontal)
-        .background(secondaryColor)
-        .clipShape(.capsule)
-        .buttonEmbeded {
-            dismiss()
-            onSelect(template)
-        }
     }
 }
 

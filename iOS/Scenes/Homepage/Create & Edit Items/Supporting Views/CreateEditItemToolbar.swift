@@ -33,11 +33,15 @@ struct CreateEditItemToolbar: ToolbarContent {
     let canChangeVault: Bool
     let itemContentType: ItemContentType
     let shouldUpgrade: Bool
-    let onSelectContainer: () -> Void
-    let onGoBack: () -> Void
-    let onUpgrade: () -> Void
-    let onScan: () -> Void
-    let onSave: () -> Void
+    let onAction: (Action) -> Void
+
+    enum Action {
+        case selectContainer
+        case goBack
+        case upgrade
+        case scan
+        case save
+    }
 
     var body: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
@@ -45,7 +49,7 @@ struct CreateEditItemToolbar: ToolbarContent {
                          iconColor: itemContentType.normMajor2Color,
                          backgroundColor: itemContentType.normMinor1Color,
                          accessibilityLabel: "Close",
-                         action: onGoBack)
+                         action: { onAction(.goBack) })
                 .animation(.default, value: isSaving)
                 .disabled(isSaving)
         }
@@ -53,63 +57,82 @@ struct CreateEditItemToolbar: ToolbarContent {
         if shouldUpgrade {
             ToolbarItem(placement: .topBarTrailing) {
                 UpgradeButton(backgroundColor: itemContentType.normMajor1Color,
-                              action: onUpgrade)
+                              action: { onAction(.upgrade) })
                     .disabled(isSaving)
             }
         } else {
             ToolbarItem(placement: .principal) {
-                Group {
-                    if canChangeVault {
-                        if container.isFolderSelected {
-                            containerButton(.folder(container.title))
-                        } else if let vaultContent = container.share.vaultContent {
-                            containerButton(.vault(vaultContent))
-                        }
-                    }
-                }
+                containerButton
             }
 
             ToolbarItem(placement: .topBarTrailing) {
-                Group {
-                    if isSaving {
-                        ProgressView()
-                    } else {
-                        buttons
-                    }
+                if isSaving {
+                    ProgressView()
                 }
-                .animation(.default, value: isSaving)
             }
+
+            scanButton
+
+            saveButton
         }
     }
 }
 
 private extension CreateEditItemToolbar {
-    var buttons: some View {
-        HStack {
-            if !ProcessInfo.processInfo.isiOSAppOnMac, canScanDocuments {
+    @ToolbarContentBuilder
+    var scanButton: some ToolbarContent {
+        ToolbarItem(placement: .topBarTrailing) {
+            if !isSaving, !ProcessInfo.processInfo.isiOSAppOnMac, canScanDocuments {
                 switch itemContentType {
                 case .creditCard, .note:
                     CircleButton(icon: PassIcon.scanner,
                                  iconColor: itemContentType.normMajor2Color,
                                  backgroundColor: itemContentType.normMinor1Color,
                                  accessibilityLabel: "Scan \(itemContentType == .note ? "document" : "credit card")",
-                                 action: onScan)
+                                 action: { onAction(.scan) })
                 default:
                     EmptyView()
                 }
             }
-
-            DisablableCapsuleTextButton(title: saveButtonTitle,
-                                        titleColor: PassColor.textInvert,
-                                        disableTitleColor: PassColor.textHint,
-                                        backgroundColor: itemContentType.normMajor1Color,
-                                        disableBackgroundColor: itemContentType.normMinor1Color,
-                                        disabled: !isSaveable,
-                                        action: onSave)
         }
     }
 
-    func containerButton(_ containerType: ContainerType) -> some View {
+    @ToolbarContentBuilder
+    var saveButton: some ToolbarContent {
+        ToolbarItem(placement: .topBarTrailing) {
+            if !isSaving {
+                DisablableCapsuleTextButton(title: saveButtonTitle,
+                                            titleColor: PassColor.textInvert,
+                                            disableTitleColor: PassColor.textHint,
+                                            backgroundColor: itemContentType.normMajor1Color,
+                                            disableBackgroundColor: itemContentType.normMinor1Color,
+                                            disabled: !isSaveable,
+                                            action: { onAction(.save) })
+            }
+        }
+    }
+
+    @ViewBuilder
+    var containerButton: some View {
+        let action = { onAction(.selectContainer) }
+        if canChangeVault, let containerType {
+            if #available(iOS 26.0, *) {
+                Button(action: action) {
+                    containerButtonContent(containerType)
+                }
+                .buttonStyle(.plain)
+                .glassEffect(.regular.tint(containerType.background), in: .capsule)
+            } else {
+                Button(action: action) {
+                    containerButtonContent(containerType)
+                        .background(containerType.background)
+                        .clipShape(.capsule)
+                }
+            }
+        }
+    }
+
+    func containerButtonContent(_ containerType: ContainerType) -> some View {
         HStack {
             containerType.icon
                 .scaledToFit()
@@ -123,9 +146,16 @@ private extension CreateEditItemToolbar {
         .frame(height: 40)
         .foregroundStyle(containerType.foreground)
         .padding(.horizontal, DesignConstant.sectionPadding)
-        .background(containerType.background)
-        .clipShape(Capsule())
-        .buttonEmbeded(action: onSelectContainer)
+    }
+
+    var containerType: ContainerType? {
+        if container.isFolderSelected {
+            .folder(container.title)
+        } else if let vaultContent = container.share.vaultContent {
+            .vault(vaultContent)
+        } else {
+            nil
+        }
     }
 }
 

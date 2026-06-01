@@ -252,6 +252,7 @@ private extension HomepageCoordinator {
                     createButtonDisabled = true
                 }
                 homepageTabDelegate?.disableCreateButton(createButtonDisabled)
+                itemsTabViewModel?.hideCreateButton(createButtonDisabled)
             }
             .store(in: &cancellables)
 
@@ -590,6 +591,8 @@ extension HomepageCoordinator {
                     } else {
                         presentCreateEditLoginView(mode: item)
                     }
+                case .createNewItem:
+                    createNewItem()
                 case let .createItem(item, type, aliasToCopy, _):
                     handleItemCreation(item: item, type: type, aliasToCopy: aliasToCopy)
                 case let .editItem(itemContent):
@@ -660,6 +663,8 @@ extension HomepageCoordinator {
                     presentShareSheet(for: url)
                 case let .moveFolder(folderToMove):
                     moveFolder(folderToMove: folderToMove)
+                case .searchPinnedItems:
+                    homepageTabDelegate?.activateSearch(pinnedItems: true)
                 }
             }
             .store(in: &cancellables)

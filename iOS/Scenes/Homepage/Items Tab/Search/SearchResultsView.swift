@@ -49,7 +49,7 @@ struct SearchResultsView: View {
          vaultSearchSelection: Binding<VaultSearchSelection>,
          itemContextMenuHandler: ItemContextMenuHandler,
          results: SearchDataDisplayContainer,
-         mode: SearchMode?,
+         mode: SearchMode,
          safeAreaInsets: EdgeInsets,
          onScroll: @escaping () -> Void,
          onSelectItem: @escaping (ItemSearchResult) -> Void) {

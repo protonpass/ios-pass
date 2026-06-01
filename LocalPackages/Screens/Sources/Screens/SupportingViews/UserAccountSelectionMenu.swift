@@ -73,16 +73,31 @@ public struct UserAccountSelectionMenu: View {
                     allAccountsMessage
                 }
 
-                Label(title: { Text(text) },
-                      icon: { Image(systemName: "chevron.up.chevron.down") })
-                    .foregroundStyle(PassColor.interactionNormMajor2)
-                    .labelStyle(.rightIcon)
-                    .padding(10)
-                    .background(PassColor.interactionNormMinor1)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                if #available(iOS 26.0, *) {
+                    label(text: text)
+                        .glassEffect(.regular.tint(PassColor.interactionNormMinor1), in: shape)
+                } else {
+                    label(text: text)
+                        .background(PassColor.interactionNormMinor1)
+                        .clipShape(shape)
+                }
 
                 Spacer()
             }
         })
+    }
+}
+
+private extension UserAccountSelectionMenu {
+    func label(text: String) -> some View {
+        Label(title: { Text(text) },
+              icon: { Image(systemName: "chevron.up.chevron.down") })
+            .foregroundStyle(PassColor.interactionNormMajor2)
+            .labelStyle(.rightIcon)
+            .padding(10)
+    }
+
+    var shape: some Shape {
+        RoundedRectangle(cornerRadius: 8)
     }
 }

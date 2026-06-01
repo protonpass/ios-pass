@@ -48,7 +48,7 @@ public enum CircleButtonType {
     }
 }
 
-/// A cirle button with an icon inside.
+/// A cirle button with an icon inside. Only rendered as liquid glass button if action closure is provided.
 public struct CircleButton: View {
     @Environment(\.isEnabled) private var isEnabled
     let icon: Image
@@ -79,30 +79,51 @@ public struct CircleButton: View {
     }
 
     public var body: some View {
+        content
+            .if(accessibilityLabel) { view, label in
+                view.accessibilityLabel(label)
+            }
+    }
+}
+
+private extension CircleButton {
+    @ViewBuilder
+    var content: some View {
         if let action {
-            Button(action: action) {
-                realBody
+            if #available(iOS 26.0, *) {
+                Button(action: action) {
+                    iconView
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
+                .frame(maxWidth: type.width, maxHeight: type.width)
+                .tint(isEnabled ? backgroundColor : backgroundDisabledColor)
+                .buttonStyle(.glassProminent)
+                .buttonBorderShape(.circle)
+            } else {
+                Button(action: action) {
+                    iconWithBackground
+                }
             }
         } else {
-            realBody
+            iconWithBackground
         }
     }
 
-    private var realBody: some View {
+    var iconWithBackground: some View {
         ZStack {
             (isEnabled ? backgroundColor : backgroundDisabledColor)
-                .clipShape(Circle())
-
-            icon
-                .resizable()
-                .renderingMode(.template)
-                .scaledToFit()
-                .foregroundStyle(isEnabled ? iconColor : iconDisabledColor)
-                .frame(width: type.iconWidth, height: type.iconWidth)
+                .clipShape(.circle)
+            iconView
         }
         .frame(width: type.width, height: type.width)
-        .if(accessibilityLabel) { view, label in
-            view.accessibilityLabel(label)
-        }
+    }
+
+    var iconView: some View {
+        icon
+            .resizable()
+            .renderingMode(.template)
+            .scaledToFit()
+            .foregroundStyle(isEnabled ? iconColor : iconDisabledColor)
+            .frame(width: type.iconWidth, height: type.iconWidth)
     }
 }

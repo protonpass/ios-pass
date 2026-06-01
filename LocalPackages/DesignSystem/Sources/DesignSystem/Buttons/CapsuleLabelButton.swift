@@ -69,45 +69,60 @@ public struct CapsuleLabelButton: View {
     }
 
     public var body: some View {
-        Button(action: action) {
-            Group {
-                if leadingIcon {
-                    ZStack(alignment: .leading) {
-                        iconView
-                        HStack {
-                            Spacer()
-                            titleView
-                            Spacer()
+        if #available(iOS 26.0, *) {
+            Button(action: action) {
+                content
+                    .padding(.horizontal, 6)
+                    .frame(maxWidth: maxWidth, maxHeight: .infinity)
+            }
+            .tint(backgroundColor)
+            .buttonStyle(.glassProminent)
+            .frame(height: height)
+            .disabled(isDisabled)
+        } else {
+            Button(action: action) {
+                content
+                    .padding(.horizontal)
+                    .frame(height: height)
+                    .frame(maxWidth: maxWidth)
+                    .background(backgroundColor.opacity(isDisabled ? 0.4 : 1.0))
+                    .clipShape(Capsule())
+                    .contentShape(.rect)
+                    .overlay {
+                        if let border {
+                            Capsule()
+                                .stroke(border.color, lineWidth: border.width)
                         }
                     }
-                } else {
-                    HStack(spacing: 6) {
-                        iconView
-                        titleView
-                    }
-                }
             }
-            .padding(.horizontal)
-            .foregroundStyle(titleColor)
-            .fontWeight(fontWeight)
-            .frame(height: height)
-            .frame(maxWidth: maxWidth)
-            .background(backgroundColor.opacity(isDisabled ? 0.4 : 1.0))
-            .clipShape(Capsule())
-            .contentShape(.rect)
-            .if(border) { view, border in
-                view
-                    .overlay {
-                        Capsule()
-                            .stroke(border.color, lineWidth: border.width)
-                    }
-            }
+            .disabled(isDisabled)
         }
-        .disabled(isDisabled)
     }
 }
 
 private extension CapsuleLabelButton {
+    var content: some View {
+        Group {
+            if leadingIcon {
+                ZStack(alignment: .leading) {
+                    iconView
+                    HStack {
+                        Spacer()
+                        titleView
+                        Spacer()
+                    }
+                }
+            } else {
+                HStack(spacing: 6) {
+                    iconView
+                    titleView
+                }
+            }
+        }
+        .foregroundStyle(titleColor)
+        .fontWeight(fontWeight)
+    }
+
     var iconView: some View {
         icon
             .resizable()

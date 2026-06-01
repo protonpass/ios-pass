@@ -53,15 +53,15 @@ final class SearchResultsViewModel: ObservableObject {
         return vaultSearchSelection == .current ? fullResults.current.searchResults : all.searchResults
     }
 
-    let mode: SearchMode?
+    let mode: SearchMode
     let fullResults: SearchDataDisplayContainer
 
     var isTrash: Bool {
-        mode?.shareSelection == .trash
+        mode.shareSelection == .trash
     }
 
     var currentSelectionTitle: String {
-        switch mode?.shareSelection {
+        switch mode.shareSelection {
         case .sharedWithMe:
             #localized("Shared with me")
         case .sharedByMe:
@@ -76,7 +76,7 @@ final class SearchResultsViewModel: ObservableObject {
     init(itemContextMenuHandler: ItemContextMenuHandler,
          results: SearchDataDisplayContainer,
          vaultSearchSelection: VaultSearchSelection,
-         mode: SearchMode?) {
+         mode: SearchMode) {
         self.itemContextMenuHandler = itemContextMenuHandler
         fullResults = results
         self.vaultSearchSelection = vaultSearchSelection

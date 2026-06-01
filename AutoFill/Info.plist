@@ -8,8 +8,6 @@
 	<string>$(IS_QA_BUILD)</string>
 	<key>MODULE</key>
 	<string>AUTOFILL_EXTENSION</string>
-	<key>UIDesignRequiresCompatibility</key>
-	<true/>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionAttributes</key>

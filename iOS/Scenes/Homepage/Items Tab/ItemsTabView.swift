@@ -90,8 +90,7 @@ struct ItemsTabView: View {
     private func vaultContent(_ sections: [SectionedItemUiModel]) -> some View {
         GeometryReader { proxy in
             VStack(spacing: 0) {
-                ItemsTabTopBar(searchMode: $viewModel.searchMode,
-                               animationNamespace: animationNamespace,
+                ItemsTabTopBar(animationNamespace: animationNamespace,
                                isEditMode: $viewModel.isEditMode,
                                showPromoBadge: viewModel.showPromoBadge) { action in
                     viewModel.handleTopbarAction(action)
@@ -116,10 +115,12 @@ struct ItemsTabView: View {
                         .padding()
                 }
 
-                if let pinnedItems = viewModel.pinnedItems, !pinnedItems.isEmpty, !viewModel.isEditMode,
+                if let pinnedItems = viewModel.pinnedItems,
+                   !pinnedItems.isEmpty,
+                   !viewModel.isEditMode,
                    viewModel.appContentManager.shareSelection != .trash {
                     PinnedItemsView(pinnedItems: pinnedItems,
-                                    onSearch: { viewModel.searchMode = .pinned },
+                                    onSearch: { viewModel.searchPinnedItems() },
                                     action: { viewModel.viewDetail(of: $0) })
                     Divider()
                 }
@@ -163,13 +164,36 @@ struct ItemsTabView: View {
                                                     onDisableAlias: { viewModel.disableAlias() },
                                                     onDelete: { viewModel.permanentlyDelete() }))
         }
+        .animation(.default, value: viewModel.isEditMode)
+        .overlay(alignment: .bottomTrailing) {
+            if #available(iOS 26.0, *), !viewModel.createButtonHidden, !viewModel.isEditMode {
+                createButton
+            }
+        }
         .searchScreen(searchMode: $viewModel.searchMode,
-                      refreshResults: viewModel.refreshSearchResult,
                       animationNamespace: animationNamespace)
     }
 }
 
 private extension ItemsTabView {
+    @available(iOS 26.0, *)
+    var createButton: some View {
+        Button(action: viewModel.createNewItem) {
+            ZStack {
+                IconProvider.plus
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 24)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .frame(width: 60, height: 60)
+        .tint(PassColor.interactionNorm)
+        .buttonStyle(.glassProminent)
+        .padding(.bottom)
+        .padding(.trailing, 22)
+    }
+
     @ViewBuilder
     var emptySections: some View {
         switch viewModel.appContentManager.shareSelection {
