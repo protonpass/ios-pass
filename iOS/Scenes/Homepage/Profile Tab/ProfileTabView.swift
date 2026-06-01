@@ -88,7 +88,7 @@ struct ProfileTabView: View {
                 itemCountSection.accessibilityIdentifierBranch("ItemSection")
 
                 securitySection
-                    .padding(.vertical)
+                    .padding(.bottom)
 
                 if viewModel.autoFillEnabled {
                     autoFillEnabledSection
@@ -185,7 +185,7 @@ struct ProfileTabView: View {
     }
 
     private var itemCountSection: some View {
-        VStack {
+        VStack(spacing: 0) {
             if let storage = viewModel.storageUiModel {
                 HStack {
                     Text("Storage")

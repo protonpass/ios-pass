@@ -91,6 +91,7 @@ struct CreateEditVaultView: View {
                                             action: { viewModel.save() })
             } else {
                 UpgradeButton(backgroundColor: PassColor.interactionNormMajor1,
+                              maxWidth: nil,
                               action: { viewModel.upgrade() })
             }
         }

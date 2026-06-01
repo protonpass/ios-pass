@@ -65,6 +65,7 @@ enum SearchViewState {
 final class SearchViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
+    @Published private(set) var searchMode: SearchMode
     @Published private(set) var state = SearchViewState.initializing
     @Published var selectedType: ItemContentType?
     @Published var query = ""
@@ -83,9 +84,9 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private let getSearchableItems = resolve(\UseCasesContainer.getSearchableItems)
     private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
     @LazyInjected(\SharedUseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
 
-    private let searchMode: SearchMode
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
 
     private var lastSearchQuery = ""
@@ -236,7 +237,7 @@ private extension SearchViewModel {
             let current = try await parse(results: results)
 
             var all: SearchDataDisplay?
-            if searchMode.isSpecificSelection {
+            if await searchMode.isSpecificSelection {
                 all = try await parse(results: allResults)
             }
 
@@ -292,6 +293,16 @@ private extension SearchViewModel {
 // MARK: - Public APIs
 
 extension SearchViewModel {
+    /// Reset state and search mode depending on the entry point of the search context
+    func resetStateAndSearchMode(pinnedItems: Bool) {
+        state = .initializing
+        if pinnedItems {
+            searchMode = .pinned
+        } else {
+            searchMode = .all(appContentManager.shareSelection)
+        }
+    }
+
     func refreshResults() {
         refreshResultsTask?.cancel()
         refreshResultsTask = Task { [weak self] in

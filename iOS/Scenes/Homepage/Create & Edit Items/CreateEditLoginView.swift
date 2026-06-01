@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+// swiftlint:disable file_length
 import CodeScanner
 import Core
 import DesignSystem
@@ -386,18 +387,29 @@ private extension CreateEditLoginView {
                 }
                 .popoverTip(UsernameTip())
 
-            IconProvider.plus
-                .resizable()
-                .renderingMode(.template)
-                .frame(width: 9, height: 9)
-                .foregroundStyle(PassColor.loginInteractionNormMajor2)
-                .padding(2)
-                .background(PassColor.loginInteractionNormMinor1)
-                .clipShape(.circle)
-                .overlay(Circle()
-                    .stroke(UIColor.secondarySystemGroupedBackground.toColor, lineWidth: 2))
-                .offset(x: 5, y: -2)
+            Group {
+                if #available(iOS 26.0, *) {
+                    plusIcon
+                        .glassEffect(.regular.tint(PassColor.loginInteractionNormMinor1), in: .circle)
+                } else {
+                    plusIcon
+                        .background(PassColor.loginInteractionNormMinor1)
+                        .clipShape(.circle)
+                        .overlay(Circle()
+                            .stroke(UIColor.secondarySystemGroupedBackground.toColor, lineWidth: 2))
+                }
+            }
+            .offset(x: 5, y: -2)
         }
+    }
+
+    var plusIcon: some View {
+        IconProvider.plus
+            .resizable()
+            .renderingMode(.template)
+            .frame(width: 9, height: 9)
+            .foregroundStyle(PassColor.loginInteractionNormMajor2)
+            .padding(2)
     }
 
     var emailOrUsernameRow: some View {
@@ -693,3 +705,5 @@ private struct WebsiteSection<Field: Hashable>: View {
         }
     }
 }
+
+// swiftlint:enable file_length

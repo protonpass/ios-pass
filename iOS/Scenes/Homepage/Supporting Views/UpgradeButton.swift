@@ -29,22 +29,38 @@ struct UpgradeButton: View {
     let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
-            HStack {
-                Text("Upgrade")
-                    .font(.callout)
-                IconProvider.arrowOutSquare
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: 16)
+        if #available(iOS 26.0, *) {
+            Button(action: action) {
+                content
             }
             .frame(height: height)
             .frame(maxWidth: maxWidth)
-            .padding(.horizontal, 16)
-            .foregroundStyle(PassColor.textInvert)
-            .background(backgroundColor)
-            .clipShape(Capsule())
+            .tint(backgroundColor)
+            .buttonStyle(.glassProminent)
+        } else {
+            Button(action: action) {
+                content
+                    .frame(height: height)
+                    .frame(maxWidth: maxWidth)
+                    .foregroundStyle(PassColor.textInvert)
+                    .background(backgroundColor)
+                    .clipShape(.capsule)
+            }
         }
+    }
+}
+
+private extension UpgradeButton {
+    var content: some View {
+        HStack {
+            Text("Upgrade")
+                .font(.callout)
+            IconProvider.arrowOutSquare
+                .resizable()
+                .scaledToFit()
+                .frame(maxWidth: 16)
+        }
+        .padding(.horizontal, 16)
     }
 }
 

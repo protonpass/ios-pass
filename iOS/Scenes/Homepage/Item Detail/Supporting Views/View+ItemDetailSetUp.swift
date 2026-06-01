@@ -38,7 +38,6 @@ struct ItemDetailSetUpModifier: ViewModifier {
             .frame(maxWidth: .infinity, alignment: .leading)
             .navigationBarBackButtonHidden()
             .navigationBarTitleDisplayMode(.inline)
-            .navigationBarHidden(false)
             .animation(.default, value: viewModel.files)
             .background(PassColor.backgroundNorm)
             .toolbar { ItemDetailToolbar(viewModel: viewModel) }

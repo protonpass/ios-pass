@@ -80,16 +80,26 @@ struct ContactRow: View {
             .font(.footnote)
             .foregroundStyle(PassColor.textWeak)
 
-            Text(contact.actionTitle)
-                .font(.callout)
-                .foregroundStyle(PassColor.aliasInteractionNormMajor2)
+            if #available(iOS 26.0, *) {
+                Button(action: onToggleState) {
+                    contactActionContent
+                        .frame(maxHeight: .infinity)
+                        .padding(.horizontal, 6)
+                }
                 .frame(height: 40)
-                .padding(.horizontal, 16)
-                .background(contact.blocked ? .clear : PassColor.aliasInteractionNormMinor1)
-                .clipShape(Capsule())
-                .buttonEmbeded(action: onToggleState)
-                .overlay(Capsule()
-                    .stroke(PassColor.aliasInteractionNormMinor1, lineWidth: 1))
+                .tint(contactActionBackgroundColor)
+                .buttonStyle(.glassProminent)
+            } else {
+                Button(action: onToggleState) {
+                    contactActionContent
+                        .frame(height: 40)
+                        .padding(.horizontal, 16)
+                        .background(contactActionBackgroundColor)
+                        .clipShape(.capsule)
+                        .overlay(Capsule()
+                            .stroke(PassColor.aliasInteractionNormMinor1, lineWidth: 1))
+                }
+            }
         }
         .frame(maxWidth: .infinity)
         .padding(DesignConstant.sectionPadding)
@@ -97,13 +107,25 @@ struct ContactRow: View {
         .cornerRadius(16)
         .overlay(RoundedRectangle(cornerRadius: 16).stroke(PassColor.inputBorderNorm, lineWidth: 1))
     }
+}
 
+private extension ContactRow {
     func button(title: LocalizedStringKey,
                 icon: Image,
                 action: @escaping () -> Void) -> some View {
         Button { action() } label: {
             Label(title: { Text(title) }, icon: { icon })
         }
+    }
+
+    var contactActionBackgroundColor: Color {
+        contact.blocked ? .clear : PassColor.aliasInteractionNormMinor1
+    }
+
+    var contactActionContent: some View {
+        Text(contact.actionTitle)
+            .font(.callout)
+            .foregroundStyle(PassColor.aliasInteractionNormMajor2)
     }
 }
 

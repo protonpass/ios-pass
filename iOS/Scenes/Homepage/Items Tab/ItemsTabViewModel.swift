@@ -49,11 +49,11 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published private(set) var showingUpgradeAppBanner = false
     @Published private(set) var banners: [InfoBanner] = []
     @Published private(set) var shouldShowSyncProgress = false
+    @Published private(set) var createButtonHidden = false
     @Published var isEditMode = false
     @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)?
     @Published private(set) var sectionedItems: FetchableObject<[SectionedItemUiModel]> = .fetching
     @Published private(set) var organization: Entities.Organization?
-    @Published private(set) var refreshSearchResult = false
     @Published private(set) var showPromoBadge = false
     @Published private var userData: UserData?
     @Published var searchMode: SearchMode?
@@ -158,7 +158,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
             do {
                 let userId = try await userManager.getActiveUserId()
                 await appContentManager.refresh(userId: userId)
-                refreshSearchResult.toggle()
             } catch {
                 handle(error: error)
             }
@@ -205,6 +204,18 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
         case .onPromoBadgeTapped:
             showNotification()
         }
+    }
+
+    func searchPinnedItems() {
+        if #available(iOS 26.0, *) {
+            router.present(for: .searchPinnedItems)
+        } else {
+            searchMode = .pinned
+        }
+    }
+
+    func createNewItem() {
+        router.present(for: .createNewItem)
     }
 }
 
@@ -365,6 +376,10 @@ private extension ItemsTabViewModel {
 extension ItemsTabViewModel {
     func createVault() {
         router.present(for: .vaultCreateEdit(vault: nil))
+    }
+
+    func hideCreateButton(_ isHidden: Bool) {
+        createButtonHidden = isHidden
     }
 
     func filterAndSortItems() {

@@ -104,7 +104,8 @@ struct EditCustomFieldView<Field: Hashable>: View {
                 CircleButton(icon: IconProvider.threeDotsVertical,
                              iconColor: contentType.normMajor1Color,
                              backgroundColor: contentType.normMinor1Color,
-                             accessibilityLabel: "Custom field menu")
+                             accessibilityLabel: "Custom field menu",
+                             action: {})
             })
         }
         .padding(.horizontal, DesignConstant.sectionPadding)

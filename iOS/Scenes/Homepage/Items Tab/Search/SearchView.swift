@@ -26,52 +26,55 @@ import SwiftUI
 import TipKit
 
 struct SearchView: View {
-    @Binding var searchMode: SearchMode?
     let animationNamespace: Namespace.ID
     @FocusState private var isFocusedOnSearchBar
     @StateObject var viewModel: SearchViewModel
     @State private var safeAreaInsets = EdgeInsets.zero
-    let refreshResults: Bool
+    let onCancel: () -> Void
 
     var body: some View {
-        GeometryReader { proxy in
-            ZStack {
-                PassColor.backgroundNorm
-                    .ignoresSafeArea(edges: .all)
-                switch viewModel.state {
-                case let .error(error):
-                    RetryableErrorView(error: error, onRetry: viewModel.refreshResults)
-                default:
-                    content
-                }
+        if #available(iOS 26.0, *) {
+            NavigationStack {
+                content(showCustomSearchBar: false)
+                    .searchable(text: $viewModel.query, prompt: viewModel.searchBarPlaceholder)
             }
-            .animation(.default, value: viewModel.state)
-            .onChange(of: refreshResults) {
-                viewModel.refreshResults()
-            }
-            .onFirstAppear {
-                safeAreaInsets = proxy.safeAreaInsets
-                isFocusedOnSearchBar = true
-                viewModel.refreshResults()
+        } else {
+            GeometryReader { proxy in
+                content(showCustomSearchBar: true)
+                    .ignoresSafeArea(edges: .bottom)
+                    .onFirstAppear {
+                        safeAreaInsets = proxy.safeAreaInsets
+                        isFocusedOnSearchBar = true
+                    }
             }
         }
     }
 }
 
 private extension SearchView {
-    var content: some View {
+    func content(showCustomSearchBar: Bool) -> some View {
         VStack(spacing: 0) {
-            SearchBar(query: $viewModel.query,
-                      isFocused: $isFocusedOnSearchBar,
-                      placeholder: viewModel.searchBarPlaceholder,
-                      cancelMode: .always,
-                      canEdit: viewModel.state != .initializing,
-                      onCancel: {
-                          viewModel.cancelRefreshing()
-                          searchMode = nil
-                      })
-                      .matchedGeometryEffect(id: SearchEffectID.searchbar.id,
-                                             in: animationNamespace)
+            if showCustomSearchBar {
+                SearchBar(query: $viewModel.query,
+                          isFocused: $isFocusedOnSearchBar,
+                          placeholder: viewModel.searchBarPlaceholder,
+                          cancelMode: .always,
+                          canEdit: viewModel.state != .initializing,
+                          onCancel: {
+                              viewModel.cancelRefreshing()
+                              onCancel()
+                          })
+                          .matchedGeometryEffect(id: SearchEffectID.searchbar.id,
+                                                 in: animationNamespace)
+            } else if UIDevice.current.userInterfaceIdiom == .phone {
+                Text("Search")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal)
+                    .padding(.vertical, 8)
+                    .animationsDisabled()
+            }
 
             let tip = SpotlightTip()
             TipView(tip) { action in
@@ -85,9 +88,10 @@ private extension SearchView {
 
             switch viewModel.state {
             case .filteringResults, .initializing, .searching:
-                ProgressView()
-                    .padding(.top)
                 Spacer()
+                ProgressView()
+                    .controlSize(.extraLarge)
+                    .padding(.top)
 
             case .empty:
                 EmptySearchView()
@@ -109,7 +113,7 @@ private extension SearchView {
                                   vaultSearchSelection: $viewModel.vaultSearchSelection,
                                   itemContextMenuHandler: viewModel.itemContextMenuHandler,
                                   results: results,
-                                  mode: searchMode,
+                                  mode: viewModel.searchMode,
                                   safeAreaInsets: safeAreaInsets,
                                   onScroll: { isFocusedOnSearchBar = false },
                                   onSelectItem: { viewModel.viewDetail(of: $0) })
@@ -120,11 +124,15 @@ private extension SearchView {
 
             Spacer()
         }
-        .ignoresSafeArea(edges: .bottom)
+        .fullSheetBackground(PassColor.backgroundNorm)
+        .animation(.default, value: viewModel.state)
         .onChange(of: viewModel.state) {
             if viewModel.state != .initializing {
                 isFocusedOnSearchBar = true
             }
+        }
+        .task {
+            viewModel.refreshResults()
         }
     }
 }

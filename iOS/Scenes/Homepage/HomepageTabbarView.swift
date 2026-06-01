@@ -24,11 +24,12 @@ import Core
 import DesignSystem
 import Entities
 import FactoryKit
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
-enum HomepageTab: CaseIterable, Hashable {
-    case items, itemCreation, passMonitor, profile
+enum HomepageTab: String, CaseIterable, Hashable {
+    case items, itemCreation, passMonitor, profile, search
 
     var image: UIImage {
         switch self {
@@ -40,28 +41,23 @@ enum HomepageTab: CaseIterable, Hashable {
             IconProvider.shield
         case .profile:
             IconProvider.user
+        case .search:
+            UIImage(systemName: "magnifyingglass") ?? IconProvider.magnifier
         }
     }
 
     var hint: String {
         switch self {
         case .items:
-            "Homepage tab"
+            #localized("Homepage tab")
         case .itemCreation:
-            "Create new item button"
+            #localized("Create new item button")
         case .passMonitor:
-            "Pass Monitor tab"
+            #localized("Pass Monitor tab")
         case .profile:
-            "Profile tab"
-        }
-    }
-
-    var identifier: String? {
-        switch self {
-        case .profile:
-            "HomepageTabBarController_profileTabView"
-        default:
-            nil
+            #localized("Profile tab")
+        case .search:
+            #localized("Search tab")
         }
     }
 }
@@ -106,9 +102,22 @@ private extension MonitorState {
 @MainActor
 protocol HomepageTabDelegate: AnyObject {
     func change(tab: HomepageTab)
+    func activateSearch(pinnedItems: Bool)
     func refreshTabIcons()
     func hideTabbar(_ isHidden: Bool)
     func disableCreateButton(_ isDisabled: Bool)
+}
+
+@available(iOS 26.0, *)
+private struct SearchTabView: View {
+    @Namespace private var namespace
+    let viewModel: SearchViewModel
+
+    var body: some View {
+        SearchView(animationNamespace: namespace,
+                   viewModel: viewModel,
+                   onCancel: { /* No op */ })
+    }
 }
 
 struct HomepageTabbarView: UIViewControllerRepresentable {
@@ -154,6 +163,10 @@ struct HomepageTabbarView: UIViewControllerRepresentable {
             homepageTabBarController?.select(tab: tab)
         }
 
+        func activateSearch(pinnedItems: Bool) {
+            homepageTabBarController?.activateSearch(pinnedItems: pinnedItems)
+        }
+
         func refreshTabIcons() {
             homepageTabBarController?.refreshTabBarIcons()
         }
@@ -178,11 +191,11 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
     deinit { print(deinitMessage) }
 
     private let itemsTabView: ItemsTabView
-    private var createItemViewController: UIViewController?
     private let profileTabView: ProfileTabView
     private let passMonitorView: PassMonitorView
     private var passMonitorViewController: UIViewController?
     private var profileTabViewController: UIViewController?
+    private var searchViewModel: SearchViewModel?
 
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let monitorStateStream = resolve(\DataStreamContainer.monitorStateStream)
@@ -243,7 +256,6 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
         createItemViewController.tabBarItem.image = HomepageTab.itemCreation.image
         createItemViewController.tabBarItem.accessibilityLabel = HomepageTab.itemCreation.hint
         controllers.append(createItemViewController)
-        self.createItemViewController = createItemViewController
         tabIndexes[.itemCreation] = currentIndex
         currentIndex += 1
 
@@ -259,12 +271,47 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
         let profileTabViewController = UIHostingController(rootView: profileTabView)
         profileTabViewController.tabBarItem.image = HomepageTab.profile.image
         profileTabViewController.tabBarItem.accessibilityLabel = HomepageTab.profile.hint
-        profileTabViewController.tabBarItem.accessibilityIdentifier = HomepageTab.profile.identifier
+        profileTabViewController.tabBarItem.accessibilityIdentifier = HomepageTab.profile.rawValue
         self.profileTabViewController = profileTabViewController
         controllers.append(profileTabViewController)
         tabIndexes[.profile] = currentIndex
 
-        viewControllers = controllers
+        if #available(iOS 26.0, *) {
+            let searchViewModel = SearchViewModel(searchMode: .all(.all))
+            let searchView = SearchTabView(viewModel: searchViewModel)
+            self.searchViewModel = searchViewModel
+            let searchTab = UISearchTab(title: "",
+                                        image: HomepageTab.search.image,
+                                        identifier: HomepageTab.search.rawValue,
+                                        viewControllerProvider: { _ in
+                                            UIHostingController(rootView: searchView)
+                                        })
+            searchTab.automaticallyActivatesSearch = true
+            searchTab.accessibilityLabel = HomepageTab.search.hint
+            tabs = [
+                UITab(title: "",
+                      image: HomepageTab.items.image,
+                      identifier: HomepageTab.items.rawValue,
+                      viewControllerProvider: { _ in
+                          itemsTabViewController
+                      }),
+                UITab(title: "",
+                      image: MonitorState.default.icon(selected: false),
+                      identifier: HomepageTab.passMonitor.rawValue,
+                      viewControllerProvider: { _ in
+                          passMonitorViewController
+                      }),
+                UITab(title: "",
+                      image: HomepageTab.profile.image,
+                      identifier: HomepageTab.profile.rawValue,
+                      viewControllerProvider: { _ in
+                          profileTabViewController
+                      }),
+                searchTab
+            ]
+        } else {
+            viewControllers = controllers
+        }
 
         let tabBarAppearance = UITabBarAppearance()
         tabBarAppearance.configureWithTransparentBackground()
@@ -290,9 +337,16 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
 
 extension HomepageTabBarController {
     func select(tab: HomepageTab) {
-        if let index = tabIndexes[tab] {
+        if #available(iOS 26.0, *) {
+            selectedTab = tabs.first { $0.identifier == tab.rawValue }
+        } else if let index = tabIndexes[tab] {
             selectedViewController = viewControllers?[index]
         }
+    }
+
+    func activateSearch(pinnedItems: Bool) {
+        searchViewModel?.resetStateAndSearchMode(pinnedItems: pinnedItems)
+        select(tab: .search)
     }
 
     func refreshTabBarIcons() {
@@ -362,5 +416,14 @@ extension HomepageTabBarController: UITabBarControllerDelegate {
         }
 
         return false
+    }
+
+    @available(iOS 18.0, *)
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelectTab tab: UITab) -> Bool {
+        if tab.identifier == HomepageTab.search.rawValue {
+            activateSearch(pinnedItems: false)
+            return false
+        }
+        return true
     }
 }

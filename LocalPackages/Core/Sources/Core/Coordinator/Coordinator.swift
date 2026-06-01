@@ -219,7 +219,9 @@ open class Coordinator: CoordinatorProtocol {
         case let .navigation(navigationController):
             navigationController.setViewControllers([viewController], animated: true)
         case let .split(splitViewController):
-            splitViewController.setViewController(viewController, for: .primary)
+            let primaryNavController = UINavigationController(rootViewController: viewController)
+            primaryNavController.isNavigationBarHidden = true
+            splitViewController.setViewController(primaryNavController, for: .primary)
             if let secondaryViewController {
                 splitViewController.setViewController(secondaryViewController, for: .secondary)
             }

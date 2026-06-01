@@ -173,31 +173,46 @@ private extension EditableVaultListView {
     @ViewBuilder
     var upsellRow: some View {
         if viewModel.shouldUpsell {
-            HStack(alignment: .center, spacing: 16) {
-                PassIcon.diamond
-                    .resizable()
-                    .frame(width: 20, height: 20)
-                    .scaledToFit()
-                    .foregroundStyle(PassColor.interactionNormMajor2)
-                Text("Upgrade to Pass Plus")
-                    .foregroundStyle(PassColor.textNorm)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                IconProvider.chevronRight
-                    .resizable()
-                    .frame(width: 16, height: 16)
-                    .foregroundStyle(PassColor.interactionNormMajor2)
+            Group {
+                if #available(iOS 26.0, *) {
+                    Button(action: viewModel.upgradeSubscription) {
+                        upsellRowContent
+                    }
+                    .glassEffect(in: RoundedRectangle(cornerRadius: 16))
+                } else {
+                    Button(action: viewModel.upgradeSubscription) {
+                        upsellRowContent
+                            .cornerRadius(16)
+                            .overlay(RoundedRectangle(cornerRadius: 16)
+                                .inset(by: 0.5)
+                                .stroke(PassColor.inputBorderNorm, lineWidth: 1))
+                    }
+                }
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 15)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .cornerRadius(16)
-            .overlay(RoundedRectangle(cornerRadius: 16)
-                .inset(by: 0.5)
-                .stroke(PassColor.inputBorderNorm, lineWidth: 1))
             .padding(.horizontal)
             .padding(.top, 25)
-            .buttonEmbeded(action: viewModel.upgradeSubscription)
         }
+    }
+
+    var upsellRowContent: some View {
+        HStack(alignment: .center, spacing: 16) {
+            PassIcon.diamond
+                .resizable()
+                .frame(width: 20, height: 20)
+                .scaledToFit()
+                .foregroundStyle(PassColor.interactionNormMajor2)
+            Text("Upgrade to Pass Plus")
+                .foregroundStyle(PassColor.textNorm)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            IconProvider.chevronRight
+                .resizable()
+                .frame(width: 16, height: 16)
+                .foregroundStyle(PassColor.interactionNormMajor2)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 15)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .contentShape(.rect)
     }
 
     @ViewBuilder
@@ -269,7 +284,8 @@ private extension EditableVaultListView {
                         vaultRow(for: .precise(.init(share: content.share, folder: nil)))
                     }
 
-                    if viewModel.expandedContainerIds.contains(content.id) {
+                    if viewModel.folderSupported,
+                       viewModel.expandedContainerIds.contains(content.id) {
                         if let folders = content.folders(in: content.id), !folders.isEmpty {
                             FolderTreeView(content: content,
                                            folders: folders,
@@ -280,7 +296,21 @@ private extension EditableVaultListView {
                             }
                             .padding(.leading, 30)
                         } else if content.canAddFolder(in: content.id, limits: viewModel.folderLimits) {
-                            createFolderButton(content)
+                            HStack {
+                                if #available(iOS 26.0, *) {
+                                    createFolderButton(content)
+                                        .tint(PassColor.interactionNormMinor1)
+                                        .buttonStyle(.glassProminent)
+                                } else {
+                                    createFolderButton(content)
+                                        .background(PassColor.interactionNormMinor1)
+                                        .clipShape(.capsule)
+                                        .buttonStyle(.plain)
+                                }
+                                Spacer()
+                            }
+                            .padding(.leading, 36)
+                            .padding(.bottom, 16)
                         }
                     }
                     PassDivider()
@@ -497,43 +527,34 @@ private extension EditableVaultListView {
     }
 
     func createFolderButton(_ content: ShareContent) -> some View {
-        HStack {
-            Button {
+        Button(action: {
+            if viewModel.shouldUpsell {
+                viewModel.upgradeSubscription()
+            } else {
+                viewModel.folderAction = .createNewFolder(content.share, parentFolderId: nil)
+            }
+        }, label: {
+            HStack(spacing: 8) {
+                IconProvider.folderPlus
+                    .resizable()
+                    .scaledToFit()
+                    .foregroundStyle(PassColor.interactionNormMajor2)
+                    .frame(height: 20)
+                Text("Create folder")
+                    .font(.callout)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(PassColor.interactionNormMajor2)
+                    .padding(.vertical, 2)
                 if viewModel.shouldUpsell {
-                    viewModel.upgradeSubscription()
-                } else {
-                    viewModel.folderAction = .createNewFolder(content.share, parentFolderId: nil)
-                }
-            } label: {
-                HStack(spacing: 10) {
-                    IconProvider.folderPlus
+                    PassIcon.passSubscriptionBadge
                         .resizable()
                         .scaledToFit()
-                        .foregroundStyle(PassColor.interactionNormMajor2)
-                        .frame(height: 20)
-                    Text("Create folder")
-                        .font(.callout)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(PassColor.interactionNormMajor2)
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                    if viewModel.shouldUpsell {
-                        PassIcon.passSubscriptionBadge
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 24)
-                    }
+                        .frame(height: 24)
                 }
             }
-            .padding(.vertical, 10)
-            .padding(.horizontal, 16)
-            .background(PassColor.interactionNormMinor1)
-            .cornerRadius(20)
-            .buttonStyle(.plain)
-            Spacer()
-        }
-        .padding(.leading, 36)
-        .padding(.bottom, 16)
+        })
+        .padding(.vertical, 10)
+        .padding(.horizontal, 16)
     }
 }
 

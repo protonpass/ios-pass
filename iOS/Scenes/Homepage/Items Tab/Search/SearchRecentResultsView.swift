@@ -64,6 +64,7 @@ struct SearchRecentResultsView: View {
             }
             .listStyle(.plain)
             .animation(.default, value: results)
+            .scrollDismissesKeyboard(.immediately)
         }
     }
 }

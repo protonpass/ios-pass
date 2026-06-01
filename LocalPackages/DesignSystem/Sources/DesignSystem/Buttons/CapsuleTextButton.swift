@@ -30,7 +30,7 @@ public struct CapsuleTextButton: View {
     let height: CGFloat
     let maxWidth: CGFloat?
     let horizontalPadding: CGFloat?
-    let action: (() -> Void)?
+    let action: () -> Void
 
     public init(title: String,
                 titleColor: Color,
@@ -40,7 +40,7 @@ public struct CapsuleTextButton: View {
                 height: CGFloat = 40,
                 maxWidth: CGFloat? = .infinity,
                 horizontalPadding: CGFloat? = DesignConstant.sectionPadding,
-                action: (() -> Void)? = nil) {
+                action: @escaping () -> Void = {}) {
         self.title = title
         self.titleColor = titleColor
         self.font = font
@@ -53,27 +53,32 @@ public struct CapsuleTextButton: View {
     }
 
     public var body: some View {
-        if let action {
+        if #available(iOS 26.0, *) {
             Button(action: action) {
-                realBody
+                text
+                    .frame(maxWidth: maxWidth, maxHeight: .infinity)
             }
+            .tint(backgroundColor)
+            .buttonStyle(.glassProminent)
+            .frame(height: height)
         } else {
-            realBody
+            Button(action: action) {
+                text
+                    .frame(height: height)
+                    .frame(maxWidth: maxWidth)
+                    .background(backgroundColor, in: .capsule)
+            }
         }
     }
 }
 
 private extension CapsuleTextButton {
-    var realBody: some View {
+    var text: some View {
         Text(title)
             .font(font)
             .fontWeight(fontWeight)
             .foregroundStyle(titleColor)
-            .frame(height: height)
-            .frame(maxWidth: maxWidth)
             .padding(.horizontal, horizontalPadding)
-            .background(backgroundColor)
-            .clipShape(Capsule())
     }
 }
 
@@ -109,18 +114,36 @@ public struct DisablableCapsuleTextButton: View {
     }
 
     public var body: some View {
-        Button(action: action) {
-            Text(title)
-                .font(.callout)
-                .foregroundStyle(disabled ? disableTitleColor : titleColor)
-                .frame(height: height)
-                .frame(maxWidth: maxWidth)
-                .padding(.horizontal, 16)
-                .background(disabled ? disableBackgroundColor : backgroundColor)
-                .clipShape(Capsule())
+        if #available(iOS 26.0, *) {
+            Button(action: action) {
+                text
+                    .frame(maxWidth: maxWidth, maxHeight: .infinity)
+            }
+            .tint(disabled ? disableBackgroundColor : backgroundColor)
+            .buttonStyle(.glassProminent)
+            .frame(height: height)
+            .disabled(disabled)
+            .animation(.default, value: disabled)
+        } else {
+            Button(action: action) {
+                text
+                    .padding(.horizontal, 16)
+                    .frame(height: height)
+                    .frame(maxWidth: maxWidth)
+                    .background(disabled ? disableBackgroundColor : backgroundColor)
+                    .clipShape(.capsule)
+            }
+            .disabled(disabled)
+            .animation(.default, value: disabled)
         }
-        .disabled(disabled)
-        .animation(.default, value: disabled)
+    }
+}
+
+private extension DisablableCapsuleTextButton {
+    var text: some View {
+        Text(title)
+            .font(.callout)
+            .foregroundStyle(disabled ? disableTitleColor : titleColor)
     }
 }
 
@@ -154,27 +177,44 @@ public struct CapsuleTextBorderedButton: View {
     }
 
     public var body: some View {
-        if let action {
-            Button(action: action) {
-                realBody
+        if #available(iOS 26.0, *) {
+            if let action {
+                Button(action: action) {
+                    text
+                        .frame(maxWidth: maxWidth, maxHeight: .infinity)
+                }
+                .tint(borderColor)
+                .buttonStyle(.glass)
+                .frame(height: height)
+            } else {
+                borderedText
             }
         } else {
-            realBody
+            if let action {
+                Button(action: action) {
+                    borderedText
+                }
+            } else {
+                borderedText
+            }
         }
     }
 }
 
 private extension CapsuleTextBorderedButton {
-    var realBody: some View {
+    var text: some View {
         Text(title)
             .font(font)
             .foregroundStyle(titleColor)
+            .padding(.horizontal, 16)
+    }
+
+    var borderedText: some View {
+        text
             .frame(height: height)
             .frame(maxWidth: maxWidth)
-            .padding(.horizontal, 16)
             .background(.clear)
-            .clipShape(Capsule())
-            .overlay(Capsule()
-                .stroke(borderColor, lineWidth: borderWidth))
+            .clipShape(.capsule)
+            .overlay(Capsule().stroke(borderColor, lineWidth: borderWidth))
     }
 }

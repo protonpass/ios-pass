@@ -216,7 +216,6 @@ struct AccountView: View {
         }
         .navigationTitle("Account")
         .navigationBarBackButtonHidden()
-        .navigationBarHidden(false)
         .navigationBarTitleDisplayMode(.large)
         .background(PassColor.backgroundNorm)
         .toolbar { toolbarContent }

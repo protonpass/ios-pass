@@ -239,8 +239,6 @@ public extension LocalItemDatasource {
                              if let aliasEmail = item.item.aliasEmail,
                                 let alias = aliasMap[aliasEmail] {
                                  entity.encryptedSimpleLoginNote = alias.encryptedNote
-                             } else {
-                                 assertionFailure("No matched encrypted alias for \(item.item.aliasEmail ?? "")")
                              }
                          })
     }

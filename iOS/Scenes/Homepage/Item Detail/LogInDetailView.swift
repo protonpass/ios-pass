@@ -300,7 +300,6 @@ private extension LogInDetailView {
                              backgroundColor: viewModel.itemContent.type.normMinor2Color,
                              accessibilityLabel: isShowingPassword ? "Hide password" : "Show password",
                              action: { isShowingPassword.toggle() })
-                    .fixedSize(horizontal: true, vertical: true)
                     .animationsDisabled()
             }
         }

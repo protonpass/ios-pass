@@ -42,86 +42,115 @@ struct ItemDetailToolbar: ToolbarContent {
             }
         }
 
+        editButton
+
+        shareButton
+
+        activeMenuButton
+
+        trashMenuButton
+    }
+}
+
+private extension ItemDetailToolbar {
+    @ToolbarContentBuilder
+    var editButton: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
-            switch viewModel.itemContent.item.itemState {
-            case .active:
-                HStack {
-                    if viewModel.isAllowedToEdit {
-                        CapsuleLabelButton(icon: IconProvider.pencil,
-                                           title: #localized("Edit"),
-                                           titleColor: PassColor.textInvert,
-                                           backgroundColor: itemContentType.normMajor1Color,
-                                           isDisabled: !viewModel.isAllowedToEdit,
-                                           action: { viewModel.edit() })
-                    }
+            if viewModel.isAllowedToEdit,
+               case .active = viewModel.itemContent.item.itemState {
+                CapsuleLabelButton(icon: IconProvider.pencil,
+                                   title: #localized("Edit"),
+                                   titleColor: PassColor.textInvert,
+                                   backgroundColor: itemContentType.normMajor1Color,
+                                   isDisabled: !viewModel.isAllowedToEdit,
+                                   action: { viewModel.edit() })
+            }
+        }
+    }
 
-                    if viewModel.canShareItem {
-                        ShareCounterButton(iconColor: itemContentType.normMajor2Color,
-                                           backgroundColor: itemContentType.normMinor1Color,
-                                           numberOfSharedMembers: viewModel.numberOfSharedMembers,
-                                           action: {
-                                               viewModel.share()
-                                           })
-                    }
+    @ToolbarContentBuilder
+    var shareButton: some ToolbarContent {
+        ToolbarItem(placement: .topBarTrailing) {
+            if viewModel.canShareItem,
+               case .active = viewModel.itemContent.item.itemState {
+                ShareCounterButton(iconColor: itemContentType.normMajor2Color,
+                                   backgroundColor: itemContentType.normMinor1Color,
+                                   numberOfSharedMembers: viewModel.numberOfSharedMembers,
+                                   action: {
+                                       viewModel.share()
+                                   })
+            }
+        }
+    }
 
-                    Menu(content: {
-                        if viewModel.itemIsLinkToVault, viewModel.isAllowedToEdit {
-                            Label("Move to another container", uiImage: IconProvider.folderArrowIn)
-                                .buttonEmbeded {
-                                    if viewModel.itemContent.shared {
-                                        viewModel.showingVaultMoveAlert.toggle()
-                                    } else {
-                                        viewModel.moveToAnotherVault()
-                                    }
-                                }
-                        }
-
-                        Label(viewModel.itemContent.item.pinTitle,
-                              image: viewModel.itemContent.item.pinIcon)
-                            .buttonEmbeded { viewModel.toggleItemPinning() }
-
-                        if viewModel.itemContent.type == .note {
-                            Label("Copy note content", image: IconProvider.note)
-                                .buttonEmbeded { viewModel.copyNoteContent() }
-                        }
-
-                        if viewModel.isAllowedToClone {
-                            Label("Duplicate", image: IconProvider.squares)
-                                .buttonEmbeded { viewModel.clone() }
-                        }
-
-                        if viewModel.itemContent.type == .login {
-                            let title: LocalizedStringKey = viewModel.isMonitored ?
-                                "Exclude from monitoring" : "Include for monitoring"
-                            let icon: UIImage = viewModel.isMonitored ? IconProvider.eyeSlash : IconProvider
-                                .eye
-
-                            Label(title, uiImage: icon)
-                                .buttonEmbeded { viewModel.toggleMonitoring() }
-                        }
-
-                        Divider()
-
-                        leaveButton
-
-                        Label("Move to Trash", image: IconProvider.trash)
-                            .buttonEmbeded(action: {
-                                if viewModel.itemContent.isAlias {
-                                    viewModel.showingTrashAliasAlert.toggle()
+    @ToolbarContentBuilder
+    var activeMenuButton: some ToolbarContent {
+        ToolbarItem(placement: .topBarTrailing) {
+            if case .active = viewModel.itemContent.item.itemState {
+                Menu(content: {
+                    if viewModel.itemIsLinkToVault, viewModel.isAllowedToEdit {
+                        Label("Move to another container", uiImage: IconProvider.folderArrowIn)
+                            .buttonEmbeded {
+                                if viewModel.itemContent.shared {
+                                    viewModel.showingVaultMoveAlert.toggle()
                                 } else {
-                                    viewModel.moveToTrash()
+                                    viewModel.moveToAnotherVault()
                                 }
-                            })
-                            .hidden(!viewModel.isAllowedToEdit)
-                    }, label: {
-                        CircleButton(icon: IconProvider.threeDotsVertical,
-                                     iconColor: itemContentType.normMajor2Color,
-                                     backgroundColor: itemContentType.normMinor1Color,
-                                     accessibilityLabel: "Item's action Menu")
-                    })
-                }
+                            }
+                    }
 
-            case .trashed:
+                    Label(viewModel.itemContent.item.pinTitle,
+                          image: viewModel.itemContent.item.pinIcon)
+                        .buttonEmbeded { viewModel.toggleItemPinning() }
+
+                    if viewModel.itemContent.type == .note {
+                        Label("Copy note content", image: IconProvider.note)
+                            .buttonEmbeded { viewModel.copyNoteContent() }
+                    }
+
+                    if viewModel.isAllowedToClone {
+                        Label("Duplicate", image: IconProvider.squares)
+                            .buttonEmbeded { viewModel.clone() }
+                    }
+
+                    if viewModel.itemContent.type == .login {
+                        let title: LocalizedStringKey = viewModel.isMonitored ?
+                            "Exclude from monitoring" : "Include for monitoring"
+                        let icon: UIImage = viewModel.isMonitored ? IconProvider.eyeSlash : IconProvider
+                            .eye
+
+                        Label(title, uiImage: icon)
+                            .buttonEmbeded { viewModel.toggleMonitoring() }
+                    }
+
+                    Divider()
+
+                    leaveButton
+
+                    Label("Move to Trash", image: IconProvider.trash)
+                        .buttonEmbeded(action: {
+                            if viewModel.itemContent.isAlias {
+                                viewModel.showingTrashAliasAlert.toggle()
+                            } else {
+                                viewModel.moveToTrash()
+                            }
+                        })
+                        .hidden(!viewModel.isAllowedToEdit)
+                }, label: {
+                    CircleButton(icon: IconProvider.threeDotsVertical,
+                                 iconColor: itemContentType.normMajor2Color,
+                                 backgroundColor: itemContentType.normMinor1Color,
+                                 accessibilityLabel: "Item's action Menu",
+                                 action: {})
+                })
+            }
+        }
+    }
+
+    @ToolbarContentBuilder
+    var trashMenuButton: some ToolbarContent {
+        ToolbarItem(placement: .topBarTrailing) {
+            if case .trashed = viewModel.itemContent.item.itemState {
                 Menu(content: {
                     Label("Restore", image: IconProvider.clockRotateLeft)
                         .buttonEmbeded { viewModel.restore() }
@@ -144,14 +173,13 @@ struct ItemDetailToolbar: ToolbarContent {
                 }, label: {
                     CircleButton(icon: IconProvider.threeDotsVertical,
                                  iconColor: itemContentType.normMajor2Color,
-                                 backgroundColor: itemContentType.normMinor1Color)
+                                 backgroundColor: itemContentType.normMinor1Color,
+                                 action: {})
                 })
             }
         }
     }
-}
 
-private extension ItemDetailToolbar {
     @ViewBuilder
     var leaveButton: some View {
         if viewModel.sharedItem {
@@ -180,29 +208,41 @@ private struct ShareCounterButton: View {
     }
 
     var body: some View {
-        Button(action: action) {
-            HStack(spacing: 4) {
-                IconProvider.usersPlus
-                    .resizable()
-                    .scaledToFit()
-                    .foregroundStyle(iconColor)
-                    .frame(maxHeight: 20)
-                if numberOfSharedMembers > 0 {
-                    Text(verbatim: "\(numberOfSharedMembers)")
-                        .font(.caption)
-                        .fontWeight(.medium)
-                        .foregroundStyle(backgroundColor)
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                        .background(iconColor)
-                        .cornerRadius(20)
-                        .frame(maxWidth: .infinity)
-                }
+        if #available(iOS 26.0, *) {
+            Button(action: action) {
+                content
             }
-            .padding(10)
-            .background(backgroundColor)
-            .cornerRadius(20)
+            .tint(backgroundColor)
+            .buttonStyle(.glassProminent)
+        } else {
+            Button(action: action) {
+                content
+                    .padding(10)
+                    .background(backgroundColor)
+                    .cornerRadius(20)
+            }
+            .buttonStyle(.plain)
         }
-        .buttonStyle(.plain)
+    }
+
+    private var content: some View {
+        HStack(spacing: 4) {
+            IconProvider.usersPlus
+                .resizable()
+                .scaledToFit()
+                .foregroundStyle(iconColor)
+                .frame(maxHeight: 20)
+            if numberOfSharedMembers > 0 {
+                Text(verbatim: "\(numberOfSharedMembers)")
+                    .font(.caption)
+                    .fontWeight(.medium)
+                    .foregroundStyle(backgroundColor)
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 2)
+                    .background(iconColor)
+                    .cornerRadius(20)
+                    .frame(maxWidth: .infinity)
+            }
+        }
     }
 }

@@ -71,7 +71,8 @@ private extension MonitorProtonAddressesView {
                     CircleButton(icon: IconProvider.threeDotsVertical,
                                  iconColor: PassColor.interactionNormMajor2,
                                  backgroundColor: PassColor.interactionNormMinor1,
-                                 accessibilityLabel: "Options")
+                                 accessibilityLabel: "Options",
+                                 action: {})
                 })
             }
         }

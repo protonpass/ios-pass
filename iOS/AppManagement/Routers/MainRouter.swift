@@ -78,6 +78,8 @@ enum SheetDestination: Equatable, Hashable {
     case tutorial
     case accountSettings
     case settingsMenu
+    /// iOS 26+ only
+    case createNewItem
     case createEditLogin(mode: ItemMode, dismissAllSheets: Bool)
     case createItem(item: SymmetricallyEncryptedItem,
                     type: ItemContentType,
@@ -115,6 +117,8 @@ enum SheetDestination: Equatable, Hashable {
     case undecryptableSharesBanner(dismissTopSheetBeforeShowing: Bool)
     case shareLogs(URL)
     case moveFolder(FolderToMove)
+    /// iOS 26+ only
+    case searchPinnedItems
 }
 
 enum ItemDestination {
