@@ -88,12 +88,11 @@ public struct CapsuleLabelButton: View {
                     .background(backgroundColor.opacity(isDisabled ? 0.4 : 1.0))
                     .clipShape(Capsule())
                     .contentShape(.rect)
-                    .if(border) { view, border in
-                        view
-                            .overlay {
-                                Capsule()
-                                    .stroke(border.color, lineWidth: border.width)
-                            }
+                    .overlay {
+                        if let border {
+                            Capsule()
+                                .stroke(border.color, lineWidth: border.width)
+                        }
                     }
             }
             .disabled(isDisabled)
