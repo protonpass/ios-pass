@@ -434,6 +434,8 @@
 		534090602D70A6E7002E42F8 /* CreateEditWifiViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5340905F2D70A6E5002E42F8 /* CreateEditWifiViewModel.swift */; };
 		534090622D70B062002E42F8 /* CreateEditSshKeyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534090612D70B060002E42F8 /* CreateEditSshKeyViewModel.swift */; };
 		534090642D70B11B002E42F8 /* CreateEditCustomItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534090632D70B11A002E42F8 /* CreateEditCustomItemViewModel.swift */; };
+		5343BB4B2FCDC97000F329E0 /* CreateEditItemToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572E52829940C1900775FAC /* CreateEditItemToolbar.swift */; };
+		5343BB4C2FCDC99100F329E0 /* UpgradeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF602A02961D00A0B27D /* UpgradeButton.swift */; };
 		534736542D5A9CAD00BE2EA5 /* LocalAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E9A9B2A443D9700AD2B9A /* LocalAuthenticationView.swift */; };
 		534736552D5A9CC400BE2EA5 /* LocalAuthenticationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E9AAA2A445B1100AD2B9A /* LocalAuthenticationViewModel.swift */; };
 		534736562D5A9CDA00BE2EA5 /* BiometricAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E9AA42A4458D100AD2B9A /* BiometricAuthenticationView.swift */; };
@@ -3957,6 +3959,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5343BB4B2FCDC97000F329E0 /* CreateEditItemToolbar.swift in Sources */,
 				5347B5782D58BA3C0014013F /* SharedDataContainer+DependencyInjections.swift in Sources */,
 				5347B58A2D58BB6E0014013F /* Factory+Extensions.swift in Sources */,
 				5347B5792D58BA3C0014013F /* SharedViewContainer+DependencyInjection.swift in Sources */,
@@ -3979,6 +3982,7 @@
 				534736562D5A9CDA00BE2EA5 /* BiometricAuthenticationView.swift in Sources */,
 				537FC0782D59ECA500011AEA /* CustomFieldTypesView.swift in Sources */,
 				5347B57D2D58BA3C0014013F /* SharedTooling+DependencyInjections.swift in Sources */,
+				5343BB4C2FCDC99100F329E0 /* UpgradeButton.swift in Sources */,
 				5347B57E2D58BA3C0014013F /* SharedRouter+DependencyInjections.swift in Sources */,
 				5347B5862D58BAFA0014013F /* MainRouter.swift in Sources */,
 				53F33A3C2D5A9BF0005EA4FD /* View+LocalAuthentication.swift in Sources */,

@@ -114,12 +114,14 @@ private struct CounterChip: View {
                 .buttonStyle(.glass)
                 .buttonBorderShape(.capsule)
             } else {
-                content
-                    .padding(10)
-                    .frame(height: kChipHeight)
-                    .overlay(Capsule().strokeBorder(PassColor.inputBorderNorm, lineWidth: 1))
-                    .contentShape(.rect)
-                    .onTapGesture(perform: action)
+                Button(action: action) {
+                    content
+                        .padding(10)
+                        .frame(height: kChipHeight)
+                        .overlay(Capsule().strokeBorder(PassColor.inputBorderNorm, lineWidth: 1))
+                        .contentShape(.rect)
+                }
+                .buttonStyle(.plain)
             }
         }
         .padding(.vertical)

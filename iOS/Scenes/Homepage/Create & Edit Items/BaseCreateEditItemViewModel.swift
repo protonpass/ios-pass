@@ -654,6 +654,23 @@ extension BaseCreateEditItemViewModel {
         }
     }
 
+    func handle(_ action: CreateEditItemToolbar.Action) {
+        switch action {
+        case .selectContainer:
+            isShowingVaultSelector.toggle()
+        case .goBack:
+            isShowingDiscardAlert.toggle()
+        case .upgrade:
+            if shouldUpgrade {
+                upgrade()
+            }
+        case .scan:
+            openScanner()
+        case .save:
+            checkAndSave()
+        }
+    }
+
     func upgrade() {
         router.present(for: .upgradeFlow)
     }
