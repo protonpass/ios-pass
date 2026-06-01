@@ -33,11 +33,15 @@ struct CreateEditItemToolbar: ToolbarContent {
     let canChangeVault: Bool
     let itemContentType: ItemContentType
     let shouldUpgrade: Bool
-    let onSelectContainer: () -> Void
-    let onGoBack: () -> Void
-    let onUpgrade: () -> Void
-    let onScan: () -> Void
-    let onSave: () -> Void
+    let onAction: (Action) -> Void
+
+    enum Action {
+        case selectContainer
+        case goBack
+        case upgrade
+        case scan
+        case save
+    }
 
     var body: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
@@ -45,7 +49,7 @@ struct CreateEditItemToolbar: ToolbarContent {
                          iconColor: itemContentType.normMajor2Color,
                          backgroundColor: itemContentType.normMinor1Color,
                          accessibilityLabel: "Close",
-                         action: onGoBack)
+                         action: { onAction(.goBack) })
                 .animation(.default, value: isSaving)
                 .disabled(isSaving)
         }
@@ -53,7 +57,7 @@ struct CreateEditItemToolbar: ToolbarContent {
         if shouldUpgrade {
             ToolbarItem(placement: .topBarTrailing) {
                 UpgradeButton(backgroundColor: itemContentType.normMajor1Color,
-                              action: onUpgrade)
+                              action: { onAction(.upgrade) })
                     .disabled(isSaving)
             }
         } else {
@@ -85,7 +89,7 @@ private extension CreateEditItemToolbar {
                                  iconColor: itemContentType.normMajor2Color,
                                  backgroundColor: itemContentType.normMinor1Color,
                                  accessibilityLabel: "Scan \(itemContentType == .note ? "document" : "credit card")",
-                                 action: onScan)
+                                 action: { onAction(.scan) })
                 default:
                     EmptyView()
                 }
@@ -103,22 +107,23 @@ private extension CreateEditItemToolbar {
                                             backgroundColor: itemContentType.normMajor1Color,
                                             disableBackgroundColor: itemContentType.normMinor1Color,
                                             disabled: !isSaveable,
-                                            action: onSave)
+                                            action: { onAction(.save) })
             }
         }
     }
 
     @ViewBuilder
     var containerButton: some View {
+        let action = { onAction(.selectContainer) }
         if canChangeVault, let containerType {
             if #available(iOS 26.0, *) {
-                Button(action: onSelectContainer) {
+                Button(action: action) {
                     containerButtonContent(containerType)
                 }
                 .buttonStyle(.plain)
                 .glassEffect(.regular.tint(containerType.background), in: .capsule)
             } else {
-                Button(action: onSelectContainer) {
+                Button(action: action) {
                     containerButtonContent(containerType)
                         .background(containerType.background)
                         .clipShape(.capsule)

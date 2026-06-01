@@ -107,15 +107,7 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                       canChangeVault: viewModel.mode.canChangeVault,
                                       itemContentType: viewModel.itemContentType,
                                       shouldUpgrade: viewModel.shouldUpgrade,
-                                      onSelectContainer: { viewModel.isShowingVaultSelector.toggle() },
-                                      onGoBack: { viewModel.isShowingDiscardAlert.toggle() },
-                                      onUpgrade: {
-                                          if viewModel.shouldUpgrade {
-                                              viewModel.upgrade()
-                                          }
-                                      },
-                                      onScan: { viewModel.openScanner() },
-                                      onSave: { viewModel.checkAndSave() })
+                                      onAction: viewModel.handle(_:))
             }
             .task {
                 await viewModel.fetchAttachedFiles()
