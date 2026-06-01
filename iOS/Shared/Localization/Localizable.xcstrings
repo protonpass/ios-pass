@@ -154657,10 +154657,142 @@
     },
     "Show %@ vault" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Паказаць сховішча %@"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra la caixa forta %@"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zobrazit trezor %@"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vis %@ boks"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ Tresor anzeigen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Εμφάνιση %@ κρύπτη"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Show %@ vault"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar la caja fuerte « %@ »"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar bóveda %@"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Näytä holvi %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher le coffre-fort %@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra la cassaforte %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 保管庫を表示"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ საცავის ჩვენება"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vis hvelvet %@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toon %@ kluis"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar cofre %@"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afișare %@ seif"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zobraziť %@ trezor"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaži %@ trezor"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visa %@ valv"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ kasasını görüntüle"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "显示 %@ 保险库"
           }
         }
       }
@@ -170246,10 +170378,136 @@
     },
     "This will permanently delete the vault « %@ » and all its contents. Enter the vault name to confirm deletion." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Гэта дзеянне прывядзе да выдалення сховішча з назвай « %@ » і ўсяго яго змесціва. Увядзіце назву сховішча, каб пацвердзіць выдаленне."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Això eliminarà permanentment la caixa forta «%@» i tot el seu contingut. Introduïu el nom de la caixa forta per confirmar-ne l'eliminació."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toto trvale smaže trezor « %@ » a veškerý jeho obsah. Zadejte název trezoru pro potvrzení smazání."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dette vil permanent slette boksen « %@ » og alt dens indhold. Indtast boksens navn for at bekræfte sletningen."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dadurch werden der Tresor „%@“ und sein gesamter Inhalt dauerhaft gelöscht. Bitte gib den Namen des Tresors ein, um den Löschvorgang zu bestätigen."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αυτό θα διαγράψει οριστικά την κρύπτη « %@ » και όλα τα περιεχόμενά της. Εισαγάγετε το όνομα της κρύπτης για να επιβεβαιώσετε τη διαγραφή."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "This will permanently delete the vault « %@ » and all its contents. Enter the vault name to confirm deletion."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta acción eliminará de forma permanente la caja fuerte « %@ » y todo su contenido. Introduce el nombre de la caja fuerte para confirmar que quieres borrarla."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esto eliminará permanentemente la bóveda «%@» y todo su contenido. Escriba el nombre de la bóveda para confirmar la eliminación."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ceci supprimera définitivement le coffre-fort « %@ » et tout son contenu. Saisissez le nom du coffre-fort pour confirmer la suppression."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questo eliminerà definitivamente la cassaforte « %@ » e tutti i suoi contenuti. Inserisci il nome della cassaforte per confermare l'eliminazione."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "これにより、保管庫 « %@ » とそのすべての内容が完全に削除されます。保管庫名を入力して削除を確認します。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ეს სამუდამოდ წაშლის საცავს „%@“ და მის შემცველობას. წაშლის დასადასტურებლად შეიყვანეთ საცავის სახელი."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dette vil permanent slette hvelvet \"%@\" og alt dets innhold. Skriv inn hvelvnavnet for å bekrefte slettingen."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hiermee wordt de kluis « %@ » en de volledige inhoud permanent verwijderd. Voer de kluis naam in om de verwijdering te bevestigen."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Isso irá excluir permanentemente o cofre \"%@\" e todo o seu conteúdo. Insira o nome do cofre para confirmar a exclusão."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceasta va șterge permanent seiful « %@ » și tot conținutul acestuia. Introduceți numele seifului pentru a confirma ștergerea."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Týmto sa natrvalo odstráni trezor « %@ » a celý jeho obsah. Pre potvrdenie vymazania zadajte názov trezora."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S tem boste trajno izbrisali trezor »%@« in vso njegovo vsebino. Vnesite ime trezorja, da potrdite izbris."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detta kommer ta bort valvet « %@ » och allt dess innehåll permanent. Ange valvets namn för att bekräfta borttagning."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu işlem « %@ » kasasını ve içindekileri kalıcı olarak silecek. Silme işlemini onaylamak için kasa adını yazın."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "这将永久删除保险库 « %@ » 及其所有内容。输入保险库名称以确认删除。"
           }
         }
       }
@@ -181749,10 +182007,142 @@
     },
     "Vault « %@ » deleted" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сховішча « %@ » выдалена"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S'ha eliminat la caixa forta «%@»"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trezor « %@ » smazán"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Boks « %@ » slettet"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tresor „%@“ gelöscht"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Η κρύπτη « %@ » διαγράφηκε"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vault « %@ » deleted"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se ha eliminado la caja fuerte «%@»."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bóveda «%@» eliminada"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Holvi \"%@\" poistettiin"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le coffre-fort « %@ » a été supprimé."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cassaforte « %@ » eliminata"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保管庫« %@ » が削除されました"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საცავი „%@“ წაიშალა"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hvelv \"%@\" slettet"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vault « %@ » verwijderd"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O cofre « %@ » foi excluído"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seiful „%@” a fost șters."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trezor « %@ » bol vymazaný"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trezor »%@« izbrisan"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valv « %@ » borttaget"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "« %@ » kasası silindi"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保险库 « %@ » 已删除"
           }
         }
       }
