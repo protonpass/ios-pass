@@ -140,7 +140,7 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
     }
 
     @concurrent
-    // swiftlint:disable:next unneeded_throws_rethrows async_without_await
+    // swiftlint:disable:next unneeded_throws_rethrows
     func fetchAutoFillCredentials(userId: String) async throws -> T {
         fatalError("Must be overridden by subclasses")
     }

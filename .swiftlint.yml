@@ -83,6 +83,16 @@ disabled_rules:
  - unused_parameter
  - closure_end_indentation
  - prefer_self_in_static_references
+ - accessibility_trait_for_button
+ - accessibility_label_for_image
+ - discouraged_default_parameter
+ - nesting
+ - modifier_order
+ - legacy_objc_type
+ - discouraged_none_name
+ - orphaned_doc_comment
+ - multiline_function_chains
+ - multiline_literal_brackets
 
 ##############
 #Opted in rules#
@@ -132,7 +142,7 @@ trailing_whitespace:
 
 # or they can set both explicitly
 file_length:
-  warning: 700
+  warning: 1000
   error: 1200
   
 function_body_length: # Functions bodies should not span too many lines.

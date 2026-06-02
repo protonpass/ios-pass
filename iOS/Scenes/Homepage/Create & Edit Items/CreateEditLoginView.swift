@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// swiftlint:disable file_length
 import CodeScanner
 import Core
 import DesignSystem
@@ -711,5 +710,3 @@ private struct WebsiteSection<Field: Hashable>: View {
         }
     }
 }
-
-// swiftlint:enable file_length

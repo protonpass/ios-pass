@@ -192,7 +192,7 @@ class BaseCreateEditItemViewModel: ObservableObject {
     let scanResponsePublisher = ScanResponsePublisher()
 
     private var pendingFileNameUpdates = [PendingFileNameUpdate]()
-    private lazy var renameAttachmentDelegate = RenameAttachmentDelegate()
+    private weak var renameAttachmentDelegate = RenameAttachmentDelegate()
 
     let mode: ItemMode
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)

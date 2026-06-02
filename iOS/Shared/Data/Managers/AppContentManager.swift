@@ -61,8 +61,6 @@ enum AppContentState: Equatable {
     }
 }
 
-// swiftlint:disable file_length
-
 @MainActor
 final class AppContentManager: ObservableObject, DeinitPrintable, AppContentManagerProtocol {
     deinit { print(deinitMessage) }
@@ -793,5 +791,3 @@ extension AppContentManager {
         try await localFullSync(userId: userId)
     }
 }
-
-// swiftlint:enable file_length
