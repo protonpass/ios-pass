@@ -59,6 +59,9 @@ extension AccessEntity {
     @NSManaged var storageUsed: Int64
     @NSManaged var storageQuota: Int64
     @NSManaged var folderAllowed: Bool
+    @NSManaged var folderMaxCount: Int64
+    @NSManaged var folderMaxChildren: Int64
+    @NSManaged var folderMaxDepth: Int64
 }
 
 extension AccessEntity {
@@ -75,7 +78,10 @@ extension AccessEntity {
                         storageAllowed: storageAllowed,
                         storageUsed: Int(storageUsed),
                         storageQuota: Int(storageQuota),
-                        folderAllowed: folderAllowed)
+                        folderAllowed: folderAllowed,
+                        folderMaxCount: Int(folderMaxCount),
+                        folderMaxChildren: Int(folderMaxChildren),
+                        folderMaxDepth: Int(folderMaxDepth))
 
         let userAliasSyncData = UserAliasSyncData(defaultShareID: defaultShareID,
                                                   aliasSyncEnabled: aliasSyncEnabled,
@@ -118,5 +124,8 @@ extension AccessEntity {
         storageAllowed = plan.storageAllowed
         storageUsed = Int64(plan.storageUsed)
         storageQuota = Int64(plan.storageQuota)
+        folderMaxCount = Int64(plan.folderMaxCount)
+        folderMaxDepth = Int64(plan.folderMaxDepth)
+        folderMaxChildren = Int64(plan.folderMaxChildren)
     }
 }

@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Entities
 import FactoryKit
 import Foundation
@@ -36,21 +37,26 @@ final class FolderMoveListViewModel {
     @ObservationIgnored
     @LazyInjected(\SharedToolingContainer.logger) private var logger
 
+    @ObservationIgnored
+    @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
+
     private(set) var loading = false
     private(set) var moveCompleted = false
     @ObservationIgnored private var moveTask: Task<Void, Never>?
     @ObservationIgnored private var folderToMove: FolderToMove?
     var expandedContainerIds = Set<String>()
+    @ObservationIgnored
+    private var cancellables = Set<AnyCancellable>()
 
-    // swiftlint:disable:next todo
-    // TODO: fetch from BE
     private var folderLimits = FolderLimits.default
 
     deinit {
         moveTask?.cancel()
     }
 
-    init() {}
+    init() {
+        setup()
+    }
 
     func move(selectedContainer: ShareSelectionPayload, currentFolderId: String) {
         guard !loading else { return }
@@ -99,6 +105,28 @@ final class FolderMoveListViewModel {
         if expandedContainerIds.remove(containerId) == nil {
             expandedContainerIds.insert(containerId)
         }
+    }
+}
+
+private extension FolderMoveListViewModel {
+    func setup() {
+        if let newFolderLimits = accessRepository.access.value?.access.plan.folderLimits {
+            folderLimits = newFolderLimits
+        }
+
+        accessRepository.access
+            .receive(on: DispatchQueue.main)
+            .dropFirst()
+            .compactMap(\.self)
+            .sink { [weak self] _ in
+                guard let self,
+                      let newFolderLimits = accessRepository.access.value?.access.plan.folderLimits,
+                      newFolderLimits != folderLimits else {
+                    return
+                }
+                folderLimits = newFolderLimits
+            }
+            .store(in: &cancellables)
     }
 }
 
