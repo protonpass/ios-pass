@@ -28,7 +28,6 @@ import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 
-// swiftlint:disable file_length
 private enum SectionsSheetState {
     case personal(CreateEditIdentitySection)
     case address(CreateEditIdentitySection)
@@ -749,5 +748,3 @@ private extension BaseIdentitySection {
         }
     }
 }
-
-// swiftlint:enable file_length

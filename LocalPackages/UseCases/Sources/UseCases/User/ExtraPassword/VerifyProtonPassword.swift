@@ -44,7 +44,7 @@ public final class VerifyProtonPassword: @unchecked Sendable, VerifyProtonPasswo
     private let doh: any DoHInterface
     private let appVer: String
 
-    private var safeAuthSessionInvalidatedDelegate: (any AuthSessionInvalidatedDelegate)?
+    private weak var safeAuthSessionInvalidatedDelegate: (any AuthSessionInvalidatedDelegate)?
     private let queue = DispatchQueue(label: "me.proton.pass.verifyProtonPassword")
     // Required by `AuthDelegate`
     // swiftlint:disable:next identifier_name
