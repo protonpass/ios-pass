@@ -106,8 +106,6 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
     @LazyInjected(\UseCasesContainer.checkVaultCreationAllowance)
     private var checkVaultCreationAllowance
-    // swiftlint:disable:next todo
-    // TODO: fetch from BE
     private(set) var folderLimits = FolderLimits.default
     private var count: Count
     private var cancellables = Set<AnyCancellable>()
@@ -516,6 +514,10 @@ private extension EditableVaultListViewModel {
             shareSelection = payload
         }
 
+        if let newFolderLimits = accessRepository.access.value?.access.plan.folderLimits {
+            folderLimits = newFolderLimits
+        }
+
         $shareSelection
             .receive(on: DispatchQueue.main)
             .compactMap(\.self)
@@ -556,6 +558,10 @@ private extension EditableVaultListViewModel {
                     return
                 }
                 plan = updatedAccess?.access.plan
+                if let newFolderLimits = accessRepository.access.value?.access.plan.folderLimits,
+                   newFolderLimits != folderLimits {
+                    folderLimits = newFolderLimits
+                }
             }
             .store(in: &cancellables)
     }

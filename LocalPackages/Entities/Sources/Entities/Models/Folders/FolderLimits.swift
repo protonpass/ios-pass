@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct FolderLimits {
+public struct FolderLimits: Equatable {
     public let maxFoldersPerVault: Int
     public let maxFoldersPerLayer: Int
     public let maxFolderDepth: Int
