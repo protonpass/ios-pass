@@ -75,6 +75,7 @@ final class DetailHistoryViewModel: ObservableObject {
         switch selectedRevision {
         case .past:
             pastRevision
+
         case .current:
             currentRevision
         }
@@ -317,8 +318,10 @@ private extension DetailHistoryViewModel {
                     switch postAction {
                     case .save:
                         urlToSave = url
+
                     case .share:
                         urlToShare = url
+
                     case .none:
                         filePreviewMode = .item(file, self, postAction)
                     }

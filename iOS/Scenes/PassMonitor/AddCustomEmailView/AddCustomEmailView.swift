@@ -28,6 +28,7 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct AddCustomEmailView: View {
+    // swiftlint:disable:next private_swiftui_state
     @StateObject var viewModel: AddCustomEmailViewModel
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focused
@@ -151,6 +152,7 @@ private extension ValidationEmailType {
         switch self {
         case .customEmail:
             "Custom email monitoring"
+
         case .mailbox:
             "Add mailbox"
         }
@@ -161,6 +163,7 @@ private extension ValidationEmailType {
         switch self {
         case .customEmail:
             "Please check in your Spam for an email called \"Please confirm your email address for Proton Pass\"\n\nIf you can't find such email, you can [request a new code](https://proton.me)."
+
         case let .mailbox(email):
             "Please check in your Spam for an email called \"Please confirm your mailbox \(email?.email ?? "")\"\n\nIf you can't find such email, you can [request a new code](https://proton.me)."
         }

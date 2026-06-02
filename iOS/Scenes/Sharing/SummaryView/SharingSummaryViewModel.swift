@@ -70,9 +70,9 @@ final class SharingSummaryViewModel: ObservableObject {
                 return
             }
             defer {
-                self.sendingInvite = false
-                self.lastTask?.cancel()
-                self.lastTask = nil
+                sendingInvite = false
+                lastTask?.cancel()
+                lastTask = nil
             }
             sendingInvite = true
 

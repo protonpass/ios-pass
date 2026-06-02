@@ -180,8 +180,10 @@ struct CreateEditLoginView: View {
                     switch lastFocusedField {
                     case .totp:
                         viewModel.handleScanResult(result)
+
                     case let .custom(value) where value?.type == .totp:
                         viewModel.handleScanResult(result, customField: value)
+
                     default:
                         return
                     }
@@ -209,12 +211,16 @@ private extension CreateEditLoginView {
             case .email, .emailOrUsername:
                 emailTextFieldToolbar
                     .animationsDisabled() // Disable animation when switching between toolbars
+
             case .totp:
                 totpTextFieldToolbar
+
             case let .custom(value) where value?.type == .totp:
                 totpTextFieldToolbar
+
             case .password:
                 passwordTextFieldToolbar
+
             default:
                 EmptyView()
             }

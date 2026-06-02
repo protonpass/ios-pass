@@ -110,8 +110,10 @@ public extension VaultSyncProgress {
         switch itemsState {
         case let .download(_, total):
             total == 0
+
         case let .decrypt(decrypted, total):
             decrypted >= total
+
         default:
             false
         }
@@ -121,8 +123,10 @@ public extension VaultSyncProgress {
         switch itemsState {
         case .loading:
             false
+
         case let .download(_, total):
             total == 0
+
         case let .decrypt(_, total):
             total == 0
         }

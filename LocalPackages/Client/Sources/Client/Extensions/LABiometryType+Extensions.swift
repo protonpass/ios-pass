@@ -25,6 +25,7 @@ public extension LABiometryType {
         switch self {
         case .faceID, .opticID, .touchID:
             true
+
         default:
             false
         }

@@ -26,12 +26,16 @@ public extension SecurityWeakness {
         switch self {
         case .excludedItems:
             #localized("Excluded Items")
+
         case .weakPasswords:
             #localized("Weak passwords")
+
         case .reusedPasswords:
             #localized("Reused passwords")
+
         case .breaches:
             #localized("Dark Web Monitoring")
+
         case .missing2FA:
             #localized("Set up 2FA for more security")
         }
@@ -42,6 +46,7 @@ public extension SecurityWeakness {
         switch self {
         case .reusedPasswords:
             nil
+
         default:
             title
         }
@@ -51,10 +56,13 @@ public extension SecurityWeakness {
         switch self {
         case .weakPasswords:
             #localized("Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe.")
+
         case .reusedPasswords:
             #localized("Generate unique passwords for each account to increase your security.")
+
         case .missing2FA:
             #localized("For added security, set up two-factor authentication on the following accounts.")
+
         default:
             nil
         }
@@ -64,10 +72,13 @@ public extension SecurityWeakness {
         switch self {
         case .excludedItems:
             #localized("This item is not being monitored")
+
         case .weakPasswords:
             #localized("This account is vulnerable, visit the service and change your password")
+
         case .missing2FA:
             #localized("This service offers 2FA. Enable it for added account security.")
+
         default:
             nil
         }

@@ -52,6 +52,7 @@ struct SecureLinkDetailUiModel {
         switch mode {
         case .create:
             #localized("Can be viewed:")
+
         case .edit:
             #localized("Opened:")
         }
@@ -61,6 +62,7 @@ struct SecureLinkDetailUiModel {
         switch mode {
         case .create:
             #localized("View all your secure links")
+
         case .edit:
             #localized("Remove link")
         }
@@ -71,9 +73,9 @@ struct SecureLinkDetailUiModel {
         case .create:
             if let maxReadCount {
                 return #localized("%lld time(s)", maxReadCount)
-            } else {
-                return #localized("Unlimited")
             }
+            return #localized("Unlimited")
+
         case .edit:
             let readCountString = if let readCount {
                 "\(readCount)"

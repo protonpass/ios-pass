@@ -96,23 +96,28 @@ private extension GetSearchableItems {
         case .pinned:
             try Task.checkCancellation()
             return try await getAllPinnedItems()
+
         case let .all(vaultSelection):
             switch vaultSelection {
             case .all:
                 try Task.checkCancellation()
                 return try await itemRepository.getItems(userId: userId, state: .active)
+
             case let .precise(selection):
                 try Task.checkCancellation()
                 return try await itemRepository.getItems(shareId: selection.share.shareId,
                                                          folderId: selection.folder?.folderId,
                                                          state: .active)
+
             case .trash:
                 try Task.checkCancellation()
                 return try await itemRepository.getItems(userId: userId, state: .trashed)
+
             case .sharedByMe:
                 try Task.checkCancellation()
                 return try await itemRepository.getItems(userId: userId, state: .active)
                     .filter(\.item.isASharedByMeItem)
+
             case .sharedWithMe:
                 try Task.checkCancellation()
                 return try await itemRepository.getItems(userId: userId, state: .active)

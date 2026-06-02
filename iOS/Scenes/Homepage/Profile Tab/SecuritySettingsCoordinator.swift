@@ -150,7 +150,7 @@ private extension SecuritySettingsCoordinator {
         router.present(for: .setPINCode)
     }
 
-    func verifyPINCodeAndUpdateMethod(_ newMethod: LocalAuthenticationMethod) async throws {
+    func verifyPINCodeAndUpdateMethod(_ newMethod: LocalAuthenticationMethod) {
         let successHandler: () async throws -> Void = { [weak self] in
             guard let self else { return }
             delegate?.childCoordinatorWantsToDismissTopViewController()

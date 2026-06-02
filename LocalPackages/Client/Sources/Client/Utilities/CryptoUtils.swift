@@ -48,7 +48,7 @@ public enum CryptoUtils {
     }
 
     public static func unlockAddressKeys(address: Address,
-                                         userData: UserData) throws -> [ProtonCoreCrypto.DecryptionKey] {
+                                         userData: UserData) -> [ProtonCoreCrypto.DecryptionKey] {
         let binKeys = userData.user.keys
         return address.keys.compactMap { key -> DecryptionKey? in
             for passphrase in userData.passphrases {

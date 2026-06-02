@@ -60,17 +60,22 @@ public extension ItemCount {
             switch item.type {
             case .alias:
                 alias += 1
+
             case .creditCard:
                 creditCard += 1
+
             case .identity:
                 identity += 1
+
             case .login:
                 login += 1
                 if item.totpUri?.isEmpty == false {
                     loginWith2fa += 1
                 }
+
             case .note:
                 note += 1
+
             case .custom, .sshKey, .wifi:
                 custom += 1
             }

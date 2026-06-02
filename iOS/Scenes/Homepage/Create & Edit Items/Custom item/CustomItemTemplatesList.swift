@@ -167,32 +167,46 @@ private extension CustomItemTemplate {
         switch self {
         case .fromScratch:
             .init(icon: IconProvider.pencil, title: "Start from scratch")
+
         case .apiCredential:
             .init(icon: IconProvider.code, title: "API Credential")
+
         case .database:
             .init(icon: IconProvider.storage, title: "Database")
+
         case .server:
             .init(icon: IconProvider.servers, title: "Server")
+
         case .softwareLicense:
             .init(icon: IconProvider.fileLines, title: "Software License")
+
         case .sshKey:
             .init(icon: IconProvider.filingCabinet, title: "SSH Key")
+
         case .wifi:
             .init(icon: Image(systemName: "wifi"), title: "WiFi Network")
+
         case .bankAccount:
             .init(icon: PassIcon.bank, title: "Bank Account")
+
         case .cryptoWallet:
             .init(icon: PassIcon.brandBitcoin, title: "Crypto Wallet")
+
         case .driverLicense:
             .init(icon: IconProvider.cardIdentity, title: "Driver License")
+
         case .medicalRecord:
             .init(icon: IconProvider.heart, title: "Medical Record")
+
         case .membership:
             .init(icon: IconProvider.userCircle, title: "Membership")
+
         case .passport:
             .init(icon: IconProvider.cardIdentity, title: "Passport")
+
         case .rewardProgram:
             .init(icon: IconProvider.bagPercent, title: "Reward Program")
+
         case .socialSecurityNumber:
             .init(icon: IconProvider.users, title: "Social Security Number")
         }

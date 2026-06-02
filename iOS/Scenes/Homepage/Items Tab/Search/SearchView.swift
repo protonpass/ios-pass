@@ -28,6 +28,7 @@ import TipKit
 struct SearchView: View {
     let animationNamespace: Namespace.ID
     @FocusState private var isFocusedOnSearchBar
+    // swiftlint:disable:next private_swiftui_state
     @StateObject var viewModel: SearchViewModel
     @State private var safeAreaInsets = EdgeInsets.zero
     let onCancel: () -> Void

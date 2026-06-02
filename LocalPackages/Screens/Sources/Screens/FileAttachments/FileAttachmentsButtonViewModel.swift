@@ -38,6 +38,7 @@ enum CapturedPhoto {
                     throw PassError.fileAttachment(.noPngData)
                 }
                 return data
+
             case let .jpeg(data):
                 guard let data else {
                     throw PassError.fileAttachment(.noJpegData)
@@ -51,6 +52,7 @@ enum CapturedPhoto {
         switch self {
         case .png:
             "png"
+
         case .jpeg:
             "jpeg"
         }

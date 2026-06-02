@@ -26,18 +26,25 @@ public extension MostRecentType {
         switch self {
         case .today:
             #localized("Today")
+
         case .yesterday:
             #localized("Yesterday")
+
         case .last7Days:
             #localized("Last week")
+
         case .last14Days:
             #localized("Last two weeks")
+
         case .last30Days:
             #localized("Last 30 days")
+
         case .last60Days:
             #localized("Last 60 days")
+
         case .last90Days:
             #localized("Last 90 days")
+
         case .others:
             #localized("More than 90 days")
         }

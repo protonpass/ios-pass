@@ -29,6 +29,7 @@ enum PPCoreError: Error, CustomDebugStringConvertible {
         switch self {
         case .biometryTypeNotInitialized:
             "Biometry type not initialized"
+
         case .failedToRandomizeData:
             "Failed to randomize data"
         }

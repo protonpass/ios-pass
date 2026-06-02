@@ -49,7 +49,7 @@ public actor SymmetricKeyProviderImpl: SymmetricKeyProvider {
 }
 
 public extension SymmetricKeyProviderImpl {
-    func getSymmetricKey() async throws -> SymmetricKey {
+    func getSymmetricKey() throws -> SymmetricKey {
         if let cachedKey {
             return cachedKey
         }
@@ -116,11 +116,10 @@ private enum SymmetricKeyGetter {
             let lockedData = Locked<Data>(encryptedValue: lockedSymmetricKeyData)
             let unlockedData = try lockedData.unlock(with: mainKey)
             return .init(data: unlockedData)
-        } else {
-            let randomData = try Data.random()
-            try lockAndSaveToKeychain(randomData)
-            return .init(data: randomData)
         }
+        let randomData = try Data.random()
+        try lockAndSaveToKeychain(randomData)
+        return .init(data: randomData)
     }
 
     /// Due to legacy reason, we used to encode/decode base 64 data before storing/getting from keychain,

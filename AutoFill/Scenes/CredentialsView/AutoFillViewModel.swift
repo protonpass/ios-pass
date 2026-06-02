@@ -83,6 +83,7 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
             switch selectedUser.plan.planType {
             case .free:
                 #localized("Search in oldest 2 vaults")
+
             default:
                 #localized("Search in all vaults")
             }
@@ -139,6 +140,7 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
     }
 
     @concurrent
+    // swiftlint:disable:next unneeded_throws_rethrows async_without_await
     func fetchAutoFillCredentials(userId: String) async throws -> T {
         fatalError("Must be overridden by subclasses")
     }

@@ -119,8 +119,10 @@ private extension SendShareInvite {
         switch info.shareElement {
         case let .vault(vault):
             vault
+
         case let .item(_, item):
             item
+
         case let .new(vaultContent, itemContent):
             try await createAndMoveItemToNewVault(userId: userId, vault: vaultContent, itemContent: itemContent)
         }
@@ -130,6 +132,7 @@ private extension SendShareInvite {
         switch info.shareElement {
         case let .item(item, _):
             item
+
         default:
             nil
         }
@@ -138,7 +141,7 @@ private extension SendShareInvite {
     func generateInviteeData(userData: UserData,
                              from info: SharingInfos,
                              share: Share,
-                             shareKey: any CryptographicKeyProtocol) async throws -> InviteeData {
+                             shareKey: any CryptographicKeyProtocol) throws -> InviteeData {
         let email = info.email
         if let key = info.receiverPublicKeys?.first {
             let signedKey = try CryptoUtils.encryptKeyForSharing(addressId: share.addressId,
@@ -146,13 +149,12 @@ private extension SendShareInvite {
                                                                  userData: userData,
                                                                  key: shareKey)
             return .existing(email: email, keys: [signedKey], role: info.role)
-        } else {
-            let signature = try createAndSignSignature(addressId: share.addressId,
-                                                       shareKey: shareKey,
-                                                       email: email,
-                                                       userData: userData)
-            return .new(email: email, signature: signature, role: info.role)
         }
+        let signature = try createAndSignSignature(addressId: share.addressId,
+                                                   shareKey: shareKey,
+                                                   email: email,
+                                                   userData: userData)
+        return .new(email: email, signature: signature, role: info.role)
     }
 
     func createAndSignSignature(addressId: String,

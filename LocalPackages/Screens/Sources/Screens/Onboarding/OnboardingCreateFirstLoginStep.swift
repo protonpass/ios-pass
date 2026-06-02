@@ -218,6 +218,7 @@ private struct CreateFirstLoginView: View {
             switch service.loginType {
             case .both, .email:
                 focusedField = .email
+
             case .username:
                 focusedField = .username
             }
@@ -251,9 +252,11 @@ private extension CreateFirstLoginView {
             case .email:
                 emailTextField
                 PassSectionDivider()
+
             case .username:
                 usernameTextField
                 PassSectionDivider()
+
             case .both:
                 emailTextField
                 PassSectionDivider()

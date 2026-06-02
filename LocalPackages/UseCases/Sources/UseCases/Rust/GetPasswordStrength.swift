@@ -48,8 +48,10 @@ public final class GetPasswordStrength: GetPasswordStrengthUseCase {
         return switch passwordScorer.checkScore(password: password) {
         case .vulnerable:
             .vulnerable
+
         case .weak:
             .weak
+
         case .strong:
             .strong
         }

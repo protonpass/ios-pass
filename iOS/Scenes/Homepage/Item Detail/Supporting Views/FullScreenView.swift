@@ -32,6 +32,7 @@ enum FullScreenData {
         switch self {
         case let .password(password):
             password
+
         case let .text(text):
             text
         }
@@ -52,6 +53,7 @@ struct FullScreenView: View {
             switch self {
             case .text:
                 "textformat.abc"
+
             case .qr:
                 "qrcode"
             }
@@ -61,6 +63,7 @@ struct FullScreenView: View {
             switch self {
             case .text:
                 .qr
+
             case .qr:
                 .text
             }
@@ -78,6 +81,7 @@ struct FullScreenView: View {
                     case .text:
                         FullScreenTextView(percentage: $percentage,
                                            data: data)
+
                     case .qr:
                         QrCodeView(text: data.text)
                     }
@@ -131,6 +135,7 @@ private struct FullScreenTextView: View {
                 Text(password.coloredPassword())
                     .font(.system(size: (percentage + 1) * 24).monospaced())
                     .fontWeight(.semibold)
+
             case let .text(text):
                 Text(verbatim: text)
                     .font(.system(size: (percentage + 1) * 24))

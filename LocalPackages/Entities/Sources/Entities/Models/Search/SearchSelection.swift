@@ -28,6 +28,7 @@ public enum SearchMode: Equatable, Hashable, Sendable {
         switch self {
         case let .all(selection):
             selection
+
         default:
             nil
         }

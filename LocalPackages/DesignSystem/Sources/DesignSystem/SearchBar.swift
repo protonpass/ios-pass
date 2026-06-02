@@ -37,8 +37,10 @@ public struct SearchBar: View {
             switch self {
             case .never:
                 false
+
             case .always:
                 true
+
             case .queryNotEmpty:
                 !query.isEmpty
             }

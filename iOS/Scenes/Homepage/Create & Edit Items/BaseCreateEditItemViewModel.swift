@@ -43,6 +43,7 @@ enum ItemMode: Equatable, Hashable {
         switch self {
         case let .clone(content), let .edit(content):
             content
+
         default:
             nil
         }
@@ -52,6 +53,7 @@ enum ItemMode: Equatable, Hashable {
         switch self {
         case .edit:
             true
+
         default:
             false
         }
@@ -61,6 +63,7 @@ enum ItemMode: Equatable, Hashable {
         switch self {
         case .clone, .create:
             true
+
         default:
             false
         }
@@ -89,18 +92,25 @@ enum ItemCreationType: Equatable, Hashable {
         switch self {
         case .note:
             .note
+
         case .alias:
             .alias
+
         case .login:
             .login
+
         case .creditCard:
             .creditCard
+
         case .identity:
             .identity
+
         case .sshKey:
             .sshKey
+
         case .wifi:
             .wifi
+
         case .custom:
             .custom
         }
@@ -231,6 +241,7 @@ class BaseCreateEditItemViewModel: ObservableObject {
                                       name: pending.metadata.name,
                                       group: pending.metadata.fileGroup,
                                       formattedSize: pending.metadata.formattedSize))
+
             case let .item(itemFile):
                 let formattedSize = formatFileAttachmentSize(itemFile.size)
                 if let name = itemFile.name,
@@ -282,6 +293,7 @@ class BaseCreateEditItemViewModel: ObservableObject {
                selection.share.canEdit {
                 container = selection
             }
+
         case let .clone(itemContent), let .edit(itemContent):
             if let shareContent = shareContents.shares[itemContent.shareId] {
                 let folder: FolderUiModel? = if let folderId = itemContent.item.folderID {
@@ -332,12 +344,13 @@ class BaseCreateEditItemViewModel: ObservableObject {
         fatalError("Must be overridden by subclasses")
     }
 
-    // swiftlint:disable:next unavailable_function
+    // swiftlint:disable:next unavailable_function async_without_await
     func generateItemContent() async -> ItemContentProtobuf? {
         fatalError("Must be overridden by subclasses")
     }
 
-    /// The new passkey associated with this item
+    /// The new passkey associated with this item,
+    // swiftlint:disable:next unneeded_throws_rethrows async_without_await
     func newPasskey() async throws -> CreatePasskeyResponse? {
         nil
     }
@@ -346,11 +359,13 @@ class BaseCreateEditItemViewModel: ObservableObject {
         switch mode {
         case .clone, .create:
             #localized("Create")
+
         case .edit:
             #localized("Save")
         }
     }
 
+    // swiftlint:disable:next unneeded_throws_rethrows async_without_await
     func additionalEdit() async throws -> AdditionalItemEditResult {
         .default
     }
@@ -528,11 +543,10 @@ private extension BaseCreateEditItemViewModel {
                                                             itemContent: itemContent,
                                                             shareId: shareId,
                                                             folderId: selectedContainer.folder?.folderId)
-            } else {
-                assertionFailure("aliasCreationInfo should not be null")
-                logger.warning("Can not create alias because creation info is empty")
-                return nil
             }
+            assertionFailure("aliasCreationInfo should not be null")
+            logger.warning("Can not create alias because creation info is empty")
+            return nil
 
         case .login:
             if let aliasCreationInfo = generateAliasCreationInfo(),
@@ -629,8 +643,10 @@ extension BaseCreateEditItemViewModel {
             customErrorMessage = switch reason {
             case .fileTooLarge:
                 #localized("The selected file exceeds the size limit. Please choose a file smaller than 100 MB.")
+
             case .emptyFile:
                 #localized("The selected file is empty. Please check the file and try again.")
+
             default:
                 nil
             }
@@ -658,14 +674,18 @@ extension BaseCreateEditItemViewModel {
         switch action {
         case .selectContainer:
             isShowingVaultSelector.toggle()
+
         case .goBack:
             isShowingDiscardAlert.toggle()
+
         case .upgrade:
             if shouldUpgrade {
                 upgrade()
             }
+
         case .scan:
             openScanner()
+
         case .save:
             checkAndSave()
         }

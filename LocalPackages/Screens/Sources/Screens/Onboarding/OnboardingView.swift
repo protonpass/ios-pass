@@ -316,12 +316,16 @@ private extension OnboardStep {
             switch type {
             case .none:
                 #localized("None", bundle: .module)
+
             case .faceID:
                 #localized("Enable Face ID", bundle: .module)
+
             case .touchID:
                 #localized("Enable Touch ID", bundle: .module)
+
             case .opticID:
                 #localized("Enable Optic ID", bundle: .module)
+
             @unknown default:
                 #localized("None", bundle: .module)
             }

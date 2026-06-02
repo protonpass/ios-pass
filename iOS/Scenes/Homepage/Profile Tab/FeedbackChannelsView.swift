@@ -81,8 +81,10 @@ extension FeedbackChannel {
         switch self {
         case .bugReport:
             IconProvider.bug
+
         case .reddit:
             PassIcon.brandReddit
+
         case .uservoice:
             PassIcon.brandPass
         }
@@ -92,8 +94,10 @@ extension FeedbackChannel {
         switch self {
         case .bugReport:
             #localized("Report a problem")
+
         case .reddit:
             #localized("Write us on Reddit")
+
         case .uservoice:
             #localized("Vote for new features")
         }
@@ -103,8 +107,10 @@ extension FeedbackChannel {
         switch self {
         case .bugReport:
             nil
+
         case .reddit:
             "https://www.reddit.com/r/ProtonPass"
+
         case .uservoice:
             "https://protonmail.uservoice.com/forums/953584-proton-pass"
         }

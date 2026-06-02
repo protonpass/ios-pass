@@ -27,6 +27,7 @@ import Screens
 import SwiftUI
 
 struct ItemHistoryView: View {
+    // swiftlint:disable:next private_swiftui_state
     @StateObject var viewModel: ItemHistoryViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var path = NavigationPath()

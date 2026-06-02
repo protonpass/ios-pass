@@ -26,10 +26,13 @@ extension ClipboardExpiration: @retroactive CustomStringConvertible {
         switch self {
         case .fifteenSeconds:
             #localized("After 15 seconds")
+
         case .oneMinute:
             #localized("After %lld minute(s)", 1)
+
         case .twoMinutes:
             #localized("After %lld minute(s)", 2)
+
         case .never:
             #localized("Never")
         }

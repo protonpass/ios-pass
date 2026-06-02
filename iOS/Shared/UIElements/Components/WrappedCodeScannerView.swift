@@ -42,6 +42,7 @@ struct WrappedCodeScannerView: View {
                 switch result {
                 case let .success(scanResult):
                     completion(.success(scanResult.string))
+
                 case let .failure(error):
                     completion(.failure(error))
                 }

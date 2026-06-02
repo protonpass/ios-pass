@@ -369,15 +369,19 @@ private extension DetailHistoryView {
         case .identity:
             currentSections = viewModel.currentRevision.identityItem?.extraSections ?? []
             pastSections = viewModel.pastRevision.identityItem?.extraSections ?? []
+
         case .sshKey:
             currentSections = viewModel.currentRevision.sshKey?.extraSections ?? []
             pastSections = viewModel.pastRevision.sshKey?.extraSections ?? []
+
         case .wifi:
             currentSections = viewModel.currentRevision.wifi?.extraSections ?? []
             pastSections = viewModel.pastRevision.wifi?.extraSections ?? []
+
         case .custom:
             currentSections = viewModel.currentRevision.custom?.sections ?? []
             pastSections = viewModel.pastRevision.custom?.sections ?? []
+
         default:
             return PassColor.inputBorderNorm
         }

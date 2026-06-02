@@ -274,7 +274,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     func generateAlias() {
         Task { [weak self] in
             guard let self else { return }
-            defer { self.loading = false }
+            defer { loading = false }
             do {
                 loading = true
                 if aliasOptions == nil {
@@ -341,6 +341,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             } else {
                 totpUri = scanResult
             }
+
         case let .failure(error):
             router.display(element: .displayErrorBanner(error))
         }

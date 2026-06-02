@@ -90,6 +90,7 @@ public struct CustomField: Equatable, Hashable, Sendable, Identifiable {
         case let .title(newTitle):
             updatedTitle = newTitle
             updatedContent = content
+
         case let .content(newContent):
             updatedTitle = title
             updatedContent = newContent

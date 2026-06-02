@@ -25,16 +25,22 @@ extension TaskPriority: @retroactive CustomDebugStringConvertible {
         switch self {
         case .background:
             "background"
+
         case .high:
             "high"
+
         case .low:
             "low"
+
         case .medium:
             "medium"
+
         case .userInitiated:
             "userInitiated"
+
         case .utility:
             "utility"
+
         default:
             "unknown"
         }

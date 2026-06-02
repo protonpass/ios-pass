@@ -41,8 +41,7 @@ public final class CheckBiometryType: CheckBiometryTypeUseCase {
         context.canEvaluatePolicy(policy, error: &error)
         if let error {
             throw error
-        } else {
-            return context.biometryType
         }
+        return context.biometryType
     }
 }

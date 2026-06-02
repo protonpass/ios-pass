@@ -34,8 +34,10 @@ public extension NotLoggedInView {
             switch self {
             case .autoFillExtension:
                 #localized("Please sign in to use Proton Pass AutoFill extension", bundle: .module)
+
             case .shareExtension:
                 #localized("Please sign in to use Proton Pass Share extension", bundle: .module)
+
             case .actionExtension:
                 #localized("Please sign in to use Proton Pass Action extension", bundle: .module)
             }

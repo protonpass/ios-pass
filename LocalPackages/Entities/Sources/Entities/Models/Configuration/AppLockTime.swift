@@ -38,16 +38,22 @@ public enum AppLockTime: Int, Codable, CaseIterable, Sendable {
         switch self {
         case .immediately:
             0
+
         case .oneMinute:
             1
+
         case .twoMinutes:
             2
+
         case .fiveMinutes:
             5
+
         case .tenMinutes:
             10
+
         case .oneHour:
             60
+
         case .fourHours:
             240
         }
@@ -57,21 +63,29 @@ public enum AppLockTime: Int, Codable, CaseIterable, Sendable {
         self = switch rawValue {
         case 0:
             .immediately
+
         case 1:
             .oneMinute
+
         case 2:
             .twoMinutes
+
         case 3:
             .fiveMinutes
+
         case 4:
             .tenMinutes
+
         case 5:
             .oneHour
+
         case 6:
             .fourHours
+
         case 7:
             // Deprecated "Never" case
             .default
+
         default:
             .default
         }

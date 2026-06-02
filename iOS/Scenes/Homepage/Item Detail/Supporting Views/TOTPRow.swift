@@ -81,11 +81,14 @@ struct TOTPRow: View {
                 switch viewModel.state {
                 case .empty:
                     EmptyView()
+
                 case .loading:
                     ProgressView()
+
                 case let .valid(data):
                     TOTPText(code: data.code, textColor: textColor)
                         .frame(maxWidth: .infinity, alignment: .leading)
+
                 case .invalid:
                     Text("Invalid TOTP URI")
                         .font(.caption)
@@ -103,6 +106,7 @@ struct TOTPRow: View {
             switch viewModel.state {
             case let .valid(data):
                 TOTPCircularTimer(data: data.timerData)
+
             default:
                 EmptyView()
             }

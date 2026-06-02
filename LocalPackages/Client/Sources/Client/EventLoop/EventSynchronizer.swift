@@ -166,7 +166,7 @@ private extension EventSynchronizer {
         return false
     }
 
-    func delete(userId: String, shares: [SymmetricallyEncryptedShare]) async throws {
+    func delete(userId: String, shares: [SymmetricallyEncryptedShare]) async {
         await withThrowingTaskGroup(of: Void.self) { taskGroup in
             for share in shares {
                 let shareId = share.share.shareID
@@ -206,10 +206,9 @@ private extension EventSynchronizer {
 
                     if isExistingShare {
                         return try await handleExistingShare(userId: userId, remoteShare: remoteShare)
-                    } else {
-                        try await handleNewShare(userId: userId, remoteShare: remoteShare)
-                        return true
                     }
+                    try await handleNewShare(userId: userId, remoteShare: remoteShare)
+                    return true
                 }
             }
 
@@ -289,9 +288,8 @@ private extension EventSynchronizer {
             logger.info("Force full sync for share \(share.shareId)")
             try await itemRepository.refreshItems(userId: userId, shareId: share.shareId)
             return true
-        } else {
-            return try await processEventDetails(userId: userId, events: events, share: share)
         }
+        return try await processEventDetails(userId: userId, events: events, share: share)
     }
 
     /// Process the detailed parts of the events
@@ -369,7 +367,7 @@ private extension EventSynchronizer {
     func handleUpdateEvent(description: String,
                            count: Int,
                            shareId: ShareID,
-                           operation: @escaping () async throws -> Void) async throws -> Bool {
+                           operation: () async throws -> Void) async throws -> Bool {
         logger.trace("Found \(count) \(description) for share \(shareId)")
         try await operation()
         return true

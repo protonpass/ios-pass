@@ -62,7 +62,7 @@ public actor ApiServiceLite: NSObject, ApiServiceLiteProtocol, DeinitPrintable {
 public extension ApiServiceLite {
     func uploadMultipart<R: Decodable & Sendable>(path: String,
                                                   userId: String,
-                                                  infos: [MultipartInfo]) async throws
+                                                  infos: [MultipartInfo]) throws
         -> AsyncThrowingStream<ProgressEvent<R>, any Error> {
         let (url, credential) = try getUrlAndCredentials(userId: userId)
         let request = URLRequest(url: url,
@@ -80,7 +80,7 @@ public extension ApiServiceLite {
             let task = session.dataTask(with: request) { [weak self] data, _, error in
                 defer {
                     if let self {
-                        self.observations[request] = nil
+                        observations[request] = nil
                     }
                 }
                 if let error {
@@ -105,7 +105,7 @@ public extension ApiServiceLite {
         }
     }
 
-    func download(path: String, userId: String) async throws
+    func download(path: String, userId: String) throws
         -> AsyncThrowingStream<ProgressEvent<Data>, any Error> {
         let (url, credential) = try getUrlAndCredentials(userId: userId)
         let request = URLRequest(url: url,
@@ -124,7 +124,7 @@ public extension ApiServiceLite {
             let task = session.dataTask(with: request) { [weak self] data, _, error in
                 defer {
                     if let self {
-                        self.observations[request] = nil
+                        observations[request] = nil
                     }
                 }
                 if let error {

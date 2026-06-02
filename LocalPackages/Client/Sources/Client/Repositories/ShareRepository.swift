@@ -452,9 +452,8 @@ private extension ShareRepository {
             if error.isInactiveUserKey {
                 logger.warning(error.localizedDebugDescription)
                 return nil
-            } else {
-                throw error
             }
+            throw error
         }
     }
 }

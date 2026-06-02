@@ -34,10 +34,13 @@ public enum ClipboardExpiration: Int, Codable, CaseIterable, Sendable {
         switch self {
         case .fifteenSeconds:
             Date().addingTimeInterval(15)
+
         case .oneMinute:
             Date().addingTimeInterval(60)
+
         case .twoMinutes:
             Date().addingTimeInterval(120)
+
         case .never:
             nil
         }

@@ -30,10 +30,13 @@ extension ItemTypeFilterOption {
         switch self {
         case .all:
             .init(icon: IconProvider.grid2, title: #localized("All"), count: itemCount.total)
+
         case let .precise(type):
             type.uiModel(from: itemCount)
+
         case .itemSharedWithMe:
             .init(icon: IconProvider.grid2, title: #localized("Shared with me"), count: itemCount.sharedWithMe)
+
         case .itemSharedByMe:
             .init(icon: IconProvider.grid2, title: #localized("Shared by me"), count: itemCount.sharedByMe)
         }
@@ -51,14 +54,19 @@ private extension ItemContentType {
         let count: Int = switch self {
         case .login:
             itemCount.login
+
         case .alias:
             itemCount.alias
+
         case .note:
             itemCount.note
+
         case .creditCard:
             itemCount.creditCard
+
         case .identity:
             itemCount.identity
+
         case .custom, .sshKey, .wifi:
             itemCount.custom
         }

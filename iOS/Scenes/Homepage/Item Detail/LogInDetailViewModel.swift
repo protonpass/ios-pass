@@ -226,8 +226,10 @@ extension SecurityWeakness {
         switch self {
         case .excludedItems, .reusedPasswords, .weakPasswords:
             .warning
+
         case .missing2FA:
             .info
+
         case .breaches:
             .danger
         }

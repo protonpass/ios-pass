@@ -51,6 +51,7 @@ enum ValidationEmailType: Hashable {
         switch self {
         case let .customEmail(data):
             data?.email
+
         case let .mailbox(data):
             data?.pendingEmail ?? data?.email
         }
@@ -60,6 +61,7 @@ enum ValidationEmailType: Hashable {
         switch self {
         case let .customEmail(data):
             data != nil
+
         case let .mailbox(data):
             data != nil
         }
@@ -74,6 +76,7 @@ enum GeneralSheetDestination: Identifiable, Hashable {
         switch self {
         case .addEmail:
             "addEmail"
+
         case .breachDetail:
             "breachDetail"
         }
@@ -95,24 +98,32 @@ extension View {
             switch destination {
             case .userSharePermission:
                 UserPermissionView()
+
             case .shareSummary:
                 SharingSummaryView()
+
             case let .historyDetail(currentRevision: currentRevision,
                                     pastRevision: pastRevision,
                                     files):
                 DetailHistoryView(viewModel: .init(currentRevision: currentRevision,
                                                    pastRevision: pastRevision,
                                                    files: files))
+
             case let .protonAddressesList(addresses):
                 MonitorProtonAddressesView(viewModel: .init(addresses: addresses))
+
             case let .aliasesList(infos):
                 MonitorAliasesView(viewModel: .init(infos: infos))
+
             case let .breachDetail(info):
                 DetailMonitoredItemView(viewModel: .init(infos: info))
+
             case let .monitoredAliases(infos, monitored):
                 MonitorAllAliasesView(infos: infos, monitored: monitored)
+
             case let .darkWebMonitorHome(breach):
                 DarkWebMonitorHomeView(viewModel: .init(userBreaches: breach))
+
             case let .contacts(infos):
                 AliasContactsView(viewModel: .init(infos: infos))
             }
@@ -124,6 +135,7 @@ extension View {
             switch destination {
             case let .addEmail(type):
                 AddCustomEmailView(viewModel: .init(validationType: type))
+
             case let .breachDetail(breach):
                 BreachDetailView(breach: breach)
             }

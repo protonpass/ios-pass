@@ -240,6 +240,7 @@ private extension CredentialProviderCoordinator {
                                                 itemContent: itemContent,
                                                 context: context)
                 }
+
             case let .failure(error):
                 handle(error: error)
             }
@@ -317,8 +318,10 @@ private extension CredentialProviderCoordinator {
                 switch destination {
                 case .upgradeFlow:
                     startUpgradeFlow()
+
                 case let .createItem(item, type, _, response):
                     handleItemCreation(item, type: type, response: response)
+
                 default:
                     break
                 }
@@ -337,10 +340,13 @@ private extension CredentialProviderCoordinator {
                     } else {
                         hideLoadingHud()
                     }
+
                 case let .displayErrorBanner(error):
                     bannerManager.displayTopErrorMessage(error)
+
                 case let .errorMessage(message):
                     bannerManager.displayTopErrorMessage(message)
+
                 default:
                     return
                 }
@@ -383,6 +389,7 @@ private extension CredentialProviderCoordinator {
             case .noUserDataFound:
                 showNotLoggedInView()
                 return
+
             default:
                 defaultHandler(error)
                 return
@@ -402,15 +409,17 @@ private extension CredentialProviderCoordinator {
 
         case .failedToAuthenticate:
             guard let userId = userManager.activeUserId else {
-                return defaultHandler(error)
+                defaultHandler(error)
+                return
             }
-            return logOut(userId: userId) { [weak self] in
+            logOut(userId: userId) { [weak self] in
                 guard let self else { return }
                 // swiftlint:disable:next todo
                 // TODO: should we always call the cancelAutoFill as we will be able to have multiple account for one user
                 // this means we should in some case only reload the data to remove the deleted content.
                 cancelAutoFill(reason: .failed, context: context)
             }
+            return
 
         default:
             defaultHandler(error)
@@ -612,6 +621,7 @@ extension CredentialProviderCoordinator: AutoFillViewModelDelegate {
                 case let .login(url, passkeyCredentialRequest):
                     presentCreateLoginView(url: url,
                                            request: passkeyCredentialRequest)
+
                 case .alias:
                     presentCreateAliasView()
                 }

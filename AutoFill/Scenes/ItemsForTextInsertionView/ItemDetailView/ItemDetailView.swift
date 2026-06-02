@@ -52,18 +52,25 @@ struct ItemDetailView: View {
             switch item.content.type {
             case .alias:
                 AliasDetailView(.init(item: item, selectedTextStream: selectedTextStream))
+
             case .creditCard:
                 CreditCardDetailView(.init(item: item, selectedTextStream: selectedTextStream))
+
             case .identity:
                 IdentityDetailView(.init(item: item, selectedTextStream: selectedTextStream))
+
             case .login:
                 LoginDetailView(.init(item: item, selectedTextStream: selectedTextStream))
+
             case .note:
                 NoteDetailView(.init(item: item, selectedTextStream: selectedTextStream))
+
             case .sshKey:
                 SshDetailView(.init(item: item, selectedTextStream: selectedTextStream))
+
             case .wifi:
                 WifiDetailView(.init(item: item, selectedTextStream: selectedTextStream))
+
             case .custom:
                 CustomDetailView(.init(item: item, selectedTextStream: selectedTextStream))
             }

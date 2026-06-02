@@ -51,12 +51,15 @@ public final class CheckVaultCreationAllowance: CheckVaultCreationAllowanceUseCa
         case .allowed:
             // Explicitly allowed
             true
+
         case .onlyOrgAdmins:
             // Explicitly disallowed
             false
+
         case .onlyOrgAdminsAndPersonalVault:
             // Only possible when no vaults
             vaultCount == 0
+
         default:
             // Implicitly allowed
             true

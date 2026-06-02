@@ -80,8 +80,10 @@ public actor VerifyExtraPassword: VerifyExtraPasswordUseCase {
                 switch apiError {
                 case .notAllowed:
                     return .wrongPassword
+
                 case .tooManyWrongAttempts:
                     return .tooManyAttempts
+
                 default:
                     break
                 }

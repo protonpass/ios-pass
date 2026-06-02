@@ -25,6 +25,7 @@ import SwiftUI
 
 struct CreateEditVaultView: View {
     @Environment(\.dismiss) private var dismiss
+    // swiftlint:disable:next private_swiftui_state
     @StateObject var viewModel: CreateEditVaultViewModel
     @FocusState private var isFocusedOnTitle
 
@@ -153,6 +154,7 @@ struct CreateEditVaultView: View {
                     case let .color(color):
                         VaultColorView(color: color, selectedColor: $viewModel.selectedColor)
                             .frame(width: itemSize, height: itemSize)
+
                     case let .icon(icon):
                         VaultIconView(icon: icon, selectedIcon: $viewModel.selectedIcon)
                             .frame(width: itemSize, height: itemSize)

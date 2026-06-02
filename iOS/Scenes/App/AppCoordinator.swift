@@ -41,6 +41,7 @@ private enum HomeSceneMode {
         switch self {
         case .manualLogin, .manualLoginWithExtraPassword:
             true
+
         default:
             false
         }
@@ -141,6 +142,7 @@ final class AppCoordinator {
                     logger.info("Logged out \(reason)")
                     inAppNotificationManager.removeCurrentNotification()
                     showWelcomeScene(reason: reason)
+
                 case .alreadyLoggedIn:
                     logger.info("Already logged in")
                     showHomeScene(mode: .alreadyLoggedIn)
@@ -150,6 +152,7 @@ final class AppCoordinator {
                     }
                     authDeviceManagerUI?.setup()
                     fetchAuthPendingDevices()
+
                 case let .manuallyLoggedIn(userData, extraPassword):
                     Task { [weak self] in
                         guard let self else {
@@ -167,6 +170,7 @@ final class AppCoordinator {
                         authDeviceManagerUI?.setup()
                         fetchAuthPendingDevices()
                     }
+
                 case .undefined:
                     logger.warning("Undefined app state. Don't know what to do...")
                 }
@@ -433,14 +437,18 @@ private extension AppCoordinator {
         case .expiredRefreshToken, .sessionInvalidated:
             alert(title: #localized("Your session is expired"),
                   message: #localized("Please log in again"))
+
         case let .failedBiometricAuthentication(reason):
             alert(title: reason ?? #localized("Failed to authenticate"),
                   message: #localized("Please log in again"))
+
         case let .failedToSetUpAppCoordinator(error):
             alert(title: #localized("Error occurred"), message: error.localizedDescription)
+
         case .tooManyWrongExtraPasswordAttempts:
             alert(title: #localized("Failed to authenticate"),
                   message: #localized("Too many wrong attempts"))
+
         default:
             break
         }

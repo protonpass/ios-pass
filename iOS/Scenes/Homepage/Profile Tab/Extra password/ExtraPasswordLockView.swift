@@ -121,10 +121,12 @@ private extension ExtraPasswordLockView {
         switch result {
         case .successful:
             onSuccess()
+
         case .wrongPassword:
             viewModel.extraPassword = ""
             showWrongPasswordError = true
             focused = true
+
         case .tooManyAttempts:
             onFailure()
         }

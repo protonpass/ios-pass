@@ -35,6 +35,7 @@ public enum UpdateMonitorStateRequest: Sendable, Encodable {
         switch self {
         case let .protonAddress(monitored):
             try container.encode(monitored, forKey: .protonAddress)
+
         case let .aliases(monitored):
             try container.encode(monitored, forKey: .aliases)
         }

@@ -106,8 +106,10 @@ final class DetailMonitoredItemViewModel: ObservableObject {
                 case let .alias(aliasInfos):
                     try await passMonitorRepository.markAliasAsResolved(sharedId: aliasInfos.alias.shareId,
                                                                         itemId: aliasInfos.alias.itemId)
+
                 case let .customEmail(email):
                     _ = try await passMonitorRepository.markCustomEmailAsResolved(email: email)
+
                 case let .protonAddress(address):
                     try await passMonitorRepository.markProtonAddressAsResolved(address: address)
                 }
@@ -149,8 +151,10 @@ final class DetailMonitoredItemViewModel: ObservableObject {
                 switch infos {
                 case let .alias(aliasInfos):
                     try await toggleMonitoringForAlias(userId: userId, alias: aliasInfos.alias)
+
                 case let .customEmail(email):
                     _ = try await toggleMonitoringForCustomEmail(email: email)
+
                 case let .protonAddress(address):
                     try await toggleMonitoringForProtonAddress(address: address)
                 }
@@ -217,14 +221,17 @@ private extension DetailMonitoredItemViewModel {
             let alias = aliasInfos.alias
             breaches = try await passMonitorRepository.getBreachesForAlias(sharedId: alias.shareId,
                                                                            itemId: alias.itemId)
+
         case let .customEmail(customEmail):
             breaches = try await passMonitorRepository.getAllBreachesForEmail(emailId: customEmail.customEmailID)
+
         case let .protonAddress(address):
             breaches = try await passMonitorRepository.getAllBreachesForProtonAddress(addressId: address.addressID)
         }
         let linkedItems: [ItemUiModel] = switch state {
         case let .fetched(uiModel):
             uiModel.linkedItems
+
         default:
             try await getItemsLinkedToBreach(userId: userId, email: infos.email)
         }
@@ -245,8 +252,10 @@ private extension BreachDetailsInfo {
         switch self {
         case let .alias(aliasInfos):
             aliasInfos.alias.item.aliasEmail ?? ""
+
         case let .customEmail(email):
             email.email
+
         case let .protonAddress(address):
             address.email
         }

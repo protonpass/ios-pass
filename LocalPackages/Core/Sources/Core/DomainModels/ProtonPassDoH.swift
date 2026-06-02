@@ -41,11 +41,14 @@ public final class ProtonPassDoH: DoH, ServerConfig {
             switch userDefaults.string(forKey: "pref_environment") {
             case "black":
                 environment = .black
+
             case "prod":
                 environment = .prod
+
             case "scientist":
                 let name = userDefaults.string(forKey: "pref_scientist_env_name")
                 environment = .scientist(name ?? "")
+
             case "custom":
                 let signupDomain = userDefaults.string(forKey: "pref_custom_env_sign_up_domain")
                 let captchaHost = userDefaults.string(forKey: "pref_custom_env_captcha_host")
@@ -61,6 +64,7 @@ public final class ProtonPassDoH: DoH, ServerConfig {
                                                     defaultHost: defaultHost ?? "https://pass-api.proton.me",
                                                     apiHost: apiHost ?? "pass-api.proton.me",
                                                     defaultPath: defaultPath ?? "/api"))
+
             default:
                 // Fallback to "Automatic" mode
                 #if DEBUG

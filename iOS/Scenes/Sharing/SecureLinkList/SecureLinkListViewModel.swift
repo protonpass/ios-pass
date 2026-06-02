@@ -92,7 +92,7 @@ final class SecureLinkListViewModel: ObservableObject {
         }
     }
 
-    func load() async {
+    func load() {
         Task { [weak self] in
             guard let self else { return }
             defer { loading = false }

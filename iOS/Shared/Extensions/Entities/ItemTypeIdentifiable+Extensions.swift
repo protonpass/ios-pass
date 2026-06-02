@@ -26,18 +26,25 @@ extension ItemTypeIdentifiable {
         switch type {
         case .login:
             #localized("Login moved to trash")
+
         case .alias:
             #localized("Alias \"%@\" moved to trash", aliasEmail ?? "")
+
         case .creditCard:
             #localized("Credit card moved to trash")
+
         case .note:
             #localized("Note moved to trash")
+
         case .identity:
             #localized("Identity moved to trash")
+
         case .sshKey:
             #localized("SSH key moved to trash")
+
         case .wifi:
             #localized("WiFi network moved to trash")
+
         case .custom:
             #localized("Custom item moved to trash")
         }

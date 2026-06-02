@@ -46,18 +46,25 @@ extension ItemContentType: CustomDebugStringConvertible {
         switch self {
         case .login:
             "login"
+
         case .alias:
             "alias"
+
         case .note:
             "note"
+
         case .creditCard:
             "creditCard"
+
         case .identity:
             "identity"
+
         case .sshKey:
             "sshkey"
+
         case .wifi:
             "wifi"
+
         case .custom:
             "custom"
         }

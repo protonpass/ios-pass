@@ -29,6 +29,7 @@ import SwiftUI
 
 // swiftlint:disable:next type_body_length
 struct ProfileTabView: View {
+    // swiftlint:disable:next private_swiftui_state
     @StateObject var viewModel: ProfileTabViewModel
     @Namespace private var animationNamespace
     @State private var showSwitcher = false

@@ -90,6 +90,7 @@ private extension CreateEditItemToolbar {
                                  backgroundColor: itemContentType.normMinor1Color,
                                  accessibilityLabel: "Scan \(itemContentType == .note ? "document" : "credit card")",
                                  action: { onAction(.scan) })
+
                 default:
                     EmptyView()
                 }
@@ -170,6 +171,7 @@ private enum ContainerType {
             IconProvider.foldersFilled
                 .resizable()
                 .foregroundStyle(PassColor.folderIcon)
+
         case let .vault(content):
             content.vaultBigIcon
                 .resizable()
@@ -187,6 +189,7 @@ private enum ContainerType {
         switch self {
         case .folder:
             PassColor.textNorm
+
         case let .vault(content):
             content.mainColor
         }
@@ -196,6 +199,7 @@ private enum ContainerType {
         switch self {
         case .folder:
             PassColor.interactionNormMinor1
+
         case let .vault(content):
             content.backgroundColor
         }

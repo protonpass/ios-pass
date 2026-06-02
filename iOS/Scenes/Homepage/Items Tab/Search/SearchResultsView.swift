@@ -209,11 +209,13 @@ private extension SearchResultsView {
                 guard !bucket.items.isEmpty else { return nil }
                 return .init(type: bucket.id, title: bucket.type.title, items: bucket.items)
             }
+
         case let results as AlphabeticalSortResult<ItemSearchResult>:
             results.buckets.compactMap { bucket in
                 guard !bucket.items.isEmpty else { return nil }
                 return .init(type: bucket.letter, title: bucket.letter.character, items: bucket.items)
             }
+
         case let results as MonthYearSortResult<ItemSearchResult>:
             results.buckets.compactMap { bucket in
                 guard !bucket.items.isEmpty else { return nil }
@@ -221,6 +223,7 @@ private extension SearchResultsView {
                              title: bucket.monthYear.relativeString,
                              items: bucket.items)
             }
+
         default:
             []
         }
@@ -265,10 +268,13 @@ private extension SearchResultsView {
         switch items {
         case let items as MostRecentSortResult<ItemSearchResult>:
             mostRecentItemList(items)
+
         case let items as AlphabeticalSortResult<ItemSearchResult>:
             alphabeticalItemList(items)
+
         case let items as MonthYearSortResult<ItemSearchResult>:
             monthYearItemList(items)
+
         default:
             EmptyView()
         }

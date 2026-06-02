@@ -134,7 +134,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
         }
     }
 
-    public func reset() async {
+    public func reset() {
         userBreaches.send(nil)
         weaknessStats.send(.default)
         itemsWithSecurityIssues.send([])
@@ -205,13 +205,13 @@ public extension PassMonitorRepository {
     func markAliasAsResolved(sharedId: String, itemId: String) async throws {
         try Task.checkCancellation()
         let userId = try await userManager.getActiveUserId()
-        return try await remoteDataSource.markAliasAsResolved(userId: userId, sharedId: sharedId, itemId: itemId)
+        try await remoteDataSource.markAliasAsResolved(userId: userId, sharedId: sharedId, itemId: itemId)
     }
 
     func markProtonAddressAsResolved(address: ProtonAddress) async throws {
         try Task.checkCancellation()
         let userId = try await userManager.getActiveUserId()
-        return try await remoteDataSource.markProtonAddressAsResolved(userId: userId, address: address)
+        try await remoteDataSource.markProtonAddressAsResolved(userId: userId, address: address)
     }
 
     func markCustomEmailAsResolved(email: CustomEmail) async throws -> CustomEmail {
@@ -223,9 +223,9 @@ public extension PassMonitorRepository {
     func toggleMonitoringFor(address: ProtonAddress, shouldMonitor: Bool) async throws {
         try Task.checkCancellation()
         let userId = try await userManager.getActiveUserId()
-        return try await remoteDataSource.toggleMonitoringFor(userId: userId,
-                                                              address: address,
-                                                              shouldMonitor: shouldMonitor)
+        try await remoteDataSource.toggleMonitoringFor(userId: userId,
+                                                       address: address,
+                                                       shouldMonitor: shouldMonitor)
     }
 
     func toggleMonitoringFor(email: CustomEmail, shouldMonitor: Bool) async throws -> CustomEmail {
@@ -238,16 +238,16 @@ public extension PassMonitorRepository {
 
     func toggleMonitoringForAlias(sharedId: String, itemId: String, shouldMonitor: Bool) async throws {
         try Task.checkCancellation()
-        return try await itemRepository.updateItemFlags(flags: [.skipHealthCheck(shouldMonitor)],
-                                                        shareId: sharedId,
-                                                        itemId: itemId)
+        try await itemRepository.updateItemFlags(flags: [.skipHealthCheck(shouldMonitor)],
+                                                 shareId: sharedId,
+                                                 itemId: itemId)
     }
 
     func sendUserMonitorStats() async throws {
         try Task.checkCancellation()
         let userId = try await userManager.getActiveUserId()
         let result = try await weaknessStats(userId: userId, userOwned: true)
-        return try await remoteDataSource.sendUserMonitorStats(userId: userId, stats: result.0)
+        try await remoteDataSource.sendUserMonitorStats(userId: userId, stats: result.0)
     }
 }
 

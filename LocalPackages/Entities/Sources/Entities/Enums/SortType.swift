@@ -33,6 +33,7 @@ public enum SortType: Int, CaseIterable, Equatable, Sendable {
         switch self {
         case .alphabeticalAsc, .alphabeticalDesc:
             true
+
         default:
             false
         }
@@ -43,8 +44,10 @@ public enum SortType: Int, CaseIterable, Equatable, Sendable {
         case .mostRecent:
             assertionFailure("Not applicable")
             return .ascending
+
         case .alphabeticalAsc, .oldestToNewest:
             return .ascending
+
         case .alphabeticalDesc, .newestToOldest:
             return .descending
         }

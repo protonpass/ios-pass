@@ -90,9 +90,8 @@ final class ManageSharedShareViewModel: ObservableObject {
         }
         if isFreeUser {
             return !reachedLimit
-        } else {
-            return reachedLimit
         }
+        return reachedLimit
     }
 
     var showVaultLimitMessage: Bool {
@@ -116,6 +115,7 @@ final class ManageSharedShareViewModel: ObservableObject {
         switch displayType {
         case let .item(_, item):
             item
+
         default:
             nil
         }

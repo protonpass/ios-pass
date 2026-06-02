@@ -27,18 +27,23 @@ extension LocalAuthenticationMethodUiModel {
         switch self {
         case .none:
             return #localized("No unlock")
+
         case let .biometric(type):
             switch type {
             case .faceID:
                 return #localized("Face ID")
+
             case .touchID:
                 return #localized("Touch ID")
+
             case .opticID:
                 return #localized("Optic ID")
+
             default:
                 assertionFailure("Not usable biometric type")
                 return ""
             }
+
         case .pin:
             return #localized("PIN code")
         }
@@ -48,8 +53,10 @@ extension LocalAuthenticationMethodUiModel {
         switch self {
         case .none:
             .none
+
         case .biometric:
             .biometric
+
         case .pin:
             .pin
         }

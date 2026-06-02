@@ -28,6 +28,7 @@ import SwiftUI
 struct FolderMoveListView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var viewModel = FolderMoveListViewModel()
+    // swiftlint:disable:next private_swiftui_state
     @State var selectedContainer: ShareSelectionPayload
     let folderToMove: FolderToMove
 

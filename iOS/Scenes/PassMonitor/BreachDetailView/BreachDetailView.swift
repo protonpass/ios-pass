@@ -214,12 +214,16 @@ private extension BreachActionCode {
         switch self {
         case .stayAlert:
             IconProvider.checkmark
+
         case .passwordAll, .passwordExposed, .passwordSource:
             IconProvider.key
+
         case .twoFA:
             IconProvider.locks
+
         case .aliases:
             IconProvider.alias
+
         case .unknown:
             IconProvider.infoCircle
         }

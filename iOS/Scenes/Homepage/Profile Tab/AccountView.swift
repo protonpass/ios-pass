@@ -25,6 +25,7 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct AccountView: View {
+    // swiftlint:disable:next private_swiftui_state
     @StateObject var viewModel: AccountViewModel
     @State private var showDisableExtraPasswordAlert = false
 

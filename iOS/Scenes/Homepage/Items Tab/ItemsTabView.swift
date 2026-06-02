@@ -28,6 +28,7 @@ import SwiftUI
 import TipKit
 
 struct ItemsTabView: View {
+    // swiftlint:disable:next private_swiftui_state
     @StateObject var viewModel: ItemsTabViewModel
     @State private var safeAreaInsets = EdgeInsets.zero
     @Namespace private var animationNamespace

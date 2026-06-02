@@ -27,10 +27,13 @@ public enum CircleButtonType {
         switch self {
         case .small:
             36
+
         case .regular:
             40
+
         case .big:
             48
+
         case let .custom(size, _):
             size
         }
@@ -40,8 +43,10 @@ public enum CircleButtonType {
         switch self {
         case .small:
             16
+
         case .big, .regular:
             20
+
         case let .custom(_, size):
             size
         }

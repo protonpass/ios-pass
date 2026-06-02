@@ -248,6 +248,7 @@ private extension CreateEditAliasView {
                 switch lastFocusedField {
                 case let .custom(value) where value?.type == .totp:
                     viewModel.handleScanResult(result, customField: value)
+
                 default:
                     return
                 }
@@ -297,6 +298,7 @@ private extension CreateEditAliasView {
                             .clipShape(Capsule())
                             .shimmering()
                     }
+
                 default:
                     Text(AttributedString(viewModel.aliasEmail, attributes: .lineBreakHyphenErasing))
                         .sectionContentText()

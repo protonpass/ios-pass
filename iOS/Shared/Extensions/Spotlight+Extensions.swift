@@ -26,8 +26,10 @@ extension SpotlightSearchableContent {
         switch self {
         case .title:
             #localized("Title")
+
         case .titleAndNote:
             #localized("Title and note")
+
         case .allExceptSensitiveData:
             #localized("All except sensitive data")
         }
@@ -39,6 +41,7 @@ extension SpotlightSearchableVaults {
         switch self {
         case .all:
             #localized("All vaults")
+
         case .selected:
             #localized("Selected vaults")
         }
