@@ -115,6 +115,7 @@ extension ShareNewUserInvite: @retroactive ShareInvitee {
         switch inviteState {
         case .waitingForAccountCreation:
             #localized("Pending account creation")
+
         case .accountCreated:
             shareRole.title(managerAsAdmin: managerAsAdmin)
         }

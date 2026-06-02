@@ -64,8 +64,10 @@ private extension Entities.TargetType {
         switch self {
         case .item:
             .item
+
         case .vault:
             .vault
+
         default:
             .vault
         }

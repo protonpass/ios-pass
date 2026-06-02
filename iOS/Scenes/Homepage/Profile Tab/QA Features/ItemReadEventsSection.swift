@@ -138,9 +138,8 @@ private final class ItemReadEventsViewModel: ObservableObject {
                     return .init(event: event,
                                  formatter: formatter,
                                  uiModel: uiModel)
-                } else {
-                    return nil
                 }
+                return nil
             }
         } catch {
             self.error = error

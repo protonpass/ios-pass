@@ -27,10 +27,13 @@ public enum OptionRowHeight {
         switch self {
         case .compact:
             44
+
         case .short:
             56
+
         case .medium:
             72
+
         case .tall:
             76
         }

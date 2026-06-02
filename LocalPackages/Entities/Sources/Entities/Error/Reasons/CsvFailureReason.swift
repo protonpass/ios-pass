@@ -30,8 +30,10 @@ public extension PassError {
             switch self {
             case let .invalidNumberOfColumn(columnCount):
                 "Invalid number of column (\(columnCount))"
+
             case let .unexpectedColumnName(index, expectation, value):
                 "Expect column \"\(expectation)\" at index \(index) but found \"\(value)\" instead"
+
             case let .invalidRow(rowNumber):
                 "Invalid row \(rowNumber)"
             }

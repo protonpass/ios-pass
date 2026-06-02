@@ -40,6 +40,7 @@ public struct MailboxSection: View {
             switch self {
             case .create:
                 #localized("Forward to", bundle: .module)
+
             case .edit:
                 #localized("Forwarding to", bundle: .module)
             }

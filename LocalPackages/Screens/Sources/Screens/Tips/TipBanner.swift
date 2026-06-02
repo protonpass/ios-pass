@@ -65,6 +65,7 @@ public extension TipBanner {
             switch arrowMode {
             case .none:
                 contentPadding
+
             case .topLeft, .topRight:
                 contentPadding + arrowSize.height
             }
@@ -157,11 +158,13 @@ private extension TipBanner {
         switch configuration.arrowMode {
         case .none:
             AnyShape(RoundedRectangle(cornerRadius: configuration.cornerRadius))
+
         case let .topLeft(padding):
             AnyShape(RoundedRectangleWithArrow(cornerRadius: configuration.cornerRadius,
                                                arrowPosition: .topLeft,
                                                arrowSize: configuration.arrowSize,
                                                arrowPadding: padding))
+
         case let .topRight(padding):
             AnyShape(RoundedRectangleWithArrow(cornerRadius: configuration.cornerRadius,
                                                arrowPosition: .topRight,

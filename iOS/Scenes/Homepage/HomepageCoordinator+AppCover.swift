@@ -65,8 +65,10 @@ private extension HomepageCoordinator {
                 switch mode {
                 case .definePIN:
                     router.present(for: .setPINCode)
+
                 case .removeLocalAuth:
                     removeLocalAuth()
+
                 case .none:
                     refreshInAppNotifications()
                 }

@@ -129,8 +129,10 @@ private extension CredentialsView {
                         itemList
                     }
                 }
+
             case .searching:
                 ProgressView()
+
             case let .searchResults(results):
                 if results.isEmpty {
                     NoSearchResultsView(query: viewModel.query)
@@ -140,8 +142,10 @@ private extension CredentialsView {
                                                getUser: { viewModel.getUserForUiDisplay(for: $0) },
                                                selectItem: { viewModel.select(item: $0) })
                 }
+
             case .loading:
                 CredentialsSkeletonView()
+
             case let .error(error):
                 RetryableErrorView(error: error,
                                    onRetry: { Task { await viewModel.fetchItems() } })
@@ -414,6 +418,7 @@ private extension CredentialsMode {
         switch self {
         case .passwords:
             "You currently have no login items"
+
         case .oneTimeCodes:
             "You currently have no login items with 2FA secret key (TOTP)"
         }

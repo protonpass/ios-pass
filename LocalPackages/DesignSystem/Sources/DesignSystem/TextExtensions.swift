@@ -40,6 +40,7 @@ public extension Text {
         switch content {
         case let .verbatim(value):
             self.init(verbatim: value)
+
         case let .localized(value):
             self.init(value)
         }

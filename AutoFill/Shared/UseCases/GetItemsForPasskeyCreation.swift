@@ -102,16 +102,19 @@ final class GetItemsForPasskeyCreation: GetItemsForPasskeyCreationUseCase {
                     // Left matched, right NOT matched
                     // => Left is above right
                     return true
+
                 case (false, true):
                     // Left NOT matched, right matched
                     // => Left is below right
                     return false
+
                 case (true, true):
                     // Both are matched
                     // => Base on lastUseTime if any and default to modifyTime
                     let lhsTime = lhs.item.lastUseTime ?? lhs.item.modifyTime
                     let rhsTime = rhs.item.lastUseTime ?? rhs.item.modifyTime
                     return lhsTime > rhsTime
+
                 case (false, false):
                     // Nothing matched
                     // => Base on modifyTime
@@ -132,6 +135,7 @@ private extension GetItemsForPasskeyCreation {
         switch plan.planType {
         case .free:
             allowedVaults.contains(where: { $0.shareId == vault.shareId })
+
         default:
             true
         }

@@ -148,6 +148,7 @@ extension GeneratePasswordViewModel {
                                                 numbers: activateNumberCharacters,
                                                 uppercaseLetters: activateCapitalCharacters,
                                                 symbols: activateSpecialCharacters)
+
             case .memorable:
                 if forceRefresh || cachedWords.isEmpty {
                     cachedWords = try generateRandomWords(wordCount: Int(numberOfWords))

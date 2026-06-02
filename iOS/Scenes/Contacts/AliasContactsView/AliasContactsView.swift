@@ -33,6 +33,7 @@ private enum AliasContactsSheetState {
 }
 
 struct AliasContactsView: View {
+    // swiftlint:disable:next private_swiftui_state
     @StateObject var viewModel: AliasContactsViewModel
 
     @Environment(\.dismiss) private var dismiss
@@ -195,6 +196,7 @@ private extension AliasContactsView {
         switch state {
         case .creation:
             CreateContactView(itemIds: viewModel.itemIds)
+
         case .explanation:
             AliasExplanationView(email: viewModel.displayName)
         }
@@ -204,6 +206,7 @@ private extension AliasContactsView {
         switch state {
         case .creation:
             [.large]
+
         case .explanation:
             [.medium, .large]
         }

@@ -171,9 +171,11 @@ private extension DarkWebMonitorHomeViewModel {
                 switch section {
                 case let .aliases(newValue):
                     aliasBreachesState = .fetched(newValue)
+
                 case let .customEmails(newValue):
                     customEmailsState = .fetched(newValue)
                     fetchSuggestedEmails()
+
                 case let .protonAddresses(updatedUserBreaches):
                     userBreaches = updatedUserBreaches
                 }

@@ -34,14 +34,19 @@ enum BugReportObject: CaseIterable {
         switch self {
         case .autofill:
             #localized("AutoFill")
+
         case .autosave:
             #localized("Autosave")
+
         case .aliases:
             #localized("Aliases")
+
         case .syncing:
             #localized("Syncing")
+
         case .featureRequest:
             #localized("Feature request")
+
         case .other:
             #localized("Other")
         }
@@ -117,6 +122,7 @@ final class BugReportViewModel: ObservableObject {
             } catch {
                 self.error = error
             }
+
         case let .failure(error):
             self.error = error
         }

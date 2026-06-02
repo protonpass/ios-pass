@@ -60,68 +60,100 @@ enum IdentityFields {
         switch self {
         case .title:
             #localized("Title")
+
         case .fullName:
             #localized("Full name")
+
         case .email:
             #localized("Email")
+
         case .phoneNumber:
             #localized("Phone number")
+
         case .firstName:
             #localized("First name")
+
         case .middleName:
             #localized("Middle name")
+
         case .lastName:
             #localized("Last name")
+
         case .birthdate:
             #localized("Birthdate")
+
         case .gender:
             #localized("Gender")
+
         case .organization:
             #localized("Organization")
+
         case .streetAddress:
             #localized("Street address, P.O. box")
+
         case .zipOrPostalCode:
             #localized("ZIP or Postal code")
+
         case .city:
             #localized("City")
+
         case .stateOrProvince:
             #localized("State or province")
+
         case .countryOrRegion:
             #localized("Country or Region")
+
         case .floor:
             #localized("Floor")
+
         case .county:
             #localized("County")
+
         case .socialSecurityNumber:
             #localized("Social security number")
+
         case .passportNumber:
             #localized("Passport number")
+
         case .licenseNumber:
             #localized("License number")
+
         case .website:
             #localized("Website")
+
         case .xHandle:
             #localized("X handle")
+
         case .secondPhoneNumber:
             #localized("Second phone number")
+
         case .linkedIn:
             #localized("LinkedIn")
+
         case .reddit:
             #localized("Reddit")
+
         case .facebook:
             #localized("Facebook")
+
         case .yahoo:
             #localized("Yahoo")
+
         case .instagram:
             #localized("Instagram")
+
         case .company:
             #localized("Company")
+
         case .jobTitle:
             #localized("Job title")
+
         case .personalWebsite:
             #localized("Personal website")
+
         case .workPhoneNumber:
             #localized("Work phone number")
+
         case .workEmail:
             #localized("Work email")
         }

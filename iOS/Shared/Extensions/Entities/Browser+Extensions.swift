@@ -26,8 +26,10 @@ extension Browser: @retroactive CustomStringConvertible {
         switch self {
         case .safari:
             "Safari"
+
         case .inAppSafari:
             "In-App Safari"
+
         case .systemDefault:
             #localized("System default")
         }

@@ -298,7 +298,7 @@ public extension LocalItemDatasource {
         }
     }
 
-    func update(lastUseItems: [LastUseItem], shareId: String) async throws {
+    func update(lastUseItems: [LastUseItem], shareId: String) throws {
         let taskContext = newTaskContext(type: .fetch)
         try taskContext.performAndWait {
             let fetchRequest: NSFetchRequest<ItemEntity> = ItemEntity.fetchRequest()

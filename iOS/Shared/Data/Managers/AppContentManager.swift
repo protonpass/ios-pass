@@ -38,6 +38,7 @@ enum AppContentState: Equatable {
         switch self {
         case let .loaded(content):
             content
+
         default:
             nil
         }
@@ -47,10 +48,13 @@ enum AppContentState: Equatable {
         switch (lhs, rhs) {
         case (.loading, .loading):
             true
+
         case let (.loaded(lhsUiModel), .loaded(rhsUiModel)):
             lhsUiModel.hashValue == rhsUiModel.hashValue
+
         case let (.error(lhsError), .error(rhsError)):
             lhsError.localizedDescription == rhsError.localizedDescription
+
         default:
             false
         }
@@ -143,9 +147,11 @@ extension AppContentManager {
             switch state {
             case .loaded:
                 break
+
             case let .error(error):
                 cryptoErrorOccurred = error is CryptoKitError
                 state = .loading
+
             default:
                 state = .loading
             }
@@ -409,8 +415,10 @@ extension AppContentManager {
         switch filterOption {
         case .itemSharedWithMe:
             return sharesData.itemsSharedWithMe
+
         case .itemSharedByMe:
             return sharesData.itemsSharedByMe
+
         case .all, .precise:
             break // Proceed to share selection logic
         }
@@ -422,16 +430,20 @@ extension AppContentManager {
         let baseItems: [ItemUiModel] = switch shareSelection {
         case .all:
             sharesData.visibleShareContents.flatMap(\.allItems)
+
         case let .precise(selection):
             if let shareContent = sharesData.shares[selection.share.id] {
                 shareContent.flattenedItems(from: selection.folder?.folderId ?? selection.share.shareId)
             } else {
                 []
             }
+
         case .sharedByMe:
             sharesData.itemsSharedByMe
+
         case .sharedWithMe:
             sharesData.itemsSharedWithMe
+
         case .trash:
             sharesData.trashedItems.filter { !hiddenShareIds.contains($0.shareId) }
         }
@@ -440,8 +452,10 @@ extension AppContentManager {
         switch filterOption {
         case .all:
             return baseItems
+
         case let .precise(type):
             return baseItems.filter { $0.type.isSameType(with: type) }
+
         case .itemSharedByMe, .itemSharedWithMe:
             assertionFailure("Unreachable: handled by early return")
             return baseItems
@@ -452,17 +466,20 @@ extension AppContentManager {
         switch shareSelection {
         case .all:
             true
+
         case let .precise(selection):
             if selection.share.shareId == item.shareId {
                 switch filterOption {
                 case let .precise(filterType):
                     filterType == type
+
                 default:
                     true
                 }
             } else {
                 false
             }
+
         default:
             false
         }
@@ -494,6 +511,7 @@ extension AppContentManager: LimitationCounterProtocol {
             } // flatMap(\.allItems).filter(\.isAlias)
             let trashedAliases = sharesData.trashedItems.compactMap(\.isAlias)
             return activeAliases + trashedAliases.count
+
         default:
             return 0
         }
@@ -550,6 +568,7 @@ private extension AppContentManager {
             itemCount = ItemCount(items: sharesData.shares.flatMap(\.value.allItems),
                                   sharedByMe: sharesData.itemsSharedByMe.count,
                                   sharedWithMe: sharesData.itemsSharedWithMe.count)
+
         case let .precise(selection):
             guard let share = sharesData.shares[selection.share.id] else {
                 itemCount = ItemCount(items: [], sharedByMe: 0, sharedWithMe: 0)
@@ -563,14 +582,17 @@ private extension AppContentManager {
             } else {
                 itemCount = ItemCount(items: items, sharedByMe: 0, sharedWithMe: shouldCount ? items.count : 0)
             }
+
         case .sharedByMe:
             itemCount = ItemCount(items: sharesData.itemsSharedByMe,
                                   sharedByMe: sharesData.itemsSharedByMe.count,
                                   sharedWithMe: 0)
+
         case .sharedWithMe:
             itemCount = ItemCount(items: sharesData.itemsSharedWithMe,
                                   sharedByMe: 0,
                                   sharedWithMe: sharesData.itemsSharedWithMe.count)
+
         case .trash:
             itemCount = ItemCount(items: sharesData.trashedItems,
                                   sharedByMe: 0,

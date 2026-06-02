@@ -38,11 +38,14 @@ enum LocalDatasourceError: Error, CustomDebugStringConvertible {
         switch self {
         case let .batchInsertError(request):
             return "Failed to batch insert entity \(request.entityName)"
+
         case let .batchDeleteError(request):
             let entityName = request.fetchRequest.entityName ?? ""
             return "Failed to batch delete entity \(entityName)"
+
         case .databaseOperationsOnMainThread:
             return "Cannot do database operations on main thread"
+
         case let .corruptedShareKeys(shareId, itemKeyCount, vaultKeyCount):
             return """
             "Corrupted share keys for share \(shareId).
@@ -265,9 +268,8 @@ extension LocalDatasource {
             if let result = fetchResult as? NSBatchInsertResult,
                let success = result.result as? Bool, success {
                 return
-            } else {
-                throw LocalDatasourceError.batchInsertError(request)
             }
+            throw LocalDatasourceError.batchInsertError(request)
         }
     }
 
@@ -285,9 +287,8 @@ extension LocalDatasource {
             if let result = deleteResult as? NSBatchDeleteResult,
                let success = result.result as? Bool, success {
                 return
-            } else {
-                throw LocalDatasourceError.batchDeleteError(request)
             }
+            throw LocalDatasourceError.batchDeleteError(request)
         }
     }
 

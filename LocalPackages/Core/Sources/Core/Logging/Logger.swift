@@ -212,12 +212,14 @@ private extension Logger {
         switch consolePrintOption {
         case .never:
             return
+
         case .debug:
             #if DEBUG
             if ProcessInfo.processInfo.environment["me.proton.pass.LogDebug"] != "1" {
                 printToConsole()
             }
             #endif
+
         case let .conditioned(condition):
             if condition {
                 printToConsole()

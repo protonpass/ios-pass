@@ -123,6 +123,7 @@ public extension InviteRepository {
                                                                     request: request)
                 logger.trace("Accepted user invite with token \(inviteToken)")
                 return share
+
             case .group:
                 logger.trace("Accepting group invite with token \(inviteToken)")
                 _ = try await remoteDatasource.acceptGroupInvite(userId: userId,
@@ -149,6 +150,7 @@ public extension InviteRepository {
                 rejectedStatus = try await remoteDatasource.rejectInvite(userId: userId,
                                                                          inviteToken: inviteToken)
                 logger.trace("Invite rejection status \(rejectedStatus)")
+
             case .group:
                 rejectedStatus = try await remoteDatasource.rejectGroupInvite(userId: userId,
                                                                               inviteToken: inviteToken)
@@ -182,6 +184,7 @@ public extension InviteRepository {
         case let .group(token):
             groupInvites = await (try? updateGroupInvite(userId, eventToken: token)) ?? []
             userInvites = try await localDatasource.getUserInvites(userId: userId)
+
         case let .user(token):
             groupInvites = try await localDatasource.getGroupInvites(userId: userId)
             userInvites = try await updateUserInvite(userId, eventToken: token)
@@ -190,7 +193,7 @@ public extension InviteRepository {
         updateCurrentInvites(groupInvites: groupInvites, userInvites: userInvites)
     }
 
-    func removeCachedInvite(containing inviteToken: String) async {
+    func removeCachedInvite(containing inviteToken: String) {
         logger.trace("Removing current cached invite containing inviteToken \(inviteToken)")
         let newInvites = currentPendingInvites.value.filter { $0.inviteToken != inviteToken }
         currentPendingInvites.send(newInvites)
@@ -238,15 +241,15 @@ public extension InviteRepository {
 
         if !userInvites.isEmpty, newUserInvites.isEmpty {
             return try await sendProtonInvites(userId: userId, shareId: shareId, requests: userInvites)
-        } else if userInvites.isEmpty, !newUserInvites.isEmpty {
-            return try await sendExternalInvites(userId: userId, shareId: shareId, requests: newUserInvites)
-        } else {
-            async let invites = sendProtonInvites(userId: userId, shareId: shareId, requests: userInvites)
-            async let newInvites = sendExternalInvites(userId: userId, shareId: shareId, requests: newUserInvites)
-
-            let (invitesSuccess, newInvitesSuccess) = try await (invites, newInvites)
-            return invitesSuccess && newInvitesSuccess
         }
+        if userInvites.isEmpty, !newUserInvites.isEmpty {
+            return try await sendExternalInvites(userId: userId, shareId: shareId, requests: newUserInvites)
+        }
+        async let invites = sendProtonInvites(userId: userId, shareId: shareId, requests: userInvites)
+        async let newInvites = sendExternalInvites(userId: userId, shareId: shareId, requests: newUserInvites)
+
+        let (invitesSuccess, newInvitesSuccess) = try await (invites, newInvites)
+        return invitesSuccess && newInvitesSuccess
     }
 
     func promoteNewUserInvite(userId: String,
@@ -444,6 +447,7 @@ private extension InviteRepository {
         switch invite {
         case let .user(invite):
             try await localDatasource.removeUserInvite(userId: userId, invite: invite)
+
         case let .group(invite):
             try await localDatasource.removeGroupInvite(userId: userId, invite: invite)
         }

@@ -26,6 +26,7 @@ extension WifiData.Security {
         switch self {
         case .unspecified:
             #localized("Unspecified")
+
         default:
             protocolName
         }

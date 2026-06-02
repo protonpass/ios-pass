@@ -27,12 +27,16 @@ extension HomepageCoordinator: HomepageTabBarControllerDelegate {
         switch tab {
         case .items:
             itemsTab()
+
         case .itemCreation:
             createNewItem()
+
         case .passMonitor:
             passMonitor()
+
         case .profile:
             profileTab()
+
         case .search:
             break
         }

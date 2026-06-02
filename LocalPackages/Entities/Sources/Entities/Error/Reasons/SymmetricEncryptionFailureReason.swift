@@ -30,6 +30,7 @@ public extension PassError {
             switch self {
             case let .failedToUtf8ConvertToData(string):
                 "Failed to UTF8 convert to data \"\(string)\""
+
             case let .failedToBase64Decode(string):
                 "Failed to base 64 decode \"\(string)\""
             }

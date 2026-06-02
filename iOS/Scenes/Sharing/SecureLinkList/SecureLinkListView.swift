@@ -45,14 +45,19 @@ struct SecureLinkListView: View {
             switch self {
             case let .expire(value):
                 "expire\(value)"
+
             case let .view(value):
                 "view\(value)"
+
             case let .internalContainer(value):
                 "internalContainer\(value)"
+
             case let .externalContainer(value):
                 "externalContainer\(value)"
+
             case let .stack(value):
                 "stack\(value)"
+
             case let .menu(value):
                 "menu\(value)"
             }

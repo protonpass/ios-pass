@@ -26,6 +26,7 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct SettingsView: View {
+    // swiftlint:disable:next private_swiftui_state
     @StateObject var viewModel: SettingsViewModel
 
     var body: some View {

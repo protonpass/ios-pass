@@ -73,6 +73,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             switch self {
             case .loading:
                 true
+
             default:
                 false
             }
@@ -102,6 +103,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         return switch mode {
         case .clone, .create:
             !title.isEmpty && !prefix.isEmpty && !suffix.isEmpty && !mailboxes.isEmpty && prefixError == nil
+
         case .edit:
             if isAliasOwner {
                 !title.isEmpty && !mailboxes.isEmpty
@@ -138,7 +140,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .dropFirst()
             .receive(on: RunLoop.main)
             .sink { [weak self] title in
-                guard let self, !self.prefixManuallyEdited else {
+                guard let self, !prefixManuallyEdited else {
                     return
                 }
                 prefix = PrefixUtils.generatePrefix(fromTitle: title)

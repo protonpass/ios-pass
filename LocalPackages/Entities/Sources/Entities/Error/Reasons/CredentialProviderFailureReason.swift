@@ -34,14 +34,19 @@ public extension PassError {
             switch self {
             case .failedToAuthenticate:
                 "Failed to authenticate"
+
             case let .invalidURL(url):
                 "Invalid URL \"\(String(describing: url?.absoluteString))\""
+
             case .missingRecordIdentifier:
                 "ASPasswordCredentialIdentity object missing record identifier"
+
             case .notLogInItem:
                 "Not log in item"
+
             case .userCancelled:
                 "User cancelled"
+
             case .generic:
                 "Something went wrong"
             }

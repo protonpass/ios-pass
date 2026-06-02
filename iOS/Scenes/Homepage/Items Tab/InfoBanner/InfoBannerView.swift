@@ -117,6 +117,7 @@ private extension InfoBannerView {
             }
             .buttonStyle(.plain)
             .frame(maxHeight: 17)
+
         case let .capsule(titleColor, backgroundColor):
             CapsuleTextButton(title: ctaTitle,
                               titleColor: titleColor,

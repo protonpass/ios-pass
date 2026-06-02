@@ -54,54 +54,79 @@ public extension PassError {
             switch self {
             case .failedToSplitPGPMessage:
                 "Failed to split PGP message"
+
             case let .failedToUnarmor(string):
                 "Failed to unarmor \(string)"
+
             case let .failedToArmor(string):
                 "Failed to armor \(string)"
+
             case .failedToBase64Decode:
                 "Failed to base 64 decode"
+
             case .failedToGetFingerprint:
                 "Failed to get fingerprint"
+
             case .failedToGenerateKeyRing:
                 "Failed to generate key ring"
+
             case .failedToEncrypt:
                 "Failed to encrypt"
+
             case .failedToVerifyVault:
                 "Failed to verify vault"
+
             case .failedToDecryptContent:
                 "Failed to decrypt content"
+
             case .failedToVerifySignature:
                 "Failed to verify signature"
+
             case .failedToGenerateSessionKey:
                 "Failed to generate session key"
+
             case .failedToDecode:
                 "Failed to decode"
+
             case let .failedToEncode(string):
                 "Failed to encode \"\(string)\""
+
             case .failedToAESEncrypt:
                 "Failed to AES encrypt"
+
             case .failedToBuildPassphrases:
                 "Failed to build passphrases"
+
             case let .userKeyNotFound(userKeyId):
                 "User key not found \(userKeyId)"
+
             case let .inactiveUserKey(userKeyId):
                 "Inactive user key \(userKeyId)"
+
             case let .addressNotFound(addressID):
                 "Address not found \"\(addressID)\""
+
             case let .corruptedShareContent(shareID):
                 "Corrupted share content shareID \"\(shareID)\""
+
             case let .missingUserKey(userID):
                 "Missing user key \"\(userID)\""
+
             case let .missingPassphrase(keyID):
                 "Missing passphrase \"\(keyID)\""
+
             case .missingKeys:
                 "Missing keys"
+
             case let .unmatchedKeyRotation(lhsKey, rhsKey):
                 "Unmatch key rotation \(lhsKey) - \(rhsKey)"
+
             case let .missingItemKeyRotation(rotation):
                 "Missing item key rotation \(rotation)"
+
             case let .failedToVerifyContent(error):
                 "Failed to verify content: \(error)"
+
             case let .missingGroupAddress(groupId):
                 "Missing group address for groupId \(groupId)"
             }

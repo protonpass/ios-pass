@@ -95,6 +95,7 @@ private extension ActionCoordinator {
                     } else {
                         hideLoadingHud()
                     }
+
                 default:
                     return
                 }
@@ -102,7 +103,7 @@ private extension ActionCoordinator {
             .store(in: &cancellables)
     }
 
-    func beginFlow() async {
+    func beginFlow() {
         if let activeUserId = userManager.activeUserId,
            credentialProvider.isAuthenticated(userId: activeUserId) {
             let prefs = getSharedPreferences()

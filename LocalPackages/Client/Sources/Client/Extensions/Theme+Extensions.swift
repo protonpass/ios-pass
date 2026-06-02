@@ -28,8 +28,10 @@ extension Theme: @retroactive CustomStringConvertible {
         switch self {
         case .light:
             #localized("Light")
+
         case .dark:
             #localized("Dark")
+
         case .matchSystem:
             #localized("Match system")
         }
@@ -39,8 +41,10 @@ extension Theme: @retroactive CustomStringConvertible {
         switch self {
         case .light:
             IconProvider.sun
+
         case .dark:
             IconProvider.moon
+
         case .matchSystem:
             IconProvider.cogWheel
         }
@@ -50,8 +54,10 @@ extension Theme: @retroactive CustomStringConvertible {
         switch self {
         case .light:
             .light
+
         case .dark:
             .dark
+
         case .matchSystem:
             .matchSystem
         }

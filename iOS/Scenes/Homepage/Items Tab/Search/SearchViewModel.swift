@@ -159,6 +159,7 @@ private extension SearchViewModel {
             } else {
                 state = .history(history)
             }
+
         default:
             break
         }
@@ -173,6 +174,7 @@ private extension SearchViewModel {
                 filterAndSortResults()
                 return
             }
+
         case .all:
             guard !query.isEmpty else {
                 if history.isEmpty {
@@ -268,8 +270,10 @@ private extension SearchViewModel {
             switch selectedSortType {
             case .mostRecent:
                 try filteredResults.mostRecentSortResult()
+
             case .alphabeticalAsc, .alphabeticalDesc:
                 try filteredResults.alphabeticalSortResult(direction: selectedSortType.sortDirection)
+
             case .newestToOldest, .oldestToNewest:
                 try filteredResults.monthYearSortResult(direction: selectedSortType.sortDirection)
             }

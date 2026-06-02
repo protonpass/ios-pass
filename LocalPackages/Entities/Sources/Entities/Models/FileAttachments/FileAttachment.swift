@@ -29,6 +29,7 @@ public enum FileAttachment: Sendable, Equatable, Identifiable {
         switch self {
         case let .pending(file):
             file.id
+
         case let .item(file):
             file.fileID
         }
@@ -45,10 +46,13 @@ public enum FileAttachmentUploadState: Sendable, Equatable {
         switch (lhs, rhs) {
         case (.uploaded, .uploaded):
             true
+
         case let (.uploading(lProgress), .uploading(rProgress)):
             lProgress == rProgress
+
         case let (.error(lError), .error(rError)):
             lError.localizedDescription == rError.localizedDescription
+
         default:
             false
         }

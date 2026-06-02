@@ -266,8 +266,8 @@ private extension SyncEventLoop {
                         guard let self else { return }
 
                         defer {
-                            self.activeTasks[userId] = nil
-                            self.pullToRefreshDelegate?.pullToRefreshShouldStopRefreshing()
+                            activeTasks[userId] = nil
+                            pullToRefreshDelegate?.pullToRefreshShouldStopRefreshing()
                         }
 
                         guard await backOffManager.canProceed() else {

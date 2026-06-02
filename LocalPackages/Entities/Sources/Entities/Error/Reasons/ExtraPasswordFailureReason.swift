@@ -32,10 +32,13 @@ public extension PassError {
             switch self {
             case .failedToGenerateSalt:
                 "Failed to generate salt"
+
             case .failedToHashPassword:
                 "Failed to hash password"
+
             case .failedToGenerateSrpAuth:
                 "Failed to generate SRP auth"
+
             case .emptySrpClientAuth:
                 "Empty SRP client auth"
             }

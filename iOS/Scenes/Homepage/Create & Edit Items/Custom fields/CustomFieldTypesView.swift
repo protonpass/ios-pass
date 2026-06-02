@@ -70,10 +70,13 @@ extension CustomFieldType {
         switch self {
         case .text:
             #localized("Text")
+
         case .totp:
             #localized("2FA secret key (TOTP)")
+
         case .hidden:
             #localized("Hidden")
+
         case .timestamp:
             #localized("Date")
         }
@@ -83,10 +86,13 @@ extension CustomFieldType {
         switch self {
         case .text:
             IconProvider.textAlignLeft
+
         case .totp:
             IconProvider.lock
+
         case .hidden:
             IconProvider.eyeSlash
+
         case .timestamp:
             IconProvider.calendarDay
         }

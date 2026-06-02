@@ -91,10 +91,13 @@ public final class GetLogEntries: GetLogEntriesUseCase {
         switch module {
         case .hostApp:
             try await mainAppLogManager.getLogEntries()
+
         case .autoFillExtension:
             try await autofillLogManager.getLogEntries()
+
         case .shareExtension:
             try await shareLogManager.getLogEntries()
+
         case .actionExtension:
             try await actionLogManager.getLogEntries()
         }

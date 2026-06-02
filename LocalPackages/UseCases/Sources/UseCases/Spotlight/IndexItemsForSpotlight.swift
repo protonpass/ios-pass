@@ -72,6 +72,7 @@ public final class IndexItemsForSpotlight: IndexItemsForSpotlightUseCase {
         case .all:
             searchableItems = try allItems.map { try $0.toSearchableItem(content: content) }
             logger.trace("Indexing \(searchableItems.count) items in all vaults for Spotlight")
+
         case .selected:
             let ids = try await datasource.getIds(for: userId).toSet
             searchableItems = try allItems.compactMap { item in

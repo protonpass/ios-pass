@@ -62,9 +62,8 @@ public extension RemoteFavIconDatasource {
         case 200, 204:
             if let data = dataResponse.data {
                 return .positive(data)
-            } else {
-                return .negative(.notExist)
             }
+            return .negative(.notExist)
 
         default:
             if let protonCode = dataResponse.protonCode,

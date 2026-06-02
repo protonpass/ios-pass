@@ -33,6 +33,7 @@ public enum MonitorState: Sendable, Equatable {
         switch self {
         case let .active(state):
             state.breachCount
+
         case let .inactive(state):
             state.breachCount
         }
@@ -42,6 +43,7 @@ public enum MonitorState: Sendable, Equatable {
         switch self {
         case let .active(state):
             state == .noBreaches || state == .noBreachesButWeakOrReusedPasswords
+
         case let .inactive(state):
             state == .noBreaches || state == .noBreachesButWeakOrReusedPasswords
         }
@@ -51,6 +53,7 @@ public enum MonitorState: Sendable, Equatable {
         switch self {
         case let .active(state):
             state.latestBreachDomainInfo
+
         case let .inactive(state):
             state.latestBreachDomainInfo
         }

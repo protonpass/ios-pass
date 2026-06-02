@@ -150,6 +150,7 @@ private extension BannerManager {
                     // swiftlint:disable:next line_length
                     return #localized("You don't have any vaults with editor or admin access. Try creating one in the main app, or ask your organization's administrator for support.")
                 }
+
             default:
                 return nil
             }

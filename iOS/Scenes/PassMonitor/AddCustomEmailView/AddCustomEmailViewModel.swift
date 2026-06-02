@@ -87,6 +87,7 @@ final class AddCustomEmailViewModel: ObservableObject {
                         return
                     }
                     try await passMonitorRepository.resendEmailVerification(email: customEmail)
+
                 case let .mailbox(mailbox):
                     guard let mailbox else {
                         return
@@ -170,6 +171,7 @@ final class AddCustomEmailViewModel: ObservableObject {
                 case .customEmail:
                     let customEmail = try await addCustomEmailToMonitoring(email: lowercasedEmail)
                     type = .customEmail(customEmail)
+
                 case .mailbox:
                     let userId = try await userManager.getActiveUserId()
                     let mailbox = try await aliasRepository.createMailbox(userId: userId, email: lowercasedEmail)

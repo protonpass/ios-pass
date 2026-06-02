@@ -80,6 +80,7 @@ public final class SetUpBeforeLaunching: SetUpBeforeLaunchingUseCase {
                 switch rootContainer {
                 case let .window(window):
                     window.overrideUserInterfaceStyle = theme.userInterfaceStyle
+
                 case let .viewController(rootViewController):
                     if let rootViewController {
                         rootViewController.overrideUserInterfaceStyle = theme.userInterfaceStyle

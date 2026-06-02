@@ -52,6 +52,7 @@ enum CredentialItem: TitledItemIdentifiable {
         switch self {
         case let .uiModel(uiModel):
             uiModel
+
         case let .searchResult(result):
             result
         }
@@ -61,6 +62,7 @@ enum CredentialItem: TitledItemIdentifiable {
         switch self {
         case let .uiModel(uiModel):
             uiModel.title
+
         case let .searchResult(result):
             result.highlightableTitle.fullText
         }

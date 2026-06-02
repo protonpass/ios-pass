@@ -28,8 +28,10 @@ extension PasswordStrength {
         switch self {
         case .vulnerable:
             #localized("Vulnerable")
+
         case .weak:
             #localized("Weak")
+
         case .strong:
             #localized("Strong")
         }
@@ -39,8 +41,10 @@ extension PasswordStrength {
         switch self {
         case .vulnerable:
             "xmark.shield.fill"
+
         case .weak:
             "exclamationmark.shield.fill"
+
         case .strong:
             "checkmark.shield.fill"
         }
@@ -50,8 +54,10 @@ extension PasswordStrength {
         switch self {
         case .vulnerable:
             PassColor.signalDanger
+
         case .weak:
             PassColor.signalWarning
+
         case .strong:
             PassColor.signalSuccess
         }

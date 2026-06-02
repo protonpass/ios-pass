@@ -67,10 +67,13 @@ public extension FetchableObject {
         switch (lhs, rhs) {
         case (.fetching, .fetching):
             true
+
         case let (.fetched(lValue), .fetched(rValue)):
             lValue == rValue
+
         case let (.error(lError), .error(rError)):
             lError.localizedDescription == rError.localizedDescription
+
         default:
             false
         }

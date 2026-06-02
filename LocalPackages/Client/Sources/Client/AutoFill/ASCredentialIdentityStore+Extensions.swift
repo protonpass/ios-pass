@@ -47,8 +47,10 @@ extension ASCredentialIdentityStore {
         switch action {
         case .save:
             try await saveCredentialIdentities(domainCredentials)
+
         case .replace:
             try await replaceCredentialIdentities(domainCredentials)
+
         case .remove:
             try await removeCredentialIdentities(domainCredentials)
         }

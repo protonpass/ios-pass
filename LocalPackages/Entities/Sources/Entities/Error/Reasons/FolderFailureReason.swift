@@ -28,8 +28,10 @@ public extension PassError {
             switch self {
             case let .layerFull(containerName, limit):
                 "\(containerName) has reached the limit of \(limit) sub-folders"
+
             case let .depthExceeded(containerName, limit):
                 "\(containerName) cannot be nest more than \(limit) levels deep"
+
             case let .vaultFull(containerName, limit):
                 "\(containerName) has reached the limit of \(limit) folders"
             }

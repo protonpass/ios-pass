@@ -106,6 +106,7 @@ public extension LogFormatter {
             switch self.format {
             case .txt:
                 return formattedEntries.joined(separator: "\n")
+
             case .html:
                 return """
                 <!doctype html>
@@ -135,6 +136,7 @@ public extension LogFormatter {
         switch format {
         case .txt:
             txtFormat(entry: entry)
+
         case let .html(style):
             htmlFormat(entry: entry, style: style)
         }

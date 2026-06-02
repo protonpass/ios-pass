@@ -63,9 +63,8 @@ public extension ReportRepository {
             let result = try await service.exec(endpoint: endpoint, files: logs).isSuccessful
             cleanReportLogFiles(from: logs)
             return result
-        } else {
-            return try await service.exec(endpoint: endpoint).isSuccessful
         }
+        return try await service.exec(endpoint: endpoint).isSuccessful
     }
 }
 

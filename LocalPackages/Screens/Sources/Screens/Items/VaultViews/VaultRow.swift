@@ -39,8 +39,10 @@ public enum VaultRowMode: Equatable {
         switch (lhs, rhs) {
         case let (.view(lIsSelected, lIsHidden, _), .view(rIsSelected, rIsHidden, _)):
             lIsSelected == rIsSelected && lIsHidden == rIsHidden
+
         case let (.organise(lIsHidden), .organise(rIsHidden)):
             lIsHidden == rIsHidden
+
         default:
             false
         }

@@ -41,6 +41,7 @@ struct OnboardingPaymentStep: View {
             switch self {
             case .plus:
                 #localized("Get Pass Plus", bundle: .module)
+
             case .unlimited:
                 #localized("Get Proton Unlimited", bundle: .module)
             }
@@ -99,6 +100,7 @@ private extension OnboardingPaymentStep {
                 switch selection {
                 case .plus:
                     OnboardingPassPlusView(foldersEnabled: plans.foldersEnabled)
+
                 case .unlimited:
                     OnboardingProtonUnlimitedView()
                 }

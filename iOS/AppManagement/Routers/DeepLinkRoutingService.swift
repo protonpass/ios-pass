@@ -61,6 +61,7 @@ final class DeepLinkRoutingService {
                 return
             }
             router.requestDeeplink(.totp(uri))
+
         default:
             return
         }
@@ -82,6 +83,7 @@ final class DeepLinkRoutingService {
                         }
                     }
                 }
+
             default:
                 break
             }

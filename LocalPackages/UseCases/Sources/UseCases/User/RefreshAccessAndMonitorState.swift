@@ -94,14 +94,19 @@ private extension RefreshAccessAndMonitorState {
         let state = switch (isFreeUser, breachCount > 0, hasWeaknesses) {
         case (true, false, false):
             MonitorState.inactive(.noBreaches)
+
         case (true, false, true):
             MonitorState.inactive(.noBreachesButWeakOrReusedPasswords)
+
         case (true, true, _):
             MonitorState.inactive(.breachesFound(breachCount, latestBreach))
+
         case (false, false, false):
             MonitorState.active(.noBreaches)
+
         case (false, false, true):
             MonitorState.active(.noBreachesButWeakOrReusedPasswords)
+
         case (false, true, _):
             MonitorState.active(.breachesFound(breachCount, latestBreach))
         }

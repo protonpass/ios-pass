@@ -51,13 +51,12 @@ final class EnableAutoFill: EnableAutoFillUseCase {
         if ProcessInfo.processInfo.isiOSAppOnMac {
             router.present(for: .autoFillInstructions)
             return true
+        }
+        if #available(iOS 18, *) {
+            return await credentialManager.enableAutoFill()
         } else {
-            if #available(iOS 18, *) {
-                return await credentialManager.enableAutoFill()
-            } else {
-                UIApplication.shared.openPasswordSettings()
-                return true
-            }
+            UIApplication.shared.openPasswordSettings()
+            return true
         }
     }
 }

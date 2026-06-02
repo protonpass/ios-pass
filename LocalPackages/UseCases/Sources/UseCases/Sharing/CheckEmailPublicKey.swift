@@ -53,9 +53,8 @@ public final class GetEmailPublicKey: @unchecked Sendable, GetEmailPublicKeyUseC
                networkError.httpCode == 422,
                [33_102, 33_103].contains(networkError.responseCode) {
                 throw PassError.sharing(.notProtonAddress)
-            } else {
-                throw error
             }
+            throw error
         }
     }
 }

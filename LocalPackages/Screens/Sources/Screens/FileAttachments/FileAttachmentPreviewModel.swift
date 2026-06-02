@@ -47,6 +47,7 @@ public enum FileAttachmentPreviewMode: Sendable, Identifiable {
         switch self {
         case let .pending(url):
             url.path()
+
         case let .item(item, _, _):
             item.fileID
         }
@@ -111,8 +112,10 @@ extension FileAttachmentPreviewModel {
                         switch action {
                         case .none:
                             break
+
                         case .save:
                             urlToSave = value
+
                         case .share:
                             urlToShare = value
                         }

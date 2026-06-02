@@ -267,9 +267,8 @@ enum ItemContextMenu {
                                           action: onPermanentlyDelete,
                                           isDestructive: true)])
                 ]
-            } else {
-                return []
             }
+            return []
 
         case let .identity(item,
                            isEditable,

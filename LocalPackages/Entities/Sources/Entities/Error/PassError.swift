@@ -67,80 +67,118 @@ public enum PassError: Error, CustomDebugStringConvertible, Equatable {
         switch self {
         case let .credentialProvider(reason):
             reason.debugDescription
+
         case .deallocatedSelf:
             "Failed to access deallocated self"
+
         case .failedToGetOrCreateSymmetricKey:
             "Failed to get or create symmetric key"
+
         case .noUserData:
             "No user data currently accessible"
+
         case let .vault(reason):
             reason.debugDescription
+
         case let .coreData(reason):
             reason.debugDescription
+
         case .corruptedEncryptedContent:
             "Corrupted encrypted content"
+
         case let .corruptedUserData(reason):
             reason.debugDescription
+
         case let .crypto(reason):
             reason.debugDescription
+
         case .errorExpected:
             "An error is expected"
+
         case let .itemNotFound(item):
             "Item not found ID \"\(item.itemId)\", share ID \"\(item.shareId)\""
+
         case let .keysNotFound(shareID):
             "Keys not found for share \"\(shareID)\""
+
         case let .shareNotFoundInLocalDB(shareID):
             "Share not found in local DB \"\(shareID)\""
+
         case let .symmetricEncryption(reason):
             reason.debugDescription
+
         case .unexpectedError:
             "Unexpected error"
+
         case .unknownShareType:
             "Unknown share type"
+
         case .unexpectedLogout:
             "Unexpected logout"
+
         case let .unmatchedRotationID(leftID, rightID):
             "Unmatched rotation IDs \"\(leftID)\" & \"\(rightID)\""
+
         case let .sharing(reason):
             reason.debugDescription
+
         case let .network(reason):
             reason.debugDescription
+
         case let .invalidUrl(url):
             "Invalid URL \(url)"
+
         case let .userDefault(reason):
             reason.debugDescription
+
         case .biometricChange:
             "We detected a change in recorded biometric"
+
         case let .failedToConvertBase64StringToData(string):
             "Failed to convert base 64 string to data \"\(string)\""
+
         case .organizationNotFound:
             "Organization not found"
+
         case let .preferences(reason):
             reason.debugDescription
+
         case .mainKeyNotFound:
             "Main key not found"
+
         case .sentinelNotEligible:
             "Sentinel not eligible"
+
         case let .userManager(reason):
             reason.debugDescription
+
         case let .extraPassword(reason):
             reason.debugDescription
+
         case let .payments(reason):
             reason.debugDescription
+
         case let .api(reason):
             reason.debugDescription
+
         case let .fileAttachment(reason):
             reason.debugDescription
+
         case let .csv(reason):
             reason.debugDescription
+
         case let .importer(reason):
             reason.debugDescription
+
         case let .extension(reason):
             reason.debugDescription
+
         case .itemsNotBelongToSameVault:
             "Items not belong to same vault"
+
         case let .group(reason):
             reason.debugDescription
+
         case let .folder(reason):
             reason.debugDescription
         }

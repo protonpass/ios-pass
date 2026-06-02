@@ -68,6 +68,7 @@ private extension GetInviteDecryptionKeys {
 
             return try CryptoUtils.unlockAddressKeys(address: invitedAddress,
                                                      userData: userData)
+
         case let .group(invite):
             let group = try await groupRepository.getGroup(userId: userData.user.ID,
                                                            groupId: invite.invitedGroupID)

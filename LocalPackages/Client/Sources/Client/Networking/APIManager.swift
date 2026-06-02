@@ -138,7 +138,8 @@ public final class APIManager: @unchecked Sendable, APIManagerProtocol, APIManag
            let service = allCurrentApiServices
            .first(where: { $0.apiService.sessionUID == credentials.sessionID }) {
             return service.apiService
-        } else if let unauthApiService = allCurrentApiServices.unauthApiService {
+        }
+        if let unauthApiService = allCurrentApiServices.unauthApiService {
             return unauthApiService
         }
 

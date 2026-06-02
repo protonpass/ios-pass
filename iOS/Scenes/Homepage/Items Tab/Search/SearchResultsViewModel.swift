@@ -64,10 +64,13 @@ final class SearchResultsViewModel: ObservableObject {
         switch mode.shareSelection {
         case .sharedWithMe:
             #localized("Shared with me")
+
         case .sharedByMe:
             #localized("Shared by me")
+
         case .trash:
             #localized("Trash")
+
         default:
             #localized("Current vault")
         }

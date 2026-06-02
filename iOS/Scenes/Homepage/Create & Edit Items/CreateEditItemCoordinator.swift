@@ -51,39 +51,52 @@ extension CreateEditItemCoordinator {
         switch itemContent.contentData.type {
         case .login:
             try presentCreateEditLoginView(mode: mode)
+
         case .note:
             try presentCreateEditNoteView(mode: mode)
+
         case .creditCard:
             try presentCreateEditCreditCardView(mode: mode)
+
         case .alias:
             try presentCreateEditAliasView(mode: mode)
+
         case .identity:
             try presentCreateEditIdentityView(mode: mode)
+
         case .sshKey:
             try presentCreateEditSshKeyView(mode: mode)
+
         case .wifi:
             try presentCreateEditWifiView(mode: mode)
+
         case .custom:
             try presentCreateEditCustomView(mode: mode)
         }
     }
 
     func presentCreateItemView(for itemType: ItemType,
-                               onError: @escaping (any Error) -> Void) async throws {
+                               onError: @escaping (any Error) -> Void) throws {
         switch itemType {
         case .login:
             let logInType = ItemCreationType.login(autofill: false)
             try presentCreateEditLoginView(mode: .create(logInType))
+
         case .alias:
             try presentCreateEditAliasView(mode: .create(.alias))
+
         case .creditCard:
             try presentCreateEditCreditCardView(mode: .create(.creditCard))
+
         case .note:
             try presentCreateEditNoteView(mode: .create(.note(title: "", note: "")))
+
         case .password:
             assertionFailure("Should be handled outside of this coordinator")
+
         case .identity:
             try presentCreateEditIdentityView(mode: .create(.identity))
+
         case .custom:
             try presentCustomItemList(onError: onError)
         }
@@ -166,7 +179,7 @@ private extension CreateEditItemCoordinator {
 // MARK: - Custom item
 
 private extension CreateEditItemCoordinator {
-    func presentCustomItemList(onError: @escaping (any Error) -> Void) throws {
+    func presentCustomItemList(onError: @escaping (any Error) -> Void) {
         let view = CustomItemTemplatesList { [weak self] template in
             guard let self else { return }
             do {
@@ -183,8 +196,10 @@ private extension CreateEditItemCoordinator {
         switch template {
         case .sshKey:
             try presentCreateEditSshKeyView(mode: .create(.sshKey))
+
         case .wifi:
             try presentCreateEditWifiView(mode: .create(.wifi))
+
         default:
             try presentCreateEditCustomView(mode: .create(.custom(template)))
         }

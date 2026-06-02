@@ -26,10 +26,13 @@ public extension LABiometryType {
         switch self {
         case .faceID:
             return "Use system passcode when Face ID fails"
+
         case .touchID:
             return "Use system passcode when Touch ID fails"
+
         case .opticID:
             return "Use system passcode when Optic ID fails"
+
         default:
             assertionFailure("Not applicable")
             return nil

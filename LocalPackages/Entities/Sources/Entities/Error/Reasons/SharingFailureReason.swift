@@ -37,20 +37,28 @@ public extension PassError {
             switch self {
             case .incompleteInformation:
                 "Incomplete information"
+
             case .failedEncryptionKeysFetching:
                 "Failed to fetch encryption keys"
+
             case let .noPublicKeyAssociatedWithEmail(email):
                 "No public key for email \(email)"
+
             case .invalidKey:
                 "Invalid key"
+
             case let .invalidAddress(email):
                 "Invalid address for email \(email)"
+
             case .cannotDecode:
                 "Cannot decode"
+
             case .failedToCreateNewVault:
                 "Failed to create new vault"
+
             case .failedToInvite:
                 "Failed to invite"
+
             case .notProtonAddress:
                 "Not Proton address"
             }

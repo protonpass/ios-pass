@@ -37,7 +37,7 @@ public final class ParseCsvLogins: ParseCsvLoginsUseCase {
         self.validateEmail = validateEmail
     }
 
-    public func execute(_ csv: String) async throws -> [CsvLogin] {
+    public func execute(_ csv: String) throws -> [CsvLogin] {
         var rows = csv.components(separatedBy: "\n")
 
         // Some CSV files have empty last row, so we remove it

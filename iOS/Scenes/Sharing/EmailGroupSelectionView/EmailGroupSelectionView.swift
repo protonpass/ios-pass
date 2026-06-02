@@ -180,8 +180,10 @@ private extension EmailGroupSelectionView {
             switch (highlighted, invalid) {
             case (false, true):
                 PassColor.passwordInteractionNormMajor1
+
             case (true, _):
                 PassColor.textInvert
+
             default:
                 PassColor.textNorm
             }
@@ -191,10 +193,13 @@ private extension EmailGroupSelectionView {
             switch (highlighted, invalid) {
             case (true, true):
                 PassColor.passwordInteractionNormMajor1
+
             case (true, false):
                 PassColor.interactionNormMajor2
+
             case (false, true):
                 PassColor.passwordInteractionNormMinor1
+
             default:
                 PassColor.interactionNormMinor1
             }

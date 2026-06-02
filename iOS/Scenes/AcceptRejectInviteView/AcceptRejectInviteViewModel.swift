@@ -57,7 +57,7 @@ final class AcceptRejectInviteViewModel: ObservableObject {
                 return
             }
             defer {
-                self.executingAction = false
+                executingAction = false
             }
 
             do {
