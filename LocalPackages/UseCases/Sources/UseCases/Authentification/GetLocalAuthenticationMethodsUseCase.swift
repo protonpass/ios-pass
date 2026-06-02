@@ -77,6 +77,7 @@ public final class GetLocalAuthenticationMethods: GetLocalAuthenticationMethodsU
                      .biometryNotEnrolled,
                      .passcodeNotSet:
                     break
+
                 default:
                     throw error
                 }

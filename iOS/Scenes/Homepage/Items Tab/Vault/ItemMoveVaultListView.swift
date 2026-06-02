@@ -27,6 +27,7 @@ import SwiftUI
 
 struct ItemMoveVaultListView: View {
     @Environment(\.dismiss) private var dismiss
+    // swiftlint:disable:next private_swiftui_state
     @StateObject var viewModel: ItemMoveVaultListViewModel
 
     var body: some View {

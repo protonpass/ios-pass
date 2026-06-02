@@ -40,8 +40,8 @@ struct CodeOnlyResponse: Decodable {
 /// as the parsing in the `Networking` core lib is very strict on this aspect.
 /// You should annotate the endpoint as `@unchecked Sendable` if you have params or queries set on it
 protocol Endpoint: Request, Sendable {
-    associatedtype Body: Encodable & Sendable
-    associatedtype Response: Decodable & Sendable
+    associatedtype Body: Encodable, Sendable
+    associatedtype Response: Decodable, Sendable
 
     /// The "name" of the endpoint for debugging purposes
     var debugDescription: String { get }

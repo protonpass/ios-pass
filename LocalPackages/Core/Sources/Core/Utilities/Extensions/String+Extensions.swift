@@ -38,7 +38,7 @@ public extension String {
         return String((0..<length).compactMap { _ in allCharacters.randomElement() })
     }
 
-    func base64Decode() throws -> Data? {
+    func base64Decode() -> Data? {
         Data(base64Encoded: self)
     }
 
@@ -87,10 +87,9 @@ public extension String {
                 formatted.insert(" ", at: formatted.index(formatted.startIndex, offsetBy: 11))
             }
             return formatted
-        } else {
-            let chunks = Array(noSpacesCardNumber).chunked(into: 4)
-            return chunks.map { String($0) }.joined(separator: " ")
         }
+        let chunks = Array(noSpacesCardNumber).chunked(into: 4)
+        return chunks.map { String($0) }.joined(separator: " ")
     }
 
     func toMaskedCreditCardNumber() -> String {
@@ -106,22 +105,21 @@ public extension String {
 
         if isAmex, count == 15 {
             return "\(noSpacesCardNumber.prefix(4)) •••••• \(noSpacesCardNumber.suffix(5))"
-        } else {
-            let chunks = Array(noSpacesCardNumber).chunked(into: 4)
-            var formatted = ""
-
-            for (index, chunk) in chunks.enumerated() {
-                if index == 0 {
-                    formatted += String(chunk)
-                } else if index == chunks.count - 1 {
-                    formatted += " \(String(chunk))"
-                } else {
-                    formatted += " ••••"
-                }
-            }
-
-            return formatted
         }
+        let chunks = Array(noSpacesCardNumber).chunked(into: 4)
+        var formatted = ""
+
+        for (index, chunk) in chunks.enumerated() {
+            if index == 0 {
+                formatted += String(chunk)
+            } else if index == chunks.count - 1 {
+                formatted += " \(String(chunk))"
+            } else {
+                formatted += " ••••"
+            }
+        }
+
+        return formatted
     }
 
     /// https://www.hackingwithswift.com/example-code/strings/how-to-detect-a-url-in-a-string-using-nsdatadetector
@@ -154,9 +152,8 @@ public extension String {
 
         if let attributedString = try? NSAttributedString(data: data, options: options, documentAttributes: nil) {
             return attributedString.string
-        } else {
-            return self
         }
+        return self
     }
 
     func replaceAllCharsExceptFirstAndLast(withChar newChar: Character) -> String {

@@ -157,6 +157,7 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
 
     public final class Coordinator: NSObject, UITableViewDelegate {
         let parent: TableView
+        // swiftlint:disable:next implicitly_unwrapped_optional
         private var dataSource: PassDiffableDataSource<PassSectionIdentifier, Item>!
         private var configuration: TableViewConfiguration
 

@@ -29,6 +29,7 @@ import Screens
 import SwiftUI
 
 struct DarkWebMonitorHomeView: View {
+    // swiftlint:disable:next private_swiftui_state
     @StateObject var viewModel: DarkWebMonitorHomeViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var showDataSecurityExplanation = false
@@ -311,6 +312,7 @@ private extension DarkWebMonitorHomeView {
                 case .fetching:
                     // Handled in header
                     EmptyView()
+
                 case let .fetched(emails):
                     ForEach(emails) { email in
                         customEmailRow(for: email)
@@ -318,6 +320,7 @@ private extension DarkWebMonitorHomeView {
                             PassDivider()
                         }
                     }
+
                 case let .error(error):
                     RetryableErrorView(mode: .defaultHorizontal,
                                        error: error,
@@ -332,6 +335,7 @@ private extension DarkWebMonitorHomeView {
                 switch viewModel.suggestedEmailsState {
                 case .fetching:
                     EmptyView()
+
                 case let .fetched(emails):
                     ForEach(emails, id: \.email) { email in
                         suggestedEmailRow(email)
@@ -340,6 +344,7 @@ private extension DarkWebMonitorHomeView {
                             PassDivider()
                         }
                     }
+
                 case let .error(error):
                     HStack {
                         Text(error.localizedDescription)
@@ -369,6 +374,7 @@ private extension DarkWebMonitorHomeView {
                 switch viewModel.customEmailsState {
                 case .fetching:
                     ProgressView()
+
                 case .fetched:
                     CircleButton(icon: IconProvider.plus,
                                  iconColor: PassColor.interactionNormMajor2,
@@ -376,6 +382,7 @@ private extension DarkWebMonitorHomeView {
                                  accessibilityLabel: "Add custom email address",
                                  type: .small,
                                  action: { router.present(sheet: .addEmail(.customEmail(nil))) })
+
                 case .error:
                     EmptyView()
                 }

@@ -213,12 +213,16 @@ extension SecurityWeakness {
         switch self {
         case .weakPasswords:
             .monitorDisplayWeakPasswords
+
         case .reusedPasswords:
             .monitorDisplayReusedPasswords
+
         case .breaches:
             .monitorDisplayDarkWebMonitoring
+
         case .missing2FA:
             .monitorDisplayMissing2FA
+
         case .excludedItems:
             .monitorDisplayExcludedItems
         }

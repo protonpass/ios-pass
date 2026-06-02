@@ -27,17 +27,23 @@ extension AliasPrefixError: @retroactive LocalizedError {
         switch self {
         case .emptyPrefix:
             #localized("Prefix can not be empty")
+
         case .disallowedCharacters:
             // swiftlint:disable:next line_length
             #localized("Prefix must contain only lowercase alphanumeric (a-z, 0-9), dot (.), hyphen (-) & underscore (_)")
+
         case .twoConsecutiveDots:
             #localized("Prefix can not contain 2 consecutive dots (..)")
+
         case .dotAtTheEnd:
             #localized("Alias can not contain 2 consecutive dots (..)")
+
         case .dotAtTheStart:
             #localized("Alias can not start with a dot (.)")
+
         case .prefixToLong:
             #localized("The alias prefix is too long")
+
         case .unknown:
             #localized("Invalid prefix")
         }

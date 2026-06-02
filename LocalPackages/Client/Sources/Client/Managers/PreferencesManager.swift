@@ -202,7 +202,7 @@ private extension PreferencesManager {
 
 public extension PreferencesManager {
     func updateAppPreferences<T: Sendable>(_ keyPath: WritableKeyPath<AppPreferences, T>,
-                                           value: T) async throws {
+                                           value: T) throws {
         logger.trace("Updating app preferences \(keyPath)")
         assertDidSetUp()
         guard var preferences = appPreferences.value else {
@@ -215,7 +215,7 @@ public extension PreferencesManager {
         logger.info("Updated app preferences \(keyPath)")
     }
 
-    func removeAppPreferences() async {
+    func removeAppPreferences() {
         logger.trace("Removing app preferences")
         appPreferencesDatasource.removePreferences()
         logger.info("Removed app preferences")
@@ -239,7 +239,7 @@ public extension PreferencesManager {
         logger.info("Updated shared preferences \(keyPath)")
     }
 
-    func removeSharedPreferences() async throws {
+    func removeSharedPreferences() throws {
         logger.trace("Removing shared preferences")
         try sharedPreferencesDatasource.removePreferences()
         logger.info("Removed app preferences")

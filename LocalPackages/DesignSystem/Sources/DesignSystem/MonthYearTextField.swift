@@ -127,9 +127,11 @@ public extension MonthYearTextField {
             case 0:
                 // Month
                 parent.month = parent.months[row]
+
             case 1:
                 // Year
                 parent.year = parent.years[row]
+
             default:
                 break
             }
@@ -144,9 +146,11 @@ public extension MonthYearTextField {
             case 0:
                 // Month
                 parent.months.count
+
             case 1:
                 // Year
                 parent.years.count
+
             default:
                 0
             }
@@ -159,9 +163,11 @@ public extension MonthYearTextField {
             case 0:
                 // Month
                 String(format: "%02d - %@", row + 1, formatter.monthSymbols[row])
+
             case 1:
                 // Year
                 "\(parent.years[row])"
+
             default:
                 nil
             }

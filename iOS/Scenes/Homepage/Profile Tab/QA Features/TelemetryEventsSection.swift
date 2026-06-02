@@ -165,14 +165,19 @@ private extension TelemetryEventType {
         switch self {
         case let .create(type), let .delete(type), let .read(type), let .update(type):
             type.regularIcon
+
         case .autofillDisplay, .autofillTriggeredFromApp, .autofillTriggeredFromSource:
             Image(systemName: "rectangle.and.pencil.and.ellipsis")
+
         case .searchClick, .searchTriggered:
             Image(systemName: "magnifyingglass")
+
         case .twoFaCreation, .twoFaUpdate:
             Image(systemName: "2.circle")
+
         case .passkeyAuth, .passkeyCreate, .passkeyDisplay:
             PassIcon.passkey
+
         case .monitorAddCustomEmailFromSuggestion,
              .monitorDisplayDarkWebMonitoring,
              .monitorDisplayExcludedItems,
@@ -186,12 +191,16 @@ private extension TelemetryEventType {
              .monitorItemDetailFromReusedPassword,
              .monitorItemDetailFromWeakPassword:
             Image(systemName: "person.badge.shield.checkmark.fill")
+
         case .multiAccountAddAccount, .multiAccountRemoveAccount:
             Image(systemName: "person.3.fill")
+
         case .notificationChangeStatus, .notificationCtaClick, .notificationDisplay:
             Image(systemName: "envelope.fill")
+
         case .fileUploaded:
             Image(systemName: "icloud.and.arrow.up.fill")
+
         case .onboardingAliasVideoOpened,
              .onboardingBiometricsEnabled,
              .onboardingBiometricsSkipped,
@@ -208,6 +217,7 @@ private extension TelemetryEventType {
         switch self {
         case let .create(type), let .delete(type), let .read(type), let .update(type):
             type.normMajor1Color
+
         case .autofillDisplay,
              .autofillTriggeredFromApp,
              .autofillTriggeredFromSource,
@@ -215,10 +225,13 @@ private extension TelemetryEventType {
              .passkeyCreate,
              .passkeyDisplay:
             PassColor.signalInfo
+
         case .searchClick, .searchTriggered:
             PassColor.signalDanger
+
         case .twoFaCreation, .twoFaUpdate:
             ItemContentType.login.normMajor1Color
+
         case .monitorAddCustomEmailFromSuggestion,
              .monitorDisplayDarkWebMonitoring,
              .monitorDisplayExcludedItems,
@@ -234,10 +247,13 @@ private extension TelemetryEventType {
              .multiAccountAddAccount,
              .multiAccountRemoveAccount:
             ItemContentType.note.normMajor1Color
+
         case .notificationChangeStatus, .notificationCtaClick, .notificationDisplay:
             ItemContentType.creditCard.normMajor1Color
+
         case .fileUploaded:
             ItemContentType.identity.normMajor1Color
+
         case .onboardingAliasVideoOpened,
              .onboardingBiometricsEnabled,
              .onboardingBiometricsSkipped,
@@ -254,6 +270,7 @@ private extension TelemetryEventType {
         switch self {
         case let .create(type), let .delete(type), let .read(type), let .update(type):
             type.normMinor1Color
+
         case .autofillDisplay,
              .autofillTriggeredFromApp,
              .autofillTriggeredFromSource,
@@ -261,10 +278,13 @@ private extension TelemetryEventType {
              .passkeyCreate,
              .passkeyDisplay:
             PassColor.signalInfo.opacity(0.16)
+
         case .searchClick, .searchTriggered:
             PassColor.signalDanger.opacity(0.16)
+
         case .twoFaCreation, .twoFaUpdate:
             ItemContentType.login.normMinor1Color
+
         case .monitorAddCustomEmailFromSuggestion,
              .monitorDisplayDarkWebMonitoring,
              .monitorDisplayExcludedItems,
@@ -280,10 +300,13 @@ private extension TelemetryEventType {
              .multiAccountAddAccount,
              .multiAccountRemoveAccount:
             ItemContentType.note.normMinor1Color
+
         case .notificationChangeStatus, .notificationCtaClick, .notificationDisplay:
             ItemContentType.creditCard.normMinor1Color
+
         case .fileUploaded:
             ItemContentType.identity.normMinor1Color
+
         case .onboardingAliasVideoOpened,
              .onboardingBiometricsEnabled,
              .onboardingBiometricsSkipped,
@@ -300,82 +323,121 @@ private extension TelemetryEventType {
         switch self {
         case .create:
             "Create ➕"
+
         case .read:
             "Read 🗒️"
+
         case .update:
             "Update ✏️"
+
         case .delete:
             "Delete ❌"
+
         case .autofillDisplay:
             "AutoFill extension opened 🔑"
+
         case .autofillTriggeredFromSource:
             "Autofilled from QuickType bar ⌨️"
+
         case .autofillTriggeredFromApp:
             "Autofilled from extension 📱"
+
         case .searchClick:
             "Pick search result 🔎"
+
         case .searchTriggered:
             "Open search 🔎"
+
         case .twoFaCreation:
             "Create 2FA"
+
         case .twoFaUpdate:
             "Update 2FA"
+
         case .passkeyCreate:
             "Create passkey"
+
         case .passkeyAuth:
             "Authenticate with passkey"
+
         case .passkeyDisplay:
             "Display passkeys"
+
         case .monitorDisplayHome:
             "Display monitor homepage"
+
         case .monitorDisplayWeakPasswords:
             "Display weak passwords"
+
         case .monitorDisplayReusedPasswords:
             "Display reused passwords"
+
         case .monitorDisplayMissing2FA:
             "Display missing 2FA"
+
         case .monitorDisplayExcludedItems:
             "Display excluded items"
+
         case .monitorDisplayDarkWebMonitoring:
             "Display dark web monitoring"
+
         case .monitorDisplayMonitoringProtonAddresses:
             "Display monitored Proton addresses"
+
         case .monitorDisplayMonitoringEmailAliases:
             "Display monitored aliases"
+
         case .monitorAddCustomEmailFromSuggestion:
             "Add custom email from suggestion"
+
         case .monitorItemDetailFromWeakPassword:
             "View item detail from weak password list"
+
         case .monitorItemDetailFromMissing2FA:
             "View item detail from missing 2FA list"
+
         case .monitorItemDetailFromReusedPassword:
             "View item detail from reused password list"
+
         case .multiAccountAddAccount:
             "Add new account"
+
         case .multiAccountRemoveAccount:
             "Remove an account"
+
         case .notificationDisplay:
             "Display notification"
+
         case .notificationChangeStatus:
             "Change notification status"
+
         case .notificationCtaClick:
             "Notification Cta clicked"
+
         case let .fileUploaded(mimeType):
             "File uploaded (\(mimeType))"
+
         case .onboardingUpsellCtaClicked:
             "Clicked onboarding upsell CTA"
+
         case .onboardingUpsellSubscribed:
             "Subscribed while onboarding"
+
         case .onboardingUpsellSkipped:
             "Skipped onboarding upsell"
+
         case .onboardingBiometricsEnabled:
             "Enabled biometrics while onboarding"
+
         case .onboardingBiometricsSkipped:
             "Skipped biometrics while onboarding"
+
         case .onboardingPassAsAutofillProviderEnabled:
             "Enabled AutoFill while onboarding"
+
         case .onboardingPassAsAutofillProviderSkipped:
             "Skipped AutoFill while onboarding"
+
         case .onboardingAliasVideoOpened:
             "Watch alias video while onboarding"
         }

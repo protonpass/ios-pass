@@ -51,6 +51,7 @@ public struct StaticToggle: View {
                 case let .localized(localizedStringKey):
                     Text(localizedStringKey)
                         .foregroundStyle(titleColor)
+
                 case let .verbatim(string):
                     Text(verbatim: string)
                         .foregroundStyle(titleColor)

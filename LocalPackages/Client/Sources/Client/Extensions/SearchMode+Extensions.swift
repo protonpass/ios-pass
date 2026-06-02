@@ -26,6 +26,7 @@ public extension SearchMode {
         switch self {
         case .pinned:
             #localized("Search pinned items", bundle: .module)
+
         case let .all(selection):
             selection.searchBarPlaceholder
         }

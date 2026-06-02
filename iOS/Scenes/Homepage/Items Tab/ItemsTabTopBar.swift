@@ -288,10 +288,13 @@ private struct EditModeView: View {
         switch extraOption {
         case .pin:
             action(.onPin)
+
         case .unpin:
             action(.onUnpin)
+
         case .disableAliases:
             action(.onDisableAliases)
+
         case .enableAliases:
             action(.onEnableAliases)
         }

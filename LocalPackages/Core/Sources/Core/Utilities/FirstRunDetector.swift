@@ -49,9 +49,8 @@ public extension FirstRunDetector {
             let lastKnownModificationTimestamp = userDefaults.double(forKey: kBundleModificationDate)
             return lastKnownModificationTimestamp == 0 ||
                 lastKnownModificationTimestamp != modificationTimestamp
-        } else {
-            return userDefaults.bool(forKey: kIsFirstRun)
         }
+        return userDefaults.bool(forKey: kIsFirstRun)
     }
 
     func completeFirstRun() {
@@ -71,9 +70,8 @@ private extension FirstRunDetector {
             let attributes = try FileManager.default.attributesOfItem(atPath: bundle.bundlePath)
             if let date = attributes[.modificationDate] as? Date {
                 return date.timeIntervalSince1970
-            } else {
-                return nil
             }
+            return nil
         } catch {
             assertionFailure("Failed to get bundle modification date: \(error)")
             return nil

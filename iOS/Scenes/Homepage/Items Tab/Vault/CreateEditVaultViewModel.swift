@@ -80,8 +80,10 @@ final class CreateEditVaultViewModel: ObservableObject {
         switch mode {
         case .create:
             #localized("Create vault")
+
         case .editExistingVault:
             #localized("Save")
+
         case .editNewVault:
             #localized("Update vault")
         }
@@ -94,10 +96,12 @@ final class CreateEditVaultViewModel: ObservableObject {
             selectedColor = .color1
             selectedIcon = .icon1
             title = ""
+
         case let .editExistingVault(vault):
             selectedColor = vault.vaultContent?.display.color.color ?? .color1
             selectedIcon = vault.vaultContent?.display.icon.icon ?? .icon1
             title = vault.vaultName ?? ""
+
         case let .editNewVault(vault, _):
             selectedColor = vault.display.color.color
             selectedIcon = vault.display.icon.icon
@@ -132,7 +136,7 @@ private extension CreateEditVaultViewModel {
     func editVault(_ oldVault: Share) {
         Task { [weak self] in
             guard let self else { return }
-            defer { self.loading = false }
+            defer { loading = false }
             do {
                 logger.trace("Editing vault \(oldVault.id)")
                 loading = true
@@ -150,7 +154,7 @@ private extension CreateEditVaultViewModel {
     func createVault() {
         Task { [weak self] in
             guard let self else { return }
-            defer { self.loading = false }
+            defer { loading = false }
             do {
                 logger.trace("Creating vault")
                 loading = true
@@ -174,8 +178,10 @@ extension CreateEditVaultViewModel {
         switch mode {
         case .create:
             createVault()
+
         case let .editExistingVault(vault):
             editVault(vault)
+
         case let .editNewVault(_, itemContent):
             setShareInviteVault(with: .new(generateVaultProtobuf(), itemContent))
             finishSaving = true
@@ -192,6 +198,7 @@ extension VaultColorIcon: Hashable {
         switch self {
         case let .color(color):
             hasher.combine(color)
+
         case let .icon(icon):
             hasher.combine(icon)
         }

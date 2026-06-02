@@ -133,8 +133,10 @@ class BaseItemDetailViewModel: ObservableObject {
         switch itemContent.type {
         case .alias:
             return false
+
         case .creditCard, .custom, .sshKey, .wifi:
             return !isFreeUser
+
         default:
             return true
         }
@@ -487,8 +489,10 @@ private extension BaseItemDetailViewModel {
                     switch postAction {
                     case .save:
                         urlToSave = url
+
                     case .share:
                         urlToShare = url
+
                     case .none:
                         filePreviewMode = .item(file, self, postAction)
                     }

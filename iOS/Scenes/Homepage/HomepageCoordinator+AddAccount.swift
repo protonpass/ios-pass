@@ -58,6 +58,7 @@ private extension HomepageCoordinator {
         switch result {
         case .dismissed:
             return
+
         case let .loggedIn(logInData), let .signedUp(logInData):
             logInAndSignUp = makeLoginAndSignUp()
 

@@ -110,9 +110,11 @@ private extension LoginItemsView {
                 allItems
             }
             .padding(.horizontal)
+
         case .searching:
             ProgressView()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
+
         case let .searchResults(results):
             if results.isEmpty {
                 NoSearchResultsView(query: viewModel.query)

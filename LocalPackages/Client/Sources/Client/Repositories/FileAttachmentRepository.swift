@@ -97,7 +97,7 @@ public extension FileAttachmentRepository {
     }
 
     func uploadFile(userId: String,
-                    file: PendingFileAttachment) async throws -> AsyncThrowingStream<Float, any Error> {
+                    file: PendingFileAttachment) throws -> AsyncThrowingStream<Float, any Error> {
         guard let remoteId = file.remoteId else {
             throw PassError.fileAttachment(.failedToUploadMissingRemoteId)
         }

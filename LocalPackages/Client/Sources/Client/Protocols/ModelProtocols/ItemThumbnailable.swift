@@ -28,9 +28,9 @@ public extension ItemThumbnailable {
             let initials = title.initials()
             if let url {
                 return .favIcon(type: type, url: url, initials: initials)
-            } else {
-                return .initials(type: type, initials: initials)
             }
+            return .initials(type: type, initials: initials)
+
         default:
             return .icon(type: type)
         }

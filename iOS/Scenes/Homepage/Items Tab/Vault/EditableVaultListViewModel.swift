@@ -269,6 +269,7 @@ extension EditableVaultListViewModel {
                 switch container {
                 case let .vault(vault):
                     try await appContentManager.delete(vault: vault)
+
                 case let .folder(folder):
                     try await appContentManager.deleteFolder(userId: userId,
                                                              shareId: folder.shareId,
@@ -369,12 +370,16 @@ extension EditableVaultListViewModel {
         return switch selection {
         case .all:
             count.all + activeItemsSharedWithMeCount
+
         case let .precise(selection):
             count.vaultCounts.first { $0.shareId == selection.share.shareId }?.value ?? 0
+
         case .sharedWithMe:
             itemsSharedWithMe.count
+
         case .sharedByMe:
             appContentManager.state.loadedContent?.itemsSharedByMe.count ?? 0
+
         case .trash:
             count.trashed
         }
@@ -488,6 +493,7 @@ extension EditableVaultListViewModel {
                 switch folderAction {
                 case let .createNewFolder(share, parentFolderId):
                     try await createFolder(share: share, parentFolderId: parentFolderId, name: folderName)
+
                 case let .edit(folder):
                     try await editFolder(folder)
                 }

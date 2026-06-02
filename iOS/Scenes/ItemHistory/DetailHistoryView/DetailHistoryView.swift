@@ -27,6 +27,7 @@ import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 
+// swiftlint:disable private_swiftui_state
 struct DetailHistoryView: View {
     @StateObject var viewModel: DetailHistoryViewModel
     @Environment(\.dismiss) private var dismiss
@@ -36,6 +37,8 @@ struct DetailHistoryView: View {
     @State var isShowingVerificationNumber = false
     @State var isShowingPIN = false
     @State var selectedKeyComponent: SshKeyComponent?
+
+    // swiftlint:enable private_swiftui_state
 
     var body: some View {
         mainContainer
@@ -187,18 +190,25 @@ private extension DetailHistoryView {
                 switch viewModel.currentRevision.contentData {
                 case .note:
                     noteView
+
                 case .login:
                     loginView
+
                 case .creditCard:
                     creditCardView
+
                 case .alias:
                     aliasView
+
                 case .identity:
                     identityView
+
                 case .sshKey:
                     sshView
+
                 case .wifi:
                     wifiView
+
                 case .custom:
                     customView
                 }

@@ -38,6 +38,7 @@ enum SecureLinkExpiration: Hashable, Identifiable {
         switch self {
         case let .hour(hour):
             #localized("%lld hour(s)", hour)
+
         case let .day(day):
             #localized("%lld day(s)", day)
         }
@@ -47,6 +48,7 @@ enum SecureLinkExpiration: Hashable, Identifiable {
         switch self {
         case let .hour(hour):
             hour * 3_600
+
         case let .day(day):
             day * 24 * 3_600
         }
@@ -66,6 +68,7 @@ enum CreateSecureLinkViewModelState {
         switch self {
         case .creationWithoutRestriction, .creationWithRestriction:
             310
+
         case .created:
             450
         }

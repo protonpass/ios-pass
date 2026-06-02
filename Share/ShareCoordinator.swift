@@ -154,6 +154,7 @@ private extension ShareCoordinator {
                 switch destination {
                 case let .createItem(_, type, _, _):
                     handleItemCreation(type: type)
+
                 default:
                     break
                 }
@@ -172,8 +173,10 @@ private extension ShareCoordinator {
                     } else {
                         hideLoadingHud()
                     }
+
                 case let .displayErrorBanner(error):
                     bannerManager.displayTopErrorMessage(error)
+
                 default:
                     return
                 }
@@ -189,7 +192,7 @@ private extension ShareCoordinator {
         showView(view)
     }
 
-    func parseSharedContent() async throws -> SharedContent {
+    func parseSharedContent() async -> SharedContent {
         guard let extensionItems = context?.inputItems as? [NSExtensionItem] else {
             assertionFailure("Failed to cast inputItems into NSExtensionItems")
             return .unknown
@@ -217,9 +220,8 @@ private extension ShareCoordinator {
                 }).value {
                     if let url = text.firstUrl() {
                         return parseUrl(url, .textWithUrl(text, url))
-                    } else {
-                        return .text(text)
                     }
+                    return .text(text)
                 }
             }
         }
@@ -292,6 +294,7 @@ private extension ShareCoordinator {
                     createEditItemViewModel = viewModel
                     let view = CreateEditNoteView(viewModel: viewModel)
                     viewController = UIHostingController(rootView: view)
+
                 case .login:
                     let urlString = content.url?.absoluteString
                     let creationType = ItemCreationType.login(title: title,

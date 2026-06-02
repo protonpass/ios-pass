@@ -116,11 +116,14 @@ private extension PaymentsManager {
                 case .transactionCompleted:
                     completion(.success(true))
                     paymentsV2.dismissPayments()
+
                 case .transactionCancelledByUser:
                     completion(.success(false)) // to be updated
+
                 case .mismatchTransactionIDs, .transactionProcessError, .unableToGetUserTransactionUUID,
                      .unknownError:
                     completion(.success(false)) // to be updated
+
                 default:
                     debugPrint("\(value) not handled")
                 }

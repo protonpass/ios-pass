@@ -40,8 +40,10 @@ private enum ContactCreationSteps: Hashable {
         switch self {
         case .first:
             #localized("Enter the address you want to email.")
+
         case .second:
             #localized("Proton Pass will generate a forwarding address (also referred to as reverse alias).")
+
         case let .third(title):
             #localized("Email this address and it will appear to be sent from %@.", title)
         }
@@ -90,6 +92,7 @@ private enum ContactCreationSteps: Hashable {
             .cornerRadius(12)
             .overlay(RoundedRectangle(cornerRadius: 12)
                 .stroke(PassColor.borderWeak, lineWidth: 1))
+
         case let .third(info):
             VStack(alignment: .leading, spacing: 0) {
                 VStack(alignment: .leading, spacing: 0) {
@@ -122,6 +125,7 @@ private enum ContactCreationSteps: Hashable {
             }
             .background(.white)
             .cornerRadius(12)
+
         default:
             EmptyView()
         }

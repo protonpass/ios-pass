@@ -186,6 +186,7 @@ private extension TotpLoginsViewModel {
         do {
             await MainActor.run { [weak self] in
                 guard let self else { return }
+                // swiftlint:disable:next redundant_self
                 self.results = .fetching
             }
 

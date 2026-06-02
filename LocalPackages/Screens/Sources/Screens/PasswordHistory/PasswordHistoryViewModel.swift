@@ -50,13 +50,12 @@ extension PasswordHistoryViewModel {
     func getClearPassword(for password: GeneratedPasswordUiModel) async -> String? {
         if case let .unmasked(clearPassword) = password.visibility {
             return clearPassword
-        } else {
-            do {
-                return try await repository.getClearPassword(id: password.id)
-            } catch {
-                self.error = error
-                return nil
-            }
+        }
+        do {
+            return try await repository.getClearPassword(id: password.id)
+        } catch {
+            self.error = error
+            return nil
         }
     }
 

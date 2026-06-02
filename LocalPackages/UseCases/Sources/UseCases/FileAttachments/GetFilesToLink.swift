@@ -54,6 +54,7 @@ public final class GetFilesToLink: GetFilesToLinkUseCase {
             switch file {
             case let .pending(pending):
                 toAdd.append(pending)
+
             case let .item(attached):
                 preservedAttachedFileIds.insert(attached.fileID)
             }

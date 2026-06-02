@@ -28,30 +28,43 @@ public extension FileGroup {
         switch self {
         case .image:
             PassIcon.fileTypeImage
+
         case .photo:
             PassIcon.fileTypePhoto
+
         case .vectorImage:
             PassIcon.fileTypeVectorImage
+
         case .video:
             PassIcon.fileTypeVideo
+
         case .audio:
             PassIcon.fileTypeAudio
+
         case .key:
             PassIcon.fileTypeKey
+
         case .text:
             PassIcon.fileTypeText
+
         case .calendar:
             PassIcon.fileTypeCalendar
+
         case .pdf:
             PassIcon.fileTypePdf
+
         case .word:
             PassIcon.fileTypeWord
+
         case .powerPoint:
             PassIcon.fileTypePowerPoint
+
         case .excel:
             PassIcon.fileTypeExcel
+
         case .document:
             PassIcon.fileTypeDocument
+
         case .unknown:
             PassIcon.fileTypeUnknown
         }

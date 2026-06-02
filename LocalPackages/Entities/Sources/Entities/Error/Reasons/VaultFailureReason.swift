@@ -33,12 +33,16 @@ public extension PassError {
             switch self {
             case .canNotDeleteLastVault:
                 "Can not delete last vault"
+
             case .noSelectedVault:
                 "No selected vault"
+
             case let .vaultNotEmpty(id):
                 "Vault not empty \"\(id)\""
+
             case .noEditableVault:
                 "No editable vault"
+
             case let .vaultsNotFound(userId):
                 "Vaults not found for userId \(userId)"
             }

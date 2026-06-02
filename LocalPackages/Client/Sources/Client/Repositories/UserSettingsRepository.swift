@@ -37,7 +37,7 @@ public actor UserSettingsRepository: UserSettingsRepositoryProtocol {
         self.remoteDatasource = remoteDatasource
     }
 
-    public func getSettings(for id: String) async -> UserSettings {
+    public func getSettings(for id: String) -> UserSettings {
         guard let data: Data = userDefaultService.value(forKey: UserDefaultsKey.settings, and: id),
               let settings = try? JSONDecoder().decode(UserSettings.self, from: data) else {
             return UserSettings.default

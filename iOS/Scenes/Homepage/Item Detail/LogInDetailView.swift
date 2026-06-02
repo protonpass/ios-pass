@@ -440,6 +440,7 @@ private extension LogInDetailView {
         case .fetching:
             ProgressView()
                 .tint(rowType.iconColor)
+
         case let .fetched(reusedItems):
             let reuseText: () -> Text = {
                 Text("\(reusedItems.count) other logins use this password")
@@ -464,6 +465,7 @@ private extension LogInDetailView {
                                             action: { viewModel.showDetail(for: $0) })
                 }
             }
+
         case let .error(error):
             RetryableErrorView(mode: .defaultHorizontal,
                                tintColor: PassColor.loginInteractionNormMajor2,

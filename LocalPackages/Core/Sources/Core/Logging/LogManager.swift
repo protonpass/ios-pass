@@ -107,7 +107,7 @@ public extension LogManager {
         saveAllLogs()
     }
 
-    func getLogEntries() async throws -> [LogEntry] {
+    func getLogEntries() throws -> [LogEntry] {
         guard fileExists else { return [] }
         let logContents = try String(contentsOf: url, encoding: .utf8)
         let lines = logContents.components(separatedBy: .newlines).filter { !$0.isEmpty }

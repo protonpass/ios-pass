@@ -52,6 +52,7 @@ public enum ShareSelection: Hashable, Sendable {
         switch self {
         case let .precise(selection):
             selection.isFolderSelected
+
         default: false
         }
     }
@@ -60,12 +61,16 @@ public enum ShareSelection: Hashable, Sendable {
         switch self {
         case .all:
             nil
+
         case let .precise(selection):
             selection.id
+
         case .sharedWithMe:
             "sharedWithMe"
+
         case .sharedByMe:
             "sharedByMe"
+
         case .trash:
             "trash"
         }
@@ -75,6 +80,7 @@ public enum ShareSelection: Hashable, Sendable {
         switch self {
         case .sharedByMe, .sharedWithMe:
             true
+
         default:
             false
         }

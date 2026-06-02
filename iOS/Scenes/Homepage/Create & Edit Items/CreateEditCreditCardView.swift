@@ -122,6 +122,7 @@ private extension CreateEditCreditCardView {
                 switch lastFocusedField {
                 case let .custom(value) where value?.type == .totp:
                     viewModel.handleScanResult(result, customField: value)
+
                 default:
                     return
                 }

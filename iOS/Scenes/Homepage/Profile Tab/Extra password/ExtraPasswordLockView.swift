@@ -51,13 +51,11 @@ struct ExtraPasswordLockView: View {
         VStack(alignment: .center) {
             Spacer()
 
-            if let logo = UIImage(named: "LaunchScreenPassLogo") {
-                Image(uiImage: logo)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: 88)
-                    .padding(.bottom, 32)
-            }
+            Image(.launchScreenPassLogo)
+                .resizable()
+                .scaledToFit()
+                .frame(maxWidth: 88)
+                .padding(.bottom, 32)
 
             Text("Enter your extra password")
                 .font(.title.bold())
@@ -121,10 +119,12 @@ private extension ExtraPasswordLockView {
         switch result {
         case .successful:
             onSuccess()
+
         case .wrongPassword:
             viewModel.extraPassword = ""
             showWrongPasswordError = true
             focused = true
+
         case .tooManyAttempts:
             onFailure()
         }

@@ -62,16 +62,22 @@ private extension Entities.WordSeparator {
         switch self {
         case .hyphens:
             .hyphens
+
         case .spaces:
             .spaces
+
         case .periods:
             .periods
+
         case .commas:
             .commas
+
         case .underscores:
             .underscores
+
         case .numbers:
             .numbers
+
         case .numbersAndSymbols:
             .numbersAndSymbols
         }

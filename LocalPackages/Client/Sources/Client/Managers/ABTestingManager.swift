@@ -55,11 +55,10 @@ public final class ABTestingManager: ABTestingManagerProtocol {
     var installationId: String {
         if let id = storage.string(forKey: installationIdKey) {
             return id
-        } else {
-            let newId = UUID().uuidString
-            storage.set(newId, forKey: installationIdKey)
-            return newId
         }
+        let newId = UUID().uuidString
+        storage.set(newId, forKey: installationIdKey)
+        return newId
     }
 
     /// Returns a deterministic variant for a given experiment.

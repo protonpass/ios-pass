@@ -30,6 +30,7 @@ public enum ItemThumbnailData: Equatable, Sendable {
         switch self {
         case let .favIcon(_, url, _):
             url
+
         default:
             nil
         }
@@ -39,8 +40,10 @@ public enum ItemThumbnailData: Equatable, Sendable {
         switch self {
         case let .icon(type):
             type
+
         case let .initials(type, _):
             type
+
         case let .favIcon(type, _, _):
             type
         }

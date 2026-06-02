@@ -49,8 +49,10 @@ public final class SetShareInviteVault: SetShareInviteVaultUseCase {
         switch element {
         case let .vault(createdVault):
             shareInviteService.setCurrentSelectedVaultItem(with: getVaultItemCount(for: createdVault.id))
+
         case .new:
             shareInviteService.setCurrentSelectedVaultItem(with: 1)
+
         default:
             return
         }

@@ -79,52 +79,76 @@ public enum TelemetryEventType: Sendable, Equatable, Codable {
         switch rawValue {
         case "autofill.display":
             self = .autofillDisplay
+
         case "autofill.triggered.source":
             self = .autofillTriggeredFromSource
+
         case "autofill.triggered.app":
             self = .autofillTriggeredFromApp
+
         case "search.triggered":
             self = .searchTriggered
+
         case "search.click":
             self = .searchClick
+
         case "2fa.creation":
             self = .twoFaCreation
+
         case "2fa.update":
             self = .twoFaUpdate
+
         case "passkey.create", "passkey.create_done":
             self = .passkeyCreate
+
         case "passkey.auth", "passkey.auth_done":
             self = .passkeyAuth
+
         case "passkey.display", "passkey.display_all_passkeys":
             self = .passkeyDisplay
+
         case "monitor.display.home", "pass_monitor.display_home":
             self = .monitorDisplayHome
+
         case "monitor.display.weak.passwords", "pass_monitor.display_weak_passwords":
             self = .monitorDisplayWeakPasswords
+
         case "monitor.display.reused.passwords", "pass_monitor.display_reused_passwords":
             self = .monitorDisplayReusedPasswords
+
         case "monitor.display.missing.2fa", "pass_monitor.display_missing_2fa":
             self = .monitorDisplayMissing2FA
+
         case "monitor.display.excluded.items", "pass_monitor.display_excluded_items":
             self = .monitorDisplayExcludedItems
+
         case "monitor.display.dark.web.monitoring", "pass_monitor.display_dark_web_monitoring":
             self = .monitorDisplayDarkWebMonitoring
+
         case "monitor.display.monitoring.proton.addresses", "pass_monitor.display_monitoring_proton_addresses":
             self = .monitorDisplayMonitoringProtonAddresses
+
         case "monitor.display.monitoring.email.aliases", "pass_monitor.display_monitoring_email_aliases":
             self = .monitorDisplayMonitoringEmailAliases
+
         case "monitor.add.custom.email.from.suggestion", "pass_monitor.add_custom_email_from_suggestion":
             self = .monitorAddCustomEmailFromSuggestion
+
         case "monitor.item.detail.from.weak.password", "pass_monitor.item_detail_from_weak_password":
             self = .monitorItemDetailFromWeakPassword
+
         case "monitor.item.detail.from.missing.2fa", "pass_monitor.item_detail_from_missing_2fa":
             self = .monitorItemDetailFromMissing2FA
+
         case "monitor.item.detail.from.reused.password", "pass_monitor.item_detail_from_reused_password":
             self = .monitorItemDetailFromReusedPassword
+
         case "multi.account.add.account", "pass_multi_account.add_account":
             self = .multiAccountAddAccount
+
         case "multi.account.remove.account", "pass_multi_account.remove_account":
             self = .multiAccountRemoveAccount
+
         default:
             if let crudEvent = Self.crudEvent(rawValue: rawValue) {
                 self = crudEvent
@@ -144,12 +168,16 @@ public enum TelemetryEventType: Sendable, Equatable, Codable {
         switch eventType {
         case "create":
             return .create(itemType)
+
         case "read":
             return .read(itemType)
+
         case "update":
             return .update(itemType)
+
         case "delete":
             return .delete(itemType)
+
         default:
             return nil
         }
@@ -160,80 +188,118 @@ public enum TelemetryEventType: Sendable, Equatable, Codable {
         switch self {
         case .create:
             "item.creation"
+
         case .read:
             "item.read"
+
         case .update:
             "item.update"
+
         case .delete:
             "item.deletion"
+
         case .autofillDisplay:
             "autofill.display"
+
         case .autofillTriggeredFromApp, .autofillTriggeredFromSource:
             "autofill.triggered"
+
         case .searchClick:
             "search.click"
+
         case .searchTriggered:
             "search.triggered"
+
         case .twoFaCreation:
             "2fa.creation"
+
         case .twoFaUpdate:
             "2fa.update"
+
         case .passkeyCreate:
             "passkey.create_done"
+
         case .passkeyAuth:
             "passkey.auth_done"
+
         case .passkeyDisplay:
             "passkey.display_all_passkeys"
+
         case .monitorDisplayHome:
             "pass_monitor.display_home"
+
         case .monitorDisplayWeakPasswords:
             "pass_monitor.display_weak_passwords"
+
         case .monitorDisplayReusedPasswords:
             "pass_monitor.display_reused_passwords"
+
         case .monitorDisplayMissing2FA:
             "pass_monitor.display_missing_2fa"
+
         case .monitorDisplayExcludedItems:
             "pass_monitor.display_excluded_items"
+
         case .monitorDisplayDarkWebMonitoring:
             "pass_monitor.display_dark_web_monitoring"
+
         case .monitorDisplayMonitoringProtonAddresses:
             "pass_monitor.display_monitoring_proton_addresses"
+
         case .monitorDisplayMonitoringEmailAliases:
             "pass_monitor.display_monitoring_email_aliases"
+
         case .monitorAddCustomEmailFromSuggestion:
             "pass_monitor.add_custom_email_from_suggestion"
+
         case .monitorItemDetailFromWeakPassword:
             "pass_monitor.item_detail_from_weak_password"
+
         case .monitorItemDetailFromMissing2FA:
             "pass_monitor.item_detail_from_missing_2fa"
+
         case .monitorItemDetailFromReusedPassword:
             "pass_monitor.item_detail_from_reused_password"
+
         case .multiAccountAddAccount:
             "pass_multi_account.add_account"
+
         case .multiAccountRemoveAccount:
             "pass_multi_account.remove_account"
+
         case .notificationDisplay:
             "pass_notification.display_notification"
+
         case .notificationChangeStatus:
             "pass_notification.change_notification_status"
+
         case .notificationCtaClick:
             "pass_notification.notification_cta_click"
+
         case .fileUploaded:
             "pass_file_attachment.file_uploaded"
+
         case .onboardingUpsellCtaClicked:
             "onboarding_upsell_cta_clicked"
+
         case .onboardingUpsellSubscribed:
             "onboarding_upsell_subscribed"
+
         case .onboardingUpsellSkipped:
             "onboarding_upsell_skipped"
+
         case .onboardingBiometricsEnabled:
             "onboarding_biometrics_enabled"
+
         case .onboardingBiometricsSkipped:
             "onboarding_biometrics_skipped"
+
         case .onboardingPassAsAutofillProviderEnabled:
             "onboarding_pass_as_autofill_provider_enabled"
+
         case .onboardingPassAsAutofillProviderSkipped:
             "onboarding_pass_as_autofill_provider_skipped"
+
         case .onboardingAliasVideoOpened:
             "onboarding_alias_video_opened"
         }

@@ -77,10 +77,13 @@ private extension SharedContent {
         switch self {
         case let .url(url):
             url.absoluteString
+
         case let .text(text):
             text
+
         case let .textWithUrl(text, _):
             text
+
         default:
             ""
         }

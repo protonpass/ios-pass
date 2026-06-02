@@ -31,10 +31,13 @@ public enum ItemTypeFilterOption: Sendable, Equatable, Hashable, RawRepresentabl
         switch self {
         case .all:
             -1
+
         case let .precise(type):
             type.rawValue
+
         case .itemSharedWithMe:
             300
+
         case .itemSharedByMe:
             301
         }
@@ -52,10 +55,13 @@ public enum ItemTypeFilterOption: Sendable, Equatable, Hashable, RawRepresentabl
         switch rawValue {
         case ItemTypeFilterOption.all.rawValue:
             self = .all
+
         case ItemTypeFilterOption.itemSharedWithMe.rawValue:
             self = .itemSharedWithMe
+
         case ItemTypeFilterOption.itemSharedByMe.rawValue:
             self = .itemSharedByMe
+
         default:
             if let type = ItemContentType(rawValue: rawValue) {
                 self = .precise(type)

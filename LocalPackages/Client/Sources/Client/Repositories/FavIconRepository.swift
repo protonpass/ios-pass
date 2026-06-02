@@ -83,7 +83,7 @@ public extension FavIconRepository {
     /// Parameters:
     ///   - domain: The domain for which to fetch the favicon.
     /// Returns: The fetched `FavIcon` object, or `nil` if the operation fails or is cancelled.
-    func getIcon(for domain: String) async throws -> FavIcon? {
+    func getIcon(for domain: String) async -> FavIcon? {
         guard !domain.isEmpty else { return nil }
 
         // we have the data, no need to go to the network
@@ -110,10 +110,9 @@ public extension FavIconRepository {
 
                 cache[domain] = .loaded(fav)
                 return fav
-            } else {
-                cache[domain] = nil
-                return nil
             }
+            cache[domain] = nil
+            return nil
         } catch {
             return nil
         }
@@ -129,9 +128,8 @@ public extension FavIconRepository {
             let encryptedData = try Data(contentsOf: url)
             if encryptedData.isEmpty {
                 return .init()
-            } else {
-                return try? symmetricKey.decrypt(encryptedData)
             }
+            return try? symmetricKey.decrypt(encryptedData)
         }
 
         var icons = [FavIcon]()
@@ -192,6 +190,7 @@ private extension FavIconRepository {
             let dataToWrite: Data = switch result {
             case let .positive(data):
                 data
+
             case .negative:
                 .init()
             }

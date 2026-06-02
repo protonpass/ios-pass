@@ -33,7 +33,7 @@ public extension ObservableObject {
         where T.ObjectWillChangePublisher == ObservableObjectPublisher {
         objectWillChange
             .receive(on: queue)
-            .sink { [unowned another] _ in
+            .sink { [unowned another] _ in // swiftlint:disable:this unowned_variable_capture
                 another.objectWillChange.send()
             }
             .store(in: &cancellable)

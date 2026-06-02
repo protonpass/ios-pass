@@ -46,38 +46,55 @@ public extension PassError {
             switch self {
             case .noPngData:
                 "No PNG data"
+
             case .noJpegData:
                 "No JPEG data"
+
             case let .noDataFound(url):
                 "No data found \(url.absoluteString)"
+
             case let .noDataForChunk(id):
                 "No data for chunk \(id)"
+
             case let .noChunkId(fileId):
                 "No chunk ID for file \(fileId)"
+
             case .failedToProcessPickedPhotos:
                 "Failed to process picked photos"
+
             case .failedToEncryptFile:
                 "Failed to encrypt file"
+
             case .failedToUploadMissingRemoteId:
                 "Failed to upload because of missing remote ID"
+
             case let .failedToDownloadMissingFileName(id):
                 "Failed to download because of missing file name \(id)"
+
             case let .failedToDownloadMissingDecryptedFileKey(id):
                 "Failed to download because of missing decrypted file key \(id)"
+
             case .failedToDownloadNoFetchedFiles:
                 "Failed to download because of missing fetched files"
+
             case .failedToAttachMissingRemoteId:
                 "Failed to attach file to an item because of missing remote ID"
+
             case .failedToUpdateMissingMimeType:
                 "Failed to update because of missing MIME type"
+
             case let .failedToUpload(code):
                 "Failed to upload (\(code))"
+
             case let .fileTooLarge(size):
                 "File too large (\(size) bytes)"
+
             case let .missingItemKey(rotation):
                 "Missing item key rotation \(rotation)"
+
             case let .missingFile(id):
                 "Missing file \(id)"
+
             case .emptyFile:
                 "Empty file"
             }

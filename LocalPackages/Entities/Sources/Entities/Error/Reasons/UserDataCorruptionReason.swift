@@ -33,10 +33,13 @@ public extension PassError {
             switch self {
             case .noAddresses:
                 "No addresses"
+
             case .noAddressKeys:
                 "No address keys"
+
             case .failedToGetAddressKeyPassphrase:
                 "Failed to get address key passphrase"
+
             case .incompleteUserData:
                 "Incomplete user data"
             }

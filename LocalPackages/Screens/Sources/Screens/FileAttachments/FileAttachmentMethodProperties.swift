@@ -29,10 +29,13 @@ public extension FileAttachmentMethod {
         switch self {
         case .takePhoto:
             "Take a photo"
+
         case .scanDocuments:
             "Scan documents"
+
         case .choosePhotoOrVideo:
             "Choose a photo or video"
+
         case .chooseFile:
             "Choose a file"
         }
@@ -42,10 +45,13 @@ public extension FileAttachmentMethod {
         switch self {
         case .takePhoto:
             IconProvider.camera
+
         case .scanDocuments:
             PassIcon.documentScan
+
         case .choosePhotoOrVideo:
             PassIcon.images
+
         case .chooseFile:
             IconProvider.fileEmpty
         }

@@ -30,13 +30,17 @@ extension UpsellEntry {
         switch self {
         case .generic, .missing2fa, .secureLink, .sentinel:
             #localized("Unlock advanced security features and detailed logs to safeguard your online presence.")
+
         case .darkWebMonitorNoBreach:
             #localized("Dark Web Monitoring is available with a paid plan. Upgrade for immediate access.")
+
         case .darkWebMonitorBreach:
             // swiftlint:disable:next line_length
             #localized("Your personal data was leaked by an online service in a data breach. Upgrade to view full details and get recommended actions.")
+
         case .aliasManagement:
             #localized("Advanced alias management is available with Pass Plus. Upgrade for immediate access.")
+
         case .fileAttachments:
             #localized("File attachments are available with Pass Plus. Upgrade for immediate access.")
         }
@@ -57,18 +61,22 @@ extension UpsellEntry {
             upsellElements.append(UpsellElement(icon: IconProvider.link,
                                                 title: #localized("Secure links"),
                                                 color: PassColor.interactionNormMajor2))
+
         case .darkWebMonitorNoBreach:
             upsellElements.append(UpsellElement(icon: PassIcon.shield2,
                                                 title: #localized("Dark Web Monitoring"),
                                                 color: PassColor.interactionNormMajor2))
+
         case .aliasManagement:
             upsellElements.append(UpsellElement(icon: IconProvider.mailbox,
                                                 title: #localized("Advanced alias management"),
                                                 color: PassColor.interactionNormMajor2))
+
         case .fileAttachments:
             upsellElements.append(UpsellElement(icon: IconProvider.mailbox,
                                                 title: #localized("File attachments"),
                                                 color: PassColor.interactionNormMajor2))
+
         default:
             break
         }

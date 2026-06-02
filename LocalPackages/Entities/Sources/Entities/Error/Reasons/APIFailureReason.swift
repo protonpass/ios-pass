@@ -30,8 +30,10 @@ public extension PassError {
             switch self {
             case .noApiServiceLinkedToUserId:
                 "Could not find any apiservice linked to the user id"
+
             case let .invalidApiHost(url):
                 "Invalid API host \(url)"
+
             case .errorOrDataExpected:
                 "Error or data expected"
             }

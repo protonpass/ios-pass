@@ -28,6 +28,7 @@ public enum Invite: Equatable, Hashable, Sendable {
         switch self {
         case let .user(invite):
             invite.inviteToken
+
         case let .group(invite):
             invite.inviteToken
         }
@@ -37,6 +38,7 @@ public enum Invite: Equatable, Hashable, Sendable {
         switch self {
         case let .user(invite):
             invite.inviteType
+
         case let .group(invite):
             .init(rawValue: invite.targetType) ?? .unknown
         }
@@ -46,6 +48,7 @@ public enum Invite: Equatable, Hashable, Sendable {
         switch self {
         case let .user(invite):
             invite.inviterEmail
+
         case let .group(invite):
             invite.inviterEmail
         }
@@ -55,6 +58,7 @@ public enum Invite: Equatable, Hashable, Sendable {
         switch self {
         case let .user(invite):
             invite.invitedEmail
+
         case let .group(invite):
             invite.invitedEmail
         }
@@ -68,6 +72,7 @@ public enum Invite: Equatable, Hashable, Sendable {
         switch self {
         case let .user(invite):
             invite.vaultData
+
         case let .group(invite):
             invite.vaultData
         }
@@ -77,6 +82,7 @@ public enum Invite: Equatable, Hashable, Sendable {
         switch self {
         case let .user(invite):
             invite.keys
+
         case let .group(invite):
             invite.keys
         }
@@ -86,6 +92,7 @@ public enum Invite: Equatable, Hashable, Sendable {
         switch self {
         case let .user(invite):
             invite.fromNewUser
+
         default:
             false
         }
@@ -95,6 +102,7 @@ public enum Invite: Equatable, Hashable, Sendable {
         switch self {
         case let .user(invite):
             invite.targetID
+
         case let .group(invite):
             invite.targetID
         }

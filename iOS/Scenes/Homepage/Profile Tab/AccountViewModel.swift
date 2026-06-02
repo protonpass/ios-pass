@@ -189,6 +189,7 @@ extension AccountViewModel {
                     let message = #localized("Extra password disabled")
                     router.display(element: .infosMessage(message))
                     try await preferencesManager.updateUserPreferences(\.extraPasswordEnabled, value: false)
+
                 case .tooManyAttempts, .wrongPassword:
                     let errorMessage = #localized("Wrong extra password")
                     router.display(element: .errorMessage(errorMessage))
@@ -293,6 +294,7 @@ private extension AccountViewModel {
                      Or completed, and sheet is being dismissed.
                     """)
             }
+
         case let .failure(error):
             logger.error(error)
         }

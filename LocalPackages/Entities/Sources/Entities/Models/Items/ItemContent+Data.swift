@@ -34,18 +34,25 @@ public enum ItemContentData: Sendable, Equatable, Hashable {
         switch self {
         case .alias:
             .alias
+
         case .login:
             .login
+
         case .note:
             .note
+
         case .creditCard:
             .creditCard
+
         case .identity:
             .identity
+
         case .sshKey:
             .sshKey
+
         case .wifi:
             .wifi
+
         case .custom:
             .custom
         }

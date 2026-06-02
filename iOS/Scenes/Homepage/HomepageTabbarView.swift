@@ -35,12 +35,16 @@ enum HomepageTab: String, CaseIterable, Hashable {
         switch self {
         case .items:
             IconProvider.listBullets
+
         case .itemCreation:
             IconProvider.plus
+
         case .passMonitor:
             IconProvider.shield
+
         case .profile:
             IconProvider.user
+
         case .search:
             UIImage(systemName: "magnifyingglass") ?? IconProvider.magnifier
         }
@@ -50,12 +54,16 @@ enum HomepageTab: String, CaseIterable, Hashable {
         switch self {
         case .items:
             #localized("Homepage tab")
+
         case .itemCreation:
             #localized("Create new item button")
+
         case .passMonitor:
             #localized("Pass Monitor tab")
+
         case .profile:
             #localized("Profile tab")
+
         case .search:
             #localized("Search tab")
         }
@@ -71,25 +79,30 @@ private extension MonitorState {
                 selected ?
                     PassIcon.tabMonitorActiveNoBreachesSelected :
                     PassIcon.tabMonitorActiveNoBreachesUnselected
+
             case .noBreachesButWeakOrReusedPasswords:
                 selected ?
                     PassIcon.tabMonitorActiveNoBreachesWeakReusedPasswordsSelected :
                     PassIcon.tabMonitorActiveNoBreachesWeakReusedPasswordsUnselected
+
             case .breachesFound:
                 selected ?
                     PassIcon.tabMonitorActiveBreachesFoundSelected :
                     PassIcon.tabMonitorActiveBreachesFoundUnselected
             }
+
         case let .inactive(state):
             switch state {
             case .noBreaches:
                 selected ?
                     PassIcon.tabMonitorInactiveNoBreachesSelected :
                     PassIcon.tabMonitorInactiveNoBreachesUnselected
+
             case .noBreachesButWeakOrReusedPasswords:
                 selected ?
                     PassIcon.tabMonitorInactiveNoBreachesWeakReusedPasswordsSelected :
                     PassIcon.tabMonitorInactiveNoBreachesWeakReusedPasswordsUnselected
+
             case .breachesFound:
                 selected ?
                     PassIcon.tabMonitorInactiveBreachesFoundSelected :
@@ -358,8 +371,10 @@ extension HomepageTabBarController {
                 let (image, selectedImage): (UIImage, UIImage) = switch plan.planType {
                 case .free:
                     (IconProvider.user, IconProvider.user)
+
                 case .business, .plus:
                     (PassIcon.tabProfilePaidUnselected, PassIcon.tabProfilePaidSelected)
+
                 case .trial:
                     (PassIcon.tabProfileTrialUnselected, PassIcon.tabProfileTrialSelected)
                 }
@@ -410,6 +425,7 @@ extension HomepageTabBarController: UITabBarControllerDelegate {
             switch tab {
             case .itemCreation:
                 return false
+
             default:
                 return true
             }

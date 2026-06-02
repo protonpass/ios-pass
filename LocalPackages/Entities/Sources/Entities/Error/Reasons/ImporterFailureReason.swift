@@ -32,10 +32,13 @@ public extension PassError {
             switch self {
             case .missingDatasource:
                 "Datasource is not set"
+
             case .noCsvUrl:
                 "No URL for CSV file"
+
             case .noLoginsFound:
                 "No logins found"
+
             case .noCsvContent:
                 "No CSV content"
             }

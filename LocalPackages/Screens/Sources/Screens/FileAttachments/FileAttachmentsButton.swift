@@ -80,6 +80,7 @@ struct FileAttachmentsButton: View {
                                       if let url = urls.first {
                                           handler.handleAttachment(url)
                                       }
+
                                   case let .failure(error):
                                       handler.handleAttachmentError(error)
                                   }
@@ -143,12 +144,15 @@ struct FileAttachmentsButton: View {
             checkCameraPermission {
                 showCamera.toggle()
             }
+
         case .scanDocuments:
             checkCameraPermission {
                 showDocScanner.toggle()
             }
+
         case .choosePhotoOrVideo:
             showPhotosPicker.toggle()
+
         case .chooseFile:
             showFileImporter.toggle()
         }
@@ -158,8 +162,10 @@ struct FileAttachmentsButton: View {
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized, .notDetermined:
             onSuccess()
+
         case .denied, .restricted:
             showCameraUnavailable.toggle()
+
         @unknown default:
             showCameraUnavailable.toggle()
         }

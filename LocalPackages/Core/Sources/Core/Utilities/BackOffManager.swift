@@ -75,24 +75,34 @@ enum BackOffStride: CaseIterable {
         switch self {
         case .zeroSecond:
             0
+
         case .oneSecond:
             1
+
         case .twoSeconds:
             2
+
         case .fiveSeconds:
             5
+
         case .tenSeconds:
             10
+
         case .thirtySeconds:
             30
+
         case .oneMinute:
             60
+
         case .twoMinutes:
             2 * 60
+
         case .fiveMinutes:
             5 * 60
+
         case .tenMinutes:
             10 * 60
+
         case .thirtyMinutes:
             30 * 60
         }
@@ -102,8 +112,7 @@ enum BackOffStride: CaseIterable {
         guard failureCount > 0 else { return .zeroSecond }
         if failureCount >= BackOffStride.allCases.count {
             return BackOffStride.allCases.last ?? .thirtyMinutes
-        } else {
-            return BackOffStride.allCases[safeIndex: failureCount] ?? .zeroSecond
         }
+        return BackOffStride.allCases[safeIndex: failureCount] ?? .zeroSecond
     }
 }

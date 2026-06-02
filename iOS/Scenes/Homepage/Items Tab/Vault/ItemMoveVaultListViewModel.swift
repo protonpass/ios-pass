@@ -56,10 +56,13 @@ final class ItemMoveVaultListViewModel: ObservableObject, DeinitPrintable {
         let fromShareId: String? = switch context {
         case let .singleItem(item):
             item.shareId
+
         case let .allItems(vault):
             vault.shareId
+
         case let .allItemsInFolder(folder):
             folder.shareId
+
         case .selectedItems:
             nil
         }
@@ -138,14 +141,17 @@ private extension ItemMoveVaultListViewModel {
         case let .singleItem(item):
             .successMessage(singleItemMessage(destination: destination),
                             config: .dismissAndRefresh(with: .update(item.type)))
+
         case let .allItems(fromVault):
             .successMessage(allItemsMessage(fromVaultName: fromVault.vaultName ?? "",
                                             destination: destination),
                             config: .dismissAndRefresh)
+
         case let .allItemsInFolder(folder):
             .successMessage(allItemsInFolderMessage(fromFolderName: folder.content.name,
                                                     destination: destination),
                             config: .dismissAndRefresh)
+
         case let .selectedItems(items):
             .successMessage(selectedItemsMessage(count: items.count, destination: destination),
                             config: .dismissAndRefresh)
@@ -163,6 +169,7 @@ private extension ItemMoveVaultListViewModel {
         switch destination {
         case let .vault(name):
             #localized("Items from « %@ » moved to vault « %@ »", fromVaultName, name)
+
         case let .folder(name):
             #localized("Items from « %@ » moved to folder « %@ »", fromVaultName, name)
         }
@@ -172,6 +179,7 @@ private extension ItemMoveVaultListViewModel {
         switch destination {
         case let .vault(name):
             #localized("Items from folder « %@ » moved to vault « %@ »", fromFolderName, name)
+
         case let .folder(name):
             #localized("Items from folder « %@ » moved to folder « %@ »", fromFolderName, name)
         }

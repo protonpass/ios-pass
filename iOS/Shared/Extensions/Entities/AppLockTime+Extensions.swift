@@ -27,16 +27,22 @@ extension AppLockTime: @retroactive CustomStringConvertible {
         switch self {
         case .immediately:
             #localized("Immediately")
+
         case .oneMinute:
             #localized("After %lld minute(s)", 1)
+
         case .twoMinutes:
             #localized("After %lld minute(s)", 2)
+
         case .fiveMinutes:
             #localized("After %lld minute(s)", 5)
+
         case .tenMinutes:
             #localized("After %lld minute(s)", 10)
+
         case .oneHour:
             #localized("After %lld hour(s)", 1)
+
         case .fourHours:
             #localized("After %lld hour(s)", 4)
         }

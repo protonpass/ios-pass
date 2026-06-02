@@ -195,16 +195,22 @@ public extension Organization.Settings {
         switch forceLockSeconds {
         case 0:
             nil
+
         case 1...60:
             .oneMinute
+
         case 61...120:
             .twoMinutes
+
         case 121...300:
             .fiveMinutes
+
         case 301...600:
             .tenMinutes
+
         case 601...3_600:
             .oneHour
+
         default:
             .fourHours
         }

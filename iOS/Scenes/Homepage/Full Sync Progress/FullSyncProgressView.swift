@@ -37,6 +37,7 @@ struct FullSyncProgressView: View {
                 realBody
                     .background(PassColor.backgroundNorm)
             }
+
         case .logIn:
             realBody
         }

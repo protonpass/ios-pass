@@ -27,6 +27,7 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct SecurityWeaknessDetailView: View {
+    // swiftlint:disable:next private_swiftui_state
     @StateObject var viewModel: SecurityWeaknessDetailViewModel
     @State private var collapsedSections = Set<SecuritySectionHeaderKey>()
 
@@ -214,6 +215,7 @@ private extension SecurityWeakness {
         switch self {
         case .excludedItems, .missing2FA, .weakPasswords:
             false
+
         default:
             true
         }

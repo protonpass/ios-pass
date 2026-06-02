@@ -37,6 +37,7 @@ public enum SearchResultEither: HighlightableText, Hashable {
         switch self {
         case let .notMatched(text):
             text
+
         case let .matched(searchResult):
             searchResult.matchedPhrase
         }
@@ -46,6 +47,7 @@ public enum SearchResultEither: HighlightableText, Hashable {
         switch self {
         case .notMatched:
             nil
+
         case let .matched(searchResult):
             searchResult.matchedWord
         }
@@ -55,6 +57,7 @@ public enum SearchResultEither: HighlightableText, Hashable {
         switch self {
         case .notMatched:
             true
+
         case let .matched(searchResult):
             searchResult.isLeadingPhrase
         }
@@ -64,6 +67,7 @@ public enum SearchResultEither: HighlightableText, Hashable {
         switch self {
         case .notMatched:
             true
+
         case let .matched(searchResult):
             searchResult.isTrailingPhrase
         }

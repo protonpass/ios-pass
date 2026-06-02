@@ -26,8 +26,10 @@ extension ShareRole {
         switch self {
         case .read:
             #localized("Viewer")
+
         case .write:
             #localized("Editor")
+
         case .manager:
             managerAsAdmin ? #localized("Manager") : #localized("Admin")
         }
@@ -37,9 +39,11 @@ extension ShareRole {
         switch self {
         case .read:
             isItemSharing ? #localized("Can view this item") : #localized("Can view items in this vault")
+
         case .write:
             isItemSharing ? #localized("Can edit and delete this item.") :
                 #localized("Can create, edit, delete and export items in this vault")
+
         case .manager:
             isItemSharing ? #localized("Can grant and revoke access to the item.") :
                 #localized("Can grant and revoke access to this vault")

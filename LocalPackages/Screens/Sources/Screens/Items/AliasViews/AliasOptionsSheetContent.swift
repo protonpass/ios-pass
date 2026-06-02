@@ -64,6 +64,7 @@ public struct AliasOptionsSheetContent: View {
                                          viewModel.dismissMailboxTip(completion: onAddMailbox)
                                      },
                                      onDismissTip: { viewModel.dismissMailboxTip() })
+
             case let .suffix(suffixSelection):
                 SuffixSelectionView(selection: suffixSelection,
                                     showTip: viewModel.showDomainTip,
@@ -96,6 +97,7 @@ private final class AliasOptionsSheetContentViewModel: ObservableObject {
         let elementCount = switch state {
         case let .mailbox(selection, _):
             selection.wrappedValue.allUserMailboxes.count
+
         case let .suffix(selection):
             selection.wrappedValue.suffixes.count
         }
@@ -103,6 +105,7 @@ private final class AliasOptionsSheetContentViewModel: ObservableObject {
         let showTip = switch state {
         case .mailbox:
             showMailboxTip
+
         case .suffix:
             showDomainTip
         }

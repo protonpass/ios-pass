@@ -110,6 +110,7 @@ private struct CreateItemButton: View {
         let foregroundColor: Color = switch type {
         case .custom:
             PassColor.textNorm
+
         default:
             type.normColor
         }
@@ -117,6 +118,7 @@ private struct CreateItemButton: View {
         let backgroundColor: Color = switch type {
         case .custom:
             PassColor.customItemBackground
+
         default:
             type.normMinor1Color
         }

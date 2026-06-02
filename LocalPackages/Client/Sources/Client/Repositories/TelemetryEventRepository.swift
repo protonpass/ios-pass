@@ -196,10 +196,9 @@ public actor TelemetryScheduler: TelemetrySchedulerProtocol {
         let currentDate = currentDateProvider.getCurrentDate()
         if let threshold = thresholdProvider.getThreshold() {
             return currentDate > Date(timeIntervalSince1970: threshold)
-        } else {
-            try await randomNextThreshold()
-            return false
         }
+        try await randomNextThreshold()
+        return false
     }
 
     public func randomNextThreshold() async throws {

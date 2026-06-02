@@ -53,9 +53,8 @@ public final class CreateAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCa
                                                      destinationFolderId: nil)
                 await appContentManager.refresh(userId: userId)
                 return vault
-            } else {
-                throw PassError.sharing(.failedToCreateNewVault)
             }
+            throw PassError.sharing(.failedToCreateNewVault)
         } catch {
             throw PassError.sharing(.failedToCreateNewVault)
         }

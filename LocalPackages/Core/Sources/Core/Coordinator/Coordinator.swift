@@ -181,6 +181,7 @@ enum CoordinatorType {
         switch self {
         case let .navigation(navigationController):
             navigationController
+
         case let .split(splitViewController):
             splitViewController
         }
@@ -218,6 +219,7 @@ open class Coordinator: CoordinatorProtocol {
         switch type {
         case let .navigation(navigationController):
             navigationController.setViewControllers([viewController], animated: true)
+
         case let .split(splitViewController):
             let primaryNavController = UINavigationController(rootViewController: viewController)
             primaryNavController.isNavigationBarHidden = true
@@ -236,6 +238,7 @@ open class Coordinator: CoordinatorProtocol {
             switch type {
             case let .navigation(navigationController):
                 navigationController.pushViewController(viewController, animated: animated)
+
             case let .split(splitViewController):
                 // Embed in a `UINavigationController` so that `splitViewController` replaces the secondary view
                 // instead of pushing it into the navigation stack of the current secondary view controller.
@@ -256,18 +259,21 @@ open class Coordinator: CoordinatorProtocol {
             switch type {
             case let .navigation(navigationController):
                 navigationController.popViewController(animated: animated)
+
             case let .split(splitViewController):
                 // Show primary view controller if it's hidden
                 // Hide primary view controller if it's visible
                 switch splitViewController.displayMode {
                 case .secondaryOnly:
                     splitViewController.show(.primary)
+
                 case .oneBesideSecondary, .oneOverSecondary:
                     if splitViewController.isCollapsed {
                         splitViewController.show(.primary)
                     } else {
                         splitViewController.hide(.primary)
                     }
+
                 default:
                     break
                 }
@@ -281,6 +287,7 @@ open class Coordinator: CoordinatorProtocol {
         switch type {
         case .navigation:
             true
+
         case let .split(splitViewController):
             splitViewController.isCollapsed
         }

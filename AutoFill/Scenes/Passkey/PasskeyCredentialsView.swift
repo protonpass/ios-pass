@@ -39,6 +39,7 @@ struct PasskeyCredentialsView: View {
             case .loading:
                 ProgressView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+
             case .loaded:
                 LoginItemsView(searchableItems: viewModel.searchableItems,
                                uiModels: viewModel.items,
@@ -57,6 +58,7 @@ struct PasskeyCredentialsView: View {
                                    }
                                },
                                onCancel: { viewModel.handleCancel() })
+
             case let .error(error):
                 RetryableErrorView(error: error,
                                    onRetry: { Task { await viewModel.fetchItems() } })

@@ -47,8 +47,10 @@ private struct TrashItemsView: View {
         switch viewModel.state {
         case .loading:
             ProgressView()
+
         case let .loaded(uiModels):
             vaultList(uiModels)
+
         case let .error(error):
             RetryableErrorView(error: error, onRetry: viewModel.loadVaults)
         }

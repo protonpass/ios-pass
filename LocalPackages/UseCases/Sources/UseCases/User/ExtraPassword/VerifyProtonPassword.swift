@@ -44,7 +44,7 @@ public final class VerifyProtonPassword: @unchecked Sendable, VerifyProtonPasswo
     private let doh: any DoHInterface
     private let appVer: String
 
-    private var safeAuthSessionInvalidatedDelegate: (any AuthSessionInvalidatedDelegate)?
+    private weak var safeAuthSessionInvalidatedDelegate: (any AuthSessionInvalidatedDelegate)?
     private let queue = DispatchQueue(label: "me.proton.pass.verifyProtonPassword")
     // Required by `AuthDelegate`
     // swiftlint:disable:next identifier_name
@@ -81,11 +81,13 @@ public final class VerifyProtonPassword: @unchecked Sendable, VerifyProtonPasswo
                 switch result {
                 case .success:
                     continuation.resume(returning: true)
+
                 case let .failure(error):
                     switch error {
                     // Upon testing`wrongPassword` case is not returned by this method but just in case
                     case .wrongPassword:
                         continuation.resume(returning: false)
+
                     case let .networkingError(networkError):
                         if networkError.httpCode == 422,
                            networkError.responseCode == 8_002 {
@@ -93,6 +95,7 @@ public final class VerifyProtonPassword: @unchecked Sendable, VerifyProtonPasswo
                         } else {
                             continuation.resume(throwing: networkError)
                         }
+
                     default:
                         continuation.resume(throwing: error)
                     }

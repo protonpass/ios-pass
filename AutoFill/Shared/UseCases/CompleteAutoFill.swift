@@ -80,7 +80,7 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
                  identifiers: [ASCredentialServiceIdentifier],
                  credential: any ASAuthorizationCredential,
                  itemContent: ItemContent,
-                 context: ASCredentialProviderExtensionContext) async throws {
+                 context: ASCredentialProviderExtensionContext) async {
         defer {
             resetFactory()
         }

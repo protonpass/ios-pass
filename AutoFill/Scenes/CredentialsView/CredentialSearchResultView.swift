@@ -102,8 +102,10 @@ private final class CredentialSearchResultViewModel: ObservableObject {
             switch (lhs, rhs) {
             case (.loaded, .loaded), (.loading, .loading):
                 true
+
             case let (.error(lError), .error(rError)):
                 lError.localizedDescription == rError.localizedDescription
+
             default:
                 false
             }

@@ -258,6 +258,7 @@ private extension AliasSyncConfigurationView {
         case .domain:
             // +1 for "Not selected" option
             OptionRowHeight.compact.value * CGFloat(viewModel.domains.count + 1) + 50
+
         case .vault:
             OptionRowHeight.medium.value * CGFloat(viewModel.vaults.count) + 50
         }

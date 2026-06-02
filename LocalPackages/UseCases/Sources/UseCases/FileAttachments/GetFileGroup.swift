@@ -50,30 +50,43 @@ private extension PassRustCore.FileGroup {
         switch self {
         case .image:
             .image
+
         case .photo:
             .photo
+
         case .vectorImage:
             .vectorImage
+
         case .video:
             .video
+
         case .audio:
             .audio
+
         case .key:
             .key
+
         case .text:
             .text
+
         case .calendar:
             .calendar
+
         case .pdf:
             .pdf
+
         case .word:
             .word
+
         case .powerPoint:
             .powerPoint
+
         case .excel:
             .excel
+
         case .document:
             .document
+
         case .unknown:
             .unknown
         }

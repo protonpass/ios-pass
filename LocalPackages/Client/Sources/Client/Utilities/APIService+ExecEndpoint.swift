@@ -72,9 +72,8 @@ extension APIService {
         } catch {
             if Task.isCancelled {
                 throw CancellationError()
-            } else {
-                throw error
             }
+            throw error
         }
     }
 
@@ -143,9 +142,8 @@ extension APIService {
         } catch {
             if Task.isCancelled {
                 throw CancellationError()
-            } else {
-                throw error
             }
+            throw error
         }
     }
 }
@@ -212,6 +210,7 @@ private enum NetworkDebugger {
         case let .success(object):
             print("Success:")
             dump(object)
+
         case let .failure(error):
             print("Failure:")
             dump(error)
