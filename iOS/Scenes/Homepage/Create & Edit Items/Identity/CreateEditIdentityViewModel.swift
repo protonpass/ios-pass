@@ -251,6 +251,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
             workEmail = .init(value: data.workEmail)
             extraWorkDetails = data.extraWorkDetails
             customSections = data.extraSections
+
         case .create:
             addBaseSections()
         }
@@ -358,8 +359,10 @@ private extension IdentityData {
         switch sectionType {
         case .address, .personalDetails:
             true
+
         case .workDetail:
             workSection.contains { !$0.isEmpty }
+
         case .contact:
             contactSection.contains { !$0.isEmpty }
         }

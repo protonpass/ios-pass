@@ -65,6 +65,7 @@ struct LocalAuthenticationView: View {
             switch viewModel.mode {
             case .biometric:
                 BiometricAuthenticationView(viewModel: viewModel)
+
             case .pin:
                 PinAuthenticationView(viewModel: viewModel)
             }

@@ -43,10 +43,13 @@ private enum ImportFromChromeStep: CaseIterable, Identifiable {
         switch self {
         case .first:
             "Open **Chrome** menu"
+
         case .second:
             "Go to **Password manager** and tap on **Settings**"
+
         case .third:
             "Tap **Export passwords**"
+
         case .fourth:
             "Select **Import to Proton Pass**"
         }

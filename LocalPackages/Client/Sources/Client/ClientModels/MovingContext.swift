@@ -33,12 +33,16 @@ public extension MovingContext {
         switch (lhs, rhs) {
         case let (.singleItem(lhsItem), .singleItem(rhsItem)):
             lhsItem.isEqual(with: rhsItem)
+
         case let (.allItems(lhsShare), .allItems(rhsShare)):
             lhsShare.id == rhsShare.id
+
         case let (.allItemsInFolder(lhsFolder), .allItemsInFolder(rhsFolder)):
             lhsFolder.id == rhsFolder.id
+
         case let (.selectedItems(lhsItems), .selectedItems(rhsItems)):
             lhsItems.count == rhsItems.count
+
         default:
             false
         }
@@ -48,10 +52,13 @@ public extension MovingContext {
         switch self {
         case let .singleItem(item):
             hasher.combine(item.shareId + item.itemId)
+
         case let .allItems(share):
             hasher.combine(share.id)
+
         case let .allItemsInFolder(folder):
             hasher.combine(folder.id)
+
         case let .selectedItems(items):
             hasher.combine(items.map { $0.shareId + $0.itemId })
         }

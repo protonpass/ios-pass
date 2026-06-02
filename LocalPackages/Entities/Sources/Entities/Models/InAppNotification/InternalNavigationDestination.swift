@@ -54,26 +54,33 @@ public enum InternalNavigationDestination: Equatable, Sendable {
             if let shareID = queryParams["ShareID"] {
                 return .viewVaultMembers(shareID: shareID)
             }
+
         case "alias_breach":
             if let shareID = queryParams["ShareID"], let itemID = queryParams["ItemID"] {
                 return .aliasBreach(shareID: shareID, itemID: itemID)
             }
+
         case "custom_email_breach":
             if let customEmailID = queryParams["CustomEmailID"] {
                 return .customEmailBreach(customEmailID: customEmailID)
             }
+
         case "address_breach":
             if let addressID = queryParams["AddressID"] {
                 return .addressBreach(addressID: addressID)
             }
+
         case "upgrade":
             return .upgrade
+
         case "view_item":
             if let shareID = queryParams["ShareID"], let itemID = queryParams["ItemID"] {
                 return .viewItem(shareID: shareID, itemID: itemID)
             }
+
         case "alias_management":
             return .aliasManagement
+
         default:
             return .unknown(urlString: urlString)
         }

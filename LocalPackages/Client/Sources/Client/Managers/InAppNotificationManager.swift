@@ -157,7 +157,7 @@ public extension InAppNotificationManager {
         try await timeDatasource.upsertNotificationTime(date.timeIntervalSince1970, for: userId)
     }
 
-    func updateDisplayState(_ state: InAppNotificationDisplayState) async {
+    func updateDisplayState(_ state: InAppNotificationDisplayState) {
         displayState = state
     }
 
@@ -178,18 +178,18 @@ public extension InAppNotificationManager {
 // MARK: - QA features
 
 @_spi(QA) public extension InAppNotificationManager {
-    func addMockNotification(notification: InAppNotification) async {
+    func addMockNotification(notification: InAppNotification) {
         mockNotification = notification
     }
 
-    func removeMockNotification() async {
+    func removeMockNotification() {
         notifications.removeAll(where: { $0.id == mockNotification?.id })
         mockNotification = nil
     }
 }
 
 @_spi(Test) public extension InAppNotificationManager {
-    func getCurrentNofications() async -> [InAppNotification] {
+    func getCurrentNofications() -> [InAppNotification] {
         notifications
     }
 }
@@ -216,6 +216,7 @@ private extension InAppNotification {
         return switch displayType {
         case .promo:
             validTime
+
         case .banner, .modal:
             isUnread && validTime
         }

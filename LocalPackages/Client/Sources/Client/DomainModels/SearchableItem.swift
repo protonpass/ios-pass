@@ -164,6 +164,7 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
             switch field.type {
             case .text:
                 optionalExtras.append("\(field.title): \(field.content)")
+
             default:
                 optionalExtras.append(field.title)
             }
@@ -175,6 +176,7 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
                 switch field.type {
                 case .text:
                     optionalExtras.append("\(field.title): \(field.content)")
+
                 default:
                     optionalExtras.append(field.title)
                 }

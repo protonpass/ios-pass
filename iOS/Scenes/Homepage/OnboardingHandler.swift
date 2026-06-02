@@ -121,7 +121,7 @@ extension OnboardingHandler: OnboardingDatasource {
                      unlimited: unlimitedPlan)
     }
 
-    func getBiometryType() async throws -> LABiometryType? {
+    func getBiometryType() throws -> LABiometryType? {
         try checkBiometryType(policy: localAuthenticationEnablingPolicy)
     }
 
@@ -130,7 +130,7 @@ extension OnboardingHandler: OnboardingDatasource {
     }
 
     // periphery:ignore
-    func getFirstLoginSuggestion() async -> OnboardFirstLoginSuggestion {
+    func getFirstLoginSuggestion() -> OnboardFirstLoginSuggestion {
         .none
     }
 }
@@ -165,7 +165,7 @@ extension OnboardingHandler: OnboardingDelegate {
     }
 
     // periphery:ignore:parameters payload
-    func createFirstLogin(payload: OnboardFirstLoginPayload) async throws {}
+    func createFirstLogin(payload: OnboardFirstLoginPayload) {}
 
     func markAsOnboarded() async {
         // Optionally update "onboarded" to not block users from using the app

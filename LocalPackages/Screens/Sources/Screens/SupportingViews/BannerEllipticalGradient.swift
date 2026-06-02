@@ -41,6 +41,7 @@ private extension BannerEllipticalGradient {
         switch colorScheme {
         case .dark:
             0.5
+
         default:
             0.3
         }

@@ -32,6 +32,7 @@ public enum InviteRecommendationType: Sendable, Equatable, Hashable, Identifiabl
         switch self {
         case let .email(email):
             email
+
         case let .group(groupInfo):
             groupInfo.group.address?.email
         }
@@ -41,6 +42,7 @@ public enum InviteRecommendationType: Sendable, Equatable, Hashable, Identifiabl
         switch self {
         case let .email(email):
             email
+
         case let .group(groupInfo):
             groupInfo.group.name
         }
@@ -50,6 +52,7 @@ public enum InviteRecommendationType: Sendable, Equatable, Hashable, Identifiabl
         switch self {
         case let .group(groupInfo):
             groupInfo.memberCounts
+
         default:
             nil
         }
@@ -59,6 +62,7 @@ public enum InviteRecommendationType: Sendable, Equatable, Hashable, Identifiabl
         switch self {
         case .email:
             true
+
         case .group:
             false
         }
@@ -71,6 +75,7 @@ public enum InviteRecommendationType: Sendable, Equatable, Hashable, Identifiabl
                 return false
             }
             return true
+
         default:
             return false
         }
@@ -80,6 +85,7 @@ public enum InviteRecommendationType: Sendable, Equatable, Hashable, Identifiabl
         switch self {
         case let .group(info):
             info
+
         default:
             nil
         }

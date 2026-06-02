@@ -157,9 +157,11 @@ private extension HomepageCoordinator {
             switch notification.ctaType {
             case let .externalNavigation(urlString):
                 urlOpener.open(urlString: urlString)
+
             case let .internalNavigation(deeplink):
                 let destination = InternalNavigationDestination.parse(urlString: deeplink)
                 navigate(to: destination)
+
             case .none:
                 break
             }
@@ -175,6 +177,7 @@ private extension HomepageCoordinator {
                 switch notification.displayType {
                 case .banner:
                     updateFloatingView(floatingView: nil, viewTag: UniqueSheet.inAppNotificationDisplay)
+
                 case .modal, .promo:
                     break
                 }
@@ -205,18 +208,25 @@ private extension HomepageCoordinator {
                 switch destination {
                 case let .viewVaultMembers(sharedId):
                     try await shareMembers(shareID: sharedId)
+
                 case let .aliasBreach(sharedId, itemId):
                     try await aliasBreach(shareID: sharedId, itemID: itemId)
+
                 case let .customEmailBreach(customEmailId):
                     try await customEmailBreach(customEmailId: customEmailId)
+
                 case let .addressBreach(addressID):
                     try await protonAddressBreach(protonAddressId: addressID)
+
                 case .upgrade:
                     router.present(for: .upgradeFlow)
+
                 case let .viewItem(shareID, itemID):
                     try await itemDetail(shareID: shareID, itemID: itemID)
+
                 case .aliasManagement:
                     router.present(for: .aliasesSyncConfiguration)
+
                 case let .unknown(url):
                     logger.trace("Unknown navigation destination: \(url)")
                 }

@@ -506,6 +506,7 @@ private extension ProfileTabViewModel {
         case .none:
             localAuthenticationMethod = .none
             automaticallyCopyTotpCode = false
+
         case .biometric:
             do {
                 let biometryType = try checkBiometryType(policy: policy)
@@ -516,6 +517,7 @@ private extension ProfileTabViewModel {
                 router.display(element: .displayErrorBanner(error))
                 localAuthenticationMethod = .none
             }
+
         case .pin:
             localAuthenticationMethod = .pin
         }

@@ -36,18 +36,25 @@ public extension PassError {
             switch self {
             case .userDatasAvailableButNoActiveUserId:
                 "User datas available but not active user ID"
+
             case .activeUserIdAvailableButNoUserDataFound:
                 "Active user ID available but no user data found"
+
             case .activeUserDataNotFound:
                 "Active user data not found"
+
             case .noUserDataFound:
                 "No user data found"
+
             case .noInactiveUserFound:
                 "No inactivate user found"
+
             case let .noAccessFound(userId):
                 "No access found for user \(userId)"
+
             case let .noUserFound(shareId, itemId):
                 "No user found for share \(shareId), item \(itemId)"
+
             case let .userNotFound(userId):
                 "User not found for id \(userId)"
             }

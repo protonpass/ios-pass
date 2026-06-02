@@ -749,13 +749,12 @@ public extension ItemRepository {
                 let encryptedNote = try symmetricKey.encrypt(note)
                 return SymmetricallyEncryptedAlias(email: alias.email,
                                                    encryptedNote: encryptedNote)
-            } else {
-                // We store a placeholder instead of a null or empty string
-                // in order to mark an alias as synced
-                // So then we could query out only unsynced aliases
-                return SymmetricallyEncryptedAlias(email: alias.email,
-                                                   encryptedNote: Constants.Database.encryptedSlNotePlaceholder)
             }
+            // We store a placeholder instead of a null or empty string
+            // in order to mark an alias as synced
+            // So then we could query out only unsynced aliases
+            return SymmetricallyEncryptedAlias(email: alias.email,
+                                               encryptedNote: Constants.Database.encryptedSlNotePlaceholder)
         }
         try await localDatasource.updateCachedAliasInfo(items: items, aliases: encryptedAliases)
         logger.info("Updated cached alias info for \(items.count) aliases for user \(userId)")

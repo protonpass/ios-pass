@@ -154,8 +154,10 @@ private extension LocalAuthenticationViewModel {
         switch failedAttemptCount {
         case 0:
             state = .noAttempts
+
         case maxAttemptCount - 1:
             state = .lastAttempt
+
         default:
             let remainingAttempts = maxAttemptCount - failedAttemptCount
             if remainingAttempts >= 1 {

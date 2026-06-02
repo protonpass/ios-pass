@@ -27,6 +27,7 @@ import SwiftUI
 
 struct AcceptRejectInviteView: View {
     @Environment(\.dismiss) private var dismiss
+    // swiftlint:disable:next private_swiftui_state
     @StateObject var viewModel: AcceptRejectInviteViewModel
 
     var body: some View {
@@ -79,6 +80,7 @@ private extension AcceptRejectInviteView {
                 switch viewModel.invite {
                 case .user:
                     Text("invites you to access items in")
+
                 case .group:
                     Text("invites the group \(viewModel.invitedGroupName) to access items in")
                 }
@@ -92,6 +94,7 @@ private extension AcceptRejectInviteView {
                     Text("\(viewModel.invite.inviterEmail) wants to share an item with you.")
                         .multilineTextAlignment(.center)
                         .padding(.bottom, 16)
+
                 case .group:
                     // swiftlint:disable:next line_length
                     Text("\(viewModel.invite.inviterEmail) wants to share an item with the group \(viewModel.invitedGroupName).")
@@ -156,6 +159,7 @@ private extension Invite {
         case .user:
             isVault ? fromNewUser ? #localized("See the shared vault") : #localized("Join shared vault") :
                 #localized("Accept and view the item")
+
         case .group:
             #localized("Accept invitation")
         }

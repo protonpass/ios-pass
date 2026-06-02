@@ -62,6 +62,7 @@ public struct SuggestedEmailView: View {
         switch recommendation {
         case let .email(email):
             return email
+
         case .group:
             guard let memberCounts = recommendation.memberCount else {
                 return recommendation.name

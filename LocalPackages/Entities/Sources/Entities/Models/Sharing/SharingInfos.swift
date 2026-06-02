@@ -36,8 +36,10 @@ public extension SharingElementData {
         switch self {
         case let .vault(share):
             share.vaultName ?? ""
+
         case let .item(item, _):
             item.name
+
         case let .new(vault, _):
             vault.name
         }
@@ -47,8 +49,10 @@ public extension SharingElementData {
         switch self {
         case let .vault(share):
             share.shared
+
         case let .item(_, share):
             share.shared
+
         default:
             false
         }
@@ -58,8 +62,10 @@ public extension SharingElementData {
         switch self {
         case let .vault(share):
             share.id
+
         case let .item(_, share):
             share.id
+
         case let .new(_, content):
             content.shareId
         }

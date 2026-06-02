@@ -44,12 +44,16 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
         switch contentData {
         case let .identity(data):
             data.extraSections
+
         case let .sshKey(data):
             data.extraSections
+
         case let .wifi(data):
             data.extraSections
+
         case let .custom(data):
             data.sections
+
         default:
             []
         }
@@ -112,8 +116,10 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
         let sections: [CustomSection] = switch contentData {
         case let .sshKey(data):
             data.extraSections
+
         case let .custom(data):
             data.sections
+
         default:
             []
         }
@@ -194,6 +200,7 @@ extension ItemContent: ItemThumbnailable {
         switch contentData {
         case let .login(data):
             data.urls.first
+
         default:
             nil
         }
@@ -254,6 +261,7 @@ public extension ItemContent {
         switch contentData {
         case let .login(data):
             !data.totpUri.isEmpty
+
         default:
             false
         }
@@ -263,8 +271,10 @@ public extension ItemContent {
         switch contentData {
         case let .login(data):
             data.email
+
         case let .identity(data):
             data.email
+
         default:
             nil
         }
@@ -291,16 +301,22 @@ public extension ItemContent {
             switch contentData {
             case .alias:
                 contents.append(aliasEmail)
+
             case let .login(data):
                 contents.append(contentsOf: [data.email, data.username] + data.urls)
+
             case let .creditCard(data):
                 contents.append(data.cardholderName)
+
             case .note:
                 break
+
             case let .identity(data):
                 contents.append(contentsOf: [data.fullName, data.email])
+
             case let .wifi(data):
                 contents.append(contentsOf: [data.ssid])
+
             case .custom, .sshKey:
                 // Explicit opt-out
                 break

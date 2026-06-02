@@ -90,11 +90,14 @@ public struct AuthenticatorRow<ThumbnailView: View>: View {
                 case .empty:
                     TOTPText(code: "", textColor: PassColor.textNorm, font: .title)
                         .frame(maxWidth: .infinity, alignment: .leading)
+
                 case .loading:
                     ProgressView()
+
                 case let .valid(data):
                     TOTPText(code: data.code, textColor: PassColor.textNorm, font: .title)
                         .frame(maxWidth: .infinity, alignment: .leading)
+
                 case .invalid:
                     Text("Invalid TOTP URI", bundle: .module)
                         .font(.caption)
@@ -111,6 +114,7 @@ public struct AuthenticatorRow<ThumbnailView: View>: View {
             switch viewModel.state {
             case let .valid(data):
                 TOTPCircularTimer(data: data.timerData)
+
             default:
                 EmptyView()
             }

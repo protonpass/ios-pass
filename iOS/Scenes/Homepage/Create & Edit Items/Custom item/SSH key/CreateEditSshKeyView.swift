@@ -110,6 +110,7 @@ struct CreateEditSshKeyView: View {
                              switch component {
                              case .publicKey:
                                  viewModel.publicKey = newValue
+
                              case .privateKey:
                                  viewModel.privateKey = newValue
                              }

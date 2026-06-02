@@ -31,8 +31,10 @@ public extension PassError {
             switch self {
             case .appPreferencesNotInitialized:
                 "AppPreferences not initialized"
+
             case .sharedPreferencesNotInitialized:
                 "SharedPreferences not initialized"
+
             case .userPreferencesNotInitialized:
                 "UserPreferences not initialized"
             }

@@ -31,8 +31,10 @@ public extension PassError {
             switch self {
             case let .unexpectedHttpStatusCode(code):
                 "Unexpected HTTP status code \(String(describing: code))"
+
             case .notHttpResponse:
                 "Not HTTP response"
+
             case let .badUrlString(urlString):
                 "Bad URL \(urlString)"
             }

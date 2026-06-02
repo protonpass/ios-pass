@@ -31,8 +31,10 @@ public enum SshKeyType: Sendable, CaseIterable {
         switch self {
         case .ed25519:
             "Ed25519"
+
         case .rsa2048:
             "RSA-2048"
+
         case .rsa4096:
             "RSA-4096"
         }

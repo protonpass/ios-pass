@@ -92,12 +92,11 @@ public final class LogOutUser: LogOutUserUseCase {
             // Scenario 1: Only 1 user
             try await signOutLastUser(user)
             return true
-        } else {
-            let isActive = userManager.currentActiveUser.value?.user.ID == userId
-            isActive ? try await signOutActiveUser(user) : try await signOutInactiveUser(user)
-            syncEventLoop.start()
-            return false
         }
+        let isActive = userManager.currentActiveUser.value?.user.ID == userId
+        isActive ? try await signOutActiveUser(user) : try await signOutInactiveUser(user)
+        syncEventLoop.start()
+        return false
     }
 }
 

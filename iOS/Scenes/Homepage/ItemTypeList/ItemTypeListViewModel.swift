@@ -36,14 +36,19 @@ extension ItemContentType {
         switch self {
         case .login:
             .login
+
         case .alias:
             .alias
+
         case .creditCard:
             .creditCard
+
         case .note:
             .note
+
         case .identity:
             .identity
+
         case .custom, .sshKey, .wifi:
             .custom
         }
@@ -119,16 +124,22 @@ extension ItemType {
         switch self {
         case .login:
             IconProvider.user
+
         case .alias:
             IconProvider.alias
+
         case .creditCard:
             PassIcon.passCreditCardOneStripe
+
         case .note:
             IconProvider.fileLines
+
         case .password:
             IconProvider.key
+
         case .identity:
             IconProvider.cardIdentity
+
         case .custom:
             IconProvider.wrench
         }
@@ -138,16 +149,22 @@ extension ItemType {
         switch self {
         case .login:
             ItemContentType.login.normMajor2Color
+
         case .alias:
             ItemContentType.alias.normMajor2Color
+
         case .creditCard:
             ItemContentType.creditCard.normMajor2Color
+
         case .note:
             ItemContentType.note.normMajor2Color
+
         case .password:
             PassColor.passwordInteractionNormMajor2
+
         case .identity:
             PassColor.interactionNormMajor2
+
         case .custom:
             PassColor.textNorm
         }
@@ -157,16 +174,22 @@ extension ItemType {
         switch self {
         case .login:
             ItemContentType.login.normMinor1Color
+
         case .alias:
             ItemContentType.alias.normMinor1Color
+
         case .creditCard:
             ItemContentType.creditCard.normMinor1Color
+
         case .note:
             ItemContentType.note.normMinor1Color
+
         case .password:
             PassColor.passwordInteractionNormMinor1
+
         case .identity:
             PassColor.interactionNormMinor1
+
         case .custom:
             PassColor.customItemBackground
         }
@@ -176,16 +199,22 @@ extension ItemType {
         switch self {
         case .login:
             #localized("Login")
+
         case .alias:
             #localized("Alias")
+
         case .note:
             #localized("Note")
+
         case .creditCard:
             #localized("Card")
+
         case .password:
             #localized("Password")
+
         case .identity:
             #localized("Identity")
+
         case .custom:
             #localized("Other")
         }
@@ -195,16 +224,22 @@ extension ItemType {
         switch self {
         case .login:
             #localized("Add login details for an app or site")
+
         case .alias:
             #localized("Get an email alias to use on new apps")
+
         case .creditCard:
             #localized("Securely store your payment information")
+
         case .note:
             #localized("Jot down a PIN, code, or note to self")
+
         case .password:
             #localized("Generate a secure password")
+
         case .identity:
             #localized("Fill in your personal data")
+
         case .custom:
             #localized("WiFi details, SSH, custom items, and more")
         }

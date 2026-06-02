@@ -58,7 +58,7 @@ public final class ApplyAppMigration: ApplyAppMigrationUseCase {
         logger = .init(manager: logManager)
     }
 
-    public func execute() async throws {
+    public func execute() async {
         logger.trace("Check if any migration should be applied to account")
 
         let missingMigrations = await dataMigrationManager.missingMigrations(MigrationType.all)

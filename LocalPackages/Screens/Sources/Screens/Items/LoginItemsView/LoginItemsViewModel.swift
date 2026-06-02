@@ -35,6 +35,7 @@ enum LoginItemsViewModelState: Equatable {
              (.searching, .searching),
              (.searchResults, .searchResults):
             true
+
         default:
             false
         }

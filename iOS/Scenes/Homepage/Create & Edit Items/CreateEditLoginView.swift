@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// swiftlint:disable file_length
 import CodeScanner
 import Core
 import DesignSystem
@@ -180,8 +179,10 @@ struct CreateEditLoginView: View {
                     switch lastFocusedField {
                     case .totp:
                         viewModel.handleScanResult(result)
+
                     case let .custom(value) where value?.type == .totp:
                         viewModel.handleScanResult(result, customField: value)
+
                     default:
                         return
                     }
@@ -209,12 +210,16 @@ private extension CreateEditLoginView {
             case .email, .emailOrUsername:
                 emailTextFieldToolbar
                     .animationsDisabled() // Disable animation when switching between toolbars
+
             case .totp:
                 totpTextFieldToolbar
+
             case let .custom(value) where value?.type == .totp:
                 totpTextFieldToolbar
+
             case .password:
                 passwordTextFieldToolbar
+
             default:
                 EmptyView()
             }
@@ -705,5 +710,3 @@ private struct WebsiteSection<Field: Hashable>: View {
         }
     }
 }
-
-// swiftlint:enable file_length

@@ -97,10 +97,9 @@ public extension Bundle {
         let buildNumber = Bundle.main.buildNumber
         if let gitCommitHash = Bundle.main.gitCommitHash {
             return "\(fullAppVersionName) (\(buildNumber)) (\(gitCommitHash))"
-        } else {
-            assertionFailure("Missing git commit hash")
-            return "\(fullAppVersionName) (\(buildNumber))"
         }
+        assertionFailure("Missing git commit hash")
+        return "\(fullAppVersionName) (\(buildNumber))"
     }
 }
 

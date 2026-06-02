@@ -95,7 +95,7 @@ public extension UserManager {
         didSetUp = true
     }
 
-    func getActiveUserData() async throws -> UserData? {
+    func getActiveUserData() throws -> UserData? {
         assertDidSetUp()
 
         if userProfiles.isEmpty {
@@ -108,7 +108,7 @@ public extension UserManager {
         return activeUserData
     }
 
-    func getAllUsers() async -> [UserData] {
+    func getAllUsers() -> [UserData] {
         assertDidSetUp()
 
         return userProfiles.userDatas
@@ -200,7 +200,7 @@ private extension UserManager {
 
 private extension [UserProfile] {
     var activeUser: UserProfile? {
-        self.first { $0.isActive }
+        self.first(where: \.isActive)
     }
 
     var userDatas: [UserData] {

@@ -35,8 +35,10 @@ public enum Theme: Int, Codable, CaseIterable, Sendable {
         switch self {
         case .light:
             .light
+
         case .dark:
             .dark
+
         case .matchSystem:
             .unspecified
         }

@@ -204,12 +204,11 @@ private extension ManageSharedShareView {
                 !invitee.owner &&
                 !viewModel.isCurrentUser(invitee) &&
                 (!viewModel.isInCurrentGroup(invitee) || !invitee.isManager)
-        } else {
-            return canAdmin &&
-                !invitee.owner &&
-                !viewModel.isCurrentUser(invitee) &&
-                (!viewModel.isInCurrentGroup(invitee) || viewModel.currentUserHasDirectMembership())
         }
+        return canAdmin &&
+            !invitee.owner &&
+            !viewModel.isCurrentUser(invitee) &&
+            (!viewModel.isInCurrentGroup(invitee) || viewModel.currentUserHasDirectMembership())
     }
 }
 

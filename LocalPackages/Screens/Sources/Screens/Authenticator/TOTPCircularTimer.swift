@@ -99,6 +99,7 @@ public struct TOTPCircularTimer: View {
         switch viewModel.remainingSeconds {
         case 0...10:
             PassColor.signalDanger
+
         default:
             PassColor.signalSuccess
         }

@@ -38,10 +38,13 @@ enum ExtraBulkActionOption {
         switch self {
         case .pin:
             "Pin"
+
         case .unpin:
             "Unpin"
+
         case .disableAliases:
             "Disable aliases"
+
         case .enableAliases:
             "Enable aliases"
         }
@@ -51,10 +54,13 @@ enum ExtraBulkActionOption {
         switch self {
         case .pin:
             PassIcon.pinAngled
+
         case .unpin:
             PassIcon.pinAngledSlash
+
         case .disableAliases:
             PassIcon.aliasSlash
+
         case .enableAliases:
             IconProvider.alias
         }
@@ -97,6 +103,7 @@ final class ItemsTabTopBarViewModel: ObservableObject {
         switch appContentManager.shareSelection {
         case .all, .sharedByMe, .sharedWithMe, .trash:
             true
+
         case let .precise(selection):
             selection.share.canEdit
         }

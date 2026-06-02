@@ -38,6 +38,7 @@ struct ItemCountView: View {
         switch viewModel.object {
         case .fetching:
             skeleton
+
         case let .fetched(itemCount):
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
@@ -69,6 +70,7 @@ struct ItemCountView: View {
                 }
                 .padding(.horizontal)
             }
+
         case let .error(error):
             Text(error.localizedDescription)
                 .foregroundStyle(PassColor.signalDanger)
@@ -187,6 +189,7 @@ private final class ItemCountViewModel: ObservableObject {
                 switch state {
                 case .loading:
                     object = .fetching
+
                 case let .loaded(uiModel):
                     task?.cancel()
                     task = Task { [weak self] in
@@ -195,6 +198,7 @@ private final class ItemCountViewModel: ObservableObject {
                             object = result
                         }
                     }
+
                 case let .error(error):
                     object = .error(error)
                 }

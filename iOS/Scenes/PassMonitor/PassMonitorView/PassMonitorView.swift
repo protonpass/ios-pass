@@ -35,10 +35,13 @@ enum SecureRowType {
         switch self {
         case .danger:
             "exclamationmark.circle.fill"
+
         case .warning:
             "exclamationmark.square.fill"
+
         case .success:
             "checkmark.square.fill"
+
         default:
             nil
         }
@@ -48,10 +51,13 @@ enum SecureRowType {
         switch self {
         case .danger:
             PassColor.passwordInteractionNormMajor1
+
         case .warning:
             PassColor.noteInteractionNormMajor1
+
         case .success:
             PassColor.cardInteractionNormMajor1
+
         default:
             PassColor.loginInteractionNormMajor1
         }
@@ -62,6 +68,7 @@ enum SecureRowType {
         switch self {
         case .info:
             "exclamationmark.square.fill"
+
         default:
             icon
         }
@@ -71,12 +78,16 @@ enum SecureRowType {
         switch self {
         case .danger:
             PassColor.passwordInteractionNormMinor2
+
         case .warning:
             PassColor.noteInteractionNormMinor2
+
         case .success:
             PassColor.cardInteractionNormMinor2
+
         case .info:
             PassColor.inputBackgroundNorm
+
         case .upsell:
             PassColor.interactionNormMinor2
         }
@@ -87,6 +98,7 @@ enum SecureRowType {
         switch self {
         case .info:
             PassColor.loginInteractionNormMinor2
+
         default:
             background
         }
@@ -96,12 +108,16 @@ enum SecureRowType {
         switch self {
         case .danger:
             PassColor.passwordInteractionNormMinor1
+
         case .warning:
             PassColor.noteInteractionNormMinor1
+
         case .success:
             PassColor.cardInteractionNormMinor1
+
         case .info:
             PassColor.inputBorderNorm
+
         case .upsell:
             PassColor.interactionNormMinor1
         }
@@ -111,8 +127,10 @@ enum SecureRowType {
         switch self {
         case .danger:
             PassColor.passwordInteractionNormMajor2
+
         case .warning:
             PassColor.noteInteractionNormMajor2
+
         case .info, .success, .upsell:
             PassColor.textNorm
         }
@@ -122,10 +140,13 @@ enum SecureRowType {
         switch self {
         case .danger:
             PassColor.passwordInteractionNormMinor1
+
         case .warning:
             PassColor.noteInteractionNormMinor1
+
         case .success:
             PassColor.cardInteractionNormMinor1
+
         case .info, .upsell:
             PassColor.backgroundMedium
         }
@@ -135,6 +156,7 @@ enum SecureRowType {
         switch self {
         case .danger:
             PassColor.passwordInteractionNormMajor2
+
         default:
             PassColor.textNorm
         }
@@ -144,8 +166,10 @@ enum SecureRowType {
         switch self {
         case .success:
             PassColor.cardInteractionNormMajor2
+
         case .danger:
             PassColor.passwordInteractionNormMajor2
+
         default:
             PassColor.textWeak
         }
@@ -153,6 +177,7 @@ enum SecureRowType {
 }
 
 struct PassMonitorView: View {
+    // swiftlint:disable:next private_swiftui_state
     @StateObject var viewModel: PassMonitorViewModel
     @State private var router = PathRouter()
 

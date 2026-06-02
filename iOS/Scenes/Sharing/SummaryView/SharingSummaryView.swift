@@ -269,16 +269,22 @@ private extension ItemContent {
         switch contentData {
         case let .login(data):
             data.authIdentifier
+
         case .alias:
             aliasEmail ?? ""
+
         case let .creditCard(data):
             data.number.toMaskedCreditCardNumber()
+
         case .note:
             String(note.prefix(50))
+
         case let .identity(data):
             data.fullName.concatenateWith(data.email, separator: " / ")
+
         case let .wifi(data):
             data.ssid
+
         case .custom, .sshKey:
             firstTextCustomFieldValue ?? ""
         }

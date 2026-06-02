@@ -59,12 +59,16 @@ public final class GetAllSecurityAffectedLogins: GetAllSecurityAffectedLoginsUse
             switch type {
             case .weakPasswords:
                 return try filterWeakPasswords(items: items, type: type, key: key)
+
             case .reusedPasswords:
                 return try filterReusedPasswords(items: items, type: type, key: key)
+
             case .missing2FA:
                 return try filterMissing2fa(items: items, type: type, key: key)
+
             case .excludedItems:
                 return try filterExcludedItems(items: items, type: type, key: key)
+
             default:
                 return [:]
             }

@@ -52,6 +52,7 @@ struct CustomFieldSections: View {
                                        isASection: isASection,
                                        showIcon: showIcon,
                                        onUpgrade: onUpgrade)
+
             case .hidden:
                 HiddenCustomFieldSection(title: title,
                                          content: content,
@@ -61,6 +62,7 @@ struct CustomFieldSections: View {
                                          showIcon: showIcon,
                                          onSelect: { onSelectHiddenText(content) },
                                          onUpgrade: onUpgrade)
+
             case .totp:
                 TotpCustomFieldSection(title: title,
                                        content: content,
@@ -70,6 +72,7 @@ struct CustomFieldSections: View {
                                        showIcon: showIcon,
                                        onSelectTotpToken: onSelectTotpToken,
                                        onUpgrade: onUpgrade)
+
             case .timestamp:
                 TimestampCustomFieldSection(title: title,
                                             content: content,
@@ -259,11 +262,14 @@ private struct TotpCustomFieldSection: View {
                     case .empty:
                         Text("Empty")
                             .placeholderText()
+
                     case .loading:
                         ProgressView()
+
                     case let .valid(data):
                         TOTPText(code: data.code)
                             .frame(maxWidth: .infinity, alignment: .leading)
+
                     case .invalid:
                         Text("Invalid TOTP URI")
                             .font(.caption)
@@ -283,6 +289,7 @@ private struct TotpCustomFieldSection: View {
                 switch viewModel.state {
                 case let .valid(data):
                     TOTPCircularTimer(data: data.timerData)
+
                 default:
                     EmptyView()
                 }

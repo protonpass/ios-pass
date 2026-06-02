@@ -31,6 +31,7 @@ public extension PassError {
             switch self {
             case let .corrupted(object, property):
                 "Corrupted \(type(of: object)): missing value for \(property)"
+
             case let .corruptedShareKeys(shareId):
                 "ItemKeys & VaultKeys are not synced for share with ID \(shareId)"
             }

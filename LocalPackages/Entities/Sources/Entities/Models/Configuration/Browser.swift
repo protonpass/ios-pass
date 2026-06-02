@@ -34,6 +34,7 @@ public enum Browser: Int, CaseIterable, Codable, Sendable {
         switch self {
         case .safari:
             "com-apple-mobilesafari-tab://"
+
         default:
             nil
         }

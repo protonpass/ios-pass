@@ -38,11 +38,11 @@ public actor LocalDataMigrationDatasource: LocalDataMigrationDatasourceProtocol 
 }
 
 public extension LocalDataMigrationDatasource {
-    func upsert(migrations: MigrationStatus) async {
+    func upsert(migrations: MigrationStatus) {
         userDefault.set(migrations, forKey: kGlobalMigrationsKey)
     }
 
-    func getMigrations() async -> MigrationStatus {
+    func getMigrations() -> MigrationStatus {
         userDefault.integer(forKey: kGlobalMigrationsKey)
     }
 }

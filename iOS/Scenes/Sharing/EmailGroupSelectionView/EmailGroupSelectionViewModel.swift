@@ -268,6 +268,7 @@ private extension EmailGroupSelectionViewModel {
             switch displayType {
             case .organisation:
                 suggestions = await fetchOrganizationsRecommendation(shouldFetchMore: fetchMore)
+
             case .suggestion:
                 suggestions = await fetchSuggestions()
             }

@@ -31,8 +31,10 @@ enum ItemSquircleThumbnailSize {
         switch self {
         case .small:
             24
+
         case .regular:
             40
+
         case .large:
             60
         }
@@ -46,8 +48,10 @@ enum ItemSquircleThumbnailSize {
         switch self {
         case .small:
             1
+
         case .regular:
             2
+
         case .large:
             3
         }

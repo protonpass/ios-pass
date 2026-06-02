@@ -24,7 +24,7 @@ import Screens
 import SwiftUI
 
 extension HomepageCoordinator {
-    func suggestSimpleLoginSyncIfApplicable() async throws {
+    func suggestSimpleLoginSyncIfApplicable() async {
         do {
             guard !preferencesManager.userPreferences.unwrapped().dismissedAliasesSyncSheet,
                   let count = try await getPendingAliasCount() else {

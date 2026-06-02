@@ -50,18 +50,25 @@ public enum MostRecentType: String, Hashable, Sendable, CaseIterable, Identifiab
             switch type {
             case .today:
                 return startOfToday
+
             case .yesterday:
                 return calendar.date(byAdding: .day, value: -1, to: startOfToday)
+
             case .last7Days:
                 return calendar.date(byAdding: .day, value: -7, to: startOfToday)
+
             case .last14Days:
                 return calendar.date(byAdding: .day, value: -14, to: startOfToday)
+
             case .last30Days:
                 return calendar.date(byAdding: .day, value: -30, to: startOfToday)
+
             case .last60Days:
                 return calendar.date(byAdding: .day, value: -60, to: startOfToday)
+
             case .last90Days:
                 return calendar.date(byAdding: .day, value: -90, to: startOfToday)
+
             default:
                 return Date.distantPast
             }
@@ -159,6 +166,7 @@ public enum AlphabetLetter: Int, CaseIterable, Sendable {
         switch direction {
         case .ascending:
             allCases
+
         case .descending:
             allCases.reversed()
         }
@@ -269,6 +277,7 @@ private extension Array where Element: AlphabeticalSortable {
             return switch direction {
             case .ascending:
                 result == .orderedAscending
+
             case .descending:
                 result == .orderedDescending
             }
@@ -343,6 +352,7 @@ public extension Array where Element: DateSortable {
                 try Task.checkCancellation()
                 return $0.dateForSorting < $1.dateForSorting
             })
+
         case .descending:
             try sorted(by: {
                 try Task.checkCancellation()
@@ -366,6 +376,7 @@ public extension Array where Element: DateSortable {
             return switch direction {
             case .ascending:
                 lhs.monthYear < rhs.monthYear
+
             case .descending:
                 lhs.monthYear > rhs.monthYear
             }

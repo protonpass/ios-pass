@@ -52,12 +52,16 @@ final class SecurityWeaknessDetailViewModel: ObservableObject {
         switch type {
         case .weakPasswords:
             #localized("No weak passwords were found in your login items")
+
         case .reusedPasswords:
             #localized("You have no reused passwords in your login items")
+
         case .missing2FA:
             #localized("All your login items have two-factor authentication enabled")
+
         case .excludedItems:
             #localized("You don't have any excluded login items from monitoring")
+
         default:
             ""
         }
@@ -80,10 +84,13 @@ final class SecurityWeaknessDetailViewModel: ObservableObject {
                 let eventType: TelemetryEventType? = switch type {
                 case .weakPasswords:
                     .monitorItemDetailFromWeakPassword
+
                 case .missing2FA:
                     .monitorItemDetailFromMissing2FA
+
                 case .reusedPasswords:
                     .monitorItemDetailFromReusedPassword
+
                 default:
                     nil
                 }
@@ -135,6 +142,7 @@ private extension SecuritySection {
         switch self {
         case let .reusedPasswords(numberOfTime):
             SecuritySectionHeaderKey(title: #localized("Reused %lld times", numberOfTime.numberOfTimeReused))
+
         case .excludedItems, .missing2fa, .weakPasswords:
             SecuritySectionHeaderKey(title: "")
         }

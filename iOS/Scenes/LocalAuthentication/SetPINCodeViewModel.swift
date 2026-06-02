@@ -52,6 +52,7 @@ final class SetPINCodeViewModel: ObservableObject, DeinitPrintable {
         switch state {
         case .definition:
             return isInvalid(pin: definedPIN)
+
         case .confirmation:
             return isInvalid(pin: confirmedPIN)
         }
@@ -113,6 +114,7 @@ extension SetPINCodeViewModel.State {
         switch self {
         case .definition:
             #localized("Set PIN code")
+
         case .confirmation:
             #localized("Repeat PIN code")
         }
@@ -122,6 +124,7 @@ extension SetPINCodeViewModel.State {
         switch self {
         case .definition:
             #localized("Unlock the app with this code")
+
         case .confirmation:
             #localized("Type your PIN again to confirm")
         }
@@ -131,6 +134,7 @@ extension SetPINCodeViewModel.State {
         switch self {
         case .definition:
             #localized("Enter PIN code")
+
         case .confirmation:
             #localized("Repeat PIN code")
         }
@@ -140,6 +144,7 @@ extension SetPINCodeViewModel.State {
         switch self {
         case .definition:
             #localized("Continue")
+
         case .confirmation:
             #localized("Set PIN code")
         }

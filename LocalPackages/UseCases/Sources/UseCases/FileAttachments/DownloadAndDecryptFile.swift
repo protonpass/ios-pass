@@ -123,6 +123,7 @@ public actor DownloadAndDecryptFile: DownloadAndDecryptFileUseCase {
                         let overall = await tracker.overallProgress(currentProgress: value,
                                                                     chunkSize: chunk.size)
                         continuation.yield(.progress(overall))
+
                     case let .result(encryptedData):
                         let associatedData = AssociatedData.fileData(version: file.encryptionVersion,
                                                                      chunkIndex: index,

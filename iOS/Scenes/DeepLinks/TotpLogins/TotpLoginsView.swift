@@ -30,6 +30,7 @@ import Screens
 import SwiftUI
 
 struct TotpLoginsView: View {
+    // swiftlint:disable:next private_swiftui_state
     @StateObject var viewModel: TotpLoginsViewModel
     @FocusState private var isFocusedOnSearchBar
     @Environment(\.dismiss) private var dismiss

@@ -179,28 +179,38 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
         switch action {
         case .onSearch:
             searchMode = .all(appContentManager.shareSelection)
+
         case .onShowVaultList:
             presentVaultList()
+
         case .onPin:
             pinSelectedItems()
+
         case .onUnpin:
             unpinSelectedItems()
+
         case .onMove:
             if hasSharedItems() {
                 showSharedItemsAlert.toggle()
             } else {
                 presentVaultListToMoveSelectedItems()
             }
+
         case .onTrash:
             trashSelectedItems()
+
         case .onRestore:
             restoreSelectedItems()
+
         case .onPermanentlyDelete:
             askForBulkPermanentDeleteConfirmation()
+
         case .onDisableAliases:
             disableSelectedAliases()
+
         case .onEnableAliases:
             enableSelectedAliases()
+
         case .onPromoBadgeTapped:
             showNotification()
         }
@@ -231,8 +241,10 @@ private extension ItemsTabViewModel {
                 switch state {
                 case .loading:
                     sectionedItems = .fetching
+
                 case .loaded:
                     filterAndSortItems()
+
                 case let .error(error):
                     sectionedItems = .error(error)
                 }
@@ -343,7 +355,7 @@ private extension ItemsTabViewModel {
     func refreshBanners(_ invites: [Invite]? = nil) {
         var banners = [InfoBanner]()
         if let invites, !invites.isEmpty {
-            if let newUserInvite = invites.first(where: { $0.fromNewUser }) {
+            if let newUserInvite = invites.first(where: \.fromNewUser) {
                 router.present(for: .acceptRejectInvite(newUserInvite))
             } else {
                 banners.append(invites.toInfoBanners)
@@ -442,7 +454,7 @@ extension ItemsTabViewModel {
     }
 
     func hasSharedItems() -> Bool {
-        currentSelectedItems.value.contains { $0.shared }
+        currentSelectedItems.value.contains(where: \.shared)
     }
 
     func presentVaultListToMoveSelectedItems() {
@@ -551,6 +563,7 @@ extension ItemsTabViewModel {
         switch appContentManager.state {
         case .loaded:
             delegate?.itemsTabViewModelWantsToPresentVaultList()
+
         default:
             logger.error("Can not present vault list. Vaults are not loaded.")
         }

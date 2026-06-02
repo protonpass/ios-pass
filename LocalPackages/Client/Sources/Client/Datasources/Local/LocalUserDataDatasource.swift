@@ -95,7 +95,7 @@ public extension LocalUserDataDatasource {
             let request = UserProfileEntity.fetchRequest()
             let profiles = try context.fetch(request)
 
-            if let activeProfile = profiles.first(where: { $0.isActive }) {
+            if let activeProfile = profiles.first(where: \.isActive) {
                 activeProfile.isActive = false
             }
 

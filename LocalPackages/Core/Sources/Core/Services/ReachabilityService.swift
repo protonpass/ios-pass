@@ -76,8 +76,10 @@ private extension ReachabilityService {
             switch path.status {
             case .satisfied:
                 isNetworkAvailable.send(true)
+
             case .requiresConnection, .unsatisfied:
                 isNetworkAvailable.send(false)
+
             @unknown default:
                 isNetworkAvailable.send(false)
             }

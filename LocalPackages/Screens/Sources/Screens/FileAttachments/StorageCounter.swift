@@ -40,8 +40,10 @@ public struct StorageCounter: View {
             switch self {
             case .low:
                 PassColor.textNorm
+
             case .medium:
                 PassColor.signalWarning
+
             case .full:
                 PassColor.signalDanger
             }
@@ -51,6 +53,7 @@ public struct StorageCounter: View {
             switch self {
             case .low:
                 .regular
+
             default:
                 .medium
             }
@@ -60,8 +63,10 @@ public struct StorageCounter: View {
             switch self {
             case .low:
                 PassColor.signalSuccess
+
             case .medium:
                 PassColor.signalWarning
+
             case .full:
                 PassColor.signalDanger
             }
@@ -91,8 +96,10 @@ public struct StorageCounter: View {
         level = switch percentage {
         case 0...74:
             .low
+
         case 75...99:
             .medium
+
         default:
             .full
         }
@@ -113,6 +120,7 @@ public struct StorageCounter: View {
                                  lineWidth: 4,
                                  color: level.progressColor)
                     .fixedSize(horizontal: true, vertical: true)
+
             case .full:
                 IconProvider.exclamationCircleFilled
                     .resizable()

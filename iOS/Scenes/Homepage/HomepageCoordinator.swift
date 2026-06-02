@@ -216,8 +216,10 @@ private extension HomepageCoordinator {
                 switch destination {
                 case let .totp(uri):
                     await totpDeepLink(totpUri: uri)
+
                 case let .spotlightItemDetail(itemContent):
                     await router.present(for: .itemDetail(itemContent))
+
                 case let .error(error):
                     await router.display(element: .displayErrorBanner(error))
                 }
@@ -246,8 +248,10 @@ private extension HomepageCoordinator {
                 switch selection {
                 case .all, .trash:
                     createButtonDisabled = !appContentManager.hasEditableContainers
+
                 case let .precise(selection):
                     createButtonDisabled = !selection.share.canEdit
+
                 default:
                     createButtonDisabled = true
                 }
@@ -516,6 +520,7 @@ extension HomepageCoordinator {
                 switch destination {
                 case let .urlPage(urlString: url):
                     urlOpener.open(urlString: url)
+
                 case .openSettings:
                     UIApplication.shared.openAppSettings()
                 }
@@ -530,6 +535,7 @@ extension HomepageCoordinator {
                 switch destination {
                 case let .createEdit(view, dismissible):
                     createEditItemCoordinatorWantsToPresent(view: view, dismissable: dismissible)
+
                 case let .detail(view, asSheet):
                     itemDetailCoordinatorWantsToPresent(view: view, asSheet: asSheet)
                 }
@@ -544,44 +550,64 @@ extension HomepageCoordinator {
                 switch destination {
                 case let .alert(alert):
                     present(alert)
+
                 case let .sharingFlow(dismissal):
                     presentSharingFlow(dismissal: dismissal)
+
                 case let .manageSharedShare(display, dismissal):
                     presentManageSharedShare(with: display, dismissal: dismissal)
+
                 case let .acceptRejectInvite(invite):
                     presentAcceptRejectInvite(with: invite)
+
                 case .upgradeFlow:
                     startUpgradeFlow()
+
                 case let .upselling(configuration, dismissal):
                     startUpsellingFlow(configuration: configuration, dismissal: dismissal)
+
                 case let .vaultCreateEdit(vault: vault):
                     createEditVaultView(vault: vault)
+
                 case let .logView(module: module):
                     presentLogsView(for: module)
+
                 case .autoFillInstructions:
                     present(AutoFillInstructionsView())
+
                 case let .moveItemsBetweenVaults(context):
                     itemMoveBetweenVault(context: context)
+
                 case .fullSync:
                     present(FullSyncProgressView(mode: .fullSync), dismissible: false)
+
                 case let .shareVaultFromItemDetail(vault, itemContent):
                     presentShareElementView(for: vault, itemContent: itemContent)
+
                 case let .customizeNewVault(vault, itemContent):
                     presentCreateEditVaultView(mode: .editNewVault(vault, itemContent))
+
                 case .setPINCode:
                     presentSetPINCodeView()
+
                 case let .history(item):
                     presentItemHistory(item)
+
                 case .restoreHistory:
                     dismissTopMostViewController(animated: true, completion: nil)
+
                 case .tutorial:
                     openTutorialVideo()
+
                 case .accountSettings:
                     beginAccountSettingsFlow()
+
                 case .securityKeys:
                     presentSecurityKeys()
+
                 case .settingsMenu:
                     profileTabViewModelWantsToShowSettingsMenu()
+
                 case let .createEditLogin(item, dismissAllSheets):
                     if dismissAllSheets {
                         dismissAllViewControllers(animated: true) { [weak self] in
@@ -591,46 +617,65 @@ extension HomepageCoordinator {
                     } else {
                         presentCreateEditLoginView(mode: item)
                     }
+
                 case .createNewItem:
                     createNewItem()
+
                 case let .createItem(item, type, aliasToCopy, _):
                     handleItemCreation(item: item, type: type, aliasToCopy: aliasToCopy)
+
                 case let .editItem(itemContent):
                     presentEditItemView(for: itemContent)
+
                 case let .cloneItem(itemContent):
                     presentCloneItemView(for: itemContent)
+
                 case let .updateItem(type: type, updated: upgrade):
                     createEditItemViewModelDidUpdateItem(type, updated: upgrade)
+
                 case let .itemDetail(content,
                                      automaticDisplay,
                                      showSecurityIssues):
                     presentItemDetailView(for: content,
                                           asSheet: automaticDisplay ? shouldShowAsSheet() : true,
                                           showSecurityIssues: showSecurityIssues)
+
                 case .editSpotlightSearchableContent:
                     presentEditSpotlightSearchableContentView()
+
                 case .editSpotlightSearchableVaults:
                     presentEditSpotlightSearchableVaultsView()
+
                 case .editSpotlightVaults:
                     presentEditSpotlightVaultsView()
+
                 case let .passkeyDetail(passkey):
                     presentPasskeyDetailView(for: passkey)
+
                 case let .securityDetail(securityWeakness):
                     presentSecurity(securityWeakness)
+
                 case let .passwordReusedItemList(content):
                     presentPasswordReusedListView(for: content)
+
                 case let .changePassword(mode):
                     presentChangePassword(mode: mode)
+
                 case let .createSecureLink(item, share):
                     presentCreateSecureLinkView(for: item, and: share)
+
                 case .enableExtraPassword:
                     beginEnableExtraPasswordFlow()
+
                 case .secureLinks:
                     presentSecureLinks()
+
                 case let .secureLinkDetail(link):
                     presentSecureLinkDetail(link: link)
+
                 case .addAccount:
                     beginAddAccountFlow()
+
                 case let .simpleLoginSyncActivation(dismissAllSheets):
                     if dismissAllSheets {
                         dismissAllViewControllers { [weak self] in
@@ -640,29 +685,40 @@ extension HomepageCoordinator {
                     } else {
                         present(SimpleLoginAliasActivationView())
                     }
+
                 case .aliasesSyncConfiguration:
                     present(AliasSyncConfigurationView())
+
                 case .loginsWith2fa:
                     presentLoginsWith2faView()
+
                 case let .breachDetail(breach):
                     presentBreachDetail(breach: breach)
+
                 case let .breach(breach):
                     presentBreach(breach: breach)
+
                 case .addMailbox:
                     dismissTopMostViewController { [weak self] in
                         guard let self else { return }
                         present(AddCustomEmailView(viewModel: .init(validationType: .mailbox(nil))))
                     }
+
                 case .passwordHistory:
                     presentPasswordHistoryView()
+
                 case .signInToAnotherDevice:
                     presentSignInToAnotherDeviceView()
+
                 case let .undecryptableSharesBanner(dismissTopSheetBeforeShowing):
                     displayUndecryptableSharesBanner(dismissTopSheetBeforeShowing)
+
                 case let .shareLogs(url):
                     presentShareSheet(for: url)
+
                 case let .moveFolder(folderToMove):
                     moveFolder(folderToMove: folderToMove)
+
                 case .searchPinnedItems:
                     homepageTabDelegate?.activateSearch(pinnedItems: true)
                 }
@@ -681,15 +737,19 @@ extension HomepageCoordinator {
                     } else {
                         hideLoadingHud()
                     }
+
                 case let .displayErrorBanner(errorLocalized):
                     guard shouldDisplayError(error: errorLocalized) else {
                         return
                     }
                     bannerManager.displayTopErrorMessage(errorLocalized)
+
                 case let .errorMessage(message):
                     bannerManager.displayTopErrorMessage(message)
+
                 case let .successMessage(message, config):
                     displaySuccessBanner(with: message, and: config)
+
                 case let .infosMessage(message, showWhenNoSheets, config):
                     if !showWhenNoSheets ||
                         (showWhenNoSheets && rootViewController.presentedViewController == nil) {
@@ -719,20 +779,27 @@ extension HomepageCoordinator {
                 switch destination {
                 case let .copyToClipboard(text, message):
                     copyToClipboard(text, bannerMessage: message, bannerDisplay: bannerManager)
+
                 case let .back(isShownAsSheet):
                     itemDetailViewModelWantsToGoBack(isShownAsSheet: isShownAsSheet)
+
                 case let .manage(userId):
                     handleManageAccount(userId: userId)
+
                 case let .signOut(userId):
                     handleSignOut(userId: userId)
+
                 case let .deleteAccount(userId):
                     deleteAccount(userId: userId)
+
                 case let .screenDismissal(dismissal):
                     switch dismissal {
                     case .none:
                         return
+
                     case .topMost:
                         dismissTopMostViewController(animated: true, completion: nil)
+
                     case .all:
                         dismissAllViewControllers(animated: true, completion: nil)
                     }
@@ -747,6 +814,7 @@ extension HomepageCoordinator {
                 switch destination {
                 case let .sheet(view):
                     present(view)
+
                 case let .fullScreen(view):
                     present(view, fullScreen: true)
                 }
@@ -770,8 +838,10 @@ extension HomepageCoordinator {
         switch dismissal {
         case .none:
             completion()
+
         case .topMost:
             dismissTopMostViewController(animated: true, completion: completion)
+
         case .all:
             dismissAllViewControllers(animated: true, completion: completion)
         }
@@ -805,8 +875,10 @@ extension HomepageCoordinator {
         switch dismissal {
         case .none:
             present(manageShareShareView)
+
         case .topMost:
             dismissTopMostViewController(animated: true, completion: completion)
+
         case .all:
             dismissAllViewControllers(animated: true, completion: completion)
         }
@@ -1529,6 +1601,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
                     guard let self else { return }
                     presentBugReportView()
                 }
+
             default:
                 if let urlString = selectedChannel.urlString {
                     urlOpener.open(urlString: urlString)
@@ -1592,9 +1665,11 @@ extension HomepageCoordinator: AccountViewModelDelegate {
                                                                case .success:
                                                                    logger.trace("Account deletion successful")
                                                                    loggingOutUser(userId: userId)
+
                                                                case .failure(AccountDeletionError.closedByUser):
                                                                    logger
                                                                        .trace("Accpunt deletion form closed by user")
+
                                                                case let .failure(error):
                                                                    logger.error(error)
                                                                    bannerManager
@@ -1860,7 +1935,7 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
         logger.info("Skipped sync loop \(reason)")
     }
 
-    func syncEventLoopRequiresFullSync(userId: String) async throws {
+    func syncEventLoopRequiresFullSync(userId: String) async {
         await router.present(for: .fullSync)
         logger.info("Full syncing triggered by user events")
         await fullContentSync(userId: userId, shouldStopEventLoop: false)

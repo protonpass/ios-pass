@@ -300,10 +300,13 @@ private extension CustomFieldType {
         switch self {
         case .text:
             "Text custom field"
+
         case .totp:
             "2FA secret key (TOTP) custom field"
+
         case .hidden:
             "Hidden custom field"
+
         case .timestamp:
             "Date custom field"
         }
@@ -313,10 +316,13 @@ private extension CustomFieldType {
         switch self {
         case .text:
             "E.g., User ID, Acct number"
+
         case .totp:
             "2FA secret key (TOTP)"
+
         case .hidden:
             "E.g., Recovery key, PIN"
+
         case .timestamp:
             "Date"
         }

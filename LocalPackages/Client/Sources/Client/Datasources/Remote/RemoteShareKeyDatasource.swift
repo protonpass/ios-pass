@@ -51,9 +51,8 @@ public extension RemoteShareKeyDatasource {
             keys += response.shareKeys.keys
             if response.shareKeys.total < pageSize {
                 break
-            } else {
-                page += 1
             }
+            page += 1
         }
         return keys
     }

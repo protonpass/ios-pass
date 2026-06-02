@@ -108,9 +108,11 @@ private extension PassError.FolderFailureReason {
         case let .layerFull(containerName, limit):
             #localized("%@ has reached the limit of %lld sub-folders", containerName,
                        limit)
+
         case let .depthExceeded(containerName, limit):
             #localized("%@ cannot be nest more than %lld levels deep", containerName,
                        limit)
+
         case let .vaultFull(containerName, limit):
             #localized("%@ has reached the limit of %lld folders", containerName,
                        limit)

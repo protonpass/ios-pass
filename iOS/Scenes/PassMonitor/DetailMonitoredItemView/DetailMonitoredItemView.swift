@@ -28,6 +28,7 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct DetailMonitoredItemView: View {
+    // swiftlint:disable:next private_swiftui_state
     @StateObject var viewModel: DetailMonitoredItemViewModel
     @Environment(\.dismiss) private var dismiss
     @Environment(PathRouter.self) private var router: PathRouter
@@ -40,8 +41,10 @@ struct DetailMonitoredItemView: View {
             switch viewModel.state {
             case .fetching:
                 ProgressView()
+
             case let .fetched(uiModel):
                 content(uiModel)
+
             case let .error(error):
                 RetryableErrorView(error: error,
                                    onRetry: { Task { await viewModel.fetchData() } })

@@ -35,6 +35,7 @@ enum ActionnableContainer {
         switch self {
         case .vault:
             true
+
         case .folder:
             false
         }
@@ -44,6 +45,7 @@ enum ActionnableContainer {
         switch self {
         case let .vault(share):
             share.vaultName
+
         case let .folder(folder):
             folder.content.name
         }
@@ -58,6 +60,7 @@ enum FolderAction {
         switch self {
         case .createNewFolder:
             true
+
         default:
             false
         }
@@ -67,6 +70,7 @@ enum FolderAction {
         switch self {
         case .createNewFolder:
             "Enter a folder title"
+
         case .edit:
             "Enter new folder title"
         }
@@ -369,8 +373,10 @@ private extension EditableVaultListView {
             switch selection {
             case .all, .sharedByMe, .sharedWithMe:
                 EmptyView()
+
             case let .precise(selection):
                 vaultTrailingMenuView(selection.share, haveItems: itemCount > 0)
+
             case .trash:
                 trashTrailingView
             }

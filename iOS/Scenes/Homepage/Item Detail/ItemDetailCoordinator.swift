@@ -40,18 +40,25 @@ final class ItemDetailCoordinator: DeinitPrintable {
         let itemDetailPage: ItemDetailPage = switch itemContent.contentData {
         case .login:
             makeLoginItemDetailPage(from: itemContent, asSheet: asSheet, showSecurityIssues: showSecurityIssues)
+
         case .note:
             makeNoteDetailPage(from: itemContent, asSheet: asSheet)
+
         case .alias:
             makeAliasItemDetailPage(from: itemContent, asSheet: asSheet)
+
         case .creditCard:
             makeCreditCardDetailPage(from: itemContent, asSheet: asSheet)
+
         case .identity:
             makeIdentityDetailPage(from: itemContent, asSheet: asSheet)
+
         case .sshKey:
             makeSshKeyDetailPage(from: itemContent, asSheet: asSheet)
+
         case .wifi:
             makeWifiDetailPage(from: itemContent, asSheet: asSheet)
+
         case .custom:
             makeCustomDetailPage(from: itemContent, asSheet: asSheet)
         }

@@ -34,15 +34,17 @@ enum CredentialsViewState: Equatable {
     case loading
     case error(any Error)
 
-    static func == (lhs: CredentialsViewState, rhs: CredentialsViewState) -> Bool {
+    static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
         case let (.error(lhsError), .error(rhsError)):
             lhsError.localizedDescription == rhsError.localizedDescription
+
         case (.idle, .idle),
              (.loading, .loading),
              (.searching, .searching),
              (.searchResults, .searchResults):
             true
+
         default:
             false
         }
@@ -344,7 +346,7 @@ private extension CredentialsViewModel {
     }
 
     @concurrent
-    func filterItemsAsync() async throws {
+    func filterItemsAsync() async {
         await MainActor.run { [weak self] in
             guard let self else { return }
             state = .loading

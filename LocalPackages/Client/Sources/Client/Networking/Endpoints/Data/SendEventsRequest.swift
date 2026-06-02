@@ -42,12 +42,16 @@ struct Dimensions: Encodable {
             switch value {
             case let stringValue as String:
                 try container.encode(stringValue, forKey: codingKey)
+
             case let intValue as Int:
                 try container.encode(intValue, forKey: codingKey)
+
             case let doubleValue as Double:
                 try container.encode(doubleValue, forKey: codingKey)
+
             case let boolValue as Bool:
                 try container.encode(boolValue, forKey: codingKey)
+
             default:
                 // Throw an error for unsupported types
                 let context = EncodingError.Context(codingPath: encoder.codingPath,
@@ -94,13 +98,16 @@ private extension TelemetryEventType {
         switch self {
         case let .notificationDisplay(notificationKey):
             ["notificationKey": notificationKey]
+
         case let .notificationChangeStatus(notificationKey, notificationStatus):
             [
                 "notificationKey": notificationKey,
                 "notificationStatus": notificationStatus
             ]
+
         case let .notificationCtaClick(notificationKey):
             ["notificationKey": notificationKey]
+
         default:
             nil
         }
@@ -141,16 +148,22 @@ private extension TelemetryEvent {
         switch type {
         case let .create(itemContentType):
             itemContentType.dimensionType
+
         case let .read(itemContentType):
             itemContentType.dimensionType
+
         case let .update(itemContentType):
             itemContentType.dimensionType
+
         case let .delete(itemContentType):
             itemContentType.dimensionType
+
         case .twoFaCreation, .twoFaUpdate:
             "login"
+
         case let .onboardingUpsellCtaClicked(planName):
             planName
+
         default:
             nil
         }
@@ -160,8 +173,10 @@ private extension TelemetryEvent {
         switch type {
         case .autofillDisplay, .autofillTriggeredFromApp:
             "app"
+
         case .autofillTriggeredFromSource:
             "source"
+
         default:
             nil
         }
@@ -185,18 +200,25 @@ private extension ItemContentType {
         switch self {
         case .login:
             "login"
+
         case .alias:
             "alias"
+
         case .note:
             "note"
+
         case .creditCard:
             "credit_card"
+
         case .identity:
             "identity"
+
         case .sshKey:
             "ssh_key"
+
         case .wifi:
             "wifi"
+
         case .custom:
             "custom"
         }

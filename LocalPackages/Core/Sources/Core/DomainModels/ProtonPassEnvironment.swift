@@ -71,10 +71,13 @@ public enum ProtonPassEnvironment: Sendable {
         switch self {
         case .prod:
             "production"
+
         case .black:
             "black"
+
         case let .scientist(name):
             "scientist_\(name)"
+
         case .custom:
             "custom"
         }
@@ -84,6 +87,7 @@ public enum ProtonPassEnvironment: Sendable {
         switch self {
         case .prod:
             true
+
         default:
             false
         }

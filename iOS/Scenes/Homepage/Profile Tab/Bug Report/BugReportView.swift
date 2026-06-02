@@ -33,6 +33,7 @@ private extension BugReportView {
             switch self {
             case .missingReason:
                 #localized("Please select a reason")
+
             case .shortDescription:
                 #localized("Please provide us with more details in the description")
             }

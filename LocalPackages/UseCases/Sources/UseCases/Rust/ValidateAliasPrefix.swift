@@ -58,14 +58,19 @@ extension PassRustCore.AliasPrefixError {
         switch self {
         case .DotAtTheBeginning:
             .dotAtTheStart
+
         case .DotAtTheEnd:
             .dotAtTheEnd
+
         case .InvalidCharacter:
             .disallowedCharacters
+
         case .PrefixEmpty:
             .emptyPrefix
+
         case .PrefixTooLong:
             .prefixToLong
+
         case .TwoConsecutiveDots:
             .twoConsecutiveDots
         }

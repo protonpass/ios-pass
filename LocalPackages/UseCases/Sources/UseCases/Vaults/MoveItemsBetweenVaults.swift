@@ -49,10 +49,12 @@ public final class MoveItemsBetweenContainers: MoveItemsBetweenContainersUseCase
         switch context {
         case let .singleItem(item):
             try await repository.move(items: [item], toShareId: shareId, destinationFolderId: destinationFolderId)
+
         case let .allItems(fromVault):
             try await repository.move(currentShareId: fromVault.shareId,
                                       toShareId: shareId,
                                       destinationFolderId: destinationFolderId)
+
         case let .allItemsInFolder(folder):
             guard let shareContent = appContentManager.getShareContent(for: folder.shareId) else { return }
             let items = shareContent.flattenedItems(from: folder.folderId)
@@ -60,6 +62,7 @@ public final class MoveItemsBetweenContainers: MoveItemsBetweenContainersUseCase
             try await repository.move(items: items,
                                       toShareId: shareId,
                                       destinationFolderId: destinationFolderId)
+
         case let .selectedItems(items):
             try await repository.move(items: items, toShareId: shareId, destinationFolderId: destinationFolderId)
         }

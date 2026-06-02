@@ -150,11 +150,10 @@ public extension AccessRepository {
         if let localInfos = try await localDatasource.getPassUserInformations(userId: userId) {
             logger.trace("Found local infos for user \(userId)")
             return localInfos
-        } else {
-            let infos = try await remoteDatasource.getUserPassInformations(userId: userId)
-            try await localDatasource.upsert(informations: infos, userId: userId)
-            return infos
         }
+        let infos = try await remoteDatasource.getUserPassInformations(userId: userId)
+        try await localDatasource.upsert(informations: infos, userId: userId)
+        return infos
     }
 }
 

@@ -65,7 +65,7 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
     func loadLogs() {
         Task { [weak self] in
             guard let self else { return }
-            defer { self.isLoading = false }
+            defer { isLoading = false }
             do {
                 isLoading = true
                 entries = try await getLogEntries(for: module)
@@ -78,7 +78,7 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
     func shareLogs() {
         Task { [weak self] in
             guard let self else { return }
-            defer { self.sharingLogs = false }
+            defer { sharingLogs = false }
             do {
                 sharingLogs = true
                 fileToDelete = try await extractLogsToFile(for: entries,

@@ -253,8 +253,10 @@ private extension AliasSyncConfigurationViewModel {
                 switch event {
                 case let .created(mailbox):
                     mailboxes.append(mailbox)
+
                 case let .deleted(mailboxId):
                     mailboxes.removeAll(where: { $0.mailboxID == mailboxId })
+
                 case let .verified(mailbox):
                     if let index = mailboxes.firstIndex(where: { $0.mailboxID == mailbox.mailboxID }) {
                         mailboxes[index] = mailbox

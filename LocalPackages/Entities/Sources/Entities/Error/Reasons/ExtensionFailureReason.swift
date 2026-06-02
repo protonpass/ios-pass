@@ -29,6 +29,7 @@ public extension PassError {
             switch self {
             case .noInputItems:
                 "No input items"
+
             case .noAttachments:
                 "No attachents found"
             }

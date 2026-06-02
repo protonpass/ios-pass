@@ -26,6 +26,7 @@ import SwiftUI
 
 struct MonitorAliasesView: View {
     @Environment(\.dismiss) private var dismiss
+    // swiftlint:disable:next private_swiftui_state
     @StateObject var viewModel: MonitorAliasesViewModel
     @Environment(PathRouter.self) private var router: PathRouter
 

@@ -26,12 +26,16 @@ public extension SortType {
         switch self {
         case .mostRecent:
             #localized("Most recent", bundle: .module)
+
         case .alphabeticalAsc:
             #localized("Title (A-Z)", bundle: .module)
+
         case .alphabeticalDesc:
             #localized("Title (Z-A)", bundle: .module)
+
         case .newestToOldest:
             #localized("Newest to oldest", bundle: .module)
+
         case .oldestToNewest:
             #localized("Oldest to newest", bundle: .module)
         }

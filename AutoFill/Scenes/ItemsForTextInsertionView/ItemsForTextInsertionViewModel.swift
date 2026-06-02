@@ -37,6 +37,7 @@ enum ItemForTextInsertion: Hashable {
         switch self {
         case let .history(uiModel):
             uiModel
+
         case let .regular(uiModel):
             uiModel
         }
@@ -159,8 +160,10 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
         switch selectedItemType {
         case .login:
             return .init(userId: userId, vaults: vaults, data: .login(nil, nil))
+
         case .alias:
             return .init(userId: userId, vaults: vaults, data: .alias)
+
         default:
             assertionFailure("Only logins and aliases could be created when text autofilling")
             // Fallback to creating login
@@ -289,6 +292,7 @@ private extension ItemsForTextInsertionViewModel {
                 switch state {
                 case .searchResults:
                     break
+
                 default:
                     state = .idle
                 }

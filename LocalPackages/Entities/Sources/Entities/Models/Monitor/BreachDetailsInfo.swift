@@ -27,8 +27,10 @@ public enum BreachDetailsInfo: Equatable, Hashable, Sendable {
         switch self {
         case let .alias(aliasInfos):
             !aliasInfos.alias.item.monitoringDisabled
+
         case let .customEmail(email):
             !email.monitoringDisabled
+
         case let .protonAddress(address):
             !address.monitoringDisabled
         }

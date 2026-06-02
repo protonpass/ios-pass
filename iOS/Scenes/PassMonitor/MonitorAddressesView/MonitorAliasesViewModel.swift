@@ -122,6 +122,7 @@ private extension MonitorAliasesViewModel {
             .sink { [weak self] update in
                 guard let self else { return }
                 if case let .aliases(infos) = update {
+                    // swiftlint:disable:next redundant_self
                     self.infos = infos
                 }
             }

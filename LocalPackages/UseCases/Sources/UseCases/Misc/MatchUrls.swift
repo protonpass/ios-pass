@@ -40,7 +40,7 @@ public final class MatchUrls: MatchUrlsUseCase {
         self.getRootDomain = getRootDomain
     }
 
-    public func execute(_ leftUrl: URL, with rightUrl: URL) throws -> UrlMatchResult {
+    public func execute(_ leftUrl: URL, with rightUrl: URL) -> UrlMatchResult {
         guard let leftScheme = leftUrl.scheme,
               let rightScheme = rightUrl.scheme,
               let leftHost = leftUrl.host,
@@ -55,34 +55,31 @@ public final class MatchUrls: MatchUrlsUseCase {
         if httpHttps.contains(leftScheme), httpHttps.contains(rightScheme) {
             if leftScheme == "https", rightScheme == "http" {
                 return .notMatched
-            } else {
-                guard let leftRootDomain = try? getRootDomain(of: leftUrl),
-                      let rightRootDomain = try? getRootDomain(of: rightUrl),
-                      leftRootDomain == rightRootDomain else {
-                    return .notMatched
-                }
-
-                var leftSubdomains = leftHost.components(separatedBy: ".")
-                var rightSubdomains = rightHost.components(separatedBy: ".")
-
-                var matchScore = 1_000
-                while let lastLeftSubdomain = leftSubdomains.popLast() {
-                    let lastRightSubdomain = rightSubdomains.popLast()
-                    if lastLeftSubdomain != lastRightSubdomain {
-                        matchScore -= 1
-                    }
-                }
-                matchScore -= rightSubdomains.count
-
-                return .matched(matchScore)
             }
-        } else {
-            // Other schemes like `ssh` or `ftp`...
-            if leftScheme == rightScheme, leftHost == rightHost {
-                return .matched(1_000)
-            } else {
+            guard let leftRootDomain = try? getRootDomain(of: leftUrl),
+                  let rightRootDomain = try? getRootDomain(of: rightUrl),
+                  leftRootDomain == rightRootDomain else {
                 return .notMatched
             }
+
+            var leftSubdomains = leftHost.components(separatedBy: ".")
+            var rightSubdomains = rightHost.components(separatedBy: ".")
+
+            var matchScore = 1_000
+            while let lastLeftSubdomain = leftSubdomains.popLast() {
+                let lastRightSubdomain = rightSubdomains.popLast()
+                if lastLeftSubdomain != lastRightSubdomain {
+                    matchScore -= 1
+                }
+            }
+            matchScore -= rightSubdomains.count
+
+            return .matched(matchScore)
         }
+        // Other schemes like `ssh` or `ftp`...
+        if leftScheme == rightScheme, leftHost == rightHost {
+            return .matched(1_000)
+        }
+        return .notMatched
     }
 }

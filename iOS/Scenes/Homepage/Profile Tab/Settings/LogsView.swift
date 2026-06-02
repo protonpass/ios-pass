@@ -26,6 +26,7 @@ import SwiftUI
 
 struct LogsView: View {
     @Environment(\.dismiss) private var dismiss
+    // swiftlint:disable:next private_swiftui_state
     @StateObject var viewModel: LogsViewModel
 
     var body: some View {

@@ -30,6 +30,7 @@ enum EnableExtraPasswordViewState {
         switch self {
         case .defining:
             #localized("Set extra password")
+
         case .repeating:
             #localized("Repeat extra password")
         }
@@ -39,6 +40,7 @@ enum EnableExtraPasswordViewState {
         switch self {
         case .defining:
             #localized("Extra password")
+
         case .repeating:
             #localized("Confirm extra password")
         }

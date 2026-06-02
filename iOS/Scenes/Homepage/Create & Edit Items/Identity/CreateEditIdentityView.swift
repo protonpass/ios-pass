@@ -28,7 +28,6 @@ import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 
-// swiftlint:disable file_length
 private enum SectionsSheetState {
     case personal(CreateEditIdentitySection)
     case address(CreateEditIdentitySection)
@@ -39,10 +38,13 @@ private enum SectionsSheetState {
         switch self {
         case .personal:
             "Personal details"
+
         case .address:
             "Address details"
+
         case .contact:
             "Contact details"
+
         case .work:
             "Work details"
         }
@@ -52,8 +54,10 @@ private enum SectionsSheetState {
         switch self {
         case .contact, .personal:
             480
+
         case .address:
             280
+
         case .work:
             350
         }
@@ -237,14 +241,17 @@ private extension CreateEditIdentityView {
                     if !section.isCollapsed {
                         personalDetailSection(section)
                     }
+
                 case BaseIdentitySection.address:
                     if !section.isCollapsed {
                         addressDetailSection(section)
                     }
+
                 case BaseIdentitySection.contact:
                     if !section.isCollapsed {
                         contactDetailSection(section)
                     }
+
                 case BaseIdentitySection.workDetail:
                     if !section.isCollapsed {
                         workDetailSection(section)
@@ -729,14 +736,15 @@ private extension BaseIdentitySection {
         switch self {
         case .personalDetails:
             "Personal details"
+
         case .address:
             "Address details"
+
         case .contact:
             "Contact details"
+
         case .workDetail:
             "Work details"
         }
     }
 }
-
-// swiftlint:enable file_length

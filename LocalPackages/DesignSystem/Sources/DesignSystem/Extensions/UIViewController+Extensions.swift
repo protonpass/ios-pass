@@ -95,22 +95,24 @@ private extension UIViewController {
         switch type {
         case .medium:
             return [.medium()]
+
         case .large:
             return [.large()]
+
         case .mediumAndLarge:
             return [.medium(), .large()]
+
         case let .custom(height):
             if height > screenHeight {
                 return [.large()]
-            } else {
-                return [customDetent(height)]
             }
+            return [customDetent(height)]
+
         case let .customAndLarge(height):
             if height >= screenHeight * 0.8 {
                 return [.large()]
-            } else {
-                return [customDetent(height), .large()]
             }
+            return [customDetent(height), .large()]
         }
     }
 }

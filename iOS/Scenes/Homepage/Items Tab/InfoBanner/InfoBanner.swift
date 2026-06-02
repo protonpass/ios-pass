@@ -67,6 +67,7 @@ private extension Invite {
                          ctaTitle: nil,
                          backgroundColor: PassColor.backgroundMedium,
                          foregroundColor: PassColor.textNorm)
+
         case .group:
             let title = #localized("Vault shared with a group you administer")
             let description = #localized("The group is invited to a vault. Tap for details.")

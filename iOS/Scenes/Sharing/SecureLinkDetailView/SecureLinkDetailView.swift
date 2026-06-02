@@ -24,6 +24,7 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct SecureLinkDetailView: View {
+    // swiftlint:disable:next private_swiftui_state
     @StateObject var viewModel: SecureLinkDetailViewModel
     @Environment(\.dismiss) private var dismiss
 
