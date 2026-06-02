@@ -183,7 +183,6 @@ public struct CapsuleTextBorderedButton: View {
                     text
                         .frame(maxWidth: maxWidth, maxHeight: .infinity)
                 }
-                .tint(borderColor)
                 .buttonStyle(.glass)
                 .frame(height: height)
             } else {

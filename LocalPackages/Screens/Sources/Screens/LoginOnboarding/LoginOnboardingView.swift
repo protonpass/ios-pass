@@ -168,12 +168,14 @@ private extension LoginOnboardingView {
             CapsuleTextButton(title: #localized("Create an account", bundle: .module),
                               titleColor: .white,
                               backgroundColor: signUp ? Color(red: 0.43, green: 0.29, blue: 1) : .clear,
+                              height: 48,
                               action: { onAction(signUp) })
         } else {
             CapsuleTextBorderedButton(title: #localized("Sign in", bundle: .module),
                                       titleColor: .white,
                                       borderColor: .white,
                                       borderWidth: 1,
+                                      height: 48,
                                       action: { onAction(signUp) })
         }
     }
