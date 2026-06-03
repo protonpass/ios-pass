@@ -30,7 +30,7 @@ extension Folder {
                                                          rhsKey: Int64(keyRotation)))
         }
 
-        guard let contentData = try content.base64Decode() else {
+        guard let contentData = content.base64Decode() else {
             throw PassError.crypto(.failedToBase64Decode)
         }
 

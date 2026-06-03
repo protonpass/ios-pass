@@ -187,12 +187,8 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
 
     @concurrent
     func filterAndSortItemsAsync() async {
-        do {
-            try await filterItemsAsync()
-            await sortNotMatchedItemsAsync()
-        } catch {
-            await handle(error)
-        }
+        await filterItemsAsync()
+        await sortNotMatchedItemsAsync()
     }
 }
 

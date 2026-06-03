@@ -98,7 +98,7 @@ extension CreateEditItemCoordinator {
             try presentCreateEditIdentityView(mode: .create(.identity))
 
         case .custom:
-            try presentCustomItemList(onError: onError)
+            presentCustomItemList(onError: onError)
         }
     }
 }
