@@ -99,9 +99,9 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
         var (localShares, remoteShares) = try await (fetchLocalShares, fetchRemoteShares)
         logger.trace("Finished fetching \(localShares.count) local and \(remoteShares.shares.count) remote shares")
 
-        let updatedShares = try await removeSuperfluousLocalShares(userId: userId,
-                                                                   localShares: localShares,
-                                                                   remoteShares: remoteShares.shares)
+        let updatedShares = await removeSuperfluousLocalShares(userId: userId,
+                                                               localShares: localShares,
+                                                               remoteShares: remoteShares.shares)
         if updatedShares {
             if Task.isCancelled {
                 return true
@@ -140,7 +140,7 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
 private extension EventSynchronizer {
     func removeSuperfluousLocalShares(userId: String,
                                       localShares: [SymmetricallyEncryptedShare],
-                                      remoteShares: [Share]) async throws -> Bool {
+                                      remoteShares: [Share]) async -> Bool {
         // This is used to respond to sharing modifications that are not tied to events in the BE
         // making changes not visible to the user.
         logger.trace("Started removing superfluous local shares")
@@ -157,7 +157,7 @@ private extension EventSynchronizer {
 
             // Delete local shares if there are any to delete
             if !deletedLocalShares.isEmpty {
-                try await delete(userId: userId, shares: deletedLocalShares)
+                await delete(userId: userId, shares: deletedLocalShares)
             }
             logger.trace("Finished deleting superfluous local shares")
 

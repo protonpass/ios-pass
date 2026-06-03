@@ -140,7 +140,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
             // Do not suggest SL sync if the user just logged in
             // to avoid showing too many things (onboarding, full sync progress...)
             guard let self, await !loginMethod.isManualLogIn() else { return }
-            try await suggestSimpleLoginSyncIfApplicable()
+            await suggestSimpleLoginSyncIfApplicable()
         }
         refreshOrganizationAndOverrideSecuritySettings()
         refreshAccessAndMonitorStateSync()
@@ -944,7 +944,7 @@ extension HomepageCoordinator {
             }
             do {
                 let coordinator = makeCreateEditItemCoordinator()
-                try await coordinator.presentCreateItemView(for: itemType) { [weak self] error in
+                try coordinator.presentCreateItemView(for: itemType) { [weak self] error in
                     guard let self else { return }
                     handle(error: error)
                 }

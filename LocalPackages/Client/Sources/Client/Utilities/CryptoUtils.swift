@@ -84,7 +84,7 @@ public enum CryptoUtils {
             throw PassError.crypto(.addressNotFound(addressID: addressID))
         }
 
-        return try CryptoUtils.unlockAddressKeys(address: firstAddress, userData: userData)
+        return CryptoUtils.unlockAddressKeys(address: firstAddress, userData: userData)
     }
 
     public static func encryptKeyForSharing(addressId: String,

@@ -400,7 +400,7 @@ private extension ShareRepository {
             return share
         }
 
-        guard let contentData = try content.base64Decode() else {
+        guard let contentData = content.base64Decode() else {
             throw PassError.crypto(.failedToBase64Decode)
         }
 
@@ -463,7 +463,7 @@ private extension SymmetricallyEncryptedShare {
         guard share.shareType == .vault, let encryptedContent else { return share }
 
         let decryptedContent = try symmetricKey.decrypt(encryptedContent)
-        guard let decryptedContentData = try decryptedContent.base64Decode() else { return share }
+        guard let decryptedContentData = decryptedContent.base64Decode() else { return share }
         let vaultContent = try VaultContent(data: decryptedContentData)
 
         return share.copy(with: vaultContent)

@@ -110,7 +110,7 @@ private extension SecuritySettingsCoordinator {
         case (.pin, .biometric),
              (.pin, .none):
             // Disable PIN authentication or change from PIN to biometric
-            try await verifyPINCodeAndUpdateMethod(newMethod)
+            verifyPINCodeAndUpdateMethod(newMethod)
         }
     }
 
