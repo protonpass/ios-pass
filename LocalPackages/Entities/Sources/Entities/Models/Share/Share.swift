@@ -105,6 +105,10 @@ public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable {
         owner
     }
 
+    public var isGroupShare: Bool {
+        groupID != nil
+    }
+
     /// Decoded vault content
     public var vaultContent: VaultContent?
 

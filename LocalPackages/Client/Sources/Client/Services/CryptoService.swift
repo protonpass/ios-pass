@@ -63,7 +63,7 @@ public final class CryptoService: CryptoServiceProtocol {
         let share = try await getShare(shareId: shareId, userData: userData)
         let keyDescription = "shareId \"\(shareId)\", keyRotation: \"\(encryptedKey.keyRotation)\""
         logger.trace("Decrypting share key \(keyDescription)")
-        guard let encryptedKeyData = try encryptedKey.key.base64Decode() else {
+        guard let encryptedKeyData = encryptedKey.key.base64Decode() else {
             logger.trace("Failed to base 64 decode share key \(keyDescription)")
             throw PassError.crypto(.failedToBase64Decode)
         }

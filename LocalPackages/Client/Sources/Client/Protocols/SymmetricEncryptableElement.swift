@@ -41,7 +41,7 @@ extension SymmetricEncryptableElement {
     }
 
     init(base64: String, symmetricKey: SymmetricKey) throws {
-        guard let cypherData = try base64.base64Decode() else {
+        guard let cypherData = base64.base64Decode() else {
             throw PassError.crypto(.failedToBase64Decode)
         }
         let clearData = try symmetricKey.decrypt(cypherData)

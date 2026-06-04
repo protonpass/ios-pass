@@ -336,7 +336,7 @@ private extension PassKeyManager {
             throw PassError.keysNotFound(shareID: parentId)
         }
 
-        guard let encryptedItemKeyData = try itemKey.key.base64Decode() else {
+        guard let encryptedItemKeyData = itemKey.key.base64Decode() else {
             throw PassError.crypto(.failedToBase64Decode)
         }
 
@@ -353,7 +353,7 @@ private extension PassKeyManager {
     func decryptFolderKey(shareId: String,
                           folder: Folder,
                           parentKey: any CryptographicKeyProtocol) throws -> DecryptedFolderKey {
-        guard let encryptedFolderKeyData = try folder.folderKey.base64Decode() else {
+        guard let encryptedFolderKeyData = folder.folderKey.base64Decode() else {
             throw PassError.crypto(.failedToBase64Decode)
         }
 
@@ -505,7 +505,7 @@ private extension PassKeyManager {
 private extension SymmetricallyEncryptedKeyProtocol {
     func decrypt(with encryptionKey: SymmetricKey) throws -> any CryptographicKeyProtocol {
         let decryptedKey = try encryptionKey.decrypt(encryptedKey)
-        guard let decryptedKeyData = try decryptedKey.base64Decode() else {
+        guard let decryptedKeyData = decryptedKey.base64Decode() else {
             throw PassError.crypto(.failedToBase64Decode)
         }
         return buildKey(with: decryptedKeyData)

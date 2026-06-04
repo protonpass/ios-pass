@@ -88,7 +88,7 @@ public actor DownloadAndDecryptFile: DownloadAndDecryptFileUseCase {
             throw PassError.fileAttachment(.missingItemKey(file.itemKeyRotation))
         }
 
-        guard let encryptedFileKey = try file.fileKey.base64Decode() else {
+        guard let encryptedFileKey = file.fileKey.base64Decode() else {
             throw PassError.fileAttachment(.failedToDownloadMissingDecryptedFileKey(file.fileID))
         }
 

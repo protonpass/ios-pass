@@ -61,7 +61,7 @@ public final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShare
                 throw PassError.sharing(.invalidKey)
             }
 
-            guard let encryptedVaultContent = try vaultData.content.base64Decode() else {
+            guard let encryptedVaultContent = vaultData.content.base64Decode() else {
                 throw PassError.sharing(.cannotDecode)
             }
 
@@ -101,7 +101,7 @@ private extension DecodeShareVaultInformation {
     }
 
     func getValue(intermediateVaultKey: ItemKey) throws -> ArmoredMessage {
-        guard let decodedIntermediateVaultKey = try intermediateVaultKey.key.base64Decode() else {
+        guard let decodedIntermediateVaultKey = intermediateVaultKey.key.base64Decode() else {
             throw PassError.sharing(.cannotDecode)
         }
 

@@ -192,7 +192,8 @@ class BaseCreateEditItemViewModel: ObservableObject {
     let scanResponsePublisher = ScanResponsePublisher()
 
     private var pendingFileNameUpdates = [PendingFileNameUpdate]()
-    private weak var renameAttachmentDelegate = RenameAttachmentDelegate()
+    // swiftlint:disable:next weak_delegate
+    private lazy var renameAttachmentDelegate = RenameAttachmentDelegate()
 
     let mode: ItemMode
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
