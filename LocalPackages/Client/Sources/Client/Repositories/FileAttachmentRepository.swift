@@ -181,7 +181,7 @@ public extension FileAttachmentRepository {
             throw PassError.fileAttachment(.missingItemKey(file.itemKeyRotation))
         }
 
-        guard let encryptedFileKey = try file.fileKey.base64Decode() else {
+        guard let encryptedFileKey = file.fileKey.base64Decode() else {
             throw PassError.fileAttachment(.failedToDownloadMissingDecryptedFileKey(file.fileID))
         }
 
@@ -291,7 +291,7 @@ public extension FileAttachmentRepository {
                 throw PassError.fileAttachment(.missingItemKey(file.itemKeyRotation))
             }
 
-            guard let encryptedFileKey = try file.fileKey.base64Decode() else {
+            guard let encryptedFileKey = file.fileKey.base64Decode() else {
                 throw PassError.crypto(.failedToBase64Decode)
             }
 
@@ -342,8 +342,8 @@ private extension FileAttachmentRepository {
                     throw PassError.crypto(.missingItemKeyRotation(file.itemKeyRotation))
                 }
 
-                guard let encryptedFileKey = try file.fileKey.base64Decode(),
-                      let encryptedMetadata = try file.metadata.base64Decode() else {
+                guard let encryptedFileKey = file.fileKey.base64Decode(),
+                      let encryptedMetadata = file.metadata.base64Decode() else {
                     throw PassError.crypto(.failedToBase64Decode)
                 }
 

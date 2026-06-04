@@ -92,15 +92,12 @@ final class SecureLinkListViewModel: ObservableObject {
         }
     }
 
-    func load() {
-        Task { [weak self] in
-            guard let self else { return }
-            defer { loading = false }
-            if links == nil || (links?.isEmpty ?? true) {
-                loading = true
-            }
-            await refresh()
+    func load() async {
+        defer { loading = false }
+        if links == nil || (links?.isEmpty ?? true) {
+            loading = true
         }
+        await refresh()
     }
 
     func refresh() async {

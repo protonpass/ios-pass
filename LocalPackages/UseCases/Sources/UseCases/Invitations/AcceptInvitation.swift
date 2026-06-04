@@ -102,7 +102,7 @@ private extension AcceptInvitation {
                       addressKeys: [DecryptionKey],
                       armoredInviterPublicKeys: [ArmoredKey],
                       config: TransformKeyConfig) throws -> ItemKey {
-        guard let decodeKey = try? key.key.base64Decode() else {
+        guard let decodeKey = key.key.base64Decode() else {
             throw PassError.sharing(.cannotDecode)
         }
 

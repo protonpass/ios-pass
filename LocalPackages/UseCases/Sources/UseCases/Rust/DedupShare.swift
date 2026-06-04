@@ -55,7 +55,10 @@ private extension Entities.Share {
                            targetId: targetID,
                            roleId: shareRoleID,
                            permissions: UInt16(permission),
-                           flags: UInt16(flags))
+                           flags: UInt16(flags),
+                           userIsVaultOwner: owner,
+                           isGroupShare: isGroupShare,
+                           createTime: UInt32(createTime))
     }
 }
 

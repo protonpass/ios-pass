@@ -138,6 +138,6 @@ private enum SymmetricKeyGetter {
         let lockedEncodedBase64 = Locked<Data>(encryptedValue: cypherEncodedBase64)
         let unlockedEncodedData = try lockedEncodedBase64.unlock(with: mainKey)
         let base64 = try JSONDecoder().decode(String.self, from: unlockedEncodedData)
-        return try base64.base64Decode()
+        return base64.base64Decode()
     }
 }
