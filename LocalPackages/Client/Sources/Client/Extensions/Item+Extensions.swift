@@ -32,13 +32,13 @@ public extension Item {
                                                          rhsKey: keyRotation))
         }
 
-        guard let contentData = try content.base64Decode() else {
+        guard let contentData = content.base64Decode() else {
             throw PassError.crypto(.failedToBase64Decode)
         }
 
         let decryptionKey: Data
         if let itemKey {
-            guard let itemKeyData = try itemKey.base64Decode() else {
+            guard let itemKeyData = itemKey.base64Decode() else {
                 throw PassError.crypto(.failedToBase64Decode)
             }
             decryptionKey = try AES.GCM.open(itemKeyData,

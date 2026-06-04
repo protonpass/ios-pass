@@ -230,49 +230,42 @@ private extension ShareCoordinator {
     }
 
     func parseSharedContentAndBeginShareFlow(userId: String) async {
-        do {
-            let content = try await parseSharedContent()
-            parsedContent = content
+        let content = await parseSharedContent()
+        parsedContent = content
 
-            let view: any View
-            if case .csv = content,
-               let activeUserId = userManager.activeUserId {
-                let prefs = preferencesManager.sharedPreferences.unwrapped()
-                view = ImporterView(logManager: logManager,
-                                    datasource: self,
-                                    onClose: { [weak self] in
+        let view: any View
+        if case .csv = content,
+           let activeUserId = userManager.activeUserId {
+            let prefs = preferencesManager.sharedPreferences.unwrapped()
+            view = ImporterView(logManager: logManager,
+                                datasource: self,
+                                onClose: { [weak self] in
+                                    guard let self else { return }
+                                    dismissExtension()
+                                })
+                                .if(prefs.localAuthenticationMethod == .pin) { view in
+                                    view.localAuthentication(onFailure: { [weak self] _ in
                                         guard let self else { return }
-                                        dismissExtension()
+                                        logOut(userId: activeUserId)
                                     })
-                                    .if(prefs.localAuthenticationMethod == .pin) { view in
-                                        view.localAuthentication(onFailure: { [weak self] _ in
-                                            guard let self else { return }
-                                            logOut(userId: activeUserId)
-                                        })
-                                    }
-            } else {
-                view = SharedContentView(content: content,
-                                         onCreate: { [weak self] type in
-                                             guard let self else { return }
-                                             presentCreateItemView(for: type, content: content)
-                                         },
-                                         onDismiss: { [weak self] in
-                                             guard let self else { return }
-                                             dismissExtension()
-                                         })
-                                         .localAuthentication(onFailure: { [weak self] _ in
-                                             guard let self else { return }
-                                             logOut(userId: userId)
-                                         })
-            }
-
-            showView(view)
-        } catch {
-            alert(error: error) { [weak self] in
-                guard let self else { return }
-                dismissExtension()
-            }
+                                }
+        } else {
+            view = SharedContentView(content: content,
+                                     onCreate: { [weak self] type in
+                                         guard let self else { return }
+                                         presentCreateItemView(for: type, content: content)
+                                     },
+                                     onDismiss: { [weak self] in
+                                         guard let self else { return }
+                                         dismissExtension()
+                                     })
+                                     .localAuthentication(onFailure: { [weak self] _ in
+                                         guard let self else { return }
+                                         logOut(userId: userId)
+                                     })
         }
+
+        showView(view)
     }
 
     func presentCreateItemView(for type: SharedItemType, content: SharedContent) {

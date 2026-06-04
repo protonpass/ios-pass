@@ -69,7 +69,7 @@ extension ActionCoordinator {
     func start() async {
         do {
             try await setUpBeforeLaunching(rootContainer: .viewController(rootViewController))
-            await beginFlow()
+            beginFlow()
         } catch {
             alert(error: error) { [weak self] in
                 guard let self else { return }

@@ -93,10 +93,10 @@ public final class SendShareInvite: Sendable, SendShareInviteUseCase {
             throw PassError.sharing(.failedEncryptionKeysFetching)
         }
 
-        let inviteesData = try await infos.asyncCompactMap { try await generateInviteeData(userData: userData,
-                                                                                           from: $0,
-                                                                                           share: share,
-                                                                                           shareKey: key) }
+        let inviteesData = try infos.compactMap { try generateInviteeData(userData: userData,
+                                                                          from: $0,
+                                                                          share: share,
+                                                                          shareKey: key) }
 
         let invited = try await shareInviteRepository.sendInvites(userId: userId,
                                                                   shareId: share.id,
