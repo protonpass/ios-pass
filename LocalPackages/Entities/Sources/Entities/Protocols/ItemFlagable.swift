@@ -55,6 +55,22 @@ public extension ItemFlagable {
     var hasHadFiles: Bool {
         itemFlags.contains(.hasHadFiles)
     }
+
+    var weakPasswordCheckDisabled: Bool {
+        itemFlags.contains(.skipWeakPasswordCheck)
+    }
+
+    var compromisedPasswordCheckDisabled: Bool {
+        itemFlags.contains(.skipCompromisedPasswordCheck)
+    }
+
+    var reusedPasswordCheckDisabled: Bool {
+        itemFlags.contains(.skipReusedPasswordCheck)
+    }
+
+    var twoFACheckDisabled: Bool {
+        itemFlags.contains(.skip2FACheck)
+    }
 }
 
 public struct ItemFlags: Sendable, OptionSet {
@@ -64,6 +80,10 @@ public struct ItemFlags: Sendable, OptionSet {
     public static let aliasDisabled = ItemFlags(rawValue: 1 << 2)
     public static let hasFiles = ItemFlags(rawValue: 1 << 3)
     public static let hasHadFiles = ItemFlags(rawValue: 1 << 4)
+    public static let skipWeakPasswordCheck = ItemFlags(rawValue: 1 << 5)
+    public static let skipCompromisedPasswordCheck = ItemFlags(rawValue: 1 << 6)
+    public static let skipReusedPasswordCheck = ItemFlags(rawValue: 1 << 7)
+    public static let skip2FACheck = ItemFlags(rawValue: 1 << 8)
 
     public init(rawValue: Int) {
         self.rawValue = rawValue
