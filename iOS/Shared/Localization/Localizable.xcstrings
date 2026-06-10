@@ -473,6 +473,9 @@
         }
       }
     },
+    "%@" : {
+
+    },
     "%@ (%lld members)" : {
       "localizations" : {
         "be" : {

@@ -27,6 +27,21 @@ import PassRustCore
 
 public enum ItemFlag: Sendable, Hashable {
     case skipHealthCheck(Bool)
+    case skipWeakPasswordCheck(Bool)
+    case skipCompromisedPasswordCheck(Bool)
+    case skipReusedPasswordCheck(Bool)
+    case skip2FACheck(Bool)
+
+    public var value: Bool {
+        switch self {
+        case let .skip2FACheck(value),
+             let .skipCompromisedPasswordCheck(value),
+             let .skipHealthCheck(value),
+             let .skipReusedPasswordCheck(value),
+             let .skipWeakPasswordCheck(value):
+            value
+        }
+    }
 }
 
 private struct InternalPassMonitorItem {
@@ -293,6 +308,7 @@ private extension PassMonitorRepository {
                 }
                 return share.share.shareID
             }
+
         let loginItems = try await itemRepository.getActiveLogInItems(userId: userId)
             .filter { applicableShareIds.contains($0.shareId) }
             .compactMap { encryptedItem -> InternalPassMonitorItem? in
@@ -301,7 +317,9 @@ private extension PassMonitorRepository {
                     return nil
                 }
 
-                if !encryptedItem.item.monitoringDisabled, !loginItem.password.isEmpty {
+                if !encryptedItem.item.monitoringDisabled,
+                   !encryptedItem.item.reusedPasswordCheckDisabled,
+                   !loginItem.password.isEmpty {
                     passwordCounts[loginItem.password, default: 0] += 1
                 }
                 return InternalPassMonitorItem(encrypted: encryptedItem, loginData: loginItem)
@@ -313,33 +331,40 @@ private extension PassMonitorRepository {
         var numberOfWeakPassword = 0
         var numberOfMissing2fa = 0
         var numberOfExcludedItems = 0
+        var numberOfReusedPassword = 0
 
         var securityAffectedItems = [SecurityAffectedItem]()
 
         for item in loginItems {
             var weaknesses = [SecurityWeakness]()
 
-            if item.encrypted.item.monitoringDisabled {
-                weaknesses.append(.excludedItems)
+            if let weaknessExclusions = parseWeaknesses(item: item) {
+                weaknesses.append(contentsOf: weaknessExclusions)
                 numberOfExcludedItems += 1
-            } else {
-                if reusedPasswords.contains(item.loginData.password) {
-                    weaknesses.append(.reusedPasswords)
-                }
-
-                if !item.loginData.password.isEmpty,
-                   passwordScorer.checkScore(password: item.loginData.password) != .strong {
-                    weaknesses.append(.weakPasswords)
-                    numberOfWeakPassword += 1
-                }
-
-                if item.loginData.totpUri.isEmpty,
-                   item.loginData.urls.contains(where: { twofaDomainChecker.twofaDomainEligible(domain: $0) }),
-                   item.loginData.passkeys.isEmpty {
-                    weaknesses.append(.missing2FA)
-                    numberOfMissing2fa += 1
-                }
             }
+
+//            if !item.encrypted.item.monitoringDisabled {
+            if !item.encrypted.item.reusedPasswordCheckDisabled,
+               reusedPasswords.contains(item.loginData.password) {
+                weaknesses.append(.reusedPasswords(isExcluded: false))
+                numberOfReusedPassword += 1
+            }
+
+            if !item.encrypted.item.weakPasswordCheckDisabled,
+               !item.loginData.password.isEmpty,
+               passwordScorer.checkScore(password: item.loginData.password) != .strong {
+                weaknesses.append(.weakPasswords(isExcluded: false))
+                numberOfWeakPassword += 1
+            }
+
+            if !item.encrypted.item.twoFACheckDisabled,
+               item.loginData.totpUri.isEmpty,
+               item.loginData.urls.contains(where: { twofaDomainChecker.twofaDomainEligible(domain: $0) }),
+               item.loginData.passkeys.isEmpty {
+                weaknesses.append(.missing2FA(isExcluded: false))
+                numberOfMissing2fa += 1
+            }
+//            }
 
             if !weaknesses.isEmpty {
                 securityAffectedItems.append(SecurityAffectedItem(item: item.encrypted, weaknesses: weaknesses))
@@ -351,6 +376,23 @@ private extension PassMonitorRepository {
                               missing2FA: numberOfMissing2fa,
                               excludedItems: numberOfExcludedItems),
                 securityAffectedItems)
+    }
+
+    func parseWeaknesses(item: InternalPassMonitorItem) -> [SecurityWeakness]? {
+        var weaknesses: [SecurityWeakness] = []
+        if item.encrypted.item.monitoringDisabled {
+            weaknesses.append(.fullyExcluded)
+        }
+        if item.encrypted.item.reusedPasswordCheckDisabled {
+            weaknesses.append(.reusedPasswords(isExcluded: true))
+        }
+        if item.encrypted.item.weakPasswordCheckDisabled {
+            weaknesses.append(.weakPasswords(isExcluded: true))
+        }
+        if item.encrypted.item.twoFACheckDisabled {
+            weaknesses.append(.missing2FA(isExcluded: true))
+        }
+        return weaknesses.nilIfEmpty
     }
 }
 

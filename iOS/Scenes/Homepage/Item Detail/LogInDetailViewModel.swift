@@ -66,28 +66,35 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
         super.init(isShownAsSheet: isShownAsSheet,
                    itemContent: itemContent,
                    upgradeChecker: upgradeChecker)
-        if showSecurityIssues {
-            getLoginSecurityIssues(itemId: itemContent.itemId)
-                .subscribe(on: DispatchQueue.global())
-                .receive(on: DispatchQueue.main)
-                .sink { [weak self] newSecurityIssues in
-                    guard let self else {
-                        return
-                    }
-                    securityIssues = newSecurityIssues
+//        if showSecurityIssues {
+        getLoginSecurityIssues(itemId: itemContent.itemId)
+            .subscribe(on: DispatchQueue.global())
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newSecurityIssues in
+                guard let self else {
+                    return
                 }
-                .store(in: &cancellables)
+                securityIssues = newSecurityIssues?.filter { weakness in
+                    showSecurityIssues ? weakness.isExcluded : !weakness.isExcluded
+//                    if showSecurityIssues {
+//
+//                    } else {
+//
+//                    }
+                }
+            }
+            .store(in: &cancellables)
 
-            $securityIssues.receive(on: DispatchQueue.main)
-                .sink { [weak self] issues in
-                    guard let self, let issues else {
-                        return
-                    }
-                    if issues.contains(.reusedPasswords) {
-                        fetchSimilarPasswordItems()
-                    }
-                }.store(in: &cancellables)
-        }
+        $securityIssues.receive(on: DispatchQueue.main)
+            .sink { [weak self] issues in
+                guard let self, let issues else {
+                    return
+                }
+                if issues.containsReused {
+                    fetchSimilarPasswordItems()
+                }
+            }.store(in: &cancellables)
+//        }
     }
 
     override func bindValues() {
@@ -182,8 +189,7 @@ extension LogInDetailViewModel {
                 if let content = try await itemRepository.getItemContent(shareId: aliasItem.shareId,
                                                                          itemId: aliasItem.itemId) {
                     router.present(for: .itemDetail(content,
-                                                    automaticDisplay: true,
-                                                    showSecurityIssues: false))
+                                                    automaticDisplay: true))
                 }
             } catch {
                 handle(error)
@@ -224,7 +230,7 @@ extension LogInDetailViewModel {
 extension SecurityWeakness {
     var secureRowType: SecureRowType {
         switch self {
-        case .excludedItems, .reusedPasswords, .weakPasswords:
+        case .fullyExcluded, .reusedPasswords, .weakPasswords:
             .warning
 
         case .missing2FA:

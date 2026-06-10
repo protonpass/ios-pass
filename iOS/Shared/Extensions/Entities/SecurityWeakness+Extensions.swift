@@ -24,7 +24,7 @@ import Macro
 public extension SecurityWeakness {
     var title: String {
         switch self {
-        case .excludedItems:
+        case .fullyExcluded:
             #localized("Excluded Items")
 
         case .weakPasswords:
@@ -44,8 +44,8 @@ public extension SecurityWeakness {
     /// Title used in login detail page
     var detailTitle: String? {
         switch self {
-        case .reusedPasswords:
-            nil
+//        case .reusedPasswords:
+//            nil
 
         default:
             title
@@ -70,7 +70,7 @@ public extension SecurityWeakness {
 
     var infos: String? {
         switch self {
-        case .excludedItems:
+        case .fullyExcluded:
             #localized("This item is not being monitored")
 
         case .weakPasswords:

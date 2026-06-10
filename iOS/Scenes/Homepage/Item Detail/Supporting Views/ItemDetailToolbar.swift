@@ -120,7 +120,9 @@ private extension ItemDetailToolbar {
                             .eye
 
                         Label(title, uiImage: icon)
-                            .buttonEmbeded { viewModel.toggleMonitoring() }
+                            .buttonEmbeded {
+                                viewModel.toggleFullItemMonitoring()
+                            }
                     }
 
                     Divider()

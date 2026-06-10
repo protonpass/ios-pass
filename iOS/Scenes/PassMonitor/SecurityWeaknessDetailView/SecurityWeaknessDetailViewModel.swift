@@ -59,7 +59,7 @@ final class SecurityWeaknessDetailViewModel: ObservableObject {
         case .missing2FA:
             #localized("All your login items have two-factor authentication enabled")
 
-        case .excludedItems:
+        case .fullyExcluded:
             #localized("You don't have any excluded login items from monitoring")
 
         default:
@@ -80,7 +80,10 @@ final class SecurityWeaknessDetailViewModel: ObservableObject {
                                                                                 itemId: item.itemId) else {
                     return
                 }
-                router.present(for: .itemDetail(itemContent, automaticDisplay: false, showSecurityIssues: true))
+                let showExcludedWeakness: Bool = type == .fullyExcluded
+                router.present(for: .itemDetail(itemContent,
+                                                automaticDisplay: false,
+                                                showExcludedSecurityIssue: showExcludedWeakness))
                 let eventType: TelemetryEventType? = switch type {
                 case .weakPasswords:
                     .monitorItemDetailFromWeakPassword

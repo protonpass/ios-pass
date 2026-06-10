@@ -213,7 +213,7 @@ struct SecuritySectionHeaderKey: Hashable, Comparable, Identifiable {
 private extension SecurityWeakness {
     var isSectionned: Bool {
         switch self {
-        case .excludedItems, .missing2FA, .weakPasswords:
+        case .fullyExcluded, .missing2FA, .weakPasswords:
             false
 
         default:

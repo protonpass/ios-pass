@@ -309,7 +309,14 @@ class BaseItemDetailViewModel: ObservableObject {
         }
     }
 
-    func toggleMonitoring() {
+    func toggleFullItemMonitoring() {
+        toggleMonitoring(weakness: .fullyExcluded)
+    }
+
+    func toggleMonitoring(weakness: SecurityWeakness) {
+        guard let newItemFlag = weakness.flag else {
+            return
+        }
         Task { [weak self] in
             guard let self else {
                 return
@@ -318,7 +325,7 @@ class BaseItemDetailViewModel: ObservableObject {
             do {
                 logger.trace("Toggling monitor from \(isMonitored) for \(itemContent.debugDescription)")
                 router.display(element: .globalLoading(shouldShow: true))
-                try await toggleItemMonitoring(item: itemContent, shouldNotMonitor: isMonitored)
+                try await toggleItemMonitoring(item: itemContent, shouldNotMonitor: newItemFlag)
                 logger.trace("Toggled monitor to \(!isMonitored) for \(itemContent.debugDescription)")
                 if isMonitored {
                     let message = #localized("Item excluded from monitoring")
@@ -518,3 +525,23 @@ extension BaseItemDetailViewModel: FileAttachmentPreviewHandler {
 }
 
 // swiftlint:enable type_body_length
+extension SecurityWeakness {
+    var flag: ItemFlag? {
+        switch self {
+        case .missing2FA:
+            .skip2FACheck(!isExcluded)
+
+        case .reusedPasswords:
+            .skipReusedPasswordCheck(!isExcluded)
+
+        case .weakPasswords:
+            .skipWeakPasswordCheck(!isExcluded)
+
+        case .fullyExcluded:
+            .skipHealthCheck(isExcluded)
+
+        default:
+            nil
+        }
+    }
+}
