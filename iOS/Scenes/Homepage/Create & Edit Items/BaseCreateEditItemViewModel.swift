@@ -648,6 +648,9 @@ extension BaseCreateEditItemViewModel {
             case .emptyFile:
                 #localized("The selected file is empty. Please check the file and try again.")
 
+            case let .failedToUpload(message):
+                message
+
             default:
                 nil
             }
