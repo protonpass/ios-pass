@@ -25,11 +25,11 @@ import Combine
 import Entities
 
 public protocol ToggleItemMonitoringUseCase: Sendable {
-    func execute(item: ItemContent, shouldNotMonitor: Bool) async throws
+    func execute(item: ItemContent, shouldNotMonitor: ItemFlag) async throws
 }
 
 public extension ToggleItemMonitoringUseCase {
-    func callAsFunction(item: ItemContent, shouldNotMonitor: Bool) async throws {
+    func callAsFunction(item: ItemContent, shouldNotMonitor: ItemFlag) async throws {
         try await execute(item: item, shouldNotMonitor: shouldNotMonitor)
     }
 }
@@ -41,8 +41,8 @@ public final class ToggleItemMonitoring: ToggleItemMonitoringUseCase {
         self.itemRepository = itemRepository
     }
 
-    public func execute(item: ItemContent, shouldNotMonitor: Bool) async throws {
-        try await itemRepository.updateItemFlags(flags: [.skipHealthCheck(shouldNotMonitor)],
+    public func execute(item: ItemContent, shouldNotMonitor: ItemFlag) async throws {
+        try await itemRepository.updateItemFlags(flags: [shouldNotMonitor],
                                                  shareId: item.shareId,
                                                  itemId: item.itemId)
     }

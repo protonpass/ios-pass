@@ -484,7 +484,7 @@ private extension PassMonitorView {
                        title: "Weak Passwords",
                        subTitle: "Change your passwords",
                        count: weakPasswords,
-                       action: { viewModel.showSecurityWeakness(type: .weakPasswords) })
+                       action: { viewModel.showSecurityWeakness(type: .weakPasswords(isExcluded: false)) })
     }
 }
 
@@ -494,7 +494,7 @@ private extension PassMonitorView {
                        title: "Reused passwords",
                        subTitle: "Generate unique passwords",
                        count: reusedPasswords,
-                       action: { viewModel.showSecurityWeakness(type: .reusedPasswords) })
+                       action: { viewModel.showSecurityWeakness(type: .reusedPasswords(isExcluded: false)) })
     }
 }
 
@@ -504,7 +504,7 @@ private extension PassMonitorView {
                        title: "Inactive 2FA",
                        subTitle: "Set up 2FA for more security",
                        count: missing2FA,
-                       action: { viewModel.showSecurityWeakness(type: .missing2FA) })
+                       action: { viewModel.showSecurityWeakness(type: .missing2FA(isExcluded: false)) })
     }
 }
 
@@ -514,7 +514,7 @@ private extension PassMonitorView {
                        title: "Excluded items",
                        subTitle: "These items remain at risk",
                        count: excludedItems,
-                       action: { viewModel.showSecurityWeakness(type: .excludedItems) })
+                       action: { viewModel.showSecurityWeakness(type: .fullyExcluded) })
     }
 }
 

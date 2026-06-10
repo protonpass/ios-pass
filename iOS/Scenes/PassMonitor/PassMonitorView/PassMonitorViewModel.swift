@@ -223,7 +223,7 @@ extension SecurityWeakness {
         case .missing2FA:
             .monitorDisplayMissing2FA
 
-        case .excludedItems:
+        case .fullyExcluded:
             .monitorDisplayExcludedItems
         }
     }

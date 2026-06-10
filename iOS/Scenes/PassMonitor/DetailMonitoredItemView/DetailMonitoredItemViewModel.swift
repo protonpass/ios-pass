@@ -132,7 +132,7 @@ final class DetailMonitoredItemViewModel: ObservableObject {
                                                                             itemId: item.itemId) else {
                     return
                 }
-                router.present(for: .itemDetail(content, automaticDisplay: false, showSecurityIssues: true))
+                router.present(for: .itemDetail(content, automaticDisplay: false, showExcludedSecurityIssue: true))
             } catch {
                 handle(error: error)
             }

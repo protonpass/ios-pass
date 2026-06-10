@@ -20,10 +20,70 @@
 
 import Foundation
 
-public enum SecurityWeakness: Equatable, Sendable, Hashable {
-    case weakPasswords
-    case reusedPasswords
+// swiftlint:disable:next todo
+// TODO: Add compromized passwords
+public enum SecurityWeakness: Equatable, Sendable, Hashable, Identifiable {
+    case weakPasswords(isExcluded: Bool)
+    case reusedPasswords(isExcluded: Bool)
     case breaches
-    case missing2FA
-    case excludedItems
+    case missing2FA(isExcluded: Bool)
+    case fullyExcluded
+//    case fullyExcludedItem
+//    case excludedWeakPasswords
+//    case excludedReusedPasswords
+//    case excludedMissing2FA
+
+//    public enum ExclusionType: Equatable, Sendable, Hashable, Identifiable, CaseIterable {
+//        case fullItem
+//        case weak
+//        case reused
+//        case twoFA
+//
+//        public var id: Self {
+//            self
+//        }
+//    }
+
+    public var id: Self {
+        self
+    }
+
+    public var isExcluded: Bool {
+        switch self {
+        case let .missing2FA(isExcluded: isExcluded),
+             let .reusedPasswords(isExcluded: isExcluded),
+             let .weakPasswords(isExcluded: isExcluded):
+            isExcluded
+
+        case .fullyExcluded:
+            true
+
+        default:
+            false
+        }
+    }
+
+    public var hasReusedPasswords: Bool {
+        guard case .reusedPasswords = self else { return false }
+        return true
+    }
+
+//    public var exclusionType: ExclusionType? {
+//        guard case let .excluded(type) = self else { return nil }
+//        return type
+//    }
+//
+//    public static var allExclusions: [SecurityWeakness] {
+//        ExclusionType.allCases.map { .excluded($0) }
+//    }
+}
+
+public extension [SecurityWeakness] {
+    var containsExcluded: Bool {
+        contains(where: \.isExcluded)
+    }
+
+    var containsReused: Bool {
+        contains(where: \.hasReusedPasswords)
+    }
 }

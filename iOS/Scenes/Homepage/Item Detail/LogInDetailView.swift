@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import DesignSystem
 import Entities
 import Macro
@@ -51,7 +52,7 @@ private extension LogInDetailView {
             ScrollViewReader { value in
                 ScrollView {
                     VStack(spacing: 0) {
-                        if viewModel.showSecurityIssues, let issues = viewModel.securityIssues {
+                        if /* viewModel.showSecurityIssues, */ let issues = viewModel.securityIssues {
                             securityIssuesView(issues: issues)
                                 .padding(.vertical)
                         }
@@ -383,56 +384,70 @@ private extension LogInDetailView {
 }
 
 private extension LogInDetailView {
-    func securityIssuesView(issues: [SecurityWeakness]) -> some View {
-        VStack {
-            ForEach(issues, id: \.self) {
-                securityWeaknessRow(weakness: $0)
-            }
-        }
-    }
-
     @ViewBuilder
-    func securityWeaknessRow(weakness: SecurityWeakness) -> some View {
-        let rowType = weakness.secureRowType
-        let showIcon = weakness == .reusedPasswords ? viewModel.reusedItems.isFetched : true
-        HStack(spacing: DesignConstant.sectionPadding) {
-            if showIcon, let iconName = rowType.detailIcon {
-                VStack {
-                    Image(systemName: iconName)
-                        .resizable()
-                        .renderingMode(.template)
-                        .scaledToFit()
-                        .symbolRenderingMode(.hierarchical)
-                        .foregroundStyle(rowType.iconColor)
-                        .frame(width: 28)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                    Spacer()
-                }
-            }
-
-            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                if let title = weakness.detailTitle {
-                    Text(title)
-                        .fontWeight(.bold)
-                        .foregroundStyle(rowType.iconColor)
-                }
-                if weakness == .reusedPasswords {
-                    reusedList(rowType: rowType)
-                        .padding(.vertical, DesignConstant.sectionPadding / 4)
-                }
-                if let infos = weakness.infos {
-                    Text(infos)
-                        .font(.callout)
-                        .foregroundStyle(rowType.iconColor)
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
+    func securityIssuesView(issues: [SecurityWeakness]) -> some View {
+        if !issues.isEmpty {
+            SecurityIssueView(weaknesses: issues,
+                              ignoreExcluded: !viewModel.showSecurityIssues,
+                              viewModel: viewModel)
         }
-        .padding(DesignConstant.sectionPadding)
-        .animation(.default, value: viewModel.reusedItems)
-        .roundedDetailSection(backgroundColor: rowType.detailBackground,
-                              borderColor: rowType.border)
+//        VStack {
+//            ForEach(issues) {
+//                securityWeaknessRow(weakness: $0)
+//            }
+//        }
     }
+
+//    @ViewBuilder
+//    func securityWeaknessRow(weakness: SecurityWeakness) -> some View {
+//        let rowType = weakness.secureRowType
+//        let showIcon = weakness == .reusedPasswords ? viewModel.reusedItems.isFetched : true
+//        HStack(spacing: DesignConstant.sectionPadding) {
+//            if showIcon, let iconName = rowType.detailIcon {
+//                VStack {
+//                    Image(systemName: iconName)
+//                        .resizable()
+//                        .renderingMode(.template)
+//                        .scaledToFit()
+//                        .symbolRenderingMode(.hierarchical)
+//                        .foregroundStyle(rowType.iconColor)
+//                        .frame(width: 28)
+//                        .clipShape(RoundedRectangle(cornerRadius: 8))
+//                    Spacer()
+//                }
+//            }
+//
+//            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+//                if let title = weakness.detailTitle {
+//                    Text(title)
+//                        .fontWeight(.bold)
+//                        .foregroundStyle(rowType.iconColor)
+//                }
+//                if weakness == .reusedPasswords {
+//                    reusedList(rowType: rowType)
+//                        .padding(.vertical, DesignConstant.sectionPadding / 4)
+//                }
+//                if let infos = weakness.infos {
+//                    Text(infos)
+//                        .font(.callout)
+//                        .foregroundStyle(rowType.iconColor)
+//                }
+//            }
+//            .frame(maxWidth: .infinity, alignment: .leading)
+//
+//            if let flag = weakness.flag {
+//                Button {
+//                    viewModel.toggleMonitoring(itemFlags: flag)
+//                } label: {
+//                    Text("Ignore")
+//                }
+//            }
+//        }
+//        .padding(DesignConstant.sectionPadding)
+//        .animation(.default, value: viewModel.reusedItems)
+//        .roundedDetailSection(backgroundColor: rowType.detailBackground,
+//                              borderColor: rowType.border)
+//    }
 
     @ViewBuilder
     func reusedList(rowType: SecureRowType) -> some View {
@@ -502,6 +517,286 @@ struct ReusedItemsPassListView: View {
                     }
                 }
             }
+        }.scrollBounceBehavior(.basedOnSize)
+    }
+}
+
+struct SecurityIssueView: View {
+    let weaknesses: [SecurityWeakness]
+    let ignoreExcluded: Bool
+    @ObservedObject var viewModel: LogInDetailViewModel
+    @State private var expanded: Bool = false
+
+    var body: some View {
+//        if !ignoreExcluded || !weaknesses.filter(\.isExcluded).isEmpty {
+        mainContent
+            .animation(.default, value: expanded)
+//        }
+    }
+
+    var mainContent: some View {
+        VStack(spacing: 10) {
+            headerRow
+
+            weaknessContent
+        }
+        .padding(DesignConstant.sectionPadding)
+        .roundedDetailSection()
+    }
+
+    @ViewBuilder
+    var headerRow: some View {
+        if multipleWeakness {
+            Button { expanded.toggle() } label: {
+                HStack {
+                    Image(uiImage: expanded ? IconProvider.chevronDownFilled : IconProvider.chevronRightFilled)
+                        .foregroundStyle(PassColor.textNorm)
+                    mainHeader
+                }
+            }
+        } else {
+            mainHeader
+        }
+    }
+
+    @ViewBuilder
+    var weaknessContent: some View {
+        if multipleWeakness, !expanded {
+            contentNonExpended
+                .foregroundStyle(PassColor.textNorm)
+        } else {
+            ForEach(weaknesses) { weakness in
+//                if !ignoreExcluded || weakness.isExcluded {
+                securityWeaknessRow(weakness: weakness)
+                if weakness != weaknesses.last {
+                    Divider()
+                }
+//                }
+            }
+        }
+    }
+
+    var multipleWeakness: Bool {
+        weaknesses.count /* (where: { !ignoreExcluded || $0.isExcluded }) */ > 1
+    }
+
+    var mainHeader: some View {
+        HStack {
+            Text("Pass Monitor")
+                .fontWeight(.semibold)
+                .foregroundStyle(PassColor.textNorm)
+            Spacer()
+            PassIcon.shieldWarning
+        }
+    }
+
+    var contentNonExpended: some View {
+        let text = weaknesses.compactMap(\.titleTest).joined(separator: " · ")
+
+        return Text(text)
+    }
+
+    @ViewBuilder
+    func securityWeaknessRow(weakness: SecurityWeakness) -> some View {
+        let rowType = weakness.secureRowType
+        //         let showIcon = weakness == .reusedPasswords ? viewModel.reusedItems.isFetched : true
+        HStack(alignment: .top, spacing: 8) {
+            rowIcon(weakness: weakness)
+            VStack {
+                HStack(alignment: .top, spacing: 8) {
+                    VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                        if let title = weakness.detailTitle {
+                            Text(title)
+                                .fontWeight(.bold)
+                                .foregroundStyle(rowType.iconColor)
+                                .layoutPriority(1)
+                        }
+                        if case .reusedPasswords = weakness {
+                            reusedText()
+                        } else if let infos = weakness.infos {
+                            Text(infos)
+                                .font(.callout)
+                                .foregroundStyle(PassColor.textNorm)
+                        }
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+//                    if let flag = weakness.flag {
+                    VStack {
+                        CapsuleTextButton(title: #localized("%@",
+                                                            weakness.isExcluded ? "Restore alert" : "Ignore"),
+                                          titleColor: PassColor.loginInteractionNormMajor2,
+                                          backgroundColor: PassColor.loginInteractionNormMinor2,
+                                          action: {
+                                              viewModel.toggleMonitoring(weakness: weakness)
+                                          })
+                        Spacer()
+                    }
+//                    }
+                }
+                if case .reusedPasswords = weakness {
+                    reusedList()
+                }
+            }
+        }
+        .animation(.default, value: viewModel.reusedItems)
+    }
+
+    @ViewBuilder
+    func rowIcon(weakness: SecurityWeakness) -> some View {
+        if let icon = weakness.icon {
+            VStack {
+                icon
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 16)
+                Spacer()
+            }
+        }
+    }
+
+    @ViewBuilder
+    func reusedText() -> some View {
+        switch viewModel.reusedItems {
+        case .fetching:
+            ProgressView()
+                .tint(PassColor.textNorm)
+
+        case let .fetched(reusedItems):
+            Text("\(reusedItems.count) other logins use this password")
+                .foregroundStyle(PassColor.textNorm)
+
+        case let .error(error):
+            RetryableErrorView(mode: .defaultHorizontal,
+                               tintColor: PassColor.loginInteractionNormMajor2,
+                               error: error,
+                               onRetry: viewModel.fetchSimilarPasswordItems)
+        }
+    }
+
+    @ViewBuilder
+    func reusedList() -> some View {
+        switch viewModel.reusedItems {
+        case .fetching:
+            ProgressView()
+                .tint(PassColor.textNorm)
+
+        case let .fetched(reusedItems):
+            if reusedItems.count > 5 {
+                HStack {
+                    CapsuleTextButton(title: #localized("See all"),
+                                      titleColor: PassColor.loginInteractionNormMajor2,
+                                      backgroundColor: PassColor.loginInteractionNormMinor2,
+                                      action: { viewModel.showItemList() })
+                        .fixedSize(horizontal: true, vertical: true)
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+            } else {
+                ReusedItemsPassListView(reusedPasswordItems: reusedItems,
+                                        action: { viewModel.showDetail(for: $0) })
+            }
+
+        case let .error(error):
+            RetryableErrorView(mode: .defaultHorizontal,
+                               tintColor: PassColor.loginInteractionNormMajor2,
+                               error: error,
+                               onRetry: viewModel.fetchSimilarPasswordItems)
         }
     }
 }
+
+// public struct ItemPathBreadcrumbView: View {
+//    let vaultContent: VaultContent
+//    let path: [FolderUiModel]
+//    @State private var expanded: Bool = false
+//
+//    public init(vaultContent: VaultContent, path: [FolderUiModel]) {
+//        self.vaultContent = vaultContent
+//        self.path = path
+//        expanded = expanded
+//    }
+//
+//    public var body: some View {
+//        if path.isEmpty {
+//            EmptyView()
+//        } else {
+//            Button { expanded.toggle() } label: {
+//                breadcrumb
+//            }
+//            .padding(DesignConstant.sectionPadding)
+//            .roundedDetailSection()
+//            .animation(.default, value: expanded)
+//        }
+//    }
+// }
+
+extension SecurityWeakness {
+    var titleTest: String? {
+        switch self {
+        case .weakPasswords:
+            "Weak passwords"
+
+        case .reusedPasswords:
+            "Reused passwords"
+
+        case .missing2FA:
+            "Missing 2FA"
+
+        default:
+            nil
+        }
+    }
+
+    var icon: Image? {
+        switch self {
+        case .missing2FA:
+            PassIcon.shieldLockPurple
+
+        case .reusedPasswords:
+            PassIcon.reusedKey
+
+        case .weakPasswords:
+            PassIcon.shieldBad
+
+        default:
+            nil
+        }
+    }
+
+    var longTitle: String? {
+        switch self {
+        case .missing2FA:
+            "Set up 2FA for more security"
+
+        default:
+            titleTest
+        }
+    }
+
+    var description: String? {
+        switch self {
+        case .weakPasswords:
+            "This account is vulnerable, visit the service and change your password."
+
+        case .reusedPasswords:
+            "This service offers 2FA. Enable it for added account security. "
+
+        default:
+            nil
+        }
+    }
+}
+
+//    static let reusedKey = Image(.reusedKey)
+//    static let shieldBad = Image(.shieldBad)
+//    static let shieldExclamationFilled = Image(.shieldExclamationFilled)
+//    static let shieldLock = Image(.shieldLock)
+//    static let shieldWarning = Image(.shieldWarning)
+
+// public enum SecurityWeakness: Equatable, Sendable, Hashable, Identifiable {
+//    case weakPasswords
+//    case reusedPasswords
+//    case breaches
+//    case missing2FA
+//    case excluded(ExclusionType)

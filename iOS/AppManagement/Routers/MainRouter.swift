@@ -92,7 +92,7 @@ enum SheetDestination: Equatable, Hashable {
     /// have the same display.
     /// Search and security centre act the same when it comes to display whereas the main list tab has a different
     /// flow.
-    case itemDetail(ItemContent, automaticDisplay: Bool = true, showSecurityIssues: Bool = false)
+    case itemDetail(ItemContent, automaticDisplay: Bool = true, showExcludedSecurityIssue: Bool = false)
     case editSpotlightSearchableContent
     case editSpotlightSearchableVaults
     case editSpotlightVaults

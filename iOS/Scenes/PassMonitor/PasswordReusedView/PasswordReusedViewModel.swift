@@ -46,7 +46,7 @@ final class PasswordReusedViewModel: ObservableObject {
     }
 
     func viewDetail(of item: ItemContent) {
-        router.present(for: .itemDetail(item, automaticDisplay: false, showSecurityIssues: true))
+        router.present(for: .itemDetail(item, automaticDisplay: false, showExcludedSecurityIssue: true))
     }
 }
 
