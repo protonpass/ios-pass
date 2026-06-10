@@ -25,13 +25,20 @@ import Entities
 import Foundation
 @preconcurrency import ProtonCoreDoh
 
-/// Redundant with `CodeOnlyReponse` on purpose because `CodeOnlyReponse` is used by
-/// core's network layer which has custom decode logic.
 private struct UploadMultipartResponse: Decodable {
     let code: Int
+    let error: String?
 
     enum CodingKeys: String, CodingKey {
         case code = "Code"
+        case error = "Error"
+    }
+
+    var formattedErrorMessage: String? {
+        if let error {
+            return "\(error) (\(code))"
+        }
+        return nil
     }
 }
 
@@ -135,11 +142,20 @@ public extension FileAttachmentRepository {
                                                              userId: userId,
                                                              infos: infos)
 
-                for try await case let .progress(progress) in eventStream {
-                    let overallProgress =
-                        await tracker.overallProgress(currentProgress: progress,
-                                                      chunkSize: blockData.value.count)
-                    continuation.yield(overallProgress)
+                for try await event in eventStream {
+                    switch event {
+                    case let .progress(progress):
+                        let overallProgress =
+                            await tracker.overallProgress(currentProgress: progress,
+                                                          chunkSize: blockData.value.count)
+                        continuation.yield(overallProgress)
+
+                    case let .result(response):
+                        if let errorMessage = response.formattedErrorMessage {
+                            let error = PassError.fileAttachment(.failedToUpload(errorMessage))
+                            continuation.yield(with: .failure(error))
+                        }
+                    }
                 }
             }
 
