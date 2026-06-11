@@ -1,3 +1,11 @@
+# Version 1.20.0
+- Introduced Liquid Glass, bringing a more refined and modern visual experience
+- Added support for folders (behind feature flag)
+
+Others:
+- Core libraries upgraded from 36.0.3 to 37.2.0
+- Rust library upgraded from 1.1.2 to 1.6.1
+
 # Version 1.19.2
 - Added handling for newly added account keys during an active session
 - Fixed the logic for displaying the "Leave" button on item detail page

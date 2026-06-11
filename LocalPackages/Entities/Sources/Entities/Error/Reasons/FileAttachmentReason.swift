@@ -36,7 +36,7 @@ public extension PassError {
         case failedToDownloadNoFetchedFiles
         case failedToAttachMissingRemoteId
         case failedToUpdateMissingMimeType
-        case failedToUpload(Int)
+        case failedToUpload(String)
         case fileTooLarge(UInt64)
         case missingItemKey(Int)
         case missingFile(String)
@@ -83,8 +83,8 @@ public extension PassError {
             case .failedToUpdateMissingMimeType:
                 "Failed to update because of missing MIME type"
 
-            case let .failedToUpload(code):
-                "Failed to upload (\(code))"
+            case let .failedToUpload(message):
+                "Failed to upload: \(message)"
 
             case let .fileTooLarge(size):
                 "File too large (\(size) bytes)"
