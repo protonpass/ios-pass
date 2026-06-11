@@ -1,6 +1,6 @@
 //
-// WordTypes+Extensions.swift
-// Proton Pass - Created on 04/06/2026.
+// WordSeparator+Extensions.swift
+// Proton Pass - Created on 11/06/2026.
 // Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,8 +21,29 @@
 import Entities
 import PassRustCore
 
-public extension Entities.WordTypes {
-    var toRustWordTypes: PassRustCore.WordTypes {
-        PassRustCore.WordTypes(adjectives: adjectives, nouns: nouns, verbs: verbs)
+public extension Entities.WordSeparator {
+    var toRustSeparator: PassRustCore.WordSeparator {
+        switch self {
+        case .hyphens:
+            .hyphens
+
+        case .spaces:
+            .spaces
+
+        case .periods:
+            .periods
+
+        case .commas:
+            .commas
+
+        case .underscores:
+            .underscores
+
+        case .numbers:
+            .numbers
+
+        case .numbersAndSymbols:
+            .numbersAndSymbols
+        }
     }
 }
