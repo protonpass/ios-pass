@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Client
 import Entities
 import PassRustCore
 
@@ -48,38 +49,11 @@ public final class GeneratePassphrase: GeneratePassphraseUseCase {
                         separator: Entities.WordSeparator,
                         capitalise: Bool,
                         includeNumbers: Bool) throws -> String {
-        let config = PassphraseConfig(separator: separator.toRustSeparator(),
+        let config = PassphraseConfig(separator: separator.toRustSeparator,
                                       capitalise: capitalise,
                                       includeNumbers: includeNumbers,
                                       count: 0) // Not applicable
         return try PassphraseGenerator().generatePassphrase(words: words,
                                                             config: config)
-    }
-}
-
-private extension Entities.WordSeparator {
-    func toRustSeparator() -> PassRustCore.WordSeparator {
-        switch self {
-        case .hyphens:
-            .hyphens
-
-        case .spaces:
-            .spaces
-
-        case .periods:
-            .periods
-
-        case .commas:
-            .commas
-
-        case .underscores:
-            .underscores
-
-        case .numbers:
-            .numbers
-
-        case .numbersAndSymbols:
-            .numbersAndSymbols
-        }
     }
 }
