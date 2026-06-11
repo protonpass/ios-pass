@@ -270,7 +270,7 @@ extension SharedUseCasesContainer {
     }
 }
 
-// MARK: Password Utils
+// MARK: Rust Utils
 
 extension SharedUseCasesContainer {
     var generatePassword: Factory<any GeneratePasswordUseCase> {
@@ -287,6 +287,11 @@ extension SharedUseCasesContainer {
 
     var getPasswordStrength: Factory<any GetPasswordStrengthUseCase> {
         self { GetPasswordStrength() }
+    }
+
+    // periphery:ignore
+    var generateUsername: Factory<any GenerateUsernameUseCase> {
+        self { GenerateUsername() }
     }
 }
 
