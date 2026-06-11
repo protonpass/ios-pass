@@ -25,15 +25,14 @@ public struct ShareSelectionPayload: Hashable, Sendable, Identifiable {
     public let folder: FolderUiModel?
 
     public var id: String {
-        if let folderId = folder?.folderId {
-            share.id + folderId
+        if let folderId = folder?.folderId, share.shareType == .vault {
+            folderId + share.id
         } else {
             share.id
         }
     }
 
     public init(share: Share, folder: FolderUiModel?) {
-        assert(share.isVaultRepresentation, "Share must be a vault")
         self.share = share
         self.folder = folder
     }

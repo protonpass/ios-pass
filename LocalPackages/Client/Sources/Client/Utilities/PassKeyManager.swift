@@ -137,7 +137,7 @@ public extension PassKeyManager {
         case .vault:
             return try await getItemKeys(userId: userId,
                                          shareId: item.shareId,
-                                         parentId: item.parentId,
+                                         parentId: item.fullParentId,
                                          itemId: item.itemId)
 
         case .item:
