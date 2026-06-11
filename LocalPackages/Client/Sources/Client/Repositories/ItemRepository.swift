@@ -940,13 +940,17 @@ private extension ItemRepository {
                               userId: String,
                               symmetricKey: SymmetricKey,
                               slNote: String? = nil) async throws -> SymmetricallyEncryptedItem {
-        let fullContainerKey = if let folderID = itemRevision.folderID {
+        guard let share = try await localShareDatasource.getShare(userId: userId, shareId: shareId) else {
+            throw PassError.shareNotFoundInLocalDB(shareID: shareId)
+        }
+
+        let fullContainerKey = if let folderID = itemRevision.folderID, share.share.shareType == .vault {
             folderID + shareId
         } else {
             shareId
         }
-        let shareKey = try await passKeyManager.getContainerKey(containerId: fullContainerKey,
-                                                                keyRotation: nil)
+
+        let shareKey = try await passKeyManager.getContainerKey(containerId: fullContainerKey, keyRotation: nil)
 
         let contentProtobuf = try itemRevision.getContentProtobuf(containerKey: shareKey)
 
