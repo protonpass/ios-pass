@@ -60,3 +60,9 @@ public struct GenerateUsername: GenerateUsernameUseCase {
 }
 
 // swiftlint:enable function_parameter_count
+
+extension Entities.WordTypes {
+    var toRustWordTypes: PassRustCore.WordTypes {
+        PassRustCore.WordTypes(adjectives: adjectives, nouns: nouns, verbs: verbs)
+    }
+}
