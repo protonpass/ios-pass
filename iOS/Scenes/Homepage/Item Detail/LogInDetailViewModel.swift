@@ -48,7 +48,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
         aliasItem != nil
     }
 
-    let showSecurityIssues: Bool
+    let showExcludedWeaknesses: Bool
 
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
     private let getLoginSecurityIssues = resolve(\UseCasesContainer.getLoginSecurityIssues)
@@ -61,12 +61,11 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     init(isShownAsSheet: Bool,
          itemContent: ItemContent,
          upgradeChecker: any UpgradeCheckerProtocol,
-         showSecurityIssues: Bool) {
-        self.showSecurityIssues = showSecurityIssues
+         showExcludedWeaknesses: Bool) {
+        self.showExcludedWeaknesses = showExcludedWeaknesses
         super.init(isShownAsSheet: isShownAsSheet,
                    itemContent: itemContent,
                    upgradeChecker: upgradeChecker)
-//        if showSecurityIssues {
         getLoginSecurityIssues(itemId: itemContent.itemId)
             .subscribe(on: DispatchQueue.global())
             .receive(on: DispatchQueue.main)
@@ -75,12 +74,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
                     return
                 }
                 securityIssues = newSecurityIssues?.filter { weakness in
-                    showSecurityIssues ? weakness.isExcluded : !weakness.isExcluded
-//                    if showSecurityIssues {
-//
-//                    } else {
-//
-//                    }
+                    showExcludedWeaknesses ? weakness.isExcluded : !weakness.isExcluded
                 }
             }
             .store(in: &cancellables)
@@ -94,7 +88,6 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
                     fetchSimilarPasswordItems()
                 }
             }.store(in: &cancellables)
-//        }
     }
 
     override func bindValues() {
