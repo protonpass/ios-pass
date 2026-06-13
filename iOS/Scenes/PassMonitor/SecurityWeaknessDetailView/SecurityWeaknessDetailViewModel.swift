@@ -80,10 +80,10 @@ final class SecurityWeaknessDetailViewModel: ObservableObject {
                                                                                 itemId: item.itemId) else {
                     return
                 }
-                let showExcludedWeakness: Bool = type == .fullyExcluded
+                let showExcludedWeaknesses: Bool = type == .fullyExcluded
                 router.present(for: .itemDetail(itemContent,
                                                 automaticDisplay: false,
-                                                showExcludedSecurityIssue: showExcludedWeakness))
+                                                showExcludedWeaknesses: showExcludedWeaknesses))
                 let eventType: TelemetryEventType? = switch type {
                 case .weakPasswords:
                     .monitorItemDetailFromWeakPassword

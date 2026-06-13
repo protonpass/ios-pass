@@ -52,10 +52,8 @@ private extension LogInDetailView {
             ScrollViewReader { value in
                 ScrollView {
                     VStack(spacing: 0) {
-                        if /* viewModel.showSecurityIssues, */ let issues = viewModel.securityIssues {
-                            securityIssuesView(issues: issues)
-                                .padding(.vertical)
-                        }
+                        securityIssuesView()
+                            .padding(.vertical)
 
                         if let vaultContent = viewModel.shareContent?.share.vaultContent {
                             ItemPathBreadcrumbView(vaultContent: vaultContent, path: viewModel.path)
@@ -120,6 +118,7 @@ private extension LogInDetailView {
             }
         }
         .animation(.default, value: viewModel.moreInfoSectionExpanded)
+        .animation(.default, value: viewModel.securityIssues)
         .itemDetailSetUp(viewModel)
     }
 }
@@ -385,69 +384,16 @@ private extension LogInDetailView {
 
 private extension LogInDetailView {
     @ViewBuilder
-    func securityIssuesView(issues: [SecurityWeakness]) -> some View {
-        if !issues.isEmpty {
+    func securityIssuesView() -> some View {
+        if let issues = viewModel.securityIssues, !issues.isEmpty {
+//            SecurityIssueView(weaknesses: issues,
+//                              ignoreExcluded: !viewModel.showExcludedWeaknesses,
+//                              viewModel: viewModel)
             SecurityIssueView(weaknesses: issues,
-                              ignoreExcluded: !viewModel.showSecurityIssues,
+//                              showExcludedWeaknesses: viewModel.showExcludedWeaknesses,
                               viewModel: viewModel)
         }
-//        VStack {
-//            ForEach(issues) {
-//                securityWeaknessRow(weakness: $0)
-//            }
-//        }
     }
-
-//    @ViewBuilder
-//    func securityWeaknessRow(weakness: SecurityWeakness) -> some View {
-//        let rowType = weakness.secureRowType
-//        let showIcon = weakness == .reusedPasswords ? viewModel.reusedItems.isFetched : true
-//        HStack(spacing: DesignConstant.sectionPadding) {
-//            if showIcon, let iconName = rowType.detailIcon {
-//                VStack {
-//                    Image(systemName: iconName)
-//                        .resizable()
-//                        .renderingMode(.template)
-//                        .scaledToFit()
-//                        .symbolRenderingMode(.hierarchical)
-//                        .foregroundStyle(rowType.iconColor)
-//                        .frame(width: 28)
-//                        .clipShape(RoundedRectangle(cornerRadius: 8))
-//                    Spacer()
-//                }
-//            }
-//
-//            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-//                if let title = weakness.detailTitle {
-//                    Text(title)
-//                        .fontWeight(.bold)
-//                        .foregroundStyle(rowType.iconColor)
-//                }
-//                if weakness == .reusedPasswords {
-//                    reusedList(rowType: rowType)
-//                        .padding(.vertical, DesignConstant.sectionPadding / 4)
-//                }
-//                if let infos = weakness.infos {
-//                    Text(infos)
-//                        .font(.callout)
-//                        .foregroundStyle(rowType.iconColor)
-//                }
-//            }
-//            .frame(maxWidth: .infinity, alignment: .leading)
-//
-//            if let flag = weakness.flag {
-//                Button {
-//                    viewModel.toggleMonitoring(itemFlags: flag)
-//                } label: {
-//                    Text("Ignore")
-//                }
-//            }
-//        }
-//        .padding(DesignConstant.sectionPadding)
-//        .animation(.default, value: viewModel.reusedItems)
-//        .roundedDetailSection(backgroundColor: rowType.detailBackground,
-//                              borderColor: rowType.border)
-//    }
 
     @ViewBuilder
     func reusedList(rowType: SecureRowType) -> some View {
@@ -523,7 +469,8 @@ struct ReusedItemsPassListView: View {
 
 struct SecurityIssueView: View {
     let weaknesses: [SecurityWeakness]
-    let ignoreExcluded: Bool
+//    let ignoreExcluded: Bool
+//    let showExcludedWeaknesses: Bool
     @ObservedObject var viewModel: LogInDetailViewModel
     @State private var expanded: Bool = false
 
@@ -591,16 +538,44 @@ struct SecurityIssueView: View {
     }
 
     var contentNonExpended: some View {
-        let text = weaknesses.compactMap(\.titleTest).joined(separator: " · ")
+        weaknesses.enumerated().reduce(Text("")) { result, element in
+            let (index, issue) = element
 
-        return Text(text)
+            let separator = index > 0 ? Text(verbatim: " · ")
+                .foregroundStyle(PassColor.textNorm) : Text(verbatim: "")
+
+            return result
+                + separator
+                + Text(issue.title)
+                .foregroundStyle(issue.color)
+        }
     }
 
-    @ViewBuilder
+//    var contentNonExpended: some View {
+//        var result: Text
+//
+//        for weakness in weaknesses {
+//            guard let title = weakness.titleTest else {
+//                continue
+//            }
+//            let text = Text(title)
+//                .foregroundStyle(.red)
+//            result += text
+//        }
+//
+//        let text = weaknesses.compactMap { weakness in
+//            guard let title = weakness.titleTest else {
+//                return nil
+//            }
+//            return Text(title)
+//                .foregroundStyle(.red)
+//        }.joined(separator: Text(" · "))
+//
+//        return result
+//    }
+
     func securityWeaknessRow(weakness: SecurityWeakness) -> some View {
-        let rowType = weakness.secureRowType
-        //         let showIcon = weakness == .reusedPasswords ? viewModel.reusedItems.isFetched : true
-        HStack(alignment: .top, spacing: 8) {
+        HStack(alignment: .center, spacing: 8) {
             rowIcon(weakness: weakness)
             VStack {
                 HStack(alignment: .top, spacing: 8) {
@@ -608,8 +583,7 @@ struct SecurityIssueView: View {
                         if let title = weakness.detailTitle {
                             Text(title)
                                 .fontWeight(.bold)
-                                .foregroundStyle(rowType.iconColor)
-                                .layoutPriority(1)
+                                .foregroundStyle(weakness.color)
                         }
                         if case .reusedPasswords = weakness {
                             reusedText()
@@ -621,19 +595,19 @@ struct SecurityIssueView: View {
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-//                    if let flag = weakness.flag {
                     VStack {
                         CapsuleTextButton(title: #localized("%@",
                                                             weakness.isExcluded ? "Restore alert" : "Ignore"),
                                           titleColor: PassColor.loginInteractionNormMajor2,
                                           backgroundColor: PassColor.loginInteractionNormMinor2,
+                                          maxWidth: nil,
                                           action: {
                                               viewModel.toggleMonitoring(weakness: weakness)
                                           })
                         Spacer()
                     }
-//                    }
                 }
+
                 if case .reusedPasswords = weakness {
                     reusedList()
                 }
@@ -650,6 +624,7 @@ struct SecurityIssueView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 16)
+                    .padding(.top, 2)
                 Spacer()
             }
         }
@@ -784,6 +759,19 @@ extension SecurityWeakness {
 
         default:
             nil
+        }
+    }
+
+    var color: Color {
+        switch self {
+        case .weakPasswords:
+            PassColor.signalDanger
+
+        case .reusedPasswords:
+            PassColor.signalWarning
+
+        default:
+            PassColor.textNorm
         }
     }
 }
