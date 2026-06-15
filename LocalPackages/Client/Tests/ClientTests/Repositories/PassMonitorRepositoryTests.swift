@@ -46,6 +46,10 @@ struct PassMonitorRepositoryTests {
         itemRepository.stubbedGetActiveLogInItemsResult = []
         itemRepository.stubbedItemsWereUpdated = .init(())
         shareRepository = ShareRepositoryProtocolMock()
+        // Guard against the SUT's init-time `setup()` task calling `getShares` before a test body
+        // sets a stub (the generated mock force-unwraps `stubbedGetSharesResult`). Mirrors the
+        // `itemRepository` default above.
+        shareRepository.stubbedGetSharesResult = []
         sut = PassMonitorRepository(itemRepository: itemRepository,
                                     shareRepository: shareRepository,
                                     remoteDataSource: RemoteBreachDataSourceProtocolMock(),
@@ -82,7 +86,7 @@ struct PassMonitorRepositoryTests {
                 items.append(SymmetricallyEncryptedItem.random(shareId: shareID,
                     item: Item.monitoredMock,
                                                                encryptedContent: try! weakpassLogin.encrypt(symmetricKey: key)))
-            case .excludedItems:
+            case .fullyExcluded:
                 let loginData = LogInItemData.mock(totpUri: "", urls: ["google.com"])
                 let nonMonitorLogin = ItemContentProtobufFactory.createItemContentProtobuf(name: "Example Login",
                                                                                            note: "This is a note.",
@@ -124,15 +128,25 @@ struct PassMonitorRepositoryTests {
 
     @Test("PassMonitorRepository operations")
     func testPassMonitorRepositoryTests() async throws {
-        itemRepository.stubbedGetActiveLogInItemsResult = createEncryptedLoginItems(weakness: [.reusedPasswords,.reusedPasswords,.weakPasswords,.missing2FA, .excludedItems])
-      
+        itemRepository.stubbedGetActiveLogInItemsResult = createEncryptedLoginItems(weakness: [
+            .reusedPasswords(isExcluded: false),
+            .reusedPasswords(isExcluded: false),
+            .weakPasswords(isExcluded: false),
+            .missing2FA(isExcluded: false),
+            .fullyExcluded
+        ])
+
         try await sut.refreshSecurityChecks()
-        
+
         let state = sut.weaknessStats.value
+        // The fully-excluded item (`.fullyExcluded`, monitoringDisabled) is built with the weak
+        // password "password123", an empty TOTP and a 2FA-eligible URL. Per the INTENTIONAL
+        // behaviour confirmed for IDTEAM-5965 it counts toward the excluded bucket AND the active
+        // weak + missing-2FA buckets — hence weakPasswords == 2 and missing2FA == 2 here.
         #expect(state.reusedPasswords == 1)
-        #expect(state.weakPasswords == 1)
+        #expect(state.weakPasswords == 2)
         #expect(state.excludedItems == 1)
-        #expect(state.missing2FA == 1)
+        #expect(state.missing2FA == 2)
 
 
         let itemsWithSecurityIssues = sut.itemsWithSecurityIssues.value
@@ -144,7 +158,12 @@ struct PassMonitorRepositoryTests {
         let itemsWithSecurityNoIssues = sut.itemsWithSecurityIssues.value
         #expect(itemsWithSecurityNoIssues.count == 0)
 
-        itemRepository.stubbedGetActiveLogInItemsResult = createEncryptedLoginItems(weakness: [.reusedPasswords,.reusedPasswords,.reusedPasswords,.reusedPasswords])
+        itemRepository.stubbedGetActiveLogInItemsResult = createEncryptedLoginItems(weakness: [
+            .reusedPasswords(isExcluded: false),
+            .reusedPasswords(isExcluded: false),
+            .reusedPasswords(isExcluded: false),
+            .reusedPasswords(isExcluded: false)
+        ])
         try await sut.refreshSecurityChecks()
         
         let itemsWithSecurityOnlyReused = sut.itemsWithSecurityIssues.value
@@ -155,7 +174,11 @@ struct PassMonitorRepositoryTests {
         #expect(state2.excludedItems == 0)
         #expect(state2.missing2FA == 0)
 
-        itemRepository.stubbedGetActiveLogInItemsResult = createEncryptedLoginItems(weakness: [.weakPasswords,.weakPasswords,.weakPasswords])
+        itemRepository.stubbedGetActiveLogInItemsResult = createEncryptedLoginItems(weakness: [
+            .weakPasswords(isExcluded: false),
+            .weakPasswords(isExcluded: false),
+            .weakPasswords(isExcluded: false)
+        ])
         try await sut.refreshSecurityChecks()
         
         let itemsWithSecurityReusedWeak = sut.itemsWithSecurityIssues.value
@@ -167,8 +190,49 @@ struct PassMonitorRepositoryTests {
         #expect(state3.missing2FA == 0)
     }
     
+    /// Characterization test for the behaviour confirmed for IDTEAM-5965: a fully-excluded
+    /// (`monitoringDisabled`) item that also has a weak password is INTENTIONALLY counted in
+    /// BOTH the excluded-items bucket AND the active weak-passwords bucket, and surfaces both
+    /// weaknesses. This guards against a future "fix" that re-introduces a `!monitoringDisabled`
+    /// guard in `PassMonitorRepository.weaknessStats`.
+    @Test("Fully-excluded item still counts as an active weakness")
+    func testFullyExcludedItemStillCountsAsActiveWeakness() async throws {
+        itemRepository.stubbedGetActiveLogInItemsResult = makeFullyExcludedWeakItems()
+
+        try await sut.refreshSecurityChecks()
+
+        let stats = sut.weaknessStats.value
+        #expect(stats.excludedItems == 1)
+        #expect(stats.weakPasswords == 1)
+
+        let affected = sut.itemsWithSecurityIssues.value
+        #expect(affected.count == 1)
+        let weaknesses = try #require(affected.first).weaknesses
+        #expect(weaknesses.contains(.fullyExcluded))
+        #expect(weaknesses.contains(.weakPasswords(isExcluded: false)))
+    }
+
+    /// A single fully-excluded (`monitoringDisabled`) login whose password is weak.
+    func makeFullyExcludedWeakItems() -> [SymmetricallyEncryptedItem] {
+        let shareID = UUID().uuidString
+        let key = symmetricKeyProviderMockFactory.key
+        shareRepository.stubbedGetSharesResult =
+            [SymmetricallyEncryptedShare(encryptedContent: nil, share: .random(shareId: shareID))]
+        let loginData = LogInItemData.mock(username: "test", password: "aaaaa")
+        let login = ItemContentProtobufFactory.createItemContentProtobuf(name: "Excluded weak login",
+                                                                          note: "This is a note.",
+                                                                          itemUuid: UUID().uuidString,
+                                                                          data: .login(loginData),
+                                                                          customFields: [])
+        return [SymmetricallyEncryptedItem.random(shareId: shareID,
+                                                  item: Item.notMonitoredMock,
+                                                  encryptedContent: try! login.encrypt(symmetricKey: key))]
+    }
+
     func testPassMonitorRepository_listOfReusedPasswordItems() async throws {
-        let items = createEncryptedLoginItems(weakness: [.reusedPasswords, .reusedPasswords], addStrong: false)
+        let items = createEncryptedLoginItems(weakness: [.reusedPasswords(isExcluded: false),
+                                                         .reusedPasswords(isExcluded: false)],
+                                              addStrong: false)
         let item = items.first!
         itemRepository.stubbedGetActiveLogInItemsResult = items
         let key = symmetricKeyProviderMockFactory.key
