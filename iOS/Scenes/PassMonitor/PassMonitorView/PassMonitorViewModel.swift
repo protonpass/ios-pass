@@ -70,9 +70,9 @@ final class PassMonitorViewModel: ObservableObject {
         }
     }
 
-    func showSecurityWeakness(type: SecurityWeakness) {
-        router.present(for: .securityDetail(type))
-        addTelemetryEvent(with: type.telemetryEventType)
+    func showSecurityWeakness(filter: MonitorWeaknessFilter) {
+        router.present(for: .securityDetail(filter))
+        addTelemetryEvent(with: filter.telemetryEventType)
     }
 
     func sentinelSheetAction() {
@@ -205,26 +205,5 @@ private extension PassMonitorViewModel {
     func handle(error: any Error) {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
-    }
-}
-
-extension SecurityWeakness {
-    var telemetryEventType: TelemetryEventType {
-        switch self {
-        case .weakPasswords:
-            .monitorDisplayWeakPasswords
-
-        case .reusedPasswords:
-            .monitorDisplayReusedPasswords
-
-        case .breaches:
-            .monitorDisplayDarkWebMonitoring
-
-        case .missing2FA:
-            .monitorDisplayMissing2FA
-
-        case .fullyExcluded:
-            .monitorDisplayExcludedItems
-        }
     }
 }

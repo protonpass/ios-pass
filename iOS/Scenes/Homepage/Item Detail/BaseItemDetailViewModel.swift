@@ -313,7 +313,7 @@ class BaseItemDetailViewModel: ObservableObject {
         toggleMonitoring(weakness: .fullyExcluded)
     }
 
-    func toggleMonitoring(weakness: SecurityWeakness) {
+    func toggleMonitoring(weakness: ItemWeaknessDisplay) {
         guard let newItemFlag = weakness.flag else {
             return
         }
@@ -525,23 +525,23 @@ extension BaseItemDetailViewModel: FileAttachmentPreviewHandler {
 }
 
 // swiftlint:enable type_body_length
-extension SecurityWeakness {
+extension ItemWeaknessDisplay {
     var flag: ItemFlag? {
         switch self {
-        case .missing2FA:
+        case let .weakness(.missing2FA, isExcluded):
             .skip2FACheck(!isExcluded)
 
-        case .reusedPasswords:
+        case let .weakness(.reusedPassword, isExcluded):
             .skipReusedPasswordCheck(!isExcluded)
 
-        case .weakPasswords:
+        case let .weakness(.weakPassword, isExcluded):
             .skipWeakPasswordCheck(!isExcluded)
+
+        case let .weakness(.compromisedPassword, isExcluded):
+            .skipCompromisedPasswordCheck(!isExcluded)
 
         case .fullyExcluded:
             .skipHealthCheck(isExcluded)
-
-        default:
-            nil
         }
     }
 }

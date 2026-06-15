@@ -386,11 +386,7 @@ private extension LogInDetailView {
     @ViewBuilder
     func securityIssuesView() -> some View {
         if let issues = viewModel.securityIssues, !issues.isEmpty {
-//            SecurityIssueView(weaknesses: issues,
-//                              ignoreExcluded: !viewModel.showExcludedWeaknesses,
-//                              viewModel: viewModel)
             SecurityIssueView(weaknesses: issues,
-//                              showExcludedWeaknesses: viewModel.showExcludedWeaknesses,
                               viewModel: viewModel)
         }
     }
@@ -468,17 +464,13 @@ struct ReusedItemsPassListView: View {
 }
 
 struct SecurityIssueView: View {
-    let weaknesses: [SecurityWeakness]
-//    let ignoreExcluded: Bool
-//    let showExcludedWeaknesses: Bool
+    let weaknesses: [ItemWeaknessDisplay]
     @ObservedObject var viewModel: LogInDetailViewModel
     @State private var expanded: Bool = false
 
     var body: some View {
-//        if !ignoreExcluded || !weaknesses.filter(\.isExcluded).isEmpty {
         mainContent
             .animation(.default, value: expanded)
-//        }
     }
 
     var mainContent: some View {
@@ -513,18 +505,16 @@ struct SecurityIssueView: View {
                 .foregroundStyle(PassColor.textNorm)
         } else {
             ForEach(weaknesses) { weakness in
-//                if !ignoreExcluded || weakness.isExcluded {
                 securityWeaknessRow(weakness: weakness)
                 if weakness != weaknesses.last {
                     Divider()
                 }
-//                }
             }
         }
     }
 
     var multipleWeakness: Bool {
-        weaknesses.count /* (where: { !ignoreExcluded || $0.isExcluded }) */ > 1
+        weaknesses.count > 1
     }
 
     var mainHeader: some View {
@@ -538,7 +528,7 @@ struct SecurityIssueView: View {
     }
 
     var contentNonExpended: some View {
-        weaknesses.enumerated().reduce(Text("")) { result, element in
+        weaknesses.enumerated().reduce(Text(verbatim: "")) { result, element in
             let (index, issue) = element
 
             let separator = index > 0 ? Text(verbatim: " · ")
@@ -551,30 +541,7 @@ struct SecurityIssueView: View {
         }
     }
 
-//    var contentNonExpended: some View {
-//        var result: Text
-//
-//        for weakness in weaknesses {
-//            guard let title = weakness.titleTest else {
-//                continue
-//            }
-//            let text = Text(title)
-//                .foregroundStyle(.red)
-//            result += text
-//        }
-//
-//        let text = weaknesses.compactMap { weakness in
-//            guard let title = weakness.titleTest else {
-//                return nil
-//            }
-//            return Text(title)
-//                .foregroundStyle(.red)
-//        }.joined(separator: Text(" · "))
-//
-//        return result
-//    }
-
-    func securityWeaknessRow(weakness: SecurityWeakness) -> some View {
+    func securityWeaknessRow(weakness: ItemWeaknessDisplay) -> some View {
         HStack(alignment: .center, spacing: 8) {
             rowIcon(weakness: weakness)
             VStack {
@@ -585,7 +552,7 @@ struct SecurityIssueView: View {
                                 .fontWeight(.bold)
                                 .foregroundStyle(weakness.color)
                         }
-                        if case .reusedPasswords = weakness {
+                        if case .weakness(.reusedPassword, _) = weakness {
                             reusedText()
                         } else if let infos = weakness.infos {
                             Text(infos)
@@ -608,7 +575,7 @@ struct SecurityIssueView: View {
                     }
                 }
 
-                if case .reusedPasswords = weakness {
+                if case .weakness(.reusedPassword, _) = weakness {
                     reusedList()
                 }
             }
@@ -617,7 +584,7 @@ struct SecurityIssueView: View {
     }
 
     @ViewBuilder
-    func rowIcon(weakness: SecurityWeakness) -> some View {
+    func rowIcon(weakness: ItemWeaknessDisplay) -> some View {
         if let icon = weakness.icon {
             VStack {
                 icon
@@ -706,16 +673,16 @@ struct SecurityIssueView: View {
 //    }
 // }
 
-extension SecurityWeakness {
+extension ItemWeaknessDisplay {
     var titleTest: String? {
         switch self {
-        case .weakPasswords:
+        case .weakness(.compromisedPassword, _), .weakness(.weakPassword, _):
             "Weak passwords"
 
-        case .reusedPasswords:
+        case .weakness(.reusedPassword, _):
             "Reused passwords"
 
-        case .missing2FA:
+        case .weakness(.missing2FA, _):
             "Missing 2FA"
 
         default:
@@ -725,13 +692,13 @@ extension SecurityWeakness {
 
     var icon: Image? {
         switch self {
-        case .missing2FA:
+        case .weakness(.missing2FA, _):
             PassIcon.shieldLockPurple
 
-        case .reusedPasswords:
+        case .weakness(.reusedPassword, _):
             PassIcon.reusedKey
 
-        case .weakPasswords:
+        case .weakness(.compromisedPassword, _), .weakness(.weakPassword, _):
             PassIcon.shieldBad
 
         default:
@@ -741,7 +708,7 @@ extension SecurityWeakness {
 
     var longTitle: String? {
         switch self {
-        case .missing2FA:
+        case .weakness(.missing2FA, _):
             "Set up 2FA for more security"
 
         default:
@@ -751,10 +718,10 @@ extension SecurityWeakness {
 
     var description: String? {
         switch self {
-        case .weakPasswords:
+        case .weakness(.compromisedPassword, _), .weakness(.weakPassword, _):
             "This account is vulnerable, visit the service and change your password."
 
-        case .reusedPasswords:
+        case .weakness(.reusedPassword, _):
             "This service offers 2FA. Enable it for added account security. "
 
         default:
@@ -764,10 +731,10 @@ extension SecurityWeakness {
 
     var color: Color {
         switch self {
-        case .weakPasswords:
+        case .weakness(.compromisedPassword, _), .weakness(.weakPassword, _):
             PassColor.signalDanger
 
-        case .reusedPasswords:
+        case .weakness(.reusedPassword, _):
             PassColor.signalWarning
 
         default:
@@ -775,16 +742,3 @@ extension SecurityWeakness {
         }
     }
 }
-
-//    static let reusedKey = Image(.reusedKey)
-//    static let shieldBad = Image(.shieldBad)
-//    static let shieldExclamationFilled = Image(.shieldExclamationFilled)
-//    static let shieldLock = Image(.shieldLock)
-//    static let shieldWarning = Image(.shieldWarning)
-
-// public enum SecurityWeakness: Equatable, Sendable, Hashable, Identifiable {
-//    case weakPasswords
-//    case reusedPasswords
-//    case breaches
-//    case missing2FA
-//    case excluded(ExclusionType)
