@@ -491,6 +491,9 @@
 		53B202CA2E2E636400D1261A /* NoteDetailSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD5C298D49B300E2A0EE /* NoteDetailSection.swift */; };
 		53B981792D7ED25D003BD70E /* WifiDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B981782D7ED258003BD70E /* WifiDetailView.swift */; };
 		53B9817B2D7ED28B003BD70E /* WifiDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B9817A2D7ED289003BD70E /* WifiDetailViewModel.swift */; };
+		53BBAB9E2FE02EF80057F267 /* UsernameGeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BBAB9D2FE02EF20057F267 /* UsernameGeneratorView.swift */; };
+		53BBAB9F2FE02EF80057F267 /* UsernameGeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BBAB9D2FE02EF20057F267 /* UsernameGeneratorView.swift */; };
+		53BBABA02FE02EF80057F267 /* UsernameGeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BBAB9D2FE02EF20057F267 /* UsernameGeneratorView.swift */; };
 		53BCE8422DF06586002A903D /* CreateEditKeyboardToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BCE8412DF06576002A903D /* CreateEditKeyboardToolbar.swift */; };
 		53BCE8432DF06586002A903D /* CreateEditKeyboardToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BCE8412DF06576002A903D /* CreateEditKeyboardToolbar.swift */; };
 		53BCE8442DF06586002A903D /* CreateEditKeyboardToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BCE8412DF06576002A903D /* CreateEditKeyboardToolbar.swift */; };
@@ -1069,6 +1072,7 @@
 		53AEE4692D7F0E1200CE0CA7 /* CustomSectionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSectionsSection.swift; sourceTree = "<group>"; };
 		53B981782D7ED258003BD70E /* WifiDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiDetailView.swift; sourceTree = "<group>"; };
 		53B9817A2D7ED289003BD70E /* WifiDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiDetailViewModel.swift; sourceTree = "<group>"; };
+		53BBAB9D2FE02EF20057F267 /* UsernameGeneratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsernameGeneratorView.swift; sourceTree = "<group>"; };
 		53BCE8412DF06576002A903D /* CreateEditKeyboardToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditKeyboardToolbar.swift; sourceTree = "<group>"; };
 		53F19E5B2D81961600496168 /* DetailHistoryView+Ssh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailHistoryView+Ssh.swift"; sourceTree = "<group>"; };
 		53F19E5D2D81AA6E00496168 /* DetailHisotryView+Wifi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailHisotryView+Wifi.swift"; sourceTree = "<group>"; };
@@ -1611,6 +1615,7 @@
 				3561C9F529E6CDFA00D6E518 /* VaultSelectorView.swift */,
 				35AC9A5E2A0BDCA600FBCEEC /* Custom fields */,
 				35855AB02A0A65F20091992F /* Password generator */,
+				53BBABA12FE030540057F267 /* UsernameGenerator */,
 				3572E52729940C0300775FAC /* Supporting Views */,
 			);
 			path = "Create & Edit Items";
@@ -2158,6 +2163,14 @@
 				53B9817A2D7ED289003BD70E /* WifiDetailViewModel.swift */,
 			);
 			path = Wifi;
+			sourceTree = "<group>";
+		};
+		53BBABA12FE030540057F267 /* UsernameGenerator */ = {
+			isa = PBXGroup;
+			children = (
+				53BBAB9D2FE02EF20057F267 /* UsernameGeneratorView.swift */,
+			);
+			path = UsernameGenerator;
 			sourceTree = "<group>";
 		};
 		5B0939152C04DD0A0046F467 /* Identity */ = {
@@ -3537,6 +3550,7 @@
 				3570E0502B8E070F005B8186 /* PasskeyCredentialsViewModel.swift in Sources */,
 				3597F0D22CB5D57B00384874 /* ItemDetailMoreInfoSection.swift in Sources */,
 				352352B72B91DEC900603B91 /* ItemSearchResultView.swift in Sources */,
+				53BBAB9E2FE02EF80057F267 /* UsernameGeneratorView.swift in Sources */,
 				5B0C75032A30806D00272CE8 /* SharedTooling+DependencyInjections.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3584,6 +3598,7 @@
 				53043D9A2D1D8D9E0088D6EE /* UpsellingViewConfiguration+Extensions.swift in Sources */,
 				35796CEE2B5EE69E00BF4E9E /* Browser+Extensions.swift in Sources */,
 				35796D022B5EEE7700BF4E9E /* CreateEditLoginViewModel.swift in Sources */,
+				53BBAB9F2FE02EF80057F267 /* UsernameGeneratorView.swift in Sources */,
 				357C71DD2B5FF46900AA0BF1 /* VaultSelectorView.swift in Sources */,
 				357C71A42B5FAEA200AA0BF1 /* CreateEditAliasViewModel.swift in Sources */,
 				3574437B2C22FE00000DE6F7 /* View+ItemCreateEditSetUp.swift in Sources */,
@@ -3683,6 +3698,7 @@
 				5B66395E2B4D88290029F8DA /* ItemHistoryView.swift in Sources */,
 				35533BC129D618B800EC58DE /* AccountViewModel.swift in Sources */,
 				354F769A28C87CD500EB2383 /* EmptyVaultView.swift in Sources */,
+				53BBABA02FE02EF80057F267 /* UsernameGeneratorView.swift in Sources */,
 				5BC03E992C175FE50028516E /* HomepageCoordinator+Sharing.swift in Sources */,
 				5B3AD42B2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift in Sources */,
 				5B14538D2A681B400048B022 /* MainRouter.swift in Sources */,

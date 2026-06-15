@@ -78672,6 +78672,16 @@
         }
       }
     },
+    "Generate username" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generate username"
+          }
+        }
+      }
+    },
     "Generated passwords" : {
       "localizations" : {
         "be" : {
