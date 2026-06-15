@@ -200,8 +200,14 @@ struct CreateEditLoginView: View {
                 }
             }
             .sheet(isPresented: $showUsernameGenerator) {
-                UsernameGeneratorView()
-                    .environment(\.colorScheme, colorScheme)
+                UsernameGeneratorView(onConfirm: { username in
+                    if viewModel.emailUsernameExpanded {
+                        viewModel.username = username
+                    } else {
+                        viewModel.emailOrUsername = username
+                    }
+                })
+                .environment(\.colorScheme, colorScheme)
             }
             .onChange(of: showUsernameGenerator) { _, newValue in
                 if !newValue {

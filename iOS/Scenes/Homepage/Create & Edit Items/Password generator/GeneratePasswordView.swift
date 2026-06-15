@@ -322,7 +322,7 @@ private extension PasswordType {
     }
 }
 
-private extension WordSeparator {
+extension WordSeparator {
     var title: LocalizedStringKey {
         switch self {
         case .hyphens: "Hyphens"

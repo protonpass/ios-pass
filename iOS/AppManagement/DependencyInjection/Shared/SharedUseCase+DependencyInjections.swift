@@ -289,7 +289,6 @@ extension SharedUseCasesContainer {
         self { GetPasswordStrength() }
     }
 
-    // periphery:ignore
     var generateUsername: Factory<any GenerateUsernameUseCase> {
         self { GenerateUsername() }
     }

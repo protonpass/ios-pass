@@ -87839,6 +87839,16 @@
         }
       }
     },
+    "Include adjectives" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Include adjectives"
+          }
+        }
+      }
+    },
     "Include for monitoring" : {
       "localizations" : {
         "be" : {
@@ -88035,6 +88045,16 @@
         }
       }
     },
+    "Include nouns" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Include nouns"
+          }
+        }
+      }
+    },
     "Include numbers" : {
       "localizations" : {
         "be" : {
@@ -88227,6 +88247,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "包含數字"
+          }
+        }
+      }
+    },
+    "Include verbs" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Include verbs"
           }
         }
       }
@@ -97937,6 +97967,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "離開保管庫"
+          }
+        }
+      }
+    },
+    "Leetspeak" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leetspeak"
           }
         }
       }
@@ -134024,6 +134064,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "重新產生密碼字元"
+          }
+        }
+      }
+    },
+    "Regenerate username" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regenerate username"
           }
         }
       }
