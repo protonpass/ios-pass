@@ -22,10 +22,38 @@ import Foundation
 
 public struct SecurityAffectedItem: Sendable {
     public let item: SymmetricallyEncryptedItem
-    public let weaknesses: [SecurityWeakness]
 
-    public init(item: SymmetricallyEncryptedItem, weaknesses: [SecurityWeakness]) {
+    /// Weaknesses genuinely detected on the item, IGNORING any per-check suppression or full
+    /// exclusion. Suppression is applied via the computed `activeWeaknesses` below so that the
+    /// "is this item weak?" and "is this check enabled?" questions stay independent.
+    public let detected: Set<WeaknessKind>
+
+    public init(item: SymmetricallyEncryptedItem, detected: Set<WeaknessKind>) {
         self.item = item
-        self.weaknesses = weaknesses
+        self.detected = detected
+    }
+}
+
+public extension SecurityAffectedItem {
+    /// Checks the user has individually suppressed for this item (derived from its flags).
+    var suppressedChecks: Set<WeaknessKind> {
+        Set(WeaknessKind.allCases.filter { item.item.itemFlags.contains($0.skipFlag) })
+    }
+
+    /// Whether the whole item is excluded from monitoring (the `monitoringDisabled` master switch).
+    var isFullyExcluded: Bool {
+        item.item.monitoringDisabled
+    }
+
+    /// Weaknesses that should raise an active alert: detected, minus per-check suppressions.
+    /// Full exclusion does NOT remove an item from here — a fully-excluded item still surfaces its
+    /// underlying weaknesses in the active lists (confirmed product behaviour, IDTEAM-5965).
+    var activeWeaknesses: Set<WeaknessKind> {
+        detected.subtracting(suppressedChecks)
+    }
+
+    /// Whether the item belongs in the "Excluded items" list: fully excluded, or any check skipped.
+    var isExcludedItem: Bool {
+        isFullyExcluded || !suppressedChecks.isEmpty
     }
 }

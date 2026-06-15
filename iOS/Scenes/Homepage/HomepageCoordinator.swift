@@ -652,8 +652,8 @@ extension HomepageCoordinator {
                 case let .passkeyDetail(passkey):
                     presentPasskeyDetailView(for: passkey)
 
-                case let .securityDetail(securityWeakness):
-                    presentSecurity(securityWeakness)
+                case let .securityDetail(filter):
+                    presentSecurity(filter)
 
                 case let .passwordReusedItemList(content):
                     presentPasswordReusedListView(for: content)
@@ -1351,9 +1351,9 @@ extension HomepageCoordinator {
 // MARK: - Security Center
 
 extension HomepageCoordinator {
-    func presentSecurity(_ securityWeakness: SecurityWeakness) {
+    func presentSecurity(_ filter: MonitorWeaknessFilter) {
         let isSheet = shouldShowAsSheet()
-        let results = (view: SecurityWeaknessDetailView(viewModel: .init(type: securityWeakness),
+        let results = (view: SecurityWeaknessDetailView(viewModel: .init(type: filter),
                                                         isSheet: isSheet),
                        isSheet: isSheet)
 

@@ -39,7 +39,7 @@ extension SecuritySectionedData {
 final class SecurityWeaknessDetailViewModel: ObservableObject {
     @Published private(set) var state: FetchableObject<SecuritySectionedData> = .fetching
 
-    let type: SecurityWeakness
+    let type: MonitorWeaknessFilter
 
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
     @LazyInjected(\UseCasesContainer.getAllSecurityAffectedLogins) private var getAllSecurityAffectedLogins
@@ -49,25 +49,10 @@ final class SecurityWeaknessDetailViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     var nothingWrongMessage: String {
-        switch type {
-        case .weakPasswords:
-            #localized("No weak passwords were found in your login items")
-
-        case .reusedPasswords:
-            #localized("You have no reused passwords in your login items")
-
-        case .missing2FA:
-            #localized("All your login items have two-factor authentication enabled")
-
-        case .fullyExcluded:
-            #localized("You don't have any excluded login items from monitoring")
-
-        default:
-            ""
-        }
+        type.nothingWrongMessage
     }
 
-    init(type: SecurityWeakness) {
+    init(type: MonitorWeaknessFilter) {
         self.type = type
         setUp()
     }
@@ -80,18 +65,18 @@ final class SecurityWeaknessDetailViewModel: ObservableObject {
                                                                                 itemId: item.itemId) else {
                     return
                 }
-                let showExcludedWeaknesses: Bool = type == .fullyExcluded
+                let showExcludedWeaknesses: Bool = type == .excludedItems
                 router.present(for: .itemDetail(itemContent,
                                                 automaticDisplay: false,
                                                 showExcludedWeaknesses: showExcludedWeaknesses))
                 let eventType: TelemetryEventType? = switch type {
-                case .weakPasswords:
+                case .weakness(.compromisedPassword), .weakness(.weakPassword):
                     .monitorItemDetailFromWeakPassword
 
-                case .missing2FA:
+                case .weakness(.missing2FA):
                     .monitorItemDetailFromMissing2FA
 
-                case .reusedPasswords:
+                case .weakness(.reusedPassword):
                     .monitorItemDetailFromReusedPassword
 
                 default:

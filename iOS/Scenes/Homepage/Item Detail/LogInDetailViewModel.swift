@@ -41,7 +41,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var passwordStrength: PasswordStrength?
     @Published private(set) var totpTokenState = TOTPTokenState.loading
     @Published private var aliasItem: SymmetricallyEncryptedItem?
-    @Published private(set) var securityIssues: [SecurityWeakness]?
+    @Published private(set) var securityIssues: [ItemWeaknessDisplay]?
     @Published private(set) var reusedItems: FetchableObject<[ItemContent]> = .fetching
 
     var isAlias: Bool {
@@ -69,12 +69,26 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
         getLoginSecurityIssues(itemId: itemContent.itemId)
             .subscribe(on: DispatchQueue.global())
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] newSecurityIssues in
+            .sink { [weak self] affected in
                 guard let self else {
                     return
                 }
-                securityIssues = newSecurityIssues?.filter { weakness in
-                    showExcludedWeaknesses ? weakness.isExcluded : !weakness.isExcluded
+                guard let affected else {
+                    securityIssues = nil
+                    return
+                }
+                if showExcludedWeaknesses {
+                    var rows = affected.suppressedChecks.sorted().map {
+                        ItemWeaknessDisplay.weakness($0, isExcluded: true)
+                    }
+                    if affected.isFullyExcluded {
+                        rows.append(.fullyExcluded)
+                    }
+                    securityIssues = rows
+                } else {
+                    securityIssues = affected.activeWeaknesses.sorted().map {
+                        ItemWeaknessDisplay.weakness($0, isExcluded: false)
+                    }
                 }
             }
             .store(in: &cancellables)
@@ -84,7 +98,9 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
                 guard let self, let issues else {
                     return
                 }
-                if issues.containsReused {
+                if issues.contains(where: {
+                    if case .weakness(.reusedPassword, _) = $0 { true } else { false }
+                }) {
                     fetchSimilarPasswordItems()
                 }
             }.store(in: &cancellables)
@@ -220,17 +236,17 @@ extension LogInDetailViewModel {
     }
 }
 
-extension SecurityWeakness {
+extension ItemWeaknessDisplay {
     var secureRowType: SecureRowType {
         switch self {
-        case .fullyExcluded, .reusedPasswords, .weakPasswords:
+        case .fullyExcluded,
+             .weakness(.compromisedPassword, _),
+             .weakness(.reusedPassword, _),
+             .weakness(.weakPassword, _):
             .warning
 
-        case .missing2FA:
+        case .weakness(.missing2FA, _):
             .info
-
-        case .breaches:
-            .danger
         }
     }
 }

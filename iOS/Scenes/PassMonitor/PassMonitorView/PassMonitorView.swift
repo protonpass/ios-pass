@@ -414,7 +414,7 @@ private extension PassMonitorView {
                            subTitle: "No breaches detected",
                            action: {
                                router.navigate(to: .darkWebMonitorHome(breaches))
-                               viewModel.addTelemetryEvent(with: SecurityWeakness.breaches.telemetryEventType)
+                               viewModel.addTelemetryEvent(with: .monitorDisplayDarkWebMonitoring)
                            })
         } else {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding) {
@@ -465,8 +465,7 @@ private extension PassMonitorView {
                                   backgroundColor: PassColor.passwordInteractionNormMajor2,
                                   action: {
                                       router.navigate(to: .darkWebMonitorHome(breaches))
-                                      viewModel
-                                          .addTelemetryEvent(with: SecurityWeakness.breaches.telemetryEventType)
+                                      viewModel.addTelemetryEvent(with: .monitorDisplayDarkWebMonitoring)
                                   })
             }
             .padding(24)
@@ -484,7 +483,7 @@ private extension PassMonitorView {
                        title: "Weak Passwords",
                        subTitle: "Change your passwords",
                        count: weakPasswords,
-                       action: { viewModel.showSecurityWeakness(type: .weakPasswords(isExcluded: false)) })
+                       action: { viewModel.showSecurityWeakness(filter: .weakness(.weakPassword)) })
     }
 }
 
@@ -494,7 +493,7 @@ private extension PassMonitorView {
                        title: "Reused passwords",
                        subTitle: "Generate unique passwords",
                        count: reusedPasswords,
-                       action: { viewModel.showSecurityWeakness(type: .reusedPasswords(isExcluded: false)) })
+                       action: { viewModel.showSecurityWeakness(filter: .weakness(.reusedPassword)) })
     }
 }
 
@@ -504,7 +503,7 @@ private extension PassMonitorView {
                        title: "Inactive 2FA",
                        subTitle: "Set up 2FA for more security",
                        count: missing2FA,
-                       action: { viewModel.showSecurityWeakness(type: .missing2FA(isExcluded: false)) })
+                       action: { viewModel.showSecurityWeakness(filter: .weakness(.missing2FA)) })
     }
 }
 
@@ -514,7 +513,7 @@ private extension PassMonitorView {
                        title: "Excluded items",
                        subTitle: "These items remain at risk",
                        count: excludedItems,
-                       action: { viewModel.showSecurityWeakness(type: .fullyExcluded) })
+                       action: { viewModel.showSecurityWeakness(filter: .excludedItems) })
     }
 }
 

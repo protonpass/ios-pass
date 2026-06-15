@@ -25,11 +25,11 @@ import Combine
 import Entities
 
 public protocol GetLoginSecurityIssuesUseCase: Sendable {
-    func execute(itemId: String) -> AnyPublisher<[SecurityWeakness]?, Never>
+    func execute(itemId: String) -> AnyPublisher<SecurityAffectedItem?, Never>
 }
 
 public extension GetLoginSecurityIssuesUseCase {
-    func callAsFunction(itemId: String) -> AnyPublisher<[SecurityWeakness]?, Never> {
+    func callAsFunction(itemId: String) -> AnyPublisher<SecurityAffectedItem?, Never> {
         execute(itemId: itemId)
     }
 }
@@ -41,10 +41,10 @@ public final class GetLoginSecurityIssues: GetLoginSecurityIssuesUseCase {
         self.passMonitorRepository = passMonitorRepository
     }
 
-    public func execute(itemId: String) -> AnyPublisher<[SecurityWeakness]?, Never> {
+    public func execute(itemId: String) -> AnyPublisher<SecurityAffectedItem?, Never> {
         passMonitorRepository.itemsWithSecurityIssues
-            .map { items -> [SecurityWeakness]? in
-                items.first { $0.item.itemId == itemId }?.weaknesses
+            .map { items -> SecurityAffectedItem? in
+                items.first { $0.item.itemId == itemId }
             }.eraseToAnyPublisher()
     }
 }

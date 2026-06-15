@@ -328,72 +328,41 @@ private extension PassMonitorRepository {
         // Filter out unique passwords
         let reusedPasswords = Set(passwordCounts.filter { $0.value > 1 }.map(\.key))
 
-        var numberOfWeakPassword = 0
-        var numberOfMissing2fa = 0
-        var numberOfExcludedItems = 0
-
         var securityAffectedItems = [SecurityAffectedItem]()
 
         for item in loginItems {
-            var weaknesses = [SecurityWeakness]()
+            var detected = Set<WeaknessKind>()
 
-            if let weaknessExclusions = parseWeaknesses(item: item) {
-                weaknesses.append(contentsOf: weaknessExclusions)
-                numberOfExcludedItems += 1
+            // Detection IGNORES per-item suppression and full exclusion; suppression is applied by
+            // `SecurityAffectedItem.activeWeaknesses`. A fully-excluded item is still surfaced in the
+            // active lists (confirmed behaviour, IDTEAM-5965) — pinned by
+            // `testFullyExcludedItemStillCountsAsActiveWeakness`.
+            if reusedPasswords.contains(item.loginData.password) {
+                detected.insert(.reusedPassword)
             }
-
-            // INTENTIONAL (IDTEAM-5965): the active weak/reused/2FA checks below are evaluated
-            // even when the item is fully excluded (`monitoringDisabled`). A fully-excluded item
-            // is meant to appear in BOTH the "Excluded items" bucket and the relevant active
-            // list/count. Do not re-introduce a `!monitoringDisabled` guard here — this behaviour
-            // is pinned by `testFullyExcludedItemStillCountsAsActiveWeakness`.
-            if !item.encrypted.item.reusedPasswordCheckDisabled,
-               reusedPasswords.contains(item.loginData.password) {
-                weaknesses.append(.reusedPasswords(isExcluded: false))
-            }
-
-            if !item.encrypted.item.weakPasswordCheckDisabled,
-               !item.loginData.password.isEmpty,
+            if !item.loginData.password.isEmpty,
                passwordScorer.checkScore(password: item.loginData.password) != .strong {
-                weaknesses.append(.weakPasswords(isExcluded: false))
-                numberOfWeakPassword += 1
+                detected.insert(.weakPassword)
             }
-
-            if !item.encrypted.item.twoFACheckDisabled,
-               item.loginData.totpUri.isEmpty,
+            if item.loginData.totpUri.isEmpty,
                item.loginData.urls.contains(where: { twofaDomainChecker.twofaDomainEligible(domain: $0) }),
                item.loginData.passkeys.isEmpty {
-                weaknesses.append(.missing2FA(isExcluded: false))
-                numberOfMissing2fa += 1
+                detected.insert(.missing2FA)
             }
 
-            if !weaknesses.isEmpty {
-                securityAffectedItems.append(SecurityAffectedItem(item: item.encrypted, weaknesses: weaknesses))
+            let affectedItem = SecurityAffectedItem(item: item.encrypted, detected: detected)
+            if !detected.isEmpty || affectedItem.isExcludedItem {
+                securityAffectedItems.append(affectedItem)
             }
         }
 
-        return (WeaknessStats(weakPasswords: numberOfWeakPassword,
-                              reusedPasswords: reusedPasswords.count,
-                              missing2FA: numberOfMissing2fa,
-                              excludedItems: numberOfExcludedItems),
-                securityAffectedItems)
-    }
-
-    func parseWeaknesses(item: InternalPassMonitorItem) -> [SecurityWeakness]? {
-        var weaknesses: [SecurityWeakness] = []
-        if item.encrypted.item.monitoringDisabled {
-            weaknesses.append(.fullyExcluded)
-        }
-        if item.encrypted.item.reusedPasswordCheckDisabled {
-            weaknesses.append(.reusedPasswords(isExcluded: true))
-        }
-        if item.encrypted.item.weakPasswordCheckDisabled {
-            weaknesses.append(.weakPasswords(isExcluded: true))
-        }
-        if item.encrypted.item.twoFACheckDisabled {
-            weaknesses.append(.missing2FA(isExcluded: true))
-        }
-        return weaknesses.nilIfEmpty
+        let stats = WeaknessStats(weakPasswords: securityAffectedItems
+            .count(where: { $0.activeWeaknesses.contains(.weakPassword) }),
+            reusedPasswords: reusedPasswords.count,
+            missing2FA: securityAffectedItems
+                .count(where: { $0.activeWeaknesses.contains(.missing2FA) }),
+            excludedItems: securityAffectedItems.filter(\.isExcludedItem).count)
+        return (stats, securityAffectedItems)
     }
 }
 
