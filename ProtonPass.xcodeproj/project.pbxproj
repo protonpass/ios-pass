@@ -494,6 +494,9 @@
 		53BBAB9E2FE02EF80057F267 /* UsernameGeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BBAB9D2FE02EF20057F267 /* UsernameGeneratorView.swift */; };
 		53BBAB9F2FE02EF80057F267 /* UsernameGeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BBAB9D2FE02EF20057F267 /* UsernameGeneratorView.swift */; };
 		53BBABA02FE02EF80057F267 /* UsernameGeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BBAB9D2FE02EF20057F267 /* UsernameGeneratorView.swift */; };
+		53BBABA32FE031310057F267 /* UsernameGeneratorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BBABA22FE0312F0057F267 /* UsernameGeneratorViewModel.swift */; };
+		53BBABA42FE031310057F267 /* UsernameGeneratorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BBABA22FE0312F0057F267 /* UsernameGeneratorViewModel.swift */; };
+		53BBABA52FE031310057F267 /* UsernameGeneratorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BBABA22FE0312F0057F267 /* UsernameGeneratorViewModel.swift */; };
 		53BCE8422DF06586002A903D /* CreateEditKeyboardToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BCE8412DF06576002A903D /* CreateEditKeyboardToolbar.swift */; };
 		53BCE8432DF06586002A903D /* CreateEditKeyboardToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BCE8412DF06576002A903D /* CreateEditKeyboardToolbar.swift */; };
 		53BCE8442DF06586002A903D /* CreateEditKeyboardToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BCE8412DF06576002A903D /* CreateEditKeyboardToolbar.swift */; };
@@ -1073,6 +1076,7 @@
 		53B981782D7ED258003BD70E /* WifiDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiDetailView.swift; sourceTree = "<group>"; };
 		53B9817A2D7ED289003BD70E /* WifiDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiDetailViewModel.swift; sourceTree = "<group>"; };
 		53BBAB9D2FE02EF20057F267 /* UsernameGeneratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsernameGeneratorView.swift; sourceTree = "<group>"; };
+		53BBABA22FE0312F0057F267 /* UsernameGeneratorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsernameGeneratorViewModel.swift; sourceTree = "<group>"; };
 		53BCE8412DF06576002A903D /* CreateEditKeyboardToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditKeyboardToolbar.swift; sourceTree = "<group>"; };
 		53F19E5B2D81961600496168 /* DetailHistoryView+Ssh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailHistoryView+Ssh.swift"; sourceTree = "<group>"; };
 		53F19E5D2D81AA6E00496168 /* DetailHisotryView+Wifi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailHisotryView+Wifi.swift"; sourceTree = "<group>"; };
@@ -2169,6 +2173,7 @@
 			isa = PBXGroup;
 			children = (
 				53BBAB9D2FE02EF20057F267 /* UsernameGeneratorView.swift */,
+				53BBABA22FE0312F0057F267 /* UsernameGeneratorViewModel.swift */,
 			);
 			path = UsernameGenerator;
 			sourceTree = "<group>";
@@ -3459,6 +3464,7 @@
 				3574437C2C22FE59000DE6F7 /* View+ItemCreateEditSetUp.swift in Sources */,
 				3597F0D02CB5D19F00384874 /* ItemDetailView.swift in Sources */,
 				3560C2F12B99B46F00F35D7A /* CompleteConfiguration.swift in Sources */,
+				53BBABA42FE031310057F267 /* UsernameGeneratorViewModel.swift in Sources */,
 				358FB12F2CBFF45600ECE39F /* ItemTypeListViewModel.swift in Sources */,
 				5BFFB5132A5D42C300C2D1F9 /* SharedUseCase+DependencyInjections.swift in Sources */,
 				356A1F072B88C59C00561950 /* Passkey.swift in Sources */,
@@ -3581,6 +3587,7 @@
 				357C71A22B5FAE5F00AA0BF1 /* SharedRepository+DependencyInjections.swift in Sources */,
 				35796D012B5EEE7400BF4E9E /* CreateEditLoginView.swift in Sources */,
 				357C71AE2B5FB05300AA0BF1 /* PrefixSuffixSection.swift in Sources */,
+				53BBABA32FE031310057F267 /* UsernameGeneratorViewModel.swift in Sources */,
 				357C71B32B5FB08B00AA0BF1 /* AppContentManager.swift in Sources */,
 				357C71CB2B5FB35700AA0BF1 /* NoCameraPermissionView.swift in Sources */,
 				357C71CC2B5FB36900AA0BF1 /* GeneratePasswordView.swift in Sources */,
@@ -3873,6 +3880,7 @@
 				351E31A82B271E6E00750504 /* EnableAutoFill.swift in Sources */,
 				355A2E732C5B83CC00F000B3 /* HomepageCoordinator+AppCover.swift in Sources */,
 				5BDDEABD2C5916590068B9DF /* SearchViewModifier.swift in Sources */,
+				53BBABA52FE031310057F267 /* UsernameGeneratorViewModel.swift in Sources */,
 				354F769828C879CC00EB2383 /* NoteDetailViewModel.swift in Sources */,
 				5B1453B22A69816C0048B022 /* SharingSummaryViewModel.swift in Sources */,
 				5B5DBF112B67FAEB00F72F6C /* DeepLinkRoutingService.swift in Sources */,
