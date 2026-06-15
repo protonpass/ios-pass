@@ -331,7 +331,6 @@ private extension PassMonitorRepository {
         var numberOfWeakPassword = 0
         var numberOfMissing2fa = 0
         var numberOfExcludedItems = 0
-        var numberOfReusedPassword = 0
 
         var securityAffectedItems = [SecurityAffectedItem]()
 
@@ -343,11 +342,14 @@ private extension PassMonitorRepository {
                 numberOfExcludedItems += 1
             }
 
-//            if !item.encrypted.item.monitoringDisabled {
+            // INTENTIONAL (IDTEAM-5965): the active weak/reused/2FA checks below are evaluated
+            // even when the item is fully excluded (`monitoringDisabled`). A fully-excluded item
+            // is meant to appear in BOTH the "Excluded items" bucket and the relevant active
+            // list/count. Do not re-introduce a `!monitoringDisabled` guard here — this behaviour
+            // is pinned by `testFullyExcludedItemStillCountsAsActiveWeakness`.
             if !item.encrypted.item.reusedPasswordCheckDisabled,
                reusedPasswords.contains(item.loginData.password) {
                 weaknesses.append(.reusedPasswords(isExcluded: false))
-                numberOfReusedPassword += 1
             }
 
             if !item.encrypted.item.weakPasswordCheckDisabled,
@@ -364,7 +366,6 @@ private extension PassMonitorRepository {
                 weaknesses.append(.missing2FA(isExcluded: false))
                 numberOfMissing2fa += 1
             }
-//            }
 
             if !weaknesses.isEmpty {
                 securityAffectedItems.append(SecurityAffectedItem(item: item.encrypted, weaknesses: weaknesses))
