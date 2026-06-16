@@ -306,8 +306,11 @@ private extension PassMonitorRepository {
                     return nil
                 }
 
+                // Reuse pool: every monitored, non-empty-password item counts. Per-check reuse
+                // suppression is applied later (via `activeWeaknesses`), so suppressing one item
+                // never un-flags its password-sharing partners (IDTEAM-5965). Pinned by
+                // `reuseSuppressedItemStillCountsForPartner`.
                 if !encryptedItem.item.monitoringDisabled,
-                   !encryptedItem.item.reusedPasswordCheckDisabled,
                    !loginItem.password.isEmpty {
                     passwordCounts[loginItem.password, default: 0] += 1
                 }

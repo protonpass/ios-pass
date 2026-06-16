@@ -236,6 +236,53 @@ struct PassMonitorRepositoryTests {
                                                   encryptedContent: try! login.encrypt(symmetricKey: key))]
     }
 
+    /// IDTEAM-5965 reuse semantics: suppressing the reused-password check on ONE item must NOT
+    /// un-flag its password-sharing partner. The suppressed item still counts toward the shared
+    /// pool; only the suppressed item is hidden from the active reused list.
+    @Test("Reuse-suppressed item still counts; its partner stays flagged")
+    func reuseSuppressedItemStillCountsForPartner() async throws {
+        itemRepository.stubbedGetActiveLogInItemsResult = makeReusePairOneSuppressed()
+
+        try await sut.refreshSecurityChecks()
+
+        let affected = sut.itemsWithSecurityIssues.value
+        let suppressed = try #require(affected.first { $0.suppressedChecks.contains(.reusedPassword) })
+        let partner = try #require(affected.first { !$0.suppressedChecks.contains(.reusedPassword) })
+
+        // Suppressed item: detected as reused (it would reappear) but NOT active, and it IS excluded.
+        #expect(suppressed.detected.contains(.reusedPassword))
+        #expect(!suppressed.activeWeaknesses.contains(.reusedPassword))
+        #expect(suppressed.isExcludedItem)
+
+        // Partner: still actively flagged as reused.
+        #expect(partner.activeWeaknesses.contains(.reusedPassword))
+    }
+
+    /// Two logins sharing the SAME strong password; the first has the reused-password check
+    /// suppressed (flag `skipReusedPasswordCheck`, rawValue 1 << 7 = 128), the second is normally
+    /// monitored.
+    func makeReusePairOneSuppressed() -> [SymmetricallyEncryptedItem] {
+        let shareID = UUID().uuidString
+        let key = symmetricKeyProviderMockFactory.key
+        shareRepository.stubbedGetSharesResult =
+            [SymmetricallyEncryptedShare(encryptedContent: nil, share: .random(shareId: shareID))]
+        let shared = "Ageless6-Evidence0-Detonator1-Cider4-Synthesis6sdfasdsad"
+
+        func make(flags: Int) -> SymmetricallyEncryptedItem {
+            let loginData = LogInItemData.mock(username: "test", password: shared)
+            let content = ItemContentProtobufFactory.createItemContentProtobuf(name: "Login",
+                                                                               note: "n",
+                                                                               itemUuid: UUID().uuidString,
+                                                                               data: .login(loginData),
+                                                                               customFields: [])
+            return SymmetricallyEncryptedItem.random(shareId: shareID,
+                                                     item: .random(flags: flags),
+                                                     encryptedContent: try! content.encrypt(symmetricKey: key))
+        }
+        // 128 = skipReusedPasswordCheck (1 << 7); 0 = fully monitored.
+        return [make(flags: 128), make(flags: 0)]
+    }
+
     func testPassMonitorRepository_listOfReusedPasswordItems() async throws {
         let items = createEncryptedLoginItems(weakness: [.reusedPasswords, .reusedPasswords],
                                               addStrong: false)
