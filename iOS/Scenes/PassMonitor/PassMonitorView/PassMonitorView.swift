@@ -63,17 +63,6 @@ enum SecureRowType {
         }
     }
 
-    /// Icon used in item detail pages
-    var detailIcon: String? {
-        switch self {
-        case .info:
-            "exclamationmark.square.fill"
-
-        default:
-            icon
-        }
-    }
-
     var background: Color {
         switch self {
         case .danger:
@@ -90,17 +79,6 @@ enum SecureRowType {
 
         case .upsell:
             PassColor.interactionNormMinor2
-        }
-    }
-
-    /// Background used in item detail pages
-    var detailBackground: Color {
-        switch self {
-        case .info:
-            PassColor.loginInteractionNormMinor2
-
-        default:
-            background
         }
     }
 

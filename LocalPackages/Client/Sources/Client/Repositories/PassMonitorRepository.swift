@@ -31,17 +31,6 @@ public enum ItemFlag: Sendable, Hashable {
     case skipCompromisedPasswordCheck(Bool)
     case skipReusedPasswordCheck(Bool)
     case skip2FACheck(Bool)
-
-    public var value: Bool {
-        switch self {
-        case let .skip2FACheck(value),
-             let .skipCompromisedPasswordCheck(value),
-             let .skipHealthCheck(value),
-             let .skipReusedPasswordCheck(value),
-             let .skipWeakPasswordCheck(value):
-            value
-        }
-    }
 }
 
 private struct InternalPassMonitorItem {
