@@ -274,7 +274,7 @@ private extension GeneratePasswordView {
             Spacer()
 
             Menu(content: {
-                ForEach(WordSeparator.allCases, id: \.self) { separator in
+                ForEach(WordSeparator.allCases) { separator in
                     Button(action: {
                         viewModel.changeWordSeparator(separator)
                     }, label: {

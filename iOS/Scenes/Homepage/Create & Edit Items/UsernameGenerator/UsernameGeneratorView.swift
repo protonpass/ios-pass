@@ -121,7 +121,7 @@ private extension UsernameGeneratorView {
             Spacer()
 
             Menu(content: {
-                ForEach(WordSeparator.allCases, id: \.self) { separator in
+                ForEach(WordSeparator.allCases) { separator in
                     Button(action: {
                         viewModel.separator = separator
                     }, label: {
