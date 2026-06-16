@@ -53,7 +53,7 @@ extension ItemWeaknessDisplay {
         case .weakness(.missing2FA, _):
             #localized("This service offers 2FA. Enable it for added account security.")
 
-        default:
+        case .weakness(.reusedPassword, _):
             nil
         }
     }
@@ -79,7 +79,10 @@ extension ItemWeaknessDisplay {
         case .weakness(.missing2FA, _):
             #localized("Missing 2FA")
 
-        default:
+        case .fullyExcluded,
+             .weakness(.compromisedPassword, _),
+             .weakness(.reusedPassword, _),
+             .weakness(.weakPassword, _):
             title
         }
     }
@@ -92,7 +95,7 @@ extension ItemWeaknessDisplay {
         case .fullyExcluded, .weakness(.reusedPassword, _):
             PassColor.noteInteractionNormMajor2
 
-        default:
+        case .weakness(.missing2FA, _):
             PassColor.textNorm
         }
     }
