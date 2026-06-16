@@ -47,9 +47,9 @@ public struct Plan: Decodable, Hashable, Sendable {
     public let storageUsed: Int
     public let storageQuota: Int
     public let folderAllowed: Bool
-    public let folderMaxCount: Int
-    public let folderMaxChildren: Int
-    public let folderMaxDepth: Int
+    public let folderMaxCount: Int?
+    public let folderMaxChildren: Int?
+    public let folderMaxDepth: Int?
 
     /// Enum representation of `type`
     public enum PlanType {
@@ -89,10 +89,13 @@ public struct Plan: Decodable, Hashable, Sendable {
         isFreeUser && !hideUpgrade
     }
 
-    public var folderLimits: FolderLimits {
-        FolderLimits(maxFoldersPerVault: folderMaxCount,
-                     maxFoldersPerLayer: folderMaxChildren,
-                     maxFolderDepth: folderMaxDepth)
+    public var folderLimits: FolderLimits? {
+        guard let folderMaxCount,
+              let folderMaxChildren,
+              let folderMaxDepth else { return nil }
+        return FolderLimits(maxFoldersPerVault: folderMaxCount,
+                            maxFoldersPerLayer: folderMaxChildren,
+                            maxFolderDepth: folderMaxDepth)
     }
 
     public init(type: String,
@@ -108,9 +111,9 @@ public struct Plan: Decodable, Hashable, Sendable {
                 storageUsed: Int,
                 storageQuota: Int,
                 folderAllowed: Bool,
-                folderMaxCount: Int,
-                folderMaxChildren: Int,
-                folderMaxDepth: Int) {
+                folderMaxCount: Int?,
+                folderMaxChildren: Int?,
+                folderMaxDepth: Int?) {
         self.type = type
         self.internalName = internalName
         self.displayName = displayName
