@@ -535,25 +535,3 @@ extension BaseItemDetailViewModel: FileAttachmentPreviewHandler {
 }
 
 // swiftlint:enable type_body_length
-extension ItemWeaknessDisplay {
-    var flag: ItemFlag? {
-        switch self {
-        case let .weakness(.missing2FA, isExcluded):
-            .skip2FACheck(!isExcluded)
-
-        case let .weakness(.reusedPassword, isExcluded):
-            .skipReusedPasswordCheck(!isExcluded)
-
-        case let .weakness(.weakPassword, isExcluded):
-            .skipWeakPasswordCheck(!isExcluded)
-
-        case let .weakness(.compromisedPassword, isExcluded):
-            .skipCompromisedPasswordCheck(!isExcluded)
-
-        case .fullyExcluded:
-            // Full-item monitoring is a stateful toggle handled by `toggleMonitoring(weakness:)`;
-            // its direction depends on the item's live monitoring state, not on `isExcluded`.
-            nil
-        }
-    }
-}
