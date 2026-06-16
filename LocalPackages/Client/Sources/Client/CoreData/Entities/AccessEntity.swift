@@ -79,9 +79,9 @@ extension AccessEntity {
                         storageUsed: Int(storageUsed),
                         storageQuota: Int(storageQuota),
                         folderAllowed: folderAllowed,
-                        folderMaxCount: Int(folderMaxCount),
-                        folderMaxChildren: Int(folderMaxChildren),
-                        folderMaxDepth: Int(folderMaxDepth))
+                        folderMaxCount: folderMaxCount == -1 ? nil : Int(folderMaxCount),
+                        folderMaxChildren: folderMaxChildren == -1 ? nil : Int(folderMaxChildren),
+                        folderMaxDepth: folderMaxDepth == -1 ? nil : Int(folderMaxDepth))
 
         let userAliasSyncData = UserAliasSyncData(defaultShareID: defaultShareID,
                                                   aliasSyncEnabled: aliasSyncEnabled,
@@ -124,8 +124,8 @@ extension AccessEntity {
         storageAllowed = plan.storageAllowed
         storageUsed = Int64(plan.storageUsed)
         storageQuota = Int64(plan.storageQuota)
-        folderMaxCount = Int64(plan.folderMaxCount)
-        folderMaxDepth = Int64(plan.folderMaxDepth)
-        folderMaxChildren = Int64(plan.folderMaxChildren)
+        folderMaxCount = Int64(plan.folderMaxCount ?? -1)
+        folderMaxDepth = Int64(plan.folderMaxDepth ?? -1)
+        folderMaxChildren = Int64(plan.folderMaxChildren ?? -1)
     }
 }
