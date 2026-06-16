@@ -42,22 +42,6 @@ extension ItemWeaknessDisplay {
         }
     }
 
-    var subtitleInfo: String? {
-        switch self {
-        case .weakness(.compromisedPassword, _), .weakness(.weakPassword, _):
-            #localized("Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe.")
-
-        case .weakness(.reusedPassword, _):
-            #localized("Generate unique passwords for each account to increase your security.")
-
-        case .weakness(.missing2FA, _):
-            #localized("For added security, set up two-factor authentication on the following accounts.")
-
-        default:
-            nil
-        }
-    }
-
     var infos: String? {
         switch self {
         case .fullyExcluded:
