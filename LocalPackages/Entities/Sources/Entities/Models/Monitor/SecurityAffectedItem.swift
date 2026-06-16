@@ -46,10 +46,11 @@ public extension SecurityAffectedItem {
     }
 
     /// Weaknesses that should raise an active alert: detected, minus per-check suppressions.
-    /// Full exclusion does NOT remove an item from here — a fully-excluded item still surfaces its
-    /// underlying weaknesses in the active lists (confirmed product behaviour, IDTEAM-5965).
+    /// A fully-excluded item (`monitoringDisabled`) surfaces NO active weaknesses — full exclusion
+    /// takes precedence over surfacing individual weaknesses, so the item appears only in the
+    /// "Excluded items" list, never in the active weak/reused/2FA lists (IDTEAM-5965).
     var activeWeaknesses: Set<WeaknessKind> {
-        detected.subtracting(suppressedChecks)
+        isFullyExcluded ? [] : detected.subtracting(suppressedChecks)
     }
 
     /// Whether the item belongs in the "Excluded items" list: fully excluded, or any check skipped.

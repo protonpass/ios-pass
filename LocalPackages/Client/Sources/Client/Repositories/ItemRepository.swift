@@ -422,6 +422,7 @@ public extension ItemRepository {
                                                            symmetricKey: symmetricKey)
         try await localDatasource.upsertItems([encryptedItem])
         logger.trace("Saved item \(createdItemRevision.itemID) to local database")
+        itemsWereUpdated.send()
 
         return encryptedItem
     }
@@ -449,6 +450,7 @@ public extension ItemRepository {
                                                            symmetricKey: symmetricKey)
         try await localDatasource.upsertItems([encryptedItem])
         logger.trace("Saved alias \(createdItemRevision.itemID) to local database")
+        itemsWereUpdated.send()
         return encryptedItem
     }
 
@@ -481,6 +483,7 @@ public extension ItemRepository {
         }
         try await localDatasource.upsertItems(encryptedItem)
         logger.trace("Saved aliased to local database")
+        itemsWereUpdated.send()
         return encryptedItem
     }
 
@@ -517,6 +520,7 @@ public extension ItemRepository {
                                                                 symmetricKey: symmetricKey)
         try await localDatasource.upsertItems([encryptedAlias, encryptedOtherItem])
         logger.trace("Saved alias & other item to local database")
+        itemsWereUpdated.send()
         return (encryptedAlias, encryptedOtherItem)
     }
 

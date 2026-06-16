@@ -473,9 +473,6 @@
         }
       }
     },
-    "%@" : {
-
-    },
     "%@ (%lld members)" : {
       "localizations" : {
         "be" : {
@@ -69397,6 +69394,16 @@
         }
       }
     },
+    "Excluded Item" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Excluded Item"
+          }
+        }
+      }
+    },
     "Excluded items" : {
       "localizations" : {
         "be" : {
@@ -86454,6 +86461,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "身分已更新"
+          }
+        }
+      }
+    },
+    "Ignore" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ignore"
           }
         }
       }
@@ -105558,6 +105575,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "中間名"
+          }
+        }
+      }
+    },
+    "Missing 2FA" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Missing 2FA"
           }
         }
       }
@@ -139119,6 +139146,16 @@
         }
       }
     },
+    "Restore alert" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore alert"
+          }
+        }
+      }
+    },
     "Restore all items" : {
       "localizations" : {
         "be" : {
@@ -141194,6 +141231,16 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "Reused password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reused password"
           }
         }
       }
@@ -188351,6 +188398,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "弱"
+          }
+        }
+      }
+    },
+    "Weak password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weak password"
           }
         }
       }
