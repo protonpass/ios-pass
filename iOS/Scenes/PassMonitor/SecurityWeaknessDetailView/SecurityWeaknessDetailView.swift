@@ -216,7 +216,7 @@ private extension MonitorWeaknessFilter {
         case .excludedItems, .weakness(.compromisedPassword), .weakness(.missing2FA), .weakness(.weakPassword):
             false
 
-        default:
+        case .weakness(.reusedPassword):
             true
         }
     }

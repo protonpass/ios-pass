@@ -51,7 +51,7 @@ extension MonitorWeaknessFilter {
         case .weakness(.missing2FA):
             #localized("For added security, set up two-factor authentication on the following accounts.")
 
-        default:
+        case .excludedItems:
             nil
         }
     }
