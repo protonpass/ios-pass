@@ -43,15 +43,14 @@ final class UsernameGeneratorViewModel {
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var router
 
-    func startTracking() {
-        withObservationTracking {
-            regenerate()
-        } onChange: {
-            DispatchQueue.main.async { [weak self] in
-                guard let self else { return }
-                startTracking()
-            }
-        }
+    @ObservationIgnored
+    @LazyInjected(\SharedRepositoryContainer.localUsernamePreferencesDatasource)
+    private var datasource
+
+    init() {
+        retrievePreferences()
+        startTracking()
+        regenerate()
     }
 
     func regenerate() {
@@ -67,5 +66,42 @@ final class UsernameGeneratorViewModel {
         } catch {
             router.display(element: .displayErrorBanner(error))
         }
+    }
+}
+
+private extension UsernameGeneratorViewModel {
+    func retrievePreferences() {
+        let prefs = datasource.getPreferences()
+        wordCount = Double(prefs.wordCount)
+        separator = prefs.separator
+        includeNumbers = prefs.includeNumbers
+        capitalize = prefs.capitalize
+        leetspeak = prefs.leetspeak
+        includeAdjectives = prefs.includeAdjectives
+        includeNouns = prefs.includeNouns
+        includeVerbs = prefs.includeVerbs
+    }
+
+    func startTracking() {
+        withObservationTracking {
+            storePreferences()
+            regenerate()
+        } onChange: {
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                startTracking()
+            }
+        }
+    }
+
+    func storePreferences() {
+        datasource.save(preferences: .init(wordCount: Int(wordCount),
+                                           separator: separator,
+                                           includeNumbers: includeNumbers,
+                                           capitalize: capitalize,
+                                           leetspeak: leetspeak,
+                                           includeAdjectives: includeAdjectives,
+                                           includeNouns: includeNouns,
+                                           includeVerbs: includeVerbs))
     }
 }

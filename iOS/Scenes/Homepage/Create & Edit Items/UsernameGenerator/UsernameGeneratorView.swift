@@ -55,10 +55,6 @@ struct UsernameGeneratorView: View {
 
             ctaButtons
         }
-        .task {
-            viewModel.startTracking()
-            viewModel.regenerate()
-        }
         .padding([.top, .horizontal])
         .background(PassColor.backgroundNorm)
         .presentationDragIndicator(.visible)
@@ -110,7 +106,9 @@ private extension UsernameGeneratorView {
                 .frame(minWidth: 120, alignment: .leading)
                 .foregroundStyle(PassColor.textNorm)
                 .animationsDisabled()
-            Slider(value: $viewModel.wordCount, in: 1...5, step: 1)
+            Slider(value: $viewModel.wordCount,
+                   in: Double(UsernamePreferences.minWordCount)...Double(UsernamePreferences.maxWordCount),
+                   step: 1)
                 .tint(PassColor.loginInteractionNormMajor1)
         }
     }
