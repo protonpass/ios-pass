@@ -36,16 +36,6 @@ public extension ItemFlagable {
         itemFlags.contains(.monitoringDisabled)
     }
 
-    var hasMonitoringExclusion: Bool {
-        itemFlags.contains([
-            .monitoringDisabled,
-            .skipWeakPasswordCheck,
-            .skipCompromisedPasswordCheck,
-            .skipReusedPasswordCheck,
-            .skip2FACheck
-        ])
-    }
-
     var isBreached: Bool {
         itemFlags.contains(.isBreached)
     }
