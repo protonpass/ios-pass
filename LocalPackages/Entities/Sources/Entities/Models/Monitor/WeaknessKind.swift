@@ -61,10 +61,3 @@ public enum WeaknessKind: Sendable, Hashable, CaseIterable, Identifiable, Compar
         }
     }
 }
-
-/// Selects which list the Pass Monitor weakness-detail screen shows (and the matching dashboard row).
-/// Dark Web Monitoring is intentionally NOT here — it is an account-level concern with its own route.
-public enum MonitorWeaknessFilter: Sendable, Hashable {
-    case weakness(WeaknessKind)
-    case excludedItems
-}

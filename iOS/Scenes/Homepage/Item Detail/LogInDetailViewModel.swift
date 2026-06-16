@@ -235,18 +235,3 @@ extension LogInDetailViewModel {
         }
     }
 }
-
-extension ItemWeaknessDisplay {
-    var secureRowType: SecureRowType {
-        switch self {
-        case .fullyExcluded,
-             .weakness(.compromisedPassword, _),
-             .weakness(.reusedPassword, _),
-             .weakness(.weakPassword, _):
-            .warning
-
-        case .weakness(.missing2FA, _):
-            .info
-        }
-    }
-}

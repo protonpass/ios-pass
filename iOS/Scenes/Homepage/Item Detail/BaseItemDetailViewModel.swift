@@ -314,8 +314,18 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func toggleMonitoring(weakness: ItemWeaknessDisplay) {
-        guard let newItemFlag = weakness.flag else {
-            return
+        let newItemFlag: ItemFlag
+        switch weakness {
+        case .fullyExcluded:
+            // Full-item monitoring is a stateful toggle: flip the item's CURRENT state so a
+            // fully-excluded item can be re-enabled (and a monitored one excluded). The display's
+            // `isExcluded` is constant for `.fullyExcluded`, so the direction comes from `isMonitored`
+            // (`skipHealthCheck(true)` disables, `skipHealthCheck(false)` re-enables).
+            newItemFlag = .skipHealthCheck(isMonitored)
+
+        case .weakness:
+            guard let flag = weakness.flag else { return }
+            newItemFlag = flag
         }
         Task { [weak self] in
             guard let self else {
@@ -541,7 +551,9 @@ extension ItemWeaknessDisplay {
             .skipCompromisedPasswordCheck(!isExcluded)
 
         case .fullyExcluded:
-            .skipHealthCheck(isExcluded)
+            // Full-item monitoring is a stateful toggle handled by `toggleMonitoring(weakness:)`;
+            // its direction depends on the item's live monitoring state, not on `isExcluded`.
+            nil
         }
     }
 }

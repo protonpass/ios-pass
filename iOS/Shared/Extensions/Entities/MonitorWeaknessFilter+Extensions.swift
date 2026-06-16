@@ -1,5 +1,5 @@
 //
-// SecurityWeakness+Extensions.swift
+// MonitorWeaknessFilter+Extensions.swift
 // Proton Pass - Created on 08/03/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -20,85 +20,6 @@
 
 import Entities
 import Macro
-
-/// Presentation model for a single weakness row shown on the login detail screen.
-///
-/// A row either represents one detected `WeaknessKind` (with whether the user has excluded that
-/// specific check) or the whole-item "fully excluded" state. Dark Web Monitoring is intentionally
-/// not represented here — it has its own route.
-enum ItemWeaknessDisplay: Identifiable, Hashable {
-    case weakness(WeaknessKind, isExcluded: Bool)
-    case fullyExcluded
-
-    var id: Self {
-        self
-    }
-
-    var isExcluded: Bool {
-        switch self {
-        case let .weakness(_, isExcluded):
-            isExcluded
-
-        case .fullyExcluded:
-            true
-        }
-    }
-}
-
-extension ItemWeaknessDisplay {
-    var title: String {
-        switch self {
-        case .fullyExcluded:
-            #localized("Excluded Items")
-
-        case .weakness(.compromisedPassword, _), .weakness(.weakPassword, _):
-            #localized("Weak passwords")
-
-        case .weakness(.reusedPassword, _):
-            #localized("Reused passwords")
-
-        case .weakness(.missing2FA, _):
-            #localized("Set up 2FA for more security")
-        }
-    }
-
-    /// Title used in login detail page
-    var detailTitle: String? {
-        title
-    }
-
-    var subtitleInfo: String? {
-        switch self {
-        case .weakness(.compromisedPassword, _), .weakness(.weakPassword, _):
-            #localized("Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe.")
-
-        case .weakness(.reusedPassword, _):
-            #localized("Generate unique passwords for each account to increase your security.")
-
-        case .weakness(.missing2FA, _):
-            #localized("For added security, set up two-factor authentication on the following accounts.")
-
-        default:
-            nil
-        }
-    }
-
-    var infos: String? {
-        switch self {
-        case .fullyExcluded:
-            #localized("This item is not being monitored")
-
-        case .weakness(.compromisedPassword, _), .weakness(.weakPassword, _):
-            #localized("This account is vulnerable, visit the service and change your password")
-
-        case .weakness(.missing2FA, _):
-            #localized("This service offers 2FA. Enable it for added account security.")
-
-        default:
-            nil
-        }
-    }
-}
 
 // MARK: - MonitorWeaknessFilter presentation
 

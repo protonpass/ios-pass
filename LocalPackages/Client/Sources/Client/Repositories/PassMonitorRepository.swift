@@ -333,10 +333,10 @@ private extension PassMonitorRepository {
         for item in loginItems {
             var detected = Set<WeaknessKind>()
 
-            // Detection IGNORES per-item suppression and full exclusion; suppression is applied by
-            // `SecurityAffectedItem.activeWeaknesses`. A fully-excluded item is still surfaced in the
-            // active lists (confirmed behaviour, IDTEAM-5965) — pinned by
-            // `testFullyExcludedItemStillCountsAsActiveWeakness`.
+            // Detection IGNORES per-item suppression and full exclusion; both are applied by
+            // `SecurityAffectedItem.activeWeaknesses`, which surfaces nothing for a fully-excluded
+            // item (full exclusion takes precedence). Pinned by
+            // `testFullyExcludedItemIsExcludedOnly`.
             if reusedPasswords.contains(item.loginData.password) {
                 detected.insert(.reusedPassword)
             }

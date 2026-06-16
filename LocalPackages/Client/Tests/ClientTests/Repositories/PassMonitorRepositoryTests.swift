@@ -145,14 +145,14 @@ struct PassMonitorRepositoryTests {
         try await sut.refreshSecurityChecks()
 
         let state = sut.weaknessStats.value
-        // The fully-excluded item (`.fullyExcluded`, monitoringDisabled) is built with the weak
-        // password "password123", an empty TOTP and a 2FA-eligible URL. Per the INTENTIONAL
-        // behaviour confirmed for IDTEAM-5965 it counts toward the excluded bucket AND the active
-        // weak + missing-2FA buckets — hence weakPasswords == 2 and missing2FA == 2 here.
+        // The fully-excluded item (`.fullyExcluded`, monitoringDisabled) is built with a weak
+        // password, an empty TOTP and a 2FA-eligible URL — but full exclusion takes precedence
+        // (IDTEAM-5965), so it counts ONLY toward the excluded bucket, never the active weak /
+        // missing-2FA buckets. Hence weakPasswords == 1 and missing2FA == 1 (the non-excluded items).
         #expect(state.reusedPasswords == 1)
-        #expect(state.weakPasswords == 2)
+        #expect(state.weakPasswords == 1)
         #expect(state.excludedItems == 1)
-        #expect(state.missing2FA == 2)
+        #expect(state.missing2FA == 1)
 
 
         let itemsWithSecurityIssues = sut.itemsWithSecurityIssues.value
@@ -196,28 +196,27 @@ struct PassMonitorRepositoryTests {
         #expect(state3.missing2FA == 0)
     }
     
-    /// Characterization test for the behaviour confirmed for IDTEAM-5965: a fully-excluded
-    /// (`monitoringDisabled`) item that also has a weak password is INTENTIONALLY counted in
-    /// BOTH the excluded-items bucket AND the active weak-passwords bucket, and surfaces both
-    /// weaknesses. This guards against a future "fix" that re-introduces a `!monitoringDisabled`
-    /// guard in `PassMonitorRepository.weaknessStats`.
-    @Test("Fully-excluded item still counts as an active weakness")
-    func testFullyExcludedItemStillCountsAsActiveWeakness() async throws {
+    /// Characterization test for IDTEAM-5965: a fully-excluded (`monitoringDisabled`) item whose
+    /// password is weak appears ONLY in the excluded bucket — full exclusion takes precedence, so it
+    /// does NOT surface as an active weakness. The weakness is still *detected* (it would reappear
+    /// if monitoring were re-enabled), but `activeWeaknesses` is empty.
+    @Test("Fully-excluded item is excluded only, never an active weakness")
+    func testFullyExcludedItemIsExcludedOnly() async throws {
         itemRepository.stubbedGetActiveLogInItemsResult = makeFullyExcludedWeakItems()
 
         try await sut.refreshSecurityChecks()
 
         let stats = sut.weaknessStats.value
         #expect(stats.excludedItems == 1)
-        #expect(stats.weakPasswords == 1)
+        #expect(stats.weakPasswords == 0)
 
         let affected = sut.itemsWithSecurityIssues.value
         #expect(affected.count == 1)
         let item = try #require(affected.first)
         #expect(item.isFullyExcluded)
         #expect(item.isExcludedItem)
-        #expect(item.detected.contains(.weakPassword))
-        #expect(item.activeWeaknesses.contains(.weakPassword))
+        #expect(item.detected.contains(.weakPassword))   // still detected...
+        #expect(item.activeWeaknesses.isEmpty)            // ...but not surfaced as active
     }
 
     /// A single fully-excluded (`monitoringDisabled`) login whose password is weak.
