@@ -29,8 +29,11 @@ extension MonitorWeaknessFilter {
         case .excludedItems:
             #localized("Excluded Items")
 
-        case .weakness(.compromisedPassword), .weakness(.weakPassword):
+        case .weakness(.weakPassword):
             #localized("Weak passwords")
+
+        case .weakness(.compromisedPassword):
+            #localized("Compromised passwords")
 
         case .weakness(.reusedPassword):
             #localized("Reused passwords")

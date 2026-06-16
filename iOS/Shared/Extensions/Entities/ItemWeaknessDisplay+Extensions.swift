@@ -31,8 +31,11 @@ extension ItemWeaknessDisplay {
         case .fullyExcluded:
             #localized("Excluded Item")
 
-        case .weakness(.compromisedPassword, _), .weakness(.weakPassword, _):
+        case .weakness(.weakPassword, _):
             #localized("Weak password")
+
+        case .weakness(.compromisedPassword, _):
+            #localized("Compromised password")
 
         case .weakness(.reusedPassword, _):
             #localized("Reused password")
