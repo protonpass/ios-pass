@@ -50,7 +50,6 @@ final class UsernameGeneratorViewModel {
     init() {
         retrievePreferences()
         startTracking()
-        regenerate()
     }
 
     func regenerate() {
@@ -86,9 +85,9 @@ private extension UsernameGeneratorViewModel {
         withObservationTracking {
             storePreferences()
             regenerate()
-        } onChange: {
-            DispatchQueue.main.async { [weak self] in
-                guard let self else { return }
+        } onChange: { [weak self] in
+            guard let self else { return }
+            MainActor.assumeIsolated {
                 startTracking()
             }
         }
