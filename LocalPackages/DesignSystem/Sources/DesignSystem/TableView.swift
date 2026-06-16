@@ -46,6 +46,16 @@ final class PassDiffableDataSource<Section: Hashable, Item: Hashable>:
     var sectionIndexTitles: (() -> [String]?)?
     var titleForHeader: ((Int) -> String?)?
 
+    /// Workaround for a Swift 6.3.2 (Xcode 26.5) SIL optimizer crash: the `EarlyPerfInliner`
+    /// pass crashes in `isCallerAndCalleeLayoutConstraintsCompatible` when it evaluates the
+    /// synthesized deallocating destructor of this generic subclass of the ObjC generic
+    /// `UITableViewDiffableDataSource` as an inlining candidate, but only under whole-module
+    /// optimization (QA/Release). `@inline(never)` keeps the destructor out of the inliner's
+    /// candidate set (the noinline check short-circuits before the crashing layout check).
+    /// Remove once the toolchain ships a fix.
+    @inline(never)
+    deinit {}
+
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         sectionIndexTitles?()
     }
@@ -165,6 +175,14 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
             self.parent = parent
             self.configuration = configuration
         }
+
+        /// Same Swift 6.3.2 (Xcode 26.5) SIL optimizer-crash workaround as `PassDiffableDataSource`
+        /// above: `EarlyPerfInliner` crashes in `isCallerAndCalleeLayoutConstraintsCompatible` when
+        /// it processes this generic class's deallocating destructor (which releases the generic
+        /// `PassDiffableDataSource` member) under whole-module optimization. `@inline(never)` keeps
+        /// the destructor out of the inliner's candidate set. Remove once the toolchain ships a fix.
+        @inline(never)
+        deinit {}
 
         public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             tableView.deselectRow(at: indexPath, animated: true)
