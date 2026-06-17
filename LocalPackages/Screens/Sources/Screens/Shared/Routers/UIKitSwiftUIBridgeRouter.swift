@@ -84,7 +84,7 @@ public enum SheetDestination: Equatable, Hashable {
     case restoreHistory
     case tutorial
     case accountSettings
-    case settingsMenu
+    case settings(asSheet: Bool)
     /// iOS 26+ only
     case createNewItem
     case createEditLogin(mode: Entities.ItemMode, dismissAllSheets: Bool)
@@ -108,7 +108,7 @@ public enum SheetDestination: Equatable, Hashable {
     case changePassword(PasswordChangeModule.PasswordChangeMode)
     case createSecureLink(ItemContent, Share)
     case enableExtraPassword
-    case secureLinks
+    case secureLinks(asSheet: Bool)
     case secureLinkDetail(SecureLinkListUIModel)
     case addAccount
     case simpleLoginSyncActivation(dismissAllSheets: Bool)
