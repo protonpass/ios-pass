@@ -187,13 +187,12 @@ struct PassMonitorView: View {
 
     var body: some View {
         mainContent
+            .animation(.default, value: viewModel.breaches)
             .animation(.default, value: viewModel.weaknessStats)
             .navigationTitle("Pass Monitor")
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .scrollViewEmbeded(maxWidth: .infinity)
             .background(PassColor.backgroundNorm)
-            .animation(.default, value: viewModel.breaches)
-            .animation(.default, value: viewModel.weaknessStats)
             .showSpinner(viewModel.updatingSentinel)
             .sheet(isPresented: $viewModel.showSentinelSheet) {
                 SentinelSheetView(isPresented: $viewModel.showSentinelSheet,
