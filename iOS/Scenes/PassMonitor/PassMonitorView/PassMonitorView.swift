@@ -227,10 +227,13 @@ private extension PassMonitorView {
                 }
                 Section {
                     VStack(spacing: DesignConstant.sectionPadding) {
-                        weakPasswordsRow(weaknessStats.count(for: .weakPassword))
-                        reusedPasswordsRow(weaknessStats.count(for: .reusedPassword))
-                        missing2FARow(weaknessStats.count(for: .missing2FA))
-                            .padding(.top, 16)
+                        // Rows are ordered by WeaknessKind.displayPriority (single source of
+                        // truth). Compromised is hidden until its detection lands (next MR); it
+                        // will then slot into the correct position automatically.
+                        ForEach(WeaknessKind.allCases.sorted().filter { $0 != .compromisedPassword }) { kind in
+                            weaknessRow(kind: kind, count: weaknessStats.count(for: kind))
+                                .padding(.top, kind == .missing2FA ? 16 : 0)
+                        }
                         excludedItemsRow(weaknessStats.excludedItems)
                     }
                 } header: {
@@ -456,32 +459,21 @@ private extension PassMonitorView {
 }
 
 private extension PassMonitorView {
-    func weakPasswordsRow(_ weakPasswords: Int) -> some View {
-        passMonitorRow(rowType: weakPasswords > 0 ? .warning : .success,
-                       title: "Weak Passwords",
-                       subTitle: "Change your passwords",
-                       count: weakPasswords,
-                       action: { viewModel.showSecurityWeakness(filter: .weakness(.weakPassword)) })
-    }
-}
+    @ViewBuilder
+    func weaknessRow(kind: WeaknessKind, count: Int) -> some View {
+        // Count-aware severity stays in the view (the entity must not know about row styling).
+        let rowType: SecureRowType = switch kind {
+        case .compromisedPassword, .reusedPassword, .weakPassword:
+            count > 0 ? .warning : .success
 
-private extension PassMonitorView {
-    func reusedPasswordsRow(_ reusedPasswords: Int) -> some View {
-        passMonitorRow(rowType: reusedPasswords > 0 ? .warning : .success,
-                       title: "Reused passwords",
-                       subTitle: "Generate unique passwords",
-                       count: reusedPasswords,
-                       action: { viewModel.showSecurityWeakness(filter: .weakness(.reusedPassword)) })
-    }
-}
-
-private extension PassMonitorView {
-    func missing2FARow(_ missing2FA: Int) -> some View {
-        passMonitorRow(rowType: .info,
-                       title: "Inactive 2FA",
-                       subTitle: "Set up 2FA for more security",
-                       count: missing2FA,
-                       action: { viewModel.showSecurityWeakness(filter: .weakness(.missing2FA)) })
+        case .missing2FA:
+            .info
+        }
+        passMonitorRow(rowType: rowType,
+                       title: kind.dashboardTitle,
+                       subTitle: kind.dashboardSubtitle,
+                       count: count,
+                       action: { viewModel.showSecurityWeakness(filter: .weakness(kind)) })
     }
 }
 
