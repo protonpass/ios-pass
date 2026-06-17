@@ -210,7 +210,7 @@ struct SecuritySectionHeaderKey: Hashable, Comparable, Identifiable {
     }
 }
 
-private extension MonitorWeaknessFilter {
+private extension MonitorListSection {
     var isSectionned: Bool {
         switch self {
         case .excludedItems, .weakness(.compromisedPassword), .weakness(.missing2FA), .weakness(.weakPassword):

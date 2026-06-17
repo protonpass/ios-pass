@@ -1,5 +1,5 @@
 //
-// MonitorWeaknessFilter+Extensions.swift
+// MonitorListSection+Extensions.swift
 // Proton Pass - Created on 08/03/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -21,9 +21,9 @@
 import Entities
 import Macro
 
-// MARK: - MonitorWeaknessFilter presentation
+// MARK: - MonitorListSection presentation
 
-extension MonitorWeaknessFilter {
+extension MonitorListSection {
     var title: String {
         switch self {
         case .excludedItems:

@@ -27,11 +27,11 @@ import Entities
 public typealias SecurityIssuesContent = [SecuritySection: [ItemUiModel]]
 
 public protocol GetAllSecurityAffectedLoginsUseCase: Sendable {
-    func execute(for filter: MonitorWeaknessFilter) -> AnyPublisher<SecurityIssuesContent, any Error>
+    func execute(for filter: MonitorListSection) -> AnyPublisher<SecurityIssuesContent, any Error>
 }
 
 public extension GetAllSecurityAffectedLoginsUseCase {
-    func callAsFunction(for filter: MonitorWeaknessFilter) -> AnyPublisher<SecurityIssuesContent, any Error> {
+    func callAsFunction(for filter: MonitorListSection) -> AnyPublisher<SecurityIssuesContent, any Error> {
         execute(for: filter)
     }
 }
@@ -43,7 +43,7 @@ public final class GetAllSecurityAffectedLogins: GetAllSecurityAffectedLoginsUse
         self.passMonitorRepository = passMonitorRepository
     }
 
-    public func execute(for filter: MonitorWeaknessFilter) -> AnyPublisher<SecurityIssuesContent, any Error> {
+    public func execute(for filter: MonitorListSection) -> AnyPublisher<SecurityIssuesContent, any Error> {
         // `tryMap` (rather than `map`) keeps the failure type `any Error` to satisfy the protocol;
         // the body no longer throws because it reads the repository's decrypt-once projection.
         passMonitorRepository.itemsWithSecurityIssues
