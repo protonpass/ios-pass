@@ -662,8 +662,8 @@ extension HomepageCoordinator {
                 case .securityKeys:
                     presentSecurityKeys()
 
-                case .settingsMenu:
-                    profileTabViewModelWantsToShowSettingsMenu()
+                case let .settings(asSheet):
+                    showView(view: SettingsView(), asSheet: asSheet)
 
                 case let .createEditLogin(item, dismissAllSheets):
                     if dismissAllSheets {
@@ -724,8 +724,8 @@ extension HomepageCoordinator {
                 case .enableExtraPassword:
                     beginEnableExtraPasswordFlow()
 
-                case .secureLinks:
-                    presentSecureLinks()
+                case let .secureLinks(asSheet):
+                    presentSecureLinks(asSheet: asSheet)
 
                 case let .secureLinkDetail(link):
                     presentSecureLinkDetail(link: link)
@@ -744,7 +744,7 @@ extension HomepageCoordinator {
                     }
 
                 case .aliasesSyncConfiguration:
-                    present(AliasSyncConfigurationView())
+                    push(AliasSyncConfigurationView())
 
                 case .loginsWith2fa:
                     presentLoginsWith2faView()
@@ -773,7 +773,7 @@ extension HomepageCoordinator {
                     }
 
                 case .passwordHistory:
-                    presentPasswordHistoryView()
+                    presentPasswordHistoryView(asSheet: false)
 
                 case .signInToAnotherDevice:
                     presentSignInToAnotherDeviceView()
@@ -1053,7 +1053,7 @@ extension HomepageCoordinator {
         let viewPasswordHistory: @MainActor (PMBanner) -> Void = { [weak self] banner in
             guard let self else { return }
             banner.dismiss()
-            presentPasswordHistoryView()
+            presentPasswordHistoryView(asSheet: true)
         }
 
         let copyPassword: (String) -> Void = { [weak self] password in
@@ -1256,7 +1256,7 @@ extension HomepageCoordinator {
         }
     }
 
-    func presentPasswordHistoryView() {
+    func presentPasswordHistoryView(asSheet: Bool) {
         let createLogin: (String) -> Void = { [weak self] clearPassword in
             guard let self else { return }
             dismissTopMostViewController(animated: true) { [weak self] in
@@ -1265,7 +1265,7 @@ extension HomepageCoordinator {
                                                                 autofill: false)))
             }
         }
-        let view = PasswordHistoryView { [weak self] action in
+        let view = PasswordHistoryView(isShownAsSheet: asSheet) { [weak self] action in
             guard let self else { return }
             switch action {
             case let .copy(password):
@@ -1275,10 +1275,16 @@ extension HomepageCoordinator {
 
             case let .create(password):
                 createLogin(password)
+
+            case .close:
+                if asSheet {
+                    dismissTopMostViewController(animated: true)
+                } else {
+                    popTopViewController(animated: true)
+                }
             }
         }
-
-        present(view)
+        showView(view: view, asSheet: asSheet)
     }
 
     func presentSignInToAnotherDeviceView() {
@@ -1660,13 +1666,6 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 // MARK: - ProfileTabViewModelDelegate
 
 extension HomepageCoordinator: ProfileTabViewModelDelegate {
-    func profileTabViewModelWantsToShowSettingsMenu() {
-        let asSheet = shouldShowAsSheet()
-        let viewModel = SettingsViewModel(isShownAsSheet: asSheet)
-        let view = SettingsView(viewModel: viewModel)
-        showView(view: view, asSheet: asSheet)
-    }
-
     func profileTabViewModelWantsToShowFeedback() {
         let view = FeedbackChannelsView { [weak self] selectedChannel in
             guard let self else { return }

@@ -26,9 +26,7 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct SettingsView: View {
-    @Environment(\.dismiss) private var dismiss
-    // swiftlint:disable:next private_swiftui_state
-    @StateObject var viewModel: SettingsViewModel
+    @StateObject private var viewModel = SettingsViewModel()
     @State private var sheet: Sheet?
 
     private enum Sheet: String, Identifiable {
@@ -89,11 +87,11 @@ private extension SettingsView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            CircleButton(icon: viewModel.isShownAsSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
+            CircleButton(icon: IconProvider.chevronLeft,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
                          accessibilityLabel: "Go back",
-                         action: dismiss.callAsFunction)
+                         action: { viewModel.goBack() })
         }
     }
 }

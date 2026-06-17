@@ -36,7 +36,6 @@ import UseCases
 
 @MainActor
 protocol ProfileTabViewModelDelegate: AnyObject {
-    func profileTabViewModelWantsToShowSettingsMenu()
     func profileTabViewModelWantsToShowFeedback()
 }
 
@@ -313,7 +312,7 @@ extension ProfileTabViewModel {
     }
 
     func showSettingsMenu() {
-        delegate?.profileTabViewModelWantsToShowSettingsMenu()
+        router.present(for: .settings(asSheet: false))
     }
 
     func showAliasSyncConfiguration() {
@@ -404,7 +403,7 @@ extension ProfileTabViewModel {
     }
 
     func showSecureLinkList() {
-        router.present(for: .secureLinks)
+        router.present(for: .secureLinks(asSheet: false))
     }
 
     func upsell(entryPoint: UpsellEntry) {
