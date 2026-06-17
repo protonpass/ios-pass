@@ -68,13 +68,13 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
     // MARK: - weaknessStats
     public var invokedWeaknessStatsSetter = false
     public var invokedWeaknessStatsSetterCount = 0
-    public var invokedWeaknessStats: CurrentValueSubject<WeaknessStats, Never>?
-    public var invokedWeaknessStatsList = [CurrentValueSubject<WeaknessStats, Never>?]()
+    public var invokedWeaknessStats: CurrentValueSubject<WeaknessStats?, Never>?
+    public var invokedWeaknessStatsList = [CurrentValueSubject<WeaknessStats?, Never>?]()
     public var invokedWeaknessStatsGetter = false
     public var invokedWeaknessStatsGetterCount = 0
-    public nonisolated(unsafe) var stubbedWeaknessStats: CurrentValueSubject<WeaknessStats, Never>!
+    public nonisolated(unsafe) var stubbedWeaknessStats: CurrentValueSubject<WeaknessStats?, Never>!
 
-    public var weaknessStats: CurrentValueSubject<WeaknessStats, Never> {
+    public var weaknessStats: CurrentValueSubject<WeaknessStats?, Never> {
          get {
             return stubbedWeaknessStats
         }

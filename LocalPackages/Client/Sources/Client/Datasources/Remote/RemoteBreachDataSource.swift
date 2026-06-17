@@ -127,10 +127,10 @@ public extension RemoteBreachDataSource {
     }
 
     func sendUserMonitorStats(userId: String, stats: WeaknessStats) async throws {
-        let request = SendUserMonitoringStatsRequest(reusedPasswords: stats.reusedPasswords,
-                                                     inactive2FA: stats.missing2FA,
+        let request = SendUserMonitoringStatsRequest(reusedPasswords: stats.count(for: .reusedPassword),
+                                                     inactive2FA: stats.count(for: .missing2FA),
                                                      excludedItems: stats.excludedItems,
-                                                     weakPasswords: stats.weakPasswords)
+                                                     weakPasswords: stats.count(for: .weakPassword))
         let endpoint = SendUserMonitoringStatsEndpoint(request: request)
         _ = try await exec(userId: userId, endpoint: endpoint)
     }

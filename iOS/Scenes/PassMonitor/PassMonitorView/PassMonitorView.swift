@@ -227,9 +227,9 @@ private extension PassMonitorView {
                 }
                 Section {
                     VStack(spacing: DesignConstant.sectionPadding) {
-                        weakPasswordsRow(weaknessStats.weakPasswords)
-                        reusedPasswordsRow(weaknessStats.reusedPasswords)
-                        missing2FARow(weaknessStats.missing2FA)
+                        weakPasswordsRow(weaknessStats.count(for: .weakPassword))
+                        reusedPasswordsRow(weaknessStats.count(for: .reusedPassword))
+                        missing2FARow(weaknessStats.count(for: .missing2FA))
                             .padding(.top, 16)
                         excludedItemsRow(weaknessStats.excludedItems)
                     }
