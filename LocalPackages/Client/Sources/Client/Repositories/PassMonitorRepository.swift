@@ -25,14 +25,6 @@ import Entities
 import Foundation
 import PassRustCore
 
-public enum ItemFlag: Sendable, Hashable {
-    case skipHealthCheck(Bool)
-    case skipWeakPasswordCheck(Bool)
-    case skipCompromisedPasswordCheck(Bool)
-    case skipReusedPasswordCheck(Bool)
-    case skip2FACheck(Bool)
-}
-
 private struct InternalPassMonitorItem {
     let encrypted: SymmetricallyEncryptedItem
     let loginData: LogInItemData
