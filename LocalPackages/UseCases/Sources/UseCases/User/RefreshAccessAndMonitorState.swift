@@ -66,7 +66,7 @@ public final class RefreshAccessAndMonitorState: @unchecked Sendable, RefreshAcc
             breachCount += breachedAliases.count
         }
 
-        let hasWeaknesses = passMonitorRepository.weaknessStats.value.hasWeakOrReusedPasswords
+        let hasWeaknesses = passMonitorRepository.weaknessStats.value?.hasWeakOrReusedPasswords ?? false
         var latestBreach: LatestBreachDomainInfo?
 
         if let info = userBreaches.latestBreach {

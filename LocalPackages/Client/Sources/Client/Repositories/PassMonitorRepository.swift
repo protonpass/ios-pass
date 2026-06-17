@@ -42,7 +42,7 @@ private struct InternalPassMonitorItem {
 public protocol PassMonitorRepositoryProtocol: Sendable {
     var darkWebDataSectionUpdate: PassthroughSubject<DarkWebDataSectionUpdate, Never> { get }
     var userBreaches: CurrentValueSubject<UserBreaches?, Never> { get }
-    var weaknessStats: CurrentValueSubject<WeaknessStats, Never> { get }
+    var weaknessStats: CurrentValueSubject<WeaknessStats?, Never> { get }
     var itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> { get }
 
     func refreshSecurityChecks() async throws
@@ -75,14 +75,13 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
     private let itemRepository: any ItemRepositoryProtocol
     private let shareRepository: any ShareRepositoryProtocol
     private let symmetricKeyProvider: any SymmetricKeyProvider
-    private let passwordScorer: any PasswordScorerProtocol
-    private let twofaDomainChecker: any TwofaDomainCheckerProtocol
+    private let weaknessEvaluator: any ItemWeaknessEvaluatorProtocol
     private let remoteDataSource: any RemoteBreachDataSourceProtocol
     private let userManager: any UserManagerProtocol
 
     public nonisolated let darkWebDataSectionUpdate: PassthroughSubject<DarkWebDataSectionUpdate, Never> = .init()
     public nonisolated let userBreaches: CurrentValueSubject<UserBreaches?, Never> = .init(nil)
-    public nonisolated let weaknessStats: CurrentValueSubject<WeaknessStats, Never> = .init(.default)
+    public nonisolated let weaknessStats: CurrentValueSubject<WeaknessStats?, Never> = .init(nil)
     public nonisolated let itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> = .init([])
 
     private var cancellable = Set<AnyCancellable>()
@@ -93,13 +92,11 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
                 remoteDataSource: any RemoteBreachDataSourceProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider,
                 userManager: any UserManagerProtocol,
-                passwordScorer: any PasswordScorerProtocol = PasswordScorer(),
-                twofaDomainChecker: any TwofaDomainCheckerProtocol = TwofaDomainChecker()) {
+                weaknessEvaluator: any ItemWeaknessEvaluatorProtocol = ItemWeaknessEvaluator()) {
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
         self.symmetricKeyProvider = symmetricKeyProvider
-        self.passwordScorer = passwordScorer
-        self.twofaDomainChecker = twofaDomainChecker
+        self.weaknessEvaluator = weaknessEvaluator
         self.remoteDataSource = remoteDataSource
         self.userManager = userManager
 
@@ -140,7 +137,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
 
     public func reset() {
         userBreaches.send(nil)
-        weaknessStats.send(.default)
+        weaknessStats.send(nil)
         itemsWithSecurityIssues.send([])
         refreshTask?.cancel()
         refreshTask = nil
@@ -311,6 +308,7 @@ private extension PassMonitorRepository {
                 // never un-flags its password-sharing partners (IDTEAM-5965). Pinned by
                 // `reuseSuppressedItemStillCountsForPartner`.
                 if !encryptedItem.item.monitoringDisabled,
+//                   !encryptedItem.item.reusedPasswordCheckDisabled,
                    !loginItem.password.isEmpty {
                     passwordCounts[loginItem.password, default: 0] += 1
                 }
@@ -323,24 +321,8 @@ private extension PassMonitorRepository {
         var securityAffectedItems = [SecurityAffectedItem]()
 
         for item in loginItems {
-            var detected = Set<WeaknessKind>()
-
-            // Detection IGNORES per-item suppression and full exclusion; both are applied by
-            // `SecurityAffectedItem.activeWeaknesses`, which surfaces nothing for a fully-excluded
-            // item (full exclusion takes precedence). Pinned by
-            // `testFullyExcludedItemIsExcludedOnly`.
-            if reusedPasswords.contains(item.loginData.password) {
-                detected.insert(.reusedPassword)
-            }
-            if !item.loginData.password.isEmpty,
-               passwordScorer.checkScore(password: item.loginData.password) != .strong {
-                detected.insert(.weakPassword)
-            }
-            if item.loginData.totpUri.isEmpty,
-               item.loginData.urls.contains(where: { twofaDomainChecker.twofaDomainEligible(domain: $0) }),
-               item.loginData.passkeys.isEmpty {
-                detected.insert(.missing2FA)
-            }
+            let isReused = reusedPasswords.contains(item.loginData.password)
+            let detected = weaknessEvaluator.evaluate(item.loginData, isReused: isReused)
 
             let affectedItem = SecurityAffectedItem(item: item.encrypted, detected: detected)
             if !detected.isEmpty || affectedItem.isExcludedItem {
@@ -348,12 +330,15 @@ private extension PassMonitorRepository {
             }
         }
 
-        let stats = WeaknessStats(weakPasswords: securityAffectedItems
-            .count(where: { $0.activeWeaknesses.contains(.weakPassword) }),
-            reusedPasswords: reusedPasswords.count,
-            missing2FA: securityAffectedItems
-                .count(where: { $0.activeWeaknesses.contains(.missing2FA) }),
-            excludedItems: securityAffectedItems.filter(\.isExcludedItem).count)
+        let counts: [WeaknessKind: Int] = [
+            .weakPassword: securityAffectedItems
+                .count(where: { $0.activeWeaknesses.contains(.weakPassword) }),
+            .reusedPassword: reusedPasswords.count,
+            .missing2FA: securityAffectedItems
+                .count(where: { $0.activeWeaknesses.contains(.missing2FA) })
+        ]
+        let stats = WeaknessStats(counts: counts,
+                                  excludedItems: securityAffectedItems.filter(\.isExcludedItem).count)
         return (stats, securityAffectedItems)
     }
 }
