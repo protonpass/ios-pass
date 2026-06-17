@@ -1,5 +1,5 @@
 //
-// MonitorWeaknessFilter.swift
+// MonitorListSection.swift
 // Proton Pass - Created on 16/06/2026.
 // Copyright (c) 2026 Proton Technologies AG
 //
@@ -22,7 +22,7 @@ import Foundation
 
 /// Selects which list the Pass Monitor weakness-detail screen shows (and the matching dashboard row).
 /// Dark Web Monitoring is intentionally NOT here — it is an account-level concern with its own route.
-public enum MonitorWeaknessFilter: Sendable, Hashable {
+public enum MonitorListSection: Sendable, Hashable {
     case weakness(WeaknessKind)
     case excludedItems
 }

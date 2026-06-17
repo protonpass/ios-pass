@@ -70,7 +70,7 @@ final class PassMonitorViewModel: ObservableObject {
         }
     }
 
-    func showSecurityWeakness(filter: MonitorWeaknessFilter) {
+    func showSecurityWeakness(filter: MonitorListSection) {
         router.present(for: .securityDetail(filter))
         addTelemetryEvent(with: filter.telemetryEventType)
     }

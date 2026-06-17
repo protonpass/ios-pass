@@ -39,7 +39,7 @@ extension SecuritySectionedData {
 final class SecurityWeaknessDetailViewModel: ObservableObject {
     @Published private(set) var state: FetchableObject<SecuritySectionedData> = .fetching
 
-    let type: MonitorWeaknessFilter
+    let type: MonitorListSection
 
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
     @LazyInjected(\UseCasesContainer.getAllSecurityAffectedLogins) private var getAllSecurityAffectedLogins
@@ -52,7 +52,7 @@ final class SecurityWeaknessDetailViewModel: ObservableObject {
         type.nothingWrongMessage
     }
 
-    init(type: MonitorWeaknessFilter) {
+    init(type: MonitorListSection) {
         self.type = type
         setUp()
     }

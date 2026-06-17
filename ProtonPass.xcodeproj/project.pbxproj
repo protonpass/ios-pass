@@ -660,7 +660,7 @@
 		5BECDE4A2B90EC900040FCA7 /* PassMonitorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE482B90EC900040FCA7 /* PassMonitorViewModel.swift */; };
 		5BECDE4E2B97789A0040FCA7 /* SecurityWeaknessDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE4C2B97789A0040FCA7 /* SecurityWeaknessDetailView.swift */; };
 		5BECDE4F2B97789A0040FCA7 /* SecurityWeaknessDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE4D2B97789A0040FCA7 /* SecurityWeaknessDetailViewModel.swift */; };
-		5BECDE512B9B230C0040FCA7 /* MonitorWeaknessFilter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE502B9B230C0040FCA7 /* MonitorWeaknessFilter+Extensions.swift */; };
+		5BECDE512B9B230C0040FCA7 /* MonitorListSection+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE502B9B230C0040FCA7 /* MonitorListSection+Extensions.swift */; };
 		5BEE71E22BFDE63300B3C005 /* HomepageCoordinator+ItemCreateEditDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE71E12BFDE63300B3C005 /* HomepageCoordinator+ItemCreateEditDetails.swift */; };
 		5BF35D6E2B21FB1800D3E297 /* Pinnable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF35D6D2B21FB1800D3E297 /* Pinnable+Extensions.swift */; };
 		5BF35D6F2B21FB2D00D3E297 /* Pinnable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF35D6D2B21FB1800D3E297 /* Pinnable+Extensions.swift */; };
@@ -1187,7 +1187,7 @@
 		5BECDE482B90EC900040FCA7 /* PassMonitorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassMonitorViewModel.swift; sourceTree = "<group>"; };
 		5BECDE4C2B97789A0040FCA7 /* SecurityWeaknessDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityWeaknessDetailView.swift; sourceTree = "<group>"; };
 		5BECDE4D2B97789A0040FCA7 /* SecurityWeaknessDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityWeaknessDetailViewModel.swift; sourceTree = "<group>"; };
-		5BECDE502B9B230C0040FCA7 /* MonitorWeaknessFilter+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MonitorWeaknessFilter+Extensions.swift"; sourceTree = "<group>"; };
+		5BECDE502B9B230C0040FCA7 /* MonitorListSection+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MonitorListSection+Extensions.swift"; sourceTree = "<group>"; };
 		5BEE71E12BFDE63300B3C005 /* HomepageCoordinator+ItemCreateEditDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+ItemCreateEditDetails.swift"; sourceTree = "<group>"; };
 		5BF35D6D2B21FB1800D3E297 /* Pinnable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pinnable+Extensions.swift"; sourceTree = "<group>"; };
 		5BF9F9542C183F0700EF0627 /* SecureLinkListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureLinkListView.swift; sourceTree = "<group>"; };
@@ -2474,7 +2474,7 @@
 				5B1453E42A72BF570048B022 /* ShareRole+Extensions.swift */,
 				5B5DBF1A2B6961EE00F72F6C /* ItemContent+Extensions.swift */,
 				5BF35D6D2B21FB1800D3E297 /* Pinnable+Extensions.swift */,
-				5BECDE502B9B230C0040FCA7 /* MonitorWeaknessFilter+Extensions.swift */,
+				5BECDE502B9B230C0040FCA7 /* MonitorListSection+Extensions.swift */,
 				3575EB5229FAB017000FFD53 /* AppLockTime+Extensions.swift */,
 				5BD4A90B2B15F18100C44C08 /* PasswordStrength+Extensions.swift */,
 				5B888A242B440E270011D6E0 /* AliasPrefixError+Extensions.swift */,
@@ -3945,7 +3945,7 @@
 				356650D92AAF608A00BFF4F3 /* FullSyncProgressViewModel.swift in Sources */,
 				5B1453E52A72BF570048B022 /* ShareRole+Extensions.swift in Sources */,
 				355895AF29D76E67001E2207 /* LogsView.swift in Sources */,
-				5BECDE512B9B230C0040FCA7 /* MonitorWeaknessFilter+Extensions.swift in Sources */,
+				5BECDE512B9B230C0040FCA7 /* MonitorListSection+Extensions.swift in Sources */,
 				350CF79C2A6FC44D004E932F /* SharedDataContainer+DependencyInjections.swift in Sources */,
 				3572E5252993D7BF00775FAC /* ItemDetailToolbar.swift in Sources */,
 				5BFFB5122A5D42C300C2D1F9 /* SharedUseCase+DependencyInjections.swift in Sources */,
