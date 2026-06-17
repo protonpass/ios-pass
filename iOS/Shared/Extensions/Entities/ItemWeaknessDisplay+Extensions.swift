@@ -105,17 +105,10 @@ extension ItemWeaknessDisplay {
 
     var flag: ItemFlag? {
         switch self {
-        case let .weakness(.missing2FA, isExcluded):
-            .skip2FACheck(!isExcluded)
-
-        case let .weakness(.reusedPassword, isExcluded):
-            .skipReusedPasswordCheck(!isExcluded)
-
-        case let .weakness(.weakPassword, isExcluded):
-            .skipWeakPasswordCheck(!isExcluded)
-
-        case let .weakness(.compromisedPassword, isExcluded):
-            .skipCompromisedPasswordCheck(!isExcluded)
+        case let .weakness(kind, isExcluded):
+            // `isExcluded` means the check is currently suppressed; toggling restores it, hence
+            // `skipped: !isExcluded`. The kind↔flag mapping lives once in `ItemFlag.skip`.
+            .skip(kind, !isExcluded)
 
         case .fullyExcluded:
             // Full-item monitoring is a stateful toggle handled by `toggleMonitoring(weakness:)`;
