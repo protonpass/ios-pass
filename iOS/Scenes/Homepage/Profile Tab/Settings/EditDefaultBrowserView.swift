@@ -28,32 +28,26 @@ struct EditDefaultBrowserView: View {
     let onSelect: (Browser) -> Void
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(spacing: 0) {
-                    ForEach(Browser.allCases, id: \.rawValue) { browser in
-                        SelectableOptionRow(action: { onSelect(browser); dismiss() },
-                                            height: .compact,
-                                            content: {
-                                                Text(browser.description)
-                                                    .foregroundStyle(PassColor.textNorm)
-                                            },
-                                            isSelected: browser == selection)
+        VStack {
+            Text("Default browser")
+                .navigationTitleText()
 
-                        PassDivider()
-                    }
-                }
-                .padding(.horizontal)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(PassColor.backgroundWeak)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Default browser")
-                        .navigationTitleText()
+            ForEach(Browser.allCases) { browser in
+                SelectableOptionRow(action: { onSelect(browser); dismiss() },
+                                    height: .compact,
+                                    content: {
+                                        Text(browser.description)
+                                            .foregroundStyle(PassColor.textNorm)
+                                    },
+                                    isSelected: browser == selection)
+
+                if browser != Browser.allCases.last {
+                    PassDivider()
                 }
             }
         }
+        .padding()
+        .background(PassColor.backgroundWeak)
+        .fittedPresentationDetent(onHeightChanged: nil)
     }
 }

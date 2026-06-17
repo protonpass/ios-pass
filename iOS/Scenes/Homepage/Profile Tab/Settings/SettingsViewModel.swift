@@ -27,15 +27,6 @@ import Macro
 import SwiftUI
 
 @MainActor
-protocol SettingsViewModelDelegate: AnyObject {
-    func settingsViewModelWantsToGoBack()
-    func settingsViewModelWantsToEditDefaultBrowser()
-    func settingsViewModelWantsToEditTheme()
-    func settingsViewModelWantsToEditClipboardExpiration()
-    func settingsViewModelWantsToClearLogs()
-}
-
-@MainActor
 final class SettingsViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
@@ -70,8 +61,19 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var spotlightSearchableVaults: SpotlightSearchableVaults
     @Published private(set) var spotlightVaults: [Share]?
 
-    weak var delegate: (any SettingsViewModelDelegate)?
     private var cancellables = Set<AnyCancellable>()
+
+    var browser: Browser {
+        getSharedPreferences().browser
+    }
+
+    var theme: Theme {
+        getSharedPreferences().theme
+    }
+
+    var clipboardExpiration: ClipboardExpiration {
+        getSharedPreferences().clipboardExpiration
+    }
 
     init(isShownAsSheet: Bool) {
         self.isShownAsSheet = isShownAsSheet
@@ -98,20 +100,37 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
 // MARK: - Public APIs
 
 extension SettingsViewModel {
-    func goBack() {
-        delegate?.settingsViewModelWantsToGoBack()
+    func update(browser: Browser) {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await updateSharedPreferences(\.browser, value: browser)
+            } catch {
+                handle(error)
+            }
+        }
     }
 
-    func editDefaultBrowser() {
-        delegate?.settingsViewModelWantsToEditDefaultBrowser()
+    func update(theme: Theme) {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await updateSharedPreferences(\.theme, value: theme)
+            } catch {
+                handle(error)
+            }
+        }
     }
 
-    func editTheme() {
-        delegate?.settingsViewModelWantsToEditTheme()
-    }
-
-    func editClipboardExpiration() {
-        delegate?.settingsViewModelWantsToEditClipboardExpiration()
+    func update(clipboardExpiration: ClipboardExpiration) {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await updateSharedPreferences(\.clipboardExpiration, value: clipboardExpiration)
+            } catch {
+                handle(error)
+            }
+        }
     }
 
     func toggleDisplayFavIcons() {
@@ -224,7 +243,14 @@ extension SettingsViewModel {
     }
 
     func clearLogs() {
-        delegate?.settingsViewModelWantsToClearLogs()
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            let modules = PassModule.allCases.map(LogManager.init)
+            await modules.asyncForEach { await $0.removeAllLogs() }
+            router.display(element: .successMessage(#localized("All logs cleared"), config: nil))
+        }
     }
 
     func forceSync() {

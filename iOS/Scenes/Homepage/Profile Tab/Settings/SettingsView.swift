@@ -26,8 +26,20 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct SettingsView: View {
+    @Environment(\.dismiss) private var dismiss
     // swiftlint:disable:next private_swiftui_state
     @StateObject var viewModel: SettingsViewModel
+    @State private var sheet: Sheet?
+
+    private enum Sheet: String, Identifiable {
+        case editDefaultBrowser
+        case editTheme
+        case editClipboardExpiration
+
+        var id: String {
+            rawValue
+        }
+    }
 
     var body: some View {
         realBody
@@ -57,6 +69,21 @@ private extension SettingsView {
         .toolbar { toolbarContent }
         .animation(.default, value: viewModel.spotlightEnabled)
         .animation(.default, value: viewModel.spotlightSearchableVaults)
+        .sheet(item: $sheet) { sheet in
+            switch sheet {
+            case .editDefaultBrowser:
+                EditDefaultBrowserView(selection: viewModel.browser,
+                                       onSelect: viewModel.update(browser:))
+
+            case .editTheme:
+                EditThemeView(currentTheme: viewModel.theme,
+                              onSelect: viewModel.update(theme:))
+
+            case .editClipboardExpiration:
+                EditClipboardExpirationView(selection: viewModel.clipboardExpiration,
+                                            onSelect: viewModel.update(clipboardExpiration:))
+            }
+        }
     }
 
     @ToolbarContentBuilder
@@ -66,7 +93,7 @@ private extension SettingsView {
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
                          accessibilityLabel: "Go back",
-                         action: { viewModel.goBack() })
+                         action: dismiss.callAsFunction)
         }
     }
 }
@@ -75,7 +102,7 @@ private extension SettingsView {
     var untitledSection: some View {
         VStack(spacing: 0) {
             if !ProcessInfo.processInfo.isiOSAppOnMac {
-                OptionRow(action: { viewModel.editDefaultBrowser() },
+                OptionRow(action: { sheet = .editDefaultBrowser },
                           title: #localized("Default browser"),
                           height: .tall,
                           content: {
@@ -87,7 +114,7 @@ private extension SettingsView {
                 PassSectionDivider()
             }
 
-            OptionRow(action: { viewModel.editTheme() },
+            OptionRow(action: { sheet = .editTheme },
                       title: #localized("Theme"),
                       height: .tall,
                       content: {
@@ -147,7 +174,7 @@ private extension SettingsView {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             VStack(spacing: 0) {
-                OptionRow(action: { viewModel.editClipboardExpiration() },
+                OptionRow(action: { sheet = .editClipboardExpiration },
                           title: #localized("Clear clipboard"),
                           height: .tall,
                           content: {

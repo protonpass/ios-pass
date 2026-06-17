@@ -21,10 +21,14 @@
 
 import Foundation
 
-public enum Browser: Int, CaseIterable, Codable, Sendable {
+public enum Browser: Int, CaseIterable, Codable, Sendable, Identifiable {
     case safari = 0
     case inAppSafari = 1
     case systemDefault = 2
+
+    public var id: Int {
+        rawValue
+    }
 
     public static var `default`: Self {
         .systemDefault

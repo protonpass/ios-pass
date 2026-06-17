@@ -1325,17 +1325,6 @@ extension HomepageCoordinator {
                 uniquenessTag: uniquenessTag)
     }
 
-    func updateSharedPreferences<T: Sendable>(_ keyPath: WritableKeyPath<SharedPreferences, T>, value: T) {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                try await preferencesManager.updateSharedPreferences(keyPath, value: value)
-            } catch {
-                handle(error: error)
-            }
-        }
-    }
-
     func updateUserPreferences<T: Sendable>(_ keyPath: WritableKeyPath<UserPreferences, T>, value: T) {
         Task { [weak self] in
             guard let self else { return }
@@ -1587,7 +1576,6 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     func profileTabViewModelWantsToShowSettingsMenu() {
         let asSheet = shouldShowAsSheet()
         let viewModel = SettingsViewModel(isShownAsSheet: asSheet)
-        viewModel.delegate = self
         let view = SettingsView(viewModel: viewModel)
         showView(view: view, asSheet: asSheet)
     }
@@ -1695,73 +1683,6 @@ extension HomepageCoordinator: AccountViewModelDelegate {
 
         let view = AccountRecoveryView(viewModel: viewModel)
         showView(view: view, asSheet: asSheet)
-    }
-}
-
-// MARK: - SettingsViewModelDelegate
-
-extension HomepageCoordinator: SettingsViewModelDelegate {
-    func settingsViewModelWantsToGoBack() {
-        adaptivelyDismissCurrentDetailView()
-    }
-
-    func settingsViewModelWantsToEditDefaultBrowser() {
-        let currentValue = getSharedPreferences().browser
-        let view = EditDefaultBrowserView(selection: currentValue) { [weak self] newValue in
-            guard let self else { return }
-            updateSharedPreferences(\.browser, value: newValue)
-        }
-        let viewController = UIHostingController(rootView: view)
-
-        let customHeight = Int(OptionRowHeight.compact.value) * Browser.allCases.count + 100
-        viewController.setDetentType(.custom(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
-    }
-
-    func settingsViewModelWantsToEditTheme() {
-        let theme = getSharedPreferences().theme
-        let view = EditThemeView(currentTheme: theme) { [weak self] newTheme in
-            guard let self else { return }
-            updateSharedPreferences(\.theme, value: newTheme)
-        }
-        let viewController = UIHostingController(rootView: view)
-
-        let customHeight = Int(OptionRowHeight.short.value) * Theme.allCases.count + 60
-        viewController.setDetentType(.custom(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
-    }
-
-    func settingsViewModelWantsToEditClipboardExpiration() {
-        let currentValue = getSharedPreferences().clipboardExpiration
-        let view = EditClipboardExpirationView(selection: currentValue) { [weak self] newValue in
-            guard let self else { return }
-            updateSharedPreferences(\.clipboardExpiration, value: newValue)
-        }
-        let viewController = UIHostingController(rootView: view)
-
-        let customHeight = Int(OptionRowHeight.compact.value) * ClipboardExpiration.allCases.count + 60
-        viewController.setDetentType(.custom(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
-    }
-
-    func settingsViewModelWantsToClearLogs() {
-        Task { [weak self] in
-            guard let self else {
-                return
-            }
-            let modules = PassModule.allCases.map(LogManager.init)
-            await modules.asyncForEach { await $0.removeAllLogs() }
-            bannerManager.displayBottomSuccessMessage(#localized("All logs cleared"))
-        }
     }
 }
 

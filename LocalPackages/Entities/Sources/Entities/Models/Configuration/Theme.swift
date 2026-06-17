@@ -22,10 +22,14 @@
 import Foundation
 import UIKit
 
-public enum Theme: Int, Codable, CaseIterable, Sendable {
+public enum Theme: Int, Codable, CaseIterable, Sendable, Identifiable {
     case light = 0
     case dark = 1
     case matchSystem = 2
+
+    public var id: Int {
+        rawValue
+    }
 
     public static var `default`: Self {
         .dark
