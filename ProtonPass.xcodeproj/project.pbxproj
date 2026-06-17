@@ -640,6 +640,7 @@
 		5BD4A9102B15FC2600C44C08 /* PasswordStrengthIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A90E2B15FC0B00C44C08 /* PasswordStrengthIcon.swift */; };
 		5BD5DD122FE1795100079983 /* SecurityIssueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD5DD102FE1795100079983 /* SecurityIssueView.swift */; };
 		5BD5DD142FE19DDC00079983 /* ItemWeaknessDisplay+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD5DD132FE19DDC00079983 /* ItemWeaknessDisplay+Extensions.swift */; };
+		5BD5DD4C2FE2B14B00079983 /* WeaknessKind+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD5DD4B2FE2B14B00079983 /* WeaknessKind+Extensions.swift */; };
 		5BD613892C2028FE00968E0F /* SecureLinkListUIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD613882C2028FE00968E0F /* SecureLinkListUIModel.swift */; };
 		5BD6138A2C20293B00968E0F /* SecureLinkListUIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD613882C2028FE00968E0F /* SecureLinkListUIModel.swift */; };
 		5BD6138B2C20295300968E0F /* SecureLinkListUIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD613882C2028FE00968E0F /* SecureLinkListUIModel.swift */; };
@@ -1170,6 +1171,7 @@
 		5BD4A90E2B15FC0B00C44C08 /* PasswordStrengthIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordStrengthIcon.swift; sourceTree = "<group>"; };
 		5BD5DD102FE1795100079983 /* SecurityIssueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityIssueView.swift; sourceTree = "<group>"; };
 		5BD5DD132FE19DDC00079983 /* ItemWeaknessDisplay+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemWeaknessDisplay+Extensions.swift"; sourceTree = "<group>"; };
+		5BD5DD4B2FE2B14B00079983 /* WeaknessKind+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WeaknessKind+Extensions.swift"; sourceTree = "<group>"; };
 		5BD613882C2028FE00968E0F /* SecureLinkListUIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureLinkListUIModel.swift; sourceTree = "<group>"; };
 		5BD6138C2C202B0E00968E0F /* UpsellEntry+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpsellEntry+Extensions.swift"; sourceTree = "<group>"; };
 		5BD870D62BB46C7800A9F1A8 /* PasswordReusedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordReusedView.swift; sourceTree = "<group>"; };
@@ -2461,6 +2463,7 @@
 		5B98D6812CEDD886000AE3E1 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				5BD5DD4B2FE2B14B00079983 /* WeaknessKind+Extensions.swift */,
 				531A48192D808D0C00DDC7FB /* WifiData+Extensions.swift */,
 				5B159D302D00AB3500150125 /* ShareContent+Extensions.swift */,
 				35219D7E2AE1C38D00868F78 /* ShareInvitee+Extensions.swift */,
@@ -3878,6 +3881,7 @@
 				53B9817B2D7ED28B003BD70E /* WifiDetailViewModel.swift in Sources */,
 				354E9A9E2A44430D00AD2B9A /* View+LocalAuthentication.swift in Sources */,
 				353739E329EAE9D900A3255E /* QAFeaturesView.swift in Sources */,
+				5BD5DD4C2FE2B14B00079983 /* WeaknessKind+Extensions.swift in Sources */,
 				35733B7329CC481400052229 /* CreateEditVaultView.swift in Sources */,
 				5BAE71072BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift in Sources */,
 				534090622D70B062002E42F8 /* CreateEditSshKeyViewModel.swift in Sources */,

@@ -38288,6 +38288,9 @@
         }
       }
     },
+    "Change exposed passwords" : {
+
+    },
     "Change mailbox email" : {
       "localizations" : {
         "be" : {
