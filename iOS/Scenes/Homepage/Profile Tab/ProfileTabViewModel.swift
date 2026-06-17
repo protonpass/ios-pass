@@ -34,11 +34,6 @@ import Screens
 import SwiftUI
 import UseCases
 
-@MainActor
-protocol ProfileTabViewModelDelegate: AnyObject {
-    func profileTabViewModelWantsToShowFeedback()
-}
-
 struct StorageUiModel {
     let used: Int
     let total: Int
@@ -132,7 +127,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private var accessesTask: Task<Void, Never>?
     private var exportFlowTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
-    weak var delegate: (any ProfileTabViewModelDelegate)?
 
     var isChromeInstalled: Bool {
         #if DEBUG
@@ -360,8 +354,12 @@ extension ProfileTabViewModel {
         router.present(for: .tutorial)
     }
 
-    func showFeedback() {
-        delegate?.profileTabViewModelWantsToShowFeedback()
+    func open(urlString: String) {
+        router.navigate(to: .urlPage(urlString: urlString))
+    }
+
+    func showReportSuccessMessage() {
+        router.display(element: .successMessage(#localized("Report successfully sent")))
     }
 
     func `switch`(to account: AccountCellDetail) {

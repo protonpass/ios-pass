@@ -347,7 +347,6 @@ private extension HomepageCoordinator {
         self.itemsTabViewModel = itemsTabViewModel
 
         let profileTabViewModel = ProfileTabViewModel(childCoordinatorDelegate: self)
-        profileTabViewModel.delegate = self
 
         let homeView = HomepageTabbarView(itemsTabViewModel: itemsTabViewModel,
                                           profileTabViewModel: profileTabViewModel,
@@ -1660,48 +1659,6 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent) {
         presentItemDetailView(for: itemContent, asSheet: shouldShowAsSheet())
-    }
-}
-
-// MARK: - ProfileTabViewModelDelegate
-
-extension HomepageCoordinator: ProfileTabViewModelDelegate {
-    func profileTabViewModelWantsToShowFeedback() {
-        let view = FeedbackChannelsView { [weak self] selectedChannel in
-            guard let self else { return }
-            switch selectedChannel {
-            case .bugReport:
-                dismissTopMostViewController(animated: true) { [weak self] in
-                    guard let self else { return }
-                    presentBugReportView()
-                }
-
-            default:
-                if let urlString = selectedChannel.urlString {
-                    urlOpener.open(urlString: urlString)
-                }
-            }
-        }
-
-        let viewController = UIHostingController(rootView: view)
-        let customHeight = 52 * FeedbackChannel.allCases.count + 80
-        viewController.setDetentType(.custom(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
-    }
-
-    func presentBugReportView() {
-        let successHandler: () -> Void = { [weak self] in
-            guard let self else { return }
-            dismissTopMostViewController { [weak self] in
-                guard let self else { return }
-                bannerManager.displayBottomSuccessMessage(#localized("Report successfully sent"))
-            }
-        }
-        let view = BugReportView(onSuccess: successHandler)
-        present(view)
     }
 }
 
