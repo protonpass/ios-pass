@@ -28,9 +28,21 @@ public struct SecurityAffectedItem: Sendable {
     /// "is this item weak?" and "is this check enabled?" questions stay independent.
     public let detected: Set<WeaknessKind>
 
-    public init(item: SymmetricallyEncryptedItem, detected: Set<WeaknessKind>) {
+    /// Display projection built once (at detection time) so consumers never re-decrypt the item.
+    public let display: ItemUiModel
+
+    /// Stable equality token for reuse grouping (a hash of the password; nil when empty). Lets the
+    /// reused-password list group items without re-decrypting or holding plaintext passwords.
+    public let reuseToken: String?
+
+    public init(item: SymmetricallyEncryptedItem,
+                detected: Set<WeaknessKind>,
+                display: ItemUiModel,
+                reuseToken: String?) {
         self.item = item
         self.detected = detected
+        self.display = display
+        self.reuseToken = reuseToken
     }
 }
 

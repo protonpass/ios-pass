@@ -22,7 +22,6 @@
 
 import Client
 import Combine
-import CryptoKit
 import Entities
 
 public typealias SecurityIssuesContent = [SecuritySection: [ItemUiModel]]
@@ -39,73 +38,67 @@ public extension GetAllSecurityAffectedLoginsUseCase {
 
 public final class GetAllSecurityAffectedLogins: GetAllSecurityAffectedLoginsUseCase {
     private let passMonitorRepository: any PassMonitorRepositoryProtocol
-    private let getPasswordStrength: any GetPasswordStrengthUseCase
-    private let symmetricKeyProvider: any NonAsyncSymmetricKeyProvider
 
-    public init(passMonitorRepository: any PassMonitorRepositoryProtocol,
-                symmetricKeyProvider: any NonAsyncSymmetricKeyProvider,
-                getPasswordStrength: any GetPasswordStrengthUseCase) {
+    public init(passMonitorRepository: any PassMonitorRepositoryProtocol) {
         self.passMonitorRepository = passMonitorRepository
-        self.getPasswordStrength = getPasswordStrength
-        self.symmetricKeyProvider = symmetricKeyProvider
     }
 
     public func execute(for filter: MonitorWeaknessFilter) -> AnyPublisher<SecurityIssuesContent, any Error> {
-        passMonitorRepository.itemsWithSecurityIssues.tryMap { [weak self] items in
-            guard let self else {
-                return [:]
+        // `tryMap` (rather than `map`) keeps the failure type `any Error` to satisfy the protocol;
+        // the body no longer throws because it reads the repository's decrypt-once projection.
+        passMonitorRepository.itemsWithSecurityIssues
+            .tryMap { [weak self] items in
+                guard let self else {
+                    return [:]
+                }
+                switch filter {
+                case .weakness(.weakPassword):
+                    return filterActiveWeakness(.weakPassword, in: items, section: .weakPasswords)
+
+                case .weakness(.reusedPassword):
+                    return filterReusedPasswords(items: items)
+
+                case .weakness(.missing2FA):
+                    return filterActiveWeakness(.missing2FA, in: items, section: .missing2fa)
+
+                case .weakness(.compromisedPassword):
+                    // Compromised-password detection is not surfaced yet (next MR).
+                    return [:]
+
+                case .excludedItems:
+                    return filterExcludedItems(items: items)
+                }
             }
-            let key = try symmetricKeyProvider.getSymmetricKey()
-            switch filter {
-            case .weakness(.weakPassword):
-                return try filterActiveWeakness(.weakPassword, in: items, section: .weakPasswords, key: key)
-
-            case .weakness(.reusedPassword):
-                return try filterReusedPasswords(items: items, key: key)
-
-            case .weakness(.missing2FA):
-                return try filterActiveWeakness(.missing2FA, in: items, section: .missing2fa, key: key)
-
-            case .weakness(.compromisedPassword):
-                // Compromised-password detection is not surfaced yet (next MR).
-                return [:]
-
-            case .excludedItems:
-                return try filterExcludedItems(items: items, key: key)
-            }
-        }.eraseToAnyPublisher()
+            .eraseToAnyPublisher()
     }
 }
 
 private extension GetAllSecurityAffectedLogins {
-    /// Items whose ACTIVE weaknesses (detected and not suppressed) contain `kind`, grouped into `section`.
+    /// Items whose ACTIVE weaknesses (detected and not suppressed) contain `kind`, grouped into
+    /// `section`. Reads the decrypt-once `display` projection, so it never re-decrypts.
     func filterActiveWeakness(_ kind: WeaknessKind,
                               in items: [SecurityAffectedItem],
-                              section: SecuritySection,
-                              key: SymmetricKey) throws -> SecurityIssuesContent {
+                              section: SecuritySection) -> SecurityIssuesContent {
         var result: SecurityIssuesContent = [:]
         for item in items where item.activeWeaknesses.contains(kind) {
-            let itemContent = try item.item.getItemContent(symmetricKey: key)
-            result[section, default: []].append(itemContent.toItemUiModel)
+            result[section, default: []].append(item.display)
         }
         return result
     }
 
-    func filterReusedPasswords(items: [SecurityAffectedItem],
-                               key: SymmetricKey) throws -> SecurityIssuesContent {
+    func filterReusedPasswords(items: [SecurityAffectedItem]) -> SecurityIssuesContent {
         var reusedPasswords: SecurityIssuesContent = [:]
-        var intermediatePasswords: [String: Set<ItemUiModel>] = [:]
+        var grouped: [String: Set<ItemUiModel>] = [:]
 
         for item in items where item.activeWeaknesses.contains(.reusedPassword) {
-            let itemContent = try item.item.getItemContent(symmetricKey: key)
-            guard let password = itemContent.loginItem?.password else {
+            guard let token = item.reuseToken else {
                 continue
             }
-            intermediatePasswords[password, default: []].insert(itemContent.toItemUiModel)
+            grouped[token, default: []].insert(item.display)
         }
 
-        // Filter to keep only reused passwords
-        intermediatePasswords.filter { $0.value.count > 1 }
+        // Keep only passwords actually shared by more than one surfaced item.
+        grouped.filter { $0.value.count > 1 }
             .forEach {
                 let reusedKey = ReusedPasswordsKey(numberOfTimeReused: $0.value.count)
                 reusedPasswords[SecuritySection.reusedPasswords(reusedKey)] = Array($0.value)
@@ -113,14 +106,11 @@ private extension GetAllSecurityAffectedLogins {
         return reusedPasswords
     }
 
-    func filterExcludedItems(items: [SecurityAffectedItem],
-                             key: SymmetricKey) throws -> SecurityIssuesContent {
+    func filterExcludedItems(items: [SecurityAffectedItem]) -> SecurityIssuesContent {
         let section = SecuritySection.excludedItems
         var excludedItems: SecurityIssuesContent = [section: []]
-
         for item in items where item.isExcludedItem {
-            let itemContent = try item.item.getItemContent(symmetricKey: key)
-            excludedItems[section]?.append(itemContent.toItemUiModel)
+            excludedItems[section]?.append(item.display)
         }
         return excludedItems
     }

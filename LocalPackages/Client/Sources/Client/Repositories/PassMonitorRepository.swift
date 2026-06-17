@@ -27,6 +27,7 @@ import PassRustCore
 
 private struct InternalPassMonitorItem {
     let encrypted: SymmetricallyEncryptedItem
+    let content: ItemContent
     let loginData: LogInItemData
 }
 
@@ -300,11 +301,12 @@ private extension PassMonitorRepository {
                 // never un-flags its password-sharing partners (IDTEAM-5965). Pinned by
                 // `reuseSuppressedItemStillCountsForPartner`.
                 if !encryptedItem.item.monitoringDisabled,
-//                   !encryptedItem.item.reusedPasswordCheckDisabled,
                    !loginItem.password.isEmpty {
                     passwordCounts[loginItem.password, default: 0] += 1
                 }
-                return InternalPassMonitorItem(encrypted: encryptedItem, loginData: loginItem)
+                return InternalPassMonitorItem(encrypted: encryptedItem,
+                                               content: item,
+                                               loginData: loginItem)
             }
 
         // Filter out unique passwords
@@ -316,7 +318,10 @@ private extension PassMonitorRepository {
             let isReused = reusedPasswords.contains(item.loginData.password)
             let detected = weaknessEvaluator.evaluate(item.loginData, isReused: isReused)
 
-            let affectedItem = SecurityAffectedItem(item: item.encrypted, detected: detected)
+            let affectedItem = SecurityAffectedItem(item: item.encrypted,
+                                                    detected: detected,
+                                                    display: item.content.toItemUiModel,
+                                                    reuseToken: reuseToken(for: item.loginData.password))
             if !detected.isEmpty || affectedItem.isExcludedItem {
                 securityAffectedItems.append(affectedItem)
             }
@@ -332,6 +337,15 @@ private extension PassMonitorRepository {
         let stats = WeaknessStats(counts: counts,
                                   excludedItems: securityAffectedItems.filter(\.isExcludedItem).count)
         return (stats, securityAffectedItems)
+    }
+
+    /// Stable hash of a password for reuse grouping (nil when empty). Storing a hash rather than the
+    /// plaintext keeps the published security cache from holding every password in memory.
+    func reuseToken(for password: String) -> String? {
+        guard !password.isEmpty else {
+            return nil
+        }
+        return SHA256.hash(data: Data(password.utf8)).map { String(format: "%02x", $0) }.joined()
     }
 }
 
