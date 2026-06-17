@@ -36,43 +36,36 @@ struct FeedbackChannelsView: View {
     let onSelectChannel: (FeedbackChannel) -> Void
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(spacing: 0) {
-                    ForEach(FeedbackChannel.allCases) { channel in
-                        OptionRow(action: {
-                                      dismiss()
-                                      onSelectChannel(channel)
-                                  },
-                                  height: .short,
-                                  horizontalPadding: 0,
-                                  content: {
-                                      Label(title: {
-                                          Text(channel.description)
-                                      }, icon: {
-                                          channel.icon
-                                              .resizable()
-                                              .scaledToFit()
-                                              .frame(maxWidth: 20, maxHeight: 20)
-                                      })
-                                      .foregroundStyle(PassColor.textNorm)
-                                  })
+        VStack {
+            Text("Feedback")
+                .navigationTitleText()
+            ForEach(FeedbackChannel.allCases) { channel in
+                OptionRow(action: {
+                              dismiss()
+                              onSelectChannel(channel)
+                          },
+                          height: .compact,
+                          horizontalPadding: 0,
+                          content: {
+                              Label(title: {
+                                  Text(channel.description)
+                              }, icon: {
+                                  channel.icon
+                                      .resizable()
+                                      .scaledToFit()
+                                      .frame(maxWidth: 20, maxHeight: 20)
+                              })
+                              .foregroundStyle(PassColor.textNorm)
+                          })
 
-                        PassDivider()
-                    }
-                }
-                .padding(.horizontal)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(PassColor.backgroundWeak)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Feedback")
-                        .navigationTitleText()
+                if channel != FeedbackChannel.allCases.last {
+                    PassDivider()
                 }
             }
         }
+        .padding()
+        .background(PassColor.backgroundWeak)
+        .fittedPresentationDetent(onHeightChanged: nil)
     }
 }
 
