@@ -41621,6 +41621,26 @@
         }
       }
     },
+    "Compromised password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compromised password"
+          }
+        }
+      }
+    },
+    "Compromised passwords" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compromised passwords"
+          }
+        }
+      }
+    },
     "Conceal" : {
       "localizations" : {
         "be" : {
