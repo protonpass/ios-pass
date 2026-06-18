@@ -25,22 +25,22 @@ import Testing
 struct WeaknessKindTests {
     /// Pins the product-defined severity/display order. If this fails, the on-screen ordering
     /// of weakness categories has changed — confirm it is intentional before updating.
-    @Test("Display order is weak → compromised → reused → missing2FA")
-    func displayPriorityOrder() {
+    @Test
+    func `Display order is weak → compromised → reused → missing2FA`() {
         #expect(WeaknessKind.allCases.sorted() == [.weakPassword,
                                                    .compromisedPassword,
                                                    .reusedPassword,
                                                    .missing2FA])
     }
 
-    @Test("Display priorities are unique")
-    func displayPrioritiesAreUnique() {
+    @Test
+    func `Display priorities are unique`() {
         let priorities = WeaknessKind.allCases.map(\.displayPriority)
         #expect(Set(priorities).count == WeaknessKind.allCases.count)
     }
 
-    @Test("Each kind maps to its matching skip flag")
-    func skipFlagMapping() {
+    @Test
+    func `Each kind maps to its matching skip flag`() {
         #expect(WeaknessKind.weakPassword.skipFlag == .skipWeakPasswordCheck)
         #expect(WeaknessKind.compromisedPassword.skipFlag == .skipCompromisedPasswordCheck)
         #expect(WeaknessKind.reusedPassword.skipFlag == .skipReusedPasswordCheck)

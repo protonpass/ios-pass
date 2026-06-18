@@ -23,8 +23,8 @@ import Testing
 
 @Suite(.tags(.entity))
 struct WeaknessStatsTests {
-    @Test("count(for:) returns the stored count or 0 for missing keys")
-    func countForKind() {
+    @Test
+    func `count(for:) returns the stored count or 0 for missing keys`() {
         let stats = WeaknessStats(counts: [.weakPassword: 3, .reusedPassword: 1], excludedItems: 2)
         #expect(stats.count(for: .weakPassword) == 3)
         #expect(stats.count(for: .reusedPassword) == 1)
@@ -33,8 +33,8 @@ struct WeaknessStatsTests {
         #expect(stats.excludedItems == 2)
     }
 
-    @Test("hasWeakOrReusedPasswords reflects only weak + reused counts")
-    func hasWeakOrReused() {
+    @Test
+    func `hasWeakOrReusedPasswords reflects only weak + reused counts`() {
         #expect(!WeaknessStats(counts: [:], excludedItems: 0).hasWeakOrReusedPasswords)
         #expect(WeaknessStats(counts: [.weakPassword: 1], excludedItems: 0).hasWeakOrReusedPasswords)
         #expect(WeaknessStats(counts: [.reusedPassword: 1], excludedItems: 0).hasWeakOrReusedPasswords)
