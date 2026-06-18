@@ -301,6 +301,7 @@ private extension PassMonitorRepository {
                 // never un-flags its password-sharing partners (IDTEAM-5965). Pinned by
                 // `reuseSuppressedItemStillCountsForPartner`.
                 if !encryptedItem.item.monitoringDisabled,
+                   !encryptedItem.item.reusedPasswordCheckDisabled,
                    !loginItem.password.isEmpty {
                     passwordCounts[loginItem.password, default: 0] += 1
                 }
