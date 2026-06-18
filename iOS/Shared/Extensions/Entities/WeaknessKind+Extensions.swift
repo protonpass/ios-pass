@@ -39,7 +39,7 @@ extension WeaknessKind {
     var dashboardSubtitle: LocalizedStringKey {
         switch self {
         case .weakPassword: "Change your passwords"
-        case .compromisedPassword: "Change exposed passwords"
+        case .compromisedPassword: "Common passwords that frequently appear in data breaches."
         case .reusedPassword: "Generate unique passwords"
         case .missing2FA: "Set up 2FA for more security"
         }
