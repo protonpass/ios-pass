@@ -28,39 +28,33 @@ struct EditThemeView: View {
     let onSelect: (Theme) -> Void
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(spacing: 0) {
-                    ForEach(Theme.allCases, id: \.rawValue) { theme in
-                        SelectableOptionRow(action: { onSelect(theme); dismiss() },
-                                            height: .short,
-                                            content: {
-                                                Label(title: {
-                                                    Text(theme.description)
-                                                }, icon: {
-                                                    Image(uiImage: theme.icon)
-                                                        .resizable()
-                                                        .scaledToFit()
-                                                        .frame(maxWidth: 20, maxHeight: 20)
-                                                })
-                                                .foregroundStyle(PassColor.textNorm)
-                                            },
-                                            isSelected: theme == currentTheme)
+        VStack {
+            Text("Theme")
+                .navigationTitleText()
 
-                        PassDivider()
-                    }
-                }
-                .padding(.horizontal)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(PassColor.backgroundWeak)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Theme")
-                        .navigationTitleText()
+            ForEach(Theme.allCases) { theme in
+                SelectableOptionRow(action: { onSelect(theme); dismiss() },
+                                    height: .compact,
+                                    content: {
+                                        Label(title: {
+                                            Text(theme.description)
+                                        }, icon: {
+                                            Image(uiImage: theme.icon)
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(maxWidth: 20, maxHeight: 20)
+                                        })
+                                        .foregroundStyle(PassColor.textNorm)
+                                    },
+                                    isSelected: theme == currentTheme)
+
+                if theme != Theme.allCases.last {
+                    PassDivider()
                 }
             }
         }
+        .padding()
+        .background(PassColor.backgroundWeak)
+        .fittedPresentationDetent(onHeightChanged: nil)
     }
 }
