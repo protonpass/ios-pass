@@ -28,32 +28,26 @@ struct EditClipboardExpirationView: View {
     let onSelect: (ClipboardExpiration) -> Void
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(spacing: 0) {
-                    ForEach(ClipboardExpiration.allCases, id: \.rawValue) { expiration in
-                        SelectableOptionRow(action: { onSelect(expiration); dismiss() },
-                                            height: .compact,
-                                            content: {
-                                                Text(expiration.description)
-                                                    .foregroundStyle(PassColor.textNorm)
-                                            },
-                                            isSelected: expiration == selection)
+        VStack {
+            Text("Clear clipboard")
+                .navigationTitleText()
 
-                        PassDivider()
-                    }
-                }
-                .padding(.horizontal)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(PassColor.backgroundWeak)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Clear clipboard")
-                        .navigationTitleText()
+            ForEach(ClipboardExpiration.allCases) { expiration in
+                SelectableOptionRow(action: { onSelect(expiration); dismiss() },
+                                    height: .compact,
+                                    content: {
+                                        Text(expiration.description)
+                                            .foregroundStyle(PassColor.textNorm)
+                                    },
+                                    isSelected: expiration == selection)
+
+                if expiration != ClipboardExpiration.allCases.last {
+                    PassDivider()
                 }
             }
         }
+        .padding()
+        .background(PassColor.backgroundWeak)
+        .fittedPresentationDetent(onHeightChanged: nil)
     }
 }

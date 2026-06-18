@@ -20,11 +20,15 @@
 
 import Foundation
 
-public enum ClipboardExpiration: Int, Codable, CaseIterable, Sendable {
+public enum ClipboardExpiration: Int, Codable, CaseIterable, Sendable, Identifiable {
     case fifteenSeconds = 0
     case oneMinute = 1
     case twoMinutes = 2
     case never = 3
+
+    public var id: Int {
+        rawValue
+    }
 
     public static var `default`: Self {
         .twoMinutes
