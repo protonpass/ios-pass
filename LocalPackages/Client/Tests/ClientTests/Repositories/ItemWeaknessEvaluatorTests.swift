@@ -33,22 +33,22 @@ struct ItemWeaknessEvaluatorTests {
     private let weakPassword = "aaaaa"
     private let strongPassword = "Ageless6-Evidence0-Detonator1-Cider4-Synthesis4"
 
-    @Test("Weak password is detected; strong is not")
-    func weakDetection() {
+    @Test
+    func `Weak password is detected; strong is not`() {
         #expect(sut.evaluate(.mock(username: "test", password: weakPassword), isReused: false)
             .contains(.weakPassword))
         #expect(!sut.evaluate(.mock(username: "test", password: strongPassword), isReused: false)
             .contains(.weakPassword))
     }
 
-    @Test("isReused drives the reused weakness")
-    func reusedFromFlag() {
+    @Test
+    func `isReused drives the reused weakness`() {
         #expect(sut.evaluate(.mock(password: strongPassword), isReused: true).contains(.reusedPassword))
         #expect(!sut.evaluate(.mock(password: strongPassword), isReused: false).contains(.reusedPassword))
     }
 
-    @Test("missing2FA needs an eligible URL, no TOTP and no passkeys")
-    func missing2FADetection() {
+    @Test
+    func `Missing2FA needs an eligible URL, no TOTP and no passkeys`() {
         let missing = LogInItemData.mock(username: "test",
                                          password: strongPassword,
                                          totpUri: "",

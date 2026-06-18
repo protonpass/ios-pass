@@ -132,8 +132,8 @@ struct PassMonitorRepositoryTests {
         return items
     }
 
-    @Test("PassMonitorRepository operations")
-    func testPassMonitorRepositoryTests() async throws {
+    @Test
+    func `PassMonitorRepository operations`() async throws {
         itemRepository.stubbedGetActiveLogInItemsResult = createEncryptedLoginItems(weakness: [
             .reusedPasswords,
             .reusedPasswords,
@@ -200,8 +200,8 @@ struct PassMonitorRepositoryTests {
     /// password is weak appears ONLY in the excluded bucket — full exclusion takes precedence, so it
     /// does NOT surface as an active weakness. The weakness is still *detected* (it would reappear
     /// if monitoring were re-enabled), but `activeWeaknesses` is empty.
-    @Test("Fully-excluded item is excluded only, never an active weakness")
-    func testFullyExcludedItemIsExcludedOnly() async throws {
+    @Test
+    func `Fully-excluded item is excluded only, never an active weakness`() async throws {
         itemRepository.stubbedGetActiveLogInItemsResult = makeFullyExcludedWeakItems()
 
         try await sut.refreshSecurityChecks()
@@ -236,27 +236,21 @@ struct PassMonitorRepositoryTests {
                                                   encryptedContent: try! login.encrypt(symmetricKey: key))]
     }
 
-    /// IDTEAM-5965 reuse semantics: suppressing the reused-password check on ONE item must NOT
-    /// un-flag its password-sharing partner. The suppressed item still counts toward the shared
-    /// pool; only the suppressed item is hidden from the active reused list.
-//    @Test("Reuse-suppressed item still counts; its partner stays flagged")
-//    func reuseSuppressedItemStillCountsForPartner() async throws {
-//        itemRepository.stubbedGetActiveLogInItemsResult = makeReusePairOneSuppressed()
-//
-//        try await sut.refreshSecurityChecks()
-//
-//        let affected = sut.itemsWithSecurityIssues.value
-//        let suppressed = try #require(affected.first { $0.suppressedChecks.contains(.reusedPassword) })
-//        let partner = try #require(affected.first { !$0.suppressedChecks.contains(.reusedPassword) })
-//
-//        // Suppressed item: detected as reused (it would reappear) but NOT active, and it IS excluded.
-//        #expect(suppressed.detected.contains(.reusedPassword))
-//        #expect(!suppressed.activeWeaknesses.contains(.reusedPassword))
-//        #expect(suppressed.isExcludedItem)
-//
-//        // Partner: still actively flagged as reused.
-//        #expect(partner.activeWeaknesses.contains(.reusedPassword))
-//    }
+    @Test
+    func `Reuse-suppressed item wont counts; its partner is removed from flagged`() async throws {
+        itemRepository.stubbedGetActiveLogInItemsResult = makeReusePairOneSuppressed()
+
+        try await sut.refreshSecurityChecks()
+        let affected = sut.itemsWithSecurityIssues.value
+    
+        let suppressed = try #require(affected.first { $0.suppressedChecks.contains(.reusedPassword) })
+        #expect(affected.count == 1)
+
+        // Suppressed item: not detected as reused.
+        #expect(suppressed.detected.isEmpty)
+        #expect(!suppressed.activeWeaknesses.contains(.reusedPassword))
+        #expect(suppressed.isExcludedItem)
+    }
 
     /// Two logins sharing the SAME strong password; the first has the reused-password check
     /// suppressed (flag `skipReusedPasswordCheck`, rawValue 1 << 7 = 128), the second is normally
