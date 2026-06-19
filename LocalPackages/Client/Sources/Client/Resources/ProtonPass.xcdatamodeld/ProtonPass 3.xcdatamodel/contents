@@ -43,6 +43,24 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
+    <entity name="CompromisedPasswordCheckEntity" representedClassName="CompromisedPasswordCheckEntity" syncable="YES">
+        <attribute name="breached" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="breachCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="checkedAt" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="etag" attributeType="String" defaultValueString=""/>
+        <attribute name="itemID" attributeType="String" defaultValueString=""/>
+        <attribute name="passwordHash" attributeType="String" defaultValueString=""/>
+        <attribute name="prefix" attributeType="String" defaultValueString=""/>
+        <attribute name="shareID" attributeType="String" defaultValueString=""/>
+        <attribute name="userID" attributeType="String" defaultValueString=""/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="userID"/>
+                <constraint value="shareID"/>
+                <constraint value="itemID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
     <entity name="CoreEventIDEntity" representedClassName="CoreEventIDEntity" syncable="YES">
         <attribute name="lastEventID" attributeType="String"/>
         <attribute name="userID" attributeType="String"/>

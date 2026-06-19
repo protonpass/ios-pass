@@ -156,6 +156,22 @@ extension SharedRepositoryContainer {
         self { RemoteBreachDataSource(apiServicing: self.apiManager) }
     }
 
+    var remoteCompromisedPasswordsDatasource: Factory<any RemoteCompromisedPasswordsDatasourceProtocol> {
+        self { RemoteCompromisedPasswordsDatasource(userAgent: SharedToolingContainer.shared.appVersion()) }
+    }
+
+    var localCompromisedPasswordDatasource: Factory<any LocalCompromisedPasswordDatasourceProtocol> {
+        self { LocalCompromisedPasswordDatasource(databaseService: self.databaseService) }
+    }
+
+    var compromisedPasswordChecker: Factory<any CompromisedPasswordCheckerProtocol> {
+        self {
+            CompromisedPasswordChecker(remoteDatasource: self.remoteCompromisedPasswordsDatasource(),
+                                       localDatasource: self.localCompromisedPasswordDatasource(),
+                                       logManager: self.logManager)
+        }
+    }
+
     var localItemReadEventDatasource: Factory<any LocalItemReadEventDatasourceProtocol> {
         self { LocalItemReadEventDatasource(databaseService: self.databaseService) }
     }
@@ -466,7 +482,9 @@ extension SharedRepositoryContainer {
                                   shareRepository: self.shareRepository(),
                                   remoteDataSource: self.remoteBreachDataSource(),
                                   symmetricKeyProvider: self.symmetricKeyProvider,
-                                  userManager: self.userManager)
+                                  userManager: self.userManager,
+                                  accessRepository: self.accessRepository(),
+                                  compromisedPasswordChecker: self.compromisedPasswordChecker())
         }
     }
 }

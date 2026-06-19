@@ -131,7 +131,7 @@ private extension SecuritySection {
         case let .reusedPasswords(numberOfTime):
             SecuritySectionHeaderKey(title: #localized("Reused %lld times", numberOfTime.numberOfTimeReused))
 
-        case .excludedItems, .missing2fa, .weakPasswords:
+        case .compromisedPasswords, .excludedItems, .missing2fa, .weakPasswords:
             SecuritySectionHeaderKey(title: "")
         }
     }

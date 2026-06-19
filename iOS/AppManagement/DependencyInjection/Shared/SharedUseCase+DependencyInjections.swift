@@ -441,7 +441,9 @@ extension SharedUseCasesContainer {
                                        userEventIdDatasource: container.localUserEventIdDatasource(),
                                        coreEventIdDatasource: container.localCoreEventIdDatasource(),
                                        folderDatasource: container.localFolderDatasource(),
-                                       folderKeysDatasource: container.localFolderKeyDatasource())
+                                       folderKeysDatasource: container.localFolderKeyDatasource(),
+                                       compromisedPasswordDatasource: container
+                                           .localCompromisedPasswordDatasource())
         }
     }
 

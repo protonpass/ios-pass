@@ -31,6 +31,13 @@ private struct InternalPassMonitorItem {
     let loginData: LogInItemData
 }
 
+/// Pre-decrypted inputs for weakness computation, shared between the base (local) pass and the
+/// compromised-password enrichment so items are only decrypted once per refresh.
+private struct WeaknessComputation {
+    let loginItems: [InternalPassMonitorItem]
+    let reusedPasswords: Set<String>
+}
+
 // sourcery: AutoMockable
 public protocol PassMonitorRepositoryProtocol: Sendable {
     var darkWebDataSectionUpdate: PassthroughSubject<DarkWebDataSectionUpdate, Never> { get }
@@ -71,6 +78,8 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
     private let weaknessEvaluator: any ItemWeaknessEvaluatorProtocol
     private let remoteDataSource: any RemoteBreachDataSourceProtocol
     private let userManager: any UserManagerProtocol
+    private let accessRepository: any AccessRepositoryProtocol
+    private let compromisedPasswordChecker: any CompromisedPasswordCheckerProtocol
 
     public nonisolated let darkWebDataSectionUpdate: PassthroughSubject<DarkWebDataSectionUpdate, Never> = .init()
     public nonisolated let userBreaches: CurrentValueSubject<UserBreaches?, Never> = .init(nil)
@@ -85,6 +94,8 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
                 remoteDataSource: any RemoteBreachDataSourceProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider,
                 userManager: any UserManagerProtocol,
+                accessRepository: any AccessRepositoryProtocol,
+                compromisedPasswordChecker: any CompromisedPasswordCheckerProtocol,
                 weaknessEvaluator: any ItemWeaknessEvaluatorProtocol = ItemWeaknessEvaluator()) {
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
@@ -92,6 +103,8 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
         self.weaknessEvaluator = weaknessEvaluator
         self.remoteDataSource = remoteDataSource
         self.userManager = userManager
+        self.accessRepository = accessRepository
+        self.compromisedPasswordChecker = compromisedPasswordChecker
 
         Task { [weak self] in
             guard let self else {
@@ -103,9 +116,26 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
 
     public func refreshSecurityChecks() async throws {
         let userId = try await userManager.getActiveUserId()
-        let result = try await weaknessStats(userId: userId, userOwned: false)
-        weaknessStats.send(result.0)
-        itemsWithSecurityIssues.send(result.1)
+        // Decrypt items once; both the synchronous publish and the compromised enrichment reuse it.
+        let inputs = try await computeWeaknessInputs(userId: userId, userOwned: false)
+
+        // Phase 1: local (instant) checks — publish immediately so the dashboard stays responsive.
+        let base = buildStats(inputs, breachedItemIds: [])
+        weaknessStats.send(base.0)
+        itemsWithSecurityIssues.send(base.1)
+
+        // Phase 2: compromised-password detection is a paid feature; enrich and re-publish.
+        guard await isCompromisedCheckEnabled(userId: userId) else {
+            return
+        }
+        try Task.checkCancellation()
+        let breachedItemIds = await compromisedItemIds(userId: userId, inputs: inputs)
+        guard !breachedItemIds.isEmpty else {
+            return
+        }
+        let enriched = buildStats(inputs, breachedItemIds: breachedItemIds)
+        weaknessStats.send(enriched.0)
+        itemsWithSecurityIssues.send(enriched.1)
     }
 
     public func getItemsWithSamePassword(item: ItemContent) async throws -> [ItemContent] {
@@ -240,7 +270,11 @@ public extension PassMonitorRepository {
     func sendUserMonitorStats() async throws {
         try Task.checkCancellation()
         let userId = try await userManager.getActiveUserId()
-        let result = try await weaknessStats(userId: userId, userOwned: true)
+        let inputs = try await computeWeaknessInputs(userId: userId, userOwned: true)
+        let breachedItemIds = await isCompromisedCheckEnabled(userId: userId)
+            ? await compromisedItemIds(userId: userId, inputs: inputs)
+            : []
+        let result = buildStats(inputs, breachedItemIds: breachedItemIds)
         try await remoteDataSource.sendUserMonitorStats(userId: userId, stats: result.0)
     }
 }
@@ -274,7 +308,10 @@ private extension PassMonitorRepository {
         refresh()
     }
 
-    func weaknessStats(userId: String, userOwned: Bool) async throws -> (WeaknessStats, [SecurityAffectedItem]) {
+    /// Decrypts the user's applicable login items once and derives the reused-password set. The
+    /// expensive decryption pass lives here so callers can build base and compromised-enriched
+    /// stats from the same inputs without decrypting twice.
+    func computeWeaknessInputs(userId: String, userOwned: Bool) async throws -> WeaknessComputation {
         var passwordCounts = [String: Int]()
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
         let shares = try await shareRepository.getShares(userId: userId)
@@ -308,12 +345,21 @@ private extension PassMonitorRepository {
 
         // Filter out unique passwords
         let reusedPasswords = Set(passwordCounts.filter { $0.value > 1 }.map(\.key))
+        return WeaknessComputation(loginItems: loginItems, reusedPasswords: reusedPasswords)
+    }
 
+    /// Builds the weakness stats from pre-decrypted inputs, folding `.compromisedPassword` into the
+    /// detected weaknesses of any item in `breachedItemIds` (empty for the synchronous/base pass).
+    func buildStats(_ inputs: WeaknessComputation,
+                    breachedItemIds: Set<String>) -> (WeaknessStats, [SecurityAffectedItem]) {
         var securityAffectedItems = [SecurityAffectedItem]()
 
-        for item in loginItems {
-            let isReused = reusedPasswords.contains(item.loginData.password)
-            let detected = weaknessEvaluator.evaluate(item.loginData, isReused: isReused)
+        for item in inputs.loginItems {
+            let isReused = inputs.reusedPasswords.contains(item.loginData.password)
+            var detected = weaknessEvaluator.evaluate(item.loginData, isReused: isReused)
+            if breachedItemIds.contains(item.content.itemId) {
+                detected.insert(.compromisedPassword)
+            }
 
             let affectedItem = SecurityAffectedItem(item: item.encrypted,
                                                     detected: detected,
@@ -327,13 +373,41 @@ private extension PassMonitorRepository {
         let counts: [WeaknessKind: Int] = [
             .weakPassword: securityAffectedItems
                 .count(where: { $0.activeWeaknesses.contains(.weakPassword) }),
-            .reusedPassword: reusedPasswords.count,
+            .reusedPassword: inputs.reusedPasswords.count,
+            .compromisedPassword: securityAffectedItems
+                .count(where: { $0.activeWeaknesses.contains(.compromisedPassword) }),
             .missing2FA: securityAffectedItems
                 .count(where: { $0.activeWeaknesses.contains(.missing2FA) })
         ]
         let stats = WeaknessStats(counts: counts,
                                   excludedItems: securityAffectedItems.filter(\.isExcludedItem).count)
         return (stats, securityAffectedItems)
+    }
+
+    /// Compromised-password detection runs only for paid users (no server feature flag).
+    func isCompromisedCheckEnabled(userId: String) async -> Bool {
+        let isFreeUser = await (try? accessRepository.getPlan(userId: userId).isFreeUser) ?? true
+        return !isFreeUser
+    }
+
+    /// Item ids whose password was found in the breach corpus. Network/parse failures keep cached
+    /// results (handled in the checker); excluded or per-check-suppressed items are never queried.
+    func compromisedItemIds(userId: String, inputs: WeaknessComputation) async -> Set<String> {
+        let candidates = inputs.loginItems.compactMap { item -> CompromisedPasswordCandidate? in
+            guard !item.encrypted.item.monitoringDisabled,
+                  !item.encrypted.item.compromisedPasswordCheckDisabled,
+                  !item.loginData.password.isEmpty else {
+                return nil
+            }
+            return CompromisedPasswordCandidate(shareId: item.encrypted.shareId,
+                                                itemId: item.content.itemId,
+                                                password: item.loginData.password)
+        }
+        guard !candidates.isEmpty else {
+            return []
+        }
+        let results = await compromisedPasswordChecker.check(userId: userId, candidates: candidates)
+        return Set(results.filter(\.value.breached).map(\.key))
     }
 
     /// Stable hash of a password for reuse grouping (nil when empty). Storing a hash rather than the

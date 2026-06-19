@@ -53,6 +53,7 @@ public final class RemoveUserLocalData: Sendable, RemoveUserLocalDataUseCase {
     private let coreEventIdDatasource: any LocalCoreEventIdDatasourceProtocol
     private let folderDatasource: any LocalFolderDatasourceProtocol
     private let folderKeysDatasource: any LocalFolderKeyDatasourceProtocol
+    private let compromisedPasswordDatasource: any LocalCompromisedPasswordDatasourceProtocol
 
     public init(accessDatasource: any LocalAccessDatasourceProtocol,
                 itemDatasource: any LocalItemDatasourceProtocol,
@@ -72,7 +73,8 @@ public final class RemoveUserLocalData: Sendable, RemoveUserLocalDataUseCase {
                 userEventIdDatasource: any LocalUserEventIdDatasourceProtocol,
                 coreEventIdDatasource: any LocalCoreEventIdDatasourceProtocol,
                 folderDatasource: any LocalFolderDatasourceProtocol,
-                folderKeysDatasource: any LocalFolderKeyDatasourceProtocol) {
+                folderKeysDatasource: any LocalFolderKeyDatasourceProtocol,
+                compromisedPasswordDatasource: any LocalCompromisedPasswordDatasourceProtocol) {
         self.accessDatasource = accessDatasource
         self.itemDatasource = itemDatasource
         self.itemReadEventDatasource = itemReadEventDatasource
@@ -92,6 +94,7 @@ public final class RemoveUserLocalData: Sendable, RemoveUserLocalDataUseCase {
         self.coreEventIdDatasource = coreEventIdDatasource
         self.folderKeysDatasource = folderKeysDatasource
         self.folderDatasource = folderDatasource
+        self.compromisedPasswordDatasource = compromisedPasswordDatasource
     }
 }
 
@@ -117,6 +120,7 @@ public extension RemoveUserLocalData {
         async let removeCoreEventId: () = coreEventIdDatasource.removeLastEventId(userId: userId)
         async let removeFolders: () = folderDatasource.removeAllFolders(userId: userId)
         async let removeFolderKeys: () = folderKeysDatasource.removeAllKeys(userId: userId)
+        async let removeCompromisedPasswords: () = compromisedPasswordDatasource.removeAll(userId: userId)
 
         _ = try await (removeAccess,
                        removeItems,
@@ -136,6 +140,7 @@ public extension RemoveUserLocalData {
                        removeLastEventId,
                        removeCoreEventId,
                        removeFolders,
-                       removeFolderKeys)
+                       removeFolderKeys,
+                       removeCompromisedPasswords)
     }
 }

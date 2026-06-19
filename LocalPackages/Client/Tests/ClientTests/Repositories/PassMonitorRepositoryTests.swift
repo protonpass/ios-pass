@@ -58,11 +58,39 @@ struct PassMonitorRepositoryTests {
         // sets a stub (the generated mock force-unwraps `stubbedGetSharesResult`). Mirrors the
         // `itemRepository` default above.
         shareRepository.stubbedGetSharesResult = []
+        // Free plan => compromised-password detection (a paid feature) is skipped, so these tests
+        // exercise only the local weakness checks.
+        let accessRepository = AccessRepositoryProtocolMock()
+        accessRepository.stubbedGetAccessResult = UserAccess(userId: "test",
+                                                             access: Access(plan: .init(type: "free",
+                                                                                        internalName: "free",
+                                                                                        displayName: "Free",
+                                                                                        hideUpgrade: false,
+                                                                                        manageAlias: false,
+                                                                                        trialEnd: nil,
+                                                                                        vaultLimit: 1,
+                                                                                        aliasLimit: 10,
+                                                                                        totpLimit: 3,
+                                                                                        storageAllowed: false,
+                                                                                        storageUsed: 0,
+                                                                                        storageQuota: 0,
+                                                                                        folderAllowed: false,
+                                                                                        folderMaxCount: 0,
+                                                                                        folderMaxChildren: 0,
+                                                                                        folderMaxDepth: 0),
+                                                                            monitor: .init(protonAddress: true,
+                                                                                           aliases: false),
+                                                                            pendingInvites: 0,
+                                                                            waitingNewUserInvites: 0,
+                                                                            minVersionUpgrade: nil,
+                                                                            userData: UserAliasSyncData.default))
         sut = PassMonitorRepository(itemRepository: itemRepository,
                                     shareRepository: shareRepository,
                                     remoteDataSource: RemoteBreachDataSourceProtocolMock(),
                                     symmetricKeyProvider: symmetricKeyProviderMockFactory.getProvider(),
-                                    userManager: userManager)
+                                    userManager: userManager,
+                                    accessRepository: accessRepository,
+                                    compromisedPasswordChecker: CompromisedPasswordCheckerProtocolMock())
     }
 
     func createEncryptedLoginItems(weakness: [FixtureWeakness], addStrong: Bool = true) -> [SymmetricallyEncryptedItem] {
