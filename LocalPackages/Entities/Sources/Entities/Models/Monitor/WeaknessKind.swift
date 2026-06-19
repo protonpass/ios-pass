@@ -38,11 +38,12 @@ public enum WeaknessKind: Sendable, Hashable, CaseIterable, Identifiable, Compar
     /// Product-defined display order — lower value is shown first / treated as higher priority.
     /// Defined explicitly (not via declaration order) so reordering the cases cannot silently
     /// change the ordering; pinned by `WeaknessKindTests`.
+    /// Compromised passwords are surfaced as a paid feature directly below reused passwords.
     public var displayPriority: Int {
         switch self {
         case .weakPassword: 0
-        case .compromisedPassword: 1
-        case .reusedPassword: 2
+        case .reusedPassword: 1
+        case .compromisedPassword: 2
         case .missing2FA: 3
         }
     }

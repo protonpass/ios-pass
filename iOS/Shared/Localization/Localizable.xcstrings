@@ -41641,6 +41641,12 @@
         }
       }
     },
+    "Compromised password detection" : {
+
+    },
+    "Compromised password detection is available with a paid plan. Upgrade to find passwords exposed in known data breaches." : {
+
+    },
     "Compromised passwords" : {
       "localizations" : {
         "en" : {

@@ -62,8 +62,9 @@ public final class GetAllSecurityAffectedLogins: GetAllSecurityAffectedLoginsUse
                     return filterActiveWeakness(.missing2FA, in: items, section: .missing2fa)
 
                 case .weakness(.compromisedPassword):
-                    // Compromised-password detection is not surfaced yet (next MR).
-                    return [:]
+                    return filterActiveWeakness(.compromisedPassword,
+                                                in: items,
+                                                section: .compromisedPasswords)
 
                 case .excludedItems:
                     return filterExcludedItems(items: items)

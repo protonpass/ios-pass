@@ -29,4 +29,5 @@ public enum UpsellEntry {
     case secureLink
     case aliasManagement
     case fileAttachments
+    case compromisedPasswords
 }

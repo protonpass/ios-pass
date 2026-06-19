@@ -43,6 +43,10 @@ extension UpsellEntry {
 
         case .fileAttachments:
             #localized("File attachments are available with Pass Plus. Upgrade for immediate access.")
+
+        case .compromisedPasswords:
+            // swiftlint:disable:next line_length
+            #localized("Compromised password detection is available with a paid plan. Upgrade to find passwords exposed in known data breaches.")
         }
     }
 
@@ -75,6 +79,11 @@ extension UpsellEntry {
         case .fileAttachments:
             upsellElements.append(UpsellElement(icon: IconProvider.mailbox,
                                                 title: #localized("File attachments"),
+                                                color: PassColor.interactionNormMajor2))
+
+        case .compromisedPasswords:
+            upsellElements.append(UpsellElement(icon: PassIcon.shield2,
+                                                title: #localized("Compromised password detection"),
                                                 color: PassColor.interactionNormMajor2))
 
         default:

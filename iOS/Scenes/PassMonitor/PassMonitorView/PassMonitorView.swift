@@ -227,11 +227,17 @@ private extension PassMonitorView {
                 Section {
                     VStack(spacing: DesignConstant.sectionPadding) {
                         // Rows are ordered by WeaknessKind.displayPriority (single source of
-                        // truth). Compromised is hidden until its detection lands (next MR); it
-                        // will then slot into the correct position automatically.
-                        ForEach(WeaknessKind.allCases.sorted().filter { $0 != .compromisedPassword }) { kind in
-                            weaknessRow(kind: kind, count: weaknessStats.count(for: kind))
-                                .padding(.top, kind == .missing2FA ? 16 : 0)
+                        // truth). Compromised passwords are a paid feature, so the row is rendered
+                        // specially (upsell for free users) while keeping its sorted position.
+                        ForEach(WeaknessKind.allCases.sorted()) { kind in
+                            Group {
+                                if kind == .compromisedPassword {
+                                    compromisedPasswordRow(count: weaknessStats.count(for: kind))
+                                } else {
+                                    weaknessRow(kind: kind, count: weaknessStats.count(for: kind))
+                                }
+                            }
+                            .padding(.top, kind == .missing2FA ? 16 : 0)
                         }
                         excludedItemsRow(weaknessStats.excludedItems)
                     }
@@ -473,6 +479,21 @@ private extension PassMonitorView {
                        subTitle: kind.dashboardSubtitle,
                        count: count,
                        action: { viewModel.showSecurityWeakness(filter: .weakness(kind)) })
+    }
+
+    /// Compromised passwords is a paid feature: free users get an upsell row, paid users get the
+    /// normal weakness row (count + navigation to the affected-items list).
+    @ViewBuilder
+    func compromisedPasswordRow(count: Int) -> some View {
+        if viewModel.isFreeUser {
+            passMonitorRow(rowType: .upsell,
+                           title: WeaknessKind.compromisedPassword.dashboardTitle,
+                           subTitle: WeaknessKind.compromisedPassword.dashboardSubtitle,
+                           badge: true,
+                           action: { viewModel.upsell(entryPoint: .compromisedPasswords) })
+        } else {
+            weaknessRow(kind: .compromisedPassword, count: count)
+        }
     }
 }
 
