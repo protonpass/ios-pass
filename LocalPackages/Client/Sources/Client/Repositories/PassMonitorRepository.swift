@@ -118,24 +118,15 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
         let userId = try await userManager.getActiveUserId()
         // Decrypt items once; both the synchronous publish and the compromised enrichment reuse it.
         let inputs = try await computeWeaknessInputs(userId: userId, userOwned: false)
-
-        // Phase 1: local (instant) checks — publish immediately so the dashboard stays responsive.
-        let base = buildStats(inputs, breachedItemIds: [])
-        weaknessStats.send(base.0)
-        itemsWithSecurityIssues.send(base.1)
-
-        // Phase 2: compromised-password detection is a paid feature; enrich and re-publish.
-        guard await isCompromisedCheckEnabled(userId: userId) else {
+        var base = buildStats(inputs, breachedItemIds: [])
+        if await isCompromisedCheckEnabled(userId: userId),
+           let breachedItemIds = await compromisedItemIds(userId: userId, inputs: inputs),
+           !breachedItemIds.isEmpty {
+            let enriched = buildStats(inputs, breachedItemIds: breachedItemIds)
+            pushWeaknessState(enriched)
             return
         }
-        try Task.checkCancellation()
-        let breachedItemIds = await compromisedItemIds(userId: userId, inputs: inputs)
-        guard !breachedItemIds.isEmpty else {
-            return
-        }
-        let enriched = buildStats(inputs, breachedItemIds: breachedItemIds)
-        weaknessStats.send(enriched.0)
-        itemsWithSecurityIssues.send(enriched.1)
+        pushWeaknessState(base)
     }
 
     public func getItemsWithSamePassword(item: ItemContent) async throws -> [ItemContent] {
@@ -272,7 +263,7 @@ public extension PassMonitorRepository {
         let userId = try await userManager.getActiveUserId()
         let inputs = try await computeWeaknessInputs(userId: userId, userOwned: true)
         let breachedItemIds = await isCompromisedCheckEnabled(userId: userId)
-            ? await compromisedItemIds(userId: userId, inputs: inputs)
+            ? await compromisedItemIds(userId: userId, inputs: inputs) ?? []
             : []
         let result = buildStats(inputs, breachedItemIds: breachedItemIds)
         try await remoteDataSource.sendUserMonitorStats(userId: userId, stats: result.0)
@@ -367,9 +358,6 @@ private extension PassMonitorRepository {
             } else {
                 nil
             }
-//            (!detected.isEmpty || affectedItem.isExcludedItem)
-//                ? affectedItem
-//                : nil
         }
 
         var weakPasswordCount = 0
@@ -405,6 +393,11 @@ private extension PassMonitorRepository {
         return (stats, securityAffectedItems)
     }
 
+    func pushWeaknessState(_ newState: (WeaknessStats, [SecurityAffectedItem])) {
+        weaknessStats.send(newState.0)
+        itemsWithSecurityIssues.send(newState.1)
+    }
+
     /// Compromised-password detection runs only for paid users (no server feature flag).
     func isCompromisedCheckEnabled(userId: String) async -> Bool {
         let isFreeUser = await (try? accessRepository.getPlan(userId: userId).isFreeUser) ?? true
@@ -413,7 +406,7 @@ private extension PassMonitorRepository {
 
     /// Item ids whose password was found in the breach corpus. Network/parse failures keep cached
     /// results (handled in the checker); excluded or per-check-suppressed items are never queried.
-    func compromisedItemIds(userId: String, inputs: WeaknessComputation) async -> Set<String> {
+    func compromisedItemIds(userId: String, inputs: WeaknessComputation) async -> Set<String>? {
         let candidates = inputs.loginItems.compactMap { item -> CompromisedPasswordCandidate? in
             guard !item.encrypted.item.monitoringDisabled,
                   !item.encrypted.item.compromisedPasswordCheckDisabled,
@@ -425,9 +418,12 @@ private extension PassMonitorRepository {
                                                 password: item.loginData.password)
         }
         guard !candidates.isEmpty else {
-            return []
+            return nil
         }
         let results = await compromisedPasswordChecker.check(userId: userId, candidates: candidates)
+        guard !results.isEmpty else {
+            return nil
+        }
         return Set(results.filter(\.value.breached).map(\.key))
     }
 
