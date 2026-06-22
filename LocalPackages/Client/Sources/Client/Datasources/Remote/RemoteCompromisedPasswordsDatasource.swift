@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import Entities
 import Foundation
 
@@ -31,9 +32,7 @@ public enum CompromisedPasswordsNetworkError: Error, Equatable {
 /// Talks to Proton's public k-anonymity compromised-password service.
 ///
 /// This is a public, unauthenticated external host, so it deliberately bypasses the Proton
-/// API stack (`ApiServiceLite`/`APIManager`, which are bound to the Proton DoH host and a
-/// per-user credential) and uses a plain `URLSession`. Only the 6-character SHA-1 prefix is
-/// ever sent — the full password/hash never leaves the device.
+/// Only the 6-character SHA-1 prefix is ever sent — the full password/hash never leaves the device.
 // sourcery: AutoMockable
 public protocol RemoteCompromisedPasswordsDatasourceProtocol: Sendable {
     /// Plain-text UNIX epoch seconds of the most recent change to the corpus.
@@ -44,14 +43,13 @@ public protocol RemoteCompromisedPasswordsDatasourceProtocol: Sendable {
     func query(prefix6: String, etag: String?) async throws -> CompromisedRangeResponse
 }
 
-public final class RemoteCompromisedPasswordsDatasource: RemoteCompromisedPasswordsDatasourceProtocol,
-    @unchecked Sendable {
+public final class RemoteCompromisedPasswordsDatasource: RemoteCompromisedPasswordsDatasourceProtocol, Sendable {
     private let session: URLSession
     private let userAgent: String
     private let baseURLString: String
 
     public init(userAgent: String,
-                baseURLString: String = "https://compromisedpasswords.simplelogin.com",
+                baseURLString: String = Constants.CompromisedPasswords.baseURLEndpoint,
                 session: URLSession? = nil) {
         self.userAgent = userAgent
         self.baseURLString = baseURLString

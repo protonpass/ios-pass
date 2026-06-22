@@ -224,34 +224,31 @@ private extension PassMonitorView {
                                 subTitle: "Advanced account protection program",
                                 action: { viewModel.showSentinelSheet = true })
                 }
-                Section {
-                    VStack(spacing: DesignConstant.sectionPadding) {
-                        // Rows are ordered by WeaknessKind.displayPriority (single source of
-                        // truth). Compromised passwords are a paid feature, so the row is rendered
-                        // specially (upsell for free users) while keeping its sorted position.
-                        ForEach(WeaknessKind.allCases.sorted()) { kind in
-                            Group {
-                                if kind == .compromisedPassword {
-                                    compromisedPasswordRow(count: weaknessStats.count(for: kind))
-                                } else {
-                                    weaknessRow(kind: kind, count: weaknessStats.count(for: kind))
-                                }
-                            }
-                            .padding(.top, kind == .missing2FA ? 16 : 0)
-                        }
-                        excludedItemsRow(weaknessStats.excludedItems)
-                    }
-                } header: {
-                    HStack {
-                        Text("Passwords Health")
-                            .fontWeight(.bold)
-                            .foregroundStyle(PassColor.textNorm)
-                        Spacer()
-                    }.padding(.top, DesignConstant.sectionPadding)
-                }
+                passwordHealthSection(weaknessStats)
             }
         }
         .padding(DesignConstant.sectionPadding)
+    }
+
+    func passwordHealthSection(_ weaknessStats: WeaknessStats) -> some View {
+        Section {
+            VStack(spacing: DesignConstant.sectionPadding) {
+                ForEach(WeaknessKind.allCases.sorted()) { kind in
+                    weaknessRow(kind: kind,
+                                count: weaknessStats.count(for: kind),
+                                upsellEntry: kind == .compromisedPassword ? .compromisedPasswords : nil)
+                        .padding(.top, kind == .missing2FA ? 16 : 0)
+                }
+                excludedItemsRow(weaknessStats.excludedItems)
+            }
+        } header: {
+            HStack {
+                Text("Passwords Health")
+                    .fontWeight(.bold)
+                    .foregroundStyle(PassColor.textNorm)
+                Spacer()
+            }.padding(.top, DesignConstant.sectionPadding)
+        }
     }
 
     var passPlusBadge: some View {
@@ -465,7 +462,14 @@ private extension PassMonitorView {
 
 private extension PassMonitorView {
     @ViewBuilder
-    func weaknessRow(kind: WeaknessKind, count: Int) -> some View {
+    func weaknessRow(kind: WeaknessKind, count: Int, upsellEntry: UpsellEntry? = nil) -> some View {
+        if let upsellEntry, viewModel.isFreeUser {
+            passMonitorRow(rowType: .upsell,
+                           title: kind.dashboardTitle,
+                           subTitle: kind.dashboardSubtitle,
+                           badge: true,
+                           action: { viewModel.upsell(entryPoint: upsellEntry) })
+        }
         // Count-aware severity stays in the view (the entity must not know about row styling).
         let rowType: SecureRowType = switch kind {
         case .compromisedPassword, .reusedPassword, .weakPassword:
@@ -479,21 +483,6 @@ private extension PassMonitorView {
                        subTitle: kind.dashboardSubtitle,
                        count: count,
                        action: { viewModel.showSecurityWeakness(filter: .weakness(kind)) })
-    }
-
-    /// Compromised passwords is a paid feature: free users get an upsell row, paid users get the
-    /// normal weakness row (count + navigation to the affected-items list).
-    @ViewBuilder
-    func compromisedPasswordRow(count: Int) -> some View {
-        if viewModel.isFreeUser {
-            passMonitorRow(rowType: .upsell,
-                           title: WeaknessKind.compromisedPassword.dashboardTitle,
-                           subTitle: WeaknessKind.compromisedPassword.dashboardSubtitle,
-                           badge: true,
-                           action: { viewModel.upsell(entryPoint: .compromisedPasswords) })
-        } else {
-            weaknessRow(kind: .compromisedPassword, count: count)
-        }
     }
 }
 

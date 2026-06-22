@@ -42,8 +42,8 @@ public enum WeaknessKind: Sendable, Hashable, CaseIterable, Identifiable, Compar
     public var displayPriority: Int {
         switch self {
         case .weakPassword: 0
-        case .reusedPassword: 1
-        case .compromisedPassword: 2
+        case .compromisedPassword: 1
+        case .reusedPassword: 2
         case .missing2FA: 3
         }
     }

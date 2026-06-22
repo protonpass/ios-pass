@@ -31,14 +31,8 @@ public protocol LocalCompromisedPasswordDatasourceProtocol: Sendable {
 
     /// Persisted checks for a user, restricted to the given item ids.
     func getChecks(userId: String, itemIds: [String]) async throws -> [CompromisedPasswordCheck]
-
-    /// Insert or update the given checks for a user.
     func upsert(_ checks: [CompromisedPasswordCheck], userId: String) async throws
-
-    /// Remove checks for items no longer present (e.g. deleted items).
     func remove(userId: String, staleItemIds: [String]) async throws
-
-    /// Remove all checks (and the cached corpus freshness marker) for a user.
     func removeAll(userId: String) async throws
 
     /// Cached UNIX epoch seconds of the corpus's last change at the previous successful scan.
