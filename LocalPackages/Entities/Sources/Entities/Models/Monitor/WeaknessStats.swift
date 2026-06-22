@@ -21,10 +21,7 @@
 import Foundation
 
 public struct WeaknessStats: Equatable, Sendable {
-    /// Active-weakness item counts keyed by kind. A missing key means zero (see `count(for:)`).
-    /// Keyed (rather than one stored property per kind) so adding a `WeaknessKind` needs no new
-    /// field and the dashboard can iterate `WeaknessKind.allCases` for its ordering.
-    public let counts: [WeaknessKind: Int]
+    private let counts: [WeaknessKind: Int]
 
     /// Items in the "Excluded items" bucket. This is a monitoring-status count, not a weakness,
     /// so it stays separate from `counts`.
@@ -39,7 +36,7 @@ public struct WeaknessStats: Equatable, Sendable {
         counts[kind] ?? 0
     }
 
-    public var hasWeakOrReusedPasswords: Bool {
-        (count(for: .weakPassword) + count(for: .reusedPassword)) > 0
+    public var hasPasswordsWithWeaknesses: Bool {
+        (count(for: .weakPassword) + count(for: .reusedPassword)) > 0 + count(for: .compromisedPassword)
     }
 }
