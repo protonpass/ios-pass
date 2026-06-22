@@ -41642,10 +41642,24 @@
       }
     },
     "Compromised password detection" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compromised password detection"
+          }
+        }
+      }
     },
     "Compromised password detection is available with a paid plan. Upgrade to find passwords exposed in known data breaches." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compromised password detection is available with a paid plan. Upgrade to find passwords exposed in known data breaches."
+          }
+        }
+      }
     },
     "Compromised passwords" : {
       "localizations" : {
@@ -121419,6 +121433,16 @@
         }
       }
     },
+    "Password exposed on the dark web." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password exposed on the dark web."
+          }
+        }
+      }
+    },
     "Passwords do not match" : {
       "localizations" : {
         "be" : {
@@ -168933,202 +168957,6 @@
         }
       }
     },
-    "This account is vulnerable, visit the service and change your password" : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Гэты ўліковы запіс з'яўляецца ўразлівым. Наведайце сэрвіс і змяніце свой пароль"
-          }
-        },
-        "ca" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aquest compte és vulnerable, visiteu el servei i canvieu la contrasenya"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tento účet je zranitelný, navštivte službu a změňte si heslo"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Denne konto er sårbar. Besøg tjenesten og skift din adgangskode"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dieses Konto ist angreifbar, besuche den Dienst und ändere dein Passwort"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Αυτός ο λογαριασμός είναι ευάλωτος, επισκεφθείτε την υπηρεσία και αλλάξτε τον κωδικό πρόσβασής σας"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This account is vulnerable, visit the service and change your password"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Esta cuenta es vulnerable. Visita el servicio y cambia tu contraseña."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Esta cuenta es vulnerable, visite el servicio y cambie la contraseña"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tämä tili on vaarassa. Käy vaihtamassa salasanasi palvelun tiliasetuksista."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ce compte est vulnérable. Rendez-vous sur le service et changez votre mot de passe"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ez a fiók sérülékeny, látogasson el a szolgáltatáshoz, és változtassa meg jelszavát"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Akun ini terindikasi rentan. Kunjungi layanan keamanan dan ubah kata sandi Anda"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Questo account è vulnerabile, visita il servizio e cambia la tua password"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "このアカウントは脆弱です。サービスにアクセスしてパスワードを変更してください"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ეს ანგარიში მოწყვლადია. მიმართეთ სერვისს და შეცვალეთ თქვენი პაროლი"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이 계정은 취약합니다. 서비스를 방문하여 비밀번호를 변경하십시오"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Denne kontoen er sårbar, besøk tjenesten og endre passordet ditt"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dit account is kwetsbaar, bezoek de service en wijzig uw wachtwoord"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Konto jest zagrożone. Przejdź do usługi i zmień hasło"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Esta conta está vulnerável. Consulte o serviço e altere a sua palavra-passe"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Essa conta está vulnerável, visite o serviço e mude sua senha"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Acest cont este vulnerabil, accesați serviciul și schimbați-vă parola."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Этот аккаунт уязвим, посетите службу и смените пароль"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tento účet je zraniteľný. Navštívte službu a zmeňte si heslo"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vaš račun je ranljiv, pojdite v nastavitve in spremenite geslo"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Detta konto är sårbart, besök tjänsten och ändra ditt lösenord"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bu hesap ele geçirilebilir. Hizmeti ziyaret edin ve parolanızı değiştirin"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Цей обліковий запис вразливий, відвідайте сервіс і змініть пароль"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tài khoản này không an toàn, hãy thay đổi mật khẩu."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "此账户存在安全风险，请访问该服务并更改密码"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "這個帳號有風險，請造訪該服務並變更您的密碼字元"
-          }
-        }
-      }
-    },
     "This is your last attempt. You will be logged out after failing to authenticate again." : {
       "comment" : "Local authentication",
       "localizations" : {
@@ -187512,6 +187340,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "具有風險"
+          }
+        }
+      }
+    },
+    "Vulnerable passwords" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vulnerable passwords"
           }
         }
       }

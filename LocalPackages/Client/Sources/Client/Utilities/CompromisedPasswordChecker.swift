@@ -35,8 +35,7 @@ public protocol CompromisedPasswordCheckerProtocol: Sendable {
     /// uncached item whose network query failed) and must NOT be treated as breached. The check is
     /// resilient: network/parse failures keep cached results rather than throwing.
     func check(userId: String,
-               candidates: [CompromisedPasswordCandidate]) async
-        -> [String: CompromisedPasswordResult]
+               candidates: [CompromisedPasswordCandidate]) async -> [String: CompromisedPasswordResult]
 }
 
 public final class CompromisedPasswordChecker: CompromisedPasswordCheckerProtocol, @unchecked Sendable {
@@ -61,8 +60,7 @@ public final class CompromisedPasswordChecker: CompromisedPasswordCheckerProtoco
 
 public extension CompromisedPasswordChecker {
     func check(userId: String,
-               candidates: [CompromisedPasswordCandidate]) async
-        -> [String: CompromisedPasswordResult] {
+               candidates: [CompromisedPasswordCandidate]) async -> [String: CompromisedPasswordResult] {
         let derivedAll = candidates
             .filter { !$0.password.isEmpty }
             .map { Derived(candidate: $0) }

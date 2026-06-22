@@ -94,6 +94,10 @@ public enum Constants {
         public static let maxFolderDepth = 5
     }
 
+    public enum CompromisedPasswords {
+        public static let baseURLEndpoint = "https://compromisedpasswords.simplelogin.com"
+    }
+
     // swiftlint:disable:next type_name
     public enum QA {
         public static let forceDisplayUpgradeAppBanner = "forceDisplayUpgradeAppBanner"

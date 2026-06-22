@@ -51,7 +51,7 @@ extension ItemWeaknessDisplay {
             #localized("This item is not being monitored")
 
         case .weakness(.compromisedPassword, _), .weakness(.weakPassword, _):
-            #localized("This account is vulnerable, visit the service and change your password")
+            #localized("Password exposed on the dark web.")
 
         case .weakness(.missing2FA, _):
             #localized("This service offers 2FA. Enable it for added account security.")
