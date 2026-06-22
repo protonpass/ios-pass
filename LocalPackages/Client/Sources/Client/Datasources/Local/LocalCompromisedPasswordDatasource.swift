@@ -26,12 +26,13 @@ import Foundation
 
 // sourcery: AutoMockable
 public protocol LocalCompromisedPasswordDatasourceProtocol: Sendable {
-    /// All persisted compromised-password checks for a user.
+    // periphery:ignore
     func getChecks(userId: String) async throws -> [CompromisedPasswordCheck]
 
     /// Persisted checks for a user, restricted to the given item ids.
     func getChecks(userId: String, itemIds: [String]) async throws -> [CompromisedPasswordCheck]
     func upsert(_ checks: [CompromisedPasswordCheck], userId: String) async throws
+    // periphery:ignore
     func remove(userId: String, staleItemIds: [String]) async throws
     func removeAll(userId: String) async throws
 

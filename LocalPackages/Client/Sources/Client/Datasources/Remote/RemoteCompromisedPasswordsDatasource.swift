@@ -22,7 +22,7 @@ import Core
 import Entities
 import Foundation
 
-public enum CompromisedPasswordsNetworkError: Error, Equatable {
+enum CompromisedPasswordsNetworkError: Error, Equatable {
     case invalidURL
     case invalidResponse
     case unexpectedStatusCode(Int)
