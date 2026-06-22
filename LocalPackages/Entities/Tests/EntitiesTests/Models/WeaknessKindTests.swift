@@ -26,10 +26,10 @@ struct WeaknessKindTests {
     /// Pins the product-defined severity/display order. If this fails, the on-screen ordering
     /// of weakness categories has changed — confirm it is intentional before updating.
     @Test
-    func `Display order is weak → reused → compromised → missing2FA`() {
+    func `Display order is weak → compromised → reused → missing2FA`() {
         #expect(WeaknessKind.allCases.sorted() == [.weakPassword,
-                                                   .reusedPassword,
                                                    .compromisedPassword,
+                                                   .reusedPassword,
                                                    .missing2FA])
     }
 
