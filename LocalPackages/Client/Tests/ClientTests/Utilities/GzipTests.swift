@@ -31,7 +31,7 @@ struct GzipTests {
         0000000000000000000000000000000000:3
         7D0679CA88DB6464EAC60DA96345513964:31033620
         """
-        let result = try gunzip(makeGzip(original))
+        let result = try makeGzip(original).gunzipped()
         #expect(String(decoding: result, as: UTF8.self) == original)
     }
 
@@ -39,26 +39,40 @@ struct GzipTests {
     func `Round-trips a payload larger than the inflate buffer`() throws {
         // Force several drain cycles through the 32k streaming buffer.
         let original = String(repeating: "ABCDEF0123456789:42\n", count: 5_000)
-        let result = try gunzip(makeGzip(original))
+        let result = try makeGzip(original).gunzipped()
         #expect(String(decoding: result, as: UTF8.self) == original)
     }
 
     @Test
     func `Rejects non-gzip data`() {
         #expect(throws: GzipError.notGzip) {
-            try gunzip(Data([0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
-                             0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10,
-                             0x11, 0x12, 0x13, 0x14]))
+            try Data([0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
+                      0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10,
+                      0x11, 0x12, 0x13, 0x14]).gunzipped()
+        }
+    }
+
+    @Test
+    func `Rejects a payload with a corrupted CRC trailer`() {
+        var corrupted = makeGzip("7D0679CA88DB6464EAC60DA96345513964:31033620\n")
+        corrupted[corrupted.count - 8] ^= 0xFF // flip a CRC-32 trailer byte
+        #expect(throws: GzipError.checksumMismatch) {
+            try corrupted.gunzipped()
         }
     }
 }
 
-/// Builds a minimal gzip container (RFC 1952) around `string`. The CRC32/ISIZE trailer is left as
-/// zeroes because `gunzip` does not validate it — it relies on the DEFLATE end-of-stream marker.
+/// Builds a valid gzip container (RFC 1952) around `string`, including a correct CRC-32/ISIZE
+/// trailer (which `gunzipped()` now validates).
 func makeGzip(_ string: String) -> Data {
+    let payload = Data(string.utf8)
     var gzip = Data([0x1F, 0x8B, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF])
-    gzip.append(rawDeflate(Data(string.utf8)))
-    gzip.append(Data(repeating: 0, count: 8))
+    gzip.append(rawDeflate(payload))
+    let crc = payload.crc32()
+    let isize = UInt32(truncatingIfNeeded: payload.count)
+    for value in [crc, isize] {
+        gzip.append(contentsOf: (0 ..< 4).map { UInt8((value >> ($0 * 8)) & 0xFF) })
+    }
     return gzip
 }
 

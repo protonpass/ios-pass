@@ -120,7 +120,7 @@ public extension RemoteCompromisedPasswordsDatasource {
 
         case 200:
             let newEtag = httpResponse.value(forHTTPHeaderField: "ETag")
-            let body = try gunzip(data)
+            let body = try data.gunzipped()
             return .modified(etag: newEtag, body: body)
 
         default:

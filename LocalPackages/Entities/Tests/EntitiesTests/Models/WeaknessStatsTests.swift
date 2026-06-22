@@ -35,9 +35,10 @@ struct WeaknessStatsTests {
 
     @Test
     func `hasWeakOrReusedPasswords reflects only weak + reused counts`() {
-        #expect(!WeaknessStats(counts: [:], excludedItems: 0).hasWeakOrReusedPasswords)
-        #expect(WeaknessStats(counts: [.weakPassword: 1], excludedItems: 0).hasWeakOrReusedPasswords)
-        #expect(WeaknessStats(counts: [.reusedPassword: 1], excludedItems: 0).hasWeakOrReusedPasswords)
-        #expect(!WeaknessStats(counts: [.missing2FA: 5], excludedItems: 0).hasWeakOrReusedPasswords)
+        #expect(!WeaknessStats(counts: [:], excludedItems: 0).hasPasswordsWithWeaknesses)
+        #expect(WeaknessStats(counts: [.weakPassword: 1], excludedItems: 0).hasPasswordsWithWeaknesses)
+        #expect(WeaknessStats(counts: [.reusedPassword: 1], excludedItems: 0).hasPasswordsWithWeaknesses)
+        #expect(WeaknessStats(counts: [.compromisedPassword: 1], excludedItems: 0).hasPasswordsWithWeaknesses)
+        #expect(!WeaknessStats(counts: [.missing2FA: 5], excludedItems: 0).hasPasswordsWithWeaknesses)
     }
 }
