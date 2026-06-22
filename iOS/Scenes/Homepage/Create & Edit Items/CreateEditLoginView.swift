@@ -669,6 +669,7 @@ private extension CreateEditLoginView {
 
 private struct WebsiteSection<Field: Hashable>: View {
     @ObservedObject var viewModel: CreateEditLoginViewModel
+    @State private var selectedAutofillUrl: IdentifiableObject<AutofillUrl>?
     let focusedField: FocusState<Field?>.Binding
     let field: Field
     let onSubmit: () -> Void
@@ -681,6 +682,8 @@ private struct WebsiteSection<Field: Hashable>: View {
                 Text("Website")
                     .editableSectionTitleText(for: viewModel.urls.first?.value)
                 VStack(alignment: .leading) {
+                    Button(action: { selectedAutofillUrl = viewModel.autofillUrls.first },
+                           label: { Text(verbatim: "Test") })
                     ForEach($viewModel.urls) { $url in
                         HStack {
                             TextField(text: $url.value) {
@@ -728,6 +731,10 @@ private struct WebsiteSection<Field: Hashable>: View {
         .padding(DesignConstant.sectionPadding)
         .roundedEditableSection()
         .contentShape(.rect)
+        .sheet(item: $selectedAutofillUrl) { autofillUrl in
+            EditDomainMatchingView(url: autofillUrl,
+                                   itemContentType: viewModel.itemContentType)
+        }
     }
 
     private func isValid(_ url: IdentifiableObject<String>) -> Bool {
