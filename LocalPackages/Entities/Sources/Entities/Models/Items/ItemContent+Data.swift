@@ -61,12 +61,33 @@ public enum ItemContentData: Sendable, Equatable, Hashable {
 
 // MARK: - Login
 
+public enum AutofillUrlMode: Sendable, Equatable, Hashable {
+    case `default`
+    case exact
+    case never
+    case startWith
+    case pattern
+    case regularExpression
+    case exactPath
+}
+
+public struct AutofillUrl: Sendable, Equatable, Hashable {
+    public let url: String
+    public let mode: AutofillUrlMode
+
+    public init(url: String, mode: AutofillUrlMode) {
+        self.url = url
+        self.mode = mode
+    }
+}
+
 public struct LogInItemData: Sendable, Equatable, Hashable {
     public let email: String
     public let username: String
     public let password: String
     public let totpUri: String
     public let urls: [String]
+    public let autofillUrls: [AutofillUrl]
     public let allowedAndroidApps: [AllowedAndroidApp]
     public let passkeys: [Passkey]
 
@@ -75,6 +96,7 @@ public struct LogInItemData: Sendable, Equatable, Hashable {
                 password: String,
                 totpUri: String,
                 urls: [String],
+                autofillUrls: [AutofillUrl],
                 allowedAndroidApps: [AllowedAndroidApp],
                 passkeys: [Passkey]) {
         self.email = email
@@ -82,6 +104,7 @@ public struct LogInItemData: Sendable, Equatable, Hashable {
         self.password = password
         self.totpUri = totpUri
         self.urls = urls
+        self.autofillUrls = autofillUrls
         self.allowedAndroidApps = allowedAndroidApps
         self.passkeys = passkeys
     }
