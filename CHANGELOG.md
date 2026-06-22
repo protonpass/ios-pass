@@ -3,7 +3,7 @@
 - Added support for folders (behind feature flag)
 
 Others:
-- Core libraries upgraded from 36.0.3 to 37.2.0
+- Core libraries upgraded from 36.0.3 to 37.3.1
 - Rust library upgraded from 1.1.2 to 1.6.1
 
 # Version 1.19.2
