@@ -15,12 +15,12 @@ import SwiftProtobuf
 // incompatible with the version of SwiftProtobuf to which you are linking.
 // Please ensure that you are building against the same version of the API
 // that was used to generate this file.
-fileprivate struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAPIVersionCheck {
+fileprivate nonisolated struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAPIVersionCheck {
   struct _2: SwiftProtobuf.ProtobufAPIVersion_2 {}
   typealias Version = _2
 }
 
-public enum ProtonPassVaultV1_VaultIcon: SwiftProtobuf.Enum, Swift.CaseIterable {
+public nonisolated enum ProtonPassVaultV1_VaultIcon: SwiftProtobuf.Enum, Swift.CaseIterable {
   public typealias RawValue = Int
   case iconUnspecified // = 0
   case iconCustom // = 1
@@ -174,7 +174,7 @@ public enum ProtonPassVaultV1_VaultIcon: SwiftProtobuf.Enum, Swift.CaseIterable 
 
 }
 
-public enum ProtonPassVaultV1_VaultColor: SwiftProtobuf.Enum, Swift.CaseIterable {
+public nonisolated enum ProtonPassVaultV1_VaultColor: SwiftProtobuf.Enum, Swift.CaseIterable {
   public typealias RawValue = Int
   case colorUnspecified // = 0
   case colorCustom // = 1
@@ -248,7 +248,7 @@ public enum ProtonPassVaultV1_VaultColor: SwiftProtobuf.Enum, Swift.CaseIterable
 
 }
 
-public struct ProtonPassVaultV1_VaultDisplayPreferences: Sendable {
+public nonisolated struct ProtonPassVaultV1_VaultDisplayPreferences: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -262,7 +262,7 @@ public struct ProtonPassVaultV1_VaultDisplayPreferences: Sendable {
   public init() {}
 }
 
-public struct ProtonPassVaultV1_Vault: Sendable {
+public nonisolated struct ProtonPassVaultV1_Vault: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -272,11 +272,11 @@ public struct ProtonPassVaultV1_Vault: Sendable {
   public var description_p: String = String()
 
   public var display: ProtonPassVaultV1_VaultDisplayPreferences {
-    get {return _display ?? ProtonPassVaultV1_VaultDisplayPreferences()}
+    get {_display ?? ProtonPassVaultV1_VaultDisplayPreferences()}
     set {_display = newValue}
   }
   /// Returns true if `display` has been explicitly set.
-  public var hasDisplay: Bool {return self._display != nil}
+  public var hasDisplay: Bool {self._display != nil}
   /// Clears the value of `display`. Subsequent reads from it will return its default value.
   public mutating func clearDisplay() {self._display = nil}
 
@@ -289,17 +289,17 @@ public struct ProtonPassVaultV1_Vault: Sendable {
 
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
 
-fileprivate let _protobuf_package = "proton_pass_vault_v1"
+fileprivate nonisolated let _protobuf_package = "proton_pass_vault_v1"
 
-extension ProtonPassVaultV1_VaultIcon: SwiftProtobuf._ProtoNameProviding {
+nonisolated extension ProtonPassVaultV1_VaultIcon: SwiftProtobuf._ProtoNameProviding {
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{2}\0ICON_UNSPECIFIED\0\u{1}ICON_CUSTOM\0\u{1}ICON1\0\u{1}ICON2\0\u{1}ICON3\0\u{1}ICON4\0\u{1}ICON5\0\u{1}ICON6\0\u{1}ICON7\0\u{1}ICON8\0\u{1}ICON9\0\u{1}ICON10\0\u{1}ICON11\0\u{1}ICON12\0\u{1}ICON13\0\u{1}ICON14\0\u{1}ICON15\0\u{1}ICON16\0\u{1}ICON17\0\u{1}ICON18\0\u{1}ICON19\0\u{1}ICON20\0\u{1}ICON21\0\u{1}ICON22\0\u{1}ICON23\0\u{1}ICON24\0\u{1}ICON25\0\u{1}ICON26\0\u{1}ICON27\0\u{1}ICON28\0\u{1}ICON29\0\u{1}ICON30\0")
 }
 
-extension ProtonPassVaultV1_VaultColor: SwiftProtobuf._ProtoNameProviding {
+nonisolated extension ProtonPassVaultV1_VaultColor: SwiftProtobuf._ProtoNameProviding {
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{2}\0COLOR_UNSPECIFIED\0\u{1}COLOR_CUSTOM\0\u{1}COLOR1\0\u{1}COLOR2\0\u{1}COLOR3\0\u{1}COLOR4\0\u{1}COLOR5\0\u{1}COLOR6\0\u{1}COLOR7\0\u{1}COLOR8\0\u{1}COLOR9\0\u{1}COLOR10\0")
 }
 
-extension ProtonPassVaultV1_VaultDisplayPreferences: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+nonisolated extension ProtonPassVaultV1_VaultDisplayPreferences: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".VaultDisplayPreferences"
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}icon\0\u{1}color\0")
 
@@ -334,7 +334,7 @@ extension ProtonPassVaultV1_VaultDisplayPreferences: SwiftProtobuf.Message, Swif
   }
 }
 
-extension ProtonPassVaultV1_Vault: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+nonisolated extension ProtonPassVaultV1_Vault: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".Vault"
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}name\0\u{1}description\0\u{1}display\0")
 

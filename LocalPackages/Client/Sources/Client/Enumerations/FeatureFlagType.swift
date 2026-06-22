@@ -30,4 +30,5 @@ public enum FeatureFlagType: String, CaseIterable, FeatureFlagTypeProtocol {
     case passUserEventsV1 = "PassUserEventsV1"
     case passGroupSharingV1 = "PassGroupInvitesV1"
     case passFolder = "PassFolder"
+    case passAutofillUrlRegex = "PassAutofillUrlRegex"
 }

@@ -8,7 +8,11 @@
 // For information on using the generated types, please see the documentation:
 //   https://github.com/apple/swift-protobuf/
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 import SwiftProtobuf
 
 // If the compiler emits an error on this type, it is because this file
@@ -16,12 +20,12 @@ import SwiftProtobuf
 // incompatible with the version of SwiftProtobuf to which you are linking.
 // Please ensure that you are building against the same version of the API
 // that was used to generate this file.
-fileprivate struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAPIVersionCheck {
+fileprivate nonisolated struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAPIVersionCheck {
   struct _2: SwiftProtobuf.ProtobufAPIVersion_2 {}
   typealias Version = _2
 }
 
-public enum ProtonPassItemV1_WifiSecurity: SwiftProtobuf.Enum, Swift.CaseIterable {
+public nonisolated enum ProtonPassItemV1_WifiSecurity: SwiftProtobuf.Enum, Swift.CaseIterable {
   public typealias RawValue = Int
   case unspecifiedWifiSecurity // = 0
   case wpa // = 1
@@ -68,7 +72,7 @@ public enum ProtonPassItemV1_WifiSecurity: SwiftProtobuf.Enum, Swift.CaseIterabl
 }
 
 /// Credit cards
-public enum ProtonPassItemV1_CardType: SwiftProtobuf.Enum, Swift.CaseIterable {
+public nonisolated enum ProtonPassItemV1_CardType: SwiftProtobuf.Enum, Swift.CaseIterable {
   public typealias RawValue = Int
   case unspecified // = 0
   case other // = 1
@@ -114,7 +118,7 @@ public enum ProtonPassItemV1_CardType: SwiftProtobuf.Enum, Swift.CaseIterable {
 
 }
 
-public struct ProtonPassItemV1_ItemNote: Sendable {
+public nonisolated struct ProtonPassItemV1_ItemNote: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -124,7 +128,7 @@ public struct ProtonPassItemV1_ItemNote: Sendable {
   public init() {}
 }
 
-public struct ProtonPassItemV1_PasskeyCreationData: Sendable {
+public nonisolated struct ProtonPassItemV1_PasskeyCreationData: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -142,7 +146,7 @@ public struct ProtonPassItemV1_PasskeyCreationData: Sendable {
   public init() {}
 }
 
-public struct ProtonPassItemV1_Passkey: Sendable {
+public nonisolated struct ProtonPassItemV1_Passkey: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -172,11 +176,11 @@ public struct ProtonPassItemV1_Passkey: Sendable {
   public var userHandle: Data = Data()
 
   public var creationData: ProtonPassItemV1_PasskeyCreationData {
-    get {return _creationData ?? ProtonPassItemV1_PasskeyCreationData()}
+    get {_creationData ?? ProtonPassItemV1_PasskeyCreationData()}
     set {_creationData = newValue}
   }
   /// Returns true if `creationData` has been explicitly set.
-  public var hasCreationData: Bool {return self._creationData != nil}
+  public var hasCreationData: Bool {self._creationData != nil}
   /// Clears the value of `creationData`. Subsequent reads from it will return its default value.
   public mutating func clearCreationData() {self._creationData = nil}
 
@@ -187,7 +191,75 @@ public struct ProtonPassItemV1_Passkey: Sendable {
   fileprivate var _creationData: ProtonPassItemV1_PasskeyCreationData? = nil
 }
 
-public struct ProtonPassItemV1_ItemLogin: Sendable {
+public nonisolated struct ProtonPassItemV1_AutofillUrl: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  public var url: String = String()
+
+  public var mode: ProtonPassItemV1_AutofillUrl.Mode = .default
+
+  public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  public nonisolated enum Mode: SwiftProtobuf.Enum, Swift.CaseIterable {
+    public typealias RawValue = Int
+    case `default` // = 0
+    case exact // = 1
+    case never // = 2
+    case startWith // = 3
+    case pattern // = 4
+    case regularExpression // = 5
+    case exactPath // = 6
+    case UNRECOGNIZED(Int)
+
+    public init() {
+      self = .default
+    }
+
+    public init?(rawValue: Int) {
+      switch rawValue {
+      case 0: self = .default
+      case 1: self = .exact
+      case 2: self = .never
+      case 3: self = .startWith
+      case 4: self = .pattern
+      case 5: self = .regularExpression
+      case 6: self = .exactPath
+      default: self = .UNRECOGNIZED(rawValue)
+      }
+    }
+
+    public var rawValue: Int {
+      switch self {
+      case .default: return 0
+      case .exact: return 1
+      case .never: return 2
+      case .startWith: return 3
+      case .pattern: return 4
+      case .regularExpression: return 5
+      case .exactPath: return 6
+      case .UNRECOGNIZED(let i): return i
+      }
+    }
+
+    // The compiler won't synthesize support with the UNRECOGNIZED case.
+    public static let allCases: [ProtonPassItemV1_AutofillUrl.Mode] = [
+      .default,
+      .exact,
+      .never,
+      .startWith,
+      .pattern,
+      .regularExpression,
+      .exactPath,
+    ]
+
+  }
+
+  public init() {}
+}
+
+public nonisolated struct ProtonPassItemV1_ItemLogin: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -204,12 +276,14 @@ public struct ProtonPassItemV1_ItemLogin: Sendable {
 
   public var itemUsername: String = String()
 
+  public var autofillUrls: [ProtonPassItemV1_AutofillUrl] = []
+
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
   public init() {}
 }
 
-public struct ProtonPassItemV1_ItemAlias: Sendable {
+public nonisolated struct ProtonPassItemV1_ItemAlias: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -219,7 +293,7 @@ public struct ProtonPassItemV1_ItemAlias: Sendable {
   public init() {}
 }
 
-public struct ProtonPassItemV1_CustomSection: Sendable {
+public nonisolated struct ProtonPassItemV1_CustomSection: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -233,7 +307,7 @@ public struct ProtonPassItemV1_CustomSection: Sendable {
   public init() {}
 }
 
-public struct ProtonPassItemV1_ItemCustom: Sendable {
+public nonisolated struct ProtonPassItemV1_ItemCustom: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -245,7 +319,7 @@ public struct ProtonPassItemV1_ItemCustom: Sendable {
   public init() {}
 }
 
-public struct ProtonPassItemV1_ItemSSHKey: Sendable {
+public nonisolated struct ProtonPassItemV1_ItemSSHKey: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -261,7 +335,7 @@ public struct ProtonPassItemV1_ItemSSHKey: Sendable {
   public init() {}
 }
 
-public struct ProtonPassItemV1_ItemWifi: Sendable {
+public nonisolated struct ProtonPassItemV1_ItemWifi: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -279,7 +353,7 @@ public struct ProtonPassItemV1_ItemWifi: Sendable {
   public init() {}
 }
 
-public struct ProtonPassItemV1_ItemCreditCard: Sendable {
+public nonisolated struct ProtonPassItemV1_ItemCreditCard: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -302,7 +376,7 @@ public struct ProtonPassItemV1_ItemCreditCard: Sendable {
   public init() {}
 }
 
-public struct ProtonPassItemV1_ItemIdentity: @unchecked Sendable {
+public nonisolated struct ProtonPassItemV1_ItemIdentity: @unchecked Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -310,198 +384,198 @@ public struct ProtonPassItemV1_ItemIdentity: @unchecked Sendable {
   /// Personal details
   /// Shown
   public var fullName: String {
-    get {return _storage._fullName}
+    get {_storage._fullName}
     set {_uniqueStorage()._fullName = newValue}
   }
 
   public var email: String {
-    get {return _storage._email}
+    get {_storage._email}
     set {_uniqueStorage()._email = newValue}
   }
 
   public var phoneNumber: String {
-    get {return _storage._phoneNumber}
+    get {_storage._phoneNumber}
     set {_uniqueStorage()._phoneNumber = newValue}
   }
 
   /// Additional
   public var firstName: String {
-    get {return _storage._firstName}
+    get {_storage._firstName}
     set {_uniqueStorage()._firstName = newValue}
   }
 
   public var middleName: String {
-    get {return _storage._middleName}
+    get {_storage._middleName}
     set {_uniqueStorage()._middleName = newValue}
   }
 
   public var lastName: String {
-    get {return _storage._lastName}
+    get {_storage._lastName}
     set {_uniqueStorage()._lastName = newValue}
   }
 
   public var birthdate: String {
-    get {return _storage._birthdate}
+    get {_storage._birthdate}
     set {_uniqueStorage()._birthdate = newValue}
   }
 
   public var gender: String {
-    get {return _storage._gender}
+    get {_storage._gender}
     set {_uniqueStorage()._gender = newValue}
   }
 
   public var extraPersonalDetails: [ProtonPassItemV1_ExtraField] {
-    get {return _storage._extraPersonalDetails}
+    get {_storage._extraPersonalDetails}
     set {_uniqueStorage()._extraPersonalDetails = newValue}
   }
 
   /// Address details
   /// Shown
   public var organization: String {
-    get {return _storage._organization}
+    get {_storage._organization}
     set {_uniqueStorage()._organization = newValue}
   }
 
   public var streetAddress: String {
-    get {return _storage._streetAddress}
+    get {_storage._streetAddress}
     set {_uniqueStorage()._streetAddress = newValue}
   }
 
   public var zipOrPostalCode: String {
-    get {return _storage._zipOrPostalCode}
+    get {_storage._zipOrPostalCode}
     set {_uniqueStorage()._zipOrPostalCode = newValue}
   }
 
   public var city: String {
-    get {return _storage._city}
+    get {_storage._city}
     set {_uniqueStorage()._city = newValue}
   }
 
   public var stateOrProvince: String {
-    get {return _storage._stateOrProvince}
+    get {_storage._stateOrProvince}
     set {_uniqueStorage()._stateOrProvince = newValue}
   }
 
   public var countryOrRegion: String {
-    get {return _storage._countryOrRegion}
+    get {_storage._countryOrRegion}
     set {_uniqueStorage()._countryOrRegion = newValue}
   }
 
   /// Additional
   public var floor: String {
-    get {return _storage._floor}
+    get {_storage._floor}
     set {_uniqueStorage()._floor = newValue}
   }
 
   public var county: String {
-    get {return _storage._county}
+    get {_storage._county}
     set {_uniqueStorage()._county = newValue}
   }
 
   public var extraAddressDetails: [ProtonPassItemV1_ExtraField] {
-    get {return _storage._extraAddressDetails}
+    get {_storage._extraAddressDetails}
     set {_uniqueStorage()._extraAddressDetails = newValue}
   }
 
   /// Contact details
   /// Shown
   public var socialSecurityNumber: String {
-    get {return _storage._socialSecurityNumber}
+    get {_storage._socialSecurityNumber}
     set {_uniqueStorage()._socialSecurityNumber = newValue}
   }
 
   public var passportNumber: String {
-    get {return _storage._passportNumber}
+    get {_storage._passportNumber}
     set {_uniqueStorage()._passportNumber = newValue}
   }
 
   public var licenseNumber: String {
-    get {return _storage._licenseNumber}
+    get {_storage._licenseNumber}
     set {_uniqueStorage()._licenseNumber = newValue}
   }
 
   public var website: String {
-    get {return _storage._website}
+    get {_storage._website}
     set {_uniqueStorage()._website = newValue}
   }
 
   public var xHandle: String {
-    get {return _storage._xHandle}
+    get {_storage._xHandle}
     set {_uniqueStorage()._xHandle = newValue}
   }
 
   public var secondPhoneNumber: String {
-    get {return _storage._secondPhoneNumber}
+    get {_storage._secondPhoneNumber}
     set {_uniqueStorage()._secondPhoneNumber = newValue}
   }
 
   /// Additional
   public var linkedin: String {
-    get {return _storage._linkedin}
+    get {_storage._linkedin}
     set {_uniqueStorage()._linkedin = newValue}
   }
 
   public var reddit: String {
-    get {return _storage._reddit}
+    get {_storage._reddit}
     set {_uniqueStorage()._reddit = newValue}
   }
 
   public var facebook: String {
-    get {return _storage._facebook}
+    get {_storage._facebook}
     set {_uniqueStorage()._facebook = newValue}
   }
 
   public var yahoo: String {
-    get {return _storage._yahoo}
+    get {_storage._yahoo}
     set {_uniqueStorage()._yahoo = newValue}
   }
 
   public var instagram: String {
-    get {return _storage._instagram}
+    get {_storage._instagram}
     set {_uniqueStorage()._instagram = newValue}
   }
 
   public var extraContactDetails: [ProtonPassItemV1_ExtraField] {
-    get {return _storage._extraContactDetails}
+    get {_storage._extraContactDetails}
     set {_uniqueStorage()._extraContactDetails = newValue}
   }
 
   /// Work details
   /// Shown
   public var company: String {
-    get {return _storage._company}
+    get {_storage._company}
     set {_uniqueStorage()._company = newValue}
   }
 
   public var jobTitle: String {
-    get {return _storage._jobTitle}
+    get {_storage._jobTitle}
     set {_uniqueStorage()._jobTitle = newValue}
   }
 
   /// Additional
   public var personalWebsite: String {
-    get {return _storage._personalWebsite}
+    get {_storage._personalWebsite}
     set {_uniqueStorage()._personalWebsite = newValue}
   }
 
   public var workPhoneNumber: String {
-    get {return _storage._workPhoneNumber}
+    get {_storage._workPhoneNumber}
     set {_uniqueStorage()._workPhoneNumber = newValue}
   }
 
   public var workEmail: String {
-    get {return _storage._workEmail}
+    get {_storage._workEmail}
     set {_uniqueStorage()._workEmail = newValue}
   }
 
   public var extraWorkDetails: [ProtonPassItemV1_ExtraField] {
-    get {return _storage._extraWorkDetails}
+    get {_storage._extraWorkDetails}
     set {_uniqueStorage()._extraWorkDetails = newValue}
   }
 
   /// Extra sections
   public var extraSections: [ProtonPassItemV1_CustomSection] {
-    get {return _storage._extraSections}
+    get {_storage._extraSections}
     set {_uniqueStorage()._extraSections = newValue}
   }
 
@@ -513,7 +587,7 @@ public struct ProtonPassItemV1_ItemIdentity: @unchecked Sendable {
 }
 
 /// Client extras
-public struct ProtonPassItemV1_AllowedAndroidApp: Sendable {
+public nonisolated struct ProtonPassItemV1_AllowedAndroidApp: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -529,7 +603,7 @@ public struct ProtonPassItemV1_AllowedAndroidApp: Sendable {
   public init() {}
 }
 
-public struct ProtonPassItemV1_AndroidSpecific: Sendable {
+public nonisolated struct ProtonPassItemV1_AndroidSpecific: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -541,17 +615,17 @@ public struct ProtonPassItemV1_AndroidSpecific: Sendable {
   public init() {}
 }
 
-public struct ProtonPassItemV1_PlatformSpecific: Sendable {
+public nonisolated struct ProtonPassItemV1_PlatformSpecific: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
   public var android: ProtonPassItemV1_AndroidSpecific {
-    get {return _android ?? ProtonPassItemV1_AndroidSpecific()}
+    get {_android ?? ProtonPassItemV1_AndroidSpecific()}
     set {_android = newValue}
   }
   /// Returns true if `android` has been explicitly set.
-  public var hasAndroid: Bool {return self._android != nil}
+  public var hasAndroid: Bool {self._android != nil}
   /// Clears the value of `android`. Subsequent reads from it will return its default value.
   public mutating func clearAndroid() {self._android = nil}
 
@@ -562,7 +636,7 @@ public struct ProtonPassItemV1_PlatformSpecific: Sendable {
   fileprivate var _android: ProtonPassItemV1_AndroidSpecific? = nil
 }
 
-public struct ProtonPassItemV1_ExtraTotp: Sendable {
+public nonisolated struct ProtonPassItemV1_ExtraTotp: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -574,7 +648,7 @@ public struct ProtonPassItemV1_ExtraTotp: Sendable {
   public init() {}
 }
 
-public struct ProtonPassItemV1_ExtraTextField: Sendable {
+public nonisolated struct ProtonPassItemV1_ExtraTextField: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -586,7 +660,7 @@ public struct ProtonPassItemV1_ExtraTextField: Sendable {
   public init() {}
 }
 
-public struct ProtonPassItemV1_ExtraHiddenField: Sendable {
+public nonisolated struct ProtonPassItemV1_ExtraHiddenField: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -598,17 +672,17 @@ public struct ProtonPassItemV1_ExtraHiddenField: Sendable {
   public init() {}
 }
 
-public struct ProtonPassItemV1_ExtraTimestampField: Sendable {
+public nonisolated struct ProtonPassItemV1_ExtraTimestampField: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
   public var timestamp: SwiftProtobuf.Google_Protobuf_Timestamp {
-    get {return _timestamp ?? SwiftProtobuf.Google_Protobuf_Timestamp()}
+    get {_timestamp ?? SwiftProtobuf.Google_Protobuf_Timestamp()}
     set {_timestamp = newValue}
   }
   /// Returns true if `timestamp` has been explicitly set.
-  public var hasTimestamp: Bool {return self._timestamp != nil}
+  public var hasTimestamp: Bool {self._timestamp != nil}
   /// Clears the value of `timestamp`. Subsequent reads from it will return its default value.
   public mutating func clearTimestamp() {self._timestamp = nil}
 
@@ -619,7 +693,7 @@ public struct ProtonPassItemV1_ExtraTimestampField: Sendable {
   fileprivate var _timestamp: SwiftProtobuf.Google_Protobuf_Timestamp? = nil
 }
 
-public struct ProtonPassItemV1_ExtraField: Sendable {
+public nonisolated struct ProtonPassItemV1_ExtraField: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -662,7 +736,7 @@ public struct ProtonPassItemV1_ExtraField: Sendable {
 
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
-  public enum OneOf_Content: Equatable, Sendable {
+  public nonisolated enum OneOf_Content: Equatable, Sendable {
     case totp(ProtonPassItemV1_ExtraTotp)
     case text(ProtonPassItemV1_ExtraTextField)
     case hidden(ProtonPassItemV1_ExtraHiddenField)
@@ -673,7 +747,7 @@ public struct ProtonPassItemV1_ExtraField: Sendable {
   public init() {}
 }
 
-public struct ProtonPassItemV1_Metadata: Sendable {
+public nonisolated struct ProtonPassItemV1_Metadata: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -689,7 +763,7 @@ public struct ProtonPassItemV1_Metadata: Sendable {
   public init() {}
 }
 
-public struct ProtonPassItemV1_Content: Sendable {
+public nonisolated struct ProtonPassItemV1_Content: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -764,7 +838,7 @@ public struct ProtonPassItemV1_Content: Sendable {
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
   /// No case 1 to avoid having a default
-  public enum OneOf_Content: Equatable, Sendable {
+  public nonisolated enum OneOf_Content: Equatable, Sendable {
     case note(ProtonPassItemV1_ItemNote)
     case login(ProtonPassItemV1_ItemLogin)
     case alias(ProtonPassItemV1_ItemAlias)
@@ -779,35 +853,35 @@ public struct ProtonPassItemV1_Content: Sendable {
   public init() {}
 }
 
-public struct ProtonPassItemV1_Item: Sendable {
+public nonisolated struct ProtonPassItemV1_Item: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
   public var metadata: ProtonPassItemV1_Metadata {
-    get {return _metadata ?? ProtonPassItemV1_Metadata()}
+    get {_metadata ?? ProtonPassItemV1_Metadata()}
     set {_metadata = newValue}
   }
   /// Returns true if `metadata` has been explicitly set.
-  public var hasMetadata: Bool {return self._metadata != nil}
+  public var hasMetadata: Bool {self._metadata != nil}
   /// Clears the value of `metadata`. Subsequent reads from it will return its default value.
   public mutating func clearMetadata() {self._metadata = nil}
 
   public var content: ProtonPassItemV1_Content {
-    get {return _content ?? ProtonPassItemV1_Content()}
+    get {_content ?? ProtonPassItemV1_Content()}
     set {_content = newValue}
   }
   /// Returns true if `content` has been explicitly set.
-  public var hasContent: Bool {return self._content != nil}
+  public var hasContent: Bool {self._content != nil}
   /// Clears the value of `content`. Subsequent reads from it will return its default value.
   public mutating func clearContent() {self._content = nil}
 
   public var platformSpecific: ProtonPassItemV1_PlatformSpecific {
-    get {return _platformSpecific ?? ProtonPassItemV1_PlatformSpecific()}
+    get {_platformSpecific ?? ProtonPassItemV1_PlatformSpecific()}
     set {_platformSpecific = newValue}
   }
   /// Returns true if `platformSpecific` has been explicitly set.
-  public var hasPlatformSpecific: Bool {return self._platformSpecific != nil}
+  public var hasPlatformSpecific: Bool {self._platformSpecific != nil}
   /// Clears the value of `platformSpecific`. Subsequent reads from it will return its default value.
   public mutating func clearPlatformSpecific() {self._platformSpecific = nil}
 
@@ -824,17 +898,17 @@ public struct ProtonPassItemV1_Item: Sendable {
 
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
 
-fileprivate let _protobuf_package = "proton_pass_item_v1"
+fileprivate nonisolated let _protobuf_package = "proton_pass_item_v1"
 
-extension ProtonPassItemV1_WifiSecurity: SwiftProtobuf._ProtoNameProviding {
+nonisolated extension ProtonPassItemV1_WifiSecurity: SwiftProtobuf._ProtoNameProviding {
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{2}\0UnspecifiedWifiSecurity\0\u{1}WPA\0\u{1}WPA2\0\u{1}WPA3\0\u{1}WEP\0")
 }
 
-extension ProtonPassItemV1_CardType: SwiftProtobuf._ProtoNameProviding {
+nonisolated extension ProtonPassItemV1_CardType: SwiftProtobuf._ProtoNameProviding {
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{2}\0Unspecified\0\u{1}Other\0\u{1}Visa\0\u{1}Mastercard\0\u{1}AmericanExpress\0")
 }
 
-extension ProtonPassItemV1_ItemNote: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+nonisolated extension ProtonPassItemV1_ItemNote: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ItemNote"
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap()
 
@@ -853,7 +927,7 @@ extension ProtonPassItemV1_ItemNote: SwiftProtobuf.Message, SwiftProtobuf._Messa
   }
 }
 
-extension ProtonPassItemV1_PasskeyCreationData: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+nonisolated extension ProtonPassItemV1_PasskeyCreationData: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".PasskeyCreationData"
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}os_name\0\u{3}os_version\0\u{3}device_name\0\u{3}app_version\0")
 
@@ -898,7 +972,7 @@ extension ProtonPassItemV1_PasskeyCreationData: SwiftProtobuf.Message, SwiftProt
   }
 }
 
-extension ProtonPassItemV1_Passkey: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+nonisolated extension ProtonPassItemV1_Passkey: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".Passkey"
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}key_id\0\u{1}content\0\u{1}domain\0\u{3}rp_id\0\u{3}rp_name\0\u{3}user_name\0\u{3}user_display_name\0\u{3}user_id\0\u{3}create_time\0\u{1}note\0\u{3}credential_id\0\u{3}user_handle\0\u{3}creation_data\0")
 
@@ -992,9 +1066,48 @@ extension ProtonPassItemV1_Passkey: SwiftProtobuf.Message, SwiftProtobuf._Messag
   }
 }
 
-extension ProtonPassItemV1_ItemLogin: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+nonisolated extension ProtonPassItemV1_AutofillUrl: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = _protobuf_package + ".AutofillUrl"
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}url\0\u{1}mode\0")
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.url) }()
+      case 2: try { try decoder.decodeSingularEnumField(value: &self.mode) }()
+      default: break
+      }
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.url.isEmpty {
+      try visitor.visitSingularStringField(value: self.url, fieldNumber: 1)
+    }
+    if self.mode != .default {
+      try visitor.visitSingularEnumField(value: self.mode, fieldNumber: 2)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: ProtonPassItemV1_AutofillUrl, rhs: ProtonPassItemV1_AutofillUrl) -> Bool {
+    if lhs.url != rhs.url {return false}
+    if lhs.mode != rhs.mode {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+nonisolated extension ProtonPassItemV1_AutofillUrl.Mode: SwiftProtobuf._ProtoNameProviding {
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{2}\0Default\0\u{1}Exact\0\u{1}Never\0\u{1}StartWith\0\u{1}Pattern\0\u{1}RegularExpression\0\u{1}ExactPath\0")
+}
+
+nonisolated extension ProtonPassItemV1_ItemLogin: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ItemLogin"
-  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}item_email\0\u{1}password\0\u{1}urls\0\u{3}totp_uri\0\u{1}passkeys\0\u{3}item_username\0")
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}item_email\0\u{1}password\0\u{1}urls\0\u{3}totp_uri\0\u{1}passkeys\0\u{3}item_username\0\u{3}autofill_urls\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -1008,6 +1121,7 @@ extension ProtonPassItemV1_ItemLogin: SwiftProtobuf.Message, SwiftProtobuf._Mess
       case 4: try { try decoder.decodeSingularStringField(value: &self.totpUri) }()
       case 5: try { try decoder.decodeRepeatedMessageField(value: &self.passkeys) }()
       case 6: try { try decoder.decodeSingularStringField(value: &self.itemUsername) }()
+      case 7: try { try decoder.decodeRepeatedMessageField(value: &self.autofillUrls) }()
       default: break
       }
     }
@@ -1032,6 +1146,9 @@ extension ProtonPassItemV1_ItemLogin: SwiftProtobuf.Message, SwiftProtobuf._Mess
     if !self.itemUsername.isEmpty {
       try visitor.visitSingularStringField(value: self.itemUsername, fieldNumber: 6)
     }
+    if !self.autofillUrls.isEmpty {
+      try visitor.visitRepeatedMessageField(value: self.autofillUrls, fieldNumber: 7)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -1042,12 +1159,13 @@ extension ProtonPassItemV1_ItemLogin: SwiftProtobuf.Message, SwiftProtobuf._Mess
     if lhs.totpUri != rhs.totpUri {return false}
     if lhs.passkeys != rhs.passkeys {return false}
     if lhs.itemUsername != rhs.itemUsername {return false}
+    if lhs.autofillUrls != rhs.autofillUrls {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension ProtonPassItemV1_ItemAlias: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+nonisolated extension ProtonPassItemV1_ItemAlias: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ItemAlias"
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap()
 
@@ -1066,7 +1184,7 @@ extension ProtonPassItemV1_ItemAlias: SwiftProtobuf.Message, SwiftProtobuf._Mess
   }
 }
 
-extension ProtonPassItemV1_CustomSection: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+nonisolated extension ProtonPassItemV1_CustomSection: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".CustomSection"
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}section_name\0\u{3}section_fields\0")
 
@@ -1101,7 +1219,7 @@ extension ProtonPassItemV1_CustomSection: SwiftProtobuf.Message, SwiftProtobuf._
   }
 }
 
-extension ProtonPassItemV1_ItemCustom: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+nonisolated extension ProtonPassItemV1_ItemCustom: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ItemCustom"
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}sections\0")
 
@@ -1131,7 +1249,7 @@ extension ProtonPassItemV1_ItemCustom: SwiftProtobuf.Message, SwiftProtobuf._Mes
   }
 }
 
-extension ProtonPassItemV1_ItemSSHKey: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+nonisolated extension ProtonPassItemV1_ItemSSHKey: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ItemSSHKey"
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}private_key\0\u{3}public_key\0\u{1}sections\0")
 
@@ -1171,7 +1289,7 @@ extension ProtonPassItemV1_ItemSSHKey: SwiftProtobuf.Message, SwiftProtobuf._Mes
   }
 }
 
-extension ProtonPassItemV1_ItemWifi: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+nonisolated extension ProtonPassItemV1_ItemWifi: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ItemWifi"
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}ssid\0\u{1}password\0\u{1}security\0\u{1}sections\0")
 
@@ -1216,7 +1334,7 @@ extension ProtonPassItemV1_ItemWifi: SwiftProtobuf.Message, SwiftProtobuf._Messa
   }
 }
 
-extension ProtonPassItemV1_ItemCreditCard: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+nonisolated extension ProtonPassItemV1_ItemCreditCard: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ItemCreditCard"
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}cardholder_name\0\u{3}card_type\0\u{1}number\0\u{3}verification_number\0\u{3}expiration_date\0\u{1}pin\0")
 
@@ -1271,7 +1389,7 @@ extension ProtonPassItemV1_ItemCreditCard: SwiftProtobuf.Message, SwiftProtobuf.
   }
 }
 
-extension ProtonPassItemV1_ItemIdentity: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+nonisolated extension ProtonPassItemV1_ItemIdentity: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ItemIdentity"
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}full_name\0\u{1}email\0\u{3}phone_number\0\u{3}first_name\0\u{3}middle_name\0\u{3}last_name\0\u{1}birthdate\0\u{1}gender\0\u{3}extra_personal_details\0\u{1}organization\0\u{3}street_address\0\u{3}zip_or_postal_code\0\u{1}city\0\u{3}state_or_province\0\u{3}country_or_region\0\u{1}floor\0\u{1}county\0\u{3}extra_address_details\0\u{3}social_security_number\0\u{3}passport_number\0\u{3}license_number\0\u{1}website\0\u{3}x_handle\0\u{3}second_phone_number\0\u{1}linkedin\0\u{1}reddit\0\u{1}facebook\0\u{1}yahoo\0\u{1}instagram\0\u{3}extra_contact_details\0\u{1}company\0\u{3}job_title\0\u{3}personal_website\0\u{3}work_phone_number\0\u{3}work_email\0\u{3}extra_work_details\0\u{3}extra_sections\0")
 
@@ -1589,7 +1707,7 @@ extension ProtonPassItemV1_ItemIdentity: SwiftProtobuf.Message, SwiftProtobuf._M
   }
 }
 
-extension ProtonPassItemV1_AllowedAndroidApp: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+nonisolated extension ProtonPassItemV1_AllowedAndroidApp: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".AllowedAndroidApp"
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}package_name\0\u{1}hashes\0\u{3}app_name\0")
 
@@ -1629,7 +1747,7 @@ extension ProtonPassItemV1_AllowedAndroidApp: SwiftProtobuf.Message, SwiftProtob
   }
 }
 
-extension ProtonPassItemV1_AndroidSpecific: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+nonisolated extension ProtonPassItemV1_AndroidSpecific: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".AndroidSpecific"
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}allowed_apps\0")
 
@@ -1659,7 +1777,7 @@ extension ProtonPassItemV1_AndroidSpecific: SwiftProtobuf.Message, SwiftProtobuf
   }
 }
 
-extension ProtonPassItemV1_PlatformSpecific: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+nonisolated extension ProtonPassItemV1_PlatformSpecific: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".PlatformSpecific"
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}android\0")
 
@@ -1693,7 +1811,7 @@ extension ProtonPassItemV1_PlatformSpecific: SwiftProtobuf.Message, SwiftProtobu
   }
 }
 
-extension ProtonPassItemV1_ExtraTotp: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+nonisolated extension ProtonPassItemV1_ExtraTotp: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ExtraTotp"
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}totp_uri\0")
 
@@ -1723,7 +1841,7 @@ extension ProtonPassItemV1_ExtraTotp: SwiftProtobuf.Message, SwiftProtobuf._Mess
   }
 }
 
-extension ProtonPassItemV1_ExtraTextField: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+nonisolated extension ProtonPassItemV1_ExtraTextField: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ExtraTextField"
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}content\0")
 
@@ -1753,7 +1871,7 @@ extension ProtonPassItemV1_ExtraTextField: SwiftProtobuf.Message, SwiftProtobuf.
   }
 }
 
-extension ProtonPassItemV1_ExtraHiddenField: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+nonisolated extension ProtonPassItemV1_ExtraHiddenField: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ExtraHiddenField"
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}content\0")
 
@@ -1783,7 +1901,7 @@ extension ProtonPassItemV1_ExtraHiddenField: SwiftProtobuf.Message, SwiftProtobu
   }
 }
 
-extension ProtonPassItemV1_ExtraTimestampField: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+nonisolated extension ProtonPassItemV1_ExtraTimestampField: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ExtraTimestampField"
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}timestamp\0")
 
@@ -1817,7 +1935,7 @@ extension ProtonPassItemV1_ExtraTimestampField: SwiftProtobuf.Message, SwiftProt
   }
 }
 
-extension ProtonPassItemV1_ExtraField: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+nonisolated extension ProtonPassItemV1_ExtraField: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ExtraField"
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}field_name\0\u{1}totp\0\u{1}text\0\u{1}hidden\0\u{1}timestamp\0")
 
@@ -1923,7 +2041,7 @@ extension ProtonPassItemV1_ExtraField: SwiftProtobuf.Message, SwiftProtobuf._Mes
   }
 }
 
-extension ProtonPassItemV1_Metadata: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+nonisolated extension ProtonPassItemV1_Metadata: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".Metadata"
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}name\0\u{1}note\0\u{3}item_uuid\0")
 
@@ -1963,7 +2081,7 @@ extension ProtonPassItemV1_Metadata: SwiftProtobuf.Message, SwiftProtobuf._Messa
   }
 }
 
-extension ProtonPassItemV1_Content: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+nonisolated extension ProtonPassItemV1_Content: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".Content"
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{2}\u{2}note\0\u{1}login\0\u{1}alias\0\u{3}credit_card\0\u{1}identity\0\u{3}ssh_key\0\u{1}wifi\0\u{1}custom\0")
 
@@ -2132,7 +2250,7 @@ extension ProtonPassItemV1_Content: SwiftProtobuf.Message, SwiftProtobuf._Messag
   }
 }
 
-extension ProtonPassItemV1_Item: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+nonisolated extension ProtonPassItemV1_Item: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".Item"
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}metadata\0\u{1}content\0\u{3}platform_specific\0\u{3}extra_fields\0")
 
