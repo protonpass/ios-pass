@@ -4868,6 +4868,16 @@
         }
       }
     },
+    "Advanced" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Advanced"
+          }
+        }
+      }
+    },
     "All accounts (%lld)" : {
       "comment" : "Placeholder is a number of total logged in accounts",
       "localizations" : {
@@ -6431,6 +6441,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在 Safari 和其他應用程式中，以非常快速簡單的方式自動輸入您的密碼字元。"
+          }
+        }
+      }
+    },
+    "Basic" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Basic"
           }
         }
       }
@@ -31068,6 +31088,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "從你的裝置上傳檔案"
+          }
+        }
+      }
+    },
+    "URL matching" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "URL matching"
           }
         }
       }
