@@ -78,6 +78,8 @@ final class AssociateUrlAndAutoFill: AssociateUrlAndAutoFillUseCase {
                                                        password: oldData.password,
                                                        totpUri: oldData.totpUri,
                                                        urls: oldData.urls + [newUrl],
+                                                       // TODO: append new autofill URL here
+                                                       autofillUrls: oldData.autofillUrls,
                                                        allowedAndroidApps: oldData.allowedAndroidApps,
                                                        passkeys: oldData.passkeys))
         let newContent = ItemContentProtobuf(name: oldContent.name,

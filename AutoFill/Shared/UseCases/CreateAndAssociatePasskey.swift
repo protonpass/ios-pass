@@ -77,6 +77,7 @@ final class CreateAndAssociatePasskey: CreateAndAssociatePasskeyUseCase {
                                                        password: oldLoginData.password,
                                                        totpUri: oldLoginData.totpUri,
                                                        urls: oldLoginData.urls,
+                                                       autofillUrls: oldLoginData.autofillUrls,
                                                        allowedAndroidApps: oldLoginData.allowedAndroidApps,
                                                        passkeys: newPasskeys))
         let newContent = ItemContentProtobuf(name: oldItemContent.name,
