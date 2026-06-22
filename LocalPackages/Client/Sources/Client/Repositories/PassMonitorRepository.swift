@@ -317,11 +317,9 @@ private extension PassMonitorRepository {
         let shares = try await shareRepository.getShares(userId: userId)
         let applicableShareIds = shares
             .compactMapToSet { share -> String? in
-                guard share.share.visible else { return nil }
-
-                if userOwned, !share.share.owner {
-                    return nil
-                }
+                guard share.share.visible,
+                      !userOwned || share.share.owner
+                else { return nil }
                 return share.share.shareID
             }
 
@@ -352,9 +350,7 @@ private extension PassMonitorRepository {
     /// detected weaknesses of any item in `breachedItemIds` (empty for the synchronous/base pass).
     func buildStats(_ inputs: WeaknessComputation,
                     breachedItemIds: Set<String>) -> (WeaknessStats, [SecurityAffectedItem]) {
-        var securityAffectedItems = [SecurityAffectedItem]()
-
-        for item in inputs.loginItems {
+        let securityAffectedItems = inputs.loginItems.compactMap { item in
             let isReused = inputs.reusedPasswords.contains(item.loginData.password)
             var detected = weaknessEvaluator.evaluate(item.loginData, isReused: isReused)
             if breachedItemIds.contains(item.content.itemId) {
@@ -365,22 +361,47 @@ private extension PassMonitorRepository {
                                                     detected: detected,
                                                     display: item.content.toItemUiModel,
                                                     reuseToken: reuseToken(for: item.loginData.password))
-            if !detected.isEmpty || affectedItem.isExcludedItem {
-                securityAffectedItems.append(affectedItem)
+
+            return if !detected.isEmpty || affectedItem.isExcludedItem {
+                affectedItem
+            } else {
+                nil
+            }
+//            (!detected.isEmpty || affectedItem.isExcludedItem)
+//                ? affectedItem
+//                : nil
+        }
+
+        var weakPasswordCount = 0
+        var missing2FACount = 0
+        var excludedItemsCount = 0
+        var compromisedPasswordCount = 0
+
+        for item in securityAffectedItems {
+            if item.activeWeaknesses.contains(.weakPassword) {
+                weakPasswordCount += 1
+            }
+
+            if item.activeWeaknesses.contains(.missing2FA) {
+                missing2FACount += 1
+            }
+
+            if item.activeWeaknesses.contains(.compromisedPassword) {
+                compromisedPasswordCount += 1
+            }
+
+            if item.isExcludedItem {
+                excludedItemsCount += 1
             }
         }
 
-        let counts: [WeaknessKind: Int] = [
-            .weakPassword: securityAffectedItems
-                .count(where: { $0.activeWeaknesses.contains(.weakPassword) }),
+        let stats = WeaknessStats(counts: [
+            .weakPassword: weakPasswordCount,
             .reusedPassword: inputs.reusedPasswords.count,
-            .compromisedPassword: securityAffectedItems
-                .count(where: { $0.activeWeaknesses.contains(.compromisedPassword) }),
-            .missing2FA: securityAffectedItems
-                .count(where: { $0.activeWeaknesses.contains(.missing2FA) })
-        ]
-        let stats = WeaknessStats(counts: counts,
-                                  excludedItems: securityAffectedItems.filter(\.isExcludedItem).count)
+            .compromisedPassword: compromisedPasswordCount,
+            .missing2FA: missing2FACount
+        ],
+        excludedItems: excludedItemsCount)
         return (stats, securityAffectedItems)
     }
 
