@@ -42,15 +42,17 @@ public extension UpdateItemRequest {
     init(oldRevision: Item,
          key: Data,
          keyRotation: Int64,
-         itemContent: any ProtobufableItemContentProtocol) throws {
+         itemContent: any ProtobufableItemContentProtocol,
+         domainMatchingSupported: Bool) throws {
         let updatedContent = try AES.GCM.seal(itemContent.data(),
                                               key: key,
                                               associatedData: .itemContent)
 
+        let cfv = Constants.ContentFormatVersion.item(domainMatchingSupported: domainMatchingSupported)
         self.init(keyRotation: keyRotation,
                   lastRevision: oldRevision.revision,
                   content: updatedContent.base64EncodedString(),
-                  contentFormatVersion: Int16(Constants.ContentFormatVersion.item))
+                  contentFormatVersion: Int16(cfv))
     }
 }
 

@@ -48,7 +48,8 @@ public struct ItemToImport: Encodable, Sendable {
     }
 
     init(containerKey: any CryptographicKeyProtocol,
-         itemContent: any ProtobufableItemContentProtocol) throws {
+         itemContent: any ProtobufableItemContentProtocol,
+         domainMatchingSupported: Bool) throws {
         let itemKey = try Data.random()
         let encryptedContent = try AES.GCM.seal(itemContent.data(),
                                                 key: itemKey,
@@ -58,8 +59,9 @@ public struct ItemToImport: Encodable, Sendable {
                                                 key: containerKey.keyData,
                                                 associatedData: .itemKey)
 
+        let cfv = Constants.ContentFormatVersion.item(domainMatchingSupported: domainMatchingSupported)
         item = .init(keyRotation: containerKey.keyRotation,
-                     contentFormatVersion: Int16(Constants.ContentFormatVersion.item),
+                     contentFormatVersion: Int16(cfv),
                      content: encryptedContent.base64EncodedString(),
                      itemKey: encryptedItemKey.base64EncodedString(),
                      folderId: nil)
