@@ -60,6 +60,8 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
                          password: data.password,
                          totpUri: data.totpUri,
                          urls: data.urls,
+                         autofillUrls: data.autofillUrls.map { .init(url: $0.url,
+                                                                     mode: $0.mode.toNativeMode) },
                          allowedAndroidApps: platformSpecific.android.allowedApps,
                          passkeys: data.passkeys))
 
@@ -143,5 +145,20 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
         }
 
         extraFields = customFields.toProtonPassItemV1ExtraFields
+    }
+}
+
+private extension ProtonPassItemV1_AutofillUrl.Mode {
+    var toNativeMode: AutofillUrlMode {
+        switch self {
+        case .default: .default
+        case .exact: .exact
+        case .never: .never
+        case .startWith: .startWith
+        case .pattern: .pattern
+        case .regularExpression: .regularExpression
+        case .exactPath: .exactPath
+        case .UNRECOGNIZED: .default
+        }
     }
 }

@@ -836,11 +836,15 @@ public extension ItemRepository {
         let chunks = logins.chunked(into: 100)
         for chunk in chunks {
             let itemsToImport: [ItemToImport] = try chunk.map { login in
+                let urls = domainMatchingSupported ? [] : [login.url]
+                let autofillUrls = domainMatchingSupported ?
+                    [AutofillUrl(url: login.url, mode: .default)] : []
                 let loginData = ItemContentData.login(.init(email: login.email,
                                                             username: login.username,
                                                             password: login.password,
                                                             totpUri: "",
-                                                            urls: [login.url],
+                                                            urls: urls,
+                                                            autofillUrls: autofillUrls,
                                                             allowedAndroidApps: [],
                                                             passkeys: []))
                 let content = ItemContentProtobuf(name: login.name,

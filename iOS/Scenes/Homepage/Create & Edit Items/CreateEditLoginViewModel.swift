@@ -54,6 +54,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var totpUri = ""
     @Published private(set) var totpUriErrorMessage = ""
     @Published var urls: [IdentifiableObject<String>] = [.init(value: "")]
+    @Published var autofillUrls: [IdentifiableObject<AutofillUrl>] = [.init(value: .init(url: "",
+                                                                                         mode: .default))]
     @Published var invalidURLs = [String]()
 
     @Published private(set) var loading = false
@@ -192,6 +194,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                                                         password: password,
                                                         totpUri: sanitizedTotpUri,
                                                         urls: sanitizedUrls,
+                                                        autofillUrls: autofillUrls.map(\.value),
                                                         allowedAndroidApps: allowedAndroidApps,
                                                         passkeys: passkeys))
             return ItemContentProtobuf(name: title,
