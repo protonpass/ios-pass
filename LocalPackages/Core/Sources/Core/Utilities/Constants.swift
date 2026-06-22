@@ -68,7 +68,10 @@ public enum Constants {
     }
 
     public enum ContentFormatVersion {
-        public static let item = 8
+        public static func item(domainMatchingSupported: Bool) -> Int {
+            domainMatchingSupported ? 8 : 7
+        }
+
         public static let vault = 1
         public static let folder = 1
     }
