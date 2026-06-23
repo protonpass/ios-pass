@@ -118,7 +118,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
         let userId = try await userManager.getActiveUserId()
         // Decrypt items once; both the synchronous publish and the compromised enrichment reuse it.
         let inputs = try await computeWeaknessInputs(userId: userId, userOwned: false)
-        var base = buildStats(inputs, breachedItemIds: [])
+        let base = buildStats(inputs, breachedItemIds: [])
         if await isCompromisedCheckEnabled(userId: userId),
            let breachedItemIds = await compromisedItemIds(userId: userId, inputs: inputs),
            !breachedItemIds.isEmpty {
