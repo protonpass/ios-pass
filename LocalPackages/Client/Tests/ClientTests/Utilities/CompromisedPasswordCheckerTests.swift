@@ -33,10 +33,12 @@ struct CompromisedPasswordCheckerTests {
     private let suffix = "7D0679CA88DB6464EAC60DA96345513964"
 
     private func makeSUT(remote: RemoteCompromisedPasswordsDatasourceProtocolMock,
-                         local: LocalCompromisedPasswordDatasourceProtocolMock) -> CompromisedPasswordChecker {
+                         local: LocalCompromisedPasswordDatasourceProtocolMock,
+                         maxConcurrentRequests: Int = 8) -> CompromisedPasswordChecker {
         CompromisedPasswordChecker(remoteDatasource: remote,
                                    localDatasource: local,
                                    logManager: LogManagerProtocolMock(),
+                                   maxConcurrentRequests: maxConcurrentRequests,
                                    currentDate: { Date(timeIntervalSince1970: 1_000_000) })
     }
 
@@ -152,5 +154,35 @@ struct CompromisedPasswordCheckerTests {
         #expect(results.isEmpty)
         #expect(!remote.invokedQueryfunction)
         #expect(!remote.invokedLastChangefunction)
+    }
+
+    @Test
+    func `Resolves every prefix when the fan-out exceeds the concurrency limit`() async throws {
+        let remote = RemoteCompromisedPasswordsDatasourceProtocolMock()
+        let local = LocalCompromisedPasswordDatasourceProtocolMock()
+        remote.stubbedLastChangeResult = 1_000_000
+        // A single dummy suffix that matches none of the candidates, so every item resolves as not
+        // breached regardless of which prefix it falls under.
+        remote.stubbedQueryResult = .modified(etag: "\"v1\"",
+                                              body: Data("0000000000000000000000000000000000:3\n".utf8))
+        local.stubbedGetChecksUserIdItemIdsAsyncResult2 = []
+        local.stubbedGetLastChangeResult = nil
+
+        // Distinct passwords -> distinct SHA-1 prefixes, more than the concurrency limit, which
+        // forces the bounded backfill path.
+        let candidates = (0..<12).map {
+            CompromisedPasswordCandidate(shareId: "share", itemId: "item-\($0)", password: "password-\($0)")
+        }
+
+        let results = await makeSUT(remote: remote, local: local, maxConcurrentRequests: 2)
+            .check(userId: "user", candidates: candidates)
+
+        // Every candidate is resolved exactly once, none breached.
+        #expect(results.count == candidates.count)
+        for candidate in candidates {
+            let result = try #require(results[candidate.itemId])
+            #expect(!result.breached)
+            #expect(result.count == 0)
+        }
     }
 }
