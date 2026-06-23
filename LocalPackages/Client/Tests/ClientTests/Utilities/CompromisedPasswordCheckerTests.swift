@@ -31,15 +31,30 @@ struct CompromisedPasswordCheckerTests {
     // SHA1("12345") = 8CB2237D0679CA88DB6464EAC60DA96345513964
     private let prefix = "8CB223"
     private let suffix = "7D0679CA88DB6464EAC60DA96345513964"
+    // A fixed key so the keyed HMAC fingerprint is deterministic across the SUT and the cache seeds.
+    private let symmetricKey = SymmetricKey(data: Data(repeating: 0x07, count: 32))
+
+    private var keyProvider: SymmetricKeyProviderMock {
+        let mock = SymmetricKeyProviderMock()
+        mock.stubbedGetSymmetricKeyResult = symmetricKey
+        return mock
+    }
 
     private func makeSUT(remote: RemoteCompromisedPasswordsDatasourceProtocolMock,
                          local: LocalCompromisedPasswordDatasourceProtocolMock,
                          maxConcurrentRequests: Int = 8) -> CompromisedPasswordChecker {
         CompromisedPasswordChecker(remoteDatasource: remote,
                                    localDatasource: local,
+                                   symmetricKeyProvider: keyProvider,
                                    logManager: LogManagerProtocolMock(),
                                    maxConcurrentRequests: maxConcurrentRequests,
                                    currentDate: { Date(timeIntervalSince1970: 1_000_000) })
+    }
+
+    /// The persisted fingerprint is HMAC-SHA256(appKey, password); mirror it for cache seeds.
+    private func fingerprint(_ password: String) -> String {
+        HMAC<SHA256>.authenticationCode(for: Data(password.utf8), using: symmetricKey)
+            .map { String(format: "%02x", $0) }.joined()
     }
 
     private func candidate(password: String = "12345") -> CompromisedPasswordCandidate {
@@ -90,7 +105,7 @@ struct CompromisedPasswordCheckerTests {
     func `Skips the network and reuses the cached result when the corpus is unchanged`() async throws {
         let remote = RemoteCompromisedPasswordsDatasourceProtocolMock()
         let local = LocalCompromisedPasswordDatasourceProtocolMock()
-        let passwordHash = SHA256.hash(data: Data("12345".utf8)).map { String(format: "%02x", $0) }.joined()
+        let passwordHash = fingerprint("12345")
 
         remote.stubbedLastChangeResult = 500 // older than the stored marker below
         local.stubbedGetLastChangeResult = 1_000
@@ -118,7 +133,7 @@ struct CompromisedPasswordCheckerTests {
     func `Keeps the cached result when the network query fails`() async throws {
         let remote = RemoteCompromisedPasswordsDatasourceProtocolMock()
         let local = LocalCompromisedPasswordDatasourceProtocolMock()
-        let passwordHash = SHA256.hash(data: Data("12345".utf8)).map { String(format: "%02x", $0) }.joined()
+        let passwordHash = fingerprint("12345")
 
         // Corpus reportedly changed (newer than stored), so it tries the network — which fails.
         remote.stubbedLastChangeResult = 2_000
