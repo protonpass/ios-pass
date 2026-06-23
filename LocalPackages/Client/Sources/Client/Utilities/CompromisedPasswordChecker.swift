@@ -41,17 +41,20 @@ public protocol CompromisedPasswordCheckerProtocol: Sendable {
 public final class CompromisedPasswordChecker: CompromisedPasswordCheckerProtocol, Sendable {
     private let remoteDatasource: any RemoteCompromisedPasswordsDatasourceProtocol
     private let localDatasource: any LocalCompromisedPasswordDatasourceProtocol
+    private let symmetricKeyProvider: any SymmetricKeyProvider
     private let currentDate: @Sendable () -> Date
     private let maxConcurrentRequests: Int
     private let logger: Logger
 
     public init(remoteDatasource: any RemoteCompromisedPasswordsDatasourceProtocol,
                 localDatasource: any LocalCompromisedPasswordDatasourceProtocol,
+                symmetricKeyProvider: any SymmetricKeyProvider,
                 logManager: any LogManagerProtocol,
                 maxConcurrentRequests: Int = 8,
                 currentDate: @escaping @Sendable () -> Date = { Date() }) {
         self.remoteDatasource = remoteDatasource
         self.localDatasource = localDatasource
+        self.symmetricKeyProvider = symmetricKeyProvider
         self.currentDate = currentDate
         self.maxConcurrentRequests = maxConcurrentRequests
         logger = .init(manager: logManager)
@@ -63,10 +66,18 @@ public extension CompromisedPasswordChecker {
                candidates: [CompromisedPasswordCandidate]) async -> [String: CompromisedPasswordResult] {
         logger.info("Checking compromised password for \(candidates.count) login items")
 
-        let derivedAll = candidates
-            .filter { !$0.password.isEmpty }
-            .map { DerivedCompromisedPasswordCandidate(candidate: $0) }
-        guard !derivedAll.isEmpty else { return [:] }
+        let nonEmpty = candidates.filter { !$0.password.isEmpty }
+        guard !nonEmpty.isEmpty else { return [:] }
+
+        let key: SymmetricKey
+        do {
+            key = try await symmetricKeyProvider.getSymmetricKey()
+        } catch {
+            logger.error(error)
+            return [:]
+        }
+
+        let derivedAll = nonEmpty.map { DerivedCompromisedPasswordCandidate(candidate: $0, key: key) }
 
         let cached = await loadCachedChecks(userId: userId, derived: derivedAll)
         let currentLastChange = await fetchCurrentLastChange()
@@ -100,7 +111,7 @@ private extension CompromisedPasswordChecker {
         -> [String: CompromisedPasswordCheck] {
         do {
             let list = try await localDatasource.getChecks(userId: userId,
-                                                           itemIds: derived.map(\.candidate.itemId))
+                                                           itemIds: derived.map(\.itemId))
             return Dictionary(list.map { ($0.itemId, $0) }, uniquingKeysWith: { _, new in new })
         } catch {
             logger.warning("Failed to fetch locally stored items password checks")
@@ -130,9 +141,9 @@ private extension CompromisedPasswordChecker {
         var toCheck = [DerivedCompromisedPasswordCandidate]()
         for derived in derivedAll {
             if corpusUnchanged,
-               let row = cached[derived.candidate.itemId],
+               let row = cached[derived.itemId],
                row.passwordHash == derived.passwordHash {
-                reusable[derived.candidate.itemId] = .init(breached: row.breached, count: row.count)
+                reusable[derived.itemId] = .init(breached: row.breached, count: row.count)
             } else {
                 toCheck.append(derived)
             }
@@ -184,9 +195,9 @@ private extension CompromisedPasswordChecker {
                  now: Int) async -> PrefixOutcome {
         // Only reuse a stored ETag (and thus accept a 304) when every item in this prefix has a
         // matching, still-valid cached result to fall back on — otherwise force a fresh body.
-        let storedEtags = Set(derived.compactMap { cached[$0.candidate.itemId]?.etag }.filter { !$0.isEmpty })
+        let storedEtags = Set(derived.compactMap { cached[$0.itemId]?.etag }.filter { !$0.isEmpty })
         let canConditional = storedEtags.count == 1 && derived.allSatisfy { derived in
-            guard let row = cached[derived.candidate.itemId] else {
+            guard let row = cached[derived.itemId] else {
                 return false
             }
             return row.passwordHash == derived.passwordHash && row.prefix == prefix && !row.etag.isEmpty
@@ -200,12 +211,12 @@ private extension CompromisedPasswordChecker {
             switch response {
             case .notModified:
                 for item in derived {
-                    guard let row = cached[item.candidate.itemId] else {
+                    guard let row = cached[item.itemId] else {
                         continue
                     }
-                    results[item.candidate.itemId] = .init(breached: row.breached, count: row.count)
-                    rows.append(.init(shareId: item.candidate.shareId,
-                                      itemId: item.candidate.itemId,
+                    results[item.itemId] = .init(breached: row.breached, count: row.count)
+                    rows.append(.init(shareId: item.shareId,
+                                      itemId: item.itemId,
                                       passwordHash: row.passwordHash,
                                       prefix: row.prefix,
                                       etag: row.etag,
@@ -220,9 +231,9 @@ private extension CompromisedPasswordChecker {
                 for item in derived {
                     let count = suffixes[item.suffix]
                     let breached = count != nil
-                    results[item.candidate.itemId] = .init(breached: breached, count: count ?? 0)
-                    rows.append(.init(shareId: item.candidate.shareId,
-                                      itemId: item.candidate.itemId,
+                    results[item.itemId] = .init(breached: breached, count: count ?? 0)
+                    rows.append(.init(shareId: item.shareId,
+                                      itemId: item.itemId,
                                       passwordHash: item.passwordHash,
                                       prefix: prefix,
                                       etag: newEtag ?? "",
@@ -236,8 +247,8 @@ private extension CompromisedPasswordChecker {
             logger.error(error)
             // Keep cached results on error; never invalidate or mark unbreached.
             for item in derived {
-                if let row = cached[item.candidate.itemId] {
-                    results[item.candidate.itemId] = .init(breached: row.breached, count: row.count)
+                if let row = cached[item.itemId] {
+                    results[item.itemId] = .init(breached: row.breached, count: row.count)
                 }
             }
             return .init(results: results, rows: [], succeeded: false)
@@ -267,20 +278,29 @@ private extension CompromisedPasswordChecker {
 // MARK: - Internal data struct
 
 private extension CompromisedPasswordChecker {
-    /// A candidate with its derived SHA-1 prefix/suffix and SHA-256 password hash.
+    /// A candidate reduced to only what the breach check needs: the item identifiers, the SHA-1
+    /// prefix/suffix for the k-anonymity range query, and a keyed fingerprint of the password.
+    /// The plaintext `CompromisedPasswordCandidate` is intentionally NOT retained — it is consumed
+    /// here and dropped, so the password lives in memory only for the duration of this initializer.
     struct DerivedCompromisedPasswordCandidate {
-        let candidate: CompromisedPasswordCandidate
+        let itemId: String
+        let shareId: String
         let prefix: String
         let suffix: String
+        /// HMAC-SHA256(appKey, password): the local password-change invalidation key. Never sent.
         let passwordHash: String
 
-        init(candidate: CompromisedPasswordCandidate) {
-            self.candidate = candidate
+        init(candidate: CompromisedPasswordCandidate, key: SymmetricKey) {
+            itemId = candidate.itemId
+            shareId = candidate.shareId
             let data = Data(candidate.password.utf8)
+            // The SHA-1 prefix/suffix stay unkeyed: they drive the k-anonymity lookup against the
+            // breach corpus and must match the server's SHA-1 space.
             let sha1 = Insecure.SHA1.hash(data: data).map { String(format: "%02X", $0) }.joined()
             prefix = String(sha1.prefix(6))
             suffix = String(sha1.dropFirst(6))
-            passwordHash = SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
+            passwordHash = HMAC<SHA256>.authenticationCode(for: data, using: key)
+                .map { String(format: "%02x", $0) }.joined()
         }
     }
 

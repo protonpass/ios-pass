@@ -168,6 +168,7 @@ extension SharedRepositoryContainer {
         self {
             CompromisedPasswordChecker(remoteDatasource: self.remoteCompromisedPasswordsDatasource(),
                                        localDatasource: self.localCompromisedPasswordDatasource(),
+                                       symmetricKeyProvider: self.symmetricKeyProvider,
                                        logManager: self.logManager)
         }
     }
