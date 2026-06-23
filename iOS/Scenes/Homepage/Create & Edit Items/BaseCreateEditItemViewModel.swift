@@ -126,7 +126,7 @@ class BaseCreateEditItemViewModel: ObservableObject {
     private let updateUserPreferences = dependency(\UseCasesContainer.updateUserPreferences)
     private let appContentManager = dependency(\ServiceContainer.appContentManager)
     private let accessRepository = dependency(\RepositoryContainer.accessRepository)
-    private let getFeatureFlagStatus = dependency(\UseCasesContainer.getFeatureFlagStatus)
+    let getFeatureFlagStatus = dependency(\UseCasesContainer.getFeatureFlagStatus)
     @LazyInjected(\ToolingContainer.preferencesManager) var preferencesManager
     @LazyInjected(\RepositoryContainer.fileAttachmentRepository) private var fileRepository
     @LazyInjected(\UseCasesContainer.generateDatedFileName) private var generateDatedFileName

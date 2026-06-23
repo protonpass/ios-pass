@@ -44,11 +44,14 @@ public struct EditDomainMatchingView: View {
     @State private var selectedMode: AutofillUrlMode
     private let url: IdentifiableObject<AutofillUrl>
     private let itemContentType: ItemContentType = .login
+    private let onSave: (AutofillUrlMode) -> Void
 
-    public init(url: IdentifiableObject<AutofillUrl>) {
+    public init(url: IdentifiableObject<AutofillUrl>,
+                onSave: @escaping (AutofillUrlMode) -> Void) {
         self.url = url
         _selectedType = .init(initialValue: url.value.mode.isBasic ? .basic : .advanced)
         _selectedMode = .init(initialValue: url.value.mode)
+        self.onSave = onSave
     }
 
     public var body: some View {
@@ -70,7 +73,7 @@ public struct EditDomainMatchingView: View {
                         CapsuleTextButton(title: #localized("Save"),
                                           titleColor: PassColor.textInvert,
                                           backgroundColor: itemContentType.normMajor1Color,
-                                          action: dismiss.callAsFunction)
+                                          action: { onSave(selectedMode); dismiss() })
                     }
                 }
         }

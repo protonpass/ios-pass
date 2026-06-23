@@ -72,8 +72,8 @@ public enum AutofillUrlMode: Sendable, Equatable, Hashable {
 }
 
 public struct AutofillUrl: Sendable, Equatable, Hashable {
-    public let url: String
-    public let mode: AutofillUrlMode
+    public var url: String
+    public var mode: AutofillUrlMode
 
     public init(url: String, mode: AutofillUrlMode) {
         self.url = url
