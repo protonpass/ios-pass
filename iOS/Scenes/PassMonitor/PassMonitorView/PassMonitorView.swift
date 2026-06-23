@@ -469,20 +469,21 @@ private extension PassMonitorView {
                            subTitle: kind.dashboardSubtitle,
                            badge: true,
                            action: { viewModel.upsell(entryPoint: upsellEntry) })
-        }
-        // Count-aware severity stays in the view (the entity must not know about row styling).
-        let rowType: SecureRowType = switch kind {
-        case .compromisedPassword, .reusedPassword, .weakPassword:
-            count > 0 ? .warning : .success
+        } else {
+            // Count-aware severity stays in the view (the entity must not know about row styling).
+            let rowType: SecureRowType = switch kind {
+            case .compromisedPassword, .reusedPassword, .weakPassword:
+                count > 0 ? .warning : .success
 
-        case .missing2FA:
-            .info
+            case .missing2FA:
+                .info
+            }
+            passMonitorRow(rowType: rowType,
+                           title: kind.dashboardTitle,
+                           subTitle: kind.dashboardSubtitle,
+                           count: count,
+                           action: { viewModel.showSecurityWeakness(filter: .weakness(kind)) })
         }
-        passMonitorRow(rowType: rowType,
-                       title: kind.dashboardTitle,
-                       subTitle: kind.dashboardSubtitle,
-                       count: count,
-                       action: { viewModel.showSecurityWeakness(filter: .weakness(kind)) })
     }
 }
 
