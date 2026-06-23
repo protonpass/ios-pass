@@ -54,7 +54,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var totpUri = ""
     @Published private(set) var totpUriErrorMessage = ""
     @Published var urls: [IdentifiableObject<String>] = [.init(value: "")]
-    @Published var autofillUrls: [IdentifiableObject<AutofillUrl>] = [.init(value: .init(url: "",
+    @Published var autofillUrls: [IdentifiableObject<AutofillUrl>] = [.init(value: .init(url: "test.com",
                                                                                          mode: .default))]
     @Published var invalidURLs = [String]()
 

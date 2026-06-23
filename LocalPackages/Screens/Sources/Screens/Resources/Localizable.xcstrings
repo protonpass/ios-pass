@@ -4868,12 +4868,32 @@
         }
       }
     },
+    "Adjust autofill behaviors to change where logins are suggested and filled for %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adjust autofill behaviors to change where logins are suggested and filled for %@."
+          }
+        }
+      }
+    },
     "Advanced" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Advanced"
+          }
+        }
+      }
+    },
+    "Advanced rules are not available on iOS due to limitations in the operating system APIs." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Advanced rules are not available on iOS due to limitations in the operating system APIs."
           }
         }
       }
@@ -9466,6 +9486,16 @@
         }
       }
     },
+    "DEFAULT" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DEFAULT"
+          }
+        }
+      }
+    },
     "Default SimpleLogin vault" : {
       "localizations" : {
         "be" : {
@@ -12582,6 +12612,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "發生錯誤"
+          }
+        }
+      }
+    },
+    "Exact (sub) domain" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exact (sub) domain"
+          }
+        }
+      }
+    },
+    "Exact subdomain rule is not available on iOS due to limitations in the operating system APIs." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exact subdomain rule is not available on iOS due to limitations in the operating system APIs."
+          }
+        }
+      }
+    },
+    "Exact URL matching" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exact URL matching"
           }
         }
       }
@@ -17914,6 +17974,16 @@
         }
       }
     },
+    "Never fill on this website" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Never fill on this website"
+          }
+        }
+      }
+    },
     "NEW" : {
       "comment" : "Text for the top right badge for a button of a new feature. Always in majuscule.",
       "localizations" : {
@@ -20577,6 +20647,16 @@
         }
       }
     },
+    "Parent domain and subdomains" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parent domain and subdomains"
+          }
+        }
+      }
+    },
     "Password" : {
       "localizations" : {
         "be" : {
@@ -22611,6 +22691,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "項目快速動作"
+          }
+        }
+      }
+    },
+    "Regular expression" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regular expression"
           }
         }
       }
@@ -26880,6 +26970,17 @@
         }
       }
     },
+    "Starts with" : {
+      "comment" : "A domain matching rule",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Starts with"
+          }
+        }
+      }
+    },
     "Stay Informed." : {
       "localizations" : {
         "be" : {
@@ -31098,6 +31199,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "URL matching"
+          }
+        }
+      }
+    },
+    "URL wildcard pattern" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "URL wildcard pattern"
           }
         }
       }

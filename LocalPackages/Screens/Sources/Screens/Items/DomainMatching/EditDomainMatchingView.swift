@@ -40,19 +40,20 @@ private enum DomainMatchingType: Int, Hashable {
 
 public struct EditDomainMatchingView: View {
     @Environment(\.dismiss) private var dismiss
-    @State private var url: IdentifiableObject<AutofillUrl>
     @State private var selectedType: DomainMatchingType
-    let itemContentType: ItemContentType
+    @State private var selectedMode: AutofillUrlMode
+    private let url: IdentifiableObject<AutofillUrl>
+    private let itemContentType: ItemContentType = .login
 
-    public init(url: IdentifiableObject<AutofillUrl>, itemContentType: ItemContentType) {
-        _url = .init(initialValue: url)
+    public init(url: IdentifiableObject<AutofillUrl>) {
+        self.url = url
         _selectedType = .init(initialValue: url.value.mode.isBasic ? .basic : .advanced)
-        self.itemContentType = itemContentType
+        _selectedMode = .init(initialValue: url.value.mode)
     }
 
     public var body: some View {
         NavigationStack {
-            content
+            mainContent
                 .background(PassColor.backgroundNorm)
                 .navigationTitle(Text("URL matching", bundle: .module))
                 .tint(itemContentType.normMajor1Color)
@@ -77,15 +78,148 @@ public struct EditDomainMatchingView: View {
 }
 
 private extension EditDomainMatchingView {
-    var content: some View {
-        VStack {
-            EnumSegmentedPicker(selection: $selectedType,
-                                options: [
-                                    DomainMatchingType.basic.title,
-                                    DomainMatchingType.advanced.title
-                                ])
-            Spacer()
+    var mainContent: some View {
+        ScrollView {
+            VStack(spacing: DesignConstant.sectionPadding) {
+                descriptionText
+
+                EnumSegmentedPicker(selection: $selectedType,
+                                    options: [
+                                        DomainMatchingType.basic.title,
+                                        DomainMatchingType.advanced.title
+                                    ])
+
+                switch selectedType {
+                case .basic:
+                    basicContent
+
+                case .advanced:
+                    advancedContent
+                }
+
+                Spacer()
+            }
+            .padding(.horizontal)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .animation(.default, value: selectedType)
+            .animation(.default, value: selectedMode)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .scrollBounceBehavior(.basedOnSize)
+    }
+
+    @ViewBuilder
+    var descriptionText: some View {
+        let urlString = url.value.url
+        let rawDescription =
+            #localized("Adjust autofill behaviors to change where logins are suggested and filled for %@.",
+                       urlString)
+        // Heuristic to detect if the URL is valid or not in order to highlight it
+        // Because for example if the URL is simply "a", we would end up highlighting
+        // the first "a" character.
+        if urlString.contains("."), urlString.count > 5 {
+            let attributedString: AttributedString = {
+                var attributedString = AttributedString(rawDescription)
+                attributedString.foregroundColor = PassColor.textWeak
+                if let range = attributedString.range(of: urlString) {
+                    attributedString[range].foregroundColor = PassColor.textNorm
+                }
+                return attributedString
+            }()
+            Text(attributedString)
+        } else {
+            Text(verbatim: rawDescription)
+                .foregroundStyle(PassColor.textWeak)
+        }
+    }
+
+    var basicContent: some View {
+        VStack(spacing: DesignConstant.sectionPadding) {
+            row(for: .default)
+            row(for: .never)
+            row(for: .exact)
+            // swiftlint:disable:next line_length
+            unavailableText("Exact subdomain rule is not available on iOS due to limitations in the operating system APIs.")
+        }
+    }
+
+    var advancedContent: some View {
+        VStack(spacing: DesignConstant.sectionPadding) {
+            row(for: .startWith)
+            row(for: .regularExpression)
+            row(for: .pattern)
+            row(for: .exactPath)
+            unavailableText("Advanced rules are not available on iOS due to limitations in the operating system APIs.")
+        }
+    }
+
+    @ViewBuilder
+    func row(for mode: AutofillUrlMode) -> some View {
+        let isSelected = mode == selectedMode
+        HStack {
+            Image(systemName: isSelected ? "circle.inset.filled" : "circle")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 24)
+                .foregroundStyle(isSelected ? itemContentType.normMajor2Color : PassColor.textWeak)
+
+            ViewThatFits {
+                HStack {
+                    text(for: mode)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+                VStack(alignment: .leading) {
+                    text(for: mode)
+                }
+                .frame(maxWidth: .infinity)
+            }
+        }
+        .contentShape(.rect)
+        .onTapGesture {
+            selectedMode = mode
+        }
+        .disabled(!mode.isSupported)
+        .opacity(mode.isSupported ? 1.0 : 0.5)
+    }
+
+    @ViewBuilder
+    func text(for mode: AutofillUrlMode) -> some View {
+        Text(mode.title)
+            .foregroundStyle(PassColor.textNorm)
+
+        if mode == .default {
+            Text("DEFAULT", bundle: .module)
+                .font(.caption)
+                .foregroundStyle(itemContentType.normMajor2Color)
+                .padding(.vertical, 4)
+                .padding(.horizontal, 8)
+                .background(itemContentType.normMinor1Color)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
+        }
+    }
+
+    func unavailableText(_ text: LocalizedStringKey) -> some View {
+        Text(text, bundle: .module)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .foregroundStyle(PassColor.textNorm)
+            .padding()
+            .background(PassColor.inputBackgroundNorm)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+    }
+}
+
+private extension AutofillUrlMode {
+    var isBasic: Bool {
+        switch self {
+        case .default, .exact, .never: true
+        default: false
+        }
+    }
+
+    var isSupported: Bool {
+        switch self {
+        case .default, .never: true
+        default: false
+        }
     }
 }
