@@ -732,8 +732,7 @@ private struct WebsiteSection<Field: Hashable>: View {
         .roundedEditableSection()
         .contentShape(.rect)
         .sheet(item: $selectedAutofillUrl) { autofillUrl in
-            EditDomainMatchingView(url: autofillUrl,
-                                   itemContentType: viewModel.itemContentType)
+            EditDomainMatchingView(url: autofillUrl)
         }
     }
 

@@ -69,13 +69,6 @@ public enum AutofillUrlMode: Sendable, Equatable, Hashable {
     case pattern
     case regularExpression
     case exactPath
-
-    public var isBasic: Bool {
-        switch self {
-        case .default, .exact, .never: true
-        default: false
-        }
-    }
 }
 
 public struct AutofillUrl: Sendable, Equatable, Hashable {
