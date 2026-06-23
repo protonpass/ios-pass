@@ -26,25 +26,25 @@ extension AutofillUrlMode {
     var title: String {
         switch self {
         case .default:
-            #localized("Parent domain and subdomains")
+            #localized("Parent domain and subdomains", bundle: .module)
 
         case .exact:
-            #localized("Exact (sub) domain")
+            #localized("Exact (sub) domain", bundle: .module)
 
         case .never:
-            #localized("Never fill on this website")
+            #localized("Never fill on this website", bundle: .module)
 
         case .startWith:
-            #localized("Starts with")
+            #localized("Starts with", bundle: .module)
 
         case .pattern:
-            #localized("URL wildcard pattern")
+            #localized("URL wildcard pattern", bundle: .module)
 
         case .regularExpression:
-            #localized("Regular expression")
+            #localized("Regular expression", bundle: .module)
 
         case .exactPath:
-            #localized("Exact URL matching")
+            #localized("Exact URL matching", bundle: .module)
         }
     }
 }

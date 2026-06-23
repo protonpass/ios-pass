@@ -217,6 +217,7 @@ class BaseCreateEditItemViewModel: ObservableObject {
     @LazyInjected(\SharedUseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
     @LazyInjected(\SharedUseCasesContainer.checkCameraPermission) private var checkCameraPermission
     @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
 
     var isFetchingAttachedFiles: Bool {
         attachedFiles?.isFetching == true

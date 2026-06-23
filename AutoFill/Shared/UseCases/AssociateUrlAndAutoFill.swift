@@ -73,13 +73,13 @@ final class AssociateUrlAndAutoFill: AssociateUrlAndAutoFillUseCase {
             throw PassError.itemNotFound(item)
         }
 
+        let newAutofillUrl = AutofillUrl(url: newUrl, mode: .default)
         let newLoginData = ItemContentData.login(.init(email: oldData.email,
                                                        username: oldData.username,
                                                        password: oldData.password,
                                                        totpUri: oldData.totpUri,
                                                        urls: oldData.urls + [newUrl],
-                                                       // TODO: append new autofill URL here
-                                                       autofillUrls: oldData.autofillUrls,
+                                                       autofillUrls: oldData.autofillUrls + [newAutofillUrl],
                                                        allowedAndroidApps: oldData.allowedAndroidApps,
                                                        passkeys: oldData.passkeys))
         let newContent = ItemContentProtobuf(name: oldContent.name,

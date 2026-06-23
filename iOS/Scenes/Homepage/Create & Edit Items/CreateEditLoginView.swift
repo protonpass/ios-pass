@@ -90,11 +90,20 @@ struct CreateEditLoginView: View {
                         editablePasskeySection
                         readOnlyPasskeySection
                         usernamePasswordTOTPSection
-                        WebsiteSection(viewModel: viewModel,
-                                       focusedField: $focusedField,
-                                       field: .websites,
-                                       onSubmit: { focusedField = .note })
-                            .id(websitesID)
+                        if viewModel.domainMatchingSupported {
+                            DomainMatchingWebsiteSection(viewModel: viewModel,
+                                                         focusedField: $focusedField,
+                                                         field: .websites,
+                                                         onSubmit: { focusedField = .note })
+                                .id(websitesID)
+                        } else {
+                            WebsiteSection(viewModel: viewModel,
+                                           focusedField: $focusedField,
+                                           field: .websites,
+                                           onSubmit: { focusedField = .note })
+                                .id(websitesID)
+                        }
+
                         NoteEditSection(note: $viewModel.note,
                                         focusedField: $focusedField,
                                         field: .note)
@@ -630,7 +639,6 @@ private extension CreateEditLoginView {
 
 private struct WebsiteSection<Field: Hashable>: View {
     @ObservedObject var viewModel: CreateEditLoginViewModel
-    @State private var selectedAutofillUrl: IdentifiableObject<AutofillUrl>?
     let focusedField: FocusState<Field?>.Binding
     let field: Field
     let onSubmit: () -> Void
@@ -642,9 +650,8 @@ private struct WebsiteSection<Field: Hashable>: View {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Website")
                     .editableSectionTitleText(for: viewModel.urls.first?.value)
+
                 VStack(alignment: .leading) {
-                    Button(action: { selectedAutofillUrl = viewModel.autofillUrls.first },
-                           label: { Text(verbatim: "Test") })
                     ForEach($viewModel.urls) { $url in
                         HStack {
                             TextField(text: $url.value) {
@@ -692,9 +699,6 @@ private struct WebsiteSection<Field: Hashable>: View {
         .padding(DesignConstant.sectionPadding)
         .roundedEditableSection()
         .contentShape(.rect)
-        .sheet(item: $selectedAutofillUrl) { autofillUrl in
-            EditDomainMatchingView(url: autofillUrl)
-        }
     }
 
     private func isValid(_ url: IdentifiableObject<String>) -> Bool {
@@ -713,6 +717,111 @@ private struct WebsiteSection<Field: Hashable>: View {
                 Label("Add", systemImage: "plus")
             })
             .opacityReduced(viewModel.urls.last?.value.isEmpty == true)
+        }
+    }
+}
+
+// MARK: - DomainMatchingWebsiteSection
+
+private struct DomainMatchingWebsiteSection<Field: Hashable>: View {
+    @ObservedObject var viewModel: CreateEditLoginViewModel
+    @State private var selectedAutofillUrl: IdentifiableObject<AutofillUrl>?
+    let focusedField: FocusState<Field?>.Binding
+    let field: Field
+    let onSubmit: () -> Void
+
+    var body: some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.earth)
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("Website")
+                    .editableSectionTitleText(for: viewModel.autofillUrls.first?.value.url)
+
+                VStack(alignment: .leading) {
+                    ForEach($viewModel.autofillUrls) { $url in
+                        HStack {
+                            TextField(text: $url.value.url) {
+                                Text(verbatim: "https://")
+                            }
+                            .focused(focusedField, equals: field)
+                            .onChange(of: viewModel.autofillUrls) {
+                                viewModel.invalidURLs.removeAll()
+                            }
+                            .keyboardType(.URL)
+                            .textInputAutocapitalization(.never)
+                            .autocorrectionDisabled()
+                            .foregroundStyle(isValid(url) ?
+                                PassColor.textNorm : PassColor.signalDanger)
+                            .onSubmit(onSubmit)
+
+                            if !url.value.url.isEmpty {
+                                Button(action: { selectedAutofillUrl = url },
+                                       label: {
+                                           ItemDetailSectionIcon(icon: IconProvider.threeDotsVertical)
+                                       })
+
+                                Button(action: {
+                                    withAnimation {
+                                        if viewModel.autofillUrls.count == 1 {
+                                            url.value.url = ""
+                                        } else {
+                                            viewModel.autofillUrls.removeAll { $0.id == url.id }
+                                        }
+                                    }
+                                }, label: {
+                                    ItemDetailSectionIcon(icon: IconProvider.cross)
+                                })
+                                .fixedSize(horizontal: false, vertical: true)
+                            }
+                        }
+
+                        if !url.value.url.isEmpty {
+                            AutofillUrlModeLabel(mode: url.value.mode)
+                        }
+
+                        if viewModel.autofillUrls.count > 1 ||
+                            viewModel.autofillUrls.first?.value.url.isEmpty == false {
+                            PassSectionDivider()
+                                .padding(.top, 4)
+                        }
+                    }
+
+                    addUrlButton
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .animation(.default, value: viewModel.autofillUrls)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(DesignConstant.sectionPadding)
+        .roundedEditableSection()
+        .contentShape(.rect)
+        .sheet(item: $selectedAutofillUrl) { autofillUrl in
+            EditDomainMatchingView(url: autofillUrl,
+                                   onSave: { newMode in
+                                       viewModel.update(mode: newMode, for: autofillUrl)
+                                   })
+        }
+    }
+
+    private func isValid(_ url: IdentifiableObject<AutofillUrl>) -> Bool {
+        !viewModel.invalidURLs.contains { $0 == url.value.url }
+    }
+
+    @ViewBuilder
+    private var addUrlButton: some View {
+        if viewModel.autofillUrls.first?.value.url.isEmpty == false {
+            Button(action: {
+                if viewModel.autofillUrls.last?.value.url.isEmpty == false {
+                    // Only add new URL when last URL has value to avoid adding blank URLs
+                    viewModel.autofillUrls.append(.init(value: .init(url: "",
+                                                                     mode: .default)))
+                }
+            }, label: {
+                Label("Add", systemImage: "plus")
+            })
+            .opacityReduced(viewModel.autofillUrls.last?.value.url.isEmpty == true)
         }
     }
 }
