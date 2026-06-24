@@ -24,6 +24,7 @@ import ClientMocks
 import Core
 import CoreMocks
 import Entities
+import ProtonCoreFeatureFlags
 import ProtonCoreLogin
 import XCTest
 
@@ -35,6 +36,7 @@ final class ItemRepositoryTests: XCTestCase {
     var localShareDatasource: LocalShareDatasourceProtocolMock!
     var shareEventIDRepository: ShareEventIDRepositoryProtocol!
     var passKeyManager: PassKeyManagerProtocol!
+    var featureFlagsRepository: FeatureFlagsRepositoryProtocol!
     var logManager: LogManagerProtocol!
     var sut: ItemRepositoryProtocol!
     var cancellable: AnyCancellable?
@@ -49,6 +51,7 @@ final class ItemRepositoryTests: XCTestCase {
         localShareDatasource = .init()
         shareEventIDRepository = ShareEventIDRepositoryProtocolMock()
         passKeyManager = PassKeyManagerProtocolMock()
+        featureFlagsRepository = FeatureFlagsRepositoryMock()
         logManager = LogManagerProtocolMock()
     }
 
@@ -86,6 +89,7 @@ extension ItemRepositoryTests {
                              localShareDatasource: localShareDatasource,
                              shareEventIDRepository: shareEventIDRepository,
                              passKeyManager: passKeyManager,
+                             featureFlagsRepository: featureFlagsRepository,
                              logManager: logManager)
 
         let expectation = expectation(description: "Init of ItemRepository")
