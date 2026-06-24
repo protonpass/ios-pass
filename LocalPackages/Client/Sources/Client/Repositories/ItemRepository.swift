@@ -947,7 +947,7 @@ private extension ItemRepository {
     /// here because `Client` package doesn't depend on `UseCase` package.
     /// This is to avoid injecting `domainMatchingSupported` bool from up to 3 4 layers above
     var domainMatchingSupported: Bool {
-        let flag = FeatureFlagType.passAutofillUrlRegex
+        let flag = FeatureFlagType.passAutofillUrlAdvancedModes
         if Bundle.main.isQaBuild, kSharedUserDefaults.bool(forKey: flag.rawValue) {
             return true
         }

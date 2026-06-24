@@ -74,7 +74,12 @@ private extension LogInDetailView {
 
                         usernamePassword2FaSection
 
-                        if !viewModel.urls.isEmpty {
+                        if viewModel.domainMatchingSupported, !viewModel.autofillUrls.isEmpty {
+                            autofillUrlsSection
+                                .padding(.top, 8)
+                        }
+
+                        if !viewModel.domainMatchingSupported, !viewModel.urls.isEmpty {
                             urlsSection
                                 .padding(.top, 8)
                         }
@@ -376,6 +381,58 @@ private extension LogInDetailView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .animation(.default, value: viewModel.urls)
+        }
+        .padding(DesignConstant.sectionPadding)
+        .roundedDetailSection()
+    }
+
+    var autofillUrlsSection: some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.earth, color: iconTintColor)
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("Website")
+                    .sectionTitleText()
+
+                VStack(alignment: .leading, spacing: 12) {
+                    ForEach(viewModel.autofillUrls, id: \.self) { url in
+                        Button(action: {
+                            viewModel.openUrl(url.url)
+                        }, label: {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(verbatim: url.url)
+                                    .foregroundStyle(viewModel.itemContent.type.normMajor2Color)
+                                    .multilineTextAlignment(.leading)
+                                    .lineLimit(2)
+
+                                if url.mode != .default {
+                                    Text(verbatim: url.mode.title)
+                                        .foregroundStyle(PassColor.textWeak)
+                                }
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(DesignConstant.sectionPadding / 2)
+                            .roundedEditableSection()
+                        })
+                        .contextMenu {
+                            Button(action: {
+                                viewModel.openUrl(url.url)
+                            }, label: {
+                                Text("Open")
+                            })
+
+                            Button(action: {
+                                viewModel.copyToClipboard(text: url.url,
+                                                          message: #localized("Website copied"))
+                            }, label: {
+                                Text("Copy")
+                            })
+                        }
+                    }
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .animation(.default, value: viewModel.autofillUrls)
         }
         .padding(DesignConstant.sectionPadding)
         .roundedDetailSection()

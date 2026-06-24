@@ -35,6 +35,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var email = ""
     @Published private(set) var username = ""
     @Published private(set) var urls: [String] = []
+    @Published private(set) var autofillUrls: [AutofillUrl] = []
     @Published private(set) var password = ""
     @Published private(set) var totpUri = ""
     @Published private(set) var note = ""
@@ -46,6 +47,10 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
     var isAlias: Bool {
         aliasItem != nil
+    }
+
+    var domainMatchingSupported: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passAutofillUrlAdvancedModes)
     }
 
     let showSecurityIssues: Bool
@@ -101,6 +106,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
             password = data.password
             passwordStrength = getPasswordStrength(password: password)
             urls = data.urls
+            autofillUrls = data.autofillUrls
             totpUri = data.totpUri
             totpManager.bind(uri: data.totpUri)
             getAliasItem(email: data.email, shareId: itemContent.shareId)
