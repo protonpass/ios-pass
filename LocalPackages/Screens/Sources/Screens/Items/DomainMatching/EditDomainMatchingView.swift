@@ -32,8 +32,8 @@ private enum DomainMatchingType: Int, Hashable {
 
     var title: String {
         switch self {
-        case .basic: #localized("Basic")
-        case .advanced: #localized("Advanced")
+        case .basic: #localized("Basic", bundle: .module)
+        case .advanced: #localized("Advanced", bundle: .module)
         }
     }
 }
@@ -90,7 +90,9 @@ private extension EditDomainMatchingView {
                                     options: [
                                         DomainMatchingType.basic.title,
                                         DomainMatchingType.advanced.title
-                                    ])
+                                    ],
+                                    mainColor: itemContentType.normMajor1Color,
+                                    backgroundColor: itemContentType.normMinor1Color)
 
                 switch selectedType {
                 case .basic:

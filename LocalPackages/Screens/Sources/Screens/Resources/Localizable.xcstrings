@@ -4869,6 +4869,7 @@
       }
     },
     "Adjust autofill behaviors to change where logins are suggested and filled for %@." : {
+      "comment" : "Placeholder is an URL",
       "localizations" : {
         "en" : {
           "stringUnit" : {
