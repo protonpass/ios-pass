@@ -32,4 +32,5 @@ public enum FeatureFlagType: String, CaseIterable, FeatureFlagTypeProtocol {
     case passMonitorPerCheckExclusion = "PassMonitorPerCheckExclusion"
     case passCompromisedPasswords = "PassCompromisedPasswords"
     case passAutofillUrlRegex = "PassAutofillUrlRegex"
+    case passAutofillUrlAdvancedModes = "PassAutofillUrlAdvancedModes"
 }

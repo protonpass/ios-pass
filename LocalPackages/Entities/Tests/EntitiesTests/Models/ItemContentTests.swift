@@ -31,20 +31,22 @@ final class ItemContentTests: XCTestCase {
                                            password: "",
                                            totpUri: "",
                                            urls: [],
+                                           autofillUrls: [],
                                            allowedAndroidApps: [],
                                            passkeys: [])
-        
+
         XCTAssertEqual(onlyEmailLogin.authIdentifier, email)
-        
-        
+
+
         let usernameLogin = LogInItemData(email: email,
-                                           username: username,
-                                           password: "",
-                                           totpUri: "",
-                                           urls: [],
-                                           allowedAndroidApps: [],
-                                           passkeys: [])
-        
+                                          username: username,
+                                          password: "",
+                                          totpUri: "",
+                                          urls: [],
+                                          autofillUrls: [],
+                                          allowedAndroidApps: [],
+                                          passkeys: [])
+
         XCTAssertEqual(usernameLogin.authIdentifier, username)
     }
 }

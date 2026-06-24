@@ -117,7 +117,7 @@ class BaseItemDetailViewModel: ObservableObject {
     @LazyInjected(\ToolingContainer.preferencesManager) var preferencesManager
     @LazyInjected(\RepositoryContainer.organizationRepository) private var organizationRepository
     @LazyInjected(\UseCasesContainer.getFeatureFlagStatus)
-    private var getFeatureFlagStatus
+    var getFeatureFlagStatus
 
     var folderSupported: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passFolder)

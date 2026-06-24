@@ -91,7 +91,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     weak var delegate: (any CreateEditLoginViewModelDelegate)?
 
     var domainMatchingSupported: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passAutofillUrlRegex)
+        getFeatureFlagStatus(for: FeatureFlagType.passAutofillUrlAdvancedModes)
     }
 
     override init(mode: ItemMode,
