@@ -160,6 +160,12 @@ private extension CredentialProviderCoordinator {
 
         case .arbitraryTextInsertion:
             handleArbitraryTextInsertion(users: users)
+
+        case let .generatePasswords(request, withUI: withUI):
+            if #available(iOS 26.2, *),
+               let request = request as? ASGeneratePasswordsRequest {
+                handleGeneratePasswords(request, withUI)
+            }
         }
     }
 
@@ -267,6 +273,33 @@ private extension CredentialProviderCoordinator {
                                                        userForNewItemSubject: userForNewItemSubject)
         viewModel.delegate = self
         showView(ItemsForTextInsertionView(viewModel: viewModel))
+    }
+}
+
+@available(iOS 26.2, *)
+private extension CredentialProviderCoordinator {
+    func handleGeneratePasswords(_ request: ASGeneratePasswordsRequest, _ withUI: Bool) {
+        guard let context else { return }
+
+        if withUI {
+            let view = GeneratePasswordView(mode: .random) { password in
+                var results = [ASGeneratedPassword]()
+                results.append(ASGeneratedPassword(kind: .strong, value: password))
+
+                context.completeGeneratePasswordRequest(results: results) { _ in }
+            }
+            showView(view)
+            return
+        }
+
+        let generatePasswords = resolve(\AutoFillUseCaseContainer.generateAutofillPasswords)
+        do {
+            let passwords = try generatePasswords()
+            context.completeGeneratePasswordRequest(results: passwords) { _ in }
+        } catch {
+            logger.error(error)
+            cancelAutoFill(reason: .failed, context: context)
+        }
     }
 }
 

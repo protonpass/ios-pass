@@ -473,6 +473,7 @@
 		5B24B1F93008C6CA009B081A /* DIComposition in Frameworks */ = {isa = PBXBuildFile; productRef = 5B24B1F83008C6CA009B081A /* DIComposition */; };
 		5B24B1FB3008C6F4009B081A /* DIComposition in Frameworks */ = {isa = PBXBuildFile; productRef = 5B24B1FA3008C6F4009B081A /* DIComposition */; };
 		5B24B1FD3008C728009B081A /* DIComposition in Frameworks */ = {isa = PBXBuildFile; productRef = 5B24B1FC3008C728009B081A /* DIComposition */; };
+		5B2537ED2FEBF62400E383D7 /* GenerateAutofillPasswords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2537EC2FEBF62400E383D7 /* GenerateAutofillPasswords.swift */; };
 		5B39DF7F2B501C020009D53E /* DetailHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B39DF7D2B501C020009D53E /* DetailHistoryView.swift */; };
 		5B39DF802B501C020009D53E /* DetailHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B39DF7E2B501C020009D53E /* DetailHistoryViewModel.swift */; };
 		5B3FD1A42BFCE24E00434294 /* CreateEditIdentityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3FD1A22BFCE24E00434294 /* CreateEditIdentityView.swift */; };
@@ -968,6 +969,7 @@
 		5B1F0F062EC1DF5C0015982A /* InviteSuggestionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteSuggestionsSection.swift; sourceTree = "<group>"; };
 		5B1F5CEA2A5ED6D000A6C3ED /* CustomFieldTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFieldTypes.swift; sourceTree = "<group>"; };
 		5B24B0532FFCFC50009B081A /* DIComposition */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = DIComposition; path = LocalPackages/DIComposition; sourceTree = "<group>"; };
+		5B2537EC2FEBF62400E383D7 /* GenerateAutofillPasswords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateAutofillPasswords.swift; sourceTree = "<group>"; };
 		5B39DF7D2B501C020009D53E /* DetailHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHistoryView.swift; sourceTree = "<group>"; };
 		5B39DF7E2B501C020009D53E /* DetailHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHistoryViewModel.swift; sourceTree = "<group>"; };
 		5B3E2FFF2AAF01A30002289A /* TestPlans */ = {isa = PBXFileReference; lastKnownFileType = folder; path = TestPlans; sourceTree = "<group>"; };
@@ -1403,6 +1405,7 @@
 				3552D0CA2CA6ECAB004156D8 /* FetchItemsForTextInsertion.swift */,
 				35951DCD2B8CCC48006616BE /* GenerateAuthorizationCredential.swift */,
 				3570E05B2B8E29EB005B8186 /* GetItemsForPasskeyCreation.swift */,
+				5B2537EC2FEBF62400E383D7 /* GenerateAutofillPasswords.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -3188,6 +3191,7 @@
 				3597F0D02CB5D19F00384874 /* ItemDetailView.swift in Sources */,
 				3560C2F12B99B46F00F35D7A /* CompleteConfiguration.swift in Sources */,
 				358FB12F2CBFF45600ECE39F /* ItemTypeListViewModel.swift in Sources */,
+				5B2537ED2FEBF62400E383D7 /* GenerateAutofillPasswords.swift in Sources */,
 				356A1F072B88C59C00561950 /* Passkey.swift in Sources */,
 				3524A4642CB6AB92001EC572 /* CreditCardDetailViewModel.swift in Sources */,
 				350AF86F299685690045B7B6 /* NoteEditSection.swift in Sources */,
