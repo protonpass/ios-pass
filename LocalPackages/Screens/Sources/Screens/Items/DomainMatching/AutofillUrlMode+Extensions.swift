@@ -22,7 +22,7 @@
 import Entities
 import Macro
 
-extension AutofillUrlMode {
+public extension AutofillUrlMode {
     var title: String {
         switch self {
         case .default:
