@@ -77,3 +77,16 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
         coordinator.setUpAndStart(mode: .passkeyRegistration(passkeyCredentialRequest))
     }
 }
+
+// MARK: - Password Generation (iOS 26.2+)
+
+@available(iOS 26.2, *)
+extension CredentialProviderViewController {
+    override func performWithoutUserInteraction(generatePasswordsRequest request: ASGeneratePasswordsRequest) {
+        coordinator.setUpAndStart(mode: .generatePasswords(request))
+    }
+
+    override func prepareInterface(for request: ASGeneratePasswordsRequest) {
+        coordinator.setUpAndStart(mode: .generatePasswords(request, withUI: true))
+    }
+}

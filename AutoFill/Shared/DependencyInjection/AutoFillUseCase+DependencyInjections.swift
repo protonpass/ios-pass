@@ -219,4 +219,12 @@ extension AutoFillUseCaseContainer {
             CanSkipLocalAuthentication(currentDateProvider: ToolingContainer.shared.currentDateProvider())
         }
     }
+
+    @available(iOS 26.2, *)
+    var generateAutofillPasswords: Factory<any GenerateAutofillPasswordsUseCase> {
+        self { GenerateAutofillPasswords(generatePassword: SharedUseCasesContainer.shared.generatePassword(),
+                                         generateRandomWords: SharedUseCasesContainer.shared.generateRandomWords(),
+                                         generatePassphrase: SharedUseCasesContainer.shared.generatePassphrase())
+        }
+    }
 }
