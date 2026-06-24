@@ -777,7 +777,14 @@ private struct DomainMatchingWebsiteSection<Field: Hashable>: View {
                         }
 
                         if !url.value.url.isEmpty {
-                            AutofillUrlModeLabel(mode: url.value.mode)
+                            Text(url.value.mode.title)
+                                .font(.callout)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .foregroundStyle(viewModel.itemContentType.normMajor2Color)
+                                .padding(.vertical, 6)
+                                .padding(.horizontal, 10)
+                                .background(PassColor.inputBackgroundNorm)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
                         }
 
                         if viewModel.autofillUrls.count > 1 ||
