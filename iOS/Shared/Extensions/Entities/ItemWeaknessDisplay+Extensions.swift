@@ -61,7 +61,7 @@ extension ItemWeaknessDisplay {
         }
     }
 
-    var icon: Image? {
+    var icon: Image {
         switch self {
         case .weakness(.missing2FA, _):
             PassIcon.shieldLockPurple
@@ -103,7 +103,7 @@ extension ItemWeaknessDisplay {
         }
     }
 
-    var flag: ItemFlag? {
+    func flag(_ isFullyMonitored: Bool) -> ItemFlag {
         switch self {
         case let .weakness(kind, isExcluded):
             // `isExcluded` means the check is currently suppressed; toggling restores it, hence
@@ -111,9 +111,7 @@ extension ItemWeaknessDisplay {
             .skip(kind, !isExcluded)
 
         case .fullyExcluded:
-            // Full-item monitoring is a stateful toggle handled by `toggleMonitoring(weakness:)`;
-            // its direction depends on the item's live monitoring state, not on `isExcluded`.
-            nil
+            .skipHealthCheck(isFullyMonitored)
         }
     }
 }

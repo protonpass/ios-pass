@@ -100,14 +100,7 @@ private extension SecurityWeaknessDetailViewModel {
         getAllSecurityAffectedLogins(for: type)
             .subscribe(on: DispatchQueue.global())
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] completion in
-                guard let self else {
-                    return
-                }
-                if case let .failure(error) = completion {
-                    state = .error(error)
-                }
-            } receiveValue: { [weak self] logins in
+            .sink { [weak self] logins in
                 guard let self else {
                     return
                 }

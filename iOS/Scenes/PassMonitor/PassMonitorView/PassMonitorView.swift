@@ -458,17 +458,8 @@ private extension PassMonitorView {
 }
 
 private extension PassMonitorView {
-    @ViewBuilder
     func weaknessRow(kind: WeaknessKind, count: Int) -> some View {
-        // Count-aware severity stays in the view (the entity must not know about row styling).
-        let rowType: SecureRowType = switch kind {
-        case .compromisedPassword, .reusedPassword, .weakPassword:
-            count > 0 ? .warning : .success
-
-        case .missing2FA:
-            .info
-        }
-        passMonitorRow(rowType: rowType,
+        passMonitorRow(rowType: kind.toSecureRowType(count),
                        title: kind.dashboardTitle,
                        subTitle: kind.dashboardSubtitle,
                        count: count,
@@ -558,5 +549,17 @@ private extension PassMonitorView {
         }
         .buttonStyle(.plain)
         .animation(.default, value: loading)
+    }
+}
+
+private extension WeaknessKind {
+    func toSecureRowType(_ count: Int) -> SecureRowType {
+        switch self {
+        case .compromisedPassword, .reusedPassword, .weakPassword:
+            count > 0 ? .warning : .success
+
+        case .missing2FA:
+            .info
+        }
     }
 }
