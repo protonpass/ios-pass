@@ -321,17 +321,3 @@ private extension PasswordType {
         }
     }
 }
-
-extension WordSeparator {
-    var title: LocalizedStringKey {
-        switch self {
-        case .hyphens: "Hyphens"
-        case .spaces: "Spaces"
-        case .periods: "Periods"
-        case .commas: "Commas"
-        case .underscores: "Underscores"
-        case .numbers: "Numbers"
-        case .numbersAndSymbols: "Numbers and Symbols"
-        }
-    }
-}
