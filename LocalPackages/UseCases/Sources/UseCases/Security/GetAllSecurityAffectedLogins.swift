@@ -38,8 +38,6 @@ public struct GetAllSecurityAffectedLogins: GetAllSecurityAffectedLoginsUseCase 
     }
 
     public func callAsFunction(for filter: MonitorListSection) -> AnyPublisher<SecurityIssuesContent, Never> {
-        // `tryMap` (rather than `map`) keeps the failure type `any Error` to satisfy the protocol;
-        // the body no longer throws because it reads the repository's decrypt-once projection.
         passMonitorRepository.itemsWithSecurityIssues
             .map { items in
                 switch filter {
