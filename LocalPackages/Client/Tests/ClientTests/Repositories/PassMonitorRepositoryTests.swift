@@ -288,6 +288,56 @@ struct PassMonitorRepositoryTests {
         #expect(reusedItems.count == 1)
         #expect(reusedItems.first! == (try! items.last!.getItemContent(symmetricKey: key)))
     }
+
+    /// Regression for IDTEAM-5965: the reused-password count must reflect the item's CURRENT
+    /// password, not a stale `ItemContent` a long-lived detail view model may still hold after an
+    /// edit. Here the repository already reflects the post-edit state (the viewed item shares its new
+    /// password with a partner), but the caller passes the PRE-edit content (same ids, old unique
+    /// password). The lookup must resolve the current password by id and still find the partner —
+    /// otherwise the UI shows "Reused password" with "0 other logins use this password".
+    @Test
+    func `getItemsWithSamePassword resolves the item's current password, ignoring a stale passed-in copy`() async throws {
+        let shareID = UUID().uuidString
+        let key = symmetricKeyProviderMockFactory.key
+        shareRepository.stubbedGetSharesResult =
+            [SymmetricallyEncryptedShare(encryptedContent: nil, share: .random(shareId: shareID))]
+
+        let sharedPassword = "Ageless6-Evidence0-Detonator1-Cider4-Synthesis6sdfasdsad"
+        let stalePassword = "old-unique-password-never-shared"
+
+        // Stable identity for the edited item so the "stale" and "current" encryptions share ids.
+        let viewedItem = Item.random(itemId: "viewed-item-id", flags: 0)
+
+        func encrypt(_ password: String) -> String {
+            let loginData = LogInItemData.mock(username: "test", password: password)
+            let content = ItemContentProtobufFactory.createItemContentProtobuf(name: "Login",
+                                                                               note: "n",
+                                                                               itemUuid: UUID().uuidString,
+                                                                               data: .login(loginData),
+                                                                               customFields: [])
+            return try! content.encrypt(symmetricKey: key)
+        }
+
+        // Post-edit repository state: the viewed item now shares `sharedPassword` with a partner.
+        let viewedCurrent = SymmetricallyEncryptedItem.random(shareId: shareID,
+                                                              item: viewedItem,
+                                                              encryptedContent: encrypt(sharedPassword))
+        let partner = SymmetricallyEncryptedItem.random(shareId: shareID,
+                                                        item: .random(flags: 0),
+                                                        encryptedContent: encrypt(sharedPassword))
+        itemRepository.stubbedGetActiveLogInItemsResult = [viewedCurrent, partner]
+
+        // The caller still holds the pre-edit content: same ids, old (unique) password.
+        let staleEncrypted = SymmetricallyEncryptedItem.random(shareId: shareID,
+                                                              item: viewedItem,
+                                                              encryptedContent: encrypt(stalePassword))
+        let staleContent = try staleEncrypted.getItemContent(symmetricKey: key)
+
+        let reused = try await sut.getItemsWithSamePassword(item: staleContent)
+
+        #expect(reused.count == 1)
+        #expect(reused.first == (try partner.getItemContent(symmetricKey: key)))
+    }
 }
 
 private extension Item {
