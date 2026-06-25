@@ -19,55 +19,112 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Core
-import XCTest
+import Testing
+import Foundation
+import CryptoKit
 
-final class StringExtensionTests: XCTestCase {
-    func testGenerateInitials() {
-        XCTAssertEqual("John doe wick".initials(), "JD")
-        XCTAssertEqual("john doe wick".initials(), "JD")
-        XCTAssertEqual("john-doe wick".initials(), "JW")
-        XCTAssertEqual("   john wick doe".initials(), "JW")
-        XCTAssertEqual("john↑doe".initials(), "JO")
-        XCTAssertEqual("johndoe".initials(), "JO")
-        XCTAssertEqual("john wick".initials(), "JW")
-        XCTAssertEqual("j".initials(), "J")
-        XCTAssertEqual("".initials(), "")
-        XCTAssertEqual("012".initials(), "01")
+@Suite("String extensions")
+struct StringExtensionTests {
+
+    @Suite("String.reuseToken")
+    struct ReuseTokenTests {
+
+        @Test func `empty password yields nil`() {
+            #expect("".reuseToken == nil)
+        }
+
+        // NIST / well-known SHA-256 known-answer vectors. Hardcoded on purpose:
+        // re-deriving via CryptoKit in the test would just re-test CryptoKit.
+        @Test(arguments: [
+            ("a",   "ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb"),
+            ("abc", "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"),
+        ])
+        func `known SHA-256 vectors`(password: String, expected: String) throws {
+            let token = try #require(password.reuseToken)
+            #expect(token == expected)
+        }
+
+        @Test func `token is 64 lowercase hex characters`() throws {
+            let token = try #require("hunter2".reuseToken)
+            #expect(token.count == 64)
+            #expect(token.allSatisfy { $0.isHexDigit && !$0.isUppercase })
+        }
+
+        @Test func `same password is deterministic`() {
+            #expect("s3cret".reuseToken == "s3cret".reuseToken)
+        }
+
+        // The whole feature depends on this: different passwords must not collide into one group.
+        @Test func `distinct passwords produce distinct tokens`() {
+            #expect("password1".reuseToken != "password2".reuseToken)
+        }
+
+        // Guard is `isEmpty`, not "blank" — a single space is a real, hashable password.
+        @Test func `whitespace-only password is non-nil`() {
+            #expect(" ".reuseToken != nil)
+        }
+
+        // Hashing is over raw UTF-8 bytes, so canonically-equivalent strings in different
+        // normalization forms group SEPARATELY. Documents real behavior — matters if the same
+        // visible password can arrive un-normalized (e.g. paste vs. type on different keyboards).
+        @Test func `normalization forms hash differently`() {
+            let nfc = "é"             // U+00E9
+            let nfd = "e\u{0301}"     // "e" + combining acute
+            #expect(nfc.reuseToken != nfd.reuseToken)
+        }
     }
 
-    func testCharacterCount() {
-        XCTAssertEqual("teststring".characterCount("t"), 3)
-        XCTAssertEqual("test long string".characterCount(" "), 2)
-        XCTAssertEqual("🤘 string with emoji 😊😊 and special character (◕‿◕)".characterCount("😊"), 2)
+    @Test(arguments: [
+        ("John doe wick", "JD"),
+        ("john doe wick", "JD"),
+        ("john-doe wick", "JW"),
+        ("   john wick doe", "JW"),
+        ("john↑doe", "JO"),     // ↑ is not a separator → single word, first two chars
+        ("johndoe", "JO"),
+        ("john wick", "JW"),
+        ("j", "J"),
+        ("", ""),
+        ("012", "01"),
+    ])
+    func `initials`(input: String, expected: String) {
+        #expect(input.initials() == expected)
     }
 
-    func testConvertToCardNumber() {
-        XCTAssertEqual("341234569865".toCreditCardNumber(),
-                       "3412 345698 65")
-        XCTAssertEqual("341234569865857".toCreditCardNumber(),
-                       "3412 345698 65857")
-        XCTAssertEqual("3712345698658579".toCreditCardNumber(),
-                       "3712 3456 9865 8579")
-        XCTAssertEqual("671934946329032".toCreditCardNumber(),
-                       "6719 3494 6329 032")
+    @Test(arguments: [
+        ("teststring", Character("t"), 3),
+        ("test long string", Character(" "), 2),
+        ("🤘 string with emoji 😊😊 and special character (◕‿◕)", Character("😊"), 2),
+    ])
+    func `characterCount`(input: String, needle: Character, expected: Int) {
+        #expect(input.characterCount(needle) == expected)
     }
 
-    func testConvertToMaskedCardNumber() {
-        XCTAssertEqual("341234569865".toMaskedCreditCardNumber(),
-                       "3412 •••• 9865")
-        XCTAssertEqual("341234569865857".toMaskedCreditCardNumber(),
-                       "3412 •••••• 65857")
-        XCTAssertEqual("3712345698658579".toMaskedCreditCardNumber(),
-                       "3712 •••• •••• 8579")
-        XCTAssertEqual("671934946329032".toMaskedCreditCardNumber(),
-                       "6719 •••• •••• 032")
-        XCTAssertEqual("67193494632903247021".toMaskedCreditCardNumber(),
-                       "6719 •••• •••• •••• 7021")
+    @Test(arguments: [
+        ("341234569865", "3412 345698 65"),
+        ("341234569865857", "3412 345698 65857"),
+        ("3712345698658579", "3712 3456 9865 8579"),
+        ("671934946329032", "6719 3494 6329 032"),
+    ])
+    func `toCreditCardNumber`(input: String, expected: String) {
+        #expect(input.toCreditCardNumber() == expected)
     }
-    
-    func testReplaceAllCharsExceptFirstAndLast() {
-        XCTAssertEqual("ABBBB".replaceAllCharsExceptFirstAndLast(withChar: "z"), "AzzzB")
-        XCTAssertEqual("AB".replaceAllCharsExceptFirstAndLast(withChar: "z"), "AB")
-        XCTAssertEqual("AB".replaceAllCharsExceptFirstAndLast(withChar: "z"), "AB")
+
+    @Test(arguments: [
+        ("341234569865", "3412 •••• 9865"),
+        ("341234569865857", "3412 •••••• 65857"),
+        ("3712345698658579", "3712 •••• •••• 8579"),
+        ("671934946329032", "6719 •••• •••• 032"),
+        ("67193494632903247021", "6719 •••• •••• •••• 7021"),
+    ])
+    func `toMaskedCreditCardNumber`(input: String, expected: String) {
+        #expect(input.toMaskedCreditCardNumber() == expected)
+    }
+
+    @Test(arguments: [
+        ("ABBBB", "AzzzB"),
+        ("AB", "AB"),
+    ])
+    func `replaceAllCharsExceptFirstAndLast`(input: String, expected: String) {
+        #expect(input.replaceAllCharsExceptFirstAndLast(withChar: "z") == expected)
     }
 }
