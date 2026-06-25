@@ -121,7 +121,7 @@ private extension SecurityWeaknessDetailView {
             }, header: {
                 Label(title: { Text(key.title) },
                       icon: {
-                          if viewModel.type.collapsible {
+                          if viewModel.type.isSectionned {
                               Image(systemName: collapsedSections.contains(key) ? "chevron.up" : "chevron.down")
                                   .resizable()
                                   .scaledToFit()
@@ -130,7 +130,7 @@ private extension SecurityWeaknessDetailView {
                       })
                       .foregroundStyle(PassColor.textWeak)
                       .frame(maxWidth: .infinity, alignment: .leading)
-                      .if(viewModel.type.collapsible) { view in
+                      .if(viewModel.type.isSectionned) { view in
                           view
                               .padding(.top, DesignConstant.sectionPadding)
                               .buttonEmbeded {
@@ -219,13 +219,6 @@ private extension MonitorListSection {
         case .weakness(.reusedPassword):
             true
         }
-    }
-
-    var collapsible: Bool {
-        if case .weakness(.reusedPassword) = self {
-            return true
-        }
-        return false
     }
 }
 
