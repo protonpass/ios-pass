@@ -25,26 +25,20 @@ import Combine
 import Entities
 
 public protocol GetLoginSecurityIssuesUseCase: Sendable {
-    func execute(itemId: String) -> AnyPublisher<SecurityAffectedItem?, Never>
+    func callAsFunction(item: ItemContent) -> AnyPublisher<SecurityAffectedItem?, Never>
 }
 
-public extension GetLoginSecurityIssuesUseCase {
-    func callAsFunction(itemId: String) -> AnyPublisher<SecurityAffectedItem?, Never> {
-        execute(itemId: itemId)
-    }
-}
-
-public final class GetLoginSecurityIssues: GetLoginSecurityIssuesUseCase {
+public struct GetLoginSecurityIssues: GetLoginSecurityIssuesUseCase {
     private let passMonitorRepository: any PassMonitorRepositoryProtocol
 
     public init(passMonitorRepository: any PassMonitorRepositoryProtocol) {
         self.passMonitorRepository = passMonitorRepository
     }
 
-    public func execute(itemId: String) -> AnyPublisher<SecurityAffectedItem?, Never> {
+    public func callAsFunction(item: ItemContent) -> AnyPublisher<SecurityAffectedItem?, Never> {
         passMonitorRepository.itemsWithSecurityIssues
             .map { items -> SecurityAffectedItem? in
-                items.first { $0.item.itemId == itemId }
+                items.first { $0.display.id == item.id }
             }.eraseToAnyPublisher()
     }
 }

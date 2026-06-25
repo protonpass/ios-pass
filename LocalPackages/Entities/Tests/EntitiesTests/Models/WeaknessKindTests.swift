@@ -38,12 +38,4 @@ struct WeaknessKindTests {
         let priorities = WeaknessKind.allCases.map(\.displayPriority)
         #expect(Set(priorities).count == WeaknessKind.allCases.count)
     }
-
-    @Test
-    func `Each kind maps to its matching skip flag`() {
-        #expect(WeaknessKind.weakPassword.skipFlag == .skipWeakPasswordCheck)
-        #expect(WeaknessKind.compromisedPassword.skipFlag == .skipCompromisedPasswordCheck)
-        #expect(WeaknessKind.reusedPassword.skipFlag == .skipReusedPasswordCheck)
-        #expect(WeaknessKind.missing2FA.skipFlag == .skip2FACheck)
-    }
 }

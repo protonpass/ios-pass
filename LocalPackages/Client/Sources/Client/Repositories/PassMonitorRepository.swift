@@ -316,9 +316,7 @@ private extension PassMonitorRepository {
                                                     display: item.content.toItemUiModel,
                                                     reuseToken: item.loginData.password.reuseToken)
 
-            return (!detected.isEmpty || affectedItem.isExcludedItem)
-                ? affectedItem
-                : nil
+            return affectedItem.shouldBeIncluded ? affectedItem : nil
         }
 
         var weakPasswordCount = 0
