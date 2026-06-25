@@ -387,9 +387,7 @@ private extension LogInDetailView {
     var securityIssuesView: some View {
         if let issues = viewModel.securityIssues, !issues.isEmpty {
             SecurityIssueView(weaknesses: issues,
-                              viewModel: viewModel) { expended in
-                expanded = expended
-            }
+                              viewModel: viewModel)
         }
     }
 }
