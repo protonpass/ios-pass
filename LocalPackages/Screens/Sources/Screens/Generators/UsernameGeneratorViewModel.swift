@@ -18,9 +18,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Entities
 import FactoryKit
 import Foundation
+import UseCases
 
 @MainActor
 @Observable
@@ -36,18 +38,21 @@ final class UsernameGeneratorViewModel {
     var includeVerbs = false
 
     @ObservationIgnored
-    @LazyInjected(\SharedUseCasesContainer.generateUsername)
-    private var generateUsername
+    private let datasource: any LocalUsernamePreferencesDatasourceProtocol
 
     @ObservationIgnored
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private var router
+    private let generateUsername: any GenerateUsernameUseCase
 
     @ObservationIgnored
-    @LazyInjected(\SharedRepositoryContainer.localUsernamePreferencesDatasource)
-    private var datasource
+    private let onError: (any Error) -> Void
 
-    init() {
+    init(datasource: any LocalUsernamePreferencesDatasourceProtocol,
+         generateUsername: any GenerateUsernameUseCase,
+         onError: @escaping (any Error) -> Void) {
+        self.datasource = datasource
+        self.generateUsername = generateUsername
+        self.onError = onError
+
         retrievePreferences()
         startTracking()
     }
@@ -63,7 +68,7 @@ final class UsernameGeneratorViewModel {
                                                              nouns: includeNouns,
                                                              verbs: includeVerbs))
         } catch {
-            router.display(element: .displayErrorBanner(error))
+            onError(error)
         }
     }
 }

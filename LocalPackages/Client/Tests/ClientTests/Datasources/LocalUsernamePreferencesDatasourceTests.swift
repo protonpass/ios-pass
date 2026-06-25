@@ -35,8 +35,8 @@ struct LocalUsernamePreferencesDatasourceTests {
         sut = LocalUsernamePreferencesDatasource(store: store)
     }
 
-    @Test("Return default preferences when nothing has been saved")
-    func returnsDefaultsWhenEmpty() {
+    @Test
+    func `Return default preferences when nothing has been saved`() {
         let result = sut.getPreferences()
 
         let expected = UsernamePreferences.default
@@ -50,8 +50,8 @@ struct LocalUsernamePreferencesDatasourceTests {
         #expect(result.includeVerbs == expected.includeVerbs)
     }
 
-    @Test("Save and retrieve preserves every field")
-    func saveAndRetrieveRoundTrip() {
+    @Test
+    func `Save and retrieve preserves every field`() {
         let given = UsernamePreferences(wordCount: 4,
                                         separator: .underscores,
                                         includeNumbers: true,
@@ -74,8 +74,8 @@ struct LocalUsernamePreferencesDatasourceTests {
         #expect(result.includeVerbs == given.includeVerbs)
     }
 
-    @Test("includeNumbers is persisted independently from includeNouns")
-    func includeNumbersIsIndependentFromIncludeNouns() {
+    @Test
+    func `includeNumbers is persisted independently from includeNouns`() {
         let given = UsernamePreferences(wordCount: 3,
                                         separator: .commas,
                                         includeNumbers: true,
@@ -92,8 +92,8 @@ struct LocalUsernamePreferencesDatasourceTests {
         #expect(!result.includeNouns)
     }
 
-    @Test("Saving again overwrites the previously stored preferences")
-    func saveOverwritesPreviousValues() {
+    @Test
+    func `Saving again overwrites the previously stored preferences`() {
         let first = UsernamePreferences(wordCount: 2,
                                         separator: .hyphens,
                                         includeNumbers: false,
@@ -125,8 +125,8 @@ struct LocalUsernamePreferencesDatasourceTests {
         #expect(result.includeVerbs == second.includeVerbs)
     }
 
-    @Test("All word separators survive a save/retrieve round trip")
-    func everySeparatorRoundTrips() {
+    @Test
+    func `All word separators survive a save/retrieve round trip`() {
         for separator in WordSeparator.allCases {
             let given = UsernamePreferences(wordCount: 2,
                                             separator: separator,
@@ -141,8 +141,8 @@ struct LocalUsernamePreferencesDatasourceTests {
         }
     }
 
-    @Test("An unknown stored separator value falls back to hyphens")
-    func unknownSeparatorFallsBackToHyphens() {
+    @Test
+    func `An unknown stored separator value falls back to hyphens`() {
         // Persist an out-of-range raw value directly, bypassing the typed API.
         store.set(999, forKey: "UsernameSeparator")
 

@@ -18,20 +18,32 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import DesignSystem
 import Entities
 import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
+import UseCases
 
-struct UsernameGeneratorView: View {
+public struct UsernameGeneratorView: View {
     @Environment(\.dismiss) private var dismiss
-    @State private var viewModel = UsernameGeneratorViewModel()
+    @State private var viewModel: UsernameGeneratorViewModel
     @State private var maxUsernameHeight = 0.0
     @State private var showAdvancedOptions = false
     let onConfirm: (String) -> Void
 
-    var body: some View {
+    public init(datasource: any LocalUsernamePreferencesDatasourceProtocol,
+                generateUsername: any GenerateUsernameUseCase,
+                onError: @escaping (any Error) -> Void,
+                onConfirm: @escaping (String) -> Void) {
+        _viewModel = .init(initialValue: .init(datasource: datasource,
+                                               generateUsername: generateUsername,
+                                               onError: onError))
+        self.onConfirm = onConfirm
+    }
+
+    public var body: some View {
         VStack {
             titleBar
 
@@ -126,7 +138,7 @@ private extension UsernameGeneratorView {
                         viewModel.separator = separator
                     }, label: {
                         HStack {
-                            Text(separator.title)
+                            Text(verbatim: separator.title)
                             Spacer()
                             if viewModel.separator == separator {
                                 Image(systemName: "checkmark")
@@ -136,7 +148,7 @@ private extension UsernameGeneratorView {
                 }
             }, label: {
                 HStack {
-                    Text(viewModel.separator.title)
+                    Text(verbatim: viewModel.separator.title)
                         .foregroundStyle(PassColor.textNorm)
                     IconProvider.chevronDownFilled
                         .resizable()
