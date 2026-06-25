@@ -138,6 +138,7 @@ struct SecurityIssueView: View {
                         }
                     }
 
+                    Spacer()
                     CapsuleTextButton(title: weakness.isExcluded
                         ? #localized("Restore alert") : #localized("Ignore"),
                         titleColor: PassColor.interactionNormMajor2,
@@ -155,17 +156,6 @@ struct SecurityIssueView: View {
         }
         .animation(.default, value: viewModel.reusedItems)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-
-    func rowIcon(weakness: ItemWeaknessDisplay) -> some View {
-        VStack {
-            weakness.icon
-                .resizable()
-                .scaledToFit()
-                .frame(width: 16)
-                .padding(.top, 2)
-            Spacer()
-        }
     }
 
     @ViewBuilder
