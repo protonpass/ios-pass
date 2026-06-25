@@ -41,7 +41,7 @@ public struct GetAllSecurityAffectedLogins: GetAllSecurityAffectedLoginsUseCase 
         // `tryMap` (rather than `map`) keeps the failure type `any Error` to satisfy the protocol;
         // the body no longer throws because it reads the repository's decrypt-once projection.
         passMonitorRepository.itemsWithSecurityIssues
-            .tryMap { items in
+            .map { items in
                 switch filter {
                 case .weakness(.weakPassword):
                     filterActiveWeakness(.weakPassword, in: items, section: .weakPasswords)
@@ -60,7 +60,6 @@ public struct GetAllSecurityAffectedLogins: GetAllSecurityAffectedLoginsUseCase 
                     filterExcludedItems(items: items)
                 }
             }
-            .replaceError(with: [:])
             .eraseToAnyPublisher()
     }
 }
