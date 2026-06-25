@@ -59,4 +59,8 @@ public extension SecurityAffectedItem {
     var isExcludedItem: Bool {
         isFullyExcluded || !suppressedChecks.isEmpty
     }
+
+    var shouldBeIncluded: Bool {
+        !detected.isEmpty || isExcludedItem
+    }
 }

@@ -66,7 +66,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
         super.init(isShownAsSheet: isShownAsSheet,
                    itemContent: itemContent,
                    upgradeChecker: upgradeChecker)
-        getLoginSecurityIssues(itemId: itemContent.itemId)
+        getLoginSecurityIssues(item: itemContent)
             .subscribe(on: DispatchQueue.global())
             .receive(on: DispatchQueue.main)
             .sink { [weak self] affected in
