@@ -40,6 +40,7 @@ struct LocalPasswordPreferencesDatasourceTests {
         let result = sut.getPreferences()
 
         let expected = PasswordPreferences.default
+        #expect(result.passwordType == expected.passwordType)
         #expect(result.characterCount == expected.characterCount)
         #expect(result.hasSpecialCharacters == expected.hasSpecialCharacters)
         #expect(result.hasCapitalCharacters == expected.hasCapitalCharacters)
@@ -52,7 +53,8 @@ struct LocalPasswordPreferencesDatasourceTests {
 
     @Test
     func `Save and retrieve preserves every field`() {
-        let given = PasswordPreferences(characterCount: 32,
+        let given = PasswordPreferences(passwordType: .random,
+                                        characterCount: 32,
                                         hasSpecialCharacters: false,
                                         hasCapitalCharacters: true,
                                         hasNumberCharacters: false,
@@ -64,6 +66,7 @@ struct LocalPasswordPreferencesDatasourceTests {
         sut.save(preferences: given)
         let result = sut.getPreferences()
 
+        #expect(result.passwordType == given.passwordType)
         #expect(result.characterCount == given.characterCount)
         #expect(result.hasSpecialCharacters == given.hasSpecialCharacters)
         #expect(result.hasCapitalCharacters == given.hasCapitalCharacters)
@@ -76,7 +79,8 @@ struct LocalPasswordPreferencesDatasourceTests {
 
     @Test
     func `hasSpecialCharacters is persisted independently from hasNumberCharacters`() {
-        let given = PasswordPreferences(characterCount: 16,
+        let given = PasswordPreferences(passwordType: .memorable,
+                                        characterCount: 16,
                                         hasSpecialCharacters: true,
                                         hasCapitalCharacters: false,
                                         hasNumberCharacters: false,
@@ -94,7 +98,8 @@ struct LocalPasswordPreferencesDatasourceTests {
 
     @Test
     func `Saving again overwrites the previously stored preferences`() {
-        let first = PasswordPreferences(characterCount: 12,
+        let first = PasswordPreferences(passwordType: .memorable,
+                                        characterCount: 12,
                                         hasSpecialCharacters: false,
                                         hasCapitalCharacters: false,
                                         hasNumberCharacters: false,
@@ -104,7 +109,8 @@ struct LocalPasswordPreferencesDatasourceTests {
                                         includingNumbers: false)
         sut.save(preferences: first)
 
-        let second = PasswordPreferences(characterCount: 48,
+        let second = PasswordPreferences(passwordType: .random,
+                                         characterCount: 48,
                                          hasSpecialCharacters: true,
                                          hasCapitalCharacters: true,
                                          hasNumberCharacters: true,
@@ -115,6 +121,7 @@ struct LocalPasswordPreferencesDatasourceTests {
         sut.save(preferences: second)
 
         let result = sut.getPreferences()
+        #expect(result.passwordType == second.passwordType)
         #expect(result.characterCount == second.characterCount)
         #expect(result.hasSpecialCharacters == second.hasSpecialCharacters)
         #expect(result.hasCapitalCharacters == second.hasCapitalCharacters)
@@ -128,7 +135,8 @@ struct LocalPasswordPreferencesDatasourceTests {
     @Test
     func `All word separators survive a save/retrieve round trip`() {
         for separator in WordSeparator.allCases {
-            let given = PasswordPreferences(characterCount: 20,
+            let given = PasswordPreferences(passwordType: .memorable,
+                                            characterCount: 20,
                                             hasSpecialCharacters: false,
                                             hasCapitalCharacters: false,
                                             hasNumberCharacters: false,
@@ -154,6 +162,7 @@ struct LocalPasswordPreferencesDatasourceTests {
 
 extension LocalPasswordPreferencesDatasourceTests {
     private func seedLegacyPreferences(in store: UserDefaults) {
+        store.set(PasswordType.random.rawValue, forKey: LegacyPasswordPreferenceKey.passwordType.rawValue)
         store.set(28.0, forKey: LegacyPasswordPreferenceKey.characterCount.rawValue)
         store.set(false, forKey: LegacyPasswordPreferenceKey.hasSpecialCharacters.rawValue)
         store.set(true, forKey: LegacyPasswordPreferenceKey.hasCapitalCharacters.rawValue)
@@ -179,6 +188,7 @@ extension LocalPasswordPreferencesDatasourceTests {
         let sut = LocalPasswordPreferencesDatasource(store: store)
         let result = sut.getPreferences()
 
+        #expect(result.passwordType == .random)
         #expect(result.characterCount == 28)
         #expect(!result.hasSpecialCharacters)
         #expect(result.hasCapitalCharacters)
@@ -210,7 +220,8 @@ extension LocalPasswordPreferencesDatasourceTests {
         let firstInstance = LocalPasswordPreferencesDatasource(store: store)
 
         // The user then tweaks their preferences.
-        let updated = PasswordPreferences(characterCount: 50,
+        let updated = PasswordPreferences(passwordType: .memorable,
+                                          characterCount: 50,
                                           hasSpecialCharacters: true,
                                           hasCapitalCharacters: true,
                                           hasNumberCharacters: true,
@@ -224,6 +235,7 @@ extension LocalPasswordPreferencesDatasourceTests {
         let secondInstance = LocalPasswordPreferencesDatasource(store: store)
         let result = secondInstance.getPreferences()
 
+        #expect(result.passwordType == updated.passwordType)
         #expect(result.characterCount == updated.characterCount)
         #expect(result.wordSeparator == updated.wordSeparator)
         #expect(result.wordCount == updated.wordCount)

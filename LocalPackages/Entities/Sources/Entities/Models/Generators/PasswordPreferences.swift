@@ -21,6 +21,8 @@
 import Foundation
 
 public struct PasswordPreferences: Sendable {
+    public let passwordType: PasswordType
+
     // Random password options
     public let characterCount: Int
     public let hasSpecialCharacters: Bool
@@ -39,7 +41,8 @@ public struct PasswordPreferences: Sendable {
     public static let maxWordCount = 10
 
     public static var `default`: Self {
-        .init(characterCount: 20,
+        .init(passwordType: .memorable,
+              characterCount: 20,
               hasSpecialCharacters: true,
               hasCapitalCharacters: true,
               hasNumberCharacters: true,
@@ -49,7 +52,8 @@ public struct PasswordPreferences: Sendable {
               includingNumbers: true)
     }
 
-    public init(characterCount: Int,
+    public init(passwordType: PasswordType,
+                characterCount: Int,
                 hasSpecialCharacters: Bool,
                 hasCapitalCharacters: Bool,
                 hasNumberCharacters: Bool,
@@ -57,6 +61,7 @@ public struct PasswordPreferences: Sendable {
                 wordCount: Int,
                 capitalizingWords: Bool,
                 includingNumbers: Bool) {
+        self.passwordType = passwordType
         self.characterCount = characterCount
         self.hasSpecialCharacters = hasSpecialCharacters
         self.hasCapitalCharacters = hasCapitalCharacters
