@@ -36,24 +36,26 @@ struct SecurityIssueView: View {
     var mainContent: some View {
         VStack(alignment: .leading, spacing: 10) {
             headerRow
-
             weaknessContent
         }
         .padding(DesignConstant.sectionPadding)
         .roundedDetailSection()
-        .animation(.default, value: expanded)
+        .clipShape(.rect(cornerRadius: 16))
     }
 
     @ViewBuilder
     var headerRow: some View {
         if multipleWeakness {
-            Button { expanded.toggle() } label: {
+            Button {
+                withAnimation {
+                    expanded.toggle()
+                }
+            } label: {
                 HStack {
-                    Image(uiImage: expanded ? IconProvider.chevronDownFilled : IconProvider.chevronRightFilled)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 16)
+                    Image(uiImage: IconProvider.chevronRightFilled)
+                        .resizable().scaledToFit().frame(width: 16)
                         .foregroundStyle(PassColor.textNorm)
+                        .rotationEffect(.degrees(expanded ? 90 : 0))
                     mainHeader
                 }
             }
@@ -66,21 +68,24 @@ struct SecurityIssueView: View {
     @ViewBuilder
     var weaknessContent: some View {
         if multipleWeakness, !expanded {
-            HStack {
-                Color.clear
-                    .frame(width: 16)
-                contentNonExpended
-                    .font(.subheadline)
-                    .foregroundStyle(PassColor.textNorm)
-                    .layoutPriority(1)
-            }
-        } else {
-            ForEach(weaknesses) { weakness in
-                securityWeaknessRow(weakness: weakness)
-                if weakness != weaknesses.last {
-                    Divider()
+            VStack(alignment: .leading, spacing: 10) {
+                HStack {
+                    Color.clear.frame(width: 16)
+                    contentNonExpended
+                        .font(.subheadline)
+                        .foregroundStyle(PassColor.textNorm)
+                        .layoutPriority(1)
                 }
             }
+            .transition(.opacity)
+        } else {
+            VStack(alignment: .leading, spacing: 10) {
+                ForEach(weaknesses) { weakness in
+                    securityWeaknessRow(weakness: weakness)
+                    if weakness != weaknesses.last { Divider() }
+                }
+            }
+            .transition(.opacity)
         }
     }
 
@@ -113,64 +118,48 @@ struct SecurityIssueView: View {
     }
 
     func securityWeaknessRow(weakness: ItemWeaknessDisplay) -> some View {
-        HStack(alignment: .center, spacing: 8) {
-            rowIcon(weakness: weakness)
-            VStack {
+        HStack(alignment: .top, spacing: 8) {
+            weakness.icon
+                .resizable().scaledToFit()
+                .frame(width: 16)
+                .padding(.top, 2)
+
+            VStack(alignment: .leading, spacing: 8) {
                 HStack(alignment: .top, spacing: 8) {
                     VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                         Text(weakness.title)
-                            .font(.subheadline)
-                            .fontWeight(.bold)
+                            .font(.subheadline).fontWeight(.bold)
                             .foregroundStyle(weakness.color)
                         if case .weakness(.reusedPassword, _) = weakness {
-                            reusedText()
+                            reusedText
                         } else if let infos = weakness.infos {
-                            Text(infos)
-                                .font(.subheadline)
+                            Text(infos).font(.subheadline)
                                 .foregroundStyle(PassColor.textNorm)
                         }
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
 
-                    VStack {
-                        CapsuleTextButton(title: weakness
-                            .isExcluded ? #localized("Restore alert") : #localized("Ignore"),
-                            titleColor: PassColor.interactionNormMajor2,
-                            font: .subheadline,
-                            backgroundColor: PassColor.loginInteractionNormMinor2,
-                            maxWidth: nil,
-                            horizontalPadding: buttonPadding,
-                            action: {
-                                viewModel.toggleMonitoring(weakness: weakness)
-                            })
-                        Spacer()
-                    }
+                    Spacer()
+                    CapsuleTextButton(title: weakness.isExcluded
+                        ? #localized("Restore alert") : #localized("Ignore"),
+                        titleColor: PassColor.interactionNormMajor2,
+                        font: .subheadline,
+                        backgroundColor: PassColor.loginInteractionNormMinor2,
+                        maxWidth: nil,
+                        horizontalPadding: buttonPadding,
+                        action: { viewModel.toggleMonitoring(weakness: weakness) })
                 }
 
                 if case .weakness(.reusedPassword, _) = weakness {
-                    reusedList()
+                    reusedList
                 }
             }
         }
         .animation(.default, value: viewModel.reusedItems)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     @ViewBuilder
-    func rowIcon(weakness: ItemWeaknessDisplay) -> some View {
-        if let icon = weakness.icon {
-            VStack {
-                icon
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 16)
-                    .padding(.top, 2)
-                Spacer()
-            }
-        }
-    }
-
-    @ViewBuilder
-    func reusedText() -> some View {
+    var reusedText: some View {
         switch viewModel.reusedItems {
         case .fetching:
             ProgressView()
@@ -190,7 +179,7 @@ struct SecurityIssueView: View {
     }
 
     @ViewBuilder
-    func reusedList() -> some View {
+    var reusedList: some View {
         switch viewModel.reusedItems {
         case .fetching:
             ProgressView()
@@ -252,7 +241,7 @@ private struct ReusedItemsPassListView: View {
                         .padding(6)
                         .frame(maxWidth: 165, alignment: .leading)
                         .background(PassColor.backgroundMedium)
-                        .cornerRadius(6)
+                        .cornerRadius(16)
                     }
                     .buttonStyle(.plain)
                 }

@@ -52,7 +52,7 @@ private extension LogInDetailView {
             ScrollViewReader { value in
                 ScrollView {
                     VStack(spacing: 0) {
-                        securityIssuesView()
+                        securityIssuesView
                             .padding(.vertical)
 
                         if let vaultContent = viewModel.shareContent?.share.vaultContent {
@@ -384,7 +384,7 @@ private extension LogInDetailView {
 
 private extension LogInDetailView {
     @ViewBuilder
-    func securityIssuesView() -> some View {
+    var securityIssuesView: some View {
         if let issues = viewModel.securityIssues, !issues.isEmpty {
             SecurityIssueView(weaknesses: issues,
                               viewModel: viewModel)

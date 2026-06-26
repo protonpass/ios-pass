@@ -21,13 +21,6 @@
 import Entities
 import PassRustCore
 
-/// Pure, per-item weakness detection policy.
-///
-/// This is the single home for "what makes an item weak". It is intentionally item-local: reuse is a
-/// global property (it needs the whole password multiset), so the caller computes `isReused` and the
-/// evaluator only decides the per-item weaknesses. Keeping detection out of `PassMonitorRepository`
-/// lets the rules be unit-tested without infrastructure and gives the upcoming compromised-password
-/// check a single place to live.
 // sourcery: AutoMockable
 public protocol ItemWeaknessEvaluatorProtocol: Sendable {
     func evaluate(_ login: LogInItemData, isReused: Bool) -> Set<WeaknessKind>

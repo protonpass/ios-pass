@@ -130,22 +130,30 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
     }
 
     public func getItemsWithSamePassword(item: ItemContent) async throws -> [ItemContent] {
-        guard let login = item.loginItem else {
+        guard item.loginItem != nil else {
             return []
         }
         let userId = try await userManager.getActiveUserId()
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
-        let encryptedItems = try await itemRepository.getActiveLogInItems(userId: userId)
+        let decryptedItems = try await itemRepository.getActiveLogInItems(userId: userId)
+            .compactMap { try? $0.getItemContent(symmetricKey: symmetricKey) }
 
-        return encryptedItems.compactMap { encryptedItem in
-            guard let decryptedItem = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
-                  !decryptedItem.item.monitoringDisabled,
-                  let loginItem = decryptedItem.loginItem,
+        guard let referencePassword = decryptedItems
+            .first(where: { $0.ids == item.ids })?
+            .loginItem?.password,
+            !referencePassword.isEmpty else {
+            return []
+        }
+
+        return decryptedItems.filter { decryptedItem in
+            guard !decryptedItem.item.monitoringDisabled,
                   decryptedItem.ids != item.ids,
-                  !loginItem.password.isEmpty, loginItem.password == login.password else {
-                return nil
+                  let loginItem = decryptedItem.loginItem,
+                  !loginItem.password.isEmpty,
+                  loginItem.password == referencePassword else {
+                return false
             }
-            return decryptedItem
+            return true
         }
     }
 
@@ -351,13 +359,9 @@ private extension PassMonitorRepository {
             let affectedItem = SecurityAffectedItem(item: item.encrypted,
                                                     detected: detected,
                                                     display: item.content.toItemUiModel,
-                                                    reuseToken: reuseToken(for: item.loginData.password))
+                                                    reuseToken: item.loginData.password.reuseToken)
 
-            return if !detected.isEmpty || affectedItem.isExcludedItem {
-                affectedItem
-            } else {
-                nil
-            }
+            return affectedItem.shouldBeIncluded ? affectedItem : nil
         }
 
         var weakPasswordCount = 0

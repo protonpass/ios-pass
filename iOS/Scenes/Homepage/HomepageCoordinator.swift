@@ -1340,9 +1340,9 @@ extension HomepageCoordinator {
 // MARK: - Security Center
 
 extension HomepageCoordinator {
-    func presentSecurity(_ filter: MonitorListSection) {
+    func presentSecurity(_ type: MonitorListSection) {
         let isSheet = shouldShowAsSheet()
-        let results = (view: SecurityWeaknessDetailView(viewModel: .init(type: filter),
+        let results = (view: SecurityWeaknessDetailView(viewModel: .init(type: type),
                                                         isSheet: isSheet),
                        isSheet: isSheet)
 

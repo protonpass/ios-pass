@@ -26,48 +26,37 @@ import Entities
 
 public typealias SecurityIssuesContent = [SecuritySection: [ItemUiModel]]
 
-public protocol GetAllSecurityAffectedLoginsUseCase: Sendable {
-    func execute(for filter: MonitorListSection) -> AnyPublisher<SecurityIssuesContent, any Error>
+public protocol GetAllSecurityAffectedLoginsUseCase {
+    func callAsFunction(for filter: MonitorListSection) -> AnyPublisher<SecurityIssuesContent, Never>
 }
 
-public extension GetAllSecurityAffectedLoginsUseCase {
-    func callAsFunction(for filter: MonitorListSection) -> AnyPublisher<SecurityIssuesContent, any Error> {
-        execute(for: filter)
-    }
-}
-
-public final class GetAllSecurityAffectedLogins: GetAllSecurityAffectedLoginsUseCase {
+public struct GetAllSecurityAffectedLogins: GetAllSecurityAffectedLoginsUseCase {
     private let passMonitorRepository: any PassMonitorRepositoryProtocol
 
     public init(passMonitorRepository: any PassMonitorRepositoryProtocol) {
         self.passMonitorRepository = passMonitorRepository
     }
 
-    public func execute(for filter: MonitorListSection) -> AnyPublisher<SecurityIssuesContent, any Error> {
-        // `tryMap` (rather than `map`) keeps the failure type `any Error` to satisfy the protocol;
-        // the body no longer throws because it reads the repository's decrypt-once projection.
+    public func callAsFunction(for filter: MonitorListSection) -> AnyPublisher<SecurityIssuesContent, Never> {
         passMonitorRepository.itemsWithSecurityIssues
-            .tryMap { [weak self] items in
-                guard let self else {
-                    return [:]
-                }
+            .map { items in
                 switch filter {
                 case .weakness(.weakPassword):
-                    return filterActiveWeakness(.weakPassword, in: items, section: .weakPasswords)
+                    filterActiveWeakness(.weakPassword, in: items, section: .weakPasswords)
 
                 case .weakness(.reusedPassword):
-                    return filterReusedPasswords(items: items)
+                    filterReusedPasswords(items: items)
 
                 case .weakness(.missing2FA):
-                    return filterActiveWeakness(.missing2FA, in: items, section: .missing2fa)
+                    filterActiveWeakness(.missing2FA, in: items, section: .missing2fa)
 
                 case .weakness(.compromisedPassword):
-                    return filterActiveWeakness(.compromisedPassword,
-                                                in: items,
-                                                section: .compromisedPasswords)
+                    filterActiveWeakness(.compromisedPassword,
+                                         in: items,
+                                         section: .compromisedPasswords)
 
                 case .excludedItems:
-                    return filterExcludedItems(items: items)
+                    filterExcludedItems(items: items)
                 }
             }
             .eraseToAnyPublisher()

@@ -18,9 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-/// A value-carrying monitoring flag update, sent to the backend via `UpdateItemFlagsRequest`.
-/// This is the *write* side (toggle a check on/off); the *read* side is `ItemFlags` (the OptionSet
-/// on `ItemFlagable`) and `WeaknessKind.skipFlag`.
 public enum ItemFlag: Sendable, Hashable {
     case skipHealthCheck(Bool)
     case skipWeakPasswordCheck(Bool)
