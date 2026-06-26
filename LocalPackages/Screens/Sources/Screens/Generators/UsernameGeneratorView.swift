@@ -69,6 +69,9 @@ public struct UsernameGeneratorView: View {
         .presentationDragIndicator(.visible)
         .animation(.default, value: showAdvancedOptions)
         .fittedPresentationDetent(onHeightChanged: nil)
+        .onChange(of: viewModel.preferences, initial: true) {
+            viewModel.persistAndRegenerate()
+        }
     }
 }
 
