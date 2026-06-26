@@ -6095,7 +6095,7 @@
 			repositoryURL = "https://github.com/ProtonMail/protoncore_ios";
 			requirement = {
 				kind = exactVersion;
-				version = 37.3.1;
+				version = 37.4.0;
 			};
 		};
 		575D3C232AE9100D0012434B /* XCRemoteSwiftPackageReference "TrustKit" */ = {
