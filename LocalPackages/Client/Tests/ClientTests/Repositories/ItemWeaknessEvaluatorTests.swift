@@ -60,5 +60,20 @@ struct ItemWeaknessEvaluatorTests {
                                           totpUri: "otpauth://totp/Example",
                                           urls: ["google.com"])
         #expect(!sut.evaluate(withTotp, isReused: false).contains(.missing2FA))
+        
+        
+        let missingWithPasskey = LogInItemData.mock(username: "test2",
+                                         password: strongPassword,
+                                         totpUri: "",
+                                         urls: ["google.com"],
+                                        passkeys: [Passkey()])
+        #expect(!sut.evaluate(missingWithPasskey, isReused: false).contains(.missing2FA))
+
+        let withTotpWithPasskey = LogInItemData.mock(username: "test",
+                                                     password: strongPassword,
+                                                     totpUri: "otpauth://totp/Example",
+                                                     urls: ["google.com"],
+                                                     passkeys: [Passkey()])
+        #expect(!sut.evaluate(withTotpWithPasskey, isReused: false).contains(.missing2FA))
     }
 }

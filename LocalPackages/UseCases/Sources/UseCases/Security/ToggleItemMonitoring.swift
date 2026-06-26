@@ -25,24 +25,18 @@ import Combine
 import Entities
 
 public protocol ToggleItemMonitoringUseCase: Sendable {
-    func execute(item: ItemContent, shouldNotMonitor: ItemFlag) async throws
+    func callAsFunction(item: ItemContent, flag: ItemFlag) async throws
 }
 
-public extension ToggleItemMonitoringUseCase {
-    func callAsFunction(item: ItemContent, shouldNotMonitor: ItemFlag) async throws {
-        try await execute(item: item, shouldNotMonitor: shouldNotMonitor)
-    }
-}
-
-public final class ToggleItemMonitoring: ToggleItemMonitoringUseCase {
+public struct ToggleItemMonitoring: ToggleItemMonitoringUseCase {
     private let itemRepository: any ItemRepositoryProtocol
 
     public init(itemRepository: any ItemRepositoryProtocol) {
         self.itemRepository = itemRepository
     }
 
-    public func execute(item: ItemContent, shouldNotMonitor: ItemFlag) async throws {
-        try await itemRepository.updateItemFlags(flags: [shouldNotMonitor],
+    public func callAsFunction(item: ItemContent, flag: ItemFlag) async throws {
+        try await itemRepository.updateItemFlags(flags: [flag],
                                                  shareId: item.shareId,
                                                  itemId: item.itemId)
     }

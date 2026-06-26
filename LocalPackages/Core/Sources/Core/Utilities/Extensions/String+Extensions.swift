@@ -61,10 +61,6 @@ public extension String {
         return String(first2Words.first?.prefix(2) ?? "").uppercased()
     }
 
-    var spacesRemoved: String {
-        replacingOccurrences(of: " ", with: "")
-    }
-
     // periphery:ignore
     func characterCount(_ character: Character) -> Int {
         count(where: { $0 == character })
@@ -187,13 +183,30 @@ public extension String {
         content.append(contentsOf: strings)
         return String.concatenateOptionalStrings(content, separator: separator)
     }
-
-    var accentsRemoved: String {
-        folding(options: .diacriticInsensitive, locale: .init(identifier: "en_US"))
-    }
 }
 
 // MARK: Computed Extensions
+
+public extension String {
+    var accentsRemoved: String {
+        folding(options: .diacriticInsensitive, locale: .init(identifier: "en_US"))
+    }
+
+    var spacesRemoved: String {
+        replacingOccurrences(of: " ", with: "")
+    }
+
+    /// Stable hash of a password for reuse grouping (nil when empty). Storing a hash rather than the
+    /// plaintext keeps the published security cache from holding every password in memory.
+    var reuseToken: String? {
+        guard !isEmpty else {
+            return nil
+        }
+        return SHA256.hash(data: Data(utf8)).map { String(format: "%02x", $0) }.joined()
+    }
+}
+
+// MARK: Computed Extensions Substring
 
 public extension Substring {
     var toString: String {

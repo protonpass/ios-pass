@@ -24,13 +24,10 @@ import SwiftUI
 // MARK: - Pass Monitor dashboard presentation
 
 extension WeaknessKind {
-    /// Title for the Pass Monitor dashboard row. Lives here (iOS), not on the entity, because it is
-    /// presentation. Row ordering comes from `WeaknessKind.displayPriority`, so adding a case shows a
-    /// correctly-positioned row once it provides copy here.
     var dashboardTitle: LocalizedStringKey {
         switch self {
-        case .weakPassword: "Weak Passwords"
-        case .compromisedPassword: "Vulnerable passwords"
+        case .weakPassword: "Weak passwords"
+        case .compromisedPassword: "Compromised passwords"
         case .reusedPassword: "Reused passwords"
         case .missing2FA: "Inactive 2FA"
         }
@@ -39,7 +36,7 @@ extension WeaknessKind {
     var dashboardSubtitle: LocalizedStringKey {
         switch self {
         case .weakPassword: "Change your passwords"
-        case .compromisedPassword: "Common passwords that frequently appear in data breaches."
+        case .compromisedPassword: "Common passwords that frequently appear in data breaches"
         case .reusedPassword: "Generate unique passwords"
         case .missing2FA: "Set up 2FA for more security"
         }

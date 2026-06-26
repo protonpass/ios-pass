@@ -314,19 +314,6 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func toggleMonitoring(weakness: ItemWeaknessDisplay) {
-        let newItemFlag: ItemFlag
-        switch weakness {
-        case .fullyExcluded:
-            // Full-item monitoring is a stateful toggle: flip the item's CURRENT state so a
-            // fully-excluded item can be re-enabled (and a monitored one excluded). The display's
-            // `isExcluded` is constant for `.fullyExcluded`, so the direction comes from `isMonitored`
-            // (`skipHealthCheck(true)` disables, `skipHealthCheck(false)` re-enables).
-            newItemFlag = .skipHealthCheck(isMonitored)
-
-        case .weakness:
-            guard let flag = weakness.flag else { return }
-            newItemFlag = flag
-        }
         Task { [weak self] in
             guard let self else {
                 return
@@ -335,7 +322,7 @@ class BaseItemDetailViewModel: ObservableObject {
             do {
                 logger.trace("Toggling monitor from \(isMonitored) for \(itemContent.debugDescription)")
                 router.display(element: .globalLoading(shouldShow: true))
-                try await toggleItemMonitoring(item: itemContent, shouldNotMonitor: newItemFlag)
+                try await toggleItemMonitoring(item: itemContent, flag: weakness.flag(isMonitored))
                 logger.trace("Toggled monitor to \(!isMonitored) for \(itemContent.debugDescription)")
                 if isMonitored {
                     let message = #localized("Item excluded from monitoring")

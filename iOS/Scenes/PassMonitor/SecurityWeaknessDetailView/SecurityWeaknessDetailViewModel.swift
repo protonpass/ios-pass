@@ -65,10 +65,9 @@ final class SecurityWeaknessDetailViewModel: ObservableObject {
                                                                                 itemId: item.itemId) else {
                     return
                 }
-                let showExcludedWeaknesses: Bool = type == .excludedItems
                 router.present(for: .itemDetail(itemContent,
                                                 automaticDisplay: false,
-                                                showExcludedWeaknesses: showExcludedWeaknesses))
+                                                showExcludedWeaknesses: type == .excludedItems))
                 let eventType: TelemetryEventType? = switch type {
                 case .weakness(.compromisedPassword), .weakness(.weakPassword):
                     .monitorItemDetailFromWeakPassword
@@ -101,14 +100,7 @@ private extension SecurityWeaknessDetailViewModel {
         getAllSecurityAffectedLogins(for: type)
             .subscribe(on: DispatchQueue.global())
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] completion in
-                guard let self else {
-                    return
-                }
-                if case let .failure(error) = completion {
-                    state = .error(error)
-                }
-            } receiveValue: { [weak self] logins in
+            .sink { [weak self] logins in
                 guard let self else {
                     return
                 }
