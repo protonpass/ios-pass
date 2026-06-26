@@ -147,6 +147,7 @@ private extension UsernameGeneratorView {
                 HStack {
                     Text(verbatim: viewModel.separator.title)
                         .foregroundStyle(PassColor.textNorm)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
                     IconProvider.chevronDownFilled
                         .resizable()
                         .scaledToFit()
