@@ -137,6 +137,7 @@ private extension GeneratePasswordView {
                 HStack {
                     Text(viewModel.passwordType.title)
                         .foregroundStyle(PassColor.textNorm)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
                     IconProvider.chevronDownFilled
                         .resizable()
                         .scaledToFit()
@@ -290,6 +291,7 @@ private extension GeneratePasswordView {
                 HStack {
                     Text(viewModel.typeOfWordSeparator.title)
                         .foregroundStyle(PassColor.textNorm)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
                     IconProvider.chevronDownFilled
                         .resizable()
                         .scaledToFit()
