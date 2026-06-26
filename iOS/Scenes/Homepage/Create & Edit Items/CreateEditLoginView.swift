@@ -262,6 +262,7 @@ private extension CreateEditLoginView {
                 useCurrentEmailButton
             }
         }
+        .safeAreaPadding(.horizontal, DesignConstant.sectionPadding)
     }
 
     var generateUsernameButton: some View {

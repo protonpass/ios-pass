@@ -46,6 +46,17 @@ final class UsernameGeneratorViewModel {
     @ObservationIgnored
     private let onResult: (Result<String, any Error>) -> Void
 
+    var preferences: UsernamePreferences {
+        .init(wordCount: Int(wordCount),
+              separator: separator,
+              includeNumbers: includeNumbers,
+              capitalize: capitalize,
+              leetspeak: leetspeak,
+              includeAdjectives: includeAdjectives,
+              includeNouns: includeNouns,
+              includeVerbs: includeVerbs)
+    }
+
     init(datasource: any LocalUsernamePreferencesDatasourceProtocol,
          generateUsername: any GenerateUsernameUseCase,
          onResult: @escaping (Result<String, any Error>) -> Void) {
@@ -54,11 +65,11 @@ final class UsernameGeneratorViewModel {
         self.onResult = onResult
 
         retrievePreferences()
-        startTracking()
     }
 
     func regenerate() {
         do {
+            print("woot: \(preferences)")
             username = try generateUsername(wordCount: Int(wordCount),
                                             includeNumbers: includeNumbers,
                                             capitalise: capitalize,
@@ -75,6 +86,11 @@ final class UsernameGeneratorViewModel {
     func confirm() {
         onResult(.success(username))
     }
+
+    func persistAndRegenerate() {
+        datasource.save(preferences: preferences)
+        regenerate()
+    }
 }
 
 private extension UsernameGeneratorViewModel {
@@ -88,28 +104,5 @@ private extension UsernameGeneratorViewModel {
         includeAdjectives = prefs.includeAdjectives
         includeNouns = prefs.includeNouns
         includeVerbs = prefs.includeVerbs
-    }
-
-    func startTracking() {
-        withObservationTracking {
-            storePreferences()
-            regenerate()
-        } onChange: { [weak self] in
-            guard let self else { return }
-            MainActor.assumeIsolated {
-                startTracking()
-            }
-        }
-    }
-
-    func storePreferences() {
-        datasource.save(preferences: .init(wordCount: Int(wordCount),
-                                           separator: separator,
-                                           includeNumbers: includeNumbers,
-                                           capitalize: capitalize,
-                                           leetspeak: leetspeak,
-                                           includeAdjectives: includeAdjectives,
-                                           includeNouns: includeNouns,
-                                           includeVerbs: includeVerbs))
     }
 }
