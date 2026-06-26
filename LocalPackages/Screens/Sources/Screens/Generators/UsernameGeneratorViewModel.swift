@@ -69,7 +69,6 @@ final class UsernameGeneratorViewModel {
 
     func regenerate() {
         do {
-            print("woot: \(preferences)")
             username = try generateUsername(wordCount: Int(wordCount),
                                             includeNumbers: includeNumbers,
                                             capitalise: capitalize,
