@@ -28,6 +28,7 @@ public protocol LocalPasswordPreferencesDatasourceProtocol: Sendable {
 }
 
 private enum PasswordPreferenceKey: String {
+    case passwordType = "PasswordType"
     case characterCount = "PasswordCharacterCount"
     case hasSpecialCharacters = "PasswordHasSpecialCharacters"
     case hasCapitalCharacters = "PasswordHasCapitalCharacters"
@@ -40,6 +41,7 @@ private enum PasswordPreferenceKey: String {
 
 /// Keys used by the legacy `GeneratePasswordViewModel` `@AppStorage` properties.
 public enum LegacyPasswordPreferenceKey: String, CaseIterable, Sendable {
+    case passwordType
     case characterCount
     case hasSpecialCharacters
     case hasCapitalCharacters
@@ -57,6 +59,7 @@ public final class LocalPasswordPreferencesDatasource: LocalPasswordPreferencesD
         self.store = store
         let defaultPrefs = PasswordPreferences.default
         store.register(defaults: [
+            PasswordPreferenceKey.passwordType.rawValue: defaultPrefs.passwordType.rawValue,
             PasswordPreferenceKey.characterCount.rawValue: defaultPrefs.characterCount,
             PasswordPreferenceKey.hasSpecialCharacters.rawValue: defaultPrefs.hasSpecialCharacters,
             PasswordPreferenceKey.hasCapitalCharacters.rawValue: defaultPrefs.hasCapitalCharacters,
@@ -70,6 +73,7 @@ public final class LocalPasswordPreferencesDatasource: LocalPasswordPreferencesD
     }
 
     public func save(preferences: PasswordPreferences) {
+        store.set(preferences.passwordType.rawValue, forKey: PasswordPreferenceKey.passwordType.rawValue)
         store.set(preferences.characterCount, forKey: PasswordPreferenceKey.characterCount.rawValue)
         store.set(preferences.hasSpecialCharacters, forKey: PasswordPreferenceKey.hasSpecialCharacters.rawValue)
         store.set(preferences.hasCapitalCharacters, forKey: PasswordPreferenceKey.hasCapitalCharacters.rawValue)
@@ -81,6 +85,8 @@ public final class LocalPasswordPreferencesDatasource: LocalPasswordPreferencesD
     }
 
     public func getPreferences() -> PasswordPreferences {
+        let passwordTypeValue = store.integer(forKey: PasswordPreferenceKey.passwordType.rawValue)
+        let passwordType = PasswordType(rawValue: passwordTypeValue) ?? .memorable
         let characterCount = store.integer(forKey: PasswordPreferenceKey.characterCount.rawValue)
         let hasSpecialCharacters = store.bool(forKey: PasswordPreferenceKey.hasSpecialCharacters.rawValue)
         let hasCapitalCharacters = store.bool(forKey: PasswordPreferenceKey.hasCapitalCharacters.rawValue)
@@ -90,7 +96,8 @@ public final class LocalPasswordPreferencesDatasource: LocalPasswordPreferencesD
         let wordCount = store.integer(forKey: PasswordPreferenceKey.wordCount.rawValue)
         let capitalizingWords = store.bool(forKey: PasswordPreferenceKey.capitalizingWords.rawValue)
         let includingNumbers = store.bool(forKey: PasswordPreferenceKey.includingNumbers.rawValue)
-        return .init(characterCount: characterCount,
+        return .init(passwordType: passwordType,
+                     characterCount: characterCount,
                      hasSpecialCharacters: hasSpecialCharacters,
                      hasCapitalCharacters: hasCapitalCharacters,
                      hasNumberCharacters: hasNumberCharacters,
@@ -103,6 +110,8 @@ public final class LocalPasswordPreferencesDatasource: LocalPasswordPreferencesD
 
 // MARK: - Migration
 
+// swiftlint:disable:next todo
+// TODO: Migration path introduced in July 2026, can be removed several months later
 private extension LocalPasswordPreferencesDatasource {
     func migrateLegacyPreferences() {
         guard LegacyPasswordPreferenceKey.allCases
@@ -112,7 +121,8 @@ private extension LocalPasswordPreferencesDatasource {
 
         let defaultPrefs = PasswordPreferences.default
         let preferences =
-            PasswordPreferences(characterCount: legacyInt(.characterCount,
+            PasswordPreferences(passwordType: legacyPasswordType(fallback: defaultPrefs.passwordType),
+                                characterCount: legacyInt(.characterCount,
                                                           fallback: defaultPrefs.characterCount),
                                 hasSpecialCharacters: legacyBool(.hasSpecialCharacters,
                                                                  fallback: defaultPrefs.hasSpecialCharacters),
@@ -131,6 +141,14 @@ private extension LocalPasswordPreferencesDatasource {
         for key in LegacyPasswordPreferenceKey.allCases {
             store.removeObject(forKey: key.rawValue)
         }
+    }
+
+    func legacyPasswordType(fallback: PasswordType) -> PasswordType {
+        guard store.object(forKey: LegacyPasswordPreferenceKey.passwordType.rawValue) != nil else {
+            return fallback
+        }
+        let rawValue = store.integer(forKey: LegacyPasswordPreferenceKey.passwordType.rawValue)
+        return PasswordType(rawValue: rawValue) ?? fallback
     }
 
     func legacyInt(_ key: LegacyPasswordPreferenceKey, fallback: Int) -> Int {
