@@ -31,16 +31,13 @@ public struct UsernameGeneratorView: View {
     @State private var viewModel: UsernameGeneratorViewModel
     @State private var maxUsernameHeight = 0.0
     @State private var showAdvancedOptions = false
-    let onConfirm: (String) -> Void
 
     public init(datasource: any LocalUsernamePreferencesDatasourceProtocol,
                 generateUsername: any GenerateUsernameUseCase,
-                onError: @escaping (any Error) -> Void,
-                onConfirm: @escaping (String) -> Void) {
+                onResult: @escaping (Result<String, any Error>) -> Void) {
         _viewModel = .init(initialValue: .init(datasource: datasource,
                                                generateUsername: generateUsername,
-                                               onError: onError))
-        self.onConfirm = onConfirm
+                                               onResult: onResult))
     }
 
     public var body: some View {
@@ -174,7 +171,7 @@ private extension UsernameGeneratorView {
                               backgroundColor: PassColor.loginInteractionNormMajor1,
                               height: 44,
                               action: {
-                                  onConfirm(viewModel.username)
+                                  viewModel.confirm()
                                   dismiss()
                               })
         }
