@@ -430,15 +430,6 @@ private extension PassMonitorRepository {
         }
         return Set(results.filter(\.value.breached).map(\.key))
     }
-
-    /// Stable hash of a password for reuse grouping (nil when empty). Storing a hash rather than the
-    /// plaintext keeps the published security cache from holding every password in memory.
-    func reuseToken(for password: String) -> String? {
-        guard !password.isEmpty else {
-            return nil
-        }
-        return SHA256.hash(data: Data(password.utf8)).map { String(format: "%02x", $0) }.joined()
-    }
 }
 
 private extension [ProtonAddress] {
