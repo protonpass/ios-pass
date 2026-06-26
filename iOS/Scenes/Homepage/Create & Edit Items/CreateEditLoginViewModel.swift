@@ -367,6 +367,20 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     func remove(passkey: Passkey) {
         passkeys.removeAll(where: { $0.keyID == passkey.keyID })
     }
+
+    func handleUsernameResult(_ result: Result<String, any Error>) {
+        switch result {
+        case let .success(username):
+            if emailUsernameExpanded {
+                self.username = username
+            } else {
+                emailOrUsername = username
+            }
+
+        case let .failure(error):
+            handle(error)
+        }
+    }
 }
 
 // MARK: - SetUP & Utils

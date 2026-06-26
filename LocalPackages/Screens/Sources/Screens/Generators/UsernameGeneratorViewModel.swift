@@ -44,14 +44,14 @@ final class UsernameGeneratorViewModel {
     private let generateUsername: any GenerateUsernameUseCase
 
     @ObservationIgnored
-    private let onError: (any Error) -> Void
+    private let onResult: (Result<String, any Error>) -> Void
 
     init(datasource: any LocalUsernamePreferencesDatasourceProtocol,
          generateUsername: any GenerateUsernameUseCase,
-         onError: @escaping (any Error) -> Void) {
+         onResult: @escaping (Result<String, any Error>) -> Void) {
         self.datasource = datasource
         self.generateUsername = generateUsername
-        self.onError = onError
+        self.onResult = onResult
 
         retrievePreferences()
         startTracking()
@@ -68,8 +68,12 @@ final class UsernameGeneratorViewModel {
                                                              nouns: includeNouns,
                                                              verbs: includeVerbs))
         } catch {
-            onError(error)
+            onResult(.failure(error))
         }
+    }
+
+    func confirm() {
+        onResult(.success(username))
     }
 }
 
