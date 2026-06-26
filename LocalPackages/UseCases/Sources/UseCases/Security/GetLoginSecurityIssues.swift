@@ -25,7 +25,7 @@ import Combine
 import Entities
 
 public protocol GetLoginSecurityIssuesUseCase: Sendable {
-    func callAsFunction(item: ItemContent) -> AnyPublisher<SecurityAffectedItem?, Never>
+    func callAsFunction(itemId: String) -> AnyPublisher<SecurityAffectedItem?, Never>
 }
 
 public struct GetLoginSecurityIssues: GetLoginSecurityIssuesUseCase {
@@ -35,10 +35,13 @@ public struct GetLoginSecurityIssues: GetLoginSecurityIssuesUseCase {
         self.passMonitorRepository = passMonitorRepository
     }
 
-    public func callAsFunction(item: ItemContent) -> AnyPublisher<SecurityAffectedItem?, Never> {
+    /// Return the items with security issue
+    /// - Parameter itemId: This is the combination of item id + share id for uniqueness
+    /// - Returns: All the items found with some security weakness
+    public func callAsFunction(itemId: String) -> AnyPublisher<SecurityAffectedItem?, Never> {
         passMonitorRepository.itemsWithSecurityIssues
             .map { items -> SecurityAffectedItem? in
-                items.first { $0.display.id == item.id }
+                items.first { $0.display.id == itemId }
             }.eraseToAnyPublisher()
     }
 }
