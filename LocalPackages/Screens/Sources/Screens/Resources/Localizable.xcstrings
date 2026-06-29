@@ -2714,6 +2714,16 @@
         }
       }
     },
+    "%lld word(s)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld word(s)"
+          }
+        }
+      }
+    },
     "10 GB" : {
       "comment" : "Storage of Pass Plus plan",
       "localizations" : {
@@ -4868,6 +4878,16 @@
         }
       }
     },
+    "Advanced options" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Advanced options"
+          }
+        }
+      }
+    },
     "All accounts (%lld)" : {
       "comment" : "Placeholder is a number of total logged in accounts",
       "localizations" : {
@@ -7018,6 +7038,16 @@
         }
       }
     },
+    "Capitalize" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capitalize"
+          }
+        }
+      }
+    },
     "Choose a file" : {
       "localizations" : {
         "be" : {
@@ -7798,6 +7828,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "關閉"
+          }
+        }
+      }
+    },
+    "Commas" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Commas"
+          }
+        }
+      }
+    },
+    "Confirm" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm"
           }
         }
       }
@@ -14063,6 +14113,16 @@
         }
       }
     },
+    "Generate username" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generate username"
+          }
+        }
+      }
+    },
     "Generated passwords" : {
       "localizations" : {
         "be" : {
@@ -16186,6 +16246,16 @@
         }
       }
     },
+    "Hyphens" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hyphens"
+          }
+        }
+      }
+    },
     "Import" : {
       "comment" : "Title of the button",
       "localizations" : {
@@ -16919,6 +16989,46 @@
         }
       }
     },
+    "Include adjectives" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Include adjectives"
+          }
+        }
+      }
+    },
+    "Include nouns" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Include nouns"
+          }
+        }
+      }
+    },
+    "Include numbers" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Include numbers"
+          }
+        }
+      }
+    },
+    "Include verbs" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Include verbs"
+          }
+        }
+      }
+    },
     "Invalid TOTP URI" : {
       "localizations" : {
         "be" : {
@@ -17503,6 +17613,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "了解更多關於 Pass"
+          }
+        }
+      }
+    },
+    "Leetspeak" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leetspeak"
           }
         }
       }
@@ -19244,6 +19364,26 @@
         }
       }
     },
+    "Numbers" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Numbers"
+          }
+        }
+      }
+    },
+    "Numbers and Symbols" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Numbers and Symbols"
+          }
+        }
+      }
+    },
     "OK" : {
       "localizations" : {
         "be" : {
@@ -20950,6 +21090,16 @@
         }
       }
     },
+    "Periods" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Periods"
+          }
+        }
+      }
+    },
     "Please contact your administrator." : {
       "localizations" : {
         "be" : {
@@ -22591,6 +22741,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "項目快速動作"
+          }
+        }
+      }
+    },
+    "Regenerate username" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regenerate username"
           }
         }
       }
@@ -26664,6 +26824,16 @@
         }
       }
     },
+    "Spaces" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spaces"
+          }
+        }
+      }
+    },
     "Start using Proton Pass" : {
       "localizations" : {
         "be" : {
@@ -29768,6 +29938,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "開啟自動填入"
+          }
+        }
+      }
+    },
+    "Underscores" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Underscores"
           }
         }
       }
@@ -33074,6 +33254,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "您想要為哪個服務建立登入？"
+          }
+        }
+      }
+    },
+    "Word separator" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Word separator"
           }
         }
       }

@@ -22,15 +22,19 @@ import DesignSystem
 import ProtonCoreUIFoundations
 import SwiftUI
 
-struct AdvancedOptionsSection: View {
+public struct AdvancedOptionsSection: View {
     @Binding var isShowingAdvancedOptions: Bool
 
-    var body: some View {
+    public init(isShowingAdvancedOptions: Binding<Bool>) {
+        _isShowingAdvancedOptions = isShowingAdvancedOptions
+    }
+
+    public var body: some View {
         Button(action: {
             isShowingAdvancedOptions.toggle()
         }, label: {
             Label(title: {
-                Text("Advanced options")
+                Text("Advanced options", bundle: .module)
                     .font(.callout)
             }, icon: {
                 IconProvider.cogWheel
