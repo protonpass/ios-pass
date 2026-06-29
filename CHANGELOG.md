@@ -1,10 +1,13 @@
 # Version 1.20.0
 - Introduced Liquid Glass, bringing a more refined and modern visual experience
+- Added support for username generator
 - Added support for folders (behind feature flag)
+- Search is now diacritic-insensitive
 
 Others:
 - Core libraries upgraded from 36.0.3 to 37.4.0
 - Rust library upgraded from 1.1.2 to 1.6.1
+- Surface file upload errors
 
 # Version 1.19.2
 - Added handling for newly added account keys during an active session
