@@ -270,6 +270,10 @@ extension SharedRepositoryContainer {
     var localFolderDatasource: Factory<any LocalFolderDatasourceProtocol> {
         self { LocalFolderDatasource(databaseService: self.databaseService) }
     }
+
+    var localUsernamePreferencesDatasource: Factory<any LocalUsernamePreferencesDatasourceProtocol> {
+        self { LocalUsernamePreferencesDatasource(store: kSharedUserDefaults) }
+    }
 }
 
 // MARK: Repositories

@@ -274,7 +274,7 @@ private extension GeneratePasswordView {
             Spacer()
 
             Menu(content: {
-                ForEach(WordSeparator.allCases, id: \.self) { separator in
+                ForEach(WordSeparator.allCases) { separator in
                     Button(action: {
                         viewModel.changeWordSeparator(separator)
                     }, label: {
@@ -318,20 +318,6 @@ private extension PasswordType {
         switch self {
         case .random: "Random password"
         case .memorable: "Memorable password"
-        }
-    }
-}
-
-private extension WordSeparator {
-    var title: LocalizedStringKey {
-        switch self {
-        case .hyphens: "Hyphens"
-        case .spaces: "Spaces"
-        case .periods: "Periods"
-        case .commas: "Commas"
-        case .underscores: "Underscores"
-        case .numbers: "Numbers"
-        case .numbersAndSymbols: "Numbers and Symbols"
         }
     }
 }

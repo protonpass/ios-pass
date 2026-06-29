@@ -107,8 +107,6 @@
 		354FBF622A02988900A0B27D /* UpgradeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF602A02961D00A0B27D /* UpgradeButton.swift */; };
 		354FBF632A02AE1F00A0B27D /* AliasLimitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF5E2A02939600A0B27D /* AliasLimitView.swift */; };
 		3550F5702B8A72410027BA2A /* CheckAndAutoFill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3550F56F2B8A72410027BA2A /* CheckAndAutoFill.swift */; };
-		3551BC6129A505940048CE07 /* AdvancedOptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */; };
-		3551BC6229A506D50048CE07 /* AdvancedOptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */; };
 		3552273229DCB68200B9607E /* SectionIndexTitles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562BCF229BDBF2500564508 /* SectionIndexTitles.swift */; };
 		3552A28A29EC29BF00ABDB6E /* CachedFavIconsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552A28929EC29BF00ABDB6E /* CachedFavIconsSection.swift */; };
 		3552A28B29EC89EF00ABDB6E /* ItemSquircleThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA32829E9E3C500C20F5F /* ItemSquircleThumbnail.swift */; };
@@ -289,7 +287,6 @@
 		357C71CB2B5FB35700AA0BF1 /* NoCameraPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3567E46529B0E6F900511D62 /* NoCameraPermissionView.swift */; };
 		357C71CC2B5FB36900AA0BF1 /* GeneratePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */; };
 		357C71CD2B5FB3CD00AA0BF1 /* EditCustomFieldSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A5B2A0BDAA300FBCEEC /* EditCustomFieldSections.swift */; };
-		357C71CE2B5FB3D500AA0BF1 /* AdvancedOptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */; };
 		357C71CF2B5FB41400AA0BF1 /* EditCustomFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A672A0C16FE00FBCEEC /* EditCustomFieldView.swift */; };
 		357C71D12B5FB50200AA0BF1 /* MBProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 357C71D02B5FB50200AA0BF1 /* MBProgressHUD */; };
 		357C71D32B5FB51800AA0BF1 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 357C71D22B5FB51800AA0BF1 /* CodeScanner */; };
@@ -834,7 +831,6 @@
 		354FBF5E2A02939600A0B27D /* AliasLimitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasLimitView.swift; sourceTree = "<group>"; };
 		354FBF602A02961D00A0B27D /* UpgradeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeButton.swift; sourceTree = "<group>"; };
 		3550F56F2B8A72410027BA2A /* CheckAndAutoFill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckAndAutoFill.swift; sourceTree = "<group>"; };
-		3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedOptionsSection.swift; sourceTree = "<group>"; };
 		3552A28929EC29BF00ABDB6E /* CachedFavIconsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedFavIconsSection.swift; sourceTree = "<group>"; };
 		3552D0C62CA6D579004156D8 /* ItemsForTextInsertionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsForTextInsertionView.swift; sourceTree = "<group>"; };
 		3552D0C82CA6D5DE004156D8 /* ItemsForTextInsertionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsForTextInsertionViewModel.swift; sourceTree = "<group>"; };
@@ -1808,7 +1804,6 @@
 		3572E52729940C0300775FAC /* Supporting Views */ = {
 			isa = PBXGroup;
 			children = (
-				3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */,
 				354FBF5E2A02939600A0B27D /* AliasLimitView.swift */,
 				5335C6DB2D7889DF00190897 /* CreateEditCustomSections.swift */,
 				3564DE9B299A4EBD0002DDFA /* CreateEditItemTitleSection.swift */,
@@ -3430,7 +3425,6 @@
 				531A48182D808BC100DDC7FB /* WifiDetailViewModel.swift in Sources */,
 				5BFFB5002A57FE8E00C2D1F9 /* GenericCredentialItemRow.swift in Sources */,
 				3593245C2CB9012F00A7D33B /* SelectedText.swift in Sources */,
-				3551BC6229A506D50048CE07 /* AdvancedOptionsSection.swift in Sources */,
 				3570E0522B8E15F4005B8186 /* CompletePasskeyRegistration.swift in Sources */,
 				3562BC30299542D6003FCB13 /* ItemContentType+Extensions.swift in Sources */,
 				3577746D2B8F24670087A275 /* CreateAndAssociatePasskey.swift in Sources */,
@@ -3554,7 +3548,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				357C71CE2B5FB3D500AA0BF1 /* AdvancedOptionsSection.swift in Sources */,
 				35796D002B5EEE7000BF4E9E /* BaseCreateEditItemViewModel.swift in Sources */,
 				357C71A52B5FAEAF00AA0BF1 /* SharedRouter+DependencyInjections.swift in Sources */,
 				357C71C92B5FB34200AA0BF1 /* WrappedCodeScannerView.swift in Sources */,
@@ -3708,7 +3701,6 @@
 				35C1439C298C042C00F91161 /* ItemDetailTitleView.swift in Sources */,
 				3547ABEE287777B700EE85E1 /* CreateEditAliasView.swift in Sources */,
 				354F769228C8678100EB2383 /* LogInDetailView.swift in Sources */,
-				3551BC6129A505940048CE07 /* AdvancedOptionsSection.swift in Sources */,
 				354AD96028CB5934000E645B /* EmptyTrashView.swift in Sources */,
 				5B1F0F072EC1DF5C0015982A /* InviteSuggestionsSection.swift in Sources */,
 				53A2EB092D6F538A008A4A0C /* CustomItemTemplatesList.swift in Sources */,

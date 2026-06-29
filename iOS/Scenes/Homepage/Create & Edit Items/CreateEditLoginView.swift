@@ -35,6 +35,7 @@ struct CreateEditLoginView: View {
     @FocusState private var focusedField: Field?
     @State private var lastFocusedField: Field?
     @State private var showPasswordGenerator = false
+    @State private var showUsernameGenerator = false
     @Namespace private var emailOrUsernameID
     @Namespace private var usernameID
     @Namespace private var emailID
@@ -198,6 +199,17 @@ struct CreateEditLoginView: View {
                     focusedField = lastFocusedField
                 }
             }
+            .sheet(isPresented: $showUsernameGenerator) {
+                UsernameGeneratorView(datasource: viewModel.localUsernamePreferencesDatasource,
+                                      generateUsername: viewModel.generateUsername,
+                                      onResult: viewModel.handleUsernameResult)
+                    .environment(\.colorScheme, colorScheme)
+            }
+            .onChange(of: showUsernameGenerator) { _, newValue in
+                if !newValue {
+                    focusedField = lastFocusedField
+                }
+            }
         }
     }
 }
@@ -210,6 +222,9 @@ private extension CreateEditLoginView {
             case .email, .emailOrUsername:
                 emailTextFieldToolbar
                     .animationsDisabled() // Disable animation when switching between toolbars
+
+            case .username:
+                generateUsernameButton
 
             case .totp:
                 totpTextFieldToolbar
@@ -226,11 +241,10 @@ private extension CreateEditLoginView {
         }
     }
 
-    @ViewBuilder
     var emailTextFieldToolbar: some View {
-        if viewModel.aliasesAllowed {
-            ScrollView(.horizontal, showsIndicators: true) {
-                HStack {
+        ScrollView(.horizontal, showsIndicators: true) {
+            HStack {
+                if viewModel.aliasesAllowed {
                     ToolbarButton("Hide my email",
                                   titleBundle: .main,
                                   image: IconProvider.alias,
@@ -238,13 +252,28 @@ private extension CreateEditLoginView {
 
                     PassDivider()
                         .padding(.horizontal)
-
-                    useCurrentEmailButton
                 }
+
+                generateUsernameButton
+
+                PassDivider()
+                    .padding(.horizontal)
+
+                useCurrentEmailButton
             }
-        } else {
-            useCurrentEmailButton
         }
+        .safeAreaPadding(.horizontal, DesignConstant.sectionPadding)
+    }
+
+    var generateUsernameButton: some View {
+        ToolbarButton("Generate username",
+                      titleBundle: .main,
+                      image: IconProvider.arrowsRotate,
+                      action: {
+                          lastFocusedField = focusedField
+                          focusedField = nil
+                          showUsernameGenerator = true
+                      })
     }
 
     var useCurrentEmailButton: some View {
