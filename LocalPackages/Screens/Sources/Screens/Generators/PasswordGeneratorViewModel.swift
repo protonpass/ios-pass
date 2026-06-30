@@ -74,6 +74,7 @@ public extension PasswordGeneratorViewModel {
 public final class PasswordGeneratorViewModel {
     private(set) var password = ""
     private(set) var strength: PasswordStrength = .vulnerable
+    private(set) var penalties: [PasswordPenalty] = []
 
     var passwordType: PasswordType = .memorable
 
@@ -205,6 +206,7 @@ public final class PasswordGeneratorViewModel {
             password = newPassword
             let score = scorePassword(newPassword)
             strength = score.strength
+            penalties = score.penalties
         } catch {
             onResult(.failure(error))
         }
