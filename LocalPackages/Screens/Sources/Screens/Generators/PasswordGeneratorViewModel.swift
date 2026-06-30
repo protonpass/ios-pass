@@ -210,12 +210,12 @@ public final class PasswordGeneratorViewModel {
         }
     }
 
-    func saveHistory(onComplete: @escaping (String) -> Void) {
+    func handleCta() {
         Task { [weak self] in
             guard let self else { return }
             do {
                 try await passwordHistoryRepository.insertPassword(password)
-                onComplete(password)
+                onResult(.success(password))
             } catch {
                 onResult(.failure(error))
             }
