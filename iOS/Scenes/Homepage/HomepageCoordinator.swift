@@ -1004,7 +1004,6 @@ extension HomepageCoordinator {
         let view = PasswordGeneratorView(viewModel: viewModel, onHeightChanged: updateSheetHeight)
         let viewController = UIHostingController(rootView: view)
         sheetPresentationController = viewController.sheetPresentationController
-        sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
 
