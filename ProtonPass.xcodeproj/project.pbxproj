@@ -955,6 +955,7 @@
 		35F8CD0829B62F230017DBC6 /* ItemTypeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeListView.swift; sourceTree = "<group>"; };
 		35F8CD0B29B631310017DBC6 /* GeneralItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralItemRow.swift; sourceTree = "<group>"; };
 		35FD55A12C9072DC00805584 /* ItemCreationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCreationInfo.swift; sourceTree = "<group>"; };
+		5309947E2FF3DDB2003C1FE9 /* SharedFactoryContainer+DependencyInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedFactoryContainer+DependencyInjection.swift"; sourceTree = "<group>"; };
 		531A480D2D80831E00DDC7FB /* SshDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SshDetailView.swift; sourceTree = "<group>"; };
 		531A480F2D80833C00DDC7FB /* SshDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SshDetailViewModel.swift; sourceTree = "<group>"; };
 		531A48112D80852500DDC7FB /* SshKeyComponent+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SshKeyComponent+Extensions.swift"; sourceTree = "<group>"; };
@@ -3247,6 +3248,7 @@
 				3564DE9D299A4EC00002DDFA /* CreateEditItemTitleSection.swift in Sources */,
 				35AC9A692A0C189000FBCEEC /* EditCustomFieldView.swift in Sources */,
 				355BDED9299E789A009FDBB1 /* CreateEditAliasViewModel.swift in Sources */,
+				530994802FF3DDC4003C1FE9 /* SharedFactoryContainer+DependencyInjection.swift in Sources */,
 				5BD4A9102B15FC2600C44C08 /* PasswordStrengthIcon.swift in Sources */,
 				5BD4A8FC2B10C1B900C44C08 /* ResetFactory.swift in Sources */,
 				3571B59D29BF6587008D4350 /* GeneralItemRow.swift in Sources */,
@@ -3427,6 +3429,7 @@
 				357C71BE2B5FB14100AA0BF1 /* Pinnable+Extensions.swift in Sources */,
 				357C71C62B5FB31600AA0BF1 /* PasswordStrength+Extensions.swift in Sources */,
 				357C71B72B5FB0D900AA0BF1 /* ItemTypeFilter.swift in Sources */,
+				530994822FF3DDC4003C1FE9 /* SharedFactoryContainer+DependencyInjection.swift in Sources */,
 				35E81D932CBEAAE8008E7BA0 /* SortFilterItemsMenu.swift in Sources */,
 				351B420C2B641976003FA3E3 /* View+LocalAuthentication.swift in Sources */,
 			);
@@ -3504,6 +3507,7 @@
 				35704EBF2AD577F900044716 /* ShareElementViewModel.swift in Sources */,
 				35AF16CB2C108E5800277E79 /* HomepageCoordinator+ExtraPassword.swift in Sources */,
 				352352B62B91DEB400603B91 /* ItemSearchResultView.swift in Sources */,
+				5309947F2FF3DDC4003C1FE9 /* SharedFactoryContainer+DependencyInjection.swift in Sources */,
 				3547ABF0287777FB00EE85E1 /* CreateEditNoteView.swift in Sources */,
 				53F19E5E2D81AA7700496168 /* DetailHisotryView+Wifi.swift in Sources */,
 				534090592D709856002E42F8 /* CreateEditSshKeyView.swift in Sources */,
@@ -3744,6 +3748,7 @@
 				5343BB4B2FCDC97000F329E0 /* CreateEditItemToolbar.swift in Sources */,
 				534736542D5A9CAD00BE2EA5 /* LocalAuthenticationView.swift in Sources */,
 				534736552D5A9CC400BE2EA5 /* LocalAuthenticationViewModel.swift in Sources */,
+				530994812FF3DDC4003C1FE9 /* SharedFactoryContainer+DependencyInjection.swift in Sources */,
 				534736572D5A9CE100BE2EA5 /* PinAuthenticationView.swift in Sources */,
 				537FC0792D59ECB900011AEA /* UpsellingViewConfiguration+Extensions.swift in Sources */,
 				537FC0772D59EC8300011AEA /* UpsellEntry+Extensions.swift in Sources */,
