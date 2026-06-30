@@ -975,6 +975,23 @@ extension HomepageCoordinator {
             copyToClipboard(password)
         }
 
+        var sheetPresentationController: UISheetPresentationController?
+        let updateSheetHeight: (Double) -> Void = { height in
+            guard let sheetPresentationController else {
+                assertionFailure("sheetPresentationController is not set")
+                return
+            }
+            let detent = UISheetPresentationController.Detent.custom { _ in
+                height
+            }
+            let detentIdentifier = detent.identifier
+
+            sheetPresentationController.animateChanges {
+                sheetPresentationController.detents = [detent]
+                sheetPresentationController.selectedDetentIdentifier = detentIdentifier
+            }
+        }
+
         let viewModel = passwordGeneratorViewModelFactory.create(mode: .random,
                                                                  onResult: { [weak self] result in
                                                                      guard let self else { return }
@@ -984,8 +1001,11 @@ extension HomepageCoordinator {
                                                                      case let .failure(error): handle(error: error)
                                                                      }
                                                                  })
-        let view = PasswordGeneratorView(viewModel: viewModel)
-        present(view)
+        let view = PasswordGeneratorView(viewModel: viewModel, onHeightChanged: updateSheetHeight)
+        let viewController = UIHostingController(rootView: view)
+        sheetPresentationController = viewController.sheetPresentationController
+        sheetPresentationController?.prefersGrabberVisible = true
+        present(viewController)
     }
 
     func presentCreateEditVaultView(mode: VaultMode) {

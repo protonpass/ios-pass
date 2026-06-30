@@ -48,6 +48,6 @@ struct EditDefaultBrowserView: View {
         }
         .padding()
         .background(PassColor.backgroundWeak)
-        .fittedPresentationDetent(onHeightChanged: nil)
+        .fittedPresentationDetent()
     }
 }

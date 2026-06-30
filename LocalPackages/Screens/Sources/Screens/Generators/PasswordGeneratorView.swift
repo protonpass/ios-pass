@@ -18,14 +18,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import DesignSystem
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
 import UseCases
 
 public struct PasswordGeneratorView: View {
+    @Environment(\.dismiss) private var dismiss
     @State private var viewModel: PasswordGeneratorViewModel
+    private let onHeightChanged: ((Double) -> Void)?
 
-    public init(viewModel: PasswordGeneratorViewModel) {
+    public init(viewModel: PasswordGeneratorViewModel,
+                onHeightChanged: ((Double) -> Void)? = nil) {
         self.viewModel = viewModel
+        self.onHeightChanged = onHeightChanged
     }
 
     public var body: some View {
@@ -41,6 +48,37 @@ public struct PasswordGeneratorView: View {
 
 private extension PasswordGeneratorView {
     var mainContent: some View {
-        Text(verbatim: "Password generator")
+        VStack {
+            topBar
+        }
+        .padding([.top, .horizontal])
+        .background(PassColor.backgroundNorm)
+        .animation(.default, value: viewModel.password)
+        .animation(.default, value: viewModel.showAdvancedOptions)
+        .fittedPresentationDetent(onHeightChanged: onHeightChanged)
+    }
+
+    @ViewBuilder
+    var topBar: some View {
+        switch viewModel.mode {
+        case .createLogin, .random:
+            Text("Generate password", bundle: .module)
+                .navigationTitleText()
+                .frame(maxWidth: .infinity, alignment: .center)
+
+        case .autofill:
+            HStack {
+                CircleButton(icon: IconProvider.cross,
+                             iconColor: PassColor.interactionNormMajor2,
+                             backgroundColor: PassColor.interactionNormMinor1,
+                             accessibilityLabel: "Close",
+                             action: dismiss.callAsFunction)
+
+                CapsuleTextButton(title: #localized("Use this password", bundle: .module),
+                                  titleColor: PassColor.textInvert,
+                                  backgroundColor: PassColor.interactionNormMajor1,
+                                  action: viewModel.handleCta)
+            }
+        }
     }
 }
