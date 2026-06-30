@@ -57,7 +57,6 @@ final class ActionCoordinator {
 
     init(rootViewController: UIViewController?) {
         self.rootViewController = rootViewController
-        AppearanceSettings.apply()
         setUpSentry()
         setUpRouter()
         setCoreLoggerEnvironment()

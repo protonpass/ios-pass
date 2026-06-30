@@ -39,7 +39,6 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window.makeKeyAndVisible()
             UIComponentsContainer.shared.window.register { window }
         }
-        AppearanceSettings.apply()
         Task { [weak self] in
             guard let self else { return }
             guard await appCoordinator.setUpAndStart() else {
