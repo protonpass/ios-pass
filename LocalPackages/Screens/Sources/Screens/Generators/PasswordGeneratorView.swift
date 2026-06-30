@@ -64,7 +64,17 @@ private extension PasswordGeneratorView {
     @ViewBuilder
     var mainContent: some View {
         topBar
+
+        if viewModel.mode.fullScreen {
+            Text("Customize password", bundle: .module)
+                .foregroundStyle(PassColor.textNorm)
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+
         passwordText
+
         strenghtAndPenalties
         PassDivider()
 
@@ -83,6 +93,14 @@ private extension PasswordGeneratorView {
 
         if viewModel.mode.fullScreen {
             Spacer()
+            CapsuleTextButton(title: #localized("Regenerate password", bundle: .module),
+                              titleColor: PassColor.loginInteractionNormMajor2,
+                              backgroundColor: PassColor.loginInteractionNormMinor1,
+                              height: 50,
+                              action: {
+                                  viewModel.handleCta()
+                                  dismiss()
+                              })
         } else {
             ctaButtons
         }
@@ -104,8 +122,8 @@ private extension PasswordGeneratorView {
         case .autofill:
             HStack {
                 CircleButton(icon: IconProvider.cross,
-                             iconColor: PassColor.interactionNormMajor2,
-                             backgroundColor: PassColor.interactionNormMinor1,
+                             iconColor: PassColor.loginInteractionNormMajor2,
+                             backgroundColor: PassColor.loginInteractionNormMinor1,
                              accessibilityLabel: "Close",
                              action: dismiss.callAsFunction)
 
@@ -113,7 +131,7 @@ private extension PasswordGeneratorView {
 
                 CapsuleTextButton(title: #localized("Use this password", bundle: .module),
                                   titleColor: PassColor.textInvert,
-                                  backgroundColor: PassColor.interactionNormMajor1,
+                                  backgroundColor: PassColor.loginInteractionNormMajor1,
                                   maxWidth: nil,
                                   action: viewModel.handleCta)
             }
@@ -161,7 +179,7 @@ private extension PasswordGeneratorView {
             RoundedRectangle(cornerRadius: 16)
                 .stroke(PassColor.inputBorderNorm, lineWidth: 2)
         }
-        .padding(.vertical, DesignConstant.sectionPadding)
+        .padding(.bottom, DesignConstant.sectionPadding)
     }
 
     var strenghtAndPenalties: some View {
@@ -377,7 +395,7 @@ private extension PasswordGeneratorView {
             Text(title, bundle: .module)
                 .foregroundStyle(PassColor.textNorm)
         }
-        .toggleStyle(SwitchToggleStyle.pass)
+        .tint(PassColor.loginInteractionNormMajor2)
     }
 }
 

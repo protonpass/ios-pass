@@ -38,6 +38,7 @@ protocol CreateEditLoginViewModelDelegate: AnyObject {
 }
 
 @MainActor
+// swiftlint:disable:next type_body_length
 final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
 
