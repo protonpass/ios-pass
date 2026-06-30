@@ -1,7 +1,7 @@
 //
-// PasswordStrength.swift
-// Proton Pass - Created on 27/11/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// PasswordScore.swift
+// Proton Pass - Created on 26/06/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -20,7 +20,28 @@
 
 import Foundation
 
-public enum PasswordStrength: Sendable, Equatable {
+public struct PasswordScore: Sendable {
+    public let strength: PasswordStrength
+    public let penalties: [PasswordPenalty]
+
+    public init(strength: PasswordStrength, penalties: [PasswordPenalty]) {
+        self.strength = strength
+        self.penalties = penalties
+    }
+}
+
+public enum PasswordPenalty: Sendable, CaseIterable {
+    case noLowercase
+    case noUppercase
+    case noNumbers
+    case noSymbols
+    case short
+    case consecutive
+    case progressive
+    case containsCommonPassword
+}
+
+public enum PasswordStrength: Sendable {
     case strong
     case weak
     case vulnerable

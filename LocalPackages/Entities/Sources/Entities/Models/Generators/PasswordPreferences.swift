@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct PasswordPreferences: Sendable {
+public struct PasswordPreferences: Sendable, Equatable {
     public let passwordType: PasswordType
 
     // Random password options

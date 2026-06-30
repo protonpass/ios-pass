@@ -22,5 +22,25 @@ import SwiftUI
 import UseCases
 
 public struct PasswordGeneratorView: View {
-    public var body: some View {}
+    @State private var viewModel: PasswordGeneratorViewModel
+
+    public init(viewModel: PasswordGeneratorViewModel) {
+        self.viewModel = viewModel
+    }
+
+    public var body: some View {
+        mainContent
+            .task {
+                await viewModel.checkForOrganisationLimitation()
+            }
+            .onChange(of: viewModel.preferences, initial: true) {
+                viewModel.persistAndRegenerate()
+            }
+    }
+}
+
+private extension PasswordGeneratorView {
+    var mainContent: some View {
+        Text(verbatim: "Password generator")
+    }
 }

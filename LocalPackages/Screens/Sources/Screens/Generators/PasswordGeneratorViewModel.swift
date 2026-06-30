@@ -24,9 +24,54 @@ import Entities
 import Foundation
 import UseCases
 
+public extension PasswordGeneratorViewModel {
+    final class Factory {
+        private let datasource: any LocalPasswordPreferencesDatasourceProtocol
+        private let generatePassword: any GeneratePasswordUseCase
+        private let generateRandomWords: any GenerateRandomWordsUseCase
+        private let generatePassphrase: any GeneratePassphraseUseCase
+        private let scorePassword: any ScorePasswordUseCase
+        private let getOrganizationSettings: any GetOrganizationSettingsUseCase
+        private let passwordHistoryRepository: any PasswordHistoryRepositoryProtocol
+        private let logManager: any LogManagerProtocol
+
+        public init(datasource: any LocalPasswordPreferencesDatasourceProtocol,
+                    generatePassword: any GeneratePasswordUseCase,
+                    generateRandomWords: any GenerateRandomWordsUseCase,
+                    generatePassphrase: any GeneratePassphraseUseCase,
+                    scorePassword: any ScorePasswordUseCase,
+                    getOrganizationSettings: any GetOrganizationSettingsUseCase,
+                    passwordHistoryRepository: any PasswordHistoryRepositoryProtocol,
+                    logManager: any LogManagerProtocol) {
+            self.datasource = datasource
+            self.generatePassword = generatePassword
+            self.generateRandomWords = generateRandomWords
+            self.generatePassphrase = generatePassphrase
+            self.scorePassword = scorePassword
+            self.getOrganizationSettings = getOrganizationSettings
+            self.passwordHistoryRepository = passwordHistoryRepository
+            self.logManager = logManager
+        }
+
+        public func create(mode: PasswordGeneratorMode,
+                           onResult: @escaping (Result<String, any Error>) -> Void) -> PasswordGeneratorViewModel {
+            .init(mode: mode,
+                  datasource: datasource,
+                  generatePassword: generatePassword,
+                  generateRandomWords: generateRandomWords,
+                  generatePassphrase: generatePassphrase,
+                  scorePassword: scorePassword,
+                  getOrganizationSettings: getOrganizationSettings,
+                  passwordHistoryRepository: passwordHistoryRepository,
+                  logManager: logManager,
+                  onResult: onResult)
+        }
+    }
+}
+
 @MainActor
 @Observable
-final class PasswordGeneratorViewModel {
+public final class PasswordGeneratorViewModel {
     private(set) var password = ""
     private(set) var strength: PasswordStrength = .vulnerable
 
@@ -92,7 +137,7 @@ final class PasswordGeneratorViewModel {
     private let generatePassphrase: any GeneratePassphraseUseCase
 
     @ObservationIgnored
-    private let getPasswordStrength: any GetPasswordStrengthUseCase
+    private let scorePassword: any ScorePasswordUseCase
 
     @ObservationIgnored
     private let getOrganizationSettings: any GetOrganizationSettingsUseCase
@@ -111,7 +156,7 @@ final class PasswordGeneratorViewModel {
          generatePassword: any GeneratePasswordUseCase,
          generateRandomWords: any GenerateRandomWordsUseCase,
          generatePassphrase: any GeneratePassphraseUseCase,
-         getPasswordStrength: any GetPasswordStrengthUseCase,
+         scorePassword: any ScorePasswordUseCase,
          getOrganizationSettings: any GetOrganizationSettingsUseCase,
          passwordHistoryRepository: any PasswordHistoryRepositoryProtocol,
          logManager: any LogManagerProtocol,
@@ -121,7 +166,7 @@ final class PasswordGeneratorViewModel {
         self.generatePassword = generatePassword
         self.generateRandomWords = generateRandomWords
         self.generatePassphrase = generatePassphrase
-        self.getPasswordStrength = getPasswordStrength
+        self.scorePassword = scorePassword
         self.getOrganizationSettings = getOrganizationSettings
         self.passwordHistoryRepository = passwordHistoryRepository
         logger = .init(manager: logManager)
@@ -129,6 +174,11 @@ final class PasswordGeneratorViewModel {
 
         retrievePreferences()
         startTracking()
+    }
+
+    func persistAndRegenerate() {
+        datasource.save(preferences: preferences)
+        regenerate()
     }
 
     func regenerate(forceRefresh: Bool = true) {
@@ -153,7 +203,8 @@ final class PasswordGeneratorViewModel {
                                                      includeNumbers: includingNumbers)
             }
             password = newPassword
-            strength = getPasswordStrength(password: newPassword) ?? .vulnerable
+            let score = scorePassword(newPassword)
+            strength = score.strength
         } catch {
             onResult(.failure(error))
         }

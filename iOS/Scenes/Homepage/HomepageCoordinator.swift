@@ -108,6 +108,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\UseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
     @LazyInjected(\UseCasesContainer.fullContentSync) var fullContentSync
     @LazyInjected(\UseCasesContainer.postbackConversionValue) var postbackConversionValue
+    @LazyInjected(\SharedFactoryContainer.passwordGeneratorViewModelFactory)
+    private var passwordGeneratorViewModelFactory
 
     private let getAppPreferences = dependency(\UseCasesContainer.getAppPreferences)
     let updateAppPreferences = dependency(\UseCasesContainer.updateAppPreferences)
@@ -973,30 +975,17 @@ extension HomepageCoordinator {
             copyToClipboard(password)
         }
 
-        var sheetPresentationController: UISheetPresentationController?
-        let updateSheetHeight: (Double) -> Void = { height in
-            guard let sheetPresentationController else {
-                assertionFailure("sheetPresentationController is not set")
-                return
-            }
-            let detent = UISheetPresentationController.Detent.custom { _ in
-                height
-            }
-            let detentIdentifier = detent.identifier
+        let viewModel = passwordGeneratorViewModelFactory.create(mode: .random,
+                                                                 onResult: { [weak self] result in
+                                                                     guard let self else { return }
+                                                                     switch result {
+                                                                     case let .success(password): copyPassword(password)
 
-            sheetPresentationController.animateChanges {
-                sheetPresentationController.detents = [detent]
-                sheetPresentationController.selectedDetentIdentifier = detentIdentifier
-            }
-        }
-
-        let view = GeneratePasswordView(mode: .random,
-                                        onConfirm: copyPassword,
-                                        onUpdateHeight: updateSheetHeight)
-        let viewController = UIHostingController(rootView: view)
-        sheetPresentationController = viewController.sheetPresentationController
-        sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
+                                                                     case let .failure(error): handle(error: error)
+                                                                     }
+                                                                 })
+        let view = PasswordGeneratorView(viewModel: viewModel)
+        present(view)
     }
 
     func presentCreateEditVaultView(mode: VaultMode) {
