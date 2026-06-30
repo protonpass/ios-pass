@@ -93,7 +93,6 @@ final class CredentialProviderCoordinator: DeinitPrintable {
         // Post init
         setUpSentry()
         setCoreLoggerEnvironment()
-        AppearanceSettings.apply()
         setUpRouting()
     }
 

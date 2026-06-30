@@ -111,7 +111,6 @@ final class ShareCoordinator {
     init(rootViewController: UIViewController) {
         UIComponentsContainer.shared.register(rootViewController: rootViewController)
         self.rootViewController = rootViewController
-        AppearanceSettings.apply()
         setUpSentry()
         setUpRouter()
         setCoreLoggerEnvironment()

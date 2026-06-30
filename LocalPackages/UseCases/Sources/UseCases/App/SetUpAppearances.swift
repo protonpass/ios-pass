@@ -1,0 +1,47 @@
+//
+// SetUpAppearances.swift
+// Proton Pass - Created on 30/06/2026.
+// Copyright (c) 2026 Proton Technologies AG
+//
+// This file is part of Proton Pass.
+//
+// Proton Pass is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Pass is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
+
+import DesignSystem
+import ProtonCoreUIFoundations
+import QuickLook
+import UIKit
+
+public protocol SetUpAppearancesUseCase: Sendable {
+    @MainActor
+    func callAsFunction()
+}
+
+public struct SetUpAppearances: SetUpAppearancesUseCase {
+    public init() {}
+
+    public func callAsFunction() {
+        Brand.currentBrand = .pass
+
+        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor =
+            PassUIColor.interactionNorm
+        UIView.appearance(whenContainedInInstancesOf: [QLPreviewController.self]).backgroundColor =
+            PassUIColor.backgroundNorm
+        UILabel.appearance(whenContainedInInstancesOf: [UINavigationBar.self]).adjustsFontSizeToFitWidth = true
+
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: PassUIColor.textNorm]
+        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: PassUIColor.textNorm]
+    }
+}
