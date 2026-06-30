@@ -20,7 +20,9 @@
 
 import Core
 import DesignSystem
+import FactoryKit
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct QAFeaturesView: View {
@@ -34,6 +36,11 @@ struct QAFeaturesView: View {
 
     @AppStorage(Constants.QA.useSwiftUIList, store: kSharedUserDefaults)
     private var useSwiftUIList = false
+
+    @State private var showFullScreenPasswordGenerator = false
+
+    private let passwordGeneratorViewModelFactory =
+        resolve(\SharedFactoryContainer.passwordGeneratorViewModelFactory)
 
     var body: some View {
         NavigationStack {
@@ -74,6 +81,9 @@ struct QAFeaturesView: View {
                         .foregroundStyle(.secondary)
                         // swiftlint:enable line_length
                     }
+
+                    Button(action: { showFullScreenPasswordGenerator = true },
+                           label: { Text(verbatim: "Full screen password generator") })
                 }
 
                 FileAttachmentViewerSection()
@@ -92,6 +102,11 @@ struct QAFeaturesView: View {
                                  accessibilityLabel: "Close",
                                  action: dismiss.callAsFunction)
                 }
+            }
+            .sheet(isPresented: $showFullScreenPasswordGenerator) {
+                let viewModel = passwordGeneratorViewModelFactory.create(mode: .autofill,
+                                                                         onResult: { _ in })
+                PasswordGeneratorView(viewModel: viewModel)
             }
         }
         .tint(PassColor.interactionNorm)

@@ -39821,6 +39821,16 @@
         }
       }
     },
+    "Regenerate password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regenerate password"
+          }
+        }
+      }
+    },
     "Regenerate username" : {
       "localizations" : {
         "be" : {

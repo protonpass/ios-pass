@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Entities
 import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
@@ -27,6 +28,7 @@ import UseCases
 public struct PasswordGeneratorView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var viewModel: PasswordGeneratorViewModel
+    @State private var maxPasswordHeight = 0.0
     private let onHeightChanged: ((Double) -> Void)?
 
     public init(viewModel: PasswordGeneratorViewModel,
@@ -36,35 +38,65 @@ public struct PasswordGeneratorView: View {
     }
 
     public var body: some View {
-        mainContent
-            .task {
-                await viewModel.checkForOrganisationLimitation()
-            }
-            .onChange(of: viewModel.preferences, initial: true) {
-                viewModel.persistAndRegenerate()
-            }
-    }
-}
-
-private extension PasswordGeneratorView {
-    var mainContent: some View {
         VStack {
-            topBar
+            mainContent
+        }
+        .frame(maxHeight: viewModel.mode.fullScreen ? .infinity : nil)
+        .task {
+            await viewModel.checkForOrganisationLimitation()
+        }
+        .onChange(of: viewModel.preferences, initial: true) {
+            viewModel.persistAndRegenerate()
         }
         .padding([.top, .horizontal])
         .background(PassColor.backgroundNorm)
         .animation(.default, value: viewModel.password)
         .animation(.default, value: viewModel.showAdvancedOptions)
-        .fittedPresentationDetent(onHeightChanged: onHeightChanged)
+        .if(!viewModel.mode.fullScreen) { view in
+            view
+                .fittedPresentationDetent(onHeightChanged: onHeightChanged)
+        }
+    }
+}
+
+private extension PasswordGeneratorView {
+    @ViewBuilder
+    var mainContent: some View {
+        topBar
+
+        // The height of password text grows as text gets longer
+        // We remember the last known max height and make it the min height
+        // in order to avoid animation glitch when height increases and decreases as lenght changes
+        Text(viewModel.password.coloredPassword())
+            .font(.title3.monospaced())
+            .frame(minHeight: max(32, maxPasswordHeight), alignment: .center)
+            .fixedSize(horizontal: false, vertical: true)
+            .animationsDisabled()
+            .onGeometryChange(for: Double.self,
+                              of: { $0.size.height },
+                              action: { newHeight in
+                                  if newHeight > maxPasswordHeight {
+                                      maxPasswordHeight = newHeight
+                                  }
+                              })
+
+        if viewModel.mode.fullScreen {
+            Spacer()
+        }
     }
 
     @ViewBuilder
     var topBar: some View {
         switch viewModel.mode {
         case .createLogin, .random:
-            Text("Generate password", bundle: .module)
-                .navigationTitleText()
-                .frame(maxWidth: .infinity, alignment: .center)
+            HStack {
+                circleRegenerateButton
+                    .opacity(0)
+                Text("Generate password", bundle: .module)
+                    .navigationTitleText()
+                    .frame(maxWidth: .infinity, alignment: .center)
+                circleRegenerateButton
+            }
 
         case .autofill:
             HStack {
@@ -74,11 +106,32 @@ private extension PasswordGeneratorView {
                              accessibilityLabel: "Close",
                              action: dismiss.callAsFunction)
 
+                Spacer()
+
                 CapsuleTextButton(title: #localized("Use this password", bundle: .module),
                                   titleColor: PassColor.textInvert,
                                   backgroundColor: PassColor.interactionNormMajor1,
+                                  maxWidth: nil,
                                   action: viewModel.handleCta)
             }
+        }
+    }
+
+    var circleRegenerateButton: some View {
+        CircleButton(icon: IconProvider.arrowsRotate,
+                     iconColor: PassColor.loginInteractionNormMajor2,
+                     backgroundColor: PassColor.loginInteractionNormMinor1,
+                     accessibilityLabel: "Regenerate password",
+                     action: { viewModel.regenerate() })
+    }
+}
+
+private extension PasswordGeneratorMode {
+    var fullScreen: Bool {
+        if case .autofill = self {
+            true
+        } else {
+            false
         }
     }
 }
