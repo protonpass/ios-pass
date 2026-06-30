@@ -63,23 +63,8 @@ private extension PasswordGeneratorView {
     @ViewBuilder
     var mainContent: some View {
         topBar
-
-        // The height of password text grows as text gets longer
-        // We remember the last known max height and make it the min height
-        // in order to avoid animation glitch when height increases and decreases as lenght changes
-        Text(viewModel.password.coloredPassword())
-            .font(.title3.monospaced())
-            .frame(minHeight: max(32, maxPasswordHeight), alignment: .center)
-            .fixedSize(horizontal: false, vertical: true)
-            .animationsDisabled()
-            .onGeometryChange(for: Double.self,
-                              of: { $0.size.height },
-                              action: { newHeight in
-                                  if newHeight > maxPasswordHeight {
-                                      maxPasswordHeight = newHeight
-                                  }
-                              })
-
+        passwordText
+        strenghtAndPenalties
         if viewModel.mode.fullScreen {
             Spacer()
         }
@@ -124,6 +109,65 @@ private extension PasswordGeneratorView {
                      accessibilityLabel: "Regenerate password",
                      action: { viewModel.regenerate() })
     }
+
+    var passwordText: some View {
+        HStack(alignment: .center) {
+            // The height of password text grows as text gets longer
+            // We remember the last known max height and make it the min height
+            // in order to avoid animation glitch when height increases and decreases as lenght changes
+            Text(viewModel.password.coloredPassword())
+                .font(.title3.monospaced())
+                .frame(minHeight: max(32, maxPasswordHeight), alignment: .center)
+                .fixedSize(horizontal: false, vertical: true)
+                .animationsDisabled()
+                .onGeometryChange(for: Double.self,
+                                  of: { $0.size.height },
+                                  action: { newHeight in
+                                      if newHeight > maxPasswordHeight {
+                                          maxPasswordHeight = newHeight
+                                      }
+                                  })
+
+            Image(systemName: viewModel.strength.iconName)
+                .scaledToFit()
+                .frame(width: 16)
+                .foregroundStyle(viewModel.strength.color)
+        }
+        .padding(DesignConstant.sectionPadding * 3 / 4)
+        .background(PassColor.inputBackgroundNorm)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .overlay {
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(PassColor.inputBorderNorm, lineWidth: 2)
+        }
+    }
+
+    var strenghtAndPenalties: some View {
+        VStack(alignment: .leading) {
+            Text("Password", bundle: .module)
+                .fontWeight(.bold)
+                .foregroundStyle(PassColor.textNorm) +
+                Text(verbatim: " • ")
+                .foregroundStyle(PassColor.textNorm) +
+                Text(verbatim: viewModel.strength.title)
+                .fontWeight(.bold)
+                .foregroundStyle(viewModel.strength.color)
+
+            ForEach(PasswordPenalty.allCases, id: \.self) { penalty in
+                let included = viewModel.penalties.contains(penalty)
+                Label(title: {
+                    Text(penalty.title, bundle: .module)
+                        .foregroundStyle(PassColor.textNorm)
+                }, icon: {
+                    Image(systemName: included ? "xmark" : "checkmark")
+                        .scaledToFit()
+                        .frame(width: 16)
+                        .foregroundStyle(included ? PassColor.signalDanger : PassColor.signalSuccess)
+                })
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
 }
 
 private extension PasswordGeneratorMode {
@@ -132,6 +176,47 @@ private extension PasswordGeneratorMode {
             true
         } else {
             false
+        }
+    }
+}
+
+private extension PasswordPenalty {
+    var title: LocalizedStringKey {
+        switch self {
+        case .noLowercase: "Lowercase letters"
+        case .noUppercase: "Uppercase letters"
+        case .noNumbers: "Number letters"
+        case .noSymbols: "Symbol letters"
+        case .short: "At least 12 characters"
+        case .consecutive: "No repeated characters"
+        case .progressive: "No sequential characters"
+        case .containsCommonPassword: "No common passwords"
+        }
+    }
+}
+
+public extension PasswordStrength {
+    var title: String {
+        switch self {
+        case .vulnerable: #localized("Vulnerable", bundle: .module)
+        case .weak: #localized("Weak", bundle: .module)
+        case .strong: #localized("Strong", bundle: .module)
+        }
+    }
+
+    var iconName: String {
+        switch self {
+        case .vulnerable: "xmark.shield.fill"
+        case .weak: "exclamationmark.shield.fill"
+        case .strong: "checkmark.shield.fill"
+        }
+    }
+
+    var color: Color {
+        switch self {
+        case .vulnerable: PassColor.signalDanger
+        case .weak: PassColor.signalWarning
+        case .strong: PassColor.signalSuccess
         }
     }
 }

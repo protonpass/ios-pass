@@ -23,47 +23,6 @@ import Entities
 import Macro
 import SwiftUI
 
-extension PasswordStrength {
-    var title: String {
-        switch self {
-        case .vulnerable:
-            #localized("Vulnerable")
-
-        case .weak:
-            #localized("Weak")
-
-        case .strong:
-            #localized("Strong")
-        }
-    }
-
-    var iconName: String {
-        switch self {
-        case .vulnerable:
-            "xmark.shield.fill"
-
-        case .weak:
-            "exclamationmark.shield.fill"
-
-        case .strong:
-            "checkmark.shield.fill"
-        }
-    }
-
-    var color: Color {
-        switch self {
-        case .vulnerable:
-            PassColor.signalDanger
-
-        case .weak:
-            PassColor.signalWarning
-
-        case .strong:
-            PassColor.signalSuccess
-        }
-    }
-}
-
 extension PasswordStrength? {
     func sectionTitle(reuseCount: Int?) -> String {
         if let self {
