@@ -26,8 +26,13 @@ public protocol LocalTimestampDatasourceProtocol: Sendable {
 
     /// Persist (or clear with `nil`) the corpus freshness marker.
     func setLastChangeTimestamp(_ value: Int?, key: String)
+}
 
-    func lastChangeKey(_ userId: String) -> String
+public extension LocalTimestampDatasourceProtocol {
+    /// Key to fetch the saved timestamp
+    func lastChangeKey(_ userId: String) -> String {
+        "compromisedPasswordsLastChange.\(userId)"
+    }
 }
 
 public final class LocalTimestampDatasource: LocalTimestampDatasourceProtocol {
@@ -52,10 +57,5 @@ public extension LocalTimestampDatasource {
         } else {
             userDefault.removeObject(forKey: key)
         }
-    }
-
-    /// Key to fetch the saved timestamp
-    func lastChangeKey(_ userId: String) -> String {
-        "compromisedPasswordsLastChange.\(userId)"
     }
 }
