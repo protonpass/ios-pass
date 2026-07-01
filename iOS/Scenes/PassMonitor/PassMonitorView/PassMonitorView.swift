@@ -532,7 +532,7 @@ private extension PassMonitorView {
                             }
                     }
                 }
-                .frame(maxWidth: .infinity, minHeight: ElementSizes.cellHeight, alignment: .leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .contentShape(.rect)
 
                 if loading {
@@ -555,7 +555,7 @@ private extension PassMonitorView {
                                           width: 12)
                 }
             }
-            .padding(.horizontal, DesignConstant.sectionPadding)
+            .padding(DesignConstant.sectionPadding)
             .roundedDetailSection(backgroundColor: loading ? .clear : rowType.background,
                                   borderColor: loading ? PassColor.inputBorderNorm : rowType.border)
         }
