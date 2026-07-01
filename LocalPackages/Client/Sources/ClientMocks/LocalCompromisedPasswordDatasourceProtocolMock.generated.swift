@@ -47,24 +47,24 @@ public final class LocalCompromisedPasswordDatasourceProtocolMock: @unchecked Se
         closureGetChecksUserIdAsync1()
         return stubbedGetChecksUserIdAsyncResult1
     }
-    // MARK: - getChecksUserIdItemIds
-    public var getChecksUserIdItemIdsThrowableError2: Error?
-    public var closureGetChecksUserIdItemIdsAsync2: () -> () = {}
-    public var invokedGetChecksUserIdItemIdsAsync2 = false
-    public var invokedGetChecksUserIdItemIdsAsyncCount2 = 0
-    public var invokedGetChecksUserIdItemIdsAsyncParameters2: (userId: String, itemIds: [String])?
-    public var invokedGetChecksUserIdItemIdsAsyncParametersList2 = [(userId: String, itemIds: [String])]()
-    public var stubbedGetChecksUserIdItemIdsAsyncResult2: [CompromisedPasswordCheck]!
+    // MARK: - getChecksUserIdItems
+    public var getChecksUserIdItemsThrowableError2: Error?
+    public var closureGetChecksUserIdItemsAsync2: () -> () = {}
+    public var invokedGetChecksUserIdItemsAsync2 = false
+    public var invokedGetChecksUserIdItemsAsyncCount2 = 0
+    public var invokedGetChecksUserIdItemsAsyncParameters2: (userId: String, items: [any ItemIdentifiable])?
+    public var invokedGetChecksUserIdItemsAsyncParametersList2 = [(userId: String, items: [any ItemIdentifiable])]()
+    public var stubbedGetChecksUserIdItemsAsyncResult2: [CompromisedPasswordCheck]!
 
-    public func getChecks(userId: String, itemIds: [String]) async throws -> [CompromisedPasswordCheck] {
-        invokedGetChecksUserIdItemIdsAsync2 = true
-        invokedGetChecksUserIdItemIdsAsyncCount2 += 1
-        invokedGetChecksUserIdItemIdsAsyncParameters2 = (userId, itemIds)
-        if let error = getChecksUserIdItemIdsThrowableError2 {
+    public func getChecks(userId: String, items: [any ItemIdentifiable]) async throws -> [CompromisedPasswordCheck] {
+        invokedGetChecksUserIdItemsAsync2 = true
+        invokedGetChecksUserIdItemsAsyncCount2 += 1
+        invokedGetChecksUserIdItemsAsyncParameters2 = (userId, items)
+        if let error = getChecksUserIdItemsThrowableError2 {
             throw error
         }
-        closureGetChecksUserIdItemIdsAsync2()
-        return stubbedGetChecksUserIdItemIdsAsyncResult2
+        closureGetChecksUserIdItemsAsync2()
+        return stubbedGetChecksUserIdItemsAsyncResult2
     }
     // MARK: - upsert
     public var upsertUserIdThrowableError3: Error?
@@ -88,10 +88,10 @@ public final class LocalCompromisedPasswordDatasourceProtocolMock: @unchecked Se
     public var closureRemove: () -> () = {}
     public var invokedRemovefunction = false
     public var invokedRemoveCount = 0
-    public var invokedRemoveParameters: (userId: String, staleItemIds: [String])?
-    public var invokedRemoveParametersList = [(userId: String, staleItemIds: [String])]()
+    public var invokedRemoveParameters: (userId: String, staleItemIds: [any ItemIdentifiable])?
+    public var invokedRemoveParametersList = [(userId: String, staleItemIds: [any ItemIdentifiable])]()
 
-    public func remove(userId: String, staleItemIds: [String]) async throws {
+    public func remove(userId: String, staleItemIds: [any ItemIdentifiable]) async throws {
         invokedRemovefunction = true
         invokedRemoveCount += 1
         invokedRemoveParameters = (userId, staleItemIds)
@@ -116,33 +116,5 @@ public final class LocalCompromisedPasswordDatasourceProtocolMock: @unchecked Se
             throw error
         }
         closureRemoveAll()
-    }
-    // MARK: - getLastChange
-    public var closureGetLastChange: () -> () = {}
-    public var invokedGetLastChangefunction = false
-    public var invokedGetLastChangeCount = 0
-    public var invokedGetLastChangeParameters: (userId: String, Void)?
-    public var invokedGetLastChangeParametersList = [(userId: String, Void)]()
-    public nonisolated(unsafe) var stubbedGetLastChangeResult: Int?
-
-    public func getLastChange(userId: String) -> Int? {
-        invokedGetLastChangefunction = true
-        invokedGetLastChangeCount += 1
-        invokedGetLastChangeParameters = (userId, ())
-        closureGetLastChange()
-        return stubbedGetLastChangeResult
-    }
-    // MARK: - setLastChange
-    public var closureSetLastChange: () -> () = {}
-    public var invokedSetLastChangefunction = false
-    public var invokedSetLastChangeCount = 0
-    public var invokedSetLastChangeParameters: (value: Int?, userId: String)?
-    public var invokedSetLastChangeParametersList = [(value: Int?, userId: String)]()
-
-    public func setLastChange(_ value: Int?, userId: String) {
-        invokedSetLastChangefunction = true
-        invokedSetLastChangeCount += 1
-        invokedSetLastChangeParameters = (value, userId)
-        closureSetLastChange()
     }
 }
