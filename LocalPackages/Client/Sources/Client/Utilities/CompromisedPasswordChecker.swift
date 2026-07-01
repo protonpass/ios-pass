@@ -41,6 +41,7 @@ public protocol CompromisedPasswordCheckerProtocol: Sendable {
 public final class CompromisedPasswordChecker: CompromisedPasswordCheckerProtocol, Sendable {
     private let remoteDatasource: any RemoteCompromisedPasswordsDatasourceProtocol
     private let localDatasource: any LocalCompromisedPasswordDatasourceProtocol
+    private let localTimestampDatasource: any LocalTimestampDatasourceProtocol
     private let symmetricKeyProvider: any SymmetricKeyProvider
     private let currentDate: @Sendable () -> Date
     private let maxConcurrentRequests: Int
@@ -48,12 +49,14 @@ public final class CompromisedPasswordChecker: CompromisedPasswordCheckerProtoco
 
     public init(remoteDatasource: any RemoteCompromisedPasswordsDatasourceProtocol,
                 localDatasource: any LocalCompromisedPasswordDatasourceProtocol,
+                localTimestampDatasource: any LocalTimestampDatasourceProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider,
                 logManager: any LogManagerProtocol,
                 maxConcurrentRequests: Int = 8,
                 currentDate: @escaping @Sendable () -> Date = { Date() }) {
         self.remoteDatasource = remoteDatasource
         self.localDatasource = localDatasource
+        self.localTimestampDatasource = localTimestampDatasource
         self.symmetricKeyProvider = symmetricKeyProvider
         self.currentDate = currentDate
         self.maxConcurrentRequests = maxConcurrentRequests
@@ -82,7 +85,9 @@ public extension CompromisedPasswordChecker {
         let cached = await loadCachedChecks(userId: userId, derived: derivedAll)
         let currentLastChange = await fetchCurrentLastChange()
         let corpusUnchanged = isCorpusUnchanged(current: currentLastChange,
-                                                stored: localDatasource.getLastChange(userId: userId))
+                                                stored: localTimestampDatasource
+                                                    .getLastChangeTimestamp(key: localTimestampDatasource
+                                                        .lastChangeKey(userId)))
 
         let (reusable, toCheck) = partition(derivedAll, cached: cached, corpusUnchanged: corpusUnchanged)
 
@@ -97,7 +102,8 @@ public extension CompromisedPasswordChecker {
         // Advance the freshness marker only when nothing failed, so a partial failure forces a
         // re-check next scan rather than masking a stale result.
         if let currentLastChange, allSucceeded {
-            localDatasource.setLastChange(currentLastChange, userId: userId)
+            localTimestampDatasource.setLastChangeTimestamp(currentLastChange,
+                                                            key: localTimestampDatasource.lastChangeKey(userId))
         }
 
         logger.info("Finished fetching and checking compromised passwords")
@@ -111,7 +117,7 @@ private extension CompromisedPasswordChecker {
         -> [String: CompromisedPasswordCheck] {
         do {
             let list = try await localDatasource.getChecks(userId: userId,
-                                                           itemIds: derived.map(\.itemId))
+                                                           items: derived)
             return Dictionary(list.map { ($0.itemId, $0) }, uniquingKeysWith: { _, new in new })
         } catch {
             logger.warning("Failed to fetch locally stored items password checks")
@@ -282,7 +288,8 @@ private extension CompromisedPasswordChecker {
     /// prefix/suffix for the k-anonymity range query, and a keyed fingerprint of the password.
     /// The plaintext `CompromisedPasswordCandidate` is intentionally NOT retained — it is consumed
     /// here and dropped, so the password lives in memory only for the duration of this initializer.
-    struct DerivedCompromisedPasswordCandidate {
+    struct DerivedCompromisedPasswordCandidate: ItemIdentifiable {
+        let folderId: String?
         let itemId: String
         let shareId: String
         let prefix: String
@@ -301,6 +308,7 @@ private extension CompromisedPasswordChecker {
             suffix = String(sha1.dropFirst(6))
             passwordHash = HMAC<SHA256>.authenticationCode(for: data, using: key)
                 .map { String(format: "%02x", $0) }.joined()
+            folderId = nil
         }
     }
 

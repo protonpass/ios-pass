@@ -164,15 +164,6 @@ extension SharedRepositoryContainer {
         self { LocalCompromisedPasswordDatasource(databaseService: self.databaseService) }
     }
 
-    var compromisedPasswordChecker: Factory<any CompromisedPasswordCheckerProtocol> {
-        self {
-            CompromisedPasswordChecker(remoteDatasource: self.remoteCompromisedPasswordsDatasource(),
-                                       localDatasource: self.localCompromisedPasswordDatasource(),
-                                       symmetricKeyProvider: self.symmetricKeyProvider,
-                                       logManager: self.logManager)
-        }
-    }
-
     var localItemReadEventDatasource: Factory<any LocalItemReadEventDatasourceProtocol> {
         self { LocalItemReadEventDatasource(databaseService: self.databaseService) }
     }
@@ -286,6 +277,10 @@ extension SharedRepositoryContainer {
 
     var localFolderDatasource: Factory<any LocalFolderDatasourceProtocol> {
         self { LocalFolderDatasource(databaseService: self.databaseService) }
+    }
+
+    var localTimestampDatasource: Factory<any LocalTimestampDatasourceProtocol> {
+        self { LocalTimestampDatasource(userDefault: .standard) }
     }
 }
 
@@ -486,6 +481,16 @@ extension SharedRepositoryContainer {
                                   userManager: self.userManager,
                                   accessRepository: self.accessRepository(),
                                   compromisedPasswordChecker: self.compromisedPasswordChecker())
+        }
+    }
+
+    var compromisedPasswordChecker: Factory<any CompromisedPasswordCheckerProtocol> {
+        self {
+            CompromisedPasswordChecker(remoteDatasource: self.remoteCompromisedPasswordsDatasource(),
+                                       localDatasource: self.localCompromisedPasswordDatasource(),
+                                       localTimestampDatasource: self.localTimestampDatasource(),
+                                       symmetricKeyProvider: self.symmetricKeyProvider,
+                                       logManager: self.logManager)
         }
     }
 }

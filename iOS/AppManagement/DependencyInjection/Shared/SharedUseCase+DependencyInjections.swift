@@ -443,7 +443,8 @@ extension SharedUseCasesContainer {
                                        folderDatasource: container.localFolderDatasource(),
                                        folderKeysDatasource: container.localFolderKeyDatasource(),
                                        compromisedPasswordDatasource: container
-                                           .localCompromisedPasswordDatasource())
+                                           .localCompromisedPasswordDatasource(),
+                                       localTimestampDatasource: container.localTimestampDatasource())
         }
     }
 

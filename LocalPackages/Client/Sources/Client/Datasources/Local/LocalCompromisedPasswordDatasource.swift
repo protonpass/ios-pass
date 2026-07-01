@@ -30,29 +30,15 @@ public protocol LocalCompromisedPasswordDatasourceProtocol: Sendable {
     func getChecks(userId: String) async throws -> [CompromisedPasswordCheck]
 
     /// Persisted checks for a user, restricted to the given item ids.
-    func getChecks(userId: String, itemIds: [String]) async throws -> [CompromisedPasswordCheck]
+    func getChecks(userId: String, items: [any ItemIdentifiable]) async throws -> [CompromisedPasswordCheck]
     func upsert(_ checks: [CompromisedPasswordCheck], userId: String) async throws
     // periphery:ignore
-    func remove(userId: String, staleItemIds: [String]) async throws
+    func remove(userId: String, staleItemIds: [any ItemIdentifiable]) async throws
     func removeAll(userId: String) async throws
-
-    /// Cached UNIX epoch seconds of the corpus's last change at the previous successful scan.
-    func getLastChange(userId: String) -> Int?
-
-    /// Persist (or clear with `nil`) the corpus freshness marker.
-    func setLastChange(_ value: Int?, userId: String)
 }
 
 public final class LocalCompromisedPasswordDatasource: LocalDatasource,
-    LocalCompromisedPasswordDatasourceProtocol, @unchecked Sendable {
-    private let userDefaults: UserDefaults
-
-    public init(databaseService: any DatabaseServiceProtocol,
-                userDefaults: UserDefaults = kSharedUserDefaults) {
-        self.userDefaults = userDefaults
-        super.init(databaseService: databaseService)
-    }
-}
+    LocalCompromisedPasswordDatasourceProtocol, @unchecked Sendable {}
 
 public extension LocalCompromisedPasswordDatasource {
     func getChecks(userId: String) async throws -> [CompromisedPasswordCheck] {
@@ -63,13 +49,17 @@ public extension LocalCompromisedPasswordDatasource {
         return entities.map { $0.toCompromisedPasswordCheck() }
     }
 
-    func getChecks(userId: String, itemIds: [String]) async throws -> [CompromisedPasswordCheck] {
-        guard !itemIds.isEmpty else {
+    func getChecks(userId: String, items: [any ItemIdentifiable]) async throws -> [CompromisedPasswordCheck] {
+        guard !items.isEmpty else {
             return []
         }
         let context = newTaskContext(type: .fetch)
         let request = CompromisedPasswordCheckEntity.fetchRequest()
-        request.predicate = .init(format: "userID == %@ AND itemID IN %@", userId, itemIds)
+        request.predicate = NSPredicate(format: "userID == %@ AND itemID IN %@ AND shareID IN %@",
+                                        userId,
+                                        items.map(\.itemId),
+                                        items.map(\.shareId))
+
         let entities = try await execute(fetchRequest: request, context: context)
         return entities.map { $0.toCompromisedPasswordCheck() }
     }
@@ -86,14 +76,17 @@ public extension LocalCompromisedPasswordDatasource {
                          })
     }
 
-    func remove(userId: String, staleItemIds: [String]) async throws {
+    func remove(userId: String, staleItemIds: [any ItemIdentifiable]) async throws {
         guard !staleItemIds.isEmpty else {
             return
         }
         let context = newTaskContext(type: .delete)
         let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName:
             "CompromisedPasswordCheckEntity")
-        fetchRequest.predicate = .init(format: "userID == %@ AND itemID IN %@", userId, staleItemIds)
+        fetchRequest.predicate = NSPredicate(format: "userID == %@ AND itemID IN %@ AND shareID IN %@",
+                                             userId,
+                                             staleItemIds.map(\.itemId),
+                                             staleItemIds.map(\.shareId))
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest), context: context)
     }
 
@@ -103,29 +96,5 @@ public extension LocalCompromisedPasswordDatasource {
             "CompromisedPasswordCheckEntity")
         fetchRequest.predicate = .init(format: "userID = %@", userId)
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest), context: context)
-        setLastChange(nil, userId: userId)
-    }
-
-    func getLastChange(userId: String) -> Int? {
-        let key = lastChangeKey(userId: userId)
-        guard userDefaults.object(forKey: key) != nil else {
-            return nil
-        }
-        return userDefaults.integer(forKey: key)
-    }
-
-    func setLastChange(_ value: Int?, userId: String) {
-        let key = lastChangeKey(userId: userId)
-        if let value {
-            userDefaults.set(value, forKey: key)
-        } else {
-            userDefaults.removeObject(forKey: key)
-        }
-    }
-}
-
-private extension LocalCompromisedPasswordDatasource {
-    func lastChangeKey(userId: String) -> String {
-        "compromisedPasswordsLastChange.\(userId)"
     }
 }
