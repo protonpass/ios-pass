@@ -54,6 +54,7 @@ public final class RemoveUserLocalData: Sendable, RemoveUserLocalDataUseCase {
     private let folderDatasource: any LocalFolderDatasourceProtocol
     private let folderKeysDatasource: any LocalFolderKeyDatasourceProtocol
     private let compromisedPasswordDatasource: any LocalCompromisedPasswordDatasourceProtocol
+    private let localTimestampDatasource: any LocalTimestampDatasourceProtocol
 
     public init(accessDatasource: any LocalAccessDatasourceProtocol,
                 itemDatasource: any LocalItemDatasourceProtocol,
@@ -74,7 +75,8 @@ public final class RemoveUserLocalData: Sendable, RemoveUserLocalDataUseCase {
                 coreEventIdDatasource: any LocalCoreEventIdDatasourceProtocol,
                 folderDatasource: any LocalFolderDatasourceProtocol,
                 folderKeysDatasource: any LocalFolderKeyDatasourceProtocol,
-                compromisedPasswordDatasource: any LocalCompromisedPasswordDatasourceProtocol) {
+                compromisedPasswordDatasource: any LocalCompromisedPasswordDatasourceProtocol,
+                localTimestampDatasource: any LocalTimestampDatasourceProtocol) {
         self.accessDatasource = accessDatasource
         self.itemDatasource = itemDatasource
         self.itemReadEventDatasource = itemReadEventDatasource
@@ -95,6 +97,7 @@ public final class RemoveUserLocalData: Sendable, RemoveUserLocalDataUseCase {
         self.folderKeysDatasource = folderKeysDatasource
         self.folderDatasource = folderDatasource
         self.compromisedPasswordDatasource = compromisedPasswordDatasource
+        self.localTimestampDatasource = localTimestampDatasource
     }
 }
 
@@ -121,6 +124,8 @@ public extension RemoveUserLocalData {
         async let removeFolders: () = folderDatasource.removeAllFolders(userId: userId)
         async let removeFolderKeys: () = folderKeysDatasource.removeAllKeys(userId: userId)
         async let removeCompromisedPasswords: () = compromisedPasswordDatasource.removeAll(userId: userId)
+        async let removeSavedTimestamp: () = localTimestampDatasource
+            .setLastChangeTimestamp(nil, key: localTimestampDatasource.lastChangeKey(userId))
 
         _ = try await (removeAccess,
                        removeItems,
@@ -141,6 +146,7 @@ public extension RemoveUserLocalData {
                        removeCoreEventId,
                        removeFolders,
                        removeFolderKeys,
-                       removeCompromisedPasswords)
+                       removeCompromisedPasswords,
+                       removeSavedTimestamp)
     }
 }
