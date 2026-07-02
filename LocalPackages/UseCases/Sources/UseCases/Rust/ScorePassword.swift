@@ -27,7 +27,7 @@ public protocol ScorePasswordUseCase: Sendable {
 }
 
 private extension PassRustCore.PasswordScore {
-    var toNativeScore: Entities.PasswordStrength {
+    var toNativeStrength: Entities.PasswordStrength {
         switch self {
         case .vulnerable: .vulnerable
         case .weak: .weak
@@ -45,7 +45,7 @@ public struct ScorePassword: ScorePasswordUseCase {
 
     public func callAsFunction(_ password: String) -> Entities.PasswordScore {
         let score = scorer.scorePassword(password: password)
-        return .init(strength: score.passwordScore.toNativeScore,
+        return .init(strength: score.passwordScore.toNativeStrength,
                      penalties: score.penalties.map(\.toNativePenalty))
     }
 }
