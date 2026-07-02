@@ -174,7 +174,7 @@ public final class PasswordGeneratorViewModel {
         self.onResult = onResult
 
         retrievePreferences()
-        startTracking()
+        regenerate(forceRefresh: false)
     }
 
     func persistAndRegenerate() {
@@ -213,8 +213,11 @@ public final class PasswordGeneratorViewModel {
     }
 
     func handleCta() {
-        Task { [weak self] in
-            guard let self else { return }
+        // Strong `self` capture is intentional: the caller dismisses the view immediately after
+        // calling this, which releases the view-owned view model. A weak capture could deallocate
+        // `self` before `insertPassword` resumes, silently dropping `onResult`. The task is
+        // short-lived and self-terminating, so the strong capture cannot leak.
+        Task {
             do {
                 try await passwordHistoryRepository.insertPassword(password)
                 onResult(.success(password))
@@ -248,18 +251,6 @@ public final class PasswordGeneratorViewModel {
 }
 
 private extension PasswordGeneratorViewModel {
-    func startTracking() {
-        withObservationTracking {
-            storePreferences()
-            regenerate(forceRefresh: false)
-        } onChange: { [weak self] in
-            guard let self else { return }
-            MainActor.assumeIsolated {
-                startTracking()
-            }
-        }
-    }
-
     func retrievePreferences() {
         let prefs = datasource.getPreferences()
         passwordType = prefs.passwordType
@@ -273,17 +264,17 @@ private extension PasswordGeneratorViewModel {
         includingNumbers = prefs.includingNumbers
     }
 
-    func storePreferences() {
-        datasource.save(preferences: .init(passwordType: passwordType,
-                                           characterCount: Int(characterCount),
-                                           hasSpecialCharacters: hasSpecialCharacters,
-                                           hasCapitalCharacters: hasCapitalCharacters,
-                                           hasNumberCharacters: hasNumberCharacters,
-                                           wordSeparator: wordSeparator,
-                                           wordCount: Int(wordCount),
-                                           capitalizingWords: capitalizingWords,
-                                           includingNumbers: includingNumbers))
-    }
+//    func storePreferences() {
+//        datasource.save(preferences: .init(passwordType: passwordType,
+//                                           characterCount: Int(characterCount),
+//                                           hasSpecialCharacters: hasSpecialCharacters,
+//                                           hasCapitalCharacters: hasCapitalCharacters,
+//                                           hasNumberCharacters: hasNumberCharacters,
+//                                           wordSeparator: wordSeparator,
+//                                           wordCount: Int(wordCount),
+//                                           capitalizingWords: capitalizingWords,
+//                                           includingNumbers: includingNumbers))
+//    }
 
     func apply(policy: PasswordPolicy) {
         if !policy.randomPasswordAllowed {

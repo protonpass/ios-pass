@@ -1003,6 +1003,7 @@ extension HomepageCoordinator {
                                                                  })
         let view = PasswordGeneratorView(viewModel: viewModel, onHeightChanged: updateSheetHeight)
         let viewController = UIHostingController(rootView: view)
+        viewController.view.backgroundColor = UIColor(PassColor.backgroundNorm)
         sheetPresentationController = viewController.sheetPresentationController
         present(viewController)
     }

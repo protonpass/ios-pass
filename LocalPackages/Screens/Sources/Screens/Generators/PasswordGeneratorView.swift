@@ -28,7 +28,6 @@ import UseCases
 public struct PasswordGeneratorView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var viewModel: PasswordGeneratorViewModel
-    @State private var maxPasswordHeight = 0.0
     private let onHeightChanged: ((Double) -> Void)?
 
     public init(viewModel: PasswordGeneratorViewModel,
@@ -45,13 +44,14 @@ public struct PasswordGeneratorView: View {
         .task {
             await viewModel.checkForOrganisationLimitation()
         }
-        .onChange(of: viewModel.preferences, initial: true) {
+        .onChange(of: viewModel.preferences) { old, new in
+            guard old != new else {
+                return
+            }
             viewModel.persistAndRegenerate()
         }
         .padding([.top, .horizontal])
         .background(PassColor.backgroundNorm)
-        .animation(.default, value: viewModel.mode)
-        .animation(.default, value: viewModel.password)
         .animation(.default, value: viewModel.showAdvancedOptions)
         .if(!viewModel.mode.fullScreen) { view in
             view
@@ -75,7 +75,7 @@ private extension PasswordGeneratorView {
 
         passwordText
 
-        strenghtAndPenalties
+        strengthAndPenalties
         PassDivider()
 
         if viewModel.shouldDisplayTypeSelection {
@@ -97,10 +97,7 @@ private extension PasswordGeneratorView {
                               titleColor: PassColor.loginInteractionNormMajor2,
                               backgroundColor: PassColor.loginInteractionNormMinor1,
                               height: 50,
-                              action: {
-                                  viewModel.handleCta()
-                                  dismiss()
-                              })
+                              action: { viewModel.regenerate() })
         } else {
             ctaButtons
         }
@@ -112,7 +109,7 @@ private extension PasswordGeneratorView {
         case .createLogin, .random:
             HStack {
                 circleRegenerateButton
-                    .opacity(0)
+                    .hidden()
                 Text("Generate password", bundle: .module)
                     .navigationTitleText()
                     .frame(maxWidth: .infinity, alignment: .center)
@@ -148,21 +145,11 @@ private extension PasswordGeneratorView {
 
     var passwordText: some View {
         HStack(alignment: .center) {
-            // The height of password text grows as text gets longer
-            // We remember the last known max height and make it the min height
-            // in order to avoid animation glitch when height increases and decreases as lenght changes
             Text(viewModel.password.coloredPassword())
                 .font(.title3.monospaced())
-                .frame(minHeight: max(32, maxPasswordHeight), alignment: .center)
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .fixedSize(horizontal: false, vertical: true)
                 .animationsDisabled()
-                .onGeometryChange(for: Double.self,
-                                  of: { $0.size.height },
-                                  action: { newHeight in
-                                      if newHeight > maxPasswordHeight {
-                                          maxPasswordHeight = newHeight
-                                      }
-                                  })
 
             Spacer()
 
@@ -182,7 +169,7 @@ private extension PasswordGeneratorView {
         .padding(.bottom, DesignConstant.sectionPadding)
     }
 
-    var strenghtAndPenalties: some View {
+    var strengthAndPenalties: some View {
         VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 2) {
             Text("Password", bundle: .module)
                 .fontWeight(.bold)
@@ -224,7 +211,7 @@ private extension PasswordGeneratorView {
                         viewModel.passwordType = type
                     }, label: {
                         HStack {
-                            Text(type.title)
+                            Text(type.title, bundle: .module)
                             Spacer()
                             if viewModel.passwordType == type {
                                 Image(systemName: "checkmark")
@@ -234,7 +221,7 @@ private extension PasswordGeneratorView {
                 }
             }, label: {
                 HStack {
-                    Text(viewModel.passwordType.title)
+                    Text(viewModel.passwordType.title, bundle: .module)
                         .foregroundStyle(PassColor.textNorm)
                         .frame(maxWidth: .infinity, alignment: .trailing)
                     IconProvider.chevronDownFilled
