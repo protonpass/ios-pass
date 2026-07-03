@@ -126,8 +126,12 @@ public final class PasswordGeneratorViewModel {
     @ObservationIgnored
     private var persistTask: Task<Void, Never>?
 
+    /// The preferences produced by the last organisation-policy application. While the live
+    /// preferences still equal this value the change came from the policy (or a redundant
+    /// re-delivery of the change callback) and must not be persisted; the first genuine user edit
+    /// clears it.
     @ObservationIgnored
-    private var isApplyingPolicy = false
+    private var policyAppliedPreferences: PasswordPreferences?
 
     @ObservationIgnored
     private var qaPasswordPolicyOverride: Bool {
@@ -193,17 +197,16 @@ public final class PasswordGeneratorViewModel {
     func handlePreferenceChange() {
         regenerate(forceRefresh: false)
 
-        // Organisation-policy adjustments flow through the same `onChange`; don't persist them as if
-        // the user had chosen the clamped values.
-        guard !isApplyingPolicy else {
-            isApplyingPolicy = false
+        // Never persist the policy-clamped values (this callback can be delivered for the policy
+        // mutation itself). Any value differing from the policy baseline is a real user edit, which
+        // clears the suppression so subsequent edits persist normally.
+        if preferences == policyAppliedPreferences {
             return
         }
+        policyAppliedPreferences = nil
         schedulePersist()
     }
 
-    /// Flush a pending debounced write immediately, e.g. before the view disappears. Only writes when
-    /// a user change is actually pending, so it never persists policy-clamped values.
     func flushPendingPreferences() {
         guard persistTask != nil else { return }
         persistTask?.cancel()
@@ -272,13 +275,7 @@ public final class PasswordGeneratorViewModel {
                 }
 
                 if let passwordPolicy {
-                    let before = preferences
                     apply(policy: passwordPolicy)
-                    // Applying the policy mutates the observed settings, which fires the view's
-                    // `onChange`; flag it so the preview updates but the clamped values aren't persisted.
-                    if preferences != before {
-                        isApplyingPolicy = true
-                    }
                 }
             }
         } catch {
@@ -322,6 +319,8 @@ private extension PasswordGeneratorViewModel {
 
         shouldDisplayTypeSelection = resolution.allowsTypeSelection
         lockedOptions = resolution.lockedOptions
+
+        policyAppliedPreferences = preferences
     }
 
     func schedulePersist() {
