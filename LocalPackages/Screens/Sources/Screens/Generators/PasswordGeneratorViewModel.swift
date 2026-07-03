@@ -258,23 +258,27 @@ public final class PasswordGeneratorViewModel {
 
     func checkForOrganisationLimitation() async {
         do {
-            let passwordPolicy: PasswordPolicy? = if qaPasswordPolicyOverride,
-                                                     let string = UserDefaults.standard
-                                                     .string(forKey: Constants.QA.passwordPolicy) {
-                PasswordPolicy(rawValue: string)
-            } else if let newPasswordPolicy = try await getOrganizationSettings()?.passwordPolicy {
-                newPasswordPolicy
-            } else {
-                nil
-            }
+            // This forbid QA settings to be applied to all user. We can only check the policy on org linked user.
+            // If we want to QA on any user the following if let logic should be moved to the else if let case
+            if let organizationSettings = try await getOrganizationSettings() {
+                let passwordPolicy: PasswordPolicy? = if qaPasswordPolicyOverride,
+                                                         let string = UserDefaults.standard
+                                                         .string(forKey: Constants.QA.passwordPolicy) {
+                    PasswordPolicy(rawValue: string)
+                } else if let newPasswordPolicy = organizationSettings.passwordPolicy {
+                    newPasswordPolicy
+                } else {
+                    nil
+                }
 
-            if let passwordPolicy {
-                let before = preferences
-                apply(policy: passwordPolicy)
-                // Applying the policy mutates the observed settings, which fires the view's
-                // `onChange`; flag it so the preview updates but the clamped values aren't persisted.
-                if preferences != before {
-                    isApplyingPolicy = true
+                if let passwordPolicy {
+                    let before = preferences
+                    apply(policy: passwordPolicy)
+                    // Applying the policy mutates the observed settings, which fires the view's
+                    // `onChange`; flag it so the preview updates but the clamped values aren't persisted.
+                    if preferences != before {
+                        isApplyingPolicy = true
+                    }
                 }
             }
         } catch {
