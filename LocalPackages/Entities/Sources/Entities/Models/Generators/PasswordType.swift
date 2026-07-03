@@ -20,6 +20,10 @@
 
 import Foundation
 
-public enum PasswordType: Int, CaseIterable, Sendable {
+public enum PasswordType: Int, CaseIterable, Sendable, Identifiable {
     case random = 0, memorable
+
+    public var id: Self {
+        self
+    }
 }
