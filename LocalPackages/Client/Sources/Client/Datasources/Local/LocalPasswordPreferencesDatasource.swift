@@ -40,7 +40,7 @@ private enum PasswordPreferenceKey: String {
 }
 
 /// Keys used by the legacy `GeneratePasswordViewModel` `@AppStorage` properties.
-public enum LegacyPasswordPreferenceKey: String, CaseIterable, Sendable {
+enum LegacyPasswordPreferenceKey: String, CaseIterable {
     case passwordType
     case characterCount
     case hasSpecialCharacters
