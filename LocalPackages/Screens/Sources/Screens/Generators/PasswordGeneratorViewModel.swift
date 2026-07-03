@@ -99,6 +99,9 @@ public final class PasswordGeneratorViewModel {
     var showAdvancedOptions = false
     private(set) var shouldDisplayTypeSelection = true
 
+    /// Options whose value is dictated by the organisation policy; their toggles must be read-only.
+    private(set) var lockedOptions = PasswordPolicyResolver.LockedOptions.unlocked
+
     var preferences: PasswordPreferences {
         .init(passwordType: passwordType,
               characterCount: Int(characterCount),
@@ -119,6 +122,12 @@ public final class PasswordGeneratorViewModel {
 
     @ObservationIgnored
     private var lastGeneratedWordCount: Int?
+
+    @ObservationIgnored
+    private var persistTask: Task<Void, Never>?
+
+    @ObservationIgnored
+    private var isApplyingPolicy = false
 
     @ObservationIgnored
     private var qaPasswordPolicyOverride: Bool {
@@ -177,9 +186,29 @@ public final class PasswordGeneratorViewModel {
         regenerate(forceRefresh: false)
     }
 
-    func persistAndRegenerate() {
+    /// Called on every user-driven preference change. Regenerates immediately for a live preview
+    /// (reusing the current words for memorable passwords, so tweaking a formatting option doesn't
+    /// draw a brand-new passphrase) and debounces persistence so dragging a slider doesn't write to
+    /// disk on every intermediate value.
+    func handlePreferenceChange() {
+        regenerate(forceRefresh: false)
+
+        // Organisation-policy adjustments flow through the same `onChange`; don't persist them as if
+        // the user had chosen the clamped values.
+        guard !isApplyingPolicy else {
+            isApplyingPolicy = false
+            return
+        }
+        schedulePersist()
+    }
+
+    /// Flush a pending debounced write immediately, e.g. before the view disappears. Only writes when
+    /// a user change is actually pending, so it never persists policy-clamped values.
+    func flushPendingPreferences() {
+        guard persistTask != nil else { return }
+        persistTask?.cancel()
+        persistTask = nil
         datasource.save(preferences: preferences)
-        regenerate()
     }
 
     func regenerate(forceRefresh: Bool = true) {
@@ -229,19 +258,23 @@ public final class PasswordGeneratorViewModel {
 
     func checkForOrganisationLimitation() async {
         do {
-            if let settings = try await getOrganizationSettings() {
-                let passwordPolicy: PasswordPolicy? = if qaPasswordPolicyOverride,
-                                                         let string = UserDefaults.standard
-                                                         .string(forKey: Constants.QA.passwordPolicy) {
-                    PasswordPolicy(rawValue: string)
-                } else if let newPasswordPolicy = settings.passwordPolicy {
-                    newPasswordPolicy
-                } else {
-                    nil
-                }
+            let passwordPolicy: PasswordPolicy? = if qaPasswordPolicyOverride,
+                                                     let string = UserDefaults.standard
+                                                     .string(forKey: Constants.QA.passwordPolicy) {
+                PasswordPolicy(rawValue: string)
+            } else if let newPasswordPolicy = try await getOrganizationSettings()?.passwordPolicy {
+                newPasswordPolicy
+            } else {
+                nil
+            }
 
-                if let passwordPolicy {
-                    apply(policy: passwordPolicy)
+            if let passwordPolicy {
+                let before = preferences
+                apply(policy: passwordPolicy)
+                // Applying the policy mutates the observed settings, which fires the view's
+                // `onChange`; flag it so the preview updates but the clamped values aren't persisted.
+                if preferences != before {
+                    isApplyingPolicy = true
                 }
             }
         } catch {
@@ -264,71 +297,36 @@ private extension PasswordGeneratorViewModel {
         includingNumbers = prefs.includingNumbers
     }
 
-//    func storePreferences() {
-//        datasource.save(preferences: .init(passwordType: passwordType,
-//                                           characterCount: Int(characterCount),
-//                                           hasSpecialCharacters: hasSpecialCharacters,
-//                                           hasCapitalCharacters: hasCapitalCharacters,
-//                                           hasNumberCharacters: hasNumberCharacters,
-//                                           wordSeparator: wordSeparator,
-//                                           wordCount: Int(wordCount),
-//                                           capitalizingWords: capitalizingWords,
-//                                           includingNumbers: includingNumbers))
-//    }
-
     func apply(policy: PasswordPolicy) {
-        if !policy.randomPasswordAllowed {
-            passwordType = .memorable
-        }
+        let resolution = PasswordPolicyResolver.resolve(preferences: preferences, policy: policy)
+        let resolved = resolution.preferences
 
-        if !policy.memorablePasswordAllowed, passwordType == .memorable {
-            passwordType = .random
-        }
+        passwordType = resolved.passwordType
+        characterCount = Double(resolved.characterCount)
+        hasSpecialCharacters = resolved.hasSpecialCharacters
+        hasCapitalCharacters = resolved.hasCapitalCharacters
+        hasNumberCharacters = resolved.hasNumberCharacters
+        wordSeparator = resolved.wordSeparator
+        wordCount = Double(resolved.wordCount)
+        capitalizingWords = resolved.capitalizingWords
+        includingNumbers = resolved.includingNumbers
 
-        shouldDisplayTypeSelection = policy.randomPasswordAllowed && policy.memorablePasswordAllowed
+        minChar = resolution.bounds.minCharacterCount
+        maxChar = resolution.bounds.maxCharacterCount
+        minWord = resolution.bounds.minWordCount
+        maxWord = resolution.bounds.maxWordCount
 
-        minChar = Double(policy.randomPasswordMinLength)
-        maxChar = Double(policy.randomPasswordMaxLength)
-
-        characterCount = adjustToRange(characterCount, range: minChar...maxChar)
-
-        if let randomPasswordMustIncludeSymbols = policy.randomPasswordMustIncludeSymbols {
-            hasSpecialCharacters = randomPasswordMustIncludeSymbols
-        }
-
-        if let randomPasswordMustIncludeUppercase = policy.randomPasswordMustIncludeUppercase {
-            hasCapitalCharacters = randomPasswordMustIncludeUppercase
-        }
-
-        if let randomPasswordMustIncludeNumbers = policy.randomPasswordMustIncludeNumbers {
-            hasNumberCharacters = randomPasswordMustIncludeNumbers
-        }
-
-        minWord = Double(policy.memorablePasswordMinWords)
-        maxWord = Double(policy.memorablePasswordMaxWords)
-
-        wordCount = adjustToRange(wordCount, range: minWord...maxWord)
-
-        if let memorablePasswordMustCapitalize = policy.memorablePasswordMustCapitalize {
-            capitalizingWords = memorablePasswordMustCapitalize
-        }
-
-        if let memorablePasswordMustIncludeNumbers = policy.memorablePasswordMustIncludeNumbers {
-            includingNumbers = memorablePasswordMustIncludeNumbers
-        }
-
-        if !includingNumbers, wordSeparator == .numbersAndSymbols || wordSeparator == .numbers {
-            wordSeparator = .commas
-        }
+        shouldDisplayTypeSelection = resolution.allowsTypeSelection
+        lockedOptions = resolution.lockedOptions
     }
 
-    func adjustToRange(_ number: Double, range: ClosedRange<Double>) -> Double {
-        if range.contains(number) {
-            number
-        } else if number < range.lowerBound {
-            range.lowerBound
-        } else {
-            range.upperBound
+    func schedulePersist() {
+        persistTask?.cancel()
+        persistTask = Task { [weak self] in
+            try? await Task.sleep(for: .milliseconds(500))
+            guard let self, !Task.isCancelled else { return }
+            datasource.save(preferences: preferences)
+            persistTask = nil
         }
     }
 }

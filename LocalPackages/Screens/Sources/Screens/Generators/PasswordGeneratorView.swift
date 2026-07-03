@@ -38,7 +38,49 @@ public struct PasswordGeneratorView: View {
 
     public var body: some View {
         VStack {
-            mainContent
+            PasswordGeneratorTopBar(viewModel: viewModel)
+
+            if viewModel.mode.fullScreen {
+                Text("Customize password", bundle: .module)
+                    .foregroundStyle(PassColor.textNorm)
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+
+            PasswordPreview(password: viewModel.password, strength: viewModel.strength)
+
+            StrengthAndPenalties(strength: viewModel.strength, penalties: viewModel.penalties)
+            PassDivider()
+
+            if viewModel.shouldDisplayTypeSelection {
+                PasswordTypeSelector(viewModel: viewModel)
+                PassDivider()
+            }
+
+            switch viewModel.passwordType {
+            case .random:
+                RandomPasswordOptions(viewModel: viewModel)
+
+            case .memorable:
+                MemorablePasswordOptions(viewModel: viewModel)
+            }
+
+            if viewModel.mode.fullScreen {
+                Spacer()
+                CapsuleTextButton(title: #localized("Regenerate password", bundle: .module),
+                                  titleColor: PassColor.loginInteractionNormMajor2,
+                                  backgroundColor: PassColor.loginInteractionNormMinor1,
+                                  height: 50,
+                                  action: { viewModel.regenerate() })
+            } else {
+                PasswordGeneratorCtaButtons(confirmTitle: viewModel.mode.confirmTitle,
+                                            onConfirm: {
+                                                viewModel.handleCta()
+                                                dismiss()
+                                            },
+                                            onCancel: dismiss.callAsFunction)
+            }
         }
         .frame(maxHeight: viewModel.mode.fullScreen ? .infinity : nil)
         .task {
@@ -48,7 +90,10 @@ public struct PasswordGeneratorView: View {
             guard old != new else {
                 return
             }
-            viewModel.persistAndRegenerate()
+            viewModel.handlePreferenceChange()
+        }
+        .onDisappear {
+            viewModel.flushPendingPreferences()
         }
         .padding([.top, .horizontal])
         .background(PassColor.backgroundNorm)
@@ -60,60 +105,22 @@ public struct PasswordGeneratorView: View {
     }
 }
 
-private extension PasswordGeneratorView {
-    @ViewBuilder
-    var mainContent: some View {
-        topBar
+// MARK: - Top bar
 
-        if viewModel.mode.fullScreen {
-            Text("Customize password", bundle: .module)
-                .foregroundStyle(PassColor.textNorm)
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }
+private struct PasswordGeneratorTopBar: View {
+    @Environment(\.dismiss) private var dismiss
+    let viewModel: PasswordGeneratorViewModel
 
-        passwordText
-
-        strengthAndPenalties
-        PassDivider()
-
-        if viewModel.shouldDisplayTypeSelection {
-            type
-            PassDivider()
-        }
-
-        switch viewModel.passwordType {
-        case .random:
-            randomPasswordOptions
-
-        case .memorable:
-            memorablePasswordOptions
-        }
-
-        if viewModel.mode.fullScreen {
-            Spacer()
-            CapsuleTextButton(title: #localized("Regenerate password", bundle: .module),
-                              titleColor: PassColor.loginInteractionNormMajor2,
-                              backgroundColor: PassColor.loginInteractionNormMinor1,
-                              height: 50,
-                              action: { viewModel.regenerate() })
-        } else {
-            ctaButtons
-        }
-    }
-
-    @ViewBuilder
-    var topBar: some View {
+    var body: some View {
         switch viewModel.mode {
         case .createLogin, .random:
             HStack {
-                circleRegenerateButton
+                regenerateButton
                     .hidden()
                 Text("Generate password", bundle: .module)
                     .navigationTitleText()
                     .frame(maxWidth: .infinity, alignment: .center)
-                circleRegenerateButton
+                regenerateButton
             }
 
         case .autofill:
@@ -135,17 +142,24 @@ private extension PasswordGeneratorView {
         }
     }
 
-    var circleRegenerateButton: some View {
+    private var regenerateButton: some View {
         CircleButton(icon: IconProvider.arrowsRotate,
                      iconColor: PassColor.loginInteractionNormMajor2,
                      backgroundColor: PassColor.loginInteractionNormMinor1,
                      accessibilityLabel: "Regenerate password",
                      action: { viewModel.regenerate() })
     }
+}
 
-    var passwordText: some View {
+// MARK: - Password preview
+
+private struct PasswordPreview: View {
+    let password: String
+    let strength: PasswordStrength
+
+    var body: some View {
         HStack(alignment: .center) {
-            Text(viewModel.password.coloredPassword())
+            Text(password.coloredPassword())
                 .font(.title3.monospaced())
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .fixedSize(horizontal: false, vertical: true)
@@ -153,10 +167,11 @@ private extension PasswordGeneratorView {
 
             Spacer()
 
-            Image(systemName: viewModel.strength.iconName)
+            Image(systemName: strength.iconName)
                 .scaledToFit()
                 .frame(width: 16)
-                .foregroundStyle(viewModel.strength.color)
+                .foregroundStyle(strength.color)
+                .accessibilityLabel(strength.title)
         }
         .frame(maxWidth: .infinity)
         .padding(DesignConstant.sectionPadding * 3 / 4)
@@ -168,223 +183,196 @@ private extension PasswordGeneratorView {
         }
         .padding(.bottom, DesignConstant.sectionPadding)
     }
+}
 
-    var strengthAndPenalties: some View {
+// MARK: - Strength & penalties
+
+private struct StrengthAndPenalties: View {
+    let strength: PasswordStrength
+    let penalties: [PasswordPenalty]
+
+    var body: some View {
         VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 2) {
             Text("Password", bundle: .module)
                 .fontWeight(.bold)
                 .foregroundStyle(PassColor.textNorm) +
                 Text(verbatim: " • ")
                 .foregroundStyle(PassColor.textNorm) +
-                Text(verbatim: viewModel.strength.title)
+                Text(verbatim: strength.title)
                 .fontWeight(.bold)
-                .foregroundStyle(viewModel.strength.color)
+                .foregroundStyle(strength.color)
 
             ForEach(PasswordPenalty.allCases, id: \.self) { penalty in
-                let included = viewModel.penalties.contains(penalty)
-                Label(title: {
-                    Text(penalty.title, bundle: .module)
-                        .foregroundStyle(PassColor.textNorm)
-                        .font(.callout)
-                }, icon: {
-                    Image(systemName: included ? "xmark" : "checkmark")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 8)
-                        .foregroundStyle(included ? PassColor.signalDanger : PassColor.signalSuccess)
-                })
+                PenaltyRow(penalty: penalty, satisfied: !penalties.contains(penalty))
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
+}
 
-    var type: some View {
-        HStack {
-            Text("Type", bundle: .module)
+private struct PenaltyRow: View {
+    let penalty: PasswordPenalty
+    let satisfied: Bool
+
+    var body: some View {
+        Label(title: {
+            Text(penalty.title, bundle: .module)
                 .foregroundStyle(PassColor.textNorm)
+                .font(.callout)
+        }, icon: {
+            Image(systemName: satisfied ? "checkmark" : "xmark")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 8)
+                .foregroundStyle(satisfied ? PassColor.signalSuccess : PassColor.signalDanger)
+        })
+        .accessibilityElement(children: .combine)
+        .accessibilityValue(satisfied ? Text("Satisfied", bundle: .module) : Text("Not satisfied",
+                                                                                  bundle: .module))
+    }
+}
 
-            Spacer()
+// MARK: - Type selector
 
-            Menu(content: {
-                ForEach(PasswordType.allCases, id: \.self) { type in
-                    Button(action: {
-                        viewModel.passwordType = type
-                    }, label: {
-                        HStack {
-                            Text(type.title, bundle: .module)
-                            Spacer()
-                            if viewModel.passwordType == type {
-                                Image(systemName: "checkmark")
-                            }
-                        }
-                    })
-                }
-            }, label: {
-                HStack {
-                    Text(viewModel.passwordType.title, bundle: .module)
-                        .foregroundStyle(PassColor.textNorm)
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                    IconProvider.chevronDownFilled
-                        .resizable()
-                        .scaledToFit()
-                        .foregroundStyle(PassColor.textHint)
-                        .frame(width: 16)
-                }
-            })
+private struct PasswordTypeSelector: View {
+    @Bindable var viewModel: PasswordGeneratorViewModel
+
+    var body: some View {
+        LabeledMenuPicker(title: "Type",
+                          selection: $viewModel.passwordType,
+                          options: PasswordType.allCases) {
+            Text($0.title, bundle: .module)
         }
     }
 }
 
 // MARK: - Random password options
 
-private extension PasswordGeneratorView {
-    @ViewBuilder
-    var randomPasswordOptions: some View {
-        characterCountRow
+private struct RandomPasswordOptions: View {
+    @Bindable var viewModel: PasswordGeneratorViewModel
+
+    var body: some View {
+        GeneratorSliderRow(title: "\(Int(viewModel.characterCount)) characters",
+                           value: $viewModel.characterCount,
+                           range: viewModel.minChar...viewModel.maxChar)
 
         PassDivider()
 
-        toggle(title: "Special characters", isOn: $viewModel.hasSpecialCharacters)
+        GeneratorToggle(title: "Special characters",
+                        isOn: $viewModel.hasSpecialCharacters,
+                        isLocked: viewModel.lockedOptions.specialCharacters)
         PassDivider()
 
         if viewModel.showAdvancedOptions {
-            toggle(title: "Capital letters", isOn: $viewModel.hasCapitalCharacters)
+            GeneratorToggle(title: "Capital letters",
+                            isOn: $viewModel.hasCapitalCharacters,
+                            isLocked: viewModel.lockedOptions.capitalCharacters)
             PassDivider()
 
-            toggle(title: "Include numbers", isOn: $viewModel.hasNumberCharacters)
+            GeneratorToggle(title: "Include numbers",
+                            isOn: $viewModel.hasNumberCharacters,
+                            isLocked: viewModel.lockedOptions.numberCharacters)
             PassDivider()
         } else {
-            advancedOptionsRow
-        }
-    }
-
-    var characterCountRow: some View {
-        HStack {
-            Text("\(Int(viewModel.characterCount)) characters", bundle: .module)
-                .monospacedDigit()
-                .frame(minWidth: 120, alignment: .leading)
-                .foregroundStyle(PassColor.textNorm)
-                .animationsDisabled()
-            Slider(value: $viewModel.characterCount,
-                   in: viewModel.minChar...viewModel.maxChar,
-                   step: 1)
-                .tint(PassColor.loginInteractionNormMajor1)
+            AdvancedOptionsSection(isShowingAdvancedOptions: $viewModel.showAdvancedOptions)
         }
     }
 }
 
 // MARK: - Memorable password options
 
-private extension PasswordGeneratorView {
-    @ViewBuilder
-    var memorablePasswordOptions: some View {
-        wordCountRow
+private struct MemorablePasswordOptions: View {
+    @Bindable var viewModel: PasswordGeneratorViewModel
+
+    var body: some View {
+        GeneratorSliderRow(title: "\(Int(viewModel.wordCount)) word(s)",
+                           value: $viewModel.wordCount,
+                           range: viewModel.minWord...viewModel.maxWord)
         PassDivider()
 
-        capitalizingWordsRow
+        GeneratorToggle(title: "Capitalize",
+                        isOn: $viewModel.capitalizingWords,
+                        isLocked: viewModel.lockedOptions.capitalizingWords)
         PassDivider()
 
         if viewModel.showAdvancedOptions {
-            wordSeparatorRow
+            LabeledMenuPicker(title: "Word separator",
+                              selection: $viewModel.wordSeparator,
+                              options: WordSeparator.allCases) {
+                Text(verbatim: $0.title)
+            }
             PassDivider()
 
-            toggle(title: "Include numbers", isOn: $viewModel.includingNumbers)
+            GeneratorToggle(title: "Include numbers",
+                            isOn: $viewModel.includingNumbers,
+                            isLocked: viewModel.lockedOptions.includingNumbers)
             PassDivider()
         } else {
-            advancedOptionsRow
-        }
-    }
-
-    var wordCountRow: some View {
-        HStack {
-            Text("\(Int(viewModel.wordCount)) word(s)", bundle: .module)
-                .monospacedDigit()
-                .frame(minWidth: 120, alignment: .leading)
-                .foregroundStyle(PassColor.textNorm)
-                .animationsDisabled()
-            Slider(value: $viewModel.wordCount,
-                   in: viewModel.minWord...viewModel.maxWord,
-                   step: 1)
-                .tint(PassColor.loginInteractionNormMajor1)
-        }
-    }
-
-    var capitalizingWordsRow: some View {
-        toggle(title: "Capitalize", isOn: $viewModel.capitalizingWords)
-    }
-
-    var wordSeparatorRow: some View {
-        HStack {
-            Text("Word separator", bundle: .module)
-                .foregroundStyle(PassColor.textNorm)
-
-            Spacer()
-
-            Menu(content: {
-                ForEach(WordSeparator.allCases) { separator in
-                    Button(action: {
-                        viewModel.wordSeparator = separator
-                    }, label: {
-                        HStack {
-                            Text(verbatim: separator.title)
-                            Spacer()
-                            if viewModel.wordSeparator == separator {
-                                Image(systemName: "checkmark")
-                            }
-                        }
-                    })
-                }
-            }, label: {
-                HStack {
-                    Text(verbatim: viewModel.wordSeparator.title)
-                        .foregroundStyle(PassColor.textNorm)
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                    IconProvider.chevronDownFilled
-                        .resizable()
-                        .scaledToFit()
-                        .foregroundStyle(PassColor.textHint)
-                        .frame(width: 16)
-                }
-            })
+            AdvancedOptionsSection(isShowingAdvancedOptions: $viewModel.showAdvancedOptions)
         }
     }
 }
 
 // MARK: - Shared building blocks
 
-private extension PasswordGeneratorView {
-    var advancedOptionsRow: some View {
-        AdvancedOptionsSection(isShowingAdvancedOptions: $viewModel.showAdvancedOptions)
-    }
+private struct GeneratorSliderRow: View {
+    let title: LocalizedStringKey
+    @Binding var value: Double
+    let range: ClosedRange<Double>
 
-    var ctaButtons: some View {
+    var body: some View {
+        HStack {
+            Text(title, bundle: .module)
+                .monospacedDigit()
+                .frame(minWidth: 120, alignment: .leading)
+                .foregroundStyle(PassColor.textNorm)
+                .animationsDisabled()
+            Slider(value: $value, in: range, step: 1)
+                .tint(PassColor.loginInteractionNormMajor1)
+        }
+    }
+}
+
+private struct GeneratorToggle: View {
+    let title: LocalizedStringKey
+    @Binding var isOn: Bool
+    /// When `true` the toggle is dictated by the organisation policy and is shown read-only.
+    var isLocked = false
+
+    var body: some View {
+        Toggle(isOn: $isOn) {
+            Text(title, bundle: .module)
+                .foregroundStyle(PassColor.textNorm)
+        }
+        .tint(PassColor.loginInteractionNormMajor2)
+        .disabled(isLocked)
+    }
+}
+
+private struct PasswordGeneratorCtaButtons: View {
+    let confirmTitle: String
+    let onConfirm: () -> Void
+    let onCancel: () -> Void
+
+    var body: some View {
         HStack {
             CapsuleTextButton(title: #localized("Cancel", bundle: .module),
                               titleColor: PassColor.textWeak,
                               backgroundColor: PassColor.textDisabled,
                               height: 44,
-                              action: dismiss.callAsFunction)
+                              action: onCancel)
 
-            CapsuleTextButton(title: viewModel.mode.confirmTitle,
+            CapsuleTextButton(title: confirmTitle,
                               titleColor: PassColor.textInvert,
                               backgroundColor: PassColor.loginInteractionNormMajor1,
                               height: 44,
-                              action: {
-                                  viewModel.handleCta()
-                                  dismiss()
-                              })
+                              action: onConfirm)
         }
         .padding(.vertical)
     }
-
-    func toggle(title: LocalizedStringKey, isOn: Binding<Bool>) -> some View {
-        Toggle(isOn: isOn) {
-            Text(title, bundle: .module)
-                .foregroundStyle(PassColor.textNorm)
-        }
-        .tint(PassColor.loginInteractionNormMajor2)
-    }
 }
+
+// MARK: - Model presentation helpers
 
 private extension PasswordGeneratorMode {
     var fullScreen: Bool {
@@ -409,38 +397,12 @@ private extension PasswordPenalty {
         switch self {
         case .noLowercase: "Lowercase letters"
         case .noUppercase: "Uppercase letters"
-        case .noNumbers: "Number letters"
-        case .noSymbols: "Symbol letters"
+        case .noNumbers: "Numbers"
+        case .noSymbols: "Symbols"
         case .short: "At least 12 characters"
         case .consecutive: "No repeated characters"
         case .progressive: "No sequential characters"
         case .containsCommonPassword: "No common passwords"
-        }
-    }
-}
-
-public extension PasswordStrength {
-    var title: String {
-        switch self {
-        case .vulnerable: #localized("Vulnerable", bundle: .module)
-        case .weak: #localized("Weak", bundle: .module)
-        case .strong: #localized("Strong", bundle: .module)
-        }
-    }
-
-    var iconName: String {
-        switch self {
-        case .vulnerable: "xmark.shield.fill"
-        case .weak: "exclamationmark.shield.fill"
-        case .strong: "checkmark.shield.fill"
-        }
-    }
-
-    var color: Color {
-        switch self {
-        case .vulnerable: PassColor.signalDanger
-        case .weak: PassColor.signalWarning
-        case .strong: PassColor.signalSuccess
         }
     }
 }
