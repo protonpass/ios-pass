@@ -34,18 +34,6 @@ public struct CompromisedPasswordCandidate: Sendable, Equatable {
     }
 }
 
-/// Outcome of a compromised-password check for a single item.
-public struct CompromisedPasswordResult: Sendable, Equatable {
-    public let breached: Bool
-    /// How many times the password was seen in breach corpora (0 when not breached).
-    public let count: Int
-
-    public init(breached: Bool, count: Int) {
-        self.breached = breached
-        self.count = count
-    }
-}
-
 /// Per-item compromised-password state persisted locally to honour the corpus's
 /// `last_change` freshness and `ETag` conditional-request model. Scoped to a user by the
 /// datasource (the user id is not carried on the value, mirroring `ItemReadEvent`).
@@ -58,26 +46,27 @@ public struct CompromisedPasswordCheck: Sendable, Equatable {
     public let prefix: String
     /// ETag from the most recent successful range query for this item's prefix (empty when none).
     public let etag: String
-    public let breached: Bool
-    public let count: Int
+    public let breachCount: Int
     /// UNIX epoch seconds of the most recent successful range query.
     public let checkedAt: Int
+
+    public var id: String {
+        itemId + shareId
+    }
 
     public init(shareId: String,
                 itemId: String,
                 passwordHash: String,
                 prefix: String,
                 etag: String,
-                breached: Bool,
-                count: Int,
+                breachCount: Int,
                 checkedAt: Int) {
         self.shareId = shareId
         self.itemId = itemId
         self.passwordHash = passwordHash
         self.prefix = prefix
         self.etag = etag
-        self.breached = breached
-        self.count = count
+        self.breachCount = breachCount
         self.checkedAt = checkedAt
     }
 }

@@ -36,7 +36,7 @@ extension Data {
     /// ourselves, inflate the DEFLATE payload via the streaming API (which, unlike the
     /// one-shot buffer API, handles an unknown decompressed size correctly), then validate the
     /// trailing CRC-32/ISIZE to catch silent corruption.
-    func gunzipped() throws -> Data {
+    func gunzipped() throws(GzipError) -> Data {
         let bytes = [UInt8](self)
         let payloadStart = try Self.gzipPayloadStart(bytes)
 
@@ -75,7 +75,7 @@ extension Data {
 private extension Data {
     /// Validates the gzip magic bytes/header (RFC 1952) and returns the index at which the DEFLATE
     /// payload begins, accounting for the optional FEXTRA/FNAME/FCOMMENT/FHCRC fields.
-    static func gzipPayloadStart(_ bytes: [UInt8]) throws -> Int {
+    static func gzipPayloadStart(_ bytes: [UInt8]) throws(GzipError) -> Int {
         // 10-byte header + at least 1 byte of payload + 8-byte trailer.
         guard bytes.count > 18 else { throw GzipError.notGzip }
         guard bytes[0] == 0x1F, bytes[1] == 0x8B, bytes[2] == 0x08 else {
@@ -107,7 +107,7 @@ private extension Data {
         return index
     }
 
-    func inflatedRawDeflate() throws -> Data {
+    func inflatedRawDeflate() throws(GzipError) -> Data {
         let bufferSize = 32_768
         let dstBuffer = UnsafeMutablePointer<UInt8>.allocate(capacity: bufferSize)
         defer { dstBuffer.deallocate() }

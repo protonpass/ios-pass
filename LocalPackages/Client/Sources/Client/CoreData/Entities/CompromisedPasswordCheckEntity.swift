@@ -51,8 +51,7 @@ extension CompromisedPasswordCheckEntity {
               passwordHash: passwordHash,
               prefix: prefix,
               etag: etag,
-              breached: breached,
-              count: Int(breachCount),
+              breachCount: Int(breachCount),
               checkedAt: Int(checkedAt))
     }
 }
@@ -65,8 +64,7 @@ extension CompromisedPasswordCheckEntity {
         passwordHash = check.passwordHash
         prefix = check.prefix
         etag = check.etag
-        breached = check.breached
-        breachCount = Int64(check.count)
+        breachCount = Int64(check.breachCount)
         checkedAt = Int64(check.checkedAt)
     }
 }

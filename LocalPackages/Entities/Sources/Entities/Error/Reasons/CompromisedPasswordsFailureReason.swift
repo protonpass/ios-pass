@@ -43,7 +43,7 @@ public extension PassError {
                 "Invalid last change payload"
 
             case let .invalidPrefixSize(size):
-                "Invalid prefix size\(size)"
+                "Invalid prefix size \(size)"
             }
         }
     }

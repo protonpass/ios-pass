@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24901" systemVersion="25F71" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24902" systemVersion="25F84" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
     <entity name="AccessEntity" representedClassName="AccessEntity" syncable="YES">
         <attribute name="aliasLimit" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="aliasSyncEnabled" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
@@ -44,7 +44,6 @@
         </uniquenessConstraints>
     </entity>
     <entity name="CompromisedPasswordCheckEntity" representedClassName="CompromisedPasswordCheckEntity" syncable="YES">
-        <attribute name="breached" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="breachCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="checkedAt" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="etag" attributeType="String" defaultValueString=""/>
