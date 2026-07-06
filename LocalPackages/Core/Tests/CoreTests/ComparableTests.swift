@@ -1,5 +1,5 @@
 //  
-// IntTests.swift
+// ComparableTests.swift
 // Proton Pass - Created on 06/07/2026.
 // Copyright (c) 2026 Proton Technologies AG
 //
@@ -22,9 +22,7 @@ import Core
 import Foundation
 import Testing
 
-struct IntTests {
-    let containerUrl = FileUtils.getDocumentsDirectory()
-    
+struct ComparableTests {
     @Test
     func `clamp keeps a value that is already within range`() {
         #expect(10.clamp(to: 4...64) == 10)

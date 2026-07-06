@@ -43,7 +43,7 @@ extension SharedFactoryContainer {
                          scorePassword: useCaseContainer.scorePassword(),
                          getOrganizationSettings: useCaseContainer.getOrganizationSettings(),
                          passwordHistoryRepository: repositoryContainer.passwordHistoryRepository(),
-                         passwordPolicyResolver: useCaseContainer.passwordPolicyResolver(),
+                         resolvePasswordPolicy: useCaseContainer.resolvePasswordPolicy(),
                          logManager: SharedToolingContainer.shared.logManager())
         }
     }

@@ -241,7 +241,7 @@ private struct PasswordTypeSelector: View {
         LabeledMenuPicker(title: "Type",
                           selection: $viewModel.passwordType,
                           options: PasswordType.allCases) {
-            Text($0.title, bundle: .module)
+            .localized($0.title)
         }
     }
 }
@@ -299,7 +299,7 @@ private struct MemorablePasswordOptions: View {
             LabeledMenuPicker(title: "Word separator",
                               selection: $viewModel.wordSeparator,
                               options: WordSeparator.allCases) {
-                Text(verbatim: $0.title)
+                .verbatim($0.title)
             }
             PassDivider()
 

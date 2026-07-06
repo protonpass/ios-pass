@@ -33,7 +33,7 @@ public extension PasswordGeneratorViewModel {
         private let scorePassword: any ScorePasswordUseCase
         private let getOrganizationSettings: any GetOrganizationSettingsUseCase
         private let passwordHistoryRepository: any PasswordHistoryRepositoryProtocol
-        private let passwordPolicyResolver: any PasswordPolicyResolverUseCase
+        private let resolvePasswordPolicy: any ResolvePasswordPolicyUseCase
         private let logManager: any LogManagerProtocol
 
         public init(datasource: any LocalPasswordPreferencesDatasourceProtocol,
@@ -43,7 +43,7 @@ public extension PasswordGeneratorViewModel {
                     scorePassword: any ScorePasswordUseCase,
                     getOrganizationSettings: any GetOrganizationSettingsUseCase,
                     passwordHistoryRepository: any PasswordHistoryRepositoryProtocol,
-                    passwordPolicyResolver: any PasswordPolicyResolverUseCase,
+                    resolvePasswordPolicy: any ResolvePasswordPolicyUseCase,
                     logManager: any LogManagerProtocol) {
             self.datasource = datasource
             self.generatePassword = generatePassword
@@ -52,7 +52,7 @@ public extension PasswordGeneratorViewModel {
             self.scorePassword = scorePassword
             self.getOrganizationSettings = getOrganizationSettings
             self.passwordHistoryRepository = passwordHistoryRepository
-            self.passwordPolicyResolver = passwordPolicyResolver
+            self.resolvePasswordPolicy = resolvePasswordPolicy
             self.logManager = logManager
         }
 
@@ -65,7 +65,7 @@ public extension PasswordGeneratorViewModel {
                   generatePassphrase: generatePassphrase,
                   scorePassword: scorePassword,
                   getOrganizationSettings: getOrganizationSettings,
-                  passwordPolicyResolver: passwordPolicyResolver,
+                  resolvePasswordPolicy: resolvePasswordPolicy,
                   passwordHistoryRepository: passwordHistoryRepository,
                   logManager: logManager,
                   onResult: onResult)
@@ -149,7 +149,7 @@ public final class PasswordGeneratorViewModel {
     private let generatePassword: any GeneratePasswordUseCase
 
     @ObservationIgnored
-    private let passwordPolicyResolver: any PasswordPolicyResolverUseCase
+    private let resolvePasswordPolicy: any ResolvePasswordPolicyUseCase
 
     @ObservationIgnored
     private let generateRandomWords: any GenerateRandomWordsUseCase
@@ -179,7 +179,7 @@ public final class PasswordGeneratorViewModel {
          generatePassphrase: any GeneratePassphraseUseCase,
          scorePassword: any ScorePasswordUseCase,
          getOrganizationSettings: any GetOrganizationSettingsUseCase,
-         passwordPolicyResolver: any PasswordPolicyResolverUseCase,
+         resolvePasswordPolicy: any ResolvePasswordPolicyUseCase,
          passwordHistoryRepository: any PasswordHistoryRepositoryProtocol,
          logManager: any LogManagerProtocol,
          onResult: @escaping (Result<String, any Error>) -> Void) {
@@ -190,7 +190,7 @@ public final class PasswordGeneratorViewModel {
         self.generatePassphrase = generatePassphrase
         self.scorePassword = scorePassword
         self.getOrganizationSettings = getOrganizationSettings
-        self.passwordPolicyResolver = passwordPolicyResolver
+        self.resolvePasswordPolicy = resolvePasswordPolicy
         self.passwordHistoryRepository = passwordHistoryRepository
         logger = .init(manager: logManager)
         self.onResult = onResult
@@ -270,22 +270,18 @@ public final class PasswordGeneratorViewModel {
 
     func checkForOrganisationLimitation() async {
         do {
-            // This forbid QA settings to be applied to all user. We can only check the policy on org linked user.
-            // If we want to QA on any user the following if let logic should be moved to the else if let case
-            if let organizationSettings = try await getOrganizationSettings() {
-                let passwordPolicy: PasswordPolicy? = if qaPasswordPolicyOverride,
-                                                         let string = UserDefaults.standard
-                                                         .string(forKey: Constants.QA.passwordPolicy) {
-                    PasswordPolicy(rawValue: string)
-                } else if let newPasswordPolicy = organizationSettings.passwordPolicy {
-                    newPasswordPolicy
-                } else {
-                    nil
-                }
+            let passwordPolicy: PasswordPolicy? = if qaPasswordPolicyOverride,
+                                                     let string = UserDefaults.standard
+                                                     .string(forKey: Constants.QA.passwordPolicy) {
+                PasswordPolicy(rawValue: string)
+            } else if let newPasswordPolicy = try await getOrganizationSettings()?.passwordPolicy {
+                newPasswordPolicy
+            } else {
+                nil
+            }
 
-                if let passwordPolicy {
-                    apply(policy: passwordPolicy)
-                }
+            if let passwordPolicy {
+                apply(policy: passwordPolicy)
             }
         } catch {
             logger.error(error)
@@ -308,7 +304,7 @@ private extension PasswordGeneratorViewModel {
     }
 
     func apply(policy: PasswordPolicy) {
-        let resolution = passwordPolicyResolver(preferences: preferences, policy: policy)
+        let resolution = resolvePasswordPolicy(preferences: preferences, policy: policy)
         let resolved = resolution.preferences
 
         passwordType = resolved.passwordType

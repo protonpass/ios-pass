@@ -1,5 +1,5 @@
 //
-// Int+Extensions.swift
+// Comparable+Extensions.swift
 // Proton Pass - Created on 06/07/2026.
 // Copyright (c) 2026 Proton Technologies AG
 //
@@ -20,8 +20,14 @@
 
 import Foundation
 
-public extension Int {
-    var toDouble: Double {
-        Double(self)
+public extension Comparable {
+    func clamp(to range: ClosedRange<Self>) -> Self {
+        if range.contains(self) {
+            self
+        } else if self < range.lowerBound {
+            range.lowerBound
+        } else {
+            range.upperBound
+        }
     }
 }
