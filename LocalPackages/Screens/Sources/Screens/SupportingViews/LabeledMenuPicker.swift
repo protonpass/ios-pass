@@ -26,7 +26,7 @@ struct LabeledMenuPicker<Value: Hashable & Identifiable>: View {
     let title: LocalizedStringKey
     @Binding var selection: Value
     let options: [Value]
-    let optionLabel: (Value) -> Text
+    let optionLabel: (Value) -> TextContent
 
     var body: some View {
         HStack {
@@ -41,7 +41,7 @@ struct LabeledMenuPicker<Value: Hashable & Identifiable>: View {
                         selection = option
                     } label: {
                         HStack {
-                            optionLabel(option)
+                            Text(optionLabel(option))
                             Spacer()
                             if selection == option {
                                 Image(systemName: "checkmark")
@@ -51,7 +51,7 @@ struct LabeledMenuPicker<Value: Hashable & Identifiable>: View {
                 }
             } label: {
                 HStack {
-                    optionLabel(selection)
+                    Text(optionLabel(selection))
                         .foregroundStyle(PassColor.textNorm)
                         .frame(maxWidth: .infinity, alignment: .trailing)
                     IconProvider.chevronDownFilled

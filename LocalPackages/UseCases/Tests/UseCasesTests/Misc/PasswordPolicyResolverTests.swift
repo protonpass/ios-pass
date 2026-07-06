@@ -25,7 +25,7 @@ import Testing
 struct PasswordPolicyResolverTests {
     // MARK: - clamp
 
-    let resolver = PasswordPolicyResolver()
+    let resolver = ResolvePasswordPolicy()
 
     // MARK: - Type restriction
 

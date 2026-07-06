@@ -24,14 +24,4 @@ public extension Int {
     var toDouble: Double {
         Double(self)
     }
-
-    func clamp(to range: ClosedRange<Int>) -> Int {
-        if range.contains(self) {
-            self
-        } else if self < range.lowerBound {
-            range.lowerBound
-        } else {
-            range.upperBound
-        }
-    }
 }
