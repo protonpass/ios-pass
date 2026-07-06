@@ -23,13 +23,10 @@ import Entities
 import Foundation
 
 /// Talks to Proton's public k-anonymity compromised-password service.
-///
-/// This is a public, unauthenticated external host, so it deliberately bypasses the Proton
 /// Only the 6-character SHA-1 prefix is ever sent — the full password/hash never leaves the device.
 // sourcery: AutoMockable
 public protocol RemoteCompromisedPasswordsDatasourceProtocol: Sendable {
-    /// Plain-text UNIX epoch seconds of the most recent change to the corpus.
-    func lastChange() async throws -> Int
+    func getLastChangeTimestamp() async throws -> Int
 
     /// Conditional range query for an uppercase SHA-1 hex prefix (6 chars). Pass the
     /// previously stored, opaque `etag` to receive `304 Not Modified` when unchanged.
@@ -42,7 +39,7 @@ public final class RemoteCompromisedPasswordsDatasource: RemoteCompromisedPasswo
     private let baseURLString: String
 
     public init(userAgent: String,
-                baseURLString: String = Constants.CompromisedPasswords.baseURLEndpoint,
+                baseURLString: String = Constants.CompromisedPasswords.baseUrl,
                 session: URLSession? = nil) {
         self.userAgent = userAgent
         self.baseURLString = baseURLString
@@ -61,7 +58,7 @@ public final class RemoteCompromisedPasswordsDatasource: RemoteCompromisedPasswo
 }
 
 public extension RemoteCompromisedPasswordsDatasource {
-    func lastChange() async throws -> Int {
+    func getLastChangeTimestamp() async throws -> Int {
         let url = try url(for: "/split/sha1/last_change")
         var request = URLRequest(url: url)
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")

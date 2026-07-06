@@ -26,16 +26,13 @@ import Foundation
 /// Detects passwords present in a breach corpus via the k-anonymity range-query model, honouring
 /// the corpus `last_change` freshness gate and per-prefix `ETag` conditional requests. The full
 /// password/hash never leaves the device — only the 6-character SHA-1 prefix is transmitted.
-///
-/// Lives in the Client layer (not as a UseCase) so `PassMonitorRepository` — which is also in
-/// Client and cannot import UseCases — can drive it directly from its weakness computation.
 // sourcery: AutoMockable
 public protocol CompromisedPasswordCheckerProtocol: Sendable {
-    /// Returns a map of itemId → result. Items omitted from the map are "unknown" (e.g. an
+    /// Returns a map of item Id (itemId + shareId) → result. Items omitted from the map are "unknown" (e.g. an
     /// uncached item whose network query failed) and must NOT be treated as breached. The check is
     /// resilient: network/parse failures keep cached results rather than throwing.
     func check(userId: String,
-               candidates: [CompromisedPasswordCandidate]) async -> [String: CompromisedPasswordResult]
+               candidates: [CompromisedPasswordCandidate]) async -> [String: Int]
 }
 
 public final class CompromisedPasswordChecker: CompromisedPasswordCheckerProtocol, Sendable {
@@ -66,7 +63,7 @@ public final class CompromisedPasswordChecker: CompromisedPasswordCheckerProtoco
 
 public extension CompromisedPasswordChecker {
     func check(userId: String,
-               candidates: [CompromisedPasswordCandidate]) async -> [String: CompromisedPasswordResult] {
+               candidates: [CompromisedPasswordCandidate]) async -> [String: Int] {
         logger.info("Checking compromised password for \(candidates.count) login items")
 
         let nonEmpty = candidates.filter { !$0.password.isEmpty }
@@ -118,7 +115,7 @@ private extension CompromisedPasswordChecker {
         do {
             let list = try await localDatasource.getChecks(userId: userId,
                                                            items: derived)
-            return Dictionary(list.map { ($0.itemId, $0) }, uniquingKeysWith: { _, new in new })
+            return Dictionary(list.map { ($0.id, $0) }, uniquingKeysWith: { _, new in new })
         } catch {
             logger.warning("Failed to fetch locally stored items password checks")
             return [:]
@@ -127,7 +124,7 @@ private extension CompromisedPasswordChecker {
 
     func fetchCurrentLastChange() async -> Int? {
         do {
-            return try await remoteDatasource.lastChange()
+            return try await remoteDatasource.getLastChangeTimestamp()
         } catch {
             logger.warning("Failed to fetch last timestamp for compromised password")
             return nil
@@ -142,14 +139,14 @@ private extension CompromisedPasswordChecker {
     func partition(_ derivedAll: [DerivedCompromisedPasswordCandidate],
                    cached: [String: CompromisedPasswordCheck],
                    corpusUnchanged: Bool)
-        -> (reusable: [String: CompromisedPasswordResult], toCheck: [DerivedCompromisedPasswordCandidate]) {
-        var reusable = [String: CompromisedPasswordResult]()
+        -> (reusable: [String: Int], toCheck: [DerivedCompromisedPasswordCandidate]) {
+        var reusable = [String: Int]()
         var toCheck = [DerivedCompromisedPasswordCandidate]()
         for derived in derivedAll {
             if corpusUnchanged,
-               let row = cached[derived.itemId],
+               let row = cached[derived.id],
                row.passwordHash == derived.passwordHash {
-                reusable[derived.itemId] = .init(breached: row.breached, count: row.count)
+                reusable[derived.id] = row.breachCount
             } else {
                 toCheck.append(derived)
             }
@@ -160,7 +157,7 @@ private extension CompromisedPasswordChecker {
     func checkRemotely(_ toCheck: [DerivedCompromisedPasswordCandidate],
                        cached: [String: CompromisedPasswordCheck],
                        userId: String)
-        async -> (results: [String: CompromisedPasswordResult], succeeded: Bool) {
+        async -> (results: [String: Int], succeeded: Bool) {
         var groups = [String: [DerivedCompromisedPasswordCandidate]]()
         for derived in toCheck {
             groups[derived.prefix, default: []].append(derived)
@@ -168,7 +165,7 @@ private extension CompromisedPasswordChecker {
         let now = Int(currentDate().timeIntervalSince1970)
         let outcomes = await runBounded(groups: groups, cached: cached, now: now)
 
-        var results = [String: CompromisedPasswordResult]()
+        var results = [String: Int]()
         var rows = [CompromisedPasswordCheck]()
         var allSucceeded = true
         for outcome in outcomes {
@@ -201,15 +198,15 @@ private extension CompromisedPasswordChecker {
                  now: Int) async -> PrefixOutcome {
         // Only reuse a stored ETag (and thus accept a 304) when every item in this prefix has a
         // matching, still-valid cached result to fall back on — otherwise force a fresh body.
-        let storedEtags = Set(derived.compactMap { cached[$0.itemId]?.etag }.filter { !$0.isEmpty })
+        let storedEtags = Set(derived.compactMap { cached[$0.id]?.etag }.filter { !$0.isEmpty })
         let canConditional = storedEtags.count == 1 && derived.allSatisfy { derived in
-            guard let row = cached[derived.itemId] else {
+            guard let row = cached[derived.id] else {
                 return false
             }
             return row.passwordHash == derived.passwordHash && row.prefix == prefix && !row.etag.isEmpty
         }
         let etagToSend = canConditional ? storedEtags.first : nil
-        var results = [String: CompromisedPasswordResult]()
+        var results = [String: Int]()
         var rows = [CompromisedPasswordCheck]()
 
         do {
@@ -217,17 +214,16 @@ private extension CompromisedPasswordChecker {
             switch response {
             case .notModified:
                 for item in derived {
-                    guard let row = cached[item.itemId] else {
+                    guard let row = cached[item.id] else {
                         continue
                     }
-                    results[item.itemId] = .init(breached: row.breached, count: row.count)
+                    results[item.id] = row.breachCount
                     rows.append(.init(shareId: item.shareId,
                                       itemId: item.itemId,
                                       passwordHash: row.passwordHash,
                                       prefix: row.prefix,
                                       etag: row.etag,
-                                      breached: row.breached,
-                                      count: row.count,
+                                      breachCount: row.breachCount,
                                       checkedAt: now))
                 }
                 return .init(results: results, rows: rows, succeeded: true)
@@ -236,15 +232,13 @@ private extension CompromisedPasswordChecker {
                 let suffixes = parseRange(body)
                 for item in derived {
                     let count = suffixes[item.suffix]
-                    let breached = count != nil
-                    results[item.itemId] = .init(breached: breached, count: count ?? 0)
+                    results[item.id] = count ?? 0
                     rows.append(.init(shareId: item.shareId,
                                       itemId: item.itemId,
                                       passwordHash: item.passwordHash,
                                       prefix: prefix,
                                       etag: newEtag ?? "",
-                                      breached: breached,
-                                      count: count ?? 0,
+                                      breachCount: count ?? 0,
                                       checkedAt: now))
                 }
                 return .init(results: results, rows: rows, succeeded: true)
@@ -253,8 +247,8 @@ private extension CompromisedPasswordChecker {
             logger.error(error)
             // Keep cached results on error; never invalidate or mark unbreached.
             for item in derived {
-                if let row = cached[item.itemId] {
-                    results[item.itemId] = .init(breached: row.breached, count: row.count)
+                if let row = cached[item.id] {
+                    results[item.id] = row.breachCount
                 }
             }
             return .init(results: results, rows: [], succeeded: false)
@@ -297,6 +291,10 @@ private extension CompromisedPasswordChecker {
         /// HMAC-SHA256(appKey, password): the local password-change invalidation key. Never sent.
         let passwordHash: String
 
+        var id: String {
+            itemId + shareId
+        }
+
         init(candidate: CompromisedPasswordCandidate, key: SymmetricKey) {
             itemId = candidate.itemId
             shareId = candidate.shareId
@@ -313,7 +311,7 @@ private extension CompromisedPasswordChecker {
     }
 
     struct PrefixOutcome {
-        let results: [String: CompromisedPasswordResult]
+        let results: [String: Int]
         let rows: [CompromisedPasswordCheck]
         let succeeded: Bool
     }

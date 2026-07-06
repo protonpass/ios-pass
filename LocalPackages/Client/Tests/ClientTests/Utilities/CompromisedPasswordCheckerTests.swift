@@ -26,7 +26,7 @@ import Entities
 import Foundation
 import Testing
 
-final class MockLocalTimestampDatasource: LocalTimestampDatasourceProtocol, @unchecked Sendable {
+private final class MockLocalTimestampDatasource: LocalTimestampDatasourceProtocol, @unchecked Sendable {
     var currentTimestamp: Int?
     
     /// Cached UNIX epoch seconds of the corpus's last change at the previous successful scan.

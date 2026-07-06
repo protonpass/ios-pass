@@ -95,7 +95,7 @@ public enum Constants {
     }
 
     public enum CompromisedPasswords {
-        public static let baseURLEndpoint = "https://compromisedpasswords.simplelogin.com"
+        public static let baseUrl = "https://compromisedpasswords.simplelogin.com"
     }
 
     // swiftlint:disable:next type_name

@@ -352,7 +352,7 @@ private extension PassMonitorRepository {
         let securityAffectedItems = inputs.loginItems.compactMap { item in
             let isReused = inputs.reusedPasswords.contains(item.loginData.password)
             var detected = weaknessEvaluator.evaluate(item.loginData, isReused: isReused)
-            if breachedItemIds.contains(item.content.itemId) {
+            if breachedItemIds.contains(item.content.id) {
                 detected.insert(.compromisedPassword)
             }
 
@@ -408,7 +408,8 @@ private extension PassMonitorRepository {
         return !isFreeUser
     }
 
-    /// Item ids whose password was found in the breach corpus. Network/parse failures keep cached
+    /// Item ids that contains itemId and shareId whose password was found in the breach corpus. Network/parse
+    /// failures keep cached
     /// results (handled in the checker); excluded or per-check-suppressed items are never queried.
     func compromisedItemIds(userId: String, inputs: WeaknessComputation) async -> Set<String>? {
         let candidates = inputs.loginItems.compactMap { item -> CompromisedPasswordCandidate? in
@@ -428,7 +429,7 @@ private extension PassMonitorRepository {
         guard !results.isEmpty else {
             return nil
         }
-        return Set(results.filter(\.value.breached).map(\.key))
+        return Set(results.filter { $0.value > 0 }.map(\.key))
     }
 }
 
