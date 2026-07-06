@@ -254,7 +254,7 @@ private struct RandomPasswordOptions: View {
     var body: some View {
         GeneratorSliderRow(title: "\(Int(viewModel.characterCount)) characters",
                            value: $viewModel.characterCount,
-                           range: viewModel.minChar...viewModel.maxChar)
+                           range: viewModel.minChar.toDouble...viewModel.maxChar.toDouble)
 
         PassDivider()
 
@@ -287,7 +287,7 @@ private struct MemorablePasswordOptions: View {
     var body: some View {
         GeneratorSliderRow(title: "\(Int(viewModel.wordCount)) word(s)",
                            value: $viewModel.wordCount,
-                           range: viewModel.minWord...viewModel.maxWord)
+                           range: viewModel.minWord.toDouble...viewModel.maxWord.toDouble)
         PassDivider()
 
         GeneratorToggle(title: "Capitalize",

@@ -33,6 +33,7 @@ public extension PasswordGeneratorViewModel {
         private let scorePassword: any ScorePasswordUseCase
         private let getOrganizationSettings: any GetOrganizationSettingsUseCase
         private let passwordHistoryRepository: any PasswordHistoryRepositoryProtocol
+        private let passwordPolicyResolver: any PasswordPolicyResolverUseCase
         private let logManager: any LogManagerProtocol
 
         public init(datasource: any LocalPasswordPreferencesDatasourceProtocol,
@@ -42,6 +43,7 @@ public extension PasswordGeneratorViewModel {
                     scorePassword: any ScorePasswordUseCase,
                     getOrganizationSettings: any GetOrganizationSettingsUseCase,
                     passwordHistoryRepository: any PasswordHistoryRepositoryProtocol,
+                    passwordPolicyResolver: any PasswordPolicyResolverUseCase,
                     logManager: any LogManagerProtocol) {
             self.datasource = datasource
             self.generatePassword = generatePassword
@@ -50,6 +52,7 @@ public extension PasswordGeneratorViewModel {
             self.scorePassword = scorePassword
             self.getOrganizationSettings = getOrganizationSettings
             self.passwordHistoryRepository = passwordHistoryRepository
+            self.passwordPolicyResolver = passwordPolicyResolver
             self.logManager = logManager
         }
 
@@ -62,6 +65,7 @@ public extension PasswordGeneratorViewModel {
                   generatePassphrase: generatePassphrase,
                   scorePassword: scorePassword,
                   getOrganizationSettings: getOrganizationSettings,
+                  passwordPolicyResolver: passwordPolicyResolver,
                   passwordHistoryRepository: passwordHistoryRepository,
                   logManager: logManager,
                   onResult: onResult)
@@ -91,16 +95,16 @@ public final class PasswordGeneratorViewModel {
     var includingNumbers = true
 
     /// Boundaries, possibly tightened by the organisation password policy
-    private(set) var minChar = Double(PasswordPreferences.minCharCount)
-    private(set) var maxChar = Double(PasswordPreferences.maxCharCount)
-    private(set) var minWord = Double(PasswordPreferences.minWordCount)
-    private(set) var maxWord = Double(PasswordPreferences.maxWordCount)
+    private(set) var minChar = PasswordPreferences.minCharCount
+    private(set) var maxChar = PasswordPreferences.maxCharCount
+    private(set) var minWord = PasswordPreferences.minWordCount
+    private(set) var maxWord = PasswordPreferences.maxWordCount
 
     var showAdvancedOptions = false
     private(set) var shouldDisplayTypeSelection = true
 
     /// Options whose value is dictated by the organisation policy; their toggles must be read-only.
-    private(set) var lockedOptions = PasswordPolicyResolver.LockedOptions.unlocked
+    private(set) var lockedOptions = PasswordPolicyLockedOptions.unlocked
 
     var preferences: PasswordPreferences {
         .init(passwordType: passwordType,
@@ -145,6 +149,9 @@ public final class PasswordGeneratorViewModel {
     private let generatePassword: any GeneratePasswordUseCase
 
     @ObservationIgnored
+    private let passwordPolicyResolver: any PasswordPolicyResolverUseCase
+
+    @ObservationIgnored
     private let generateRandomWords: any GenerateRandomWordsUseCase
 
     @ObservationIgnored
@@ -172,6 +179,7 @@ public final class PasswordGeneratorViewModel {
          generatePassphrase: any GeneratePassphraseUseCase,
          scorePassword: any ScorePasswordUseCase,
          getOrganizationSettings: any GetOrganizationSettingsUseCase,
+         passwordPolicyResolver: any PasswordPolicyResolverUseCase,
          passwordHistoryRepository: any PasswordHistoryRepositoryProtocol,
          logManager: any LogManagerProtocol,
          onResult: @escaping (Result<String, any Error>) -> Void) {
@@ -182,6 +190,7 @@ public final class PasswordGeneratorViewModel {
         self.generatePassphrase = generatePassphrase
         self.scorePassword = scorePassword
         self.getOrganizationSettings = getOrganizationSettings
+        self.passwordPolicyResolver = passwordPolicyResolver
         self.passwordHistoryRepository = passwordHistoryRepository
         logger = .init(manager: logManager)
         self.onResult = onResult
@@ -299,7 +308,7 @@ private extension PasswordGeneratorViewModel {
     }
 
     func apply(policy: PasswordPolicy) {
-        let resolution = PasswordPolicyResolver.resolve(preferences: preferences, policy: policy)
+        let resolution = passwordPolicyResolver(preferences: preferences, policy: policy)
         let resolved = resolution.preferences
 
         passwordType = resolved.passwordType

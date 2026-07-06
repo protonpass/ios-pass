@@ -1,6 +1,6 @@
 //
 // PasswordPolicyResolverTests.swift
-// Proton Pass - Created on 02/07/2026.
+// Proton Pass - Created on 06/07/2026.
 // Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,26 +18,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-@testable import Entities
+@testable import UseCases
+import Entities
 import Testing
 
 struct PasswordPolicyResolverTests {
     // MARK: - clamp
 
-    @Test
-    func `clamp keeps a value that is already within range`() {
-        #expect(PasswordPolicyResolver.clamp(10, to: 4...64) == 10)
-    }
-
-    @Test
-    func `clamp raises a value below the lower bound`() {
-        #expect(PasswordPolicyResolver.clamp(2, to: 4...64) == 4)
-    }
-
-    @Test
-    func `clamp lowers a value above the upper bound`() {
-        #expect(PasswordPolicyResolver.clamp(80, to: 4...64) == 64)
-    }
+    let resolver = PasswordPolicyResolver()
 
     // MARK: - Type restriction
 
@@ -46,7 +34,7 @@ struct PasswordPolicyResolverTests {
         let preferences = makePreferences(passwordType: .random)
         let policy = makePolicy(randomAllowed: false)
 
-        let resolution = PasswordPolicyResolver.resolve(preferences: preferences, policy: policy)
+        let resolution = resolver(preferences: preferences, policy: policy)
 
         #expect(resolution.preferences.passwordType == .memorable)
         #expect(!resolution.allowsTypeSelection)
@@ -57,7 +45,7 @@ struct PasswordPolicyResolverTests {
         let preferences = makePreferences(passwordType: .memorable)
         let policy = makePolicy(memorableAllowed: false)
 
-        let resolution = PasswordPolicyResolver.resolve(preferences: preferences, policy: policy)
+        let resolution = resolver(preferences: preferences, policy: policy)
 
         #expect(resolution.preferences.passwordType == .random)
         #expect(!resolution.allowsTypeSelection)
@@ -68,7 +56,7 @@ struct PasswordPolicyResolverTests {
         let preferences = makePreferences(passwordType: .memorable)
         let policy = makePolicy(randomAllowed: true, memorableAllowed: true)
 
-        let resolution = PasswordPolicyResolver.resolve(preferences: preferences, policy: policy)
+        let resolution = resolver(preferences: preferences, policy: policy)
 
         #expect(resolution.preferences.passwordType == .memorable)
         #expect(resolution.allowsTypeSelection)
@@ -79,16 +67,16 @@ struct PasswordPolicyResolverTests {
     @Test
     func `character and word counts are clamped into the policy bounds`() {
         let tooLow = makePreferences(characterCount: 2, wordCount: 0)
-        let lowResolution = PasswordPolicyResolver.resolve(preferences: tooLow,
-                                                           policy: makePolicy(randomMinLength: 8,
-                                                                              memorableMinWords: 3))
+        let lowResolution = resolver(preferences: tooLow,
+                                     policy: makePolicy(randomMinLength: 8,
+                                                        memorableMinWords: 3))
         #expect(lowResolution.preferences.characterCount == 8)
         #expect(lowResolution.preferences.wordCount == 3)
 
         let tooHigh = makePreferences(characterCount: 200, wordCount: 50)
-        let highResolution = PasswordPolicyResolver.resolve(preferences: tooHigh,
-                                                            policy: makePolicy(randomMaxLength: 32,
-                                                                               memorableMaxWords: 6))
+        let highResolution = resolver(preferences: tooHigh,
+                                      policy: makePolicy(randomMaxLength: 32,
+                                                         memorableMaxWords: 6))
         #expect(highResolution.preferences.characterCount == 32)
         #expect(highResolution.preferences.wordCount == 6)
     }
@@ -100,7 +88,7 @@ struct PasswordPolicyResolverTests {
                                 memorableMinWords: 2,
                                 memorableMaxWords: 8)
 
-        let bounds = PasswordPolicyResolver.resolve(preferences: makePreferences(), policy: policy).bounds
+        let bounds = resolver(preferences: makePreferences(), policy: policy).bounds
 
         #expect(bounds == .init(minCharacterCount: 6,
                                 maxCharacterCount: 40,
@@ -123,7 +111,7 @@ struct PasswordPolicyResolverTests {
                                 mustCapitalize: true,
                                 memorableMustIncludeNumbers: true)
 
-        let resolved = PasswordPolicyResolver.resolve(preferences: preferences, policy: policy).preferences
+        let resolved = resolver(preferences: preferences, policy: policy).preferences
 
         #expect(resolved.hasSpecialCharacters)
         #expect(resolved.hasCapitalCharacters)
@@ -140,8 +128,8 @@ struct PasswordPolicyResolverTests {
                                           capitalizingWords: false,
                                           includingNumbers: true)
         // A policy with all mandatory flags nil (the `makePolicy` defaults).
-        let resolved = PasswordPolicyResolver.resolve(preferences: preferences,
-                                                      policy: makePolicy()).preferences
+        let resolved = resolver(preferences: preferences,
+                                policy: makePolicy()).preferences
 
         #expect(!resolved.hasSpecialCharacters)
         #expect(resolved.hasCapitalCharacters)
@@ -158,7 +146,7 @@ struct PasswordPolicyResolverTests {
             let preferences = makePreferences(wordSeparator: separator, includingNumbers: true)
             let policy = makePolicy(memorableMustIncludeNumbers: false)
 
-            let resolved = PasswordPolicyResolver.resolve(preferences: preferences, policy: policy).preferences
+            let resolved = resolver(preferences: preferences, policy: policy).preferences
 
             #expect(!resolved.includingNumbers)
             #expect(resolved.wordSeparator == .commas)
@@ -170,7 +158,7 @@ struct PasswordPolicyResolverTests {
         let preferences = makePreferences(wordSeparator: .numbers, includingNumbers: true)
         let policy = makePolicy(memorableMustIncludeNumbers: true)
 
-        let resolved = PasswordPolicyResolver.resolve(preferences: preferences, policy: policy).preferences
+        let resolved = resolver(preferences: preferences, policy: policy).preferences
 
         #expect(resolved.includingNumbers)
         #expect(resolved.wordSeparator == .numbers)
@@ -186,7 +174,7 @@ struct PasswordPolicyResolverTests {
                                 mustCapitalize: true,
                                 memorableMustIncludeNumbers: nil)
 
-        let locked = PasswordPolicyResolver.resolve(preferences: makePreferences(), policy: policy).lockedOptions
+        let locked = resolver(preferences: makePreferences(), policy: policy).lockedOptions
 
         // A set flag locks the toggle even when the mandated value is `false`.
         #expect(locked.numberCharacters)
@@ -199,8 +187,8 @@ struct PasswordPolicyResolverTests {
 
     @Test
     func `no options are locked when the policy sets no mandatory flags`() {
-        let locked = PasswordPolicyResolver.resolve(preferences: makePreferences(),
-                                                    policy: makePolicy()).lockedOptions
+        let locked = resolver(preferences: makePreferences(),
+                              policy: makePolicy()).lockedOptions
         #expect(locked == .unlocked)
     }
 }
@@ -251,5 +239,3 @@ private func makePolicy(randomAllowed: Bool = true,
                    memorablePasswordMustCapitalize: mustCapitalize,
                    memorablePasswordMustIncludeNumbers: memorableMustIncludeNumbers)
 }
-
-// swiftlint:enable discouraged_optional_boolean

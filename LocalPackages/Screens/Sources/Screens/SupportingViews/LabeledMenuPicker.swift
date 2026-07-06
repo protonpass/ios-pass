@@ -22,9 +22,6 @@ import DesignSystem
 import ProtonCoreUIFoundations
 import SwiftUI
 
-/// A titled row with a trailing pull-down `Menu` that lets the user pick one value from `options`.
-/// The `optionLabel` closure renders each option (and the current selection), so callers control
-/// whether the text is localized or verbatim.
 struct LabeledMenuPicker<Value: Hashable & Identifiable>: View {
     let title: LocalizedStringKey
     @Binding var selection: Value
