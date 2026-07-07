@@ -130,10 +130,12 @@ extension SharedServiceContainer {
         self { ItemContextMenuHandler() }
     }
 
+    @MainActor
     var appContentManager: Factory<AppContentManager> {
-        self { @MainActor in AppContentManager() }
+        self { AppContentManager() }
     }
 
+    @MainActor
     var upgradeChecker: Factory<any UpgradeCheckerProtocol> {
         self { UpgradeChecker(accessRepository: SharedRepositoryContainer.shared.accessRepository(),
                               counter: self.appContentManager(),
