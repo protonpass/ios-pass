@@ -1,4 +1,4 @@
-//  
+//
 // RepositoriesDI.swift
 // Proton Pass - Created on 07/07/2026.
 // Copyright (c) 2026 Proton Technologies AG

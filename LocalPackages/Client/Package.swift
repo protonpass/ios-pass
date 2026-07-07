@@ -52,6 +52,11 @@ let package = Package(name: "Client",
                                       .product(name: "ProtonCoreServices", package: "protoncore_ios"),
                                       .product(name: "ProtonCoreFoundations", package: "protoncore_ios"),
                                       .product(name: "ProtonCoreForceUpgrade", package: "protoncore_ios"),
+                                      
+                                      .product(name: "ProtonCorePaymentsUIV2", package: "protoncore_ios"),
+                                      .product(name: "ProtonCorePaymentsV2", package: "protoncore_ios"),
+
+
                                       .product(name: "Core", package: "Core"),
                                       .product(name: "Entities", package: "Entities"),
                                       .product(name: "PassRustCore", package: "PassRustCore"),
