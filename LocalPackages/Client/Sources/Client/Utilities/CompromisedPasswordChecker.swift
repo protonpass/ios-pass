@@ -32,7 +32,7 @@ public protocol CompromisedPasswordCheckerProtocol: Sendable {
     /// uncached item whose network query failed) and must NOT be treated as breached. The check is
     /// resilient: network/parse failures keep cached results rather than throwing.
     func check(userId: String,
-               candidates: [CompromisedPasswordCandidate]) async -> [String: Int]
+               candidates: [CompromisedPasswordCandidate]) async throws -> [String: Int]
 }
 
 public final class CompromisedPasswordChecker: CompromisedPasswordCheckerProtocol, Sendable {
@@ -40,7 +40,7 @@ public final class CompromisedPasswordChecker: CompromisedPasswordCheckerProtoco
     private let localDatasource: any LocalCompromisedPasswordDatasourceProtocol
     private let localTimestampDatasource: any LocalTimestampDatasourceProtocol
     private let symmetricKeyProvider: any SymmetricKeyProvider
-    private let currentDate: @Sendable () -> Date
+    private let dateProvider: any CurrentDateProviderProtocol
     private let maxConcurrentRequests: Int
     private let logger: Logger
 
@@ -50,12 +50,12 @@ public final class CompromisedPasswordChecker: CompromisedPasswordCheckerProtoco
                 symmetricKeyProvider: any SymmetricKeyProvider,
                 logManager: any LogManagerProtocol,
                 maxConcurrentRequests: Int = 8,
-                currentDate: @escaping @Sendable () -> Date = { Date() }) {
+                dateProvider: any CurrentDateProviderProtocol) {
         self.remoteDatasource = remoteDatasource
         self.localDatasource = localDatasource
         self.localTimestampDatasource = localTimestampDatasource
         self.symmetricKeyProvider = symmetricKeyProvider
-        self.currentDate = currentDate
+        self.dateProvider = dateProvider
         self.maxConcurrentRequests = maxConcurrentRequests
         logger = .init(manager: logManager)
     }
@@ -63,29 +63,23 @@ public final class CompromisedPasswordChecker: CompromisedPasswordCheckerProtoco
 
 public extension CompromisedPasswordChecker {
     func check(userId: String,
-               candidates: [CompromisedPasswordCandidate]) async -> [String: Int] {
+               candidates: [CompromisedPasswordCandidate]) async throws -> [String: Int] {
         logger.info("Checking compromised password for \(candidates.count) login items")
 
         let candidatesWithPasswords = candidates.filter { !$0.password.isEmpty }
         guard !candidatesWithPasswords.isEmpty else { return [:] }
 
-        let key: SymmetricKey
-        do {
-            key = try await symmetricKeyProvider.getSymmetricKey()
-        } catch {
-            logger.error(error)
-            return [:]
-        }
+        let key = try await symmetricKeyProvider.getSymmetricKey()
 
         let derivedCandidates = candidatesWithPasswords.map { DerivedCompromisedPasswordCandidate(candidate: $0,
                                                                                                   key: key) }
 
-        let cached = await loadCachedChecks(userId: userId, derived: derivedCandidates)
-        let currentLastChange = await fetchCurrentLastChange()
+        let cached = try await loadCachedChecks(userId: userId, derived: derivedCandidates)
+        let currentLastChange = try await fetchCurrentLastChange()
         let corpusUnchanged = isCorpusUnchanged(current: currentLastChange,
                                                 stored: localTimestampDatasource
-                                                    .getLastChangeTimestamp(key: localTimestampDatasource
-                                                        .lastChangeKey(userId)))
+                                                    .getTimestamp(key: Constants.CompromisedPasswords
+                                                        .lastCorpusChangeKey(userId)))
 
         let (reusable, toCheck) = partition(derivedCandidates, cached: cached, corpusUnchanged: corpusUnchanged)
 
@@ -100,8 +94,8 @@ public extension CompromisedPasswordChecker {
         // Advance the freshness marker only when nothing failed, so a partial failure forces a
         // re-check next scan rather than masking a stale result.
         if let currentLastChange, allSucceeded {
-            localTimestampDatasource.setLastChangeTimestamp(currentLastChange,
-                                                            key: localTimestampDatasource.lastChangeKey(userId))
+            localTimestampDatasource.setTimestamp(currentLastChange,
+                                                  key: Constants.CompromisedPasswords.lastCorpusChangeKey(userId))
         }
 
         logger.info("Finished fetching and checking compromised passwords")
@@ -111,7 +105,7 @@ public extension CompromisedPasswordChecker {
 
 private extension CompromisedPasswordChecker {
     func loadCachedChecks(userId: String,
-                          derived: [DerivedCompromisedPasswordCandidate]) async
+                          derived: [DerivedCompromisedPasswordCandidate]) async throws
         -> [String: CompromisedPasswordCheck] {
         do {
             let list = try await localDatasource.getChecks(userId: userId,
@@ -119,16 +113,16 @@ private extension CompromisedPasswordChecker {
             return Dictionary(list.map { ($0.id, $0) }, uniquingKeysWith: { _, new in new })
         } catch {
             logger.warning("Failed to fetch locally stored items password checks")
-            return [:]
+            throw error
         }
     }
 
-    func fetchCurrentLastChange() async -> Int? {
+    func fetchCurrentLastChange() async throws -> Int? {
         do {
             return try await remoteDatasource.getLastChangeTimestamp()
         } catch {
             logger.warning("Failed to fetch last timestamp for compromised password")
-            return nil
+            throw error
         }
     }
 
@@ -163,7 +157,8 @@ private extension CompromisedPasswordChecker {
         for derived in toCheck {
             groups[derived.prefix, default: []].append(derived)
         }
-        let now = Int(currentDate().timeIntervalSince1970)
+
+        let now = Int(dateProvider.getCurrentDate().timeIntervalSince1970)
         let outcomes = await runBounded(groups: groups, cached: cached, now: now)
 
         var results = [String: Int]()
@@ -232,14 +227,14 @@ private extension CompromisedPasswordChecker {
             case let .modified(newEtag, body):
                 let suffixes = parseRange(body)
                 for item in derived {
-                    let count = suffixes[item.suffix]
-                    results[item.id] = count ?? 0
+                    let breachCount = suffixes[item.suffix]
+                    results[item.id] = breachCount ?? 0
                     rows.append(.init(shareId: item.shareId,
                                       itemId: item.itemId,
                                       passwordHash: item.passwordHash,
                                       prefix: prefix,
                                       etag: newEtag ?? "",
-                                      breachCount: count ?? 0,
+                                      breachCount: breachCount ?? 0,
                                       checkedAt: now))
                 }
                 return .init(results: results, rows: rows, succeeded: true)
@@ -269,8 +264,8 @@ private extension CompromisedPasswordChecker {
                 continue
             }
             let suffix = parts[0].trimmingCharacters(in: .whitespaces).uppercased()
-            let count = Int(parts[1].trimmingCharacters(in: .whitespaces)) ?? 0
-            result[suffix] = count
+            let breachCounts = Int(parts[1].trimmingCharacters(in: .whitespaces)) ?? 0
+            result[suffix] = breachCounts
         }
         return result
     }
@@ -312,6 +307,7 @@ private extension CompromisedPasswordChecker {
     }
 
     struct PrefixOutcome {
+        /// This contains the full item id (itemId + shareId) and the number of breach linked to the password
         let results: [String: Int]
         let rows: [CompromisedPasswordCheck]
         let succeeded: Bool

@@ -20,6 +20,7 @@
 //
 
 import Client
+import Core
 import Foundation
 
 /// Remove all local data related to a user after logging out
@@ -125,7 +126,7 @@ public extension RemoveUserLocalData {
         async let removeFolderKeys: () = folderKeysDatasource.removeAllKeys(userId: userId)
         async let removeCompromisedPasswords: () = compromisedPasswordDatasource.removeAll(userId: userId)
         async let removeSavedTimestamp: () = localTimestampDatasource
-            .setLastChangeTimestamp(nil, key: localTimestampDatasource.lastChangeKey(userId))
+            .setTimestamp(nil, key: Constants.CompromisedPasswords.lastCorpusChangeKey(userId))
 
         _ = try await (removeAccess,
                        removeItems,

@@ -39,7 +39,6 @@ extension CompromisedPasswordCheckEntity {
     @NSManaged var passwordHash: String
     @NSManaged var prefix: String
     @NSManaged var etag: String
-    @NSManaged var breached: Bool
     @NSManaged var breachCount: Int64
     @NSManaged var checkedAt: Int64
 }

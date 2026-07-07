@@ -21,18 +21,8 @@
 import Foundation
 
 public protocol LocalTimestampDatasourceProtocol: Sendable {
-    /// Cached UNIX epoch seconds of the corpus's last change at the previous successful scan.
-    func getLastChangeTimestamp(key: String) -> Int?
-
-    /// Persist (or clear with `nil`) the corpus freshness marker.
-    func setLastChangeTimestamp(_ value: Int?, key: String)
-}
-
-public extension LocalTimestampDatasourceProtocol {
-    /// Key to fetch the saved timestamp
-    func lastChangeKey(_ userId: String) -> String {
-        "compromisedPasswordsLastChange.\(userId)"
-    }
+    func getTimestamp(key: String) -> Int?
+    func setTimestamp(_ value: Int?, key: String)
 }
 
 public final class LocalTimestampDatasource: LocalTimestampDatasourceProtocol {
@@ -44,14 +34,14 @@ public final class LocalTimestampDatasource: LocalTimestampDatasourceProtocol {
 }
 
 public extension LocalTimestampDatasource {
-    func getLastChangeTimestamp(key: String) -> Int? {
-        guard userDefault.object(forKey: key) != nil else {
+    func getTimestamp(key: String) -> Int? {
+        guard userDefault.object(forKey: key) is Int else {
             return nil
         }
         return userDefault.integer(forKey: key)
     }
 
-    func setLastChangeTimestamp(_ value: Int?, key: String) {
+    func setTimestamp(_ value: Int?, key: String) {
         if let value {
             userDefault.set(value, forKey: key)
         } else {
