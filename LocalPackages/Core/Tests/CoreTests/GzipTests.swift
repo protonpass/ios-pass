@@ -1,6 +1,6 @@
-//
+//  
 // GzipTests.swift
-// Proton Pass - Created on 18/06/2026.
+// Proton Pass - Created on 07/07/2026.
 // Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,12 +18,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-@testable import Client
+@testable import Core
 import Compression
 import Foundation
 import Testing
 
-@Suite(.tags(.models))
+@Suite
 struct GzipTests {
     @Test
     func `Round-trips a gzip payload`() throws {
