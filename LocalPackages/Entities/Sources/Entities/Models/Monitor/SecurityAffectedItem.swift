@@ -23,6 +23,10 @@ import Foundation
 public struct SecurityAffectedItem: Sendable {
     public let item: SymmetricallyEncryptedItem
 
+    public var id: String {
+        item.itemId + item.shareId
+    }
+
     /// Weaknesses genuinely detected on the item, IGNORING any per-check suppression or full
     /// exclusion.
     public let detected: Set<WeaknessKind>
@@ -58,6 +62,10 @@ public extension SecurityAffectedItem {
 
     var isExcludedItem: Bool {
         isFullyExcluded || !suppressedChecks.isEmpty
+    }
+
+    var passwordIsCompromised: Bool {
+        detected.contains(.compromisedPassword)
     }
 
     var shouldBeIncluded: Bool {
