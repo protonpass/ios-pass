@@ -1,6 +1,6 @@
 //
 // Gzip.swift
-// Proton Pass - Created on 18/06/2026.
+// Proton Pass - Created on 07/07/2026.
 // Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,13 +21,13 @@
 import Compression
 import Foundation
 
-enum GzipError: Error, Equatable {
+public enum GzipError: Error, Equatable {
     case notGzip
     case decodeFailed
     case checksumMismatch
 }
 
-extension Data {
+public extension Data {
     /// Decompresses a gzip (RFC 1952) payload.
     ///
     /// The compromised-password range files are served gzip-compressed (`*.gz`). Apple's
