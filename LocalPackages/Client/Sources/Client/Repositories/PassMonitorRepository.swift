@@ -270,10 +270,9 @@ public extension PassMonitorRepository {
         try Task.checkCancellation()
         let userId = try await userManager.getActiveUserId()
         let inputs = try await computeWeaknessInputs(userId: userId, userOwned: true)
-        let breachedItemIds = await isCompromisedCheckEnabled(userId: userId)
-            ? try await compromisedItemIds(userId: userId, inputs: inputs) ?? []
-            : []
-        let result = buildStats(inputs, breachedItemIds: breachedItemIds)
+        let breachedItemIds = await isCompromisedCheckEnabled(userId: userId) ? itemsWithSecurityIssues.value
+            .filter(\.passwordIsCompromised).map(\.id) : []
+        let result = buildStats(inputs, breachedItemIds: Set(breachedItemIds))
         try await remoteDataSource.sendUserMonitorStats(userId: userId, stats: result.0)
     }
 }
