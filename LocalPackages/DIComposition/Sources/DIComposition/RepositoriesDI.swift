@@ -1,7 +1,7 @@
-//
-// InMemoryTokenStorage.swift
-// Proton Pass - Created on 26/04/2023.
-// Copyright (c) 2023 Proton Technologies AG
+//  
+// RepositoriesDI.swift
+// Proton Pass - Created on 07/07/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,20 +18,4 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCorePayments
-
-final class InMemoryTokenStorage: PaymentTokenStorage {
-    var token: PaymentToken?
-
-    func add(_ token: PaymentToken) {
-        self.token = token
-    }
-
-    func get() -> PaymentToken? {
-        token
-    }
-
-    func clear() {
-        token = nil
-    }
-}
+import Foundation
