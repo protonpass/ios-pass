@@ -39,6 +39,7 @@ private extension UseCasesContainer {
         SharedToolingContainer.shared.logManager()
     }
 
+    @MainActor
     var shareInviteService: any ShareInviteServiceProtocol {
         ServiceContainer.shared.shareInviteService()
     }
@@ -75,6 +76,7 @@ private extension UseCasesContainer {
         SharedRepositoryContainer.shared.publicKeyRepository()
     }
 
+    @MainActor
     var appContentManager: any AppContentManagerProtocol {
         SharedServiceContainer.shared.appContentManager()
     }
@@ -140,31 +142,37 @@ extension UseCasesContainer {
 // MARK: - Sharing
 
 extension UseCasesContainer {
+    @MainActor
     var createAndMoveItemToNewVault: Factory<any CreateAndMoveItemToNewVaultUseCase> {
         self { CreateAndMoveItemToNewVault(createVault: self.createVault(),
                                            moveItemsBetweenContainers: self.moveItemsBetweenContainers(),
                                            appContentManager: self.appContentManager) }
     }
 
+    @MainActor
     var getCurrentShareInviteInformations: Factory<any GetCurrentShareInviteInformationsUseCase> {
-        self { @MainActor in GetCurrentShareInviteInformations(shareInviteService: self.shareInviteService)
+        self { GetCurrentShareInviteInformations(shareInviteService: self.shareInviteService)
         }
     }
 
+    @MainActor
     var setShareInviteVault: Factory<any SetShareInviteVaultUseCase> {
-        self { @MainActor in SetShareInviteVault(shareInviteService: self.shareInviteService,
-                                                 getVaultItemCount: self.getVaultItemCount()) }
+        self { SetShareInviteVault(shareInviteService: self.shareInviteService,
+                                   getVaultItemCount: self.getVaultItemCount()) }
     }
 
+    @MainActor
     var setShareInvitesAndKeys: Factory<any SetShareInvitesAndKeysUseCase> {
         self { SetShareInvitesAndKeys(shareInviteService: self.shareInviteService,
                                       getEmailPublicKeyUseCase: self.getEmailPublicKey()) }
     }
 
+    @MainActor
     var setShareInviteRole: Factory<any SetShareInviteRoleUseCase> {
         self { @MainActor in SetShareInviteRole(shareInviteService: self.shareInviteService) }
     }
 
+    @MainActor
     var sendShareInvite: Factory<any SendShareInviteUseCase> {
         self { SendShareInvite(createAndMoveItemToNewVault: self.createAndMoveItemToNewVault(),
                                makeUnsignedSignatureForVaultSharing: self
@@ -195,6 +203,7 @@ extension UseCasesContainer {
                                        shareInviteRepository: self.inviteRepository) }
     }
 
+    @MainActor
     var leaveShare: Factory<any LeaveShareUseCase> {
         self { LeaveShare(appContentManager: self.appContentManager) }
     }
@@ -221,6 +230,7 @@ extension UseCasesContainer {
         }
     }
 
+    @MainActor
     var canUserPerformActionOnVault: Factory<any CanUserPerformActionOnVaultUseCase> {
         self {
             CanUserPerformActionOnVault(accessRepository: self.accessRepository,
@@ -278,8 +288,9 @@ extension UseCasesContainer {
         self { SendInviteReminder(shareInviteRepository: self.inviteRepository) }
     }
 
+    @MainActor
     var canUserTransferVaultOwnership: Factory<any CanUserTransferVaultOwnershipUseCase> {
-        self { @MainActor in CanUserTransferVaultOwnership(appContentManager: self.appContentManager) }
+        self { CanUserTransferVaultOwnership(appContentManager: self.appContentManager) }
     }
 
     var makeUnsignedSignatureForVaultSharing: Factory<any MakeUnsignedSignatureForVaultSharingUseCase> {
@@ -297,16 +308,18 @@ extension UseCasesContainer {
 // MARK: - Vaults
 
 extension UseCasesContainer {
+    @MainActor
     var getVaultItemCount: Factory<any GetVaultItemCountUseCase> {
-        self { @MainActor in GetVaultItemCount(appContentManager: self.appContentManager) }
+        self { GetVaultItemCount(appContentManager: self.appContentManager) }
     }
 
     var transferVaultOwnership: Factory<any TransferVaultOwnershipUseCase> {
         self { TransferVaultOwnership(repository: self.shareRepository) }
     }
 
+    @MainActor
     var moveItemsBetweenContainers: Factory<any MoveItemsBetweenContainersUseCase> {
-        self { @MainActor in
+        self {
             MoveItemsBetweenContainers(repository: self.itemRepository,
                                        appContentManager: self.appContentManager)
         }
@@ -324,6 +337,7 @@ extension UseCasesContainer {
         self { PermanentlyDeleteSelectedItems(repository: self.itemRepository) }
     }
 
+    @MainActor
     var createVault: Factory<any CreateVaultUseCase> {
         self { CreateVault(appContentManager: self.appContentManager,
                            repository: self.shareRepository) }
@@ -425,6 +439,7 @@ extension UseCasesContainer {
                                 authManager: SharedToolingContainer.shared.authManager()) }
     }
 
+    @MainActor
     var logOutExcessFreeAccounts: Factory<any LogOutExcessFreeAccountsUseCase> {
         self { LogOutExcessFreeAccounts(datasource: self.localAccessDatasource,
                                         logOutUser: SharedUseCasesContainer.shared.logOutUser()) }

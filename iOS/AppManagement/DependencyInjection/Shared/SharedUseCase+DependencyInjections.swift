@@ -73,6 +73,7 @@ private extension SharedUseCasesContainer {
         SharedRepositoryContainer.shared.accessRepository()
     }
 
+    @MainActor
     var appContentManager: any AppContentManagerProtocol {
         SharedServiceContainer.shared.appContentManager()
     }
@@ -234,10 +235,12 @@ extension SharedUseCasesContainer {
         self { ProcessVaultSyncEvent() }
     }
 
+    @MainActor
     var getMainVault: Factory<any GetMainVaultUseCase> {
         self { GetMainVault(appContentManager: self.appContentManager) }
     }
 
+    @MainActor
     var fullContentSync: Factory<any FullContentSyncUseCase> {
         self { FullContentSync(syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
                                appContentManager: self.appContentManager) }
@@ -313,6 +316,7 @@ extension SharedUseCasesContainer {
                                                  .folderRepository()) }
     }
 
+    @MainActor
     var logOutUser: Factory<any LogOutUserUseCase> {
         self {
             LogOutUser(userManager: self.userManager,
@@ -444,6 +448,7 @@ extension SharedUseCasesContainer {
         }
     }
 
+    @MainActor
     var switchUser: Factory<any SwitchUserUseCase> {
         self { SwitchUser(userManager: self.userManager,
                           appContentManager: self.appContentManager,
@@ -454,6 +459,7 @@ extension SharedUseCasesContainer {
                           inviteRepository: self.inviteRepository) }
     }
 
+    @MainActor
     var addAndSwitchToNewUserAccount: Factory<any AddAndSwitchToNewUserAccountUseCase> {
         self { AddAndSwitchToNewUserAccount(syncEventLoop: self.syncEventLoop,
                                             userManager: self.userManager,
@@ -465,6 +471,7 @@ extension SharedUseCasesContainer {
                                             inviteRepository: self.inviteRepository) }
     }
 
+    @MainActor
     var logOutAllAccounts: Factory<any LogOutAllAccountsUseCase> {
         self { LogOutAllAccounts(userManager: self.userManager,
                                  syncEventLoop: self.syncEventLoop,

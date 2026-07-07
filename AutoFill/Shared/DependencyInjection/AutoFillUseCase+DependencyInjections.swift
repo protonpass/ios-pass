@@ -85,6 +85,7 @@ extension AutoFillUseCaseContainer {
         self { MapASCredentialServiceIdentifierToURL() }
     }
 
+    @MainActor
     var copyTotpTokenAndNotify: Factory<any CopyTotpTokenAndNotifyUseCase> {
         self { CopyTotpTokenAndNotify(logManager: self.logManager,
                                       generateTotpToken: SharedUseCasesContainer.shared.generateTotpToken(),
@@ -142,6 +143,7 @@ extension AutoFillUseCaseContainer {
                                            resetFactory: self.resetFactory()) }
     }
 
+    @MainActor
     var checkAndAutoFill: Factory<any CheckAndAutoFillUseCase> {
         self { CheckAndAutoFill(credentialProvider: SharedDataContainer.shared.credentialProvider(),
                                 userManager: SharedServiceContainer.shared.userManager(),
@@ -151,17 +153,20 @@ extension AutoFillUseCaseContainer {
                                 completeAutoFill: self.completeAutoFill()) }
     }
 
+    @MainActor
     var autoFillCredentials: Factory<any AutoFillCredentialsUseCase> {
         self { AutoFillCredentials(itemRepository: self.itemRepository,
                                    totpService: self.totpService,
                                    completeAutoFill: self.completeAutoFill()) }
     }
 
+    @MainActor
     var autoFillPasskey: Factory<any AutoFillPasskeyUseCase> {
         self { AutoFillPasskey(resolveChallenge: self.resolvePasskeyChallenge,
                                completeAutoFill: self.completeAutoFill()) }
     }
 
+    @MainActor
     var associateUrlAndAutoFill: Factory<any AssociateUrlAndAutoFillUseCase> {
         self { AssociateUrlAndAutoFill(itemRepository: self.itemRepository,
                                        totpService: self.totpService,
@@ -173,6 +178,7 @@ extension AutoFillUseCaseContainer {
                               resetFactory: self.resetFactory()) }
     }
 
+    @MainActor
     var completeAutoFill: Factory<any CompleteAutoFillUseCase> {
         self { CompleteAutoFill(logManager: self.logManager,
                                 telemetryRepository: SharedRepositoryContainer.shared.telemetryEventRepository(),
