@@ -52,9 +52,8 @@ public struct PasswordGeneratorView: View {
 
             StrengthAndPenalties(strength: viewModel.strength,
                                  penalties: viewModel.penalties,
-                                 showPenalties: viewModel.showPenalties)
-                .contentShape(.rect)
-                .onTapGesture(perform: viewModel.togglePenaltiesVisibility)
+                                 showingPenalties: viewModel.showingPenalties,
+                                 onShowPenalties: viewModel.showPenalties)
             PassDivider()
 
             if viewModel.shouldDisplayTypeSelection {
@@ -101,8 +100,8 @@ public struct PasswordGeneratorView: View {
         }
         .padding([.top, .horizontal])
         .background(PassColor.backgroundNorm)
-        .animation(.default, value: viewModel.showAdvancedOptions)
-        .animation(.default, value: viewModel.showPenalties)
+        .animation(.default, value: viewModel.showingAdvancedOptions)
+        .animation(.default, value: viewModel.showingPenalties)
         .if(!viewModel.mode.fullScreen) { view in
             view
                 .fittedPresentationDetent(onHeightChanged: onHeightChanged)
@@ -195,11 +194,12 @@ private struct PasswordPreview: View {
 private struct StrengthAndPenalties: View {
     let strength: PasswordStrength
     let penalties: [PasswordPenalty]
-    let showPenalties: Bool
+    let showingPenalties: Bool
+    let onShowPenalties: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 2) {
-            if showPenalties {
+            if showingPenalties {
                 title
                 ForEach(PasswordPenalty.allCases, id: \.self) { penalty in
                     PenaltyRow(penalty: penalty, satisfied: !penalties.contains(penalty))
@@ -207,10 +207,10 @@ private struct StrengthAndPenalties: View {
             } else {
                 title
                     .underline(color: strength.color)
+                    .buttonEmbeded(action: onShowPenalties)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.default, value: showPenalties)
     }
 
     private var title: Text {
@@ -278,7 +278,7 @@ private struct RandomPasswordOptions: View {
                         isLocked: viewModel.lockedOptions.specialCharacters)
         PassDivider()
 
-        if viewModel.showAdvancedOptions {
+        if viewModel.showingAdvancedOptions {
             GeneratorToggle(title: "Capital letters",
                             isOn: $viewModel.hasCapitalCharacters,
                             isLocked: viewModel.lockedOptions.capitalCharacters)
@@ -289,7 +289,7 @@ private struct RandomPasswordOptions: View {
                             isLocked: viewModel.lockedOptions.numberCharacters)
             PassDivider()
         } else {
-            AdvancedOptionsSection(isShowingAdvancedOptions: $viewModel.showAdvancedOptions)
+            AdvancedOptionsSection(isShowingAdvancedOptions: $viewModel.showingAdvancedOptions)
         }
     }
 }
@@ -310,7 +310,7 @@ private struct MemorablePasswordOptions: View {
                         isLocked: viewModel.lockedOptions.capitalizingWords)
         PassDivider()
 
-        if viewModel.showAdvancedOptions {
+        if viewModel.showingAdvancedOptions {
             LabeledMenuPicker(title: "Word separator",
                               selection: $viewModel.wordSeparator,
                               options: WordSeparator.allCases) {
@@ -323,7 +323,7 @@ private struct MemorablePasswordOptions: View {
                             isLocked: viewModel.lockedOptions.includingNumbers)
             PassDivider()
         } else {
-            AdvancedOptionsSection(isShowingAdvancedOptions: $viewModel.showAdvancedOptions)
+            AdvancedOptionsSection(isShowingAdvancedOptions: $viewModel.showingAdvancedOptions)
         }
     }
 }
