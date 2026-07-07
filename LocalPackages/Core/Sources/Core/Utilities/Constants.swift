@@ -96,6 +96,11 @@ public enum Constants {
 
     public enum CompromisedPasswords {
         public static let baseUrl = "https://compromisedpasswords.simplelogin.com"
+
+        /// Key to fetch the saved timestamp of last corpus
+        public static func lastCorpusChangeKey(_ userId: String) -> String {
+            "compromisedPasswordsLastChange.\(userId)"
+        }
     }
 
     // swiftlint:disable:next type_name

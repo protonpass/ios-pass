@@ -490,7 +490,8 @@ extension SharedRepositoryContainer {
                                        localDatasource: self.localCompromisedPasswordDatasource(),
                                        localTimestampDatasource: self.localTimestampDatasource(),
                                        symmetricKeyProvider: self.symmetricKeyProvider,
-                                       logManager: self.logManager)
+                                       logManager: self.logManager,
+                                       dateProvider: SharedToolingContainer.shared.currentDateProvider())
         }
     }
 }

@@ -120,7 +120,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
         let inputs = try await computeWeaknessInputs(userId: userId, userOwned: false)
         let base = buildStats(inputs, breachedItemIds: [])
         if await isCompromisedCheckEnabled(userId: userId),
-           let breachedItemIds = await compromisedItemIds(userId: userId, inputs: inputs),
+           let breachedItemIds = try await compromisedItemIds(userId: userId, inputs: inputs),
            !breachedItemIds.isEmpty {
             let enriched = buildStats(inputs, breachedItemIds: breachedItemIds)
             pushWeaknessState(enriched)
@@ -271,7 +271,7 @@ public extension PassMonitorRepository {
         let userId = try await userManager.getActiveUserId()
         let inputs = try await computeWeaknessInputs(userId: userId, userOwned: true)
         let breachedItemIds = await isCompromisedCheckEnabled(userId: userId)
-            ? await compromisedItemIds(userId: userId, inputs: inputs) ?? []
+            ? try await compromisedItemIds(userId: userId, inputs: inputs) ?? []
             : []
         let result = buildStats(inputs, breachedItemIds: breachedItemIds)
         try await remoteDataSource.sendUserMonitorStats(userId: userId, stats: result.0)
@@ -409,9 +409,9 @@ private extension PassMonitorRepository {
     }
 
     /// Item ids that contains itemId and shareId whose password was found in the breach corpus. Network/parse
-    /// failures keep cached
-    /// results (handled in the checker); excluded or per-check-suppressed items are never queried.
-    func compromisedItemIds(userId: String, inputs: WeaknessComputation) async -> Set<String>? {
+    /// failures keep cached results (handled in the checker); excluded or per-check-suppressed items are never
+    /// queried.
+    func compromisedItemIds(userId: String, inputs: WeaknessComputation) async throws -> Set<String>? {
         let candidates = inputs.loginItems.compactMap { item -> CompromisedPasswordCandidate? in
             guard !item.encrypted.item.monitoringDisabled,
                   !item.encrypted.item.compromisedPasswordCheckDisabled,
@@ -425,7 +425,7 @@ private extension PassMonitorRepository {
         guard !candidates.isEmpty else {
             return nil
         }
-        let results = await compromisedPasswordChecker.check(userId: userId, candidates: candidates)
+        let results = try await compromisedPasswordChecker.check(userId: userId, candidates: candidates)
         guard !results.isEmpty else {
             return nil
         }

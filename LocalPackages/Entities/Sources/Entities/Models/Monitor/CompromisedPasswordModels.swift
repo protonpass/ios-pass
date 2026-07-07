@@ -38,9 +38,6 @@ public struct CompromisedPasswordCandidate: Sendable, Equatable {
     }
 }
 
-/// Per-item compromised-password state persisted locally to honour the corpus's
-/// `last_change` freshness and `ETag` conditional-request model. Scoped to a user by the
-/// datasource (the user id is not carried on the value, mirroring `ItemReadEvent`).
 public struct CompromisedPasswordCheck: Sendable, Equatable {
     public let shareId: String
     public let itemId: String
