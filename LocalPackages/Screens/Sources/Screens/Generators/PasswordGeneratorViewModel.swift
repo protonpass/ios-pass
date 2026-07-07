@@ -79,6 +79,7 @@ public final class PasswordGeneratorViewModel {
     private(set) var password = ""
     private(set) var strength: PasswordStrength = .vulnerable
     private(set) var penalties: [PasswordPenalty] = []
+    private(set) var showPenalties: Bool
 
     var passwordType: PasswordType = .memorable
 
@@ -184,6 +185,7 @@ public final class PasswordGeneratorViewModel {
          logManager: any LogManagerProtocol,
          onResult: @escaping (Result<String, any Error>) -> Void) {
         self.mode = mode
+        showPenalties = mode == .autofill
         self.datasource = datasource
         self.generatePassword = generatePassword
         self.generateRandomWords = generateRandomWords
@@ -250,6 +252,12 @@ public final class PasswordGeneratorViewModel {
             penalties = score.penalties
         } catch {
             onResult(.failure(error))
+        }
+    }
+
+    func togglePenaltiesVisibility() {
+        if !showPenalties, mode != .autofill {
+            showPenalties = true
         }
     }
 

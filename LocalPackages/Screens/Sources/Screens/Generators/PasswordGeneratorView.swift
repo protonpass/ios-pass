@@ -50,7 +50,11 @@ public struct PasswordGeneratorView: View {
 
             PasswordPreview(password: viewModel.password, strength: viewModel.strength)
 
-            StrengthAndPenalties(strength: viewModel.strength, penalties: viewModel.penalties)
+            StrengthAndPenalties(strength: viewModel.strength,
+                                 penalties: viewModel.penalties,
+                                 showPenalties: viewModel.showPenalties)
+                .contentShape(.rect)
+                .onTapGesture(perform: viewModel.togglePenaltiesVisibility)
             PassDivider()
 
             if viewModel.shouldDisplayTypeSelection {
@@ -98,6 +102,7 @@ public struct PasswordGeneratorView: View {
         .padding([.top, .horizontal])
         .background(PassColor.backgroundNorm)
         .animation(.default, value: viewModel.showAdvancedOptions)
+        .animation(.default, value: viewModel.showPenalties)
         .if(!viewModel.mode.fullScreen) { view in
             view
                 .fittedPresentationDetent(onHeightChanged: onHeightChanged)
@@ -190,23 +195,33 @@ private struct PasswordPreview: View {
 private struct StrengthAndPenalties: View {
     let strength: PasswordStrength
     let penalties: [PasswordPenalty]
+    let showPenalties: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 2) {
-            Text("Password", bundle: .module)
-                .fontWeight(.bold)
-                .foregroundStyle(PassColor.textNorm) +
-                Text(verbatim: " • ")
-                .foregroundStyle(PassColor.textNorm) +
-                Text(verbatim: strength.title)
-                .fontWeight(.bold)
-                .foregroundStyle(strength.color)
-
-            ForEach(PasswordPenalty.allCases, id: \.self) { penalty in
-                PenaltyRow(penalty: penalty, satisfied: !penalties.contains(penalty))
+            if showPenalties {
+                title
+                ForEach(PasswordPenalty.allCases, id: \.self) { penalty in
+                    PenaltyRow(penalty: penalty, satisfied: !penalties.contains(penalty))
+                }
+            } else {
+                title
+                    .underline(color: strength.color)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .animation(.default, value: showPenalties)
+    }
+
+    private var title: Text {
+        Text("Password", bundle: .module)
+            .fontWeight(.bold)
+            .foregroundStyle(PassColor.textNorm) +
+            Text(verbatim: " • ")
+            .foregroundStyle(PassColor.textNorm) +
+            Text(verbatim: strength.title)
+            .fontWeight(.bold)
+            .foregroundStyle(strength.color)
     }
 }
 
