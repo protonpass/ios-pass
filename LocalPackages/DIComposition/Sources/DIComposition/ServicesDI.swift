@@ -1,4 +1,4 @@
-//  
+//
 // ServicesDI.swift
 // Proton Pass - Created on 07/07/2026.
 // Copyright (c) 2026 Proton Technologies AG
@@ -18,4 +18,37 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import Client
+import Core
+import FactoryKit
+import ProtonCoreAuthentication
+
+final class ServiceContainer: SharedContainer, AutoRegistering {
+    static let shared = ServiceContainer()
+    let manager = ContainerManager()
+
+    func autoRegister() {
+        manager.defaultScope = .singleton
+    }
+}
+
+extension ServiceContainer {
+//    var paymentManager: Factory<PaymentsManager> {
+//        self { .init(storage: kSharedUserDefaults) }
+//    }
+
+    @MainActor
+    var shareInviteService: Factory<any ShareInviteServiceProtocol> {
+        self { ShareInviteService() }
+    }
+
+//    var secureLinkManager: Factory<any SecureLinkManagerProtocol> {
+//        self { SecureLinkManager(dataSource: SharedRepositoryContainer.shared.remoteSecureLinkDatasource(),
+//                                 userManager: SharedServiceContainer.shared.userManager()) }
+//    }
+//
+//    var onboardingHandler: Factory<any OnboardingHandling> {
+//        self { OnboardingHandler(logManager: SharedToolingContainer.shared.logManager(),
+//                                 userDefaults: kSharedUserDefaults) }
+//    }
+}
