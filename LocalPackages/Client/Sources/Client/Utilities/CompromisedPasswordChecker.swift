@@ -66,8 +66,8 @@ public extension CompromisedPasswordChecker {
                candidates: [CompromisedPasswordCandidate]) async -> [String: Int] {
         logger.info("Checking compromised password for \(candidates.count) login items")
 
-        let nonEmpty = candidates.filter { !$0.password.isEmpty }
-        guard !nonEmpty.isEmpty else { return [:] }
+        let candidatesWithPasswords = candidates.filter { !$0.password.isEmpty }
+        guard !candidatesWithPasswords.isEmpty else { return [:] }
 
         let key: SymmetricKey
         do {
@@ -77,16 +77,17 @@ public extension CompromisedPasswordChecker {
             return [:]
         }
 
-        let derivedAll = nonEmpty.map { DerivedCompromisedPasswordCandidate(candidate: $0, key: key) }
+        let derivedCandidates = candidatesWithPasswords.map { DerivedCompromisedPasswordCandidate(candidate: $0,
+                                                                                                  key: key) }
 
-        let cached = await loadCachedChecks(userId: userId, derived: derivedAll)
+        let cached = await loadCachedChecks(userId: userId, derived: derivedCandidates)
         let currentLastChange = await fetchCurrentLastChange()
         let corpusUnchanged = isCorpusUnchanged(current: currentLastChange,
                                                 stored: localTimestampDatasource
                                                     .getLastChangeTimestamp(key: localTimestampDatasource
                                                         .lastChangeKey(userId)))
 
-        let (reusable, toCheck) = partition(derivedAll, cached: cached, corpusUnchanged: corpusUnchanged)
+        let (reusable, toCheck) = partition(derivedCandidates, cached: cached, corpusUnchanged: corpusUnchanged)
 
         var results = reusable
         var allSucceeded = true

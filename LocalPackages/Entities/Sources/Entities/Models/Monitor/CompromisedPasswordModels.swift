@@ -27,6 +27,10 @@ public struct CompromisedPasswordCandidate: Sendable, Equatable {
     /// The exact stored password. Hashed verbatim (no trimming/normalization).
     public let password: String
 
+    public var id: String {
+        itemId + shareId
+    }
+
     public init(shareId: String, itemId: String, password: String) {
         self.shareId = shareId
         self.itemId = itemId

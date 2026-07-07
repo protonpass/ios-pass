@@ -34,9 +34,9 @@ public final class CompromisedPasswordCheckerProtocolMock: @unchecked Sendable, 
     public var invokedCheckCount = 0
     public var invokedCheckParameters: (userId: String, candidates: [CompromisedPasswordCandidate])?
     public var invokedCheckParametersList = [(userId: String, candidates: [CompromisedPasswordCandidate])]()
-    public nonisolated(unsafe) var stubbedCheckResult: [String: CompromisedPasswordResult]!
+    public nonisolated(unsafe) var stubbedCheckResult: [String: Int]!
 
-    public func check(userId: String, candidates: [CompromisedPasswordCandidate]) async -> [String: CompromisedPasswordResult] {
+    public func check(userId: String, candidates: [CompromisedPasswordCandidate]) async -> [String: Int] {
         invokedCheckfunction = true
         invokedCheckCount += 1
         invokedCheckParameters = (userId, candidates)
