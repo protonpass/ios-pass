@@ -27,21 +27,21 @@ public final class RemoteCompromisedPasswordsDatasourceProtocolMock: @unchecked 
 
     public init() {}
 
-    // MARK: - lastChange
-    public var lastChangeThrowableError1: Error?
-    public var closureLastChange: () -> () = {}
-    public var invokedLastChangefunction = false
-    public var invokedLastChangeCount = 0
-    public nonisolated(unsafe) var stubbedLastChangeResult: Int!
+    // MARK: - getLastChangeTimestamp
+    public var getLastChangeTimestampThrowableError1: Error?
+    public var closureGetLastChangeTimestamp: () -> () = {}
+    public var invokedGetLastChangeTimestampfunction = false
+    public var invokedGetLastChangeTimestampCount = 0
+    public nonisolated(unsafe) var stubbedGetLastChangeTimestampResult: Int!
 
-    public func lastChange() async throws -> Int {
-        invokedLastChangefunction = true
-        invokedLastChangeCount += 1
-        if let error = lastChangeThrowableError1 {
+    public func getLastChangeTimestamp() async throws -> Int {
+        invokedGetLastChangeTimestampfunction = true
+        invokedGetLastChangeTimestampCount += 1
+        if let error = getLastChangeTimestampThrowableError1 {
             throw error
         }
-        closureLastChange()
-        return stubbedLastChangeResult
+        closureGetLastChangeTimestamp()
+        return stubbedGetLastChangeTimestampResult
     }
     // MARK: - query
     public var queryPrefix6EtagThrowableError2: Error?
