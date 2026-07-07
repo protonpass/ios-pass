@@ -79,7 +79,7 @@ public final class PasswordGeneratorViewModel {
     private(set) var password = ""
     private(set) var strength: PasswordStrength = .vulnerable
     private(set) var penalties: [PasswordPenalty] = []
-    private(set) var showPenalties: Bool
+    private(set) var showingPenalties: Bool
 
     var passwordType: PasswordType = .memorable
 
@@ -101,7 +101,7 @@ public final class PasswordGeneratorViewModel {
     private(set) var minWord = PasswordPreferences.minWordCount
     private(set) var maxWord = PasswordPreferences.maxWordCount
 
-    var showAdvancedOptions = false
+    var showingAdvancedOptions = false
     private(set) var shouldDisplayTypeSelection = true
 
     /// Options whose value is dictated by the organisation policy; their toggles must be read-only.
@@ -185,7 +185,7 @@ public final class PasswordGeneratorViewModel {
          logManager: any LogManagerProtocol,
          onResult: @escaping (Result<String, any Error>) -> Void) {
         self.mode = mode
-        showPenalties = mode == .autofill
+        showingPenalties = mode == .autofill
         self.datasource = datasource
         self.generatePassword = generatePassword
         self.generateRandomWords = generateRandomWords
@@ -255,9 +255,9 @@ public final class PasswordGeneratorViewModel {
         }
     }
 
-    func togglePenaltiesVisibility() {
-        if !showPenalties, mode != .autofill {
-            showPenalties = true
+    func showPenalties() {
+        if !showingPenalties, mode != .autofill {
+            showingPenalties = true
         }
     }
 
