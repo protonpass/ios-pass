@@ -37,7 +37,7 @@ public extension PassError {
                 "Invalid network response"
 
             case let .unexpectedStatusCode(code):
-                "Unexpected statuc code \(code)"
+                "Unexpected status code \(code)"
 
             case .invalidLastChangePayload:
                 "Invalid last change payload"
