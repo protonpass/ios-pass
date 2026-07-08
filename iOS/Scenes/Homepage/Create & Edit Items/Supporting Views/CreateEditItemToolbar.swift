@@ -108,6 +108,7 @@ private extension CreateEditItemToolbar {
                                             backgroundColor: itemContentType.normMajor1Color,
                                             disableBackgroundColor: itemContentType.normMinor1Color,
                                             disabled: !isSaveable,
+                                            maxWidth: 200,
                                             action: { onAction(.save) })
             }
         }
