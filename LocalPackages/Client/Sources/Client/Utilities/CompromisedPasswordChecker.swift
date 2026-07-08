@@ -28,11 +28,15 @@ import Foundation
 /// password/hash never leaves the device — only the 6-character SHA-1 prefix is transmitted.
 // sourcery: AutoMockable
 public protocol CompromisedPasswordCheckerProtocol: Sendable {
-    /// Returns a map of item Id (itemId + shareId) → result. Items omitted from the map are "unknown" (e.g. an
-    /// uncached item whose network query failed) and must NOT be treated as breached. The check is
-    /// resilient: network/parse failures keep cached results rather than throwing.
+    /// Returns the set of item Ids (itemId + shareId) whose password is present in the breach corpus.
+    /// An Id absent from the set is either not breached or "unknown" (e.g. an uncached item whose
+    /// network query failed) — callers must not distinguish the two. Per-prefix network/parse failures
+    /// keep cached results; symmetric-key, local-cache and corpus-timestamp failures throw.
+    ///
+    /// The full corpus re-scan runs at most once per rolling 24h; a created or updated login is a
+    /// cache-miss and is checked immediately regardless of that window.
     func check(userId: String,
-               candidates: [CompromisedPasswordCandidate]) async throws -> [String: Int]
+               candidates: [CompromisedPasswordCandidate]) async throws -> Set<String>
 }
 
 public final class CompromisedPasswordChecker: CompromisedPasswordCheckerProtocol, Sendable {
@@ -63,11 +67,11 @@ public final class CompromisedPasswordChecker: CompromisedPasswordCheckerProtoco
 
 public extension CompromisedPasswordChecker {
     func check(userId: String,
-               candidates: [CompromisedPasswordCandidate]) async throws -> [String: Int] {
+               candidates: [CompromisedPasswordCandidate]) async throws -> Set<String> {
         logger.info("Checking compromised password for \(candidates.count) login items")
 
         let candidatesWithPasswords = candidates.filter { !$0.password.isEmpty }
-        guard !candidatesWithPasswords.isEmpty else { return [:] }
+        guard !candidatesWithPasswords.isEmpty else { return [] }
 
         let key = try await symmetricKeyProvider.getSymmetricKey()
 
@@ -75,17 +79,35 @@ public extension CompromisedPasswordChecker {
                                                                                                   key: key) }
 
         let cached = try await loadCachedChecks(userId: userId, derived: derivedCandidates)
-        let currentLastChange = try await fetchCurrentLastChange()
-        let corpusUnchanged = isCorpusUnchanged(current: currentLastChange,
+
+        let now = Int(dateProvider.getCurrentDate().timeIntervalSince1970)
+        let lastRun = localTimestampDatasource
+            .getTimestamp(key: Constants.CompromisedPasswords.lastRunKey(userId))
+        let dueForFullCheck = isDueForFullCheck(now: now, lastRun: lastRun)
+
+        let currentLastChange: Int?
+        let corpusUnchanged: Bool
+        if dueForFullCheck {
+            currentLastChange = try await fetchCurrentLastChange()
+            corpusUnchanged = isCorpusUnchanged(current: currentLastChange,
                                                 stored: localTimestampDatasource
                                                     .getTimestamp(key: Constants.CompromisedPasswords
                                                         .lastCorpusChangeKey(userId)))
+        } else {
+            // Within the 24h window: skip the remote corpus call and assume the corpus is stable.
+            // Unchanged passwords are reused from cache; a new/updated login is a hash-miss in
+            // `partition(...)` and is still range-queried immediately.
+            currentLastChange = nil
+            corpusUnchanged = true
+        }
 
         let (reusable, toCheck) = partition(derivedCandidates, cached: cached, corpusUnchanged: corpusUnchanged)
 
         var results = reusable
         var allSucceeded = true
         if !toCheck.isEmpty {
+            print("woot checking remotely \(toCheck)")
+
             let (checked, succeeded) = await checkRemotely(toCheck, cached: cached, userId: userId)
             results.merge(checked) { _, new in new }
             allSucceeded = succeeded
@@ -98,8 +120,13 @@ public extension CompromisedPasswordChecker {
                                                   key: Constants.CompromisedPasswords.lastCorpusChangeKey(userId))
         }
 
+        if dueForFullCheck, allSucceeded {
+            localTimestampDatasource.setTimestamp(now,
+                                                  key: Constants.CompromisedPasswords.lastRunKey(userId))
+        }
+
         logger.info("Finished fetching and checking compromised passwords")
-        return results
+        return Set(results.filter { $0.value > 0 }.map(\.key))
     }
 }
 
@@ -129,6 +156,13 @@ private extension CompromisedPasswordChecker {
     func isCorpusUnchanged(current: Int?, stored: Int?) -> Bool {
         guard let current, let stored else { return false }
         return current <= stored
+    }
+
+    func isDueForFullCheck(now: Int, lastRun: Int?) -> Bool {
+        guard let lastRun else { return true }
+        let elapsed = now - lastRun
+        guard elapsed >= 0 else { return true }
+        return elapsed >= Constants.CompromisedPasswords.minimumCheckInterval
     }
 
     func partition(_ derivedAll: [DerivedCompromisedPasswordCandidate],

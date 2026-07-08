@@ -20,25 +20,29 @@
 
 @testable import Client
 import ClientMocks
+import Core
 import CoreMocks
 import CryptoKit
 import Entities
 import Foundation
 import Testing
-import Core
 
 private final class MockLocalTimestampDatasource: LocalTimestampDatasourceProtocol, @unchecked Sendable {
-    var currentTimestamp: Int?
-    
-    /// Cached UNIX epoch seconds of the corpus's last change at the previous successful scan.
+    /// Key-aware so the corpus-change marker and the last-run marker never alias each other.
+    private var store = [String: Int]()
+
     func getTimestamp(key: String) -> Int? {
-        currentTimestamp
+        store[key]
     }
 
-    /// Persist (or clear with `nil`) the corpus freshness marker.
     func setTimestamp(_ value: Int?, key: String) {
-        currentTimestamp = value
+        store[key] = value
     }
+}
+
+private struct StubDateProvider: CurrentDateProviderProtocol {
+    let date: Date
+    func getCurrentDate() -> Date { date }
 }
 
 @Suite(.tags(.repository))
@@ -48,6 +52,8 @@ struct CompromisedPasswordCheckerTests {
     private let suffix = "7D0679CA88DB6464EAC60DA96345513964"
     // A fixed key so the keyed HMAC fingerprint is deterministic across the SUT and the cache seeds.
     private let symmetricKey = SymmetricKey(data: Data(repeating: 0x07, count: 32))
+    // A fixed "now" (UNIX epoch seconds) so the rolling-24h throttle windows are deterministic.
+    private let now = 1_000_000
 
     private var keyProvider: SymmetricKeyProviderMock {
         let mock = SymmetricKeyProviderMock()
@@ -58,14 +64,16 @@ struct CompromisedPasswordCheckerTests {
     private func makeSUT(remote: RemoteCompromisedPasswordsDatasourceProtocolMock,
                          local: LocalCompromisedPasswordDatasourceProtocolMock,
                          localTimeStamp: LocalTimestampDatasourceProtocol = MockLocalTimestampDatasource(),
+                         now: Int = 1_000_000,
                          maxConcurrentRequests: Int = 8) -> CompromisedPasswordChecker {
-        CompromisedPasswordChecker(remoteDatasource: remote,
-                                   localDatasource: local,
-                                   localTimestampDatasource: localTimeStamp,
-                                   symmetricKeyProvider: keyProvider,
-                                   logManager: LogManagerProtocolMock(),
-                                   maxConcurrentRequests: maxConcurrentRequests,
-                                   dateProvider: CurrentDateProvider())
+        let dateProvider = StubDateProvider(date: Date(timeIntervalSince1970: TimeInterval(now)))
+        return CompromisedPasswordChecker(remoteDatasource: remote,
+                                          localDatasource: local,
+                                          localTimestampDatasource: localTimeStamp,
+                                          symmetricKeyProvider: keyProvider,
+                                          logManager: LogManagerProtocolMock(),
+                                          maxConcurrentRequests: maxConcurrentRequests,
+                                          dateProvider: dateProvider)
     }
 
     /// The persisted fingerprint is HMAC-SHA256(appKey, password); mirror it for cache seeds.
@@ -82,24 +90,18 @@ struct CompromisedPasswordCheckerTests {
     func `Detects the 12345 breach vector via k-anonymity`() async throws {
         let remote = RemoteCompromisedPasswordsDatasourceProtocolMock()
         let local = LocalCompromisedPasswordDatasourceProtocolMock()
-        let localTimestamp = MockLocalTimestampDatasource()
         remote.stubbedGetLastChangeTimestampResult = 1_000_000
         // The datasource hands back already-gunzipped plain text (SUFFIX:COUNT lines).
         remote.stubbedQueryResult = .modified(etag: "\"v1\"",
                                               body: Data(("0000000000000000000000000000000000:3\n" +
                                                   "\(suffix):31033620\n").utf8))
         local.stubbedGetChecksUserIdItemsAsyncResult2 = []
-        
         let candidate = candidate()
-        
 
-        let results = try await makeSUT(remote: remote,
-                                    local: local,
-                                    localTimeStamp: localTimestamp).check(userId: "user",
-                                                                        candidates: [candidate])
+        let results = try await makeSUT(remote: remote, local: local)
+            .check(userId: "user", candidates: [candidate])
 
-        let result = try #require(results[candidate.id])
-        #expect(result == 31_033_620)
+        #expect(results.contains(candidate.id))
         // Only the 6-char prefix is ever transmitted.
         #expect(remote.invokedQueryParameters?.prefix6 == prefix)
     }
@@ -114,11 +116,11 @@ struct CompromisedPasswordCheckerTests {
         local.stubbedGetChecksUserIdItemsAsyncResult2 = []
         let candidate = candidate()
 
-        let results = try await makeSUT(remote: remote, local: local).check(userId: "user",
-                                                                        candidates: [candidate])
+        let results = try await makeSUT(remote: remote, local: local)
+            .check(userId: "user", candidates: [candidate])
 
-        let result = try #require(results[candidate.id])
-        #expect(result == 0)
+        // A not-breached item is simply absent from the returned set.
+        #expect(!results.contains(candidate.id))
     }
 
     @Test
@@ -141,11 +143,10 @@ struct CompromisedPasswordCheckerTests {
         ]
         let candidate = candidate()
 
-        let results = try await makeSUT(remote: remote, local: local, localTimeStamp: localTimestamp).check(userId: "user",
-                                                                        candidates: [candidate])
+        let results = try await makeSUT(remote: remote, local: local, localTimeStamp: localTimestamp)
+            .check(userId: "user", candidates: [candidate])
 
-        let result = try #require(results[candidate.id])
-        #expect(result == 777)
+        #expect(results.contains(candidate.id))
         #expect(!remote.invokedQueryfunction)
     }
 
@@ -154,14 +155,12 @@ struct CompromisedPasswordCheckerTests {
         let remote = RemoteCompromisedPasswordsDatasourceProtocolMock()
         let local = LocalCompromisedPasswordDatasourceProtocolMock()
         let localTimestamp = MockLocalTimestampDatasource()
-
         let passwordHash = fingerprint("12345")
 
         // Corpus reportedly changed (newer than stored), so it tries the network — which fails.
         remote.stubbedGetLastChangeTimestampResult = 2_000
         remote.queryPrefix6EtagThrowableError2 = PassError.compromisePassword(.invalidResponse)
         localTimestamp.setTimestamp(1_000, key: Constants.CompromisedPasswords.lastCorpusChangeKey("user"))
-
         local.stubbedGetChecksUserIdItemsAsyncResult2 = [
             .init(shareId: "share",
                   itemId: "item",
@@ -171,14 +170,13 @@ struct CompromisedPasswordCheckerTests {
                   breachCount: 555,
                   checkedAt: 900)
         ]
-
         let candidate = candidate()
 
-        let results = try await makeSUT(remote: remote, local: local, localTimeStamp: localTimestamp).check(userId: "user",
-                                                                        candidates: [candidate])
+        let results = try await makeSUT(remote: remote, local: local, localTimeStamp: localTimestamp)
+            .check(userId: "user", candidates: [candidate])
 
-        let result = try #require(results[candidate.id])
-        #expect(result == 555)
+        // The breached cached row survives the failure and the id stays in the set.
+        #expect(results.contains(candidate.id))
     }
 
     @Test
@@ -186,8 +184,8 @@ struct CompromisedPasswordCheckerTests {
         let remote = RemoteCompromisedPasswordsDatasourceProtocolMock()
         let local = LocalCompromisedPasswordDatasourceProtocolMock()
 
-        let results = try await makeSUT(remote: remote, local: local).check(userId: "user",
-                                                                        candidates: [candidate(password: "")])
+        let results = try await makeSUT(remote: remote, local: local)
+            .check(userId: "user", candidates: [candidate(password: "")])
 
         #expect(results.isEmpty)
         #expect(!remote.invokedQueryfunction)
@@ -214,11 +212,109 @@ struct CompromisedPasswordCheckerTests {
         let results = try await makeSUT(remote: remote, local: local, maxConcurrentRequests: 2)
             .check(userId: "user", candidates: candidates)
 
-        // Every candidate is resolved exactly once, none breached.
-        #expect(results.count == candidates.count)
-        for candidate in candidates {
-            let result = try #require(results[candidate.id])
-            #expect(result == 0)
-        }
+        // With a Set return, not-breached items collapse away: coverage is observed via the query
+        // counter (one conditional GET per distinct prefix), and the breached set is empty.
+        #expect(remote.invokedQueryCount == 12)
+        #expect(results.isEmpty)
+    }
+
+    // MARK: - Rolling-24h throttle
+
+    @Test
+    func `Within the daily window an unchanged item is served from cache with no network`() async throws {
+        let remote = RemoteCompromisedPasswordsDatasourceProtocolMock()
+        let local = LocalCompromisedPasswordDatasourceProtocolMock()
+        let localTimestamp = MockLocalTimestampDatasource()
+        let passwordHash = fingerprint("12345")
+
+        // Last full run was 1h ago -> within the 24h window.
+        localTimestamp.setTimestamp(now - 3_600, key: Constants.CompromisedPasswords.lastRunKey("user"))
+        local.stubbedGetChecksUserIdItemsAsyncResult2 = [
+            .init(shareId: "share",
+                  itemId: "item",
+                  passwordHash: passwordHash,
+                  prefix: prefix,
+                  etag: "\"v1\"",
+                  breachCount: 777,
+                  checkedAt: 900)
+        ]
+        let candidate = candidate()
+
+        let results = try await makeSUT(remote: remote, local: local, localTimeStamp: localTimestamp)
+            .check(userId: "user", candidates: [candidate])
+
+        #expect(results.contains(candidate.id))
+        // The core throttle guarantee: zero remote calls within the window.
+        #expect(!remote.invokedGetLastChangeTimestampfunction)
+        #expect(!remote.invokedQueryfunction)
+    }
+
+    @Test
+    func `Within the daily window a new login is still checked without a corpus fetch`() async throws {
+        let remote = RemoteCompromisedPasswordsDatasourceProtocolMock()
+        let local = LocalCompromisedPasswordDatasourceProtocolMock()
+        let localTimestamp = MockLocalTimestampDatasource()
+
+        localTimestamp.setTimestamp(now - 3_600, key: Constants.CompromisedPasswords.lastRunKey("user"))
+        // Empty cache -> the login is a cache-miss and must be range-queried immediately.
+        local.stubbedGetChecksUserIdItemsAsyncResult2 = []
+        remote.stubbedQueryResult = .modified(etag: "\"v1\"", body: Data("\(suffix):31033620\n".utf8))
+        let candidate = candidate()
+
+        let results = try await makeSUT(remote: remote, local: local, localTimeStamp: localTimestamp)
+            .check(userId: "user", candidates: [candidate])
+
+        #expect(results.contains(candidate.id))
+        #expect(remote.invokedQueryfunction)
+        // The corpus is not re-validated within the window...
+        #expect(!remote.invokedGetLastChangeTimestampfunction)
+        // ...and a within-window new-item check must not advance the daily gate.
+        let storedRun = localTimestamp.getTimestamp(key: Constants.CompromisedPasswords.lastRunKey("user"))
+        #expect(storedRun == now - 3_600)
+    }
+
+    @Test
+    func `After the daily window elapses a full corpus re-scan runs and advances the marker`() async throws {
+        let remote = RemoteCompromisedPasswordsDatasourceProtocolMock()
+        let local = LocalCompromisedPasswordDatasourceProtocolMock()
+        let localTimestamp = MockLocalTimestampDatasource()
+
+        // Last run is older than the 24h window.
+        localTimestamp.setTimestamp(now - Constants.CompromisedPasswords.minimumCheckInterval - 3_600,
+                                    key: Constants.CompromisedPasswords.lastRunKey("user"))
+        remote.stubbedGetLastChangeTimestampResult = 1_000_000
+        remote.stubbedQueryResult = .modified(etag: "\"v1\"", body: Data("\(suffix):31033620\n".utf8))
+        local.stubbedGetChecksUserIdItemsAsyncResult2 = []
+        let candidate = candidate()
+
+        let results = try await makeSUT(remote: remote, local: local, localTimeStamp: localTimestamp)
+            .check(userId: "user", candidates: [candidate])
+
+        #expect(results.contains(candidate.id))
+        #expect(remote.invokedGetLastChangeTimestampfunction)
+        // A successful full run advances the daily marker to "now".
+        let storedRun = localTimestamp.getTimestamp(key: Constants.CompromisedPasswords.lastRunKey("user"))
+        #expect(storedRun == now)
+    }
+
+    @Test
+    func `The first run has no marker so it performs a full check and records the run`() async throws {
+        let remote = RemoteCompromisedPasswordsDatasourceProtocolMock()
+        let local = LocalCompromisedPasswordDatasourceProtocolMock()
+        let localTimestamp = MockLocalTimestampDatasource()
+
+        // No lastRun marker seeded.
+        remote.stubbedGetLastChangeTimestampResult = 1_000_000
+        remote.stubbedQueryResult = .modified(etag: "\"v1\"", body: Data("\(suffix):31033620\n".utf8))
+        local.stubbedGetChecksUserIdItemsAsyncResult2 = []
+        let candidate = candidate()
+
+        let results = try await makeSUT(remote: remote, local: local, localTimeStamp: localTimestamp)
+            .check(userId: "user", candidates: [candidate])
+
+        #expect(results.contains(candidate.id))
+        #expect(remote.invokedGetLastChangeTimestampfunction)
+        let storedRun = localTimestamp.getTimestamp(key: Constants.CompromisedPasswords.lastRunKey("user"))
+        #expect(storedRun == now)
     }
 }

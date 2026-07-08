@@ -424,11 +424,8 @@ private extension PassMonitorRepository {
         guard !candidates.isEmpty else {
             return nil
         }
-        let results = try await compromisedPasswordChecker.check(userId: userId, candidates: candidates)
-        guard !results.isEmpty else {
-            return nil
-        }
-        return Set(results.filter { $0.value > 0 }.map(\.key))
+        let breachedItemIds = try await compromisedPasswordChecker.check(userId: userId, candidates: candidates)
+        return breachedItemIds.nilIfEmpty
     }
 }
 
