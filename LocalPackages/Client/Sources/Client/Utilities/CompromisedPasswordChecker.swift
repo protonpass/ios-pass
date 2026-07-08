@@ -106,8 +106,6 @@ public extension CompromisedPasswordChecker {
         var results = reusable
         var allSucceeded = true
         if !toCheck.isEmpty {
-            print("woot checking remotely \(toCheck)")
-
             let (checked, succeeded) = await checkRemotely(toCheck, cached: cached, userId: userId)
             results.merge(checked) { _, new in new }
             allSucceeded = succeeded
