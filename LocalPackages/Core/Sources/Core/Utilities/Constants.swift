@@ -95,7 +95,7 @@ public enum Constants {
     }
 
     public enum CompromisedPasswords {
-        public static let baseUrl = "https://compromisedpasswords.simplelogin.com"
+        public static let baseUrl = "https://credential-check.protonweb.com"
 
         /// Minimum spacing between two full corpus re-scans (rolling 24h). A created/updated login
         /// is still checked immediately regardless, because it is a cache-miss in the checker.
