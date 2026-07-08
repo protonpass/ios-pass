@@ -127,6 +127,8 @@ public extension RemoveUserLocalData {
         async let removeCompromisedPasswords: () = compromisedPasswordDatasource.removeAll(userId: userId)
         async let removeSavedTimestamp: () = localTimestampDatasource
             .setTimestamp(nil, key: Constants.CompromisedPasswords.lastCorpusChangeKey(userId))
+        async let removeLastRunTimestamp: () = localTimestampDatasource
+            .setTimestamp(nil, key: Constants.CompromisedPasswords.lastRunKey(userId))
 
         _ = try await (removeAccess,
                        removeItems,
@@ -148,6 +150,7 @@ public extension RemoveUserLocalData {
                        removeFolders,
                        removeFolderKeys,
                        removeCompromisedPasswords,
-                       removeSavedTimestamp)
+                       removeSavedTimestamp,
+                       removeLastRunTimestamp)
     }
 }

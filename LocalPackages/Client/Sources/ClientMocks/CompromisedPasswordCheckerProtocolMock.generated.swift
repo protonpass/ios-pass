@@ -29,17 +29,21 @@ public final class CompromisedPasswordCheckerProtocolMock: @unchecked Sendable, 
     public init() {}
 
     // MARK: - check
+    public var checkUserIdCandidatesThrowableError1: Error?
     public var closureCheck: () -> () = {}
     public var invokedCheckfunction = false
     public var invokedCheckCount = 0
     public var invokedCheckParameters: (userId: String, candidates: [CompromisedPasswordCandidate])?
     public var invokedCheckParametersList = [(userId: String, candidates: [CompromisedPasswordCandidate])]()
-    public nonisolated(unsafe) var stubbedCheckResult: [String: Int]!
+    public nonisolated(unsafe) var stubbedCheckResult: Set<String>!
 
-    public func check(userId: String, candidates: [CompromisedPasswordCandidate]) async -> [String: Int] {
+    public func check(userId: String, candidates: [CompromisedPasswordCandidate]) async throws -> Set<String> {
         invokedCheckfunction = true
         invokedCheckCount += 1
         invokedCheckParameters = (userId, candidates)
+        if let error = checkUserIdCandidatesThrowableError1 {
+            throw error
+        }
         closureCheck()
         return stubbedCheckResult
     }

@@ -97,9 +97,18 @@ public enum Constants {
     public enum CompromisedPasswords {
         public static let baseUrl = "https://compromisedpasswords.simplelogin.com"
 
+        /// Minimum spacing between two full corpus re-scans (rolling 24h). A created/updated login
+        /// is still checked immediately regardless, because it is a cache-miss in the checker.
+        public static let minimumCheckInterval = 24 * 60 * 60
+
         /// Key to fetch the saved timestamp of last corpus
         public static func lastCorpusChangeKey(_ userId: String) -> String {
             "compromisedPasswordsLastChange.\(userId)"
+        }
+
+        /// Key to fetch the wall-clock timestamp of the last successful full corpus re-scan, per user.
+        public static func lastRunKey(_ userId: String) -> String {
+            "compromisedPasswordsLastRun.\(userId)"
         }
     }
 
