@@ -49,12 +49,21 @@ public final class CreatePasskey: CreatePasskeyUseCase {
                         bundle: Bundle,
                         device: UIDevice) async throws -> Entities.CreatePasskeyResponse {
         let supportedAlgorithms = request.supportedAlgorithms.map { Int64($0.rawValue) }
+        var prf: CreatePasskeyPrfInput?
+        if request.needsPrf {
+            var prfValues: CreatePasskeyPrfValues?
+            if let saltInput1 = request.saltInput1 {
+                prfValues = .init(first: saltInput1, second: request.saltInput2)
+            }
+            prf = .init(eval: prfValues)
+        }
         let createRequest = CreatePasskeyIosRequest(serviceIdentifier: request.serviceIdentifier.identifier,
                                                     rpId: request.relyingPartyIdentifier,
                                                     userName: request.userName,
                                                     userHandle: request.userHandle,
                                                     clientDataHash: request.clientDataHash,
-                                                    supportedAlgorithms: supportedAlgorithms)
+                                                    supportedAlgorithms: supportedAlgorithms,
+                                                    prf: prf)
         let response = try managerProvider.manager.generateIosPasskey(request: createRequest)
         return await .from(response, bundle: bundle, device: device)
     }
@@ -79,6 +88,9 @@ private extension Entities.CreatePasskeyResponse {
                     osName: device.systemName,
                     osVersion: device.systemVersion,
                     deviceName: device.name,
-                    appVersion: "ios-pass@\(bundle.fullAppVersionName)")
+                    appVersion: "ios-pass@\(bundle.fullAppVersionName)",
+                    prf: response.prf.map { .init(supported: $0.supported,
+                                                  first: $0.first,
+                                                  second: $0.second) })
     }
 }
