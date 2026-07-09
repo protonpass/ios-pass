@@ -26,15 +26,16 @@ import Macro
 @preconcurrency import ProtonCoreUIFoundations
 import Screens
 
-final class ItemContextMenuHandler: @unchecked Sendable {
+@MainActor
+final class ItemContextMenuHandler {
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\SharedToolingContainer.logger) private var logger
     @LazyInjected(\SharedUseCasesContainer.pinItems) private var pinItems
     @LazyInjected(\SharedUseCasesContainer.unpinItems) private var unpinItems
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
+    private var actionTask: Task<Void, Never>?
 
     init() {}
 }
@@ -45,11 +46,10 @@ extension ItemContextMenuHandler {
     func edit(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
-            await router.present(for: .editItem(itemContent))
+            router.present(for: .editItem(itemContent))
         }
     }
 
-    @MainActor
     func trash(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: true) { [weak self] _ in
             guard let self else { return }
@@ -69,7 +69,7 @@ extension ItemContextMenuHandler {
                                                    dismissButtonTitle: #localized("Undo"),
                                                    onDismiss: undoBlock)
 
-            await router.display(element: .successMessage(config: .refresh(with: .update(item.type))))
+            router.display(element: .successMessage(config: .refresh(with: .update(item.type))))
         }
     }
 
@@ -78,7 +78,7 @@ extension ItemContextMenuHandler {
             guard let self else { return }
             try await itemRepository.untrashItems([item])
             bannerManager.displayBottomSuccessMessage(item.type.restoreMessage)
-            await router.display(element: .successMessage(config: .refresh(with: .update(item.type))))
+            router.display(element: .successMessage(config: .refresh(with: .update(item.type))))
         }
     }
 
@@ -92,7 +92,7 @@ extension ItemContextMenuHandler {
             let userId = try await userManager.getActiveUserId()
             try await itemRepository.deleteItems(userId: userId, [encryptedItem], skipTrash: false)
             bannerManager.displayBottomInfoMessage(item.type.deleteMessage)
-            await router.display(element: .successMessage(config: .dismissAndRefresh(with: .delete(item.type))))
+            router.display(element: .successMessage(config: .dismissAndRefresh(with: .delete(item.type))))
         }
     }
 
@@ -114,7 +114,7 @@ extension ItemContextMenuHandler {
     func viewHistory(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
-            await router.present(for: .history(itemContent))
+            router.present(for: .history(itemContent))
         }
     }
 
@@ -126,7 +126,7 @@ extension ItemContextMenuHandler {
             try await itemRepository.changeAliasStatus(userId: userId,
                                                        items: [itemContent],
                                                        enabled: false)
-            await router.display(element: .infosMessage(#localized("Alias disabled"), config: .refresh))
+            router.display(element: .infosMessage(#localized("Alias disabled"), config: .refresh))
         }
     }
 }
@@ -137,28 +137,28 @@ extension ItemContextMenuHandler {
     func copyEmail(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
-            await copy(itemContent.email, message: #localized("Email copied"))
+            copy(itemContent.email, message: #localized("Email copied"))
         }
     }
 
     func copyItemUsername(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
-            await copy(itemContent.loginItem?.username, message: #localized("Username copied"))
+            copy(itemContent.loginItem?.username, message: #localized("Username copied"))
         }
     }
 
     func copyPassword(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
-            await copy(itemContent.loginItem?.password, message: #localized("Password copied"))
+            copy(itemContent.loginItem?.password, message: #localized("Password copied"))
         }
     }
 
     func copyAlias(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
-            await copy(itemContent.aliasEmail, message: #localized("Alias address copied"))
+            copy(itemContent.aliasEmail, message: #localized("Alias address copied"))
         }
     }
 
@@ -170,64 +170,64 @@ extension ItemContextMenuHandler {
                                                        items: [itemContent],
                                                        enabled: enabled)
             let message = enabled ? #localized("Alias enabled") : #localized("Alias disabled")
-            await router.display(element: .infosMessage(message, config: .refresh))
+            router.display(element: .infosMessage(message, config: .refresh))
         }
     }
 
     func copyNoteContent(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
-            await copy(itemContent.note, message: #localized("Note content copied"))
+            copy(itemContent.note, message: #localized("Note content copied"))
         }
     }
 
     func copyCardholderName(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
-            await copy(itemContent.creditCardItem?.cardholderName, message: #localized("Cardholder name copied"))
+            copy(itemContent.creditCardItem?.cardholderName, message: #localized("Cardholder name copied"))
         }
     }
 
     func copyCardNumber(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
-            await copy(itemContent.creditCardItem?.number, message: #localized("Card number copied"))
+            copy(itemContent.creditCardItem?.number, message: #localized("Card number copied"))
         }
     }
 
     func copyExpirationDate(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
-            await copy(itemContent.creditCardItem?.displayedExpirationDate,
-                       message: #localized("Expiration date copied"))
+            copy(itemContent.creditCardItem?.displayedExpirationDate,
+                 message: #localized("Expiration date copied"))
         }
     }
 
     func copySecurityCode(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
-            await copy(itemContent.creditCardItem?.verificationNumber, message: #localized("Security code copied"))
+            copy(itemContent.creditCardItem?.verificationNumber, message: #localized("Security code copied"))
         }
     }
 
     func copyFullname(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
-            await copy(itemContent.identityItem?.fullName, message: #localized("Full name copied"))
+            copy(itemContent.identityItem?.fullName, message: #localized("Full name copied"))
         }
     }
 
     func copySsid(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
-            await copy(itemContent.wifi?.ssid, message: #localized("SSID copied"))
+            copy(itemContent.wifi?.ssid, message: #localized("SSID copied"))
         }
     }
 
     func copyWifiPassword(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
-            await copy(itemContent.wifi?.password, message: #localized("WiFi password copied"))
+            copy(itemContent.wifi?.password, message: #localized("WiFi password copied"))
         }
     }
 }
@@ -237,11 +237,12 @@ extension ItemContextMenuHandler {
 private extension ItemContextMenuHandler {
     func performAction(on item: any ItemTypeIdentifiable,
                        showSpinner: Bool,
-                       handler: @Sendable @escaping (ItemContent) async throws -> Void) {
-        Task { @MainActor [weak self] in
+                       handler: @MainActor @escaping (ItemContent) async throws -> Void) {
+        actionTask?.cancel()
+        actionTask = Task { [weak self] in
             guard let self else { return }
             defer {
-                if showSpinner {
+                if showSpinner, !Task.isCancelled {
                     router.display(element: .globalLoading(shouldShow: false))
                 }
             }
@@ -253,8 +254,11 @@ private extension ItemContextMenuHandler {
                                                                                 itemId: item.itemId) else {
                     throw PassError.itemNotFound(item)
                 }
+                try Task.checkCancellation()
                 ItemForceTouchTip().invalidate(reason: .actionPerformed)
                 try await handler(itemContent)
+            } catch is CancellationError {
+                // superseded — no banner
             } catch {
                 logger.error(error)
                 bannerManager.displayTopErrorMessage(error)

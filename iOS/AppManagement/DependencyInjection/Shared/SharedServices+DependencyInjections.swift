@@ -126,6 +126,7 @@ extension SharedServiceContainer {
         }
     }
 
+    @MainActor
     var itemContextMenuHandler: Factory<ItemContextMenuHandler> {
         self { ItemContextMenuHandler() }
     }
