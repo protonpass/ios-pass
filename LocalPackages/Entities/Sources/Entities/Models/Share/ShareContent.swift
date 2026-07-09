@@ -34,6 +34,10 @@ public struct ShareContent: Identifiable, Hashable, Sendable {
         share.id
     }
 
+    public var isReadOnly: Bool {
+        share.shareRole == .read
+    }
+
     public init(share: Share, elements: [ShareContentElement]) {
         self.share = share
 
@@ -205,6 +209,7 @@ public extension ShareContent {
 
     /// `true` when a new folder can be added directly under `parentId` (vault id or folder id).
     func canAddFolder(in parentId: String, limits: FolderLimits) -> Bool {
+        guard !isReadOnly else { return false }
         guard !isVaultFolderLimitReached(limits: limits) else { return false }
         guard depth(of: parentId) < limits.maxFolderDepth else { return false }
         return (foldersByContainer[parentId]?.count ?? 0) < limits.maxFoldersPerLayer
