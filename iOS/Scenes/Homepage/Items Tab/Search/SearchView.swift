@@ -95,9 +95,7 @@ private extension SearchView {
                     .padding(.top)
 
             case .empty:
-                EmptySearchView()
-                    .frame(maxHeight: .infinity)
-                    .padding(.bottom, safeAreaInsets.bottom + 200)
+                EmptySearchView(bottomPadding: safeAreaInsets.bottom + 100)
 
             case let .history(history):
                 SearchRecentResultsView(results: history,
