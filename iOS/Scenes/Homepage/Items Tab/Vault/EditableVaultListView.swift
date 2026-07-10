@@ -278,7 +278,7 @@ private extension EditableVaultListView {
 
                 ForEach(viewModel.visibleVaults) { content in
                     HStack(spacing: 16) {
-                        if viewModel.folderSupported {
+                        if viewModel.folderSupported, viewModel.shouldShowToggleArrow(for: content) {
                             Button { viewModel.toggleDisplayContainerContent(containerId: content.id) } label: {
                                 ExpandRowButtonDisplay(expanded: viewModel.expandedContainerIds
                                     .contains(content.id))
@@ -296,7 +296,9 @@ private extension EditableVaultListView {
                                            shouldDismissOnSelection: true,
                                            expandedContainerIds: $viewModel.expandedContainerIds,
                                            selectedContainer: $viewModel.shareSelection) { folder, content in
-                                FolderMenuView(folder: folder, content: content, viewModel: viewModel)
+                                if !content.isReadOnly {
+                                    FolderMenuView(folder: folder, content: content, viewModel: viewModel)
+                                }
                             }
                             .padding(.leading, 30)
                         } else if content.canAddFolder(in: content.id, limits: viewModel.folderLimits) {
@@ -407,7 +409,7 @@ private extension EditableVaultListView {
                 })
             }
 
-            if viewModel.folderSupported, viewModel.canAddFolderAtVaultRoot(for: vault) {
+            if viewModel.folderSupported, viewModel.canAddFolderAtVaultRoot(for: vault), vault.shareRole != .read {
                 Button(action: {
                     if viewModel.shouldUpsell {
                         viewModel.upgradeSubscription()
@@ -603,6 +605,7 @@ private struct FolderMenuView: View {
 
             Button(action: {
                 viewModel.folderAction = .edit(folder)
+                viewModel.folderName = folder.content.name
             }, label: {
                 Label(title: {
                     Text("Rename")
