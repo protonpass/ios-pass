@@ -252,6 +252,14 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
         folderAction = nil
         folderName = ""
     }
+
+    func shouldShowToggleArrow(for content: ShareContent) -> Bool {
+        guard content.isReadOnly else {
+            return true
+        }
+
+        return !content.allFolders.isEmpty
+    }
 }
 
 // MARK: - Public APIs

@@ -127,10 +127,9 @@ private extension FolderTreeView {
                         .foregroundStyle(PassColor.textNorm)
                         .frame(maxWidth: .infinity, alignment: .topLeading)
                 }
+                .contentShape(.rect)
             }
             .buttonStyle(.plain)
-
-            Spacer()
 
             trailingView(folder, content)
         }
