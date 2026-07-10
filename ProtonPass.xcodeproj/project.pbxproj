@@ -555,6 +555,7 @@
 		5B229A662A863F6D0009103E /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B14538C2A681B400048B022 /* MainRouter.swift */; };
 		5B229A692A863FBC0009103E /* SharedRouter+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B229A682A863FBC0009103E /* SharedRouter+DependencyInjections.swift */; };
 		5B229A6A2A863FF20009103E /* SharedRouter+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B229A682A863FBC0009103E /* SharedRouter+DependencyInjections.swift */; };
+		5B24B0F730000FFF009B081A /* VaultListComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B24B0F630000FFF009B081A /* VaultListComponents.swift */; };
 		5B39DF7F2B501C020009D53E /* DetailHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B39DF7D2B501C020009D53E /* DetailHistoryView.swift */; };
 		5B39DF802B501C020009D53E /* DetailHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B39DF7E2B501C020009D53E /* DetailHistoryViewModel.swift */; };
 		5B3AD42B2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */; };
@@ -1095,6 +1096,7 @@
 		5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReportView.swift; sourceTree = "<group>"; };
 		5B1F5CEA2A5ED6D000A6C3ED /* CustomFieldTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFieldTypes.swift; sourceTree = "<group>"; };
 		5B229A682A863FBC0009103E /* SharedRouter+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedRouter+DependencyInjections.swift"; sourceTree = "<group>"; };
+		5B24B0F630000FFF009B081A /* VaultListComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultListComponents.swift; sourceTree = "<group>"; };
 		5B39DF7D2B501C020009D53E /* DetailHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHistoryView.swift; sourceTree = "<group>"; };
 		5B39DF7E2B501C020009D53E /* DetailHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHistoryViewModel.swift; sourceTree = "<group>"; };
 		5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemUiModel+Extensions.swift"; sourceTree = "<group>"; };
@@ -1651,6 +1653,7 @@
 		35661CB029B8BF76003BBAD6 /* Vault */ = {
 			isa = PBXGroup;
 			children = (
+				5B24B0F630000FFF009B081A /* VaultListComponents.swift */,
 				5B24897F2F3261CE0046097D /* FolderMoveListView */,
 				35733B7229CC481400052229 /* CreateEditVaultView.swift */,
 				35733B7429CC483300052229 /* CreateEditVaultViewModel.swift */,
@@ -3621,6 +3624,7 @@
 			files = (
 				35B0F7872C0739B700A89E93 /* SecureLinkDetailView.swift in Sources */,
 				35AC9A5C2A0BDAA300FBCEEC /* EditCustomFieldSections.swift in Sources */,
+				5B24B0F730000FFF009B081A /* VaultListComponents.swift in Sources */,
 				5B62931E2CDA27C6006C3C67 /* AliasContactsEmptyView.swift in Sources */,
 				35C44F762BDA4A420054F7EE /* MonitorAliasesViewModel.swift in Sources */,
 				5B1453992A6938660048B022 /* UserPermissionView.swift in Sources */,

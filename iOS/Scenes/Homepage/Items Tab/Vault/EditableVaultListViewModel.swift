@@ -25,115 +25,124 @@ import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Observation
 import ProtonCoreLogin
 
 private extension EditableVaultListViewModel {
-    struct VaultCount {
-        let shareId: String
-        let value: Int
-    }
-
+    /// All per-scope counts, computed once when the content state changes and then read O(1).
     @MainActor
     struct Count {
         let all: Int
-        let vaultCounts: [VaultCount]
+        let vaultCounts: [String: Int]
+        let sharedWithMe: Int
+        let sharedByMe: Int
         let trashed: Int
 
         init(appContentManager: AppContentManager) {
             guard let sharesData = appContentManager.state.loadedContent else {
                 all = 0
-                vaultCounts = []
+                vaultCounts = [:]
+                sharedWithMe = 0
+                sharedByMe = 0
                 trashed = 0
                 return
             }
             var all = 0
-            var vaultCounts = [VaultCount]()
+            var vaultCounts = [String: Int]()
             let hiddenShareIds = sharesData.hiddenSharesIds
 
-            for shareContent in sharesData.visibleShareContents where shareContent.share.vaultContent != nil {
+            for shareContent in sharesData.visibleShareContents
+                where shareContent.share.vaultContent != nil {
                 if !shareContent.share.hidden {
                     all += shareContent.itemCount
                 }
-                vaultCounts.append(.init(shareId: shareContent.share.shareId, value: shareContent.itemCount))
+                vaultCounts[shareContent.share.shareId] = shareContent.itemCount
             }
-            self.all = all
+            // The "all items" scope also surfaces active items shared with the user.
+            self.all = all + sharesData.itemsSharedWithMe.count(where: { $0.state == .active })
             self.vaultCounts = vaultCounts
+            sharedWithMe = sharesData.itemsSharedWithMe.count
+            sharedByMe = sharesData.itemsSharedByMe.count
             trashed = sharesData.trashedItems.count(where: { !hiddenShareIds.contains($0.shareId) })
         }
     }
 }
 
 @MainActor
-final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
-    @Published private(set) var loading = false
-    @Published private(set) var state = AppContentState.loading
-    @Published private(set) var organization: Entities.Organization?
-    @Published private(set) var hiddenShareIds = Set<String>()
-    @Published private(set) var mode: Mode = .view
-    @Published private var userData: UserData?
-    @Published private var plan: Plan?
-    @Published var expandedContainerIds = Set<String>() {
+@Observable
+final class EditableVaultListViewModel: DeinitPrintable {
+    private(set) var loading = false
+    private(set) var state = AppContentState.loading
+    private(set) var organization: Entities.Organization?
+    private(set) var hiddenShareIds = Set<String>()
+    private(set) var mode: Mode = .view
+    private var userData: UserData?
+    private var plan: Plan?
+    var expandedContainerIds = Set<String>() {
         didSet {
             persist()
         }
     }
 
-    @Published var shareSelection: ShareSelectionPayload?
-    @Published var containerToDelete: ActionnableContainer?
-    @Published var folderAction: FolderAction?
-    @Published var folderName: String = ""
+    var shareSelection: ShareSelectionPayload? {
+        didSet {
+            guard let shareSelection, shareSelection != oldValue else { return }
+            select(.precise(shareSelection))
+        }
+    }
 
+    var containerToDelete: ActionnableContainer?
+    var folderAction: FolderAction?
+
+    @ObservationIgnored
     let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
+    @ObservationIgnored
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
+    @ObservationIgnored
     private let getUserShareStatus = resolve(\UseCasesContainer.getUserShareStatus)
+    @ObservationIgnored
     private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
+    @ObservationIgnored
     private let leaveShare = resolve(\UseCasesContainer.leaveShare)
+    @ObservationIgnored
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
+    @ObservationIgnored
     private let logger = resolve(\SharedToolingContainer.logger)
+    @ObservationIgnored
     private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
+    @ObservationIgnored
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @ObservationIgnored
     @LazyInjected(\SharedRepositoryContainer.accessRepository)
     private var accessRepository
+    @ObservationIgnored
     @LazyInjected(\SharedRepositoryContainer.organizationRepository)
     private var organizationRepository
+    @ObservationIgnored
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
+    @ObservationIgnored
     @LazyInjected(\UseCasesContainer.reorganizeVaults)
     private var reorganizeVaults
+    @ObservationIgnored
     @LazyInjected(\SharedRepositoryContainer.itemRepository)
     private var itemRepository
 
+    @ObservationIgnored
     @LazyInjected(\UseCasesContainer.checkVaultCreationAllowance)
     private var checkVaultCreationAllowance
     private(set) var folderLimits = FolderLimits.default
     private var count: Count
+    @ObservationIgnored
     private var cancellables = Set<AnyCancellable>()
 
-    private var orderedVaults: [ShareContent] {
-        if case let .loaded(data) = state {
-            data.filteredOrderedVaults
-        } else {
-            []
-        }
-    }
-
-    var visibleVaults: [ShareContent] {
-        if mode == .view {
-            orderedVaults.filter { !$0.share.hidden }
-        } else {
-            orderedVaults.filter { !hiddenShareIds.contains($0.id) }
-        }
-    }
-
-    var hiddenVaults: [ShareContent] {
-        orderedVaults.filter { hiddenShareIds.contains($0.id) }
-    }
-
-    var hideShowVaultSupported: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passHideShowVault) ||
-            orderedVaults.contains(where: \.share.hidden)
-    }
+    /// Cached vault collections, recomputed via `recomputeVaults()` only when `state`, `mode`,
+    /// or `hiddenShareIds` change — never per `body` evaluation.
+    private var orderedVaults: [ShareContent] = []
+    private(set) var visibleVaults: [ShareContent] = []
+    private(set) var hiddenVaults: [ShareContent] = []
+    private(set) var hideShowVaultSupported = false
 
     var folderSupported: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passFolder)
@@ -194,7 +203,9 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     }
 
     init() {
+        state = appContentManager.state
         count = .init(appContentManager: appContentManager)
+        recomputeVaults()
         setUp()
     }
 
@@ -250,7 +261,6 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
     func cleanActions() {
         folderAction = nil
-        folderName = ""
     }
 
     func shouldShowToggleArrow(for content: ShareContent) -> Bool {
@@ -258,7 +268,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
             return true
         }
 
-        return !content.allFolders.isEmpty
+        return content.totalFolderCount > 0
     }
 }
 
@@ -370,21 +380,18 @@ extension EditableVaultListViewModel {
     }
 
     func itemCount(for selection: ShareSelection) -> Int {
-        let itemsSharedWithMe = appContentManager.state.loadedContent?.itemsSharedWithMe ?? []
-        let activeItemsSharedWithMeCount = itemsSharedWithMe.count(where: { $0.state == .active })
-
-        return switch selection {
+        switch selection {
         case .all:
-            count.all + activeItemsSharedWithMeCount
+            count.all
 
         case let .precise(selection):
-            count.vaultCounts.first { $0.shareId == selection.share.shareId }?.value ?? 0
+            count.vaultCounts[selection.share.shareId] ?? 0
 
         case .sharedWithMe:
-            itemsSharedWithMe.count
+            count.sharedWithMe
 
         case .sharedByMe:
-            appContentManager.state.loadedContent?.itemsSharedByMe.count ?? 0
+            count.sharedByMe
 
         case .trash:
             count.trashed
@@ -425,6 +432,7 @@ extension EditableVaultListViewModel {
         } else {
             hiddenShareIds.insert(id)
         }
+        recomputeVaults()
     }
 
     func updateMode(_ mode: Mode) {
@@ -435,6 +443,7 @@ extension EditableVaultListViewModel {
             })
         }
         self.mode = mode
+        recomputeVaults()
     }
 
     func applyVaultsOrganizations() {
@@ -462,12 +471,12 @@ extension EditableVaultListViewModel {
 // MARK: - Folder actions
 
 extension EditableVaultListViewModel {
-    func editFolder(_ folder: FolderUiModel) async throws {
+    func editFolder(_ folder: FolderUiModel, name: String) async throws {
         let userId = try await userManager.getActiveUserId()
         try await appContentManager.editFolder(userId: userId,
                                                shareId: folder.shareId,
                                                folderId: folder.folderId,
-                                               name: folderName)
+                                               name: name)
     }
 
     func createFolder(share: Share, parentFolderId: String?, name: String) async throws {
@@ -484,9 +493,9 @@ extension EditableVaultListViewModel {
         expandedContainerIds.insert(completeParentId)
     }
 
-    func folderCreateAndEdition() {
+    func folderCreateAndEdition(name: String) {
         guard let folderAction,
-              !folderName.isEmpty else { return }
+              !name.isEmpty else { return }
         // should not alow creation why other is not finished
         Task { [weak self] in
             guard let self else { return }
@@ -498,10 +507,10 @@ extension EditableVaultListViewModel {
             do {
                 switch folderAction {
                 case let .createNewFolder(share, parentFolderId):
-                    try await createFolder(share: share, parentFolderId: parentFolderId, name: folderName)
+                    try await createFolder(share: share, parentFolderId: parentFolderId, name: name)
 
                 case let .edit(folder):
-                    try await editFolder(folder)
+                    try await editFolder(folder, name: name)
                 }
             } catch {
                 handle(error)
@@ -526,23 +535,15 @@ private extension EditableVaultListViewModel {
             folderLimits = newFolderLimits
         }
 
-        $shareSelection
-            .receive(on: DispatchQueue.main)
-            .compactMap(\.self)
-            .removeDuplicates()
-            .sink { [weak self] shareSelection in
-                guard let self else { return }
-                select(.precise(shareSelection))
-            }
-            .store(in: &cancellables)
-
         appContentManager.$state
             .receive(on: DispatchQueue.main)
+            .removeDuplicates()
             .sink { [weak self] newState in
-                guard let self else { return }
+                guard let self, newState != state else { return }
                 state = newState
                 count = .init(appContentManager: appContentManager)
                 refreshHiddenShareIds()
+                recomputeVaults()
             }
             .store(in: &cancellables)
 
@@ -572,6 +573,23 @@ private extension EditableVaultListViewModel {
                 }
             }
             .store(in: &cancellables)
+    }
+
+    func recomputeVaults() {
+        let ordered: [ShareContent] = if case let .loaded(data) = state {
+            data.filteredOrderedVaults
+        } else {
+            []
+        }
+        orderedVaults = ordered
+        if mode == .view {
+            visibleVaults = ordered.filter { !$0.share.hidden }
+        } else {
+            visibleVaults = ordered.filter { !hiddenShareIds.contains($0.id) }
+        }
+        hiddenVaults = ordered.filter { hiddenShareIds.contains($0.id) }
+        hideShowVaultSupported = getFeatureFlagStatus(for: FeatureFlagType.passHideShowVault)
+            || ordered.contains(where: \.share.hidden)
     }
 
     func handle(_ error: any Error) {

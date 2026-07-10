@@ -52,7 +52,7 @@ enum ActionnableContainer {
     }
 }
 
-enum FolderAction {
+enum FolderAction: Equatable {
     case createNewFolder(Share, parentFolderId: String?)
     case edit(FolderUiModel)
 
@@ -79,9 +79,9 @@ enum FolderAction {
 
 struct EditableVaultListView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var viewModel = EditableVaultListViewModel()
+    @State private var viewModel = EditableVaultListViewModel()
     @State private var containerNameConfirmation = ""
-    @State private var isShowingEmptyTrashAlert = false
+    @State private var folderName = ""
     private let onChangeMode: (EditableVaultListViewModel.Mode) -> Void
 
     init(onChangeMode: @escaping (EditableVaultListViewModel.Mode) -> Void) {
@@ -92,7 +92,6 @@ struct EditableVaultListView: View {
         mainContent
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
             .animation(.spring, value: viewModel.mode)
-            .animation(.default, value: viewModel.state)
             .onChange(of: viewModel.mode) {
                 onChangeMode(viewModel.mode)
             }
@@ -121,20 +120,29 @@ struct EditableVaultListView: View {
                    presenting: viewModel.folderAction,
                    actions: { _ in
                        TextField("Title",
-                                 text: $viewModel.folderName)
+                                 text: $folderName)
                        Button("Cancel", action: {
                            viewModel.cleanActions()
                        })
 
                        Button(viewModel.folderAction?.isCreatingNew ?? true ? "Create" : "Save",
                               action: {
-                                  viewModel.folderCreateAndEdition()
+                                  viewModel.folderCreateAndEdition(name: folderName)
                               })
-                              .disabled(viewModel.folderName.isEmpty)
+                              .disabled(folderName.isEmpty)
                    },
                    message: { _ in
                        EmptyView()
                    })
+            .onChange(of: viewModel.folderAction) { _, newValue in
+                switch newValue {
+                case let .edit(folder):
+                    folderName = folder.content.name
+
+                default:
+                    folderName = ""
+                }
+            }
     }
 
     var mainContent: some View {
@@ -150,14 +158,20 @@ struct EditableVaultListView: View {
 
     var mainListView: some View {
         VStack(alignment: .leading) {
-            upsellRow
+            if viewModel.shouldUpsell {
+                UpsellRow(onUpgrade: viewModel.upgradeSubscription)
+            }
             vaultsScrollView
-            bottomView
+            VaultListBottomBar(viewModel: viewModel)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         .background(PassColor.backgroundWeak)
         .showSpinner(viewModel.loading)
-        .animation(.default, value: viewModel.expandedContainerIds)
+    }
+
+    private func selectAndDismiss(_ selection: ShareSelection) {
+        dismiss()
+        viewModel.select(selection)
     }
 
     // swiftlint:disable line_length
@@ -174,96 +188,6 @@ struct EditableVaultListView: View {
 }
 
 private extension EditableVaultListView {
-    @ViewBuilder
-    var upsellRow: some View {
-        if viewModel.shouldUpsell {
-            Group {
-                if #available(iOS 26.0, *) {
-                    Button(action: viewModel.upgradeSubscription) {
-                        upsellRowContent
-                    }
-                    .glassEffect(in: RoundedRectangle(cornerRadius: 16))
-                } else {
-                    Button(action: viewModel.upgradeSubscription) {
-                        upsellRowContent
-                            .cornerRadius(16)
-                            .overlay(RoundedRectangle(cornerRadius: 16)
-                                .inset(by: 0.5)
-                                .stroke(PassColor.inputBorderNorm, lineWidth: 1))
-                    }
-                }
-            }
-            .padding(.horizontal)
-            .padding(.top, 25)
-        }
-    }
-
-    var upsellRowContent: some View {
-        HStack(alignment: .center, spacing: 16) {
-            PassIcon.diamond
-                .resizable()
-                .frame(width: 20, height: 20)
-                .scaledToFit()
-                .foregroundStyle(PassColor.interactionNormMajor2)
-            Text("Upgrade to Pass Plus")
-                .foregroundStyle(PassColor.textNorm)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            IconProvider.chevronRight
-                .resizable()
-                .frame(width: 16, height: 16)
-                .foregroundStyle(PassColor.interactionNormMajor2)
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 15)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .contentShape(.rect)
-    }
-
-    @ViewBuilder
-    var bottomView: some View {
-        if viewModel.mode.isView {
-            ViewThatFits {
-                HStack {
-                    createVaultButton(fixedSize: true)
-                    if viewModel.hideShowVaultSupported {
-                        Spacer()
-                    }
-                    organizeVaultsButton(fixedSize: true)
-                }
-
-                VStack {
-                    createVaultButton(fixedSize: false)
-                    organizeVaultsButton(fixedSize: false)
-                }
-            }
-            .padding([.bottom, .horizontal])
-        }
-    }
-
-    func createVaultButton(fixedSize: Bool) -> some View {
-        CapsuleLabelButton(icon: IconProvider.plus,
-                           title: #localized("Create vault"),
-                           titleColor: PassColor.interactionNormMajor2,
-                           backgroundColor: PassColor.interactionNormMinor1,
-                           fontWeight: .semibold,
-                           action: viewModel.createNewVault)
-            .fixedSize(horizontal: fixedSize, vertical: fixedSize)
-            .hidden(!viewModel.vaultCreationAllowed)
-    }
-
-    @ViewBuilder
-    func organizeVaultsButton(fixedSize: Bool) -> some View {
-        if viewModel.hideShowVaultSupported {
-            CapsuleLabelButton(icon: IconProvider.listBullets,
-                               title: #localized("Organize vaults"),
-                               titleColor: PassColor.interactionNormMajor2,
-                               backgroundColor: PassColor.interactionNormMinor1,
-                               fontWeight: .semibold,
-                               action: { viewModel.updateMode(.organise) })
-                .fixedSize(horizontal: fixedSize, vertical: fixedSize)
-        }
-    }
-
     var vaultsScrollView: some View {
         LazyVStack(spacing: 0) {
             switch viewModel.state {
@@ -273,19 +197,25 @@ private extension EditableVaultListView {
                 ProgressView()
 
             case .loaded:
-                vaultRow(for: .all)
+                VaultScopeRow(selection: .all, viewModel: viewModel, onSelect: selectAndDismiss)
                 PassDivider()
 
                 ForEach(viewModel.visibleVaults) { content in
                     HStack(spacing: 16) {
                         if viewModel.folderSupported, viewModel.shouldShowToggleArrow(for: content) {
-                            Button { viewModel.toggleDisplayContainerContent(containerId: content.id) } label: {
+                            Button {
+                                withAnimation {
+                                    viewModel.toggleDisplayContainerContent(containerId: content.id)
+                                }
+                            } label: {
                                 ExpandRowButtonDisplay(expanded: viewModel.expandedContainerIds
                                     .contains(content.id))
                             }
                             .buttonStyle(.plain)
                         }
-                        vaultRow(for: .precise(.init(share: content.share, folder: nil)))
+                        VaultScopeRow(selection: .precise(.init(share: content.share, folder: nil)),
+                                      viewModel: viewModel,
+                                      onSelect: selectAndDismiss)
                     }
 
                     if viewModel.folderSupported,
@@ -324,215 +254,20 @@ private extension EditableVaultListView {
                 }
 
                 if viewModel.canSelectVault(selection: .sharedWithMe) {
-                    vaultRow(for: .sharedWithMe)
+                    VaultScopeRow(selection: .sharedWithMe, viewModel: viewModel, onSelect: selectAndDismiss)
                     PassDivider()
                 }
 
                 if viewModel.canSelectVault(selection: .sharedByMe) {
-                    vaultRow(for: .sharedByMe)
+                    VaultScopeRow(selection: .sharedByMe, viewModel: viewModel, onSelect: selectAndDismiss)
                     PassDivider()
                 }
 
-                vaultRow(for: .trash)
+                VaultScopeRow(selection: .trash, viewModel: viewModel, onSelect: selectAndDismiss)
             }
         }
         .padding(.horizontal)
         .scrollViewEmbeded()
-    }
-
-    @ViewBuilder
-    func vaultRow(for selection: ShareSelection) -> some View {
-        let itemCount = viewModel.itemCount(for: selection)
-
-        let vaultRowMode: VaultRowMode = .view(isSelected: viewModel.isSelected(selection),
-                                               isHidden: false) { vault in
-            if viewModel.canShare(vault: vault) {
-                viewModel.share(vault: vault)
-            } else {
-                viewModel.router.present(for: .manageSharedShare(.vault(vault), .none))
-            }
-        }
-
-        HStack {
-            Button(action: {
-                dismiss()
-                viewModel.select(selection)
-            }, label: {
-                VaultRow(thumbnail: {
-                             CircleButton(icon: selection.icon,
-                                          iconColor: selection.color,
-                                          backgroundColor: selection.color.opacity(0.16))
-                         },
-                         title: selection.title,
-                         itemCount: itemCount,
-                         share: selection.share,
-                         mode: vaultRowMode,
-                         height: 74)
-            })
-            .buttonStyle(.plain)
-
-            Spacer()
-
-            switch selection {
-            case .all, .sharedByMe, .sharedWithMe:
-                EmptyView()
-
-            case let .precise(selection):
-                vaultTrailingMenuView(selection.share, haveItems: itemCount > 0)
-
-            case .trash:
-                trashTrailingView
-            }
-        }
-    }
-
-    func threeDotsIcon() -> some View {
-        IconProvider.threeDotsVertical
-            .resizable()
-            .scaledToFit()
-            .frame(width: 24, height: 24)
-            .foregroundStyle(PassColor.textWeak)
-    }
-
-    func vaultTrailingMenuView(_ vault: Share, haveItems: Bool) -> some View {
-        Menu(content: {
-            if viewModel.canEdit(vault: vault) {
-                Button(action: {
-                    viewModel.edit(vault: vault)
-                }, label: {
-                    Label(title: {
-                        Text("Edit")
-                    }, icon: {
-                        IconProvider.pencil
-                            .renderingMode(.template)
-                            .foregroundStyle(PassColor.textWeak)
-                    })
-                })
-            }
-
-            if viewModel.folderSupported, viewModel.canAddFolderAtVaultRoot(for: vault), vault.shareRole != .read {
-                Button(action: {
-                    if viewModel.shouldUpsell {
-                        viewModel.upgradeSubscription()
-                    } else {
-                        viewModel.folderAction = .createNewFolder(vault, parentFolderId: nil)
-                    }
-                }, label: {
-                    Label(title: {
-                        Text("Create folder")
-                    }, icon: {
-                        IconProvider.folderPlus
-                            .renderingMode(.template)
-                            .foregroundStyle(PassColor.textWeak)
-                    })
-                })
-            }
-
-            if viewModel.canShare(vault: vault) {
-                Button(action: {
-                    viewModel.share(vault: vault)
-                }, label: {
-                    Label(title: {
-                        Text("Share")
-                    }, icon: {
-                        IconProvider.userPlus
-                    })
-                })
-            }
-
-            if vault.shared {
-                Button(action: {
-                    viewModel.router.present(for: .manageSharedShare(.vault(vault), .none))
-                }, label: {
-                    Label(title: {
-                        Text(vault.isManager ? "Manage access" : "View members")
-                    }, icon: {
-                        IconProvider.users
-                    })
-                })
-            }
-
-            if viewModel.canMoveItems(vault: vault), haveItems {
-                Button(action: {
-                    viewModel.router.present(for: .moveItemsBetweenVaults(.allItems(vault)))
-                }, label: {
-                    Label(title: {
-                        Text("Move all items")
-                    }, icon: {
-                        IconProvider.folderArrowIn
-                    })
-                })
-            }
-
-            Divider()
-
-            if vault.isOwner {
-                Button(role: .destructive,
-                       action: {
-                           viewModel.containerToDelete = .vault(vault)
-                       }, label: {
-                           Label("Delete vault",
-                                 uiImage: IconProvider.trash)
-                       })
-            } else if vault.groupID == nil {
-                Button(role: .destructive,
-                       action: {
-                           viewModel.leaveVault(vault: vault)
-                       }, label: {
-                           Label("Leave vault",
-                                 uiImage: IconProvider.trash)
-                       })
-            }
-        }, label: threeDotsIcon)
-    }
-
-    @ViewBuilder
-    var trashTrailingView: some View {
-        let trashedAliasesCount = viewModel.trashedAliasesCount
-        let showAliasWarning = trashedAliasesCount > 0
-        if viewModel.hasTrashItems {
-            Menu(content: {
-                Button { viewModel.restoreAllTrashedItems() } label: {
-                    Label(title: {
-                        Text("Restore all items")
-                    }, icon: {
-                        IconProvider.clockRotateLeft
-                    })
-                }
-
-                Divider()
-
-                Button(role: .destructive,
-                       action: {
-                           isShowingEmptyTrashAlert.toggle()
-                       },
-                       label: {
-                           Label(title: {
-                               Text("Empty trash")
-                           }, icon: {
-                               IconProvider.trashCross
-                           })
-                       })
-            }, label: threeDotsIcon)
-                .alert(showAliasWarning ?
-                    "You are about to permanently delete \(trashedAliasesCount) aliases" :
-                    "Empty trash",
-                    isPresented: $isShowingEmptyTrashAlert,
-                    actions: {
-                        Button(role: .destructive,
-                               action: { viewModel.emptyTrash() },
-                               label: {
-                                   Text(showAliasWarning ? "Understood, I will never need them" : "Empty trash")
-                               })
-
-                        Button(role: .cancel, label: { Text("Cancel") })
-                    },
-                    message: {
-                        Text(showAliasWarning ?
-                            "Please note once deleted, the aliases can't be restored" :
-                            "All items in trash will be permanently deleted")
-                    })
-        }
     }
 
     func createFolderButton(_ content: ShareContent) -> some View {
@@ -606,7 +341,6 @@ private struct FolderMenuView: View {
 
             Button(action: {
                 viewModel.folderAction = .edit(folder)
-                viewModel.folderName = folder.content.name
             }, label: {
                 Label(title: {
                     Text("Rename")
