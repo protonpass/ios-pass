@@ -300,6 +300,7 @@ private extension EditableVaultListView {
                                     FolderMenuView(folder: folder, content: content, viewModel: viewModel)
                                 }
                             }
+                            .equatable()
                             .padding(.leading, 30)
                         } else if content.canAddFolder(in: content.id, limits: viewModel.folderLimits) {
                             HStack {
