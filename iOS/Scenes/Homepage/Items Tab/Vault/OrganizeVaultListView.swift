@@ -25,7 +25,7 @@ import Screens
 import SwiftUI
 
 struct OrganizeVaultListView: View {
-    @ObservedObject var viewModel: EditableVaultListViewModel
+    let viewModel: EditableVaultListViewModel
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -111,24 +111,11 @@ struct OrganizeVaultListView: View {
     @ViewBuilder
     func vaultRow(for selection: ShareSelection) -> some View {
         if let share = selection.share {
-            let vaultRowMode: VaultRowMode = .organise(isHidden: viewModel.hiddenShareIds
-                .contains(share.shareId))
-            HStack {
-                Button(action: {
-                    viewModel.hideOrUnhide(share: share)
-                }, label: {
-                    VaultRow(thumbnail: {
-                                 CircleButton(icon: selection.icon,
-                                              iconColor: selection.color,
-                                              backgroundColor: selection.color.opacity(0.16))
-                             },
-                             title: selection.title,
-                             itemCount: viewModel.itemCount(for: selection),
-                             share: share,
-                             mode: vaultRowMode,
-                             height: 74)
-                })
-                .buttonStyle(.plain)
+            let mode: VaultRowMode = .organise(isHidden: viewModel.hiddenShareIds.contains(share.shareId))
+            VaultSelectionRow(selection: selection,
+                              itemCount: viewModel.itemCount(for: selection),
+                              mode: mode) {
+                viewModel.hideOrUnhide(share: share)
             }
         }
     }
