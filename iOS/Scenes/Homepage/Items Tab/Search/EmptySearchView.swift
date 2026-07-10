@@ -22,6 +22,7 @@ import DesignSystem
 import SwiftUI
 
 struct EmptySearchView: View {
+    let bottomPadding: CGFloat
     var body: some View {
         VStack(spacing: 40) {
             Spacer()
@@ -30,9 +31,10 @@ struct EmptySearchView: View {
                 .fontWeight(.semibold)
                 .foregroundStyle(PassColor.textNorm)
             Spacer()
+            Spacer()
+                .frame(height: bottomPadding)
         }
         .frame(maxHeight: .infinity)
         .padding()
-        .padding(.top, 100)
     }
 }
