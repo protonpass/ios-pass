@@ -6101,7 +6101,7 @@
 			repositoryURL = "https://github.com/hmlongco/Factory";
 			requirement = {
 				kind = exactVersion;
-				version = 3.2.3;
+				version = 3.3.1;
 			};
 		};
 		5B8D20622AA7454400457CA3 /* XCRemoteSwiftPackageReference "MBProgressHUD" */ = {
