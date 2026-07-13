@@ -26,7 +26,7 @@ let package = Package(
         .package(name: "UseCases", path: "../UseCases"),
         .package(name: "Client", path: "../Client"),
         .package(url: "https://github.com/ProtonMail/protoncore_ios", from: "37.4.0"),
-        .package(url: "https://github.com/hmlongco/Factory", exact: "3.2.3"),
+        .package(url: "https://github.com/hmlongco/Factory", exact: "3.3.1"),
         .package(name: "PassRustCore", path: "../PassRustCore"),
     ],
     targets: [
