@@ -58,16 +58,16 @@ import Core
 import FactoryKit
 @preconcurrency import ProtonCoreTelemetry
 
-final class SharedServiceContainer: SharedContainer, AutoRegistering {
-    static let shared = SharedServiceContainer()
-    let manager = ContainerManager()
+// final class ServiceContainer: SharedContainer, AutoRegistering {
+//    static let shared = SharedServiceContainer()
+//    let manager = ContainerManager()
+//
+//    func autoRegister() {
+//        manager.defaultScope = .singleton
+//    }
+// }
 
-    func autoRegister() {
-        manager.defaultScope = .singleton
-    }
-}
-
-private extension SharedServiceContainer {
+private extension ServiceContainer {
     var logManager: any LogManagerProtocol {
         SharedToolingContainer.shared.logManager()
     }
@@ -77,25 +77,25 @@ private extension SharedServiceContainer {
     }
 
     var shareRepository: any ShareRepositoryProtocol {
-        SharedRepositoryContainer.shared.shareRepository()
+        RepositoryContainer.shared.shareRepository()
     }
 
     var itemRepository: any ItemRepositoryProtocol {
-        SharedRepositoryContainer.shared.itemRepository()
+        RepositoryContainer.shared.itemRepository()
     }
 
     var accessRepository: any AccessRepositoryProtocol {
-        SharedRepositoryContainer.shared.accessRepository()
+        RepositoryContainer.shared.accessRepository()
     }
 }
 
-extension SharedServiceContainer {
+extension ServiceContainer {
     var notificationService: Factory<any LocalNotificationServiceProtocol> {
         self { NotificationService(logManager: self.logManager) }
     }
 
     var dataMigrationManager: Factory<any DataMigrationManagerProtocol> {
-        self { DataMigrationManager(datasource: SharedRepositoryContainer.shared.localDataMigrationDatasource()) }
+        self { DataMigrationManager(datasource: RepositoryContainer.shared.localDataMigrationDatasource()) }
     }
 
     var credentialManager: Factory<any CredentialManagerProtocol> {
@@ -105,11 +105,11 @@ extension SharedServiceContainer {
     var eventSynchronizer: Factory<any EventSynchronizerProtocol> {
         self { EventSynchronizer(shareRepository: self.shareRepository,
                                  itemRepository: self.itemRepository,
-                                 shareKeyRepository: SharedRepositoryContainer.shared.shareKeyRepository(),
-                                 shareEventIDRepository: SharedRepositoryContainer.shared.shareEventIDRepository(),
-                                 remoteSyncEventsDatasource: SharedRepositoryContainer.shared
+                                 shareKeyRepository: RepositoryContainer.shared.shareKeyRepository(),
+                                 shareEventIDRepository: RepositoryContainer.shared.shareEventIDRepository(),
+                                 remoteSyncEventsDatasource: RepositoryContainer.shared
                                      .remoteSyncEventsDatasource(),
-                                 aliasRepository: SharedRepositoryContainer.shared.aliasRepository(),
+                                 aliasRepository: RepositoryContainer.shared.aliasRepository(),
                                  accessRepository: self.accessRepository,
                                  userManager: self.userManager(),
                                  logManager: self.logManager) }
@@ -117,7 +117,7 @@ extension SharedServiceContainer {
 
     var userEventsSynchronizer: Factory<any UserEventsSynchronizerProtocol> {
         self {
-            let container = SharedRepositoryContainer.shared
+            let container = RepositoryContainer.shared
             return UserEventsSynchronizer(localUserEventIdDatasource: container.localUserEventIdDatasource(),
                                           remoteUserEventsDatasource: container.remoteUserEventsDatasource(),
                                           itemRepository: container.itemRepository(),
@@ -135,7 +135,7 @@ extension SharedServiceContainer {
 
     var coreEventsSynchronizer: Factory<any CoreEventsSynchronizerProtocol> {
         self {
-            let container = SharedRepositoryContainer.shared
+            let container = RepositoryContainer.shared
             return CoreEventsSynchronizer(localDatasource: container.localCoreEventIdDatasource(),
                                           remoteDatasource: container.remoteCoreEventIdDatasource(),
                                           remoteUserDataSource: container.remoteUserDataDatasource(),
@@ -151,31 +151,31 @@ extension SharedServiceContainer {
                              coreEventsSynchronizer: self.coreEventsSynchronizer(),
                              userManager: self.userManager(),
                              logManager: self.logManager,
-                             reachability: SharedServiceContainer.shared.reachabilityService()) }
+                             reachability: ServiceContainer.shared.reachabilityService()) }
     }
 
     var simpleLoginNoteSynchronizer: Factory<any SimpleLoginNoteSynchronizerProtocol> {
         self {
-            SimpleLoginNoteSynchronizer(remoteDatasource: SharedRepositoryContainer.shared.remoteAliasDatasource(),
+            SimpleLoginNoteSynchronizer(remoteDatasource: RepositoryContainer.shared.remoteAliasDatasource(),
                                         itemRepository: self.itemRepository)
         }
     }
 
-    var itemContextMenuHandler: Factory<ItemContextMenuHandler> {
-        self { ItemContextMenuHandler() }
-    }
+//    var itemContextMenuHandler: Factory<ItemContextMenuHandler> {
+//        self { ItemContextMenuHandler() }
+//    }
+//
+//    @MainActor
+//    var appContentManager: Factory<AppContentManager> {
+//        self { AppContentManager() }
+//    }
 
-    @MainActor
-    var appContentManager: Factory<AppContentManager> {
-        self { AppContentManager() }
-    }
-
-    @MainActor
-    var upgradeChecker: Factory<any UpgradeCheckerProtocol> {
-        self { UpgradeChecker(accessRepository: SharedRepositoryContainer.shared.accessRepository(),
-                              counter: self.appContentManager(),
-                              totpChecker: SharedRepositoryContainer.shared.itemRepository()) }
-    }
+//    @MainActor
+//    var upgradeChecker: Factory<any UpgradeCheckerProtocol> {
+//        self { UpgradeChecker(accessRepository: RepositoryContainer.shared.accessRepository(),
+//                              counter: self.appContentManager(),
+//                              totpChecker: RepositoryContainer.shared.itemRepository()) }
+//    }
 
     var databaseService: Factory<any DatabaseServiceProtocol> {
         self { DatabaseService(logManager: self.logManager) }
@@ -205,7 +205,7 @@ extension SharedServiceContainer {
 
     var inAppNotificationManager: Factory<any InAppNotificationManagerProtocol> {
         self {
-            let container = SharedRepositoryContainer.shared
+            let container = RepositoryContainer.shared
             return InAppNotificationManager(repository: container.inAppNotificationRepository(),
                                             timeDatasource: container.localNotificationTimeDatasource(),
                                             userManager: self.userManager(),
@@ -230,12 +230,12 @@ extension SharedServiceContainer {
 
     var cryptoService: Factory<any CryptoServiceProtocol> {
         self {
-            CryptoService(remoteDatasource: SharedRepositoryContainer.shared.remoteShareDatasource(),
-                          localDatasource: SharedRepositoryContainer.shared.localShareDatasource(),
-                          groupRepository: SharedRepositoryContainer.shared.groupRepository(),
+            CryptoService(remoteDatasource: RepositoryContainer.shared.remoteShareDatasource(),
+                          localDatasource: RepositoryContainer.shared.localShareDatasource(),
+                          groupRepository: RepositoryContainer.shared.groupRepository(),
                           logManager: self.logManager,
-                          publicKeyRepository: SharedRepositoryContainer.shared.publicKeyRepository(),
-                          symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider(),
+                          publicKeyRepository: RepositoryContainer.shared.publicKeyRepository(),
+                          symmetricKeyProvider: DataContainer.shared.symmetricKeyProvider(),
                           userManager: self.userManager())
         }
     }
@@ -243,10 +243,10 @@ extension SharedServiceContainer {
 
 // MARK: - User
 
-extension SharedServiceContainer {
+extension ServiceContainer {
     var userManager: Factory<any UserManagerProtocol> {
         self {
-            UserManager(userDataDatasource: SharedRepositoryContainer.shared.localUserDataDatasource(),
+            UserManager(userDataDatasource: RepositoryContainer.shared.localUserDataDatasource(),
                         logManager: self.logManager)
         }
     }

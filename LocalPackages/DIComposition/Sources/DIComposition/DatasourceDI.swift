@@ -19,14 +19,15 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Core
 import CryptoKit
 import Entities
 import FactoryKit
 import Foundation
 
-final class SharedDataContainer: SharedContainer, AutoRegistering {
-    static let shared = SharedDataContainer()
+final class DataContainer: SharedContainer, AutoRegistering {
+    static let shared = DataContainer()
     let manager = ContainerManager()
 
     init() {
@@ -38,7 +39,7 @@ final class SharedDataContainer: SharedContainer, AutoRegistering {
     }
 }
 
-private extension SharedDataContainer {
+private extension DataContainer {
     var keychain: any KeychainProtocol {
         SharedToolingContainer.shared.keychain()
     }
@@ -48,7 +49,7 @@ private extension SharedDataContainer {
     }
 }
 
-extension SharedDataContainer {
+extension DataContainer {
     var loginMethod: Factory<LoginMethodFlow> {
         self { LoginMethodFlow() }
     }
@@ -65,5 +66,21 @@ extension SharedDataContainer {
     var nonSendableSymmetricKeyProvider: Factory<any NonAsyncSymmetricKeyProvider> {
         self { NonSendableSymmetricKeyProviderImpl(keychain: self.keychain,
                                                    mainKeyProvider: self.mainKeyProvider) }
+    }
+}
+
+// MARK: - Data streams
+
+extension DataContainer {
+    var currentSelectedItems: Factory<CurrentValueSubject<[ItemUiModel], Never>> {
+        self { .init([]) }
+    }
+
+    var monitorStateStream: Factory<MonitorStateStream> {
+        self { MonitorStateStream(.default) }
+    }
+
+    var itemTypeSelection: Factory<PassthroughSubject<ItemContentType, Never>> {
+        self { .init() }
     }
 }

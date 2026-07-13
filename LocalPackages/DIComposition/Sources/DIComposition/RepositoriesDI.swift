@@ -29,8 +29,8 @@ import ProtonCoreLogin
 import ProtonCoreUtilities
 
 /// Contain all repositories
-final class SharedRepositoryContainer: SharedContainer, AutoRegistering {
-    static let shared = SharedRepositoryContainer()
+final class RepositoryContainer: SharedContainer, AutoRegistering {
+    static let shared = RepositoryContainer()
     let manager = ContainerManager()
 
     private init() {}
@@ -42,7 +42,7 @@ final class SharedRepositoryContainer: SharedContainer, AutoRegistering {
 
 // MARK: - Computed properties
 
-private extension SharedRepositoryContainer {
+private extension RepositoryContainer {
     var apiManager: APIManager {
         SharedToolingContainer.shared.apiManager()
     }
@@ -74,7 +74,7 @@ private extension SharedRepositoryContainer {
 
 // MARK: Datasources
 
-extension SharedRepositoryContainer {
+extension RepositoryContainer {
     var remoteAliasDatasource: Factory<any RemoteAliasDatasourceProtocol> {
         self { RemoteAliasDatasource(apiServicing: self.apiManager) }
     }
@@ -278,7 +278,7 @@ extension SharedRepositoryContainer {
 
 // MARK: Repositories
 
-extension SharedRepositoryContainer {
+extension RepositoryContainer {
     var remoteUserSettingsDatasource: Factory<any RemoteUserSettingsDatasourceProtocol> {
         self { RemoteUserSettingsDatasource(apiServicing: self.apiManager) }
     }
@@ -463,7 +463,7 @@ extension SharedRepositoryContainer {
 
 // MARK: - Security
 
-extension SharedRepositoryContainer {
+extension RepositoryContainer {
     var passMonitorRepository: Factory<any PassMonitorRepositoryProtocol> {
         self {
             PassMonitorRepository(itemRepository: self.itemRepository(),
@@ -475,8 +475,19 @@ extension SharedRepositoryContainer {
     }
 }
 
-extension SharedRepositoryContainer {
+extension RepositoryContainer {
     var localDataMigrationDatasource: Factory<any LocalDataMigrationDatasourceProtocol> {
         self { LocalDataMigrationDatasource(userDefault: kSharedUserDefaults) }
+    }
+}
+
+extension RepositoryContainer {
+    var reportRepository: Factory<any ReportRepositoryProtocol> {
+        self { ReportRepository(apiServicing: self.apiManager,
+                                userManager: self.userManager) }
+    }
+
+    var extraPasswordRepository: Factory<any ExtraPasswordRepositoryProtocol> {
+        self { ExtraPasswordRepository(apiServicing: self.apiManager) }
     }
 }
