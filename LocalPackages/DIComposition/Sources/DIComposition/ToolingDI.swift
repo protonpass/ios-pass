@@ -31,22 +31,22 @@ import ProtonCoreLogin
 import ProtonCoreLoginUI
 
 /// Contain tools shared between main iOS app and extensions
-final class ToolingContainer: SharedContainer, AutoRegistering {
-    static let shared = ToolingContainer()
-    let manager = ContainerManager()
+public final class ToolingContainer: SharedContainer, AutoRegistering {
+    public static let shared = ToolingContainer()
+    public let manager = ContainerManager()
 
     private init() {
         Self.setUpContext()
     }
 
-    func autoRegister() {
+    public func autoRegister() {
         manager.defaultScope = .singleton
     }
 }
 
 // MARK: Shared Logging tools
 
-extension ToolingContainer {
+public extension ToolingContainer {
     var logManager: Factory<any LogManagerProtocol> {
         self { LogManager(module: PassModule.hostApp) }
             .onArg(PassModule.autoFillExtension) { LogManager(module: PassModule.autoFillExtension) }
@@ -69,7 +69,7 @@ extension ToolingContainer {
 
 // MARK: Data tools
 
-extension ToolingContainer {
+public extension ToolingContainer {
     var doh: Factory<any DoHInterface> {
         self { ProtonPassDoH() }
     }
@@ -112,7 +112,7 @@ extension ToolingContainer {
 
 // MARK: User centric tools
 
-extension ToolingContainer {
+public extension ToolingContainer {
     var currentDateProvider: Factory<any CurrentDateProviderProtocol> {
         self { CurrentDateProvider() }
     }
@@ -131,7 +131,7 @@ extension ToolingContainer {
 
 // MARK: Keychain tools
 
-extension ToolingContainer {
+public extension ToolingContainer {
     private var baseKeychain: Factory<PPKeychain> {
         self { PPKeychain() }
     }
@@ -156,7 +156,7 @@ extension ToolingContainer {
 
 // MARK: Authentication
 
-extension ToolingContainer {
+public extension ToolingContainer {
     var authManager: Factory<any AuthManagerProtocol> {
         self {
             AuthManager(keychain: ToolingContainer.shared.keychain(),

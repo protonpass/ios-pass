@@ -6,11 +6,11 @@ import Core
 import FactoryKit
 import UseCases
 
-final class UseCasesContainer: SharedContainer, AutoRegistering {
-    static let shared = UseCasesContainer()
-    let manager = ContainerManager()
+public final class UseCasesContainer: SharedContainer, AutoRegistering {
+    public static let shared = UseCasesContainer()
+    public let manager = ContainerManager()
 
-    func autoRegister() {
+    public func autoRegister() {
         manager.defaultScope = .shared
     }
 }
@@ -95,7 +95,7 @@ private extension UseCasesContainer {
 
 // MARK: User report
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var sendUserBugReport: Factory<any SendUserBugReportUseCase> {
         self { SendUserBugReport(reportRepository: RepositoryContainer.shared.reportRepository(),
                                  createLogsFile: self.createLogsFile()) }
@@ -104,7 +104,7 @@ extension UseCasesContainer {
 
 // MARK: Logs
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var extractLogsToFile: Factory<any ExtractLogsToFileUseCase> {
         self { ExtractLogsToFile(logFormatter: ToolingContainer.shared.logFormatter()) }
     }
@@ -124,7 +124,7 @@ extension UseCasesContainer {
 
 // MARK: - Sharing
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     @MainActor
     var createAndMoveItemToNewVault: Factory<any CreateAndMoveItemToNewVaultUseCase> {
         self { CreateAndMoveItemToNewVault(createVault: self.createVault(),
@@ -224,7 +224,7 @@ extension UseCasesContainer {
 
 // MARK: - Invites
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var getPendingUserInvitations: Factory<any GetPendingUserInvitationsUseCase> {
         self { GetPendingUserInvitations(repository: self.inviteRepository) }
     }
@@ -290,7 +290,7 @@ extension UseCasesContainer {
 
 // MARK: - Vaults
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     @MainActor
     var getVaultItemCount: Factory<any GetVaultItemCountUseCase> {
         self { GetVaultItemCount(appContentManager: self.appContentManager) }
@@ -338,7 +338,7 @@ extension UseCasesContainer {
 
 // MARK: Spotlight
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var getSpotlightVaults: Factory<any GetSpotlightVaultsUseCase> {
         self { GetSpotlightVaults(userManager: self.userManager,
                                   shareRepository: self.shareRepository,
@@ -354,7 +354,7 @@ extension UseCasesContainer {
 
 // MARK: - items
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var getAllPinnedItems: Factory<any GetAllPinnedItemsUseCase> {
         self { GetAllPinnedItems(itemRepository: self.itemRepository) }
     }
@@ -383,7 +383,7 @@ extension UseCasesContainer {
 
 // MARK: - User
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var updateUserAddresses: Factory<any UpdateUserAddressesUseCase> {
         self { UpdateUserAddresses(userManager: self.userManager,
                                    apiServicing: self.apiManager) }
@@ -436,7 +436,7 @@ extension UseCasesContainer {
 
 // MARK: - Misc
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var getRustLibraryVersion: Factory<any GetRustLibraryVersionUseCase> {
         self { GetRustLibraryVersion() }
     }
@@ -453,7 +453,7 @@ extension UseCasesContainer {
 
 // MARK: - App
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var shouldDisplayUpgradeAppBanner: Factory<any ShouldDisplayUpgradeAppBannerUseCase> {
         self { ShouldDisplayUpgradeAppBanner(accessRepository: self.accessRepository,
                                              bundle: .main,
@@ -471,7 +471,7 @@ extension UseCasesContainer {
 
 // MARK: - Security
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var getAllSecurityAffectedLogins: Factory<any GetAllSecurityAffectedLoginsUseCase> {
         self {
             GetAllSecurityAffectedLogins(passMonitorRepository: self.passMonitorRepository,
@@ -539,7 +539,7 @@ extension UseCasesContainer {
 
 // MARK: - Organization
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var overrideSecuritySettings: Factory<any OverrideSecuritySettingsUseCase> {
         self { OverrideSecuritySettings(preferencesManager: ToolingContainer.shared.preferencesManager()) }
     }
@@ -554,7 +554,7 @@ extension UseCasesContainer {
 
 // MARK: - Secure link
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var createSecureLink: Factory<any CreateSecureLinkUseCase> {
         self { CreateSecureLink(datasource: self.remoteSecureLinkDatasource,
                                 getSecureLinkKeys: self.getSecureLinkKeys(),
@@ -632,7 +632,7 @@ private extension UseCasesContainer {
 
 // MARK: App
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var setUpBeforeLaunching: Factory<any SetUpBeforeLaunchingUseCase> {
         self { SetUpBeforeLaunching(keychain: self.keychain,
                                     databaseService: ServiceContainer.shared.databaseService(),
@@ -646,7 +646,7 @@ extension UseCasesContainer {
 
 // MARK: Permission
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var checkCameraPermission: Factory<any CheckCameraPermissionUseCase> {
         self { CheckCameraPermission() }
     }
@@ -654,7 +654,7 @@ extension UseCasesContainer {
 
 // MARK: Local authentication
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var checkBiometryType: Factory<any CheckBiometryTypeUseCase> {
         self { CheckBiometryType() }
     }
@@ -676,7 +676,7 @@ extension UseCasesContainer {
 
 // MARK: Telemetry
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var addTelemetryEvent: Factory<any AddTelemetryEventUseCase> {
         self { AddTelemetryEvent(repository: RepositoryContainer.shared.telemetryEventRepository(),
                                  userManager: self.userManager,
@@ -718,7 +718,7 @@ extension UseCasesContainer {
 
 // MARK: AutoFill
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var mapLoginItem: Factory<any MapLoginItemUseCase> {
         self { MapLoginItem() }
     }
@@ -741,7 +741,7 @@ extension UseCasesContainer {
 
 // MARK: Spotlight
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var indexItemsForSpotlight: Factory<any IndexItemsForSpotlightUseCase> {
         self { IndexItemsForSpotlight(userManager: self.userManager,
                                       itemRepository: self.itemRepository,
@@ -753,7 +753,7 @@ extension UseCasesContainer {
 
 // MARK: Vault
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var processVaultSyncEvent: Factory<any ProcessVaultSyncEventUseCase> {
         self { ProcessVaultSyncEvent() }
     }
@@ -772,7 +772,7 @@ extension UseCasesContainer {
 
 // MARK: - Feature Flags
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var getFeatureFlagStatus: Factory<any GetFeatureFlagStatusUseCase> {
         self {
             GetFeatureFlagStatus(repository: RepositoryContainer.shared.featureFlagsRepository())
@@ -782,7 +782,7 @@ extension UseCasesContainer {
 
 // MARK: TOTP
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var sanitizeTotpUriForEditing: Factory<any SanitizeTotpUriForEditingUseCase> {
         self { SanitizeTotpUriForEditing() }
     }
@@ -798,7 +798,7 @@ extension UseCasesContainer {
 
 // MARK: Rust Utils
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var generatePassword: Factory<any GeneratePasswordUseCase> {
         self { GeneratePassword() }
     }
@@ -822,7 +822,7 @@ extension UseCasesContainer {
 
 // MARK: Data
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var revokeCurrentSession: Factory<any RevokeCurrentSessionUseCase> {
         self { RevokeCurrentSession(networkRepository: RepositoryContainer.shared.networkRepository(),
                                     userManager: self.userManager) }
@@ -882,7 +882,7 @@ extension UseCasesContainer {
 
 // MARK: - Items
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var pinItems: Factory<any PinItemsUseCase> {
         self { PinItems(itemRepository: self.itemRepository) }
     }
@@ -912,7 +912,7 @@ extension UseCasesContainer {
 
 // MARK: - Rust Validators
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var validateAliasPrefix: Factory<any ValidateAliasPrefixUseCase> {
         self { ValidateAliasPrefix() }
     }
@@ -930,7 +930,7 @@ extension UseCasesContainer {
 
 // MARK: - User
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var refreshUserSettings: Factory<any RefreshUserSettingsUseCase> {
         self { RefreshUserSettings(userSettingsProtocol: self.userSettingsRepository)
         }
@@ -1025,7 +1025,7 @@ extension UseCasesContainer {
 
 // MARK: Passkey
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var passkeyManagerProvider: Factory<any PasskeyManagerProvider> {
         self { PasskeyManagerProviderImpl() }
     }
@@ -1041,7 +1041,7 @@ extension UseCasesContainer {
 
 // MARK: Preferences
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var getAppPreferences: Factory<any GetAppPreferencesUseCase> {
         self { GetAppPreferences(manager: self.preferencesManager) }
     }
@@ -1069,7 +1069,7 @@ extension UseCasesContainer {
 
 // MARK: Misc
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var copyToClipboard: Factory<any CopyToClipboardUseCase> {
         self { CopyToClipboard(getSharedPreferences: self.getSharedPreferences()) }
     }
@@ -1088,7 +1088,7 @@ extension UseCasesContainer {
 
 // MARK: - Dark web monitor
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var getCustomEmailSuggestion: Factory<any GetCustomEmailSuggestionUseCase> {
         self { GetCustomEmailSuggestion(itemRepository: self.itemRepository,
                                         symmetricKeyProvider: self.symmetricKeyProvider,
@@ -1115,7 +1115,7 @@ extension UseCasesContainer {
 
 // MARK: - Flags
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var refreshFeatureFlags: Factory<any RefreshFeatureFlagsUseCase> {
         self { RefreshFeatureFlags(repository: RepositoryContainer.shared.featureFlagsRepository(),
                                    apiServicing: self.apiManager,
@@ -1126,7 +1126,7 @@ extension UseCasesContainer {
 
 // MARK: - File attachments
 
-extension UseCasesContainer {
+public extension UseCasesContainer {
     var generateDatedFileName: Factory<any GenerateDatedFileNameUseCase> {
         self { GenerateDatedFileName() }
     }
