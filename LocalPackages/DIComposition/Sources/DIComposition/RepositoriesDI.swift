@@ -29,13 +29,13 @@ import ProtonCoreLogin
 import ProtonCoreUtilities
 
 /// Contain all repositories
-final class RepositoryContainer: SharedContainer, AutoRegistering {
-    static let shared = RepositoryContainer()
-    let manager = ContainerManager()
+public final class RepositoryContainer: SharedContainer, AutoRegistering {
+    public static let shared = RepositoryContainer()
+    public let manager = ContainerManager()
 
     private init() {}
 
-    func autoRegister() {
+    public func autoRegister() {
         manager.defaultScope = .singleton
     }
 }
@@ -44,37 +44,37 @@ final class RepositoryContainer: SharedContainer, AutoRegistering {
 
 private extension RepositoryContainer {
     var apiManager: APIManager {
-        SharedToolingContainer.shared.apiManager()
+        ToolingContainer.shared.apiManager()
     }
 
     var logManager: any LogManagerProtocol {
-        SharedToolingContainer.shared.logManager()
+        ToolingContainer.shared.logManager()
     }
 
     var currentDateProvider: any CurrentDateProviderProtocol {
-        SharedToolingContainer.shared.currentDateProvider()
+        ToolingContainer.shared.currentDateProvider()
     }
 
     var databaseService: any DatabaseServiceProtocol {
-        SharedServiceContainer.shared.databaseService()
+        ServiceContainer.shared.databaseService()
     }
 
     var userManager: any UserManagerProtocol {
-        SharedServiceContainer.shared.userManager()
+        ServiceContainer.shared.userManager()
     }
 
     var symmetricKeyProvider: any SymmetricKeyProvider {
-        SharedDataContainer.shared.symmetricKeyProvider()
+        DataContainer.shared.symmetricKeyProvider()
     }
 
     var keychain: any KeychainProtocol {
-        SharedToolingContainer.shared.keychain()
+        ToolingContainer.shared.keychain()
     }
 }
 
 // MARK: Datasources
 
-extension RepositoryContainer {
+public extension RepositoryContainer {
     var remoteAliasDatasource: Factory<any RemoteAliasDatasourceProtocol> {
         self { RemoteAliasDatasource(apiServicing: self.apiManager) }
     }
@@ -137,7 +137,7 @@ extension RepositoryContainer {
 
     var telemetryScheduler: Factory<any TelemetrySchedulerProtocol> {
         self { TelemetryScheduler(currentDateProvider: self.currentDateProvider,
-                                  thresholdProvider: SharedToolingContainer.shared.preferencesManager()) }
+                                  thresholdProvider: ToolingContainer.shared.preferencesManager()) }
     }
 
     var remoteFavIconDatasource: Factory<any RemoteFavIconDatasourceProtocol> {
@@ -278,7 +278,7 @@ extension RepositoryContainer {
 
 // MARK: Repositories
 
-extension RepositoryContainer {
+public extension RepositoryContainer {
     var remoteUserSettingsDatasource: Factory<any RemoteUserSettingsDatasourceProtocol> {
         self { RemoteUserSettingsDatasource(apiServicing: self.apiManager) }
     }
@@ -292,7 +292,7 @@ extension RepositoryContainer {
         self {
             ShareKeyRepository(localDatasource: self.localShareKeyDatasource(),
                                remoteDatasource: self.remoteShareKeyDatasource(),
-                               cryptoService: SharedServiceContainer.shared.cryptoService(),
+                               cryptoService: ServiceContainer.shared.cryptoService(),
                                logManager: self.logManager,
                                symmetricKeyProvider: self.symmetricKeyProvider)
         }
@@ -396,7 +396,7 @@ extension RepositoryContainer {
     }
 
     var userSettingsRepository: Factory<any UserSettingsRepositoryProtocol> {
-        self { UserSettingsRepository(userDefaultService: SharedServiceContainer.shared.userDefaultService(),
+        self { UserSettingsRepository(userDefaultService: ServiceContainer.shared.userDefaultService(),
                                       remoteDatasource: self.remoteUserSettingsDatasource()) }
     }
 
@@ -430,7 +430,7 @@ extension RepositoryContainer {
             FileAttachmentRepository(shareRepository: self.shareRepository(),
                                      itemRepository: self.itemRepository(),
                                      remoteFileDatasource: self.remoteFileDatasource(),
-                                     apiServiceLite: SharedToolingContainer.shared.apiServiceLite(),
+                                     apiServiceLite: ToolingContainer.shared.apiServiceLite(),
                                      keyManager: self.passKeyManager())
         }
     }
@@ -463,7 +463,7 @@ extension RepositoryContainer {
 
 // MARK: - Security
 
-extension RepositoryContainer {
+public extension RepositoryContainer {
     var passMonitorRepository: Factory<any PassMonitorRepositoryProtocol> {
         self {
             PassMonitorRepository(itemRepository: self.itemRepository(),
@@ -475,13 +475,13 @@ extension RepositoryContainer {
     }
 }
 
-extension RepositoryContainer {
+public extension RepositoryContainer {
     var localDataMigrationDatasource: Factory<any LocalDataMigrationDatasourceProtocol> {
         self { LocalDataMigrationDatasource(userDefault: kSharedUserDefaults) }
     }
 }
 
-extension RepositoryContainer {
+public extension RepositoryContainer {
     var reportRepository: Factory<any ReportRepositoryProtocol> {
         self { ReportRepository(apiServicing: self.apiManager,
                                 userManager: self.userManager) }

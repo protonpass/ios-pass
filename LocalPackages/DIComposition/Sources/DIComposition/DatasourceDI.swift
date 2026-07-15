@@ -26,36 +26,36 @@ import Entities
 import FactoryKit
 import Foundation
 
-final class DataContainer: SharedContainer, AutoRegistering {
-    static let shared = DataContainer()
-    let manager = ContainerManager()
+public final class DataContainer: SharedContainer, AutoRegistering {
+    public static let shared = DataContainer()
+    public let manager = ContainerManager()
 
-    init() {
+    private init() {
         Self.setUpContext()
     }
 
-    func autoRegister() {
+    public func autoRegister() {
         manager.defaultScope = .singleton
     }
 }
 
 private extension DataContainer {
     var keychain: any KeychainProtocol {
-        SharedToolingContainer.shared.keychain()
+        ToolingContainer.shared.keychain()
     }
 
     var mainKeyProvider: any MainKeyProvider {
-        SharedToolingContainer.shared.mainKeyProvider()
+        ToolingContainer.shared.mainKeyProvider()
     }
 }
 
-extension DataContainer {
+public extension DataContainer {
     var loginMethod: Factory<LoginMethodFlow> {
         self { LoginMethodFlow() }
     }
 
     var credentialProvider: Factory<any AuthManagerProtocol> {
-        self { SharedToolingContainer.shared.authManager() }
+        self { ToolingContainer.shared.authManager() }
     }
 
     var symmetricKeyProvider: Factory<any SymmetricKeyProvider> {
@@ -71,7 +71,7 @@ extension DataContainer {
 
 // MARK: - Data streams
 
-extension DataContainer {
+public extension DataContainer {
     var currentSelectedItems: Factory<CurrentValueSubject<[ItemUiModel], Never>> {
         self { .init([]) }
     }

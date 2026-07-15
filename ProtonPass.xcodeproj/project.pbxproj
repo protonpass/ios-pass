@@ -555,6 +555,7 @@
 		5B24B1DF3007C86D009B081A /* Stores in Frameworks */ = {isa = PBXBuildFile; productRef = 5B24B1DE3007C86D009B081A /* Stores */; };
 		5B24B1E13007C874009B081A /* Stores in Frameworks */ = {isa = PBXBuildFile; productRef = 5B24B1E03007C874009B081A /* Stores */; };
 		5B24B1E33007CA44009B081A /* Stores in Frameworks */ = {isa = PBXBuildFile; productRef = 5B24B1E23007CA44009B081A /* Stores */; };
+		5B24B1F73007CF8D009B081A /* DIComposition in Frameworks */ = {isa = PBXBuildFile; productRef = 5B24B1F63007CF8D009B081A /* DIComposition */; };
 		5B39DF7F2B501C020009D53E /* DetailHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B39DF7D2B501C020009D53E /* DetailHistoryView.swift */; };
 		5B39DF802B501C020009D53E /* DetailHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B39DF7E2B501C020009D53E /* DetailHistoryViewModel.swift */; };
 		5B3AD42B2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */; };
@@ -1286,6 +1287,7 @@
 			files = (
 				53C81ECA2DDB6E0F00A367C1 /* FactoryKit in Frameworks */,
 				57F59FB22AE5C4DE002EFDFD /* ProtonCoreCryptoGoImplementation in Frameworks */,
+				5B24B1F73007CF8D009B081A /* DIComposition in Frameworks */,
 				35855C112AC8743F00794DB4 /* UseCases in Frameworks */,
 				5B8D20AB2AA74B5E00457CA3 /* DesignSystem in Frameworks */,
 				354192842AC1CB9B001F2996 /* Macro in Frameworks */,
@@ -2993,6 +2995,7 @@
 				53C81EC92DDB6E0F00A367C1 /* FactoryKit */,
 				53A195282FB36B5F008C3BDC /* Atlantis */,
 				5B24B1DC3007C859009B081A /* Stores */,
+				5B24B1F63007CF8D009B081A /* DIComposition */,
 			);
 			productName = "Proton Key (iOS)";
 			productReference = 35E5063B286F819F00A3F6EA /* Proton Pass.app */;
@@ -6402,6 +6405,10 @@
 		5B24B1E23007CA44009B081A /* Stores */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Stores;
+		};
+		5B24B1F63007CF8D009B081A /* DIComposition */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DIComposition;
 		};
 		5B8D20632AA7454400457CA3 /* MBProgressHUD */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -24,16 +24,16 @@ import FactoryKit
 import ProtonCoreAuthentication
 import Stores
 
-final class ServiceContainer: SharedContainer, AutoRegistering {
-    static let shared = ServiceContainer()
-    let manager = ContainerManager()
+public final class ServiceContainer: SharedContainer, AutoRegistering {
+    public static let shared = ServiceContainer()
+    public let manager = ContainerManager()
 
-    func autoRegister() {
+    public func autoRegister() {
         manager.defaultScope = .singleton
     }
 }
 
-extension ServiceContainer {
+public extension ServiceContainer {
     @MainActor
     var paymentManager: Factory<any PaymentsManagerProtocol> {
         self {
@@ -93,7 +93,7 @@ private extension ServiceContainer {
     }
 }
 
-extension ServiceContainer {
+public extension ServiceContainer {
     var notificationService: Factory<any LocalNotificationServiceProtocol> {
         self { NotificationService(logManager: self.logManager) }
     }
@@ -266,7 +266,7 @@ extension ServiceContainer {
 
 // MARK: - User
 
-extension ServiceContainer {
+public extension ServiceContainer {
     var userManager: Factory<any UserManagerProtocol> {
         self {
             UserManager(userDataDatasource: RepositoryContainer.shared.localUserDataDatasource(),
