@@ -1,7 +1,7 @@
 //
 // PassModule+Extensions.swift
-// Proton Pass - Created on 30/10/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Proton Pass - Created on 13/07/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -20,22 +20,38 @@
 
 import Entities
 import Foundation
-import Macro
 
 public extension PassModule {
-    var logTitle: String {
+    var logFileName: String {
         switch self {
         case .hostApp:
-            #localized("Application logs", bundle: .module)
+            "pass_host_application.log"
 
         case .autoFillExtension:
-            #localized("AutoFill extension logs", bundle: .module)
+            "pass_autofill_extension.log"
 
         case .shareExtension:
-            #localized("Share extension logs", bundle: .module)
+            "pass_share_extension.log"
 
         case .actionExtension:
-            #localized("Action extension logs", bundle: .module)
+            "pass_action_extension.log"
+        }
+    }
+
+    var exportLogFileName: String {
+        let hash = Bundle.main.gitCommitHash ?? "?"
+        return switch self {
+        case .hostApp:
+            "pass_host_application_\(hash).log"
+
+        case .autoFillExtension:
+            "pass_autofill_extension\(hash).log"
+
+        case .shareExtension:
+            "pass_share_extension\(hash).log"
+
+        case .actionExtension:
+            "pass_action_extension\(hash).log"
         }
     }
 }

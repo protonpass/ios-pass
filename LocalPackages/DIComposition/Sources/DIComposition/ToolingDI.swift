@@ -31,8 +31,8 @@ import ProtonCoreLogin
 import ProtonCoreLoginUI
 
 /// Contain tools shared between main iOS app and extensions
-final class SharedToolingContainer: SharedContainer, AutoRegistering {
-    static let shared = SharedToolingContainer()
+final class ToolingContainer: SharedContainer, AutoRegistering {
+    static let shared = ToolingContainer()
     let manager = ContainerManager()
 
     private init() {
@@ -46,12 +46,12 @@ final class SharedToolingContainer: SharedContainer, AutoRegistering {
 
 // MARK: Shared Logging tools
 
-extension SharedToolingContainer {
+extension ToolingContainer {
     var logManager: Factory<any LogManagerProtocol> {
-        self { LogManager(module: .hostApp) }
-            .onArg(PassModule.autoFillExtension) { LogManager(module: .autoFillExtension) }
-            .onArg(PassModule.shareExtension) { LogManager(module: .shareExtension) }
-            .onArg(PassModule.actionExtension) { LogManager(module: .actionExtension) }
+        self { LogManager(module: PassModule.hostApp) }
+            .onArg(PassModule.autoFillExtension) { LogManager(module: PassModule.autoFillExtension) }
+            .onArg(PassModule.shareExtension) { LogManager(module: PassModule.shareExtension) }
+            .onArg(PassModule.actionExtension) { LogManager(module: PassModule.actionExtension) }
     }
 
     var logFormatter: Factory<any LogFormatterProtocol> {
@@ -69,7 +69,7 @@ extension SharedToolingContainer {
 
 // MARK: Data tools
 
-extension SharedToolingContainer {
+extension ToolingContainer {
     var doh: Factory<any DoHInterface> {
         self { ProtonPassDoH() }
     }
@@ -96,7 +96,7 @@ extension SharedToolingContainer {
 
     var apiManager: Factory<APIManager> {
         self { APIManager(authManager: self.authManager(),
-                          userManager: SharedServiceContainer.shared.userManager(),
+                          userManager: ServiceContainer.shared.userManager(),
                           themeProvider: self.preferencesManager(),
                           appVersion: self.appVersion(),
                           doh: self.doh(),
@@ -112,15 +112,15 @@ extension SharedToolingContainer {
 
 // MARK: User centric tools
 
-extension SharedToolingContainer {
+extension ToolingContainer {
     var currentDateProvider: Factory<any CurrentDateProviderProtocol> {
         self { CurrentDateProvider() }
     }
 
     var preferencesManager: Factory<any PreferencesManagerProtocol> {
         self {
-            let cont = SharedRepositoryContainer.shared
-            return PreferencesManager(userManager: SharedServiceContainer.shared.userManager(),
+            let cont = RepositoryContainer.shared
+            return PreferencesManager(userManager: ServiceContainer.shared.userManager(),
                                       appPreferencesDatasource: cont.appPreferencesDatasource(),
                                       sharedPreferencesDatasource: cont.sharedPreferencesDatasource(),
                                       userPreferencesDatasource: cont.userPreferencesDatasource(),
@@ -131,7 +131,7 @@ extension SharedToolingContainer {
 
 // MARK: Keychain tools
 
-extension SharedToolingContainer {
+extension ToolingContainer {
     private var baseKeychain: Factory<PPKeychain> {
         self { PPKeychain() }
     }
@@ -156,11 +156,11 @@ extension SharedToolingContainer {
 
 // MARK: Authentication
 
-extension SharedToolingContainer {
+extension ToolingContainer {
     var authManager: Factory<any AuthManagerProtocol> {
         self {
-            AuthManager(keychain: SharedToolingContainer.shared.keychain(),
-                        symmetricKeyProvider: SharedDataContainer.shared.nonSendableSymmetricKeyProvider(),
+            AuthManager(keychain: ToolingContainer.shared.keychain(),
+                        symmetricKeyProvider: DataContainer.shared.nonSendableSymmetricKeyProvider(),
                         module: self.module(),
                         logManager: self.logManager())
         }

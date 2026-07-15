@@ -63,6 +63,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     private(set) var accountRecovery: AccountRecovery?
 
     private var cancellables = Set<AnyCancellable>()
+    private var subscriptionTask: Task<Void, Never>?
     weak var delegate: (any AccountViewModelDelegate)?
 
     var username: String {
@@ -91,15 +92,25 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
             }
             .store(in: &cancellables)
 
-        userManager
-            .currentActiveUser
+//        userManager
+//            .currentActiveUser
+//            .receive(on: DispatchQueue.main)
+//            .compactMap(\.?.user.canManageSubscription)
+//            .sink { [weak self] canManageSubscription in
+//                guard let self else { return }
+//                // Temporarily hide "Manage subscription" option while waiting for dynamic plans
+//                let isB2B = plan?.isBusinessUser == true
+//                self.canManageSubscription = canManageSubscription && !isB2B
+//            }
+//            .store(in: &cancellables)
+        accessRepository.access
+            .combineLatest(userManager.currentActiveUser)
             .receive(on: DispatchQueue.main)
-            .compactMap(\.?.user.canManageSubscription)
-            .sink { [weak self] canManageSubscription in
+            .sink { [weak self] access, userData in
                 guard let self else { return }
-                // Temporarily hide "Manage subscription" option while waiting for dynamic plans
-                let isB2B = plan?.isBusinessUser == true
-                self.canManageSubscription = canManageSubscription && !isB2B
+                plan = access?.access.plan
+                let isB2B = access?.access.plan.isBusinessUser == true
+                canManageSubscription = (userData?.user.canManageSubscription ?? false) && !isB2B
             }
             .store(in: &cancellables)
     }
@@ -111,11 +122,43 @@ extension AccountViewModel {
     }
 
     func manageSubscription() {
-        paymentsManager.manageSubscription(isUpgrading: false) { [weak self] result in
+        // The payment sheet is modal and can stay up for minutes; keep the handle
+        // so a re-entrant call supersedes a pending flow instead of stacking on it.
+        subscriptionTask?.cancel()
+//        subscriptionTask = Task { [weak self] in
+//            guard let self else { return }
+//            do {
+//                if try await paymentsManager.manageSubscription(isUpgrading: false) {
+//                    refreshUserPlan()
+//                } else {
+//                    logger.debug("Payment flow ended without purchase (cancelled, failed, or dismissed).")
+//                }
+//            } catch {
+//                handle(error: error)
+//            }
+//        }
+        subscriptionTask = Task { [weak self] in
             guard let self else { return }
-            handlePaymentsResult(result: result)
+            do {
+                if try await paymentsManager.manageSubscription(isUpgrading: false) {
+                    refreshUserPlan()
+                } else {
+                    logger.debug("Payment flow ended without purchase (cancelled or failed).")
+                }
+            } catch is CancellationError {
+                // Superseded by a newer tap or torn down with the screen — not an outcome.
+            } catch {
+                handle(error: error)
+            }
         }
     }
+
+//    func manageSubscription() {
+//        paymentsManager.manageSubscription(isUpgrading: false) { [weak self] result in
+//            guard let self else { return }
+//            handlePaymentsResult(result: result)
+//        }
+//    }
 
     func upgradeSubscription() {
         router.present(for: .upgradeFlow)
@@ -281,24 +324,25 @@ private extension AccountViewModel {
         }
     }
 
-    func handlePaymentsResult(result: PaymentsManager.PaymentsResult) {
-        switch result {
-        case let .success(inAppPurchasePlan):
-            if inAppPurchasePlan {
-                refreshUserPlan()
-            } else {
-                logger
-                    .debug("""
-                    Payment is done but no plan is purchased.
-                     Or purchase was cancelled.
-                     Or completed, and sheet is being dismissed.
-                    """)
-            }
-
-        case let .failure(error):
-            logger.error(error)
-        }
-    }
+//
+//    func handlePaymentsResult(result: PaymentsManager.PaymentsResult) {
+//        switch result {
+//        case let .success(inAppPurchasePlan):
+//            if inAppPurchasePlan {
+//                refreshUserPlan()
+//            } else {
+//                logger
+//                    .debug("""
+//                    Payment is done but no plan is purchased.
+//                     Or purchase was cancelled.
+//                     Or completed, and sheet is being dismissed.
+//                    """)
+//            }
+//
+//        case let .failure(error):
+//            logger.error(error)
+//        }
+//    }
 
     private func checkFidoActivation() {
         Task { @MainActor [weak self] in

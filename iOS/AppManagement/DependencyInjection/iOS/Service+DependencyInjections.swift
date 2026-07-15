@@ -35,8 +35,20 @@ final class ServiceContainer: SharedContainer, AutoRegistering {
 }
 
 extension ServiceContainer {
-    var paymentManager: Factory<PaymentsManager> {
-        self { .init(storage: kSharedUserDefaults) }
+    @MainActor
+    var paymentManager: Factory<any PaymentsManagerProtocol> {
+        self {
+            /* .init(storage: kSharedUserDefaults) */ PaymentsManager(apiManager: SharedToolingContainer.shared
+                .apiManager(),
+                userManager: SharedServiceContainer.shared
+                    .userManager(),
+                authManager: SharedToolingContainer.shared
+                    .authManager(),
+                mainKeyProvider: SharedToolingContainer
+                    .shared.mainKeyProvider(),
+                logger: SharedToolingContainer.shared
+                    .logger())
+        }
     }
 
     @MainActor
