@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// swiftlint:disable file_length
 import Client
 import Combine
 import Core
@@ -29,6 +28,9 @@ import FactoryKit
 import Foundation
 import Macro
 import Screens
+
+// swiftlint:disable file_length
+import Stores
 import SwiftUI
 import UseCases
 

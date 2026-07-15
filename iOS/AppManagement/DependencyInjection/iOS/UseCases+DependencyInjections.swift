@@ -21,6 +21,7 @@
 import Client
 import Core
 import FactoryKit
+import Stores
 import UseCases
 
 final class UseCasesContainer: SharedContainer, AutoRegistering {

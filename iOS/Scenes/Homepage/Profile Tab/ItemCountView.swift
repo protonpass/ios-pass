@@ -24,6 +24,7 @@ import DesignSystem
 import Entities
 import FactoryKit
 import ProtonCoreUIFoundations
+import Stores
 import SwiftUI
 
 private let kChipHeight: CGFloat = 56

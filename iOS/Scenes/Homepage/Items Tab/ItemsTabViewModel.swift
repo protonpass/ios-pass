@@ -26,6 +26,7 @@ import Entities
 import FactoryKit
 import Macro
 import ProtonCoreLogin
+import Stores
 import SwiftUI
 
 @MainActor

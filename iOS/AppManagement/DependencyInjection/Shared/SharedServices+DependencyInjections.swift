@@ -22,6 +22,7 @@ import Client
 import Core
 import FactoryKit
 @preconcurrency import ProtonCoreTelemetry
+import Stores
 
 final class SharedServiceContainer: SharedContainer, AutoRegistering {
     static let shared = SharedServiceContainer()

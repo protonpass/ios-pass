@@ -26,6 +26,7 @@ import FactoryKit
 import Foundation
 import Macro
 import ProtonCoreLogin
+import Stores
 
 private extension EditableVaultListViewModel {
     struct VaultCount {

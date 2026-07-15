@@ -59,6 +59,7 @@ private extension UseCasesContainer {
         RepositoryContainer.shared.publicKeyRepository()
     }
 
+    @MainActor
     var appContentManager: any AppContentManagerProtocol {
         ServiceContainer.shared.appContentManager()
     }
@@ -185,6 +186,7 @@ extension UseCasesContainer {
                                        shareInviteRepository: self.inviteRepository) }
     }
 
+    @MainActor
     var leaveShare: Factory<any LeaveShareUseCase> {
         self { LeaveShare(appContentManager: self.appContentManager) }
     }
@@ -211,6 +213,7 @@ extension UseCasesContainer {
         }
     }
 
+    @MainActor
     var canUserPerformActionOnVault: Factory<any CanUserPerformActionOnVaultUseCase> {
         self {
             CanUserPerformActionOnVault(accessRepository: self.accessRepository,
@@ -317,6 +320,7 @@ extension UseCasesContainer {
         self { PermanentlyDeleteSelectedItems(repository: self.itemRepository) }
     }
 
+    @MainActor
     var createVault: Factory<any CreateVaultUseCase> {
         self { CreateVault(appContentManager: self.appContentManager,
                            repository: self.shareRepository) }
@@ -437,10 +441,10 @@ extension UseCasesContainer {
         self { GetRustLibraryVersion() }
     }
 
-    var enableAutoFill: Factory<any EnableAutoFillUseCase> {
-        self { EnableAutoFill(router: SharedRouterContainer.shared.mainUIKitSwiftUIRouter(),
-                              credentialManager: ServiceContainer.shared.credentialManager()) }
-    }
+//    var enableAutoFill: Factory<any EnableAutoFillUseCase> {
+//        self { EnableAutoFill(router: SharedRouterContainer.shared.mainUIKitSwiftUIRouter(),
+//                              credentialManager: ServiceContainer.shared.credentialManager()) }
+//    }
 
     var makeAccountSettingsUrl: Factory<any MakeAccountSettingsUrlUseCase> {
         self { MakeAccountSettingsUrl(doh: ToolingContainer.shared.doh()) }

@@ -25,6 +25,7 @@ import CryptoKit
 import Entities
 import FactoryKit
 import Screens
+import Stores
 import SwiftUI
 
 struct SearchDataDisplay: Equatable {

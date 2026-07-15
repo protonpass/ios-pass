@@ -25,6 +25,7 @@ import Combine
 import Entities
 import FactoryKit
 import Foundation
+import Stores
 
 @MainActor
 final class AcceptRejectInviteViewModel: ObservableObject {

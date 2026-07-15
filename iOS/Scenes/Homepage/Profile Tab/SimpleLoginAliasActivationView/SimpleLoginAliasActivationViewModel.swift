@@ -27,6 +27,7 @@ import Entities
 import FactoryKit
 import ProtonCoreLogin
 import ProtonCoreServices
+import Stores
 import SwiftUI
 import UseCases
 

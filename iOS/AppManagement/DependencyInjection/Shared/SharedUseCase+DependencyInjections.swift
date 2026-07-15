@@ -23,6 +23,7 @@ import Core
 import CryptoKit
 import FactoryKit
 import LocalAuthentication
+import Stores
 import UseCases
 
 final class SharedUseCasesContainer: SharedContainer, AutoRegistering {

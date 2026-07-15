@@ -50,6 +50,8 @@ let package = Package(
                 .product(name: "Entities", package: "Entities"),
                 .product(name: "Client", package: "Client"),
                 .product(name: "FactoryKit", package: "Factory"),
+                .product(name: "UseCases", package: "UseCases"),
+                .product(name: "Stores", package: "UseCases"),
                 .product(name: "PassRustCore", package: "PassRustCore"),
             ],
         ),

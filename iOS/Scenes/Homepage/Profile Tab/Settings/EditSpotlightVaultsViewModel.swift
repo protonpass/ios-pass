@@ -21,6 +21,7 @@
 import Entities
 import FactoryKit
 import Foundation
+import Stores
 
 @MainActor
 final class EditSpotlightVaultsViewModel: ObservableObject {

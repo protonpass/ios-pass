@@ -24,6 +24,7 @@ import Core
 import Entities
 import FactoryKit
 import Macro
+import Stores
 import SwiftUI
 
 @MainActor

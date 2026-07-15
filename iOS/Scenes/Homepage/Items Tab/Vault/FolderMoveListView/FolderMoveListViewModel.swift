@@ -24,6 +24,7 @@ import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Stores
 
 @MainActor
 @Observable

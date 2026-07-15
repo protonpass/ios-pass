@@ -24,6 +24,7 @@ import Entities
 import FactoryKit
 import ProtonCoreUIFoundations
 import Screens
+import Stores
 import SwiftUI
 
 struct VaultSelectorView: View {
