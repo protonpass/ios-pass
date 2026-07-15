@@ -50,7 +50,7 @@ private extension EditableVaultListViewModel {
             var vaultCounts = [VaultCount]()
             let hiddenShareIds = sharesData.hiddenSharesIds
 
-            for shareContent in sharesData.visibleShareContents where shareContent.share.vaultContent != nil {
+            for shareContent in sharesData.shares.values where shareContent.share.vaultContent != nil {
                 if !shareContent.share.hidden {
                     all += shareContent.itemCount
                 }
