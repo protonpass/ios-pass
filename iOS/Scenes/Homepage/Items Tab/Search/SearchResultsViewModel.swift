@@ -22,6 +22,7 @@ import Client
 import Entities
 import FactoryKit
 import Macro
+import Stores
 import SwiftUI
 
 enum VaultSearchSelection: Equatable {

@@ -23,19 +23,18 @@ import Client
 import Core
 @preconcurrency import CryptoKit
 import Entities
-import FactoryKit
 import Foundation
 import Macro
 import ProtonCoreLogin
 import SwiftUI
 import UseCases
 
-enum AppContentState: Equatable {
+public enum AppContentState: Equatable {
     case loading
     case loaded(SharesData)
     case error(any Error)
 
-    var loadedContent: SharesData? {
+    public var loadedContent: SharesData? {
         switch self {
         case let .loaded(content):
             content
@@ -45,7 +44,7 @@ enum AppContentState: Equatable {
         }
     }
 
-    static func == (lhs: Self, rhs: Self) -> Bool {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
         case (.loading, .loading):
             true
@@ -63,48 +62,42 @@ enum AppContentState: Equatable {
 }
 
 @MainActor
-final class AppContentManager: ObservableObject, DeinitPrintable, AppContentManagerProtocol {
+public final class AppContentManager: ObservableObject, DeinitPrintable, AppContentManagerProtocol {
     deinit { print(deinitMessage) }
 
-    @Published private(set) var state = AppContentState.loading
-    @Published private(set) var shareSelection = ShareSelection.all
-    @Published private(set) var itemCount = ItemCount.zero
+    @Published public private(set) var state = AppContentState.loading
+    @Published public private(set) var shareSelection = ShareSelection.all
+    @Published public private(set) var itemCount = ItemCount.zero
 
     @AppStorage(Constants.filterTypeKey, store: kSharedUserDefaults)
-    private(set) var filterOption = ItemTypeFilterOption.all
+    public private(set) var filterOption = ItemTypeFilterOption.all
 
     @AppStorage(Constants.incompleteFullSyncUserId, store: kSharedUserDefaults)
-    private(set) var incompleteFullSyncUserId: String?
+    public private(set) var incompleteFullSyncUserId: String?
 
-    nonisolated let currentShares: CurrentValueSubject<[Share], Never> = .init([])
+    public nonisolated let currentShares: CurrentValueSubject<[Share], Never> = .init([])
     // Should subscribe and receive on main queue in view models to be sure not crash appears between @MainActor
     // isolation and combine
-    nonisolated let vaultSyncEventStream = PassthroughSubject<VaultSyncProgressEvent, Never>()
-    nonisolated let currentSpotlightSelectedVaults: CurrentValueSubject<[Share], Never> = .init([])
+    public nonisolated let vaultSyncEventStream = PassthroughSubject<VaultSyncProgressEvent, Never>()
+    public nonisolated let currentSpotlightSelectedVaults: CurrentValueSubject<[Share], Never> = .init([])
 
-    private let itemRepository: any ItemRepositoryProtocol // = resolve(\SharedRepositoryContainer.itemRepository)
-    private let shareRepository: any ShareRepositoryProtocol // =
-    // resolve(\SharedRepositoryContainer.shareRepository)
-    private let logger: Logger // = resolve(\SharedToolingContainer.logger)
-    private let loginMethod: LoginMethodFlow // = resolve(\SharedDataContainer.loginMethod)
-    private let symmetricKeyProvider: any SymmetricKeyProvider // = resolve(\SharedDataContainer.symmetricKeyProvider)
-    /* @LazyInjected(\SharedToolingContainer.preferencesManager) */private var preferencesManager: any PreferencesManagerProtocol
-    /*  @LazyInjected(\SharedRepositoryContainer.inviteRepository) */private var inviteRepository: any FullInviteRepositoryProtocol
-    /* @LazyInjected(\SharedServiceContainer.simpleLoginNoteSynchronizer) */private var slNoteSynchronizer: any SimpleLoginNoteSynchronizerProtocol
-    /** @LazyInjected(\SharedRepositoryContainer.folderRepository) */ private var folderRepository: any FolderRepositoryProtocol
+    private let itemRepository: any ItemRepositoryProtocol
+    private let shareRepository: any ShareRepositoryProtocol
+    private let logger: Logger
+    private let loginMethod: LoginMethodFlow
+    private let symmetricKeyProvider: any SymmetricKeyProvider
+    private let preferencesManager: any PreferencesManagerProtocol
+    private let inviteRepository: any FullInviteRepositoryProtocol
+    private let slNoteSynchronizer: any SimpleLoginNoteSynchronizerProtocol
+    private let folderRepository: any FolderRepositoryProtocol
 
     // Use cases
-    private let indexAllLoginItems: any IndexAllLoginItemsUseCase // = resolve(\SharedUseCasesContainer.indexAllLoginItems)
-    private let indexItemsForSpotlight: any IndexItemsForSpotlightUseCase // = resolve(\SharedUseCasesContainer.indexItemsForSpotlight)
-    private let deleteLocalDataBeforeFullSync: any DeleteLocalDataBeforeFullSyncUseCase // = resolve(\SharedUseCasesContainer.deleteLocalDataBeforeFullSync)
-
-    ///    @LazyInjected(\SharedUseCasesContainer.getLastEventIdIfNotExist)
+    private let indexAllLoginItems: any IndexAllLoginItemsUseCase
+    private let indexItemsForSpotlight: any IndexItemsForSpotlightUseCase
+    private let deleteLocalDataBeforeFullSync: any DeleteLocalDataBeforeFullSyncUseCase
     private let getLastEventIdIfNotExist: any GetLastEventIdIfNotExistUseCase
-    ///    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let getFeatureFlagStatus: any GetFeatureFlagStatusUseCase
-    ///    @LazyInjected(\SharedUseCasesContainer.dedupShare)
     private let dedupShare: any DedupShareUseCase
-    ///    @LazyInjected(\SharedUseCasesContainer.refreshUserData)
     private let refreshUserData: any RefreshUserDataUseCase
 
     private var cancellables = Set<AnyCancellable>()
@@ -112,28 +105,28 @@ final class AppContentManager: ObservableObject, DeinitPrintable, AppContentMana
     /// The filter option after switching vaults
     private var pendingItemTypeFilterOption: ItemTypeFilterOption?
 
-    var hasEditableContainers: Bool {
+    public var hasEditableContainers: Bool {
         getAllShares().contains {
             $0.shareType != .item && $0.canEdit
         }
     }
 
-    init(itemRepository: any ItemRepositoryProtocol,
-         shareRepository: any ShareRepositoryProtocol,
-         inviteRepository: any FullInviteRepositoryProtocol,
-         folderRepository: any FolderRepositoryProtocol,
-         slNoteSynchronizer: any SimpleLoginNoteSynchronizerProtocol,
-         preferencesManager: any PreferencesManagerProtocol,
-         symmetricKeyProvider: any SymmetricKeyProvider,
-         indexAllLoginItems: any IndexAllLoginItemsUseCase,
-         indexItemsForSpotlight: any IndexItemsForSpotlightUseCase,
-         deleteLocalDataBeforeFullSync: any DeleteLocalDataBeforeFullSyncUseCase,
-         getLastEventIdIfNotExist: any GetLastEventIdIfNotExistUseCase,
-         getFeatureFlagStatus: any GetFeatureFlagStatusUseCase,
-         dedupShare: any DedupShareUseCase,
-         refreshUserData: any RefreshUserDataUseCase,
-         logger: Logger,
-         loginMethod: LoginMethodFlow) {
+    public init(itemRepository: any ItemRepositoryProtocol,
+                shareRepository: any ShareRepositoryProtocol,
+                inviteRepository: any FullInviteRepositoryProtocol,
+                folderRepository: any FolderRepositoryProtocol,
+                slNoteSynchronizer: any SimpleLoginNoteSynchronizerProtocol,
+                preferencesManager: any PreferencesManagerProtocol,
+                symmetricKeyProvider: any SymmetricKeyProvider,
+                indexAllLoginItems: any IndexAllLoginItemsUseCase,
+                indexItemsForSpotlight: any IndexItemsForSpotlightUseCase,
+                deleteLocalDataBeforeFullSync: any DeleteLocalDataBeforeFullSyncUseCase,
+                getLastEventIdIfNotExist: any GetLastEventIdIfNotExistUseCase,
+                getFeatureFlagStatus: any GetFeatureFlagStatusUseCase,
+                dedupShare: any DedupShareUseCase,
+                refreshUserData: any RefreshUserDataUseCase,
+                logger: Logger,
+                loginMethod: LoginMethodFlow) {
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
         self.inviteRepository = inviteRepository
@@ -153,11 +146,11 @@ final class AppContentManager: ObservableObject, DeinitPrintable, AppContentMana
         setUp()
     }
 
-    var hasOnlyOneOwnedVault: Bool {
+    public var hasOnlyOneOwnedVault: Bool {
         getAllShares().numberOfOwnedVault <= 1
     }
 
-    func reset() {
+    public func reset() {
         state = .loading
         shareSelection = .all
         itemCount = .zero
@@ -168,7 +161,7 @@ final class AppContentManager: ObservableObject, DeinitPrintable, AppContentMana
 
 // MARK: - Data loading Public APIs
 
-extension AppContentManager {
+public extension AppContentManager {
     func refresh(userId: String) async {
         guard !isRefreshing else { return }
         defer { isRefreshing = false }
@@ -299,7 +292,7 @@ extension AppContentManager {
 
 // MARK: - Share Actions Public APIs
 
-extension AppContentManager {
+public extension AppContentManager {
     func select(_ selection: ShareSelection, filterOption: ItemTypeFilterOption?) {
         pendingItemTypeFilterOption = filterOption
         shareSelection = selection
@@ -399,7 +392,7 @@ extension AppContentManager {
 
 // MARK: - Items Actions Public APIs
 
-extension AppContentManager {
+public extension AppContentManager {
     func getAllActiveAndTrashedItems() -> [ItemUiModel] {
         guard let sharesData = state.loadedContent else { return [] }
         let activeItems = getAllSharesItems()
@@ -534,7 +527,7 @@ extension AppContentManager {
 // MARK: - LimitationCounterProtocol
 
 extension AppContentManager: LimitationCounterProtocol {
-    func getAliasCount() -> Int {
+    public func getAliasCount() -> Int {
         switch state {
         case let .loaded(sharesData):
             let activeAliases = sharesData.shares.values.reduce(0) {
@@ -548,19 +541,19 @@ extension AppContentManager: LimitationCounterProtocol {
         }
     }
 
-    func getTOTPCount() -> Int {
+    public func getTOTPCount() -> Int {
         guard let sharesData = state.loadedContent else { return 0 }
         let activeItemsWithTotpUri = sharesData.shares.flatMap(\.value.allItems).filter(\.hasTotpUri).count
         let trashedItemsWithTotpUri = sharesData.trashedItems.compactMap(\.hasTotpUri).count
         return activeItemsWithTotpUri + trashedItemsWithTotpUri
     }
 
-    func getSharesCount() -> Int {
+    public func getSharesCount() -> Int {
         guard let sharesData = state.loadedContent else { return 0 }
         return sharesData.shares.count
     }
 
-    func getVaultsCount() -> Int {
+    public func getVaultsCount() -> Int {
         guard let sharesData = state.loadedContent else { return 0 }
         return sharesData.vaultCount
     }
@@ -779,7 +772,7 @@ private extension AppContentManager {
     }
 }
 
-extension [ShareContent] {
+public extension [ShareContent] {
     func sortedByHidden() -> Self {
         sorted(by: { !$0.share.hidden && $1.share.hidden })
             .sorted { lhs, rhs in
@@ -794,7 +787,7 @@ extension [ShareContent] {
 
 // MARK: - Folders
 
-extension AppContentManager {
+public extension AppContentManager {
     func createFolder(userId: String, shareId: String, parentFolderId: String?, name: String) async throws {
         let content = FolderContent(name: name)
         try await folderRepository.createFolder(userId: userId,

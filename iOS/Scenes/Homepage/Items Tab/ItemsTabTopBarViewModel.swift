@@ -26,6 +26,7 @@ import Entities
 import FactoryKit
 import Macro
 import ProtonCoreUIFoundations
+import Stores
 import SwiftUI
 
 enum ExtraBulkActionOption {

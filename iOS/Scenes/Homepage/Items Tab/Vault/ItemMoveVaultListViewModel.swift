@@ -24,6 +24,7 @@ import Core
 import Entities
 import FactoryKit
 import Macro
+import Stores
 
 @MainActor
 final class ItemMoveVaultListViewModel: ObservableObject, DeinitPrintable {

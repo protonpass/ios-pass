@@ -25,6 +25,7 @@ import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Stores
 
 @MainActor
 final class FullSyncProgressViewModel: ObservableObject {

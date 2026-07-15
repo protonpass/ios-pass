@@ -27,6 +27,7 @@ import Entities
 import FactoryKit
 import Macro
 import Screens
+import Stores
 import SwiftUI
 
 typealias UserForNewItemSubject = PassthroughSubject<UserUiModel, Never>

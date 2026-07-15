@@ -22,6 +22,7 @@ import Client
 import Core
 import FactoryKit
 import ProtonCoreAuthentication
+import Stores
 
 final class ServiceContainer: SharedContainer, AutoRegistering {
     static let shared = ServiceContainer()
@@ -164,21 +165,40 @@ extension ServiceContainer {
         }
     }
 
-//    var itemContextMenuHandler: Factory<ItemContextMenuHandler> {
-//        self { ItemContextMenuHandler() }
-//    }
-//
-//    @MainActor
-//    var appContentManager: Factory<AppContentManager> {
-//        self { AppContentManager() }
-//    }
+    ///    var itemContextMenuHandler: Factory<ItemContextMenuHandler> {
+    ///        self { ItemContextMenuHandler() }
+    ///    }
+    ///
+    ///    // NOTE: when activating, add `import Stores` and the `Stores` product
+    ///    // (from the UseCases package) to the DIComposition target dependencies.
+    @MainActor
+    var appContentManager: Factory<AppContentManager> {
+        self { AppContentManager(itemRepository: self.itemRepository,
+                                 shareRepository: self.shareRepository,
+                                 inviteRepository: RepositoryContainer.shared.inviteRepository(),
+                                 folderRepository: RepositoryContainer.shared.folderRepository(),
+                                 slNoteSynchronizer: ServiceContainer.shared.simpleLoginNoteSynchronizer(),
+                                 preferencesManager: ToolingContainer.shared.preferencesManager(),
+                                 symmetricKeyProvider: DataContainer.shared.symmetricKeyProvider(),
+                                 indexAllLoginItems: UseCasesContainer.shared.indexAllLoginItems(),
+                                 indexItemsForSpotlight: UseCasesContainer.shared.indexItemsForSpotlight(),
+                                 deleteLocalDataBeforeFullSync: UseCasesContainer.shared
+                                     .deleteLocalDataBeforeFullSync(),
+                                 getLastEventIdIfNotExist: UseCasesContainer.shared
+                                     .getLastEventIdIfNotExist(),
+                                 getFeatureFlagStatus: UseCasesContainer.shared.getFeatureFlagStatus(),
+                                 dedupShare: UseCasesContainer.shared.dedupShare(),
+                                 refreshUserData: UseCasesContainer.shared.refreshUserData(),
+                                 logger: ToolingContainer.shared.logger(),
+                                 loginMethod: DataContainer.shared.loginMethod()) }
+    }
 
-//    @MainActor
-//    var upgradeChecker: Factory<any UpgradeCheckerProtocol> {
-//        self { UpgradeChecker(accessRepository: RepositoryContainer.shared.accessRepository(),
-//                              counter: self.appContentManager(),
-//                              totpChecker: RepositoryContainer.shared.itemRepository()) }
-//    }
+    @MainActor
+    var upgradeChecker: Factory<any UpgradeCheckerProtocol> {
+        self { UpgradeChecker(accessRepository: RepositoryContainer.shared.accessRepository(),
+                              counter: self.appContentManager(),
+                              totpChecker: RepositoryContainer.shared.itemRepository()) }
+    }
 
     var databaseService: Factory<any DatabaseServiceProtocol> {
         self { DatabaseService(logManager: self.logManager) }
