@@ -133,7 +133,24 @@ extension SharedServiceContainer {
 
     @MainActor
     var appContentManager: Factory<AppContentManager> {
-        self { AppContentManager() }
+        self { AppContentManager(itemRepository: self.itemRepository,
+                                 shareRepository: self.shareRepository,
+                                 inviteRepository: SharedRepositoryContainer.shared.inviteRepository(),
+                                 folderRepository: SharedRepositoryContainer.shared.folderRepository(),
+                                 slNoteSynchronizer: SharedServiceContainer.shared.simpleLoginNoteSynchronizer(),
+                                 preferencesManager: SharedToolingContainer.shared.preferencesManager(),
+                                 symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider(),
+                                 indexAllLoginItems: SharedUseCasesContainer.shared.indexAllLoginItems(),
+                                 indexItemsForSpotlight: SharedUseCasesContainer.shared.indexItemsForSpotlight(),
+                                 deleteLocalDataBeforeFullSync: SharedUseCasesContainer.shared
+                                     .deleteLocalDataBeforeFullSync(),
+                                 getLastEventIdIfNotExist: SharedUseCasesContainer.shared
+                                     .getLastEventIdIfNotExist(),
+                                 getFeatureFlagStatus: SharedUseCasesContainer.shared.getFeatureFlagStatus(),
+                                 dedupShare: SharedUseCasesContainer.shared.dedupShare(),
+                                 refreshUserData: SharedUseCasesContainer.shared.refreshUserData(),
+                                 logger: SharedToolingContainer.shared.logger(),
+                                 loginMethod: SharedDataContainer.shared.loginMethod()) }
     }
 
     @MainActor

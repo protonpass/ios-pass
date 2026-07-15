@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import Foundation
 
 // sourcery: AutoMockable
@@ -67,6 +68,14 @@ public actor LogManager: LogManagerProtocol {
 
     private var numberOfLogsToRemove: Int {
         numberOfLogAfterMerge - config.maxLogLines
+    }
+
+    public init(module: PassModule) {
+        guard let fileContainer =
+            FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroup) else {
+            fatalError("Shared file container could not be created.")
+        }
+        self.init(url: fileContainer, fileName: module.logFileName)
     }
 
     /// Manage (read/write) the log file on disk

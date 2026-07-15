@@ -19,7 +19,7 @@ final class UseCasesContainer: SharedContainer, AutoRegistering {
 
 private extension UseCasesContainer {
     var logManager: any LogManagerProtocol {
-        SharedToolingContainer.shared.logManager()
+        ToolingContainer.shared.logManager()
     }
 
     @MainActor
@@ -28,43 +28,43 @@ private extension UseCasesContainer {
     }
 
     var userManager: any UserManagerProtocol {
-        SharedServiceContainer.shared.userManager()
+        ServiceContainer.shared.userManager()
     }
 
     var itemRepository: any ItemRepositoryProtocol {
-        SharedRepositoryContainer.shared.itemRepository()
+        RepositoryContainer.shared.itemRepository()
     }
 
     var shareRepository: any ShareRepositoryProtocol {
-        SharedRepositoryContainer.shared.shareRepository()
+        RepositoryContainer.shared.shareRepository()
     }
 
     var symmetricKeyProvider: any SymmetricKeyProvider {
-        SharedDataContainer.shared.symmetricKeyProvider()
+        DataContainer.shared.symmetricKeyProvider()
     }
 
     var localSpotlightVaultDatasource: any LocalSpotlightVaultDatasourceProtocol {
-        SharedRepositoryContainer.shared.localSpotlightVaultDatasource()
+        RepositoryContainer.shared.localSpotlightVaultDatasource()
     }
 
     var accessRepository: any AccessRepositoryProtocol {
-        SharedRepositoryContainer.shared.accessRepository()
+        RepositoryContainer.shared.accessRepository()
     }
 
     var inviteRepository: any FullInviteRepositoryProtocol {
-        SharedRepositoryContainer.shared.inviteRepository()
+        RepositoryContainer.shared.inviteRepository()
     }
 
     var publicKeyRepository: any PublicKeyRepositoryProtocol {
-        SharedRepositoryContainer.shared.publicKeyRepository()
+        RepositoryContainer.shared.publicKeyRepository()
     }
 
     var appContentManager: any AppContentManagerProtocol {
-        SharedServiceContainer.shared.appContentManager()
+        ServiceContainer.shared.appContentManager()
     }
 
     var passMonitorRepository: any PassMonitorRepositoryProtocol {
-        SharedRepositoryContainer.shared.passMonitorRepository()
+        RepositoryContainer.shared.passMonitorRepository()
     }
 
     var extraPasswordRepository: any ExtraPasswordRepositoryProtocol {
@@ -72,7 +72,7 @@ private extension UseCasesContainer {
     }
 
     var passKeyManager: any PassKeyManagerProtocol {
-        SharedRepositoryContainer.shared.passKeyManager()
+        RepositoryContainer.shared.passKeyManager()
     }
 
     var secureLinkManager: any SecureLinkManagerProtocol {
@@ -80,15 +80,15 @@ private extension UseCasesContainer {
     }
 
     var remoteSecureLinkDatasource: any RemoteSecureLinkDatasourceProtocol {
-        SharedRepositoryContainer.shared.remoteSecureLinkDatasource()
+        RepositoryContainer.shared.remoteSecureLinkDatasource()
     }
 
     var localAccessDatasource: any LocalAccessDatasourceProtocol {
-        SharedRepositoryContainer.shared.localAccessDatasource()
+        RepositoryContainer.shared.localAccessDatasource()
     }
 
     var apiManager: any APIManagerProtocol {
-        SharedToolingContainer.shared.apiManager()
+        ToolingContainer.shared.apiManager()
     }
 }
 
@@ -105,7 +105,7 @@ extension UseCasesContainer {
 
 extension UseCasesContainer {
     var extractLogsToFile: Factory<any ExtractLogsToFileUseCase> {
-        self { ExtractLogsToFile(logFormatter: SharedToolingContainer.shared.logFormatter()) }
+        self { ExtractLogsToFile(logFormatter: ToolingContainer.shared.logFormatter()) }
     }
 
     var getLogEntries: Factory<any GetLogEntriesUseCase> {
@@ -124,45 +124,51 @@ extension UseCasesContainer {
 // MARK: - Sharing
 
 extension UseCasesContainer {
+    @MainActor
     var createAndMoveItemToNewVault: Factory<any CreateAndMoveItemToNewVaultUseCase> {
         self { CreateAndMoveItemToNewVault(createVault: self.createVault(),
                                            moveItemsBetweenContainers: self.moveItemsBetweenContainers(),
                                            appContentManager: self.appContentManager) }
     }
 
+    @MainActor
     var getCurrentShareInviteInformations: Factory<any GetCurrentShareInviteInformationsUseCase> {
-        self { @MainActor in GetCurrentShareInviteInformations(shareInviteService: self.shareInviteService)
+        self { GetCurrentShareInviteInformations(shareInviteService: self.shareInviteService)
         }
     }
 
+    @MainActor
     var setShareInviteVault: Factory<any SetShareInviteVaultUseCase> {
-        self { @MainActor in SetShareInviteVault(shareInviteService: self.shareInviteService,
-                                                 getVaultItemCount: self.getVaultItemCount()) }
+        self { SetShareInviteVault(shareInviteService: self.shareInviteService,
+                                   getVaultItemCount: self.getVaultItemCount()) }
     }
 
+    @MainActor
     var setShareInvitesAndKeys: Factory<any SetShareInvitesAndKeysUseCase> {
         self { SetShareInvitesAndKeys(shareInviteService: self.shareInviteService,
                                       getEmailPublicKeyUseCase: self.getEmailPublicKey()) }
     }
 
+    @MainActor
     var setShareInviteRole: Factory<any SetShareInviteRoleUseCase> {
-        self { @MainActor in SetShareInviteRole(shareInviteService: self.shareInviteService) }
+        self { SetShareInviteRole(shareInviteService: self.shareInviteService) }
     }
 
+    @MainActor
     var sendShareInvite: Factory<any SendShareInviteUseCase> {
         self { SendShareInvite(createAndMoveItemToNewVault: self.createAndMoveItemToNewVault(),
                                makeUnsignedSignatureForVaultSharing: self
                                    .makeUnsignedSignatureForVaultSharing(),
                                shareInviteService: self.shareInviteService,
-                               passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
+                               passKeyManager: RepositoryContainer.shared.passKeyManager(),
                                shareInviteRepository: self.inviteRepository,
                                userManager: self.userManager,
-                               syncEventLoop: SharedServiceContainer.shared.syncEventLoop()) }
+                               syncEventLoop: ServiceContainer.shared.syncEventLoop()) }
     }
 
     var promoteNewUserInvite: Factory<any PromoteNewUserInviteUseCase> {
         self { PromoteNewUserInvite(publicKeyRepository: self.publicKeyRepository,
-                                    passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
+                                    passKeyManager: RepositoryContainer.shared.passKeyManager(),
                                     shareInviteRepository: self.inviteRepository,
                                     userManager: self.userManager) }
     }
@@ -174,7 +180,7 @@ extension UseCasesContainer {
     var checkAddressesForInvite: Factory<any CheckAddressesForInviteUseCase> {
         self { CheckAddressesForInvite(userManager: self.userManager,
                                        accessRepository: self.accessRepository,
-                                       organizationRepository: SharedRepositoryContainer.shared
+                                       organizationRepository: RepositoryContainer.shared
                                            .organizationRepository(),
                                        shareInviteRepository: self.inviteRepository) }
     }
@@ -262,8 +268,9 @@ extension UseCasesContainer {
         self { SendInviteReminder(shareInviteRepository: self.inviteRepository) }
     }
 
+    @MainActor
     var canUserTransferVaultOwnership: Factory<any CanUserTransferVaultOwnershipUseCase> {
-        self { @MainActor in CanUserTransferVaultOwnership(appContentManager: self.appContentManager) }
+        self { CanUserTransferVaultOwnership(appContentManager: self.appContentManager) }
     }
 
     var makeUnsignedSignatureForVaultSharing: Factory<any MakeUnsignedSignatureForVaultSharingUseCase> {
@@ -272,8 +279,8 @@ extension UseCasesContainer {
 
     var getInviteDecryptionKeys: Factory<any GetInviteDecryptionKeysUseCase> {
         self { GetInviteDecryptionKeys(userManager: self.userManager,
-                                       groupRepository: SharedRepositoryContainer.shared.groupRepository(),
-                                       decryptGroupKeys: SharedUseCasesContainer.shared.decryptGroupKey(),
+                                       groupRepository: RepositoryContainer.shared.groupRepository(),
+                                       decryptGroupKeys: self.decryptGroupKey(),
                                        updateUserAddresses: self.updateUserAddresses()) }
     }
 }
@@ -281,16 +288,18 @@ extension UseCasesContainer {
 // MARK: - Vaults
 
 extension UseCasesContainer {
+    @MainActor
     var getVaultItemCount: Factory<any GetVaultItemCountUseCase> {
-        self { @MainActor in GetVaultItemCount(appContentManager: self.appContentManager) }
+        self { GetVaultItemCount(appContentManager: self.appContentManager) }
     }
 
     var transferVaultOwnership: Factory<any TransferVaultOwnershipUseCase> {
         self { TransferVaultOwnership(repository: self.shareRepository) }
     }
 
+    @MainActor
     var moveItemsBetweenContainers: Factory<any MoveItemsBetweenContainersUseCase> {
-        self { @MainActor in
+        self {
             MoveItemsBetweenContainers(repository: self.itemRepository,
                                        appContentManager: self.appContentManager)
         }
@@ -350,7 +359,7 @@ extension UseCasesContainer {
         self { GetSearchableItems(itemRepository: self.itemRepository,
                                   shareRepository: self.shareRepository,
                                   getAllPinnedItems: self.getAllPinnedItems(),
-                                  dedupShare: SharedUseCasesContainer.shared.dedupShare(),
+                                  dedupShare: self.dedupShare(),
                                   symmetricKeyProvider: self.symmetricKeyProvider) }
     }
 
@@ -379,15 +388,15 @@ extension UseCasesContainer {
     var refreshAccessAndMonitorState: Factory<any RefreshAccessAndMonitorStateUseCase> {
         self { RefreshAccessAndMonitorState(accessRepository: self.accessRepository,
                                             passMonitorRepository: self.passMonitorRepository,
-                                            getAllAliases: SharedUseCasesContainer.shared.getAllAliases(),
+                                            getAllAliases: self.getAllAliases(),
                                             getBreachesForAlias: self.getBreachesForAlias(),
-                                            stream: DataStreamContainer.shared.monitorStateStream()) }
+                                            stream: DataContainer.shared.monitorStateStream()) }
     }
 
     var verifyProtonPassword: Factory<any VerifyProtonPasswordUseCase> {
         self { VerifyProtonPassword(userManager: self.userManager,
-                                    doh: SharedToolingContainer.shared.doh(),
-                                    appVer: SharedToolingContainer.shared.appVersion()) }
+                                    doh: ToolingContainer.shared.doh(),
+                                    appVer: ToolingContainer.shared.appVersion()) }
     }
 
     var enableExtraPassword: Factory<any EnableExtraPasswordUseCase> {
@@ -405,13 +414,14 @@ extension UseCasesContainer {
 
     var canAddNewAccount: Factory<any CanAddNewAccountUseCase> {
         self { CanAddNewAccount(localDatasource: self.localAccessDatasource,
-                                remoteDatasource: SharedRepositoryContainer.shared.remoteAccessDatasource(),
-                                authManager: SharedToolingContainer.shared.authManager()) }
+                                remoteDatasource: RepositoryContainer.shared.remoteAccessDatasource(),
+                                authManager: ToolingContainer.shared.authManager()) }
     }
 
+    @MainActor
     var logOutExcessFreeAccounts: Factory<any LogOutExcessFreeAccountsUseCase> {
         self { LogOutExcessFreeAccounts(datasource: self.localAccessDatasource,
-                                        logOutUser: SharedUseCasesContainer.shared.logOutUser()) }
+                                        logOutUser: self.logOutUser()) }
     }
 
     // periphery:ignore
@@ -429,11 +439,11 @@ extension UseCasesContainer {
 
     var enableAutoFill: Factory<any EnableAutoFillUseCase> {
         self { EnableAutoFill(router: SharedRouterContainer.shared.mainUIKitSwiftUIRouter(),
-                              credentialManager: SharedServiceContainer.shared.credentialManager()) }
+                              credentialManager: ServiceContainer.shared.credentialManager()) }
     }
 
     var makeAccountSettingsUrl: Factory<any MakeAccountSettingsUrlUseCase> {
-        self { MakeAccountSettingsUrl(doh: SharedToolingContainer.shared.doh()) }
+        self { MakeAccountSettingsUrl(doh: ToolingContainer.shared.doh()) }
     }
 }
 
@@ -461,9 +471,9 @@ extension UseCasesContainer {
     var getAllSecurityAffectedLogins: Factory<any GetAllSecurityAffectedLoginsUseCase> {
         self {
             GetAllSecurityAffectedLogins(passMonitorRepository: self.passMonitorRepository,
-                                         symmetricKeyProvider: SharedDataContainer.shared
+                                         symmetricKeyProvider: DataContainer.shared
                                              .nonSendableSymmetricKeyProvider(),
-                                         getPasswordStrength: SharedUseCasesContainer.shared.getPasswordStrength())
+                                         getPasswordStrength: self.getPasswordStrength())
         }
     }
 
@@ -480,7 +490,7 @@ extension UseCasesContainer {
     }
 
     var getAllAliasMonitorInfos: Factory<any GetAllAliasMonitorInfoUseCase> {
-        self { GetAllAliasMonitorInfos(getAllAliasesUseCase: SharedUseCasesContainer.shared.getAllAliases(),
+        self { GetAllAliasMonitorInfos(getAllAliasesUseCase: self.getAllAliases(),
                                        repository: self.passMonitorRepository) }
     }
 
@@ -527,11 +537,11 @@ extension UseCasesContainer {
 
 extension UseCasesContainer {
     var overrideSecuritySettings: Factory<any OverrideSecuritySettingsUseCase> {
-        self { OverrideSecuritySettings(preferencesManager: SharedToolingContainer.shared.preferencesManager()) }
+        self { OverrideSecuritySettings(preferencesManager: ToolingContainer.shared.preferencesManager()) }
     }
 
     var addItemReadEvent: Factory<any AddItemReadEventUseCase> {
-        self { AddItemReadEvent(eventRepository: SharedRepositoryContainer.shared.itemReadEventRepository(),
+        self { AddItemReadEvent(eventRepository: RepositoryContainer.shared.itemReadEventRepository(),
                                 accessRepository: self.accessRepository,
                                 userManager: self.userManager,
                                 logManager: self.logManager) }
@@ -573,107 +583,66 @@ extension UseCasesContainer {
     }
 }
 
-/// mark shared
-///
-final class SharedUseCasesContainer: SharedContainer, AutoRegistering {
-    static let shared = SharedUseCasesContainer()
-    let manager = ContainerManager()
-
-    func autoRegister() {
-        manager.defaultScope = .shared
-    }
-}
+///// mark shared
+/////
+// final class SharedUseCasesContainer: SharedContainer, AutoRegistering {
+//    static let shared = SharedUseCasesContainer()
+//    let manager = ContainerManager()
+//
+//    func autoRegister() {
+//        manager.defaultScope = .shared
+//    }
+// }
 
 // MARK: Computed properties
 
-private extension SharedUseCasesContainer {
-    var logManager: any LogManagerProtocol {
-        SharedToolingContainer.shared.logManager()
-    }
-
+private extension UseCasesContainer {
     var preferencesManager: any PreferencesManagerProtocol {
-        SharedToolingContainer.shared.preferencesManager()
+        ToolingContainer.shared.preferencesManager()
     }
 
     var credentialManager: any CredentialManagerProtocol {
-        SharedServiceContainer.shared.credentialManager()
-    }
-
-    var itemRepository: any ItemRepositoryProtocol {
-        SharedRepositoryContainer.shared.itemRepository()
-    }
-
-    var inviteRepository: any InviteRepositoryProtocol {
-        SharedRepositoryContainer.shared.inviteRepository()
-    }
-
-    var userManager: any UserManagerProtocol {
-        SharedServiceContainer.shared.userManager()
-    }
-
-    var symmetricKeyProvider: any SymmetricKeyProvider {
-        SharedDataContainer.shared.symmetricKeyProvider()
+        ServiceContainer.shared.credentialManager()
     }
 
     var userSettingsRepository: any UserSettingsRepositoryProtocol {
-        SharedRepositoryContainer.shared.userSettingsRepository()
-    }
-
-    var accessRepository: any AccessRepositoryProtocol {
-        SharedRepositoryContainer.shared.accessRepository()
-    }
-
-    @MainActor
-    var appContentManager: any AppContentManagerProtocol {
-        SharedServiceContainer.shared.appContentManager()
-    }
-
-    var apiManager: any APIManagerProtocol {
-        SharedToolingContainer.shared.apiManager()
+        RepositoryContainer.shared.userSettingsRepository()
     }
 
     var authManager: any AuthManagerProtocol {
-        SharedToolingContainer.shared.authManager()
+        ToolingContainer.shared.authManager()
     }
 
     var syncEventLoop: any SyncEventLoopProtocol {
-        SharedServiceContainer.shared.syncEventLoop()
+        ServiceContainer.shared.syncEventLoop()
     }
 
     var keychain: any KeychainProtocol {
-        SharedToolingContainer.shared.keychain()
-    }
-
-    var passMonitorRepository: any PassMonitorRepositoryProtocol {
-        SharedRepositoryContainer.shared.passMonitorRepository()
-    }
-
-    var shareRepository: any ShareRepositoryProtocol {
-        SharedRepositoryContainer.shared.shareRepository()
+        ToolingContainer.shared.keychain()
     }
 
     var organizationRepository: any OrganizationRepositoryProtocol {
-        SharedRepositoryContainer.shared.organizationRepository()
+        RepositoryContainer.shared.organizationRepository()
     }
 }
 
 // MARK: App
 
-extension SharedUseCasesContainer {
+extension UseCasesContainer {
     var setUpBeforeLaunching: Factory<any SetUpBeforeLaunchingUseCase> {
         self { SetUpBeforeLaunching(keychain: self.keychain,
-                                    databaseService: SharedServiceContainer.shared.databaseService(),
+                                    databaseService: ServiceContainer.shared.databaseService(),
                                     symmetricKeyProvider: self.symmetricKeyProvider,
                                     userManager: self.userManager,
                                     prefererencesManager: self.preferencesManager,
-                                    authManager: SharedDataContainer.shared.credentialProvider(),
+                                    authManager: DataContainer.shared.credentialProvider(),
                                     applyMigration: self.applyAppMigration()) }
     }
 }
 
 // MARK: Permission
 
-extension SharedUseCasesContainer {
+extension UseCasesContainer {
     var checkCameraPermission: Factory<any CheckCameraPermissionUseCase> {
         self { CheckCameraPermission() }
     }
@@ -681,7 +650,7 @@ extension SharedUseCasesContainer {
 
 // MARK: Local authentication
 
-extension SharedUseCasesContainer {
+extension UseCasesContainer {
     var checkBiometryType: Factory<any CheckBiometryTypeUseCase> {
         self { CheckBiometryType() }
     }
@@ -703,9 +672,9 @@ extension SharedUseCasesContainer {
 
 // MARK: Telemetry
 
-extension SharedUseCasesContainer {
+extension UseCasesContainer {
     var addTelemetryEvent: Factory<any AddTelemetryEventUseCase> {
-        self { AddTelemetryEvent(repository: SharedRepositoryContainer.shared.telemetryEventRepository(),
+        self { AddTelemetryEvent(repository: RepositoryContainer.shared.telemetryEventRepository(),
                                  userManager: self.userManager,
                                  logManager: self.logManager) }
     }
@@ -713,7 +682,7 @@ extension SharedUseCasesContainer {
     // periphery:ignore
     var sendTelemetryEvent: Factory<any SendTelemetryEventUseCase> {
         self {
-            SendTelemetryEvent(datasource: SharedRepositoryContainer.shared.remoteTelemetryEventDatasource(),
+            SendTelemetryEvent(datasource: RepositoryContainer.shared.remoteTelemetryEventDatasource(),
                                logManager: self.logManager)
         }
     }
@@ -735,8 +704,8 @@ extension SharedUseCasesContainer {
     }
 
     var setUpCoreTelemetry: Factory<any SetUpCoreTelemetryUseCase> {
-        self { SetUpCoreTelemetry(telemetryService: SharedServiceContainer.shared.telemetryService(),
-                                  apiServicing: SharedToolingContainer.shared.apiManager(),
+        self { SetUpCoreTelemetry(telemetryService: ServiceContainer.shared.telemetryService(),
+                                  apiServicing: ToolingContainer.shared.apiManager(),
                                   logManager: self.logManager,
                                   userSettingsRepository: self.userSettingsRepository,
                                   userManager: self.userManager) }
@@ -745,7 +714,7 @@ extension SharedUseCasesContainer {
 
 // MARK: AutoFill
 
-extension SharedUseCasesContainer {
+extension UseCasesContainer {
     var mapLoginItem: Factory<any MapLoginItemUseCase> {
         self { MapLoginItem() }
     }
@@ -754,7 +723,7 @@ extension SharedUseCasesContainer {
         self { IndexAllLoginItems(userManager: self.userManager,
                                   itemRepository: self.itemRepository,
                                   shareRepository: self.shareRepository,
-                                  localAccessDatasource: SharedRepositoryContainer.shared.localAccessDatasource(),
+                                  localAccessDatasource: RepositoryContainer.shared.localAccessDatasource(),
                                   credentialManager: self.credentialManager,
                                   mapLoginItem: self.mapLoginItem(),
                                   symmetricKeyProvider: self.symmetricKeyProvider,
@@ -768,11 +737,11 @@ extension SharedUseCasesContainer {
 
 // MARK: Spotlight
 
-extension SharedUseCasesContainer {
+extension UseCasesContainer {
     var indexItemsForSpotlight: Factory<any IndexItemsForSpotlightUseCase> {
         self { IndexItemsForSpotlight(userManager: self.userManager,
                                       itemRepository: self.itemRepository,
-                                      datasource: SharedRepositoryContainer.shared
+                                      datasource: RepositoryContainer.shared
                                           .localSpotlightVaultDatasource(),
                                       logManager: self.logManager) }
     }
@@ -780,7 +749,7 @@ extension SharedUseCasesContainer {
 
 // MARK: Vault
 
-extension SharedUseCasesContainer {
+extension UseCasesContainer {
     var processVaultSyncEvent: Factory<any ProcessVaultSyncEventUseCase> {
         self { ProcessVaultSyncEvent() }
     }
@@ -792,24 +761,24 @@ extension SharedUseCasesContainer {
 
     @MainActor
     var fullContentSync: Factory<any FullContentSyncUseCase> {
-        self { FullContentSync(syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
+        self { FullContentSync(syncEventLoop: ServiceContainer.shared.syncEventLoop(),
                                appContentManager: self.appContentManager) }
     }
 }
 
 // MARK: - Feature Flags
 
-extension SharedUseCasesContainer {
+extension UseCasesContainer {
     var getFeatureFlagStatus: Factory<any GetFeatureFlagStatusUseCase> {
         self {
-            GetFeatureFlagStatus(repository: SharedRepositoryContainer.shared.featureFlagsRepository())
+            GetFeatureFlagStatus(repository: RepositoryContainer.shared.featureFlagsRepository())
         }
     }
 }
 
 // MARK: TOTP
 
-extension SharedUseCasesContainer {
+extension UseCasesContainer {
     var sanitizeTotpUriForEditing: Factory<any SanitizeTotpUriForEditingUseCase> {
         self { SanitizeTotpUriForEditing() }
     }
@@ -819,13 +788,13 @@ extension SharedUseCasesContainer {
     }
 
     var generateTotpToken: Factory<any GenerateTotpTokenUseCase> {
-        self { GenerateTotpToken(totpService: SharedServiceContainer.shared.totpService()) }
+        self { GenerateTotpToken(totpService: ServiceContainer.shared.totpService()) }
     }
 }
 
 // MARK: Rust Utils
 
-extension SharedUseCasesContainer {
+extension UseCasesContainer {
     var generatePassword: Factory<any GeneratePasswordUseCase> {
         self { GeneratePassword() }
     }
@@ -849,20 +818,20 @@ extension SharedUseCasesContainer {
 
 // MARK: Data
 
-extension SharedUseCasesContainer {
+extension UseCasesContainer {
     var revokeCurrentSession: Factory<any RevokeCurrentSessionUseCase> {
-        self { RevokeCurrentSession(networkRepository: SharedRepositoryContainer.shared.networkRepository(),
+        self { RevokeCurrentSession(networkRepository: RepositoryContainer.shared.networkRepository(),
                                     userManager: self.userManager) }
     }
 
     var deleteLocalDataBeforeFullSync: Factory<any DeleteLocalDataBeforeFullSyncUseCase> {
         self { DeleteLocalDataBeforeFullSync(itemRepository: self.itemRepository,
                                              shareRepository: self.shareRepository,
-                                             shareKeyRepository: SharedRepositoryContainer.shared
+                                             shareKeyRepository: RepositoryContainer.shared
                                                  .shareKeyRepository(),
-                                             folderKeyDatasource: SharedRepositoryContainer.shared
+                                             folderKeyDatasource: RepositoryContainer.shared
                                                  .localFolderKeyDatasource(),
-                                             folderRepository: SharedRepositoryContainer.shared
+                                             folderRepository: RepositoryContainer.shared
                                                  .folderRepository()) }
     }
 
@@ -870,23 +839,23 @@ extension SharedUseCasesContainer {
     var logOutUser: Factory<any LogOutUserUseCase> {
         self {
             LogOutUser(userManager: self.userManager,
-                       syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
+                       syncEventLoop: ServiceContainer.shared.syncEventLoop(),
                        preferencesManager: self.preferencesManager,
                        removeUserLocalData: self.removeUserLocalData(),
-                       featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
+                       featureFlagsRepository: RepositoryContainer.shared.featureFlagsRepository(),
                        passMonitorRepository: self.passMonitorRepository,
                        accessRepository: self.accessRepository,
                        appContentManager: self.appContentManager,
                        apiManager: self.apiManager,
                        authManager: self.authManager,
-                       credentialManager: SharedServiceContainer.shared.credentialManager(),
+                       credentialManager: ServiceContainer.shared.credentialManager(),
                        switchUser: self.switchUser())
         }
     }
 
     var getUserUiModels: Factory<any GetUserUiModelsUseCase> {
         self { GetUserUiModels(userManager: self.userManager,
-                               localAccessDatasource: SharedRepositoryContainer.shared.localAccessDatasource()) }
+                               localAccessDatasource: RepositoryContainer.shared.localAccessDatasource()) }
     }
 
     var decryptOrganizationKey: Factory<any DecryptOrganizationKeyUseCase> {
@@ -909,7 +878,7 @@ extension SharedUseCasesContainer {
 
 // MARK: - Items
 
-extension SharedUseCasesContainer {
+extension UseCasesContainer {
     var pinItems: Factory<any PinItemsUseCase> {
         self { PinItems(itemRepository: self.itemRepository) }
     }
@@ -923,7 +892,7 @@ extension SharedUseCasesContainer {
     }
 
     var getActiveLoginItems: Factory<any GetActiveLoginItemsUseCase> {
-        self { GetActiveLoginItems(symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider(),
+        self { GetActiveLoginItems(symmetricKeyProvider: DataContainer.shared.symmetricKeyProvider(),
                                    repository: self.itemRepository) }
     }
 
@@ -939,7 +908,7 @@ extension SharedUseCasesContainer {
 
 // MARK: - Rust Validators
 
-extension SharedUseCasesContainer {
+extension UseCasesContainer {
     var validateAliasPrefix: Factory<any ValidateAliasPrefixUseCase> {
         self { ValidateAliasPrefix() }
     }
@@ -957,7 +926,7 @@ extension SharedUseCasesContainer {
 
 // MARK: - User
 
-extension SharedUseCasesContainer {
+extension UseCasesContainer {
     var refreshUserSettings: Factory<any RefreshUserSettingsUseCase> {
         self { RefreshUserSettings(userSettingsProtocol: self.userSettingsRepository)
         }
@@ -975,7 +944,7 @@ extension SharedUseCasesContainer {
 
     var removeUserLocalData: Factory<any RemoveUserLocalDataUseCase> {
         self {
-            let container = SharedRepositoryContainer.shared
+            let container = RepositoryContainer.shared
             return RemoveUserLocalData(accessDatasource: container.localAccessDatasource(),
                                        itemDatasource: container.localItemDatasource(),
                                        itemReadEventDatasource: container.localItemReadEventDatasource(),
@@ -1027,32 +996,32 @@ extension SharedUseCasesContainer {
                                  syncEventLoop: self.syncEventLoop,
                                  preferencesManager: self.preferencesManager,
                                  removeUserLocalData: self.removeUserLocalData(),
-                                 featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
+                                 featureFlagsRepository: RepositoryContainer.shared.featureFlagsRepository(),
                                  passMonitorRepository: self.passMonitorRepository,
                                  appContentManager: self.appContentManager,
                                  apiManager: self.apiManager,
                                  authManager: self.authManager,
-                                 credentialManager: SharedServiceContainer.shared.credentialManager(),
+                                 credentialManager: ServiceContainer.shared.credentialManager(),
                                  keychain: self.keychain) }
     }
 
     var getLastEventIdIfNotExist: Factory<any GetLastEventIdIfNotExistUseCase> {
         self {
-            let container = SharedRepositoryContainer.shared
+            let container = RepositoryContainer.shared
             return GetLastEventIdIfNotExist(localDatasource: container.localUserEventIdDatasource(),
                                             remoteDatasource: container.remoteUserEventsDatasource())
         }
     }
 
     var refreshUserData: Factory<any RefreshUserDataUseCase> {
-        self { RefreshUserData(remoteDatasource: SharedRepositoryContainer.shared.remoteUserDataDatasource(),
+        self { RefreshUserData(remoteDatasource: RepositoryContainer.shared.remoteUserDataDatasource(),
                                userManager: self.userManager) }
     }
 }
 
 // MARK: Passkey
 
-extension SharedUseCasesContainer {
+extension UseCasesContainer {
     var passkeyManagerProvider: Factory<any PasskeyManagerProvider> {
         self { PasskeyManagerProviderImpl() }
     }
@@ -1068,7 +1037,7 @@ extension SharedUseCasesContainer {
 
 // MARK: Preferences
 
-extension SharedUseCasesContainer {
+extension UseCasesContainer {
     var getAppPreferences: Factory<any GetAppPreferencesUseCase> {
         self { GetAppPreferences(manager: self.preferencesManager) }
     }
@@ -1096,26 +1065,26 @@ extension SharedUseCasesContainer {
 
 // MARK: Misc
 
-extension SharedUseCasesContainer {
+extension UseCasesContainer {
     var copyToClipboard: Factory<any CopyToClipboardUseCase> {
         self { CopyToClipboard(getSharedPreferences: self.getSharedPreferences()) }
     }
 
     var applyAppMigration: Factory<any ApplyAppMigrationUseCase> {
-        self { ApplyAppMigration(dataMigrationManager: SharedServiceContainer.shared.dataMigrationManager(),
+        self { ApplyAppMigration(dataMigrationManager: ServiceContainer.shared.dataMigrationManager(),
                                  userManager: self.userManager,
                                  authManager: self.authManager,
-                                 itemDatasource: SharedRepositoryContainer.shared.localItemDatasource(),
-                                 searchEntryDatasource: SharedRepositoryContainer.shared
+                                 itemDatasource: RepositoryContainer.shared.localItemDatasource(),
+                                 searchEntryDatasource: RepositoryContainer.shared
                                      .localSearchEntryDatasource(),
-                                 shareKeyDatasource: SharedRepositoryContainer.shared.localShareKeyDatasource(),
+                                 shareKeyDatasource: RepositoryContainer.shared.localShareKeyDatasource(),
                                  logManager: self.logManager) }
     }
 }
 
 // MARK: - Dark web monitor
 
-extension SharedUseCasesContainer {
+extension UseCasesContainer {
     var getCustomEmailSuggestion: Factory<any GetCustomEmailSuggestionUseCase> {
         self { GetCustomEmailSuggestion(itemRepository: self.itemRepository,
                                         symmetricKeyProvider: self.symmetricKeyProvider,
@@ -1142,9 +1111,9 @@ extension SharedUseCasesContainer {
 
 // MARK: - Flags
 
-extension SharedUseCasesContainer {
+extension UseCasesContainer {
     var refreshFeatureFlags: Factory<any RefreshFeatureFlagsUseCase> {
-        self { RefreshFeatureFlags(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
+        self { RefreshFeatureFlags(repository: RepositoryContainer.shared.featureFlagsRepository(),
                                    apiServicing: self.apiManager,
                                    userManager: self.userManager,
                                    logManager: self.logManager) }
@@ -1153,7 +1122,7 @@ extension SharedUseCasesContainer {
 
 // MARK: - File attachments
 
-extension SharedUseCasesContainer {
+extension UseCasesContainer {
     var generateDatedFileName: Factory<any GenerateDatedFileNameUseCase> {
         self { GenerateDatedFileName() }
     }
@@ -1185,8 +1154,8 @@ extension SharedUseCasesContainer {
     var downloadAndDecryptFile: Factory<any DownloadAndDecryptFileUseCase> {
         self { DownloadAndDecryptFile(generateFileTempUrl: self.generateFileTempUrl(),
                                       shareRepository: self.shareRepository,
-                                      keyManager: SharedRepositoryContainer.shared.passKeyManager(),
-                                      apiService: SharedToolingContainer.shared.apiServiceLite()) }
+                                      keyManager: RepositoryContainer.shared.passKeyManager(),
+                                      apiService: ToolingContainer.shared.apiServiceLite()) }
     }
 
     var getFilesToLink: Factory<any GetFilesToLinkUseCase> {
@@ -1195,7 +1164,7 @@ extension SharedUseCasesContainer {
 
     var clearCacheForLoggedOutUsers: Factory<any ClearCacheForLoggedOutUsersUseCase> {
         self {
-            ClearCacheForLoggedOutUsers(datasource: SharedRepositoryContainer.shared.localUserDataDatasource())
+            ClearCacheForLoggedOutUsers(datasource: RepositoryContainer.shared.localUserDataDatasource())
         }
     }
 

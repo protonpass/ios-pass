@@ -28,6 +28,7 @@ import Foundation
 import Macro
 import ProtonCoreLogin
 import SwiftUI
+import UseCases
 
 enum AppContentState: Equatable {
     case loading
@@ -81,29 +82,30 @@ final class AppContentManager: ObservableObject, DeinitPrintable, AppContentMana
     nonisolated let vaultSyncEventStream = PassthroughSubject<VaultSyncProgressEvent, Never>()
     nonisolated let currentSpotlightSelectedVaults: CurrentValueSubject<[Share], Never> = .init([])
 
-    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
-    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let loginMethod = resolve(\SharedDataContainer.loginMethod)
-    private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
-    @LazyInjected(\SharedToolingContainer.preferencesManager) private var preferencesManager
-    @LazyInjected(\SharedRepositoryContainer.inviteRepository) private var inviteRepository
-    @LazyInjected(\SharedServiceContainer.simpleLoginNoteSynchronizer) private var slNoteSynchronizer
-    @LazyInjected(\SharedRepositoryContainer.folderRepository) private var folderRepository
+    private let itemRepository: any ItemRepositoryProtocol // = resolve(\SharedRepositoryContainer.itemRepository)
+    private let shareRepository: any ShareRepositoryProtocol // =
+    // resolve(\SharedRepositoryContainer.shareRepository)
+    private let logger: Logger // = resolve(\SharedToolingContainer.logger)
+    private let loginMethod: LoginMethodFlow // = resolve(\SharedDataContainer.loginMethod)
+    private let symmetricKeyProvider: any SymmetricKeyProvider // = resolve(\SharedDataContainer.symmetricKeyProvider)
+    /* @LazyInjected(\SharedToolingContainer.preferencesManager) */private var preferencesManager: any PreferencesManagerProtocol
+    /*  @LazyInjected(\SharedRepositoryContainer.inviteRepository) */private var inviteRepository: any FullInviteRepositoryProtocol
+    /* @LazyInjected(\SharedServiceContainer.simpleLoginNoteSynchronizer) */private var slNoteSynchronizer: any SimpleLoginNoteSynchronizerProtocol
+    /** @LazyInjected(\SharedRepositoryContainer.folderRepository) */ private var folderRepository: any FolderRepositoryProtocol
 
     // Use cases
-    private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
-    private let indexItemsForSpotlight = resolve(\SharedUseCasesContainer.indexItemsForSpotlight)
-    private let deleteLocalDataBeforeFullSync = resolve(\SharedUseCasesContainer.deleteLocalDataBeforeFullSync)
+    private let indexAllLoginItems: any IndexAllLoginItemsUseCase // = resolve(\SharedUseCasesContainer.indexAllLoginItems)
+    private let indexItemsForSpotlight: any IndexItemsForSpotlightUseCase // = resolve(\SharedUseCasesContainer.indexItemsForSpotlight)
+    private let deleteLocalDataBeforeFullSync: any DeleteLocalDataBeforeFullSyncUseCase // = resolve(\SharedUseCasesContainer.deleteLocalDataBeforeFullSync)
 
-    @LazyInjected(\SharedUseCasesContainer.getLastEventIdIfNotExist)
-    private var getLastEventIdIfNotExist
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
-    private var getFeatureFlagStatus
-    @LazyInjected(\SharedUseCasesContainer.dedupShare)
-    private var dedupShare
-    @LazyInjected(\SharedUseCasesContainer.refreshUserData)
-    private var refreshUserData
+    ///    @LazyInjected(\SharedUseCasesContainer.getLastEventIdIfNotExist)
+    private let getLastEventIdIfNotExist: any GetLastEventIdIfNotExistUseCase
+    ///    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private let getFeatureFlagStatus: any GetFeatureFlagStatusUseCase
+    ///    @LazyInjected(\SharedUseCasesContainer.dedupShare)
+    private let dedupShare: any DedupShareUseCase
+    ///    @LazyInjected(\SharedUseCasesContainer.refreshUserData)
+    private let refreshUserData: any RefreshUserDataUseCase
 
     private var cancellables = Set<AnyCancellable>()
     private var isRefreshing: Bool = false
@@ -116,7 +118,38 @@ final class AppContentManager: ObservableObject, DeinitPrintable, AppContentMana
         }
     }
 
-    init() {
+    init(itemRepository: any ItemRepositoryProtocol,
+         shareRepository: any ShareRepositoryProtocol,
+         inviteRepository: any FullInviteRepositoryProtocol,
+         folderRepository: any FolderRepositoryProtocol,
+         slNoteSynchronizer: any SimpleLoginNoteSynchronizerProtocol,
+         preferencesManager: any PreferencesManagerProtocol,
+         symmetricKeyProvider: any SymmetricKeyProvider,
+         indexAllLoginItems: any IndexAllLoginItemsUseCase,
+         indexItemsForSpotlight: any IndexItemsForSpotlightUseCase,
+         deleteLocalDataBeforeFullSync: any DeleteLocalDataBeforeFullSyncUseCase,
+         getLastEventIdIfNotExist: any GetLastEventIdIfNotExistUseCase,
+         getFeatureFlagStatus: any GetFeatureFlagStatusUseCase,
+         dedupShare: any DedupShareUseCase,
+         refreshUserData: any RefreshUserDataUseCase,
+         logger: Logger,
+         loginMethod: LoginMethodFlow) {
+        self.itemRepository = itemRepository
+        self.shareRepository = shareRepository
+        self.inviteRepository = inviteRepository
+        self.folderRepository = folderRepository
+        self.slNoteSynchronizer = slNoteSynchronizer
+        self.preferencesManager = preferencesManager
+        self.symmetricKeyProvider = symmetricKeyProvider
+        self.indexAllLoginItems = indexAllLoginItems
+        self.indexItemsForSpotlight = indexItemsForSpotlight
+        self.deleteLocalDataBeforeFullSync = deleteLocalDataBeforeFullSync
+        self.getLastEventIdIfNotExist = getLastEventIdIfNotExist
+        self.getFeatureFlagStatus = getFeatureFlagStatus
+        self.dedupShare = dedupShare
+        self.refreshUserData = refreshUserData
+        self.logger = logger
+        self.loginMethod = loginMethod
         setUp()
     }
 
