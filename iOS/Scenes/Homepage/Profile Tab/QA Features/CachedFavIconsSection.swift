@@ -36,7 +36,7 @@ final class CachedFavIconsViewModel: ObservableObject {
     @Published private(set) var icons = [FavIcon]()
     @Published private(set) var error: (any Error)?
 
-    private let favIconRepository = resolve(\SharedRepositoryContainer.favIconRepository)
+    private let favIconRepository = resolve(\RepositoryContainer.favIconRepository)
 
     init() {}
 

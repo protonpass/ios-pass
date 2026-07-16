@@ -51,7 +51,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
-    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
+    private let accessRepository = resolve(\RepositoryContainer.accessRepository)
     private let notificationService = resolve(\SharedServiceContainer.notificationService)
     private let securitySettingsCoordinator: SecuritySettingsCoordinator
 
@@ -71,7 +71,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     /// Repositories
-    private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
+    private let userSettingsRepository = resolve(\RepositoryContainer.userSettingsRepository)
 
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedUseCasesContainer.switchUser) private var switchUser

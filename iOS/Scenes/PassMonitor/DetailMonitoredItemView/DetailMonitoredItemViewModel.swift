@@ -45,9 +45,9 @@ final class DetailMonitoredItemViewModel: ObservableObject {
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
+    private let passMonitorRepository = resolve(\RepositoryContainer.passMonitorRepository)
     private let getItemsLinkedToBreach = resolve(\UseCasesContainer.getItemsLinkedToBreach)
-    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
+    private let itemRepository = resolve(\RepositoryContainer.itemRepository)
     private let toggleMonitoringForAlias = resolve(\UseCasesContainer.toggleMonitoringForAlias)
     private let toggleMonitoringForCustomEmail = resolve(\UseCasesContainer.toggleMonitoringForCustomEmail)
     private let toggleMonitoringForProtonAddress = resolve(\UseCasesContainer.toggleMonitoringForProtonAddress)

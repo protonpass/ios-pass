@@ -39,10 +39,10 @@ final class ShareElementViewModel: ObservableObject {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
-    @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
+    @LazyInjected(\RepositoryContainer.shareRepository) private var shareRepository
     @LazyInjected(\SharedServiceContainer.userManager) var userManager
-    @LazyInjected(\SharedRepositoryContainer.accessRepository) private(set) var accessRepository
-    @LazyInjected(\SharedRepositoryContainer.organizationRepository)
+    @LazyInjected(\RepositoryContainer.accessRepository) private(set) var accessRepository
+    @LazyInjected(\RepositoryContainer.organizationRepository)
     private var organizationRepository
 
     weak var sheetPresentation: UISheetPresentationController?

@@ -37,7 +37,7 @@ final class SharingSummaryViewModel: ObservableObject {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getShareInviteInfos = resolve(\UseCasesContainer.getCurrentShareInviteInformations)
     private let sendShareInvite = resolve(\UseCasesContainer.sendShareInvite)
-    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
+    private let accessRepository = resolve(\RepositoryContainer.accessRepository)
 
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus

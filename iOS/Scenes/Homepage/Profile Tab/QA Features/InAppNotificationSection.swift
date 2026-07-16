@@ -253,7 +253,7 @@ private final class InAppNotificationViewModel {
     private var inAppNotificationManager
 
     @ObservationIgnored
-    @LazyInjected(\SharedRepositoryContainer.localNotificationTimeDatasource)
+    @LazyInjected(\RepositoryContainer.localNotificationTimeDatasource)
     private var localNotificationTimeDatasource
 
     @ObservationIgnored

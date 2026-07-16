@@ -26,7 +26,7 @@ import Stores
 import SwiftUI
 
 struct ItemReadEventsSection: View {
-    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
+    private let accessRepository = resolve(\RepositoryContainer.accessRepository)
     var enabled: Bool {
         accessRepository.access.value?.access.plan.isBusinessUser == true
     }
@@ -122,7 +122,7 @@ private final class ItemReadEventsViewModel: ObservableObject {
     @Published private(set) var uiModels: [ItemReadEventsUiModel] = []
     @Published private(set) var error: (any Error)?
 
-    private let repository = resolve(\SharedRepositoryContainer.itemReadEventRepository)
+    private let repository = resolve(\RepositoryContainer.itemReadEventRepository)
     private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private let userManager = resolve(\SharedServiceContainer.userManager)
 

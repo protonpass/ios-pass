@@ -44,8 +44,8 @@ final class DetailHistoryViewModel: ObservableObject {
     @Published var urlToShare: URL?
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
-    @LazyInjected(\SharedRepositoryContainer.fileAttachmentRepository) private var fileAttachmentRepository
+    private let itemRepository = resolve(\RepositoryContainer.itemRepository)
+    @LazyInjected(\RepositoryContainer.fileAttachmentRepository) private var fileAttachmentRepository
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedToolingContainer.logger) private var logger
     @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize

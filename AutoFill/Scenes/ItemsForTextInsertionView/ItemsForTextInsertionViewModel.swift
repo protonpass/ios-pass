@@ -63,10 +63,10 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
     @LazyInjected(\AutoFillUseCaseContainer.fetchItemsForTextInsertion)
     private var fetchItemsForTextInsertion
 
-    @LazyInjected(\SharedRepositoryContainer.itemRepository)
+    @LazyInjected(\RepositoryContainer.itemRepository)
     private var itemRepository
 
-    @LazyInjected(\SharedRepositoryContainer.localTextAutoFillHistoryEntryDatasource)
+    @LazyInjected(\RepositoryContainer.localTextAutoFillHistoryEntryDatasource)
     private var textAutoFillHistoryEntryDatasource
 
     @LazyInjected(\AutoFillUseCaseContainer.completeTextAutoFill)

@@ -41,7 +41,7 @@ final class SecureLinkListViewModel: ObservableObject {
     @Published private(set) var loading = false
     @Published var searchText = ""
 
-    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
+    private let itemRepository = resolve(\RepositoryContainer.itemRepository)
     private let deleteSecureLink = resolve(\UseCasesContainer.deleteSecureLink)
     private let deleteAllInactiveSecureLinks = resolve(\UseCasesContainer.deleteAllInactiveSecureLinks)
     private let recreateSecureLink = resolve(\UseCasesContainer.recreateSecureLink)

@@ -31,7 +31,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel {
     private(set) var email = ""
     private(set) var enabled = false
 
-    @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
+    @LazyInjected(\RepositoryContainer.aliasRepository) private var aliasRepository
 
     override func bindValues() {
         email = item.content.item.aliasEmail ?? ""

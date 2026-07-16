@@ -42,14 +42,14 @@ protocol AccountViewModelDelegate: AnyObject {
 final class AccountViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
-    private let accountRepository = resolve(\SharedRepositoryContainer.accountRepository)
-    private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
+    private let accessRepository = resolve(\RepositoryContainer.accessRepository)
+    private let accountRepository = resolve(\RepositoryContainer.accountRepository)
+    private let featureFlagsRepository = resolve(\RepositoryContainer.featureFlagsRepository)
     private let userManager = resolve(\SharedServiceContainer.userManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager) // To remove after Dynaplans
-    private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
+    private let userSettingsRepository = resolve(\RepositoryContainer.userSettingsRepository)
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let doDisableExtraPassword = resolve(\UseCasesContainer.disableExtraPassword)
 

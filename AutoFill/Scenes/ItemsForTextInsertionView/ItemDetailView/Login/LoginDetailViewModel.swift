@@ -39,8 +39,8 @@ final class LoginDetailViewModel: BaseItemDetailViewModel {
     private(set) var passwordStrength: PasswordStrength?
 
     @LazyInjected(\SharedUseCasesContainer.getPasswordStrength) private var getPasswordStrength
-    @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
-    @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
+    @LazyInjected(\RepositoryContainer.itemRepository) private var itemRepository
+    @LazyInjected(\RepositoryContainer.shareRepository) private var shareRepository
 
     var isAlias: Bool {
         aliasItem != nil
