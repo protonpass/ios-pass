@@ -33,8 +33,8 @@ final class ItemContextMenuHandler {
     @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\RepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\ToolingContainer.logger) private var logger
-    @LazyInjected(\SharedUseCasesContainer.pinItems) private var pinItems
-    @LazyInjected(\SharedUseCasesContainer.unpinItems) private var unpinItems
+    @LazyInjected(\UseCasesContainer.pinItems) private var pinItems
+    @LazyInjected(\UseCasesContainer.unpinItems) private var unpinItems
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
     private var actionTask: Task<Void, Never>?
 

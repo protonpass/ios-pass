@@ -70,7 +70,7 @@ final class ManageSharedShareViewModel: ObservableObject {
     private var organizationRepository
     @LazyInjected(\RepositoryContainer.groupRepository) private var groupRepository
 
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
+    @LazyInjected(\UseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
 
     var managerAsAdmin: Bool {

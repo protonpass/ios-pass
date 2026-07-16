@@ -39,7 +39,7 @@ final class DarkWebMonitorHomeViewModel: ObservableObject {
 
     private let accessRepository = resolve(\RepositoryContainer.accessRepository)
     private let passMonitorRepository = resolve(\RepositoryContainer.passMonitorRepository)
-    private let getCustomEmailSuggestion = resolve(\SharedUseCasesContainer.getCustomEmailSuggestion)
+    private let getCustomEmailSuggestion = resolve(\UseCasesContainer.getCustomEmailSuggestion)
     private let getAllAliasMonitorInfos = resolve(\UseCasesContainer.getAllAliasMonitorInfos)
     private let addCustomEmailToMonitoring = resolve(\UseCasesContainer.addCustomEmailToMonitoring)
     private let removeEmailFromBreachMonitoring = resolve(\UseCasesContainer.removeEmailFromBreachMonitoring)

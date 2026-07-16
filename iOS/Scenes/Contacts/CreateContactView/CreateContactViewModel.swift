@@ -54,7 +54,7 @@ final class CreateContactViewModel {
     @LazyInjected(\ToolingContainer.logger) private var logger
 
     @ObservationIgnored
-    @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
+    @LazyInjected(\UseCasesContainer.getSharedPreferences) private var getSharedPreferences
 
     @ObservationIgnored
     private var aliasDiscovery: AliasDiscovery {

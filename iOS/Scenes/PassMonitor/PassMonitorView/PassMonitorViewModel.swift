@@ -43,11 +43,11 @@ final class PassMonitorViewModel: ObservableObject {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let passMonitorRepository = resolve(\RepositoryContainer.passMonitorRepository)
     private let monitorStateStream = resolve(\DataContainer.monitorStateStream)
-    private let toggleSentinel = resolve(\SharedUseCasesContainer.toggleSentinel)
-    private let getSentinelStatus = resolve(\SharedUseCasesContainer.getSentinelStatus)
+    private let toggleSentinel = resolve(\UseCasesContainer.toggleSentinel)
+    private let getSentinelStatus = resolve(\UseCasesContainer.getSentinelStatus)
     private let accessRepository = resolve(\RepositoryContainer.accessRepository)
     private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
-    let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
+    let addTelemetryEvent = resolve(\UseCasesContainer.addTelemetryEvent)
     @LazyInjected(\ServiceContainer.userManager) private var userManager
 
     private var refreshingTask: Task<Void, Never>?

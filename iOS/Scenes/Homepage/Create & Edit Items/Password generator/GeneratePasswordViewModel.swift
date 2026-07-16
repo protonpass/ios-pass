@@ -114,15 +114,15 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     }
 
     private var cachedWords = [String]()
-    private let generatePassword = resolve(\SharedUseCasesContainer.generatePassword)
-    private let generateRandomWords = resolve(\SharedUseCasesContainer.generateRandomWords)
-    private let generatePassphrase = resolve(\SharedUseCasesContainer.generatePassphrase)
-    private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
+    private let generatePassword = resolve(\UseCasesContainer.generatePassword)
+    private let generateRandomWords = resolve(\UseCasesContainer.generateRandomWords)
+    private let generatePassphrase = resolve(\UseCasesContainer.generatePassphrase)
+    private let getPasswordStrength = resolve(\UseCasesContainer.getPasswordStrength)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     @LazyInjected(\ToolingContainer.logger) private var logger
     @LazyInjected(\RepositoryContainer.passwordHistoryRepository)
     private var passwordHistoryRepository
-    @LazyInjected(\SharedUseCasesContainer.getOrganizationSettings)
+    @LazyInjected(\UseCasesContainer.getOrganizationSettings)
     private var getOrganizationSettings
 
     private var cancellables = Set<AnyCancellable>()

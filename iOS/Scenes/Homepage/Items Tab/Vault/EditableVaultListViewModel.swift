@@ -99,7 +99,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     private var accessRepository
     @LazyInjected(\RepositoryContainer.organizationRepository)
     private var organizationRepository
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
+    @LazyInjected(\UseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
     @LazyInjected(\UseCasesContainer.reorganizeVaults)
     private var reorganizeVaults

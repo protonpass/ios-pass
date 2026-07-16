@@ -53,7 +53,7 @@ final class CreateAliasLiteViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let validateAliasPrefix = resolve(\SharedUseCasesContainer.validateAliasPrefix)
+    private let validateAliasPrefix = resolve(\UseCasesContainer.validateAliasPrefix)
     @LazyInjected(\RepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\ToolingContainer.preferencesManager) var preferencesManager
     @LazyInjected(\ToolingContainer.logger) private var logger

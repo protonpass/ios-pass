@@ -39,7 +39,7 @@ final class SharingSummaryViewModel: ObservableObject {
     private let sendShareInvite = resolve(\UseCasesContainer.sendShareInvite)
     private let accessRepository = resolve(\RepositoryContainer.accessRepository)
 
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
+    @LazyInjected(\UseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
 
     @LazyInjected(\ServiceContainer.userManager) private var userManager

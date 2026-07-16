@@ -60,7 +60,7 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
     @LazyInjected(\ServiceContainer.eventSynchronizer) private var eventSynchronizer
     @LazyInjected(\ToolingContainer.logger) var logger
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) var router
-    @LazyInjected(\SharedUseCasesContainer.canEditItem) var canEditItem
+    @LazyInjected(\UseCasesContainer.canEditItem) var canEditItem
     @LazyInjected(\AutoFillUseCaseContainer.associateUrlAndAutoFill) var associateUrlAndAutoFill
 
     weak var delegate: (any AutoFillViewModelDelegate)?

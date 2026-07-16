@@ -44,7 +44,7 @@ final class SetPINCodeViewModel: ObservableObject, DeinitPrintable {
     @Published var confirmedPIN = ""
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
+    private let updateSharedPreferences = resolve(\UseCasesContainer.updateSharedPreferences)
     private var cancellables = Set<AnyCancellable>()
 
     var actionNotAllowed: Bool {

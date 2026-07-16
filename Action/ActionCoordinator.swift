@@ -31,20 +31,20 @@ import UniformTypeIdentifiers
 @MainActor
 final class ActionCoordinator {
     @LazyInjected(\DataContainer.credentialProvider) private var credentialProvider
-    @LazyInjected(\SharedUseCasesContainer.setUpSentry) private var setUpSentry
-    @LazyInjected(\SharedUseCasesContainer.setCoreLoggerEnvironment) private var setCoreLoggerEnvironment
+    @LazyInjected(\UseCasesContainer.setUpSentry) private var setUpSentry
+    @LazyInjected(\UseCasesContainer.setCoreLoggerEnvironment) private var setCoreLoggerEnvironment
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
-    @LazyInjected(\SharedUseCasesContainer.sendErrorToSentry) private var sendErrorToSentry
+    @LazyInjected(\UseCasesContainer.sendErrorToSentry) private var sendErrorToSentry
 
     @LazyInjected(\ToolingContainer.logger) private var logger
     @LazyInjected(\ToolingContainer.logManager) private var logManager
     @LazyInjected(\ServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
-    @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
-    @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) private var logOutAllAccounts
-    @LazyInjected(\SharedUseCasesContainer.getUserUiModels) private var getUserUiModels
-    @LazyInjected(\SharedUseCasesContainer.parseCsvLogins) private var parseCsvLogins
-    @LazyInjected(\SharedUseCasesContainer.createVaultAndImportLogins)
+    @LazyInjected(\UseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
+    @LazyInjected(\UseCasesContainer.getSharedPreferences) private var getSharedPreferences
+    @LazyInjected(\UseCasesContainer.logOutAllAccounts) private var logOutAllAccounts
+    @LazyInjected(\UseCasesContainer.getUserUiModels) private var getUserUiModels
+    @LazyInjected(\UseCasesContainer.parseCsvLogins) private var parseCsvLogins
+    @LazyInjected(\UseCasesContainer.createVaultAndImportLogins)
     private var createVaultAndImportLogins
 
     private var lastChildViewController: UIViewController?

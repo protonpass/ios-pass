@@ -68,7 +68,7 @@ final class EnableExtraPasswordViewModel: ObservableObject {
 
     private let doVerifyProtonPassword = resolve(\UseCasesContainer.verifyProtonPassword)
     private let enableExtraPassword = resolve(\UseCasesContainer.enableExtraPassword)
-    private let updateUserPreferences = resolve(\SharedUseCasesContainer.updateUserPreferences)
+    private let updateUserPreferences = resolve(\UseCasesContainer.updateUserPreferences)
     private let preferencesManager = resolve(\ToolingContainer.preferencesManager)
     private let userManager = resolve(\ServiceContainer.userManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)

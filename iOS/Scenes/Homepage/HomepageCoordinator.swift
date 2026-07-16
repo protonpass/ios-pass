@@ -90,30 +90,30 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private var featureDiscoveryManager
 
     // Use cases
-    private let refreshFeatureFlags = resolve(\SharedUseCasesContainer.refreshFeatureFlags)
-    let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
+    private let refreshFeatureFlags = resolve(\UseCasesContainer.refreshFeatureFlags)
+    let revokeCurrentSession = resolve(\UseCasesContainer.revokeCurrentSession)
     private let makeAccountSettingsUrl = resolve(\UseCasesContainer.makeAccountSettingsUrl)
-    private let refreshUserSettings = resolve(\SharedUseCasesContainer.refreshUserSettings)
+    private let refreshUserSettings = resolve(\UseCasesContainer.refreshUserSettings)
     private let overrideSecuritySettings = resolve(\UseCasesContainer.overrideSecuritySettings)
-    private let copyToClipboard = resolve(\SharedUseCasesContainer.copyToClipboard)
+    private let copyToClipboard = resolve(\UseCasesContainer.copyToClipboard)
     private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
     @LazyInjected(\UseCasesContainer.logOutExcessFreeAccounts) private var logOutExcessFreeAccounts
     @LazyInjected(\UseCasesContainer.canAddNewAccount) var canAddNewAccount
-    @LazyInjected(\SharedUseCasesContainer.switchUser) var switchUser
-    @LazyInjected(\SharedUseCasesContainer.logOutUser) var logOutUser
-    @LazyInjected(\SharedUseCasesContainer.sendUserMonitoringStats) private var sendUserMonitoringStats
-    @LazyInjected(\SharedUseCasesContainer.addAndSwitchToNewUserAccount)
+    @LazyInjected(\UseCasesContainer.switchUser) var switchUser
+    @LazyInjected(\UseCasesContainer.logOutUser) var logOutUser
+    @LazyInjected(\UseCasesContainer.sendUserMonitoringStats) private var sendUserMonitoringStats
+    @LazyInjected(\UseCasesContainer.addAndSwitchToNewUserAccount)
     var addAndSwitchToNewUserAccount
-    @LazyInjected(\ SharedUseCasesContainer.addTelemetryEvent) var addTelemetryEvent
-    @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
-    @LazyInjected(\SharedUseCasesContainer.fullContentSync) var fullContentSync
+    @LazyInjected(\ UseCasesContainer.addTelemetryEvent) var addTelemetryEvent
+    @LazyInjected(\UseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
+    @LazyInjected(\UseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
+    @LazyInjected(\UseCasesContainer.fullContentSync) var fullContentSync
     @LazyInjected(\UseCasesContainer.postbackConversionValue) var postbackConversionValue
 
-    private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
-    let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
-    let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
-    let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
+    private let getAppPreferences = resolve(\UseCasesContainer.getAppPreferences)
+    let updateAppPreferences = resolve(\UseCasesContainer.updateAppPreferences)
+    let getSharedPreferences = resolve(\UseCasesContainer.getSharedPreferences)
+    let getUserPreferences = resolve(\UseCasesContainer.getUserPreferences)
 
     // References
     private(set) weak var itemsTabViewModel: ItemsTabViewModel?

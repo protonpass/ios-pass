@@ -33,10 +33,10 @@ final class ExtensionSettingsViewModel: ObservableObject {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     // Use cases
-    private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
-    private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
-    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
-    private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
+    private let indexAllLoginItems = resolve(\UseCasesContainer.indexAllLoginItems)
+    private let unindexAllLoginItems = resolve(\UseCasesContainer.unindexAllLoginItems)
+    private let getSharedPreferences = resolve(\UseCasesContainer.getSharedPreferences)
+    private let updateSharedPreferences = resolve(\UseCasesContainer.updateSharedPreferences)
 
     init() {
         let preferences = getSharedPreferences()

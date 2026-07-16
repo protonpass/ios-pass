@@ -57,15 +57,15 @@ private extension AutoFillUseCaseContainer {
     }
 
     var createPasskey: any CreatePasskeyUseCase {
-        SharedUseCasesContainer.shared.createPasskey()
+        UseCasesContainer.shared.createPasskey()
     }
 
     var resolvePasskeyChallenge: any ResolvePasskeyChallengeUseCase {
-        SharedUseCasesContainer.shared.resolvePasskeyChallenge()
+        UseCasesContainer.shared.resolvePasskeyChallenge()
     }
 
     var matchUrls: any MatchUrlsUseCase {
-        SharedUseCasesContainer.shared.matchUrls()
+        UseCasesContainer.shared.matchUrls()
     }
 
     var userManager: any UserManagerProtocol {
@@ -89,9 +89,9 @@ extension AutoFillUseCaseContainer {
     @MainActor
     var copyTotpTokenAndNotify: Factory<any CopyTotpTokenAndNotifyUseCase> {
         self { CopyTotpTokenAndNotify(logManager: self.logManager,
-                                      generateTotpToken: SharedUseCasesContainer.shared.generateTotpToken(),
-                                      getSharedPreferences: SharedUseCasesContainer.shared.getSharedPreferences(),
-                                      copyToClipboard: SharedUseCasesContainer.shared.copyToClipboard(),
+                                      generateTotpToken: UseCasesContainer.shared.generateTotpToken(),
+                                      getSharedPreferences: UseCasesContainer.shared.getSharedPreferences(),
+                                      copyToClipboard: UseCasesContainer.shared.copyToClipboard(),
                                       notificationService: ServiceContainer.shared.notificationService(),
                                       upgradeChecker: ServiceContainer.shared.upgradeChecker()) }
     }
@@ -140,7 +140,7 @@ extension AutoFillUseCaseContainer {
     }
 
     var completePasskeyRegistration: Factory<any CompletePasskeyRegistrationUseCase> {
-        self { CompletePasskeyRegistration(addTelemetryEvent: SharedUseCasesContainer.shared.addTelemetryEvent(),
+        self { CompletePasskeyRegistration(addTelemetryEvent: UseCasesContainer.shared.addTelemetryEvent(),
                                            resetFactory: self.resetFactory()) }
     }
 
@@ -175,7 +175,7 @@ extension AutoFillUseCaseContainer {
     }
 
     var cancelAutoFill: Factory<any CancelAutoFillUseCase> {
-        self { CancelAutoFill(saveAllLogs: SharedUseCasesContainer.shared.saveAllLogs(),
+        self { CancelAutoFill(saveAllLogs: UseCasesContainer.shared.saveAllLogs(),
                               resetFactory: self.resetFactory()) }
     }
 

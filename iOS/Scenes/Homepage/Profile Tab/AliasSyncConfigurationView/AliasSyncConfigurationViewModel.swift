@@ -53,7 +53,7 @@ final class AliasSyncConfigurationViewModel: ObservableObject {
 
     @LazyInjected(\RepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
-    @LazyInjected(\SharedUseCasesContainer.getMainVault) private var getMainVault
+    @LazyInjected(\UseCasesContainer.getMainVault) private var getMainVault
     @LazyInjected(\RepositoryContainer.aliasRepository) private var aliasRepository
     @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router

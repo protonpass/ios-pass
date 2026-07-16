@@ -56,26 +56,26 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let securitySettingsCoordinator: SecuritySettingsCoordinator
 
     private let policy = resolve(\ToolingContainer.localAuthenticationEnablingPolicy)
-    private let getAuthMethods = resolve(\SharedUseCasesContainer.getLocalAuthenticationMethods)
-    private let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
+    private let getAuthMethods = resolve(\UseCasesContainer.getLocalAuthenticationMethods)
+    private let checkBiometryType = resolve(\UseCasesContainer.checkBiometryType)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let itemTypeSelection = resolve(\DataContainer.itemTypeSelection)
 
     // Use cases
-    private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
-    private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
+    private let indexAllLoginItems = resolve(\UseCasesContainer.indexAllLoginItems)
+    private let unindexAllLoginItems = resolve(\UseCasesContainer.unindexAllLoginItems)
     private let enableAutoFill = resolve(\OldUseCasesContainer.enableAutoFill)
-    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
-    private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
+    private let getSharedPreferences = resolve(\UseCasesContainer.getSharedPreferences)
+    private let updateSharedPreferences = resolve(\UseCasesContainer.updateSharedPreferences)
     private let secureLinkManager = resolve(\ServiceContainer.secureLinkManager)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private let getFeatureFlagStatus = resolve(\UseCasesContainer.getFeatureFlagStatus)
 
     /// Repositories
     private let userSettingsRepository = resolve(\RepositoryContainer.userSettingsRepository)
 
     @LazyInjected(\ServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedUseCasesContainer.switchUser) private var switchUser
-    @LazyInjected(\SharedUseCasesContainer.getOrganizationSettings)
+    @LazyInjected(\UseCasesContainer.switchUser) private var switchUser
+    @LazyInjected(\UseCasesContainer.getOrganizationSettings)
     private var getOrganizationSettings
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none

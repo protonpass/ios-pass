@@ -48,10 +48,10 @@ final class DetailHistoryViewModel: ObservableObject {
     @LazyInjected(\RepositoryContainer.fileAttachmentRepository) private var fileAttachmentRepository
     @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\ToolingContainer.logger) private var logger
-    @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
-    @LazyInjected(\SharedUseCasesContainer.getFileGroup) private var getFileGroup
-    @LazyInjected(\SharedUseCasesContainer.generateFileTempUrl) private var generateFileTempUrl
-    @LazyInjected(\SharedUseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
+    @LazyInjected(\UseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
+    @LazyInjected(\UseCasesContainer.getFileGroup) private var getFileGroup
+    @LazyInjected(\UseCasesContainer.generateFileTempUrl) private var generateFileTempUrl
+    @LazyInjected(\UseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
 
     private var cancellables = Set<AnyCancellable>()
 

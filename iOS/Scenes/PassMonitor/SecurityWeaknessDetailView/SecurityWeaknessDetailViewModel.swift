@@ -44,7 +44,7 @@ final class SecurityWeaknessDetailViewModel: ObservableObject {
 
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
     @LazyInjected(\UseCasesContainer.getAllSecurityAffectedLogins) private var getAllSecurityAffectedLogins
-    @LazyInjected(\SharedUseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
+    @LazyInjected(\UseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
     @LazyInjected(\RepositoryContainer.itemRepository) private var itemRepository
 
     private var cancellables = Set<AnyCancellable>()

@@ -146,15 +146,15 @@ final class OldSharedServiceContainer: SharedContainer, AutoRegistering {
 //                                 slNoteSynchronizer: ServiceContainer.shared.simpleLoginNoteSynchronizer(),
 //                                 preferencesManager: ToolingContainer.shared.preferencesManager(),
 //                                 symmetricKeyProvider: DataContainer.shared.symmetricKeyProvider(),
-//                                 indexAllLoginItems: SharedUseCasesContainer.shared.indexAllLoginItems(),
-//                                 indexItemsForSpotlight: SharedUseCasesContainer.shared.indexItemsForSpotlight(),
-//                                 deleteLocalDataBeforeFullSync: SharedUseCasesContainer.shared
+//                                 indexAllLoginItems: UseCasesContainer.shared.indexAllLoginItems(),
+//                                 indexItemsForSpotlight: UseCasesContainer.shared.indexItemsForSpotlight(),
+//                                 deleteLocalDataBeforeFullSync: UseCasesContainer.shared
 //                                     .deleteLocalDataBeforeFullSync(),
-//                                 getLastEventIdIfNotExist: SharedUseCasesContainer.shared
+//                                 getLastEventIdIfNotExist: UseCasesContainer.shared
 //                                     .getLastEventIdIfNotExist(),
-//                                 getFeatureFlagStatus: SharedUseCasesContainer.shared.getFeatureFlagStatus(),
-//                                 dedupShare: SharedUseCasesContainer.shared.dedupShare(),
-//                                 refreshUserData: SharedUseCasesContainer.shared.refreshUserData(),
+//                                 getFeatureFlagStatus: UseCasesContainer.shared.getFeatureFlagStatus(),
+//                                 dedupShare: UseCasesContainer.shared.dedupShare(),
+//                                 refreshUserData: UseCasesContainer.shared.refreshUserData(),
 //                                 logger: ToolingContainer.shared.logger(),
 //                                 loginMethod: DataContainer.shared.loginMethod()) }
 //    }

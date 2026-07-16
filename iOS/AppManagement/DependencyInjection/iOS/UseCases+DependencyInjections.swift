@@ -303,7 +303,7 @@ final class OldUseCasesContainer: SharedContainer, AutoRegistering {
 //    var getInviteDecryptionKeys: Factory<any GetInviteDecryptionKeysUseCase> {
 //        self { GetInviteDecryptionKeys(userManager: self.userManager,
 //                                       groupRepository: SharedRepositoryContainer.shared.groupRepository(),
-//                                       decryptGroupKeys: SharedUseCasesContainer.shared.decryptGroupKey(),
+//                                       decryptGroupKeys: UseCasesContainer.shared.decryptGroupKey(),
 //                                       updateUserAddresses: self.updateUserAddresses()) }
 //    }
 // }
@@ -383,7 +383,7 @@ final class OldUseCasesContainer: SharedContainer, AutoRegistering {
 //        self { GetSearchableItems(itemRepository: self.itemRepository,
 //                                  shareRepository: self.shareRepository,
 //                                  getAllPinnedItems: self.getAllPinnedItems(),
-//                                  dedupShare: SharedUseCasesContainer.shared.dedupShare(),
+//                                  dedupShare: UseCasesContainer.shared.dedupShare(),
 //                                  symmetricKeyProvider: self.symmetricKeyProvider) }
 //    }
 //
@@ -412,7 +412,7 @@ final class OldUseCasesContainer: SharedContainer, AutoRegistering {
 //    var refreshAccessAndMonitorState: Factory<any RefreshAccessAndMonitorStateUseCase> {
 //        self { RefreshAccessAndMonitorState(accessRepository: self.accessRepository,
 //                                            passMonitorRepository: self.passMonitorRepository,
-//                                            getAllAliases: SharedUseCasesContainer.shared.getAllAliases(),
+//                                            getAllAliases: UseCasesContainer.shared.getAllAliases(),
 //                                            getBreachesForAlias: self.getBreachesForAlias(),
 //                                            stream: DataContainer.shared.monitorStateStream()) }
 //    }
@@ -445,7 +445,7 @@ final class OldUseCasesContainer: SharedContainer, AutoRegistering {
 //    @MainActor
 //    var logOutExcessFreeAccounts: Factory<any LogOutExcessFreeAccountsUseCase> {
 //        self { LogOutExcessFreeAccounts(datasource: self.localAccessDatasource,
-//                                        logOutUser: SharedUseCasesContainer.shared.logOutUser()) }
+//                                        logOutUser: UseCasesContainer.shared.logOutUser()) }
 //    }
 //
 //    // periphery:ignore
@@ -498,7 +498,7 @@ extension OldUseCasesContainer {
 //            GetAllSecurityAffectedLogins(passMonitorRepository: self.passMonitorRepository,
 //                                         symmetricKeyProvider: SharedDataContainer.shared
 //                                             .nonSendableSymmetricKeyProvider(),
-//                                         getPasswordStrength: SharedUseCasesContainer.shared.getPasswordStrength())
+//                                         getPasswordStrength: UseCasesContainer.shared.getPasswordStrength())
 //        }
 //    }
 //
@@ -515,7 +515,7 @@ extension OldUseCasesContainer {
 //    }
 //
 //    var getAllAliasMonitorInfos: Factory<any GetAllAliasMonitorInfoUseCase> {
-//        self { GetAllAliasMonitorInfos(getAllAliasesUseCase: SharedUseCasesContainer.shared.getAllAliases(),
+//        self { GetAllAliasMonitorInfos(getAllAliasesUseCase: UseCasesContainer.shared.getAllAliases(),
 //                                       repository: self.passMonitorRepository) }
 //    }
 //

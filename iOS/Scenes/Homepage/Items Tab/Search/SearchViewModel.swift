@@ -84,10 +84,10 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private let logger = resolve(\ToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getSearchableItems = resolve(\UseCasesContainer.getSearchableItems)
-    private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
+    private let getUserPreferences = resolve(\UseCasesContainer.getUserPreferences)
     @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
-    @LazyInjected(\SharedUseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
+    @LazyInjected(\UseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
 
     let itemContextMenuHandler = resolve(\OldSharedServiceContainer.itemContextMenuHandler)
 

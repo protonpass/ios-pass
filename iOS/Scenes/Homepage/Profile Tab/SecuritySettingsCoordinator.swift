@@ -29,12 +29,12 @@ import Macro
 @MainActor
 final class SecuritySettingsCoordinator {
     private let logger = resolve(\ToolingContainer.logger)
-    private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
+    private let authenticate = resolve(\UseCasesContainer.authenticateBiometrically)
     private let enablingPolicy = resolve(\ToolingContainer.localAuthenticationEnablingPolicy)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
-    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
-    private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
+    private let getSharedPreferences = resolve(\UseCasesContainer.getSharedPreferences)
+    private let updateSharedPreferences = resolve(\UseCasesContainer.updateSharedPreferences)
 
     weak var delegate: (any ChildCoordinatorDelegate)?
 

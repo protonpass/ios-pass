@@ -84,10 +84,10 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private(set) var alias: Alias?
     @LazyInjected(\RepositoryContainer.aliasRepository) private var aliasRepository
     @LazyInjected(\RepositoryContainer.localItemDatasource) private var localItemDatasource
-    @LazyInjected(\SharedUseCasesContainer.validateAliasPrefix) private var validateAliasPrefix
+    @LazyInjected(\UseCasesContainer.validateAliasPrefix) private var validateAliasPrefix
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
-    @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
-    @LazyInjected(\SharedUseCasesContainer.updateSharedPreferences) private var updateSharedPreferences
+    @LazyInjected(\UseCasesContainer.getSharedPreferences) private var getSharedPreferences
+    @LazyInjected(\UseCasesContainer.updateSharedPreferences) private var updateSharedPreferences
 
     let module = resolve(\ToolingContainer.module)
 

@@ -60,10 +60,10 @@ private final class OnboardSectionViewModel: ObservableObject {
         }
     }
 
-    @LazyInjected(\SharedUseCasesContainer.getAppPreferences)
+    @LazyInjected(\UseCasesContainer.getAppPreferences)
     private var getAppPreferences
 
-    @LazyInjected(\SharedUseCasesContainer.updateAppPreferences)
+    @LazyInjected(\UseCasesContainer.updateAppPreferences)
     private var updateAppPreferences
 
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter)

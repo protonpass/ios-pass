@@ -38,7 +38,7 @@ final class ItemMoveVaultListViewModel: ObservableObject, DeinitPrintable {
     private let currentSelectedItems = resolve(\DataContainer.currentSelectedItems)
     @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
     @LazyInjected(\RepositoryContainer.itemRepository) private var itemRepository
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
+    @LazyInjected(\UseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     @Published private(set) var isFreeUser = false
     @Published private(set) var showWarning = false

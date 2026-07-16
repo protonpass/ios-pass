@@ -37,7 +37,7 @@ struct VaultSelectorView: View {
     @State private var expandedContainerIds = Set<String>()
 
     private let appContentManager = resolve(\ServiceContainer.appContentManager)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private let getFeatureFlagStatus = resolve(\UseCasesContainer.getFeatureFlagStatus)
 
     private var shares: [ShareContent] {
         appContentManager
