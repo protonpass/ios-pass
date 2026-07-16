@@ -60,7 +60,7 @@ final class EmailGroupSelectionViewModel: ObservableObject {
     private let userManager = resolve(\ServiceContainer.userManager)
     @LazyInjected(\RepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\RepositoryContainer.groupRepository) private var groupRepository
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
+    @LazyInjected(\UseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var currentTask: Task<Void, Never>?

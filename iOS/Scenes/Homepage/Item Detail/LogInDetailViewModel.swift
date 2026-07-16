@@ -51,7 +51,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
     let showSecurityIssues: Bool
 
-    private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
+    private let getPasswordStrength = resolve(\UseCasesContainer.getPasswordStrength)
     private let getLoginSecurityIssues = resolve(\UseCasesContainer.getLoginSecurityIssues)
     private let passMonitorRepository = resolve(\RepositoryContainer.passMonitorRepository)
 

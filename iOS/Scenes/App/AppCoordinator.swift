@@ -82,14 +82,14 @@ final class AppCoordinator {
     @LazyInjected(\RepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
     @LazyInjected(\RepositoryContainer.localUserDataDatasource) var localUserDataDatasource
 
-    @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
-    @LazyInjected(\SharedUseCasesContainer.refreshFeatureFlags) private var refreshFeatureFlags
-    @LazyInjected(\SharedUseCasesContainer.setUpCoreTelemetry) private var setUpCoreTelemetry
-    @LazyInjected(\SharedUseCasesContainer.logOutUser) var logOutUser
-    @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) var logOutAllAccounts
-    @LazyInjected(\SharedUseCasesContainer.sendErrorToSentry) var sendErrorToSentry
-    @LazyInjected(\SharedUseCasesContainer.sendMessageToSentry) var sendMessageToSentry
-    @LazyInjected(\SharedUseCasesContainer.clearCacheForLoggedOutUsers)
+    @LazyInjected(\UseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
+    @LazyInjected(\UseCasesContainer.refreshFeatureFlags) private var refreshFeatureFlags
+    @LazyInjected(\UseCasesContainer.setUpCoreTelemetry) private var setUpCoreTelemetry
+    @LazyInjected(\UseCasesContainer.logOutUser) var logOutUser
+    @LazyInjected(\UseCasesContainer.logOutAllAccounts) var logOutAllAccounts
+    @LazyInjected(\UseCasesContainer.sendErrorToSentry) var sendErrorToSentry
+    @LazyInjected(\UseCasesContainer.sendMessageToSentry) var sendMessageToSentry
+    @LazyInjected(\UseCasesContainer.clearCacheForLoggedOutUsers)
     private var clearCacheForLoggedOutUsers
     @LazyInjected(\ServiceContainer.telemetryService) private var telemetryService
     @LazyInjected(\UseCasesContainer.firstRunDetector) private var firstRunDetector

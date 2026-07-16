@@ -37,7 +37,7 @@ final class UserPermissionViewModel: ObservableObject {
     private let shareInviteService = resolve(\ServiceContainer.shareInviteService)
     @LazyInjected(\ServiceContainer.userManager) private var userManager
 
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
+    @LazyInjected(\UseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
 
     var managerAsAdmin: Bool {

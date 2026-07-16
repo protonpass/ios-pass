@@ -37,8 +37,8 @@ import UIKit
 @main
 final class AppDelegate: UIResponder, UIApplicationDelegate {
     private let getRustLibraryVersion = resolve(\UseCasesContainer.getRustLibraryVersion)
-    private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
-    private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
+    private let setUpSentry = resolve(\UseCasesContainer.setUpSentry)
+    private let setCoreLoggerEnvironment = resolve(\UseCasesContainer.setCoreLoggerEnvironment)
     private let logger = resolve(\ToolingContainer.logger)
     private let userDefaults: UserDefaults = .standard
 //    @LazyInjected(\ServiceContainer

@@ -73,24 +73,24 @@ enum SharedItemType: CaseIterable {
 @MainActor
 final class ShareCoordinator {
     private let credentialProvider = resolve(\DataContainer.credentialProvider)
-    private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
-    private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
+    private let setUpSentry = resolve(\UseCasesContainer.setUpSentry)
+    private let setCoreLoggerEnvironment = resolve(\UseCasesContainer.setCoreLoggerEnvironment)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
+    private let sendErrorToSentry = resolve(\UseCasesContainer.sendErrorToSentry)
 
     @LazyInjected(\ToolingContainer.logger) private var logger
     @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
-    @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) private var logOutAllAccounts
+    @LazyInjected(\UseCasesContainer.logOutAllAccounts) private var logOutAllAccounts
     @LazyInjected(\ServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
-    @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
+    @LazyInjected(\UseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\ToolingContainer.authManager) private var authManager
     @LazyInjected(\ToolingContainer.preferencesManager) private var preferencesManager
     @LazyInjected(\ToolingContainer.logManager) private var logManager
-    @LazyInjected(\SharedUseCasesContainer.getUserUiModels) private var getUserUiModels
-    @LazyInjected(\SharedUseCasesContainer.parseCsvLogins) private var parseCsvLogins
-    @LazyInjected(\SharedUseCasesContainer.createVaultAndImportLogins)
+    @LazyInjected(\UseCasesContainer.getUserUiModels) private var getUserUiModels
+    @LazyInjected(\UseCasesContainer.parseCsvLogins) private var parseCsvLogins
+    @LazyInjected(\UseCasesContainer.createVaultAndImportLogins)
     private var createVaultAndImportLogins
 
     private var lastChildViewController: UIViewController?

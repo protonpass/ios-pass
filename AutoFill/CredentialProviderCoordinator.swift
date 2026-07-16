@@ -38,8 +38,8 @@ extension ASCredentialProviderExtensionContext: @unchecked @retroactive Sendable
 @MainActor
 final class CredentialProviderCoordinator: DeinitPrintable {
     /// Self-initialized properties
-    private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
-    private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
+    private let setUpSentry = resolve(\UseCasesContainer.setUpSentry)
+    private let setCoreLoggerEnvironment = resolve(\UseCasesContainer.setCoreLoggerEnvironment)
     private let logger = resolve(\ToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let userForNewItemSubject = UserForNewItemSubject()
@@ -51,12 +51,12 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     // Use cases
     private let completeConfiguration = resolve(\AutoFillUseCaseContainer.completeConfiguration)
     private let cancelAutoFill = resolve(\AutoFillUseCaseContainer.cancelAutoFill)
-    private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
+    private let sendErrorToSentry = resolve(\UseCasesContainer.sendErrorToSentry)
 
     // Lazily injected because some use cases are dependent on repositories
     // which are not registered when the user is not logged in
-    @LazyInjected(\SharedUseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
-    @LazyInjected(\SharedUseCasesContainer.indexAllLoginItems) private var indexAllLoginItems
+    @LazyInjected(\UseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
+    @LazyInjected(\UseCasesContainer.indexAllLoginItems) private var indexAllLoginItems
     @LazyInjected(\AutoFillUseCaseContainer.checkAndAutoFill) private var checkAndAutoFill
     @LazyInjected(\AutoFillUseCaseContainer.completeAutoFill) private var completeAutoFill
     @LazyInjected(\AutoFillUseCaseContainer.completeTextAutoFill) private var completeTextAutoFill
@@ -64,14 +64,14 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
     @LazyInjected(\ServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
-    @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
-    @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
+    @LazyInjected(\UseCasesContainer.getSharedPreferences) private var getSharedPreferences
+    @LazyInjected(\UseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\RepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\ToolingContainer.authManager) private var authManager
-    @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) var logOutAllAccounts
-    @LazyInjected(\SharedUseCasesContainer.refreshFeatureFlags) var refreshFeatureFlags
-    @LazyInjected(\SharedUseCasesContainer.getUserUiModels) var getUserUiModels
+    @LazyInjected(\UseCasesContainer.logOutAllAccounts) var logOutAllAccounts
+    @LazyInjected(\UseCasesContainer.refreshFeatureFlags) var refreshFeatureFlags
+    @LazyInjected(\UseCasesContainer.getUserUiModels) var getUserUiModels
 
     /// Derived properties
     private var lastChildViewController: UIViewController?

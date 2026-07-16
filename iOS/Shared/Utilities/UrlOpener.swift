@@ -26,7 +26,7 @@ import UIKit
 
 @MainActor
 final class UrlOpener {
-    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
+    private let getSharedPreferences = resolve(\UseCasesContainer.getSharedPreferences)
     weak var rootViewController: UIViewController?
 
     init() {}

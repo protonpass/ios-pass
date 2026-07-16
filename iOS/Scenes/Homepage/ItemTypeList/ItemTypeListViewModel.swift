@@ -65,7 +65,7 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
     @LazyInjected(\ServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\ToolingContainer.logger) private var logger
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
-    @LazyInjected(\SharedUseCasesContainer.getOrganizationSettings)
+    @LazyInjected(\UseCasesContainer.getOrganizationSettings)
     private var getOrganizationSettings
 
     enum Mode {

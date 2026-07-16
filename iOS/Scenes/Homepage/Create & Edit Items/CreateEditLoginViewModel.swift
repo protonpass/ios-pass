@@ -77,16 +77,16 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         aliasCreationLiteInfo != nil
     }
 
-    private let sanitizeTotpUriForEditing = resolve(\SharedUseCasesContainer.sanitizeTotpUriForEditing)
-    private let sanitizeTotpUriForSaving = resolve(\SharedUseCasesContainer.sanitizeTotpUriForSaving)
-    private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
-    private let createPasskey = resolve(\SharedUseCasesContainer.createPasskey)
-    private let validateEmail = resolve(\SharedUseCasesContainer.validateEmail)
-    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
-    @LazyInjected(\SharedUseCasesContainer.getOrganizationSettings)
+    private let sanitizeTotpUriForEditing = resolve(\UseCasesContainer.sanitizeTotpUriForEditing)
+    private let sanitizeTotpUriForSaving = resolve(\UseCasesContainer.sanitizeTotpUriForSaving)
+    private let getPasswordStrength = resolve(\UseCasesContainer.getPasswordStrength)
+    private let createPasskey = resolve(\UseCasesContainer.createPasskey)
+    private let validateEmail = resolve(\UseCasesContainer.validateEmail)
+    private let getSharedPreferences = resolve(\UseCasesContainer.getSharedPreferences)
+    @LazyInjected(\UseCasesContainer.getOrganizationSettings)
     private var getOrganizationSettings
 
-    @LazyInjected(\SharedUseCasesContainer.generateUsername)
+    @LazyInjected(\UseCasesContainer.generateUsername)
     private(set) var generateUsername
 
     @LazyInjected(\RepositoryContainer.localUsernamePreferencesDatasource)

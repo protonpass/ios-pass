@@ -75,13 +75,13 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let doPermanentlyDeleteSelectedItems = resolve(\UseCasesContainer.permanentlyDeleteSelectedItems)
     private let getAllPinnedItems = resolve(\UseCasesContainer.getAllPinnedItems)
     private let symmetricKeyProvider = resolve(\DataContainer.symmetricKeyProvider)
-    private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
+    private let canEditItem = resolve(\UseCasesContainer.canEditItem)
     private let shouldDisplayUpgradeAppBanner = resolve(\UseCasesContainer.shouldDisplayUpgradeAppBanner)
-    private let pinItems = resolve(\SharedUseCasesContainer.pinItems)
-    private let unpinItems = resolve(\SharedUseCasesContainer.unpinItems)
+    private let pinItems = resolve(\UseCasesContainer.pinItems)
+    private let unpinItems = resolve(\UseCasesContainer.unpinItems)
     @LazyInjected(\ServiceContainer.inAppNotificationManager) var inAppNotificationManager
 
-    @LazyInjected(\SharedUseCasesContainer.getOrganizationSettings)
+    @LazyInjected(\UseCasesContainer.getOrganizationSettings)
     private var getOrganizationSettings
 
     let itemContextMenuHandler = resolve(\OldSharedServiceContainer.itemContextMenuHandler)

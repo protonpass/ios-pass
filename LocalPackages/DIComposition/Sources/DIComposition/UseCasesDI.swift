@@ -589,8 +589,8 @@ public extension UseCasesContainer {
 
 ///// mark shared
 /////
-// final class SharedUseCasesContainer: SharedContainer, AutoRegistering {
-//    static let shared = SharedUseCasesContainer()
+// final class UseCasesContainer: SharedContainer, AutoRegistering {
+//    static let shared = UseCasesContainer()
 //    let manager = ContainerManager()
 //
 //    func autoRegister() {

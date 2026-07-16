@@ -99,8 +99,8 @@ class BaseItemDetailViewModel: ObservableObject {
 
     private let appContentManager = resolve(\ServiceContainer.appContentManager)
     private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
-    private let pinItems = resolve(\SharedUseCasesContainer.pinItems)
-    private let unpinItems = resolve(\SharedUseCasesContainer.unpinItems)
+    private let pinItems = resolve(\UseCasesContainer.pinItems)
+    private let unpinItems = resolve(\UseCasesContainer.unpinItems)
     private let toggleItemMonitoring = resolve(\UseCasesContainer.toggleItemMonitoring)
     private let addItemReadEvent = resolve(\UseCasesContainer.addItemReadEvent)
     @LazyInjected(\RepositoryContainer.itemRepository) private(set) var itemRepository
@@ -110,13 +110,13 @@ class BaseItemDetailViewModel: ObservableObject {
     @LazyInjected(\UseCasesContainer.leaveShare) var leaveShareUsecase
     @LazyInjected(\ServiceContainer.userManager) var userManager
     @LazyInjected(\RepositoryContainer.fileAttachmentRepository) private var fileRepository
-    @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
-    @LazyInjected(\SharedUseCasesContainer.getFileGroup) private var getFileGroup
-    @LazyInjected(\SharedUseCasesContainer.generateFileTempUrl) private var generateFileTempUrl
-    @LazyInjected(\SharedUseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
+    @LazyInjected(\UseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
+    @LazyInjected(\UseCasesContainer.getFileGroup) private var getFileGroup
+    @LazyInjected(\UseCasesContainer.generateFileTempUrl) private var generateFileTempUrl
+    @LazyInjected(\UseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
     @LazyInjected(\ToolingContainer.preferencesManager) var preferencesManager
     @LazyInjected(\RepositoryContainer.organizationRepository) private var organizationRepository
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
+    @LazyInjected(\UseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
 
     var folderSupported: Bool {

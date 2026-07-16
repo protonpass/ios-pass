@@ -35,7 +35,7 @@ final class MonitorAliasesViewModel: ObservableObject {
     private let accessRepository = resolve(\RepositoryContainer.accessRepository)
     private let passMonitorRepository = resolve(\RepositoryContainer.passMonitorRepository)
     private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
-    private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
+    private let getAppPreferences = resolve(\UseCasesContainer.getAppPreferences)
     private let logger = resolve(\ToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     @LazyInjected(\ServiceContainer.userManager) private var userManager

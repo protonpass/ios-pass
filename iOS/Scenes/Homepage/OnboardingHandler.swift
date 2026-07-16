@@ -44,7 +44,7 @@ final class OnboardingHandler {
     @LazyInjected(\RepositoryContainer.accessRepository)
     private var accessRepository
 
-    @LazyInjected(\SharedUseCasesContainer.checkBiometryType)
+    @LazyInjected(\UseCasesContainer.checkBiometryType)
     private var checkBiometryType
 
     @LazyInjected(\ToolingContainer.localAuthenticationEnablingPolicy)
@@ -53,19 +53,19 @@ final class OnboardingHandler {
     @LazyInjected(\OldUseCasesContainer.enableAutoFill)
     private var enableAutoFillUseCase
 
-    @LazyInjected(\SharedUseCasesContainer.authenticateBiometrically)
+    @LazyInjected(\UseCasesContainer.authenticateBiometrically)
     private var authenticateBiometrically
 
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var router
 
-    @LazyInjected(\ SharedUseCasesContainer.addTelemetryEvent)
+    @LazyInjected(\ UseCasesContainer.addTelemetryEvent)
     private var addTelemetryEvent
 
     @LazyInjected(\ToolingContainer.apiManager)
     private var apiManager
 
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
+    @LazyInjected(\UseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
 
     private let transactionsObserver: TransactionsObserverProviding

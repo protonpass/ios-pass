@@ -46,11 +46,11 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
     private let onFailure: (String?) -> Void
     private var cancellables = Set<AnyCancellable>()
     @ObservationIgnored
-    private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
+    private let authenticate = resolve(\UseCasesContainer.authenticateBiometrically)
     @ObservationIgnored
-    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
+    private let getSharedPreferences = resolve(\UseCasesContainer.getSharedPreferences)
     @ObservationIgnored
-    private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
+    private let updateSharedPreferences = resolve(\UseCasesContainer.updateSharedPreferences)
     let mode: Mode
 
     // Only applicable to app cover flow because local authentication process is wrapped inside a view modifier

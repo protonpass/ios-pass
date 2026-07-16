@@ -37,15 +37,15 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     private let logger = resolve(\ToolingContainer.logger)
     private let preferencesManager = resolve(\ToolingContainer.preferencesManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let indexItemsForSpotlight = resolve(\SharedUseCasesContainer.indexItemsForSpotlight)
+    private let indexItemsForSpotlight = resolve(\UseCasesContainer.indexItemsForSpotlight)
     private let getSpotlightVaults = resolve(\UseCasesContainer.getSpotlightVaults)
     private let updateSpotlightVaults = resolve(\UseCasesContainer.updateSpotlightVaults)
-    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
-    private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
-    private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
-    private let updateUserPreferences = resolve(\SharedUseCasesContainer.updateUserPreferences)
+    private let getSharedPreferences = resolve(\UseCasesContainer.getSharedPreferences)
+    private let updateSharedPreferences = resolve(\UseCasesContainer.updateSharedPreferences)
+    private let getUserPreferences = resolve(\UseCasesContainer.getUserPreferences)
+    private let updateUserPreferences = resolve(\UseCasesContainer.updateUserPreferences)
     @LazyInjected(\ServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedUseCasesContainer.fullContentSync) private var fullContentSync
+    @LazyInjected(\UseCasesContainer.fullContentSync) private var fullContentSync
     @LazyInjected(\RepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
 

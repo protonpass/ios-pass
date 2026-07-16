@@ -204,22 +204,22 @@ class BaseCreateEditItemViewModel: ObservableObject {
     let logger = resolve(\ToolingContainer.logger)
     let userManager = resolve(\ServiceContainer.userManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
-    private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
-    private let updateUserPreferences = resolve(\SharedUseCasesContainer.updateUserPreferences)
+    private let addTelemetryEvent = resolve(\UseCasesContainer.addTelemetryEvent)
+    private let getUserPreferences = resolve(\UseCasesContainer.getUserPreferences)
+    private let updateUserPreferences = resolve(\UseCasesContainer.updateUserPreferences)
     private let appContentManager = resolve(\ServiceContainer.appContentManager)
     @LazyInjected(\ToolingContainer.preferencesManager) var preferencesManager
     @LazyInjected(\RepositoryContainer.fileAttachmentRepository) private var fileRepository
-    @LazyInjected(\SharedUseCasesContainer.generateDatedFileName) private var generateDatedFileName
-    @LazyInjected(\SharedUseCasesContainer.writeToUrl) private var writeToUrl
-    @LazyInjected(\SharedUseCasesContainer.getFileSize) private var getFileSize
-    @LazyInjected(\SharedUseCasesContainer.getMimeType) private var getMimeType
-    @LazyInjected(\SharedUseCasesContainer.getFileGroup) private var getFileGroup
-    @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
-    @LazyInjected(\SharedUseCasesContainer.getFilesToLink) private var getFilesToLink
-    @LazyInjected(\SharedUseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
-    @LazyInjected(\SharedUseCasesContainer.checkCameraPermission) private var checkCameraPermission
-    @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
+    @LazyInjected(\UseCasesContainer.generateDatedFileName) private var generateDatedFileName
+    @LazyInjected(\UseCasesContainer.writeToUrl) private var writeToUrl
+    @LazyInjected(\UseCasesContainer.getFileSize) private var getFileSize
+    @LazyInjected(\UseCasesContainer.getMimeType) private var getMimeType
+    @LazyInjected(\UseCasesContainer.getFileGroup) private var getFileGroup
+    @LazyInjected(\UseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
+    @LazyInjected(\UseCasesContainer.getFilesToLink) private var getFilesToLink
+    @LazyInjected(\UseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
+    @LazyInjected(\UseCasesContainer.checkCameraPermission) private var checkCameraPermission
+    @LazyInjected(\UseCasesContainer.getSharedPreferences) private var getSharedPreferences
 
     var isFetchingAttachedFiles: Bool {
         attachedFiles?.isFetching == true
