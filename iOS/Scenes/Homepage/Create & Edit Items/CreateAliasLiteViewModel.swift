@@ -48,16 +48,16 @@ final class CreateAliasLiteViewModel: ObservableObject {
     @Published private(set) var aliasCount: Int?
     @Published var mailboxSelection: AliasLinkedMailboxSelection
     @Published var suffixSelection: SuffixSelection
-    let module = resolve(\SharedToolingContainer.module)
+    let module = resolve(\ToolingContainer.module)
 
     private var cancellables = Set<AnyCancellable>()
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let validateAliasPrefix = resolve(\SharedUseCasesContainer.validateAliasPrefix)
     @LazyInjected(\RepositoryContainer.accessRepository) private var accessRepository
-    @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
-    @LazyInjected(\SharedToolingContainer.logger) private var logger
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\ToolingContainer.preferencesManager) var preferencesManager
+    @LazyInjected(\ToolingContainer.logger) private var logger
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\RepositoryContainer.localItemDatasource) private var localItemDatasource
 
     weak var aliasCreationDelegate: (any AliasCreationLiteInfoDelegate)?

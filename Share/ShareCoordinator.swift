@@ -78,16 +78,16 @@ final class ShareCoordinator {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
 
-    @LazyInjected(\SharedToolingContainer.logger) private var logger
-    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
+    @LazyInjected(\ToolingContainer.logger) private var logger
+    @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
     @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) private var logOutAllAccounts
-    @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
+    @LazyInjected(\ServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedToolingContainer.authManager) private var authManager
-    @LazyInjected(\SharedToolingContainer.preferencesManager) private var preferencesManager
-    @LazyInjected(\SharedToolingContainer.logManager) private var logManager
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
+    @LazyInjected(\ToolingContainer.authManager) private var authManager
+    @LazyInjected(\ToolingContainer.preferencesManager) private var preferencesManager
+    @LazyInjected(\ToolingContainer.logManager) private var logManager
     @LazyInjected(\SharedUseCasesContainer.getUserUiModels) private var getUserUiModels
     @LazyInjected(\SharedUseCasesContainer.parseCsvLogins) private var parseCsvLogins
     @LazyInjected(\SharedUseCasesContainer.createVaultAndImportLogins)

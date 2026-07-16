@@ -119,7 +119,7 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     private let generatePassphrase = resolve(\SharedUseCasesContainer.generatePassphrase)
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    @LazyInjected(\SharedToolingContainer.logger) private var logger
+    @LazyInjected(\ToolingContainer.logger) private var logger
     @LazyInjected(\RepositoryContainer.passwordHistoryRepository)
     private var passwordHistoryRepository
     @LazyInjected(\SharedUseCasesContainer.getOrganizationSettings)

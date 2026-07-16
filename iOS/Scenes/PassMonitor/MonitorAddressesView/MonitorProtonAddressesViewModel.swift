@@ -33,9 +33,9 @@ final class MonitorProtonAddressesViewModel: ObservableObject {
     private let accessRepository = resolve(\RepositoryContainer.accessRepository)
     private let passMonitorRepository = resolve(\RepositoryContainer.passMonitorRepository)
     private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
-    private let logger = resolve(\SharedToolingContainer.logger)
+    private let logger = resolve(\ToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
 
     private var cancellables = Set<AnyCancellable>()
 

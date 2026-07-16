@@ -95,9 +95,9 @@ class BaseItemDetailViewModel: ObservableObject {
     private(set) var customFields: [CustomField]
     let vault: VaultListUiModel?
     let shareContent: ShareContent?
-    let logger = resolve(\SharedToolingContainer.logger)
+    let logger = resolve(\ToolingContainer.logger)
 
-    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
+    private let appContentManager = resolve(\ServiceContainer.appContentManager)
     private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
     private let pinItems = resolve(\SharedUseCasesContainer.pinItems)
     private let unpinItems = resolve(\SharedUseCasesContainer.unpinItems)
@@ -105,16 +105,16 @@ class BaseItemDetailViewModel: ObservableObject {
     private let addItemReadEvent = resolve(\UseCasesContainer.addItemReadEvent)
     @LazyInjected(\RepositoryContainer.itemRepository) private(set) var itemRepository
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private(set) var router
-    @LazyInjected(\SharedServiceContainer.itemContextMenuHandler) var itemContextMenuHandler
-    @LazyInjected(\SharedServiceContainer.syncEventLoop) var syncEventLoop
+    @LazyInjected(\OldSharedServiceContainer.itemContextMenuHandler) var itemContextMenuHandler
+    @LazyInjected(\ServiceContainer.syncEventLoop) var syncEventLoop
     @LazyInjected(\UseCasesContainer.leaveShare) var leaveShareUsecase
-    @LazyInjected(\SharedServiceContainer.userManager) var userManager
+    @LazyInjected(\ServiceContainer.userManager) var userManager
     @LazyInjected(\RepositoryContainer.fileAttachmentRepository) private var fileRepository
     @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
     @LazyInjected(\SharedUseCasesContainer.getFileGroup) private var getFileGroup
     @LazyInjected(\SharedUseCasesContainer.generateFileTempUrl) private var generateFileTempUrl
     @LazyInjected(\SharedUseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
-    @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
+    @LazyInjected(\ToolingContainer.preferencesManager) var preferencesManager
     @LazyInjected(\RepositoryContainer.organizationRepository) private var organizationRepository
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus

@@ -32,13 +32,13 @@ import StoreKit
 
 @MainActor
 final class OnboardingHandler {
-    @LazyInjected(\SharedToolingContainer.preferencesManager)
+    @LazyInjected(\ToolingContainer.preferencesManager)
     private var preferencesManager
 
-    @LazyInjected(\SharedServiceContainer.credentialManager)
+    @LazyInjected(\ServiceContainer.credentialManager)
     private var credentialManager
 
-    @LazyInjected(\SharedServiceContainer.userManager)
+    @LazyInjected(\ServiceContainer.userManager)
     private var userManager
 
     @LazyInjected(\RepositoryContainer.accessRepository)
@@ -47,7 +47,7 @@ final class OnboardingHandler {
     @LazyInjected(\SharedUseCasesContainer.checkBiometryType)
     private var checkBiometryType
 
-    @LazyInjected(\SharedToolingContainer.localAuthenticationEnablingPolicy)
+    @LazyInjected(\ToolingContainer.localAuthenticationEnablingPolicy)
     private var localAuthenticationEnablingPolicy
 
     @LazyInjected(\OldUseCasesContainer.enableAutoFill)
@@ -62,7 +62,7 @@ final class OnboardingHandler {
     @LazyInjected(\ SharedUseCasesContainer.addTelemetryEvent)
     private var addTelemetryEvent
 
-    @LazyInjected(\SharedToolingContainer.apiManager)
+    @LazyInjected(\ToolingContainer.apiManager)
     private var apiManager
 
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)

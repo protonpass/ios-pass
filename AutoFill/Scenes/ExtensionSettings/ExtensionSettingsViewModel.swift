@@ -28,8 +28,8 @@ final class ExtensionSettingsViewModel: ObservableObject {
     @Published private(set) var quickTypeBar: Bool
     @Published private(set) var automaticallyCopyTotpCode: Bool
     @Published private(set) var showAutomaticCopyTotpCodeExplication = false
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let notificationService = resolve(\SharedServiceContainer.notificationService)
+    private let logger = resolve(\ToolingContainer.logger)
+    private let notificationService = resolve(\ServiceContainer.notificationService)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     // Use cases

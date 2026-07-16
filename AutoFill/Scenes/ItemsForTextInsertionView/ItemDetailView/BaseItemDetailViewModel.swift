@@ -33,8 +33,8 @@ class BaseItemDetailViewModel: ObservableObject {
     let customFields: [CustomField]
 
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
-    @LazyInjected(\SharedToolingContainer.logger) private var logger
-    @LazyInjected(\SharedServiceContainer.upgradeChecker) var upgradeChecker
+    @LazyInjected(\ToolingContainer.logger) private var logger
+    @LazyInjected(\ServiceContainer.upgradeChecker) var upgradeChecker
 
     var type: ItemContentType {
         item.content.type

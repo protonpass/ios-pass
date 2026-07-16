@@ -38,8 +38,8 @@ final class ItemHistoryViewModel: ObservableObject {
 
     private let getItemHistory = resolve(\UseCasesContainer.getItemHistory)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    @LazyInjected(\SharedToolingContainer.logger) private var logger
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\ToolingContainer.logger) private var logger
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\RepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\RepositoryContainer.shareRepository) private var shareRepository
 

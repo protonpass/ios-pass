@@ -136,7 +136,7 @@ private final class TrashItemsViewModel: ObservableObject {
     private let itemRepository = resolve(\RepositoryContainer.itemRepository)
     private let shareRepository = resolve(\RepositoryContainer.shareRepository)
     private let bannerManager = resolve(\SharedViewContainer.bannerManager)
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
 
     init() {
         loadVaults()

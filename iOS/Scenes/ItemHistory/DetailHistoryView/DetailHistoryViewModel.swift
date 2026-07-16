@@ -46,8 +46,8 @@ final class DetailHistoryViewModel: ObservableObject {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let itemRepository = resolve(\RepositoryContainer.itemRepository)
     @LazyInjected(\RepositoryContainer.fileAttachmentRepository) private var fileAttachmentRepository
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedToolingContainer.logger) private var logger
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
+    @LazyInjected(\ToolingContainer.logger) private var logger
     @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
     @LazyInjected(\SharedUseCasesContainer.getFileGroup) private var getFileGroup
     @LazyInjected(\SharedUseCasesContainer.generateFileTempUrl) private var generateFileTempUrl
@@ -55,7 +55,7 @@ final class DetailHistoryViewModel: ObservableObject {
 
     private var cancellables = Set<AnyCancellable>()
 
-    let totpManager = resolve(\SharedServiceContainer.totpManager)
+    let totpManager = resolve(\ServiceContainer.totpManager)
     let currentRevision: ItemContent
     let pastRevision: ItemContent
     let files: [ItemFile]

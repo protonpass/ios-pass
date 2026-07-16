@@ -42,7 +42,7 @@ final class SharingSummaryViewModel: ObservableObject {
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
 
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
 
     private var lastTask: Task<Void, Never>?
     private var plan: Plan?

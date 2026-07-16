@@ -81,15 +81,15 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     // Injected properties
     private let itemRepository = resolve(\RepositoryContainer.itemRepository)
     private let searchEntryDatasource = resolve(\RepositoryContainer.localSearchEntryDatasource)
-    private let logger = resolve(\SharedToolingContainer.logger)
+    private let logger = resolve(\ToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getSearchableItems = resolve(\UseCasesContainer.getSearchableItems)
     private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
+    @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
     @LazyInjected(\SharedUseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
 
-    let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
+    let itemContextMenuHandler = resolve(\OldSharedServiceContainer.itemContextMenuHandler)
 
     private var lastSearchQuery = ""
     private var searchTask: Task<Void, Never>?

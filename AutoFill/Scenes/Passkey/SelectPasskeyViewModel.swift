@@ -31,7 +31,7 @@ final class SelectPasskeyViewModel: ObservableObject {
 
     private let autoFillPasskey = resolve(\AutoFillUseCaseContainer.autoFillPasskey)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let logger = resolve(\SharedToolingContainer.logger)
+    private let logger = resolve(\ToolingContainer.logger)
 
     init(info: SelectPasskeySheetInformation,
          context: ASCredentialProviderExtensionContext) {

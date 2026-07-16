@@ -64,8 +64,8 @@ struct ItemSquircleThumbnail: View {
     @State private var image: UIImage?
 
     private let repository = resolve(\RepositoryContainer.favIconRepository)
-    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
-    private let cachedFavIconsManager = resolve(\SharedServiceContainer.cachedFavIconsManager)
+    private let preferencesManager = resolve(\ToolingContainer.preferencesManager)
+    private let cachedFavIconsManager = resolve(\ServiceContainer.cachedFavIconsManager)
     private let data: ItemThumbnailData
     private let pinned: Bool
     private let isEnabled: Bool

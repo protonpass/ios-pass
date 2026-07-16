@@ -40,11 +40,11 @@ final class AcceptRejectInviteViewModel: ObservableObject {
     private let acceptInvitation = resolve(\UseCasesContainer.acceptInvitation)
     private let decodeShareVaultInformation = resolve(\UseCasesContainer.decodeShareVaultInformation)
     private let updateCachedInvitations = resolve(\UseCasesContainer.updateCachedInvitations)
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
-    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
+    private let logger = resolve(\ToolingContainer.logger)
+    private let syncEventLoop = resolve(\ServiceContainer.syncEventLoop)
+    private let appContentManager = resolve(\ServiceContainer.appContentManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\RepositoryContainer.groupRepository) private var groupRepository
     private var cancellables = Set<AnyCancellable>()
 

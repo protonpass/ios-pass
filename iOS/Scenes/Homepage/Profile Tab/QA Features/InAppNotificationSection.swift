@@ -249,7 +249,7 @@ private final class InAppNotificationViewModel {
     var removedMockedNotification = false
 
     @ObservationIgnored
-    @LazyInjected(\SharedServiceContainer.inAppNotificationManager)
+    @LazyInjected(\ServiceContainer.inAppNotificationManager)
     private var inAppNotificationManager
 
     @ObservationIgnored
@@ -257,7 +257,7 @@ private final class InAppNotificationViewModel {
     private var localNotificationTimeDatasource
 
     @ObservationIgnored
-    @LazyInjected(\SharedServiceContainer.userManager)
+    @LazyInjected(\ServiceContainer.userManager)
     private var userManager
 
     @ObservationIgnored

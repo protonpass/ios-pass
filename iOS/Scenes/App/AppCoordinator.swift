@@ -70,14 +70,14 @@ final class AppCoordinator {
 
     private var cancellables = Set<AnyCancellable>()
 
-    private let userManager = resolve(\SharedServiceContainer.userManager)
-    private let logger = resolve(\SharedToolingContainer.logger)
+    private let userManager = resolve(\ServiceContainer.userManager)
+    private let logger = resolve(\ToolingContainer.logger)
     private let loginMethod = resolve(\DataContainer.loginMethod)
 
-    @LazyInjected(\SharedToolingContainer.keychain) private var keychain
-    @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
-    @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
-    @LazyInjected(\SharedToolingContainer.authManager) private var authManager
+    @LazyInjected(\ToolingContainer.keychain) private var keychain
+    @LazyInjected(\ToolingContainer.apiManager) private var apiManager
+    @LazyInjected(\ToolingContainer.preferencesManager) var preferencesManager
+    @LazyInjected(\ToolingContainer.authManager) private var authManager
 
     @LazyInjected(\RepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
     @LazyInjected(\RepositoryContainer.localUserDataDatasource) var localUserDataDatasource
@@ -91,10 +91,10 @@ final class AppCoordinator {
     @LazyInjected(\SharedUseCasesContainer.sendMessageToSentry) var sendMessageToSentry
     @LazyInjected(\SharedUseCasesContainer.clearCacheForLoggedOutUsers)
     private var clearCacheForLoggedOutUsers
-    @LazyInjected(\SharedServiceContainer.telemetryService) private var telemetryService
+    @LazyInjected(\ServiceContainer.telemetryService) private var telemetryService
     @LazyInjected(\UseCasesContainer.firstRunDetector) private var firstRunDetector
     @LazyInjected(\UseCasesContainer.postbackConversionValue) private var postbackConversionValue
-    @LazyInjected(\SharedServiceContainer.inAppNotificationManager)
+    @LazyInjected(\ServiceContainer.inAppNotificationManager)
     private var inAppNotificationManager
 
     private var authDeviceManagerUI: AuthDeviceManagerUI?

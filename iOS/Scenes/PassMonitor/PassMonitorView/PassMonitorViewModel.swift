@@ -38,8 +38,8 @@ final class PassMonitorViewModel: ObservableObject {
     @Published var showSentinelSheet = false
     @Published private(set) var latestBreachInfo: LatestBreachDomainInfo?
 
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
+    private let logger = resolve(\ToolingContainer.logger)
+    private let upgradeChecker = resolve(\ServiceContainer.upgradeChecker)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let passMonitorRepository = resolve(\RepositoryContainer.passMonitorRepository)
     private let monitorStateStream = resolve(\DataContainer.monitorStateStream)
@@ -48,7 +48,7 @@ final class PassMonitorViewModel: ObservableObject {
     private let accessRepository = resolve(\RepositoryContainer.accessRepository)
     private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
     let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
 
     private var refreshingTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()

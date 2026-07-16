@@ -57,7 +57,7 @@ final class EmailGroupSelectionViewModel: ObservableObject {
     private let checkAddressesForInvite = resolve(\UseCasesContainer.checkAddressesForInvite)
     private let shareInviteService = resolve(\ServiceContainer.shareInviteService)
     private let setShareInvitesAndKeys = resolve(\UseCasesContainer.setShareInvitesAndKeys)
-    private let userManager = resolve(\SharedServiceContainer.userManager)
+    private let userManager = resolve(\ServiceContainer.userManager)
     @LazyInjected(\RepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\RepositoryContainer.groupRepository) private var groupRepository
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus

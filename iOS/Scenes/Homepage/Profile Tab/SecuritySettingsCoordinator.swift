@@ -28,9 +28,9 @@ import Macro
 
 @MainActor
 final class SecuritySettingsCoordinator {
-    private let logger = resolve(\SharedToolingContainer.logger)
+    private let logger = resolve(\ToolingContainer.logger)
     private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
-    private let enablingPolicy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
+    private let enablingPolicy = resolve(\ToolingContainer.localAuthenticationEnablingPolicy)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)

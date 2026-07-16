@@ -45,13 +45,13 @@ final class CreateContactViewModel {
     @LazyInjected(\RepositoryContainer.aliasRepository) private var aliasRepository
 
     @ObservationIgnored
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
 
     @ObservationIgnored
-    @LazyInjected(\SharedToolingContainer.preferencesManager) private var preferencesManager
+    @LazyInjected(\ToolingContainer.preferencesManager) private var preferencesManager
 
     @ObservationIgnored
-    @LazyInjected(\SharedToolingContainer.logger) private var logger
+    @LazyInjected(\ToolingContainer.logger) private var logger
 
     @ObservationIgnored
     @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences

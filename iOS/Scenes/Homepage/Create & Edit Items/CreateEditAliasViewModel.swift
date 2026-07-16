@@ -89,7 +89,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
     @LazyInjected(\SharedUseCasesContainer.updateSharedPreferences) private var updateSharedPreferences
 
-    let module = resolve(\SharedToolingContainer.module)
+    let module = resolve(\ToolingContainer.module)
 
     var isAliasOwner: Bool {
         alias?.mailboxes.isEmpty == false

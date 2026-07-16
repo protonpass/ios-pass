@@ -48,14 +48,14 @@ struct StorageUiModel {
 final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
+    private let credentialManager = resolve(\ServiceContainer.credentialManager)
+    private let logger = resolve(\ToolingContainer.logger)
+    private let preferencesManager = resolve(\ToolingContainer.preferencesManager)
     private let accessRepository = resolve(\RepositoryContainer.accessRepository)
-    private let notificationService = resolve(\SharedServiceContainer.notificationService)
+    private let notificationService = resolve(\ServiceContainer.notificationService)
     private let securitySettingsCoordinator: SecuritySettingsCoordinator
 
-    private let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
+    private let policy = resolve(\ToolingContainer.localAuthenticationEnablingPolicy)
     private let getAuthMethods = resolve(\SharedUseCasesContainer.getLocalAuthenticationMethods)
     private let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -73,7 +73,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     /// Repositories
     private let userSettingsRepository = resolve(\RepositoryContainer.userSettingsRepository)
 
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedUseCasesContainer.switchUser) private var switchUser
     @LazyInjected(\SharedUseCasesContainer.getOrganizationSettings)
     private var getOrganizationSettings

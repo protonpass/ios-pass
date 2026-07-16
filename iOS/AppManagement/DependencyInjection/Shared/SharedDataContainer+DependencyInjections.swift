@@ -40,11 +40,11 @@
 //
 // private extension SharedDataContainer {
 //    var keychain: any KeychainProtocol {
-//        SharedToolingContainer.shared.keychain()
+//        ToolingContainer.shared.keychain()
 //    }
 //
 //    var mainKeyProvider: any MainKeyProvider {
-//        SharedToolingContainer.shared.mainKeyProvider()
+//        ToolingContainer.shared.mainKeyProvider()
 //    }
 // }
 //
@@ -54,7 +54,7 @@
 //    }
 //
 //    var credentialProvider: Factory<any AuthManagerProtocol> {
-//        self { SharedToolingContainer.shared.authManager() }
+//        self { ToolingContainer.shared.authManager() }
 //    }
 //
 //    var symmetricKeyProvider: Factory<any SymmetricKeyProvider> {

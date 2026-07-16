@@ -31,12 +31,12 @@ import Stores
 final class ItemMoveVaultListViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
-    private let logger = resolve(\SharedToolingContainer.logger)
+    private let upgradeChecker = resolve(\ServiceContainer.upgradeChecker)
+    private let logger = resolve(\ToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let moveItemsBetweenContainers = resolve(\UseCasesContainer.moveItemsBetweenContainers)
     private let currentSelectedItems = resolve(\DataContainer.currentSelectedItems)
-    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
+    @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
     @LazyInjected(\RepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 

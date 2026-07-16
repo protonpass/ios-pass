@@ -37,11 +37,11 @@
 //
 // private extension RepositoryContainer {
 //    var apiManager: any APIManagerProtocol {
-//        SharedToolingContainer.shared.apiManager()
+//        ToolingContainer.shared.apiManager()
 //    }
 //
 //    var userManager: any UserManagerProtocol {
-//        SharedServiceContainer.shared.userManager()
+//        ServiceContainer.shared.userManager()
 //    }
 // }
 //

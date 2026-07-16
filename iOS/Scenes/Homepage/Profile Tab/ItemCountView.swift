@@ -178,7 +178,7 @@ private extension ItemContentType {
 @MainActor
 private final class ItemCountViewModel: ObservableObject {
     @Published private(set) var object: FetchableObject<ItemCount> = .fetching
-    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
+    private let appContentManager = resolve(\ServiceContainer.appContentManager)
     private var cancellables = Set<AnyCancellable>()
 
     private var task: Task<Void, Never>?

@@ -202,8 +202,8 @@ private struct HiddenCustomFieldSection: View {
 private final class TotpCustomFieldSectionViewModel: ObservableObject {
     @Published private(set) var state = TOTPState.empty
 
-    private let totpService = resolve(\SharedServiceContainer.totpService)
-    private let logManager = resolve(\SharedToolingContainer.logManager)
+    private let totpService = resolve(\ServiceContainer.totpService)
+    private let logManager = resolve(\ToolingContainer.logManager)
     private var cancellable = Set<AnyCancellable>()
 
     /// Manually construct an instance of TOTPManager instead of getting via Factory
