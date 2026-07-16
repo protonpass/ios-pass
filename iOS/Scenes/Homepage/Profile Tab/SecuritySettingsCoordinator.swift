@@ -20,6 +20,7 @@
 
 import Core
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import LocalAuthentication

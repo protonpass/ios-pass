@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Macro
@@ -67,7 +68,7 @@ final class CreateEditVaultViewModel: ObservableObject {
 
     private let mode: VaultMode
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
+    private let shareRepository = resolve(\RepositoryContainer.shareRepository)
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let createVaultUseCase = resolve(\UseCasesContainer.createVault)

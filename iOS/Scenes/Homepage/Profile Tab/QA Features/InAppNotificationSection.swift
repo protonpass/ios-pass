@@ -22,6 +22,7 @@
 @_spi(QA) import Client
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import StoreKit

@@ -18,40 +18,40 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
-import FactoryKit
-import Foundation
-
-@preconcurrency import ProtonCoreServices
-
-final class RepositoryContainer: SharedContainer, AutoRegistering {
-    static let shared = RepositoryContainer()
-    let manager = ContainerManager()
-
-    func autoRegister() {
-        manager.defaultScope = .singleton
-    }
-}
-
-// MARK: - Computed properties
-
-private extension RepositoryContainer {
-    var apiManager: any APIManagerProtocol {
-        SharedToolingContainer.shared.apiManager()
-    }
-
-    var userManager: any UserManagerProtocol {
-        SharedServiceContainer.shared.userManager()
-    }
-}
-
-extension RepositoryContainer {
-    var reportRepository: Factory<any ReportRepositoryProtocol> {
-        self { ReportRepository(apiServicing: self.apiManager,
-                                userManager: self.userManager) }
-    }
-
-    var extraPasswordRepository: Factory<any ExtraPasswordRepositoryProtocol> {
-        self { ExtraPasswordRepository(apiServicing: self.apiManager) }
-    }
-}
+// import Client
+// import FactoryKit
+// import Foundation
+//
+// @preconcurrency import ProtonCoreServices
+//
+// final class RepositoryContainer: SharedContainer, AutoRegistering {
+//    static let shared = RepositoryContainer()
+//    let manager = ContainerManager()
+//
+//    func autoRegister() {
+//        manager.defaultScope = .singleton
+//    }
+// }
+//
+//// MARK: - Computed properties
+//
+// private extension RepositoryContainer {
+//    var apiManager: any APIManagerProtocol {
+//        SharedToolingContainer.shared.apiManager()
+//    }
+//
+//    var userManager: any UserManagerProtocol {
+//        SharedServiceContainer.shared.userManager()
+//    }
+// }
+//
+// extension RepositoryContainer {
+//    var reportRepository: Factory<any ReportRepositoryProtocol> {
+//        self { ReportRepository(apiServicing: self.apiManager,
+//                                userManager: self.userManager) }
+//    }
+//
+//    var extraPasswordRepository: Factory<any ExtraPasswordRepositoryProtocol> {
+//        self { ExtraPasswordRepository(apiServicing: self.apiManager) }
+//    }
+// }

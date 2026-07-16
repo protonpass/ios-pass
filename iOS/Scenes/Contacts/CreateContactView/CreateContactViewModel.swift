@@ -22,6 +22,7 @@
 
 import Client
 import Combine
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
@@ -41,7 +42,7 @@ final class CreateContactViewModel {
     }
 
     @ObservationIgnored
-    @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
+    @LazyInjected(\RepositoryContainer.aliasRepository) private var aliasRepository
 
     @ObservationIgnored
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager

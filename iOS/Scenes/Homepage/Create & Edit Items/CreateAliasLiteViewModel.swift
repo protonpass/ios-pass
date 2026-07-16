@@ -20,6 +20,7 @@
 
 import Client
 import Combine
+import DIComposition
 import Entities
 import FactoryKit
 import SwiftUI
@@ -53,11 +54,11 @@ final class CreateAliasLiteViewModel: ObservableObject {
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let validateAliasPrefix = resolve(\SharedUseCasesContainer.validateAliasPrefix)
-    @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
+    @LazyInjected(\RepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
     @LazyInjected(\SharedToolingContainer.logger) private var logger
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedRepositoryContainer.localItemDatasource) private var localItemDatasource
+    @LazyInjected(\RepositoryContainer.localItemDatasource) private var localItemDatasource
 
     weak var aliasCreationDelegate: (any AliasCreationLiteInfoDelegate)?
 

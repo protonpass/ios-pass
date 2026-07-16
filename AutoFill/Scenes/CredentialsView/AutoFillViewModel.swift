@@ -21,6 +21,7 @@
 @preconcurrency import AuthenticationServices
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation

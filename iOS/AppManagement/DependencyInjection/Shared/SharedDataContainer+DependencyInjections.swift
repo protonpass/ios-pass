@@ -18,52 +18,52 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
-import Core
-import CryptoKit
-import Entities
-import FactoryKit
-import Foundation
-
-final class SharedDataContainer: SharedContainer, AutoRegistering {
-    static let shared = SharedDataContainer()
-    let manager = ContainerManager()
-
-    init() {
-        Self.setUpContext()
-    }
-
-    func autoRegister() {
-        manager.defaultScope = .singleton
-    }
-}
-
-private extension SharedDataContainer {
-    var keychain: any KeychainProtocol {
-        SharedToolingContainer.shared.keychain()
-    }
-
-    var mainKeyProvider: any MainKeyProvider {
-        SharedToolingContainer.shared.mainKeyProvider()
-    }
-}
-
-extension SharedDataContainer {
-    var loginMethod: Factory<LoginMethodFlow> {
-        self { LoginMethodFlow() }
-    }
-
-    var credentialProvider: Factory<any AuthManagerProtocol> {
-        self { SharedToolingContainer.shared.authManager() }
-    }
-
-    var symmetricKeyProvider: Factory<any SymmetricKeyProvider> {
-        self { SymmetricKeyProviderImpl(keychain: self.keychain,
-                                        mainKeyProvider: self.mainKeyProvider) }
-    }
-
-    var nonSendableSymmetricKeyProvider: Factory<any NonAsyncSymmetricKeyProvider> {
-        self { NonSendableSymmetricKeyProviderImpl(keychain: self.keychain,
-                                                   mainKeyProvider: self.mainKeyProvider) }
-    }
-}
+// import Client
+// import Core
+// import CryptoKit
+// import Entities
+// import FactoryKit
+// import Foundation
+//
+// final class SharedDataContainer: SharedContainer, AutoRegistering {
+//    static let shared = SharedDataContainer()
+//    let manager = ContainerManager()
+//
+//    init() {
+//        Self.setUpContext()
+//    }
+//
+//    func autoRegister() {
+//        manager.defaultScope = .singleton
+//    }
+// }
+//
+// private extension SharedDataContainer {
+//    var keychain: any KeychainProtocol {
+//        SharedToolingContainer.shared.keychain()
+//    }
+//
+//    var mainKeyProvider: any MainKeyProvider {
+//        SharedToolingContainer.shared.mainKeyProvider()
+//    }
+// }
+//
+// extension SharedDataContainer {
+//    var loginMethod: Factory<LoginMethodFlow> {
+//        self { LoginMethodFlow() }
+//    }
+//
+//    var credentialProvider: Factory<any AuthManagerProtocol> {
+//        self { SharedToolingContainer.shared.authManager() }
+//    }
+//
+//    var symmetricKeyProvider: Factory<any SymmetricKeyProvider> {
+//        self { SymmetricKeyProviderImpl(keychain: self.keychain,
+//                                        mainKeyProvider: self.mainKeyProvider) }
+//    }
+//
+//    var nonSendableSymmetricKeyProvider: Factory<any NonAsyncSymmetricKeyProvider> {
+//        self { NonSendableSymmetricKeyProviderImpl(keychain: self.keychain,
+//                                                   mainKeyProvider: self.mainKeyProvider) }
+//    }
+// }

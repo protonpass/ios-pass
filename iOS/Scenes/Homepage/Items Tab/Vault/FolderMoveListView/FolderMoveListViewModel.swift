@@ -20,6 +20,7 @@
 
 import Client
 import Combine
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
@@ -39,7 +40,7 @@ final class FolderMoveListViewModel {
     @LazyInjected(\SharedToolingContainer.logger) private var logger
 
     @ObservationIgnored
-    @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
+    @LazyInjected(\RepositoryContainer.accessRepository) private var accessRepository
 
     private(set) var loading = false
     private(set) var moveCompleted = false

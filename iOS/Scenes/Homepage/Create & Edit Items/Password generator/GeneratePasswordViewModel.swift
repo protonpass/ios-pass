@@ -20,6 +20,7 @@
 
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import SwiftUI
@@ -119,7 +120,7 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     @LazyInjected(\SharedToolingContainer.logger) private var logger
-    @LazyInjected(\SharedRepositoryContainer.passwordHistoryRepository)
+    @LazyInjected(\RepositoryContainer.passwordHistoryRepository)
     private var passwordHistoryRepository
     @LazyInjected(\SharedUseCasesContainer.getOrganizationSettings)
     private var getOrganizationSettings

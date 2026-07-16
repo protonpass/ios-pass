@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Macro
@@ -102,19 +103,19 @@ class BaseItemDetailViewModel: ObservableObject {
     private let unpinItems = resolve(\SharedUseCasesContainer.unpinItems)
     private let toggleItemMonitoring = resolve(\UseCasesContainer.toggleItemMonitoring)
     private let addItemReadEvent = resolve(\UseCasesContainer.addItemReadEvent)
-    @LazyInjected(\SharedRepositoryContainer.itemRepository) private(set) var itemRepository
+    @LazyInjected(\RepositoryContainer.itemRepository) private(set) var itemRepository
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private(set) var router
     @LazyInjected(\SharedServiceContainer.itemContextMenuHandler) var itemContextMenuHandler
     @LazyInjected(\SharedServiceContainer.syncEventLoop) var syncEventLoop
     @LazyInjected(\UseCasesContainer.leaveShare) var leaveShareUsecase
     @LazyInjected(\SharedServiceContainer.userManager) var userManager
-    @LazyInjected(\SharedRepositoryContainer.fileAttachmentRepository) private var fileRepository
+    @LazyInjected(\RepositoryContainer.fileAttachmentRepository) private var fileRepository
     @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
     @LazyInjected(\SharedUseCasesContainer.getFileGroup) private var getFileGroup
     @LazyInjected(\SharedUseCasesContainer.generateFileTempUrl) private var generateFileTempUrl
     @LazyInjected(\SharedUseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
     @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
-    @LazyInjected(\SharedRepositoryContainer.organizationRepository) private var organizationRepository
+    @LazyInjected(\RepositoryContainer.organizationRepository) private var organizationRepository
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
 

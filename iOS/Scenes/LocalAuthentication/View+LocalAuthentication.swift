@@ -20,6 +20,7 @@
 
 import Combine
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import ProtonCoreKeymaker

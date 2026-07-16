@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
@@ -94,15 +95,15 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedRepositoryContainer.accessRepository)
+    @LazyInjected(\RepositoryContainer.accessRepository)
     private var accessRepository
-    @LazyInjected(\SharedRepositoryContainer.organizationRepository)
+    @LazyInjected(\RepositoryContainer.organizationRepository)
     private var organizationRepository
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
     @LazyInjected(\UseCasesContainer.reorganizeVaults)
     private var reorganizeVaults
-    @LazyInjected(\SharedRepositoryContainer.itemRepository)
+    @LazyInjected(\RepositoryContainer.itemRepository)
     private var itemRepository
 
     @LazyInjected(\UseCasesContainer.checkVaultCreationAllowance)

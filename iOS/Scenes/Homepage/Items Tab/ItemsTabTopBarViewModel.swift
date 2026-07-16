@@ -22,6 +22,7 @@ import Client
 import Combine
 import Core
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import Macro
@@ -71,8 +72,8 @@ enum ExtraBulkActionOption {
 @MainActor
 final class ItemsTabTopBarViewModel: ObservableObject {
     private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
-    private let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
-    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
+    private let currentSelectedItems = resolve(\DataContainer.currentSelectedItems)
+    private let accessRepository = resolve(\RepositoryContainer.accessRepository)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     private var cancellables = Set<AnyCancellable>()

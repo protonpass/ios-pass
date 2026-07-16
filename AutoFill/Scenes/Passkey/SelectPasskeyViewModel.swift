@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @preconcurrency import AuthenticationServices
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation

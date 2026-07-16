@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import Stores

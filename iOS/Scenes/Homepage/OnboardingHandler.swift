@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import LocalAuthentication
@@ -40,7 +41,7 @@ final class OnboardingHandler {
     @LazyInjected(\SharedServiceContainer.userManager)
     private var userManager
 
-    @LazyInjected(\SharedRepositoryContainer.accessRepository)
+    @LazyInjected(\RepositoryContainer.accessRepository)
     private var accessRepository
 
     @LazyInjected(\SharedUseCasesContainer.checkBiometryType)
@@ -49,7 +50,7 @@ final class OnboardingHandler {
     @LazyInjected(\SharedToolingContainer.localAuthenticationEnablingPolicy)
     private var localAuthenticationEnablingPolicy
 
-    @LazyInjected(\UseCasesContainer.enableAutoFill)
+    @LazyInjected(\OldUseCasesContainer.enableAutoFill)
     private var enableAutoFillUseCase
 
     @LazyInjected(\SharedUseCasesContainer.authenticateBiometrically)

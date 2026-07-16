@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import DIComposition
 import FactoryKit
 import Foundation
 import Macro

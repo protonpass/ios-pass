@@ -22,6 +22,7 @@
 
 import Client
 import Combine
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
@@ -41,7 +42,7 @@ final class PassMonitorViewModel: ObservableObject {
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
-    private let monitorStateStream = resolve(\DataStreamContainer.monitorStateStream)
+    private let monitorStateStream = resolve(\DataContainer.monitorStateStream)
     private let toggleSentinel = resolve(\SharedUseCasesContainer.toggleSentinel)
     private let getSentinelStatus = resolve(\SharedUseCasesContainer.getSentinelStatus)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)

@@ -23,6 +23,7 @@
 import Client
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
@@ -48,8 +49,8 @@ final class TotpLoginsViewModel: ObservableObject {
 
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     private let getActiveLoginItems = resolve(\SharedUseCasesContainer.getActiveLoginItems)
-    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
-    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
+    private let itemRepository = resolve(\RepositoryContainer.itemRepository)
+    private let shareRepository = resolve(\RepositoryContainer.shareRepository)
     let totpManager = resolve(\SharedServiceContainer.totpManager)
 
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router

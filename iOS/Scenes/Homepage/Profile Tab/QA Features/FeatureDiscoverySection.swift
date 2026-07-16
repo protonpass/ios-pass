@@ -21,6 +21,7 @@
 @_spi(QA)
 import Client
 import DesignSystem
+import DIComposition
 import FactoryKit
 import SwiftUI
 

@@ -22,6 +22,7 @@ import Client
 import Combine
 import Core
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import ProtonCoreUIFoundations

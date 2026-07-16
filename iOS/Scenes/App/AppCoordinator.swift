@@ -22,6 +22,7 @@ import Client
 import Combine
 import Core
 import CoreSpotlight
+import DIComposition
 import Entities
 import FactoryKit
 import Macro
@@ -71,15 +72,15 @@ final class AppCoordinator {
 
     private let userManager = resolve(\SharedServiceContainer.userManager)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let loginMethod = resolve(\SharedDataContainer.loginMethod)
+    private let loginMethod = resolve(\DataContainer.loginMethod)
 
     @LazyInjected(\SharedToolingContainer.keychain) private var keychain
     @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
     @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
     @LazyInjected(\SharedToolingContainer.authManager) private var authManager
 
-    @LazyInjected(\SharedRepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
-    @LazyInjected(\SharedRepositoryContainer.localUserDataDatasource) var localUserDataDatasource
+    @LazyInjected(\RepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
+    @LazyInjected(\RepositoryContainer.localUserDataDatasource) var localUserDataDatasource
 
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\SharedUseCasesContainer.refreshFeatureFlags) private var refreshFeatureFlags

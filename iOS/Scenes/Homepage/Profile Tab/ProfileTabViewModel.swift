@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import LocalAuthentication
@@ -58,12 +59,12 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let getAuthMethods = resolve(\SharedUseCasesContainer.getLocalAuthenticationMethods)
     private let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let itemTypeSelection = resolve(\DataStreamContainer.itemTypeSelection)
+    private let itemTypeSelection = resolve(\DataContainer.itemTypeSelection)
 
     // Use cases
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
     private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
-    private let enableAutoFill = resolve(\UseCasesContainer.enableAutoFill)
+    private let enableAutoFill = resolve(\OldUseCasesContainer.enableAutoFill)
     private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
     private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
     private let secureLinkManager = resolve(\ServiceContainer.secureLinkManager)
