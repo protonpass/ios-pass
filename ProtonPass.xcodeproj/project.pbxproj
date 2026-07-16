@@ -556,6 +556,9 @@
 		5B24B1E13007C874009B081A /* Stores in Frameworks */ = {isa = PBXBuildFile; productRef = 5B24B1E03007C874009B081A /* Stores */; };
 		5B24B1E33007CA44009B081A /* Stores in Frameworks */ = {isa = PBXBuildFile; productRef = 5B24B1E23007CA44009B081A /* Stores */; };
 		5B24B1F73007CF8D009B081A /* DIComposition in Frameworks */ = {isa = PBXBuildFile; productRef = 5B24B1F63007CF8D009B081A /* DIComposition */; };
+		5B24B1F93008C6CA009B081A /* DIComposition in Frameworks */ = {isa = PBXBuildFile; productRef = 5B24B1F83008C6CA009B081A /* DIComposition */; };
+		5B24B1FB3008C6F4009B081A /* DIComposition in Frameworks */ = {isa = PBXBuildFile; productRef = 5B24B1FA3008C6F4009B081A /* DIComposition */; };
+		5B24B1FD3008C728009B081A /* DIComposition in Frameworks */ = {isa = PBXBuildFile; productRef = 5B24B1FC3008C728009B081A /* DIComposition */; };
 		5B39DF7F2B501C020009D53E /* DetailHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B39DF7D2B501C020009D53E /* DetailHistoryView.swift */; };
 		5B39DF802B501C020009D53E /* DetailHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B39DF7E2B501C020009D53E /* DetailHistoryViewModel.swift */; };
 		5B3AD42B2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */; };
@@ -1241,6 +1244,7 @@
 				8B70786A2BD1209600E920D7 /* ProtonCorePasswordChange in Frameworks */,
 				40EC90982D1AE440004FCA37 /* ProtonCorePaymentsV2 in Frameworks */,
 				5B8D209F2AA748F700457CA3 /* Client in Frameworks */,
+				5B24B1FB3008C6F4009B081A /* DIComposition in Frameworks */,
 				3535182B2AE14FBD00574991 /* Screens in Frameworks */,
 				53C81ECC2DDB6E1700A367C1 /* FactoryKit in Frameworks */,
 				354192862AC1CB9F001F2996 /* Macro in Frameworks */,
@@ -1277,6 +1281,7 @@
 				53C81ECE2DDB6E2000A367C1 /* FactoryKit in Frameworks */,
 				40EC909A2D1AE451004FCA37 /* ProtonCorePaymentsV2 in Frameworks */,
 				35796CFE2B5EEAC800BF4E9E /* Entities in Frameworks */,
+				5B24B1F93008C6CA009B081A /* DIComposition in Frameworks */,
 				35796CFA2B5EE80900BF4E9E /* ProtonCoreCryptoGoImplementation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1337,6 +1342,7 @@
 				53C81ED02DDB6E2700A367C1 /* FactoryKit in Frameworks */,
 				53E07DC22D58BD29009D6EE5 /* Screens in Frameworks */,
 				5379EA9F2D59EE6B00F56DBC /* CodeScanner in Frameworks */,
+				5B24B1FD3008C728009B081A /* DIComposition in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2890,6 +2896,7 @@
 				40EC90972D1AE440004FCA37 /* ProtonCorePaymentsV2 */,
 				53C81ECB2DDB6E1700A367C1 /* FactoryKit */,
 				5B24B1DE3007C86D009B081A /* Stores */,
+				5B24B1FA3008C6F4009B081A /* DIComposition */,
 			);
 			productName = AutoFill;
 			productReference = 3544F5E028E2341800834CA4 /* AutoFill.appex */;
@@ -2945,6 +2952,7 @@
 				40EC90992D1AE451004FCA37 /* ProtonCorePaymentsV2 */,
 				53C81ECD2DDB6E2000A367C1 /* FactoryKit */,
 				5B24B1E03007C874009B081A /* Stores */,
+				5B24B1F83008C6CA009B081A /* DIComposition */,
 			);
 			productName = Share;
 			productReference = 35C9B8142B5E8AA90062D787 /* Share.appex */;
@@ -3051,6 +3059,7 @@
 				533F20332DA5ADC600CE1C5E /* ProtonCorePaymentsV2 */,
 				53C81ECF2DDB6E2700A367C1 /* FactoryKit */,
 				5B24B1E23007CA44009B081A /* Stores */,
+				5B24B1FC3008C728009B081A /* DIComposition */,
 			);
 			productName = Action;
 			productReference = 538548E62D58ACF300AEFB66 /* Action.appex */;
@@ -6407,6 +6416,18 @@
 			productName = Stores;
 		};
 		5B24B1F63007CF8D009B081A /* DIComposition */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DIComposition;
+		};
+		5B24B1F83008C6CA009B081A /* DIComposition */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DIComposition;
+		};
+		5B24B1FA3008C6F4009B081A /* DIComposition */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DIComposition;
+		};
+		5B24B1FC3008C728009B081A /* DIComposition */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DIComposition;
 		};

@@ -22,6 +22,7 @@ import Client
 import Combine
 import Core
 @preconcurrency import CryptoKit
+import DIComposition
 import Entities
 import FactoryKit
 import Macro
@@ -61,19 +62,19 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published var showSharedItemsAlert = false
     @Published private(set) var aliasesAllowed = true
 
-    let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
+    let currentSelectedItems = resolve(\DataContainer.currentSelectedItems)
     @LazyInjected(\SharedServiceContainer.appContentManager) var appContentManager
 
-    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
-    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
+    private let itemRepository = resolve(\RepositoryContainer.itemRepository)
+    private let accessRepository = resolve(\RepositoryContainer.accessRepository)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let loginMethod = resolve(\SharedDataContainer.loginMethod)
+    private let loginMethod = resolve(\DataContainer.loginMethod)
     private let getPendingUserInvitations = resolve(\UseCasesContainer.getPendingUserInvitations)
     private let doTrashSelectedItems = resolve(\UseCasesContainer.trashSelectedItems)
     private let doRestoreSelectedItems = resolve(\UseCasesContainer.restoreSelectedItems)
     private let doPermanentlyDeleteSelectedItems = resolve(\UseCasesContainer.permanentlyDeleteSelectedItems)
     private let getAllPinnedItems = resolve(\UseCasesContainer.getAllPinnedItems)
-    private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
+    private let symmetricKeyProvider = resolve(\DataContainer.symmetricKeyProvider)
     private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
     private let shouldDisplayUpgradeAppBanner = resolve(\UseCasesContainer.shouldDisplayUpgradeAppBanner)
     private let pinItems = resolve(\SharedUseCasesContainer.pinItems)
@@ -85,14 +86,14 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedRepositoryContainer.organizationRepository)
+    @LazyInjected(\RepositoryContainer.organizationRepository)
     private var organizationRepository
 
     @LazyInjected(\UseCasesContainer.checkVaultCreationAllowance)
     private var checkVaultCreationAllowance
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let itemTypeSelection = resolve(\DataStreamContainer.itemTypeSelection)
+    private let itemTypeSelection = resolve(\DataContainer.itemTypeSelection)
 
     weak var delegate: (any ItemsTabViewModelDelegate)?
     private var sortTask: Task<Void, Never>?

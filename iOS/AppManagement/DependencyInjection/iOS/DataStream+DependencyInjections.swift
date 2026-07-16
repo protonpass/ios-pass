@@ -18,31 +18,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
-import Combine
-import Entities
-import FactoryKit
-import Foundation
-
-final class DataStreamContainer: SharedContainer, AutoRegistering {
-    static let shared = DataStreamContainer()
-    let manager = ContainerManager()
-
-    func autoRegister() {
-        manager.defaultScope = .singleton
-    }
-}
-
-extension DataStreamContainer {
-    var currentSelectedItems: Factory<CurrentValueSubject<[ItemUiModel], Never>> {
-        self { .init([]) }
-    }
-
-    var monitorStateStream: Factory<MonitorStateStream> {
-        self { MonitorStateStream(.default) }
-    }
-
-    var itemTypeSelection: Factory<PassthroughSubject<ItemContentType, Never>> {
-        self { .init() }
-    }
-}
+// import Client
+// import Combine
+// import Entities
+// import FactoryKit
+// import Foundation
+//
+// final class DataStreamContainer: SharedContainer, AutoRegistering {
+//    static let shared = DataStreamContainer()
+//    let manager = ContainerManager()
+//
+//    func autoRegister() {
+//        manager.defaultScope = .singleton
+//    }
+// }
+//
+// extension DataStreamContainer {
+//    var currentSelectedItems: Factory<CurrentValueSubject<[ItemUiModel], Never>> {
+//        self { .init([]) }
+//    }
+//
+//    var monitorStateStream: Factory<MonitorStateStream> {
+//        self { MonitorStateStream(.default) }
+//    }
+//
+//    var itemTypeSelection: Factory<PassthroughSubject<ItemContentType, Never>> {
+//        self { .init() }
+//    }
+// }

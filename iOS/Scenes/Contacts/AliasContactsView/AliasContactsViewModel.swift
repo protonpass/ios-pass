@@ -23,6 +23,7 @@
 import Client
 import Combine
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
@@ -96,10 +97,10 @@ final class AliasContactsViewModel: ObservableObject {
 
     @LazyInjected(\SharedToolingContainer.preferencesManager) private var preferencesManager
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
-    @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
+    @LazyInjected(\RepositoryContainer.aliasRepository) private var aliasRepository
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedToolingContainer.logger) private var logger
-    @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
+    @LazyInjected(\RepositoryContainer.accessRepository) private var accessRepository
 
     private var cancellables = Set<AnyCancellable>()
 

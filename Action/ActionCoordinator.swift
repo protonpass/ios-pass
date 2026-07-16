@@ -21,6 +21,7 @@
 import Client
 import Combine
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import Screens
@@ -29,7 +30,7 @@ import UniformTypeIdentifiers
 
 @MainActor
 final class ActionCoordinator {
-    @LazyInjected(\SharedDataContainer.credentialProvider) private var credentialProvider
+    @LazyInjected(\DataContainer.credentialProvider) private var credentialProvider
     @LazyInjected(\SharedUseCasesContainer.setUpSentry) private var setUpSentry
     @LazyInjected(\SharedUseCasesContainer.setCoreLoggerEnvironment) private var setCoreLoggerEnvironment
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router

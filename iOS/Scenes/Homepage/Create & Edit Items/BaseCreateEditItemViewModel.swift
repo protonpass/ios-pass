@@ -22,6 +22,7 @@ import Client
 import Combine
 import Core
 import DesignSystem
+import DIComposition
 import DocScanner
 import Entities
 import FactoryKit
@@ -198,7 +199,7 @@ class BaseCreateEditItemViewModel: ObservableObject {
     private lazy var renameAttachmentDelegate = RenameAttachmentDelegate()
 
     let mode: ItemMode
-    let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
+    let itemRepository = resolve(\RepositoryContainer.itemRepository)
     let upgradeChecker: any UpgradeCheckerProtocol
     let logger = resolve(\SharedToolingContainer.logger)
     let userManager = resolve(\SharedServiceContainer.userManager)
@@ -208,7 +209,7 @@ class BaseCreateEditItemViewModel: ObservableObject {
     private let updateUserPreferences = resolve(\SharedUseCasesContainer.updateUserPreferences)
     private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
-    @LazyInjected(\SharedRepositoryContainer.fileAttachmentRepository) private var fileRepository
+    @LazyInjected(\RepositoryContainer.fileAttachmentRepository) private var fileRepository
     @LazyInjected(\SharedUseCasesContainer.generateDatedFileName) private var generateDatedFileName
     @LazyInjected(\SharedUseCasesContainer.writeToUrl) private var writeToUrl
     @LazyInjected(\SharedUseCasesContainer.getFileSize) private var getFileSize

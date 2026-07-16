@@ -23,6 +23,7 @@ import Combine
 import Core
 @preconcurrency import CryptoKit
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import Macro
@@ -56,15 +57,15 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     // Injected & self-initialized properties
     let logger = resolve(\SharedToolingContainer.logger)
     let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
-    private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
+    private let telemetryEventRepository = resolve(\RepositoryContainer.telemetryEventRepository)
     let urlOpener = UrlOpener()
-    let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
-    private let organizationRepository = resolve(\SharedRepositoryContainer.organizationRepository)
+    let accessRepository = resolve(\RepositoryContainer.accessRepository)
+    private let organizationRepository = resolve(\RepositoryContainer.organizationRepository)
     let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
-    private let loginMethod = resolve(\SharedDataContainer.loginMethod)
-    private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
-    private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
+    private let loginMethod = resolve(\DataContainer.loginMethod)
+    private let userSettingsRepository = resolve(\RepositoryContainer.userSettingsRepository)
+    private let symmetricKeyProvider = resolve(\DataContainer.symmetricKeyProvider)
 
     // App cover/local authentication
     @LazyInjected(\RouterContainer.window) var window
@@ -78,13 +79,13 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\SharedServiceContainer.upgradeChecker) var upgradeChecker
     @LazyInjected(\SharedServiceContainer.userManager) var userManager
     @LazyInjected(\SharedServiceContainer.inAppNotificationManager) var inAppNotificationManager
-    @LazyInjected(\SharedRepositoryContainer.itemRepository) var itemRepository
-    @LazyInjected(\SharedRepositoryContainer.shareRepository) var shareRepository
-    @LazyInjected(\SharedRepositoryContainer.passMonitorRepository) var passMonitorRepository
-    @LazyInjected(\SharedRepositoryContainer.aliasRepository) var aliasRepository
-    @LazyInjected(\SharedRepositoryContainer.passwordHistoryRepository)
+    @LazyInjected(\RepositoryContainer.itemRepository) var itemRepository
+    @LazyInjected(\RepositoryContainer.shareRepository) var shareRepository
+    @LazyInjected(\RepositoryContainer.passMonitorRepository) var passMonitorRepository
+    @LazyInjected(\RepositoryContainer.aliasRepository) var aliasRepository
+    @LazyInjected(\RepositoryContainer.passwordHistoryRepository)
     private var passwordHistoryRepository
-    @LazyInjected(\ServiceContainer.onboardingHandler) private var onboardingHandler
+    @LazyInjected(\OldServiceContainer.onboardingHandler) private var onboardingHandler
     @LazyInjected(\SharedServiceContainer.featureDiscoveryManager)
     private var featureDiscoveryManager
 

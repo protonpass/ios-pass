@@ -22,6 +22,7 @@ import Client
 import Core
 import CoreData
 import CryptoKit
+import DIComposition
 import Entities
 import FactoryKit
 import LocalAuthentication
@@ -119,7 +120,7 @@ extension SharedToolingContainer {
 
     var preferencesManager: Factory<any PreferencesManagerProtocol> {
         self {
-            let cont = SharedRepositoryContainer.shared
+            let cont = RepositoryContainer.shared
             return PreferencesManager(userManager: SharedServiceContainer.shared.userManager(),
                                       appPreferencesDatasource: cont.appPreferencesDatasource(),
                                       sharedPreferencesDatasource: cont.sharedPreferencesDatasource(),
@@ -160,7 +161,7 @@ extension SharedToolingContainer {
     var authManager: Factory<any AuthManagerProtocol> {
         self {
             AuthManager(keychain: SharedToolingContainer.shared.keychain(),
-                        symmetricKeyProvider: SharedDataContainer.shared.nonSendableSymmetricKeyProvider(),
+                        symmetricKeyProvider: DataContainer.shared.nonSendableSymmetricKeyProvider(),
                         module: self.module(),
                         logManager: self.logManager())
         }

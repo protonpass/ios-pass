@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import DIComposition
 import FactoryKit
 import Screens
 import SwiftUI
@@ -68,7 +69,7 @@ private final class OnboardSectionViewModel: ObservableObject {
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var router
 
-    @LazyInjected(\ServiceContainer.onboardingHandler)
+    @LazyInjected(\OldServiceContainer.onboardingHandler)
     var handler
 
     init() {

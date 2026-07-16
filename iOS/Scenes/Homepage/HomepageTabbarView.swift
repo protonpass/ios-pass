@@ -22,6 +22,7 @@ import Client
 import Combine
 import Core
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import Macro
@@ -210,9 +211,9 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
     private var profileTabViewController: UIViewController?
     private var searchViewModel: SearchViewModel?
 
-    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
-    private let monitorStateStream = resolve(\DataStreamContainer.monitorStateStream)
-    private let itemTypeSelection = resolve(\DataStreamContainer.itemTypeSelection)
+    private let accessRepository = resolve(\RepositoryContainer.accessRepository)
+    private let monitorStateStream = resolve(\DataContainer.monitorStateStream)
+    private let itemTypeSelection = resolve(\DataContainer.itemTypeSelection)
     private let logger = resolve(\SharedToolingContainer.logger)
     weak var homepageTabBarControllerDelegate: (any HomepageTabBarControllerDelegate)?
 

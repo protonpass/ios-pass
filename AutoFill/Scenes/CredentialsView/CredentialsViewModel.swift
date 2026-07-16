@@ -22,6 +22,7 @@
 import Client
 import Core
 import CryptoKit
+import DIComposition
 import Entities
 import FactoryKit
 import SwiftUI

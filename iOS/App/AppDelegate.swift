@@ -23,6 +23,7 @@ import Atlantis
 #endif
 import BackgroundTasks
 import Core
+import DIComposition
 import FactoryKit
 import ProtonCoreAccountRecovery
 import ProtonCoreCryptoGoImplementation

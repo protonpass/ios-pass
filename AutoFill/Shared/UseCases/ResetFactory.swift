@@ -20,6 +20,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import DIComposition
 import FactoryKit
 
 protocol ResetFactoryUseCase: Sendable {
@@ -39,7 +40,7 @@ final class ResetFactory: ResetFactoryUseCase {
         SharedViewContainer.shared.reset()
         SharedRepositoryContainer.shared.reset()
         SharedToolingContainer.shared.reset()
-        SharedDataContainer.shared.reset()
+        DataContainer.shared.reset()
         AutoFillUseCaseContainer.shared.reset()
     }
 }

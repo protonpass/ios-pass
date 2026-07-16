@@ -25,8 +25,8 @@ import ProtonCoreAuthentication
 import ProtonCorePushNotifications
 import Screens
 
-final class ServiceContainer: SharedContainer, AutoRegistering {
-    static let shared = ServiceContainer()
+final class OldServiceContainer: SharedContainer, AutoRegistering {
+    static let shared = OldServiceContainer()
     let manager = ContainerManager()
 
     func autoRegister() {
@@ -34,33 +34,33 @@ final class ServiceContainer: SharedContainer, AutoRegistering {
     }
 }
 
-extension ServiceContainer {
-    @MainActor
-    var paymentManager: Factory<any PaymentsManagerProtocol> {
-        self {
-            /* .init(storage: kSharedUserDefaults) */ PaymentsManager(apiManager: SharedToolingContainer.shared
-                .apiManager(),
-                userManager: SharedServiceContainer.shared
-                    .userManager(),
-                authManager: SharedToolingContainer.shared
-                    .authManager(),
-                mainKeyProvider: SharedToolingContainer
-                    .shared.mainKeyProvider(),
-                logger: SharedToolingContainer.shared
-                    .logger())
-        }
-    }
-
-    @MainActor
-    var shareInviteService: Factory<any ShareInviteServiceProtocol> {
-        self { ShareInviteService() }
-    }
-
-    var secureLinkManager: Factory<any SecureLinkManagerProtocol> {
-        self { SecureLinkManager(dataSource: SharedRepositoryContainer.shared.remoteSecureLinkDatasource(),
-                                 userManager: SharedServiceContainer.shared.userManager()) }
-    }
-
+extension OldServiceContainer {
+//    @MainActor
+//    var paymentManager: Factory<any PaymentsManagerProtocol> {
+//        self {
+//            /* .init(storage: kSharedUserDefaults) */ PaymentsManager(apiManager: SharedToolingContainer.shared
+//                .apiManager(),
+//                userManager: SharedServiceContainer.shared
+//                    .userManager(),
+//                authManager: SharedToolingContainer.shared
+//                    .authManager(),
+//                mainKeyProvider: SharedToolingContainer
+//                    .shared.mainKeyProvider(),
+//                logger: SharedToolingContainer.shared
+//                    .logger())
+//        }
+//    }
+//
+//    @MainActor
+//    var shareInviteService: Factory<any ShareInviteServiceProtocol> {
+//        self { ShareInviteService() }
+//    }
+//
+//    var secureLinkManager: Factory<any SecureLinkManagerProtocol> {
+//        self { SecureLinkManager(dataSource: SharedRepositoryContainer.shared.remoteSecureLinkDatasource(),
+//                                 userManager: SharedServiceContainer.shared.userManager()) }
+//    }
+//
     var onboardingHandler: Factory<any OnboardingHandling> {
         self { OnboardingHandler(logManager: SharedToolingContainer.shared.logManager(),
                                  userDefaults: kSharedUserDefaults) }

@@ -22,6 +22,7 @@ import Client
 import Combine
 import Core
 import CryptoKit
+import DIComposition
 import Entities
 import FactoryKit
 import Screens
@@ -78,8 +79,8 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     }
 
     // Injected properties
-    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
-    private let searchEntryDatasource = resolve(\SharedRepositoryContainer.localSearchEntryDatasource)
+    private let itemRepository = resolve(\RepositoryContainer.itemRepository)
+    private let searchEntryDatasource = resolve(\RepositoryContainer.localSearchEntryDatasource)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getSearchableItems = resolve(\UseCasesContainer.getSearchableItems)

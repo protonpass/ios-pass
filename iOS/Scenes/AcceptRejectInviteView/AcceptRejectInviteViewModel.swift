@@ -22,6 +22,7 @@
 
 import Client
 import Combine
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
@@ -44,7 +45,7 @@ final class AcceptRejectInviteViewModel: ObservableObject {
     private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedRepositoryContainer.groupRepository) private var groupRepository
+    @LazyInjected(\RepositoryContainer.groupRepository) private var groupRepository
     private var cancellables = Set<AnyCancellable>()
 
     init(invite: Invite) {

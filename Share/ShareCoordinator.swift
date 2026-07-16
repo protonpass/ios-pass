@@ -22,6 +22,7 @@ import Client
 @preconcurrency import Combine
 import Core
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 @preconcurrency import Foundation
@@ -71,7 +72,7 @@ enum SharedItemType: CaseIterable {
 
 @MainActor
 final class ShareCoordinator {
-    private let credentialProvider = resolve(\SharedDataContainer.credentialProvider)
+    private let credentialProvider = resolve(\DataContainer.credentialProvider)
     private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
     private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)

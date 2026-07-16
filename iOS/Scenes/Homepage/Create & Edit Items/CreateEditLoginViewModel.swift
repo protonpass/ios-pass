@@ -23,6 +23,7 @@ import Client
 import CodeScanner
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Macro
@@ -67,7 +68,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     /// Proton account email address
     private(set) var emailAddress: String = ""
 
-    private let aliasRepository = resolve(\SharedRepositoryContainer.aliasRepository)
+    private let aliasRepository = resolve(\RepositoryContainer.aliasRepository)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     private var aliasOptions: AliasOptions?
@@ -88,7 +89,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @LazyInjected(\SharedUseCasesContainer.generateUsername)
     private(set) var generateUsername
 
-    @LazyInjected(\SharedRepositoryContainer.localUsernamePreferencesDatasource)
+    @LazyInjected(\RepositoryContainer.localUsernamePreferencesDatasource)
     private(set) var localUsernamePreferencesDatasource
 
     weak var delegate: (any CreateEditLoginViewModelDelegate)?

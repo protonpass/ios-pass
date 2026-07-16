@@ -21,6 +21,7 @@
 import AuthenticationServices
 import Client
 import Core
+import DIComposition
 import FactoryKit
 import Foundation
 import UseCases
@@ -40,7 +41,7 @@ private extension AutoFillUseCaseContainer {
     }
 
     var symmetricKeyProvider: any SymmetricKeyProvider {
-        SharedDataContainer.shared.symmetricKeyProvider()
+        DataContainer.shared.symmetricKeyProvider()
     }
 
     var itemRepository: any ItemRepositoryProtocol {
@@ -145,7 +146,7 @@ extension AutoFillUseCaseContainer {
 
     @MainActor
     var checkAndAutoFill: Factory<any CheckAndAutoFillUseCase> {
-        self { CheckAndAutoFill(credentialProvider: SharedDataContainer.shared.credentialProvider(),
+        self { CheckAndAutoFill(credentialProvider: DataContainer.shared.credentialProvider(),
                                 userManager: SharedServiceContainer.shared.userManager(),
                                 canSkipLocalAuthentication: self.canSkipLocalAuthentication(),
                                 generateAuthorizationCredential: self.generateAuthorizationCredential(),
