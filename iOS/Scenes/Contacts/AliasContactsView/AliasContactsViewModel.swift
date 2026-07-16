@@ -96,7 +96,7 @@ final class AliasContactsViewModel: ObservableObject {
     @Published private(set) var plan: Plan?
 
     @LazyInjected(\ToolingContainer.preferencesManager) private var preferencesManager
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) private var router
     @LazyInjected(\RepositoryContainer.aliasRepository) private var aliasRepository
     @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\ToolingContainer.logger) private var logger

@@ -22,6 +22,7 @@
 
 import DIComposition
 import FactoryKit
+import Screens
 
 protocol ResetFactoryUseCase: Sendable {
     func execute()
@@ -37,7 +38,7 @@ final class ResetFactory: ResetFactoryUseCase {
     init() {}
 
     func execute() {
-        SharedViewContainer.shared.reset()
+        UIKitUIComponentsContainer.shared.reset()
         RepositoryContainer.shared.reset()
         ToolingContainer.shared.reset()
         DataContainer.shared.reset()

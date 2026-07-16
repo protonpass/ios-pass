@@ -23,6 +23,7 @@ import Combine
 import DIComposition
 import Entities
 import FactoryKit
+import Screens
 import SwiftUI
 
 @MainActor
@@ -52,7 +53,7 @@ final class CreateAliasLiteViewModel: ObservableObject {
 
     private var cancellables = Set<AnyCancellable>()
 
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     private let validateAliasPrefix = resolve(\UseCasesContainer.validateAliasPrefix)
     @LazyInjected(\RepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\ToolingContainer.preferencesManager) var preferencesManager

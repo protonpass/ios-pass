@@ -56,7 +56,7 @@ final class OnboardingHandler {
     @LazyInjected(\UseCasesContainer.authenticateBiometrically)
     private var authenticateBiometrically
 
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter)
     private var router
 
     @LazyInjected(\ UseCasesContainer.addTelemetryEvent)

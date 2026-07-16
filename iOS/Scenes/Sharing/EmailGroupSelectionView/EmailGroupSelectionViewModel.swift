@@ -28,6 +28,7 @@ import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 
 enum SuggestionsDisplayType: Int, Hashable {
     case suggestion = 0
@@ -62,7 +63,7 @@ final class EmailGroupSelectionViewModel: ObservableObject {
     @LazyInjected(\RepositoryContainer.groupRepository) private var groupRepository
     @LazyInjected(\UseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     private var currentTask: Task<Void, Never>?
     private var cachedGroupInfos: [InviteRecommendationType]?
     private var updateSuggestionTask: Task<Void, Never>?

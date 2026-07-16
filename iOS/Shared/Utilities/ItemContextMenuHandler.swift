@@ -29,13 +29,13 @@ import Screens
 
 @MainActor
 final class ItemContextMenuHandler {
-    @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
+    @LazyInjected(\UIKitUIComponentsContainer.bannerManager) private var bannerManager
     @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\RepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\ToolingContainer.logger) private var logger
     @LazyInjected(\UseCasesContainer.pinItems) private var pinItems
     @LazyInjected(\UseCasesContainer.unpinItems) private var unpinItems
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) private var router
     private var actionTask: Task<Void, Never>?
 
     init() {}

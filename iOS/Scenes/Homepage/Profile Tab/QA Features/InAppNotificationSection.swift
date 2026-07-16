@@ -25,6 +25,7 @@ import Core
 import DIComposition
 import Entities
 import FactoryKit
+import Screens
 import StoreKit
 import SwiftUI
 
@@ -261,7 +262,7 @@ private final class InAppNotificationViewModel {
     private var userManager
 
     @ObservationIgnored
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter)
     private var router
 
     var lastThreshold: Double?

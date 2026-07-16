@@ -27,6 +27,7 @@ import Entities
 import FactoryKit
 import Macro
 import ProtonCoreLogin
+import Screens
 import Stores
 import SwiftUI
 
@@ -92,7 +93,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @LazyInjected(\UseCasesContainer.checkVaultCreationAllowance)
     private var checkVaultCreationAllowance
 
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     private let itemTypeSelection = resolve(\DataContainer.itemTypeSelection)
 
     weak var delegate: (any ItemsTabViewModelDelegate)?

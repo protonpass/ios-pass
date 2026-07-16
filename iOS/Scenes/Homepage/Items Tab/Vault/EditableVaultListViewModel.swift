@@ -27,6 +27,7 @@ import FactoryKit
 import Foundation
 import Macro
 import ProtonCoreLogin
+import Screens
 import Stores
 
 private extension EditableVaultListViewModel {
@@ -85,7 +86,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     @Published var folderAction: FolderAction?
     @Published var folderName: String = ""
 
-    let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
 
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
     private let getUserShareStatus = resolve(\UseCasesContainer.getUserShareStatus)

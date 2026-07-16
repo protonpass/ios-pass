@@ -26,6 +26,7 @@ import Entities
 import FactoryKit
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 enum ItemType: CaseIterable {
@@ -64,7 +65,7 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
 
     @LazyInjected(\ServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\ToolingContainer.logger) private var logger
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) private var router
     @LazyInjected(\UseCasesContainer.getOrganizationSettings)
     private var getOrganizationSettings
 

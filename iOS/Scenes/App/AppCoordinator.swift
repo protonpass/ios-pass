@@ -31,6 +31,7 @@ import ProtonCoreFeatureFlags
 @preconcurrency import ProtonCoreLogin
 @preconcurrency import ProtonCoreLoginUI
 import ProtonCorePushNotifications
+import Screens
 import SwiftUI
 
 private enum HomeSceneMode {
@@ -352,7 +353,7 @@ private extension AppCoordinator {
             if let userId = userManager.activeUserId {
                 do {
                     if try await logOutUser(userId: userId) {
-                        SharedViewContainer.shared.reset()
+                        UIKitUIComponentsContainer.shared.reset()
                     }
                 } catch {
                     logger.error(error)

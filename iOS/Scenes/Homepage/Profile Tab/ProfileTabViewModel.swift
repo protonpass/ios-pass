@@ -58,7 +58,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let policy = resolve(\ToolingContainer.localAuthenticationEnablingPolicy)
     private let getAuthMethods = resolve(\UseCasesContainer.getLocalAuthenticationMethods)
     private let checkBiometryType = resolve(\UseCasesContainer.checkBiometryType)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     private let itemTypeSelection = resolve(\DataContainer.itemTypeSelection)
 
     // Use cases

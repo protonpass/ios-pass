@@ -43,7 +43,7 @@ final class DetailHistoryViewModel: ObservableObject {
     @Published var urlToSave: URL?
     @Published var urlToShare: URL?
 
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     private let itemRepository = resolve(\RepositoryContainer.itemRepository)
     @LazyInjected(\RepositoryContainer.fileAttachmentRepository) private var fileAttachmentRepository
     @LazyInjected(\ServiceContainer.userManager) private var userManager

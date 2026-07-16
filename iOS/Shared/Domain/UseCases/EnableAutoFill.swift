@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Screens
 import UIKit
 
 protocol EnableAutoFillUseCase: Sendable {
@@ -36,10 +37,10 @@ extension EnableAutoFillUseCase {
 }
 
 final class EnableAutoFill: EnableAutoFillUseCase {
-    private let router: MainUIKitSwiftUIRouter
+    private let router: any UIKitSwiftUIBridgeRouterProtocol
     private let credentialManager: any CredentialManagerProtocol
 
-    init(router: MainUIKitSwiftUIRouter,
+    init(router: any UIKitSwiftUIBridgeRouterProtocol,
          credentialManager: any CredentialManagerProtocol) {
         self.router = router
         self.credentialManager = credentialManager

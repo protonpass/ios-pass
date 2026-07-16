@@ -56,7 +56,7 @@ final class AliasSyncConfigurationViewModel: ObservableObject {
     @LazyInjected(\UseCasesContainer.getMainVault) private var getMainVault
     @LazyInjected(\RepositoryContainer.aliasRepository) private var aliasRepository
     @LazyInjected(\ServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) private var router
     @LazyInjected(\ToolingContainer.logger) private var logger
 
     private var selectedVaultTask: Task<Void, Never>?

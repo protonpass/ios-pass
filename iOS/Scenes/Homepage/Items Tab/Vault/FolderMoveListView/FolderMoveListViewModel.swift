@@ -25,6 +25,7 @@ import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 import Stores
 
 @MainActor
@@ -35,7 +36,7 @@ final class FolderMoveListViewModel {
     @ObservationIgnored
     @LazyInjected(\ServiceContainer.userManager) private var userManager
     @ObservationIgnored
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) private var router
     @ObservationIgnored
     @LazyInjected(\ToolingContainer.logger) private var logger
 

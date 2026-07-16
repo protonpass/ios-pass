@@ -22,6 +22,7 @@ import DIComposition
 import Entities
 import FactoryKit
 import Foundation
+import Screens
 
 @MainActor
 class BaseItemDetailViewModel: ObservableObject {
@@ -32,7 +33,7 @@ class BaseItemDetailViewModel: ObservableObject {
     let selectedTextStream: SelectedTextStream
     let customFields: [CustomField]
 
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) private var router
     @LazyInjected(\ToolingContainer.logger) private var logger
     @LazyInjected(\ServiceContainer.upgradeChecker) var upgradeChecker
 

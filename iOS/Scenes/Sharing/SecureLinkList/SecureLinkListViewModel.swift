@@ -27,6 +27,7 @@ import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 import SwiftUI
 
 enum SecureLinkListDisplay: Int {
@@ -45,7 +46,7 @@ final class SecureLinkListViewModel: ObservableObject {
     private let deleteSecureLink = resolve(\UseCasesContainer.deleteSecureLink)
     private let deleteAllInactiveSecureLinks = resolve(\UseCasesContainer.deleteAllInactiveSecureLinks)
     private let recreateSecureLink = resolve(\UseCasesContainer.recreateSecureLink)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     private let secureLinkManager = resolve(\ServiceContainer.secureLinkManager)
     private var links: [SecureLink]?
     private var items = [SecureLinkListUIModel]()

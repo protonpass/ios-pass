@@ -22,6 +22,7 @@ import Core
 import DIComposition
 import Entities
 import FactoryKit
+import Screens
 import SwiftUI
 
 @MainActor
@@ -31,7 +32,7 @@ final class ItemDetailCoordinator: DeinitPrintable {
     private let upgradeChecker = resolve(\ServiceContainer.upgradeChecker)
     private weak var itemDetailViewModelDelegate: (any ItemDetailViewModelDelegate)?
     private weak var currentViewModel: BaseItemDetailViewModel?
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
 
     init(itemDetailViewModelDelegate: (any ItemDetailViewModelDelegate)?) {
         self.itemDetailViewModelDelegate = itemDetailViewModelDelegate

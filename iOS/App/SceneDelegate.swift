@@ -20,6 +20,7 @@
 
 import DIComposition
 import FactoryKit
+import Screens
 import SwiftUI
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -36,7 +37,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let window = UIWindow(windowScene: windowScene)
             self.window = window
             window.makeKeyAndVisible()
-            RouterContainer.shared.window.register { window }
+            UIKitUIComponentsContainer.shared.window.register { window }
         }
         AppearanceSettings.apply()
         Task { [weak self] in

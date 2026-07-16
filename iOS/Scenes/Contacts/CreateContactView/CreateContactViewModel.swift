@@ -27,6 +27,7 @@ import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 
 @MainActor
 @Observable
@@ -62,7 +63,7 @@ final class CreateContactViewModel {
     }
 
     @ObservationIgnored
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) private var router
 
     @ObservationIgnored
     private let itemIds: IDs

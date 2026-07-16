@@ -22,6 +22,7 @@ import Client
 import Core
 import DIComposition
 import FactoryKit
+import Screens
 import Stores
 import UseCases
 
@@ -462,7 +463,7 @@ extension OldUseCasesContainer {
     //    }
 
     var enableAutoFill: Factory<any EnableAutoFillUseCase> {
-        self { EnableAutoFill(router: SharedRouterContainer.shared.mainUIKitSwiftUIRouter(),
+        self { EnableAutoFill(router: RouterContainer.shared.mainUIKitSwiftUIRouter(),
                               credentialManager: ServiceContainer.shared.credentialManager()) }
     }
 }

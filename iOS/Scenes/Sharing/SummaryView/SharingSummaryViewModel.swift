@@ -26,6 +26,7 @@ import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 
 @MainActor
 final class SharingSummaryViewModel: ObservableObject {
@@ -34,7 +35,7 @@ final class SharingSummaryViewModel: ObservableObject {
     @Published private(set) var currentUserEmail: String?
     @Published var showContactSupportAlert = false
 
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     private let getShareInviteInfos = resolve(\UseCasesContainer.getCurrentShareInviteInformations)
     private let sendShareInvite = resolve(\UseCasesContainer.sendShareInvite)
     private let accessRepository = resolve(\RepositoryContainer.accessRepository)

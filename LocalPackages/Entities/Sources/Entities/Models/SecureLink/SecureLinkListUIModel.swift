@@ -1,7 +1,7 @@
 //
 // SecureLinkListUIModel.swift
-// Proton Pass - Created on 17/06/2024.
-// Copyright (c) 2024 Proton Technologies AG
+// Proton Pass - Created on 16/07/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,36 +18,35 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Entities
 import Foundation
 
-struct SecureLinkListUIModel: Identifiable, Hashable, Equatable, @unchecked Sendable {
-    var id: String {
+public struct SecureLinkListUIModel: Identifiable, Hashable, Equatable, @unchecked Sendable {
+    public var id: String {
         secureLink.id
     }
 
-    let secureLink: SecureLink
-    let itemContent: ItemContent
-    let url: String
+    public let secureLink: SecureLink
+    public let itemContent: ItemContent
+    public let url: String
 
     private let currentDate: Date
     private let formatter = RelativeDateTimeFormatter()
 
-    init(secureLink: SecureLink,
-         itemContent: ItemContent,
-         url: String,
-         currentDate: Date = .now) {
+    public init(secureLink: SecureLink,
+                itemContent: ItemContent,
+                url: String,
+                currentDate: Date = .now) {
         self.secureLink = secureLink
         self.itemContent = itemContent
         self.url = url
         self.currentDate = currentDate
     }
 
-    var isActive: Bool {
+    public var isActive: Bool {
         secureLink.active
     }
 
-    var relativeTimeRemaining: String {
+    public var relativeTimeRemaining: String {
         let expirationDate = Date(timeIntervalSince1970: Double(secureLink.expirationTime))
         formatter.unitsStyle = .full
 

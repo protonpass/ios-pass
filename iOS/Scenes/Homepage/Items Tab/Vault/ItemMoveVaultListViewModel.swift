@@ -25,6 +25,7 @@ import DIComposition
 import Entities
 import FactoryKit
 import Macro
+import Screens
 import Stores
 
 @MainActor
@@ -33,7 +34,7 @@ final class ItemMoveVaultListViewModel: ObservableObject, DeinitPrintable {
 
     private let upgradeChecker = resolve(\ServiceContainer.upgradeChecker)
     private let logger = resolve(\ToolingContainer.logger)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     private let moveItemsBetweenContainers = resolve(\UseCasesContainer.moveItemsBetweenContainers)
     private let currentSelectedItems = resolve(\DataContainer.currentSelectedItems)
     @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager

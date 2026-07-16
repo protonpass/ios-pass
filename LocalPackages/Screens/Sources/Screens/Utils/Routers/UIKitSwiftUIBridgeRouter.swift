@@ -1,7 +1,7 @@
 //
-// MainRouter.swift
-// Proton Pass - Created on 19/07/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// UIKitSwiftUIBridgeRouter.swift
+// Proton Pass - Created on 16/07/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -22,43 +22,50 @@ import Client
 @preconcurrency import Combine
 import Entities
 @preconcurrency import ProtonCorePasswordChange
-import Screens
 @preconcurrency import SwiftUI
 
-struct NavigationConfiguration {
-    var dismissBeforeShowing = false
-    var refresh = false
-    var telemetryEvent: TelemetryEventType?
+public struct NavigationConfiguration {
+    public var dismissBeforeShowing = false
+    public var refresh = false
+    public var telemetryEvent: TelemetryEventType?
 
-    static var refresh: NavigationConfiguration {
+    public init(dismissBeforeShowing: Bool = false,
+                refresh: Bool = false,
+                telemetryEvent: TelemetryEventType? = nil) {
+        self.dismissBeforeShowing = dismissBeforeShowing
+        self.refresh = refresh
+        self.telemetryEvent = telemetryEvent
+    }
+
+    public static var refresh: NavigationConfiguration {
         NavigationConfiguration(refresh: true)
     }
 
-    static func refresh(with event: TelemetryEventType) -> NavigationConfiguration {
+    public static func refresh(with event: TelemetryEventType) -> NavigationConfiguration {
         NavigationConfiguration(refresh: true, telemetryEvent: event)
     }
 
-    static var dismissAndRefresh: NavigationConfiguration {
+    public static var dismissAndRefresh: NavigationConfiguration {
         NavigationConfiguration(dismissBeforeShowing: true, refresh: true)
     }
 
-    static func dismissAndRefresh(with event: TelemetryEventType) -> NavigationConfiguration {
+    public static func dismissAndRefresh(with event: TelemetryEventType) -> NavigationConfiguration {
         NavigationConfiguration(dismissBeforeShowing: true, refresh: true, telemetryEvent: event)
     }
 }
 
-enum RouterDestination: Hashable {
+public enum RouterDestination: Hashable {
     case urlPage(urlString: String)
     case openSettings
 }
 
-enum SheetDismissal {
+public enum SheetDismissal {
     case none
     case topMost
     case all
 }
 
-enum SheetDestination: Equatable, Hashable {
+public enum SheetDestination: Equatable, Hashable {
     case alert(UIAlertController)
     case sharingFlow(SheetDismissal)
     case manageSharedShare(ManageSharedDisplay, SheetDismissal)
@@ -80,7 +87,7 @@ enum SheetDestination: Equatable, Hashable {
     case settingsMenu
     /// iOS 26+ only
     case createNewItem
-    case createEditLogin(mode: ItemMode, dismissAllSheets: Bool)
+    case createEditLogin(mode: Entities.ItemMode, dismissAllSheets: Bool)
     case createItem(item: SymmetricallyEncryptedItem,
                     type: ItemContentType,
                     aliasToCopy: String?,
@@ -121,12 +128,12 @@ enum SheetDestination: Equatable, Hashable {
     case searchPinnedItems
 }
 
-enum ItemDestination {
+public enum ItemDestination {
     case createEdit(view: any View, dismissible: Bool)
     case detail(view: any View, asSheet: Bool)
 }
 
-enum UIElementDisplay {
+public enum UIElementDisplay {
     case globalLoading(shouldShow: Bool)
     case displayErrorBanner(any Error)
     case errorMessage(String)
@@ -139,11 +146,11 @@ enum UIElementDisplay {
                       config: NavigationConfiguration? = nil)
 }
 
-enum AlertDestination {
+public enum AlertDestination {
     case bulkPermanentDeleteConfirmation(itemCount: Int, aliasCount: Int)
 }
 
-enum ActionDestination {
+public enum ActionDestination {
     case copyToClipboard(text: String, message: String? = nil)
     case back(isShownAsSheet: Bool)
     case manage(userId: String)
@@ -152,19 +159,41 @@ enum ActionDestination {
     case screenDismissal(SheetDismissal)
 }
 
-enum DeeplinkDestination {
+public enum DeeplinkDestination {
     case totp(String)
     case spotlightItemDetail(ItemContent)
     case error(any Error)
 }
 
-enum GenericDestination {
+public enum GenericDestination {
     case sheet(any View)
     case fullScreen(any View)
 }
 
 @MainActor
-final class MainUIKitSwiftUIRouter {
+public protocol UIKitSwiftUIBridgeRouterProtocol: Sendable {
+    nonisolated var newPresentationDestination: PassthroughSubject<RouterDestination, Never> { get }
+    nonisolated var newSheetDestination: PassthroughSubject<SheetDestination, Never> { get }
+    nonisolated var globalElementDisplay: PassthroughSubject<UIElementDisplay, Never> { get }
+    nonisolated var alertDestination: PassthroughSubject<AlertDestination, Never> { get }
+    nonisolated var actionDestination: PassthroughSubject<ActionDestination, Never> { get }
+    nonisolated var itemDestination: PassthroughSubject<ItemDestination, Never> { get }
+    nonisolated var genericDestination: PassthroughSubject<GenericDestination, Never> { get }
+
+    func navigate(to destination: RouterDestination)
+    func present(for destination: SheetDestination)
+    func navigate(to destination: ItemDestination)
+    func navigate(to destination: GenericDestination)
+    func display(element: UIElementDisplay)
+    func alert(_ destination: AlertDestination)
+    func action(_ destination: ActionDestination)
+    func requestDeeplink(_ destination: DeeplinkDestination)
+    func getDeeplink() -> DeeplinkDestination?
+    func resolveDeeplink()
+}
+
+@MainActor
+final class UIKitSwiftUIBridgeRouter: UIKitSwiftUIBridgeRouterProtocol {
     nonisolated let newPresentationDestination: PassthroughSubject<RouterDestination, Never> = .init()
     nonisolated let newSheetDestination: PassthroughSubject<SheetDestination, Never> = .init()
     nonisolated let globalElementDisplay: PassthroughSubject<UIElementDisplay, Never> = .init()

@@ -1,7 +1,7 @@
 //
-// SharedViewContainer+DependencyInjection.swift
-// Proton Pass - Created on 15/09/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// UIKitUIComponentsContainer.swift
+// Proton Pass - Created on 16/07/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -22,31 +22,34 @@ import Client
 import FactoryKit
 import UIKit
 
-final class SharedViewContainer: SharedContainer, AutoRegistering {
-    static let shared = SharedViewContainer()
+public final class UIKitUIComponentsContainer: SharedContainer, AutoRegistering {
+    public static let shared = UIKitUIComponentsContainer()
+    public let manager = ContainerManager()
 
-    let manager = ContainerManager()
-
-    func autoRegister() {
+    public func autoRegister() {
         manager.defaultScope = .cached
     }
 
-    func register(rootViewController: UIViewController) {
+    public func register(rootViewController: UIViewController) {
         self.rootViewController.register { rootViewController }
     }
 
-    func reset() {
-        SharedViewContainer.shared.bannerManager.reset()
-        SharedViewContainer.shared.rootViewController.reset()
+    public func reset() {
+        UIKitUIComponentsContainer.shared.bannerManager.reset()
+        UIKitUIComponentsContainer.shared.rootViewController.reset()
     }
 }
 
-extension SharedViewContainer {
+public extension UIKitUIComponentsContainer {
     var bannerManager: Factory<any BannerDisplayProtocol> {
         self { BannerManager(container: self.rootViewController()) }
     }
 
     var rootViewController: Factory<UIViewController?> {
+        self { nil }
+    }
+
+    var window: Factory<UIWindow?> {
         self { nil }
     }
 }

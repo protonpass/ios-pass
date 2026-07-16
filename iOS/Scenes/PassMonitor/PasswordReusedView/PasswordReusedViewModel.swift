@@ -25,6 +25,7 @@ import DIComposition
 import Entities
 import FactoryKit
 import Foundation
+import Screens
 
 @MainActor
 final class PasswordReusedViewModel: ObservableObject {
@@ -33,7 +34,7 @@ final class PasswordReusedViewModel: ObservableObject {
 
     private let passMonitorRepository = resolve(\RepositoryContainer.passMonitorRepository)
     let logger = resolve(\ToolingContainer.logger)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     private let itemContent: ItemContent
 
     var title: String {

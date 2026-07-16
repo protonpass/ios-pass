@@ -26,6 +26,7 @@ import DIComposition
 import Entities
 import FactoryKit
 import Foundation
+import Screens
 import UseCases
 
 @MainActor
@@ -44,7 +45,7 @@ final class DarkWebMonitorHomeViewModel: ObservableObject {
     private let addCustomEmailToMonitoring = resolve(\UseCasesContainer.addCustomEmailToMonitoring)
     private let removeEmailFromBreachMonitoring = resolve(\UseCasesContainer.removeEmailFromBreachMonitoring)
     private let getAllCustomEmails = resolve(\UseCasesContainer.getAllCustomEmails)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     private let logger = resolve(\ToolingContainer.logger)
     @LazyInjected(\ServiceContainer.userManager) private var userManager
 

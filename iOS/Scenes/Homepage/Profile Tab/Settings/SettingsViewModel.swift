@@ -25,6 +25,7 @@ import DIComposition
 import Entities
 import FactoryKit
 import Macro
+import Screens
 import Stores
 import SwiftUI
 
@@ -36,7 +37,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     private let favIconRepository = resolve(\RepositoryContainer.favIconRepository)
     private let logger = resolve(\ToolingContainer.logger)
     private let preferencesManager = resolve(\ToolingContainer.preferencesManager)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     private let indexItemsForSpotlight = resolve(\UseCasesContainer.indexItemsForSpotlight)
     private let getSpotlightVaults = resolve(\UseCasesContainer.getSpotlightVaults)
     private let updateSpotlightVaults = resolve(\UseCasesContainer.updateSpotlightVaults)

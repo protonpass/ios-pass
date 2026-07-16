@@ -26,6 +26,7 @@ import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 
 @MainActor
 final class ItemHistoryViewModel: ObservableObject {
@@ -37,7 +38,7 @@ final class ItemHistoryViewModel: ObservableObject {
     let item: ItemContent
 
     private let getItemHistory = resolve(\UseCasesContainer.getItemHistory)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     @LazyInjected(\ToolingContainer.logger) private var logger
     @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\RepositoryContainer.itemRepository) private var itemRepository

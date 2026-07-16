@@ -23,6 +23,7 @@ import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 
 struct SecureLinkDetailUiModel {
     let secureLinkID: String
@@ -100,7 +101,7 @@ final class SecureLinkDetailViewModel: ObservableObject {
     @Published private(set) var loading = false
     @Published private(set) var finishedDeleting = false
 
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     private let deleteSecureLink = resolve(\UseCasesContainer.deleteSecureLink)
 
     let uiModel: SecureLinkDetailUiModel
