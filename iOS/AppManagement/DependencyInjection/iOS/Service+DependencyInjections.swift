@@ -36,32 +36,6 @@ final class OldServiceContainer: SharedContainer, AutoRegistering {
 }
 
 extension OldServiceContainer {
-//    @MainActor
-//    var paymentManager: Factory<any PaymentsManagerProtocol> {
-//        self {
-//            /* .init(storage: kSharedUserDefaults) */ PaymentsManager(apiManager: ToolingContainer.shared
-//                .apiManager(),
-//                userManager: ServiceContainer.shared
-//                    .userManager(),
-//                authManager: ToolingContainer.shared
-//                    .authManager(),
-//                mainKeyProvider: ToolingContainer
-//                    .shared.mainKeyProvider(),
-//                logger: ToolingContainer.shared
-//                    .logger())
-//        }
-//    }
-//
-//    @MainActor
-//    var shareInviteService: Factory<any ShareInviteServiceProtocol> {
-//        self { ShareInviteService() }
-//    }
-//
-//    var secureLinkManager: Factory<any SecureLinkManagerProtocol> {
-//        self { SecureLinkManager(dataSource: SharedRepositoryContainer.shared.remoteSecureLinkDatasource(),
-//                                 userManager: ServiceContainer.shared.userManager()) }
-//    }
-//
     var onboardingHandler: Factory<any OnboardingHandling> {
         self { OnboardingHandler(logManager: ToolingContainer.shared.logManager(),
                                  userDefaults: kSharedUserDefaults) }
