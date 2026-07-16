@@ -1,7 +1,7 @@
 //
-// DeepLinkRoutingService.swift
-// Proton Pass - Created on 29/01/2024.
-// Copyright (c) 2024 Proton Technologies AG
+// DeepLinkRouter.swift
+// Proton Pass - Created on 16/07/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -38,18 +38,24 @@ extension URL {
     }
 }
 
-final class DeepLinkRoutingService {
-    private let router: MainUIKitSwiftUIRouter
+@MainActor
+public protocol DeepLinkRouterProtocol: Sendable {
+    func parseAndDispatch(context: Set<UIOpenURLContext>)
+    func handle(userActivities: Set<NSUserActivity>)
+}
+
+@MainActor
+public struct DeepLinkRouter: DeepLinkRouterProtocol {
+    private let router: any UIKitSwiftUIBridgeRouterProtocol
     private let getItemContentFromBase64IDs: any GetItemContentFromBase64IDsUseCase
 
-    init(router: MainUIKitSwiftUIRouter,
-         getItemContentFromBase64IDs: any GetItemContentFromBase64IDsUseCase) {
+    public init(router: any UIKitSwiftUIBridgeRouterProtocol,
+                getItemContentFromBase64IDs: any GetItemContentFromBase64IDsUseCase) {
         self.router = router
         self.getItemContentFromBase64IDs = getItemContentFromBase64IDs
     }
 
-    @MainActor
-    func parseAndDispatch(context: Set<UIOpenURLContext>) {
+    public func parseAndDispatch(context: Set<UIOpenURLContext>) {
         guard let url = context.first?.url else {
             return
         }
@@ -66,14 +72,12 @@ final class DeepLinkRoutingService {
         }
     }
 
-    @MainActor
-    func handle(userActivities: Set<NSUserActivity>) {
+    public func handle(userActivities: Set<NSUserActivity>) {
         for activity in userActivities {
             switch activity.activityType {
             case CSSearchableItemActionType:
                 if let base64Ids = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String {
-                    Task { [weak self] in
-                        guard let self else { return }
+                    Task {
                         do {
                             let itemContent = try await getItemContentFromBase64IDs(for: base64Ids)
                             router.requestDeeplink(.spotlightItemDetail(itemContent))

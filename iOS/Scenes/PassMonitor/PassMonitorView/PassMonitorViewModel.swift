@@ -26,6 +26,7 @@ import DIComposition
 import Entities
 import FactoryKit
 import Foundation
+import Screens
 
 @MainActor
 final class PassMonitorViewModel: ObservableObject {
@@ -40,7 +41,7 @@ final class PassMonitorViewModel: ObservableObject {
 
     private let logger = resolve(\ToolingContainer.logger)
     private let upgradeChecker = resolve(\ServiceContainer.upgradeChecker)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     private let passMonitorRepository = resolve(\RepositoryContainer.passMonitorRepository)
     private let monitorStateStream = resolve(\DataContainer.monitorStateStream)
     private let toggleSentinel = resolve(\UseCasesContainer.toggleSentinel)

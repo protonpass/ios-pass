@@ -35,7 +35,7 @@ private struct AccountSwitcherView: View {
     @State private var showSwitcher = false
     @State private var johnCount = 1
     @Namespace private var namespace
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
 
     private var details: [AccountCellDetail] {
         var details = [eric]

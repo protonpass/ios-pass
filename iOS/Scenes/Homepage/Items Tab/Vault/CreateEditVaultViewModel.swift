@@ -70,7 +70,7 @@ final class CreateEditVaultViewModel: ObservableObject {
     private let logger = resolve(\ToolingContainer.logger)
     private let shareRepository = resolve(\RepositoryContainer.shareRepository)
     private let upgradeChecker = resolve(\ServiceContainer.upgradeChecker)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     private let createVaultUseCase = resolve(\UseCasesContainer.createVault)
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
     @LazyInjected(\ServiceContainer.userManager) private var userManager

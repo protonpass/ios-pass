@@ -24,6 +24,7 @@ import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 
 @MainActor
 final class MonitorAliasesViewModel: ObservableObject {
@@ -37,7 +38,7 @@ final class MonitorAliasesViewModel: ObservableObject {
     private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
     private let getAppPreferences = resolve(\UseCasesContainer.getAppPreferences)
     private let logger = resolve(\ToolingContainer.logger)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     @LazyInjected(\ServiceContainer.userManager) private var userManager
 
     private var cancellables = Set<AnyCancellable>()

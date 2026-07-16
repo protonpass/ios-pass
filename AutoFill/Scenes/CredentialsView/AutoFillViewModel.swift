@@ -26,6 +26,7 @@ import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 import SwiftUI
 
 @MainActor
@@ -59,7 +60,7 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
 
     @LazyInjected(\ServiceContainer.eventSynchronizer) private var eventSynchronizer
     @LazyInjected(\ToolingContainer.logger) var logger
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) var router
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) var router
     @LazyInjected(\UseCasesContainer.canEditItem) var canEditItem
     @LazyInjected(\AutoFillUseCaseContainer.associateUrlAndAutoFill) var associateUrlAndAutoFill
 

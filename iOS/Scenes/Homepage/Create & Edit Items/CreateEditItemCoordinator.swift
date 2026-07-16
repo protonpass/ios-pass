@@ -23,6 +23,7 @@ import DIComposition
 import Entities
 import FactoryKit
 import ProtonCoreLogin
+import Screens
 import SwiftUI
 
 @MainActor
@@ -30,7 +31,7 @@ final class CreateEditItemCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let upgradeChecker = resolve(\ServiceContainer.upgradeChecker)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     private weak var createEditItemDelegate: (any CreateEditLoginViewModelDelegate)?
     private var currentViewModel: BaseCreateEditItemViewModel?
 

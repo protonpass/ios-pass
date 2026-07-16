@@ -26,6 +26,7 @@ import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 import UseCases
 
 typealias SecuritySectionedData = [SecuritySectionHeaderKey: [ItemUiModel]]
@@ -42,7 +43,7 @@ final class SecurityWeaknessDetailViewModel: ObservableObject {
 
     let type: SecurityWeakness
 
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) private var router
     @LazyInjected(\UseCasesContainer.getAllSecurityAffectedLogins) private var getAllSecurityAffectedLogins
     @LazyInjected(\UseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
     @LazyInjected(\RepositoryContainer.itemRepository) private var itemRepository

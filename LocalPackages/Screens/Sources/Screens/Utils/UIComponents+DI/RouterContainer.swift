@@ -1,7 +1,7 @@
 //
-// Router+DependencyInjections.swift
-// Proton Pass - Created on 19/07/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// RouterContainer.swift
+// Proton Pass - Created on 16/07/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -21,29 +21,31 @@
 import DIComposition
 import FactoryKit
 import Foundation
-import UIKit
 
-final class RouterContainer: SharedContainer, AutoRegistering {
-    static let shared = RouterContainer()
-    let manager = ContainerManager()
+public final class RouterContainer: SharedContainer, AutoRegistering {
+    public static let shared = RouterContainer()
+    public let manager = ContainerManager()
 
-    func autoRegister() {
+    public func autoRegister() {
         manager.defaultScope = .singleton
     }
 }
 
 // MARK: Main Router
 
-extension RouterContainer {
-    var deepLinkRoutingService: Factory<DeepLinkRoutingService> {
-        self { DeepLinkRoutingService(router: SharedRouterContainer.shared.mainUIKitSwiftUIRouter(),
-                                      getItemContentFromBase64IDs: UseCasesContainer.shared
-                                          .getItemContentFromBase64IDs()) }
+public extension RouterContainer {
+    var mainUIKitSwiftUIRouter: Factory<any UIKitSwiftUIBridgeRouterProtocol> {
+        self { UIKitSwiftUIBridgeRouter() }
     }
 }
 
-extension RouterContainer {
-    var window: Factory<UIWindow?> {
-        self { nil }
+// MARK: - Deeplink
+
+public extension RouterContainer {
+    @MainActor
+    var deepLinkRoutingService: Factory<any DeepLinkRouterProtocol> {
+        self { DeepLinkRouter(router: self.mainUIKitSwiftUIRouter(),
+                              getItemContentFromBase64IDs: UseCasesContainer.shared
+                                  .getItemContentFromBase64IDs()) }
     }
 }

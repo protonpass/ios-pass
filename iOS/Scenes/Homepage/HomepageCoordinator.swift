@@ -68,12 +68,12 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let symmetricKeyProvider = resolve(\DataContainer.symmetricKeyProvider)
 
     // App cover/local authentication
-    @LazyInjected(\RouterContainer.window) var window
+    @LazyInjected(\UIKitUIComponentsContainer.window) var window
     weak var appCoverView: UIView?
 
     // Lazily initialised properties
     @LazyInjected(\ServiceContainer.syncEventLoop) var eventLoop
-    @LazyInjected(\SharedViewContainer.bannerManager) var bannerManager
+    @LazyInjected(\UIKitUIComponentsContainer.bannerManager) var bannerManager
     @LazyInjected(\ToolingContainer.apiManager) var apiManager
     @LazyInjected(\ToolingContainer.authManager) var authManager
     @LazyInjected(\ServiceContainer.upgradeChecker) var upgradeChecker
@@ -125,7 +125,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     // MARK: - Navigation Router
 
-    let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
 
     var authenticated = false
 
@@ -134,7 +134,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     override init() {
         super.init()
-        SharedViewContainer.shared.register(rootViewController: rootViewController)
+        UIKitUIComponentsContainer.shared.register(rootViewController: rootViewController)
         setUpRouting()
         finalizeInitialization()
         start()

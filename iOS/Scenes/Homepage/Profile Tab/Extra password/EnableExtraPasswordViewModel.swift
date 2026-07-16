@@ -23,6 +23,7 @@ import DIComposition
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 
 enum EnableExtraPasswordViewState {
     case defining, repeating
@@ -71,7 +72,7 @@ final class EnableExtraPasswordViewModel: ObservableObject {
     private let updateUserPreferences = resolve(\UseCasesContainer.updateUserPreferences)
     private let preferencesManager = resolve(\ToolingContainer.preferencesManager)
     private let userManager = resolve(\ServiceContainer.userManager)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
 
     init() {
         Task { [weak self] in

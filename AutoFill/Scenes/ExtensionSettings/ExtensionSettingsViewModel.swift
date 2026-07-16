@@ -21,6 +21,7 @@
 import Core
 import DIComposition
 import FactoryKit
+import Screens
 import UserNotifications
 
 @MainActor
@@ -30,7 +31,7 @@ final class ExtensionSettingsViewModel: ObservableObject {
     @Published private(set) var showAutomaticCopyTotpCodeExplication = false
     private let logger = resolve(\ToolingContainer.logger)
     private let notificationService = resolve(\ServiceContainer.notificationService)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
 
     // Use cases
     private let indexAllLoginItems = resolve(\UseCasesContainer.indexAllLoginItems)

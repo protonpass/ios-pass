@@ -41,7 +41,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     private let setUpSentry = resolve(\UseCasesContainer.setUpSentry)
     private let setCoreLoggerEnvironment = resolve(\UseCasesContainer.setCoreLoggerEnvironment)
     private let logger = resolve(\ToolingContainer.logger)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     private let userForNewItemSubject = UserForNewItemSubject()
 
     private weak var rootViewController: UIViewController?
@@ -61,7 +61,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\AutoFillUseCaseContainer.completeAutoFill) private var completeAutoFill
     @LazyInjected(\AutoFillUseCaseContainer.completeTextAutoFill) private var completeTextAutoFill
     @LazyInjected(\AutoFillUseCaseContainer.completePasskeyRegistration) private var completePasskeyRegistration
-    @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
+    @LazyInjected(\UIKitUIComponentsContainer.bannerManager) private var bannerManager
     @LazyInjected(\ServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
     @LazyInjected(\UseCasesContainer.getSharedPreferences) private var getSharedPreferences
@@ -86,7 +86,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     private var mode: AutoFillMode?
 
     init(rootViewController: UIViewController, context: ASCredentialProviderExtensionContext) {
-        SharedViewContainer.shared.register(rootViewController: rootViewController)
+        UIKitUIComponentsContainer.shared.register(rootViewController: rootViewController)
         self.rootViewController = rootViewController
         self.context = context
 

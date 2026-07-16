@@ -24,6 +24,7 @@ import Entities
 import FactoryKit
 import Foundation
 import ProtonCoreUIFoundations
+import Screens
 import UIKit
 
 @MainActor
@@ -36,7 +37,7 @@ final class ShareElementViewModel: ObservableObject {
     let itemContent: ItemContent
     let itemCount: Int?
 
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
     private let upgradeChecker = resolve(\ServiceContainer.upgradeChecker)
     @LazyInjected(\RepositoryContainer.shareRepository) private var shareRepository

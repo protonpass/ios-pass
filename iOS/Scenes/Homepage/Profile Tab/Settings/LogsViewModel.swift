@@ -22,6 +22,7 @@ import Core
 import DIComposition
 import Entities
 import FactoryKit
+import Screens
 import SwiftUI
 
 @MainActor
@@ -55,7 +56,7 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
 
     private let getLogEntries = resolve(\UseCasesContainer.getLogEntries)
     private let extractLogsToFile = resolve(\UseCasesContainer.extractLogsToFile)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
 
     init(module: PassModule) {
         self.module = module

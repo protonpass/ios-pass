@@ -23,6 +23,7 @@ import Core
 import DIComposition
 import Entities
 import FactoryKit
+import Screens
 import SwiftUI
 
 enum GeneratePasswordViewMode {
@@ -118,7 +119,7 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     private let generateRandomWords = resolve(\UseCasesContainer.generateRandomWords)
     private let generatePassphrase = resolve(\UseCasesContainer.generatePassphrase)
     private let getPasswordStrength = resolve(\UseCasesContainer.getPasswordStrength)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     @LazyInjected(\ToolingContainer.logger) private var logger
     @LazyInjected(\RepositoryContainer.passwordHistoryRepository)
     private var passwordHistoryRepository

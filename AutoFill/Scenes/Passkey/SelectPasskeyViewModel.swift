@@ -23,6 +23,7 @@ import DIComposition
 import Entities
 import FactoryKit
 import Foundation
+import Screens
 
 @MainActor
 final class SelectPasskeyViewModel: ObservableObject {
@@ -30,7 +31,7 @@ final class SelectPasskeyViewModel: ObservableObject {
     let info: SelectPasskeySheetInformation
 
     private let autoFillPasskey = resolve(\AutoFillUseCaseContainer.autoFillPasskey)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     private let logger = resolve(\ToolingContainer.logger)
 
     init(info: SelectPasskeySheetInformation,

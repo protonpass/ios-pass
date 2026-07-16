@@ -33,7 +33,7 @@ final class ActionCoordinator {
     @LazyInjected(\DataContainer.credentialProvider) private var credentialProvider
     @LazyInjected(\UseCasesContainer.setUpSentry) private var setUpSentry
     @LazyInjected(\UseCasesContainer.setCoreLoggerEnvironment) private var setCoreLoggerEnvironment
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) private var router
     @LazyInjected(\UseCasesContainer.sendErrorToSentry) private var sendErrorToSentry
 
     @LazyInjected(\ToolingContainer.logger) private var logger

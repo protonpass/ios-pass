@@ -82,7 +82,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private let itemRepository = resolve(\RepositoryContainer.itemRepository)
     private let searchEntryDatasource = resolve(\RepositoryContainer.localSearchEntryDatasource)
     private let logger = resolve(\ToolingContainer.logger)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     private let getSearchableItems = resolve(\UseCasesContainer.getSearchableItems)
     private let getUserPreferences = resolve(\UseCasesContainer.getUserPreferences)
     @LazyInjected(\ServiceContainer.userManager) private var userManager

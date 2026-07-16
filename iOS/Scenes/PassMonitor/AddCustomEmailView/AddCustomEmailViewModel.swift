@@ -25,6 +25,7 @@ import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 
 @MainActor
 final class AddCustomEmailViewModel: ObservableObject {
@@ -37,7 +38,7 @@ final class AddCustomEmailViewModel: ObservableObject {
     private let addCustomEmailToMonitoring = resolve(\UseCasesContainer.addCustomEmailToMonitoring)
     private let verifyCustomEmail = resolve(\UseCasesContainer.verifyCustomEmail)
     private let getAllCustomEmails = resolve(\UseCasesContainer.getAllCustomEmails)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     private let logger = resolve(\ToolingContainer.logger)
     @LazyInjected(\RepositoryContainer.aliasRepository) private var aliasRepository
     @LazyInjected(\ServiceContainer.userManager) private var userManager

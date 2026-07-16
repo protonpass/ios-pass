@@ -27,6 +27,7 @@ import Entities
 import FactoryKit
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import Stores
 import SwiftUI
 
@@ -74,7 +75,7 @@ final class ItemsTabTopBarViewModel: ObservableObject {
     private let appContentManager = resolve(\ServiceContainer.appContentManager)
     private let currentSelectedItems = resolve(\DataContainer.currentSelectedItems)
     private let accessRepository = resolve(\RepositoryContainer.accessRepository)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
 
     private var cancellables = Set<AnyCancellable>()
 

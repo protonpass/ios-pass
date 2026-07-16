@@ -69,7 +69,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private(set) var emailAddress: String = ""
 
     private let aliasRepository = resolve(\RepositoryContainer.aliasRepository)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
 
     private var aliasOptions: AliasOptions?
     @Published private var aliasCreationLiteInfo: AliasCreationLiteInfo?

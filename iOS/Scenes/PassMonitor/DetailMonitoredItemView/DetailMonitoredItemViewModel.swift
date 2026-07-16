@@ -26,6 +26,7 @@ import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 
 struct DetailMonitoredItemUiModel: Hashable {
     let email: String
@@ -43,7 +44,7 @@ final class DetailMonitoredItemViewModel: ObservableObject {
     @Published private(set) var state: FetchableObject<DetailMonitoredItemUiModel> = .fetching
     @Published private(set) var shouldDismiss = false
 
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     private let logger = resolve(\ToolingContainer.logger)
     private let passMonitorRepository = resolve(\RepositoryContainer.passMonitorRepository)
     private let getItemsLinkedToBreach = resolve(\UseCasesContainer.getItemsLinkedToBreach)

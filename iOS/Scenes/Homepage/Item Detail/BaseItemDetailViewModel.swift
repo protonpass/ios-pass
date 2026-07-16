@@ -104,7 +104,7 @@ class BaseItemDetailViewModel: ObservableObject {
     private let toggleItemMonitoring = resolve(\UseCasesContainer.toggleItemMonitoring)
     private let addItemReadEvent = resolve(\UseCasesContainer.addItemReadEvent)
     @LazyInjected(\RepositoryContainer.itemRepository) private(set) var itemRepository
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private(set) var router
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) private(set) var router
     @LazyInjected(\OldSharedServiceContainer.itemContextMenuHandler) var itemContextMenuHandler
     @LazyInjected(\ServiceContainer.syncEventLoop) var syncEventLoop
     @LazyInjected(\UseCasesContainer.leaveShare) var leaveShareUsecase

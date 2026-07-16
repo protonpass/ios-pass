@@ -25,13 +25,14 @@ import Entities
 import FactoryKit
 import LocalAuthentication
 import Macro
+import Screens
 
 @MainActor
 final class SecuritySettingsCoordinator {
     private let logger = resolve(\ToolingContainer.logger)
     private let authenticate = resolve(\UseCasesContainer.authenticateBiometrically)
     private let enablingPolicy = resolve(\ToolingContainer.localAuthenticationEnablingPolicy)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
 
     private let getSharedPreferences = resolve(\UseCasesContainer.getSharedPreferences)
     private let updateSharedPreferences = resolve(\UseCasesContainer.updateSharedPreferences)

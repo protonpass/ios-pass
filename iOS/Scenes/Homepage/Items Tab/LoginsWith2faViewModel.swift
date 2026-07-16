@@ -21,6 +21,7 @@
 import DIComposition
 import Entities
 import FactoryKit
+import Screens
 
 @MainActor
 final class LoginsWith2faViewModel {
@@ -29,7 +30,7 @@ final class LoginsWith2faViewModel {
     @LazyInjected(\RepositoryContainer.itemRepository)
     private var itemRepository
 
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter)
     private var router
 
     init(items: [ItemUiModel]) {

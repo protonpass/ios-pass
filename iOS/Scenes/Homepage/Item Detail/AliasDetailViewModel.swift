@@ -26,6 +26,7 @@ import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 
 @MainActor
 final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {

@@ -28,6 +28,7 @@ import FactoryKit
 import Foundation
 import Macro
 import ProtonCoreNetworking
+import Screens
 
 @MainActor
 final class ManageSharedShareViewModel: ObservableObject {
@@ -63,7 +64,7 @@ final class ManageSharedShareViewModel: ObservableObject {
     private let userManager = resolve(\ServiceContainer.userManager)
     private let logger = resolve(\ToolingContainer.logger)
     private let syncEventLoop = resolve(\ServiceContainer.syncEventLoop)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     private let accessRepository = resolve(\RepositoryContainer.accessRepository)
     private var fetchingTask: Task<Void, Never>?
     @LazyInjected(\RepositoryContainer.organizationRepository)

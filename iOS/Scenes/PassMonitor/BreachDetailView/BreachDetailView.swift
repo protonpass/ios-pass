@@ -24,12 +24,13 @@ import DesignSystem
 import Entities
 import FactoryKit
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct BreachDetailView: View {
     private let breach: Breach
     @Environment(\.dismiss) private var dismiss
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
 
     init(breach: Breach) {
         self.breach = breach

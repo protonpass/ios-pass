@@ -26,6 +26,7 @@ import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 import Stores
 
 @MainActor
@@ -34,7 +35,7 @@ final class FullSyncProgressViewModel: ObservableObject {
     @Published private(set) var error: (any Error)?
     private let appContentManager = resolve(\ServiceContainer.appContentManager)
     private let processVaultSyncEvent = resolve(\UseCasesContainer.processVaultSyncEvent)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     @LazyInjected(\UseCasesContainer.createLogsFile) private var createLogsFile
     private var cancellables = Set<AnyCancellable>()
 

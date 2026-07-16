@@ -25,6 +25,7 @@ import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 
 @MainActor
 final class SetPINCodeViewModel: ObservableObject, DeinitPrintable {
@@ -43,7 +44,7 @@ final class SetPINCodeViewModel: ObservableObject, DeinitPrintable {
     @Published var definedPIN = ""
     @Published var confirmedPIN = ""
 
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     private let updateSharedPreferences = resolve(\UseCasesContainer.updateSharedPreferences)
     private var cancellables = Set<AnyCancellable>()
 

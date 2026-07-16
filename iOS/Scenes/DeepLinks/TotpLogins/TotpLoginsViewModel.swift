@@ -28,6 +28,7 @@ import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 import SwiftUI
 
 typealias SectionedItemSearchResult = SectionedObjects<ItemSearchResult>
@@ -53,7 +54,7 @@ final class TotpLoginsViewModel: ObservableObject {
     private let shareRepository = resolve(\RepositoryContainer.shareRepository)
     let totpManager = resolve(\ServiceContainer.totpManager)
 
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) private var router
     @LazyInjected(\ToolingContainer.logger) private var logger
 
     private var searchableItems = [SearchableItem]()

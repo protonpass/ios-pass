@@ -75,14 +75,14 @@ final class ShareCoordinator {
     private let credentialProvider = resolve(\DataContainer.credentialProvider)
     private let setUpSentry = resolve(\UseCasesContainer.setUpSentry)
     private let setCoreLoggerEnvironment = resolve(\UseCasesContainer.setCoreLoggerEnvironment)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     private let sendErrorToSentry = resolve(\UseCasesContainer.sendErrorToSentry)
 
     @LazyInjected(\ToolingContainer.logger) private var logger
     @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
     @LazyInjected(\UseCasesContainer.logOutAllAccounts) private var logOutAllAccounts
     @LazyInjected(\ServiceContainer.upgradeChecker) private var upgradeChecker
-    @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
+    @LazyInjected(\UIKitUIComponentsContainer.bannerManager) private var bannerManager
     @LazyInjected(\UseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\ToolingContainer.authManager) private var authManager
@@ -109,7 +109,7 @@ final class ShareCoordinator {
     }
 
     init(rootViewController: UIViewController) {
-        SharedViewContainer.shared.register(rootViewController: rootViewController)
+        UIKitUIComponentsContainer.shared.register(rootViewController: rootViewController)
         self.rootViewController = rootViewController
         AppearanceSettings.apply()
         setUpSentry()

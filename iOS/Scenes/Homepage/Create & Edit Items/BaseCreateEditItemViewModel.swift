@@ -37,89 +37,6 @@ import UseCases
 
 typealias ScanResponsePublisher = PassthroughSubject<(any ScanResult)?, any Error>
 
-enum ItemMode: Equatable, Hashable {
-    case create(ItemCreationType)
-    case clone(ItemContent)
-    case edit(ItemContent)
-
-    var itemContent: ItemContent? {
-        switch self {
-        case let .clone(content), let .edit(content):
-            content
-
-        default:
-            nil
-        }
-    }
-
-    var isEditMode: Bool {
-        switch self {
-        case .edit:
-            true
-
-        default:
-            false
-        }
-    }
-
-    var canChangeVault: Bool {
-        switch self {
-        case .clone, .create:
-            true
-
-        default:
-            false
-        }
-    }
-}
-
-enum ItemCreationType: Equatable, Hashable {
-    case note(title: String, note: String)
-    case alias
-    // swiftlint:disable:next enum_case_associated_values_count
-    case login(title: String? = nil,
-               email: String? = nil,
-               password: String? = nil,
-               url: String? = nil,
-               note: String? = nil,
-               totpUri: String? = nil,
-               autofill: Bool,
-               passkeyCredentialRequest: PasskeyCredentialRequest? = nil)
-    case creditCard
-    case identity
-    case sshKey
-    case wifi
-    case custom(CustomItemTemplate)
-
-    var itemContentType: ItemContentType {
-        switch self {
-        case .note:
-            .note
-
-        case .alias:
-            .alias
-
-        case .login:
-            .login
-
-        case .creditCard:
-            .creditCard
-
-        case .identity:
-            .identity
-
-        case .sshKey:
-            .sshKey
-
-        case .wifi:
-            .wifi
-
-        case .custom:
-            .custom
-        }
-    }
-}
-
 private struct PendingFileNameUpdate {
     let fileId: String
     let newName: String
@@ -203,7 +120,7 @@ class BaseCreateEditItemViewModel: ObservableObject {
     let upgradeChecker: any UpgradeCheckerProtocol
     let logger = resolve(\ToolingContainer.logger)
     let userManager = resolve(\ServiceContainer.userManager)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     private let addTelemetryEvent = resolve(\UseCasesContainer.addTelemetryEvent)
     private let getUserPreferences = resolve(\UseCasesContainer.getUserPreferences)
     private let updateUserPreferences = resolve(\UseCasesContainer.updateUserPreferences)

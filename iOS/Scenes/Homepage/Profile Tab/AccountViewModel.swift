@@ -31,6 +31,7 @@ import ProtonCoreDataModel
 import ProtonCoreFeatureFlags
 import ProtonCoreLogin
 import ProtonCorePasswordChange
+import Screens
 
 @MainActor
 protocol AccountViewModelDelegate: AnyObject {
@@ -47,7 +48,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     private let featureFlagsRepository = resolve(\RepositoryContainer.featureFlagsRepository)
     private let userManager = resolve(\ServiceContainer.userManager)
     private let logger = resolve(\ToolingContainer.logger)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager) // To remove after Dynaplans
     private let userSettingsRepository = resolve(\RepositoryContainer.userSettingsRepository)
     private let preferencesManager = resolve(\ToolingContainer.preferencesManager)
