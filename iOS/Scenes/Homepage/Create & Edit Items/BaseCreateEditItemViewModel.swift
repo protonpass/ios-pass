@@ -201,14 +201,14 @@ class BaseCreateEditItemViewModel: ObservableObject {
     let mode: ItemMode
     let itemRepository = resolve(\RepositoryContainer.itemRepository)
     let upgradeChecker: any UpgradeCheckerProtocol
-    let logger = resolve(\SharedToolingContainer.logger)
-    let userManager = resolve(\SharedServiceContainer.userManager)
+    let logger = resolve(\ToolingContainer.logger)
+    let userManager = resolve(\ServiceContainer.userManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
     private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
     private let updateUserPreferences = resolve(\SharedUseCasesContainer.updateUserPreferences)
-    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
-    @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
+    private let appContentManager = resolve(\ServiceContainer.appContentManager)
+    @LazyInjected(\ToolingContainer.preferencesManager) var preferencesManager
     @LazyInjected(\RepositoryContainer.fileAttachmentRepository) private var fileRepository
     @LazyInjected(\SharedUseCasesContainer.generateDatedFileName) private var generateDatedFileName
     @LazyInjected(\SharedUseCasesContainer.writeToUrl) private var writeToUrl

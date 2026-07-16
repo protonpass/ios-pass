@@ -71,7 +71,7 @@ enum ExtraBulkActionOption {
 
 @MainActor
 final class ItemsTabTopBarViewModel: ObservableObject {
-    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
+    private let appContentManager = resolve(\ServiceContainer.appContentManager)
     private let currentSelectedItems = resolve(\DataContainer.currentSelectedItems)
     private let accessRepository = resolve(\RepositoryContainer.accessRepository)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)

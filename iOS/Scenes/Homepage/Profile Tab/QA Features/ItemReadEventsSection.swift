@@ -123,8 +123,8 @@ private final class ItemReadEventsViewModel: ObservableObject {
     @Published private(set) var error: (any Error)?
 
     private let repository = resolve(\RepositoryContainer.itemReadEventRepository)
-    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
-    private let userManager = resolve(\SharedServiceContainer.userManager)
+    private let appContentManager = resolve(\ServiceContainer.appContentManager)
+    private let userManager = resolve(\ServiceContainer.userManager)
 
     init() {}
 

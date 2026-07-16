@@ -34,7 +34,7 @@ enum VaultSearchSelection: Equatable {
 @MainActor
 final class SearchResultsViewModel: ObservableObject {
     @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)?
-    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
+    private let appContentManager = resolve(\ServiceContainer.appContentManager)
     private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
 
     private var vaultSearchSelection: VaultSearchSelection = .current

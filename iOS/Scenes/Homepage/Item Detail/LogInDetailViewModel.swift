@@ -55,7 +55,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     private let getLoginSecurityIssues = resolve(\UseCasesContainer.getLoginSecurityIssues)
     private let passMonitorRepository = resolve(\RepositoryContainer.passMonitorRepository)
 
-    let totpManager = resolve(\SharedServiceContainer.totpManager)
+    let totpManager = resolve(\ServiceContainer.totpManager)
 
     private var fetchSimilarPasswordItemsTask: Task<Void, Never>?
 

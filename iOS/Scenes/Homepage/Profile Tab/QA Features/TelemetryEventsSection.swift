@@ -51,7 +51,7 @@ private struct TelemetryEventUiModel: Identifiable {
 @MainActor
 private final class TelemetryEventsViewModel: ObservableObject {
     private let telemetryEventRepository = resolve(\RepositoryContainer.telemetryEventRepository)
-    private let userManager = resolve(\SharedServiceContainer.userManager)
+    private let userManager = resolve(\ServiceContainer.userManager)
 
     @Published private(set) var uiModels = [TelemetryEventUiModel]()
     @Published private(set) var relativeThreshold = ""

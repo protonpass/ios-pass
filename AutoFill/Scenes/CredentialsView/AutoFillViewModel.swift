@@ -57,8 +57,8 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
 
     let users: [UserUiModel]
 
-    @LazyInjected(\SharedServiceContainer.eventSynchronizer) private var eventSynchronizer
-    @LazyInjected(\SharedToolingContainer.logger) var logger
+    @LazyInjected(\ServiceContainer.eventSynchronizer) private var eventSynchronizer
+    @LazyInjected(\ToolingContainer.logger) var logger
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) var router
     @LazyInjected(\SharedUseCasesContainer.canEditItem) var canEditItem
     @LazyInjected(\AutoFillUseCaseContainer.associateUrlAndAutoFill) var associateUrlAndAutoFill

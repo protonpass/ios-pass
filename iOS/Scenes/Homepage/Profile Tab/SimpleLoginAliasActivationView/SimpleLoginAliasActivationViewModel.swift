@@ -41,12 +41,12 @@ final class SimpleLoginAliasActivationViewModel: ObservableObject {
 
     @LazyInjected(\RepositoryContainer.accessRepository)
     private var accessRepository: any AccessRepositoryProtocol
-    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
+    @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
     @LazyInjected(\SharedUseCasesContainer.getMainVault) private var getMainVault
     @LazyInjected(\RepositoryContainer.aliasRepository) private var aliasRepository
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
-    @LazyInjected(\SharedToolingContainer.logger) private var logger
+    @LazyInjected(\ToolingContainer.logger) private var logger
 
     private var userAliasSyncData: UserAliasSyncData?
 

@@ -38,9 +38,9 @@ final class AddCustomEmailViewModel: ObservableObject {
     private let verifyCustomEmail = resolve(\UseCasesContainer.verifyCustomEmail)
     private let getAllCustomEmails = resolve(\UseCasesContainer.getAllCustomEmails)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let logger = resolve(\SharedToolingContainer.logger)
+    private let logger = resolve(\ToolingContainer.logger)
     @LazyInjected(\RepositoryContainer.aliasRepository) private var aliasRepository
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
 
     @Published private(set) var type: ValidationEmailType
 

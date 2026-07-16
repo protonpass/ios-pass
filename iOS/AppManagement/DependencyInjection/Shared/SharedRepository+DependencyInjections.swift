@@ -45,23 +45,23 @@
 //
 // private extension SharedRepositoryContainer {
 //    var apiManager: APIManager {
-//        SharedToolingContainer.shared.apiManager()
+//        ToolingContainer.shared.apiManager()
 //    }
 //
 //    var logManager: any LogManagerProtocol {
-//        SharedToolingContainer.shared.logManager()
+//        ToolingContainer.shared.logManager()
 //    }
 //
 //    var currentDateProvider: any CurrentDateProviderProtocol {
-//        SharedToolingContainer.shared.currentDateProvider()
+//        ToolingContainer.shared.currentDateProvider()
 //    }
 //
 //    var databaseService: any DatabaseServiceProtocol {
-//        SharedServiceContainer.shared.databaseService()
+//        ServiceContainer.shared.databaseService()
 //    }
 //
 //    var userManager: any UserManagerProtocol {
-//        SharedServiceContainer.shared.userManager()
+//        ServiceContainer.shared.userManager()
 //    }
 //
 //    var symmetricKeyProvider: any SymmetricKeyProvider {
@@ -69,7 +69,7 @@
 //    }
 //
 //    var keychain: any KeychainProtocol {
-//        SharedToolingContainer.shared.keychain()
+//        ToolingContainer.shared.keychain()
 //    }
 // }
 //
@@ -138,7 +138,7 @@
 //
 //    var telemetryScheduler: Factory<any TelemetrySchedulerProtocol> {
 //        self { TelemetryScheduler(currentDateProvider: self.currentDateProvider,
-//                                  thresholdProvider: SharedToolingContainer.shared.preferencesManager()) }
+//                                  thresholdProvider: ToolingContainer.shared.preferencesManager()) }
 //    }
 //
 //    var remoteFavIconDatasource: Factory<any RemoteFavIconDatasourceProtocol> {
@@ -293,7 +293,7 @@
 //        self {
 //            ShareKeyRepository(localDatasource: self.localShareKeyDatasource(),
 //                               remoteDatasource: self.remoteShareKeyDatasource(),
-//                               cryptoService: SharedServiceContainer.shared.cryptoService(),
+//                               cryptoService: ServiceContainer.shared.cryptoService(),
 //                               logManager: self.logManager,
 //                               symmetricKeyProvider: self.symmetricKeyProvider)
 //        }
@@ -397,7 +397,7 @@
 //    }
 //
 //    var userSettingsRepository: Factory<any UserSettingsRepositoryProtocol> {
-//        self { UserSettingsRepository(userDefaultService: SharedServiceContainer.shared.userDefaultService(),
+//        self { UserSettingsRepository(userDefaultService: ServiceContainer.shared.userDefaultService(),
 //                                      remoteDatasource: self.remoteUserSettingsDatasource()) }
 //    }
 //
@@ -431,7 +431,7 @@
 //            FileAttachmentRepository(shareRepository: self.shareRepository(),
 //                                     itemRepository: self.itemRepository(),
 //                                     remoteFileDatasource: self.remoteFileDatasource(),
-//                                     apiServiceLite: SharedToolingContainer.shared.apiServiceLite(),
+//                                     apiServiceLite: ToolingContainer.shared.apiServiceLite(),
 //                                     keyManager: self.passKeyManager())
 //        }
 //    }

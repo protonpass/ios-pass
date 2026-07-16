@@ -66,7 +66,7 @@ private final class DismissibleUIElementViewModel: ObservableObject {
         }
     }
 
-    @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
+    @LazyInjected(\ToolingContainer.preferencesManager) var preferencesManager
 
     init() {
         updateValues()

@@ -26,7 +26,7 @@ import Stores
 
 @MainActor
 final class EditSpotlightVaultsViewModel: ObservableObject {
-    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
+    private let appContentManager = resolve(\ServiceContainer.appContentManager)
     @Published private(set) var selectedVaults = [Share]()
 
     let allVaults: [VaultListUiModel]

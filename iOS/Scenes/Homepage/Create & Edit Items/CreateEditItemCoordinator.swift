@@ -29,7 +29,7 @@ import SwiftUI
 final class CreateEditItemCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
+    private let upgradeChecker = resolve(\ServiceContainer.upgradeChecker)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private weak var createEditItemDelegate: (any CreateEditLoginViewModelDelegate)?
     private var currentViewModel: BaseCreateEditItemViewModel?

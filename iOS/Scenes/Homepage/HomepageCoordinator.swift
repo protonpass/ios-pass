@@ -55,13 +55,13 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     // Injected & self-initialized properties
-    let logger = resolve(\SharedToolingContainer.logger)
-    let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
+    let logger = resolve(\ToolingContainer.logger)
+    let preferencesManager = resolve(\ToolingContainer.preferencesManager)
     private let telemetryEventRepository = resolve(\RepositoryContainer.telemetryEventRepository)
     let urlOpener = UrlOpener()
     let accessRepository = resolve(\RepositoryContainer.accessRepository)
     private let organizationRepository = resolve(\RepositoryContainer.organizationRepository)
-    let appContentManager = resolve(\SharedServiceContainer.appContentManager)
+    let appContentManager = resolve(\ServiceContainer.appContentManager)
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
     private let loginMethod = resolve(\DataContainer.loginMethod)
     private let userSettingsRepository = resolve(\RepositoryContainer.userSettingsRepository)
@@ -72,13 +72,13 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     weak var appCoverView: UIView?
 
     // Lazily initialised properties
-    @LazyInjected(\SharedServiceContainer.syncEventLoop) var eventLoop
+    @LazyInjected(\ServiceContainer.syncEventLoop) var eventLoop
     @LazyInjected(\SharedViewContainer.bannerManager) var bannerManager
-    @LazyInjected(\SharedToolingContainer.apiManager) var apiManager
-    @LazyInjected(\SharedToolingContainer.authManager) var authManager
-    @LazyInjected(\SharedServiceContainer.upgradeChecker) var upgradeChecker
-    @LazyInjected(\SharedServiceContainer.userManager) var userManager
-    @LazyInjected(\SharedServiceContainer.inAppNotificationManager) var inAppNotificationManager
+    @LazyInjected(\ToolingContainer.apiManager) var apiManager
+    @LazyInjected(\ToolingContainer.authManager) var authManager
+    @LazyInjected(\ServiceContainer.upgradeChecker) var upgradeChecker
+    @LazyInjected(\ServiceContainer.userManager) var userManager
+    @LazyInjected(\ServiceContainer.inAppNotificationManager) var inAppNotificationManager
     @LazyInjected(\RepositoryContainer.itemRepository) var itemRepository
     @LazyInjected(\RepositoryContainer.shareRepository) var shareRepository
     @LazyInjected(\RepositoryContainer.passMonitorRepository) var passMonitorRepository
@@ -86,7 +86,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\RepositoryContainer.passwordHistoryRepository)
     private var passwordHistoryRepository
     @LazyInjected(\OldServiceContainer.onboardingHandler) private var onboardingHandler
-    @LazyInjected(\SharedServiceContainer.featureDiscoveryManager)
+    @LazyInjected(\ServiceContainer.featureDiscoveryManager)
     private var featureDiscoveryManager
 
     // Use cases

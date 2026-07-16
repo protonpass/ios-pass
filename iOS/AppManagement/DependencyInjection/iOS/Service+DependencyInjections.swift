@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import DIComposition
 import FactoryKit
 import ProtonCoreAuthentication
 import ProtonCorePushNotifications
@@ -38,15 +39,15 @@ extension OldServiceContainer {
 //    @MainActor
 //    var paymentManager: Factory<any PaymentsManagerProtocol> {
 //        self {
-//            /* .init(storage: kSharedUserDefaults) */ PaymentsManager(apiManager: SharedToolingContainer.shared
+//            /* .init(storage: kSharedUserDefaults) */ PaymentsManager(apiManager: ToolingContainer.shared
 //                .apiManager(),
-//                userManager: SharedServiceContainer.shared
+//                userManager: ServiceContainer.shared
 //                    .userManager(),
-//                authManager: SharedToolingContainer.shared
+//                authManager: ToolingContainer.shared
 //                    .authManager(),
-//                mainKeyProvider: SharedToolingContainer
+//                mainKeyProvider: ToolingContainer
 //                    .shared.mainKeyProvider(),
-//                logger: SharedToolingContainer.shared
+//                logger: ToolingContainer.shared
 //                    .logger())
 //        }
 //    }
@@ -58,11 +59,11 @@ extension OldServiceContainer {
 //
 //    var secureLinkManager: Factory<any SecureLinkManagerProtocol> {
 //        self { SecureLinkManager(dataSource: SharedRepositoryContainer.shared.remoteSecureLinkDatasource(),
-//                                 userManager: SharedServiceContainer.shared.userManager()) }
+//                                 userManager: ServiceContainer.shared.userManager()) }
 //    }
 //
     var onboardingHandler: Factory<any OnboardingHandling> {
-        self { OnboardingHandler(logManager: SharedToolingContainer.shared.logManager(),
+        self { OnboardingHandler(logManager: ToolingContainer.shared.logManager(),
                                  userDefaults: kSharedUserDefaults) }
     }
 }

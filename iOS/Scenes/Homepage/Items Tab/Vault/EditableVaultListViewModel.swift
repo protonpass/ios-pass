@@ -91,10 +91,10 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     private let getUserShareStatus = resolve(\UseCasesContainer.getUserShareStatus)
     private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
     private let leaveShare = resolve(\UseCasesContainer.leaveShare)
-    private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    private let syncEventLoop = resolve(\ServiceContainer.syncEventLoop)
+    private let logger = resolve(\ToolingContainer.logger)
+    private let appContentManager = resolve(\ServiceContainer.appContentManager)
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\RepositoryContainer.accessRepository)
     private var accessRepository
     @LazyInjected(\RepositoryContainer.organizationRepository)

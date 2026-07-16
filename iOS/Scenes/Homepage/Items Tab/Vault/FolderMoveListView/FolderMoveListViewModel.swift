@@ -31,13 +31,13 @@ import Stores
 @Observable
 final class FolderMoveListViewModel {
     @ObservationIgnored
-    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
+    @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
     @ObservationIgnored
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
     @ObservationIgnored
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
     @ObservationIgnored
-    @LazyInjected(\SharedToolingContainer.logger) private var logger
+    @LazyInjected(\ToolingContainer.logger) private var logger
 
     @ObservationIgnored
     @LazyInjected(\RepositoryContainer.accessRepository) private var accessRepository

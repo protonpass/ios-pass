@@ -37,7 +37,7 @@ final class AutoFillUseCaseContainer: SharedContainer, AutoRegistering {
 
 private extension AutoFillUseCaseContainer {
     var logManager: any LogManagerProtocol {
-        SharedToolingContainer.shared.logManager()
+        ToolingContainer.shared.logManager()
     }
 
     var symmetricKeyProvider: any SymmetricKeyProvider {
@@ -69,11 +69,11 @@ private extension AutoFillUseCaseContainer {
     }
 
     var userManager: any UserManagerProtocol {
-        SharedServiceContainer.shared.userManager()
+        ServiceContainer.shared.userManager()
     }
 
     var totpService: any TOTPServiceProtocol {
-        SharedServiceContainer.shared.totpService()
+        ServiceContainer.shared.totpService()
     }
 
     var localTextAutoFillHistoryEntryDatasource: any LocalTextAutoFillHistoryEntryDatasourceProtocol {
@@ -92,8 +92,8 @@ extension AutoFillUseCaseContainer {
                                       generateTotpToken: SharedUseCasesContainer.shared.generateTotpToken(),
                                       getSharedPreferences: SharedUseCasesContainer.shared.getSharedPreferences(),
                                       copyToClipboard: SharedUseCasesContainer.shared.copyToClipboard(),
-                                      notificationService: SharedServiceContainer.shared.notificationService(),
-                                      upgradeChecker: SharedServiceContainer.shared.upgradeChecker()) }
+                                      notificationService: ServiceContainer.shared.notificationService(),
+                                      upgradeChecker: ServiceContainer.shared.upgradeChecker()) }
     }
 
     var fetchCredentials: Factory<any FetchCredentialsUseCase> {
@@ -147,7 +147,7 @@ extension AutoFillUseCaseContainer {
     @MainActor
     var checkAndAutoFill: Factory<any CheckAndAutoFillUseCase> {
         self { CheckAndAutoFill(credentialProvider: DataContainer.shared.credentialProvider(),
-                                userManager: SharedServiceContainer.shared.userManager(),
+                                userManager: ServiceContainer.shared.userManager(),
                                 canSkipLocalAuthentication: self.canSkipLocalAuthentication(),
                                 generateAuthorizationCredential: self.generateAuthorizationCredential(),
                                 cancelAutoFill: self.cancelAutoFill(),
@@ -204,7 +204,7 @@ extension AutoFillUseCaseContainer {
     }
 
     var reindexLoginItem: Factory<any ReindexLoginItemUseCase> {
-        self { ReindexLoginItem(manager: SharedServiceContainer.shared.credentialManager(),
+        self { ReindexLoginItem(manager: ServiceContainer.shared.credentialManager(),
                                 matchUrls: self.matchUrls,
                                 mapServiceIdentifierToUrl: self.mapServiceIdentifierToURL()) }
     }
@@ -220,7 +220,7 @@ extension AutoFillUseCaseContainer {
 
     var canSkipLocalAuthentication: Factory<any CanSkipLocalAuthenticationUseCase> {
         self {
-            CanSkipLocalAuthentication(currentDateProvider: SharedToolingContainer.shared.currentDateProvider())
+            CanSkipLocalAuthentication(currentDateProvider: ToolingContainer.shared.currentDateProvider())
         }
     }
 }

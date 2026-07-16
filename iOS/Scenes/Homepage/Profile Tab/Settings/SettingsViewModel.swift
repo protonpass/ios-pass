@@ -34,8 +34,8 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
 
     let isShownAsSheet: Bool
     private let favIconRepository = resolve(\RepositoryContainer.favIconRepository)
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
+    private let logger = resolve(\ToolingContainer.logger)
+    private let preferencesManager = resolve(\ToolingContainer.preferencesManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let indexItemsForSpotlight = resolve(\SharedUseCasesContainer.indexItemsForSpotlight)
     private let getSpotlightVaults = resolve(\UseCasesContainer.getSpotlightVaults)
@@ -44,10 +44,10 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
     private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
     private let updateUserPreferences = resolve(\SharedUseCasesContainer.updateUserPreferences)
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedUseCasesContainer.fullContentSync) private var fullContentSync
     @LazyInjected(\RepositoryContainer.accessRepository) private var accessRepository
-    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
+    @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
 
     @Published private(set) var selectedBrowser: Browser
     @Published private(set) var selectedTheme: Theme

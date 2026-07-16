@@ -60,9 +60,9 @@ final class ManageSharedShareViewModel: ObservableObject {
     private let transferVaultOwnership = resolve(\UseCasesContainer.transferVaultOwnership)
     private let canUserTransferVaultOwnership = resolve(\UseCasesContainer.canUserTransferVaultOwnership)
     private let promoteNewUserInvite = resolve(\UseCasesContainer.promoteNewUserInvite)
-    private let userManager = resolve(\SharedServiceContainer.userManager)
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
+    private let userManager = resolve(\ServiceContainer.userManager)
+    private let logger = resolve(\ToolingContainer.logger)
+    private let syncEventLoop = resolve(\ServiceContainer.syncEventLoop)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let accessRepository = resolve(\RepositoryContainer.accessRepository)
     private var fetchingTask: Task<Void, Never>?

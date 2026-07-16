@@ -40,7 +40,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     /// Self-initialized properties
     private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
     private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
-    private let logger = resolve(\SharedToolingContainer.logger)
+    private let logger = resolve(\ToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let userForNewItemSubject = UserForNewItemSubject()
 
@@ -62,13 +62,13 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\AutoFillUseCaseContainer.completeTextAutoFill) private var completeTextAutoFill
     @LazyInjected(\AutoFillUseCaseContainer.completePasskeyRegistration) private var completePasskeyRegistration
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
-    @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
-    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
+    @LazyInjected(\ServiceContainer.upgradeChecker) private var upgradeChecker
+    @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
     @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\RepositoryContainer.itemRepository) private var itemRepository
-    @LazyInjected(\SharedToolingContainer.authManager) private var authManager
+    @LazyInjected(\ToolingContainer.authManager) private var authManager
     @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) var logOutAllAccounts
     @LazyInjected(\SharedUseCasesContainer.refreshFeatureFlags) var refreshFeatureFlags
     @LazyInjected(\SharedUseCasesContainer.getUserUiModels) var getUserUiModels

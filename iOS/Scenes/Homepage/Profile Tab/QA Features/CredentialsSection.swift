@@ -20,6 +20,7 @@
 
 @_spi(QA)
 import Client
+import DIComposition
 import FactoryKit
 import SwiftUI
 
@@ -63,7 +64,7 @@ private final class CredentialsViewModel: ObservableObject {
     /// Credentials grouped by username
     @Published private(set) var groupedCreds: [String: [Credentials]] = [:]
 
-    private let authManager = resolve(\SharedToolingContainer.authManager)
+    private let authManager = resolve(\ToolingContainer.authManager)
 
     init() {
         let credentials = (authManager as? AuthManager)?.getAllCredentialsOfAllModules() ?? []

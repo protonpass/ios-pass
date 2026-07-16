@@ -36,9 +36,9 @@ final class ActionCoordinator {
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
     @LazyInjected(\SharedUseCasesContainer.sendErrorToSentry) private var sendErrorToSentry
 
-    @LazyInjected(\SharedToolingContainer.logger) private var logger
-    @LazyInjected(\SharedToolingContainer.logManager) private var logManager
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\ToolingContainer.logger) private var logger
+    @LazyInjected(\ToolingContainer.logManager) private var logManager
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
     @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) private var logOutAllAccounts

@@ -38,7 +38,7 @@ final class OldUseCasesContainer: SharedContainer, AutoRegistering {
 
 // private extension UseCasesContainer {
 //    var logManager: any LogManagerProtocol {
-//        SharedToolingContainer.shared.logManager()
+//        ToolingContainer.shared.logManager()
 //    }
 //
 //    @MainActor
@@ -47,7 +47,7 @@ final class OldUseCasesContainer: SharedContainer, AutoRegistering {
 //    }
 //
 //    var userManager: any UserManagerProtocol {
-//        SharedServiceContainer.shared.userManager()
+//        ServiceContainer.shared.userManager()
 //    }
 //
 //    var itemRepository: any ItemRepositoryProtocol {
@@ -80,7 +80,7 @@ final class OldUseCasesContainer: SharedContainer, AutoRegistering {
 //
 //    @MainActor
 //    var appContentManager: any AppContentManagerProtocol {
-//        SharedServiceContainer.shared.appContentManager()
+//        ServiceContainer.shared.appContentManager()
 //    }
 //
 //    var passMonitorRepository: any PassMonitorRepositoryProtocol {
@@ -108,7 +108,7 @@ final class OldUseCasesContainer: SharedContainer, AutoRegistering {
 //    }
 //
 //    var apiManager: any APIManagerProtocol {
-//        SharedToolingContainer.shared.apiManager()
+//        ToolingContainer.shared.apiManager()
 //    }
 // }
 
@@ -125,7 +125,7 @@ final class OldUseCasesContainer: SharedContainer, AutoRegistering {
 
 // extension UseCasesContainer {
 //    var extractLogsToFile: Factory<any ExtractLogsToFileUseCase> {
-//        self { ExtractLogsToFile(logFormatter: SharedToolingContainer.shared.logFormatter()) }
+//        self { ExtractLogsToFile(logFormatter: ToolingContainer.shared.logFormatter()) }
 //    }
 //
 //    var getLogEntries: Factory<any GetLogEntriesUseCase> {
@@ -183,7 +183,7 @@ final class OldUseCasesContainer: SharedContainer, AutoRegistering {
 //                               passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
 //                               shareInviteRepository: self.inviteRepository,
 //                               userManager: self.userManager,
-//                               syncEventLoop: SharedServiceContainer.shared.syncEventLoop()) }
+//                               syncEventLoop: ServiceContainer.shared.syncEventLoop()) }
 //    }
 //
 //    var promoteNewUserInvite: Factory<any PromoteNewUserInviteUseCase> {
@@ -419,8 +419,8 @@ final class OldUseCasesContainer: SharedContainer, AutoRegistering {
 //
 //    var verifyProtonPassword: Factory<any VerifyProtonPasswordUseCase> {
 //        self { VerifyProtonPassword(userManager: self.userManager,
-//                                    doh: SharedToolingContainer.shared.doh(),
-//                                    appVer: SharedToolingContainer.shared.appVersion()) }
+//                                    doh: ToolingContainer.shared.doh(),
+//                                    appVer: ToolingContainer.shared.appVersion()) }
 //    }
 //
 //    var enableExtraPassword: Factory<any EnableExtraPasswordUseCase> {
@@ -439,7 +439,7 @@ final class OldUseCasesContainer: SharedContainer, AutoRegistering {
 //    var canAddNewAccount: Factory<any CanAddNewAccountUseCase> {
 //        self { CanAddNewAccount(localDatasource: self.localAccessDatasource,
 //                                remoteDatasource: SharedRepositoryContainer.shared.remoteAccessDatasource(),
-//                                authManager: SharedToolingContainer.shared.authManager()) }
+//                                authManager: ToolingContainer.shared.authManager()) }
 //    }
 //
 //    @MainActor
@@ -463,12 +463,12 @@ extension OldUseCasesContainer {
 
     var enableAutoFill: Factory<any EnableAutoFillUseCase> {
         self { EnableAutoFill(router: SharedRouterContainer.shared.mainUIKitSwiftUIRouter(),
-                              credentialManager: SharedServiceContainer.shared.credentialManager()) }
+                              credentialManager: ServiceContainer.shared.credentialManager()) }
     }
 }
 
 //    var makeAccountSettingsUrl: Factory<any MakeAccountSettingsUrlUseCase> {
-//        self { MakeAccountSettingsUrl(doh: SharedToolingContainer.shared.doh()) }
+//        self { MakeAccountSettingsUrl(doh: ToolingContainer.shared.doh()) }
 //    }
 // }
 //
@@ -562,7 +562,7 @@ extension OldUseCasesContainer {
 //
 // extension UseCasesContainer {
 //    var overrideSecuritySettings: Factory<any OverrideSecuritySettingsUseCase> {
-//        self { OverrideSecuritySettings(preferencesManager: SharedToolingContainer.shared.preferencesManager()) }
+//        self { OverrideSecuritySettings(preferencesManager: ToolingContainer.shared.preferencesManager()) }
 //    }
 //
 //    var addItemReadEvent: Factory<any AddItemReadEventUseCase> {

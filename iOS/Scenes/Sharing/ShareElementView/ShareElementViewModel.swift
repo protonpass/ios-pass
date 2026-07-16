@@ -38,9 +38,9 @@ final class ShareElementViewModel: ObservableObject {
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
-    private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
+    private let upgradeChecker = resolve(\ServiceContainer.upgradeChecker)
     @LazyInjected(\RepositoryContainer.shareRepository) private var shareRepository
-    @LazyInjected(\SharedServiceContainer.userManager) var userManager
+    @LazyInjected(\ServiceContainer.userManager) var userManager
     @LazyInjected(\RepositoryContainer.accessRepository) private(set) var accessRepository
     @LazyInjected(\RepositoryContainer.organizationRepository)
     private var organizationRepository

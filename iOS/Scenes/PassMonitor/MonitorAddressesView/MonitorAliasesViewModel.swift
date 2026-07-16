@@ -31,14 +31,14 @@ final class MonitorAliasesViewModel: ObservableObject {
     @Published private(set) var access: Access?
     @Published private(set) var dismissedCustomDomainExplanation = false
 
-    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
+    private let preferencesManager = resolve(\ToolingContainer.preferencesManager)
     private let accessRepository = resolve(\RepositoryContainer.accessRepository)
     private let passMonitorRepository = resolve(\RepositoryContainer.passMonitorRepository)
     private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
     private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
-    private let logger = resolve(\SharedToolingContainer.logger)
+    private let logger = resolve(\ToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
 
     private var cancellables = Set<AnyCancellable>()
 

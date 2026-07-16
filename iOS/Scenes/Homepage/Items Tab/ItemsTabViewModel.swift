@@ -63,11 +63,11 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published private(set) var aliasesAllowed = true
 
     let currentSelectedItems = resolve(\DataContainer.currentSelectedItems)
-    @LazyInjected(\SharedServiceContainer.appContentManager) var appContentManager
+    @LazyInjected(\ServiceContainer.appContentManager) var appContentManager
 
     private let itemRepository = resolve(\RepositoryContainer.itemRepository)
     private let accessRepository = resolve(\RepositoryContainer.accessRepository)
-    private let logger = resolve(\SharedToolingContainer.logger)
+    private let logger = resolve(\ToolingContainer.logger)
     private let loginMethod = resolve(\DataContainer.loginMethod)
     private let getPendingUserInvitations = resolve(\UseCasesContainer.getPendingUserInvitations)
     private let doTrashSelectedItems = resolve(\UseCasesContainer.trashSelectedItems)
@@ -79,13 +79,13 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let shouldDisplayUpgradeAppBanner = resolve(\UseCasesContainer.shouldDisplayUpgradeAppBanner)
     private let pinItems = resolve(\SharedUseCasesContainer.pinItems)
     private let unpinItems = resolve(\SharedUseCasesContainer.unpinItems)
-    @LazyInjected(\SharedServiceContainer.inAppNotificationManager) var inAppNotificationManager
+    @LazyInjected(\ServiceContainer.inAppNotificationManager) var inAppNotificationManager
 
     @LazyInjected(\SharedUseCasesContainer.getOrganizationSettings)
     private var getOrganizationSettings
 
-    let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    let itemContextMenuHandler = resolve(\OldSharedServiceContainer.itemContextMenuHandler)
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\RepositoryContainer.organizationRepository)
     private var organizationRepository
 
@@ -117,7 +117,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     /// `PullToRefreshable` conformance
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
-    let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
+    let syncEventLoop = resolve(\ServiceContainer.syncEventLoop)
 
     init() {
         setUp()

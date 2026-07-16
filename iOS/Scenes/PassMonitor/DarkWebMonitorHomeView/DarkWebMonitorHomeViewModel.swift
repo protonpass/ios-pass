@@ -45,8 +45,8 @@ final class DarkWebMonitorHomeViewModel: ObservableObject {
     private let removeEmailFromBreachMonitoring = resolve(\UseCasesContainer.removeEmailFromBreachMonitoring)
     private let getAllCustomEmails = resolve(\UseCasesContainer.getAllCustomEmails)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let logger = resolve(\SharedToolingContainer.logger)
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    private let logger = resolve(\ToolingContainer.logger)
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
 
     private var cancellables = Set<AnyCancellable>()
     private var fetchAliasBreachesTask: Task<Void, Never>?

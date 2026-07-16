@@ -44,7 +44,7 @@ final class DetailMonitoredItemViewModel: ObservableObject {
     @Published private(set) var shouldDismiss = false
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let logger = resolve(\SharedToolingContainer.logger)
+    private let logger = resolve(\ToolingContainer.logger)
     private let passMonitorRepository = resolve(\RepositoryContainer.passMonitorRepository)
     private let getItemsLinkedToBreach = resolve(\UseCasesContainer.getItemsLinkedToBreach)
     private let itemRepository = resolve(\RepositoryContainer.itemRepository)
@@ -52,7 +52,7 @@ final class DetailMonitoredItemViewModel: ObservableObject {
     private let toggleMonitoringForCustomEmail = resolve(\UseCasesContainer.toggleMonitoringForCustomEmail)
     private let toggleMonitoringForProtonAddress = resolve(\UseCasesContainer.toggleMonitoringForProtonAddress)
     private let removeEmailFromBreachMonitoring = resolve(\UseCasesContainer.removeEmailFromBreachMonitoring)
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
 
     private var cancellables = Set<AnyCancellable>()
     private var currentTask: Task<Void, Never>?
