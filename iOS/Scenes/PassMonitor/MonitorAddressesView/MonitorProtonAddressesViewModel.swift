@@ -30,8 +30,8 @@ final class MonitorProtonAddressesViewModel: ObservableObject {
     @Published private(set) var allAddresses: [ProtonAddress]
     @Published private(set) var access: Access?
 
-    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
-    private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
+    private let accessRepository = resolve(\RepositoryContainer.accessRepository)
+    private let passMonitorRepository = resolve(\RepositoryContainer.passMonitorRepository)
     private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)

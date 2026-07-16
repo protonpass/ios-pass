@@ -37,7 +37,7 @@ final class ItemMoveVaultListViewModel: ObservableObject, DeinitPrintable {
     private let moveItemsBetweenContainers = resolve(\UseCasesContainer.moveItemsBetweenContainers)
     private let currentSelectedItems = resolve(\DataContainer.currentSelectedItems)
     @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
-    @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
+    @LazyInjected(\RepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     @Published private(set) var isFreeUser = false

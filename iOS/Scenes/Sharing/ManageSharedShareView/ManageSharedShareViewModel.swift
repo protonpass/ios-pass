@@ -64,11 +64,11 @@ final class ManageSharedShareViewModel: ObservableObject {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
+    private let accessRepository = resolve(\RepositoryContainer.accessRepository)
     private var fetchingTask: Task<Void, Never>?
-    @LazyInjected(\SharedRepositoryContainer.organizationRepository)
+    @LazyInjected(\RepositoryContainer.organizationRepository)
     private var organizationRepository
-    @LazyInjected(\SharedRepositoryContainer.groupRepository) private var groupRepository
+    @LazyInjected(\RepositoryContainer.groupRepository) private var groupRepository
 
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus

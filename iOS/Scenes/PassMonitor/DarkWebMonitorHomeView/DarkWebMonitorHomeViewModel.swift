@@ -37,8 +37,8 @@ final class DarkWebMonitorHomeViewModel: ObservableObject {
     @Published private(set) var suggestedEmailsState: FetchableObject<[SuggestedEmail]> = .fetching
     @Published private(set) var updatingStateOfCustomEmail = false
 
-    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
-    private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
+    private let accessRepository = resolve(\RepositoryContainer.accessRepository)
+    private let passMonitorRepository = resolve(\RepositoryContainer.passMonitorRepository)
     private let getCustomEmailSuggestion = resolve(\SharedUseCasesContainer.getCustomEmailSuggestion)
     private let getAllAliasMonitorInfos = resolve(\UseCasesContainer.getAllAliasMonitorInfos)
     private let addCustomEmailToMonitoring = resolve(\UseCasesContainer.addCustomEmailToMonitoring)

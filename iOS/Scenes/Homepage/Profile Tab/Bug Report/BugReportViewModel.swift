@@ -64,7 +64,7 @@ final class BugReportViewModel: ObservableObject {
     @Published var shouldSendLogs = true
     @Published var selectedPhotos = [PhotosPickerItem]()
 
-    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
+    private let accessRepository = resolve(\RepositoryContainer.accessRepository)
     private let sendUserBugReport = resolve(\UseCasesContainer.sendUserBugReport)
     private var cancellable = Set<AnyCancellable>()
 

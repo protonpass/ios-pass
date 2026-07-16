@@ -63,7 +63,7 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
     private var sortTask: Task<Void, Never>?
     private var filterAndSortTask: Task<Void, Never>?
 
-    @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
+    @LazyInjected(\RepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\AutoFillUseCaseContainer.fetchCredentials) private var fetchCredentials
     @LazyInjected(\AutoFillUseCaseContainer.autoFillCredentials) private var autoFillCredentials
     @LazyInjected(\AutoFillUseCaseContainer.autoFillPasskey) private var autoFillPasskey

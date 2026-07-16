@@ -33,7 +33,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     let isShownAsSheet: Bool
-    private let favIconRepository = resolve(\SharedRepositoryContainer.favIconRepository)
+    private let favIconRepository = resolve(\RepositoryContainer.favIconRepository)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -46,7 +46,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     private let updateUserPreferences = resolve(\SharedUseCasesContainer.updateUserPreferences)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedUseCasesContainer.fullContentSync) private var fullContentSync
-    @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
+    @LazyInjected(\RepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
 
     @Published private(set) var selectedBrowser: Browser

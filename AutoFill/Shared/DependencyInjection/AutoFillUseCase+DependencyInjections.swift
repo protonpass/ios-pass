@@ -45,15 +45,15 @@ private extension AutoFillUseCaseContainer {
     }
 
     var itemRepository: any ItemRepositoryProtocol {
-        SharedRepositoryContainer.shared.itemRepository()
+        RepositoryContainer.shared.itemRepository()
     }
 
     var shareRepository: any ShareRepositoryProtocol {
-        SharedRepositoryContainer.shared.shareRepository()
+        RepositoryContainer.shared.shareRepository()
     }
 
     var accessRepository: any AccessRepositoryProtocol {
-        SharedRepositoryContainer.shared.accessRepository()
+        RepositoryContainer.shared.accessRepository()
     }
 
     var createPasskey: any CreatePasskeyUseCase {
@@ -77,7 +77,7 @@ private extension AutoFillUseCaseContainer {
     }
 
     var localTextAutoFillHistoryEntryDatasource: any LocalTextAutoFillHistoryEntryDatasourceProtocol {
-        SharedRepositoryContainer.shared.localTextAutoFillHistoryEntryDatasource()
+        RepositoryContainer.shared.localTextAutoFillHistoryEntryDatasource()
     }
 }
 
@@ -182,7 +182,7 @@ extension AutoFillUseCaseContainer {
     @MainActor
     var completeAutoFill: Factory<any CompleteAutoFillUseCase> {
         self { CompleteAutoFill(logManager: self.logManager,
-                                telemetryRepository: SharedRepositoryContainer.shared.telemetryEventRepository(),
+                                telemetryRepository: RepositoryContainer.shared.telemetryEventRepository(),
                                 userManager: self.userManager,
                                 copyTotpTokenAndNotify: self.copyTotpTokenAndNotify(),
                                 updateLastUseTimeAndReindex: self.updateLastUseTimeAndReindex(),
@@ -191,7 +191,7 @@ extension AutoFillUseCaseContainer {
 
     var completeTextAutoFill: Factory<any CompleteTextAutoFillUseCase> {
         self { CompleteTextAutoFill(userManager: self.userManager,
-                                    datasource: SharedRepositoryContainer.shared
+                                    datasource: RepositoryContainer.shared
                                         .localTextAutoFillHistoryEntryDatasource()) }
     }
 
@@ -211,9 +211,9 @@ extension AutoFillUseCaseContainer {
 
     var updateLastUseTimeAndReindex: Factory<any UpdateLastUseTimeAndReindexUseCase> {
         self { UpdateLastUseTimeAndReindex(itemRepository: self.itemRepository,
-                                           localItemDatasource: SharedRepositoryContainer.shared
+                                           localItemDatasource: RepositoryContainer.shared
                                                .localItemDatasource(),
-                                           localShareDatasource: SharedRepositoryContainer.shared
+                                           localShareDatasource: RepositoryContainer.shared
                                                .localShareDatasource(),
                                            reindexLoginItem: self.reindexLoginItem()) }
     }

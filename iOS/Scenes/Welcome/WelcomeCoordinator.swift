@@ -53,7 +53,7 @@ final class WelcomeCoordinator: DeinitPrintable {
     }
 
     @LazyInjected(\UseCasesContainer.createLogsFile) private var createLogsFile
-    @LazyInjected(\SharedRepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
+    @LazyInjected(\RepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
 
     let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
 

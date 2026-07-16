@@ -31,7 +31,7 @@ import Screens
 final class ItemContextMenuHandler {
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
+    @LazyInjected(\RepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\SharedToolingContainer.logger) private var logger
     @LazyInjected(\SharedUseCasesContainer.pinItems) private var pinItems
     @LazyInjected(\SharedUseCasesContainer.unpinItems) private var unpinItems

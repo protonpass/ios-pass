@@ -51,10 +51,10 @@ final class AliasSyncConfigurationViewModel: ObservableObject {
     @Published private(set) var showSyncSection = false
     @Published var error: (any Error)?
 
-    @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
+    @LazyInjected(\RepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
     @LazyInjected(\SharedUseCasesContainer.getMainVault) private var getMainVault
-    @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
+    @LazyInjected(\RepositoryContainer.aliasRepository) private var aliasRepository
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
     @LazyInjected(\SharedToolingContainer.logger) private var logger
