@@ -71,7 +71,7 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
     private let passkeyRequestParams: ASPasskeyCredentialRequestParameters?
     private let urls: [URL]
-    private let mapServiceIdentifierToURL = resolve(\AutoFillUseCaseContainer.mapServiceIdentifierToURL)
+    private let mapServiceIdentifierToURL = dependency(\AutoFillUseCaseContainer.mapServiceIdentifierToURL)
     let mode: CredentialsMode
 
     var domain: String {

@@ -67,12 +67,12 @@ final class EnableExtraPasswordViewModel: ObservableObject {
     private var definedExtraPassword = ""
     private var protonPasswordFailedVerificationCount = 0
 
-    private let doVerifyProtonPassword = resolve(\UseCasesContainer.verifyProtonPassword)
-    private let enableExtraPassword = resolve(\UseCasesContainer.enableExtraPassword)
-    private let updateUserPreferences = resolve(\UseCasesContainer.updateUserPreferences)
-    private let preferencesManager = resolve(\ToolingContainer.preferencesManager)
-    private let userManager = resolve(\ServiceContainer.userManager)
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let doVerifyProtonPassword = dependency(\UseCasesContainer.verifyProtonPassword)
+    private let enableExtraPassword = dependency(\UseCasesContainer.enableExtraPassword)
+    private let updateUserPreferences = dependency(\UseCasesContainer.updateUserPreferences)
+    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
+    private let userManager = dependency(\ServiceContainer.userManager)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
 
     init() {
         Task { [weak self] in

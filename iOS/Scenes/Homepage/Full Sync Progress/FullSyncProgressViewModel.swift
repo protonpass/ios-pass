@@ -33,9 +33,9 @@ import Stores
 final class FullSyncProgressViewModel: ObservableObject {
     @Published private(set) var progresses = [VaultSyncProgress]()
     @Published private(set) var error: (any Error)?
-    private let appContentManager = resolve(\ServiceContainer.appContentManager)
-    private let processVaultSyncEvent = resolve(\UseCasesContainer.processVaultSyncEvent)
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let appContentManager = dependency(\ServiceContainer.appContentManager)
+    private let processVaultSyncEvent = dependency(\UseCasesContainer.processVaultSyncEvent)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
     @LazyInjected(\UseCasesContainer.createLogsFile) private var createLogsFile
     private var cancellables = Set<AnyCancellable>()
 

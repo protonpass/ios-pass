@@ -72,11 +72,11 @@ enum SharedItemType: CaseIterable {
 
 @MainActor
 final class ShareCoordinator {
-    private let credentialProvider = resolve(\DataContainer.credentialProvider)
-    private let setUpSentry = resolve(\UseCasesContainer.setUpSentry)
-    private let setCoreLoggerEnvironment = resolve(\UseCasesContainer.setCoreLoggerEnvironment)
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
-    private let sendErrorToSentry = resolve(\UseCasesContainer.sendErrorToSentry)
+    private let credentialProvider = dependency(\DataContainer.credentialProvider)
+    private let setUpSentry = dependency(\UseCasesContainer.setUpSentry)
+    private let setCoreLoggerEnvironment = dependency(\UseCasesContainer.setCoreLoggerEnvironment)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let sendErrorToSentry = dependency(\UseCasesContainer.sendErrorToSentry)
 
     @LazyInjected(\ToolingContainer.logger) private var logger
     @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager

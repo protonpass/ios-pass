@@ -71,9 +71,9 @@ final class AppCoordinator {
 
     private var cancellables = Set<AnyCancellable>()
 
-    private let userManager = resolve(\ServiceContainer.userManager)
-    private let logger = resolve(\ToolingContainer.logger)
-    private let loginMethod = resolve(\DataContainer.loginMethod)
+    private let userManager = dependency(\ServiceContainer.userManager)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let loginMethod = dependency(\DataContainer.loginMethod)
 
     @LazyInjected(\ToolingContainer.keychain) private var keychain
     @LazyInjected(\ToolingContainer.apiManager) private var apiManager

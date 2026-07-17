@@ -211,10 +211,10 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
     private var profileTabViewController: UIViewController?
     private var searchViewModel: SearchViewModel?
 
-    private let accessRepository = resolve(\RepositoryContainer.accessRepository)
-    private let monitorStateStream = resolve(\DataContainer.monitorStateStream)
-    private let itemTypeSelection = resolve(\DataContainer.itemTypeSelection)
-    private let logger = resolve(\ToolingContainer.logger)
+    private let accessRepository = dependency(\RepositoryContainer.accessRepository)
+    private let monitorStateStream = dependency(\DataContainer.monitorStateStream)
+    private let itemTypeSelection = dependency(\DataContainer.itemTypeSelection)
+    private let logger = dependency(\ToolingContainer.logger)
     weak var homepageTabBarControllerDelegate: (any HomepageTabBarControllerDelegate)?
 
     private var tabIndexes = [HomepageTab: Int]()

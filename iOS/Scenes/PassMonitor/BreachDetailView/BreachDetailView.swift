@@ -30,7 +30,7 @@ import SwiftUI
 struct BreachDetailView: View {
     private let breach: Breach
     @Environment(\.dismiss) private var dismiss
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
 
     init(breach: Breach) {
         self.breach = breach

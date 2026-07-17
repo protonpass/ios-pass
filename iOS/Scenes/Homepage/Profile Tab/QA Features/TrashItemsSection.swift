@@ -133,9 +133,9 @@ private final class TrashItemsViewModel: ObservableObject {
 
     @Published private(set) var state = State.loading
 
-    private let itemRepository = resolve(\RepositoryContainer.itemRepository)
-    private let shareRepository = resolve(\RepositoryContainer.shareRepository)
-    private let bannerManager = resolve(\UIComponentsContainer.bannerManager)
+    private let itemRepository = dependency(\RepositoryContainer.itemRepository)
+    private let shareRepository = dependency(\RepositoryContainer.shareRepository)
+    private let bannerManager = dependency(\UIComponentsContainer.bannerManager)
     @LazyInjected(\ServiceContainer.userManager) private var userManager
 
     init() {

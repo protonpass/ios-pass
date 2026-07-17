@@ -54,16 +54,16 @@ final class EmailGroupSelectionViewModel: ObservableObject {
     @Published private var cachedOrgRecommendations: OrganizationInviteRecommendations?
 
     private var cancellables = Set<AnyCancellable>()
-    private let inviteRepository = resolve(\RepositoryContainer.inviteRepository)
-    private let checkAddressesForInvite = resolve(\UseCasesContainer.checkAddressesForInvite)
-    private let shareInviteService = resolve(\ServiceContainer.shareInviteService)
-    private let setShareInvitesAndKeys = resolve(\UseCasesContainer.setShareInvitesAndKeys)
-    private let userManager = resolve(\ServiceContainer.userManager)
+    private let inviteRepository = dependency(\RepositoryContainer.inviteRepository)
+    private let checkAddressesForInvite = dependency(\UseCasesContainer.checkAddressesForInvite)
+    private let shareInviteService = dependency(\ServiceContainer.shareInviteService)
+    private let setShareInvitesAndKeys = dependency(\UseCasesContainer.setShareInvitesAndKeys)
+    private let userManager = dependency(\ServiceContainer.userManager)
     @LazyInjected(\RepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\RepositoryContainer.groupRepository) private var groupRepository
     @LazyInjected(\UseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
     private var currentTask: Task<Void, Never>?
     private var cachedGroupInfos: [InviteRecommendationType]?
     private var updateSuggestionTask: Task<Void, Never>?

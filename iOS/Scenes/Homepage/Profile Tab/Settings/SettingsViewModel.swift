@@ -34,17 +34,17 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     let isShownAsSheet: Bool
-    private let favIconRepository = resolve(\RepositoryContainer.favIconRepository)
-    private let logger = resolve(\ToolingContainer.logger)
-    private let preferencesManager = resolve(\ToolingContainer.preferencesManager)
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
-    private let indexItemsForSpotlight = resolve(\UseCasesContainer.indexItemsForSpotlight)
-    private let getSpotlightVaults = resolve(\UseCasesContainer.getSpotlightVaults)
-    private let updateSpotlightVaults = resolve(\UseCasesContainer.updateSpotlightVaults)
-    private let getSharedPreferences = resolve(\UseCasesContainer.getSharedPreferences)
-    private let updateSharedPreferences = resolve(\UseCasesContainer.updateSharedPreferences)
-    private let getUserPreferences = resolve(\UseCasesContainer.getUserPreferences)
-    private let updateUserPreferences = resolve(\UseCasesContainer.updateUserPreferences)
+    private let favIconRepository = dependency(\RepositoryContainer.favIconRepository)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let indexItemsForSpotlight = dependency(\UseCasesContainer.indexItemsForSpotlight)
+    private let getSpotlightVaults = dependency(\UseCasesContainer.getSpotlightVaults)
+    private let updateSpotlightVaults = dependency(\UseCasesContainer.updateSpotlightVaults)
+    private let getSharedPreferences = dependency(\UseCasesContainer.getSharedPreferences)
+    private let updateSharedPreferences = dependency(\UseCasesContainer.updateSharedPreferences)
+    private let getUserPreferences = dependency(\UseCasesContainer.getUserPreferences)
+    private let updateUserPreferences = dependency(\UseCasesContainer.updateUserPreferences)
     @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\UseCasesContainer.fullContentSync) private var fullContentSync
     @LazyInjected(\RepositoryContainer.accessRepository) private var accessRepository

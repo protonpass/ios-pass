@@ -32,9 +32,9 @@ final class PasswordReusedViewModel: ObservableObject {
     @Published private(set) var reusedItems: [ItemContent] = []
     @Published private(set) var loading = false
 
-    private let passMonitorRepository = resolve(\RepositoryContainer.passMonitorRepository)
-    let logger = resolve(\ToolingContainer.logger)
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let passMonitorRepository = dependency(\RepositoryContainer.passMonitorRepository)
+    let logger = dependency(\ToolingContainer.logger)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
     private let itemContent: ItemContent
 
     var title: String {

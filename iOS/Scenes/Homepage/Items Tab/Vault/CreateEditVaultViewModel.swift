@@ -67,12 +67,12 @@ final class CreateEditVaultViewModel: ObservableObject {
     @Published private(set) var finishSaving = false
 
     private let mode: VaultMode
-    private let logger = resolve(\ToolingContainer.logger)
-    private let shareRepository = resolve(\RepositoryContainer.shareRepository)
-    private let upgradeChecker = resolve(\ServiceContainer.upgradeChecker)
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
-    private let createVaultUseCase = resolve(\UseCasesContainer.createVault)
-    private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let shareRepository = dependency(\RepositoryContainer.shareRepository)
+    private let upgradeChecker = dependency(\ServiceContainer.upgradeChecker)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let createVaultUseCase = dependency(\UseCasesContainer.createVault)
+    private let setShareInviteVault = dependency(\UseCasesContainer.setShareInviteVault)
     @LazyInjected(\ServiceContainer.userManager) private var userManager
 
     weak var delegate: (any CreateEditVaultViewModelDelegate)?

@@ -49,10 +49,10 @@ final class TotpLoginsViewModel: ObservableObject {
     }
 
     @LazyInjected(\ServiceContainer.userManager) private var userManager
-    private let getActiveLoginItems = resolve(\UseCasesContainer.getActiveLoginItems)
-    private let itemRepository = resolve(\RepositoryContainer.itemRepository)
-    private let shareRepository = resolve(\RepositoryContainer.shareRepository)
-    let totpManager = resolve(\ServiceContainer.totpManager)
+    private let getActiveLoginItems = dependency(\UseCasesContainer.getActiveLoginItems)
+    private let itemRepository = dependency(\RepositoryContainer.itemRepository)
+    private let shareRepository = dependency(\RepositoryContainer.shareRepository)
+    let totpManager = dependency(\ServiceContainer.totpManager)
 
     @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) private var router
     @LazyInjected(\ToolingContainer.logger) private var logger

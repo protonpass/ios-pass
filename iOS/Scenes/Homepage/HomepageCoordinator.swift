@@ -55,17 +55,17 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     // Injected & self-initialized properties
-    let logger = resolve(\ToolingContainer.logger)
-    let preferencesManager = resolve(\ToolingContainer.preferencesManager)
-    private let telemetryEventRepository = resolve(\RepositoryContainer.telemetryEventRepository)
+    let logger = dependency(\ToolingContainer.logger)
+    let preferencesManager = dependency(\ToolingContainer.preferencesManager)
+    private let telemetryEventRepository = dependency(\RepositoryContainer.telemetryEventRepository)
     let urlOpener = UrlOpener()
-    let accessRepository = resolve(\RepositoryContainer.accessRepository)
-    private let organizationRepository = resolve(\RepositoryContainer.organizationRepository)
-    let appContentManager = resolve(\ServiceContainer.appContentManager)
-    private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
-    private let loginMethod = resolve(\DataContainer.loginMethod)
-    private let userSettingsRepository = resolve(\RepositoryContainer.userSettingsRepository)
-    private let symmetricKeyProvider = resolve(\DataContainer.symmetricKeyProvider)
+    let accessRepository = dependency(\RepositoryContainer.accessRepository)
+    private let organizationRepository = dependency(\RepositoryContainer.organizationRepository)
+    let appContentManager = dependency(\ServiceContainer.appContentManager)
+    private let refreshInvitations = dependency(\UseCasesContainer.refreshInvitations)
+    private let loginMethod = dependency(\DataContainer.loginMethod)
+    private let userSettingsRepository = dependency(\RepositoryContainer.userSettingsRepository)
+    private let symmetricKeyProvider = dependency(\DataContainer.symmetricKeyProvider)
 
     // App cover/local authentication
     @LazyInjected(\UIComponentsContainer.window) var window
@@ -89,13 +89,13 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private var featureDiscoveryManager
 
     // Use cases
-    private let refreshFeatureFlags = resolve(\UseCasesContainer.refreshFeatureFlags)
-    let revokeCurrentSession = resolve(\UseCasesContainer.revokeCurrentSession)
-    private let makeAccountSettingsUrl = resolve(\UseCasesContainer.makeAccountSettingsUrl)
-    private let refreshUserSettings = resolve(\UseCasesContainer.refreshUserSettings)
-    private let overrideSecuritySettings = resolve(\UseCasesContainer.overrideSecuritySettings)
-    private let copyToClipboard = resolve(\UseCasesContainer.copyToClipboard)
-    private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
+    private let refreshFeatureFlags = dependency(\UseCasesContainer.refreshFeatureFlags)
+    let revokeCurrentSession = dependency(\UseCasesContainer.revokeCurrentSession)
+    private let makeAccountSettingsUrl = dependency(\UseCasesContainer.makeAccountSettingsUrl)
+    private let refreshUserSettings = dependency(\UseCasesContainer.refreshUserSettings)
+    private let overrideSecuritySettings = dependency(\UseCasesContainer.overrideSecuritySettings)
+    private let copyToClipboard = dependency(\UseCasesContainer.copyToClipboard)
+    private let refreshAccessAndMonitorState = dependency(\UseCasesContainer.refreshAccessAndMonitorState)
     @LazyInjected(\UseCasesContainer.logOutExcessFreeAccounts) private var logOutExcessFreeAccounts
     @LazyInjected(\UseCasesContainer.canAddNewAccount) var canAddNewAccount
     @LazyInjected(\UseCasesContainer.switchUser) var switchUser
@@ -109,10 +109,10 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\UseCasesContainer.fullContentSync) var fullContentSync
     @LazyInjected(\UseCasesContainer.postbackConversionValue) var postbackConversionValue
 
-    private let getAppPreferences = resolve(\UseCasesContainer.getAppPreferences)
-    let updateAppPreferences = resolve(\UseCasesContainer.updateAppPreferences)
-    let getSharedPreferences = resolve(\UseCasesContainer.getSharedPreferences)
-    let getUserPreferences = resolve(\UseCasesContainer.getUserPreferences)
+    private let getAppPreferences = dependency(\UseCasesContainer.getAppPreferences)
+    let updateAppPreferences = dependency(\UseCasesContainer.updateAppPreferences)
+    let getSharedPreferences = dependency(\UseCasesContainer.getSharedPreferences)
+    let getUserPreferences = dependency(\UseCasesContainer.getUserPreferences)
 
     // References
     private(set) weak var itemsTabViewModel: ItemsTabViewModel?
@@ -124,7 +124,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     // MARK: - Navigation Router
 
-    let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
+    let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
 
     var authenticated = false
 

@@ -70,7 +70,7 @@ private final class AliasDiscoverySectionViewModel {
     private(set) var askedForCopyContactAfterCreating = false
 
     @ObservationIgnored
-    private let preferencesManager = resolve(\ToolingContainer.preferencesManager)
+    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
 
     private var discovery: AliasDiscovery {
         preferencesManager.sharedPreferences.unwrapped().aliasDiscovery

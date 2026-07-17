@@ -38,10 +38,10 @@ extension ASCredentialProviderExtensionContext: @unchecked @retroactive Sendable
 @MainActor
 final class CredentialProviderCoordinator: DeinitPrintable {
     /// Self-initialized properties
-    private let setUpSentry = resolve(\UseCasesContainer.setUpSentry)
-    private let setCoreLoggerEnvironment = resolve(\UseCasesContainer.setCoreLoggerEnvironment)
-    private let logger = resolve(\ToolingContainer.logger)
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let setUpSentry = dependency(\UseCasesContainer.setUpSentry)
+    private let setCoreLoggerEnvironment = dependency(\UseCasesContainer.setCoreLoggerEnvironment)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
     private let userForNewItemSubject = UserForNewItemSubject()
 
     private weak var rootViewController: UIViewController?
@@ -49,9 +49,9 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     private var cancellables = Set<AnyCancellable>()
 
     // Use cases
-    private let completeConfiguration = resolve(\AutoFillUseCaseContainer.completeConfiguration)
-    private let cancelAutoFill = resolve(\AutoFillUseCaseContainer.cancelAutoFill)
-    private let sendErrorToSentry = resolve(\UseCasesContainer.sendErrorToSentry)
+    private let completeConfiguration = dependency(\AutoFillUseCaseContainer.completeConfiguration)
+    private let cancelAutoFill = dependency(\AutoFillUseCaseContainer.cancelAutoFill)
+    private let sendErrorToSentry = dependency(\UseCasesContainer.sendErrorToSentry)
 
     // Lazily injected because some use cases are dependent on repositories
     // which are not registered when the user is not logged in

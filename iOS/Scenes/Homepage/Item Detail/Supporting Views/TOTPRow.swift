@@ -32,7 +32,7 @@ import SwiftUI
 final class TOTPRowViewModel: ObservableObject {
     @Published private(set) var state = TOTPState.empty
 
-    private let totpManager = resolve(\ServiceContainer.totpManager)
+    private let totpManager = dependency(\ServiceContainer.totpManager)
     private var cancellable = Set<AnyCancellable>()
 
     var code: String? {

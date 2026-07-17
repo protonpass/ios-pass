@@ -29,10 +29,10 @@ import SwiftUI
 final class ItemDetailCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private let upgradeChecker = resolve(\ServiceContainer.upgradeChecker)
+    private let upgradeChecker = dependency(\ServiceContainer.upgradeChecker)
     private weak var itemDetailViewModelDelegate: (any ItemDetailViewModelDelegate)?
     private weak var currentViewModel: BaseItemDetailViewModel?
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
 
     init(itemDetailViewModelDelegate: (any ItemDetailViewModelDelegate)?) {
         self.itemDetailViewModelDelegate = itemDetailViewModelDelegate
