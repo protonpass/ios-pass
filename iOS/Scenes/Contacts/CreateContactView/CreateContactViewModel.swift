@@ -42,28 +42,17 @@ final class CreateContactViewModel {
         email.isValidEmail()
     }
 
-    @ObservationIgnored
-    @LazyInjected(\RepositoryContainer.aliasRepository) private var aliasRepository
-
-    @ObservationIgnored
-    @LazyInjected(\ServiceContainer.userManager) private var userManager
-
-    @ObservationIgnored
-    @LazyInjected(\ToolingContainer.preferencesManager) private var preferencesManager
-
-    @ObservationIgnored
-    @LazyInjected(\ToolingContainer.logger) private var logger
-
-    @ObservationIgnored
-    @LazyInjected(\UseCasesContainer.getSharedPreferences) private var getSharedPreferences
+    private let aliasRepository = dependency(\RepositoryContainer.aliasRepository)
+    private let userManager = dependency(\ServiceContainer.userManager)
+    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let getSharedPreferences = dependency(\UseCasesContainer.getSharedPreferences)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
 
     @ObservationIgnored
     private var aliasDiscovery: AliasDiscovery {
         preferencesManager.sharedPreferences.unwrapped().aliasDiscovery
     }
-
-    @ObservationIgnored
-    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) private var router
 
     @ObservationIgnored
     private let itemIds: IDs

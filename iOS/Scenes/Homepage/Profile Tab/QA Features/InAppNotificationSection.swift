@@ -249,21 +249,10 @@ private final class InAppNotificationViewModel {
     var addedMockedNotification = false
     var removedMockedNotification = false
 
-    @ObservationIgnored
-    @LazyInjected(\ServiceContainer.inAppNotificationManager)
-    private var inAppNotificationManager
-
-    @ObservationIgnored
-    @LazyInjected(\RepositoryContainer.localNotificationTimeDatasource)
-    private var localNotificationTimeDatasource
-
-    @ObservationIgnored
-    @LazyInjected(\ServiceContainer.userManager)
-    private var userManager
-
-    @ObservationIgnored
-    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter)
-    private var router
+    private let inAppNotificationManager = dependency(\ServiceContainer.inAppNotificationManager)
+    private let localNotificationTimeDatasource = dependency(\RepositoryContainer.localNotificationTimeDatasource)
+    private let userManager = dependency(\ServiceContainer.userManager)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
 
     var lastThreshold: Double?
     var notificationKey = "pass_user_internal_notification"
