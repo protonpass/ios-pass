@@ -356,7 +356,7 @@ private struct CommonViewSetUpModifier: ViewModifier {
             .padding(.horizontal, DesignConstant.sectionPadding)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .scrollViewEmbeded(maxWidth: .infinity)
-            .background(PassColor.backgroundNorm)
+            .fullSheetBackground()
             .toolbarBackground(PassColor.backgroundNorm,
                                for: .navigationBar)
 
