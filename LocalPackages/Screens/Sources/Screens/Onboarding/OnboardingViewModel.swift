@@ -61,7 +61,7 @@ public nonisolated struct KnownService: Sendable, Decodable, Equatable {
     }
 }
 
-public typealias OnboardingHandling = OnboardingDatasource & OnboardingDelegate
+// public typealias OnboardingHandling = OnboardingDatasource & OnboardingDelegate
 
 public nonisolated struct PassPlans: Sendable, Equatable {
     let foldersEnabled: Bool
@@ -83,27 +83,6 @@ public nonisolated struct PassPlans: Sendable, Equatable {
     public var onePlanAvailable: Bool {
         (plus == nil && unlimited != nil) || (plus != nil && unlimited == nil)
     }
-}
-
-public protocol OnboardingDatasource: Sendable, AnyObject {
-    func getCurrentPlan() async throws -> Entities.Plan
-    func getPassPlans() async throws -> PassPlans
-    func getBiometryType() async throws -> LABiometryType?
-    func isAutoFillEnabled() async -> Bool
-    // periphery:ignore
-    func getFirstLoginSuggestion() async -> OnboardFirstLoginSuggestion
-}
-
-public protocol OnboardingDelegate: Sendable, AnyObject {
-    func purchase(_ plan: ComposedPlan) async throws
-    func enableBiometric() async throws
-    func enableAutoFill() async -> Bool
-    func openTutorialVideo() async
-    // periphery:ignore:parameters payload
-    func createFirstLogin(payload: OnboardFirstLoginPayload) async throws
-    func markAsOnboarded() async
-    func add(event: TelemetryEventType) async
-    func handle(error: any Error) async
 }
 
 nonisolated enum OnboardStep: Equatable {
@@ -323,7 +302,7 @@ extension OnboardingViewModel {
         defer { isSaving = false }
         isSaving = true
         // swiftlint:disable:next todo
-        // TODO: implement login item creation
+        // TODO: implement login item creation when needed
         currentStep = .fetched(.firstLoginCreated(payload))
     }
 
@@ -346,7 +325,7 @@ extension OnboardingViewModel {
     }
 }
 
-extension OnboardingViewModel: OnboardingDelegate {
+extension OnboardingViewModel {
     func purchase(_ plan: ComposedPlan) async throws {
         guard let manager = try await getPlansManager() else { return }
 
@@ -395,7 +374,7 @@ extension OnboardingViewModel: OnboardingDelegate {
     }
 }
 
-extension OnboardingViewModel: OnboardingDatasource {
+extension OnboardingViewModel {
     func getCurrentPlan() async throws -> Entities.Plan {
         try await accessRepository.getPlan(userId: nil)
     }
