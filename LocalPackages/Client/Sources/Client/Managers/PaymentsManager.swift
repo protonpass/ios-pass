@@ -78,44 +78,6 @@ public extension PaymentsManager {
     /// Presents the plans UI. Returns `true` when a transaction completes,
     /// `false` on user cancellation or an SDK-reported payment failure.
     /// Cancelling the calling task tears down the observation.
-//    func manageSubscription(isUpgrading: Bool) async throws -> Bool {
-//        guard !Bundle.main.isBetaBuild else { return false }
-//
-//        // Actor reentrancy guard: the `for await` below is a suspension point,
-//        // so a second call (double-tap) could interleave on the main actor.
-//        guard !isPresentingPayments else { return false }
-//        isPresentingPayments = true
-//        defer { isPresentingPayments = false }
-//
-//        guard let userId = userManager.activeUserId else {
-//            throw PassError.payments(.couldNotCreatePaymentStack)
-//        }
-//        let apiService = try apiManager.getApiService(userId: userId)
-//
-//        try paymentsV2.showAvailablePlans(presentationMode: .modal,
-//                                          hideCurrentPlan: isUpgrading,
-//                                          apiService: apiService)
-//
-//        for await progress in paymentsV2.transactionProgress.dropFirst().values {
-//            switch progress {
-//            case .transactionCompleted:
-//                paymentsV2.dismissPayments()
-//                return true
-//
-//            case .mismatchTransactionIDs,
-//                 .transactionCancelledByUser,
-//                 .transactionProcessError,
-//                 .unableToGetUserTransactionUUID,
-//                 .unknownError:
-//                return false
-//
-//            default:
-//                logger.debug("Unhandled transaction progress: \(progress)")
-//            }
-//        }
-//        return false // publisher finished without a terminal event
-//    }
-
     func manageSubscription(isUpgrading: Bool) async throws -> Bool {
         guard !Bundle.main.isBetaBuild else { return false }
 
