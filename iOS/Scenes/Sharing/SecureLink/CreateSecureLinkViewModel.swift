@@ -91,8 +91,8 @@ final class CreateSecureLinkViewModel: ObservableObject {
     private var state = PassthroughSubject<CreateSecureLinkViewModelState, Never>()
     private var cancellables = Set<AnyCancellable>()
 
-    let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
-    let createSecureLink = resolve(\UseCasesContainer.createSecureLink)
+    let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    let createSecureLink = dependency(\UseCasesContainer.createSecureLink)
 
     let itemContent: ItemContent
     private let share: Share

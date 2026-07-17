@@ -43,8 +43,8 @@ final class DetailHistoryViewModel: ObservableObject {
     @Published var urlToSave: URL?
     @Published var urlToShare: URL?
 
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
-    private let itemRepository = resolve(\RepositoryContainer.itemRepository)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let itemRepository = dependency(\RepositoryContainer.itemRepository)
     @LazyInjected(\RepositoryContainer.fileAttachmentRepository) private var fileAttachmentRepository
     @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\ToolingContainer.logger) private var logger
@@ -55,7 +55,7 @@ final class DetailHistoryViewModel: ObservableObject {
 
     private var cancellables = Set<AnyCancellable>()
 
-    let totpManager = resolve(\ServiceContainer.totpManager)
+    let totpManager = dependency(\ServiceContainer.totpManager)
     let currentRevision: ItemContent
     let pastRevision: ItemContent
     let files: [ItemFile]

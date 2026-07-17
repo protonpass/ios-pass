@@ -64,7 +64,7 @@ private final class CredentialsViewModel: ObservableObject {
     /// Credentials grouped by username
     @Published private(set) var groupedCreds: [String: [Credentials]] = [:]
 
-    private let authManager = resolve(\ToolingContainer.authManager)
+    private let authManager = dependency(\ToolingContainer.authManager)
 
     init() {
         let credentials = (authManager as? AuthManager)?.getAllCredentialsOfAllModules() ?? []

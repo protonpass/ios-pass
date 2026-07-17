@@ -116,15 +116,15 @@ class BaseCreateEditItemViewModel: ObservableObject {
     private lazy var renameAttachmentDelegate = RenameAttachmentDelegate()
 
     let mode: ItemMode
-    let itemRepository = resolve(\RepositoryContainer.itemRepository)
+    let itemRepository = dependency(\RepositoryContainer.itemRepository)
     let upgradeChecker: any UpgradeCheckerProtocol
-    let logger = resolve(\ToolingContainer.logger)
-    let userManager = resolve(\ServiceContainer.userManager)
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
-    private let addTelemetryEvent = resolve(\UseCasesContainer.addTelemetryEvent)
-    private let getUserPreferences = resolve(\UseCasesContainer.getUserPreferences)
-    private let updateUserPreferences = resolve(\UseCasesContainer.updateUserPreferences)
-    private let appContentManager = resolve(\ServiceContainer.appContentManager)
+    let logger = dependency(\ToolingContainer.logger)
+    let userManager = dependency(\ServiceContainer.userManager)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let addTelemetryEvent = dependency(\UseCasesContainer.addTelemetryEvent)
+    private let getUserPreferences = dependency(\UseCasesContainer.getUserPreferences)
+    private let updateUserPreferences = dependency(\UseCasesContainer.updateUserPreferences)
+    private let appContentManager = dependency(\ServiceContainer.appContentManager)
     @LazyInjected(\ToolingContainer.preferencesManager) var preferencesManager
     @LazyInjected(\RepositoryContainer.fileAttachmentRepository) private var fileRepository
     @LazyInjected(\UseCasesContainer.generateDatedFileName) private var generateDatedFileName

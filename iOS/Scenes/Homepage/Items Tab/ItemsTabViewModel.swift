@@ -63,29 +63,29 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published var showSharedItemsAlert = false
     @Published private(set) var aliasesAllowed = true
 
-    let currentSelectedItems = resolve(\DataContainer.currentSelectedItems)
+    let currentSelectedItems = dependency(\DataContainer.currentSelectedItems)
     @LazyInjected(\ServiceContainer.appContentManager) var appContentManager
 
-    private let itemRepository = resolve(\RepositoryContainer.itemRepository)
-    private let accessRepository = resolve(\RepositoryContainer.accessRepository)
-    private let logger = resolve(\ToolingContainer.logger)
-    private let loginMethod = resolve(\DataContainer.loginMethod)
-    private let getPendingUserInvitations = resolve(\UseCasesContainer.getPendingUserInvitations)
-    private let doTrashSelectedItems = resolve(\UseCasesContainer.trashSelectedItems)
-    private let doRestoreSelectedItems = resolve(\UseCasesContainer.restoreSelectedItems)
-    private let doPermanentlyDeleteSelectedItems = resolve(\UseCasesContainer.permanentlyDeleteSelectedItems)
-    private let getAllPinnedItems = resolve(\UseCasesContainer.getAllPinnedItems)
-    private let symmetricKeyProvider = resolve(\DataContainer.symmetricKeyProvider)
-    private let canEditItem = resolve(\UseCasesContainer.canEditItem)
-    private let shouldDisplayUpgradeAppBanner = resolve(\UseCasesContainer.shouldDisplayUpgradeAppBanner)
-    private let pinItems = resolve(\UseCasesContainer.pinItems)
-    private let unpinItems = resolve(\UseCasesContainer.unpinItems)
+    private let itemRepository = dependency(\RepositoryContainer.itemRepository)
+    private let accessRepository = dependency(\RepositoryContainer.accessRepository)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let loginMethod = dependency(\DataContainer.loginMethod)
+    private let getPendingUserInvitations = dependency(\UseCasesContainer.getPendingUserInvitations)
+    private let doTrashSelectedItems = dependency(\UseCasesContainer.trashSelectedItems)
+    private let doRestoreSelectedItems = dependency(\UseCasesContainer.restoreSelectedItems)
+    private let doPermanentlyDeleteSelectedItems = dependency(\UseCasesContainer.permanentlyDeleteSelectedItems)
+    private let getAllPinnedItems = dependency(\UseCasesContainer.getAllPinnedItems)
+    private let symmetricKeyProvider = dependency(\DataContainer.symmetricKeyProvider)
+    private let canEditItem = dependency(\UseCasesContainer.canEditItem)
+    private let shouldDisplayUpgradeAppBanner = dependency(\UseCasesContainer.shouldDisplayUpgradeAppBanner)
+    private let pinItems = dependency(\UseCasesContainer.pinItems)
+    private let unpinItems = dependency(\UseCasesContainer.unpinItems)
     @LazyInjected(\ServiceContainer.inAppNotificationManager) var inAppNotificationManager
 
     @LazyInjected(\UseCasesContainer.getOrganizationSettings)
     private var getOrganizationSettings
 
-    let itemContextMenuHandler = resolve(\UIComponentsContainer.itemContextMenuHandler)
+    let itemContextMenuHandler = dependency(\UIComponentsContainer.itemContextMenuHandler)
     @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\RepositoryContainer.organizationRepository)
     private var organizationRepository
@@ -93,8 +93,8 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @LazyInjected(\UseCasesContainer.checkVaultCreationAllowance)
     private var checkVaultCreationAllowance
 
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
-    private let itemTypeSelection = resolve(\DataContainer.itemTypeSelection)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let itemTypeSelection = dependency(\DataContainer.itemTypeSelection)
 
     weak var delegate: (any ItemsTabViewModelDelegate)?
     private var sortTask: Task<Void, Never>?
@@ -118,7 +118,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     /// `PullToRefreshable` conformance
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
-    let syncEventLoop = resolve(\ServiceContainer.syncEventLoop)
+    let syncEventLoop = dependency(\ServiceContainer.syncEventLoop)
 
     init() {
         setUp()

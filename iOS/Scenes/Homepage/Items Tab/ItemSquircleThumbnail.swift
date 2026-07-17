@@ -63,9 +63,9 @@ enum ItemSquircleThumbnailSize {
 struct ItemSquircleThumbnail: View {
     @State private var image: UIImage?
 
-    private let repository = resolve(\RepositoryContainer.favIconRepository)
-    private let preferencesManager = resolve(\ToolingContainer.preferencesManager)
-    private let cachedFavIconsManager = resolve(\ServiceContainer.cachedFavIconsManager)
+    private let repository = dependency(\RepositoryContainer.favIconRepository)
+    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
+    private let cachedFavIconsManager = dependency(\ServiceContainer.cachedFavIconsManager)
     private let data: ItemThumbnailData
     private let pinned: Bool
     private let isEnabled: Bool

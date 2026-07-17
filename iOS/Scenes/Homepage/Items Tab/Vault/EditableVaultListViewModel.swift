@@ -86,15 +86,15 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     @Published var folderAction: FolderAction?
     @Published var folderName: String = ""
 
-    let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
+    let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
 
-    private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
-    private let getUserShareStatus = resolve(\UseCasesContainer.getUserShareStatus)
-    private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
-    private let leaveShare = resolve(\UseCasesContainer.leaveShare)
-    private let syncEventLoop = resolve(\ServiceContainer.syncEventLoop)
-    private let logger = resolve(\ToolingContainer.logger)
-    private let appContentManager = resolve(\ServiceContainer.appContentManager)
+    private let setShareInviteVault = dependency(\UseCasesContainer.setShareInviteVault)
+    private let getUserShareStatus = dependency(\UseCasesContainer.getUserShareStatus)
+    private let canUserPerformActionOnVault = dependency(\UseCasesContainer.canUserPerformActionOnVault)
+    private let leaveShare = dependency(\UseCasesContainer.leaveShare)
+    private let syncEventLoop = dependency(\ServiceContainer.syncEventLoop)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let appContentManager = dependency(\ServiceContainer.appContentManager)
     @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\RepositoryContainer.accessRepository)
     private var accessRepository

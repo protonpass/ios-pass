@@ -39,16 +39,16 @@ final class PassMonitorViewModel: ObservableObject {
     @Published var showSentinelSheet = false
     @Published private(set) var latestBreachInfo: LatestBreachDomainInfo?
 
-    private let logger = resolve(\ToolingContainer.logger)
-    private let upgradeChecker = resolve(\ServiceContainer.upgradeChecker)
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
-    private let passMonitorRepository = resolve(\RepositoryContainer.passMonitorRepository)
-    private let monitorStateStream = resolve(\DataContainer.monitorStateStream)
-    private let toggleSentinel = resolve(\UseCasesContainer.toggleSentinel)
-    private let getSentinelStatus = resolve(\UseCasesContainer.getSentinelStatus)
-    private let accessRepository = resolve(\RepositoryContainer.accessRepository)
-    private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
-    let addTelemetryEvent = resolve(\UseCasesContainer.addTelemetryEvent)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let upgradeChecker = dependency(\ServiceContainer.upgradeChecker)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let passMonitorRepository = dependency(\RepositoryContainer.passMonitorRepository)
+    private let monitorStateStream = dependency(\DataContainer.monitorStateStream)
+    private let toggleSentinel = dependency(\UseCasesContainer.toggleSentinel)
+    private let getSentinelStatus = dependency(\UseCasesContainer.getSentinelStatus)
+    private let accessRepository = dependency(\RepositoryContainer.accessRepository)
+    private let refreshAccessAndMonitorState = dependency(\UseCasesContainer.refreshAccessAndMonitorState)
+    let addTelemetryEvent = dependency(\UseCasesContainer.addTelemetryEvent)
     @LazyInjected(\ServiceContainer.userManager) private var userManager
 
     private var refreshingTask: Task<Void, Never>?

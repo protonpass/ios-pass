@@ -29,7 +29,7 @@ struct FileAttachmentViewerSection: View {
     @State private var url: URL?
     @State private var dismissedFileAttachmentsBanner = false
 
-    private let preferencesManager = resolve(\ToolingContainer.preferencesManager)
+    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
 
     var body: some View {
         Section(content: {

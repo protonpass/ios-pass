@@ -95,14 +95,14 @@ class BaseItemDetailViewModel: ObservableObject {
     private(set) var customFields: [CustomField]
     let vault: VaultListUiModel?
     let shareContent: ShareContent?
-    let logger = resolve(\ToolingContainer.logger)
+    let logger = dependency(\ToolingContainer.logger)
 
-    private let appContentManager = resolve(\ServiceContainer.appContentManager)
-    private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
-    private let pinItems = resolve(\UseCasesContainer.pinItems)
-    private let unpinItems = resolve(\UseCasesContainer.unpinItems)
-    private let toggleItemMonitoring = resolve(\UseCasesContainer.toggleItemMonitoring)
-    private let addItemReadEvent = resolve(\UseCasesContainer.addItemReadEvent)
+    private let appContentManager = dependency(\ServiceContainer.appContentManager)
+    private let canUserPerformActionOnVault = dependency(\UseCasesContainer.canUserPerformActionOnVault)
+    private let pinItems = dependency(\UseCasesContainer.pinItems)
+    private let unpinItems = dependency(\UseCasesContainer.unpinItems)
+    private let toggleItemMonitoring = dependency(\UseCasesContainer.toggleItemMonitoring)
+    private let addItemReadEvent = dependency(\UseCasesContainer.addItemReadEvent)
     @LazyInjected(\RepositoryContainer.itemRepository) private(set) var itemRepository
     @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) private(set) var router
     @LazyInjected(\UIComponentsContainer.itemContextMenuHandler) var itemContextMenuHandler

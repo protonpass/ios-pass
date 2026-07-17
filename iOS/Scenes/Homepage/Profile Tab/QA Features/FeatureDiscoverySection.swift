@@ -43,7 +43,7 @@ private extension NewFeature {
 
 struct FeatureDiscoveryView: View {
     @State private var eligibleDiscoveries = Set<NewFeature>()
-    private let manager = resolve(\ServiceContainer.featureDiscoveryManager)
+    private let manager = dependency(\ServiceContainer.featureDiscoveryManager)
 
     var body: some View {
         Form {

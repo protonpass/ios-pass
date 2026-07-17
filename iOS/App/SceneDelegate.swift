@@ -27,7 +27,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     private lazy var appCoordinator = AppCoordinator(window: window ?? .init())
-    private let saveAllLogs = resolve(\UseCasesContainer.saveAllLogs)
+    private let saveAllLogs = dependency(\UseCasesContainer.saveAllLogs)
     @LazyInjected(\RouterContainer.deepLinkRoutingService) var deepLinkRoutingService
 
     func scene(_ scene: UIScene,

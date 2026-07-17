@@ -55,7 +55,7 @@ final class WelcomeCoordinator: DeinitPrintable {
     @LazyInjected(\UseCasesContainer.createLogsFile) private var createLogsFile
     @LazyInjected(\RepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
 
-    let getSharedPreferences = resolve(\UseCasesContainer.getSharedPreferences)
+    let getSharedPreferences = dependency(\UseCasesContainer.getSharedPreferences)
 
     init(apiService: any APIService, theme: Theme) {
         self.apiService = apiService

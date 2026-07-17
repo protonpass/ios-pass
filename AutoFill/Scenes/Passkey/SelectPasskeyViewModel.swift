@@ -30,9 +30,9 @@ final class SelectPasskeyViewModel: ObservableObject {
     private weak var context: ASCredentialProviderExtensionContext?
     let info: SelectPasskeySheetInformation
 
-    private let autoFillPasskey = resolve(\AutoFillUseCaseContainer.autoFillPasskey)
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
-    private let logger = resolve(\ToolingContainer.logger)
+    private let autoFillPasskey = dependency(\AutoFillUseCaseContainer.autoFillPasskey)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let logger = dependency(\ToolingContainer.logger)
 
     init(info: SelectPasskeySheetInformation,
          context: ASCredentialProviderExtensionContext) {

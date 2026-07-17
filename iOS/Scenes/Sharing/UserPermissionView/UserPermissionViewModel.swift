@@ -33,8 +33,8 @@ final class UserPermissionViewModel: ObservableObject {
     @Published private(set) var canContinue = false
     @Published private(set) var currentUserEmail: String?
 
-    private let setShareInviteRole = resolve(\UseCasesContainer.setShareInviteRole)
-    private let shareInviteService = resolve(\ServiceContainer.shareInviteService)
+    private let setShareInviteRole = dependency(\UseCasesContainer.setShareInviteRole)
+    private let shareInviteService = dependency(\ServiceContainer.shareInviteService)
     @LazyInjected(\ServiceContainer.userManager) private var userManager
 
     @LazyInjected(\UseCasesContainer.getFeatureFlagStatus)

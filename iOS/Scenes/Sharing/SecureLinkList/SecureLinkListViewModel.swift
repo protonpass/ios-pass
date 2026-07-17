@@ -42,12 +42,12 @@ final class SecureLinkListViewModel: ObservableObject {
     @Published private(set) var loading = false
     @Published var searchText = ""
 
-    private let itemRepository = resolve(\RepositoryContainer.itemRepository)
-    private let deleteSecureLink = resolve(\UseCasesContainer.deleteSecureLink)
-    private let deleteAllInactiveSecureLinks = resolve(\UseCasesContainer.deleteAllInactiveSecureLinks)
-    private let recreateSecureLink = resolve(\UseCasesContainer.recreateSecureLink)
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
-    private let secureLinkManager = resolve(\ServiceContainer.secureLinkManager)
+    private let itemRepository = dependency(\RepositoryContainer.itemRepository)
+    private let deleteSecureLink = dependency(\UseCasesContainer.deleteSecureLink)
+    private let deleteAllInactiveSecureLinks = dependency(\UseCasesContainer.deleteAllInactiveSecureLinks)
+    private let recreateSecureLink = dependency(\UseCasesContainer.recreateSecureLink)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let secureLinkManager = dependency(\ServiceContainer.secureLinkManager)
     private var links: [SecureLink]?
     private var items = [SecureLinkListUIModel]()
 

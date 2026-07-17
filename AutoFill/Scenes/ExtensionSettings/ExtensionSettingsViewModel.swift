@@ -29,15 +29,15 @@ final class ExtensionSettingsViewModel: ObservableObject {
     @Published private(set) var quickTypeBar: Bool
     @Published private(set) var automaticallyCopyTotpCode: Bool
     @Published private(set) var showAutomaticCopyTotpCodeExplication = false
-    private let logger = resolve(\ToolingContainer.logger)
-    private let notificationService = resolve(\ServiceContainer.notificationService)
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let notificationService = dependency(\ServiceContainer.notificationService)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
 
     // Use cases
-    private let indexAllLoginItems = resolve(\UseCasesContainer.indexAllLoginItems)
-    private let unindexAllLoginItems = resolve(\UseCasesContainer.unindexAllLoginItems)
-    private let getSharedPreferences = resolve(\UseCasesContainer.getSharedPreferences)
-    private let updateSharedPreferences = resolve(\UseCasesContainer.updateSharedPreferences)
+    private let indexAllLoginItems = dependency(\UseCasesContainer.indexAllLoginItems)
+    private let unindexAllLoginItems = dependency(\UseCasesContainer.unindexAllLoginItems)
+    private let getSharedPreferences = dependency(\UseCasesContainer.getSharedPreferences)
+    private let updateSharedPreferences = dependency(\UseCasesContainer.updateSharedPreferences)
 
     init() {
         let preferences = getSharedPreferences()

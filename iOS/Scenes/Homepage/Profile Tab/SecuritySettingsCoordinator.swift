@@ -29,13 +29,13 @@ import Screens
 
 @MainActor
 final class SecuritySettingsCoordinator {
-    private let logger = resolve(\ToolingContainer.logger)
-    private let authenticate = resolve(\UseCasesContainer.authenticateBiometrically)
-    private let enablingPolicy = resolve(\ToolingContainer.localAuthenticationEnablingPolicy)
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let authenticate = dependency(\UseCasesContainer.authenticateBiometrically)
+    private let enablingPolicy = dependency(\ToolingContainer.localAuthenticationEnablingPolicy)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
 
-    private let getSharedPreferences = resolve(\UseCasesContainer.getSharedPreferences)
-    private let updateSharedPreferences = resolve(\UseCasesContainer.updateSharedPreferences)
+    private let getSharedPreferences = dependency(\UseCasesContainer.getSharedPreferences)
+    private let updateSharedPreferences = dependency(\UseCasesContainer.updateSharedPreferences)
 
     weak var delegate: (any ChildCoordinatorDelegate)?
 

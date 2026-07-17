@@ -51,11 +51,11 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
     let showSecurityIssues: Bool
 
-    private let getPasswordStrength = resolve(\UseCasesContainer.getPasswordStrength)
-    private let getLoginSecurityIssues = resolve(\UseCasesContainer.getLoginSecurityIssues)
-    private let passMonitorRepository = resolve(\RepositoryContainer.passMonitorRepository)
+    private let getPasswordStrength = dependency(\UseCasesContainer.getPasswordStrength)
+    private let getLoginSecurityIssues = dependency(\UseCasesContainer.getLoginSecurityIssues)
+    private let passMonitorRepository = dependency(\RepositoryContainer.passMonitorRepository)
 
-    let totpManager = resolve(\ServiceContainer.totpManager)
+    let totpManager = dependency(\ServiceContainer.totpManager)
 
     private var fetchSimilarPasswordItemsTask: Task<Void, Never>?
 

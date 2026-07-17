@@ -43,7 +43,7 @@ enum LocalAuthenticationSuccessMode {
 }
 
 struct LocalAuthenticationModifier: ViewModifier {
-    private let preferencesManager = resolve(\ToolingContainer.preferencesManager)
+    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
 
     @State private var method: LocalAuthenticationMethod
     @State private var authenticated: Bool

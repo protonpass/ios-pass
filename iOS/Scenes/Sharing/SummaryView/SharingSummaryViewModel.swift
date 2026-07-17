@@ -35,10 +35,10 @@ final class SharingSummaryViewModel: ObservableObject {
     @Published private(set) var currentUserEmail: String?
     @Published var showContactSupportAlert = false
 
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
-    private let getShareInviteInfos = resolve(\UseCasesContainer.getCurrentShareInviteInformations)
-    private let sendShareInvite = resolve(\UseCasesContainer.sendShareInvite)
-    private let accessRepository = resolve(\RepositoryContainer.accessRepository)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let getShareInviteInfos = dependency(\UseCasesContainer.getCurrentShareInviteInformations)
+    private let sendShareInvite = dependency(\UseCasesContainer.sendShareInvite)
+    private let accessRepository = dependency(\RepositoryContainer.accessRepository)
 
     @LazyInjected(\UseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus

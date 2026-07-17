@@ -28,7 +28,7 @@ typealias LockedCredentialResult = Result<(any ASAuthorizationCredential, ItemCo
 @MainActor
 final class LockedCredentialViewModel: ObservableObject {
     private let request: AutoFillRequest
-    private let logger = resolve(\ToolingContainer.logger)
+    private let logger = dependency(\ToolingContainer.logger)
 
     @LazyInjected(\AutoFillUseCaseContainer.generateAuthorizationCredential)
     private var generateAuthorizationCredential

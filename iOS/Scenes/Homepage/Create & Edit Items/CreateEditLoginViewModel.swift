@@ -68,8 +68,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     /// Proton account email address
     private(set) var emailAddress: String = ""
 
-    private let aliasRepository = resolve(\RepositoryContainer.aliasRepository)
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let aliasRepository = dependency(\RepositoryContainer.aliasRepository)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
 
     private var aliasOptions: AliasOptions?
     @Published private var aliasCreationLiteInfo: AliasCreationLiteInfo?
@@ -77,12 +77,12 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         aliasCreationLiteInfo != nil
     }
 
-    private let sanitizeTotpUriForEditing = resolve(\UseCasesContainer.sanitizeTotpUriForEditing)
-    private let sanitizeTotpUriForSaving = resolve(\UseCasesContainer.sanitizeTotpUriForSaving)
-    private let getPasswordStrength = resolve(\UseCasesContainer.getPasswordStrength)
-    private let createPasskey = resolve(\UseCasesContainer.createPasskey)
-    private let validateEmail = resolve(\UseCasesContainer.validateEmail)
-    private let getSharedPreferences = resolve(\UseCasesContainer.getSharedPreferences)
+    private let sanitizeTotpUriForEditing = dependency(\UseCasesContainer.sanitizeTotpUriForEditing)
+    private let sanitizeTotpUriForSaving = dependency(\UseCasesContainer.sanitizeTotpUriForSaving)
+    private let getPasswordStrength = dependency(\UseCasesContainer.getPasswordStrength)
+    private let createPasskey = dependency(\UseCasesContainer.createPasskey)
+    private let validateEmail = dependency(\UseCasesContainer.validateEmail)
+    private let getSharedPreferences = dependency(\UseCasesContainer.getSharedPreferences)
     @LazyInjected(\UseCasesContainer.getOrganizationSettings)
     private var getOrganizationSettings
 

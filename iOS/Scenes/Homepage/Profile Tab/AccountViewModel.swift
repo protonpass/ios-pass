@@ -43,16 +43,16 @@ protocol AccountViewModelDelegate: AnyObject {
 final class AccountViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private let accessRepository = resolve(\RepositoryContainer.accessRepository)
-    private let accountRepository = resolve(\RepositoryContainer.accountRepository)
-    private let featureFlagsRepository = resolve(\RepositoryContainer.featureFlagsRepository)
-    private let userManager = resolve(\ServiceContainer.userManager)
-    private let logger = resolve(\ToolingContainer.logger)
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
-    private let paymentsManager = resolve(\ServiceContainer.paymentManager) // To remove after Dynaplans
-    private let userSettingsRepository = resolve(\RepositoryContainer.userSettingsRepository)
-    private let preferencesManager = resolve(\ToolingContainer.preferencesManager)
-    private let doDisableExtraPassword = resolve(\UseCasesContainer.disableExtraPassword)
+    private let accessRepository = dependency(\RepositoryContainer.accessRepository)
+    private let accountRepository = dependency(\RepositoryContainer.accountRepository)
+    private let featureFlagsRepository = dependency(\RepositoryContainer.featureFlagsRepository)
+    private let userManager = dependency(\ServiceContainer.userManager)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let paymentsManager = dependency(\ServiceContainer.paymentManager) // To remove after Dynaplans
+    private let userSettingsRepository = dependency(\RepositoryContainer.userSettingsRepository)
+    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
+    private let doDisableExtraPassword = dependency(\UseCasesContainer.disableExtraPassword)
 
     let isShownAsSheet: Bool
     @Published private(set) var shouldShowSecurityKeys = false

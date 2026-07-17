@@ -48,30 +48,30 @@ struct StorageUiModel {
 final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private let credentialManager = resolve(\ServiceContainer.credentialManager)
-    private let logger = resolve(\ToolingContainer.logger)
-    private let preferencesManager = resolve(\ToolingContainer.preferencesManager)
-    private let accessRepository = resolve(\RepositoryContainer.accessRepository)
-    private let notificationService = resolve(\ServiceContainer.notificationService)
+    private let credentialManager = dependency(\ServiceContainer.credentialManager)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
+    private let accessRepository = dependency(\RepositoryContainer.accessRepository)
+    private let notificationService = dependency(\ServiceContainer.notificationService)
     private let securitySettingsCoordinator: SecuritySettingsCoordinator
 
-    private let policy = resolve(\ToolingContainer.localAuthenticationEnablingPolicy)
-    private let getAuthMethods = resolve(\UseCasesContainer.getLocalAuthenticationMethods)
-    private let checkBiometryType = resolve(\UseCasesContainer.checkBiometryType)
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
-    private let itemTypeSelection = resolve(\DataContainer.itemTypeSelection)
+    private let policy = dependency(\ToolingContainer.localAuthenticationEnablingPolicy)
+    private let getAuthMethods = dependency(\UseCasesContainer.getLocalAuthenticationMethods)
+    private let checkBiometryType = dependency(\UseCasesContainer.checkBiometryType)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let itemTypeSelection = dependency(\DataContainer.itemTypeSelection)
 
     // Use cases
-    private let indexAllLoginItems = resolve(\UseCasesContainer.indexAllLoginItems)
-    private let unindexAllLoginItems = resolve(\UseCasesContainer.unindexAllLoginItems)
-    private let enableAutoFill = resolve(\UseCasesContainer.enableAutoFill)
-    private let getSharedPreferences = resolve(\UseCasesContainer.getSharedPreferences)
-    private let updateSharedPreferences = resolve(\UseCasesContainer.updateSharedPreferences)
-    private let secureLinkManager = resolve(\ServiceContainer.secureLinkManager)
-    private let getFeatureFlagStatus = resolve(\UseCasesContainer.getFeatureFlagStatus)
+    private let indexAllLoginItems = dependency(\UseCasesContainer.indexAllLoginItems)
+    private let unindexAllLoginItems = dependency(\UseCasesContainer.unindexAllLoginItems)
+    private let enableAutoFill = dependency(\UseCasesContainer.enableAutoFill)
+    private let getSharedPreferences = dependency(\UseCasesContainer.getSharedPreferences)
+    private let updateSharedPreferences = dependency(\UseCasesContainer.updateSharedPreferences)
+    private let secureLinkManager = dependency(\ServiceContainer.secureLinkManager)
+    private let getFeatureFlagStatus = dependency(\UseCasesContainer.getFeatureFlagStatus)
 
     /// Repositories
-    private let userSettingsRepository = resolve(\RepositoryContainer.userSettingsRepository)
+    private let userSettingsRepository = dependency(\RepositoryContainer.userSettingsRepository)
 
     @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\UseCasesContainer.switchUser) private var switchUser
