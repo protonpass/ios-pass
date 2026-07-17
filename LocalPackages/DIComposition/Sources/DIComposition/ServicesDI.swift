@@ -59,11 +59,6 @@ public extension ServiceContainer {
         self { SecureLinkManager(dataSource: RepositoryContainer.shared.remoteSecureLinkDatasource(),
                                  userManager: ServiceContainer.shared.userManager()) }
     }
-//
-//    var onboardingHandler: Factory<any OnboardingHandling> {
-//        self { OnboardingHandler(logManager: ToolingContainer.shared.logManager(),
-//                                 userDefaults: kSharedUserDefaults) }
-//    }
 }
 
 import Client
@@ -165,12 +160,8 @@ public extension ServiceContainer {
         }
     }
 
-    ///    var itemContextMenuHandler: Factory<ItemContextMenuHandler> {
-    ///        self { ItemContextMenuHandler() }
-    ///    }
-    ///
-    ///    // NOTE: when activating, add `import Stores` and the `Stores` product
-    ///    // (from the UseCases package) to the DIComposition target dependencies.
+    /// NOTE: when activating, add `import Stores` and the `Stores` product
+    /// (from the UseCases package) to the DIComposition target dependencies.
     @MainActor
     var appContentManager: Factory<AppContentManager> {
         self { AppContentManager(itemRepository: self.itemRepository,

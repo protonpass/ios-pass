@@ -157,7 +157,7 @@ final class OnboardingViewModel: ObservableObject {
     @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter)
     private var router
 
-    @LazyInjected(\ UseCasesContainer.addTelemetryEvent)
+    @LazyInjected(\UseCasesContainer.addTelemetryEvent)
     private var addTelemetryEvent
 
     @LazyInjected(\ToolingContainer.apiManager)
@@ -322,6 +322,8 @@ extension OnboardingViewModel {
     func createFirstLogin(payload: OnboardFirstLoginPayload) {
         defer { isSaving = false }
         isSaving = true
+        // swiftlint:disable:next todo
+        // TODO: implement login item creation
         currentStep = .fetched(.firstLoginCreated(payload))
     }
 
