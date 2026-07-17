@@ -59,7 +59,7 @@ private extension CreateSecureLinkView {
                 .padding(.horizontal, DesignConstant.sectionPadding)
                 .padding(.bottom, DesignConstant.sectionPadding)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(PassColor.backgroundNorm)
+                .fullSheetBackground()
         }
     }
 }
