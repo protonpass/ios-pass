@@ -22,6 +22,7 @@ import DesignSystem
 import Entities
 import ProtonCoreFeatureFlags
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 // swiftlint:disable enum_case_associated_values_count function_parameter_count

@@ -82,7 +82,7 @@ final class ShareCoordinator {
     @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
     @LazyInjected(\UseCasesContainer.logOutAllAccounts) private var logOutAllAccounts
     @LazyInjected(\ServiceContainer.upgradeChecker) private var upgradeChecker
-    @LazyInjected(\UIKitUIComponentsContainer.bannerManager) private var bannerManager
+    @LazyInjected(\UIComponentsContainer.bannerManager) private var bannerManager
     @LazyInjected(\UseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\ToolingContainer.authManager) private var authManager
@@ -109,7 +109,7 @@ final class ShareCoordinator {
     }
 
     init(rootViewController: UIViewController) {
-        UIKitUIComponentsContainer.shared.register(rootViewController: rootViewController)
+        UIComponentsContainer.shared.register(rootViewController: rootViewController)
         self.rootViewController = rootViewController
         AppearanceSettings.apply()
         setUpSentry()

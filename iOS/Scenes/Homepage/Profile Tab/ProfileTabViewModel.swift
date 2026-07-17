@@ -64,7 +64,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     // Use cases
     private let indexAllLoginItems = resolve(\UseCasesContainer.indexAllLoginItems)
     private let unindexAllLoginItems = resolve(\UseCasesContainer.unindexAllLoginItems)
-    private let enableAutoFill = resolve(\OldUseCasesContainer.enableAutoFill)
+    private let enableAutoFill = resolve(\UseCasesContainer.enableAutoFill)
     private let getSharedPreferences = resolve(\UseCasesContainer.getSharedPreferences)
     private let updateSharedPreferences = resolve(\UseCasesContainer.updateSharedPreferences)
     private let secureLinkManager = resolve(\ServiceContainer.secureLinkManager)
@@ -230,7 +230,11 @@ extension ProfileTabViewModel {
     func handleEnableAutoFillAction() {
         Task { [weak self] in
             guard let self else { return }
-            if await enableAutoFill() {
+            let outcome = await enableAutoFill()
+            if outcome == .instructionsRequired {
+                router.present(for: .autoFillInstructions)
+            }
+            if outcome.handled {
                 autoFillEnabled = await credentialManager.isAutoFillEnabled
             }
         }

@@ -1,7 +1,7 @@
 //
 // ItemContextMenuHandler.swift
-// Proton Pass - Created on 19/03/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Proton Pass - Created on 17/07/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -25,11 +25,10 @@ import Entities
 import FactoryKit
 import Macro
 @preconcurrency import ProtonCoreUIFoundations
-import Screens
 
 @MainActor
-final class ItemContextMenuHandler {
-    @LazyInjected(\UIKitUIComponentsContainer.bannerManager) private var bannerManager
+public final class ItemContextMenuHandler {
+    @LazyInjected(\UIComponentsContainer.bannerManager) private var bannerManager
     @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\RepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\ToolingContainer.logger) private var logger
@@ -43,7 +42,7 @@ final class ItemContextMenuHandler {
 
 // MARK: - Common operations
 
-extension ItemContextMenuHandler {
+public extension ItemContextMenuHandler {
     func edit(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
@@ -134,7 +133,7 @@ extension ItemContextMenuHandler {
 
 // MARK: - Copy functions
 
-extension ItemContextMenuHandler {
+public extension ItemContextMenuHandler {
     func copyEmail(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }

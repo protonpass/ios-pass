@@ -89,7 +89,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
     @LazyInjected(\UseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
 
-    let itemContextMenuHandler = resolve(\OldSharedServiceContainer.itemContextMenuHandler)
+    let itemContextMenuHandler = resolve(\UIComponentsContainer.itemContextMenuHandler)
 
     private var lastSearchQuery = ""
     private var searchTask: Task<Void, Never>?

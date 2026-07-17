@@ -68,12 +68,12 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let symmetricKeyProvider = resolve(\DataContainer.symmetricKeyProvider)
 
     // App cover/local authentication
-    @LazyInjected(\UIKitUIComponentsContainer.window) var window
+    @LazyInjected(\UIComponentsContainer.window) var window
     weak var appCoverView: UIView?
 
     // Lazily initialised properties
     @LazyInjected(\ServiceContainer.syncEventLoop) var eventLoop
-    @LazyInjected(\UIKitUIComponentsContainer.bannerManager) var bannerManager
+    @LazyInjected(\UIComponentsContainer.bannerManager) var bannerManager
     @LazyInjected(\ToolingContainer.apiManager) var apiManager
     @LazyInjected(\ToolingContainer.authManager) var authManager
     @LazyInjected(\ServiceContainer.upgradeChecker) var upgradeChecker
@@ -85,7 +85,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\RepositoryContainer.aliasRepository) var aliasRepository
     @LazyInjected(\RepositoryContainer.passwordHistoryRepository)
     private var passwordHistoryRepository
-    @LazyInjected(\OldServiceContainer.onboardingHandler) private var onboardingHandler
     @LazyInjected(\ServiceContainer.featureDiscoveryManager)
     private var featureDiscoveryManager
 
@@ -134,7 +133,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     override init() {
         super.init()
-        UIKitUIComponentsContainer.shared.register(rootViewController: rootViewController)
+        UIComponentsContainer.shared.register(rootViewController: rootViewController)
         setUpRouting()
         finalizeInitialization()
         start()
@@ -1442,7 +1441,7 @@ private extension HomepageCoordinator {
 
     func presentOnboardView(forced: Bool, mode: OnboardingDisplayMode) {
         guard forced || !getAppPreferences().onboarded else { return }
-        let view = OnboardingView(handler: onboardingHandler, mode: mode)
+        let view = OnboardingView(mode: mode)
         let vc = UIHostingController(rootView: view)
         vc.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
         vc.isModalInPresentation = true

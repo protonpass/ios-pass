@@ -61,7 +61,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\AutoFillUseCaseContainer.completeAutoFill) private var completeAutoFill
     @LazyInjected(\AutoFillUseCaseContainer.completeTextAutoFill) private var completeTextAutoFill
     @LazyInjected(\AutoFillUseCaseContainer.completePasskeyRegistration) private var completePasskeyRegistration
-    @LazyInjected(\UIKitUIComponentsContainer.bannerManager) private var bannerManager
+    @LazyInjected(\UIComponentsContainer.bannerManager) private var bannerManager
     @LazyInjected(\ServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
     @LazyInjected(\UseCasesContainer.getSharedPreferences) private var getSharedPreferences
@@ -86,7 +86,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     private var mode: AutoFillMode?
 
     init(rootViewController: UIViewController, context: ASCredentialProviderExtensionContext) {
-        UIKitUIComponentsContainer.shared.register(rootViewController: rootViewController)
+        UIComponentsContainer.shared.register(rootViewController: rootViewController)
         self.rootViewController = rootViewController
         self.context = context
 

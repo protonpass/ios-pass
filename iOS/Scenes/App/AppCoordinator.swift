@@ -353,7 +353,7 @@ private extension AppCoordinator {
             if let userId = userManager.activeUserId {
                 do {
                     if try await logOutUser(userId: userId) {
-                        UIKitUIComponentsContainer.shared.reset()
+                        UIComponentsContainer.shared.reset()
                     }
                 } catch {
                     logger.error(error)

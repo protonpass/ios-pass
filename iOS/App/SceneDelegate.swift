@@ -37,7 +37,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let window = UIWindow(windowScene: windowScene)
             self.window = window
             window.makeKeyAndVisible()
-            UIKitUIComponentsContainer.shared.window.register { window }
+            UIComponentsContainer.shared.window.register { window }
         }
         AppearanceSettings.apply()
         Task { [weak self] in
