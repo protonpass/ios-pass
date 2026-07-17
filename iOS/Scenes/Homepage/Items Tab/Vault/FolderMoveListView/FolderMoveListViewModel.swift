@@ -31,17 +31,11 @@ import Stores
 @MainActor
 @Observable
 final class FolderMoveListViewModel {
-    @ObservationIgnored
-    @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
-    @ObservationIgnored
-    @LazyInjected(\ServiceContainer.userManager) private var userManager
-    @ObservationIgnored
-    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) private var router
-    @ObservationIgnored
-    @LazyInjected(\ToolingContainer.logger) private var logger
-
-    @ObservationIgnored
-    @LazyInjected(\RepositoryContainer.accessRepository) private var accessRepository
+    private let appContentManager = dependency(\ServiceContainer.appContentManager)
+    private let userManager = dependency(\ServiceContainer.userManager)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let accessRepository = dependency(\RepositoryContainer.accessRepository)
 
     private(set) var loading = false
     private(set) var moveCompleted = false

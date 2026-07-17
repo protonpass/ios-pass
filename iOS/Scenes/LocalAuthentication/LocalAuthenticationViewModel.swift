@@ -38,18 +38,13 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let delayed: Bool
-    @ObservationIgnored
     private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
-    @ObservationIgnored
     private let logger = dependency(\ToolingContainer.logger)
     private let onSuccess: () async throws -> Void
     private let onFailure: (String?) -> Void
     private var cancellables = Set<AnyCancellable>()
-    @ObservationIgnored
     private let authenticate = dependency(\UseCasesContainer.authenticateBiometrically)
-    @ObservationIgnored
     private let getSharedPreferences = dependency(\UseCasesContainer.getSharedPreferences)
-    @ObservationIgnored
     private let updateSharedPreferences = dependency(\UseCasesContainer.updateSharedPreferences)
     let mode: Mode
 

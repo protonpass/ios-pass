@@ -69,7 +69,6 @@ private final class AliasDiscoverySectionViewModel {
     private(set) var askedForCopyAliasAfterCreating = false
     private(set) var askedForCopyContactAfterCreating = false
 
-    @ObservationIgnored
     private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
 
     private var discovery: AliasDiscovery {
