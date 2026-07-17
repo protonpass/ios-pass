@@ -1,7 +1,7 @@
 //
 // UIApplication+Extensions.swift
-// Proton Pass - Created on 08/12/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// Proton Pass - Created on 17/07/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -21,7 +21,7 @@
 import UIKit
 
 @available(iOSApplicationExtension, unavailable)
-extension UIApplication {
+public extension UIApplication {
     func openPasswordSettings() {
         open(urlString: "App-prefs:PASSWORDS")
     }

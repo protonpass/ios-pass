@@ -1,7 +1,7 @@
 //
 // ItemTypeIdentifiable+Extensions.swift
-// Proton Pass - Created on 24/11/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Proton Pass - Created on 17/07/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //

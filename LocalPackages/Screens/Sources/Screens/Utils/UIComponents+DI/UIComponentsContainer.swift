@@ -1,5 +1,5 @@
 //
-// UIKitUIComponentsContainer.swift
+// UIComponentsContainer.swift
 // Proton Pass - Created on 16/07/2026.
 // Copyright (c) 2026 Proton Technologies AG
 //
@@ -22,8 +22,8 @@ import Client
 import FactoryKit
 import UIKit
 
-public final class UIKitUIComponentsContainer: SharedContainer, AutoRegistering {
-    public static let shared = UIKitUIComponentsContainer()
+public final class UIComponentsContainer: SharedContainer, AutoRegistering {
+    public static let shared = UIComponentsContainer()
     public let manager = ContainerManager()
 
     public func autoRegister() {
@@ -35,12 +35,12 @@ public final class UIKitUIComponentsContainer: SharedContainer, AutoRegistering 
     }
 
     public func reset() {
-        UIKitUIComponentsContainer.shared.bannerManager.reset()
-        UIKitUIComponentsContainer.shared.rootViewController.reset()
+        UIComponentsContainer.shared.bannerManager.reset()
+        UIComponentsContainer.shared.rootViewController.reset()
     }
 }
 
-public extension UIKitUIComponentsContainer {
+public extension UIComponentsContainer {
     var bannerManager: Factory<any BannerDisplayProtocol> {
         self { BannerManager(container: self.rootViewController()) }
     }
@@ -51,5 +51,10 @@ public extension UIKitUIComponentsContainer {
 
     var window: Factory<UIWindow?> {
         self { nil }
+    }
+
+    @MainActor
+    var itemContextMenuHandler: Factory<ItemContextMenuHandler> {
+        self { ItemContextMenuHandler() }
     }
 }

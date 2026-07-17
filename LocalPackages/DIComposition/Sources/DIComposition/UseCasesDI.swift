@@ -441,10 +441,9 @@ public extension UseCasesContainer {
         self { GetRustLibraryVersion() }
     }
 
-//    var enableAutoFill: Factory<any EnableAutoFillUseCase> {
-//        self { EnableAutoFill(router: SharedRouterContainer.shared.mainUIKitSwiftUIRouter(),
-//                              credentialManager: ServiceContainer.shared.credentialManager()) }
-//    }
+    var enableAutoFill: Factory<any EnableAutoFillUseCase> {
+        self { EnableAutoFill(credentialManager: ServiceContainer.shared.credentialManager()) }
+    }
 
     var makeAccountSettingsUrl: Factory<any MakeAccountSettingsUrlUseCase> {
         self { MakeAccountSettingsUrl(doh: ToolingContainer.shared.doh()) }

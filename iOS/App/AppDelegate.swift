@@ -36,10 +36,10 @@ import UIKit
 
 @main
 final class AppDelegate: UIResponder, UIApplicationDelegate {
-    private let getRustLibraryVersion = resolve(\UseCasesContainer.getRustLibraryVersion)
-    private let setUpSentry = resolve(\UseCasesContainer.setUpSentry)
-    private let setCoreLoggerEnvironment = resolve(\UseCasesContainer.setCoreLoggerEnvironment)
-    private let logger = resolve(\ToolingContainer.logger)
+    private let getRustLibraryVersion = dependency(\UseCasesContainer.getRustLibraryVersion)
+    private let setUpSentry = dependency(\UseCasesContainer.setUpSentry)
+    private let setCoreLoggerEnvironment = dependency(\UseCasesContainer.setCoreLoggerEnvironment)
+    private let logger = dependency(\ToolingContainer.logger)
     private let userDefaults: UserDefaults = .standard
 //    @LazyInjected(\ServiceContainer
 //        .pushNotificationService) private var pushNotificationService: any PushNotificationServiceProtocol

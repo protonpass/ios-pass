@@ -18,10 +18,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
-
+import Client
+import Core
+import DIComposition
 import Entities
+import FactoryKit
 import Foundation
 import LocalAuthentication
+import Macro
+import ProtonCorePaymentsUIV2
 import ProtonCorePaymentsV2
 import StoreKit
 
@@ -125,29 +130,65 @@ final class OnboardingViewModel: ObservableObject {
     @Published var selectedPlan: PlanUiModel?
     private var availableBiometryType: LABiometryType?
 
-    private weak var datasource: (any OnboardingDatasource)?
-    private weak var delegate: (any OnboardingDelegate)?
+    @LazyInjected(\ToolingContainer.preferencesManager)
+    private var preferencesManager
+
+    @LazyInjected(\ServiceContainer.credentialManager)
+    private var credentialManager
+
+    @LazyInjected(\ServiceContainer.userManager)
+    private var userManager
+
+    @LazyInjected(\RepositoryContainer.accessRepository)
+    private var accessRepository
+
+    @LazyInjected(\UseCasesContainer.checkBiometryType)
+    private var checkBiometryType
+
+    @LazyInjected(\ToolingContainer.localAuthenticationEnablingPolicy)
+    private var localAuthenticationEnablingPolicy
+
+    @LazyInjected(\UseCasesContainer.enableAutoFill)
+    private var enableAutoFillUseCase
+
+    @LazyInjected(\UseCasesContainer.authenticateBiometrically)
+    private var authenticateBiometrically
+
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter)
+    private var router
+
+    @LazyInjected(\ UseCasesContainer.addTelemetryEvent)
+    private var addTelemetryEvent
+
+    @LazyInjected(\ToolingContainer.apiManager)
+    private var apiManager
+
+    @LazyInjected(\UseCasesContainer.getFeatureFlagStatus)
+    private var getFeatureFlagStatus
+
+    private let transactionsObserver: TransactionsObserverProviding
+    private var plansManager: ProtonPlansManager?
+    private let logger: Logger
+    private let userDefaults: UserDefaults
 
     let mode: OnboardingDisplayMode
 
-    init(handler: OnboardingHandling?,
-         mode: OnboardingDisplayMode) {
-        datasource = handler
-        delegate = handler
+    init(mode: OnboardingDisplayMode,
+         logManager: any LogManagerProtocol = ToolingContainer.shared.logManager(),
+         userDefaults: UserDefaults = kSharedUserDefaults,
+         transactionsObserver: TransactionsObserverProviding = TransactionsObserver.shared) {
         self.mode = mode
+        logger = .init(manager: logManager)
+        self.userDefaults = userDefaults
+        self.transactionsObserver = transactionsObserver
     }
 }
 
 extension OnboardingViewModel {
     func setUp() async {
         do {
-            guard let datasource else {
-                currentStep = .fetched(.autofill)
-                return
-            }
-
-            availableBiometryType = try await datasource.getBiometryType()
-            let plans = try await datasource.getPassPlans()
+            availableBiometryType = try getBiometryType()
+            let plans = try await getPassPlans()
 
             // When onboarding, we skip payment step when there's no plans.
             // When upselling (users hit by paywall)
@@ -171,7 +212,7 @@ extension OnboardingViewModel {
     /// `false` if no more steps so the onboarding process could be ended
     /// `isManual` means triggered by user (manually skip the step)
     func goNext(isManual: Bool = false) async -> Bool {
-        guard let delegate, let datasource, mode == .onboarding else {
+        guard mode == .onboarding else {
             shouldDismiss = true
             return false
         }
@@ -184,7 +225,7 @@ extension OnboardingViewModel {
         switch step {
         case .payment:
             if isManual {
-                await delegate.add(event: .onboardingUpsellSkipped)
+                add(event: .onboardingUpsellSkipped)
             }
             if let availableBiometryType, availableBiometryType != .none {
                 currentStep = .fetched(.biometric(availableBiometryType))
@@ -195,9 +236,9 @@ extension OnboardingViewModel {
 
         case .biometric:
             if isManual {
-                await delegate.add(event: .onboardingBiometricsSkipped)
+                add(event: .onboardingBiometricsSkipped)
             }
-            if await datasource.isAutoFillEnabled() {
+            if await isAutoFillEnabled() {
                 // swiftlint:disable:next fallthrough
                 fallthrough
             } else {
@@ -207,7 +248,7 @@ extension OnboardingViewModel {
 
         case .autofill:
             if isManual {
-                await delegate.add(event: .onboardingPassAsAutofillProviderSkipped)
+                add(event: .onboardingPassAsAutofillProviderSkipped)
             }
             // Reenable when supporting creating first login
             /*
@@ -234,8 +275,6 @@ extension OnboardingViewModel {
     }
 
     func performCta() async {
-        guard let delegate else { return }
-
         var shouldGoToNextStep = false
         do {
             switch currentStep.fetchedObject {
@@ -244,16 +283,16 @@ extension OnboardingViewModel {
                 shouldGoToNextStep = true
 
             case .biometric:
-                await delegate.add(event: .onboardingBiometricsEnabled)
-                try await delegate.enableBiometric()
+                add(event: .onboardingBiometricsEnabled)
+                try await enableBiometric()
                 shouldGoToNextStep = true
 
             case .autofill:
-                await delegate.add(event: .onboardingPassAsAutofillProviderEnabled)
-                shouldGoToNextStep = await delegate.enableAutoFill()
+                add(event: .onboardingPassAsAutofillProviderEnabled)
+                shouldGoToNextStep = await enableAutoFill()
 
             case .aliasExplanation:
-                await delegate.markAsOnboarded()
+                await markAsOnboarded()
                 finished = true
                 return
 
@@ -261,58 +300,150 @@ extension OnboardingViewModel {
                 shouldGoToNextStep = true
             }
         } catch {
-            await delegate.handle(error: error)
+            handle(error: error)
         }
 
         if shouldGoToNextStep, await !goNext() {
-            await delegate.markAsOnboarded()
+            await markAsOnboarded()
             finished = true
         }
     }
 
     func performSecondaryCta() {
-        Task { [weak self] in
-            guard let self, let delegate else { return }
-            if case .aliasExplanation = currentStep.fetchedObject {
-                await delegate.add(event: .onboardingAliasVideoOpened)
-                await delegate.openTutorialVideo()
-                finished = true
-            } else {
-                assertionFailure("Missing secondary action")
-            }
+        if case .aliasExplanation = currentStep.fetchedObject {
+            add(event: .onboardingAliasVideoOpened)
+            openTutorialVideo()
+            finished = true
+        } else {
+            assertionFailure("Missing secondary action")
         }
     }
 
     func createFirstLogin(payload: OnboardFirstLoginPayload) {
-        Task { [weak self] in
-            guard let self else { return }
-            defer { isSaving = false }
-            isSaving = true
-            do {
-                try await delegate?.createFirstLogin(payload: payload)
-                currentStep = .fetched(.firstLoginCreated(payload))
-            } catch {
-                await delegate?.handle(error: error)
-            }
-        }
+        defer { isSaving = false }
+        isSaving = true
+        currentStep = .fetched(.firstLoginCreated(payload))
     }
 
     func purchaseSelectedPlan() {
         guard let selectedPlan else { return }
         Task { [weak self] in
-            guard let self, let delegate, let datasource else { return }
+            guard let self else { return }
             defer { isPurchasing = false }
             isPurchasing = true
             do {
-                let plan = try await datasource.getCurrentPlan()
-                await delegate.add(event: .onboardingUpsellCtaClicked(planName: plan.internalName))
-                try await delegate.purchase(selectedPlan.plan)
-                await delegate.add(event: .onboardingUpsellSubscribed)
+                let plan = try await getCurrentPlan()
+                add(event: .onboardingUpsellCtaClicked(planName: plan.internalName))
+                try await purchase(selectedPlan.plan)
+                add(event: .onboardingUpsellSubscribed)
                 _ = await goNext()
             } catch {
-                await delegate.handle(error: error)
+                handle(error: error)
             }
         }
+    }
+}
+
+extension OnboardingViewModel: OnboardingDelegate {
+    func purchase(_ plan: ComposedPlan) async throws {
+        guard let manager = try await getPlansManager() else { return }
+
+        guard let product = plan.product as? Product else {
+            assertionFailure("Failed to parse product")
+            return
+        }
+        _ = try await manager.purchase(product)
+        try await accessRepository.refreshAccess(userId: nil)
+    }
+
+    func enableBiometric() async throws {
+        let authenticated = try await authenticateBiometrically(policy: localAuthenticationEnablingPolicy,
+                                                                reason: #localized("Please authenticate"))
+        if authenticated {
+            try await preferencesManager.updateSharedPreferences(\.localAuthenticationMethod,
+                                                                 value: .biometric)
+        }
+    }
+
+    func enableAutoFill() async -> Bool {
+        let outcome = await enableAutoFillUseCase()
+        if outcome == .instructionsRequired {
+            router.present(for: .autoFillInstructions)
+        }
+        return outcome.handled
+    }
+
+    func openTutorialVideo() {
+        router.navigate(to: .urlPage(urlString: ProtonLink.youtubeTutorial))
+    }
+
+    func markAsOnboarded() async {
+        // Optionally update "onboarded" to not block users from using the app
+        // in case errors happens
+        try? await preferencesManager.updateAppPreferences(\.onboarded, value: true)
+    }
+
+    func add(event: TelemetryEventType) {
+        addTelemetryEvent(with: event)
+    }
+
+    func handle(error: any Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
+    }
+}
+
+extension OnboardingViewModel: OnboardingDatasource {
+    func getCurrentPlan() async throws -> Entities.Plan {
+        try await accessRepository.getPlan(userId: nil)
+    }
+
+    func getPassPlans() async throws -> PassPlans {
+        guard !Bundle.main.isBetaBuild, let manager = try await getPlansManager() else {
+            return .init(foldersEnabled: false, plus: nil, unlimited: nil)
+        }
+        let plans = try await manager.getAvailablePlans()
+        let plusId = "iospass_pass2023_12_usd_auto_renewing"
+        let unlimitedId = "iospass_bundle2022_12_usd_auto_renewing"
+
+        var plusPlan: PlanUiModel?
+        var unlimitedPlan: PlanUiModel?
+
+        if let plusComposedPlan = plans.first(where: { $0.product.id == plusId }) {
+            plusPlan = PlanUiModel(plan: plusComposedPlan)
+        }
+
+        if let unlimitedComposedPlan = plans.first(where: { $0.product.id == unlimitedId }) {
+            unlimitedPlan = PlanUiModel(plan: unlimitedComposedPlan)
+        }
+
+        if Bundle.main.isQaBuild {
+            if userDefaults.bool(forKey: Constants.QA.hidePassPlusPlan) {
+                plusPlan = nil
+            }
+
+            if userDefaults.bool(forKey: Constants.QA.hideProtonUnlimitedPlan) {
+                unlimitedPlan = nil
+            }
+        }
+
+        let foldersEnabled = getFeatureFlagStatus(for: FeatureFlagType.passFolder)
+        return .init(foldersEnabled: foldersEnabled,
+                     plus: plusPlan,
+                     unlimited: unlimitedPlan)
+    }
+
+    func getBiometryType() throws -> LABiometryType? {
+        try checkBiometryType(policy: localAuthenticationEnablingPolicy)
+    }
+
+    func isAutoFillEnabled() async -> Bool {
+        await credentialManager.isAutoFillEnabled
+    }
+
+    // periphery:ignore
+    func getFirstLoginSuggestion() -> OnboardFirstLoginSuggestion {
+        .none
     }
 }
 
@@ -327,5 +458,21 @@ private extension OnboardingViewModel {
 
         let data = try Data(contentsOf: url)
         return try JSONDecoder().decode([KnownService].self, from: data)
+    }
+
+    func getPlansManager() async throws -> ProtonPlansManager? {
+        if let plansManager {
+            return plansManager
+        }
+
+        let userId = try await userManager.getActiveUserId()
+        let apiService = try apiManager.getApiService(userId: userId)
+        let remoteManager = RemoteManager(apiService: apiService)
+        let configuration = TransactionsObserverConfiguration(remoteManager: remoteManager)
+        transactionsObserver.setConfiguration(configuration)
+        try await transactionsObserver.start()
+        let manager = ProtonPlansManager(remoteManager: remoteManager)
+        plansManager = manager
+        return manager
     }
 }

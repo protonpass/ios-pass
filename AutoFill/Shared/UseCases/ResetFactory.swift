@@ -38,7 +38,7 @@ final class ResetFactory: ResetFactoryUseCase {
     init() {}
 
     func execute() {
-        UIKitUIComponentsContainer.shared.reset()
+        UIComponentsContainer.shared.reset()
         RepositoryContainer.shared.reset()
         ToolingContainer.shared.reset()
         DataContainer.shared.reset()

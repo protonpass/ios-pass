@@ -1,7 +1,7 @@
 //
 // ItemContentType+Extensions.swift
-// Proton Pass - Created on 08/02/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Proton Pass - Created on 17/07/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -26,7 +26,7 @@ import SwiftUI
 
 // MARK: - Colors & icons
 
-extension ItemContentType {
+public extension ItemContentType {
     var regularIcon: Image {
         switch self {
         case .alias:
@@ -176,7 +176,7 @@ extension ItemContentType {
 
 // MARK: Thumbnail colors
 
-extension ItemContentType {
+public extension ItemContentType {
     var thumbnailTintColor: Color {
         switch self {
         case .custom, .sshKey, .wifi:
@@ -210,7 +210,7 @@ extension ItemContentType {
 
 // MARK: - Messages
 
-extension ItemContentType {
+public extension ItemContentType {
     var chipTitle: String {
         switch self {
         case .login:

@@ -85,7 +85,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @LazyInjected(\UseCasesContainer.getOrganizationSettings)
     private var getOrganizationSettings
 
-    let itemContextMenuHandler = resolve(\OldSharedServiceContainer.itemContextMenuHandler)
+    let itemContextMenuHandler = resolve(\UIComponentsContainer.itemContextMenuHandler)
     @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\RepositoryContainer.organizationRepository)
     private var organizationRepository
