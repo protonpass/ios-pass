@@ -45,7 +45,6 @@ public final class PaymentsManager: PaymentsManagerProtocol {
     private var paymentFlow: Task<Bool, any Error>?
     private var userObservation: Task<Void, Never>?
     private var observerStartTask: Task<Void, Never>?
-    private var isPresentingPayments = false
 
     public init(apiManager: any APIManagerProtocol,
                 userManager: any UserManagerProtocol,

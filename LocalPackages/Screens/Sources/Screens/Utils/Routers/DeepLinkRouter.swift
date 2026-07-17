@@ -45,17 +45,17 @@ public protocol DeepLinkRouterProtocol: Sendable {
 }
 
 @MainActor
-public struct DeepLinkRouter: DeepLinkRouterProtocol {
+struct DeepLinkRouter: DeepLinkRouterProtocol {
     private let router: any UIKitSwiftUIBridgeRouterProtocol
     private let getItemContentFromBase64IDs: any GetItemContentFromBase64IDsUseCase
 
-    public init(router: any UIKitSwiftUIBridgeRouterProtocol,
-                getItemContentFromBase64IDs: any GetItemContentFromBase64IDsUseCase) {
+    init(router: any UIKitSwiftUIBridgeRouterProtocol,
+         getItemContentFromBase64IDs: any GetItemContentFromBase64IDsUseCase) {
         self.router = router
         self.getItemContentFromBase64IDs = getItemContentFromBase64IDs
     }
 
-    public func parseAndDispatch(context: Set<UIOpenURLContext>) {
+    func parseAndDispatch(context: Set<UIOpenURLContext>) {
         guard let url = context.first?.url else {
             return
         }
@@ -72,7 +72,7 @@ public struct DeepLinkRouter: DeepLinkRouterProtocol {
         }
     }
 
-    public func handle(userActivities: Set<NSUserActivity>) {
+    func handle(userActivities: Set<NSUserActivity>) {
         for activity in userActivities {
             switch activity.activityType {
             case CSSearchableItemActionType:
