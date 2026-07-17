@@ -21,7 +21,6 @@
 import Client
 import Combine
 import Core
-import DIComposition
 import DocScanner
 import Entities
 import FactoryKit

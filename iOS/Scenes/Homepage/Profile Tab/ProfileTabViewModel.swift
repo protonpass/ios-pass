@@ -231,7 +231,7 @@ extension ProfileTabViewModel {
         Task { [weak self] in
             guard let self else { return }
             let outcome = await enableAutoFill()
-            if outcome == .instructionsRequired {
+            if outcome.needsInstructions {
                 router.present(for: .autoFillInstructions)
             }
             if outcome.handled {

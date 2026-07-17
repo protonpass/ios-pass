@@ -367,7 +367,7 @@ extension OnboardingViewModel: OnboardingDelegate {
 
     func enableAutoFill() async -> Bool {
         let outcome = await enableAutoFillUseCase()
-        if outcome == .instructionsRequired {
+        if outcome.needsInstructions {
             router.present(for: .autoFillInstructions)
         }
         return outcome.handled
