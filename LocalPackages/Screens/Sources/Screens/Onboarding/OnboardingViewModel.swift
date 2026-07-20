@@ -36,21 +36,21 @@ public enum OnboardFirstLoginSuggestion: Sendable {
     case suggestedShare(shareId: String)
 }
 
-public nonisolated struct OnboardFirstLoginPayload: Sendable, Equatable {
-    public let shareId: String
-    public let service: KnownService
-    public let title: String
-    public let email: String
-    public let username: String
-    public let password: String
-    public let website: String
+nonisolated struct OnboardFirstLoginPayload: Equatable {
+    let shareId: String
+    let service: KnownService
+    let title: String
+    let email: String
+    let username: String
+    let password: String
+    let website: String
 
     var emailOrUsername: String {
         email.isEmpty ? username : email
     }
 }
 
-public nonisolated struct KnownService: Sendable, Decodable, Equatable {
+nonisolated struct KnownService: Decodable, Equatable {
     let name: String
     let url: String
     let favIconUrl: String
@@ -63,24 +63,16 @@ public nonisolated struct KnownService: Sendable, Decodable, Equatable {
 
 // public typealias OnboardingHandling = OnboardingDatasource & OnboardingDelegate
 
-public nonisolated struct PassPlans: Sendable, Equatable {
+nonisolated struct PassPlans: Equatable {
     let foldersEnabled: Bool
     let plus: PlanUiModel?
     let unlimited: PlanUiModel?
 
-    public init(foldersEnabled: Bool,
-                plus: PlanUiModel?,
-                unlimited: PlanUiModel?) {
-        self.foldersEnabled = foldersEnabled
-        self.plus = plus
-        self.unlimited = unlimited
-    }
-
-    public var noPlansAvailable: Bool {
+    var noPlansAvailable: Bool {
         plus == nil && unlimited == nil
     }
 
-    public var onePlanAvailable: Bool {
+    var onePlanAvailable: Bool {
         (plus == nil && unlimited != nil) || (plus != nil && unlimited == nil)
     }
 }
