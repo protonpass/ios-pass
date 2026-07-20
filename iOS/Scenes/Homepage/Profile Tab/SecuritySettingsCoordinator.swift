@@ -62,7 +62,7 @@ extension SecuritySettingsCoordinator {
         let view = LocalAuthenticationMethodsView(selectedMethod: preferences.localAuthenticationMethod,
                                                   supportedMethods: supportedMethods,
                                                   onSelect: { update($0.method) })
-        let height = OptionRowHeight.compact.value * CGFloat(supportedMethods.count) + 60
+        let height = OptionRowHeight.compact.value * CGFloat(supportedMethods.count) + 80
 
         delegate?.childCoordinatorWantsToPresent(view: view,
                                                  viewOption: .customSheetWithGrabber(CGFloat(height)),
