@@ -86,12 +86,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @LazyInjected(\UseCasesContainer.getOrganizationSettings)
     private var getOrganizationSettings
 
-    @LazyInjected(\UseCasesContainer.generateUsername)
-    private(set) var generateUsername
-
-    @LazyInjected(\RepositoryContainer.localUsernamePreferencesDatasource)
-    private(set) var localUsernamePreferencesDatasource
-
     weak var delegate: (any CreateEditLoginViewModelDelegate)?
 
     override init(mode: ItemMode,
