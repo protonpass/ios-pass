@@ -2406,7 +2406,6 @@
 				5B503FE02A4D6D0700E6681C /* Data */,
 				3547A01F2A840F1A00C9DAF1 /* Localization */,
 				3542E2CE28DA4E6000194F24 /* Models */,
-				66CA927B29F9713900F2FC59 /* Payments */,
 				5B8256D12A4B25B300BCEE6D /* Protocols */,
 				3543615A2941E192000CAE12 /* Utilities */,
 			);
@@ -2623,13 +2622,6 @@
 				84E10EABA5BC087B06289733 /* Generated */,
 			);
 			path = Mocks;
-			sourceTree = "<group>";
-		};
-		66CA927B29F9713900F2FC59 /* Payments */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Payments;
 			sourceTree = "<group>";
 		};
 		75283BD62946E1A9006658A6 /* iOSUITests */ = {
