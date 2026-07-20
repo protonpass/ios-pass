@@ -56,7 +56,7 @@ struct CreateEditItemToolbar: ToolbarContent {
 
         if shouldUpgrade {
             ToolbarItem(placement: .topBarTrailing) {
-                UpgradeButton(backgroundColor: itemContentType.normMajor1Color,
+                UpgradeButton(backgroundColor: itemContentType.normMajor2Color,
                               action: { onAction(.upgrade) })
                     .disabled(isSaving)
             }
@@ -105,9 +105,10 @@ private extension CreateEditItemToolbar {
                 DisablableCapsuleTextButton(title: saveButtonTitle,
                                             titleColor: PassColor.textInvert,
                                             disableTitleColor: PassColor.textHint,
-                                            backgroundColor: itemContentType.normMajor1Color,
+                                            backgroundColor: itemContentType.normMajor2Color,
                                             disableBackgroundColor: itemContentType.normMinor1Color,
                                             disabled: !isSaveable,
+                                            maxWidth: 200,
                                             action: { onAction(.save) })
             }
         }

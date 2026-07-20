@@ -83,7 +83,9 @@ public final class SetUpBeforeLaunching: SetUpBeforeLaunchingUseCase {
 
                 case let .viewController(rootViewController):
                     if let rootViewController {
-                        rootViewController.overrideUserInterfaceStyle = theme.userInterfaceStyle
+                        let userInterfaceStyle = theme.userInterfaceStyle
+                        rootViewController.overrideUserInterfaceStyle = userInterfaceStyle
+                        rootViewController.view.window?.overrideUserInterfaceStyle = userInterfaceStyle
                     } else {
                         assertionFailure("rootViewController should not be nil")
                     }

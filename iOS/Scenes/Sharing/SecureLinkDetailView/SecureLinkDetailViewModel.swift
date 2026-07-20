@@ -115,7 +115,7 @@ final class SecureLinkDetailViewModel: ObservableObject {
     }
 
     func viewItemDetail() {
-        router.present(for: .itemDetail(uiModel.itemContent))
+        router.present(for: .itemDetail(uiModel.itemContent, automaticDisplay: false))
     }
 
     func deleteLink(link: SecureLinkDetailUiModel) {

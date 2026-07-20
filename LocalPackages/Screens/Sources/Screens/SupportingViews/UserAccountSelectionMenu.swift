@@ -66,7 +66,7 @@ public struct UserAccountSelectionMenu: View {
                 }
             }
         }, label: {
-            HStack {
+            Group {
                 let text = if let selectedUser {
                     selectedUser.displayNameAndEmail
                 } else {
@@ -81,16 +81,15 @@ public struct UserAccountSelectionMenu: View {
                         .background(PassColor.interactionNormMinor1)
                         .clipShape(shape)
                 }
-
-                Spacer()
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
         })
     }
 }
 
 private extension UserAccountSelectionMenu {
     func label(text: String) -> some View {
-        Label(title: { Text(text) },
+        Label(title: { Text(text).lineLimit(1) },
               icon: { Image(systemName: "chevron.up.chevron.down") })
             .foregroundStyle(PassColor.interactionNormMajor2)
             .labelStyle(.rightIcon)
