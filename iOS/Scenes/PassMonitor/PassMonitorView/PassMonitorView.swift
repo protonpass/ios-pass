@@ -198,9 +198,6 @@ struct PassMonitorView: View {
                                   sentinelActive: viewModel.isSentinelActive,
                                   mainAction: { viewModel.sentinelSheetAction() },
                                   secondaryAction: { viewModel.showSentinelInformation() })
-                    .presentationDetents([.height(520)])
-                    .presentationBackground(.clear)
-                    .padding(.horizontal)
             }
             .refreshable {
                 await viewModel.refresh()

@@ -43,7 +43,7 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
         content
             .background(PassColor.backgroundNorm)
             .navigationBarTitleDisplayMode(.inline)
-            .tint(viewModel.itemContentType.normMajor1Color)
+            .tint(viewModel.itemContentType.normMajor2Color)
             .disabled(viewModel.isSaving)
             .animation(.default, value: viewModel.customFields)
             .animation(.default, value: viewModel.customSections)

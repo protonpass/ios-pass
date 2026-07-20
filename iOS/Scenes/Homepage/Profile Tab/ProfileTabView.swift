@@ -490,24 +490,18 @@ private extension View {
     }
 }
 
-@MainActor
 struct SentinelSheetView: View {
     @Binding var isPresented: Bool
     let sentinelActive: Bool
     let mainAction: () -> Void
     let secondaryAction: () -> Void
+    private let isIpad = UIDevice.current.isIpad
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
             background
-                .clipShape(RoundedRectangle(cornerRadius: 24))
 
-            ViewThatFits(in: .vertical) {
-                mainSentinelSheet.padding()
-                ScrollView(showsIndicators: false) {
-                    mainSentinelSheet
-                }.padding()
-            }
+            mainSentinelSheet
 
             Button { isPresented = false } label: {
                 Image(systemName: "xmark.circle.fill")
@@ -520,11 +514,10 @@ struct SentinelSheetView: View {
             .padding()
         }
         .preferredColorScheme(.light)
+        .fittedPresentationDetent(onHeightChanged: nil)
     }
 
-    @ViewBuilder
     private var mainSentinelSheet: some View {
-        let isIpad = UIDevice.current.isIpad
         VStack(spacing: DesignConstant.sectionPadding) {
             if isIpad {
                 Spacer()
@@ -544,7 +537,8 @@ struct SentinelSheetView: View {
                 Text("Sentinel description")
                     .multilineTextAlignment(.center)
                     .foregroundStyle(PassColor.textInvert)
-                    .frame(maxWidth: .infinity, alignment: .top)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxHeight: .infinity, alignment: .top)
                     .padding(.bottom, 8)
             }
             VStack(spacing: 8) {
@@ -567,17 +561,20 @@ struct SentinelSheetView: View {
                 Spacer()
             }
         }
+        .padding()
     }
 
     private var background: some View {
         Group {
             Color.white
+                .ignoresSafeArea()
             LinearGradient(colors: [
                 .clear,
                 Color(red: 112 / 255, green: 76 / 255, blue: 225 / 255, opacity: 0.15)
             ],
             startPoint: .top,
             endPoint: .bottom)
+                .ignoresSafeArea()
         }
     }
 }

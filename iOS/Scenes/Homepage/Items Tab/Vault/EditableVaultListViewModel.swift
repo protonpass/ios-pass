@@ -53,7 +53,7 @@ private extension EditableVaultListViewModel {
             var vaultCounts = [VaultCount]()
             let hiddenShareIds = sharesData.hiddenSharesIds
 
-            for shareContent in sharesData.visibleShareContents where shareContent.share.vaultContent != nil {
+            for shareContent in sharesData.shares.values where shareContent.share.vaultContent != nil {
                 if !shareContent.share.hidden {
                     all += shareContent.itemCount
                 }
@@ -254,6 +254,14 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     func cleanActions() {
         folderAction = nil
         folderName = ""
+    }
+
+    func shouldShowToggleArrow(for content: ShareContent) -> Bool {
+        guard content.isReadOnly else {
+            return true
+        }
+
+        return !content.allFolders.isEmpty
     }
 }
 

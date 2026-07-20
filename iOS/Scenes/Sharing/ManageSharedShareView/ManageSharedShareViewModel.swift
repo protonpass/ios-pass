@@ -42,7 +42,7 @@ final class ManageSharedShareViewModel: ObservableObject {
     @Published private(set) var loading = false
     @Published private(set) var isFreeUser = true
     @Published private(set) var isBusinessUser = false
-    @Published private(set) var itemSharingAllowed = false
+    @Published private(set) var itemSharingAllowed = true
     @Published private(set) var currentUserEmail: String?
     @Published var newOwner: NewOwner?
     @Published var selectedGroupInfo: GroupInfo?
