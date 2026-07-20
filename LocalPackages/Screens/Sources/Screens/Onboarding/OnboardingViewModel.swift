@@ -92,50 +92,28 @@ public enum OnboardingDisplayMode: Equatable {
 }
 
 @MainActor
-final class OnboardingViewModel: ObservableObject {
-    @Published private(set) var currentStep: FetchableObject<OnboardStep> = .fetching
-    @Published private(set) var isPurchasing = false
-    @Published private(set) var isSaving = false
-    @Published private(set) var finished = false
-    @Published private(set) var shouldDismiss = false
-    @Published var selectedPlan: PlanUiModel?
+@Observable
+final class OnboardingViewModel {
+    private(set) var currentStep: FetchableObject<OnboardStep> = .fetching
+    private(set) var isPurchasing = false
+    private(set) var isSaving = false
+    private(set) var finished = false
+    private(set) var shouldDismiss = false
+    var selectedPlan: PlanUiModel?
     private var availableBiometryType: LABiometryType?
 
-    @LazyInjected(\ToolingContainer.preferencesManager)
-    private var preferencesManager
-
-    @LazyInjected(\ServiceContainer.credentialManager)
-    private var credentialManager
-
-    @LazyInjected(\ServiceContainer.userManager)
-    private var userManager
-
-    @LazyInjected(\RepositoryContainer.accessRepository)
-    private var accessRepository
-
-    @LazyInjected(\UseCasesContainer.checkBiometryType)
-    private var checkBiometryType
-
-    @LazyInjected(\ToolingContainer.localAuthenticationEnablingPolicy)
-    private var localAuthenticationEnablingPolicy
-
-    @LazyInjected(\UseCasesContainer.enableAutoFill)
-    private var enableAutoFillUseCase
-
-    @LazyInjected(\UseCasesContainer.authenticateBiometrically)
-    private var authenticateBiometrically
-
-    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter)
-    private var router
-
-    @LazyInjected(\UseCasesContainer.addTelemetryEvent)
-    private var addTelemetryEvent
-
-    @LazyInjected(\ToolingContainer.apiManager)
-    private var apiManager
-
-    @LazyInjected(\UseCasesContainer.getFeatureFlagStatus)
-    private var getFeatureFlagStatus
+    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
+    private let credentialManager = dependency(\ServiceContainer.credentialManager)
+    private let userManager = dependency(\ServiceContainer.userManager)
+    private let accessRepository = dependency(\RepositoryContainer.accessRepository)
+    private let checkBiometryType = dependency(\UseCasesContainer.checkBiometryType)
+    private let localAuthenticationEnablingPolicy = dependency(\ToolingContainer.localAuthenticationEnablingPolicy)
+    private let enableAutoFillUseCase = dependency(\UseCasesContainer.enableAutoFill)
+    private let authenticateBiometrically = dependency(\UseCasesContainer.authenticateBiometrically)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let addTelemetryEvent = dependency(\UseCasesContainer.addTelemetryEvent)
+    private let apiManager = dependency(\ToolingContainer.apiManager)
+    private let getFeatureFlagStatus = dependency(\UseCasesContainer.getFeatureFlagStatus)
 
     private let transactionsObserver: TransactionsObserverProviding
     private var plansManager: ProtonPlansManager?
