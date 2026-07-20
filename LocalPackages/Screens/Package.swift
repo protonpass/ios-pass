@@ -48,6 +48,7 @@ let package = Package(
                 .product(name: "ProtonCoreLoginUI", package: "protoncore_ios"),
                 .product(name: "ProtonCoreUIFoundations", package: "protoncore_ios"),
                 .product(name: "ProtonCorePaymentsV2", package: "protoncore_ios"),
+                .product(name: "ProtonCorePasswordChange", package: "protoncore_ios"),
                 .product(name: "FactoryKit", package: "Factory"),
                 .product(name: "DIComposition", package: "DIComposition"),
             ],
