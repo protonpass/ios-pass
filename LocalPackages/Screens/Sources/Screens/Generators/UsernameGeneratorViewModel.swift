@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
@@ -37,11 +38,8 @@ final class UsernameGeneratorViewModel {
     var includeNouns = true
     var includeVerbs = false
 
-    @ObservationIgnored
-    private let datasource: any LocalUsernamePreferencesDatasourceProtocol
-
-    @ObservationIgnored
-    private let generateUsername: any GenerateUsernameUseCase
+    private let generateUsername = dependency(\UseCasesContainer.generateUsername)
+    private let datasource = dependency(\RepositoryContainer.localUsernamePreferencesDatasource)
 
     @ObservationIgnored
     private let onResult: (Result<String, any Error>) -> Void
@@ -57,11 +55,7 @@ final class UsernameGeneratorViewModel {
               includeVerbs: includeVerbs)
     }
 
-    init(datasource: any LocalUsernamePreferencesDatasourceProtocol,
-         generateUsername: any GenerateUsernameUseCase,
-         onResult: @escaping (Result<String, any Error>) -> Void) {
-        self.datasource = datasource
-        self.generateUsername = generateUsername
+    init(onResult: @escaping (Result<String, any Error>) -> Void) {
         self.onResult = onResult
 
         retrievePreferences()
