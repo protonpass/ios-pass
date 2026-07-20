@@ -114,8 +114,6 @@
 		35533BBB29D5C3CA00EC58DE /* ItemCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35533BBA29D5C3CA00EC58DE /* ItemCountView.swift */; };
 		35533BBF29D618A200EC58DE /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35533BBE29D618A200EC58DE /* AccountView.swift */; };
 		35533BC129D618B800EC58DE /* AccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35533BC029D618B800EC58DE /* AccountViewModel.swift */; };
-		3553C22C296575540087518A /* LoggerManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C22A2965754C0087518A /* LoggerManager+Extensions.swift */; };
-		3553C22D296575560087518A /* LoggerManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C22A2965754C0087518A /* LoggerManager+Extensions.swift */; };
 		3556949D29D45FD5005DD2EB /* ItemMoveVaultListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3556949C29D45FD5005DD2EB /* ItemMoveVaultListView.swift */; };
 		3556949F29D46001005DD2EB /* ItemMoveVaultListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3556949E29D46001005DD2EB /* ItemMoveVaultListViewModel.swift */; };
 		355723C22BF37F5E00C76244 /* HomepageCoordinator+UniqueSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355723C12BF37F5E00C76244 /* HomepageCoordinator+UniqueSheet.swift */; };
@@ -228,7 +226,6 @@
 		35796CED2B5EE68B00BF4E9E /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3590A3382A9F9C2600622F45 /* View+Extensions.swift */; };
 		35796CEE2B5EE69E00BF4E9E /* Browser+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A5EEDF2958B60200A09623 /* Browser+Extensions.swift */; };
 		35796CEF2B5EE6B500BF4E9E /* AppLockTime+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3575EB5229FAB017000FFD53 /* AppLockTime+Extensions.swift */; };
-		35796CF32B5EE6FF00BF4E9E /* LoggerManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C22A2965754C0087518A /* LoggerManager+Extensions.swift */; };
 		35796CF82B5EE7CA00BF4E9E /* ProtonCoreForceUpgrade in Frameworks */ = {isa = PBXBuildFile; productRef = 35796CF72B5EE7CA00BF4E9E /* ProtonCoreForceUpgrade */; };
 		35796CFA2B5EE80900BF4E9E /* ProtonCoreCryptoGoImplementation in Frameworks */ = {isa = PBXBuildFile; productRef = 35796CF92B5EE80900BF4E9E /* ProtonCoreCryptoGoImplementation */; };
 		35796CFC2B5EE82D00BF4E9E /* DocScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 35796CFB2B5EE82D00BF4E9E /* DocScanner */; };
@@ -453,7 +450,6 @@
 		53C81ECC2DDB6E1700A367C1 /* FactoryKit in Frameworks */ = {isa = PBXBuildFile; productRef = 53C81ECB2DDB6E1700A367C1 /* FactoryKit */; };
 		53C81ECE2DDB6E2000A367C1 /* FactoryKit in Frameworks */ = {isa = PBXBuildFile; productRef = 53C81ECD2DDB6E2000A367C1 /* FactoryKit */; };
 		53C81ED02DDB6E2700A367C1 /* FactoryKit in Frameworks */ = {isa = PBXBuildFile; productRef = 53C81ECF2DDB6E2700A367C1 /* FactoryKit */; };
-		53D6B3962D58C12B003EA6D3 /* LoggerManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C22A2965754C0087518A /* LoggerManager+Extensions.swift */; };
 		53E07DC22D58BD29009D6EE5 /* Screens in Frameworks */ = {isa = PBXBuildFile; productRef = 53E07DC12D58BD29009D6EE5 /* Screens */; };
 		53E07DC32D58BD50009D6EE5 /* ItemTypeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24802A7814C20060EDF7 /* ItemTypeFilter.swift */; };
 		53E07DC42D58BD6C009D6EE5 /* BaseCreateEditItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE1A28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift */; };
@@ -774,7 +770,6 @@
 		35533BBA29D5C3CA00EC58DE /* ItemCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCountView.swift; sourceTree = "<group>"; };
 		35533BBE29D618A200EC58DE /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 		35533BC029D618B800EC58DE /* AccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewModel.swift; sourceTree = "<group>"; };
-		3553C22A2965754C0087518A /* LoggerManager+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoggerManager+Extensions.swift"; sourceTree = "<group>"; };
 		3555C1792A2F810B00A257D7 /* Release-Beta.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Release-Beta.xcconfig"; sourceTree = "<group>"; };
 		3556949C29D45FD5005DD2EB /* ItemMoveVaultListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemMoveVaultListView.swift; sourceTree = "<group>"; };
 		3556949E29D46001005DD2EB /* ItemMoveVaultListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemMoveVaultListViewModel.swift; sourceTree = "<group>"; };
@@ -2161,7 +2156,6 @@
 				356FBD472949246A0063978C /* Coordinator+Extensions.swift */,
 				5B41C99B2AF51FED00A8E9F0 /* LABiometryType+Extensions.swift */,
 				5BFE87772AF1003D004ABA1E /* LocalAuthenticationMethodUiModel+Extensions.swift */,
-				3553C22A2965754C0087518A /* LoggerManager+Extensions.swift */,
 				3541C0782B68C337006B35D9 /* Spotlight+Extensions.swift */,
 				3590A3382A9F9C2600622F45 /* View+Extensions.swift */,
 				5BAE71062BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift */,
@@ -3302,7 +3296,6 @@
 				3524A4642CB6AB92001EC572 /* CreditCardDetailViewModel.swift in Sources */,
 				350AF86F299685690045B7B6 /* NoteEditSection.swift in Sources */,
 				3520F36328E325900053A606 /* CredentialsViewModel.swift in Sources */,
-				3553C22D296575560087518A /* LoggerManager+Extensions.swift in Sources */,
 				3550F5702B8A72410027BA2A /* CheckAndAutoFill.swift in Sources */,
 				5335C6DC2D7889FA00190897 /* CreateEditCustomSections.swift in Sources */,
 				35706C342CB6669A009F438E /* AliasDetailView.swift in Sources */,
@@ -3411,7 +3404,6 @@
 				35C9B8172B5E8AA90062D787 /* ShareViewController.swift in Sources */,
 				351B42102B641A03003FA3E3 /* PinAuthenticationView.swift in Sources */,
 				357C71DF2B5FF49C00AA0BF1 /* LimitedVaultOperationsBanner.swift in Sources */,
-				35796CF32B5EE6FF00BF4E9E /* LoggerManager+Extensions.swift in Sources */,
 				351B420D2B6419F5003FA3E3 /* LocalAuthenticationView.swift in Sources */,
 				35796CED2B5EE68B00BF4E9E /* View+Extensions.swift in Sources */,
 				357C71BB2B5FB10B00AA0BF1 /* CreateEditItemToolbar.swift in Sources */,
@@ -3514,7 +3506,6 @@
 				5BFE87782AF1003D004ABA1E /* LocalAuthenticationMethodUiModel+Extensions.swift in Sources */,
 				5B503FD42A4C7ED900E6681C /* BugReportViewModel.swift in Sources */,
 				35E81D922CBEAAE8008E7BA0 /* SortFilterItemsMenu.swift in Sources */,
-				3553C22C296575540087518A /* LoggerManager+Extensions.swift in Sources */,
 				356650D62AAF604D00BFF4F3 /* FullSyncProgressView.swift in Sources */,
 				354F769628C879AA00EB2383 /* NoteDetailView.swift in Sources */,
 				354E1A142A3B43D600519F58 /* CreditCardDetailViewModel.swift in Sources */,
@@ -3771,7 +3762,6 @@
 				537FC0782D59ECA500011AEA /* CustomFieldTypesView.swift in Sources */,
 				5343BB4C2FCDC99100F329E0 /* UpgradeButton.swift in Sources */,
 				53F33A3C2D5A9BF0005EA4FD /* View+LocalAuthentication.swift in Sources */,
-				53D6B3962D58C12B003EA6D3 /* LoggerManager+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
