@@ -22,6 +22,7 @@ import Client
 import Core
 import FactoryKit
 import ProtonCoreAuthentication
+@preconcurrency import ProtonCoreTelemetry
 import Stores
 
 public final class ServiceContainer: SharedContainer, AutoRegistering {
@@ -60,11 +61,6 @@ public extension ServiceContainer {
                                  userManager: ServiceContainer.shared.userManager()) }
     }
 }
-
-import Client
-import Core
-import FactoryKit
-@preconcurrency import ProtonCoreTelemetry
 
 private extension ServiceContainer {
     var logManager: any LogManagerProtocol {

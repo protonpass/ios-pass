@@ -94,17 +94,6 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
             }
             .store(in: &cancellables)
 
-//        userManager
-//            .currentActiveUser
-//            .receive(on: DispatchQueue.main)
-//            .compactMap(\.?.user.canManageSubscription)
-//            .sink { [weak self] canManageSubscription in
-//                guard let self else { return }
-//                // Temporarily hide "Manage subscription" option while waiting for dynamic plans
-//                let isB2B = plan?.isBusinessUser == true
-//                self.canManageSubscription = canManageSubscription && !isB2B
-//            }
-//            .store(in: &cancellables)
         accessRepository.access
             .combineLatest(userManager.currentActiveUser)
             .receive(on: DispatchQueue.main)
@@ -127,18 +116,6 @@ extension AccountViewModel {
         // The payment sheet is modal and can stay up for minutes; keep the handle
         // so a re-entrant call supersedes a pending flow instead of stacking on it.
         subscriptionTask?.cancel()
-//        subscriptionTask = Task { [weak self] in
-//            guard let self else { return }
-//            do {
-//                if try await paymentsManager.manageSubscription(isUpgrading: false) {
-//                    refreshUserPlan()
-//                } else {
-//                    logger.debug("Payment flow ended without purchase (cancelled, failed, or dismissed).")
-//                }
-//            } catch {
-//                handle(error: error)
-//            }
-//        }
         subscriptionTask = Task { [weak self] in
             guard let self else { return }
             do {
@@ -154,13 +131,6 @@ extension AccountViewModel {
             }
         }
     }
-
-//    func manageSubscription() {
-//        paymentsManager.manageSubscription(isUpgrading: false) { [weak self] result in
-//            guard let self else { return }
-//            handlePaymentsResult(result: result)
-//        }
-//    }
 
     func upgradeSubscription() {
         router.present(for: .upgradeFlow)
@@ -326,27 +296,7 @@ private extension AccountViewModel {
         }
     }
 
-//
-//    func handlePaymentsResult(result: PaymentsManager.PaymentsResult) {
-//        switch result {
-//        case let .success(inAppPurchasePlan):
-//            if inAppPurchasePlan {
-//                refreshUserPlan()
-//            } else {
-//                logger
-//                    .debug("""
-//                    Payment is done but no plan is purchased.
-//                     Or purchase was cancelled.
-//                     Or completed, and sheet is being dismissed.
-//                    """)
-//            }
-//
-//        case let .failure(error):
-//            logger.error(error)
-//        }
-//    }
-
-    private func checkFidoActivation() {
+    func checkFidoActivation() {
         Task { @MainActor [weak self] in
             guard let self, let userId = try? await userManager.getActiveUserId() else { return }
             let settings = await userSettingsRepository.getSettings(for: userId)
