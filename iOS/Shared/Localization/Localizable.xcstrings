@@ -459,6 +459,18 @@
             }
           }
         },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "\"%1$@\" đã được sao chép vào bảng nhớ tạm. Hết hạn trong %2$lld giây."
+                }
+              }
+            }
+          }
+        },
         "zh-Hans" : {
           "variations" : {
             "plural" : {
@@ -733,6 +745,18 @@
             }
           }
         },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$@ (%2$lld명 구성원)"
+                }
+              }
+            }
+          }
+        },
         "nb" : {
           "variations" : {
             "plural" : {
@@ -872,6 +896,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%1$@ (%2$lld üye)"
+                }
+              }
+            }
+          }
+        },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$@ (%2$lld thành viên)"
                 }
               }
             }
@@ -1032,6 +1068,12 @@
             "value" : "%@ (kopyalandı)"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (đã sao chép)"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1188,6 +1230,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ kopyalandı"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ đã sao chép"
           }
         },
         "zh-Hans" : {
@@ -1358,6 +1406,12 @@
             "value" : "%@, %@ grubuyla bir öge paylaşmak istiyor."
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ muốn chia sẽ một nội dung với nhóm %@."
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1504,6 +1558,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ sizinle bir öge paylaşmak istiyor."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ muốn chia sẻ một nội dung với bạn."
           }
         },
         "zh-Hans" : {
@@ -4545,13 +4605,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld personaggio"
+                  "value" : "%lld carattere"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld personaggi"
+                  "value" : "%lld caratteri"
                 }
               }
             }
@@ -45105,6 +45165,12 @@
             "value" : "კონტაქტის გადამისამართების მისამართის კოპირება შექმნის შემდეგ"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "생성 후 연락처의 전달 주소 복사"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -45133,6 +45199,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Po vytvorení kopírovať adresu kontaktu pre presmerovanie"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Po ustvarjanju kopiraj naslov za posredovanje stika"
           }
         },
         "sv" : {
@@ -46221,6 +46293,12 @@
             "value" : "დაკოპირდეს ახალი ფსევდონიმი მისამართი ავტომატურად?"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "새로운 별칭 주소를 자동 복사하시겠습니까?"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -46369,6 +46447,12 @@
             "value" : "დაკოპირდეს ახალი კონტაქტის გადამისამართების მისამართი ავტომატურად?"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "자동으로 새로운 연락처의 전달 주소를 복사하시겠습니까?"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -46397,6 +46481,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Automaticky skopírovať presmerovaciu adresu nového kontaktu?"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ali želite samodejno kopirati naslov za posredovanje novega stika?"
           }
         },
         "sv" : {
@@ -79749,6 +79839,12 @@
             "value" : "ჯგუფი %@"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "그룹 %@"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -86568,7 +86664,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proton Pass에서 가져오기"
+            "value" : "Proton Pass로 가져오기"
           }
         },
         "nb" : {
@@ -89319,6 +89415,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "იწვევს ჯგუფს %@ ელემენტებზე წვდომაზე"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "님이 다음 항목의 접근을 위해 그룹 %@에 초대했습니다:"
           }
         },
         "nb" : {
@@ -98469,7 +98571,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Inloggen"
+            "value" : "Login"
           }
         },
         "pl" : {
@@ -109313,6 +109415,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "არა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "아니오"
           }
         },
         "nb" : {
@@ -123690,6 +123798,12 @@
             "value" : "PIN-კოდი"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PIN 코드"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -124805,6 +124919,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "შეამოწმეთ სპამის საქაღალდე ელფოსტაზე სახელად \"დაადასტურეთ თქვენი ელფოსტის მისამართი %@\"\n\nთუ ასეთი ელფოსტა ვერ იპოვეთ, შეგიძლიათ [ახალი კოდი გამოითხოვოთ](https://proton.me)."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "스팸 메일함에서 \"%@을(를) 확인해 주세요\" 라는 이메일이 있는지 확인해 주세요.\n\n보이지 않는다면, [새로운 코드 요청]이 가능합니다(https://proton.me)."
           }
         },
         "nb" : {
@@ -128002,7 +128122,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Прэміяльны дамен"
+            "value" : "прэміяльны дамен"
           }
         },
         "ca" : {
@@ -138811,6 +138931,18 @@
             }
           }
         },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld개 항목 복원됨"
+                }
+              }
+            }
+          }
+        },
         "nb" : {
           "variations" : {
             "plural" : {
@@ -139836,6 +139968,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "გამოყენებულია %lld-ჯერ"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "재사용한 횟수 %lld회"
                 }
               }
             }
@@ -141492,6 +141636,12 @@
             "value" : "%@-ის სკანირება"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 스캔"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -142578,6 +142728,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "ძებნა %lld ანგარიშში"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld개 계정에서 검색"
                 }
               }
             }
@@ -147009,6 +147171,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "აირჩიეთ SSH გასაღების ტიპი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH 키 타입 선택"
           }
         },
         "nb" : {
@@ -153625,6 +153793,12 @@
             "value" : "%@ საცავის ჩვენება"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@개 금고 보기"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -154862,7 +155036,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Паказаць Удзельнікаў"
+            "value" : "Паказаць удзельнікаў"
           }
         },
         "ca" : {
@@ -154941,6 +155115,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "წევრების ჩვენება"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "구성원 보기"
           }
         },
         "nb" : {
@@ -157236,6 +157416,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "შეხვედით, როგორც %@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 계정으로 로그인됨"
           }
         },
         "nb" : {
@@ -162885,6 +163071,12 @@
             "value" : "შეთავაზებები"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "제안"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -163032,6 +163224,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "მინიშნებები %@-სთვის"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@의 추천"
           }
         },
         "nb" : {
@@ -163563,6 +163761,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "გადაერთეთ %@-ზე"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@(으)로 전환되었습니다."
           }
         },
         "nb" : {
@@ -166455,6 +166659,12 @@
             "value" : "ჯგუფს ეპატიჟებიან საცავში. დეტალებისთვის დაატყაპუნეთ."
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "그룹이 금고에 초대되었습니다. 자세한 정보를 보려면 탭하세요."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -169142,6 +169352,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ეს სამუდამოდ წაშლის საცავს „%@“ და მის შემცველობას. წაშლის დასადასტურებლად შეიყვანეთ საცავის სახელი."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "금고 « %@ » 와(과) 이 금고의 내용물을 모두 지우게 됩니다. 삭제를 계속하려면 해당 금고 이름을 입력하십시오."
           }
         },
         "nb" : {
@@ -172419,6 +172635,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "გადაეცეს ამ საცავის ფლობის უფლება %@-ს?"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "금고의 소유권을 %@님으로 이동하시겠어요?"
           }
         },
         "nb" : {
@@ -178430,6 +178652,12 @@
             "value" : "%@-ის გამოყენება"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 사용"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -179524,6 +179752,18 @@
             }
           }
         },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld개 로그인애서 사용됨"
+                }
+              }
+            }
+          }
+        },
         "nb" : {
           "variations" : {
             "plural" : {
@@ -180581,6 +180821,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "საცავი „%@“ წაიშალა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "금고 « %@ » 이(가) 삭제되었습니다"
           }
         },
         "nb" : {
@@ -181705,6 +181951,12 @@
             "value" : "საცავი, გაზიარებული ჯგუფთან, რომლის ადმინისტრირებასაც თქვენ ახდენთ"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "내가 관리자인 그룹에서 공유 중인 금고"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -182415,6 +182667,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "საცავის გაზიარება: %lld წევრი"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "금고 공유: %lld명 구성원"
                 }
               }
             }
@@ -183478,6 +183742,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ვერსია %@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "버전 %@"
           }
         },
         "nb" : {
@@ -186539,6 +186809,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "გადამოწმების კოდი გაგზავნილია მისამართზე %@. შეიყვანეთ ის ქვემოთ:"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@(으)로 인증 코드를 발송하였습니다. 아래에 코드를 입력해 주세요:"
           }
         },
         "nb" : {
@@ -191174,6 +191450,12 @@
             "value" : "გნებავთ \"%1$@\"-ს ასოცირება \"%2$@\"-სთან?"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%1$@\"을 \"%2$@\"와 연관지으시겠어요?"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -192122,6 +192404,12 @@
             "value" : "დიახ"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "예"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -193045,6 +193333,18 @@
             }
           }
         },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld개 별칭이 영구적으로 삭제됩니다."
+                }
+              }
+            }
+          }
+        },
         "nb" : {
           "variations" : {
             "plural" : {
@@ -193843,6 +194143,18 @@
             }
           }
         },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld개 항목을 영구히 삭제하려고 합니다. 확실한가요?"
+                }
+              }
+            }
+          }
+        },
         "nb" : {
           "variations" : {
             "plural" : {
@@ -194305,6 +194617,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ამის შეცვლა ყოველთვის შეგიძლიათ პარამეტრებში"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "언제든지 설정에서 변경할 수 있습니다."
           }
         },
         "nb" : {
@@ -196415,6 +196733,12 @@
             "value" : "სამართავად %@-ზე უნდა გადახვიდეთ"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "관리하려면 %@(으)로 전환해야 합니다."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -197676,6 +198000,12 @@
             "value" : "თქვენი მიმდინარე დოკუმენტი დაბრუნდება ვერსიაზე %@-დან"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "현재 문서가 %@ 버전으로 되돌아갑니다."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -198378,6 +198708,18 @@
             }
           }
         },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "이메일 주소가 %lld개의 보안 샤고에서 노출되었습니다."
+                }
+              }
+            }
+          }
+        },
         "nb" : {
           "variations" : {
             "plural" : {
@@ -199036,6 +199378,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "თქვენი ინფორმაცია აღმოჩენილია გაჟონვაში.პოვნის დროა **%@**"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**%@**에 유출된 데이터에서 회원님의 정보가 발견되었습니다."
           }
         },
         "nb" : {
@@ -200373,7 +200721,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Postnummer"
+            "value" : "ZIP-kode eller postnummer"
           }
         },
         "nl" : {
