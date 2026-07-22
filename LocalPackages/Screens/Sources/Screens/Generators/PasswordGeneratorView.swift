@@ -232,7 +232,7 @@ private struct PenaltyRow: View {
 
     var body: some View {
         Label(title: {
-            Text(penalty.title, bundle: .module)
+            Text(penalty.title)
                 .foregroundStyle(PassColor.textNorm)
                 .font(.callout)
         }, icon: {
@@ -404,21 +404,6 @@ private extension PasswordGeneratorMode {
         case .createLogin: #localized("Confirm", bundle: .module)
         case .random: #localized("Copy and close", bundle: .module)
         case .autofill: #localized("Use this password", bundle: .module)
-        }
-    }
-}
-
-private extension PasswordPenalty {
-    var title: LocalizedStringKey {
-        switch self {
-        case .noLowercase: "Lowercase letters"
-        case .noUppercase: "Uppercase letters"
-        case .noNumbers: "Numbers"
-        case .noSymbols: "Symbols"
-        case .short: "At least 12 characters"
-        case .consecutive: "No repeated characters"
-        case .progressive: "No sequential characters"
-        case .containsCommonPassword: "No common passwords"
         }
     }
 }
