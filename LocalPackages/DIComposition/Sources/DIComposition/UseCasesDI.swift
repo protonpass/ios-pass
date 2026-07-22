@@ -478,6 +478,10 @@ public extension UseCasesContainer {
     var postbackConversionValue: Factory<any PostbackConversionValueUseCase> {
         self { PostbackConversionValue() }
     }
+
+    var setUpAppearances: Factory<any SetUpAppearancesUseCase> {
+        self { SetUpAppearances() }
+    }
 }
 
 // MARK: - Security
@@ -644,7 +648,8 @@ public extension UseCasesContainer {
                                     userManager: self.userManager,
                                     prefererencesManager: self.preferencesManager,
                                     authManager: DataContainer.shared.credentialProvider(),
-                                    applyMigration: self.applyAppMigration()) }
+                                    applyMigration: self.applyAppMigration(),
+                                    setUpAppearances: self.setUpAppearances()) }
     }
 }
 
