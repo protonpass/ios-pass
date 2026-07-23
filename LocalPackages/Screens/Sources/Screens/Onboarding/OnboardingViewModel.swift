@@ -305,7 +305,8 @@ extension OnboardingViewModel {
 
     func enableBiometric() async throws {
         let authenticated = try await authenticateBiometrically(policy: localAuthenticationEnablingPolicy,
-                                                                reason: #localized("Please authenticate"))
+                                                                reason: #localized("Please authenticate",
+                                                                                   bundle: .module))
         if authenticated {
             try await preferencesManager.updateSharedPreferences(\.localAuthenticationMethod,
                                                                  value: .biometric)
