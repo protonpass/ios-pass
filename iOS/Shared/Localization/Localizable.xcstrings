@@ -53223,6 +53223,16 @@
         }
       }
     },
+    "Description is too long. Please keep it under %lld characters." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Description is too long. Please keep it under %lld characters."
+          }
+        }
+      }
+    },
     "Details" : {
       "localizations" : {
         "be" : {
