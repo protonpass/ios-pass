@@ -97,11 +97,9 @@ public actor LogManager: LogManagerProtocol {
         }
         self.config = config
         self.clock = clock
-        // No I/O, no tasks. Init is cheap, synchronous, and race-free.
     }
 
     deinit {
-        // Reachable now: the timer task only holds `self` weakly between ticks.
         timerTask?.cancel()
     }
 }
@@ -111,7 +109,7 @@ public actor LogManager: LogManagerProtocol {
 public extension LogManager {
     func log(entry: LogEntry) {
         guard shouldLog else { return }
-        ensureSetUp() // also starts the flush timer on first use
+        ensureSetUp()
         currentMemoryLogs.append(entry)
         if currentMemoryLogs.count >= config.dumpThreshold {
             saveAllLogs()
@@ -119,7 +117,7 @@ public extension LogManager {
     }
 
     func getLogEntries() throws -> [LogEntry] {
-        saveAllLogs() // make buffered in-memory entries visible to the caller
+        saveAllLogs()
         guard let url, fileExists else { return [] }
         let contents = try String(contentsOf: url, encoding: .utf8)
         return contents
@@ -154,7 +152,7 @@ public extension LogManager {
 
     func toggleLogging(shouldLog: Bool) {
         if !shouldLog {
-            saveAllLogs() // flush entries captured while logging was enabled
+            saveAllLogs()
         }
         self.shouldLog = shouldLog
     }
@@ -201,8 +199,8 @@ private extension LogManager {
 
     func writeToDisk(at url: URL) throws {
         let data = Data(currentSavedLogs.joined(separator: "\n").utf8)
-        try data.write(to: url, options: .atomic) // survives extension termination mid-write
-        fileExists = true // atomic write creates the file; no separate create step needed
+        try data.write(to: url, options: .atomic)
+        fileExists = true
     }
 
     func startTimer() {
@@ -213,8 +211,6 @@ private extension LogManager {
                 try? await clock.sleep(for: interval)
                 guard !Task.isCancelled, let self else { return }
                 await flushPendingLogs()
-                // `self` goes back to weak at the end of each iteration:
-                // no retain cycle while sleeping, actor can deinit.
             }
         }
     }
