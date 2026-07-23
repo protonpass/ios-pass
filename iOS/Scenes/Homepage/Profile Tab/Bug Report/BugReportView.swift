@@ -95,6 +95,15 @@ struct BugReportView: View {
         .alert(isPresented: $validationError.mappedToBool(),
                error: validationError,
                actions: { Button(action: {}, label: { Text("OK") }) })
+        .alert("File too large",
+               isPresented: $viewModel.showFileTooLargeError,
+               actions: {
+                   Button(role: .cancel, action: {}, label: { Text("Close") })
+               },
+               message: {
+                   // swiftlint:disable:next line_length
+                   Text("One or more files exceed the \(Constants.Report.maxFileSizeInMb) MB limit. Please select smaller files.")
+               })
     }
 }
 

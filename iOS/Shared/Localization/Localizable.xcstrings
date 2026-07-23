@@ -67171,6 +67171,16 @@
         }
       }
     },
+    "File too large" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "File too large"
+          }
+        }
+      }
+    },
     "Fill in your personal data" : {
       "localizations" : {
         "be" : {
@@ -103195,6 +103205,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "您的其中一個電郵位址或別名出現在資料外露中"
+          }
+        }
+      }
+    },
+    "One or more files exceed the %lld MB limit. Please select smaller files." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One or more files exceed the %lld MB limit. Please select smaller files."
           }
         }
       }

@@ -58,6 +58,7 @@ enum BugReportObject: CaseIterable {
 final class BugReportViewModel: ObservableObject {
     @Published var object: BugReportObject?
     @Published var description = ""
+    @Published var showFileTooLargeError = false
     @Published private(set) var error: (any Error)?
     @Published private(set) var hasSent = false
     @Published private(set) var actionInProcess = false
@@ -69,6 +70,8 @@ final class BugReportViewModel: ObservableObject {
     private var cancellable = Set<AnyCancellable>()
 
     @Published private(set) var currentFiles = [String: URL]()
+
+    private let maxFileSize = Constants.Report.maxFileSizeInMb * 1_024 * 1_024
 
     enum SendError: Error {
         case failedToSendReport
@@ -117,8 +120,13 @@ final class BugReportViewModel: ObservableObject {
             do {
                 for fileUrl in fileUrls {
                     _ = fileUrl.startAccessingSecurityScopedResource()
+                    defer { fileUrl.stopAccessingSecurityScopedResource() }
+                    let fileSize = try fileUrl.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0
+                    guard fileSize <= maxFileSize else {
+                        showFileTooLargeError = true
+                        continue
+                    }
                     currentFiles[fileUrl.lastPathComponent] = try fileUrl.copyFileToTempDirectory()
-                    fileUrl.stopAccessingSecurityScopedResource()
                 }
             } catch {
                 self.error = error
