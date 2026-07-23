@@ -33,6 +33,9 @@ public protocol LogManagerProtocol: Actor {
     func saveAllLogs()
     // periphery:ignore
     func toggleLogging(shouldLog: Bool)
+
+    // periphery:ignore
+    @_spi(Test) func getLogEntriesWithoutSave() throws -> [LogEntry]
 }
 
 public struct LogManagerConfig: Sendable {
@@ -155,6 +158,16 @@ public extension LogManager {
             saveAllLogs() // flush entries captured while logging was enabled
         }
         self.shouldLog = shouldLog
+    }
+}
+
+@_spi(Test) public extension LogManager {
+    func getLogEntriesWithoutSave() throws -> [LogEntry] {
+        guard let url, fileExists else { return [] }
+        let contents = try String(contentsOf: url, encoding: .utf8)
+        return contents
+            .split(separator: "\n", omittingEmptySubsequences: true)
+            .compactMap { String($0).toLogEntry }
     }
 }
 
