@@ -135,7 +135,6 @@ public extension LogManager {
             try FileManager.default.removeItem(at: url)
             fileExists = false
         } catch {
-            // Deliberate: a log manager has nowhere to log its own failure.
             print("Failed to remove log file: \(error.localizedDescription)")
         }
     }
@@ -143,7 +142,7 @@ public extension LogManager {
     func saveAllLogs() {
         guard shouldLog, let url else { return }
         ensureSetUp()
-        guard !currentMemoryLogs.isEmpty else { return } // nothing new; don't rewrite the file
+        guard !currentMemoryLogs.isEmpty else { return }
         mergeAndClear()
         pruneIfNeeded()
         do {
@@ -174,9 +173,6 @@ public extension LogManager {
 // MARK: - Private APIs
 
 private extension LogManager {
-    /// Lazy, synchronous, actor-isolated: no suspension points between the check
-    /// and the flag flip, so reentrancy can't run it twice. Replaces both the
-    /// racy `Task { setUp() }` and any need for an async once-gate.
     func ensureSetUp() {
         guard !isSetUp, let url else { return }
         isSetUp = true
