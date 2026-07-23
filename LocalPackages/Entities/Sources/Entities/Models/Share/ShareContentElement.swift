@@ -32,7 +32,9 @@ public enum ShareContentElement: Sendable, Equatable, Hashable, Identifiable {
     }
 
     public var isFolder: Bool {
-        if case .folder = self { return true }
+        if case .folder = self {
+            return true
+        }
         return false
     }
 
@@ -44,17 +46,23 @@ public enum ShareContentElement: Sendable, Equatable, Hashable, Identifiable {
     }
 
     public var itemValue: ItemUiModel? {
-        if case let .item(item) = self { return item }
+        if case let .item(item) = self {
+            return item
+        }
         return nil
     }
 
     public var folderValue: FolderUiModel? {
-        if case let .folder(folder) = self { return folder }
+        if case let .folder(folder) = self {
+            return folder
+        }
         return nil
     }
 
     public var shared: Bool {
-        if case let .item(item) = self { return item.shared }
+        if case let .item(item) = self {
+            return item.shared
+        }
         return false
     }
 

@@ -29,6 +29,7 @@ import ProtonCoreDoh
 import ProtonCoreKeymaker
 import ProtonCoreLogin
 import ProtonCoreLoginUI
+import ProtonCorePaymentsV2
 
 /// Contain tools shared between main iOS app and extensions
 public final class ToolingContainer: SharedContainer, AutoRegistering {
@@ -151,6 +152,14 @@ public extension ToolingContainer {
     var mainKeyProvider: Factory<any MainKeyProvider> {
         self { Keymaker(autolocker: self.autolocker(),
                         keychain: self.baseKeychain()) }
+    }
+}
+
+// MARK: - ProtonCore
+
+public extension ToolingContainer {
+    var transactionsObserver: Factory<any TransactionsObserverProviding> {
+        self { TransactionsObserver.shared }
     }
 }
 

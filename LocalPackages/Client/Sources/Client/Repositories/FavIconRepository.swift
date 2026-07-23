@@ -88,7 +88,9 @@ public extension FavIconRepository {
 
         // we have the data, no need to go to the network
         if case let .loaded(fav) = cache[domain] {
-            if checkAndHandleCancellation(for: domain) { return nil }
+            if checkAndHandleCancellation(for: domain) {
+                return nil
+            }
 
             return fav
         }
@@ -106,7 +108,9 @@ public extension FavIconRepository {
 
             addActiveTask(task, for: domain)
             if let fav = try await task.value {
-                if checkAndHandleCancellation(for: domain) { return nil }
+                if checkAndHandleCancellation(for: domain) {
+                    return nil
+                }
 
                 cache[domain] = .loaded(fav)
                 return fav
@@ -180,10 +184,14 @@ private extension FavIconRepository {
                 return FavIcon(domain: domain, data: decryptedData, isFromCache: true)
             }
 
-            if checkAndHandleCancellation(for: domain) { return nil }
+            if checkAndHandleCancellation(for: domain) {
+                return nil
+            }
             let userId = try await userManager.getActiveUserId()
             // Fav icon is not cached (or cached but is obsolete/deleted/not decryptable), fetch from remote
-            if checkAndHandleCancellation(for: domain) { return nil }
+            if checkAndHandleCancellation(for: domain) {
+                return nil
+            }
 
             let result = try await datasource.fetchFavIcon(userId: userId, for: domain)
 

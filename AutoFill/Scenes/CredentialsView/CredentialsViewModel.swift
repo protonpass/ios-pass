@@ -422,7 +422,9 @@ private extension CredentialsViewModel {
                 notMatchedItemSections = .fetched(sectionedItems)
             }
         } catch {
-            if error is CancellationError { return }
+            if error is CancellationError {
+                return
+            }
             await MainActor.run { [weak self] in
                 guard let self else { return }
                 notMatchedItemSections = .error(error)

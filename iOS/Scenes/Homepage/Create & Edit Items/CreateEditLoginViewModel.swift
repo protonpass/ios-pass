@@ -350,7 +350,9 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     func validateURLs() -> Bool {
         invalidURLs = urls.map(\.value).compactMap { url in
-            if url.isEmpty { return nil }
+            if url.isEmpty {
+                return nil
+            }
             if URLUtils.Sanitizer.sanitize(url) == nil {
                 return url
             }

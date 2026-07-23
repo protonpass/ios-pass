@@ -235,7 +235,9 @@ private extension TotpLoginsViewModel {
                 self.results = .fetched(results)
             }
         } catch {
-            if error is CancellationError { return }
+            if error is CancellationError {
+                return
+            }
             await MainActor.run { [weak self] in
                 guard let self else { return }
                 results = .error(error)
@@ -244,7 +246,9 @@ private extension TotpLoginsViewModel {
     }
 
     func handle(_ error: any Error) {
-        if error is CancellationError { return }
+        if error is CancellationError {
+            return
+        }
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
     }
