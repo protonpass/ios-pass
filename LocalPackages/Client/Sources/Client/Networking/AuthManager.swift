@@ -57,26 +57,84 @@ public extension AuthManagerProtocol {
     }
 }
 
+/// `@unchecked Sendable` justification: every piece of mutable state lives inside a single
+/// `SafeMutex<MutableState>`. The conformance cannot be compiler-checked because ProtonCore's
+/// `AuthCredential` (a mutable reference type we are required to vend by `AuthDelegate`) and
+/// the delegate protocols carry no `Sendable` annotations. Revisit once ProtonCore ships
+/// Swift 6 annotations.
+///
+/// Locking invariant: public entry points acquire the lock exactly once; private helpers
+/// take `inout MutableState` (or a copy) and never lock. `SafeMutex` is non-reentrant —
+/// violating this invariant deadlocks, same as the previous `DispatchQueue.sync` design.
+/// Delegate callbacks and Combine emissions are computed under the lock but fired after it
+/// is released, so delegates/subscribers may safely re-enter the manager.
+///
+/// Every crossing of a non-Sendable ProtonCore value over the `sending` boundary of
+/// `SafeMutex.withLock` goes through `UncheckedSendable` — see its doc comment. When the
+/// deployment target reaches iOS 18, `SafeMutex` swaps for `Synchronization.Mutex`
+/// unchanged; the boxes stay until ProtonCore annotates its types.
 public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
-    public private(set) weak var delegate: (any AuthHelperDelegate)?
-    // swiftlint:disable:next identifier_name
-    public weak var authSessionInvalidatedDelegateForLoginAndSignup: (any AuthSessionInvalidatedDelegate)?
     public static let storageKey = "AuthManagerStorageKey"
-    private let serialAccessQueue = DispatchQueue(label: "me.proton.pass.authmanager")
 
     private typealias CachedCredentials = [CredentialsKey: Credentials]
 
-    private var cachedCredentials: CachedCredentials = [:]
+    private struct MutableState {
+        var cachedCredentials: CachedCredentials = [:]
+        var didSetUp = false
+        /// `false` when the last keychain load failed for a potentially transient reason
+        /// (keychain unreadable, symmetric key unavailable). While `false`, persistence is
+        /// suppressed so an empty in-memory cache can never overwrite valid stored sessions.
+        var storageLoaded = false
+        /// Set on first mutation. Blocks late reload attempts that would otherwise
+        /// resurrect stale on-disk state over in-memory changes.
+        var didMutate = false
+        weak var delegate: (any AuthHelperDelegate)?
+        weak var loginAndSignupDelegate: (any AuthSessionInvalidatedDelegate)?
+    }
+
+    /// Carries non-Sendable ProtonCore values across `SafeMutex.withLock`'s `sending`
+    /// boundaries, in both directions:
+    /// - Outbound: results derived from the protected state (`AuthCredential`, `Credential`,
+    ///   notification closures capturing delegates) are not in a disconnected region, so
+    ///   region analysis rejects returning them directly. Note this is the same shared
+    ///   mutable `AuthCredential` hand-out the pre-refactor code (and ProtonCore's own
+    ///   `AuthHelper`) performed — the box documents it rather than introducing it.
+    /// - Inbound: assigning caller-region values (delegates, `Credential` parameters) into
+    ///   the protected state trips the swiftlang/swift#77199 / #81546 rejections noted on
+    ///   `SafeMutex`; boxing before the lock sidesteps them deterministically.
+    /// Safe: each box is created and consumed synchronously on the calling thread; the
+    /// contained value is only ever touched on one side of the lock at a time.
+    private struct UncheckedSendable<Value>: @unchecked Sendable {
+        let value: Value
+
+        init(_ value: Value) {
+            self.value = value
+        }
+    }
+
+    private let state = SafeMutex(MutableState())
     private let keychain: any KeychainProtocol
     private let symmetricKeyProvider: any NonAsyncSymmetricKeyProvider
     private let module: PassModule
-    private let _sessionWasInvalidated: PassthroughSubject<(sessionId: String, userId: String?), Never> = .init()
     private let logger: Logger
-    private var didSetUp = false
+    private let sessionInvalidationSubject =
+        PassthroughSubject<(sessionId: String, userId: String?), Never>()
 
-    /// This exposes a read only publisher to the rest of the application as AnyPublisher has no send function
     public var sessionWasInvalidated: AnyPublisher<(sessionId: String, userId: String?), Never> {
-        _sessionWasInvalidated.eraseToAnyPublisher()
+        sessionInvalidationSubject.eraseToAnyPublisher()
+    }
+
+    public var delegate: (any AuthHelperDelegate)? {
+        state.withLock { UncheckedSendable($0.delegate) }.value
+    }
+
+    // swiftlint:disable:next identifier_name
+    public var authSessionInvalidatedDelegateForLoginAndSignup: (any AuthSessionInvalidatedDelegate)? {
+        get { state.withLock { UncheckedSendable($0.loginAndSignupDelegate) }.value }
+        set {
+            let incoming = UncheckedSendable(newValue)
+            state.withLock { $0.loginAndSignupDelegate = incoming.value }
+        }
     }
 
     public init(keychain: any KeychainProtocol,
@@ -90,65 +148,67 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
     }
 
     public func setUp() {
-        cachedCredentials = getCachedCredentials()
-        didSetUp = true
+        state.withLock { state in
+            guard !state.didSetUp else { return } // idempotent; was previously a silent reload
+            loadFromKeychain(into: &state)
+            state.didSetUp = true
+        }
     }
 
     public func setUpDelegate(_ delegate: any AuthHelperDelegate) {
-        assertDidSetUp()
-        serialAccessQueue.sync {
-            self.delegate = delegate
+        let incoming = UncheckedSendable(delegate)
+        state.withLock { state in
+            assertDidSetUp(state)
+            state.delegate = incoming.value
         }
     }
 
     public func getCredential(userId: String) -> AuthCredential? {
-        logger.info("getting authCredential for userId id \(userId)")
-        assertDidSetUp()
-
-        return serialAccessQueue.sync {
-            cachedCredentials
-                .first(where: { $0.key.module == module && $0.value.authCredential.userID == userId })?
+        logger.info("Getting authCredential for user id \(userId)")
+        return state.withLock { state -> UncheckedSendable<AuthCredential?> in
+            ensureLoaded(&state)
+            let credential = state.cachedCredentials
+                .first { $0.key.module == module && $0.value.authCredential.userID == userId }?
                 .value.authCredential
-        }
-    }
-
-    public func removeCredentials(userId: String) {
-        logger.info("Removing credential for userId id \(userId)")
-        assertDidSetUp()
-
-        serialAccessQueue.sync {
-            cachedCredentials = cachedCredentials.filter { _, value in
-                value.credential.userID != userId
-            }
-            saveCachedCredentialsToKeychain()
-        }
-    }
-
-    public func removeAllCredentials() {
-        assertDidSetUp()
-        serialAccessQueue.sync {
-            cachedCredentials = [:]
-            saveCachedCredentialsToKeychain()
-        }
+            return UncheckedSendable(credential)
+        }.value
     }
 
     public func credential(sessionUID: String) -> Credential? {
         logger.info("Getting credential for session id \(sessionUID)")
-        assertDidSetUp()
-
-        return serialAccessQueue.sync {
+        return state.withLock { state -> UncheckedSendable<Credential?> in
+            ensureLoaded(&state)
             let key = CredentialsKey(sessionId: sessionUID, module: module)
-            return cachedCredentials[key]?.credential
-        }
+            return UncheckedSendable(state.cachedCredentials[key]?.credential)
+        }.value
     }
 
     public func authCredential(sessionUID: String) -> AuthCredential? {
         logger.info("Getting authCredential for session id \(sessionUID)")
-        assertDidSetUp()
-
-        return serialAccessQueue.sync {
+        return state.withLock { state -> UncheckedSendable<AuthCredential?> in
+            ensureLoaded(&state)
             let key = CredentialsKey(sessionId: sessionUID, module: module)
-            return cachedCredentials[key]?.authCredential
+            return UncheckedSendable(state.cachedCredentials[key]?.authCredential)
+        }.value
+    }
+
+    public func removeCredentials(userId: String) {
+        logger.info("Removing credentials for user id \(userId)")
+        state.withLock { state in
+            ensureLoaded(&state)
+            state.didMutate = true
+            state.cachedCredentials = state.cachedCredentials
+                .filter { $0.value.credential.userID != userId }
+            persist(state)
+        }
+    }
+
+    public func removeAllCredentials() {
+        state.withLock { state in
+            ensureLoaded(&state)
+            state.didMutate = true
+            state.cachedCredentials = [:]
+            persist(state)
         }
     }
 
@@ -163,61 +223,54 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
     }
 
     public func onUpdate(credential: Credential, sessionUID: String) {
-        logger.info("Update Session credentials with session id \(sessionUID)")
-        assertDidSetUp()
-
-        serialAccessQueue.sync {
+        logger.info("Updating session credentials for session id \(sessionUID)")
+        let incoming = UncheckedSendable(credential)
+        let notification = state.withLock { state -> UncheckedSendable<() -> Void>? in
+            let credential = incoming.value
+            ensureLoaded(&state)
+            state.didMutate = true
             for passModule in PassModule.allCases {
                 let key = CredentialsKey(sessionId: sessionUID, module: passModule)
-
-                let credentials: Credentials = if let cred = cachedCredentials[key] {
-                    cred
-                } else {
-                    // Note: Credential has `mailboxpassword == ""` so the authCredential will have an empty
-                    // mailboxpassword
-                    // That is why we try to get the cached credentials.
-                    Credentials(credential: credential,
-                                authCredential: AuthCredential(credential),
-                                module: passModule)
-                }
-
-                // Note: updatedKeepingKeyAndPasswordDataIntact is necessary because Credential has
-                // `mailboxpassword == ""` which would override the mailboxpassword with an empty string.
-                let newAuthCredential = credentials.authCredential
+                // `Credential.mailboxpassword` is empty here; fall back to the cached entry
+                // and merge so the stored password/key data survives the update.
+                let existing = state.cachedCredentials[key]
+                    ?? Credentials(credential: credential,
+                                   authCredential: AuthCredential(credential),
+                                   module: passModule)
+                let newAuthCredential = existing.authCredential
                     .updatedKeepingKeyAndPasswordDataIntact(credential: credential)
-                cachedCredentials[key] = Credentials(credential: credential,
-                                                     authCredential: newAuthCredential,
-                                                     module: passModule)
+                state.cachedCredentials[key] = Credentials(credential: credential,
+                                                           authCredential: newAuthCredential,
+                                                           module: passModule)
             }
-            saveCachedCredentialsToKeychain()
-            sendCredentialUpdateInfo(sessionId: sessionUID)
+            persist(state)
+            return credentialsUpdateNotification(state, sessionId: sessionUID)
         }
+        notification?.value()
     }
 
     public func onSessionObtaining(credential: Credential) {
-        logger.info("Obtained Session credentials with session id \(credential.UID)")
-        assertDidSetUp()
-
-        serialAccessQueue.sync {
-            // The forking of sessions should be done at this point in the future and any looping on Pass module
-            // should be removed
-
-            // Remove all existing credentials related to the same userID
-            // This is to handle logging into the same account multiple times
-            for (key, value) in cachedCredentials
+        logger.info("Obtained session credentials for session id \(credential.UID)")
+        let incoming = UncheckedSendable(credential)
+        let notification = state.withLock { state -> UncheckedSendable<() -> Void>? in
+            let credential = incoming.value
+            ensureLoaded(&state)
+            state.didMutate = true
+            // Logging into the same account again: drop all prior sessions for that user.
+            for (key, value) in state.cachedCredentials
                 where value.credential.userID == credential.userID {
-                cachedCredentials.removeValue(forKey: key)
+                state.cachedCredentials.removeValue(forKey: key)
             }
-
             for passModule in PassModule.allCases {
                 let key = CredentialsKey(sessionId: credential.UID, module: passModule)
-                cachedCredentials[key] = Credentials(credential: credential,
-                                                     authCredential: AuthCredential(credential),
-                                                     module: passModule)
+                state.cachedCredentials[key] = Credentials(credential: credential,
+                                                           authCredential: AuthCredential(credential),
+                                                           module: passModule)
             }
-            saveCachedCredentialsToKeychain()
-            sendCredentialUpdateInfo(sessionId: credential.UID)
+            persist(state)
+            return credentialsUpdateNotification(state, sessionId: credential.UID)
         }
+        notification?.value()
     }
 
     public func onAdditionalCredentialsInfoObtained(sessionUID: String,
@@ -225,14 +278,14 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
                                                     salt: String?,
                                                     privateKey: String?) {
         logger.info("Additional credentials for session id \(sessionUID)")
-        assertDidSetUp()
-
-        serialAccessQueue.sync {
+        let notification = state.withLock { state -> UncheckedSendable<() -> Void>? in
+            ensureLoaded(&state)
+            state.didMutate = true
             for passModule in PassModule.allCases {
                 let key = CredentialsKey(sessionId: sessionUID, module: passModule)
-                guard let element = cachedCredentials[key] else {
-                    return
-                }
+                // `continue`, not `return`: a missing module entry must not abort the
+                // remaining modules or skip persistence/notification.
+                guard let element = state.cachedCredentials[key] else { continue }
 
                 if let password {
                     element.authCredential.update(password: password)
@@ -240,157 +293,214 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
                 let saltToUpdate = salt ?? element.authCredential.passwordKeySalt
                 let privateKeyToUpdate = privateKey ?? element.authCredential.privateKey
                 element.authCredential.update(salt: saltToUpdate, privateKey: privateKeyToUpdate)
-                cachedCredentials[key] = element
+                state.cachedCredentials[key] = element
             }
-            saveCachedCredentialsToKeychain()
-            sendCredentialUpdateInfo(sessionId: sessionUID)
+            persist(state)
+            return credentialsUpdateNotification(state, sessionId: sessionUID)
         }
+        notification?.value()
     }
 
     public func onAuthenticatedSessionInvalidated(sessionUID: String) {
         logger.info("Authenticated session invalidated for session id \(sessionUID)")
-        assertDidSetUp()
-
-        serialAccessQueue.sync {
-            let key = CredentialsKey(sessionId: sessionUID, module: module)
-            let currentSession = cachedCredentials[key]
-            removeCredentials(for: sessionUID)
-            saveCachedCredentialsToKeychain()
-            sendSessionInvalidationInfo(sessionId: sessionUID, isAuthenticatedSession: true)
-            _sessionWasInvalidated.send((sessionId: sessionUID, userId: currentSession?.credential.userID))
-        }
+        invalidateSession(sessionUID: sessionUID, isAuthenticatedSession: true)
     }
 
     public func onUnauthenticatedSessionInvalidated(sessionUID: String) {
-        logger.info("unauthenticated session invalidated for session id \(sessionUID)")
-        assertDidSetUp()
-
-        serialAccessQueue.sync {
-            let key = CredentialsKey(sessionId: sessionUID, module: module)
-            let currentSession = cachedCredentials[key]
-            removeCredentials(for: sessionUID)
-            saveCachedCredentialsToKeychain()
-            sendSessionInvalidationInfo(sessionId: sessionUID, isAuthenticatedSession: false)
-            _sessionWasInvalidated.send((sessionId: sessionUID, userId: currentSession?.credential.userID))
-        }
+        logger.info("Unauthenticated session invalidated for session id \(sessionUID)")
+        invalidateSession(sessionUID: sessionUID, isAuthenticatedSession: false)
     }
 
     public func clearSessions(sessionId: String) {
-        logger.info("Clear sessions for session id \(sessionId)")
-        assertDidSetUp()
-
-        serialAccessQueue.sync {
-            removeCredentials(for: sessionId)
-            saveCachedCredentialsToKeychain()
+        logger.info("Clearing sessions for session id \(sessionId)")
+        state.withLock { state in
+            ensureLoaded(&state)
+            state.didMutate = true
+            removeCredentials(for: sessionId, in: &state)
+            persist(state)
         }
     }
 
     public func clearSessions(userId: String) {
-        logger.info("Clear sessions for user id \(userId)")
-        assertDidSetUp()
-
-        serialAccessQueue.sync {
-            cachedCredentials = cachedCredentials.filter { $0.value.credential.userID != userId }
-            saveCachedCredentialsToKeychain()
+        logger.info("Clearing sessions for user id \(userId)")
+        state.withLock { state in
+            ensureLoaded(&state)
+            state.didMutate = true
+            state.cachedCredentials = state.cachedCredentials
+                .filter { $0.value.credential.userID != userId }
+            persist(state)
         }
     }
 
     public func getAllCurrentCredentials() -> [Credential] {
-        assertDidSetUp()
-        return cachedCredentials.compactMap { key, element -> Credential? in
-            guard key.module == module else {
-                return nil
+        state.withLock { state -> UncheckedSendable<[Credential]> in
+            ensureLoaded(&state)
+            let credentials = state.cachedCredentials.compactMap { key, element in
+                key.module == module ? element.credential : nil
             }
-            return element.credential
-        }
+            return UncheckedSendable(credentials)
+        }.value
     }
 }
 
 public extension AuthManager {
     /// Introduced on February 2025 for CSV import support. Can be removed later on.
     func initializeCredentialsForActionExtension() {
-        assertDidSetUp()
-        serialAccessQueue.sync {
-            if let appCredential = cachedCredentials.first(where: { $0.key.module == .hostApp }) {
+        state.withLock { state in
+            ensureLoaded(&state)
+            state.didMutate = true
+            if let appCredential = state.cachedCredentials.first(where: { $0.key.module == .hostApp }) {
                 let key = CredentialsKey(sessionId: appCredential.value.authCredential.sessionID,
                                          module: .actionExtension)
-                cachedCredentials[key] = appCredential.value
+                state.cachedCredentials[key] = appCredential.value
             }
-            saveCachedCredentialsToKeychain()
+            persist(state)
         }
     }
 
     @_spi(QA)
     func getAllCredentialsOfAllModules() -> [Credentials] {
-        assertDidSetUp()
-        return Array(cachedCredentials.values)
+        // `Credentials` is declared Sendable, so no box is needed here.
+        state.withLock { state in
+            ensureLoaded(&state)
+            return Array(state.cachedCredentials.values)
+        }
     }
 }
 
-// MARK: - Utils
+// MARK: - Private helpers (never lock — callers hold the lock)
 
 private extension AuthManager {
-    func assertDidSetUp() {
-        assert(didSetUp, "AuthManager not set up. Call setUp() function as soon as possible.")
-        if !didSetUp {
+    private func invalidateSession(sessionUID: String, isAuthenticatedSession: Bool) {
+        let notification = state.withLock { state -> UncheckedSendable<() -> Void> in
+            ensureLoaded(&state)
+            state.didMutate = true
+            let key = CredentialsKey(sessionId: sessionUID, module: module)
+            let userId = state.cachedCredentials[key]?.credential.userID
+            removeCredentials(for: sessionUID, in: &state)
+            persist(state)
+            return sessionInvalidationNotification(state,
+                                                   sessionId: sessionUID,
+                                                   userId: userId,
+                                                   isAuthenticatedSession: isAuthenticatedSession)
+        }
+        notification.value()
+    }
+
+    private func ensureLoaded(_ state: inout MutableState) {
+        assertDidSetUp(state)
+        // Lazy recovery from a transient load failure (e.g. extension launched before the
+        // keychain/symmetric key became available). Only safe while nothing has mutated.
+        if state.didSetUp, !state.storageLoaded, !state.didMutate {
+            loadFromKeychain(into: &state)
+        }
+    }
+
+    private func assertDidSetUp(_ state: MutableState) {
+        assert(state.didSetUp, "AuthManager not set up. Call setUp() as soon as possible.")
+        if !state.didSetUp {
             logger.error("AuthManager not set up")
         }
     }
 
-    func sendCredentialUpdateInfo(sessionId: String) {
-        let key = CredentialsKey(sessionId: sessionId, module: module)
-        guard let credentials = cachedCredentials[key] else {
-            return
+    private func removeCredentials(for sessionUID: String, in state: inout MutableState) {
+        for module in PassModule.allCases {
+            let key = CredentialsKey(sessionId: sessionUID, module: module)
+            state.cachedCredentials[key] = nil
         }
-
-        delegate?.credentialsWereUpdated(authCredential: credentials.authCredential,
-                                         credential: credentials.credential,
-                                         for: sessionId)
     }
 
-    func sendSessionInvalidationInfo(sessionId: String, isAuthenticatedSession: Bool) {
-        delegate?.sessionWasInvalidated(for: sessionId,
-                                        isAuthenticatedSession: isAuthenticatedSession)
-        authSessionInvalidatedDelegateForLoginAndSignup?
-            .sessionWasInvalidated(for: sessionId,
-                                   isAuthenticatedSession: isAuthenticatedSession)
+    private func credentialsUpdateNotification(_ state: MutableState,
+                                               sessionId: String) -> UncheckedSendable<() -> Void>? {
+        let key = CredentialsKey(sessionId: sessionId, module: module)
+        guard let credentials = state.cachedCredentials[key],
+              let delegate = state.delegate else {
+            return nil
+        }
+        return UncheckedSendable {
+            delegate.credentialsWereUpdated(authCredential: credentials.authCredential,
+                                            credential: credentials.credential,
+                                            for: sessionId)
+        }
+    }
+
+    private func sessionInvalidationNotification(_ state: MutableState,
+                                                 sessionId: String,
+                                                 userId: String?,
+                                                 isAuthenticatedSession: Bool)
+        -> UncheckedSendable<() -> Void> {
+        let delegate = state.delegate
+        let loginAndSignupDelegate = state.loginAndSignupDelegate
+        let subject = sessionInvalidationSubject
+        return UncheckedSendable {
+            delegate?.sessionWasInvalidated(for: sessionId,
+                                            isAuthenticatedSession: isAuthenticatedSession)
+            loginAndSignupDelegate?.sessionWasInvalidated(for: sessionId,
+                                                          isAuthenticatedSession: isAuthenticatedSession)
+            subject.send((sessionId: sessionId, userId: userId))
+        }
     }
 }
 
-// MARK: - Storage
+// MARK: - Storage (callers hold the lock)
 
 private extension AuthManager {
-    func saveCachedCredentialsToKeychain() {
+    private func loadFromKeychain(into state: inout MutableState) {
+        let encrypted: Data?
+        do {
+            encrypted = try keychain.dataOrError(forKey: Self.storageKey)
+        } catch {
+            // Transient (e.g. data protection / device locked): keep the stored blob,
+            // suppress persistence until a successful load.
+            logger.error("Failed to read stored sessions from keychain, will retry: \(error)")
+            state.storageLoaded = false
+            return
+        }
+
+        guard let encrypted else {
+            // Nothing stored: first run or post-wipe.
+            state.cachedCredentials = [:]
+            state.storageLoaded = true
+            return
+        }
+
         do {
             let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
-            let data = try JSONEncoder().encode(cachedCredentials)
+            do {
+                let decrypted = try symmetricKey.decrypt(encrypted)
+                state.cachedCredentials = try JSONDecoder()
+                    .decode(CachedCredentials.self, from: decrypted)
+                state.storageLoaded = true
+            } catch {
+                // Key is available but the payload doesn't decrypt/decode: unrecoverable
+                // corruption or a rotated key. Wipe, as the previous implementation did.
+                logger.error("Failed to decrypt stored sessions, wiping: \(error)")
+                try? keychain.removeOrError(forKey: Self.storageKey)
+                state.cachedCredentials = [:]
+                state.storageLoaded = true
+            }
+        } catch {
+            // Symmetric key unavailable (assumed transient, e.g. keymaker not unlocked yet).
+            logger.error("Symmetric key unavailable, keeping stored sessions: \(error)")
+            state.storageLoaded = false
+        }
+    }
+
+    private func persist(_ state: MutableState) {
+        guard state.storageLoaded else {
+            // Never overwrite a keychain blob we could not read: with a failed load the
+            // in-memory cache is a strict subset of reality and saving it would log out
+            // every stored user.
+            logger.error("Skipping session persistence: stored sessions were never loaded")
+            return
+        }
+        do {
+            let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
+            let data = try JSONEncoder().encode(state.cachedCredentials)
             let encryptedContent = try symmetricKey.encrypt(data)
             try keychain.setOrError(encryptedContent, forKey: Self.storageKey)
         } catch {
-            logger.error("Failed to saved user sessions in keychain: \(error)")
-        }
-    }
-
-    func getCachedCredentials() -> [CredentialsKey: Credentials] {
-        guard let encryptedContent = try? keychain.dataOrError(forKey: Self.storageKey),
-              let symmetricKey = try? symmetricKeyProvider.getSymmetricKey() else {
-            return [:]
-        }
-
-        do {
-            let decryptedContent = try symmetricKey.decrypt(encryptedContent)
-            return try JSONDecoder().decode(CachedCredentials.self, from: decryptedContent)
-        } catch {
-            logger.error("Failed to decrypted user sessions from keychain: \(error)")
-            try? keychain.removeOrError(forKey: Self.storageKey)
-            return [:]
-        }
-    }
-
-    func removeCredentials(for sessionUID: String) {
-        for module in PassModule.allCases {
-            let key = CredentialsKey(sessionId: sessionUID, module: module)
-            cachedCredentials[key] = nil
+            logger.error("Failed to save user sessions in keychain: \(error)")
         }
     }
 }
@@ -403,7 +513,7 @@ public struct Credentials: Hashable, Sendable, Codable {
     public let module: PassModule
 }
 
-private struct CredentialsKey: Hashable, Codable {
+struct CredentialsKey: Hashable, Codable {
     let sessionId: String
     let module: PassModule
 }
