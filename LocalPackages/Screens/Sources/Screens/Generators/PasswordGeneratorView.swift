@@ -202,9 +202,7 @@ private struct StrengthAndPenalties: View {
         VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 2) {
             if showingPenalties {
                 title
-                ForEach(PasswordPenalty.allCases, id: \.self) { penalty in
-                    PenaltyRow(penalty: penalty, satisfied: !penalties.contains(penalty))
-                }
+                PasswordPenaltiesSection(penalties: penalties)
             } else {
                 title
                     .underline(color: strength.color)
@@ -226,16 +224,25 @@ private struct StrengthAndPenalties: View {
     }
 }
 
-public struct PenaltyRow: View {
-    let penalty: PasswordPenalty
-    let satisfied: Bool
+public struct PasswordPenaltiesSection: View {
+    let penalties: [PasswordPenalty]
 
-    public init(penalty: PasswordPenalty, satisfied: Bool) {
-        self.penalty = penalty
-        self.satisfied = satisfied
+    public init(penalties: [PasswordPenalty]) {
+        self.penalties = penalties
     }
 
     public var body: some View {
+        ForEach(PasswordPenalty.allCases, id: \.self) { penalty in
+            PenaltyRow(penalty: penalty, satisfied: !penalties.contains(penalty))
+        }
+    }
+}
+
+private struct PenaltyRow: View {
+    let penalty: PasswordPenalty
+    let satisfied: Bool
+
+    var body: some View {
         Label(title: {
             Text(penalty.title)
                 .foregroundStyle(PassColor.textNorm)
