@@ -84,7 +84,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private let validateEmail = dependency(\UseCasesContainer.validateEmail)
     private let getSharedPreferences = dependency(\UseCasesContainer.getSharedPreferences)
     @LazyInjected(\UseCasesContainer.getOrganizationSettings) private var getOrganizationSettings
-    @LazyInjected(\SharedUseCasesContainer.scorePassword) private var scorePassword
+    @LazyInjected(\UseCasesContainer.scorePassword) private var scorePassword
 
     weak var delegate: (any CreateEditLoginViewModelDelegate)?
 

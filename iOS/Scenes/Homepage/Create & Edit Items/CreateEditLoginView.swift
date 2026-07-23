@@ -577,21 +577,19 @@ private extension CreateEditLoginView {
             }
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Button(action: { showPenalties = true },
+                Button(action: { showPenalties.toggle() },
                        label: {
                            Text(strength.sectionTitle(reuseCount: nil))
                                .font(.footnote)
                                .foregroundStyle(viewModel.password.isEmpty ?
                                    PassColor.textNorm : strength.sectionTitleColor)
-                               .underline(!viewModel.password.isEmpty && !showPenalties,
+                               .underline(!viewModel.password.isEmpty,
                                           color: strength.sectionTitleColor)
                        })
                        .buttonStyle(.plain)
 
                 if showPenalties {
-                    ForEach(PasswordPenalty.allCases, id: \.self) { penalty in
-                        PenaltyRow(penalty: penalty, satisfied: !penalties.contains(penalty))
-                    }
+                    PasswordPenaltiesSection(penalties: penalties)
                 }
 
                 SensitiveTextField(text: $viewModel.password,
