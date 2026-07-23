@@ -226,11 +226,16 @@ private struct StrengthAndPenalties: View {
     }
 }
 
-private struct PenaltyRow: View {
+public struct PenaltyRow: View {
     let penalty: PasswordPenalty
     let satisfied: Bool
 
-    var body: some View {
+    public init(penalty: PasswordPenalty, satisfied: Bool) {
+        self.penalty = penalty
+        self.satisfied = satisfied
+    }
+
+    public var body: some View {
         Label(title: {
             Text(penalty.title)
                 .foregroundStyle(PassColor.textNorm)
