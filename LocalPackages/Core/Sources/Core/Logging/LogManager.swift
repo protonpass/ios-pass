@@ -52,53 +52,54 @@ public struct LogManagerConfig: Sendable {
 }
 
 public actor LogManager: LogManagerProtocol {
-    private let url: URL
-    private var fileExists = false
-    private var currentSavedlogs = [String]()
-    private var currentMemoryLogs = [LogEntry]()
+    /// `nil` ⇒ degraded mode (App Group container unavailable). All operations are no-ops.
+    private let url: URL?
     private let config: LogManagerConfig
+    private let clock: any Clock<Duration>
+
+    private var isSetUp = false
+    private var fileExists = false
+    private var currentSavedLogs = [String]()
+    private var currentMemoryLogs = [LogEntry]()
     private var timerTask: Task<Void, Never>?
-    private var secondCount: Double = 0
 
-    public private(set) var shouldLog = true
+    public private(set) var shouldLog: Bool
 
-    private var numberOfLogAfterMerge: Int {
-        currentSavedlogs.count + currentMemoryLogs.count
+    public init(module: PassModule,
+                containerProvider: (String) -> URL? = {
+                    FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: $0)
+                }) {
+        let container = containerProvider(Constants.appGroup)
+        assert(container != nil,
+               "App Group container unavailable — check the \(Constants.appGroup) entitlement for this target.")
+        self.init(url: container, fileName: module.logFileName)
     }
 
-    private var numberOfLogsToRemove: Int {
-        numberOfLogAfterMerge - config.maxLogLines
-    }
-
-    public init(module: PassModule) {
-        guard let fileContainer =
-            FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroup) else {
-            fatalError("Shared file container could not be created.")
-        }
-        self.init(url: fileContainer, fileName: module.logFileName)
-    }
-
-    /// Manage (read/write) the log file on disk
+    /// Manage (read/write) the log file on disk.
     /// - Parameters:
-    ///    - url: The URL of the folder that contains the log file
-    ///    - fileName: The name of the log file. E.g "proton.log"
-    ///    - config: Configurations
-    public init(url: URL, fileName: String, config: LogManagerConfig = .default) {
-        self.url = url.appendingPathComponent(fileName, isDirectory: false)
+    ///   - folderURL: The folder containing the log file. `nil` creates a disabled manager.
+    ///   - fileName: The name of the log file, e.g. "proton.log".
+    ///   - config: Configurations.
+    ///   - clock: Injectable for deterministic timer tests.
+    public init(url folderURL: URL?,
+                fileName: String,
+                config: LogManagerConfig = .default,
+                clock: any Clock<Duration> = ContinuousClock()) {
+        if let folderURL {
+            url = folderURL.appendingPathComponent(fileName, isDirectory: false)
+            shouldLog = true
+        } else {
+            url = nil
+            shouldLog = false
+        }
         self.config = config
-        fileExists = FileManager.default.fileExists(atPath: self.url.path)
-        if let logContents = try? String(contentsOf: url, encoding: .utf8) {
-            currentSavedlogs = logContents.components(separatedBy: .newlines)
-        }
-        Task { [weak self] in
-            guard let self else { return }
-            await setUp()
-        }
+        self.clock = clock
+        // No I/O, no tasks. Init is cheap, synchronous, and race-free.
     }
 
     deinit {
+        // Reachable now: the timer task only holds `self` weakly between ticks.
         timerTask?.cancel()
-        timerTask = nil
     }
 }
 
@@ -106,52 +107,53 @@ public actor LogManager: LogManagerProtocol {
 
 public extension LogManager {
     func log(entry: LogEntry) {
-        guard shouldLog else {
-            return
-        }
+        guard shouldLog else { return }
+        ensureSetUp() // also starts the flush timer on first use
         currentMemoryLogs.append(entry)
-        guard currentMemoryLogs.count >= config.dumpThreshold else {
-            return
+        if currentMemoryLogs.count >= config.dumpThreshold {
+            saveAllLogs()
         }
-        saveAllLogs()
     }
 
     func getLogEntries() throws -> [LogEntry] {
-        guard fileExists else { return [] }
-        let logContents = try String(contentsOf: url, encoding: .utf8)
-        let lines = logContents.components(separatedBy: .newlines).filter { !$0.isEmpty }
-        return lines.compactMap(\.toLogEntry)
+        saveAllLogs() // make buffered in-memory entries visible to the caller
+        guard let url, fileExists else { return [] }
+        let contents = try String(contentsOf: url, encoding: .utf8)
+        return contents
+            .split(separator: "\n", omittingEmptySubsequences: true)
+            .compactMap { String($0).toLogEntry }
     }
 
     func removeAllLogs() {
-        guard fileExists else {
-            return
-        }
+        currentSavedLogs.removeAll()
+        currentMemoryLogs.removeAll()
+        guard let url, fileExists else { return }
         do {
-            try FileManager.default.removeItem(atPath: url.path)
+            try FileManager.default.removeItem(at: url)
             fileExists = false
-            currentSavedlogs.removeAll()
-            currentMemoryLogs.removeAll()
         } catch {
+            // Deliberate: a log manager has nowhere to log its own failure.
             print("Failed to remove log file: \(error.localizedDescription)")
         }
     }
 
     func saveAllLogs() {
-        guard shouldLog else {
-            return
-        }
+        guard shouldLog, let url else { return }
+        ensureSetUp()
+        guard !currentMemoryLogs.isEmpty else { return } // nothing new; don't rewrite the file
+        mergeAndClear()
+        pruneIfNeeded()
         do {
-            try createLogFileIfNotExist()
-            pruneLogs()
-            mergeAndClear()
-            try savedOnFile()
+            try writeToDisk(at: url)
         } catch {
-            print("Failed to log: \(error.localizedDescription)")
+            print("Failed to persist logs: \(error.localizedDescription)")
         }
     }
 
     func toggleLogging(shouldLog: Bool) {
+        if !shouldLog {
+            saveAllLogs() // flush entries captured while logging was enabled
+        }
         self.shouldLog = shouldLog
     }
 }
@@ -159,72 +161,66 @@ public extension LogManager {
 // MARK: - Private APIs
 
 private extension LogManager {
-    func createLogFileIfNotExist() throws {
-        guard !fileExists else {
-            return
+    /// Lazy, synchronous, actor-isolated: no suspension points between the check
+    /// and the flag flip, so reentrancy can't run it twice. Replaces both the
+    /// racy `Task { setUp() }` and any need for an async once-gate.
+    func ensureSetUp() {
+        guard !isSetUp, let url else { return }
+        isSetUp = true
+        fileExists = FileManager.default.fileExists(atPath: url.path)
+        if fileExists, let contents = try? String(contentsOf: url, encoding: .utf8) {
+            currentSavedLogs = contents
+                .split(separator: "\n", omittingEmptySubsequences: true)
+                .map(String.init)
         }
-        do {
-            try Data().write(to: url)
-            fileExists = true
-        } catch {
-            throw error
-        }
+        startTimer()
     }
 
-    func pruneLogs() {
-        if numberOfLogAfterMerge > config.maxLogLines {
-            currentSavedlogs.removeFirst(numberOfLogsToRemove)
-        }
-    }
-
+    /// Merge first, then prune: overflow can never exceed the merged count,
+    /// so `removeFirst` is trap-free by construction.
     func mergeAndClear() {
-        currentSavedlogs.append(contentsOf: currentMemoryLogs.compactMap(\.toString))
+        currentSavedLogs.append(contentsOf: currentMemoryLogs.compactMap(\.toString))
         currentMemoryLogs.removeAll()
     }
 
-    func savedOnFile() throws {
-        let updatedLogs = currentSavedlogs.joined(separator: "\n")
-        try updatedLogs.data(using: .utf8)?.write(to: url)
+    func pruneIfNeeded() {
+        let overflow = currentSavedLogs.count - config.maxLogLines
+        if overflow > 0 {
+            currentSavedLogs.removeFirst(overflow)
+        }
+    }
+
+    func writeToDisk(at url: URL) throws {
+        let data = Data(currentSavedLogs.joined(separator: "\n").utf8)
+        try data.write(to: url, options: .atomic) // survives extension termination mid-write
+        fileExists = true // atomic write creates the file; no separate create step needed
+    }
+
+    func startTimer() {
+        guard timerTask == nil else { return }
+        let interval = Duration.seconds(config.timerInterval)
+        timerTask = Task { [weak self, clock] in
+            while !Task.isCancelled {
+                try? await clock.sleep(for: interval)
+                guard !Task.isCancelled, let self else { return }
+                await flushPendingLogs()
+                // `self` goes back to weak at the end of each iteration:
+                // no retain cycle while sleeping, actor can deinit.
+            }
+        }
+    }
+
+    func flushPendingLogs() {
+        guard shouldLog, !currentMemoryLogs.isEmpty else { return }
+        saveAllLogs()
     }
 }
 
-// MARK: - Utils
-
-private extension LogManager {
-    func setUp() {
-        guard timerTask == nil else {
-            return
-        }
-        timerTask = Task { [weak self] in
-            guard let self else { return }
-            await timerLoop()
-        }
-    }
-
-    func timerLoop() async {
-        while !Task.isCancelled {
-            try? await Task.sleep(seconds: 1)
-
-            guard !Task.isCancelled else { return }
-
-            secondCount += 1
-
-            guard secondCount >= config.timerInterval,
-                  currentMemoryLogs.count > config.dumpThreshold,
-                  shouldLog else { return }
-            secondCount = 0
-            saveAllLogs()
-        }
-    }
-}
-
-// MARK: Utils Extensions
+// MARK: - Utils Extensions
 
 private extension LogEntry {
     var toString: String? {
-        guard let jsonData = try? JSONEncoder().encode(self) else {
-            return nil
-        }
+        guard let jsonData = try? JSONEncoder().encode(self) else { return nil }
         return String(data: jsonData, encoding: .utf8)
     }
 }
@@ -235,7 +231,6 @@ private extension String {
               let entry = try? JSONDecoder().decode(LogEntry.self, from: data) else {
             return nil
         }
-
         return entry
     }
 }
