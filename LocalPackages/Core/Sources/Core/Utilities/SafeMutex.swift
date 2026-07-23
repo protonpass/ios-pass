@@ -57,6 +57,7 @@ public struct SafeMutex<Value: ~Copyable>: ~Copyable, @unchecked Sendable {
         return try body(&storage.value)
     }
 
+    // periphery:ignore
     public borrowing func withLockIfAvailable<Result: ~Copyable,
         E: Error>(_ body: (inout sending Value) throws(E) -> sending Result) throws(E) -> sending Result? {
         guard lock.lockIfAvailable() else { return nil }
