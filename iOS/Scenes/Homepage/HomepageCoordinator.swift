@@ -497,7 +497,9 @@ private extension HomepageCoordinator {
     /// - Parameter error: The current error to check
     /// - Returns: A boolean to indicate if we should display the error banner
     func shouldDisplayError(error: any Error) -> Bool {
-        if error is CancellationError { return false }
+        if error is CancellationError {
+            return false
+        }
 
         if let urlError = error as? URLError,
            urlError.code == .cancelled {

@@ -94,7 +94,9 @@ struct ExtraPasswordLockView: View {
         .animation(.default, value: showWrongPasswordError)
         .onAppear { focused = true }
         .onChange(of: viewModel.result) {
-            if let result = viewModel.result { handle(result) }
+            if let result = viewModel.result {
+                handle(result)
+            }
         }
         .onChange(of: viewModel.extraPassword) {
             if showWrongPasswordError {

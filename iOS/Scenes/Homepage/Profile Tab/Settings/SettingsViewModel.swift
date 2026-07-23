@@ -250,7 +250,7 @@ extension SettingsViewModel {
             guard let self else {
                 return
             }
-            let modules = PassModule.allCases.map(LogManager.init)
+            let modules = PassModule.allCases.map { LogManager(module: $0) }
             await modules.asyncForEach { await $0.removeAllLogs() }
             router.display(element: .successMessage(#localized("All logs cleared"), config: nil))
         }

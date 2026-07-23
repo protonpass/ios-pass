@@ -120,7 +120,11 @@ public extension PaymentsManager {
             return false
         }
         paymentFlow = flow
-        defer { if paymentFlow == flow { paymentFlow = nil } }
+        defer {
+            if paymentFlow == flow {
+                paymentFlow = nil
+            }
+        }
 
         // Re-attach the unstructured flow to the caller's task tree:
         // cancelling the caller (VM) still tears the flow down.

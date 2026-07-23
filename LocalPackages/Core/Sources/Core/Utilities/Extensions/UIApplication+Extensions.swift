@@ -22,6 +22,7 @@ import UIKit
 
 @available(iOSApplicationExtension, unavailable)
 public extension UIApplication {
+    @available(iOS, deprecated: 18.0, message: "Use credentials manager enableAutoFill function")
     func openPasswordSettings() {
         open(urlString: "App-prefs:PASSWORDS")
     }

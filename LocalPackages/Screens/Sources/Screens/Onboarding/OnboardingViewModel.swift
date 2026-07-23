@@ -61,8 +61,6 @@ nonisolated struct KnownService: Decodable, Equatable {
     }
 }
 
-// public typealias OnboardingHandling = OnboardingDatasource & OnboardingDelegate
-
 nonisolated struct PassPlans: Equatable {
     let foldersEnabled: Bool
     let plus: PlanUiModel?
@@ -114,8 +112,8 @@ final class OnboardingViewModel {
     private let addTelemetryEvent = dependency(\UseCasesContainer.addTelemetryEvent)
     private let apiManager = dependency(\ToolingContainer.apiManager)
     private let getFeatureFlagStatus = dependency(\UseCasesContainer.getFeatureFlagStatus)
+    private let transactionsObserver = dependency(\ToolingContainer.transactionsObserver)
 
-    private let transactionsObserver: TransactionsObserverProviding
     private var plansManager: ProtonPlansManager?
     private let logger: Logger
     private let userDefaults: UserDefaults
@@ -124,12 +122,10 @@ final class OnboardingViewModel {
 
     init(mode: OnboardingDisplayMode,
          logManager: any LogManagerProtocol = ToolingContainer.shared.logManager(),
-         userDefaults: UserDefaults = kSharedUserDefaults,
-         transactionsObserver: TransactionsObserverProviding = TransactionsObserver.shared) {
+         userDefaults: UserDefaults = kSharedUserDefaults) {
         self.mode = mode
         logger = .init(manager: logManager)
         self.userDefaults = userDefaults
-        self.transactionsObserver = transactionsObserver
     }
 }
 

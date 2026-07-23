@@ -34,7 +34,9 @@ enum InfoBanner: Equatable, Hashable {
     }
 
     var isInvite: Bool {
-        if case .invite = self { return true }
+        if case .invite = self {
+            return true
+        }
         return false
     }
 }
