@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import DesignSystem
 import Macro
 import PhotosUI
@@ -28,6 +29,7 @@ private extension BugReportView {
     enum ValidationError: LocalizedError {
         case missingReason
         case shortDescription
+        case longDescription(Int)
 
         var errorDescription: String? {
             switch self {
@@ -36,6 +38,9 @@ private extension BugReportView {
 
             case .shortDescription:
                 #localized("Please provide us with more details in the description")
+
+            case let .longDescription(limit):
+                #localized("Description is too long. Please keep it under %lld characters.", limit)
             }
         }
     }
@@ -110,8 +115,10 @@ private extension BugReportView {
                               backgroundColor: PassColor.interactionNorm) {
                 if viewModel.object == nil {
                     validationError = .missingReason
-                } else if viewModel.description.count < 10 {
+                } else if viewModel.description.count < Constants.Report.minCharCount {
                     validationError = .shortDescription
+                } else if viewModel.description.count > Constants.Report.maxCharCount {
+                    validationError = .longDescription(Constants.Report.maxCharCount)
                 } else {
                     viewModel.send()
                 }
@@ -124,10 +131,13 @@ private extension BugReportView {
 private extension BugReportView {
     var mainContainer: some View {
         ScrollView {
-            VStack(spacing: DesignConstant.sectionPadding * 1.5) {
+            VStack {
                 objectSection
                 descriptionSection
+                    .padding(.top, DesignConstant.sectionPadding)
+                characterCountSection
                 logsSection
+                    .padding(.vertical, DesignConstant.sectionPadding)
                 attachmentsSection
                 Spacer()
             }
@@ -212,6 +222,14 @@ private extension BugReportView {
         .padding(DesignConstant.sectionPadding)
         .roundedEditableSection()
     }
+
+    var characterCountSection: some View {
+        Text(verbatim: "(\(viewModel.description.count)/\(Constants.Report.maxCharCount))")
+            .font(.footnote)
+            .foregroundStyle(viewModel.description.count <= Constants.Report.maxCharCount ?
+                PassColor.textWeak : PassColor.signalDanger)
+            .frame(maxWidth: .infinity, alignment: .leading)
+    }
 }
 
 @MainActor
@@ -252,21 +270,26 @@ private extension BugReportView {
                 })
             }
 
-            VStack(alignment: .leading) {
-                AnyLayout(FlowLayout(spacing: 8)) {
-                    ForEach(Array(viewModel.currentFiles.keys), id: \.self) { key in
-                        view(for: key)
+            GeometryReader { proxy in
+                VStack(alignment: .leading) {
+                    AnyLayout(FlowLayout(spacing: 8)) {
+                        ForEach(Array(viewModel.currentFiles.keys), id: \.self) { key in
+                            view(for: key, maxWidth: proxy.size.width - 20) // minus the padding
+                        }
                     }
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
     }
 
-    func view(for fileName: String) -> some View {
+    func view(for fileName: String, maxWidth: CGFloat) -> some View {
         Label(title: {
             Text(fileName)
                 .font(.callout)
                 .foregroundStyle(PassColor.textNorm)
+                .lineLimit(1)
+                .truncationMode(.middle)
         }, icon: {
             Button(action: {
                 viewModel.removeFile(fileName)
@@ -277,6 +300,7 @@ private extension BugReportView {
                     .frame(width: 18, height: 18)
             })
         })
+        .frame(maxWidth: maxWidth)
         .labelStyle(.rightIcon)
         .padding(.horizontal, 10)
         .padding(.vertical, 8)
