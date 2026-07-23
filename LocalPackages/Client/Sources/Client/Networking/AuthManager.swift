@@ -124,10 +124,6 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
         sessionInvalidationSubject.eraseToAnyPublisher()
     }
 
-    public var delegate: (any AuthHelperDelegate)? {
-        state.withLock { UncheckedSendable($0.delegate) }.value
-    }
-
     // swiftlint:disable:next identifier_name
     public var authSessionInvalidatedDelegateForLoginAndSignup: (any AuthSessionInvalidatedDelegate)? {
         get { state.withLock { UncheckedSendable($0.loginAndSignupDelegate) }.value }
