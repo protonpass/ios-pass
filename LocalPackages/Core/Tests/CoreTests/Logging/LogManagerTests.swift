@@ -18,89 +18,87 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+@_spi(Test)
 @testable import Core
 import CoreMocks
-import XCTest
+import Foundation
+import Testing
 
-final class LogManagerTests: XCTestCase, @unchecked Sendable {
-    private static let destinationFile = "logManagerTest.log"
-    var sut: LogManagerProtocol!
+@Suite
+struct LogManagerTests {
+    private let sut: LogManagerProtocol
 
-    override func setUp() {
-        super.setUp()
-        let url = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first!
-        sut = LogManager(url: url,
-                         fileName: LogManagerTests.destinationFile,
+    init() {
+        let directory = FileManager.default.temporaryDirectory
+        sut = LogManager(url: directory,
+                         fileName: "logManagerTest-\(UUID().uuidString).log",
                          config: LogManagerConfig(maxLogLines: 10,
                                                   dumpThreshold: 5,
                                                   timerInterval: 1))
     }
 
-    override func tearDown() {
-        Task {
-            await sut.removeAllLogs()
-            sut = nil
-        }
-        super.tearDown()
-    }
-
-    func testAddLogEntryWithoutGoingAboveDump_ShouldNotSavedLocally() async throws {
-        await sut.removeAllLogs()
-        await sut.log(entry: LogEntryFactory.createMock())
-        let newLogEntries = try await sut.getLogEntries()
-        XCTAssertTrue(newLogEntries.isEmpty)
-    }
-
-    func testAddLogEntryGoingAboveDump() async throws {
-        await sut.removeAllLogs()
-        await LogEntryFactory.createMockArray(count: 6).asyncForEach { entry in
+    @Test(arguments: [(entryCount: 1, expectedPersisted: 0),
+                      (entryCount: 6, expectedPersisted: 5)])
+    func `entries are only persisted once the dump threshold is crossed`(entryCount: Int,
+                                                                         expectedPersisted: Int) async throws {
+        await LogEntryFactory.createMockArray(count: entryCount).asyncForEach { entry in
             await sut.log(entry: entry)
         }
-        let newLogEntries = try await sut.getLogEntries()
-        XCTAssertEqual(newLogEntries.count, 5)
+        let entries = try await sut.getLogEntriesWithoutSave()
+        #expect(entries.count == expectedPersisted)
+    }
+    
+    @Test(arguments: [(entryCount: 1, expectedPersisted: 1),
+                      (entryCount: 6, expectedPersisted: 6)])
+    func `entries are only persisted if they are fetched without save`(entryCount: Int,
+                                                                         expectedPersisted: Int) async throws {
+        await LogEntryFactory.createMockArray(count: entryCount).asyncForEach { entry in
+            await sut.log(entry: entry)
+        }
+        let entries = try await sut.getLogEntries()
+        #expect(entries.count == expectedPersisted)
     }
 
-    func testLocalLogFileDoesntGoAboveMaxEntry() async throws {
-        await sut.removeAllLogs()
+    @Test
+    func `local log file is capped at maxLogLines`() async throws {
         await LogEntryFactory.createMockArray(count: 30).asyncForEach { entry in
             await sut.log(entry: entry)
         }
-        let newLogEntries = try await sut.getLogEntries()
-        XCTAssertEqual(newLogEntries.count, 10)
+        let entries = try await sut.getLogEntries()
+        #expect(entries.count == 10)
     }
 
-    func testRemoveLogEntry() async throws {
-        await sut.removeAllLogs()
+    @Test
+    func `removeAllLogs clears persisted entries`() async throws {
         await LogEntryFactory.createMockArray(count: 50).asyncForEach { entry in
             await sut.log(entry: entry)
         }
         await sut.removeAllLogs()
 
-        let newLogEntries = try await sut.getLogEntries()
-        XCTAssertTrue(newLogEntries.isEmpty)
+        let entries = try await sut.getLogEntries()
+        #expect(entries.isEmpty)
     }
 
-    func testForceLogSave() async throws {
-        await sut.removeAllLogs()
+    @Test
+    func `saveAllLogs persists entries below the dump threshold`() async throws {
         await LogEntryFactory.createMockArray(count: 3).asyncForEach { entry in
             await sut.log(entry: entry)
         }
         await sut.saveAllLogs()
 
-        let newLogEntries = try await sut.getLogEntries()
-        XCTAssertEqual(newLogEntries.count, 3)
+        let entries = try await sut.getLogEntries()
+        #expect(entries.count == 3)
     }
 
-    func testLoggingLock() async throws {
-        await sut.removeAllLogs()
+    @Test
+    func `entries logged while logging is disabled are dropped`() async throws {
         await sut.toggleLogging(shouldLog: false)
         await LogEntryFactory.createMockArray(count: 3).asyncForEach { entry in
             await sut.log(entry: entry)
         }
         await sut.saveAllLogs()
 
-        let newLogEntries = try await sut.getLogEntries()
-        XCTAssertTrue(newLogEntries.isEmpty)
-        await sut.toggleLogging(shouldLog: true)
+        let entries = try await sut.getLogEntries()
+        #expect(entries.isEmpty)
     }
 }
