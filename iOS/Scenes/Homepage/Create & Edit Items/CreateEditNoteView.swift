@@ -22,7 +22,6 @@
 import DesignSystem
 import DocScanner
 import Entities
-import FactoryKit
 import Macro
 import ProtonCoreUIFoundations
 import Screens

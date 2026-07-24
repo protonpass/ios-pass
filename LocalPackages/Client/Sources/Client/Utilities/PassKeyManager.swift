@@ -290,7 +290,9 @@ private extension PassKeyManager {
             getLatestCachedKey(id: containerId)
         }
 
-        if let key { return key }
+        if let key {
+            return key
+        }
 
         guard !refreshed else {
             throw PassError.keysNotFound(shareID: containerId)
@@ -439,7 +441,9 @@ private extension PassKeyManager {
 
 private extension PassKeyManager {
     func loadKeysIfNeeded() async throws {
-        if keysLoaded { return }
+        if keysLoaded {
+            return
+        }
 
         // Prevent concurrent loading - reuse existing task if in progress
         if let existingTask = loadingTask {

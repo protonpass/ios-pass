@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import DIComposition
 import FactoryKit
 import Screens
 import SwiftUI
@@ -28,7 +29,7 @@ struct FileAttachmentViewerSection: View {
     @State private var url: URL?
     @State private var dismissedFileAttachmentsBanner = false
 
-    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
+    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
 
     var body: some View {
         Section(content: {

@@ -21,18 +21,21 @@
 import Client
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
+import Stores
 
 @MainActor
 final class FullSyncProgressViewModel: ObservableObject {
     @Published private(set) var progresses = [VaultSyncProgress]()
     @Published private(set) var error: (any Error)?
-    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
-    private let processVaultSyncEvent = resolve(\SharedUseCasesContainer.processVaultSyncEvent)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let appContentManager = dependency(\ServiceContainer.appContentManager)
+    private let processVaultSyncEvent = dependency(\UseCasesContainer.processVaultSyncEvent)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
     @LazyInjected(\UseCasesContainer.createLogsFile) private var createLogsFile
     private var cancellables = Set<AnyCancellable>()
 

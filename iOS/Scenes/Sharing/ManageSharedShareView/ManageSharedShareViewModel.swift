@@ -22,11 +22,13 @@
 
 import Client
 import Combine
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
 import Macro
 import ProtonCoreNetworking
+import Screens
 
 @MainActor
 final class ManageSharedShareViewModel: ObservableObject {
@@ -47,29 +49,29 @@ final class ManageSharedShareViewModel: ObservableObject {
 
     @Published private var groups = [String: GroupInfo]()
 
-    private let getVaultItemCount = resolve(\UseCasesContainer.getVaultItemCount)
-    private let getUsersLinkedToShare = resolve(\UseCasesContainer.getUsersLinkedToShare)
-    private let getPendingInvitationsForShare = resolve(\UseCasesContainer.getPendingInvitationsForShare)
-    private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
-    private let revokeInvitation = resolve(\UseCasesContainer.revokeInvitation)
-    private let revokeNewUserInvitation = resolve(\UseCasesContainer.revokeNewUserInvitation)
-    private let sendInviteReminder = resolve(\UseCasesContainer.sendInviteReminder)
-    private let updateUserShareRole = resolve(\UseCasesContainer.updateUserShareRole)
-    private let revokeUserShareAccess = resolve(\UseCasesContainer.revokeUserShareAccess)
-    private let transferVaultOwnership = resolve(\UseCasesContainer.transferVaultOwnership)
-    private let canUserTransferVaultOwnership = resolve(\UseCasesContainer.canUserTransferVaultOwnership)
-    private let promoteNewUserInvite = resolve(\UseCasesContainer.promoteNewUserInvite)
-    private let userManager = resolve(\SharedServiceContainer.userManager)
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
+    private let getVaultItemCount = dependency(\UseCasesContainer.getVaultItemCount)
+    private let getUsersLinkedToShare = dependency(\UseCasesContainer.getUsersLinkedToShare)
+    private let getPendingInvitationsForShare = dependency(\UseCasesContainer.getPendingInvitationsForShare)
+    private let setShareInviteVault = dependency(\UseCasesContainer.setShareInviteVault)
+    private let revokeInvitation = dependency(\UseCasesContainer.revokeInvitation)
+    private let revokeNewUserInvitation = dependency(\UseCasesContainer.revokeNewUserInvitation)
+    private let sendInviteReminder = dependency(\UseCasesContainer.sendInviteReminder)
+    private let updateUserShareRole = dependency(\UseCasesContainer.updateUserShareRole)
+    private let revokeUserShareAccess = dependency(\UseCasesContainer.revokeUserShareAccess)
+    private let transferVaultOwnership = dependency(\UseCasesContainer.transferVaultOwnership)
+    private let canUserTransferVaultOwnership = dependency(\UseCasesContainer.canUserTransferVaultOwnership)
+    private let promoteNewUserInvite = dependency(\UseCasesContainer.promoteNewUserInvite)
+    private let userManager = dependency(\ServiceContainer.userManager)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let syncEventLoop = dependency(\ServiceContainer.syncEventLoop)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let accessRepository = dependency(\RepositoryContainer.accessRepository)
     private var fetchingTask: Task<Void, Never>?
-    @LazyInjected(\SharedRepositoryContainer.organizationRepository)
+    @LazyInjected(\RepositoryContainer.organizationRepository)
     private var organizationRepository
-    @LazyInjected(\SharedRepositoryContainer.groupRepository) private var groupRepository
+    @LazyInjected(\RepositoryContainer.groupRepository) private var groupRepository
 
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
+    @LazyInjected(\UseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
 
     var managerAsAdmin: Bool {

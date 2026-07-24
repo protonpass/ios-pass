@@ -21,6 +21,7 @@
 //
 
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import Macro
@@ -36,7 +37,7 @@ struct DarkWebMonitorHomeView: View {
     @State private var showNoBreachesAlert = false
     @State private var showBreachesFoundAlert = false
     @Environment(PathRouter.self) private var router: PathRouter
-    private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
+    private let addTelemetryEvent = dependency(\UseCasesContainer.addTelemetryEvent)
 
     var body: some View {
         mainContainer

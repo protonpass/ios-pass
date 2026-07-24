@@ -20,6 +20,7 @@
 
 import Client
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import SwiftUI
@@ -62,9 +63,9 @@ enum ItemSquircleThumbnailSize {
 struct ItemSquircleThumbnail: View {
     @State private var image: UIImage?
 
-    private let repository = resolve(\SharedRepositoryContainer.favIconRepository)
-    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
-    private let cachedFavIconsManager = resolve(\SharedServiceContainer.cachedFavIconsManager)
+    private let repository = dependency(\RepositoryContainer.favIconRepository)
+    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
+    private let cachedFavIconsManager = dependency(\ServiceContainer.cachedFavIconsManager)
     private let data: ItemThumbnailData
     private let pinned: Bool
     private let isEnabled: Bool

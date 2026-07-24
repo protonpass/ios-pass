@@ -21,10 +21,12 @@
 //
 
 import Combine
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 
 struct DetailMonitoredItemUiModel: Hashable {
     let email: String
@@ -42,16 +44,16 @@ final class DetailMonitoredItemViewModel: ObservableObject {
     @Published private(set) var state: FetchableObject<DetailMonitoredItemUiModel> = .fetching
     @Published private(set) var shouldDismiss = false
 
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
-    private let getItemsLinkedToBreach = resolve(\UseCasesContainer.getItemsLinkedToBreach)
-    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
-    private let toggleMonitoringForAlias = resolve(\UseCasesContainer.toggleMonitoringForAlias)
-    private let toggleMonitoringForCustomEmail = resolve(\UseCasesContainer.toggleMonitoringForCustomEmail)
-    private let toggleMonitoringForProtonAddress = resolve(\UseCasesContainer.toggleMonitoringForProtonAddress)
-    private let removeEmailFromBreachMonitoring = resolve(\UseCasesContainer.removeEmailFromBreachMonitoring)
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let passMonitorRepository = dependency(\RepositoryContainer.passMonitorRepository)
+    private let getItemsLinkedToBreach = dependency(\UseCasesContainer.getItemsLinkedToBreach)
+    private let itemRepository = dependency(\RepositoryContainer.itemRepository)
+    private let toggleMonitoringForAlias = dependency(\UseCasesContainer.toggleMonitoringForAlias)
+    private let toggleMonitoringForCustomEmail = dependency(\UseCasesContainer.toggleMonitoringForCustomEmail)
+    private let toggleMonitoringForProtonAddress = dependency(\UseCasesContainer.toggleMonitoringForProtonAddress)
+    private let removeEmailFromBreachMonitoring = dependency(\UseCasesContainer.removeEmailFromBreachMonitoring)
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
 
     private var cancellables = Set<AnyCancellable>()
     private var currentTask: Task<Void, Never>?

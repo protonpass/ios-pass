@@ -1,0 +1,60 @@
+//
+// UIComponentsContainer.swift
+// Proton Pass - Created on 16/07/2026.
+// Copyright (c) 2026 Proton Technologies AG
+//
+// This file is part of Proton Pass.
+//
+// Proton Pass is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Pass is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+
+import Client
+import FactoryKit
+import UIKit
+
+public final class UIComponentsContainer: SharedContainer, AutoRegistering {
+    public static let shared = UIComponentsContainer()
+    public let manager = ContainerManager()
+
+    public func autoRegister() {
+        manager.defaultScope = .cached
+    }
+
+    public func register(rootViewController: UIViewController) {
+        self.rootViewController.register { rootViewController }
+    }
+
+    public func reset() {
+        UIComponentsContainer.shared.bannerManager.reset()
+        UIComponentsContainer.shared.rootViewController.reset()
+    }
+}
+
+public extension UIComponentsContainer {
+    var bannerManager: Factory<any BannerDisplayProtocol> {
+        self { BannerManager(container: self.rootViewController()) }
+    }
+
+    var rootViewController: Factory<UIViewController?> {
+        self { nil }
+    }
+
+    var window: Factory<UIWindow?> {
+        self { nil }
+    }
+
+    @MainActor
+    var itemContextMenuHandler: Factory<ItemContextMenuHandler> {
+        self { ItemContextMenuHandler() }
+    }
+}

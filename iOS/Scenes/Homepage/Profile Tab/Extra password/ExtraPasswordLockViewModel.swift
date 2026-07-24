@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
@@ -37,7 +38,7 @@ final class ExtraPasswordLockViewModel: ObservableObject {
         extraPassword.count >= Constants.ExtraPassword.minLength
     }
 
-    private let verifyExtraPassword = resolve(\UseCasesContainer.verifyExtraPassword)
+    private let verifyExtraPassword = dependency(\UseCasesContainer.verifyExtraPassword)
     private let extraPasswordRepository: any ExtraPasswordRepositoryProtocol
     private let userId: String
 

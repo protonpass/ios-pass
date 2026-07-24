@@ -32,12 +32,8 @@ public struct UsernameGeneratorView: View {
     @State private var maxUsernameHeight = 0.0
     @State private var showAdvancedOptions = false
 
-    public init(datasource: any LocalUsernamePreferencesDatasourceProtocol,
-                generateUsername: any GenerateUsernameUseCase,
-                onResult: @escaping (Result<String, any Error>) -> Void) {
-        _viewModel = .init(initialValue: .init(datasource: datasource,
-                                               generateUsername: generateUsername,
-                                               onResult: onResult))
+    public init(onResult: @escaping (Result<String, any Error>) -> Void) {
+        _viewModel = .init(initialValue: .init(onResult: onResult))
     }
 
     public var body: some View {

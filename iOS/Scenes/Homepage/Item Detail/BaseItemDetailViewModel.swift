@@ -21,10 +21,12 @@
 import Client
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Macro
 import Screens
+import Stores
 import SwiftUI
 
 @MainActor
@@ -93,28 +95,28 @@ class BaseItemDetailViewModel: ObservableObject {
     private(set) var customFields: [CustomField]
     let vault: VaultListUiModel?
     let shareContent: ShareContent?
-    let logger = resolve(\SharedToolingContainer.logger)
+    let logger = dependency(\ToolingContainer.logger)
 
-    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
-    private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
-    private let pinItems = resolve(\SharedUseCasesContainer.pinItems)
-    private let unpinItems = resolve(\SharedUseCasesContainer.unpinItems)
-    private let toggleItemMonitoring = resolve(\UseCasesContainer.toggleItemMonitoring)
-    private let addItemReadEvent = resolve(\UseCasesContainer.addItemReadEvent)
-    @LazyInjected(\SharedRepositoryContainer.itemRepository) private(set) var itemRepository
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private(set) var router
-    @LazyInjected(\SharedServiceContainer.itemContextMenuHandler) var itemContextMenuHandler
-    @LazyInjected(\SharedServiceContainer.syncEventLoop) var syncEventLoop
+    private let appContentManager = dependency(\ServiceContainer.appContentManager)
+    private let canUserPerformActionOnVault = dependency(\UseCasesContainer.canUserPerformActionOnVault)
+    private let pinItems = dependency(\UseCasesContainer.pinItems)
+    private let unpinItems = dependency(\UseCasesContainer.unpinItems)
+    private let toggleItemMonitoring = dependency(\UseCasesContainer.toggleItemMonitoring)
+    private let addItemReadEvent = dependency(\UseCasesContainer.addItemReadEvent)
+    @LazyInjected(\RepositoryContainer.itemRepository) private(set) var itemRepository
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) private(set) var router
+    @LazyInjected(\UIComponentsContainer.itemContextMenuHandler) var itemContextMenuHandler
+    @LazyInjected(\ServiceContainer.syncEventLoop) var syncEventLoop
     @LazyInjected(\UseCasesContainer.leaveShare) var leaveShareUsecase
-    @LazyInjected(\SharedServiceContainer.userManager) var userManager
-    @LazyInjected(\SharedRepositoryContainer.fileAttachmentRepository) private var fileRepository
-    @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
-    @LazyInjected(\SharedUseCasesContainer.getFileGroup) private var getFileGroup
-    @LazyInjected(\SharedUseCasesContainer.generateFileTempUrl) private var generateFileTempUrl
-    @LazyInjected(\SharedUseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
-    @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
-    @LazyInjected(\SharedRepositoryContainer.organizationRepository) private var organizationRepository
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
+    @LazyInjected(\ServiceContainer.userManager) var userManager
+    @LazyInjected(\RepositoryContainer.fileAttachmentRepository) private var fileRepository
+    @LazyInjected(\UseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
+    @LazyInjected(\UseCasesContainer.getFileGroup) private var getFileGroup
+    @LazyInjected(\UseCasesContainer.generateFileTempUrl) private var generateFileTempUrl
+    @LazyInjected(\UseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
+    @LazyInjected(\ToolingContainer.preferencesManager) var preferencesManager
+    @LazyInjected(\RepositoryContainer.organizationRepository) private var organizationRepository
+    @LazyInjected(\UseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
 
     var folderSupported: Bool {

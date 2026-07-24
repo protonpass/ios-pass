@@ -19,22 +19,24 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Combine
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 
 @MainActor
 final class MonitorProtonAddressesViewModel: ObservableObject {
     @Published private(set) var allAddresses: [ProtonAddress]
     @Published private(set) var access: Access?
 
-    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
-    private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
-    private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    private let accessRepository = dependency(\RepositoryContainer.accessRepository)
+    private let passMonitorRepository = dependency(\RepositoryContainer.passMonitorRepository)
+    private let refreshAccessAndMonitorState = dependency(\UseCasesContainer.refreshAccessAndMonitorState)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
 
     private var cancellables = Set<AnyCancellable>()
 

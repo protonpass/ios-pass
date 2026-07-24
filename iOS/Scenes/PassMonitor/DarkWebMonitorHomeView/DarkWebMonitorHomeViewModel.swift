@@ -22,9 +22,11 @@
 
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
+import Screens
 import UseCases
 
 @MainActor
@@ -36,16 +38,16 @@ final class DarkWebMonitorHomeViewModel: ObservableObject {
     @Published private(set) var suggestedEmailsState: FetchableObject<[SuggestedEmail]> = .fetching
     @Published private(set) var updatingStateOfCustomEmail = false
 
-    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
-    private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
-    private let getCustomEmailSuggestion = resolve(\SharedUseCasesContainer.getCustomEmailSuggestion)
-    private let getAllAliasMonitorInfos = resolve(\UseCasesContainer.getAllAliasMonitorInfos)
-    private let addCustomEmailToMonitoring = resolve(\UseCasesContainer.addCustomEmailToMonitoring)
-    private let removeEmailFromBreachMonitoring = resolve(\UseCasesContainer.removeEmailFromBreachMonitoring)
-    private let getAllCustomEmails = resolve(\UseCasesContainer.getAllCustomEmails)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let logger = resolve(\SharedToolingContainer.logger)
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    private let accessRepository = dependency(\RepositoryContainer.accessRepository)
+    private let passMonitorRepository = dependency(\RepositoryContainer.passMonitorRepository)
+    private let getCustomEmailSuggestion = dependency(\UseCasesContainer.getCustomEmailSuggestion)
+    private let getAllAliasMonitorInfos = dependency(\UseCasesContainer.getAllAliasMonitorInfos)
+    private let addCustomEmailToMonitoring = dependency(\UseCasesContainer.addCustomEmailToMonitoring)
+    private let removeEmailFromBreachMonitoring = dependency(\UseCasesContainer.removeEmailFromBreachMonitoring)
+    private let getAllCustomEmails = dependency(\UseCasesContainer.getAllCustomEmails)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let logger = dependency(\ToolingContainer.logger)
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
 
     private var cancellables = Set<AnyCancellable>()
     private var fetchAliasBreachesTask: Task<Void, Never>?

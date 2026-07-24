@@ -22,9 +22,12 @@
 
 import Client
 import Combine
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
+import Screens
+import Stores
 
 @MainActor
 final class AcceptRejectInviteViewModel: ObservableObject {
@@ -34,16 +37,16 @@ final class AcceptRejectInviteViewModel: ObservableObject {
     @Published private(set) var shouldCloseSheet = false
     private(set) var invitedGroupName = ""
 
-    private let rejectInvitation = resolve(\UseCasesContainer.rejectInvitation)
-    private let acceptInvitation = resolve(\UseCasesContainer.acceptInvitation)
-    private let decodeShareVaultInformation = resolve(\UseCasesContainer.decodeShareVaultInformation)
-    private let updateCachedInvitations = resolve(\UseCasesContainer.updateCachedInvitations)
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
-    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedRepositoryContainer.groupRepository) private var groupRepository
+    private let rejectInvitation = dependency(\UseCasesContainer.rejectInvitation)
+    private let acceptInvitation = dependency(\UseCasesContainer.acceptInvitation)
+    private let decodeShareVaultInformation = dependency(\UseCasesContainer.decodeShareVaultInformation)
+    private let updateCachedInvitations = dependency(\UseCasesContainer.updateCachedInvitations)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let syncEventLoop = dependency(\ServiceContainer.syncEventLoop)
+    private let appContentManager = dependency(\ServiceContainer.appContentManager)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
+    @LazyInjected(\RepositoryContainer.groupRepository) private var groupRepository
     private var cancellables = Set<AnyCancellable>()
 
     init(invite: Invite) {

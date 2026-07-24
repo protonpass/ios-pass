@@ -23,10 +23,12 @@
 import Client
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 import SwiftUI
 
 typealias SectionedItemSearchResult = SectionedObjects<ItemSearchResult>
@@ -46,14 +48,14 @@ final class TotpLoginsViewModel: ObservableObject {
         }
     }
 
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    private let getActiveLoginItems = resolve(\SharedUseCasesContainer.getActiveLoginItems)
-    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
-    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
-    let totpManager = resolve(\SharedServiceContainer.totpManager)
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
+    private let getActiveLoginItems = dependency(\UseCasesContainer.getActiveLoginItems)
+    private let itemRepository = dependency(\RepositoryContainer.itemRepository)
+    private let shareRepository = dependency(\RepositoryContainer.shareRepository)
+    let totpManager = dependency(\ServiceContainer.totpManager)
 
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
-    @LazyInjected(\SharedToolingContainer.logger) private var logger
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) private var router
+    @LazyInjected(\ToolingContainer.logger) private var logger
 
     private var searchableItems = [SearchableItem]()
     private(set) var selectedItem: ItemContent?
@@ -233,7 +235,9 @@ private extension TotpLoginsViewModel {
                 self.results = .fetched(results)
             }
         } catch {
-            if error is CancellationError { return }
+            if error is CancellationError {
+                return
+            }
             await MainActor.run { [weak self] in
                 guard let self else { return }
                 results = .error(error)
@@ -242,7 +246,9 @@ private extension TotpLoginsViewModel {
     }
 
     func handle(_ error: any Error) {
-        if error is CancellationError { return }
+        if error is CancellationError {
+            return
+        }
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
     }

@@ -23,6 +23,7 @@ import Client
 import CodeScanner
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Macro
@@ -67,8 +68,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     /// Proton account email address
     private(set) var emailAddress: String = ""
 
-    private let aliasRepository = resolve(\SharedRepositoryContainer.aliasRepository)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let aliasRepository = dependency(\RepositoryContainer.aliasRepository)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
 
     private var aliasOptions: AliasOptions?
     @Published private var aliasCreationLiteInfo: AliasCreationLiteInfo?
@@ -76,20 +77,14 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         aliasCreationLiteInfo != nil
     }
 
-    private let sanitizeTotpUriForEditing = resolve(\SharedUseCasesContainer.sanitizeTotpUriForEditing)
-    private let sanitizeTotpUriForSaving = resolve(\SharedUseCasesContainer.sanitizeTotpUriForSaving)
-    private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
-    private let createPasskey = resolve(\SharedUseCasesContainer.createPasskey)
-    private let validateEmail = resolve(\SharedUseCasesContainer.validateEmail)
-    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
-    @LazyInjected(\SharedUseCasesContainer.getOrganizationSettings)
+    private let sanitizeTotpUriForEditing = dependency(\UseCasesContainer.sanitizeTotpUriForEditing)
+    private let sanitizeTotpUriForSaving = dependency(\UseCasesContainer.sanitizeTotpUriForSaving)
+    private let getPasswordStrength = dependency(\UseCasesContainer.getPasswordStrength)
+    private let createPasskey = dependency(\UseCasesContainer.createPasskey)
+    private let validateEmail = dependency(\UseCasesContainer.validateEmail)
+    private let getSharedPreferences = dependency(\UseCasesContainer.getSharedPreferences)
+    @LazyInjected(\UseCasesContainer.getOrganizationSettings)
     private var getOrganizationSettings
-
-    @LazyInjected(\SharedUseCasesContainer.generateUsername)
-    private(set) var generateUsername
-
-    @LazyInjected(\SharedRepositoryContainer.localUsernamePreferencesDatasource)
-    private(set) var localUsernamePreferencesDatasource
 
     weak var delegate: (any CreateEditLoginViewModelDelegate)?
 
@@ -355,7 +350,9 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     func validateURLs() -> Bool {
         invalidURLs = urls.map(\.value).compactMap { url in
-            if url.isEmpty { return nil }
+            if url.isEmpty {
+                return nil
+            }
             if URLUtils.Sanitizer.sanitize(url) == nil {
                 return url
             }

@@ -24,6 +24,7 @@ import DesignSystem
 import Entities
 import ProtonCoreUIFoundations
 import Screens
+import Stores
 import SwiftUI
 import TipKit
 

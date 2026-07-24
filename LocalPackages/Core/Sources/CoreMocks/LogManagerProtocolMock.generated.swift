@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Entities
 import Foundation
 
  // Check if the protocol inherits from Actor
@@ -108,5 +109,21 @@ public actor LogManagerProtocolMock: LogManagerProtocol {
         invokedToggleLoggingCount += 1
         invokedToggleLoggingParameters = (shouldLog, ())
         closureToggleLogging()
+    }
+    // MARK: - getLogEntriesWithoutSave
+    public var getLogEntriesWithoutSaveThrowableError6: Error?
+    public var closureGetLogEntriesWithoutSave: () -> () = {}
+    public var invokedGetLogEntriesWithoutSavefunction = false
+    public var invokedGetLogEntriesWithoutSaveCount = 0
+    public nonisolated(unsafe) var stubbedGetLogEntriesWithoutSaveResult: [LogEntry]!
+
+    public func getLogEntriesWithoutSave() throws -> [LogEntry] {
+        invokedGetLogEntriesWithoutSavefunction = true
+        invokedGetLogEntriesWithoutSaveCount += 1
+        if let error = getLogEntriesWithoutSaveThrowableError6 {
+            throw error
+        }
+        closureGetLogEntriesWithoutSave()
+        return stubbedGetLogEntriesWithoutSaveResult
     }
 }

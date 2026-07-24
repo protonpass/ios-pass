@@ -564,17 +564,16 @@ struct SentinelSheetView: View {
         .padding()
     }
 
+    @ViewBuilder
     private var background: some View {
-        Group {
-            Color.white
-                .ignoresSafeArea()
-            LinearGradient(colors: [
-                .clear,
-                Color(red: 112 / 255, green: 76 / 255, blue: 225 / 255, opacity: 0.15)
-            ],
-            startPoint: .top,
-            endPoint: .bottom)
-                .ignoresSafeArea()
-        }
+        Color.white
+            .ignoresSafeArea()
+        LinearGradient(colors: [
+            .clear,
+            Color(red: 112 / 255, green: 76 / 255, blue: 225 / 255, opacity: 0.15)
+        ],
+        startPoint: .top,
+        endPoint: .bottom)
+            .ignoresSafeArea()
     }
 }

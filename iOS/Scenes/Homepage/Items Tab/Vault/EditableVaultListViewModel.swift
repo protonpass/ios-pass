@@ -21,11 +21,14 @@
 import Client
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
 import Macro
 import ProtonCoreLogin
+import Screens
+import Stores
 
 private extension EditableVaultListViewModel {
     struct VaultCount {
@@ -83,25 +86,25 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     @Published var folderAction: FolderAction?
     @Published var folderName: String = ""
 
-    let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
 
-    private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
-    private let getUserShareStatus = resolve(\UseCasesContainer.getUserShareStatus)
-    private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
-    private let leaveShare = resolve(\UseCasesContainer.leaveShare)
-    private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedRepositoryContainer.accessRepository)
+    private let setShareInviteVault = dependency(\UseCasesContainer.setShareInviteVault)
+    private let getUserShareStatus = dependency(\UseCasesContainer.getUserShareStatus)
+    private let canUserPerformActionOnVault = dependency(\UseCasesContainer.canUserPerformActionOnVault)
+    private let leaveShare = dependency(\UseCasesContainer.leaveShare)
+    private let syncEventLoop = dependency(\ServiceContainer.syncEventLoop)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let appContentManager = dependency(\ServiceContainer.appContentManager)
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
+    @LazyInjected(\RepositoryContainer.accessRepository)
     private var accessRepository
-    @LazyInjected(\SharedRepositoryContainer.organizationRepository)
+    @LazyInjected(\RepositoryContainer.organizationRepository)
     private var organizationRepository
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
+    @LazyInjected(\UseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
     @LazyInjected(\UseCasesContainer.reorganizeVaults)
     private var reorganizeVaults
-    @LazyInjected(\SharedRepositoryContainer.itemRepository)
+    @LazyInjected(\RepositoryContainer.itemRepository)
     private var itemRepository
 
     @LazyInjected(\UseCasesContainer.checkVaultCreationAllowance)
