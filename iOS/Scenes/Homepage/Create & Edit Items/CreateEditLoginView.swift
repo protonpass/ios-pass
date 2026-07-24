@@ -189,8 +189,8 @@ struct CreateEditLoginView: View {
                 }
             }
             .sheet(isPresented: $showPasswordGenerator) {
-                let viewModel = viewModel.makePasswordGeneratorViewModel()
-                PasswordGeneratorView(viewModel: viewModel)
+                PasswordGeneratorView(mode: .createLogin,
+                                      onResult: viewModel.handlePasswordResult)
                     .environment(\.colorScheme, colorScheme)
             }
             .onChange(of: showPasswordGenerator) { _, newValue in

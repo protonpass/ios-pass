@@ -30,9 +30,10 @@ public struct PasswordGeneratorView: View {
     @State private var viewModel: PasswordGeneratorViewModel
     private let onHeightChanged: ((Double) -> Void)?
 
-    public init(viewModel: PasswordGeneratorViewModel,
+    public init(mode: PasswordGeneratorMode,
+                onResult: @escaping (Result<String, any Error>) -> Void,
                 onHeightChanged: ((Double) -> Void)? = nil) {
-        self.viewModel = viewModel
+        _viewModel = .init(wrappedValue: .init(mode: mode, onResult: onResult))
         self.onHeightChanged = onHeightChanged
     }
 
