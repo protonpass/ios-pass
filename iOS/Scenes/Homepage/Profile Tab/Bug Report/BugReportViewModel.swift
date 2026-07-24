@@ -22,10 +22,13 @@ import Client
 import Combine
 import Core
 import DIComposition
+import Entities
 import FactoryKit
 import Foundation
 import Macro
 import PhotosUI
+// TODO: remove this
+import Screens
 import SwiftUI
 
 enum BugReportObject: CaseIterable {
@@ -54,34 +57,6 @@ enum BugReportObject: CaseIterable {
     }
 }
 
-private enum BugReportError: Error {
-    case missingReason
-    case shortDescription
-    case longDescription(Int)
-    case fileTooLarge
-    case failedToSend
-
-    var description: String {
-        switch self {
-        case .missingReason:
-            #localized("Please select a reason")
-
-        case .shortDescription:
-            #localized("Please provide us with more details in the description")
-
-        case let .longDescription(limit):
-            #localized("Description is too long. Please keep it under %lld characters.", limit)
-
-        case .fileTooLarge:
-            #localized("One or more files exceed the %lld MB limit. Please select smaller files.",
-                       Constants.Report.maxFileSizeInMb)
-
-        case .failedToSend:
-            #localized("Failed to send report")
-        }
-    }
-}
-
 @MainActor
 final class BugReportViewModel: ObservableObject {
     @Published var object: BugReportObject?
@@ -93,14 +68,16 @@ final class BugReportViewModel: ObservableObject {
 
     private let accessRepository = dependency(\RepositoryContainer.accessRepository)
     private let sendUserBugReport = dependency(\UseCasesContainer.sendUserBugReport)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let logManager = dependency(\ToolingContainer.logManager)
+    private let logger: Logger
 
     private var cancellable = Set<AnyCancellable>()
 
     @Published private(set) var currentFiles = [String: URL]()
 
-    private let maxFileSize = Constants.Report.maxFileSizeInMb * 1_024 * 1_024
-
     init() {
+        logger = .init(manager: logManager)
         $selectedPhotos
             .receive(on: DispatchQueue.main)
             .sink { [weak self] photos in
@@ -113,48 +90,54 @@ final class BugReportViewModel: ObservableObject {
     }
 
     func send() {
-        assert(object != nil, "An object must be selected")
         Task { [weak self] in
             guard let self else { return }
             actionInProcess = true
+            defer { actionInProcess = false }
             do {
+                let object = try validate()
                 let plan = try await accessRepository.getPlan(userId: nil)
                 let planName = plan.type.capitalized
-                let objectDescription = object?.description ?? ""
-                let title = "[\(planName)] iOS Proton Pass: \(objectDescription)"
+                let title = "[\(planName)] iOS Proton Pass: \(object.description)"
                 if try await sendUserBugReport(with: title,
                                                and: description,
                                                shouldSendLogs: shouldSendLogs,
                                                otherLogContent: currentFiles.nilIfEmpty) {
                     hasSent = true
                 } else {
-                    throw BugReportError.failedToSend
+                    throw PassError.bugReport(.failedToSend)
                 }
             } catch {
                 handle(error)
             }
-            actionInProcess = false
         }
     }
 
     func addFiles(_ files: Result<[URL], any Error>) {
         switch files {
         case let .success(fileUrls):
+            let maxFileSizeInMb = Constants.Report.maxFileSizeInMb
+            let maxFileSizeInBytes = maxFileSizeInMb * 1_024 * 1_024
             do {
                 var hasLargeFiles = false
                 for fileUrl in fileUrls {
                     _ = fileUrl.startAccessingSecurityScopedResource()
                     defer { fileUrl.stopAccessingSecurityScopedResource() }
                     let fileSize = try fileUrl.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0
-                    guard fileSize <= maxFileSize else {
+                    guard fileSize <= maxFileSizeInBytes else {
                         hasLargeFiles = true
                         continue
+                    }
+
+                    let maxFileCount = Constants.Report.maxFileCount
+                    if currentFiles.count == maxFileCount {
+                        throw PassError.bugReport(.tooManyFiles(maxFileCount: maxFileCount))
                     }
                     currentFiles[fileUrl.lastPathComponent] = try fileUrl.copyFileToTempDirectory()
                 }
 
                 if hasLargeFiles {
-                    throw BugReportError.fileTooLarge
+                    throw PassError.bugReport(.fileTooLarge(maxSizeInMb: maxFileSizeInMb))
                 }
             } catch {
                 handle(error)
@@ -213,5 +196,57 @@ private extension BugReportViewModel {
         }
     }
 
-    func handle(_ error: any Error) {}
+    func validate() throws -> BugReportObject {
+        guard let object else {
+            throw PassError.bugReport(.missingReason)
+        }
+
+        if description.count < Constants.Report.minCharCount {
+            throw PassError.bugReport(.shortDescription)
+        }
+
+        if description.count > Constants.Report.maxCharCount {
+            throw PassError.bugReport(.longDescription(maxCharCount: Constants.Report.maxCharCount))
+        }
+
+        return object
+    }
+
+    func handle(_ error: any Error) {
+        logger.error(error)
+
+        let message = if let passError = error as? PassError,
+                         case let .bugReport(reason) = passError {
+            reason.localizedMessage
+        } else {
+            error.localizedDescription
+        }
+        router.display(element: .errorMessage(message))
+    }
+}
+
+private extension PassError.BugReportFailureReason {
+    // TODO: add bundle param
+    var localizedMessage: String {
+        switch self {
+        case .missingReason:
+            #localized("Please select a reason")
+
+        case .shortDescription:
+            #localized("Please provide us with more details in the description")
+
+        case let .longDescription(limit):
+            #localized("Description is too long. Please keep it under %lld characters.", limit)
+
+        case let .tooManyFiles(maxFileCount):
+            #localized("Please limit your selection to %lld files", maxFileCount)
+
+        case let .fileTooLarge(maxFileSizeInMb):
+            #localized("One or more files exceed the %lld MB limit. Please select smaller files.",
+                       maxFileSizeInMb)
+
+        case .failedToSend:
+            #localized("Failed to send report")
+        }
+    }
 }

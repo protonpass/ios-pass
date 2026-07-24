@@ -79,17 +79,8 @@ private extension BugReportView {
         ToolbarItem(placement: .topBarTrailing) {
             CapsuleTextButton(title: #localized("Send"),
                               titleColor: PassColor.textInvert,
-                              backgroundColor: PassColor.interactionNorm) {
-                if viewModel.object == nil {
-                    validationError = .missingReason
-                } else if viewModel.description.count < Constants.Report.minCharCount {
-                    validationError = .shortDescription
-                } else if viewModel.description.count > Constants.Report.maxCharCount {
-                    validationError = .longDescription(Constants.Report.maxCharCount)
-                } else {
-                    viewModel.send()
-                }
-            }
+                              backgroundColor: PassColor.interactionNorm,
+                              action: viewModel.send)
         }
     }
 }
