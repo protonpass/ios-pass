@@ -108,8 +108,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\UseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
     @LazyInjected(\UseCasesContainer.fullContentSync) var fullContentSync
     @LazyInjected(\UseCasesContainer.postbackConversionValue) var postbackConversionValue
-    @LazyInjected(\SharedFactoryContainer.passwordGeneratorViewModelFactory)
-    private var passwordGeneratorViewModelFactory
 
     private let getAppPreferences = dependency(\UseCasesContainer.getAppPreferences)
     let updateAppPreferences = dependency(\UseCasesContainer.updateAppPreferences)
@@ -992,15 +990,15 @@ extension HomepageCoordinator {
             }
         }
 
-        let viewModel = passwordGeneratorViewModelFactory.create(mode: .random,
-                                                                 onResult: { [weak self] result in
-                                                                     guard let self else { return }
-                                                                     switch result {
-                                                                     case let .success(password): copyPassword(password)
+        let viewModel = PasswordGeneratorViewModel(mode: .random,
+                                                   onResult: { [weak self] result in
+                                                       guard let self else { return }
+                                                       switch result {
+                                                       case let .success(password): copyPassword(password)
 
-                                                                     case let .failure(error): handle(error: error)
-                                                                     }
-                                                                 })
+                                                       case let .failure(error): handle(error: error)
+                                                       }
+                                                   })
         let view = PasswordGeneratorView(viewModel: viewModel, onHeightChanged: updateSheetHeight)
         let viewController = UIHostingController(rootView: view)
         viewController.view.backgroundColor = UIColor(PassColor.backgroundNorm)

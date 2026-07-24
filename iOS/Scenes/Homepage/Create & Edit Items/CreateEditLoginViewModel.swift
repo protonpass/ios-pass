@@ -38,7 +38,6 @@ protocol CreateEditLoginViewModelDelegate: AnyObject {
 }
 
 @MainActor
-// swiftlint:disable:next type_body_length
 final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
 
@@ -367,7 +366,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     func makePasswordGeneratorViewModel() -> PasswordGeneratorViewModel {
-        passwordGeneratorViewModelFactory.create(mode: .createLogin) { [weak self] result in
+        .init(mode: .createLogin) { [weak self] result in
             guard let self else { return }
             switch result {
             case let .success(password):

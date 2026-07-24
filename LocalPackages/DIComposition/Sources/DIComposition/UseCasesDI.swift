@@ -561,6 +561,10 @@ public extension UseCasesContainer {
                                 userManager: self.userManager,
                                 logManager: self.logManager) }
     }
+
+    var resolvePasswordPolicy: Factory<any ResolvePasswordPolicyUseCase> {
+        self { ResolvePasswordPolicy() }
+    }
 }
 
 // MARK: - Secure link
@@ -813,6 +817,10 @@ public extension UseCasesContainer {
 
     var getPasswordStrength: Factory<any GetPasswordStrengthUseCase> {
         self { GetPasswordStrength() }
+    }
+
+    var scorePassword: Factory<any ScorePasswordUseCase> {
+        self { ScorePassword() }
     }
 
     var generateUsername: Factory<any GenerateUsernameUseCase> {

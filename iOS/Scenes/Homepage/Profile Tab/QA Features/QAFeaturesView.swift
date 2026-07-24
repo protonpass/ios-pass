@@ -20,7 +20,6 @@
 
 import Core
 import DesignSystem
-import FactoryKit
 import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
@@ -38,9 +37,6 @@ struct QAFeaturesView: View {
     private var useSwiftUIList = false
 
     @State private var showFullScreenPasswordGenerator = false
-
-    private let passwordGeneratorViewModelFactory =
-        resolve(\SharedFactoryContainer.passwordGeneratorViewModelFactory)
 
     var body: some View {
         NavigationStack {
@@ -104,9 +100,8 @@ struct QAFeaturesView: View {
                 }
             }
             .sheet(isPresented: $showFullScreenPasswordGenerator) {
-                let viewModel = passwordGeneratorViewModelFactory.create(mode: .autofill,
-                                                                         onResult: { _ in })
-                PasswordGeneratorView(viewModel: viewModel)
+                PasswordGeneratorView(viewModel: .init(mode: .autofill,
+                                                       onResult: { _ in }))
             }
         }
         .tint(PassColor.interactionNorm)
