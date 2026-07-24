@@ -113,22 +113,9 @@ extension AccountViewModel {
     }
 
     func manageSubscription() {
-        // The payment sheet is modal and can stay up for minutes; keep the handle
-        // so a re-entrant call supersedes a pending flow instead of stacking on it.
-        subscriptionTask?.cancel()
-        subscriptionTask = Task { [weak self] in
+        paymentsManager.manageSubscription(isUpgrading: false) { [weak self] result in
             guard let self else { return }
-            do {
-                if try await paymentsManager.manageSubscription(isUpgrading: false) {
-                    refreshUserPlan()
-                } else {
-                    logger.debug("Payment flow ended without purchase (cancelled or failed).")
-                }
-            } catch is CancellationError {
-                // Superseded by a newer tap or torn down with the screen — not an outcome.
-            } catch {
-                handle(error: error)
-            }
+            handlePaymentsResult(result: result)
         }
     }
 
@@ -308,6 +295,25 @@ private extension AccountViewModel {
     func handle(error: any Error) {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
+    }
+
+    func handlePaymentsResult(result: PaymentsManager.PaymentsResult) {
+        switch result {
+        case let .success(inAppPurchasePlan):
+            if inAppPurchasePlan {
+                refreshUserPlan()
+            } else {
+                logger
+                    .debug("""
+                    Payment is done but no plan is purchased.
+                     Or purchase was cancelled.
+                     Or completed, and sheet is being dismissed.
+                    """)
+            }
+
+        case let .failure(error):
+            logger.error(error)
+        }
     }
 }
 

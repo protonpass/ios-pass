@@ -18,21 +18,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import Core
 import Entities
+import FactoryKit
 import Foundation
+@preconcurrency import ProtonCoreDoh
+import ProtonCoreFeatureFlags
 import ProtonCoreLogin
-import ProtonCorePayments
+@preconcurrency import ProtonCorePayments
 import ProtonCorePaymentsUIV2
 import ProtonCorePaymentsV2
 
-public protocol PaymentsManagerProtocol {
-    func manageSubscription(isUpgrading: Bool) async throws -> Bool
-    func restorePurchases() async throws
-}
+public final class PaymentsManager: Sendable {
+    public typealias PaymentsResult = Result<Bool, any Error>
 
-@MainActor
-public final class PaymentsManager: PaymentsManagerProtocol {
     private let apiManager: any APIManagerProtocol
     private let userManager: any UserManagerProtocol
     private let authManager: any AuthManagerProtocol
@@ -41,19 +41,20 @@ public final class PaymentsManager: PaymentsManagerProtocol {
     private nonisolated let inMemoryTokenStorage: InMemoryTokenStorage
     private let paymentsV2: PaymentsV2
     private let transactionsObserver: any TransactionsObserverProviding
+    private let storage: UserDefaults
 
-    private var paymentFlow: Task<Bool, any Error>?
-    private var userObservation: Task<Void, Never>?
-    private var observerStartTask: Task<Void, Never>?
+    private nonisolated(unsafe) var cancellables: Set<AnyCancellable> = []
+    private nonisolated(unsafe) var transactionTask: Task<Void, Never>?
 
     public init(apiManager: any APIManagerProtocol,
                 userManager: any UserManagerProtocol,
                 authManager: any AuthManagerProtocol,
                 mainKeyProvider: any MainKeyProvider,
                 logger: Logger,
+                storage: UserDefaults,
+                transactionsObserver: any TransactionsObserverProviding,
                 paymentsV2: PaymentsV2 = PaymentsV2(),
-                inMemoryTokenStorage: InMemoryTokenStorage = InMemoryTokenStorage(),
-                transactionsObserver: any TransactionsObserverProviding = TransactionsObserver.shared) {
+                inMemoryTokenStorage: InMemoryTokenStorage = InMemoryTokenStorage()) {
         self.transactionsObserver = transactionsObserver
         self.apiManager = apiManager
         self.userManager = userManager
@@ -62,85 +63,24 @@ public final class PaymentsManager: PaymentsManagerProtocol {
         self.logger = logger
         self.paymentsV2 = paymentsV2
         self.inMemoryTokenStorage = inMemoryTokenStorage
-        observeActiveUser()
+        self.storage = storage
+        setup()
     }
 
-    isolated deinit {
-        userObservation?.cancel()
-        observerStartTask?.cancel()
-        paymentFlow?.cancel()
-    }
-}
-
-// MARK: - Public API
-
-public extension PaymentsManager {
-    /// Presents the plans UI. Returns `true` when a transaction completes,
-    /// `false` on user cancellation or an SDK-reported payment failure.
-    /// Cancelling the calling task tears down the observation.
-    func manageSubscription(isUpgrading: Bool) async throws -> Bool {
-        guard !Bundle.main.isBetaBuild else { return false }
-
-        // A previous flow can dangle: interactive sheet dismissal emits no
-        // terminal event from the SDK. Supersede it deterministically —
-        // cancel AND await its unwind, so we never race its teardown.
-        if let previous = paymentFlow {
-            previous.cancel()
-            _ = try? await previous.value
-            paymentFlow = nil
+    @MainActor
+    public func manageSubscription(isUpgrading: Bool,
+                                   completion: @escaping (Result<Bool, any Error>) -> Void) {
+        guard !Bundle.main.isBetaBuild else {
+            return
         }
-
-        guard let userData = userManager.currentActiveUser.value else {
-            throw PassError.payments(.couldNotCreatePaymentStack)
+        do {
+            try createPaymentsV2UI(hideCurrentPlan: isUpgrading, completion: completion)
+        } catch {
+            completion(.failure(error))
         }
-        let apiService = try apiManager.getApiService(userId: userData.user.ID)
-
-        let flow = Task { [paymentsV2, logger] in
-            try paymentsV2.showAvailablePlans(presentationMode: .modal,
-                                              hideCurrentPlan: isUpgrading,
-                                              apiService: apiService)
-
-            for await progress in paymentsV2.transactionProgress.dropFirst().values {
-                switch progress {
-                case .transactionCompleted:
-                    paymentsV2.dismissPayments()
-                    return true
-
-                case .mismatchTransactionIDs,
-                     .transactionCancelledByUser,
-                     .transactionProcessError,
-                     .unableToGetUserTransactionUUID,
-                     .unknownError:
-                    return false
-
-                default:
-                    logger.debug("Unhandled transaction progress: \(progress)")
-                }
-            }
-            return false
-        }
-        paymentFlow = flow
-        defer {
-            if paymentFlow == flow {
-                paymentFlow = nil
-            }
-        }
-
-        // Re-attach the unstructured flow to the caller's task tree:
-        // cancelling the caller (VM) still tears the flow down.
-        let result = try await withTaskCancellationHandler {
-            try await flow.value
-        } onCancel: {
-            flow.cancel()
-        }
-
-        // A cancelled/superseded flow returns `false` from the loop ending —
-        // don't report that as a real "no purchase" outcome.
-        try Task.checkCancellation()
-        return result
     }
 
-    func restorePurchases() async throws {
+    public func restorePurchases() async throws {
         guard !Bundle.main.isBetaBuild else { return }
         let userID = try await userManager.getActiveUserId()
         let apiService = try apiManager.getApiService(userId: userID)
@@ -148,40 +88,74 @@ public extension PaymentsManager {
     }
 }
 
-// MARK: - Active user → transactions observer
+// MARK: - Utils
 
 private extension PaymentsManager {
-    func observeActiveUser() {
-        // `[weak self]` re-bound per iteration: the loop doesn't pin self alive,
-        // so `deinit` can run and cancel the task.
-        userObservation = Task { [weak self, userManager] in
-            for await userData in userManager.currentActiveUser.values {
+    func setup() {
+        userManager
+            .currentActiveUser
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] userData in
                 guard let self else { return }
-                activeUserDidChange(userData)
+                guard let userData else {
+                    transactionsObserver.stop()
+                    return
+                }
+
+                handleTransactionObserver(userData: userData)
             }
-        }
+            .store(in: &cancellables)
     }
 
-    func activeUserDidChange(_ userData: UserData?) {
-        // Cancel unconditionally: an in-flight start for the *previous* user
-        // must not outlive a logout or a user switch.
-        observerStartTask?.cancel()
-
-        guard let userData else {
-            transactionsObserver.stop()
-            return
+    func createPaymentsV2UI(hideCurrentPlan: Bool = false,
+                            completion: @escaping (Result<Bool, any Error>) -> Void) throws {
+        guard let userData = userManager.currentActiveUser.value else {
+            throw PassError.payments(.couldNotCreatePaymentStack)
         }
 
+        let apiService = try apiManager.getApiService(userId: userData.user.ID)
+
+        try paymentsV2.showAvailablePlans(presentationMode: .modal,
+                                          hideCurrentPlan: hideCurrentPlan,
+                                          apiService: apiService)
+        paymentsV2.transactionProgress
+            .dropFirst()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] value in
+                guard let self else { return }
+                switch value {
+                case .transactionCompleted:
+                    completion(.success(true))
+                    paymentsV2.dismissPayments()
+
+                case .transactionCancelledByUser:
+                    completion(.success(false)) // to be updated
+
+                case .mismatchTransactionIDs, .transactionProcessError, .unableToGetUserTransactionUUID,
+                     .unknownError:
+                    completion(.success(false)) // to be updated
+
+                default:
+                    debugPrint("\(value) not handled")
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    func handleTransactionObserver(userData: UserData) {
         let userId = userData.user.ID
-        observerStartTask = Task { [apiManager, transactionsObserver, logger] in
+
+        transactionTask?.cancel()
+        transactionTask = Task { [weak self] in
+            guard let self else { return }
             do {
                 let apiService = try apiManager.getApiService(userId: userId)
-                let configuration =
-                    TransactionsObserverConfiguration(remoteManager: RemoteManager(apiService: apiService))
+                let remoteManager = RemoteManager(apiService: apiService)
+
+                let configuration = TransactionsObserverConfiguration(remoteManager: remoteManager)
+
                 transactionsObserver.setConfiguration(configuration)
                 try await transactionsObserver.start()
-            } catch is CancellationError {
-                // Superseded by a newer active-user change; not an error.
             } catch {
                 logger.error(error)
             }
@@ -189,34 +163,34 @@ private extension PaymentsManager {
     }
 }
 
-// MARK: - StoreKitManagerDelegate
-
 extension PaymentsManager: StoreKitManagerDelegate {
-    public nonisolated var tokenStorage: (any PaymentTokenStorage)? {
+    public var tokenStorage: (any PaymentTokenStorage)? {
         inMemoryTokenStorage
     }
 
-    public nonisolated var isUnlocked: Bool {
+    public var isUnlocked: Bool {
         mainKeyProvider.mainKey?.isEmpty == false
     }
 
-    public nonisolated var isSignedIn: Bool {
-        guard let activeUserId = userManager.activeUserId else { return false }
+    public var isSignedIn: Bool {
+        guard let activeUserId = userManager.activeUserId else {
+            return false
+        }
         return authManager.isAuthenticated(userId: activeUserId)
     }
 
-    public nonisolated var activeUsername: String? {
+    public var activeUsername: String? {
         userManager.currentActiveUser.value?.user.name
     }
 
-    public nonisolated var userId: String? {
+    public var userId: String? {
         userManager.currentActiveUser.value?.user.ID
     }
 }
 
 extension PaymentsManager: CurrentSubscriptionChangeDelegate {
-    public nonisolated func onCurrentSubscriptionChange(old: ProtonCorePayments.Subscription?,
-                                                        new: ProtonCorePayments.Subscription?) {
-        // Nothing to do for now.
+    public func onCurrentSubscriptionChange(old: ProtonCorePayments.Subscription?,
+                                            new: ProtonCorePayments.Subscription?) {
+        // Nothing to do here for now, I guess?
     }
 }
