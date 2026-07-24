@@ -20,58 +20,10 @@
 
 import Client
 import Core
+import DIComposition
 import Entities
+import FactoryKit
 import Foundation
-import UseCases
-
-public extension PasswordGeneratorViewModel {
-    final class Factory {
-        private let datasource: any LocalPasswordPreferencesDatasourceProtocol
-        private let generatePassword: any GeneratePasswordUseCase
-        private let generateRandomWords: any GenerateRandomWordsUseCase
-        private let generatePassphrase: any GeneratePassphraseUseCase
-        private let scorePassword: any ScorePasswordUseCase
-        private let getOrganizationSettings: any GetOrganizationSettingsUseCase
-        private let passwordHistoryRepository: any PasswordHistoryRepositoryProtocol
-        private let resolvePasswordPolicy: any ResolvePasswordPolicyUseCase
-        private let logManager: any LogManagerProtocol
-
-        public init(datasource: any LocalPasswordPreferencesDatasourceProtocol,
-                    generatePassword: any GeneratePasswordUseCase,
-                    generateRandomWords: any GenerateRandomWordsUseCase,
-                    generatePassphrase: any GeneratePassphraseUseCase,
-                    scorePassword: any ScorePasswordUseCase,
-                    getOrganizationSettings: any GetOrganizationSettingsUseCase,
-                    passwordHistoryRepository: any PasswordHistoryRepositoryProtocol,
-                    resolvePasswordPolicy: any ResolvePasswordPolicyUseCase,
-                    logManager: any LogManagerProtocol) {
-            self.datasource = datasource
-            self.generatePassword = generatePassword
-            self.generateRandomWords = generateRandomWords
-            self.generatePassphrase = generatePassphrase
-            self.scorePassword = scorePassword
-            self.getOrganizationSettings = getOrganizationSettings
-            self.passwordHistoryRepository = passwordHistoryRepository
-            self.resolvePasswordPolicy = resolvePasswordPolicy
-            self.logManager = logManager
-        }
-
-        public func create(mode: PasswordGeneratorMode,
-                           onResult: @escaping (Result<String, any Error>) -> Void) -> PasswordGeneratorViewModel {
-            .init(mode: mode,
-                  datasource: datasource,
-                  generatePassword: generatePassword,
-                  generateRandomWords: generateRandomWords,
-                  generatePassphrase: generatePassphrase,
-                  scorePassword: scorePassword,
-                  getOrganizationSettings: getOrganizationSettings,
-                  resolvePasswordPolicy: resolvePasswordPolicy,
-                  passwordHistoryRepository: passwordHistoryRepository,
-                  logManager: logManager,
-                  onResult: onResult)
-        }
-    }
-}
 
 @MainActor
 @Observable
@@ -143,29 +95,15 @@ public final class PasswordGeneratorViewModel {
         UserDefaults.standard.bool(forKey: Constants.QA.forcePasswordPolicy)
     }
 
-    @ObservationIgnored
-    private let datasource: any LocalPasswordPreferencesDatasourceProtocol
-
-    @ObservationIgnored
-    private let generatePassword: any GeneratePasswordUseCase
-
-    @ObservationIgnored
-    private let resolvePasswordPolicy: any ResolvePasswordPolicyUseCase
-
-    @ObservationIgnored
-    private let generateRandomWords: any GenerateRandomWordsUseCase
-
-    @ObservationIgnored
-    private let generatePassphrase: any GeneratePassphraseUseCase
-
-    @ObservationIgnored
-    private let scorePassword: any ScorePasswordUseCase
-
-    @ObservationIgnored
-    private let getOrganizationSettings: any GetOrganizationSettingsUseCase
-
-    @ObservationIgnored
-    private let passwordHistoryRepository: any PasswordHistoryRepositoryProtocol
+    private let datasource = dependency(\RepositoryContainer.localPasswordPreferencesDatasource)
+    private let generatePassword = dependency(\UseCasesContainer.generatePassword)
+    private let resolvePasswordPolicy = dependency(\UseCasesContainer.resolvePasswordPolicy)
+    private let generateRandomWords = dependency(\UseCasesContainer.generateRandomWords)
+    private let generatePassphrase = dependency(\UseCasesContainer.generatePassphrase)
+    private let scorePassword = dependency(\UseCasesContainer.scorePassword)
+    private let getOrganizationSettings = dependency(\UseCasesContainer.getOrganizationSettings)
+    private let passwordHistoryRepository = dependency(\RepositoryContainer.passwordHistoryRepository)
+    private let logManager = dependency(\ToolingContainer.logManager)
 
     @ObservationIgnored
     private let logger: Logger
@@ -173,27 +111,10 @@ public final class PasswordGeneratorViewModel {
     @ObservationIgnored
     private let onResult: (Result<String, any Error>) -> Void
 
-    init(mode: PasswordGeneratorMode,
-         datasource: any LocalPasswordPreferencesDatasourceProtocol,
-         generatePassword: any GeneratePasswordUseCase,
-         generateRandomWords: any GenerateRandomWordsUseCase,
-         generatePassphrase: any GeneratePassphraseUseCase,
-         scorePassword: any ScorePasswordUseCase,
-         getOrganizationSettings: any GetOrganizationSettingsUseCase,
-         resolvePasswordPolicy: any ResolvePasswordPolicyUseCase,
-         passwordHistoryRepository: any PasswordHistoryRepositoryProtocol,
-         logManager: any LogManagerProtocol,
-         onResult: @escaping (Result<String, any Error>) -> Void) {
+    public init(mode: PasswordGeneratorMode,
+                onResult: @escaping (Result<String, any Error>) -> Void) {
         self.mode = mode
         showingPenalties = mode == .autofill
-        self.datasource = datasource
-        self.generatePassword = generatePassword
-        self.generateRandomWords = generateRandomWords
-        self.generatePassphrase = generatePassphrase
-        self.scorePassword = scorePassword
-        self.getOrganizationSettings = getOrganizationSettings
-        self.resolvePasswordPolicy = resolvePasswordPolicy
-        self.passwordHistoryRepository = passwordHistoryRepository
         logger = .init(manager: logManager)
         self.onResult = onResult
 
