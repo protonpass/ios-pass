@@ -365,16 +365,13 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         passkeys.removeAll(where: { $0.keyID == passkey.keyID })
     }
 
-    func makePasswordGeneratorViewModel() -> PasswordGeneratorViewModel {
-        .init(mode: .createLogin) { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case let .success(password):
-                self.password = password
+    func handlePasswordResult(_ result: Result<String, any Error>) {
+        switch result {
+        case let .success(password):
+            self.password = password
 
-            case let .failure(error):
-                handle(error)
-            }
+        case let .failure(error):
+            handle(error)
         }
     }
 

@@ -27,7 +27,7 @@ import Foundation
 
 @MainActor
 @Observable
-public final class PasswordGeneratorViewModel {
+final class PasswordGeneratorViewModel {
     private(set) var password = ""
     private(set) var strength: PasswordStrength = .vulnerable
     private(set) var penalties: [PasswordPenalty] = []
@@ -111,8 +111,8 @@ public final class PasswordGeneratorViewModel {
     @ObservationIgnored
     private let onResult: (Result<String, any Error>) -> Void
 
-    public init(mode: PasswordGeneratorMode,
-                onResult: @escaping (Result<String, any Error>) -> Void) {
+    init(mode: PasswordGeneratorMode,
+         onResult: @escaping (Result<String, any Error>) -> Void) {
         self.mode = mode
         showingPenalties = mode == .autofill
         logger = .init(manager: logManager)

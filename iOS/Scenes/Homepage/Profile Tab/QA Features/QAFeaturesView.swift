@@ -100,8 +100,7 @@ struct QAFeaturesView: View {
                 }
             }
             .sheet(isPresented: $showFullScreenPasswordGenerator) {
-                PasswordGeneratorView(viewModel: .init(mode: .autofill,
-                                                       onResult: { _ in }))
+                PasswordGeneratorView(mode: .autofill, onResult: { _ in })
             }
         }
         .tint(PassColor.interactionNorm)
