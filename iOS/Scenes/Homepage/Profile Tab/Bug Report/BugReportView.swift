@@ -25,40 +25,15 @@ import PhotosUI
 import ProtonCoreUIFoundations
 import SwiftUI
 
-private extension BugReportView {
-    enum ValidationError: LocalizedError {
-        case missingReason
-        case shortDescription
-        case longDescription(Int)
-
-        var errorDescription: String? {
-            switch self {
-            case .missingReason:
-                #localized("Please select a reason")
-
-            case .shortDescription:
-                #localized("Please provide us with more details in the description")
-
-            case let .longDescription(limit):
-                #localized("Description is too long. Please keep it under %lld characters.", limit)
-            }
-        }
-    }
-}
-
 struct BugReportView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focused
     @StateObject private var viewModel = BugReportViewModel()
-    @State private var validationError: ValidationError?
     @State private var showFilePicker = false
     @State private var showPhotoPicker = false
-    var onError: (any Error) -> Void
     var onSuccess: () -> Void
 
-    init(onError: @escaping (any Error) -> Void,
-         onSuccess: @escaping () -> Void) {
-        self.onError = onError
+    init(onSuccess: @escaping () -> Void) {
         self.onSuccess = onSuccess
     }
 
@@ -79,11 +54,6 @@ struct BugReportView: View {
                 onSuccess()
             }
         }
-        .onReceive(viewModel.$error) { error in
-            if let error {
-                onError(error)
-            }
-        }
         .fileImporter(isPresented: $showFilePicker,
                       allowedContentTypes: [.item],
                       allowsMultipleSelection: true) { files in
@@ -92,18 +62,6 @@ struct BugReportView: View {
         .photosPicker(isPresented: $showPhotoPicker,
                       selection: $viewModel.selectedPhotos,
                       maxSelectionCount: 4)
-        .alert(isPresented: $validationError.mappedToBool(),
-               error: validationError,
-               actions: { Button(action: {}, label: { Text("OK") }) })
-        .alert("File too large",
-               isPresented: $viewModel.showFileTooLargeError,
-               actions: {
-                   Button(role: .cancel, action: {}, label: { Text("Close") })
-               },
-               message: {
-                   // swiftlint:disable:next line_length
-                   Text("One or more files exceed the \(Constants.Report.maxFileSizeInMb) MB limit. Please select smaller files.")
-               })
     }
 }
 
