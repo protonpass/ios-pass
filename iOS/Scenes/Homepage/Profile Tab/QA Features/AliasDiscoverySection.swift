@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import Observation
@@ -68,8 +69,7 @@ private final class AliasDiscoverySectionViewModel {
     private(set) var askedForCopyAliasAfterCreating = false
     private(set) var askedForCopyContactAfterCreating = false
 
-    @ObservationIgnored
-    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
+    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
 
     private var discovery: AliasDiscovery {
         preferencesManager.sharedPreferences.unwrapped().aliasDiscovery

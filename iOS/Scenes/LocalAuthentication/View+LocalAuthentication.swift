@@ -20,6 +20,7 @@
 
 import Combine
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import ProtonCoreKeymaker
@@ -42,7 +43,7 @@ enum LocalAuthenticationSuccessMode {
 }
 
 struct LocalAuthenticationModifier: ViewModifier {
-    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
+    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
 
     @State private var method: LocalAuthenticationMethod
     @State private var authenticated: Bool

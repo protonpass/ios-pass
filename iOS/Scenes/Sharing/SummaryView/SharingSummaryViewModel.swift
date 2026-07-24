@@ -21,10 +21,12 @@
 //
 
 import Client
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 
 @MainActor
 final class SharingSummaryViewModel: ObservableObject {
@@ -33,15 +35,15 @@ final class SharingSummaryViewModel: ObservableObject {
     @Published private(set) var currentUserEmail: String?
     @Published var showContactSupportAlert = false
 
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let getShareInviteInfos = resolve(\UseCasesContainer.getCurrentShareInviteInformations)
-    private let sendShareInvite = resolve(\UseCasesContainer.sendShareInvite)
-    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let getShareInviteInfos = dependency(\UseCasesContainer.getCurrentShareInviteInformations)
+    private let sendShareInvite = dependency(\UseCasesContainer.sendShareInvite)
+    private let accessRepository = dependency(\RepositoryContainer.accessRepository)
 
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
+    @LazyInjected(\UseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
 
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
 
     private var lastTask: Task<Void, Never>?
     private var plan: Plan?

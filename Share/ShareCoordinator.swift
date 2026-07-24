@@ -22,11 +22,13 @@ import Client
 @preconcurrency import Combine
 import Core
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 @preconcurrency import Foundation
 import Macro
 import Screens
+import Stores
 @preconcurrency import SwiftUI
 import UniformTypeIdentifiers
 
@@ -70,25 +72,25 @@ enum SharedItemType: CaseIterable {
 
 @MainActor
 final class ShareCoordinator {
-    private let credentialProvider = resolve(\SharedDataContainer.credentialProvider)
-    private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
-    private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
+    private let credentialProvider = dependency(\DataContainer.credentialProvider)
+    private let setUpSentry = dependency(\UseCasesContainer.setUpSentry)
+    private let setCoreLoggerEnvironment = dependency(\UseCasesContainer.setCoreLoggerEnvironment)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let sendErrorToSentry = dependency(\UseCasesContainer.sendErrorToSentry)
 
-    @LazyInjected(\SharedToolingContainer.logger) private var logger
-    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
-    @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) private var logOutAllAccounts
-    @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
-    @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
-    @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedToolingContainer.authManager) private var authManager
-    @LazyInjected(\SharedToolingContainer.preferencesManager) private var preferencesManager
-    @LazyInjected(\SharedToolingContainer.logManager) private var logManager
-    @LazyInjected(\SharedUseCasesContainer.getUserUiModels) private var getUserUiModels
-    @LazyInjected(\SharedUseCasesContainer.parseCsvLogins) private var parseCsvLogins
-    @LazyInjected(\SharedUseCasesContainer.createVaultAndImportLogins)
+    @LazyInjected(\ToolingContainer.logger) private var logger
+    @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
+    @LazyInjected(\UseCasesContainer.logOutAllAccounts) private var logOutAllAccounts
+    @LazyInjected(\ServiceContainer.upgradeChecker) private var upgradeChecker
+    @LazyInjected(\UIComponentsContainer.bannerManager) private var bannerManager
+    @LazyInjected(\UseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
+    @LazyInjected(\ToolingContainer.authManager) private var authManager
+    @LazyInjected(\ToolingContainer.preferencesManager) private var preferencesManager
+    @LazyInjected(\ToolingContainer.logManager) private var logManager
+    @LazyInjected(\UseCasesContainer.getUserUiModels) private var getUserUiModels
+    @LazyInjected(\UseCasesContainer.parseCsvLogins) private var parseCsvLogins
+    @LazyInjected(\UseCasesContainer.createVaultAndImportLogins)
     private var createVaultAndImportLogins
 
     private var lastChildViewController: UIViewController?
@@ -107,7 +109,7 @@ final class ShareCoordinator {
     }
 
     init(rootViewController: UIViewController) {
-        SharedViewContainer.shared.register(rootViewController: rootViewController)
+        UIComponentsContainer.shared.register(rootViewController: rootViewController)
         self.rootViewController = rootViewController
         AppearanceSettings.apply()
         setUpSentry()

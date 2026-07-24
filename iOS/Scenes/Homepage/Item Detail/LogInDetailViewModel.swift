@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Macro
@@ -50,11 +51,11 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
     let showSecurityIssues: Bool
 
-    private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
-    private let getLoginSecurityIssues = resolve(\UseCasesContainer.getLoginSecurityIssues)
-    private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
+    private let getPasswordStrength = dependency(\UseCasesContainer.getPasswordStrength)
+    private let getLoginSecurityIssues = dependency(\UseCasesContainer.getLoginSecurityIssues)
+    private let passMonitorRepository = dependency(\RepositoryContainer.passMonitorRepository)
 
-    let totpManager = resolve(\SharedServiceContainer.totpManager)
+    let totpManager = dependency(\ServiceContainer.totpManager)
 
     private var fetchSimilarPasswordItemsTask: Task<Void, Never>?
 

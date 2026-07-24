@@ -21,10 +21,12 @@
 import Client
 import Core
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 enum ItemType: CaseIterable {
@@ -61,10 +63,10 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
     @Published private(set) var aliasesAllowed = true
     let onSelect: (ItemType) -> Void
 
-    @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
-    @LazyInjected(\SharedToolingContainer.logger) private var logger
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
-    @LazyInjected(\SharedUseCasesContainer.getOrganizationSettings)
+    @LazyInjected(\ServiceContainer.upgradeChecker) private var upgradeChecker
+    @LazyInjected(\ToolingContainer.logger) private var logger
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) private var router
+    @LazyInjected(\UseCasesContainer.getOrganizationSettings)
     private var getOrganizationSettings
 
     enum Mode {

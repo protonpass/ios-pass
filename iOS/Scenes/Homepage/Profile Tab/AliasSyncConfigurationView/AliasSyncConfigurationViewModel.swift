@@ -24,12 +24,14 @@ import Client
 import Combine
 import Core
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import Macro
 import ProtonCoreLogin
 import ProtonCoreServices
 import Screens
+import Stores
 import SwiftUI
 import UseCases
 
@@ -49,13 +51,13 @@ final class AliasSyncConfigurationViewModel: ObservableObject {
     @Published private(set) var showSyncSection = false
     @Published var error: (any Error)?
 
-    @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
-    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
-    @LazyInjected(\SharedUseCasesContainer.getMainVault) private var getMainVault
-    @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
-    @LazyInjected(\SharedToolingContainer.logger) private var logger
+    @LazyInjected(\RepositoryContainer.accessRepository) private var accessRepository
+    @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
+    @LazyInjected(\UseCasesContainer.getMainVault) private var getMainVault
+    @LazyInjected(\RepositoryContainer.aliasRepository) private var aliasRepository
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) private var router
+    @LazyInjected(\ToolingContainer.logger) private var logger
 
     private var selectedVaultTask: Task<Void, Never>?
     private var selectedDomainTask: Task<Void, Never>?

@@ -22,7 +22,6 @@ import CodeScanner
 import Core
 import DesignSystem
 import Entities
-import FactoryKit
 import Macro
 import ProtonCoreUIFoundations
 import Screens
@@ -200,9 +199,7 @@ struct CreateEditLoginView: View {
                 }
             }
             .sheet(isPresented: $showUsernameGenerator) {
-                UsernameGeneratorView(datasource: viewModel.localUsernamePreferencesDatasource,
-                                      generateUsername: viewModel.generateUsername,
-                                      onResult: viewModel.handleUsernameResult)
+                UsernameGeneratorView(onResult: viewModel.handleUsernameResult)
                     .environment(\.colorScheme, colorScheme)
             }
             .onChange(of: showUsernameGenerator) { _, newValue in

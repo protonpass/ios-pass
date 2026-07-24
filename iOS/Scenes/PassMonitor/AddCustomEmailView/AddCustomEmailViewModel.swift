@@ -20,10 +20,12 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 
 @MainActor
 final class AddCustomEmailViewModel: ObservableObject {
@@ -32,14 +34,14 @@ final class AddCustomEmailViewModel: ObservableObject {
     @Published private(set) var finishedVerification = false
     @Published private(set) var verificationError: (any Error)?
 
-    private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
-    private let addCustomEmailToMonitoring = resolve(\UseCasesContainer.addCustomEmailToMonitoring)
-    private let verifyCustomEmail = resolve(\UseCasesContainer.verifyCustomEmail)
-    private let getAllCustomEmails = resolve(\UseCasesContainer.getAllCustomEmails)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let logger = resolve(\SharedToolingContainer.logger)
-    @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    private let passMonitorRepository = dependency(\RepositoryContainer.passMonitorRepository)
+    private let addCustomEmailToMonitoring = dependency(\UseCasesContainer.addCustomEmailToMonitoring)
+    private let verifyCustomEmail = dependency(\UseCasesContainer.verifyCustomEmail)
+    private let getAllCustomEmails = dependency(\UseCasesContainer.getAllCustomEmails)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let logger = dependency(\ToolingContainer.logger)
+    @LazyInjected(\RepositoryContainer.aliasRepository) private var aliasRepository
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
 
     @Published private(set) var type: ValidationEmailType
 

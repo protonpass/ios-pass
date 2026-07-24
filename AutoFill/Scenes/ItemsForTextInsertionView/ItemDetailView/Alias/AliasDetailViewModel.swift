@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
@@ -30,7 +31,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel {
     private(set) var email = ""
     private(set) var enabled = false
 
-    @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
+    @LazyInjected(\RepositoryContainer.aliasRepository) private var aliasRepository
 
     override func bindValues() {
         email = item.content.item.aliasEmail ?? ""

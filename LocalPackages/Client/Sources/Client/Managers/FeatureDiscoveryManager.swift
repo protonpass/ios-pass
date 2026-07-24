@@ -50,7 +50,7 @@ public final class FeatureDiscoveryManager: FeatureDiscoveryManagerProtocol {
     private let storage: UserDefaults
     private let accessRepository: any AccessRepositoryProtocol
     private let logger: Logger
-    private let disallowedFeatures: any MutexProtected<Set<NewFeature>> = SafeMutex.create(Set<NewFeature>())
+    private let disallowedFeatures: SafeMutex<Set<NewFeature>> = .init(Set<NewFeature>())
     public let eligibleDiscoveries = CurrentValueSubject<Set<NewFeature>, Never>([])
 
     public init(storage: UserDefaults,
@@ -65,7 +65,7 @@ public final class FeatureDiscoveryManager: FeatureDiscoveryManagerProtocol {
                              disallowedFeatures: Set<NewFeature>) async {
         do {
             logger.trace("Refreshing discoveries state for user \(userId)")
-            self.disallowedFeatures.modify {
+            self.disallowedFeatures.withLock {
                 $0 = disallowedFeatures
             }
             let userInfo = try await accessRepository.getPassUserInformation(userId: userId)
@@ -98,8 +98,9 @@ public final class FeatureDiscoveryManager: FeatureDiscoveryManagerProtocol {
 private extension FeatureDiscoveryManager {
     func refreshEligibleDiscoveries() {
         logger.trace("Refreshed eligible discoveries")
+        let disallowed = disallowedFeatures.withLock { $0 }
         let features = NewFeature.allCases.filter {
-            !storage.bool(forKey: $0.rawValue) && !disallowedFeatures.value.contains($0)
+            !storage.bool(forKey: $0.rawValue) && !disallowed.contains($0)
         }
         eligibleDiscoveries.send(Set(features))
     }

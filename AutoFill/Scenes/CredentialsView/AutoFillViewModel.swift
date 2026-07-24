@@ -21,10 +21,12 @@
 @preconcurrency import AuthenticationServices
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 import SwiftUI
 
 @MainActor
@@ -56,10 +58,10 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
 
     let users: [UserUiModel]
 
-    @LazyInjected(\SharedServiceContainer.eventSynchronizer) private var eventSynchronizer
-    @LazyInjected(\SharedToolingContainer.logger) var logger
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) var router
-    @LazyInjected(\SharedUseCasesContainer.canEditItem) var canEditItem
+    @LazyInjected(\ServiceContainer.eventSynchronizer) private var eventSynchronizer
+    @LazyInjected(\ToolingContainer.logger) var logger
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) var router
+    @LazyInjected(\UseCasesContainer.canEditItem) var canEditItem
     @LazyInjected(\AutoFillUseCaseContainer.associateUrlAndAutoFill) var associateUrlAndAutoFill
 
     weak var delegate: (any AutoFillViewModelDelegate)?

@@ -23,7 +23,6 @@
 import Core
 import DesignSystem
 import Entities
-import FactoryKit
 import Macro
 import ProtonCoreUIFoundations
 import Screens

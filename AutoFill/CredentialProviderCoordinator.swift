@@ -23,10 +23,12 @@ import Client
 @preconcurrency import Combine
 import Core
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import Macro
 import Screens
+import Stores
 import SwiftUI
 
 typealias UserForNewItemSubject = PassthroughSubject<UserUiModel, Never>
@@ -36,10 +38,10 @@ extension ASCredentialProviderExtensionContext: @unchecked @retroactive Sendable
 @MainActor
 final class CredentialProviderCoordinator: DeinitPrintable {
     /// Self-initialized properties
-    private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
-    private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let setUpSentry = dependency(\UseCasesContainer.setUpSentry)
+    private let setCoreLoggerEnvironment = dependency(\UseCasesContainer.setCoreLoggerEnvironment)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
     private let userForNewItemSubject = UserForNewItemSubject()
 
     private weak var rootViewController: UIViewController?
@@ -47,29 +49,29 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     private var cancellables = Set<AnyCancellable>()
 
     // Use cases
-    private let completeConfiguration = resolve(\AutoFillUseCaseContainer.completeConfiguration)
-    private let cancelAutoFill = resolve(\AutoFillUseCaseContainer.cancelAutoFill)
-    private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
+    private let completeConfiguration = dependency(\AutoFillUseCaseContainer.completeConfiguration)
+    private let cancelAutoFill = dependency(\AutoFillUseCaseContainer.cancelAutoFill)
+    private let sendErrorToSentry = dependency(\UseCasesContainer.sendErrorToSentry)
 
     // Lazily injected because some use cases are dependent on repositories
     // which are not registered when the user is not logged in
-    @LazyInjected(\SharedUseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
-    @LazyInjected(\SharedUseCasesContainer.indexAllLoginItems) private var indexAllLoginItems
+    @LazyInjected(\UseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
+    @LazyInjected(\UseCasesContainer.indexAllLoginItems) private var indexAllLoginItems
     @LazyInjected(\AutoFillUseCaseContainer.checkAndAutoFill) private var checkAndAutoFill
     @LazyInjected(\AutoFillUseCaseContainer.completeAutoFill) private var completeAutoFill
     @LazyInjected(\AutoFillUseCaseContainer.completeTextAutoFill) private var completeTextAutoFill
     @LazyInjected(\AutoFillUseCaseContainer.completePasskeyRegistration) private var completePasskeyRegistration
-    @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
-    @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
-    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
-    @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
-    @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
-    @LazyInjected(\SharedToolingContainer.authManager) private var authManager
-    @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) var logOutAllAccounts
-    @LazyInjected(\SharedUseCasesContainer.refreshFeatureFlags) var refreshFeatureFlags
-    @LazyInjected(\SharedUseCasesContainer.getUserUiModels) var getUserUiModels
+    @LazyInjected(\UIComponentsContainer.bannerManager) private var bannerManager
+    @LazyInjected(\ServiceContainer.upgradeChecker) private var upgradeChecker
+    @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
+    @LazyInjected(\UseCasesContainer.getSharedPreferences) private var getSharedPreferences
+    @LazyInjected(\UseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
+    @LazyInjected(\RepositoryContainer.itemRepository) private var itemRepository
+    @LazyInjected(\ToolingContainer.authManager) private var authManager
+    @LazyInjected(\UseCasesContainer.logOutAllAccounts) var logOutAllAccounts
+    @LazyInjected(\UseCasesContainer.refreshFeatureFlags) var refreshFeatureFlags
+    @LazyInjected(\UseCasesContainer.getUserUiModels) var getUserUiModels
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -84,7 +86,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     private var mode: AutoFillMode?
 
     init(rootViewController: UIViewController, context: ASCredentialProviderExtensionContext) {
-        SharedViewContainer.shared.register(rootViewController: rootViewController)
+        UIComponentsContainer.shared.register(rootViewController: rootViewController)
         self.rootViewController = rootViewController
         self.context = context
 

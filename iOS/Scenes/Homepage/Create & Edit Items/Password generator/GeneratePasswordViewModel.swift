@@ -20,8 +20,10 @@
 
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
+import Screens
 import SwiftUI
 
 enum GeneratePasswordViewMode {
@@ -113,15 +115,15 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     }
 
     private var cachedWords = [String]()
-    private let generatePassword = resolve(\SharedUseCasesContainer.generatePassword)
-    private let generateRandomWords = resolve(\SharedUseCasesContainer.generateRandomWords)
-    private let generatePassphrase = resolve(\SharedUseCasesContainer.generatePassphrase)
-    private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    @LazyInjected(\SharedToolingContainer.logger) private var logger
-    @LazyInjected(\SharedRepositoryContainer.passwordHistoryRepository)
+    private let generatePassword = dependency(\UseCasesContainer.generatePassword)
+    private let generateRandomWords = dependency(\UseCasesContainer.generateRandomWords)
+    private let generatePassphrase = dependency(\UseCasesContainer.generatePassphrase)
+    private let getPasswordStrength = dependency(\UseCasesContainer.getPasswordStrength)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    @LazyInjected(\ToolingContainer.logger) private var logger
+    @LazyInjected(\RepositoryContainer.passwordHistoryRepository)
     private var passwordHistoryRepository
-    @LazyInjected(\SharedUseCasesContainer.getOrganizationSettings)
+    @LazyInjected(\UseCasesContainer.getOrganizationSettings)
     private var getOrganizationSettings
 
     private var cancellables = Set<AnyCancellable>()

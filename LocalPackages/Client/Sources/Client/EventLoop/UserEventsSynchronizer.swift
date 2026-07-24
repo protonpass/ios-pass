@@ -112,11 +112,21 @@ private extension UserEventsSynchronizer {
             try await process(events: events, for: userId)
 
             // Combine flags using OptionSet
-            if events.dataUpdated { result.insert(.dataUpdated) }
-            if events.invitesChanged != nil { result.insert(.invitesChanged) }
-            if events.groupInvitesChanged != nil { result.insert(.groupInvitesChanged) }
-            if events.refreshUser { result.insert(.refreshUser) }
-            if events.fullRefresh { result.insert(.fullRefreshNeeded) }
+            if events.dataUpdated {
+                result.insert(.dataUpdated)
+            }
+            if events.invitesChanged != nil {
+                result.insert(.invitesChanged)
+            }
+            if events.groupInvitesChanged != nil {
+                result.insert(.groupInvitesChanged)
+            }
+            if events.refreshUser {
+                result.insert(.refreshUser)
+            }
+            if events.fullRefresh {
+                result.insert(.fullRefreshNeeded)
+            }
 
             try await localUserEventIdDatasource.upsertLastEventId(userId: userId,
                                                                    lastEventId: events.lastEventID)

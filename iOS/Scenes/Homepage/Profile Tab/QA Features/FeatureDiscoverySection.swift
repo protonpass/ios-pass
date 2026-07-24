@@ -21,6 +21,7 @@
 @_spi(QA)
 import Client
 import DesignSystem
+import DIComposition
 import FactoryKit
 import SwiftUI
 
@@ -42,7 +43,7 @@ private extension NewFeature {
 
 struct FeatureDiscoveryView: View {
     @State private var eligibleDiscoveries = Set<NewFeature>()
-    private let manager = resolve(\SharedServiceContainer.featureDiscoveryManager)
+    private let manager = dependency(\ServiceContainer.featureDiscoveryManager)
 
     var body: some View {
         Form {

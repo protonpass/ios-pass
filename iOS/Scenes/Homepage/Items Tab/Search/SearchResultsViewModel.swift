@@ -19,9 +19,12 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import DIComposition
 import Entities
 import FactoryKit
 import Macro
+import Screens
+import Stores
 import SwiftUI
 
 enum VaultSearchSelection: Equatable {
@@ -32,8 +35,8 @@ enum VaultSearchSelection: Equatable {
 @MainActor
 final class SearchResultsViewModel: ObservableObject {
     @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)?
-    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
-    private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
+    private let appContentManager = dependency(\ServiceContainer.appContentManager)
+    private let canEditItem = dependency(\UseCasesContainer.canEditItem)
 
     private var vaultSearchSelection: VaultSearchSelection = .current
 

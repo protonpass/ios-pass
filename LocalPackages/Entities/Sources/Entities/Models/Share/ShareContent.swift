@@ -52,8 +52,12 @@ public struct ShareContent: Identifiable, Hashable, Sendable {
             switch element {
             case let .item(item):
                 itemCount += 1
-                if item.isAlias { aliasCount += 1 }
-                if item.hasTotpUri { totpCount += 1 }
+                if item.isAlias {
+                    aliasCount += 1
+                }
+                if item.hasTotpUri {
+                    totpCount += 1
+                }
                 itemsByContainer[element.containerId, default: []].append(item)
 
             case let .folder(folder):
@@ -222,7 +226,9 @@ public extension ShareContent {
         var maxBelow = 0
         for child in children {
             let below = subtreeDepth(from: child.folderId)
-            if below > maxBelow { maxBelow = below }
+            if below > maxBelow {
+                maxBelow = below
+            }
         }
         return maxBelow + 1
     }

@@ -18,14 +18,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import DIComposition
 import FactoryKit
+import Screens
 import SwiftUI
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     private lazy var appCoordinator = AppCoordinator(window: window ?? .init())
-    private let saveAllLogs = resolve(\SharedUseCasesContainer.saveAllLogs)
+    private let saveAllLogs = dependency(\UseCasesContainer.saveAllLogs)
     @LazyInjected(\RouterContainer.deepLinkRoutingService) var deepLinkRoutingService
 
     func scene(_ scene: UIScene,
@@ -35,7 +37,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let window = UIWindow(windowScene: windowScene)
             self.window = window
             window.makeKeyAndVisible()
-            RouterContainer.shared.window.register { window }
+            UIComponentsContainer.shared.window.register { window }
         }
         AppearanceSettings.apply()
         Task { [weak self] in
