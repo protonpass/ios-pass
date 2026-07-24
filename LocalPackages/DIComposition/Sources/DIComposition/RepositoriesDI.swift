@@ -274,6 +274,10 @@ public extension RepositoryContainer {
     var localUsernamePreferencesDatasource: Factory<any LocalUsernamePreferencesDatasourceProtocol> {
         self { LocalUsernamePreferencesDatasource(store: kSharedUserDefaults) }
     }
+
+    var localPasswordPreferencesDatasource: Factory<any LocalPasswordPreferencesDatasourceProtocol> {
+        self { LocalPasswordPreferencesDatasource(store: kSharedUserDefaults) }
+    }
 }
 
 // MARK: Repositories

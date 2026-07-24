@@ -1213,6 +1213,28 @@
         }
       }
     },
+    "%lld characters" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld character"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld characters"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld files" : {
       "localizations" : {
         "be" : {
@@ -7829,6 +7851,16 @@
         }
       }
     },
+    "At least 12 characters" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "At least 12 characters"
+          }
+        }
+      }
+    },
     "Attach a file" : {
       "localizations" : {
         "be" : {
@@ -9324,6 +9356,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "取消"
+          }
+        }
+      }
+    },
+    "Capital letters" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capital letters"
           }
         }
       }
@@ -11480,6 +11522,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "掌控您的收件匣內容"
+          }
+        }
+      }
+    },
+    "Copy and close" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy and close"
           }
         }
       }
@@ -16468,6 +16520,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "自訂項目"
+          }
+        }
+      }
+    },
+    "Customize password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customize password"
           }
         }
       }
@@ -23051,6 +23113,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "已複製全名"
+          }
+        }
+      }
+    },
+    "Generate password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generate password"
           }
         }
       }
@@ -30611,6 +30683,16 @@
         }
       }
     },
+    "Lowercase letters" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lowercase letters"
+          }
+        }
+      }
+    },
     "Manage account" : {
       "localizations" : {
         "be" : {
@@ -30998,6 +31080,16 @@
         }
       }
     },
+    "Memorable password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memorable password"
+          }
+        }
+      }
+    },
     "NEW" : {
       "comment" : "Text for the top right badge for a button of a new feature. Always in majuscule.",
       "localizations" : {
@@ -31191,6 +31283,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "新版本"
+          }
+        }
+      }
+    },
+    "No common passwords" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No common passwords"
           }
         }
       }
@@ -31577,6 +31679,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "找不到包含通行密鑰的登入"
+          }
+        }
+      }
+    },
+    "No repeated characters" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No repeated characters"
+          }
+        }
+      }
+    },
+    "No sequential characters" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No sequential characters"
           }
         }
       }
@@ -32344,6 +32466,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "現在不要"
+          }
+        }
+      }
+    },
+    "Not satisfied" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not satisfied"
           }
         }
       }
@@ -39821,6 +39953,26 @@
         }
       }
     },
+    "Random password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Random password"
+          }
+        }
+      }
+    },
+    "Regenerate password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regenerate password"
+          }
+        }
+      }
+    },
     "Regenerate username" : {
       "localizations" : {
         "be" : {
@@ -40713,6 +40865,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "再試一次"
+          }
+        }
+      }
+    },
+    "Satisfied" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Satisfied"
           }
         }
       }
@@ -44406,6 +44568,16 @@
         }
       }
     },
+    "Special characters" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Special characters"
+          }
+        }
+      }
+    },
     "SSH key" : {
       "localizations" : {
         "be" : {
@@ -46740,6 +46912,16 @@
         }
       }
     },
+    "Strong" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strong"
+          }
+        }
+      }
+    },
     "Suffix" : {
       "localizations" : {
         "be" : {
@@ -47129,6 +47311,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "切換至"
+          }
+        }
+      }
+    },
+    "Symbols" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbols"
           }
         }
       }
@@ -49082,6 +49274,16 @@
         }
       }
     },
+    "Type" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type"
+          }
+        }
+      }
+    },
     "Underscores" : {
       "localizations" : {
         "be" : {
@@ -50774,6 +50976,16 @@
         }
       }
     },
+    "Uppercase letters" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uppercase letters"
+          }
+        }
+      }
+    },
     "Use Hide-My-Email aliases against phishing threats." : {
       "localizations" : {
         "be" : {
@@ -50960,6 +51172,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "使用隱藏電子郵件別名來防範網路釣魚威脅。"
+          }
+        }
+      }
+    },
+    "Use this password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use this password"
           }
         }
       }
@@ -51940,6 +52162,16 @@
         }
       }
     },
+    "Vulnerable" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vulnerable"
+          }
+        }
+      }
+    },
     "We detected that you have %lld aliases that are present in SimpleLogin but missing in Proton Pass. Would you like to import them?" : {
       "localizations" : {
         "be" : {
@@ -52390,6 +52622,16 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "Weak" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weak"
           }
         }
       }

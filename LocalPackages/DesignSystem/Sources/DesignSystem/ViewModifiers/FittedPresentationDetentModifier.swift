@@ -41,7 +41,7 @@ private struct FittedPresentationDetentModifier: ViewModifier {
 public extension View {
     /// Automatically adjust sheet detent height base on content size
     /// Optionally report back the height for further processing if necessary
-    func fittedPresentationDetent(onHeightChanged: ((Double) -> Void)?) -> some View {
+    func fittedPresentationDetent(onHeightChanged: ((Double) -> Void)? = nil) -> some View {
         modifier(FittedPresentationDetentModifier(onHeightChanged: onHeightChanged))
     }
 }
