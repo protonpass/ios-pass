@@ -127,6 +127,7 @@ struct CreateEditLoginView: View {
                     .animation(.default, value: viewModel.passkeys.count)
                     .animation(.default, value: viewModel.isAlias)
                     .animation(.default, value: viewModel.dismissedFileAttachmentsBanner)
+                    .animation(.default, value: viewModel.password.isEmpty)
                     .animation(.default, value: showPenalties)
                     .showSpinner(viewModel.loading)
                 }
@@ -588,7 +589,7 @@ private extension CreateEditLoginView {
                        })
                        .buttonStyle(.plain)
 
-                if showPenalties {
+                if !viewModel.password.isEmpty, showPenalties {
                     PasswordPenaltiesSection(penalties: penalties)
                 }
 

@@ -114,6 +114,7 @@ private extension LogInDetailView {
                     .padding()
                 }
                 .animation(.default, value: viewModel.moreInfoSectionExpanded)
+                .animation(.default, value: viewModel.password.isEmpty)
                 .animation(.default, value: showPenalties)
                 .onChange(of: viewModel.moreInfoSectionExpanded) {
                     withAnimation { value.scrollTo(bottomID, anchor: .bottom) }
@@ -284,7 +285,7 @@ private extension LogInDetailView {
                                           color: strength.sectionTitleColor)
                        })
 
-                if showPenalties {
+                if !viewModel.password.isEmpty, showPenalties {
                     PasswordPenaltiesSection(penalties: penalties)
                 }
 
