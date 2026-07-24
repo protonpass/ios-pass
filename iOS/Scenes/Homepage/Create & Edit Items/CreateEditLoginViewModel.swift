@@ -79,7 +79,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     private let sanitizeTotpUriForEditing = dependency(\UseCasesContainer.sanitizeTotpUriForEditing)
     private let sanitizeTotpUriForSaving = dependency(\UseCasesContainer.sanitizeTotpUriForSaving)
-    private let getPasswordStrength = dependency(\UseCasesContainer.getPasswordStrength)
     private let createPasskey = dependency(\UseCasesContainer.createPasskey)
     private let validateEmail = dependency(\UseCasesContainer.validateEmail)
     private let getSharedPreferences = dependency(\UseCasesContainer.getSharedPreferences)
