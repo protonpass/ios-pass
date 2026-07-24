@@ -1,4 +1,4 @@
-//  
+//
 // ItemRepositoryTests.swift
 // Proton Pass - Created on 01/12/2023.
 // Copyright (c) 2023 Proton Technologies AG
@@ -19,94 +19,80 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Client
-import Combine
 import ClientMocks
+import Combine
 import Core
 import CoreMocks
 import Entities
 import ProtonCoreLogin
-import XCTest
+import Testing
+import Foundation
 
-final class ItemRepositoryTests: XCTestCase {
-    var symmetricKeyProvider: SymmetricKeyProviderMock!
-    var userManager: UserManagerProtocolMock!
-    var localDatasource: LocalItemDatasourceProtocolMock!
-    var remoteDatasource: RemoteItemDatasourceProtocol!
-    var localShareDatasource: LocalShareDatasourceProtocolMock!
-    var shareEventIDRepository: ShareEventIDRepositoryProtocol!
-    var passKeyManager: PassKeyManagerProtocol!
-    var logManager: LogManagerProtocol!
-    var sut: ItemRepositoryProtocol!
-    var cancellable: AnyCancellable?
+@Suite(.tags(.repository))
+struct ItemRepositoryTests {
+    private let symmetricKeyProvider: SymmetricKeyProviderMock
+    private let userManager: UserManagerProtocolMock
+    private let localDatasource: LocalItemDatasourceProtocolMock
+    private let remoteDatasource: RemoteItemDatasourceProtocolMock
+    private let localShareDatasource: LocalShareDatasourceProtocolMock
+    private let shareEventIDRepository: ShareEventIDRepositoryProtocolMock
+    private let passKeyManager: PassKeyManagerProtocolMock
+    private let logManager: LogManagerProtocolMock
 
-    override func setUp() {
-        super.setUp()
+    init() {
         symmetricKeyProvider = SymmetricKeyProviderMock()
-        localDatasource = LocalItemDatasourceProtocolMock()
         userManager = UserManagerProtocolMock()
+        localDatasource = LocalItemDatasourceProtocolMock()
         localDatasource.stubbedGetAllPinnedItemsResult = []
         remoteDatasource = RemoteItemDatasourceProtocolMock()
-        localShareDatasource = .init()
+        localShareDatasource = LocalShareDatasourceProtocolMock()
         shareEventIDRepository = ShareEventIDRepositoryProtocolMock()
         passKeyManager = PassKeyManagerProtocolMock()
         logManager = LogManagerProtocolMock()
-    }
-
-    override func tearDown() {
-        symmetricKeyProvider = nil
-        localDatasource = nil
-        remoteDatasource = nil
-        shareEventIDRepository = nil
-        passKeyManager = nil
-        logManager = nil
-        sut = nil
-        cancellable?.cancel()
-        super.tearDown()
     }
 }
 
 // MARK: - Pinned tests
 
 extension ItemRepositoryTests {
-
-    func testGetAllPinnedItem() async throws {
+    @Test("Get all pinned items", .timeLimit(.minutes(1)))
+    func getAllPinnedItems() async throws {
         let user = UserData.preview
         let shareId = UUID().uuidString
-        localShareDatasource.stubbedGetAllSharesUserIdAsyncResult2 = [SymmetricallyEncryptedShare(encryptedContent: nil,
-                                                                                                  share: .random(shareId: shareId))]
-        localDatasource.stubbedGetAllPinnedItemsResult = [SymmetricallyEncryptedItem].random(count: 10, randomElement: .random(shareId: shareId,
-                                                                                                                               userId: user.user.ID,
-                                                                                                                               item:.random(pinned: true)))
+        localShareDatasource.stubbedGetAllSharesUserIdAsyncResult2 =
+            [SymmetricallyEncryptedShare(encryptedContent: nil,
+                                         share: .random(shareId: shareId))]
+        localDatasource.stubbedGetAllPinnedItemsResult =
+            [SymmetricallyEncryptedItem].random(count: 10,
+                                                randomElement: .random(shareId: shareId,
+                                                                       userId: user.user.ID,
+                                                                       item: .random(pinned: true)))
         userManager.stubbedGetActiveUserDataResult = user
 
-        sut = ItemRepository(symmetricKeyProvider: symmetricKeyProvider,
-                             userManager: userManager,
-                             localDatasource: localDatasource,
-                             remoteDatasource: remoteDatasource,
-                             localShareDatasource: localShareDatasource,
-                             shareEventIDRepository: shareEventIDRepository,
-                             passKeyManager: passKeyManager,
-                             logManager: logManager)
-
-        let expectation = expectation(description: "Init of ItemRepository")
-        expectation.assertForOverFulfill = false
+        let sut = ItemRepository(symmetricKeyProvider: symmetricKeyProvider,
+                                 userManager: userManager,
+                                 localDatasource: localDatasource,
+                                 remoteDatasource: remoteDatasource,
+                                 localShareDatasource: localShareDatasource,
+                                 shareEventIDRepository: shareEventIDRepository,
+                                 passKeyManager: passKeyManager,
+                                 logManager: logManager)
 
         let pinnedItems = try await sut.getAllPinnedItems()
-        var currentlyPinnedItems:[SymmetricallyEncryptedItem]?
-        cancellable?.cancel()
-        cancellable = sut.currentlyPinnedItems
-            .receive(on: DispatchQueue.main)
-            .sink { value in
-                currentlyPinnedItems = value
-                expectation.fulfill()
+        #expect(pinnedItems.count == 10)
+
+        var loaded: [SymmetricallyEncryptedItem]?
+        for await value in sut.currentlyPinnedItems.values {
+            if let value {
+                loaded = value
+                break
             }
+        }
 
-        await fulfillment(of: [expectation], timeout: 1, enforceOrder: true)
-
-        XCTAssertFalse(pinnedItems.isEmpty)
-        XCTAssertEqual(pinnedItems.count, 10)
-        XCTAssertEqual(currentlyPinnedItems?.count, 10)
-        XCTAssertTrue(localDatasource.invokedGetAllPinnedItemsfunction)
-        XCTAssertEqual(localDatasource.invokedGetAllPinnedItemsCount, 2)
+        let items = try #require(loaded)
+        #expect(items.count == 10)
+        #expect(localDatasource.invokedGetAllPinnedItemsfunction)
+  
+        #expect(localDatasource.invokedGetAllPinnedItemsCount == 2)
     }
 }
