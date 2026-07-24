@@ -49,6 +49,7 @@ public final class SetUpBeforeLaunching: SetUpBeforeLaunchingUseCase {
     private let prefererencesManager: any PreferencesManagerProtocol
     private let authManager: any AuthManagerProtocol
     private let applyMigration: any ApplyAppMigrationUseCase
+    private let setUpAppearances: any SetUpAppearancesUseCase
 
     public init(keychain: any KeychainProtocol,
                 databaseService: any DatabaseServiceProtocol,
@@ -56,7 +57,8 @@ public final class SetUpBeforeLaunching: SetUpBeforeLaunchingUseCase {
                 userManager: any UserManagerProtocol,
                 prefererencesManager: any PreferencesManagerProtocol,
                 authManager: any AuthManagerProtocol,
-                applyMigration: any ApplyAppMigrationUseCase) {
+                applyMigration: any ApplyAppMigrationUseCase,
+                setUpAppearances: any SetUpAppearancesUseCase) {
         self.keychain = keychain
         self.databaseService = databaseService
         self.symmetricKeyProvider = symmetricKeyProvider
@@ -64,6 +66,7 @@ public final class SetUpBeforeLaunching: SetUpBeforeLaunchingUseCase {
         self.prefererencesManager = prefererencesManager
         self.authManager = authManager
         self.applyMigration = applyMigration
+        self.setUpAppearances = setUpAppearances
     }
 
     /// Order matters, `UserManager` needs to be set up before `PrefererencesManager`
@@ -76,6 +79,7 @@ public final class SetUpBeforeLaunching: SetUpBeforeLaunchingUseCase {
             try await applyMigration()
 
             await MainActor.run {
+                setUpAppearances()
                 let theme = prefererencesManager.sharedPreferences.unwrapped().theme
                 switch rootContainer {
                 case let .window(window):
