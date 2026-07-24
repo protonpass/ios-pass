@@ -98,6 +98,7 @@ public enum Constants {
         public static let minCharCount = 10
         public static let maxCharCount = 4_000
         public static let maxFileSizeInMb = 70
+        public static let maxFileCount = 10
     }
 
     // swiftlint:disable:next type_name
