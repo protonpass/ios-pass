@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct PasswordScore: Sendable {
+public struct PasswordScore: Sendable, Equatable {
     public let strength: PasswordStrength
     public let penalties: [PasswordPenalty]
 

@@ -50,7 +50,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published private(set) var emailUsernameExpanded = false
 
     @Published var password = ""
-    @Published private(set) var passwordStrength: PasswordStrength?
+    @Published private(set) var passwordScore: PasswordScore?
     private var originalTotpUri = ""
     @Published var totpUri = ""
     @Published private(set) var totpUriErrorMessage = ""
@@ -79,12 +79,11 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     private let sanitizeTotpUriForEditing = dependency(\UseCasesContainer.sanitizeTotpUriForEditing)
     private let sanitizeTotpUriForSaving = dependency(\UseCasesContainer.sanitizeTotpUriForSaving)
-    private let getPasswordStrength = dependency(\UseCasesContainer.getPasswordStrength)
     private let createPasskey = dependency(\UseCasesContainer.createPasskey)
     private let validateEmail = dependency(\UseCasesContainer.validateEmail)
     private let getSharedPreferences = dependency(\UseCasesContainer.getSharedPreferences)
-    @LazyInjected(\UseCasesContainer.getOrganizationSettings)
-    private var getOrganizationSettings
+    @LazyInjected(\UseCasesContainer.getOrganizationSettings) private var getOrganizationSettings
+    @LazyInjected(\UseCasesContainer.scorePassword) private var scorePassword
 
     weak var delegate: (any CreateEditLoginViewModelDelegate)?
 
@@ -425,7 +424,8 @@ private extension CreateEditLoginViewModel {
             .removeDuplicates()
             .sink { [weak self] passwordValue in
                 guard let self else { return }
-                passwordStrength = getPasswordStrength(password: passwordValue)
+                // swiftlint:disable:next nil_if_empty
+                passwordScore = passwordValue.isEmpty ? nil : scorePassword(passwordValue)
             }
             .store(in: &cancellables)
 
