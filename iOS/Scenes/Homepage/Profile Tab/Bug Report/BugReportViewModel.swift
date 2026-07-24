@@ -54,12 +54,38 @@ enum BugReportObject: CaseIterable {
     }
 }
 
+private enum BugReportError: Error {
+    case missingReason
+    case shortDescription
+    case longDescription(Int)
+    case fileTooLarge
+    case failedToSend
+
+    var description: String {
+        switch self {
+        case .missingReason:
+            #localized("Please select a reason")
+
+        case .shortDescription:
+            #localized("Please provide us with more details in the description")
+
+        case let .longDescription(limit):
+            #localized("Description is too long. Please keep it under %lld characters.", limit)
+
+        case .fileTooLarge:
+            #localized("One or more files exceed the %lld MB limit. Please select smaller files.",
+                       Constants.Report.maxFileSizeInMb)
+
+        case .failedToSend:
+            #localized("Failed to send report")
+        }
+    }
+}
+
 @MainActor
 final class BugReportViewModel: ObservableObject {
     @Published var object: BugReportObject?
     @Published var description = ""
-    @Published var showFileTooLargeError = false
-    @Published private(set) var error: (any Error)?
     @Published private(set) var hasSent = false
     @Published private(set) var actionInProcess = false
     @Published var shouldSendLogs = true
@@ -67,15 +93,12 @@ final class BugReportViewModel: ObservableObject {
 
     private let accessRepository = dependency(\RepositoryContainer.accessRepository)
     private let sendUserBugReport = dependency(\UseCasesContainer.sendUserBugReport)
+
     private var cancellable = Set<AnyCancellable>()
 
     @Published private(set) var currentFiles = [String: URL]()
 
     private let maxFileSize = Constants.Report.maxFileSizeInMb * 1_024 * 1_024
-
-    enum SendError: Error {
-        case failedToSendReport
-    }
 
     init() {
         $selectedPhotos
@@ -105,10 +128,10 @@ final class BugReportViewModel: ObservableObject {
                                                otherLogContent: currentFiles.nilIfEmpty) {
                     hasSent = true
                 } else {
-                    error = SendError.failedToSendReport
+                    throw BugReportError.failedToSend
                 }
             } catch {
-                self.error = error
+                handle(error)
             }
             actionInProcess = false
         }
@@ -118,22 +141,27 @@ final class BugReportViewModel: ObservableObject {
         switch files {
         case let .success(fileUrls):
             do {
+                var hasLargeFiles = false
                 for fileUrl in fileUrls {
                     _ = fileUrl.startAccessingSecurityScopedResource()
                     defer { fileUrl.stopAccessingSecurityScopedResource() }
                     let fileSize = try fileUrl.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0
                     guard fileSize <= maxFileSize else {
-                        showFileTooLargeError = true
+                        hasLargeFiles = true
                         continue
                     }
                     currentFiles[fileUrl.lastPathComponent] = try fileUrl.copyFileToTempDirectory()
                 }
+
+                if hasLargeFiles {
+                    throw BugReportError.fileTooLarge
+                }
             } catch {
-                self.error = error
+                handle(error)
             }
 
         case let .failure(error):
-            self.error = error
+            handle(error)
         }
     }
 
@@ -159,7 +187,7 @@ private extension BugReportViewModel {
                 let data = try await fetchContentUrls(photos)
                 currentFiles = currentFiles.merging(data) { _, new in new }
             } catch {
-                self.error = error
+                handle(error)
             }
         }
     }
@@ -184,4 +212,6 @@ private extension BugReportViewModel {
             return contentUrls
         }
     }
+
+    func handle(_ error: any Error) {}
 }
