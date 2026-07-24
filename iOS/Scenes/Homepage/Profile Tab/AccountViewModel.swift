@@ -65,7 +65,6 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     private(set) var accountRecovery: AccountRecovery?
 
     private var cancellables = Set<AnyCancellable>()
-    private var subscriptionTask: Task<Void, Never>?
     weak var delegate: (any AccountViewModelDelegate)?
 
     var username: String {
