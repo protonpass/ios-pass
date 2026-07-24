@@ -990,12 +990,19 @@ extension HomepageCoordinator {
             }
         }
 
-        let view = GeneratePasswordView(mode: .random,
-                                        onConfirm: copyPassword,
-                                        onUpdateHeight: updateSheetHeight)
+        let view = PasswordGeneratorView(mode: .random,
+                                         onResult: { [weak self] result in
+                                             guard let self else { return }
+                                             switch result {
+                                             case let .success(password): copyPassword(password)
+
+                                             case let .failure(error): handle(error: error)
+                                             }
+                                         },
+                                         onHeightChanged: updateSheetHeight)
         let viewController = UIHostingController(rootView: view)
+        viewController.view.backgroundColor = UIColor(PassColor.backgroundNorm)
         sheetPresentationController = viewController.sheetPresentationController
-        sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
 

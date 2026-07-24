@@ -365,6 +365,16 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         passkeys.removeAll(where: { $0.keyID == passkey.keyID })
     }
 
+    func handlePasswordResult(_ result: Result<String, any Error>) {
+        switch result {
+        case let .success(password):
+            self.password = password
+
+        case let .failure(error):
+            handle(error)
+        }
+    }
+
     func handleUsernameResult(_ result: Result<String, any Error>) {
         switch result {
         case let .success(username):

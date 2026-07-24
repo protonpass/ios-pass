@@ -1,7 +1,7 @@
 //
-// PasswordStrength+Extensions.swift
-// Proton Pass - Created on 28/11/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Comparable+Extensions.swift
+// Proton Pass - Created on 06/07/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,27 +18,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import DesignSystem
-import Entities
-import Macro
-import Screens
-import SwiftUI
+import Foundation
 
-extension PasswordStrength? {
-    func sectionTitle(reuseCount: Int?) -> String {
-        if let self {
-            if let reuseCount {
-                #localized("Password") + " • " + self.title + " • " + "Reused" + " (\(reuseCount))"
-            } else {
-                #localized("Password") + " • " + self.title
-            }
+public extension Comparable {
+    func clamp(to range: ClosedRange<Self>) -> Self {
+        if range.contains(self) {
+            self
+        } else if self < range.lowerBound {
+            range.lowerBound
         } else {
-            #localized("Password")
+            range.upperBound
         }
-    }
-
-    var sectionTitleColor: Color {
-        // swiftlint:disable:next discouraged_optional_self
-        self?.color ?? PassColor.textWeak
     }
 }

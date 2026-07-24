@@ -1,7 +1,7 @@
 //
-// PasswordStrength.swift
-// Proton Pass - Created on 27/11/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// PasswordPolicyBounds.swift
+// Proton Pass - Created on 06/07/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -20,8 +20,19 @@
 
 import Foundation
 
-public enum PasswordStrength: Sendable, Equatable {
-    case strong
-    case weak
-    case vulnerable
+public struct PasswordPolicyBounds: Sendable, Equatable {
+    public let minCharacterCount: Int
+    public let maxCharacterCount: Int
+    public let minWordCount: Int
+    public let maxWordCount: Int
+
+    public init(minCharacterCount: Int,
+                maxCharacterCount: Int,
+                minWordCount: Int,
+                maxWordCount: Int) {
+        self.minCharacterCount = minCharacterCount
+        self.maxCharacterCount = maxCharacterCount
+        self.minWordCount = minWordCount
+        self.maxWordCount = maxWordCount
+    }
 }

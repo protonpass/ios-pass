@@ -1,7 +1,7 @@
-//
-// PasswordStrengthIcon.swift
-// Proton Pass - Created on 28/11/2023.
-// Copyright (c) 2023 Proton Technologies AG
+//  
+// ComparableTests.swift
+// Proton Pass - Created on 06/07/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,20 +18,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Entities
-import Screens
-import SwiftUI
+import Core
+import Foundation
+import Testing
 
-struct PasswordStrengthIcon: View {
-    let strength: PasswordStrength
-    var width: CGFloat = 18
-
-    var body: some View {
-        Image(systemName: strength.iconName)
-            .resizable()
-            .renderingMode(.template)
-            .scaledToFit()
-            .foregroundStyle(strength.color)
-            .frame(width: width)
+struct ComparableTests {
+    @Test
+    func `clamp keeps a value that is already within range`() {
+        #expect(10.clamp(to: 4...64) == 10)
+    }
+    
+    @Test
+    func `clamp raises a value below the lower bound`() {
+        #expect(2.clamp(to: 4...64) == 4)
+    }
+    
+    @Test
+    func `clamp lowers a value above the upper bound`() {
+        #expect(80.clamp(to: 4...64) == 64)
     }
 }

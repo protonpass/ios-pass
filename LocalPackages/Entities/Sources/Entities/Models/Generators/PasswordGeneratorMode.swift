@@ -1,7 +1,7 @@
 //
-// PasswordStrengthIcon.swift
-// Proton Pass - Created on 28/11/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// PasswordGeneratorMode.swift
+// Proton Pass - Created on 26/06/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,20 +18,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Entities
-import Screens
-import SwiftUI
-
-struct PasswordStrengthIcon: View {
-    let strength: PasswordStrength
-    var width: CGFloat = 18
-
-    var body: some View {
-        Image(systemName: strength.iconName)
-            .resizable()
-            .renderingMode(.template)
-            .scaledToFit()
-            .foregroundStyle(strength.color)
-            .frame(width: width)
-    }
+public enum PasswordGeneratorMode: Sendable {
+    /// View is shown as part of create login process
+    case createLogin
+    /// View is shown independently without any context
+    case random
+    /// View is shown as part of autofill process
+    case autofill
 }

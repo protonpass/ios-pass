@@ -1,7 +1,7 @@
 //
 // PasswordStrength+Extensions.swift
-// Proton Pass - Created on 28/11/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Proton Pass - Created on 02/07/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -21,24 +21,30 @@
 import DesignSystem
 import Entities
 import Macro
-import Screens
 import SwiftUI
 
-extension PasswordStrength? {
-    func sectionTitle(reuseCount: Int?) -> String {
-        if let self {
-            if let reuseCount {
-                #localized("Password") + " • " + self.title + " • " + "Reused" + " (\(reuseCount))"
-            } else {
-                #localized("Password") + " • " + self.title
-            }
-        } else {
-            #localized("Password")
+public extension PasswordStrength {
+    var title: String {
+        switch self {
+        case .vulnerable: #localized("Vulnerable", bundle: .module)
+        case .weak: #localized("Weak", bundle: .module)
+        case .strong: #localized("Strong", bundle: .module)
         }
     }
 
-    var sectionTitleColor: Color {
-        // swiftlint:disable:next discouraged_optional_self
-        self?.color ?? PassColor.textWeak
+    var iconName: String {
+        switch self {
+        case .vulnerable: "xmark.shield.fill"
+        case .weak: "exclamationmark.shield.fill"
+        case .strong: "checkmark.shield.fill"
+        }
+    }
+
+    var color: Color {
+        switch self {
+        case .vulnerable: PassColor.signalDanger
+        case .weak: PassColor.signalWarning
+        case .strong: PassColor.signalSuccess
+        }
     }
 }
