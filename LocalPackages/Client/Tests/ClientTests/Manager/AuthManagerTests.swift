@@ -235,4 +235,63 @@ final class AuthManagerTests: XCTestCase {
         XCTAssertNil(sut.authCredential(sessionUID: baseCredentials.UID))
         XCTAssertNil(sut.getCredential(userId: baseCredentials.userID))
     }
+
+    /// `setUp()` is re-run on every foreground so the app picks up tokens an extension rotated
+    /// in the shared keychain. If it no-ops, the app keeps a stale refresh token and the
+    /// backend answers 400/422, which the app turns into a spurious logout.
+    func testSetUpReloadsCredentialsRotatedByAnotherModule() {
+        sut.onSessionObtaining(credential: baseCredentials)
+
+        // Same keychain & key, different module: this is AutoFill refreshing the session.
+        let autoFillSut = AuthManager(keychain: userDefaultsKeychainMock,
+                                      symmetricKeyProvider: symmetricKeyProvider,
+                                      module: .autoFillExtension,
+                                      logManager: LogManagerProtocolMock())
+        autoFillSut.setUp()
+
+        let rotated = Credential(UID: baseCredentials.UID,
+                                 accessToken: "rotated_access_token",
+                                 refreshToken: "rotated_refresh_token",
+                                 userName: baseCredentials.userName,
+                                 userID: baseCredentials.userID,
+                                 scopes: [],
+                                 mailboxPassword: "")
+        autoFillSut.onUpdate(credential: rotated, sessionUID: baseCredentials.UID)
+
+        // The host app still holds the pre-rotation token in memory.
+        XCTAssertEqual(sut.credential(sessionUID: baseCredentials.UID)?.accessToken,
+                       baseCredentials.accessToken)
+
+        sut.setUp()
+
+        XCTAssertEqual(sut.credential(sessionUID: baseCredentials.UID)?.accessToken,
+                       rotated.accessToken)
+        XCTAssertEqual(sut.getCredential(userId: baseCredentials.userID)?.accessToken,
+                       rotated.accessToken)
+    }
+
+    /// The other half of the guard: when a mutation never reached the keychain the in-memory
+    /// cache is the fresher copy, so reloading would throw away a live token.
+    func testSetUpKeepsUnpersistedCredentials() {
+        sut.onSessionObtaining(credential: baseCredentials)
+
+        let updated = Credential(UID: baseCredentials.UID,
+                                 accessToken: "unpersisted_access_token",
+                                 refreshToken: "unpersisted_refresh_token",
+                                 userName: baseCredentials.userName,
+                                 userID: baseCredentials.userID,
+                                 scopes: [],
+                                 mailboxPassword: "")
+
+        // Make persistence fail, so the update lands in memory only.
+        struct SymmetricKeyUnavailable: Error {}
+        symmetricKeyProvider.getSymmetricKeyThrowableError1 = SymmetricKeyUnavailable()
+        sut.onUpdate(credential: updated, sessionUID: baseCredentials.UID)
+        symmetricKeyProvider.getSymmetricKeyThrowableError1 = nil
+
+        sut.setUp()
+
+        XCTAssertEqual(sut.credential(sessionUID: baseCredentials.UID)?.accessToken,
+                       updated.accessToken)
+    }
 }

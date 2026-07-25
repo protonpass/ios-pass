@@ -85,9 +85,12 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
         /// (keychain unreadable, symmetric key unavailable). While `false`, persistence is
         /// suppressed so an empty in-memory cache can never overwrite valid stored sessions.
         var storageLoaded = false
-        /// Set on first mutation. Blocks late reload attempts that would otherwise
-        /// resurrect stale on-disk state over in-memory changes.
-        var didMutate = false
+        /// `true` when the in-memory cache holds mutations that never reached the keychain
+        /// (persistence skipped because `storageLoaded` was `false`, or the keychain write
+        /// failed). Only then is the keychain staler than memory, so only then must a reload
+        /// be skipped — reloading would silently drop a freshly refreshed token and log the
+        /// user out. Cleared by the next successful `persist`.
+        var hasUnpersistedChanges = false
         weak var delegate: (any AuthHelperDelegate)?
         weak var loginAndSignupDelegate: (any AuthSessionInvalidatedDelegate)?
     }
@@ -143,11 +146,30 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
         logger = .init(manager: logManager)
     }
 
+    /// Loads the stored sessions, and is deliberately **not** idempotent: the keychain is shared
+    /// across the app group, so extensions rotate and clear tokens behind our back. The app
+    /// re-runs this on every foreground (see `HomepageCoordinator`) precisely to pick that up —
+    /// skipping the reload leaves a stale refresh token in memory, which the backend rejects with
+    /// 400/422 and turns into a spurious logout.
+    ///
+    /// The reload is safe to repeat because it happens under the lock. The unsynchronised
+    /// `cachedCredentials` write this replaced is what used to crash.
     public func setUp() {
         state.withLock { state in
-            guard !state.didSetUp else { return } // idempotent; was previously a silent reload
-            loadFromKeychain(into: &state)
             state.didSetUp = true
+            guard !state.hasUnpersistedChanges else {
+                logger.warning("Skipping session reload: in-memory sessions are not persisted")
+                return
+            }
+            let previousKeys = Set(state.cachedCredentials.keys)
+            loadFromKeychain(into: &state)
+
+            // Another target signing out is a legitimate reason for entries to disappear, but it
+            // reaches us as a silent cache shrink rather than a session invalidation, so log it.
+            let dropped = previousKeys.subtracting(state.cachedCredentials.keys).count
+            if state.storageLoaded, dropped > 0 {
+                logger.info("Session reload dropped \(dropped) stored entries")
+            }
         }
     }
 
@@ -203,19 +225,17 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
         logger.info("Removing credentials for user id \(userId)")
         state.withLock { state in
             ensureLoaded(&state)
-            state.didMutate = true
             state.cachedCredentials = state.cachedCredentials
                 .filter { $0.value.credential.userID != userId }
-            persist(state)
+            persist(&state)
         }
     }
 
     public func removeAllCredentials() {
         state.withLock { state in
             ensureLoaded(&state)
-            state.didMutate = true
             state.cachedCredentials = [:]
-            persist(state)
+            persist(&state)
         }
     }
 
@@ -235,7 +255,6 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
         let notification = state.withLock { state -> UncheckedSendable<() -> Void>? in
             let credential = incoming.value
             ensureLoaded(&state)
-            state.didMutate = true
             for passModule in PassModule.allCases {
                 let key = CredentialsKey(sessionId: sessionUID, module: passModule)
                 // `Credential.mailboxpassword` is empty here; fall back to the cached entry
@@ -250,7 +269,7 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
                                                            authCredential: newAuthCredential,
                                                            module: passModule)
             }
-            persist(state)
+            persist(&state)
             return credentialsUpdateNotification(state, sessionId: sessionUID)
         }
         notification?.value()
@@ -262,7 +281,6 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
         let notification = state.withLock { state -> UncheckedSendable<() -> Void>? in
             let credential = incoming.value
             ensureLoaded(&state)
-            state.didMutate = true
             // Logging into the same account again: drop all prior sessions for that user.
             for (key, value) in state.cachedCredentials
                 where value.credential.userID == credential.userID {
@@ -274,7 +292,7 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
                                                            authCredential: AuthCredential(credential),
                                                            module: passModule)
             }
-            persist(state)
+            persist(&state)
             return credentialsUpdateNotification(state, sessionId: credential.UID)
         }
         notification?.value()
@@ -287,7 +305,6 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
         logger.info("Additional credentials for session id \(sessionUID)")
         let notification = state.withLock { state -> UncheckedSendable<() -> Void>? in
             ensureLoaded(&state)
-            state.didMutate = true
             for passModule in PassModule.allCases {
                 let key = CredentialsKey(sessionId: sessionUID, module: passModule)
                 // `continue`, not `return`: a missing module entry must not abort the
@@ -302,7 +319,7 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
                 element.authCredential.update(salt: saltToUpdate, privateKey: privateKeyToUpdate)
                 state.cachedCredentials[key] = element
             }
-            persist(state)
+            persist(&state)
             return credentialsUpdateNotification(state, sessionId: sessionUID)
         }
         notification?.value()
@@ -322,9 +339,8 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
         logger.info("Clearing sessions for session id \(sessionId)")
         state.withLock { state in
             ensureLoaded(&state)
-            state.didMutate = true
             removeCredentials(for: sessionId, in: &state)
-            persist(state)
+            persist(&state)
         }
     }
 
@@ -332,10 +348,9 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
         logger.info("Clearing sessions for user id \(userId)")
         state.withLock { state in
             ensureLoaded(&state)
-            state.didMutate = true
             state.cachedCredentials = state.cachedCredentials
                 .filter { $0.value.credential.userID != userId }
-            persist(state)
+            persist(&state)
         }
     }
 
@@ -355,13 +370,12 @@ public extension AuthManager {
     func initializeCredentialsForActionExtension() {
         state.withLock { state in
             ensureLoaded(&state)
-            state.didMutate = true
             if let appCredential = state.cachedCredentials.first(where: { $0.key.module == .hostApp }) {
                 let key = CredentialsKey(sessionId: appCredential.value.authCredential.sessionID,
                                          module: .actionExtension)
                 state.cachedCredentials[key] = appCredential.value
             }
-            persist(state)
+            persist(&state)
         }
     }
 
@@ -381,11 +395,10 @@ private extension AuthManager {
     private func invalidateSession(sessionUID: String, isAuthenticatedSession: Bool) {
         let notification = state.withLock { state -> UncheckedSendable<() -> Void> in
             ensureLoaded(&state)
-            state.didMutate = true
             let key = CredentialsKey(sessionId: sessionUID, module: module)
             let userId = state.cachedCredentials[key]?.credential.userID
             removeCredentials(for: sessionUID, in: &state)
-            persist(state)
+            persist(&state)
             return sessionInvalidationNotification(state,
                                                    sessionId: sessionUID,
                                                    userId: userId,
@@ -397,8 +410,8 @@ private extension AuthManager {
     private func ensureLoaded(_ state: inout MutableState) {
         assertDidSetUp(state)
         // Lazy recovery from a transient load failure (e.g. extension launched before the
-        // keychain/symmetric key became available). Only safe while nothing has mutated.
-        if state.didSetUp, !state.storageLoaded, !state.didMutate {
+        // keychain/symmetric key became available). Only safe while nothing is unpersisted.
+        if state.didSetUp, !state.storageLoaded, !state.hasUnpersistedChanges {
             loadFromKeychain(into: &state)
         }
     }
@@ -493,12 +506,15 @@ private extension AuthManager {
         }
     }
 
-    private func persist(_ state: MutableState) {
+    /// Also owns `hasUnpersistedChanges`, so every mutation gets it right by construction
+    /// instead of each call site having to remember to flag itself.
+    private func persist(_ state: inout MutableState) {
         guard state.storageLoaded else {
             // Never overwrite a keychain blob we could not read: with a failed load the
             // in-memory cache is a strict subset of reality and saving it would log out
             // every stored user.
             logger.error("Skipping session persistence: stored sessions were never loaded")
+            state.hasUnpersistedChanges = true
             return
         }
         do {
@@ -506,8 +522,10 @@ private extension AuthManager {
             let data = try JSONEncoder().encode(state.cachedCredentials)
             let encryptedContent = try symmetricKey.encrypt(data)
             try keychain.setOrError(encryptedContent, forKey: Self.storageKey)
+            state.hasUnpersistedChanges = false
         } catch {
             logger.error("Failed to save user sessions in keychain: \(error)")
+            state.hasUnpersistedChanges = true
         }
     }
 }
