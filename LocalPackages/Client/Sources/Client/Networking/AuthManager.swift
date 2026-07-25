@@ -159,33 +159,44 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
         }
     }
 
+    /// Lookups are hot paths called several times per request, so only misses are logged:
+    /// a hit says nothing, a miss is what turns into a 401 "Invalid access token" downstream.
     public func getCredential(userId: String) -> AuthCredential? {
-        logger.info("Getting authCredential for user id \(userId)")
-        return state.withLock { state -> UncheckedSendable<AuthCredential?> in
+        let credential = state.withLock { state -> UncheckedSendable<AuthCredential?> in
             ensureLoaded(&state)
             let credential = state.cachedCredentials
                 .first { $0.key.module == module && $0.value.authCredential.userID == userId }?
                 .value.authCredential
             return UncheckedSendable(credential)
         }.value
+        if credential == nil {
+            logger.warning("No authCredential for user id \(userId)")
+        }
+        return credential
     }
 
     public func credential(sessionUID: String) -> Credential? {
-        logger.info("Getting credential for session id \(sessionUID)")
-        return state.withLock { state -> UncheckedSendable<Credential?> in
+        let credential = state.withLock { state -> UncheckedSendable<Credential?> in
             ensureLoaded(&state)
             let key = CredentialsKey(sessionId: sessionUID, module: module)
             return UncheckedSendable(state.cachedCredentials[key]?.credential)
         }.value
+        if credential == nil {
+            logger.warning("No credential for session id \(sessionUID)")
+        }
+        return credential
     }
 
     public func authCredential(sessionUID: String) -> AuthCredential? {
-        logger.info("Getting authCredential for session id \(sessionUID)")
-        return state.withLock { state -> UncheckedSendable<AuthCredential?> in
+        let credential = state.withLock { state -> UncheckedSendable<AuthCredential?> in
             ensureLoaded(&state)
             let key = CredentialsKey(sessionId: sessionUID, module: module)
             return UncheckedSendable(state.cachedCredentials[key]?.authCredential)
         }.value
+        if credential == nil {
+            logger.warning("No authCredential for session id \(sessionUID)")
+        }
+        return credential
     }
 
     public func removeCredentials(userId: String) {
