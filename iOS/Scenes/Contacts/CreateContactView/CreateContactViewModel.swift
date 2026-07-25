@@ -141,12 +141,14 @@ private extension CreateContactViewModel {
     }
 
     func performIgnoringError(block: () async throws -> Void,
+                              file: String = #file,
                               function: String = #function,
-                              line: UInt = #line) async {
+                              line: UInt = #line,
+                              column: UInt = #column) async {
         do {
             try await block()
         } catch {
-            logger.error(error, function: function, line: line)
+            logger.error(error, file: file, function: function, line: line, column: column)
         }
     }
 }

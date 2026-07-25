@@ -205,9 +205,11 @@ private extension PassMonitorViewModel {
     }
 
     func handle(error: any Error,
+                file: String = #file,
                 function: String = #function,
-                line: UInt = #line) {
-        logger.error(error, function: function, line: line)
+                line: UInt = #line,
+                column: UInt = #column) {
+        logger.error(error, file: file, function: function, line: line, column: column)
         router.display(element: .displayErrorBanner(error))
     }
 }
