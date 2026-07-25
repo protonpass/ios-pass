@@ -35,12 +35,6 @@ import ProtonCoreDoh
 import ProtonCoreCryptoGoImplementation
 import Foundation
 
-enum KeychainError: Error {
-    case dataConversionError
-    case stringConversionError
-    case unexpectedError
-}
-
 final class UserDefaultsKeychainMock: KeychainProtocol {
     private let userDefaults: UserDefaults
 
@@ -48,18 +42,17 @@ final class UserDefaultsKeychainMock: KeychainProtocol {
         self.userDefaults = userDefaults
     }
 
+    // A missing key returns nil and does *not* throw, matching the real keychain:
+    // "returns nil if there was no value in the keychain, throws [only] if the keychain read
+    // failed because of the keychain access error" (ProtonCore `Keychain.dataOrError`).
+    // Throwing for "absent" made AuthManager read every empty store as an unreadable one, set
+    // `storageLoaded = false` and then silently skip all persistence for the whole test.
     func dataOrError(forKey key: String, attributes: [CFString: Any]?) throws -> Data? {
-        guard let data = userDefaults.data(forKey: key) else {
-            throw KeychainError.unexpectedError
-        }
-        return data
+        userDefaults.data(forKey: key)
     }
 
     func stringOrError(forKey key: String, attributes: [CFString: Any]?) throws -> String? {
-        guard let string = userDefaults.string(forKey: key) else {
-            throw KeychainError.unexpectedError
-        }
-        return string
+        userDefaults.string(forKey: key)
     }
 
     func setOrError(_ data: Data, forKey key: String, attributes: [CFString: Any]?) throws {

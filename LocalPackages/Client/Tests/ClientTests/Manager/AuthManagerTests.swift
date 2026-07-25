@@ -18,29 +18,32 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+@testable import Client
+import ClientMocks
 import Combine
 import Core
 import CoreMocks
-import ClientMocks
-@testable import Client
-import ProtonCoreKeymaker
-import ProtonCoreLogin
-import ProtonCoreNetworking
-import ProtonCoreAuthentication
-import ProtonCoreTestingToolkitUnitTestsCore
 import CryptoKit
-import XCTest
-import ProtonCoreDoh
+import Entities
+import Foundation
+import ProtonCoreAuthentication
 import ProtonCoreCryptoGoImplementation
+@preconcurrency import ProtonCoreNetworking
+import Testing
 
-final class AuthHelperDelegateMock: AuthHelperDelegate {
-
+/// `@unchecked Sendable`: ProtonCore's `AuthHelperDelegate` carries no `Sendable` annotation and
+/// `PassthroughSubject` is not `Sendable`. Each suite instance uses its own mock from a single
+/// task, so there is no concurrent access to check.
+final class AuthHelperDelegateMock: @unchecked Sendable, AuthHelperDelegate {
     let credentialsWereUpdatedSubject: PassthroughSubject<(authCredential: ProtonCoreNetworking.AuthCredential,
                                                            credential: ProtonCoreNetworking.Credential,
-                                                           sessionUID: String),Never> = .init()
-    let  sessionWasInvalidatedSubject: PassthroughSubject<(sessionUID: String, isAuthenticatedSession: Bool),Never> = .init()
+                                                           sessionUID: String), Never> = .init()
+    let sessionWasInvalidatedSubject: PassthroughSubject<(sessionUID: String,
+                                                          isAuthenticatedSession: Bool), Never> = .init()
 
-    func credentialsWereUpdated(authCredential: ProtonCoreNetworking.AuthCredential, credential: ProtonCoreNetworking.Credential, for sessionUID: String) {
+    func credentialsWereUpdated(authCredential: ProtonCoreNetworking.AuthCredential,
+                                credential: ProtonCoreNetworking.Credential,
+                                for sessionUID: String) {
         credentialsWereUpdatedSubject.send((authCredential, credential, sessionUID))
     }
 
@@ -49,201 +52,187 @@ final class AuthHelperDelegateMock: AuthHelperDelegate {
     }
 }
 
-final class AuthManagerTests: XCTestCase {
-    let key = SymmetricKey.random()
-    let symmetricKeyProvider = NonSendableSymmetricKeyProviderMock()
-    var sut: AuthManager!
-    let userDefaultsKeychainMock =  UserDefaultsKeychainMock()
-
-    var authHelperDelegateMock: AuthHelperDelegateMock!
-    private var cancellables: Set<AnyCancellable>!
-
-
-    override func setUp() {
-        super.setUp()
+@Suite(.tags(.manager))
+struct AuthManagerTests {
+    /// `static` so the global crypto implementation is installed exactly once: unlike XCTest,
+    /// Swift Testing runs the tests in this suite in parallel.
+    private static let cryptoIsInstalled: Bool = {
         injectDefaultCryptoImplementation()
-        symmetricKeyProvider.stubbedGetSymmetricKeyResult = key
-        cancellables = .init()
+        return true
+    }()
 
-        authHelperDelegateMock = AuthHelperDelegateMock()
-        sut = AuthManager(keychain: userDefaultsKeychainMock,
+    /// Every `AuthManager` persists under the same `AuthManager.storageKey`, so each suite
+    /// instance gets its own `UserDefaults` domain. Sharing one would let the parallel tests
+    /// overwrite each other's sessions; isolating also means no teardown is needed, matching
+    /// how the datasource suites use `DatabaseService(inMemory: true)`.
+    private static func isolatedDefaults() -> UserDefaults {
+        guard let defaults = UserDefaults(suiteName: "AuthManagerTests-\(UUID().uuidString)") else {
+            fatalError("Could not create an isolated UserDefaults suite")
+        }
+        return defaults
+    }
+
+    private let symmetricKeyProvider: NonSendableSymmetricKeyProviderMock
+    private let keychain: UserDefaultsKeychainMock
+    private let authHelperDelegateMock = AuthHelperDelegateMock()
+    private let sut: AuthManager
+
+    private let baseCredentials = Credential(UID: "test_session_id",
+                                             accessToken: "test_access_token_unauth",
+                                             refreshToken: "test_refresh_token_unauth",
+                                             userName: "test_user_name",
+                                             userID: "test_user_id",
+                                             scopes: [],
+                                             mailboxPassword: "")
+
+    init() {
+        _ = Self.cryptoIsInstalled
+
+        let symmetricKeyProvider = NonSendableSymmetricKeyProviderMock()
+        symmetricKeyProvider.stubbedGetSymmetricKeyResult = SymmetricKey.random()
+        let keychain = UserDefaultsKeychainMock(userDefaults: Self.isolatedDefaults())
+
+        self.symmetricKeyProvider = symmetricKeyProvider
+        self.keychain = keychain
+        sut = AuthManager(keychain: keychain,
                           symmetricKeyProvider: symmetricKeyProvider,
                           module: .hostApp,
                           logManager: LogManagerProtocolMock())
         sut.setUp()
     }
 
-    override func tearDown() {
-        sut = nil
-        authHelperDelegateMock = nil
-        try? userDefaultsKeychainMock.removeOrError(forKey: AuthManager.storageKey)
-        cancellables = nil
-        super.tearDown()
+    @Test func `no credential is returned when nothing is persisted`() {
+        #expect(sut.getCredential(userId: baseCredentials.userID) == nil)
     }
 
-    let baseCredentials =  Credential(UID: "test_session_id",
-                                      accessToken: "test_access_token_unauth",
-                                      refreshToken: "test_refresh_token_unauth",
-                                      userName: "test_user_name",
-                                      userID: "test_user_id",
-                                      scopes: [],
-                                      mailboxPassword: "")
-
-    func testAuthManagerNoSessionIsPersisted() {
-        XCTAssertNil(sut.getCredential(userId: baseCredentials.userID))
-    }
-
-    func testAuthManagerWithPersistedSession() {
+    @Test func `an obtained session is readable by session id and by user id`() {
         sut.onSessionObtaining(credential: baseCredentials)
 
-        XCTAssertEqual(sut.credential(sessionUID: baseCredentials.UID)?.UID, baseCredentials.UID)
-        XCTAssertEqual(sut.authCredential(sessionUID: baseCredentials.UID)?.sessionID, baseCredentials.UID)
-        XCTAssertEqual(sut.getCredential(userId: baseCredentials.userID)?.sessionID, baseCredentials.UID)
+        #expect(sut.credential(sessionUID: baseCredentials.UID)?.UID == baseCredentials.UID)
+        #expect(sut.authCredential(sessionUID: baseCredentials.UID)?.sessionID == baseCredentials.UID)
+        #expect(sut.getCredential(userId: baseCredentials.userID)?.sessionID == baseCredentials.UID)
     }
 
-    func testAuthManagerWithUpdateOfPersistedSession() {
+    @Test func `updating a session replaces the stored user name`() {
         sut.onSessionObtaining(credential: baseCredentials)
 
-        let newCredentials =  Credential(UID: "test_session_id",
-                                         accessToken: "test_access_token_unauth",
-                                         refreshToken: "test_refresh_token_unauth",
-                                         userName: "new_test_user_name",
-                                         userID: baseCredentials.userID,
-                                         scopes: [],
-                                         mailboxPassword: "")
+        let newCredentials = Credential(UID: baseCredentials.UID,
+                                        accessToken: "test_access_token_unauth",
+                                        refreshToken: "test_refresh_token_unauth",
+                                        userName: "new_test_user_name",
+                                        userID: baseCredentials.userID,
+                                        scopes: [],
+                                        mailboxPassword: "")
 
         sut.onUpdate(credential: newCredentials, sessionUID: baseCredentials.UID)
 
-        XCTAssertEqual(sut.credential(sessionUID: baseCredentials.UID)?.userName, newCredentials.userName)
-        XCTAssertEqual(sut.getCredential(userId: baseCredentials.userID)?.userName, newCredentials.userName)
-        XCTAssertEqual(sut.authCredential(sessionUID: baseCredentials.UID)?.userName, newCredentials.userName)
+        #expect(sut.credential(sessionUID: baseCredentials.UID)?.userName == newCredentials.userName)
+        #expect(sut.getCredential(userId: baseCredentials.userID)?.userName == newCredentials.userName)
+        #expect(sut.authCredential(sessionUID: baseCredentials.UID)?.userName == newCredentials.userName)
     }
 
-    func testAuthManagerOnAdditionalCredentialsInfoObtained() async throws {
+    /// The delegate is notified synchronously from `onAdditionalCredentialsInfoObtained`, so the
+    /// event is recorded and then required — no expectation or timeout involved.
+    @Test func `additional credentials info is stored and notified`() throws {
         sut.onSessionObtaining(credential: baseCredentials)
 
-        XCTAssertNil(sut.authCredential(sessionUID: baseCredentials.UID)?.passwordKeySalt)
-        XCTAssertNil(sut.authCredential(sessionUID: baseCredentials.UID)?.privateKey)
-        XCTAssertEqual(sut.authCredential(sessionUID: baseCredentials.UID)?.mailboxpassword, "")
+        #expect(sut.authCredential(sessionUID: baseCredentials.UID)?.passwordKeySalt == nil)
+        #expect(sut.authCredential(sessionUID: baseCredentials.UID)?.privateKey == nil)
+        #expect(sut.authCredential(sessionUID: baseCredentials.UID)?.mailboxpassword == "")
 
         sut.setUpDelegate(authHelperDelegateMock)
-        let expectation = expectation(description: "Should receive update event")
+
         let newSalt = "salttest"
         let newPrivateKey = "privatekeytest"
-        let newPassword =  "test"
+        let newPassword = "test"
+
+        var cancellables = Set<AnyCancellable>()
+        var notified: ProtonCoreNetworking.AuthCredential?
         authHelperDelegateMock.credentialsWereUpdatedSubject
-            .sink { value in
-                XCTAssertEqual(value.authCredential.passwordKeySalt, newSalt)
-                XCTAssertEqual(value.authCredential.privateKey, newPrivateKey)
-                XCTAssertEqual(value.authCredential.mailboxpassword, newPassword)
-
-                expectation.fulfill()
-            }
+            .sink { notified = $0.authCredential }
             .store(in: &cancellables)
 
-        sut.onAdditionalCredentialsInfoObtained(sessionUID: baseCredentials.UID, password: newPassword, salt: newSalt, privateKey: newPrivateKey)
+        sut.onAdditionalCredentialsInfoObtained(sessionUID: baseCredentials.UID,
+                                                password: newPassword,
+                                                salt: newSalt,
+                                                privateKey: newPrivateKey)
 
-        await fulfillment(of: [expectation], timeout: 1)
-        XCTAssertEqual(sut.authCredential(sessionUID: baseCredentials.UID)?.passwordKeySalt, newSalt)
-        XCTAssertEqual(sut.authCredential(sessionUID: baseCredentials.UID)?.privateKey, newPrivateKey)
-        XCTAssertEqual(sut.authCredential(sessionUID: baseCredentials.UID)?.mailboxpassword, newPassword)
+        let notifiedCredential = try #require(notified, "credentialsWereUpdated was never called")
+        #expect(notifiedCredential.passwordKeySalt == newSalt)
+        #expect(notifiedCredential.privateKey == newPrivateKey)
+        #expect(notifiedCredential.mailboxpassword == newPassword)
+
+        #expect(sut.authCredential(sessionUID: baseCredentials.UID)?.passwordKeySalt == newSalt)
+        #expect(sut.authCredential(sessionUID: baseCredentials.UID)?.privateKey == newPrivateKey)
+        #expect(sut.authCredential(sessionUID: baseCredentials.UID)?.mailboxpassword == newPassword)
     }
 
-    func testAuthManagerOnAuthenticatedSessionInvalidated() async throws {
+    /// Both invalidation paths clear the session, notify the delegate and emit on
+    /// `sessionWasInvalidated`; only the `isAuthenticatedSession` flag differs.
+    @Test(arguments: [true, false])
+    func `invalidating a session clears it and notifies observers`(isAuthenticatedSession: Bool) throws {
         sut.onSessionObtaining(credential: baseCredentials)
-
-        XCTAssertEqual(sut.credential(sessionUID: baseCredentials.UID)?.UID, baseCredentials.UID)
-        XCTAssertEqual(sut.authCredential(sessionUID: baseCredentials.UID)?.sessionID, baseCredentials.UID)
-        XCTAssertEqual(sut.getCredential(userId: baseCredentials.userID)?.sessionID, baseCredentials.UID)
-
         sut.setUpDelegate(authHelperDelegateMock)
-        let expectation = expectation(description: "Should receive invalite session event")
+
+        var cancellables = Set<AnyCancellable>()
+        var delegateEvent: (sessionUID: String, isAuthenticatedSession: Bool)?
+        var publishedEvent: (sessionId: String, userId: String?)?
         authHelperDelegateMock.sessionWasInvalidatedSubject
-            .sink { [weak self] value in
-                XCTAssertEqual(value.sessionUID, self?.baseCredentials.UID)
-                XCTAssertEqual(value.isAuthenticatedSession, true)
-                expectation.fulfill()
-            }
+            .sink { delegateEvent = $0 }
             .store(in: &cancellables)
-
-        sut.onAuthenticatedSessionInvalidated(sessionUID: baseCredentials.UID)
-
-        await fulfillment(of: [expectation], timeout: 1)
-        XCTAssertNil(sut.credential(sessionUID: baseCredentials.UID))
-        XCTAssertNil(sut.authCredential(sessionUID: baseCredentials.UID))
-        XCTAssertNil(sut.getCredential(userId: baseCredentials.userID))
-
-    }
-
-    func testAuthManagerOnUnauthenticatedSessionInvalidated() async throws {
-        sut.onSessionObtaining(credential: baseCredentials)
-
-        XCTAssertEqual(sut.credential(sessionUID: baseCredentials.UID)?.UID, baseCredentials.UID)
-        XCTAssertEqual(sut.authCredential(sessionUID: baseCredentials.UID)?.sessionID, baseCredentials.UID)
-        XCTAssertEqual(sut.getCredential(userId: baseCredentials.userID)?.sessionID, baseCredentials.UID)
-
-        sut.setUpDelegate(authHelperDelegateMock)
-        let expectation = XCTestExpectation(description: "Should receive invalidated session event")
-        let sessionWasInvalidatedExpectation = XCTestExpectation(description: "Session should be invalidated")
-
-        authHelperDelegateMock.sessionWasInvalidatedSubject
-            .sink { [weak self] value in
-                XCTAssertEqual(value.sessionUID, self?.baseCredentials.UID)
-                XCTAssertEqual(value.isAuthenticatedSession, false)
-                expectation.fulfill()
-            }
-            .store(in: &cancellables)
-
         sut.sessionWasInvalidated
-            .sink { [weak self] value in
-                XCTAssertEqual(value.sessionId, self?.baseCredentials.UID)
-                XCTAssertEqual(value.userId, self?.baseCredentials.userID)
-                sessionWasInvalidatedExpectation.fulfill()
-            }
+            .sink { publishedEvent = $0 }
             .store(in: &cancellables)
 
-        sut.onUnauthenticatedSessionInvalidated(sessionUID: baseCredentials.UID)
+        if isAuthenticatedSession {
+            sut.onAuthenticatedSessionInvalidated(sessionUID: baseCredentials.UID)
+        } else {
+            sut.onUnauthenticatedSessionInvalidated(sessionUID: baseCredentials.UID)
+        }
 
-        await fulfillment(of: [expectation, sessionWasInvalidatedExpectation], timeout: 1)
-        XCTAssertNil(sut.credential(sessionUID: baseCredentials.UID))
-        XCTAssertNil(sut.authCredential(sessionUID: baseCredentials.UID))
-        XCTAssertNil(sut.getCredential(userId: baseCredentials.userID))
+        let delegated = try #require(delegateEvent, "sessionWasInvalidated delegate was never called")
+        #expect(delegated.sessionUID == baseCredentials.UID)
+        #expect(delegated.isAuthenticatedSession == isAuthenticatedSession)
+
+        let published = try #require(publishedEvent, "sessionWasInvalidated never emitted")
+        #expect(published.sessionId == baseCredentials.UID)
+        #expect(published.userId == baseCredentials.userID)
+
+        #expect(sut.credential(sessionUID: baseCredentials.UID) == nil)
+        #expect(sut.authCredential(sessionUID: baseCredentials.UID) == nil)
+        #expect(sut.getCredential(userId: baseCredentials.userID) == nil)
     }
 
-    func testAuthManagerClearSessionsForSessionID() async throws {
+    @Test func `clearing sessions by session id removes the credentials`() {
         sut.onSessionObtaining(credential: baseCredentials)
+        #expect(sut.credential(sessionUID: baseCredentials.UID)?.UID == baseCredentials.UID)
 
-        XCTAssertEqual(sut.credential(sessionUID: baseCredentials.UID)?.UID, baseCredentials.UID)
-        XCTAssertEqual(sut.authCredential(sessionUID: baseCredentials.UID)?.sessionID, baseCredentials.UID)
-        XCTAssertEqual(sut.getCredential(userId: baseCredentials.userID)?.sessionID, baseCredentials.UID)
+        sut.clearSessions(sessionId: baseCredentials.UID)
 
-        sut.clearSessions(sessionId:  baseCredentials.UID)
-        XCTAssertNil(sut.credential(sessionUID: baseCredentials.UID))
-        XCTAssertNil(sut.authCredential(sessionUID: baseCredentials.UID))
-        XCTAssertNil(sut.getCredential(userId: baseCredentials.userID))
+        #expect(sut.credential(sessionUID: baseCredentials.UID) == nil)
+        #expect(sut.authCredential(sessionUID: baseCredentials.UID) == nil)
+        #expect(sut.getCredential(userId: baseCredentials.userID) == nil)
     }
 
-    func testAuthManagerClearSessionsForUserID() async throws {
+    @Test func `clearing sessions by user id removes the credentials`() {
         sut.onSessionObtaining(credential: baseCredentials)
+        #expect(sut.getCredential(userId: baseCredentials.userID)?.sessionID == baseCredentials.UID)
 
-        XCTAssertEqual(sut.credential(sessionUID: baseCredentials.UID)?.UID, baseCredentials.UID)
-        XCTAssertEqual(sut.authCredential(sessionUID: baseCredentials.UID)?.sessionID, baseCredentials.UID)
-        XCTAssertEqual(sut.getCredential(userId: baseCredentials.userID)?.sessionID, baseCredentials.UID)
+        sut.clearSessions(userId: baseCredentials.userID)
 
-        sut.clearSessions(userId:  baseCredentials.userID)
-        XCTAssertNil(sut.credential(sessionUID: baseCredentials.UID))
-        XCTAssertNil(sut.authCredential(sessionUID: baseCredentials.UID))
-        XCTAssertNil(sut.getCredential(userId: baseCredentials.userID))
+        #expect(sut.credential(sessionUID: baseCredentials.UID) == nil)
+        #expect(sut.authCredential(sessionUID: baseCredentials.UID) == nil)
+        #expect(sut.getCredential(userId: baseCredentials.userID) == nil)
     }
 
     /// `setUp()` is re-run on every foreground so the app picks up tokens an extension rotated
     /// in the shared keychain. If it no-ops, the app keeps a stale refresh token and the
     /// backend answers 400/422, which the app turns into a spurious logout.
-    func testSetUpReloadsCredentialsRotatedByAnotherModule() {
+    @Test func `setUp reloads credentials rotated by another module`() {
         sut.onSessionObtaining(credential: baseCredentials)
 
         // Same keychain & key, different module: this is AutoFill refreshing the session.
-        let autoFillSut = AuthManager(keychain: userDefaultsKeychainMock,
+        let autoFillSut = AuthManager(keychain: keychain,
                                       symmetricKeyProvider: symmetricKeyProvider,
                                       module: .autoFillExtension,
                                       logManager: LogManagerProtocolMock())
@@ -259,20 +248,19 @@ final class AuthManagerTests: XCTestCase {
         autoFillSut.onUpdate(credential: rotated, sessionUID: baseCredentials.UID)
 
         // The host app still holds the pre-rotation token in memory.
-        XCTAssertEqual(sut.credential(sessionUID: baseCredentials.UID)?.accessToken,
-                       baseCredentials.accessToken)
+        #expect(sut.credential(sessionUID: baseCredentials.UID)?.accessToken == baseCredentials.accessToken)
 
         sut.setUp()
 
-        XCTAssertEqual(sut.credential(sessionUID: baseCredentials.UID)?.accessToken,
-                       rotated.accessToken)
-        XCTAssertEqual(sut.getCredential(userId: baseCredentials.userID)?.accessToken,
-                       rotated.accessToken)
+        #expect(sut.credential(sessionUID: baseCredentials.UID)?.accessToken == rotated.accessToken)
+        #expect(sut.getCredential(userId: baseCredentials.userID)?.accessToken == rotated.accessToken)
     }
 
     /// The other half of the guard: when a mutation never reached the keychain the in-memory
     /// cache is the fresher copy, so reloading would throw away a live token.
-    func testSetUpKeepsUnpersistedCredentials() {
+    @Test func `setUp keeps unpersisted credentials`() {
+        struct SymmetricKeyUnavailable: Error {}
+
         sut.onSessionObtaining(credential: baseCredentials)
 
         let updated = Credential(UID: baseCredentials.UID,
@@ -284,14 +272,12 @@ final class AuthManagerTests: XCTestCase {
                                  mailboxPassword: "")
 
         // Make persistence fail, so the update lands in memory only.
-        struct SymmetricKeyUnavailable: Error {}
         symmetricKeyProvider.getSymmetricKeyThrowableError1 = SymmetricKeyUnavailable()
         sut.onUpdate(credential: updated, sessionUID: baseCredentials.UID)
         symmetricKeyProvider.getSymmetricKeyThrowableError1 = nil
 
         sut.setUp()
 
-        XCTAssertEqual(sut.credential(sessionUID: baseCredentials.UID)?.accessToken,
-                       updated.accessToken)
+        #expect(sut.credential(sessionUID: baseCredentials.UID)?.accessToken == updated.accessToken)
     }
 }
