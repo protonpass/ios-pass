@@ -18,14 +18,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
-import Combine
 import Core
 import DIComposition
 import Entities
 import FactoryKit
-import Foundation
 import Macro
+import Observation
 import PhotosUI
 import SwiftUI
 
@@ -35,56 +33,65 @@ enum BugReportObject: CaseIterable {
     var description: String {
         switch self {
         case .autofill:
-            #localized("AutoFill")
+            #localized("AutoFill", bundle: .module)
 
         case .autosave:
-            #localized("Autosave")
+            #localized("Autosave", bundle: .module)
 
         case .aliases:
-            #localized("Aliases")
+            #localized("Aliases", bundle: .module)
 
         case .syncing:
-            #localized("Syncing")
+            #localized("Syncing", bundle: .module)
 
         case .featureRequest:
-            #localized("Feature request")
+            #localized("Feature request", bundle: .module)
 
         case .other:
-            #localized("Other")
+            #localized("Other", bundle: .module)
         }
     }
 }
 
 @MainActor
-final class BugReportViewModel: ObservableObject {
-    @Published var object: BugReportObject?
-    @Published var description = ""
-    @Published private(set) var hasSent = false
-    @Published private(set) var actionInProcess = false
-    @Published var shouldSendLogs = true
-    @Published var selectedPhotos = [PhotosPickerItem]()
+@Observable
+final class BugReportViewModel {
+    var object: BugReportObject?
+    var description = ""
+    private(set) var hasSent = false
+    private(set) var actionInProcess = false
+    var shouldSendLogs = true
+    var selectedPhotos = [PhotosPickerItem]()
+    private(set) var currentFiles = [String: URL]()
 
     private let accessRepository = dependency(\RepositoryContainer.accessRepository)
     private let sendUserBugReport = dependency(\UseCasesContainer.sendUserBugReport)
     private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
     private let logManager = dependency(\ToolingContainer.logManager)
+
+    @ObservationIgnored
     private let logger: Logger
-
-    private var cancellable = Set<AnyCancellable>()
-
-    @Published private(set) var currentFiles = [String: URL]()
 
     init() {
         logger = .init(manager: logManager)
-        $selectedPhotos
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] photos in
-                guard let self else {
-                    return
-                }
-                addPhotos(photos)
+    }
+
+    func addPhotos(_ photos: [PhotosPickerItem]) {
+        Task { [weak self] in
+            guard let self else {
+                return
             }
-            .store(in: &cancellable)
+            defer {
+                actionInProcess = false
+            }
+            do {
+                actionInProcess = true
+                let data = try await fetchContentUrls(photos)
+                currentFiles = currentFiles.merging(data) { _, new in new }
+            } catch {
+                handle(error)
+            }
+        }
     }
 
     func send() {
@@ -152,27 +159,6 @@ final class BugReportViewModel: ObservableObject {
 }
 
 private extension BugReportViewModel {
-    func addPhotos(_ photos: [PhotosPickerItem]) {
-        Task { [weak self] in
-            guard let self else {
-                return
-            }
-            defer {
-                actionInProcess = false
-            }
-            do {
-                actionInProcess = true
-                for key in currentFiles.keys where key.contains("Screenshot -") {
-                    currentFiles.removeValue(forKey: key)
-                }
-                let data = try await fetchContentUrls(photos)
-                currentFiles = currentFiles.merging(data) { _, new in new }
-            } catch {
-                handle(error)
-            }
-        }
-    }
-
     func fetchContentUrls(_ photos: [PhotosPickerItem]) async throws -> [String: URL] {
         try await withThrowingTaskGroup(of: TempDirectoryTransferableUrl?.self,
                                         returning: [String: URL].self) { group in
@@ -186,7 +172,7 @@ private extension BugReportViewModel {
 
             for try await url in group {
                 if let url {
-                    contentUrls["Screenshot - \(url.value.lastPathComponent)"] = url.value
+                    contentUrls[url.value.lastPathComponent] = url.value
                 }
             }
 
@@ -210,8 +196,12 @@ private extension BugReportViewModel {
         return object
     }
 
-    func handle(_ error: any Error) {
-        logger.error(error)
+    func handle(_ error: any Error,
+                file: String = #file,
+                function: String = #function,
+                line: UInt = #line,
+                column: UInt = #column) {
+        logger.error(error, file: file, function: function, line: line, column: column)
 
         let message = if let passError = error as? PassError,
                          case let .bugReport(reason) = passError {

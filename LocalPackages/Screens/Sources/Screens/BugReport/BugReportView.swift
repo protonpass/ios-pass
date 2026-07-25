@@ -28,9 +28,10 @@ import SwiftUI
 public struct BugReportView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focused
-    @StateObject private var viewModel = BugReportViewModel()
+    @State private var viewModel = BugReportViewModel()
     @State private var showFilePicker = false
     @State private var showPhotoPicker = false
+    @State private var contentWidth: CGFloat = 0
     var onSuccess: () -> Void
 
     public init(onSuccess: @escaping () -> Void) {
@@ -41,7 +42,7 @@ public struct BugReportView: View {
         NavigationStack {
             mainContainer
                 .toolbar { toolbarContent }
-                .navigationTitle("Report a problem")
+                .navigationTitle(Text("Report a problem", bundle: .module))
                 .showSpinner(viewModel.actionInProcess)
                 .onFirstAppear {
                     focused = true
@@ -53,6 +54,9 @@ public struct BugReportView: View {
                 // Because we need to show a banner after the view is fully dismissed
                 onSuccess()
             }
+        }
+        .onChange(of: viewModel.selectedPhotos) { _, value in
+            viewModel.addPhotos(value)
         }
         .fileImporter(isPresented: $showFilePicker,
                       allowedContentTypes: [.item],
@@ -77,7 +81,7 @@ private extension BugReportView {
         }
 
         ToolbarItem(placement: .topBarTrailing) {
-            CapsuleTextButton(title: #localized("Send"),
+            CapsuleTextButton(title: #localized("Send", bundle: .module),
                               titleColor: PassColor.textInvert,
                               backgroundColor: PassColor.interactionNorm,
                               action: viewModel.send)
@@ -99,6 +103,7 @@ private extension BugReportView {
                 attachmentsSection
                 Spacer()
             }
+            .onGeometryChange(for: CGFloat.self, of: { $0.size.width }, action: { contentWidth = $0 })
             .padding()
             .frame(maxHeight: .infinity)
             .animation(.default, value: viewModel.currentFiles)
@@ -132,7 +137,7 @@ private extension BugReportView {
             }
         }, label: {
             HStack {
-                pickerLabel(viewModel.object?.description ?? #localized("Select reason"))
+                pickerLabel(viewModel.object?.description ?? #localized("Select reason", bundle: .module))
                 Spacer()
             }
             .frame(maxWidth: .infinity)
@@ -145,10 +150,11 @@ private extension BugReportView {
 private extension BugReportView {
     @ViewBuilder
     var descriptionSection: some View {
-        let title = #localized("What went wrong?")
+        let title = #localized("What went wrong?", bundle: .module)
         let placeholder =
             // swiftlint:disable:next line_length
-            #localized("Please describe the problem in as much detail as you can. If there was an error message, let us know what it said.")
+            #localized("Please describe the problem in as much detail as you can. If there was an error message, let us know what it said.",
+                       bundle: .module)
         HStack(spacing: DesignConstant.sectionPadding) {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(title)
@@ -194,10 +200,14 @@ private extension BugReportView {
 private extension BugReportView {
     var logsSection: some View {
         VStack {
-            Toggle("Logs", isOn: $viewModel.shouldSendLogs)
-                .foregroundStyle(PassColor.textNorm)
+            Toggle(isOn: $viewModel.shouldSendLogs) {
+                Text("Logs", bundle: .module)
+                    .foregroundStyle(PassColor.textNorm)
+            }
+
             // swiftlint:disable:next line_length
-            Text("A log is a type of file that shows us the actions you took that led to an error. We'll only ever use them to help our engineers fix bugs.")
+            Text("A log is a type of file that shows us the actions you took that led to an error. We'll only ever use them to help our engineers fix bugs.",
+                 bundle: .module)
                 .sectionTitleText()
         }
     }
@@ -208,40 +218,36 @@ private extension BugReportView {
     var attachmentsSection: some View {
         VStack {
             HStack {
-                Text("Attachments")
+                Text("Attachments", bundle: .module)
                     .foregroundStyle(PassColor.textNorm)
                 Spacer()
                 Menu(content: {
                     Button(action: {
                         showPhotoPicker = true
                     }, label: {
-                        Text("Screenshot")
+                        Text("Photos or videos", bundle: .module)
                     })
 
                     Button(action: {
                         showFilePicker = true
                     }, label: {
-                        Text("File")
+                        Text("Files", bundle: .module)
                     })
                 }, label: {
-                    pickerLabel(#localized("Attach"))
+                    pickerLabel(#localized("Attach", bundle: .module))
                 })
             }
 
-            GeometryReader { proxy in
-                VStack(alignment: .leading) {
-                    AnyLayout(FlowLayout(spacing: 8)) {
-                        ForEach(Array(viewModel.currentFiles.keys), id: \.self) { key in
-                            view(for: key, maxWidth: proxy.size.width - 20) // minus the padding
-                        }
-                    }
+            FlowLayout(spacing: 8) {
+                ForEach(Array(viewModel.currentFiles.keys), id: \.self) { key in
+                    view(for: key)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 
-    func view(for fileName: String, maxWidth: CGFloat) -> some View {
+    func view(for fileName: String) -> some View {
         Label(title: {
             Text(fileName)
                 .font(.callout)
@@ -258,10 +264,10 @@ private extension BugReportView {
                     .frame(width: 18, height: 18)
             })
         })
-        .frame(maxWidth: maxWidth)
         .labelStyle(.rightIcon)
         .padding(.horizontal, 10)
         .padding(.vertical, 8)
+        .frame(maxWidth: contentWidth > 0 ? contentWidth : nil)
         .overlay(RoundedRectangle(cornerRadius: 4)
             .stroke(PassColor.backgroundMedium, lineWidth: 1))
     }
