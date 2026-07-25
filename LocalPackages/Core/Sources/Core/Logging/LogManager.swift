@@ -117,7 +117,8 @@ public extension LogManager {
     }
 
     /// Sorted so the in-app log viewer and exported/shared log files are always chronological,
-    /// including across the dump batches `mergeAndClear` can only order individually.
+    /// including across the dump batches `mergeAndClear` can only order individually. Both
+    /// consumers go through here: `LogsViewModel` and `CreateLogsFile`.
     func getLogEntries() throws -> [LogEntry] {
         saveAllLogs()
         guard let url, fileExists else { return [] }
@@ -125,7 +126,7 @@ public extension LogManager {
         return contents
             .split(separator: "\n", omittingEmptySubsequences: true)
             .compactMap { String($0).toLogEntry }
-            .sorted { $0.timestamp < $1.timestamp }
+            .sorted(by: LogEntry.isBefore)
     }
 
     func removeAllLogs() {
@@ -162,8 +163,8 @@ public extension LogManager {
 }
 
 @_spi(Test) public extension LogManager {
-    /// Deliberately unsorted, unlike `getLogEntries()`: this returns the file verbatim so tests
-    /// can assert the on-disk order that `mergeAndClear` is responsible for.
+    /// Returns the file verbatim, unlike `getLogEntries()`, which sorts and flushes first. Test
+    /// seam: it is the only way to observe the on-disk order `mergeAndClear` produces.
     func getLogEntriesWithoutSave() throws -> [LogEntry] {
         guard let url, fileExists else { return [] }
         let contents = try String(contentsOf: url, encoding: .utf8)
@@ -193,14 +194,15 @@ private extension LogManager {
     ///
     /// Sorted on merge because `Logger.log(entry:)` dispatches every entry in its own
     /// unstructured `Task`: this actor serialises execution but not arrival, so entries land
-    /// here in arbitrary order. Their timestamps are stamped at the call site and are accurate
-    /// — only the arrival order is not, which is why sorting recovers the true order.
-    // ponytail: orders within a dump batch. An entry delayed past a flush still lands a few
-    // positions late. Upgrade path is ordered ingestion — have `Logger.log` yield into an
-    // AsyncStream drained by one task, instead of a Task per entry.
+    /// here in arbitrary order. `LogEntry.timestamp`/`sequence` are stamped at the call site and
+    /// record what actually happened — only the arrival order does not.
+    ///
+    /// This sort orders a dump batch, not the whole file: an entry delayed past a flush still
+    /// lands in the next batch. That only affects which lines `pruneIfNeeded` discards when the
+    /// file overflows — every reader goes through `getLogEntries()`, which sorts globally.
     func mergeAndClear() {
         currentSavedLogs.append(contentsOf: currentMemoryLogs
-            .sorted { $0.timestamp < $1.timestamp }
+            .sorted(by: LogEntry.isBefore)
             .compactMap(\.toString))
         currentMemoryLogs.removeAll()
     }

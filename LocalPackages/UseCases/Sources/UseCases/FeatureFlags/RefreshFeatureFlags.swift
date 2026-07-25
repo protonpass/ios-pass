@@ -51,9 +51,17 @@ public final class RefreshFeatureFlags: @unchecked Sendable, RefreshFeatureFlags
     public func execute() {
         Task { [weak self] in
             guard let self else { return }
-            let userId = await (try? userManager.getActiveUserId()) ?? ""
-            if userId.isEmpty {
-                logger.warning("No active user id, refreshing feature flags on unauthenticated session")
+            // `""` means "no active user": flags are then fetched on the unauthenticated session,
+            // which is a supported flow. Distinguish it from `getActiveUserId` actually failing,
+            // otherwise the two are indistinguishable in the logs.
+            var userId = ""
+            do {
+                userId = try await userManager.getActiveUserId()
+            } catch {
+                logger.info("""
+                No active user, refreshing feature flags on the unauthenticated session: \
+                \(String(describing: error))
+                """)
             }
             do {
                 let apiservice = try apiServicing.getApiService(userId: userId)

@@ -31,24 +31,37 @@ import ProtonCoreCryptoGoImplementation
 @preconcurrency import ProtonCoreNetworking
 import Testing
 
+/// Named payloads instead of tuples: `AuthHelperDelegate` hands over three values at once, which
+/// is one past SwiftLint's `large_tuple` threshold.
+struct CredentialsUpdate {
+    let authCredential: ProtonCoreNetworking.AuthCredential
+    let credential: ProtonCoreNetworking.Credential
+    let sessionUID: String
+}
+
+struct SessionInvalidation {
+    let sessionUID: String
+    let isAuthenticatedSession: Bool
+}
+
 /// `@unchecked Sendable`: ProtonCore's `AuthHelperDelegate` carries no `Sendable` annotation and
 /// `PassthroughSubject` is not `Sendable`. Each suite instance uses its own mock from a single
 /// task, so there is no concurrent access to check.
 final class AuthHelperDelegateMock: @unchecked Sendable, AuthHelperDelegate {
-    let credentialsWereUpdatedSubject: PassthroughSubject<(authCredential: ProtonCoreNetworking.AuthCredential,
-                                                           credential: ProtonCoreNetworking.Credential,
-                                                           sessionUID: String), Never> = .init()
-    let sessionWasInvalidatedSubject: PassthroughSubject<(sessionUID: String,
-                                                          isAuthenticatedSession: Bool), Never> = .init()
+    let credentialsWereUpdatedSubject = PassthroughSubject<CredentialsUpdate, Never>()
+    let sessionWasInvalidatedSubject = PassthroughSubject<SessionInvalidation, Never>()
 
     func credentialsWereUpdated(authCredential: ProtonCoreNetworking.AuthCredential,
                                 credential: ProtonCoreNetworking.Credential,
                                 for sessionUID: String) {
-        credentialsWereUpdatedSubject.send((authCredential, credential, sessionUID))
+        credentialsWereUpdatedSubject.send(.init(authCredential: authCredential,
+                                                 credential: credential,
+                                                 sessionUID: sessionUID))
     }
 
     func sessionWasInvalidated(for sessionUID: String, isAuthenticatedSession: Bool) {
-        sessionWasInvalidatedSubject.send((sessionUID, isAuthenticatedSession))
+        sessionWasInvalidatedSubject.send(.init(sessionUID: sessionUID,
+                                                isAuthenticatedSession: isAuthenticatedSession))
     }
 }
 
@@ -61,19 +74,12 @@ struct AuthManagerTests {
         return true
     }()
 
-    /// Every `AuthManager` persists under the same `AuthManager.storageKey`, so each suite
-    /// instance gets its own `UserDefaults` domain. Sharing one would let the parallel tests
-    /// overwrite each other's sessions; isolating also means no teardown is needed, matching
-    /// how the datasource suites use `DatabaseService(inMemory: true)`.
-    private static func isolatedDefaults() -> UserDefaults {
-        guard let defaults = UserDefaults(suiteName: "AuthManagerTests-\(UUID().uuidString)") else {
-            fatalError("Could not create an isolated UserDefaults suite")
-        }
-        return defaults
-    }
-
     private let symmetricKeyProvider: NonSendableSymmetricKeyProviderMock
-    private let keychain: UserDefaultsKeychainMock
+    /// Every `AuthManager` persists under the same `AuthManager.storageKey`, so each suite instance
+    /// gets its own keychain — sharing one would let the parallel tests overwrite each other's
+    /// sessions. In-memory, so there is nothing to tear down, matching how the datasource suites
+    /// use `DatabaseService(inMemory: true)`.
+    private let keychain = InMemoryKeychainMock()
     private let authHelperDelegateMock = AuthHelperDelegateMock()
     private let sut: AuthManager
 
@@ -90,10 +96,8 @@ struct AuthManagerTests {
 
         let symmetricKeyProvider = NonSendableSymmetricKeyProviderMock()
         symmetricKeyProvider.stubbedGetSymmetricKeyResult = SymmetricKey.random()
-        let keychain = UserDefaultsKeychainMock(userDefaults: Self.isolatedDefaults())
 
         self.symmetricKeyProvider = symmetricKeyProvider
-        self.keychain = keychain
         sut = AuthManager(keychain: keychain,
                           symmetricKeyProvider: symmetricKeyProvider,
                           module: .hostApp,
@@ -138,7 +142,7 @@ struct AuthManagerTests {
 
         #expect(sut.authCredential(sessionUID: baseCredentials.UID)?.passwordKeySalt == nil)
         #expect(sut.authCredential(sessionUID: baseCredentials.UID)?.privateKey == nil)
-        #expect(sut.authCredential(sessionUID: baseCredentials.UID)?.mailboxpassword == "")
+        #expect(sut.authCredential(sessionUID: baseCredentials.UID)?.mailboxpassword.isEmpty == true)
 
         sut.setUpDelegate(authHelperDelegateMock)
 
@@ -238,38 +242,24 @@ struct AuthManagerTests {
                                       logManager: LogManagerProtocolMock())
         autoFillSut.setUp()
 
-        let rotated = Credential(UID: baseCredentials.UID,
-                                 accessToken: "rotated_access_token",
-                                 refreshToken: "rotated_refresh_token",
-                                 userName: baseCredentials.userName,
-                                 userID: baseCredentials.userID,
-                                 scopes: [],
-                                 mailboxPassword: "")
-        autoFillSut.onUpdate(credential: rotated, sessionUID: baseCredentials.UID)
+        let newToken = rotated(accessToken: "rotated_access_token")
+        autoFillSut.onUpdate(credential: newToken, sessionUID: baseCredentials.UID)
 
         // The host app still holds the pre-rotation token in memory.
         #expect(sut.credential(sessionUID: baseCredentials.UID)?.accessToken == baseCredentials.accessToken)
 
         sut.setUp()
 
-        #expect(sut.credential(sessionUID: baseCredentials.UID)?.accessToken == rotated.accessToken)
-        #expect(sut.getCredential(userId: baseCredentials.userID)?.accessToken == rotated.accessToken)
+        #expect(sut.credential(sessionUID: baseCredentials.UID)?.accessToken == newToken.accessToken)
+        #expect(sut.getCredential(userId: baseCredentials.userID)?.accessToken == newToken.accessToken)
     }
 
     /// The other half of the guard: when a mutation never reached the keychain the in-memory
-    /// cache is the fresher copy, so reloading would throw away a live token.
+    /// cache is the fresher copy, so reloading must not throw away a live token.
     @Test func `setUp keeps unpersisted credentials`() {
-        struct SymmetricKeyUnavailable: Error {}
-
         sut.onSessionObtaining(credential: baseCredentials)
 
-        let updated = Credential(UID: baseCredentials.UID,
-                                 accessToken: "unpersisted_access_token",
-                                 refreshToken: "unpersisted_refresh_token",
-                                 userName: baseCredentials.userName,
-                                 userID: baseCredentials.userID,
-                                 scopes: [],
-                                 mailboxPassword: "")
+        let updated = rotated(accessToken: "unpersisted_access_token")
 
         // Make persistence fail, so the update lands in memory only.
         symmetricKeyProvider.getSymmetricKeyThrowableError1 = SymmetricKeyUnavailable()
@@ -279,5 +269,93 @@ struct AuthManagerTests {
         sut.setUp()
 
         #expect(sut.credential(sessionUID: baseCredentials.UID)?.accessToken == updated.accessToken)
+    }
+
+    /// Regression: skipping the reload whenever anything was unpersisted was unrecoverable.
+    /// `persist` needs `storageLoaded`, and `storageLoaded` only flips on a successful read, so a
+    /// mutation during a read failure suppressed persistence for the rest of the process — every
+    /// token refreshed afterwards was lost, and the next launch presented a stale refresh token.
+    @Test func `a mutation during a keychain read failure is persisted once the keychain recovers`() {
+        // A read failure (device locked, symmetric key not yet available) leaves the manager
+        // unable to persist...
+        keychain.readError = KeychainUnreadable()
+        sut.setUp()
+
+        // ...so this session exists in memory only.
+        sut.onSessionObtaining(credential: baseCredentials)
+        #expect(sut.credential(sessionUID: baseCredentials.UID)?.UID == baseCredentials.UID)
+
+        // The keychain recovers. The next reload must retry, merge memory over what it reads and
+        // flush — not refuse to reload forever.
+        keychain.readError = nil
+        sut.setUp()
+
+        // Proven by a manager that shares only the keychain: the session really reached storage.
+        let fresh = AuthManager(keychain: keychain,
+                                symmetricKeyProvider: symmetricKeyProvider,
+                                module: .hostApp,
+                                logManager: LogManagerProtocolMock())
+        fresh.setUp()
+        #expect(fresh.credential(sessionUID: baseCredentials.UID)?.UID == baseCredentials.UID)
+    }
+
+    /// Once the recovery flush has happened the manager is back to normal: a later rotation by
+    /// another module is picked up again, i.e. `hasUnpersistedChanges` really was cleared.
+    @Test func `reloading resumes after a failed write is flushed`() {
+        sut.onSessionObtaining(credential: baseCredentials)
+
+        // A failed write marks the cache as unpersisted...
+        symmetricKeyProvider.getSymmetricKeyThrowableError1 = SymmetricKeyUnavailable()
+        sut.onUpdate(credential: rotated(accessToken: "unpersisted"), sessionUID: baseCredentials.UID)
+        symmetricKeyProvider.getSymmetricKeyThrowableError1 = nil
+
+        // ...which the next reload resolves by flushing it.
+        sut.setUp()
+
+        // From here reloads work again, so another module's rotation lands.
+        let autoFillSut = AuthManager(keychain: keychain,
+                                      symmetricKeyProvider: symmetricKeyProvider,
+                                      module: .autoFillExtension,
+                                      logManager: LogManagerProtocolMock())
+        autoFillSut.setUp()
+        let newToken = rotated(accessToken: "rotated_after_recovery")
+        autoFillSut.onUpdate(credential: newToken, sessionUID: baseCredentials.UID)
+
+        sut.setUp()
+
+        #expect(sut.credential(sessionUID: baseCredentials.UID)?.accessToken == newToken.accessToken)
+    }
+
+    /// Another module wiping the shared keychain reaches us as a silent cache shrink rather than a
+    /// session invalidation, so the reload has to surface it — the UI otherwise stays logged in
+    /// with no credentials and the only symptom is blanket 401s.
+    @Test func `setUp drops sessions wiped by another module`() {
+        sut.onSessionObtaining(credential: baseCredentials)
+        #expect(sut.getCredential(userId: baseCredentials.userID) != nil)
+
+        try? keychain.removeOrError(forKey: AuthManager.storageKey)
+        sut.setUp()
+
+        #expect(sut.credential(sessionUID: baseCredentials.UID) == nil)
+        #expect(sut.getCredential(userId: baseCredentials.userID) == nil)
+    }
+}
+
+// MARK: - Helpers
+
+private extension AuthManagerTests {
+    struct SymmetricKeyUnavailable: Error {}
+    struct KeychainUnreadable: Error {}
+
+    /// `baseCredentials` with a different access & refresh token, i.e. the same session after the
+    /// backend rotated it.
+    func rotated(accessToken: String) -> Credential {
+        Credential(UID: baseCredentials.UID,
+                   accessToken: accessToken,
+                   refreshToken: "refresh_for_\(accessToken)",
+                   userName: baseCredentials.userName,
+                   userID: baseCredentials.userID,
+                   scopes: [],
+                   mailboxPassword: "")
     }
 }

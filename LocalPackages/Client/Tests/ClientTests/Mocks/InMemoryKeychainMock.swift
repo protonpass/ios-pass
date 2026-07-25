@@ -50,6 +50,8 @@ final class InMemoryKeychainMock: @unchecked Sendable, KeychainProtocol {
             .flatMap { String(data: $0, encoding: .utf8) }
     }
 
+    // `throws` is required by `KeychainProtocol`; an in-memory dictionary never fails.
+    // swiftlint:disable unneeded_throws_rethrows
     func setOrError(_ data: Data, forKey key: String, attributes: [CFString: Any]?) throws {
         storage[key] = data
     }
@@ -61,4 +63,5 @@ final class InMemoryKeychainMock: @unchecked Sendable, KeychainProtocol {
     func removeOrError(forKey key: String) throws {
         storage[key] = nil
     }
+    // swiftlint:enable unneeded_throws_rethrows
 }
