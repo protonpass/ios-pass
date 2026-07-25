@@ -51,7 +51,7 @@ struct LogManagerTests {
     @Test(arguments: [(entryCount: 1, expectedPersisted: 1),
                       (entryCount: 6, expectedPersisted: 6)])
     func `entries are only persisted if they are fetched without save`(entryCount: Int,
-                                                                         expectedPersisted: Int) async throws {
+                                                                       expectedPersisted: Int) async throws {
         await LogEntryFactory.createMockArray(count: entryCount).asyncForEach { entry in
             await sut.log(entry: entry)
         }

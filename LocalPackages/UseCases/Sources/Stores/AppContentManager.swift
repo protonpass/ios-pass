@@ -101,7 +101,13 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
     private let refreshUserData: any RefreshUserDataUseCase
 
     private var cancellables = Set<AnyCancellable>()
-    private var isRefreshing: Bool = false
+    /// The user id of the refresh currently in flight, `nil` when idle. Safe to check-then-set
+    /// without synchronisation: the whole type is `@MainActor`.
+    private var refreshingUserId: String?
+    /// A `refresh` that arrived while another one was in flight, replayed on completion. Dropping
+    /// it instead would lose the post-mutation refreshes `CreateVault`, `LeaveShare` and
+    /// `CreateAndMoveItemToNewVault` rely on to make a write visible.
+    private var pendingRefreshUserId: String?
     /// The filter option after switching vaults
     private var pendingItemTypeFilterOption: ItemTypeFilterOption?
 
@@ -163,9 +169,24 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
 
 public extension AppContentManager {
     func refresh(userId: String) async {
-        guard !isRefreshing else { return }
-        isRefreshing = true
-        defer { isRefreshing = false }
+        guard refreshingUserId == nil else {
+            // Coalesce rather than drop: the caller wants the content it just wrote to show up.
+            // Last request wins — if it names another user it is an account switch, and the
+            // in-flight result is stale either way.
+            pendingRefreshUserId = userId
+            return
+        }
+        refreshingUserId = userId
+        defer {
+            refreshingUserId = nil
+            if let pending = pendingRefreshUserId {
+                pendingRefreshUserId = nil
+                Task { [weak self] in
+                    guard let self else { return }
+                    await refresh(userId: pending)
+                }
+            }
+        }
         do {
             // No need to show loading indicator once items are loaded beforehand.
             var cryptoErrorOccurred = false
