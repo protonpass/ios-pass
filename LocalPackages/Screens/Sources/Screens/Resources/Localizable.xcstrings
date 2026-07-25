@@ -20400,16 +20400,6 @@
         }
       }
     },
-    "File" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "File"
-          }
-        }
-      }
-    },
     "File attachments" : {
       "localizations" : {
         "be" : {
@@ -20602,6 +20592,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "檔案附件"
+          }
+        }
+      }
+    },
+    "Files" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Files"
           }
         }
       }
@@ -38114,6 +38114,16 @@
         }
       }
     },
+    "Photos or videos" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photos or videos"
+          }
+        }
+      }
+    },
     "Please authenticate" : {
       "localizations" : {
         "be" : {
@@ -41325,16 +41335,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "掃描文件"
-          }
-        }
-      }
-    },
-    "Screenshot" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Screenshot"
           }
         }
       }
