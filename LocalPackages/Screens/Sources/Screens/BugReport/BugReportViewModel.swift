@@ -86,8 +86,14 @@ final class BugReportViewModel {
             }
             do {
                 actionInProcess = true
+                let maxFileCount = Constants.Report.maxFileCount
                 let data = try await fetchContentUrls(photos)
-                currentFiles = currentFiles.merging(data) { _, new in new }
+                for file in data {
+                    if currentFiles.count >= maxFileCount {
+                        throw PassError.bugReport(.tooManyFiles(maxFileCount: maxFileCount))
+                    }
+                    currentFiles[file.key] = file.value
+                }
             } catch {
                 handle(error)
             }
@@ -135,7 +141,7 @@ final class BugReportViewModel {
                     }
 
                     let maxFileCount = Constants.Report.maxFileCount
-                    if currentFiles.count == maxFileCount {
+                    if currentFiles.count >= maxFileCount {
                         throw PassError.bugReport(.tooManyFiles(maxFileCount: maxFileCount))
                     }
                     currentFiles[fileUrl.lastPathComponent] = try fileUrl.copyFileToTempDirectory()
