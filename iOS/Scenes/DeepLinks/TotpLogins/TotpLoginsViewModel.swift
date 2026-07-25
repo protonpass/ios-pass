@@ -245,11 +245,13 @@ private extension TotpLoginsViewModel {
         }
     }
 
-    func handle(_ error: any Error) {
+    func handle(_ error: any Error,
+                function: String = #function,
+                line: UInt = #line) {
         if error is CancellationError {
             return
         }
-        logger.error(error)
+        logger.error(error, function: function, line: line)
         router.display(element: .displayErrorBanner(error))
     }
 }

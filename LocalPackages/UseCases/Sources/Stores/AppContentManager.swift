@@ -164,6 +164,7 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
 public extension AppContentManager {
     func refresh(userId: String) async {
         guard !isRefreshing else { return }
+        isRefreshing = true
         defer { isRefreshing = false }
         do {
             // No need to show loading indicator once items are loaded beforehand.
@@ -196,6 +197,7 @@ public extension AppContentManager {
                 logger.info("Not manual login, done getting local shares & items")
             }
         } catch {
+            logger.error(message: "Failed to refresh content for user \(userId)", error: error)
             state = .error(error)
         }
     }
