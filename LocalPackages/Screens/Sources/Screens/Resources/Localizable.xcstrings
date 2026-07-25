@@ -3212,6 +3212,16 @@
         }
       }
     },
+    "A log is a type of file that shows us the actions you took that led to an error. We'll only ever use them to help our engineers fix bugs." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A log is a type of file that shows us the actions you took that led to an error. We'll only ever use them to help our engineers fix bugs."
+          }
+        }
+      }
+    },
     "Add account" : {
       "localizations" : {
         "be" : {
@@ -7759,6 +7769,16 @@
         }
       }
     },
+    "Attach" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attach"
+          }
+        }
+      }
+    },
     "Attach a file" : {
       "localizations" : {
         "be" : {
@@ -8300,6 +8320,16 @@
         }
       }
     },
+    "AutoFill" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AutoFill"
+          }
+        }
+      }
+    },
     "AutoFill Passkey" : {
       "comment" : "Title of the page when autofilling passkeys",
       "localizations" : {
@@ -8671,6 +8701,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在 Safari 和其他應用程式中，以非常快速簡單的方式自動輸入您的密碼字元。"
+          }
+        }
+      }
+    },
+    "Autosave" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autosave"
           }
         }
       }
@@ -17406,6 +17446,16 @@
         }
       }
     },
+    "Description is too long. Please keep it under %lld characters." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Description is too long. Please keep it under %lld characters."
+          }
+        }
+      }
+    },
     "Did you know?" : {
       "comment" : "Title of the informative banner to give hints about features.",
       "localizations" : {
@@ -20326,6 +20376,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "額外電子郵件位址"
+          }
+        }
+      }
+    },
+    "Failed to send report" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to send report"
+          }
+        }
+      }
+    },
+    "Feature request" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feature request"
+          }
+        }
+      }
+    },
+    "File" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "File"
           }
         }
       }
@@ -30581,6 +30661,16 @@
         }
       }
     },
+    "Logs" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logs"
+          }
+        }
+      }
+    },
     "Lowercase letters" : {
       "localizations" : {
         "en" : {
@@ -34730,6 +34820,16 @@
         }
       }
     },
+    "One or more files exceed the %lld MB limit. Please select smaller files." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One or more files exceed the %lld MB limit. Please select smaller files."
+          }
+        }
+      }
+    },
     "Open" : {
       "localizations" : {
         "be" : {
@@ -37219,6 +37319,16 @@
         }
       }
     },
+    "Other" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Other"
+          }
+        }
+      }
+    },
     "Password" : {
       "localizations" : {
         "be" : {
@@ -38344,6 +38454,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "请联系您的管理员"
+          }
+        }
+      }
+    },
+    "Please describe the problem in as much detail as you can. If there was an error message, let us know what it said." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please describe the problem in as much detail as you can. If there was an error message, let us know what it said."
+          }
+        }
+      }
+    },
+    "Please limit your selection to %lld files" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please limit your selection to %lld files"
+          }
+        }
+      }
+    },
+    "Please provide us with more details in the description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please provide us with more details in the description"
+          }
+        }
+      }
+    },
+    "Please select a reason" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please select a reason"
           }
         }
       }
@@ -40571,6 +40721,16 @@
         }
       }
     },
+    "Report a problem" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Report a problem"
+          }
+        }
+      }
+    },
     "Retry" : {
       "localizations" : {
         "be" : {
@@ -41165,6 +41325,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "掃描文件"
+          }
+        }
+      }
+    },
+    "Screenshot" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screenshot"
           }
         }
       }
@@ -42330,6 +42500,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "選取一個現有的登入或創建新的。"
+          }
+        }
+      }
+    },
+    "Select reason" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select reason"
+          }
+        }
+      }
+    },
+    "Send" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send"
           }
         }
       }
@@ -47615,6 +47805,16 @@
         }
       }
     },
+    "Syncing" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Syncing"
+          }
+        }
+      }
+    },
     "Take a photo" : {
       "localizations" : {
         "be" : {
@@ -52726,6 +52926,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "網站"
+          }
+        }
+      }
+    },
+    "What went wrong?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What went wrong?"
           }
         }
       }

@@ -27,8 +27,6 @@ import FactoryKit
 import Foundation
 import Macro
 import PhotosUI
-// TODO: remove this
-import Screens
 import SwiftUI
 
 enum BugReportObject: CaseIterable {
@@ -226,27 +224,27 @@ private extension BugReportViewModel {
 }
 
 private extension PassError.BugReportFailureReason {
-    // TODO: add bundle param
     var localizedMessage: String {
         switch self {
         case .missingReason:
-            #localized("Please select a reason")
+            #localized("Please select a reason", bundle: .module)
 
         case .shortDescription:
-            #localized("Please provide us with more details in the description")
+            #localized("Please provide us with more details in the description", bundle: .module)
 
         case let .longDescription(limit):
-            #localized("Description is too long. Please keep it under %lld characters.", limit)
+            #localized("Description is too long. Please keep it under %lld characters.",
+                       bundle: .module, limit)
 
         case let .tooManyFiles(maxFileCount):
-            #localized("Please limit your selection to %lld files", maxFileCount)
+            #localized("Please limit your selection to %lld files", bundle: .module, maxFileCount)
 
         case let .fileTooLarge(maxFileSizeInMb):
             #localized("One or more files exceed the %lld MB limit. Please select smaller files.",
-                       maxFileSizeInMb)
+                       bundle: .module, maxFileSizeInMb)
 
         case .failedToSend:
-            #localized("Failed to send report")
+            #localized("Failed to send report", bundle: .module)
         }
     }
 }
