@@ -246,12 +246,14 @@ private extension TotpLoginsViewModel {
     }
 
     func handle(_ error: any Error,
+                file: String = #file,
                 function: String = #function,
-                line: UInt = #line) {
+                line: UInt = #line,
+                column: UInt = #column) {
         if error is CancellationError {
             return
         }
-        logger.error(error, function: function, line: line)
+        logger.error(error, file: file, function: function, line: line, column: column)
         router.display(element: .displayErrorBanner(error))
     }
 }
