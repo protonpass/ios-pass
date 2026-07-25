@@ -373,11 +373,13 @@ private extension CredentialProviderCoordinator {
     }
 
     // swiftlint:disable:next cyclomatic_complexity
-    func handle(error: any Error) {
+    func handle(error: any Error,
+                function: String = #function,
+                line: UInt = #line) {
         guard let context else { return }
         let defaultHandler: (any Error) -> Void = { [weak self] error in
             guard let self else { return }
-            logger.error(error)
+            logger.error(error, function: function, line: line)
             alert(error: error) { [weak self] in
                 guard let self else { return }
                 cancelAutoFill(reason: .failed, context: context)

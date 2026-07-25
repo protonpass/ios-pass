@@ -124,8 +124,10 @@ extension CreateAliasLiteViewModel {
         router.present(for: .upgradeFlow)
     }
 
-    func handle(_ error: any Error) {
-        logger.error(error)
+    func handle(_ error: any Error,
+                function: String = #function,
+                line: UInt = #line) {
+        logger.error(error, function: function, line: line)
         router.display(element: .displayErrorBanner(error))
     }
 }

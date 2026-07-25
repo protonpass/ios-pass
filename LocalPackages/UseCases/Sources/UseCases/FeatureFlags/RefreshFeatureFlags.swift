@@ -51,9 +51,11 @@ public final class RefreshFeatureFlags: @unchecked Sendable, RefreshFeatureFlags
     public func execute() {
         Task { [weak self] in
             guard let self else { return }
+            let userId = await (try? userManager.getActiveUserId()) ?? ""
+            if userId.isEmpty {
+                logger.warning("No active user id, refreshing feature flags on unauthenticated session")
+            }
             do {
-                let userId = await (try? userManager.getActiveUserId()) ?? ""
-
                 let apiservice = try apiServicing.getApiService(userId: userId)
                 featureFlagsRepository.setApiService(apiservice)
 
@@ -65,7 +67,7 @@ public final class RefreshFeatureFlags: @unchecked Sendable, RefreshFeatureFlags
                 try await featureFlagsRepository.fetchFlags()
                 logger.trace("Finished updating local flags for user \(userId)")
             } catch {
-                logger.error(error)
+                logger.error(message: "Failed to refresh feature flags for user \(userId)", error: error)
             }
         }
     }

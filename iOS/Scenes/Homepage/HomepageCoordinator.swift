@@ -147,7 +147,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         refreshOrganizationAndOverrideSecuritySettings()
         refreshAccessAndMonitorStateSync()
         refreshSettings()
-        refreshFeatureFlags()
+        // No `refreshFeatureFlags()` here: `AppCoordinator.setUpAndStart` already ran it
+        // for this user before building this coordinator.
         sendAllEventsIfApplicable()
         doLogOutExcessFreeAccounts()
         cleanUpPasswordHistory()
@@ -307,7 +308,7 @@ private extension HomepageCoordinator {
                         doLogOutExcessFreeAccounts()
                         try await sendUserMonitoringStats()
                     } catch {
-                        logger.error(error)
+                        logger.error(message: "Failed to set up after entering foreground", error: error)
                     }
                 }
             }
@@ -365,7 +366,7 @@ private extension HomepageCoordinator {
                 eventLoop.forceSync()
                 eventLoop.start()
             } catch {
-                logger.error(error)
+                logger.error(message: "Failed to synchronise data", error: error)
             }
         }
     }
@@ -377,7 +378,7 @@ private extension HomepageCoordinator {
                 let userId = try await userManager.getActiveUserId()
                 try await refreshAccessAndMonitorState(userId: userId)
             } catch {
-                logger.error(error)
+                logger.error(message: "Failed to refresh access and monitor state", error: error)
             }
         }
     }
@@ -389,7 +390,7 @@ private extension HomepageCoordinator {
                 try await accessRepository.loadAccesses()
                 try await completion()
             } catch {
-                logger.error(error)
+                logger.error(message: "Failed to load accesses", error: error)
             }
         }
     }
@@ -403,7 +404,7 @@ private extension HomepageCoordinator {
                     try await overrideSecuritySettings(with: organization)
                 }
             } catch {
-                logger.error(error)
+                logger.error(message: "Failed to refresh organization", error: error)
             }
         }
     }
@@ -415,7 +416,7 @@ private extension HomepageCoordinator {
                 let userId = try await userManager.getActiveUserId()
                 try await refreshUserSettings(for: userId)
             } catch {
-                logger.error(error)
+                logger.error(message: "Failed to refresh user settings", error: error)
             }
         }
     }
@@ -826,8 +827,10 @@ extension HomepageCoordinator {
             .store(in: &cancellables)
     }
 
-    func handle(error: any Error) {
-        logger.error(error)
+    func handle(error: any Error,
+                function: String = #function,
+                line: UInt = #line) {
+        logger.error(error, function: function, line: line)
         bannerManager.displayTopErrorMessage(error)
     }
 
