@@ -25,7 +25,7 @@ import PhotosUI
 import ProtonCoreUIFoundations
 import SwiftUI
 
-struct BugReportView: View {
+public struct BugReportView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focused
     @StateObject private var viewModel = BugReportViewModel()
@@ -33,11 +33,11 @@ struct BugReportView: View {
     @State private var showPhotoPicker = false
     var onSuccess: () -> Void
 
-    init(onSuccess: @escaping () -> Void) {
+    public init(onSuccess: @escaping () -> Void) {
         self.onSuccess = onSuccess
     }
 
-    var body: some View {
+    public var body: some View {
         NavigationStack {
             mainContainer
                 .toolbar { toolbarContent }
@@ -61,7 +61,7 @@ struct BugReportView: View {
         }
         .photosPicker(isPresented: $showPhotoPicker,
                       selection: $viewModel.selectedPhotos,
-                      maxSelectionCount: 4)
+                      maxSelectionCount: Constants.Report.maxFileCount)
     }
 }
 
