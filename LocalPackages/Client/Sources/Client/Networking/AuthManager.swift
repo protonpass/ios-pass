@@ -466,7 +466,7 @@ private extension AuthManager {
 private extension AuthManager {
     /// Outcome of reading the stored sessions. Computed without the lock so the keychain
     /// syscall, decryption and JSON decoding stay out of the critical section.
-    enum LoadOutcome {
+    private enum LoadOutcome {
         /// Read and decoded. An absent or corrupt blob decodes to an empty set.
         case loaded(CachedCredentials)
         /// Transient failure (keychain unreadable, symmetric key unavailable). The stored blob

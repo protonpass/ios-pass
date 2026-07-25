@@ -179,7 +179,7 @@ struct AuthManagerTests {
         sut.setUpDelegate(authHelperDelegateMock)
 
         var cancellables = Set<AnyCancellable>()
-        var delegateEvent: (sessionUID: String, isAuthenticatedSession: Bool)?
+        var delegateEvent: SessionInvalidation?
         var publishedEvent: (sessionId: String, userId: String?)?
         authHelperDelegateMock.sessionWasInvalidatedSubject
             .sink { delegateEvent = $0 }
