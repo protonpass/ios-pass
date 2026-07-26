@@ -63,8 +63,9 @@ public extension AuthManagerProtocol {
 /// the delegate protocols carry no `Sendable` annotations. Revisit once ProtonCore ships
 /// Swift 6 annotations.
 ///
-/// Locking invariant: public entry points acquire the lock exactly once; private helpers
-/// take `inout MutableState` (or a copy) and never lock. `SafeMutex` is non-reentrant —
+/// Locking invariant: public entry points acquire the lock exactly once — as does the one
+/// private helper they share, `invalidateSession` — and every other private helper takes
+/// `inout MutableState` (or a copy) and never locks. `SafeMutex` is non-reentrant —
 /// violating this invariant deadlocks, same as the previous `DispatchQueue.sync` design.
 /// Delegate callbacks and Combine emissions are computed under the lock but fired after it
 /// is released, so delegates/subscribers may safely re-enter the manager.
@@ -156,9 +157,11 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
     /// The keychain read, decryption and decoding happen *before* taking the lock: `SafeMutex` is
     /// backed by `os_unfair_lock`, which is meant for short critical sections, and this runs on
     /// the caller's actor — the `MainActor` on every foreground, via `SetUpBeforeLaunching`.
-    /// Only the decoded result is swapped in under the lock.
+    /// Only the decoded result is swapped in under the lock. `persist` and the `ensureLoaded`
+    /// retry cannot do the same — they are reached from the synchronous `AuthDelegate` callbacks —
+    /// so those do hold the lock across keychain I/O and crypto.
     public func setUp() {
-        let outcome = readFromKeychain()
+        let outcome = readFromKeychain(logFailure: true)
         state.withLock { state in
             state.didSetUp = true
             apply(outcome, to: &state)
@@ -386,9 +389,14 @@ public extension AuthManager {
     }
 }
 
-// MARK: - Private helpers (never lock — callers hold the lock)
+// MARK: - Private helpers
 
+/// The explicit `private` on each member is required, not redundant: members of a `private`
+/// extension default to `fileprivate`, and a `fileprivate` signature cannot mention `MutableState`,
+/// `CachedCredentials` or `LoadOutcome`.
 private extension AuthManager {
+    /// The one private helper that takes the lock itself — everything below it must be called with
+    /// the lock already held, and `SafeMutex` is non-reentrant.
     private func invalidateSession(sessionUID: String, isAuthenticatedSession: Bool) {
         let notification = state.withLock { state -> UncheckedSendable<() -> Void> in
             ensureLoaded(&state)
@@ -411,8 +419,12 @@ private extension AuthManager {
         // cache untouched, and a success is merged under any unpersisted mutations by `apply`.
         // Unlike `setUp()` this reads under the lock, but only while recovering — once
         // `storageLoaded` is true this is a boolean check.
+        //
+        // Silent on failure: the lookups are called once per request, so a failure that lasts
+        // (device locked, app locked) would write one error per request into
+        // `LogManagerConfig.maxLogLines`. `setUp()` already logs it once per launch and foreground.
         guard state.didSetUp, !state.storageLoaded else { return }
-        apply(readFromKeychain(), to: &state)
+        apply(readFromKeychain(logFailure: false), to: &state)
     }
 
     private func assertDidSetUp(_ state: MutableState) {
@@ -464,8 +476,8 @@ private extension AuthManager {
 // MARK: - Storage (callers hold the lock)
 
 private extension AuthManager {
-    /// Outcome of reading the stored sessions. Computed without the lock so the keychain
-    /// syscall, decryption and JSON decoding stay out of the critical section.
+    /// Outcome of reading the stored sessions. Split from `apply` so `setUp()` can do the keychain
+    /// syscall, decryption and JSON decoding before it takes the lock.
     private enum LoadOutcome {
         /// Read and decoded. An absent or corrupt blob decodes to an empty set.
         case loaded(CachedCredentials)
@@ -474,14 +486,18 @@ private extension AuthManager {
         case unreadable
     }
 
-    private func readFromKeychain() -> LoadOutcome {
+    /// `logFailure` is `false` for the per-lookup retry in `ensureLoaded`, which would otherwise
+    /// report the same failure once per request.
+    private func readFromKeychain(logFailure: Bool) -> LoadOutcome {
         let encrypted: Data?
         do {
             encrypted = try keychain.dataOrError(forKey: Self.storageKey)
         } catch {
             // Transient (e.g. data protection / device locked): keep the stored blob,
             // suppress persistence until a successful read.
-            logger.error("Failed to read stored sessions from keychain, will retry: \(error)")
+            if logFailure {
+                logger.error("Failed to read stored sessions from keychain, will retry: \(error)")
+            }
             return .unreadable
         }
 
@@ -505,24 +521,21 @@ private extension AuthManager {
             }
         } catch {
             // Symmetric key unavailable (assumed transient, e.g. keymaker not unlocked yet).
-            logger.error("Symmetric key unavailable, keeping stored sessions: \(error)")
+            if logFailure {
+                logger.error("Symmetric key unavailable, keeping stored sessions: \(error)")
+            }
             return .unreadable
         }
     }
 
     /// Swaps a keychain snapshot into the cache. Callers hold the lock.
     ///
-    /// When the cache holds mutations that never reached the keychain it is the fresher copy: keep
-    /// it and *flush* it instead of overwriting it. Flushing is the whole point — refusing to
-    /// reload at all was unrecoverable, because `persist` requires `storageLoaded` and only a
-    /// successful read sets it. A mutation during a read failure therefore suppressed persistence
-    /// for the rest of the process lifetime, losing every token refreshed afterwards, which is the
-    /// stale-refresh-token logout this class exists to prevent.
-    ///
-    /// Keeping the whole cache rather than merging it over the snapshot is deliberate: merging
-    /// would resurrect an entry the cache deliberately removed while it could not persist. The
-    /// cost is that a change another module made during the failure window is dropped — the same
-    /// trade the "skip the reload" behaviour made, minus the permanent lockout.
+    /// When the cache holds mutations that never reached the keychain it is the fresher copy for
+    /// those keys: keep them and *flush* instead of overwriting. Flushing is the whole point —
+    /// refusing to reload at all was unrecoverable, because `persist` requires `storageLoaded` and
+    /// only a successful read sets it. A mutation during a read failure therefore suppressed
+    /// persistence for the rest of the process lifetime, losing every token refreshed afterwards,
+    /// which is the stale-refresh-token logout this class exists to prevent.
     private func apply(_ outcome: LoadOutcome, to state: inout MutableState) {
         guard case let .loaded(stored) = outcome else {
             state.storageLoaded = false
@@ -531,6 +544,15 @@ private extension AuthManager {
         state.storageLoaded = true
 
         guard !state.hasUnpersistedChanges else {
+            // Memory wins for the keys it holds — those mutations never reached the keychain — but
+            // keys only the keychain has must survive: another module may have added an account,
+            // and a process that started unreadable (app lock: no main key yet, hence no symmetric
+            // key) holds nothing but the unauthenticated session obtained meanwhile. Replacing
+            // would flush that over every stored session and log all accounts out for good.
+            //
+            // The cost is the mirror image, and the cheaper one: an entry removed while we could
+            // not persist comes back, and the next 401 invalidates it again.
+            state.cachedCredentials = stored.merging(state.cachedCredentials) { _, cached in cached }
             persist(&state)
             return
         }
@@ -588,7 +610,7 @@ public struct Credentials: Hashable, Sendable, Codable {
     public let module: PassModule
 }
 
-struct CredentialsKey: Hashable, Codable {
+private struct CredentialsKey: Hashable, Codable {
     let sessionId: String
     let module: PassModule
 }
