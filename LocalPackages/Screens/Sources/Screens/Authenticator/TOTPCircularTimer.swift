@@ -23,11 +23,14 @@ import Entities
 import SwiftUI
 
 @MainActor
-final class TOTPCircularTimerViewModel: ObservableObject {
-    @Published private(set) var remainingSeconds = 1.0
-    @Published private(set) var percentage = 1.0
-    private var timerTask: Task<Void, Never>?
+@Observable
+final class TOTPCircularTimerViewModel {
+    private(set) var remainingSeconds = 1.0
+    private(set) var percentage = 1.0
     private(set) var data: TOTPTimerData
+
+    @ObservationIgnored
+    private var timerTask: Task<Void, Never>?
 
     init(data: TOTPTimerData) {
         self.data = data
@@ -66,7 +69,7 @@ final class TOTPCircularTimerViewModel: ObservableObject {
 }
 
 public struct TOTPCircularTimer: View {
-    @ObservedObject var viewModel: TOTPCircularTimerViewModel
+    @State private var viewModel: TOTPCircularTimerViewModel
 
     public init(data: TOTPTimerData) {
         _viewModel = .init(wrappedValue: TOTPCircularTimerViewModel(data: data))
