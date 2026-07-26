@@ -55,11 +55,12 @@ public enum FileAttachmentPreviewMode: Sendable, Identifiable {
 }
 
 @MainActor
-final class FileAttachmentPreviewModel: ObservableObject {
-    @Published private(set) var url: FetchableObject<URL> = .fetching
-    @Published private(set) var progress: Float = 0.0
-    @Published var urlToSave: URL?
-    @Published var urlToShare: URL?
+@Observable
+final class FileAttachmentPreviewModel {
+    private(set) var url: FetchableObject<URL> = .fetching
+    private(set) var progress: Float = 0.0
+    var urlToSave: URL?
+    var urlToShare: URL?
     private let mode: FileAttachmentPreviewMode
     private let formatter: ByteCountFormatter
 
