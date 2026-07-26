@@ -37,15 +37,11 @@ final class ActionCoordinator {
     @LazyInjected(\UseCasesContainer.sendErrorToSentry) private var sendErrorToSentry
 
     @LazyInjected(\ToolingContainer.logger) private var logger
-    @LazyInjected(\ToolingContainer.logManager) private var logManager
     @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\UseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\UseCasesContainer.getSharedPreferences) private var getSharedPreferences
     @LazyInjected(\UseCasesContainer.logOutAllAccounts) private var logOutAllAccounts
-    @LazyInjected(\UseCasesContainer.getUserUiModels) private var getUserUiModels
     @LazyInjected(\UseCasesContainer.parseCsvLogins) private var parseCsvLogins
-    @LazyInjected(\UseCasesContainer.createVaultAndImportLogins)
-    private var createVaultAndImportLogins
 
     private var lastChildViewController: UIViewController?
     private weak var rootViewController: UIViewController?
