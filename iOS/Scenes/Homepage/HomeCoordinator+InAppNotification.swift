@@ -95,9 +95,7 @@ private extension HomepageCoordinator {
             }
 
         case .modal:
-            let viewModel = InAppModalViewModel()
             let view = InAppModalView(notification: notification,
-                                      viewModel: viewModel,
                                       onAppear: onAppear,
                                       onDisappear: onDisappear,
                                       onTap: { [weak self] in
@@ -111,7 +109,7 @@ private extension HomepageCoordinator {
             let viewController = UIHostingController(rootView: view)
             viewController.setDetentType(.medium,
                                          parentViewController: rootViewController)
-            viewModel.sheetPresentation = viewController.sheetPresentationController
+            view.viewModel.sheetPresentation = viewController.sheetPresentationController
             present(viewController, uniquenessTag: UniqueSheet.inAppNotificationDisplay)
 
         case .promo:

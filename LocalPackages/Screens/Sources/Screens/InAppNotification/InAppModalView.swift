@@ -27,7 +27,8 @@ public struct InAppModalView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var contentHeight: CGFloat = 0
 
-    @StateObject private var viewModel: InAppModalViewModel
+    // swiftlint:disable:next private_swiftui_state
+    @State public var viewModel = InAppModalViewModel()
     private let notification: InAppNotification
     private let onAppear: () -> Void
     private let onDisappear: () -> Void
@@ -35,12 +36,10 @@ public struct InAppModalView: View {
     private let onClose: () -> Void
 
     public init(notification: InAppNotification,
-                viewModel: InAppModalViewModel,
                 onAppear: @escaping () -> Void,
                 onDisappear: @escaping () -> Void,
                 onTap: @escaping () -> Void,
                 onClose: @escaping () -> Void) {
-        _viewModel = .init(wrappedValue: viewModel)
         self.notification = notification
         self.onAppear = onAppear
         self.onDisappear = onDisappear
@@ -133,10 +132,11 @@ public struct InAppModalView: View {
 }
 
 @MainActor
-public final class InAppModalViewModel: ObservableObject {
+@Observable
+public final class InAppModalViewModel {
     public weak var sheetPresentation: UISheetPresentationController?
 
-    public init() {}
+    init() {}
 
     func updateSheetHeight(_ height: CGFloat) {
         guard let sheetPresentation else {
