@@ -19,13 +19,13 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Combine
 import Foundation
 
 @MainActor
-final class OnboardingCreateFirstLoginStepViewModel: ObservableObject {
-    @Published var serviceName = ""
-    @Published var selectedService: KnownService? {
+@Observable
+final class OnboardingCreateFirstLoginStepViewModel {
+    var serviceName = ""
+    var selectedService: KnownService? {
         didSet {
             if let selectedService {
                 title = selectedService.name
@@ -34,13 +34,13 @@ final class OnboardingCreateFirstLoginStepViewModel: ObservableObject {
         }
     }
 
-    @Published private(set) var suggestions = [KnownService]()
+    private(set) var suggestions = [KnownService]()
 
-    @Published var title = ""
-    @Published var email = ""
-    @Published var username = ""
-    @Published var password = ""
-    @Published var website = ""
+    var title = ""
+    var email = ""
+    var username = ""
+    var password = ""
+    var website = ""
 
     var saveable: Bool {
         !title.isEmpty &&
@@ -48,7 +48,6 @@ final class OnboardingCreateFirstLoginStepViewModel: ObservableObject {
             !password.isEmpty
     }
 
-    private var cancellables = Set<AnyCancellable>()
     private let shareId: String
     private let services: [KnownService]
     private let onCreate: (OnboardFirstLoginPayload) -> Void
@@ -59,22 +58,6 @@ final class OnboardingCreateFirstLoginStepViewModel: ObservableObject {
         self.shareId = shareId
         self.services = services
         self.onCreate = onCreate
-
-        $serviceName
-            .receive(on: DispatchQueue.main)
-            .debounce(for: 0.3, scheduler: DispatchQueue.main)
-            .sink { [weak self] name in
-                guard let self else { return }
-                suggestions = services.filter {
-                    $0.name.lowercased().contains(name.lowercased())
-                }
-                .sorted(by: {
-                    // Prioritize matches at the beginning of service's names
-                    $0.name.lowercased().hasPrefix(name.lowercased()) &&
-                        !$1.name.lowercased().hasPrefix(name.lowercased())
-                })
-            }
-            .store(in: &cancellables)
     }
 
     func save() {
@@ -86,5 +69,24 @@ final class OnboardingCreateFirstLoginStepViewModel: ObservableObject {
                        username: username,
                        password: password,
                        website: website))
+    }
+
+    func updateSuggestion() async {
+        let lowercasedName = serviceName.lowercased()
+        suggestions = await Self.match(services, serviceName: lowercasedName)
+    }
+
+    /// The only part that runs off the main actor.
+    @concurrent
+    private static func match(_ services: [KnownService],
+                              serviceName: String) async -> [KnownService] {
+        services.filter {
+            $0.name.lowercased().contains(serviceName)
+        }
+        .sorted(by: {
+            // Prioritize matches at the beginning of service's names
+            $0.name.lowercased().hasPrefix(serviceName) &&
+                !$1.name.lowercased().hasPrefix(serviceName)
+        })
     }
 }
