@@ -87,11 +87,7 @@ final class ShareCoordinator {
     @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\ToolingContainer.authManager) private var authManager
     @LazyInjected(\ToolingContainer.preferencesManager) private var preferencesManager
-    @LazyInjected(\ToolingContainer.logManager) private var logManager
-    @LazyInjected(\UseCasesContainer.getUserUiModels) private var getUserUiModels
     @LazyInjected(\UseCasesContainer.parseCsvLogins) private var parseCsvLogins
-    @LazyInjected(\UseCasesContainer.createVaultAndImportLogins)
-    private var createVaultAndImportLogins
 
     private var lastChildViewController: UIViewController?
     private weak var rootViewController: UIViewController?

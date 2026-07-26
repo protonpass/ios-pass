@@ -20,7 +20,6 @@
 
 import Client
 import DesignSystem
-import DIComposition
 import Entities
 import Macro
 import ProtonCoreUIFoundations

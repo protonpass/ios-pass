@@ -80,8 +80,6 @@ final class FileAttachmentsButtonViewModel {
 
     @ObservationIgnored
     private var selectedPhotosTask: Task<Void, Never>?
-    @ObservationIgnored
-    private var cancellable = Set<AnyCancellable>()
     let handler: any FileAttachmentsEditHandler
 
     init(handler: any FileAttachmentsEditHandler) {

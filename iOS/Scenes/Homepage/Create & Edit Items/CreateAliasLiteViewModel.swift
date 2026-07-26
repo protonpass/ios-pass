@@ -56,7 +56,6 @@ final class CreateAliasLiteViewModel: ObservableObject {
     private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
     private let validateAliasPrefix = dependency(\UseCasesContainer.validateAliasPrefix)
     @LazyInjected(\RepositoryContainer.accessRepository) private var accessRepository
-    @LazyInjected(\ToolingContainer.preferencesManager) var preferencesManager
     @LazyInjected(\ToolingContainer.logger) private var logger
     @LazyInjected(\ServiceContainer.userManager) private var userManager
     @LazyInjected(\RepositoryContainer.localItemDatasource) private var localItemDatasource
