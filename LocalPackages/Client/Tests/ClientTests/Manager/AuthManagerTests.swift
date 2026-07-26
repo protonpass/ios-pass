@@ -286,7 +286,8 @@ struct AuthManagerTests {
         #expect(sut.credential(sessionUID: baseCredentials.UID)?.UID == baseCredentials.UID)
 
         // The keychain recovers. The next reload must retry, merge memory over what it reads and
-        // flush — not refuse to reload forever.
+        // flush — not refuse to reload forever. See `the recovery flush keeps sessions this process
+        // never read` for the other half of that merge.
         keychain.readError = nil
         sut.setUp()
 
@@ -326,6 +327,77 @@ struct AuthManagerTests {
         #expect(sut.credential(sessionUID: baseCredentials.UID)?.accessToken == newToken.accessToken)
     }
 
+    /// Regression: the recovery flush used to *replace* the stored blob with the in-memory cache. A
+    /// process that starts unreadable — app lock, so no main key and hence no symmetric key — holds
+    /// nothing but what it obtained meanwhile, so flushing wrote that over every session it never
+    /// read and logged the other accounts out for good.
+    @Test func `the recovery flush keeps sessions this process never read`() {
+        // Another module stored a session before we were able to read the keychain.
+        let other = AuthManager(keychain: keychain,
+                                symmetricKeyProvider: symmetricKeyProvider,
+                                module: .autoFillExtension,
+                                logManager: LogManagerProtocolMock())
+        other.setUp()
+        other.onSessionObtaining(credential: secondAccount)
+
+        // We cannot read, so our own session lands in memory only.
+        keychain.readError = KeychainUnreadable()
+        sut.setUp()
+        sut.onSessionObtaining(credential: baseCredentials)
+
+        // The keychain recovers and the cache is flushed — merged over what it reads, not swapped in.
+        keychain.readError = nil
+        sut.setUp()
+
+        // Proven by a manager that shares only the keychain: both sessions really are stored.
+        let fresh = AuthManager(keychain: keychain,
+                                symmetricKeyProvider: symmetricKeyProvider,
+                                module: .hostApp,
+                                logManager: LogManagerProtocolMock())
+        fresh.setUp()
+        #expect(fresh.credential(sessionUID: baseCredentials.UID) != nil)
+        #expect(fresh.credential(sessionUID: secondAccount.UID) != nil)
+    }
+
+    /// The safety argument for `@unchecked Sendable` is that every entry point takes the lock
+    /// exactly once and the helpers they call never do. `SafeMutex` is non-reentrant, so a helper
+    /// that starts locking deadlocks the app on its next token refresh — the time limit turns that
+    /// into a CI failure instead of a hung suite.
+    @Test(.timeLimit(.minutes(1)))
+    func `concurrent sessions all reach storage`() async {
+        // One distinct session per task: sharing a session id would race ProtonCore's mutable
+        // `AuthCredential` instead of exercising our lock. `FixedSymmetricKeyProvider` replaces the
+        // generated mock for the same reason — its call counters are unsynchronised.
+        let manager = AuthManager(keychain: keychain,
+                                  symmetricKeyProvider: FixedSymmetricKeyProvider(),
+                                  module: .hostApp,
+                                  logManager: LogManagerProtocolMock())
+        manager.setUp()
+
+        let ids = (0..<50).map { "concurrent_session_\($0)" }
+        await withTaskGroup(of: Void.self) { group in
+            for id in ids {
+                group.addTask {
+                    let credential = Credential(UID: id,
+                                                accessToken: "access_\(id)",
+                                                refreshToken: "refresh_\(id)",
+                                                userName: "name_\(id)",
+                                                userID: "user_\(id)",
+                                                scopes: [],
+                                                mailboxPassword: "")
+                    manager.onSessionObtaining(credential: credential)
+                    manager.onUpdate(credential: credential, sessionUID: id)
+                    _ = manager.credential(sessionUID: id)
+                    _ = manager.getAllCurrentCredentials()
+                }
+            }
+        }
+
+        for id in ids {
+            #expect(manager.credential(sessionUID: id)?.accessToken == "access_\(id)")
+        }
+    }
+
     /// Another module wiping the shared keychain reaches us as a silent cache shrink rather than a
     /// session invalidation, so the reload has to surface it — the UI otherwise stays logged in
     /// with no credentials and the only symptom is blanket 401s.
@@ -346,6 +418,29 @@ struct AuthManagerTests {
 private extension AuthManagerTests {
     struct SymmetricKeyUnavailable: Error {}
     struct KeychainUnreadable: Error {}
+
+    /// Race-free stand-in for `NonSendableSymmetricKeyProviderMock`, whose `invoked…Count += 1`
+    /// bookkeeping is unsynchronised and would show up as a data race in the concurrency test.
+    /// `@unchecked Sendable` over an immutable `let`, as `SymmetricKey` carries no annotation.
+    final class FixedSymmetricKeyProvider: @unchecked Sendable, NonAsyncSymmetricKeyProvider {
+        private let key = SymmetricKey.random()
+
+        // `throws` is required by `NonAsyncSymmetricKeyProvider`; a stored key never fails.
+        // swiftlint:disable:next unneeded_throws_rethrows
+        func getSymmetricKey() throws -> SymmetricKey { key }
+    }
+
+    /// A second logged-in account: a different session *and* a different user, so
+    /// `onSessionObtaining`'s same-user purge leaves `baseCredentials` alone.
+    var secondAccount: Credential {
+        Credential(UID: "second_session_id",
+                   accessToken: "second_access_token",
+                   refreshToken: "second_refresh_token",
+                   userName: "second_user_name",
+                   userID: "second_user_id",
+                   scopes: [],
+                   mailboxPassword: "")
+    }
 
     /// `baseCredentials` with a different access & refresh token, i.e. the same session after the
     /// backend rotated it.
