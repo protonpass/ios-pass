@@ -133,7 +133,7 @@ extension ShareCoordinator {
     func start() async {
         do {
             try await setUpBeforeLaunching(rootContainer: .viewController(rootViewController))
-            await beginFlow()
+            try await beginFlow()
         } catch {
             alert(error: error) { [weak self] in
                 guard let self else { return }
@@ -230,7 +230,7 @@ private extension ShareCoordinator {
         return .unknown
     }
 
-    func parseSharedContentAndBeginShareFlow(userId: String) async {
+    func parseSharedContentAndBeginShareFlow(userId: String) async throws {
         let content = await parseSharedContent()
         parsedContent = content
 
@@ -238,8 +238,8 @@ private extension ShareCoordinator {
         if case .csv = content,
            let activeUserId = userManager.activeUserId {
             let prefs = preferencesManager.sharedPreferences.unwrapped()
-            view = ImporterView(logManager: logManager,
-                                datasource: self,
+            let logins = try await parseLogins()
+            view = ImporterView(data: logins,
                                 onClose: { [weak self] in
                                     guard let self else { return }
                                     dismissExtension()
@@ -335,10 +335,10 @@ private extension ShareCoordinator {
         }
     }
 
-    func beginFlow() async {
+    func beginFlow() async throws {
         if let activeUserId = userManager.activeUserId,
            credentialProvider.isAuthenticated(userId: activeUserId) {
-            await parseSharedContentAndBeginShareFlow(userId: activeUserId)
+            try await parseSharedContentAndBeginShareFlow(userId: activeUserId)
         } else {
             showNotLoggedInView()
         }
@@ -397,11 +397,7 @@ extension ShareCoordinator: CreateEditLoginViewModelDelegate {
 
 // MARK: ImporterDatasource
 
-extension ShareCoordinator: ImporterDatasource {
-    func getUsers() async throws -> [UserUiModel] {
-        try await getUserUiModels()
-    }
-
+extension ShareCoordinator {
     func parseLogins() async throws -> [CsvLogin] {
         guard case let .csv(data) = parsedContent,
               let csvString = String(data: data, encoding: .utf8) else {
@@ -409,14 +405,5 @@ extension ShareCoordinator: ImporterDatasource {
         }
 
         return try await parseCsvLogins(csvString)
-    }
-
-    func proceedImportation(user: UserUiModel?, logins: [CsvLogin]) async throws {
-        let userId: String = if let user {
-            user.id
-        } else {
-            try await userManager.getActiveUserId()
-        }
-        try await createVaultAndImportLogins(userId: userId, logins: logins)
     }
 }

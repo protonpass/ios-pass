@@ -27,16 +27,13 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 public struct ImporterView: View {
-    @StateObject private var viewModel: ImporterViewModel
+    @State private var viewModel = ImporterViewModel()
     private let onClose: () -> Void
 
-    public init(logManager: any LogManagerProtocol,
-                datasource: any ImporterDatasource,
+    public init(data: [CsvLogin],
                 onClose: @escaping () -> Void) {
-        let viewModel = ImporterViewModel(logManager: logManager)
-        viewModel.datasource = datasource
-        _viewModel = .init(wrappedValue: viewModel)
         self.onClose = onClose
+        viewModel.loadData(data: data)
     }
 
     public var body: some View {
@@ -61,7 +58,7 @@ public struct ImporterView: View {
         .fullSheetBackground()
         .showSpinner(viewModel.loading)
         .navigationStackEmbeded()
-        .task { await viewModel.fetchData() }
+        .task { await viewModel.loadUser() }
         .alert(Text("Imported successfully", bundle: .module),
                isPresented: $viewModel.importSuccessMessage.mappedToBool(),
                actions: { Button("OK", action: onClose) },
