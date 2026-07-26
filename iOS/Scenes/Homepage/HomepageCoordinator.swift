@@ -1199,14 +1199,19 @@ extension HomepageCoordinator {
                                                                 autofill: false)))
             }
         }
-        let view = PasswordHistoryView(repository: passwordHistoryRepository,
-                                       onCreateLogin: createLogin,
-                                       onCopy: { [weak self] password in
-                                           guard let self else { return }
-                                           copyToClipboard(password,
-                                                           bannerMessage: #localized("Password copied"),
-                                                           bannerDisplay: bannerManager)
-                                       })
+        let view = PasswordHistoryView { [weak self] action in
+            guard let self else { return }
+            switch action {
+            case let .copy(password):
+                copyToClipboard(password,
+                                bannerMessage: #localized("Password copied"),
+                                bannerDisplay: bannerManager)
+
+            case let .create(password):
+                createLogin(password)
+            }
+        }
+
         present(view)
     }
 
