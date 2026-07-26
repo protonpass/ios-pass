@@ -18,44 +18,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
-import Combine
 import DesignSystem
 import Entities
-import Foundation
-import ProtonCoreUIFoundations
 import SwiftUI
 
-@MainActor
-private final class AuthenticatorRowViewModel: ObservableObject {
-    @Published private(set) var state = TOTPState.empty
-
-    private let totpManager: any TOTPManagerProtocol
-    private var cancellable = Set<AnyCancellable>()
-
-    var code: String? {
-        totpManager.totpData?.code
-    }
-
-    init(totpManager: any TOTPManagerProtocol) {
-        self.totpManager = totpManager
-        totpManager.currentState
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] newState in
-                guard let self else {
-                    return
-                }
-                state = newState
-            }.store(in: &cancellable)
-    }
-
-    func bind(uri: String) {
-        totpManager.bind(uri: uri)
-    }
-}
-
 public struct AuthenticatorRow<ThumbnailView: View>: View {
-    @StateObject private var viewModel: AuthenticatorRowViewModel
+    @State private var viewModel = AuthenticatorRowViewModel()
     private let thumbnailView: ThumbnailView
     private let uri: String
     private let title: String
@@ -64,67 +32,93 @@ public struct AuthenticatorRow<ThumbnailView: View>: View {
     public init(@ViewBuilder thumbnailView: () -> ThumbnailView,
                 uri: String,
                 title: String,
-                totpManager: any TOTPManagerProtocol,
                 onCopyTotpToken: @escaping (String) -> Void) {
-        _viewModel = .init(wrappedValue: .init(totpManager: totpManager))
-        self.onCopyTotpToken = onCopyTotpToken
-        self.uri = uri
         self.thumbnailView = thumbnailView()
+        self.uri = uri
         self.title = title
+        self.onCopyTotpToken = onCopyTotpToken
     }
 
+    /// Nothing here reads `viewModel.state`: only the code and the timer refresh every second.
     public var body: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
-            VStack {
-                Spacer()
-                thumbnailView
-                    .frame(width: 60)
-                Spacer()
-            }
+            thumbnailView
+                .frame(width: 60)
 
-            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text(title)
-                    .lineLimit(1)
-                    .foregroundStyle(PassColor.textWeak)
-                switch viewModel.state {
-                case .empty:
-                    TOTPText(code: "", textColor: PassColor.textNorm, font: .title)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+            AuthenticatorCodeColumn(viewModel: viewModel,
+                                    title: title,
+                                    onCopyTotpToken: onCopyTotpToken)
 
-                case .loading:
-                    ProgressView()
-
-                case let .valid(data):
-                    TOTPText(code: data.code, textColor: PassColor.textNorm, font: .title)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-
-                case .invalid:
-                    Text("Invalid TOTP URI", bundle: .module)
-                        .font(.caption)
-                        .foregroundStyle(PassColor.signalDanger)
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(.rect)
-            .onTapGesture {
-                if let code = viewModel.code {
-                    onCopyTotpToken(code)
-                }
-            }
-            switch viewModel.state {
-            case let .valid(data):
-                TOTPCircularTimer(data: data.timerData)
-
-            default:
-                EmptyView()
-            }
+            AuthenticatorRowTimer(viewModel: viewModel)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .contentShape(.rect)
         .padding(DesignConstant.sectionPadding / 2)
         .roundedEditableSection()
-        .onAppear {
+        .task(id: uri) {
             viewModel.bind(uri: uri)
+        }
+    }
+}
+
+private struct AuthenticatorCodeColumn: View {
+    let viewModel: AuthenticatorRowViewModel
+    let title: String
+    let onCopyTotpToken: (String) -> Void
+
+    var body: some View {
+        Button {
+            if case let .valid(data) = viewModel.state {
+                onCopyTotpToken(data.code)
+            }
+        } label: {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text(title)
+                    .lineLimit(1)
+                    .foregroundStyle(PassColor.textWeak)
+
+                AuthenticatorCode(viewModel: viewModel)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(.rect)
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+private struct AuthenticatorCode: View {
+    let viewModel: AuthenticatorRowViewModel
+
+    var body: some View {
+        switch viewModel.state {
+        case .empty:
+            code("")
+
+        case .loading:
+            ProgressView()
+
+        case let .valid(data):
+            code(data.code)
+
+        case .invalid:
+            Text("Invalid TOTP URI", bundle: .module)
+                .font(.caption)
+                .foregroundStyle(PassColor.signalDanger)
+        }
+    }
+
+    private func code(_ code: String) -> some View {
+        TOTPText(code: code, textColor: PassColor.textNorm, font: .title)
+            .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+private struct AuthenticatorRowTimer: View {
+    let viewModel: AuthenticatorRowViewModel
+
+    var body: some View {
+        if case let .valid(data) = viewModel.state {
+            TOTPCircularTimer(data: data.timerData)
         }
     }
 }
