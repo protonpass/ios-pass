@@ -69,7 +69,7 @@ extension ActionCoordinator {
     func start() async {
         do {
             try await setUpBeforeLaunching(rootContainer: .viewController(rootViewController))
-            beginFlow()
+            try await beginFlow()
         } catch {
             alert(error: error) { [weak self] in
                 guard let self else { return }
@@ -103,12 +103,12 @@ private extension ActionCoordinator {
             .store(in: &cancellables)
     }
 
-    func beginFlow() {
+    func beginFlow() async throws {
         if let activeUserId = userManager.activeUserId,
            credentialProvider.isAuthenticated(userId: activeUserId) {
             let prefs = getSharedPreferences()
-            let view = ImporterView(logManager: logManager,
-                                    datasource: self,
+            let logins = try await parseLogins()
+            let view = ImporterView(data: logins,
                                     onClose: { [weak self] in
                                         guard let self else { return }
                                         dismissExtension()
@@ -183,11 +183,7 @@ extension ActionCoordinator: ExtensionCoordinator {
     }
 }
 
-extension ActionCoordinator: ImporterDatasource {
-    func getUsers() async throws -> [UserUiModel] {
-        try await getUserUiModels()
-    }
-
+extension ActionCoordinator {
     func parseLogins() async throws -> [CsvLogin] {
         guard let items = context?.inputItems as? [NSExtensionItem] else {
             throw PassError.extension(.noInputItems)
@@ -217,14 +213,5 @@ extension ActionCoordinator: ImporterDatasource {
         }
 
         return try await parseCsvLogins(csvString)
-    }
-
-    func proceedImportation(user: UserUiModel?, logins: [CsvLogin]) async throws {
-        let userId: String = if let user {
-            user.id
-        } else {
-            try await userManager.getActiveUserId()
-        }
-        try await createVaultAndImportLogins(userId: userId, logins: logins)
     }
 }
