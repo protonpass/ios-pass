@@ -60,26 +60,32 @@ enum CapturedPhoto {
 }
 
 @MainActor
-final class FileAttachmentsButtonViewModel: ObservableObject {
-    @Published var selectedPhotos = [PhotosPickerItem]()
-    @Published var scannedTextToBeConfirmed = ""
-    @Published var showTextConfirmation = false
-    @Published var showNoTextFound = false
+@Observable
+final class FileAttachmentsButtonViewModel {
+    /// Tracked backing store. Written directly when we need to mutate the
+    /// selection *without* re-entering photo processing.
+    private var storedSelectedPhotos = [PhotosPickerItem]()
 
+    var selectedPhotos: [PhotosPickerItem] {
+        get { storedSelectedPhotos }
+        set {
+            storedSelectedPhotos = newValue
+            processSelectedPhotos(newValue)
+        }
+    }
+
+    var scannedTextToBeConfirmed = ""
+    var showTextConfirmation = false
+    var showNoTextFound = false
+
+    @ObservationIgnored
     private var selectedPhotosTask: Task<Void, Never>?
+    @ObservationIgnored
     private var cancellable = Set<AnyCancellable>()
     let handler: any FileAttachmentsEditHandler
 
     init(handler: any FileAttachmentsEditHandler) {
         self.handler = handler
-
-        $selectedPhotos
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] photos in
-                guard let self else { return }
-                handleSelectedPhotos(photos)
-            }
-            .store(in: &cancellable)
     }
 
     func handleCapturedPhoto(_ photo: CapturedPhoto) {
@@ -97,15 +103,15 @@ final class FileAttachmentsButtonViewModel: ObservableObject {
         switch result {
         case let .success(scanResult):
             guard let document = scanResult as? ScannedDocument else {
-                showNoTextFound.toggle()
+                showNoTextFound = true
                 return
             }
             let text = document.scannedPages.flatMap(\.text).joined(separator: "\n")
             if text.isEmpty {
-                showNoTextFound.toggle()
+                showNoTextFound = true
             } else {
                 scannedTextToBeConfirmed = text
-                showTextConfirmation.toggle()
+                showTextConfirmation = true
             }
 
         case let .failure(error):
@@ -114,9 +120,11 @@ final class FileAttachmentsButtonViewModel: ObservableObject {
     }
 
     func confirmScannedText() {
+        let text = scannedTextToBeConfirmed
+        guard !text.isEmpty else { return }
         do {
             let fileName = handler.generateDatedFileName(prefix: "Document", extension: "txt")
-            guard let data = scannedTextToBeConfirmed.data(using: .utf8) else { return }
+            guard let data = text.data(using: .utf8) else { return }
             let url = try handler.writeToTemporaryDirectory(data: data, fileName: fileName)
             handler.handleAttachment(url)
         } catch {
@@ -126,18 +134,31 @@ final class FileAttachmentsButtonViewModel: ObservableObject {
 }
 
 private extension FileAttachmentsButtonViewModel {
-    func handleSelectedPhotos(_ photos: [PhotosPickerItem]) {
-        selectedPhotosTask?.cancel()
+    func processSelectedPhotos(_ photos: [PhotosPickerItem]) {
+        guard let photo = photos.first else { return }
+
+        let previous = selectedPhotosTask
         selectedPhotosTask = Task { [weak self] in
-            guard let self, let photo = photos.first else { return }
-            defer { handler.hideLoadingIndicator() }
+            // Deterministic teardown before we touch the loading indicator, so a
+            // superseded load can never hide an indicator this load just showed.
+            previous?.cancel()
+            await previous?.value
+
+            guard let self, !Task.isCancelled else { return }
+
             handler.showLoadingIndicator()
+            defer { handler.hideLoadingIndicator() }
+
             do {
-                guard let url = try await photo.loadTransferable(type: TempDirectoryTransferableUrl.self) else {
+                guard let url = try await photo.loadTransferable(type: TempDirectoryTransferableUrl.self)?.value
+                else {
                     throw PassError.fileAttachment(.failedToProcessPickedPhotos)
                 }
-                selectedPhotos = []
-                handler.handleAttachment(url.value)
+                try Task.checkCancellation()
+                storedSelectedPhotos = [] // Bypass the setter: no re-entrancy.
+                handler.handleAttachment(url)
+            } catch is CancellationError {
+                // Superseded by a newer selection. Not user-facing.
             } catch {
                 handler.handleAttachmentError(error)
             }
