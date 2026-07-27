@@ -31,18 +31,6 @@ public struct LogEntry: Codable, Sendable {
     public let function: String
     public let line: UInt
     public let column: UInt
-
-    /// Process-monotonic creation order, minted by the initialiser's default argument.
-    ///
-    /// `Logger.log(entry:)` dispatches every entry in its own unstructured `Task`, so entries
-    /// reach `LogManager` in arbitrary order — arrival order cannot break a timestamp tie, it is
-    /// the thing that got scrambled. This records the order the entries were actually created in.
-    ///
-    /// `Optional` on purpose: the synthesised `Codable` then uses `decodeIfPresent`, so log files
-    /// written before this field existed still decode instead of vanishing from the log viewer.
-    ///
-    /// Resets with the process while the log file outlives it, so this is only meaningful *within*
-    /// one timestamp: sort on `(timestamp, sequence)`, never on `sequence` alone.
     public let sequence: UInt64?
 
     public init(timestamp: TimeInterval,
@@ -69,8 +57,6 @@ public struct LogEntry: Codable, Sendable {
 }
 
 public extension LogEntry {
-    /// The default for `sequence`. `public` because default argument expressions are inlined at
-    /// the call site; call it directly only when reconstructing an entry with a known order.
     static func nextSequence() -> UInt64 {
         sequencer.withLock { count in
             count += 1
@@ -80,13 +66,8 @@ public extension LogEntry {
 }
 
 extension LogEntry {
-    /// One counter per process. Modules log to separate files (`PassModule.logFileName`), so a
-    /// per-process counter is a total order over everything that lands in any one file.
     private static let sequencer = OSAllocatedUnfairLock(initialState: UInt64(0))
 
-    /// Chronological by emission: timestamps order across process launches, `sequence` breaks the
-    /// ties within one launch. Entries predating `sequence` compare as `0` and keep their relative
-    /// order, which is the order they already had.
     static func isBefore(_ lhs: LogEntry, _ rhs: LogEntry) -> Bool {
         (lhs.timestamp, lhs.sequence ?? 0) < (rhs.timestamp, rhs.sequence ?? 0)
     }
