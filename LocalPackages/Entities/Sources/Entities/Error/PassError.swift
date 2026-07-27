@@ -62,6 +62,7 @@ public enum PassError: Error, CustomDebugStringConvertible, Equatable {
     case itemsNotBelongToSameVault
     case group(GroupFailureReason)
     case folder(FolderFailureReason)
+    case bugReport(BugReportFailureReason)
 
     public var debugDescription: String {
         switch self {
@@ -180,6 +181,9 @@ public enum PassError: Error, CustomDebugStringConvertible, Equatable {
             reason.debugDescription
 
         case let .folder(reason):
+            reason.debugDescription
+
+        case let .bugReport(reason):
             reason.debugDescription
         }
     }

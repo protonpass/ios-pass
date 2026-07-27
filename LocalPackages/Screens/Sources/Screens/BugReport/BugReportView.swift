@@ -18,50 +18,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import DesignSystem
 import Macro
 import PhotosUI
 import ProtonCoreUIFoundations
 import SwiftUI
 
-private extension BugReportView {
-    enum ValidationError: LocalizedError {
-        case missingReason
-        case shortDescription
-
-        var errorDescription: String? {
-            switch self {
-            case .missingReason:
-                #localized("Please select a reason")
-
-            case .shortDescription:
-                #localized("Please provide us with more details in the description")
-            }
-        }
-    }
-}
-
-struct BugReportView: View {
+public struct BugReportView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focused
-    @StateObject private var viewModel = BugReportViewModel()
-    @State private var validationError: ValidationError?
+    @State private var viewModel = BugReportViewModel()
     @State private var showFilePicker = false
     @State private var showPhotoPicker = false
-    var onError: (any Error) -> Void
+    @State private var contentWidth: CGFloat = 0
     var onSuccess: () -> Void
 
-    init(onError: @escaping (any Error) -> Void,
-         onSuccess: @escaping () -> Void) {
-        self.onError = onError
+    public init(onSuccess: @escaping () -> Void) {
         self.onSuccess = onSuccess
     }
 
-    var body: some View {
+    public var body: some View {
         NavigationStack {
             mainContainer
                 .toolbar { toolbarContent }
-                .navigationTitle("Report a problem")
+                .navigationTitle(Text("Report a problem", bundle: .module))
                 .showSpinner(viewModel.actionInProcess)
                 .onFirstAppear {
                     focused = true
@@ -74,10 +55,8 @@ struct BugReportView: View {
                 onSuccess()
             }
         }
-        .onReceive(viewModel.$error) { error in
-            if let error {
-                onError(error)
-            }
+        .onChange(of: viewModel.selectedPhotos) { _, value in
+            viewModel.addPhotos(value)
         }
         .fileImporter(isPresented: $showFilePicker,
                       allowedContentTypes: [.item],
@@ -86,10 +65,7 @@ struct BugReportView: View {
         }
         .photosPicker(isPresented: $showPhotoPicker,
                       selection: $viewModel.selectedPhotos,
-                      maxSelectionCount: 4)
-        .alert(isPresented: $validationError.mappedToBool(),
-               error: validationError,
-               actions: { Button(action: {}, label: { Text("OK") }) })
+                      maxSelectionCount: Constants.Report.maxFileCount)
     }
 }
 
@@ -105,17 +81,10 @@ private extension BugReportView {
         }
 
         ToolbarItem(placement: .topBarTrailing) {
-            CapsuleTextButton(title: #localized("Send"),
+            CapsuleTextButton(title: #localized("Send", bundle: .module),
                               titleColor: PassColor.textInvert,
-                              backgroundColor: PassColor.interactionNorm) {
-                if viewModel.object == nil {
-                    validationError = .missingReason
-                } else if viewModel.description.count < 10 {
-                    validationError = .shortDescription
-                } else {
-                    viewModel.send()
-                }
-            }
+                              backgroundColor: PassColor.interactionNorm,
+                              action: viewModel.send)
         }
     }
 }
@@ -124,13 +93,17 @@ private extension BugReportView {
 private extension BugReportView {
     var mainContainer: some View {
         ScrollView {
-            VStack(spacing: DesignConstant.sectionPadding * 1.5) {
+            VStack {
                 objectSection
                 descriptionSection
+                    .padding(.top, DesignConstant.sectionPadding)
+                characterCountSection
                 logsSection
+                    .padding(.vertical, DesignConstant.sectionPadding)
                 attachmentsSection
                 Spacer()
             }
+            .onGeometryChange(for: CGFloat.self, of: { $0.size.width }, action: { contentWidth = $0 })
             .padding()
             .frame(maxHeight: .infinity)
             .animation(.default, value: viewModel.currentFiles)
@@ -164,7 +137,7 @@ private extension BugReportView {
             }
         }, label: {
             HStack {
-                pickerLabel(viewModel.object?.description ?? #localized("Select reason"))
+                pickerLabel(viewModel.object?.description ?? #localized("Select reason", bundle: .module))
                 Spacer()
             }
             .frame(maxWidth: .infinity)
@@ -177,10 +150,11 @@ private extension BugReportView {
 private extension BugReportView {
     @ViewBuilder
     var descriptionSection: some View {
-        let title = #localized("What went wrong?")
+        let title = #localized("What went wrong?", bundle: .module)
         let placeholder =
             // swiftlint:disable:next line_length
-            #localized("Please describe the problem in as much detail as you can. If there was an error message, let us know what it said.")
+            #localized("Please describe the problem in as much detail as you can. If there was an error message, let us know what it said.",
+                       bundle: .module)
         HStack(spacing: DesignConstant.sectionPadding) {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(title)
@@ -212,16 +186,28 @@ private extension BugReportView {
         .padding(DesignConstant.sectionPadding)
         .roundedEditableSection()
     }
+
+    var characterCountSection: some View {
+        Text(verbatim: "(\(viewModel.description.count)/\(Constants.Report.maxCharCount))")
+            .font(.footnote)
+            .foregroundStyle(viewModel.description.count <= Constants.Report.maxCharCount ?
+                PassColor.textWeak : PassColor.signalDanger)
+            .frame(maxWidth: .infinity, alignment: .leading)
+    }
 }
 
 @MainActor
 private extension BugReportView {
     var logsSection: some View {
         VStack {
-            Toggle("Logs", isOn: $viewModel.shouldSendLogs)
-                .foregroundStyle(PassColor.textNorm)
+            Toggle(isOn: $viewModel.shouldSendLogs) {
+                Text("Logs", bundle: .module)
+                    .foregroundStyle(PassColor.textNorm)
+            }
+
             // swiftlint:disable:next line_length
-            Text("A log is a type of file that shows us the actions you took that led to an error. We'll only ever use them to help our engineers fix bugs.")
+            Text("A log is a type of file that shows us the actions you took that led to an error. We'll only ever use them to help our engineers fix bugs.",
+                 bundle: .module)
                 .sectionTitleText()
         }
     }
@@ -232,33 +218,32 @@ private extension BugReportView {
     var attachmentsSection: some View {
         VStack {
             HStack {
-                Text("Attachments")
+                Text("Attachments", bundle: .module)
                     .foregroundStyle(PassColor.textNorm)
                 Spacer()
                 Menu(content: {
                     Button(action: {
                         showPhotoPicker = true
                     }, label: {
-                        Text("Screenshot")
+                        Text("Photos or videos", bundle: .module)
                     })
 
                     Button(action: {
                         showFilePicker = true
                     }, label: {
-                        Text("File")
+                        Text("Files", bundle: .module)
                     })
                 }, label: {
-                    pickerLabel(#localized("Attach"))
+                    pickerLabel(#localized("Attach", bundle: .module))
                 })
             }
 
-            VStack(alignment: .leading) {
-                AnyLayout(FlowLayout(spacing: 8)) {
-                    ForEach(Array(viewModel.currentFiles.keys), id: \.self) { key in
-                        view(for: key)
-                    }
+            FlowLayout(spacing: 8) {
+                ForEach(Array(viewModel.currentFiles.keys), id: \.self) { key in
+                    view(for: key)
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 
@@ -267,6 +252,8 @@ private extension BugReportView {
             Text(fileName)
                 .font(.callout)
                 .foregroundStyle(PassColor.textNorm)
+                .lineLimit(1)
+                .truncationMode(.middle)
         }, icon: {
             Button(action: {
                 viewModel.removeFile(fileName)
@@ -280,6 +267,7 @@ private extension BugReportView {
         .labelStyle(.rightIcon)
         .padding(.horizontal, 10)
         .padding(.vertical, 8)
+        .frame(maxWidth: contentWidth > 0 ? contentWidth : nil)
         .overlay(RoundedRectangle(cornerRadius: 4)
             .stroke(PassColor.backgroundMedium, lineWidth: 1))
     }
