@@ -28,7 +28,7 @@ import SwiftUI
 public struct OnboardingView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var viewModel: OnboardingViewModel
+    @State private var viewModel: OnboardingViewModel
     @State private var saveable = false
     @State private var topBar: TopBar = .notNowButton
 
@@ -40,8 +40,8 @@ public struct OnboardingView: View {
                               onSave: () -> Void)
     }
 
-    public init(handler: OnboardingHandling?, mode: OnboardingDisplayMode) {
-        _viewModel = .init(wrappedValue: .init(handler: handler, mode: mode))
+    public init(mode: OnboardingDisplayMode) {
+        _viewModel = .init(wrappedValue: .init(mode: mode))
     }
 
     public var body: some View {

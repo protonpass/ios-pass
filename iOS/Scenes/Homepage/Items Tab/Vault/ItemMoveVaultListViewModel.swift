@@ -21,22 +21,25 @@
 import Client
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Macro
+import Screens
+import Stores
 
 @MainActor
 final class ItemMoveVaultListViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let moveItemsBetweenContainers = resolve(\UseCasesContainer.moveItemsBetweenContainers)
-    private let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
-    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
-    @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
+    private let upgradeChecker = dependency(\ServiceContainer.upgradeChecker)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let moveItemsBetweenContainers = dependency(\UseCasesContainer.moveItemsBetweenContainers)
+    private let currentSelectedItems = dependency(\DataContainer.currentSelectedItems)
+    @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
+    @LazyInjected(\RepositoryContainer.itemRepository) private var itemRepository
+    @LazyInjected(\UseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     @Published private(set) var isFreeUser = false
     @Published private(set) var showWarning = false

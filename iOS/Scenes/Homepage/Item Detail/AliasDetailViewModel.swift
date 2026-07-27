@@ -21,10 +21,12 @@
 import Client
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 
 @MainActor
 final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
@@ -44,8 +46,8 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
         aliasInfos?.note ?? itemContent.simpleLoginNote
     }
 
-    @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
-    @LazyInjected(\SharedRepositoryContainer.localItemDatasource) private var localItemDatasource
+    @LazyInjected(\RepositoryContainer.aliasRepository) private var aliasRepository
+    @LazyInjected(\RepositoryContainer.localItemDatasource) private var localItemDatasource
 
     private var task: Task<Void, Never>?
 

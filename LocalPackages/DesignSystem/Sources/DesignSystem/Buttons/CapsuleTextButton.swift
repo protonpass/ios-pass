@@ -20,7 +20,10 @@
 
 import SwiftUI
 
-/// A capsule button with a text as title
+/// A capsule button with a text as title.
+///
+/// When `action` is `nil` the view renders as a plain, non-interactive capsule label so that it can be
+/// safely used as the label of another control (e.g. `ShareLink`) without swallowing its tap.
 public struct CapsuleTextButton: View {
     let title: String
     let titleColor: Color
@@ -30,7 +33,7 @@ public struct CapsuleTextButton: View {
     let height: CGFloat
     let maxWidth: CGFloat?
     let horizontalPadding: CGFloat?
-    let action: () -> Void
+    let action: (() -> Void)?
 
     public init(title: String,
                 titleColor: Color,
@@ -40,7 +43,7 @@ public struct CapsuleTextButton: View {
                 height: CGFloat = 40,
                 maxWidth: CGFloat? = .infinity,
                 horizontalPadding: CGFloat? = DesignConstant.sectionPadding,
-                action: @escaping () -> Void = {}) {
+                action: (() -> Void)? = nil) {
         self.title = title
         self.titleColor = titleColor
         self.font = font
@@ -54,19 +57,27 @@ public struct CapsuleTextButton: View {
 
     public var body: some View {
         if #available(iOS 26.0, *) {
-            Button(action: action) {
+            if let action {
+                Button(action: action) {
+                    text
+                        .frame(maxWidth: maxWidth, maxHeight: .infinity)
+                }
+                .tint(backgroundColor)
+                .buttonStyle(.glassProminent)
+                .frame(height: height)
+            } else {
                 text
                     .frame(maxWidth: maxWidth, maxHeight: .infinity)
-            }
-            .tint(backgroundColor)
-            .buttonStyle(.glassProminent)
-            .frame(height: height)
-        } else {
-            Button(action: action) {
-                text
                     .frame(height: height)
-                    .frame(maxWidth: maxWidth)
-                    .background(backgroundColor, in: .capsule)
+                    .glassEffect(.regular.tint(backgroundColor), in: .capsule)
+            }
+        } else {
+            if let action {
+                Button(action: action) {
+                    label
+                }
+            } else {
+                label
             }
         }
     }
@@ -79,6 +90,13 @@ private extension CapsuleTextButton {
             .fontWeight(fontWeight)
             .foregroundStyle(titleColor)
             .padding(.horizontal, horizontalPadding)
+    }
+
+    var label: some View {
+        text
+            .frame(height: height)
+            .frame(maxWidth: maxWidth)
+            .background(backgroundColor, in: .capsule)
     }
 }
 

@@ -22,6 +22,7 @@ import Client
 import Combine
 import Core
 import CoreSpotlight
+import DIComposition
 import Entities
 import FactoryKit
 import Macro
@@ -30,6 +31,7 @@ import ProtonCoreFeatureFlags
 @preconcurrency import ProtonCoreLogin
 @preconcurrency import ProtonCoreLoginUI
 import ProtonCorePushNotifications
+import Screens
 import SwiftUI
 
 private enum HomeSceneMode {
@@ -69,31 +71,31 @@ final class AppCoordinator {
 
     private var cancellables = Set<AnyCancellable>()
 
-    private let userManager = resolve(\SharedServiceContainer.userManager)
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let loginMethod = resolve(\SharedDataContainer.loginMethod)
+    private let userManager = dependency(\ServiceContainer.userManager)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let loginMethod = dependency(\DataContainer.loginMethod)
 
-    @LazyInjected(\SharedToolingContainer.keychain) private var keychain
-    @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
-    @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
-    @LazyInjected(\SharedToolingContainer.authManager) private var authManager
+    @LazyInjected(\ToolingContainer.keychain) private var keychain
+    @LazyInjected(\ToolingContainer.apiManager) private var apiManager
+    @LazyInjected(\ToolingContainer.preferencesManager) var preferencesManager
+    @LazyInjected(\ToolingContainer.authManager) private var authManager
 
-    @LazyInjected(\SharedRepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
-    @LazyInjected(\SharedRepositoryContainer.localUserDataDatasource) var localUserDataDatasource
+    @LazyInjected(\RepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
+    @LazyInjected(\RepositoryContainer.localUserDataDatasource) var localUserDataDatasource
 
-    @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
-    @LazyInjected(\SharedUseCasesContainer.refreshFeatureFlags) private var refreshFeatureFlags
-    @LazyInjected(\SharedUseCasesContainer.setUpCoreTelemetry) private var setUpCoreTelemetry
-    @LazyInjected(\SharedUseCasesContainer.logOutUser) var logOutUser
-    @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) var logOutAllAccounts
-    @LazyInjected(\SharedUseCasesContainer.sendErrorToSentry) var sendErrorToSentry
-    @LazyInjected(\SharedUseCasesContainer.sendMessageToSentry) var sendMessageToSentry
-    @LazyInjected(\SharedUseCasesContainer.clearCacheForLoggedOutUsers)
+    @LazyInjected(\UseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
+    @LazyInjected(\UseCasesContainer.refreshFeatureFlags) private var refreshFeatureFlags
+    @LazyInjected(\UseCasesContainer.setUpCoreTelemetry) private var setUpCoreTelemetry
+    @LazyInjected(\UseCasesContainer.logOutUser) var logOutUser
+    @LazyInjected(\UseCasesContainer.logOutAllAccounts) var logOutAllAccounts
+    @LazyInjected(\UseCasesContainer.sendErrorToSentry) var sendErrorToSentry
+    @LazyInjected(\UseCasesContainer.sendMessageToSentry) var sendMessageToSentry
+    @LazyInjected(\UseCasesContainer.clearCacheForLoggedOutUsers)
     private var clearCacheForLoggedOutUsers
-    @LazyInjected(\SharedServiceContainer.telemetryService) private var telemetryService
+    @LazyInjected(\ServiceContainer.telemetryService) private var telemetryService
     @LazyInjected(\UseCasesContainer.firstRunDetector) private var firstRunDetector
     @LazyInjected(\UseCasesContainer.postbackConversionValue) private var postbackConversionValue
-    @LazyInjected(\SharedServiceContainer.inAppNotificationManager)
+    @LazyInjected(\ServiceContainer.inAppNotificationManager)
     private var inAppNotificationManager
 
     private var authDeviceManagerUI: AuthDeviceManagerUI?
@@ -351,7 +353,7 @@ private extension AppCoordinator {
             if let userId = userManager.activeUserId {
                 do {
                     if try await logOutUser(userId: userId) {
-                        SharedViewContainer.shared.reset()
+                        UIComponentsContainer.shared.reset()
                     }
                 } catch {
                     logger.error(error)

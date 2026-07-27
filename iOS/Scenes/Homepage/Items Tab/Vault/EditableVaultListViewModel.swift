@@ -21,12 +21,15 @@
 import Client
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
 import Macro
 import Observation
 import ProtonCoreLogin
+import Screens
+import Stores
 
 private extension EditableVaultListViewModel {
     /// All per-scope counts, computed once when the content state changes and then read O(1).
@@ -51,8 +54,7 @@ private extension EditableVaultListViewModel {
             var vaultCounts = [String: Int]()
             let hiddenShareIds = sharesData.hiddenSharesIds
 
-            for shareContent in sharesData.visibleShareContents
-                where shareContent.share.vaultContent != nil {
+            for shareContent in sharesData.shares.values where shareContent.share.vaultContent != nil {
                 if !shareContent.share.hidden {
                     all += shareContent.itemCount
                 }
@@ -76,8 +78,38 @@ final class EditableVaultListViewModel: DeinitPrintable {
     private(set) var organization: Entities.Organization?
     private(set) var hiddenShareIds = Set<String>()
     private(set) var mode: Mode = .view
+    private(set) var folderLimits = FolderLimits.default
+    private(set) var visibleVaults: [ShareContent] = []
+    private(set) var hiddenVaults: [ShareContent] = []
+    private(set) var hideShowVaultSupported = false
+
+    var containerToDelete: ActionnableContainer?
+    var folderAction: FolderAction?
+
+    let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+
+    private let setShareInviteVault = dependency(\UseCasesContainer.setShareInviteVault)
+    private let getUserShareStatus = dependency(\UseCasesContainer.getUserShareStatus)
+    private let canUserPerformActionOnVault = dependency(\UseCasesContainer.canUserPerformActionOnVault)
+    private let leaveShare = dependency(\UseCasesContainer.leaveShare)
+    private let syncEventLoop = dependency(\ServiceContainer.syncEventLoop)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let appContentManager = dependency(\ServiceContainer.appContentManager)
+    private let userManager = dependency(\ServiceContainer.userManager)
+    private let accessRepository = dependency(\RepositoryContainer.accessRepository)
+    private let organizationRepository = dependency(\RepositoryContainer.organizationRepository)
+    private let getFeatureFlagStatus = dependency(\UseCasesContainer.getFeatureFlagStatus)
+    private let reorganizeVaults = dependency(\UseCasesContainer.reorganizeVaults)
+    private let itemRepository = dependency(\RepositoryContainer.itemRepository)
+    private let checkVaultCreationAllowance = dependency(\UseCasesContainer.checkVaultCreationAllowance)
+
     private var userData: UserData?
     private var plan: Plan?
+    private var count: Count
+    @ObservationIgnored
+    private var cancellables = Set<AnyCancellable>()
+    private var orderedVaults: [ShareContent] = []
+
     var expandedContainerIds = Set<String>() {
         didSet {
             persist()
@@ -90,59 +122,6 @@ final class EditableVaultListViewModel: DeinitPrintable {
             select(.precise(shareSelection))
         }
     }
-
-    var containerToDelete: ActionnableContainer?
-    var folderAction: FolderAction?
-
-    @ObservationIgnored
-    let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-
-    @ObservationIgnored
-    private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
-    @ObservationIgnored
-    private let getUserShareStatus = resolve(\UseCasesContainer.getUserShareStatus)
-    @ObservationIgnored
-    private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
-    @ObservationIgnored
-    private let leaveShare = resolve(\UseCasesContainer.leaveShare)
-    @ObservationIgnored
-    private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
-    @ObservationIgnored
-    private let logger = resolve(\SharedToolingContainer.logger)
-    @ObservationIgnored
-    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
-    @ObservationIgnored
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @ObservationIgnored
-    @LazyInjected(\SharedRepositoryContainer.accessRepository)
-    private var accessRepository
-    @ObservationIgnored
-    @LazyInjected(\SharedRepositoryContainer.organizationRepository)
-    private var organizationRepository
-    @ObservationIgnored
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
-    private var getFeatureFlagStatus
-    @ObservationIgnored
-    @LazyInjected(\UseCasesContainer.reorganizeVaults)
-    private var reorganizeVaults
-    @ObservationIgnored
-    @LazyInjected(\SharedRepositoryContainer.itemRepository)
-    private var itemRepository
-
-    @ObservationIgnored
-    @LazyInjected(\UseCasesContainer.checkVaultCreationAllowance)
-    private var checkVaultCreationAllowance
-    private(set) var folderLimits = FolderLimits.default
-    private var count: Count
-    @ObservationIgnored
-    private var cancellables = Set<AnyCancellable>()
-
-    /// Cached vault collections, recomputed via `recomputeVaults()` only when `state`, `mode`,
-    /// or `hiddenShareIds` change — never per `body` evaluation.
-    private var orderedVaults: [ShareContent] = []
-    private(set) var visibleVaults: [ShareContent] = []
-    private(set) var hiddenVaults: [ShareContent] = []
-    private(set) var hideShowVaultSupported = false
 
     var folderSupported: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passFolder)

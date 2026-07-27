@@ -20,10 +20,12 @@
 
 import Client
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import ProtonCoreUIFoundations
 import Screens
+import Stores
 import SwiftUI
 
 struct VaultSelectorView: View {
@@ -35,8 +37,8 @@ struct VaultSelectorView: View {
     @State private var expandedContainerIds = Set<String>()
     @State private var shares: [ShareContent] = []
 
-    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private let appContentManager = dependency(\ServiceContainer.appContentManager)
+    private let getFeatureFlagStatus = dependency(\UseCasesContainer.getFeatureFlagStatus)
 
     private var folderSupported: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passFolder)

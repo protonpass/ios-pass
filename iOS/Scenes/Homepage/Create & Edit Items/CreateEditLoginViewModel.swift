@@ -23,6 +23,7 @@ import Client
 import CodeScanner
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Macro
@@ -49,7 +50,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published private(set) var emailUsernameExpanded = false
 
     @Published var password = ""
-    @Published private(set) var passwordStrength: PasswordStrength?
+    @Published private(set) var passwordScore: PasswordScore?
     private var originalTotpUri = ""
     @Published var totpUri = ""
     @Published private(set) var totpUriErrorMessage = ""
@@ -67,8 +68,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     /// Proton account email address
     private(set) var emailAddress: String = ""
 
-    private let aliasRepository = resolve(\SharedRepositoryContainer.aliasRepository)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let aliasRepository = dependency(\RepositoryContainer.aliasRepository)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
 
     private var aliasOptions: AliasOptions?
     @Published private var aliasCreationLiteInfo: AliasCreationLiteInfo?
@@ -76,20 +77,13 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         aliasCreationLiteInfo != nil
     }
 
-    private let sanitizeTotpUriForEditing = resolve(\SharedUseCasesContainer.sanitizeTotpUriForEditing)
-    private let sanitizeTotpUriForSaving = resolve(\SharedUseCasesContainer.sanitizeTotpUriForSaving)
-    private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
-    private let createPasskey = resolve(\SharedUseCasesContainer.createPasskey)
-    private let validateEmail = resolve(\SharedUseCasesContainer.validateEmail)
-    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
-    @LazyInjected(\SharedUseCasesContainer.getOrganizationSettings)
-    private var getOrganizationSettings
-
-    @LazyInjected(\SharedUseCasesContainer.generateUsername)
-    private(set) var generateUsername
-
-    @LazyInjected(\SharedRepositoryContainer.localUsernamePreferencesDatasource)
-    private(set) var localUsernamePreferencesDatasource
+    private let sanitizeTotpUriForEditing = dependency(\UseCasesContainer.sanitizeTotpUriForEditing)
+    private let sanitizeTotpUriForSaving = dependency(\UseCasesContainer.sanitizeTotpUriForSaving)
+    private let createPasskey = dependency(\UseCasesContainer.createPasskey)
+    private let validateEmail = dependency(\UseCasesContainer.validateEmail)
+    private let getSharedPreferences = dependency(\UseCasesContainer.getSharedPreferences)
+    @LazyInjected(\UseCasesContainer.getOrganizationSettings) private var getOrganizationSettings
+    @LazyInjected(\UseCasesContainer.scorePassword) private var scorePassword
 
     weak var delegate: (any CreateEditLoginViewModelDelegate)?
 
@@ -355,7 +349,9 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     func validateURLs() -> Bool {
         invalidURLs = urls.map(\.value).compactMap { url in
-            if url.isEmpty { return nil }
+            if url.isEmpty {
+                return nil
+            }
             if URLUtils.Sanitizer.sanitize(url) == nil {
                 return url
             }
@@ -366,6 +362,16 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     func remove(passkey: Passkey) {
         passkeys.removeAll(where: { $0.keyID == passkey.keyID })
+    }
+
+    func handlePasswordResult(_ result: Result<String, any Error>) {
+        switch result {
+        case let .success(password):
+            self.password = password
+
+        case let .failure(error):
+            handle(error)
+        }
     }
 
     func handleUsernameResult(_ result: Result<String, any Error>) {
@@ -418,7 +424,8 @@ private extension CreateEditLoginViewModel {
             .removeDuplicates()
             .sink { [weak self] passwordValue in
                 guard let self else { return }
-                passwordStrength = getPasswordStrength(password: passwordValue)
+                // swiftlint:disable:next nil_if_empty
+                passwordScore = passwordValue.isEmpty ? nil : scorePassword(passwordValue)
             }
             .store(in: &cancellables)
 

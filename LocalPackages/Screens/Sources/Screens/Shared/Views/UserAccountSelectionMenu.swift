@@ -1,0 +1,102 @@
+//
+// UserAccountSelectionMenu.swift
+// Proton Pass - Created on 10/09/2024.
+// Copyright (c) 2024 Proton Technologies AG
+//
+// This file is part of Proton Pass.
+//
+// Proton Pass is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Pass is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
+
+import DesignSystem
+import Entities
+import Macro
+import SwiftUI
+
+public struct UserAccountSelectionMenu: View {
+    @Binding private var selectedUser: UserUiModel?
+    private let users: [UserUiModel]
+    private let allowNoSelection: Bool
+
+    public init(selectedUser: Binding<UserUiModel?>,
+                users: [UserUiModel],
+                allowNoSelection: Bool = true) {
+        _selectedUser = selectedUser
+        self.users = users
+        self.allowNoSelection = allowNoSelection
+    }
+
+    public var body: some View {
+        let allAccountsMessage = #localized("All accounts (%lld)", bundle: .module, users.count)
+        Menu(content: {
+            if allowNoSelection {
+                Button(action: {
+                    selectedUser = nil
+                }, label: {
+                    if selectedUser == nil {
+                        Label(allAccountsMessage, systemImage: "checkmark")
+                    } else {
+                        Text(verbatim: allAccountsMessage)
+                    }
+                })
+            }
+
+            Section {
+                ForEach(users) { user in
+                    Button(action: {
+                        selectedUser = user
+                    }, label: {
+                        if user == selectedUser {
+                            Label(user.email ?? "?", systemImage: "checkmark")
+                        } else {
+                            Text(verbatim: user.email ?? "?")
+                        }
+                    })
+                }
+            }
+        }, label: {
+            Group {
+                let text = if let selectedUser {
+                    selectedUser.displayNameAndEmail
+                } else {
+                    allAccountsMessage
+                }
+
+                if #available(iOS 26.0, *) {
+                    label(text: text)
+                        .glassEffect(.regular.tint(PassColor.interactionNormMinor1), in: shape)
+                } else {
+                    label(text: text)
+                        .background(PassColor.interactionNormMinor1)
+                        .clipShape(shape)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        })
+    }
+}
+
+private extension UserAccountSelectionMenu {
+    func label(text: String) -> some View {
+        Label(title: { Text(text).lineLimit(1) },
+              icon: { Image(systemName: "chevron.up.chevron.down") })
+            .foregroundStyle(PassColor.interactionNormMajor2)
+            .labelStyle(.rightIcon)
+            .padding(10)
+    }
+
+    var shape: some Shape {
+        RoundedRectangle(cornerRadius: 8)
+    }
+}

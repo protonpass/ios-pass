@@ -19,12 +19,14 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
+import Stores
 import SwiftUI
 
 struct ItemReadEventsSection: View {
-    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
+    private let accessRepository = dependency(\RepositoryContainer.accessRepository)
     var enabled: Bool {
         accessRepository.access.value?.access.plan.isBusinessUser == true
     }
@@ -120,9 +122,9 @@ private final class ItemReadEventsViewModel: ObservableObject {
     @Published private(set) var uiModels: [ItemReadEventsUiModel] = []
     @Published private(set) var error: (any Error)?
 
-    private let repository = resolve(\SharedRepositoryContainer.itemReadEventRepository)
-    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
-    private let userManager = resolve(\SharedServiceContainer.userManager)
+    private let repository = dependency(\RepositoryContainer.itemReadEventRepository)
+    private let appContentManager = dependency(\ServiceContainer.appContentManager)
+    private let userManager = dependency(\ServiceContainer.userManager)
 
     init() {}
 

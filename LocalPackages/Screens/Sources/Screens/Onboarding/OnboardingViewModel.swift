@@ -18,10 +18,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
-
+import Client
+import Core
+import DIComposition
 import Entities
+import FactoryKit
 import Foundation
 import LocalAuthentication
+import Macro
+import ProtonCorePaymentsUIV2
 import ProtonCorePaymentsV2
 import StoreKit
 
@@ -31,21 +36,21 @@ public enum OnboardFirstLoginSuggestion: Sendable {
     case suggestedShare(shareId: String)
 }
 
-public nonisolated struct OnboardFirstLoginPayload: Sendable, Equatable {
-    public let shareId: String
-    public let service: KnownService
-    public let title: String
-    public let email: String
-    public let username: String
-    public let password: String
-    public let website: String
+nonisolated struct OnboardFirstLoginPayload: Equatable {
+    let shareId: String
+    let service: KnownService
+    let title: String
+    let email: String
+    let username: String
+    let password: String
+    let website: String
 
     var emailOrUsername: String {
         email.isEmpty ? username : email
     }
 }
 
-public nonisolated struct KnownService: Sendable, Decodable, Equatable {
+nonisolated struct KnownService: Decodable, Equatable {
     let name: String
     let url: String
     let favIconUrl: String
@@ -56,49 +61,18 @@ public nonisolated struct KnownService: Sendable, Decodable, Equatable {
     }
 }
 
-public typealias OnboardingHandling = OnboardingDatasource & OnboardingDelegate
-
-public nonisolated struct PassPlans: Sendable, Equatable {
+nonisolated struct PassPlans: Equatable {
     let foldersEnabled: Bool
     let plus: PlanUiModel?
     let unlimited: PlanUiModel?
 
-    public init(foldersEnabled: Bool,
-                plus: PlanUiModel?,
-                unlimited: PlanUiModel?) {
-        self.foldersEnabled = foldersEnabled
-        self.plus = plus
-        self.unlimited = unlimited
-    }
-
-    public var noPlansAvailable: Bool {
+    var noPlansAvailable: Bool {
         plus == nil && unlimited == nil
     }
 
-    public var onePlanAvailable: Bool {
+    var onePlanAvailable: Bool {
         (plus == nil && unlimited != nil) || (plus != nil && unlimited == nil)
     }
-}
-
-public protocol OnboardingDatasource: Sendable, AnyObject {
-    func getCurrentPlan() async throws -> Entities.Plan
-    func getPassPlans() async throws -> PassPlans
-    func getBiometryType() async throws -> LABiometryType?
-    func isAutoFillEnabled() async -> Bool
-    // periphery:ignore
-    func getFirstLoginSuggestion() async -> OnboardFirstLoginSuggestion
-}
-
-public protocol OnboardingDelegate: Sendable, AnyObject {
-    func purchase(_ plan: ComposedPlan) async throws
-    func enableBiometric() async throws
-    func enableAutoFill() async -> Bool
-    func openTutorialVideo() async
-    // periphery:ignore:parameters payload
-    func createFirstLogin(payload: OnboardFirstLoginPayload) async throws
-    func markAsOnboarded() async
-    func add(event: TelemetryEventType) async
-    func handle(error: any Error) async
 }
 
 nonisolated enum OnboardStep: Equatable {
@@ -116,38 +90,50 @@ public enum OnboardingDisplayMode: Equatable {
 }
 
 @MainActor
-final class OnboardingViewModel: ObservableObject {
-    @Published private(set) var currentStep: FetchableObject<OnboardStep> = .fetching
-    @Published private(set) var isPurchasing = false
-    @Published private(set) var isSaving = false
-    @Published private(set) var finished = false
-    @Published private(set) var shouldDismiss = false
-    @Published var selectedPlan: PlanUiModel?
+@Observable
+final class OnboardingViewModel {
+    private(set) var currentStep: FetchableObject<OnboardStep> = .fetching
+    private(set) var isPurchasing = false
+    private(set) var isSaving = false
+    private(set) var finished = false
+    private(set) var shouldDismiss = false
+    var selectedPlan: PlanUiModel?
     private var availableBiometryType: LABiometryType?
 
-    private weak var datasource: (any OnboardingDatasource)?
-    private weak var delegate: (any OnboardingDelegate)?
+    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
+    private let credentialManager = dependency(\ServiceContainer.credentialManager)
+    private let userManager = dependency(\ServiceContainer.userManager)
+    private let accessRepository = dependency(\RepositoryContainer.accessRepository)
+    private let checkBiometryType = dependency(\UseCasesContainer.checkBiometryType)
+    private let localAuthenticationEnablingPolicy = dependency(\ToolingContainer.localAuthenticationEnablingPolicy)
+    private let enableAutoFillUseCase = dependency(\UseCasesContainer.enableAutoFill)
+    private let authenticateBiometrically = dependency(\UseCasesContainer.authenticateBiometrically)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let addTelemetryEvent = dependency(\UseCasesContainer.addTelemetryEvent)
+    private let apiManager = dependency(\ToolingContainer.apiManager)
+    private let getFeatureFlagStatus = dependency(\UseCasesContainer.getFeatureFlagStatus)
+    private let transactionsObserver = dependency(\ToolingContainer.transactionsObserver)
+
+    private var plansManager: ProtonPlansManager?
+    private let logger: Logger
+    private let userDefaults: UserDefaults
 
     let mode: OnboardingDisplayMode
 
-    init(handler: OnboardingHandling?,
-         mode: OnboardingDisplayMode) {
-        datasource = handler
-        delegate = handler
+    init(mode: OnboardingDisplayMode,
+         logManager: any LogManagerProtocol = ToolingContainer.shared.logManager(),
+         userDefaults: UserDefaults = kSharedUserDefaults) {
         self.mode = mode
+        logger = .init(manager: logManager)
+        self.userDefaults = userDefaults
     }
 }
 
 extension OnboardingViewModel {
     func setUp() async {
         do {
-            guard let datasource else {
-                currentStep = .fetched(.autofill)
-                return
-            }
-
-            availableBiometryType = try await datasource.getBiometryType()
-            let plans = try await datasource.getPassPlans()
+            availableBiometryType = try getBiometryType()
+            let plans = try await getPassPlans()
 
             // When onboarding, we skip payment step when there's no plans.
             // When upselling (users hit by paywall)
@@ -171,7 +157,7 @@ extension OnboardingViewModel {
     /// `false` if no more steps so the onboarding process could be ended
     /// `isManual` means triggered by user (manually skip the step)
     func goNext(isManual: Bool = false) async -> Bool {
-        guard let delegate, let datasource, mode == .onboarding else {
+        guard mode == .onboarding else {
             shouldDismiss = true
             return false
         }
@@ -184,7 +170,7 @@ extension OnboardingViewModel {
         switch step {
         case .payment:
             if isManual {
-                await delegate.add(event: .onboardingUpsellSkipped)
+                add(event: .onboardingUpsellSkipped)
             }
             if let availableBiometryType, availableBiometryType != .none {
                 currentStep = .fetched(.biometric(availableBiometryType))
@@ -195,9 +181,9 @@ extension OnboardingViewModel {
 
         case .biometric:
             if isManual {
-                await delegate.add(event: .onboardingBiometricsSkipped)
+                add(event: .onboardingBiometricsSkipped)
             }
-            if await datasource.isAutoFillEnabled() {
+            if await isAutoFillEnabled() {
                 // swiftlint:disable:next fallthrough
                 fallthrough
             } else {
@@ -207,7 +193,7 @@ extension OnboardingViewModel {
 
         case .autofill:
             if isManual {
-                await delegate.add(event: .onboardingPassAsAutofillProviderSkipped)
+                add(event: .onboardingPassAsAutofillProviderSkipped)
             }
             // Reenable when supporting creating first login
             /*
@@ -234,8 +220,6 @@ extension OnboardingViewModel {
     }
 
     func performCta() async {
-        guard let delegate else { return }
-
         var shouldGoToNextStep = false
         do {
             switch currentStep.fetchedObject {
@@ -244,16 +228,16 @@ extension OnboardingViewModel {
                 shouldGoToNextStep = true
 
             case .biometric:
-                await delegate.add(event: .onboardingBiometricsEnabled)
-                try await delegate.enableBiometric()
+                add(event: .onboardingBiometricsEnabled)
+                try await enableBiometric()
                 shouldGoToNextStep = true
 
             case .autofill:
-                await delegate.add(event: .onboardingPassAsAutofillProviderEnabled)
-                shouldGoToNextStep = await delegate.enableAutoFill()
+                add(event: .onboardingPassAsAutofillProviderEnabled)
+                shouldGoToNextStep = await enableAutoFill()
 
             case .aliasExplanation:
-                await delegate.markAsOnboarded()
+                await markAsOnboarded()
                 finished = true
                 return
 
@@ -261,58 +245,153 @@ extension OnboardingViewModel {
                 shouldGoToNextStep = true
             }
         } catch {
-            await delegate.handle(error: error)
+            handle(error: error)
         }
 
         if shouldGoToNextStep, await !goNext() {
-            await delegate.markAsOnboarded()
+            await markAsOnboarded()
             finished = true
         }
     }
 
     func performSecondaryCta() {
-        Task { [weak self] in
-            guard let self, let delegate else { return }
-            if case .aliasExplanation = currentStep.fetchedObject {
-                await delegate.add(event: .onboardingAliasVideoOpened)
-                await delegate.openTutorialVideo()
-                finished = true
-            } else {
-                assertionFailure("Missing secondary action")
-            }
+        if case .aliasExplanation = currentStep.fetchedObject {
+            add(event: .onboardingAliasVideoOpened)
+            openTutorialVideo()
+            finished = true
+        } else {
+            assertionFailure("Missing secondary action")
         }
     }
 
     func createFirstLogin(payload: OnboardFirstLoginPayload) {
-        Task { [weak self] in
-            guard let self else { return }
-            defer { isSaving = false }
-            isSaving = true
-            do {
-                try await delegate?.createFirstLogin(payload: payload)
-                currentStep = .fetched(.firstLoginCreated(payload))
-            } catch {
-                await delegate?.handle(error: error)
-            }
-        }
+        defer { isSaving = false }
+        isSaving = true
+        // swiftlint:disable:next todo
+        // TODO: implement login item creation when needed
+        currentStep = .fetched(.firstLoginCreated(payload))
     }
 
     func purchaseSelectedPlan() {
         guard let selectedPlan else { return }
         Task { [weak self] in
-            guard let self, let delegate, let datasource else { return }
+            guard let self else { return }
             defer { isPurchasing = false }
             isPurchasing = true
             do {
-                let plan = try await datasource.getCurrentPlan()
-                await delegate.add(event: .onboardingUpsellCtaClicked(planName: plan.internalName))
-                try await delegate.purchase(selectedPlan.plan)
-                await delegate.add(event: .onboardingUpsellSubscribed)
+                let plan = try await getCurrentPlan()
+                add(event: .onboardingUpsellCtaClicked(planName: plan.internalName))
+                try await purchase(selectedPlan.plan)
+                add(event: .onboardingUpsellSubscribed)
                 _ = await goNext()
             } catch {
-                await delegate.handle(error: error)
+                handle(error: error)
             }
         }
+    }
+}
+
+extension OnboardingViewModel {
+    func purchase(_ plan: ComposedPlan) async throws {
+        guard let manager = try await getPlansManager() else { return }
+
+        guard let product = plan.product as? Product else {
+            assertionFailure("Failed to parse product")
+            return
+        }
+        _ = try await manager.purchase(product)
+        try await accessRepository.refreshAccess(userId: nil)
+    }
+
+    func enableBiometric() async throws {
+        let authenticated = try await authenticateBiometrically(policy: localAuthenticationEnablingPolicy,
+                                                                reason: #localized("Please authenticate",
+                                                                                   bundle: .module))
+        if authenticated {
+            try await preferencesManager.updateSharedPreferences(\.localAuthenticationMethod,
+                                                                 value: .biometric)
+        }
+    }
+
+    func enableAutoFill() async -> Bool {
+        let outcome = await enableAutoFillUseCase()
+        if outcome.needsInstructions {
+            router.present(for: .autoFillInstructions)
+        }
+        return outcome.handled
+    }
+
+    func openTutorialVideo() {
+        router.navigate(to: .urlPage(urlString: ProtonLink.youtubeTutorial))
+    }
+
+    func markAsOnboarded() async {
+        // Optionally update "onboarded" to not block users from using the app
+        // in case errors happens
+        try? await preferencesManager.updateAppPreferences(\.onboarded, value: true)
+    }
+
+    func add(event: TelemetryEventType) {
+        addTelemetryEvent(with: event)
+    }
+
+    func handle(error: any Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
+    }
+}
+
+extension OnboardingViewModel {
+    func getCurrentPlan() async throws -> Entities.Plan {
+        try await accessRepository.getPlan(userId: nil)
+    }
+
+    func getPassPlans() async throws -> PassPlans {
+        guard !Bundle.main.isBetaBuild, let manager = try await getPlansManager() else {
+            return .init(foldersEnabled: false, plus: nil, unlimited: nil)
+        }
+        let plans = try await manager.getAvailablePlans()
+        let plusId = "iospass_pass2023_12_usd_auto_renewing"
+        let unlimitedId = "iospass_bundle2022_12_usd_auto_renewing"
+
+        var plusPlan: PlanUiModel?
+        var unlimitedPlan: PlanUiModel?
+
+        if let plusComposedPlan = plans.first(where: { $0.product.id == plusId }) {
+            plusPlan = PlanUiModel(plan: plusComposedPlan)
+        }
+
+        if let unlimitedComposedPlan = plans.first(where: { $0.product.id == unlimitedId }) {
+            unlimitedPlan = PlanUiModel(plan: unlimitedComposedPlan)
+        }
+
+        if Bundle.main.isQaBuild {
+            if userDefaults.bool(forKey: Constants.QA.hidePassPlusPlan) {
+                plusPlan = nil
+            }
+
+            if userDefaults.bool(forKey: Constants.QA.hideProtonUnlimitedPlan) {
+                unlimitedPlan = nil
+            }
+        }
+
+        let foldersEnabled = getFeatureFlagStatus(for: FeatureFlagType.passFolder)
+        return .init(foldersEnabled: foldersEnabled,
+                     plus: plusPlan,
+                     unlimited: unlimitedPlan)
+    }
+
+    func getBiometryType() throws -> LABiometryType? {
+        try checkBiometryType(policy: localAuthenticationEnablingPolicy)
+    }
+
+    func isAutoFillEnabled() async -> Bool {
+        await credentialManager.isAutoFillEnabled
+    }
+
+    // periphery:ignore
+    func getFirstLoginSuggestion() -> OnboardFirstLoginSuggestion {
+        .none
     }
 }
 
@@ -327,5 +406,21 @@ private extension OnboardingViewModel {
 
         let data = try Data(contentsOf: url)
         return try JSONDecoder().decode([KnownService].self, from: data)
+    }
+
+    func getPlansManager() async throws -> ProtonPlansManager? {
+        if let plansManager {
+            return plansManager
+        }
+
+        let userId = try await userManager.getActiveUserId()
+        let apiService = try apiManager.getApiService(userId: userId)
+        let remoteManager = RemoteManager(apiService: apiService)
+        let configuration = TransactionsObserverConfiguration(remoteManager: remoteManager)
+        transactionsObserver.setConfiguration(configuration)
+        try await transactionsObserver.start()
+        let manager = ProtonPlansManager(remoteManager: remoteManager)
+        plansManager = manager
+        return manager
     }
 }

@@ -21,18 +21,20 @@
 //
 
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
+import Screens
 
 @MainActor
 final class PasswordReusedViewModel: ObservableObject {
     @Published private(set) var reusedItems: [ItemContent] = []
     @Published private(set) var loading = false
 
-    private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
-    let logger = resolve(\SharedToolingContainer.logger)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let passMonitorRepository = dependency(\RepositoryContainer.passMonitorRepository)
+    let logger = dependency(\ToolingContainer.logger)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
     private let itemContent: ItemContent
 
     var title: String {

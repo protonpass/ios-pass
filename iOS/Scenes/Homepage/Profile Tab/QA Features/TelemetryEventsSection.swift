@@ -21,6 +21,7 @@
 @_spi(QA)
 import Client
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import SwiftUI
@@ -49,8 +50,8 @@ private struct TelemetryEventUiModel: Identifiable {
 
 @MainActor
 private final class TelemetryEventsViewModel: ObservableObject {
-    private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
-    private let userManager = resolve(\SharedServiceContainer.userManager)
+    private let telemetryEventRepository = dependency(\RepositoryContainer.telemetryEventRepository)
+    private let userManager = dependency(\ServiceContainer.userManager)
 
     @Published private(set) var uiModels = [TelemetryEventUiModel]()
     @Published private(set) var relativeThreshold = ""

@@ -21,6 +21,7 @@
 import Client
 import Core
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import Macro
@@ -52,9 +53,9 @@ final class WelcomeCoordinator: DeinitPrintable {
     }
 
     @LazyInjected(\UseCasesContainer.createLogsFile) private var createLogsFile
-    @LazyInjected(\SharedRepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
+    @LazyInjected(\RepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
 
-    let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
+    let getSharedPreferences = dependency(\UseCasesContainer.getSharedPreferences)
 
     init(apiService: any APIService, theme: Theme) {
         self.apiService = apiService

@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Macro
@@ -38,7 +39,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var password = ""
     @Published private(set) var totpUri = ""
     @Published private(set) var note = ""
-    @Published private(set) var passwordStrength: PasswordStrength?
+    @Published private(set) var passwordScore: PasswordScore?
     @Published private(set) var totpTokenState = TOTPTokenState.loading
     @Published private var aliasItem: SymmetricallyEncryptedItem?
     @Published private(set) var securityIssues: [SecurityWeakness]?
@@ -50,11 +51,11 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
     let showSecurityIssues: Bool
 
-    private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
-    private let getLoginSecurityIssues = resolve(\UseCasesContainer.getLoginSecurityIssues)
-    private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
+    private let scorePassword = dependency(\UseCasesContainer.scorePassword)
+    private let getLoginSecurityIssues = dependency(\UseCasesContainer.getLoginSecurityIssues)
+    private let passMonitorRepository = dependency(\RepositoryContainer.passMonitorRepository)
 
-    let totpManager = resolve(\SharedServiceContainer.totpManager)
+    let totpManager = dependency(\ServiceContainer.totpManager)
 
     private var fetchSimilarPasswordItemsTask: Task<Void, Never>?
 
@@ -99,7 +100,8 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
             email = data.email
             username = data.username
             password = data.password
-            passwordStrength = getPasswordStrength(password: password)
+            // swiftlint:disable:next nil_if_empty
+            passwordScore = password.isEmpty ? nil : scorePassword(password)
             urls = data.urls
             totpUri = data.totpUri
             totpManager.bind(uri: data.totpUri)

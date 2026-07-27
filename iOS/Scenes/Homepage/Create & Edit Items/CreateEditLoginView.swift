@@ -22,7 +22,6 @@ import CodeScanner
 import Core
 import DesignSystem
 import Entities
-import FactoryKit
 import Macro
 import ProtonCoreUIFoundations
 import Screens
@@ -36,6 +35,7 @@ struct CreateEditLoginView: View {
     @State private var lastFocusedField: Field?
     @State private var showPasswordGenerator = false
     @State private var showUsernameGenerator = false
+    @State private var showPenalties = false
     @Namespace private var emailOrUsernameID
     @Namespace private var usernameID
     @Namespace private var emailID
@@ -127,6 +127,8 @@ struct CreateEditLoginView: View {
                     .animation(.default, value: viewModel.passkeys.count)
                     .animation(.default, value: viewModel.isAlias)
                     .animation(.default, value: viewModel.dismissedFileAttachmentsBanner)
+                    .animation(.default, value: viewModel.password.isEmpty)
+                    .animation(.default, value: showPenalties)
                     .showSpinner(viewModel.loading)
                 }
                 // swiftformat:disable all
@@ -190,8 +192,8 @@ struct CreateEditLoginView: View {
                 }
             }
             .sheet(isPresented: $showPasswordGenerator) {
-                GeneratePasswordView(mode: .createLogin,
-                                     onConfirm: { viewModel.password = $0 })
+                PasswordGeneratorView(mode: .createLogin,
+                                      onResult: viewModel.handlePasswordResult)
                     .environment(\.colorScheme, colorScheme)
             }
             .onChange(of: showPasswordGenerator) { _, newValue in
@@ -200,9 +202,7 @@ struct CreateEditLoginView: View {
                 }
             }
             .sheet(isPresented: $showUsernameGenerator) {
-                UsernameGeneratorView(datasource: viewModel.localUsernamePreferencesDatasource,
-                                      generateUsername: viewModel.generateUsername,
-                                      onResult: viewModel.handleUsernameResult)
+                UsernameGeneratorView(onResult: viewModel.handleUsernameResult)
                     .environment(\.colorScheme, colorScheme)
             }
             .onChange(of: showUsernameGenerator) { _, newValue in
@@ -569,17 +569,29 @@ private extension CreateEditLoginView {
 
     var passwordRow: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
-            if let passwordStrength = viewModel.passwordStrength {
-                PasswordStrengthIcon(strength: passwordStrength)
+            let strength = viewModel.passwordScore?.strength
+            let penalties = viewModel.passwordScore?.penalties ?? []
+            if let strength {
+                PasswordStrengthIcon(strength: strength)
             } else {
                 ItemDetailSectionIcon(icon: IconProvider.key)
             }
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text(viewModel.passwordStrength.sectionTitle(reuseCount: nil))
-                    .font(.footnote)
-                    .foregroundStyle(viewModel.password.isEmpty ?
-                        PassColor.textNorm : viewModel.passwordStrength.sectionTitleColor)
+                Button(action: { showPenalties.toggle() },
+                       label: {
+                           Text(strength.sectionTitle(reuseCount: nil))
+                               .font(.footnote)
+                               .foregroundStyle(viewModel.password.isEmpty ?
+                                   PassColor.textNorm : strength.sectionTitleColor)
+                               .underline(!viewModel.password.isEmpty,
+                                          color: strength.sectionTitleColor)
+                       })
+                       .buttonStyle(.plain)
+
+                if !viewModel.password.isEmpty, showPenalties {
+                    PasswordPenaltiesSection(penalties: penalties)
+                }
 
                 SensitiveTextField(text: $viewModel.password,
                                    placeholder: #localized("Add password"),
@@ -601,7 +613,7 @@ private extension CreateEditLoginView {
         .padding(.horizontal, DesignConstant.sectionPadding)
         .animation(.default, value: viewModel.password.isEmpty)
         .animation(.default, value: focusedField)
-        .animation(.default, value: viewModel.passwordStrength)
+        .animation(.default, value: viewModel.passwordScore)
         .id(passwordID)
     }
 

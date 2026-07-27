@@ -22,6 +22,7 @@ import Client
 import Combine
 import Core
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import ProtonCoreUIFoundations
@@ -201,8 +202,8 @@ private struct HiddenCustomFieldSection: View {
 private final class TotpCustomFieldSectionViewModel: ObservableObject {
     @Published private(set) var state = TOTPState.empty
 
-    private let totpService = resolve(\SharedServiceContainer.totpService)
-    private let logManager = resolve(\SharedToolingContainer.logManager)
+    private let totpService = dependency(\ServiceContainer.totpService)
+    private let logManager = dependency(\ToolingContainer.logManager)
     private var cancellable = Set<AnyCancellable>()
 
     /// Manually construct an instance of TOTPManager instead of getting via Factory

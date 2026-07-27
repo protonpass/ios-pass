@@ -22,6 +22,7 @@
 
 import Client
 import Combine
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
@@ -42,19 +43,19 @@ final class DetailHistoryViewModel: ObservableObject {
     @Published var urlToSave: URL?
     @Published var urlToShare: URL?
 
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
-    @LazyInjected(\SharedRepositoryContainer.fileAttachmentRepository) private var fileAttachmentRepository
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedToolingContainer.logger) private var logger
-    @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
-    @LazyInjected(\SharedUseCasesContainer.getFileGroup) private var getFileGroup
-    @LazyInjected(\SharedUseCasesContainer.generateFileTempUrl) private var generateFileTempUrl
-    @LazyInjected(\SharedUseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let itemRepository = dependency(\RepositoryContainer.itemRepository)
+    @LazyInjected(\RepositoryContainer.fileAttachmentRepository) private var fileAttachmentRepository
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
+    @LazyInjected(\ToolingContainer.logger) private var logger
+    @LazyInjected(\UseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
+    @LazyInjected(\UseCasesContainer.getFileGroup) private var getFileGroup
+    @LazyInjected(\UseCasesContainer.generateFileTempUrl) private var generateFileTempUrl
+    @LazyInjected(\UseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
 
     private var cancellables = Set<AnyCancellable>()
 
-    let totpManager = resolve(\SharedServiceContainer.totpManager)
+    let totpManager = dependency(\ServiceContainer.totpManager)
     let currentRevision: ItemContent
     let pastRevision: ItemContent
     let files: [ItemFile]
