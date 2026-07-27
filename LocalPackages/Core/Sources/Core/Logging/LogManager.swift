@@ -123,6 +123,7 @@ public extension LogManager {
         return contents
             .split(separator: "\n", omittingEmptySubsequences: true)
             .compactMap { String($0).toLogEntry }
+            .sorted(by: LogEntry.isBefore)
     }
 
     func removeAllLogs() {
@@ -158,16 +159,6 @@ public extension LogManager {
     }
 }
 
-@_spi(Test) public extension LogManager {
-    func getLogEntriesWithoutSave() throws -> [LogEntry] {
-        guard let url, fileExists else { return [] }
-        let contents = try String(contentsOf: url, encoding: .utf8)
-        return contents
-            .split(separator: "\n", omittingEmptySubsequences: true)
-            .compactMap { String($0).toLogEntry }
-    }
-}
-
 // MARK: - Private APIs
 
 private extension LogManager {
@@ -183,10 +174,10 @@ private extension LogManager {
         startTimer()
     }
 
-    /// Merge first, then prune: overflow can never exceed the merged count,
-    /// so `removeFirst` is trap-free by construction.
     func mergeAndClear() {
-        currentSavedLogs.append(contentsOf: currentMemoryLogs.compactMap(\.toString))
+        currentSavedLogs.append(contentsOf: currentMemoryLogs
+            .sorted(by: LogEntry.isBefore)
+            .compactMap(\.toString))
         currentMemoryLogs.removeAll()
     }
 
@@ -237,5 +228,17 @@ private extension String {
             return nil
         }
         return entry
+    }
+}
+
+// MARK: - Tests
+
+@_spi(Test) public extension LogManager {
+    func getLogEntriesWithoutSave() throws -> [LogEntry] {
+        guard let url, fileExists else { return [] }
+        let contents = try String(contentsOf: url, encoding: .utf8)
+        return contents
+            .split(separator: "\n", omittingEmptySubsequences: true)
+            .compactMap { String($0).toLogEntry }
     }
 }

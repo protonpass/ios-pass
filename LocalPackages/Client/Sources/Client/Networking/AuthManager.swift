@@ -57,22 +57,6 @@ public extension AuthManagerProtocol {
     }
 }
 
-/// `@unchecked Sendable` justification: every piece of mutable state lives inside a single
-/// `SafeMutex<MutableState>`. The conformance cannot be compiler-checked because ProtonCore's
-/// `AuthCredential` (a mutable reference type we are required to vend by `AuthDelegate`) and
-/// the delegate protocols carry no `Sendable` annotations. Revisit once ProtonCore ships
-/// Swift 6 annotations.
-///
-/// Locking invariant: public entry points acquire the lock exactly once; private helpers
-/// take `inout MutableState` (or a copy) and never lock. `SafeMutex` is non-reentrant —
-/// violating this invariant deadlocks, same as the previous `DispatchQueue.sync` design.
-/// Delegate callbacks and Combine emissions are computed under the lock but fired after it
-/// is released, so delegates/subscribers may safely re-enter the manager.
-///
-/// Every crossing of a non-Sendable ProtonCore value over the `sending` boundary of
-/// `SafeMutex.withLock` goes through `UncheckedSendable` — see its doc comment. When the
-/// deployment target reaches iOS 18, `SafeMutex` swaps for `Synchronization.Mutex`
-/// unchanged; the boxes stay until ProtonCore annotates its types.
 public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
     public static let storageKey = "AuthManagerStorageKey"
 
@@ -81,29 +65,12 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
     private struct MutableState {
         var cachedCredentials: CachedCredentials = [:]
         var didSetUp = false
-        /// `false` when the last keychain load failed for a potentially transient reason
-        /// (keychain unreadable, symmetric key unavailable). While `false`, persistence is
-        /// suppressed so an empty in-memory cache can never overwrite valid stored sessions.
         var storageLoaded = false
-        /// Set on first mutation. Blocks late reload attempts that would otherwise
-        /// resurrect stale on-disk state over in-memory changes.
-        var didMutate = false
+        var hasUnpersistedChanges = false
         weak var delegate: (any AuthHelperDelegate)?
         weak var loginAndSignupDelegate: (any AuthSessionInvalidatedDelegate)?
     }
 
-    /// Carries non-Sendable ProtonCore values across `SafeMutex.withLock`'s `sending`
-    /// boundaries, in both directions:
-    /// - Outbound: results derived from the protected state (`AuthCredential`, `Credential`,
-    ///   notification closures capturing delegates) are not in a disconnected region, so
-    ///   region analysis rejects returning them directly. Note this is the same shared
-    ///   mutable `AuthCredential` hand-out the pre-refactor code (and ProtonCore's own
-    ///   `AuthHelper`) performed — the box documents it rather than introducing it.
-    /// - Inbound: assigning caller-region values (delegates, `Credential` parameters) into
-    ///   the protected state trips the swiftlang/swift#77199 / #81546 rejections noted on
-    ///   `SafeMutex`; boxing before the lock sidesteps them deterministically.
-    /// Safe: each box is created and consumed synchronously on the calling thread; the
-    /// contained value is only ever touched on one side of the lock at a time.
     private struct UncheckedSendable<Value>: @unchecked Sendable {
         let value: Value
 
@@ -144,10 +111,10 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
     }
 
     public func setUp() {
+        let outcome = readFromKeychain(logFailure: true)
         state.withLock { state in
-            guard !state.didSetUp else { return } // idempotent; was previously a silent reload
-            loadFromKeychain(into: &state)
             state.didSetUp = true
+            apply(outcome, to: &state)
         }
     }
 
@@ -160,51 +127,58 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
     }
 
     public func getCredential(userId: String) -> AuthCredential? {
-        logger.info("Getting authCredential for user id \(userId)")
-        return state.withLock { state -> UncheckedSendable<AuthCredential?> in
+        let credential = state.withLock { state -> UncheckedSendable<AuthCredential?> in
             ensureLoaded(&state)
             let credential = state.cachedCredentials
                 .first { $0.key.module == module && $0.value.authCredential.userID == userId }?
                 .value.authCredential
             return UncheckedSendable(credential)
         }.value
+        if credential == nil, !userId.isEmpty {
+            logger.warning("No authCredential for user id \(userId)")
+        }
+        return credential
     }
 
     public func credential(sessionUID: String) -> Credential? {
-        logger.info("Getting credential for session id \(sessionUID)")
-        return state.withLock { state -> UncheckedSendable<Credential?> in
+        let credential = state.withLock { state -> UncheckedSendable<Credential?> in
             ensureLoaded(&state)
             let key = CredentialsKey(sessionId: sessionUID, module: module)
             return UncheckedSendable(state.cachedCredentials[key]?.credential)
         }.value
+        if credential == nil, !sessionUID.isEmpty {
+            logger.warning("No credential for session id \(sessionUID)")
+        }
+        return credential
     }
 
     public func authCredential(sessionUID: String) -> AuthCredential? {
-        logger.info("Getting authCredential for session id \(sessionUID)")
-        return state.withLock { state -> UncheckedSendable<AuthCredential?> in
+        let credential = state.withLock { state -> UncheckedSendable<AuthCredential?> in
             ensureLoaded(&state)
             let key = CredentialsKey(sessionId: sessionUID, module: module)
             return UncheckedSendable(state.cachedCredentials[key]?.authCredential)
         }.value
+        if credential == nil, !sessionUID.isEmpty {
+            logger.warning("No authCredential for session id \(sessionUID)")
+        }
+        return credential
     }
 
     public func removeCredentials(userId: String) {
         logger.info("Removing credentials for user id \(userId)")
         state.withLock { state in
             ensureLoaded(&state)
-            state.didMutate = true
             state.cachedCredentials = state.cachedCredentials
                 .filter { $0.value.credential.userID != userId }
-            persist(state)
+            persist(&state)
         }
     }
 
     public func removeAllCredentials() {
         state.withLock { state in
             ensureLoaded(&state)
-            state.didMutate = true
             state.cachedCredentials = [:]
-            persist(state)
+            persist(&state)
         }
     }
 
@@ -224,7 +198,6 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
         let notification = state.withLock { state -> UncheckedSendable<() -> Void>? in
             let credential = incoming.value
             ensureLoaded(&state)
-            state.didMutate = true
             for passModule in PassModule.allCases {
                 let key = CredentialsKey(sessionId: sessionUID, module: passModule)
                 // `Credential.mailboxpassword` is empty here; fall back to the cached entry
@@ -239,7 +212,7 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
                                                            authCredential: newAuthCredential,
                                                            module: passModule)
             }
-            persist(state)
+            persist(&state)
             return credentialsUpdateNotification(state, sessionId: sessionUID)
         }
         notification?.value()
@@ -251,7 +224,6 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
         let notification = state.withLock { state -> UncheckedSendable<() -> Void>? in
             let credential = incoming.value
             ensureLoaded(&state)
-            state.didMutate = true
             // Logging into the same account again: drop all prior sessions for that user.
             for (key, value) in state.cachedCredentials
                 where value.credential.userID == credential.userID {
@@ -263,7 +235,7 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
                                                            authCredential: AuthCredential(credential),
                                                            module: passModule)
             }
-            persist(state)
+            persist(&state)
             return credentialsUpdateNotification(state, sessionId: credential.UID)
         }
         notification?.value()
@@ -276,11 +248,9 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
         logger.info("Additional credentials for session id \(sessionUID)")
         let notification = state.withLock { state -> UncheckedSendable<() -> Void>? in
             ensureLoaded(&state)
-            state.didMutate = true
             for passModule in PassModule.allCases {
                 let key = CredentialsKey(sessionId: sessionUID, module: passModule)
-                // `continue`, not `return`: a missing module entry must not abort the
-                // remaining modules or skip persistence/notification.
+
                 guard let element = state.cachedCredentials[key] else { continue }
 
                 if let password {
@@ -291,7 +261,7 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
                 element.authCredential.update(salt: saltToUpdate, privateKey: privateKeyToUpdate)
                 state.cachedCredentials[key] = element
             }
-            persist(state)
+            persist(&state)
             return credentialsUpdateNotification(state, sessionId: sessionUID)
         }
         notification?.value()
@@ -311,9 +281,8 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
         logger.info("Clearing sessions for session id \(sessionId)")
         state.withLock { state in
             ensureLoaded(&state)
-            state.didMutate = true
             removeCredentials(for: sessionId, in: &state)
-            persist(state)
+            persist(&state)
         }
     }
 
@@ -321,10 +290,9 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
         logger.info("Clearing sessions for user id \(userId)")
         state.withLock { state in
             ensureLoaded(&state)
-            state.didMutate = true
             state.cachedCredentials = state.cachedCredentials
                 .filter { $0.value.credential.userID != userId }
-            persist(state)
+            persist(&state)
         }
     }
 
@@ -340,23 +308,20 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
 }
 
 public extension AuthManager {
-    /// Introduced on February 2025 for CSV import support. Can be removed later on.
     func initializeCredentialsForActionExtension() {
         state.withLock { state in
             ensureLoaded(&state)
-            state.didMutate = true
             if let appCredential = state.cachedCredentials.first(where: { $0.key.module == .hostApp }) {
                 let key = CredentialsKey(sessionId: appCredential.value.authCredential.sessionID,
                                          module: .actionExtension)
                 state.cachedCredentials[key] = appCredential.value
             }
-            persist(state)
+            persist(&state)
         }
     }
 
     @_spi(QA)
     func getAllCredentialsOfAllModules() -> [Credentials] {
-        // `Credentials` is declared Sendable, so no box is needed here.
         state.withLock { state in
             ensureLoaded(&state)
             return Array(state.cachedCredentials.values)
@@ -364,17 +329,16 @@ public extension AuthManager {
     }
 }
 
-// MARK: - Private helpers (never lock — callers hold the lock)
+// MARK: - Private helpers
 
 private extension AuthManager {
     private func invalidateSession(sessionUID: String, isAuthenticatedSession: Bool) {
         let notification = state.withLock { state -> UncheckedSendable<() -> Void> in
             ensureLoaded(&state)
-            state.didMutate = true
             let key = CredentialsKey(sessionId: sessionUID, module: module)
             let userId = state.cachedCredentials[key]?.credential.userID
             removeCredentials(for: sessionUID, in: &state)
-            persist(state)
+            persist(&state)
             return sessionInvalidationNotification(state,
                                                    sessionId: sessionUID,
                                                    userId: userId,
@@ -385,11 +349,8 @@ private extension AuthManager {
 
     private func ensureLoaded(_ state: inout MutableState) {
         assertDidSetUp(state)
-        // Lazy recovery from a transient load failure (e.g. extension launched before the
-        // keychain/symmetric key became available). Only safe while nothing has mutated.
-        if state.didSetUp, !state.storageLoaded, !state.didMutate {
-            loadFromKeychain(into: &state)
-        }
+        guard state.didSetUp, !state.storageLoaded else { return }
+        apply(readFromKeychain(logFailure: false), to: &state)
     }
 
     private func assertDidSetUp(_ state: MutableState) {
@@ -441,53 +402,87 @@ private extension AuthManager {
 // MARK: - Storage (callers hold the lock)
 
 private extension AuthManager {
-    private func loadFromKeychain(into state: inout MutableState) {
+    private enum LoadOutcome {
+        case loaded(CachedCredentials)
+        case unreadable
+    }
+
+    private func readFromKeychain(logFailure: Bool) -> LoadOutcome {
         let encrypted: Data?
         do {
             encrypted = try keychain.dataOrError(forKey: Self.storageKey)
         } catch {
             // Transient (e.g. data protection / device locked): keep the stored blob,
-            // suppress persistence until a successful load.
-            logger.error("Failed to read stored sessions from keychain, will retry: \(error)")
-            state.storageLoaded = false
-            return
+            // suppress persistence until a successful read.
+            if logFailure {
+                logger.error("Failed to read stored sessions from keychain, will retry: \(error)")
+            }
+            return .unreadable
         }
 
         guard let encrypted else {
             // Nothing stored: first run or post-wipe.
-            state.cachedCredentials = [:]
-            state.storageLoaded = true
-            return
+            return .loaded([:])
         }
 
         do {
             let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
             do {
                 let decrypted = try symmetricKey.decrypt(encrypted)
-                state.cachedCredentials = try JSONDecoder()
-                    .decode(CachedCredentials.self, from: decrypted)
-                state.storageLoaded = true
+                let decoded = try JSONDecoder().decode(CachedCredentials.self, from: decrypted)
+                return .loaded(decoded)
             } catch {
                 // Key is available but the payload doesn't decrypt/decode: unrecoverable
                 // corruption or a rotated key. Wipe, as the previous implementation did.
                 logger.error("Failed to decrypt stored sessions, wiping: \(error)")
                 try? keychain.removeOrError(forKey: Self.storageKey)
-                state.cachedCredentials = [:]
-                state.storageLoaded = true
+                return .loaded([:])
             }
         } catch {
-            // Symmetric key unavailable (assumed transient, e.g. keymaker not unlocked yet).
-            logger.error("Symmetric key unavailable, keeping stored sessions: \(error)")
-            state.storageLoaded = false
+            if logFailure {
+                logger.error("Symmetric key unavailable, keeping stored sessions: \(error)")
+            }
+            return .unreadable
         }
     }
 
-    private func persist(_ state: MutableState) {
+    private func apply(_ outcome: LoadOutcome, to state: inout MutableState) {
+        guard case let .loaded(stored) = outcome else {
+            state.storageLoaded = false
+            return
+        }
+        state.storageLoaded = true
+
+        guard !state.hasUnpersistedChanges else {
+            state.cachedCredentials = stored.merging(state.cachedCredentials) { _, cached in cached }
+            persist(&state)
+            return
+        }
+
+        let previous = state.cachedCredentials
+        state.cachedCredentials = stored
+        logDroppedSessions(previous: previous, current: stored)
+    }
+
+    private func logDroppedSessions(previous: CachedCredentials, current: CachedCredentials) {
+        let dropped = Set(previous.keys).subtracting(current.keys).count
+        guard dropped > 0 else { return }
+        if current.isEmpty {
+            logger.error("""
+            Session reload cleared all \(dropped) stored entries: the shared keychain was wiped \
+            or reset by another module. Requests will fail with 401 until the user logs in again.
+            """)
+        } else {
+            logger.warning("Session reload dropped \(dropped) of \(previous.count) stored entries")
+        }
+    }
+
+    /// Also owns `hasUnpersistedChanges`, so every mutation gets it right by construction
+    /// instead of each call site having to remember to flag itself.
+    private func persist(_ state: inout MutableState) {
         guard state.storageLoaded else {
-            // Never overwrite a keychain blob we could not read: with a failed load the
-            // in-memory cache is a strict subset of reality and saving it would log out
-            // every stored user.
             logger.error("Skipping session persistence: stored sessions were never loaded")
+            state.hasUnpersistedChanges = true
             return
         }
         do {
@@ -495,8 +490,10 @@ private extension AuthManager {
             let data = try JSONEncoder().encode(state.cachedCredentials)
             let encryptedContent = try symmetricKey.encrypt(data)
             try keychain.setOrError(encryptedContent, forKey: Self.storageKey)
+            state.hasUnpersistedChanges = false
         } catch {
             logger.error("Failed to save user sessions in keychain: \(error)")
+            state.hasUnpersistedChanges = true
         }
     }
 }
@@ -509,7 +506,7 @@ public struct Credentials: Hashable, Sendable, Codable {
     public let module: PassModule
 }
 
-struct CredentialsKey: Hashable, Codable {
+private struct CredentialsKey: Hashable, Codable {
     let sessionId: String
     let module: PassModule
 }

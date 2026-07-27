@@ -549,8 +549,12 @@ private extension ProfileTabViewModel {
         accesses.first(where: { $0.userId == userId })?.access.plan.displayName
     }
 
-    func handle(error: any Error) {
-        logger.error(error)
+    func handle(error: any Error,
+                file: String = #file,
+                function: String = #function,
+                line: UInt = #line,
+                column: UInt = #column) {
+        logger.error(error, file: file, function: function, line: line, column: column)
         router.display(element: .displayErrorBanner(error))
     }
 }

@@ -141,8 +141,12 @@ private extension MonitorAliasesViewModel {
             .store(in: &cancellables)
     }
 
-    func handle(error: any Error) {
-        logger.error(error)
+    func handle(error: any Error,
+                file: String = #file,
+                function: String = #function,
+                line: UInt = #line,
+                column: UInt = #column) {
+        logger.error(error, file: file, function: function, line: line, column: column)
         router.display(element: .displayErrorBanner(error))
     }
 }
