@@ -95,6 +95,7 @@ private extension HomepageCoordinator {
             }
 
         case .modal:
+            var sheetPresentationController: UISheetPresentationController?
             let view = InAppModalView(notification: notification,
                                       onAppear: onAppear,
                                       onDisappear: onDisappear,
@@ -105,11 +106,11 @@ private extension HomepageCoordinator {
                                       onClose: { [weak self] in
                                           guard let self else { return }
                                           close(notification, newState: .dismissed)
-                                      })
+                                      },
+                                      onHeightChanged: { sheetPresentationController?.updateHeight($0) })
             let viewController = UIHostingController(rootView: view)
-            viewController.setDetentType(.medium,
-                                         parentViewController: rootViewController)
-            view.viewModel.sheetPresentation = viewController.sheetPresentationController
+            viewController.view.backgroundColor = UIColor(PassColor.backgroundNorm)
+            sheetPresentationController = viewController.sheetPresentationController
             present(viewController, uniquenessTag: UniqueSheet.inAppNotificationDisplay)
 
         case .promo:

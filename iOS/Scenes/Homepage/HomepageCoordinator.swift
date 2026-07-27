@@ -979,22 +979,6 @@ extension HomepageCoordinator {
         }
 
         var sheetPresentationController: UISheetPresentationController?
-        let updateSheetHeight: (Double) -> Void = { height in
-            guard let sheetPresentationController else {
-                assertionFailure("sheetPresentationController is not set")
-                return
-            }
-            let detent = UISheetPresentationController.Detent.custom { _ in
-                height
-            }
-            let detentIdentifier = detent.identifier
-
-            sheetPresentationController.animateChanges {
-                sheetPresentationController.detents = [detent]
-                sheetPresentationController.selectedDetentIdentifier = detentIdentifier
-            }
-        }
-
         let view = PasswordGeneratorView(mode: .random,
                                          onResult: { [weak self] result in
                                              guard let self else { return }
@@ -1004,7 +988,7 @@ extension HomepageCoordinator {
                                              case let .failure(error): handle(error: error)
                                              }
                                          },
-                                         onHeightChanged: updateSheetHeight)
+                                         onHeightChanged: { sheetPresentationController?.updateHeight($0) })
         let viewController = UIHostingController(rootView: view)
         viewController.view.backgroundColor = UIColor(PassColor.backgroundNorm)
         sheetPresentationController = viewController.sheetPresentationController
