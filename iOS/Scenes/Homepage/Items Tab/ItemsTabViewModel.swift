@@ -380,8 +380,14 @@ private extension ItemsTabViewModel {
         }
     }
 
-    func handle(error: any Error) {
-        logger.error(error)
+    /// `function` & `line` default to the call site so the log points at the failing operation
+    /// instead of this helper.
+    func handle(error: any Error,
+                file: String = #file,
+                function: String = #function,
+                line: UInt = #line,
+                column: UInt = #column) {
+        logger.error(error, file: file, function: function, line: line, column: column)
         router.display(element: .displayErrorBanner(error))
     }
 }
@@ -581,7 +587,7 @@ extension ItemsTabViewModel {
                     delegate?.itemsTabViewModelWantsViewDetail(of: itemContent)
                 }
             } catch {
-                router.display(element: .displayErrorBanner(error))
+                handle(error: error)
             }
         }
     }
@@ -617,7 +623,11 @@ extension ItemsTabViewModel {
 
 private extension ItemsTabViewModel {
     func performBulkAction(_ action: ([ItemUiModel]) async throws -> Void,
-                           successMessage: ([ItemUiModel]) -> String) async {
+                           successMessage: ([ItemUiModel]) -> String,
+                           file: String = #file,
+                           function: String = #function,
+                           line: UInt = #line,
+                           column: UInt = #column) async {
         defer { router.display(element: .globalLoading(shouldShow: false)) }
         do {
             router.display(element: .globalLoading(shouldShow: true))
@@ -627,7 +637,7 @@ private extension ItemsTabViewModel {
             let message = successMessage(items)
             router.display(element: .successMessage(message, config: .dismissAndRefresh))
         } catch {
-            handle(error: error)
+            handle(error: error, file: file, function: function, line: line, column: column)
         }
     }
 

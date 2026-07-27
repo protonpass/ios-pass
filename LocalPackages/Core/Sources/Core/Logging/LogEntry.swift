@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import os
 
 public struct LogEntry: Codable, Sendable {
     public let timestamp: TimeInterval
@@ -30,6 +31,7 @@ public struct LogEntry: Codable, Sendable {
     public let function: String
     public let line: UInt
     public let column: UInt
+    public let sequence: UInt64?
 
     public init(timestamp: TimeInterval,
                 subsystem: String,
@@ -39,7 +41,8 @@ public struct LogEntry: Codable, Sendable {
                 file: String,
                 function: String,
                 line: UInt,
-                column: UInt) {
+                column: UInt,
+                sequence: UInt64? = LogEntry.nextSequence()) {
         self.timestamp = timestamp
         self.subsystem = subsystem
         self.category = category
@@ -49,5 +52,23 @@ public struct LogEntry: Codable, Sendable {
         self.function = function
         self.line = line
         self.column = column
+        self.sequence = sequence
+    }
+}
+
+public extension LogEntry {
+    static func nextSequence() -> UInt64 {
+        sequencer.withLock { count in
+            count += 1
+            return count
+        }
+    }
+}
+
+extension LogEntry {
+    private static let sequencer = OSAllocatedUnfairLock(initialState: UInt64(0))
+
+    static func isBefore(_ lhs: LogEntry, _ rhs: LogEntry) -> Bool {
+        (lhs.timestamp, lhs.sequence ?? 0) < (rhs.timestamp, rhs.sequence ?? 0)
     }
 }

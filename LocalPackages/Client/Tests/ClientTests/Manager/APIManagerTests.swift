@@ -35,46 +35,6 @@ import ProtonCoreDoh
 import ProtonCoreCryptoGoImplementation
 import Foundation
 
-enum KeychainError: Error {
-    case dataConversionError
-    case stringConversionError
-    case unexpectedError
-}
-
-final class UserDefaultsKeychainMock: KeychainProtocol {
-    private let userDefaults: UserDefaults
-
-    init(userDefaults: UserDefaults = .standard) {
-        self.userDefaults = userDefaults
-    }
-
-    func dataOrError(forKey key: String, attributes: [CFString: Any]?) throws -> Data? {
-        guard let data = userDefaults.data(forKey: key) else {
-            throw KeychainError.unexpectedError
-        }
-        return data
-    }
-
-    func stringOrError(forKey key: String, attributes: [CFString: Any]?) throws -> String? {
-        guard let string = userDefaults.string(forKey: key) else {
-            throw KeychainError.unexpectedError
-        }
-        return string
-    }
-
-    func setOrError(_ data: Data, forKey key: String, attributes: [CFString: Any]?) throws {
-        userDefaults.set(data, forKey: key)
-    }
-
-    func setOrError(_ string: String, forKey key: String, attributes: [CFString: Any]?) throws {
-        userDefaults.set(string, forKey: key)
-    }
-
-    func removeOrError(forKey key: String) throws {
-        userDefaults.removeObject(forKey: key)
-    }
-}
-
 public final class ProtonPassDoHMock: DoH, ServerConfig {
     public let environment: ProtonPassEnvironment
     public let signupDomain: String
@@ -110,7 +70,7 @@ final class APIManagerTests: XCTestCase {
     var sut: APIManager!
     var authManager: AuthManagerProtocol!
     var stubbedCurrentActiveUser: CurrentValueSubject<UserData?, Never>!
-    let userDefaultsKeychainMock =  UserDefaultsKeychainMock()
+    let keychainMock = InMemoryKeychainMock()
 
     override func setUp() {
         super.setUp()
@@ -124,7 +84,7 @@ final class APIManagerTests: XCTestCase {
         themeProvider = .init()
         themeProvider.stubbedSharedPreferences = .init(.default)
 
-        authManager = AuthManager(keychain: userDefaultsKeychainMock,
+        authManager = AuthManager(keychain: keychainMock,
                                   symmetricKeyProvider: mock,
                                   module: .hostApp,
                                   logManager: LogManagerProtocolMock())
@@ -134,7 +94,7 @@ final class APIManagerTests: XCTestCase {
     override func tearDown() {
         sut = nil
         authManager = nil
-        try? userDefaultsKeychainMock.removeOrError(forKey: AuthManager.storageKey)
+        try? keychainMock.removeOrError(forKey: AuthManager.storageKey)
         sessionPublisher?.cancel()
         super.tearDown()
     }

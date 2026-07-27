@@ -76,8 +76,7 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
     public private(set) var incompleteFullSyncUserId: String?
 
     public nonisolated let currentShares: CurrentValueSubject<[Share], Never> = .init([])
-    // Should subscribe and receive on main queue in view models to be sure not crash appears between @MainActor
-    // isolation and combine
+
     public nonisolated let vaultSyncEventStream = PassthroughSubject<VaultSyncProgressEvent, Never>()
     public nonisolated let currentSpotlightSelectedVaults: CurrentValueSubject<[Share], Never> = .init([])
 
@@ -101,7 +100,8 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
     private let refreshUserData: any RefreshUserDataUseCase
 
     private var cancellables = Set<AnyCancellable>()
-    private var isRefreshing: Bool = false
+    private var refreshingUserId: String?
+    private var pendingRefreshUserId: String?
     /// The filter option after switching vaults
     private var pendingItemTypeFilterOption: ItemTypeFilterOption?
 
@@ -163,8 +163,21 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
 
 public extension AppContentManager {
     func refresh(userId: String) async {
-        guard !isRefreshing else { return }
-        defer { isRefreshing = false }
+        guard refreshingUserId == nil else {
+            pendingRefreshUserId = userId
+            return
+        }
+        refreshingUserId = userId
+        defer {
+            refreshingUserId = nil
+            if let pending = pendingRefreshUserId {
+                pendingRefreshUserId = nil
+                Task { [weak self] in
+                    guard let self else { return }
+                    await refresh(userId: pending)
+                }
+            }
+        }
         do {
             // No need to show loading indicator once items are loaded beforehand.
             var cryptoErrorOccurred = false
@@ -196,6 +209,7 @@ public extension AppContentManager {
                 logger.info("Not manual login, done getting local shares & items")
             }
         } catch {
+            logger.error(message: "Failed to refresh content for user \(userId)", error: error)
             state = .error(error)
         }
     }

@@ -51,7 +51,7 @@ struct LogManagerTests {
     @Test(arguments: [(entryCount: 1, expectedPersisted: 1),
                       (entryCount: 6, expectedPersisted: 6)])
     func `entries are only persisted if they are fetched without save`(entryCount: Int,
-                                                                         expectedPersisted: Int) async throws {
+                                                                       expectedPersisted: Int) async throws {
         await LogEntryFactory.createMockArray(count: entryCount).asyncForEach { entry in
             await sut.log(entry: entry)
         }
@@ -100,5 +100,33 @@ struct LogManagerTests {
 
         let entries = try await sut.getLogEntries()
         #expect(entries.isEmpty)
+    }
+
+    /// `Logger` dispatches each entry in its own unstructured `Task`, so entries reach the
+    /// manager out of order and the log file used to be unreadable without sorting it by hand.
+    /// `getLogEntriesWithoutSave` is intentionally unsorted, so this asserts the *file* order.
+    @Test
+    func `persisted entries are ordered by timestamp regardless of arrival order`() async throws {
+        // dumpThreshold is 5, so these 5 entries are merged and written in one batch.
+        for offset in [4.0, 1.0, 3.0, 0.0, 2.0] {
+            await sut.log(entry: LogEntryFactory.createMock(timestamp: offset))
+        }
+
+        let timestamps = try await sut.getLogEntriesWithoutSave().map(\.timestamp)
+        #expect(timestamps == [0.0, 1.0, 2.0, 3.0, 4.0])
+    }
+
+    @Test
+    func `getLogEntries orders entries across dump batches`() async throws {
+        for offset in [4.0, 1.0, 3.0, 0.0, 2.0] {
+            await sut.log(entry: LogEntryFactory.createMock(timestamp: offset))
+        }
+        // A second batch whose entries interleave with the first one's.
+        for offset in [1.5, 0.5] {
+            await sut.log(entry: LogEntryFactory.createMock(timestamp: offset))
+        }
+
+        let timestamps = try await sut.getLogEntries().map(\.timestamp)
+        #expect(timestamps == [0.0, 0.5, 1.0, 1.5, 2.0, 3.0, 4.0])
     }
 }
