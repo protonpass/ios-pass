@@ -21,7 +21,6 @@
 import Combine
 import Core
 import Entities
-import FactoryKit
 import Foundation
 @preconcurrency import ProtonCoreDoh
 import ProtonCoreFeatureFlags
