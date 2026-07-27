@@ -76,8 +76,7 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
     public private(set) var incompleteFullSyncUserId: String?
 
     public nonisolated let currentShares: CurrentValueSubject<[Share], Never> = .init([])
-    // Should subscribe and receive on main queue in view models to be sure not crash appears between @MainActor
-    // isolation and combine
+
     public nonisolated let vaultSyncEventStream = PassthroughSubject<VaultSyncProgressEvent, Never>()
     public nonisolated let currentSpotlightSelectedVaults: CurrentValueSubject<[Share], Never> = .init([])
 
@@ -101,12 +100,7 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
     private let refreshUserData: any RefreshUserDataUseCase
 
     private var cancellables = Set<AnyCancellable>()
-    /// The user id of the refresh currently in flight, `nil` when idle. Safe to check-then-set
-    /// without synchronisation: the whole type is `@MainActor`.
     private var refreshingUserId: String?
-    /// A `refresh` that arrived while another one was in flight, replayed on completion. Dropping
-    /// it instead would lose the post-mutation refreshes `CreateVault`, `LeaveShare` and
-    /// `CreateAndMoveItemToNewVault` rely on to make a write visible.
     private var pendingRefreshUserId: String?
     /// The filter option after switching vaults
     private var pendingItemTypeFilterOption: ItemTypeFilterOption?
@@ -170,9 +164,6 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
 public extension AppContentManager {
     func refresh(userId: String) async {
         guard refreshingUserId == nil else {
-            // Coalesce rather than drop: the caller wants the content it just wrote to show up.
-            // Last request wins — if it names another user it is an account switch, and the
-            // in-flight result is stale either way.
             pendingRefreshUserId = userId
             return
         }

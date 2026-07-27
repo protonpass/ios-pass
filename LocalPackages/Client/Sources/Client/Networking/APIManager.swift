@@ -141,11 +141,6 @@ public final class APIManager: @unchecked Sendable, APIManagerProtocol, APIManag
             return service.apiService
         }
 
-        // Falling back to the unauthenticated session means authenticated routes go out
-        // unauthenticated and come back as 401 "Invalid access token". Log why — unless the
-        // caller passed the empty id, which is how it says "no active user, unauthenticated is
-        // what I want" (see `RefreshFeatureFlags`). Warning there would cry wolf on every
-        // pre-login launch.
         let reason = if let credentials {
             "no API service matches session \(credentials.sessionID)"
         } else {

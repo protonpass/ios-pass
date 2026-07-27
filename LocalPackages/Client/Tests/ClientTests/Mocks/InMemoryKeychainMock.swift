@@ -22,26 +22,11 @@ import Core
 import Foundation
 import os
 
-/// Dictionary-backed keychain. Isolation comes for free from allocating one per test, so no
-/// teardown is needed — unlike a `UserDefaults`-backed mock, which leaves a persistent domain on
-/// disk (or, with `.standard`, writes into the test host's real preferences).
-///
-/// `@unchecked Sendable`: `KeychainProtocol` requires `Sendable`. The storage is mutable and the
-/// concurrency tests hit it from many tasks at once, so it is lock-protected — a bare dictionary
-/// would race in the mock and report as a failure in `AuthManager`.
 final class InMemoryKeychainMock: @unchecked Sendable, KeychainProtocol {
     private let storage = OSAllocatedUnfairLock(initialState: [String: Data]())
 
-    /// When set, every read fails with it. Simulates the transient failures `AuthManager` has to
-    /// survive: keychain locked by data protection, or the symmetric key not yet available.
-    /// Not lock-protected: only set from single-task tests, between calls.
     var readError: (any Error)?
 
-    /// A missing key returns `nil` and does *not* throw, matching the real keychain: "returns nil
-    /// if there was no value in the keychain, throws [only] if the keychain read failed because of
-    /// the keychain access error" (ProtonCore `Keychain.dataOrError`). Throwing for "absent" made
-    /// `AuthManager` read every empty store as an unreadable one, set `storageLoaded = false` and
-    /// then silently skip all persistence for the whole test.
     func dataOrError(forKey key: String, attributes: [CFString: Any]?) throws -> Data? {
         if let readError { throw readError }
         return storage.withLock { $0[key] }
@@ -52,7 +37,6 @@ final class InMemoryKeychainMock: @unchecked Sendable, KeychainProtocol {
             .flatMap { String(data: $0, encoding: .utf8) }
     }
 
-    // `throws` is required by `KeychainProtocol`; an in-memory dictionary never fails.
     // swiftlint:disable unneeded_throws_rethrows
     func setOrError(_ data: Data, forKey key: String, attributes: [CFString: Any]?) throws {
         storage.withLock { $0[key] = data }
