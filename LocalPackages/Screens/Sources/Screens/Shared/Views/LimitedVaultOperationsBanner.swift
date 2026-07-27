@@ -1,7 +1,7 @@
 //
 // LimitedVaultOperationsBanner.swift
-// Proton Pass - Created on 24/05/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Proton Pass - Created on 27/07/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -21,10 +21,14 @@
 import DesignSystem
 import SwiftUI
 
-struct LimitedVaultOperationsBanner: View {
-    let onUpgrade: () -> Void
+public struct LimitedVaultOperationsBanner: View {
+    private let onUpgrade: () -> Void
 
-    var body: some View {
+    public init(onUpgrade: @escaping () -> Void) {
+        self.onUpgrade = onUpgrade
+    }
+
+    public var body: some View {
         texts
             .padding()
             .frame(maxWidth: .infinity)
@@ -35,10 +39,10 @@ struct LimitedVaultOperationsBanner: View {
     }
 
     private var texts: some View {
-        Text("To interact with your other vaults, you need to upgrade your account.")
+        Text("To interact with your other vaults, you need to upgrade your account.", bundle: .module)
             .foregroundStyle(PassColor.textNorm) +
             Text(verbatim: " ") +
-            Text("Upgrade now")
+            Text("Upgrade now", bundle: .module)
             .underline(color: PassColor.interactionNormMajor1)
             .foregroundStyle(PassColor.interactionNormMajor1)
     }
