@@ -20,7 +20,7 @@
 
 private typealias ContainerId = String
 
-public struct ShareContent: Identifiable, Hashable, Sendable {
+public struct ShareContent: Identifiable, Hashable, Sendable, Equatable {
     public let share: Share
     public let itemCount: Int
     public let aliasCount: Int
