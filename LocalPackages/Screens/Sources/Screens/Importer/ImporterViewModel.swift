@@ -107,8 +107,12 @@ extension ImporterViewModel {
         }
     }
 
-    func handle(_ error: any Error) {
+    func handle(_ error: any Error,
+                file: String = #file,
+                function: String = #function,
+                line: UInt = #line,
+                column: UInt = #column) {
         self.error = error
-        logger.error(error)
+        logger.error(error, file: file, function: function, line: line, column: column)
     }
 }
