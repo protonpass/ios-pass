@@ -18,9 +18,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
+import Screens
 
 @MainActor
 class BaseItemDetailViewModel: ObservableObject {
@@ -31,9 +33,9 @@ class BaseItemDetailViewModel: ObservableObject {
     let selectedTextStream: SelectedTextStream
     let customFields: [CustomField]
 
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
-    @LazyInjected(\SharedToolingContainer.logger) private var logger
-    @LazyInjected(\SharedServiceContainer.upgradeChecker) var upgradeChecker
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) private var router
+    @LazyInjected(\ToolingContainer.logger) private var logger
+    @LazyInjected(\ServiceContainer.upgradeChecker) var upgradeChecker
 
     var type: ItemContentType {
         item.content.type

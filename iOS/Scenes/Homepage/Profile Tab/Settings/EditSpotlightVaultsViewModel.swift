@@ -18,13 +18,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
+import Stores
 
 @MainActor
 final class EditSpotlightVaultsViewModel: ObservableObject {
-    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
+    private let appContentManager = dependency(\ServiceContainer.appContentManager)
     @Published private(set) var selectedVaults = [Share]()
 
     let allVaults: [VaultListUiModel]

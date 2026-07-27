@@ -69,6 +69,7 @@ private extension SearchView {
                                                  in: animationNamespace)
             } else if UIDevice.current.userInterfaceIdiom == .phone {
                 Text("Search")
+                    .foregroundStyle(PassColor.textNorm)
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity, alignment: .leading)

@@ -69,10 +69,18 @@ public struct CapsuleStepper<V: Strideable>: View where V.Stride: Numeric {
     }
 
     private var reachedMinValue: Bool {
-        if let minValue { value <= minValue } else { false }
+        if let minValue {
+            value <= minValue
+        } else {
+            false
+        }
     }
 
     private var reachedMaxValue: Bool {
-        if let maxValue { value > maxValue } else { false }
+        if let maxValue {
+            value > maxValue
+        } else {
+            false
+        }
     }
 }

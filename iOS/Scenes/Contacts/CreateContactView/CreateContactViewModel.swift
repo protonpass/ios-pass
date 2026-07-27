@@ -22,10 +22,12 @@
 
 import Client
 import Combine
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 
 @MainActor
 @Observable
@@ -40,28 +42,17 @@ final class CreateContactViewModel {
         email.isValidEmail()
     }
 
-    @ObservationIgnored
-    @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
-
-    @ObservationIgnored
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-
-    @ObservationIgnored
-    @LazyInjected(\SharedToolingContainer.preferencesManager) private var preferencesManager
-
-    @ObservationIgnored
-    @LazyInjected(\SharedToolingContainer.logger) private var logger
-
-    @ObservationIgnored
-    @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
+    private let aliasRepository = dependency(\RepositoryContainer.aliasRepository)
+    private let userManager = dependency(\ServiceContainer.userManager)
+    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let getSharedPreferences = dependency(\UseCasesContainer.getSharedPreferences)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
 
     @ObservationIgnored
     private var aliasDiscovery: AliasDiscovery {
         preferencesManager.sharedPreferences.unwrapped().aliasDiscovery
     }
-
-    @ObservationIgnored
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
 
     @ObservationIgnored
     private let itemIds: IDs

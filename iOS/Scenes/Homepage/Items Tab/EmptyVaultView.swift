@@ -21,7 +21,6 @@
 import Core
 import DesignSystem
 import Entities
-import FactoryKit
 import ProtonCoreUIFoundations
 import SwiftUI
 

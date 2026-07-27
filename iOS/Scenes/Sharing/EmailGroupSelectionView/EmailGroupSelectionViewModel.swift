@@ -23,10 +23,12 @@
 import Client
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 
 enum SuggestionsDisplayType: Int, Hashable {
     case suggestion = 0
@@ -52,16 +54,16 @@ final class EmailGroupSelectionViewModel: ObservableObject {
     @Published private var cachedOrgRecommendations: OrganizationInviteRecommendations?
 
     private var cancellables = Set<AnyCancellable>()
-    private let inviteRepository = resolve(\SharedRepositoryContainer.inviteRepository)
-    private let checkAddressesForInvite = resolve(\UseCasesContainer.checkAddressesForInvite)
-    private let shareInviteService = resolve(\ServiceContainer.shareInviteService)
-    private let setShareInvitesAndKeys = resolve(\UseCasesContainer.setShareInvitesAndKeys)
-    private let userManager = resolve(\SharedServiceContainer.userManager)
-    @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
-    @LazyInjected(\SharedRepositoryContainer.groupRepository) private var groupRepository
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
+    private let inviteRepository = dependency(\RepositoryContainer.inviteRepository)
+    private let checkAddressesForInvite = dependency(\UseCasesContainer.checkAddressesForInvite)
+    private let shareInviteService = dependency(\ServiceContainer.shareInviteService)
+    private let setShareInvitesAndKeys = dependency(\UseCasesContainer.setShareInvitesAndKeys)
+    private let userManager = dependency(\ServiceContainer.userManager)
+    @LazyInjected(\RepositoryContainer.accessRepository) private var accessRepository
+    @LazyInjected(\RepositoryContainer.groupRepository) private var groupRepository
+    @LazyInjected(\UseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
     private var currentTask: Task<Void, Never>?
     private var cachedGroupInfos: [InviteRecommendationType]?
     private var updateSuggestionTask: Task<Void, Never>?

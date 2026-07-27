@@ -54,5 +54,8 @@ public actor LogManagerMock: LogManagerProtocol {
     public func toggleLogging(shouldLog: Bool) {
         self.shouldLog = shouldLog
     }
+    
+    public func getLogEntriesWithoutSave() throws -> [LogEntry] {
+        logEntries
+    }
 }
-

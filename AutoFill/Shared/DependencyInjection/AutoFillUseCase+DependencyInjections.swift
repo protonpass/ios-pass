@@ -21,6 +21,7 @@
 import AuthenticationServices
 import Client
 import Core
+import DIComposition
 import FactoryKit
 import Foundation
 import UseCases
@@ -36,47 +37,47 @@ final class AutoFillUseCaseContainer: SharedContainer, AutoRegistering {
 
 private extension AutoFillUseCaseContainer {
     var logManager: any LogManagerProtocol {
-        SharedToolingContainer.shared.logManager()
+        ToolingContainer.shared.logManager()
     }
 
     var symmetricKeyProvider: any SymmetricKeyProvider {
-        SharedDataContainer.shared.symmetricKeyProvider()
+        DataContainer.shared.symmetricKeyProvider()
     }
 
     var itemRepository: any ItemRepositoryProtocol {
-        SharedRepositoryContainer.shared.itemRepository()
+        RepositoryContainer.shared.itemRepository()
     }
 
     var shareRepository: any ShareRepositoryProtocol {
-        SharedRepositoryContainer.shared.shareRepository()
+        RepositoryContainer.shared.shareRepository()
     }
 
     var accessRepository: any AccessRepositoryProtocol {
-        SharedRepositoryContainer.shared.accessRepository()
+        RepositoryContainer.shared.accessRepository()
     }
 
     var createPasskey: any CreatePasskeyUseCase {
-        SharedUseCasesContainer.shared.createPasskey()
+        UseCasesContainer.shared.createPasskey()
     }
 
     var resolvePasskeyChallenge: any ResolvePasskeyChallengeUseCase {
-        SharedUseCasesContainer.shared.resolvePasskeyChallenge()
+        UseCasesContainer.shared.resolvePasskeyChallenge()
     }
 
     var matchUrls: any MatchUrlsUseCase {
-        SharedUseCasesContainer.shared.matchUrls()
+        UseCasesContainer.shared.matchUrls()
     }
 
     var userManager: any UserManagerProtocol {
-        SharedServiceContainer.shared.userManager()
+        ServiceContainer.shared.userManager()
     }
 
     var totpService: any TOTPServiceProtocol {
-        SharedServiceContainer.shared.totpService()
+        ServiceContainer.shared.totpService()
     }
 
     var localTextAutoFillHistoryEntryDatasource: any LocalTextAutoFillHistoryEntryDatasourceProtocol {
-        SharedRepositoryContainer.shared.localTextAutoFillHistoryEntryDatasource()
+        RepositoryContainer.shared.localTextAutoFillHistoryEntryDatasource()
     }
 }
 
@@ -85,13 +86,14 @@ extension AutoFillUseCaseContainer {
         self { MapASCredentialServiceIdentifierToURL() }
     }
 
+    @MainActor
     var copyTotpTokenAndNotify: Factory<any CopyTotpTokenAndNotifyUseCase> {
         self { CopyTotpTokenAndNotify(logManager: self.logManager,
-                                      generateTotpToken: SharedUseCasesContainer.shared.generateTotpToken(),
-                                      getSharedPreferences: SharedUseCasesContainer.shared.getSharedPreferences(),
-                                      copyToClipboard: SharedUseCasesContainer.shared.copyToClipboard(),
-                                      notificationService: SharedServiceContainer.shared.notificationService(),
-                                      upgradeChecker: SharedServiceContainer.shared.upgradeChecker()) }
+                                      generateTotpToken: UseCasesContainer.shared.generateTotpToken(),
+                                      getSharedPreferences: UseCasesContainer.shared.getSharedPreferences(),
+                                      copyToClipboard: UseCasesContainer.shared.copyToClipboard(),
+                                      notificationService: ServiceContainer.shared.notificationService(),
+                                      upgradeChecker: ServiceContainer.shared.upgradeChecker()) }
     }
 
     var fetchCredentials: Factory<any FetchCredentialsUseCase> {
@@ -138,30 +140,34 @@ extension AutoFillUseCaseContainer {
     }
 
     var completePasskeyRegistration: Factory<any CompletePasskeyRegistrationUseCase> {
-        self { CompletePasskeyRegistration(addTelemetryEvent: SharedUseCasesContainer.shared.addTelemetryEvent(),
+        self { CompletePasskeyRegistration(addTelemetryEvent: UseCasesContainer.shared.addTelemetryEvent(),
                                            resetFactory: self.resetFactory()) }
     }
 
+    @MainActor
     var checkAndAutoFill: Factory<any CheckAndAutoFillUseCase> {
-        self { CheckAndAutoFill(credentialProvider: SharedDataContainer.shared.credentialProvider(),
-                                userManager: SharedServiceContainer.shared.userManager(),
+        self { CheckAndAutoFill(credentialProvider: DataContainer.shared.credentialProvider(),
+                                userManager: ServiceContainer.shared.userManager(),
                                 canSkipLocalAuthentication: self.canSkipLocalAuthentication(),
                                 generateAuthorizationCredential: self.generateAuthorizationCredential(),
                                 cancelAutoFill: self.cancelAutoFill(),
                                 completeAutoFill: self.completeAutoFill()) }
     }
 
+    @MainActor
     var autoFillCredentials: Factory<any AutoFillCredentialsUseCase> {
         self { AutoFillCredentials(itemRepository: self.itemRepository,
                                    totpService: self.totpService,
                                    completeAutoFill: self.completeAutoFill()) }
     }
 
+    @MainActor
     var autoFillPasskey: Factory<any AutoFillPasskeyUseCase> {
         self { AutoFillPasskey(resolveChallenge: self.resolvePasskeyChallenge,
                                completeAutoFill: self.completeAutoFill()) }
     }
 
+    @MainActor
     var associateUrlAndAutoFill: Factory<any AssociateUrlAndAutoFillUseCase> {
         self { AssociateUrlAndAutoFill(itemRepository: self.itemRepository,
                                        totpService: self.totpService,
@@ -169,13 +175,14 @@ extension AutoFillUseCaseContainer {
     }
 
     var cancelAutoFill: Factory<any CancelAutoFillUseCase> {
-        self { CancelAutoFill(saveAllLogs: SharedUseCasesContainer.shared.saveAllLogs(),
+        self { CancelAutoFill(saveAllLogs: UseCasesContainer.shared.saveAllLogs(),
                               resetFactory: self.resetFactory()) }
     }
 
+    @MainActor
     var completeAutoFill: Factory<any CompleteAutoFillUseCase> {
         self { CompleteAutoFill(logManager: self.logManager,
-                                telemetryRepository: SharedRepositoryContainer.shared.telemetryEventRepository(),
+                                telemetryRepository: RepositoryContainer.shared.telemetryEventRepository(),
                                 userManager: self.userManager,
                                 copyTotpTokenAndNotify: self.copyTotpTokenAndNotify(),
                                 updateLastUseTimeAndReindex: self.updateLastUseTimeAndReindex(),
@@ -184,7 +191,7 @@ extension AutoFillUseCaseContainer {
 
     var completeTextAutoFill: Factory<any CompleteTextAutoFillUseCase> {
         self { CompleteTextAutoFill(userManager: self.userManager,
-                                    datasource: SharedRepositoryContainer.shared
+                                    datasource: RepositoryContainer.shared
                                         .localTextAutoFillHistoryEntryDatasource()) }
     }
 
@@ -197,23 +204,23 @@ extension AutoFillUseCaseContainer {
     }
 
     var reindexLoginItem: Factory<any ReindexLoginItemUseCase> {
-        self { ReindexLoginItem(manager: SharedServiceContainer.shared.credentialManager(),
+        self { ReindexLoginItem(manager: ServiceContainer.shared.credentialManager(),
                                 matchUrls: self.matchUrls,
                                 mapServiceIdentifierToUrl: self.mapServiceIdentifierToURL()) }
     }
 
     var updateLastUseTimeAndReindex: Factory<any UpdateLastUseTimeAndReindexUseCase> {
         self { UpdateLastUseTimeAndReindex(itemRepository: self.itemRepository,
-                                           localItemDatasource: SharedRepositoryContainer.shared
+                                           localItemDatasource: RepositoryContainer.shared
                                                .localItemDatasource(),
-                                           localShareDatasource: SharedRepositoryContainer.shared
+                                           localShareDatasource: RepositoryContainer.shared
                                                .localShareDatasource(),
                                            reindexLoginItem: self.reindexLoginItem()) }
     }
 
     var canSkipLocalAuthentication: Factory<any CanSkipLocalAuthenticationUseCase> {
         self {
-            CanSkipLocalAuthentication(currentDateProvider: SharedToolingContainer.shared.currentDateProvider())
+            CanSkipLocalAuthentication(currentDateProvider: ToolingContainer.shared.currentDateProvider())
         }
     }
 }

@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import CryptoKit
+import DesignSystem
 import Foundation
 
 public enum AllowedCharacter: String {
@@ -190,6 +191,22 @@ public extension String {
 
     var accentsRemoved: String {
         folding(options: .diacriticInsensitive, locale: .init(identifier: "en_US"))
+    }
+
+    func coloredPassword() -> AttributedString {
+        let attributedChars = map { char in
+            var attributedChar = AttributedString("\(char)", attributes: .lineBreakHyphenErasing)
+            attributedChar.foregroundColor = if AllowedCharacter.digit.rawValue.contains(char) {
+                PassColor.loginInteractionNormMajor2
+            } else if AllowedCharacter.special.rawValue.contains(char) ||
+                AllowedCharacter.separator.rawValue.contains(char) {
+                PassColor.aliasInteractionNormMajor2
+            } else {
+                PassColor.textNorm
+            }
+            return attributedChar
+        }
+        return attributedChars.reduce(into: .init()) { $0 += $1 }
     }
 }
 

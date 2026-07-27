@@ -22,9 +22,11 @@ import Client
 import Combine
 import Core
 import CryptoKit
+import DIComposition
 import Entities
 import FactoryKit
 import Screens
+import Stores
 import SwiftUI
 
 struct SearchDataDisplay: Equatable {
@@ -77,17 +79,17 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     }
 
     // Injected properties
-    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
-    private let searchEntryDatasource = resolve(\SharedRepositoryContainer.localSearchEntryDatasource)
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let getSearchableItems = resolve(\UseCasesContainer.getSearchableItems)
-    private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
-    @LazyInjected(\SharedUseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
+    private let itemRepository = dependency(\RepositoryContainer.itemRepository)
+    private let searchEntryDatasource = dependency(\RepositoryContainer.localSearchEntryDatasource)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let getSearchableItems = dependency(\UseCasesContainer.getSearchableItems)
+    private let getUserPreferences = dependency(\UseCasesContainer.getUserPreferences)
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
+    @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
+    @LazyInjected(\UseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
 
-    let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
+    let itemContextMenuHandler = dependency(\UIComponentsContainer.itemContextMenuHandler)
 
     private var lastSearchQuery = ""
     private var searchTask: Task<Void, Never>?

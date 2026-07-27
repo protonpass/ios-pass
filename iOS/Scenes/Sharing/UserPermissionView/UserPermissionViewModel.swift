@@ -21,6 +21,7 @@
 //
 
 import Client
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
@@ -32,11 +33,11 @@ final class UserPermissionViewModel: ObservableObject {
     @Published private(set) var canContinue = false
     @Published private(set) var currentUserEmail: String?
 
-    private let setShareInviteRole = resolve(\UseCasesContainer.setShareInviteRole)
-    private let shareInviteService = resolve(\ServiceContainer.shareInviteService)
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    private let setShareInviteRole = dependency(\UseCasesContainer.setShareInviteRole)
+    private let shareInviteService = dependency(\ServiceContainer.shareInviteService)
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
 
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
+    @LazyInjected(\UseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
 
     var managerAsAdmin: Bool {

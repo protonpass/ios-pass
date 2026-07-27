@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import DIComposition
 import FactoryKit
 import Screens
 import SwiftUI
@@ -38,7 +39,7 @@ struct OnboardSection: View {
             .frame(maxWidth: .infinity, alignment: .leading)
 
             Button(action: {
-                viewModel.present(view: OnboardingView(handler: viewModel.handler, mode: .onboarding))
+                viewModel.present(view: OnboardingView(mode: .onboarding))
             }, label: {
                 Text(verbatim: "Onboard")
             })
@@ -59,17 +60,14 @@ private final class OnboardSectionViewModel: ObservableObject {
         }
     }
 
-    @LazyInjected(\SharedUseCasesContainer.getAppPreferences)
+    @LazyInjected(\UseCasesContainer.getAppPreferences)
     private var getAppPreferences
 
-    @LazyInjected(\SharedUseCasesContainer.updateAppPreferences)
+    @LazyInjected(\UseCasesContainer.updateAppPreferences)
     private var updateAppPreferences
 
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter)
     private var router
-
-    @LazyInjected(\ServiceContainer.onboardingHandler)
-    var handler
 
     init() {
         onboarded = getAppPreferences().onboarded

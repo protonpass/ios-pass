@@ -22,9 +22,11 @@
 
 import Client
 import Combine
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
+import Screens
 
 @MainActor
 final class PassMonitorViewModel: ObservableObject {
@@ -37,17 +39,17 @@ final class PassMonitorViewModel: ObservableObject {
     @Published var showSentinelSheet = false
     @Published private(set) var latestBreachInfo: LatestBreachDomainInfo?
 
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
-    private let monitorStateStream = resolve(\DataStreamContainer.monitorStateStream)
-    private let toggleSentinel = resolve(\SharedUseCasesContainer.toggleSentinel)
-    private let getSentinelStatus = resolve(\SharedUseCasesContainer.getSentinelStatus)
-    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
-    private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
-    let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    private let logger = dependency(\ToolingContainer.logger)
+    private let upgradeChecker = dependency(\ServiceContainer.upgradeChecker)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let passMonitorRepository = dependency(\RepositoryContainer.passMonitorRepository)
+    private let monitorStateStream = dependency(\DataContainer.monitorStateStream)
+    private let toggleSentinel = dependency(\UseCasesContainer.toggleSentinel)
+    private let getSentinelStatus = dependency(\UseCasesContainer.getSentinelStatus)
+    private let accessRepository = dependency(\RepositoryContainer.accessRepository)
+    private let refreshAccessAndMonitorState = dependency(\UseCasesContainer.refreshAccessAndMonitorState)
+    let addTelemetryEvent = dependency(\UseCasesContainer.addTelemetryEvent)
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
 
     private var refreshingTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
