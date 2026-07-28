@@ -113,7 +113,6 @@ public struct PasswordGeneratorView: View {
 // MARK: - Top bar
 
 private struct PasswordGeneratorTopBar: View {
-    @Environment(\.dismiss) private var dismiss
     let viewModel: PasswordGeneratorViewModel
 
     var body: some View {

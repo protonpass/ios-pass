@@ -278,6 +278,7 @@ private extension CredentialProviderCoordinator {
 
 @available(iOS 26.2, *)
 private extension CredentialProviderCoordinator {
+    // periphery:ignore:parameters request
     func handleGeneratePasswords(_ request: ASGeneratePasswordsRequest, _ withUI: Bool) {
         guard let context else { return }
 
