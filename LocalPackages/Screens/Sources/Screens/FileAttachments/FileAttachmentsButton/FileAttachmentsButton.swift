@@ -29,7 +29,7 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct FileAttachmentsButton: View {
-    @StateObject private var viewModel: FileAttachmentsButtonViewModel
+    @State private var viewModel: FileAttachmentsButtonViewModel
     @State private var showCameraUnavailable = false
     @State private var showCamera = false
     @State private var capturedImageToEdit: UIImage?
@@ -127,6 +127,9 @@ struct FileAttachmentsButton: View {
                               secondaryTintColor: handler.fileAttachmentsSectionSecondaryColor,
                               onSave: { viewModel.confirmScannedText() })
                 .interactiveDismissDisabled()
+        }
+        .onChange(of: viewModel.selectedPhotos) { _, newValue in
+            viewModel.processSelectedPhotos(newValue)
         }
     }
 

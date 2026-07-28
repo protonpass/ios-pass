@@ -20,20 +20,21 @@
 //
 
 import Client
+import DIComposition
 import Entities
+import FactoryKit
 import Foundation
 
 @MainActor
-final class PasswordHistoryViewModel: ObservableObject {
-    @Published private(set) var loading = false
-    @Published private(set) var passwords = [GeneratedPasswordUiModel]()
-    @Published private(set) var error: (any Error)?
+@Observable
+final class PasswordHistoryViewModel {
+    private(set) var loading = false
+    private(set) var passwords = [GeneratedPasswordUiModel]()
+    private(set) var error: (any Error)?
 
-    private var repository: any PasswordHistoryRepositoryProtocol
+    private let repository = dependency(\RepositoryContainer.passwordHistoryRepository)
 
-    init(repository: any PasswordHistoryRepositoryProtocol) {
-        self.repository = repository
-    }
+    init() {}
 }
 
 extension PasswordHistoryViewModel {

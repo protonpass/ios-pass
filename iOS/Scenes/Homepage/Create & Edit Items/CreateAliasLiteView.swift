@@ -111,14 +111,11 @@ struct CreateAliasLiteView: View {
             }
             .optionalSheet(binding: $sheetState) { state in
                 AliasOptionsSheetContent(module: viewModel.module,
-                                         preferencesManager: viewModel.preferencesManager,
                                          state: state,
-                                         aliasCount: viewModel.aliasCount,
-                                         onAddMailbox: viewModel.addMailbox,
-                                         onAddDomain: { /* Not applicable */ },
-                                         onDismiss: { sheetState = nil },
-                                         onError: { viewModel.handle($0) })
-                    .environment(\.colorScheme, colorScheme)
+                                         aliasCount: viewModel.aliasCount) { action in
+                    handleAction(action)
+                }
+                .environment(\.colorScheme, colorScheme)
             }
         }
     }
@@ -163,6 +160,24 @@ struct CreateAliasLiteView: View {
                               height: 44,
                               action: { viewModel.upgrade() })
             }
+        }
+    }
+}
+
+private extension CreateAliasLiteView {
+    func handleAction(_ action: AliasOptionsSheetContentAction) {
+        switch action {
+        case .addMailbox:
+            viewModel.addMailbox()
+
+        case .addDomain:
+            return
+
+        case .shouldDismiss:
+            sheetState = nil
+
+        case let .hasError(error):
+            viewModel.handle(error)
         }
     }
 }

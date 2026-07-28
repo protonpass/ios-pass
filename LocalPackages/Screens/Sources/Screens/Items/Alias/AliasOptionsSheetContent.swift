@@ -20,7 +20,9 @@
 
 import Client
 import DesignSystem
+import DIComposition
 import Entities
+import FactoryKit
 import Foundation
 import SwiftUI
 
@@ -29,28 +31,26 @@ public enum AliasOptionsSheetState {
     case suffix(Binding<SuffixSelection>)
 }
 
+public enum AliasOptionsSheetContentAction {
+    case addMailbox
+    case addDomain
+    case shouldDismiss
+    case hasError(any Error)
+}
+
 public struct AliasOptionsSheetContent: View {
-    @StateObject private var viewModel: AliasOptionsSheetContentViewModel
-    private let onAddMailbox: () -> Void
-    private let onAddDomain: () -> Void
-    private let onDismiss: () -> Void
+    @State private var viewModel: AliasOptionsSheetContentViewModel
+    private let action: (AliasOptionsSheetContentAction) -> Void
 
     public init(module: PassModule,
-                preferencesManager: any PreferencesManagerProtocol,
                 state: AliasOptionsSheetState,
                 aliasCount: Int?,
-                onAddMailbox: @escaping () -> Void,
-                onAddDomain: @escaping () -> Void,
-                onDismiss: @escaping () -> Void,
-                onError: @escaping (any Error) -> Void) {
+                action: @escaping (AliasOptionsSheetContentAction) -> Void) {
         _viewModel = .init(wrappedValue: .init(module: module,
-                                               preferencesManager: preferencesManager,
                                                state: state,
                                                aliasCount: aliasCount,
-                                               onError: onError))
-        self.onAddMailbox = onAddMailbox
-        self.onAddDomain = onAddDomain
-        self.onDismiss = onDismiss
+                                               action: action))
+        self.action = action
     }
 
     public var body: some View {
@@ -61,7 +61,7 @@ public struct AliasOptionsSheetContent: View {
                                      title: title,
                                      showTip: viewModel.showMailboxTip,
                                      onAddMailbox: {
-                                         viewModel.dismissMailboxTip(completion: onAddMailbox)
+                                         viewModel.dismissMailboxTip(addMailBox: true)
                                      },
                                      onDismissTip: { viewModel.dismissMailboxTip() })
 
@@ -69,10 +69,10 @@ public struct AliasOptionsSheetContent: View {
                 SuffixSelectionView(selection: suffixSelection,
                                     showTip: viewModel.showDomainTip,
                                     onAddDomain: {
-                                        viewModel.dismissDomainTip(completion: onAddDomain)
+                                        viewModel.dismissDomainTip(addDomain: true)
                                     },
                                     onDismissTip: { viewModel.dismissDomainTip() },
-                                    onDismiss: onDismiss)
+                                    onDismiss: { action(.shouldDismiss) })
             }
         }
         .presentationDetents([.height(viewModel.height)])
@@ -81,12 +81,15 @@ public struct AliasOptionsSheetContent: View {
 }
 
 @MainActor
-private final class AliasOptionsSheetContentViewModel: ObservableObject {
-    @Published private(set) var showMailboxTip = false
-    @Published private(set) var showDomainTip = false
+@Observable
+private final class AliasOptionsSheetContentViewModel {
+    private(set) var showMailboxTip = false
+    private(set) var showDomainTip = false
+
     private let aliasCount: Int?
-    private let preferencesManager: any PreferencesManagerProtocol
-    private let onError: (any Error) -> Void
+    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
+    private let action: (AliasOptionsSheetContentAction) -> Void
+
     let state: AliasOptionsSheetState
 
     private var aliasDiscovery: AliasDiscovery {
@@ -116,14 +119,12 @@ private final class AliasOptionsSheetContentViewModel: ObservableObject {
     }
 
     init(module: PassModule,
-         preferencesManager: any PreferencesManagerProtocol,
          state: AliasOptionsSheetState,
          aliasCount: Int?,
-         onError: @escaping (any Error) -> Void) {
+         action: @escaping (AliasOptionsSheetContentAction) -> Void) {
         self.state = state
-        self.preferencesManager = preferencesManager
         self.aliasCount = aliasCount
-        self.onError = onError
+        self.action = action
 
         if let aliasCount, aliasCount > 2, module == .hostApp {
             switch state {
@@ -140,7 +141,7 @@ private final class AliasOptionsSheetContentViewModel: ObservableObject {
         }
     }
 
-    func dismissMailboxTip(completion: (() -> Void)? = nil) {
+    func dismissMailboxTip(addMailBox: Bool = false) {
         Task { [weak self] in
             guard let self else { return }
             var aliasDiscovery = aliasDiscovery
@@ -150,14 +151,16 @@ private final class AliasOptionsSheetContentViewModel: ObservableObject {
                 try await preferencesManager.updateSharedPreferences(\.aliasDiscovery,
                                                                      value: aliasDiscovery)
                 showMailboxTip = false
-                completion?()
+                if addMailBox {
+                    action(.addMailbox)
+                }
             } catch {
-                onError(error)
+                action(.hasError(error))
             }
         }
     }
 
-    func dismissDomainTip(completion: (() -> Void)? = nil) {
+    func dismissDomainTip(addDomain: Bool = false) {
         Task { [weak self] in
             guard let self else { return }
             var aliasDiscovery = aliasDiscovery
@@ -167,9 +170,11 @@ private final class AliasOptionsSheetContentViewModel: ObservableObject {
                 try await preferencesManager.updateSharedPreferences(\.aliasDiscovery,
                                                                      value: aliasDiscovery)
                 showDomainTip = false
-                completion?()
+                if addDomain {
+                    action(.addDomain)
+                }
             } catch {
-                onError(error)
+                action(.hasError(error))
             }
         }
     }
