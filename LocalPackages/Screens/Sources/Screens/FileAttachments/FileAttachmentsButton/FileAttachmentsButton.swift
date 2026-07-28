@@ -128,6 +128,9 @@ struct FileAttachmentsButton: View {
                               onSave: { viewModel.confirmScannedText() })
                 .interactiveDismissDisabled()
         }
+        .onChange(of: viewModel.selectedPhotos) { _, newValue in
+            viewModel.processSelectedPhotos(newValue)
+        }
     }
 
     private func attachFileButton(_ action: @escaping () -> Void = {}) -> some View {

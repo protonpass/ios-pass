@@ -129,7 +129,7 @@ extension ShareCoordinator {
     func start() async {
         do {
             try await setUpBeforeLaunching(rootContainer: .viewController(rootViewController))
-            try await beginFlow()
+            await beginFlow()
         } catch {
             alert(error: error) { [weak self] in
                 guard let self else { return }
@@ -226,7 +226,7 @@ private extension ShareCoordinator {
         return .unknown
     }
 
-    func parseSharedContentAndBeginShareFlow(userId: String) async throws {
+    func parseSharedContentAndBeginShareFlow(userId: String) async {
         let content = await parseSharedContent()
         parsedContent = content
 
@@ -234,8 +234,7 @@ private extension ShareCoordinator {
         if case .csv = content,
            let activeUserId = userManager.activeUserId {
             let prefs = preferencesManager.sharedPreferences.unwrapped()
-            let logins = try await parseLogins()
-            view = ImporterView(data: logins,
+            view = ImporterView(source: self,
                                 onClose: { [weak self] in
                                     guard let self else { return }
                                     dismissExtension()
@@ -331,10 +330,10 @@ private extension ShareCoordinator {
         }
     }
 
-    func beginFlow() async throws {
+    func beginFlow() async {
         if let activeUserId = userManager.activeUserId,
            credentialProvider.isAuthenticated(userId: activeUserId) {
-            try await parseSharedContentAndBeginShareFlow(userId: activeUserId)
+            await parseSharedContentAndBeginShareFlow(userId: activeUserId)
         } else {
             showNotLoggedInView()
         }
@@ -393,7 +392,7 @@ extension ShareCoordinator: CreateEditLoginViewModelDelegate {
 
 // MARK: ImporterDatasource
 
-extension ShareCoordinator {
+extension ShareCoordinator: ImporterDatasource {
     func parseLogins() async throws -> [CsvLogin] {
         guard case let .csv(data) = parsedContent,
               let csvString = String(data: data, encoding: .utf8) else {

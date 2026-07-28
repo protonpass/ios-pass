@@ -26,6 +26,10 @@ import Foundation
 import Macro
 import ProtonCoreLogin
 
+public protocol ImporterDatasource: Sendable, AnyObject {
+    func parseLogins() async throws -> [CsvLogin]
+}
+
 @MainActor
 @Observable
 final class ImporterViewModel {
@@ -42,12 +46,17 @@ final class ImporterViewModel {
     private let userManager = dependency(\ServiceContainer.userManager)
     private let logger: Logger
 
+    private let source: any ImporterDatasource
+
     var selectedCount: Int {
         logins.count - excludedIds.count
     }
 
-    init(logManager: any LogManagerProtocol = ToolingContainer.shared.logManager()) {
+    init(source: any ImporterDatasource,
+         logManager: any LogManagerProtocol = ToolingContainer.shared.logManager()) {
+        self.source = source
         logger = .init(manager: logManager)
+        logins = logins
     }
 }
 
@@ -64,12 +73,12 @@ extension ImporterViewModel {
         }
     }
 
-    func loadData(data: [CsvLogin]) {
-        logins = data
-    }
-
-    func loadUser() async {
+    func loadData() async {
         do {
+            defer { loading = false }
+            loading = true
+
+            logins = try await source.parseLogins()
             users = try await getUsers()
             selectedUser = users.first
         } catch {

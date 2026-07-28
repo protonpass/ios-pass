@@ -65,7 +65,7 @@ extension ActionCoordinator {
     func start() async {
         do {
             try await setUpBeforeLaunching(rootContainer: .viewController(rootViewController))
-            try await beginFlow()
+            beginFlow()
         } catch {
             alert(error: error) { [weak self] in
                 guard let self else { return }
@@ -99,12 +99,11 @@ private extension ActionCoordinator {
             .store(in: &cancellables)
     }
 
-    func beginFlow() async throws {
+    func beginFlow() {
         if let activeUserId = userManager.activeUserId,
            credentialProvider.isAuthenticated(userId: activeUserId) {
             let prefs = getSharedPreferences()
-            let logins = try await parseLogins()
-            let view = ImporterView(data: logins,
+            let view = ImporterView(source: self,
                                     onClose: { [weak self] in
                                         guard let self else { return }
                                         dismissExtension()
@@ -179,7 +178,7 @@ extension ActionCoordinator: ExtensionCoordinator {
     }
 }
 
-extension ActionCoordinator {
+extension ActionCoordinator: ImporterDatasource {
     func parseLogins() async throws -> [CsvLogin] {
         guard let items = context?.inputItems as? [NSExtensionItem] else {
             throw PassError.extension(.noInputItems)
