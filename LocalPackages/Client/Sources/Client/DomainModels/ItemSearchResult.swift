@@ -74,7 +74,7 @@ public enum SearchResultEither: HighlightableText, Hashable {
     }
 }
 
-public struct ItemSearchResult: Sendable, ItemTypeIdentifiable, Identifiable, Pinnable {
+public struct ItemSearchResult: Sendable, ItemTypeIdentifiable, Identifiable, Pinnable, Equatable {
     public var id: String {
         "\(itemId + shareId)"
     }

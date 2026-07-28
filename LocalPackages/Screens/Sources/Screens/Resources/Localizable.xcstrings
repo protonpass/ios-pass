@@ -3212,6 +3212,16 @@
         }
       }
     },
+    "A log is a type of file that shows us the actions you took that led to an error. We'll only ever use them to help our engineers fix bugs." : {
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+             "state" : "translated",
+             "value" : "A log is a type of file that shows us the actions you took that led to an error. We'll only ever use them to help our engineers fix bugs."
+           }
+         }
+       }
+     },
     "Add account" : {
       "localizations" : {
         "be" : {
@@ -8935,6 +8945,16 @@
         }
       }
     },
+    "Attach" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attach"
+          }
+        }
+      }
+    },
     "Attach a file" : {
       "localizations" : {
         "be" : {
@@ -9476,6 +9496,16 @@
         }
       }
     },
+    "AutoFill" : {
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+             "state" : "translated",
+             "value" : "AutoFill"
+           }
+         }
+       }
+     },
     "AutoFill Passkey" : {
       "comment" : "Title of the page when autofilling passkeys",
       "localizations" : {
@@ -9847,6 +9877,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在 Safari 和其他應用程式中，以非常快速簡單的方式自動輸入您的密碼字元。"
+          }
+        }
+      }
+    },
+    "Autosave" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autosave"
           }
         }
       }
@@ -19603,6 +19643,16 @@
         }
       }
     },
+    "Description is too long. Please keep it under %lld characters." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Description is too long. Please keep it under %lld characters."
+          }
+        }
+      }
+    },
     "Did you know?" : {
       "comment" : "Title of the informative banner to give hints about features.",
       "localizations" : {
@@ -23136,6 +23186,26 @@
         }
       }
     },
+    "Failed to send report" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to send report"
+          }
+        }
+      }
+    },
+    "Feature request" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feature request"
+          }
+        }
+      }
+    },
     "File attachments" : {
       "localizations" : {
         "be" : {
@@ -23524,6 +23594,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "檔案附件可透過 Pass Plus 取得。立即升級以存取。"
+          }
+        }
+      }
+    },
+    "Files" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Files"
           }
         }
       }
@@ -34369,6 +34449,16 @@
         }
       }
     },
+    "Logs" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logs"
+          }
+        }
+      }
+    },
     "Lowercase letters" : {
       "localizations" : {
         "en" : {
@@ -38744,6 +38834,16 @@
         }
       }
     },
+    "One or more files exceed the %lld MB limit. Please select smaller files." : {
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+             "state" : "translated",
+             "value" : "One or more files exceed the %lld MB limit. Please select smaller files."
+           }
+         }
+       }
+     },
     "Open" : {
       "localizations" : {
         "be" : {
@@ -41412,6 +41512,16 @@
         }
       }
     },
+    "Other" : {
+        "localizations" : {
+          "en" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "Other"
+            }
+          }
+        }
+      },
     "Password" : {
       "localizations" : {
         "be" : {
@@ -42197,6 +42307,16 @@
         }
       }
     },
+    "Photos or videos" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photos or videos"
+          }
+        }
+      }
+    },
     "Please authenticate" : {
       "localizations" : {
         "be" : {
@@ -42541,6 +42661,26 @@
         }
       }
     },
+    "Please describe the problem in as much detail as you can. If there was an error message, let us know what it said." : {
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+             "state" : "translated",
+             "value" : "Please describe the problem in as much detail as you can. If there was an error message, let us know what it said."
+           }
+         }
+       }
+     },
+     "Please limit your selection to %lld files" : {
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+             "state" : "translated",
+             "value" : "Please limit your selection to %lld files"
+           }
+         }
+       }
+     },
     "Please note once deleted, the aliases can't be restored" : {
       "localizations" : {
         "be" : {
@@ -42733,6 +42873,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "請注意，別名一旦刪除，就無法恢復。"
+          }
+        }
+      }
+    },
+    "Please provide us with more details in the description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please provide us with more details in the description"
+          }
+        }
+      }
+    },
+    "Please select a reason" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please select a reason"
           }
         }
       }
@@ -45079,6 +45239,16 @@
         }
       }
     },
+    "Report a problem" : {
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+             "state" : "translated",
+             "value" : "Report a problem"
+           }
+         }
+       }
+     },
     "Require 2FA for organization" : {
       "localizations" : {
         "be" : {
@@ -47436,6 +47606,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "選取一個現有的登入或創建新的。"
+          }
+        }
+      }
+    },
+    "Select reason" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select reason"
+          }
+        }
+      }
+    },
+    "Send" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send"
           }
         }
       }
@@ -54443,6 +54633,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "從 SimpleLogin 同步你的別名"
+          }
+        }
+      }
+    },
+    "Syncing" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Syncing"
           }
         }
       }
@@ -62156,6 +62356,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "網站"
+          }
+        }
+      }
+    },
+    "What went wrong?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What went wrong?"
           }
         }
       }

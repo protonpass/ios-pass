@@ -979,22 +979,6 @@ extension HomepageCoordinator {
         }
 
         var sheetPresentationController: UISheetPresentationController?
-        let updateSheetHeight: (Double) -> Void = { height in
-            guard let sheetPresentationController else {
-                assertionFailure("sheetPresentationController is not set")
-                return
-            }
-            let detent = UISheetPresentationController.Detent.custom { _ in
-                height
-            }
-            let detentIdentifier = detent.identifier
-
-            sheetPresentationController.animateChanges {
-                sheetPresentationController.detents = [detent]
-                sheetPresentationController.selectedDetentIdentifier = detentIdentifier
-            }
-        }
-
         let view = PasswordGeneratorView(mode: .random,
                                          onResult: { [weak self] result in
                                              guard let self else { return }
@@ -1004,7 +988,7 @@ extension HomepageCoordinator {
                                              case let .failure(error): handle(error: error)
                                              }
                                          },
-                                         onHeightChanged: updateSheetHeight)
+                                         onHeightChanged: { sheetPresentationController?.updateHeight($0) })
         let viewController = UIHostingController(rootView: view)
         viewController.view.backgroundColor = UIColor(PassColor.backgroundNorm)
         sheetPresentationController = viewController.sheetPresentationController
@@ -1199,14 +1183,19 @@ extension HomepageCoordinator {
                                                                 autofill: false)))
             }
         }
-        let view = PasswordHistoryView(repository: passwordHistoryRepository,
-                                       onCreateLogin: createLogin,
-                                       onCopy: { [weak self] password in
-                                           guard let self else { return }
-                                           copyToClipboard(password,
-                                                           bannerMessage: #localized("Password copied"),
-                                                           bannerDisplay: bannerManager)
-                                       })
+        let view = PasswordHistoryView { [weak self] action in
+            guard let self else { return }
+            switch action {
+            case let .copy(password):
+                copyToClipboard(password,
+                                bannerMessage: #localized("Password copied"),
+                                bannerDisplay: bannerManager)
+
+            case let .create(password):
+                createLogin(password)
+            }
+        }
+
         present(view)
     }
 
@@ -1623,10 +1612,6 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     }
 
     func presentBugReportView() {
-        let errorHandler: (any Error) -> Void = { [weak self] error in
-            guard let self else { return }
-            handle(error: error)
-        }
         let successHandler: () -> Void = { [weak self] in
             guard let self else { return }
             dismissTopMostViewController { [weak self] in
@@ -1634,7 +1619,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
                 bannerManager.displayBottomSuccessMessage(#localized("Report successfully sent"))
             }
         }
-        let view = BugReportView(onError: errorHandler, onSuccess: successHandler)
+        let view = BugReportView(onSuccess: successHandler)
         present(view)
     }
 }
