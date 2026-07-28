@@ -120,7 +120,10 @@ private extension BannerManager {
         let banner = PMBanner(message: message, style: style)
         if let dismissButtonTitle {
             banner.addButton(text: dismissButtonTitle,
-                             handler: onDismiss)
+                             handler: { banner in
+                                 banner.dismiss()
+                                 onDismiss?(banner)
+                             })
         }
         banner.show(at: position, on: host)
     }

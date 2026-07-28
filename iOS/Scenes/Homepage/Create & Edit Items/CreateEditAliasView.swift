@@ -234,14 +234,10 @@ private extension CreateEditAliasView {
         .itemCreateEditSetUp(viewModel)
         .optionalSheet(binding: $sheetState) { state in
             AliasOptionsSheetContent(module: viewModel.module,
-                                     preferencesManager: viewModel.preferencesManager,
                                      state: state,
-                                     aliasCount: viewModel.aliasCount,
-                                     onAddMailbox: viewModel.addMailbox,
-                                     onAddDomain: viewModel.addDomain,
-                                     onDismiss: { sheetState = nil },
-                                     onError: { viewModel.handle($0) })
-                .environment(\.colorScheme, colorScheme)
+                                     aliasCount: viewModel.aliasCount) { action in
+                handleAction(action)
+            }.environment(\.colorScheme, colorScheme)
         }
         .sheet(isPresented: $viewModel.isShowingCodeScanner) {
             WrappedCodeScannerView { result in
@@ -423,5 +419,23 @@ private extension CreateEditAliasView {
 
     var mailboxSelectionTitle: String {
         (viewModel.mode.isEditMode ? MailboxSection.Mode.edit : MailboxSection.Mode.create).title
+    }
+}
+
+private extension CreateEditAliasView {
+    func handleAction(_ action: AliasOptionsSheetContentAction) {
+        switch action {
+        case .addMailbox:
+            viewModel.addMailbox()
+
+        case .addDomain:
+            viewModel.addDomain()
+
+        case .shouldDismiss:
+            sheetState = nil
+
+        case let .hasError(error):
+            viewModel.handle(error)
+        }
     }
 }

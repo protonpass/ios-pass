@@ -27,7 +27,7 @@ import Macro
 import SwiftUI
 
 public struct LoginItemsView<ItemRow: View, SearchResultRow: View>: View {
-    @ObservedObject private var viewModel: LoginItemsViewModel
+    @State private var viewModel: LoginItemsViewModel
     @FocusState private var isFocused
     @Binding private var selectedUser: UserUiModel?
     private let searchableItems: [SearchableItem]
@@ -78,6 +78,10 @@ public struct LoginItemsView<ItemRow: View, SearchResultRow: View>: View {
                 Spacer()
                 createButton
             }
+        }
+        .task(id: viewModel.query) {
+            do { try await Task.sleep(for: .milliseconds(300)) } catch { return }
+            await viewModel.search(term: viewModel.query)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(PassColor.backgroundNorm)

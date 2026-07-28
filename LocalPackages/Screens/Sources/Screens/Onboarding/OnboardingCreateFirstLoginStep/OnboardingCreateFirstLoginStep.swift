@@ -25,7 +25,7 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct OnboardingCreateFirstLoginStep: View {
-    @StateObject private var viewModel: OnboardingCreateFirstLoginStepViewModel
+    @State private var viewModel: OnboardingCreateFirstLoginStepViewModel
     @FocusState private var focusedServiceName
     @Binding var saveable: Bool
     @Binding var topBar: OnboardingView.TopBar
@@ -70,6 +70,10 @@ struct OnboardingCreateFirstLoginStep: View {
                 focusedServiceName = true
                 topBar = .notNowButton
             }
+        }
+        .task(id: viewModel.serviceName) {
+            do { try await Task.sleep(for: .milliseconds(300)) } catch { return }
+            await viewModel.updateSuggestion()
         }
         .onChange(of: viewModel.saveable) { _, newValue in
             saveable = newValue
