@@ -121,7 +121,6 @@ private struct ContainerRow: View {
     @Binding var expandedContainerIds: Set<String>
     @Binding var selectedContainer: ShareSelectionPayload
 
-    /// Subfolders of the vault, `nil` when folders are unsupported or when there is none
     private var folders: [FolderUiModel]? {
         guard folderSupported,
               let folders = content.folders(in: content.id),

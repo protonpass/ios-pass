@@ -20,16 +20,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-// import SwiftUI
-//
-// struct NavigationMenuView: View {
-//    @State private var viewModel = NavigationMenuViewModel()
-//
-//    var body: some View {
-//        Text("Add some view here")
-//    }
-// }
-
 import Client
 import DesignSystem
 import Entities
@@ -171,17 +161,12 @@ public struct NavigationMenuView: View {
             if viewModel.shouldUpsell {
                 UpsellRow(onUpgrade: viewModel.upgradeSubscription)
             }
-            vaultsScrollView
+            VaultsScrollView(viewModel: viewModel)
             VaultListBottomBar(viewModel: viewModel)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         .background(PassColor.backgroundWeak)
         .showSpinner(viewModel.loading)
-    }
-
-    private func selectAndDismiss(_ selection: ShareSelection) {
-        dismiss()
-        viewModel.select(selection)
     }
 
     // swiftlint:disable line_length
@@ -197,8 +182,11 @@ public struct NavigationMenuView: View {
     // swiftlint:enable line_length
 }
 
-private extension NavigationMenuView {
-    var vaultsScrollView: some View {
+private struct VaultsScrollView: View {
+    @Environment(\.dismiss) private var dismiss
+    @Bindable var viewModel: NavigationMenuViewModel
+
+    var body: some View {
         LazyVStack(spacing: 0) {
             switch viewModel.state {
             case .error, .loading:
@@ -280,7 +268,12 @@ private extension NavigationMenuView {
         .scrollViewEmbeded()
     }
 
-    func createFolderButton(_ content: ShareContent) -> some View {
+    private func selectAndDismiss(_ selection: ShareSelection) {
+        dismiss()
+        viewModel.select(selection)
+    }
+
+    private func createFolderButton(_ content: ShareContent) -> some View {
         Button(action: {
             if viewModel.shouldUpsell {
                 viewModel.upgradeSubscription()

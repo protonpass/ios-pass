@@ -33,7 +33,6 @@ import ProtonCoreLogin
 import Stores
 
 private extension NavigationMenuViewModel {
-    /// All per-scope counts, computed once when the content state changes and then read O(1).
     @MainActor
     struct Count {
         let all: Int
@@ -61,7 +60,6 @@ private extension NavigationMenuViewModel {
                 }
                 vaultCounts[shareContent.share.shareId] = shareContent.itemCount
             }
-            // The "all items" scope also surfaces active items shared with the user.
             self.all = all + sharesData.itemsSharedWithMe.count(where: { $0.state == .active })
             self.vaultCounts = vaultCounts
             sharedWithMe = sharesData.itemsSharedWithMe.count
@@ -83,6 +81,7 @@ public final class NavigationMenuViewModel: DeinitPrintable {
     private(set) var visibleVaults: [ShareContent] = []
     private(set) var hiddenVaults: [ShareContent] = []
     private(set) var hideShowVaultSupported = false
+    private(set) var folderSupported = false
 
     var containerToDelete: ActionnableContainer?
     var folderAction: FolderAction?
@@ -122,10 +121,6 @@ public final class NavigationMenuViewModel: DeinitPrintable {
             guard let shareSelection, shareSelection != oldValue else { return }
             select(.precise(shareSelection))
         }
-    }
-
-    var folderSupported: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passFolder)
     }
 
     func shareContent(for shareId: String) -> ShareContent? {
@@ -503,6 +498,8 @@ extension NavigationMenuViewModel {
 
 private extension NavigationMenuViewModel {
     func setUp() {
+        folderSupported = getFeatureFlagStatus(for: FeatureFlagType.passFolder)
+
         if let userId = userManager.activeUserId {
             expandedContainerIds = Self.loadSet(for: userId)
         }
