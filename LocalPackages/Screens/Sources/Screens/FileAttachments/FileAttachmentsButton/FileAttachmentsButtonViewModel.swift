@@ -62,18 +62,7 @@ enum CapturedPhoto {
 @MainActor
 @Observable
 final class FileAttachmentsButtonViewModel {
-    /// Tracked backing store. Written directly when we need to mutate the
-    /// selection *without* re-entering photo processing.
-    private var storedSelectedPhotos = [PhotosPickerItem]()
-
-    var selectedPhotos: [PhotosPickerItem] {
-        get { storedSelectedPhotos }
-        set {
-            storedSelectedPhotos = newValue
-            processSelectedPhotos(newValue)
-        }
-    }
-
+    var selectedPhotos = [PhotosPickerItem]()
     var scannedTextToBeConfirmed = ""
     var showTextConfirmation = false
     var showNoTextFound = false
@@ -131,7 +120,7 @@ final class FileAttachmentsButtonViewModel {
     }
 }
 
-private extension FileAttachmentsButtonViewModel {
+extension FileAttachmentsButtonViewModel {
     func processSelectedPhotos(_ photos: [PhotosPickerItem]) {
         guard let photo = photos.first else { return }
 
@@ -153,7 +142,7 @@ private extension FileAttachmentsButtonViewModel {
                     throw PassError.fileAttachment(.failedToProcessPickedPhotos)
                 }
                 try Task.checkCancellation()
-                storedSelectedPhotos = [] // Bypass the setter: no re-entrancy.
+                selectedPhotos = []
                 handler.handleAttachment(url)
             } catch is CancellationError {
                 // Superseded by a newer selection. Not user-facing.

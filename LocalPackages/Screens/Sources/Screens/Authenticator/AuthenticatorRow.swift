@@ -39,7 +39,6 @@ public struct AuthenticatorRow<ThumbnailView: View>: View {
         self.onCopyTotpToken = onCopyTotpToken
     }
 
-    /// Nothing here reads `viewModel.state`: only the code and the timer refresh every second.
     public var body: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             thumbnailView

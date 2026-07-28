@@ -165,7 +165,7 @@ private extension PasswordHistoryView {
     func handleCopy(for password: GeneratedPasswordUiModel) {
         Task {
             if let clearPassword = await viewModel.getClearPassword(for: password) {
-                action(.create(clearPassword))
+                action(.copy(clearPassword))
             }
         }
     }
