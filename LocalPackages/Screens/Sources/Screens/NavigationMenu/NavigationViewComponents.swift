@@ -52,7 +52,6 @@ struct MenuVaultSelectionRow: View {
     }
 }
 
-/// A vault-list row in view mode: the selectable row plus its trailing contextual menu.
 struct VaultScopeRow: View {
     let selection: ShareSelection
     let viewModel: NavigationMenuViewModel
@@ -105,7 +104,6 @@ struct ThreeDotsMenuLabel: View {
     }
 }
 
-/// Menu for a vault row (edit, create folder, share, manage access, move, delete/leave).
 struct VaultTrailingMenu: View {
     let vault: Share
     let haveItems: Bool
@@ -193,8 +191,6 @@ struct VaultTrailingMenu: View {
                            }, icon: {
                                IconProvider.trash
                            })
-//                           Label("Delete vault",
-//                                 uiImage: IconProvider.trash)
                        })
             } else if vault.groupID == nil {
                 Button(role: .destructive,
@@ -206,15 +202,12 @@ struct VaultTrailingMenu: View {
                            }, icon: {
                                IconProvider.trash
                            })
-//                           Label("Leave vault",
-//                                 uiImage: IconProvider.trash)
                        })
             }
         }, label: { ThreeDotsMenuLabel() })
     }
 }
 
-/// Menu for the trash row (restore all / empty trash) with its own confirmation alert.
 struct TrashTrailingMenu: View {
     let viewModel: NavigationMenuViewModel
     @State private var isShowingEmptyTrashAlert = false
@@ -272,7 +265,6 @@ struct TrashTrailingMenu: View {
 
 // MARK: - Upsell & bottom bar
 
-/// Upgrade-to-Plus banner shown at the top of the vault list.
 struct UpsellRow: View {
     let onUpgrade: () -> Void
 
@@ -319,7 +311,6 @@ struct UpsellRow: View {
     }
 }
 
-/// Bottom action bar: "Create vault" and "Organize vaults" buttons that wrap across lines when needed.
 struct VaultListBottomBar: View {
     let viewModel: NavigationMenuViewModel
 
