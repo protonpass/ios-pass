@@ -78,7 +78,6 @@ enum FolderAction: Equatable {
 }
 
 public struct NavigationMenuView: View {
-    @Environment(\.dismiss) private var dismiss
     @State private var viewModel = NavigationMenuViewModel()
     @State private var containerNameConfirmation = ""
     @State private var folderName = ""
