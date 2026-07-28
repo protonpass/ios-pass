@@ -126,7 +126,7 @@ private extension PasswordHistoryView {
         LazyVStack(spacing: DesignConstant.sectionPadding) {
             ForEach(viewModel.passwords) { password in
                 GeneratedPasswordRow(password: password) { action in
-                    handleActions(password: password, action: action)
+                    handleAction(password: password, action: action)
                 }
             }
 
@@ -138,7 +138,7 @@ private extension PasswordHistoryView {
 }
 
 private extension PasswordHistoryView {
-    func handleActions(password: GeneratedPasswordUiModel, action: GeneratedPasswordRowActions) {
+    func handleAction(password: GeneratedPasswordUiModel, action: GeneratedPasswordRowAction) {
         switch action {
         case .copy:
             handleCopy(for: password)
@@ -171,7 +171,7 @@ private extension PasswordHistoryView {
     }
 }
 
-private enum GeneratedPasswordRowActions {
+private enum GeneratedPasswordRowAction {
     case copy
     case toggleVisibility
     case createLogin
@@ -180,7 +180,7 @@ private enum GeneratedPasswordRowActions {
 
 private struct GeneratedPasswordRow: View {
     let password: GeneratedPasswordUiModel
-    let action: (GeneratedPasswordRowActions) -> Void
+    let action: (GeneratedPasswordRowAction) -> Void
 
     var body: some View {
         HStack {

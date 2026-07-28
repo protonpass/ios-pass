@@ -76,7 +76,6 @@ final class OnboardingCreateFirstLoginStepViewModel {
         suggestions = await Self.match(services, serviceName: lowercasedName)
     }
 
-    /// The only part that runs off the main actor.
     @concurrent
     private static func match(_ services: [KnownService],
                               serviceName: String) async -> [KnownService] {

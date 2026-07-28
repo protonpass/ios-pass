@@ -87,8 +87,7 @@ private final class AliasOptionsSheetContentViewModel {
     private(set) var showDomainTip = false
 
     private let aliasCount: Int?
-    private let preferencesManager: any PreferencesManagerProtocol = dependency(\ToolingContainer
-        .preferencesManager)
+    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
     private let action: (AliasOptionsSheetContentAction) -> Void
 
     let state: AliasOptionsSheetState
