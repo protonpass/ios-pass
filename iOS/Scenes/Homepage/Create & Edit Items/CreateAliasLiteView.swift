@@ -113,7 +113,7 @@ struct CreateAliasLiteView: View {
                 AliasOptionsSheetContent(module: viewModel.module,
                                          state: state,
                                          aliasCount: viewModel.aliasCount) { action in
-                    parseOptionSheetAction(action)
+                    handleAction(action)
                 }
                 .environment(\.colorScheme, colorScheme)
             }
@@ -165,7 +165,7 @@ struct CreateAliasLiteView: View {
 }
 
 private extension CreateAliasLiteView {
-    func parseOptionSheetAction(_ action: AliasOptionsSheetContentAction) {
+    func handleAction(_ action: AliasOptionsSheetContentAction) {
         switch action {
         case .addMailbox:
             viewModel.addMailbox()

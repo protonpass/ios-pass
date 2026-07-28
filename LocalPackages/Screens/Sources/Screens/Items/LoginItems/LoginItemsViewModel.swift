@@ -44,7 +44,6 @@ final class LoginItemsViewModel {
         self.uiModels = uiModels
     }
 
-    /// Entirely main-actor isolated. No `MainActor.run`, no hop back.
     func search(term: String) async {
         let trimmed = term.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else {
@@ -54,7 +53,7 @@ final class LoginItemsViewModel {
 
         state = .searching
         do {
-            let results = try await Self.match(searchableItems, term: trimmed)
+            let results = try await searchableItems.result(for: trimmed)
             try Task.checkCancellation()
             state = .searchResults(results)
         } catch is CancellationError {
@@ -64,12 +63,5 @@ final class LoginItemsViewModel {
             print(error.localizedDescription)
             #endif
         }
-    }
-
-    /// The only part that runs off the main actor.
-    @concurrent
-    private static func match(_ items: [SearchableItem],
-                              term: String) async throws -> [ItemSearchResult] {
-        try await items.result(for: term)
     }
 }
