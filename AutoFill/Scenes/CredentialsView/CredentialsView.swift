@@ -20,7 +20,6 @@
 
 import Client
 import DesignSystem
-import DIComposition
 import Entities
 import Macro
 import ProtonCoreUIFoundations
@@ -332,7 +331,6 @@ private struct ItemRow: View {
                                      },
                                      uri: totpUri,
                                      title: title,
-                                     totpManager: ServiceContainer.shared.totpManager(),
                                      onCopyTotpToken: { _ in onSelect(item) })
                         .padding(.top, DesignConstant.sectionPadding / 2)
                 }

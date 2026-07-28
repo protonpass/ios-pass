@@ -28,80 +28,36 @@ enum LoginItemsViewModelState: Equatable {
     case idle
     case searching
     case searchResults([ItemSearchResult])
-
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        switch (lhs, rhs) {
-        case (.idle, .idle),
-             (.searching, .searching),
-             (.searchResults, .searchResults):
-            true
-
-        default:
-            false
-        }
-    }
 }
 
 @MainActor
-final class LoginItemsViewModel: ObservableObject {
-    @Published private(set) var state: LoginItemsViewModelState = .idle
-    @Published var query = ""
+@Observable
+final class LoginItemsViewModel {
+    private(set) var state: LoginItemsViewModelState = .idle
+    var query = ""
 
-    private let searchableItems: [SearchableItem]
     let uiModels: [ItemUiModel]
-
-    private var lastTask: Task<Void, Never>?
-    private var cancellables = Set<AnyCancellable>()
+    private let searchableItems: [SearchableItem]
 
     init(searchableItems: [SearchableItem], uiModels: [ItemUiModel]) {
         self.searchableItems = searchableItems
         self.uiModels = uiModels
-        setUp()
-    }
-}
-
-private extension LoginItemsViewModel {
-    func setUp() {
-        $query
-            .debounce(for: 0.4, scheduler: DispatchQueue.main)
-            .removeDuplicates()
-            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-            .subscribe(on: DispatchQueue.global())
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] term in
-                guard let self else { return }
-                doSearch(term: term)
-            }
-            .store(in: &cancellables)
     }
 
-    func doSearch(term: String) {
-        guard state != .searching else { return }
-        guard !term.isEmpty else {
+    func search(term: String) async {
+        let trimmed = term.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else {
             state = .idle
             return
         }
 
-        lastTask?.cancel()
-        lastTask = Task { [weak self] in
-            guard let self else { return }
-            await searchAsync(term: term)
-        }
-    }
-
-    @concurrent
-    func searchAsync(term: String) async {
-        await MainActor.run { [weak self] in
-            guard let self else { return }
-            state = .searching
-        }
-
+        state = .searching
         do {
-            let results = try await searchableItems.result(for: term)
-            await MainActor.run { [weak self] in
-                guard let self else { return }
-                state = .searchResults(results)
-            }
+            let results = try await searchableItems.result(for: trimmed)
+            try Task.checkCancellation()
+            state = .searchResults(results)
+        } catch is CancellationError {
+            // Superseded — the newer call owns `state`. Don't clobber it.
         } catch {
             #if DEBUG
             print(error.localizedDescription)

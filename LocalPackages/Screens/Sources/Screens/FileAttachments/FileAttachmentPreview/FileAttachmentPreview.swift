@@ -27,7 +27,7 @@ import WebKit
 
 public struct FileAttachmentPreview: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var viewModel: FileAttachmentPreviewModel
+    @State private var viewModel: FileAttachmentPreviewModel
     let primaryTintColor: Color
     let secondaryTintColor: Color
 
