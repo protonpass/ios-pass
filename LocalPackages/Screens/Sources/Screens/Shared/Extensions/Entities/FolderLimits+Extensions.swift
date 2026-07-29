@@ -1,6 +1,6 @@
 //
 // FolderLimits+Extensions.swift
-// Proton Pass - Created on 22/05/2026.
+// Proton Pass - Created on 27/07/2026.
 // Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,7 +21,7 @@
 import Core
 import Entities
 
-extension FolderLimits {
+public extension FolderLimits {
     static var `default`: Self {
         Self(maxFoldersPerVault: Constants.FolderDefaultLimits.maxFoldersPerVault,
              maxFoldersPerLayer: Constants.FolderDefaultLimits.maxFoldersPerLayer,

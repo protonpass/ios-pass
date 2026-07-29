@@ -1,7 +1,7 @@
 //
 // UpsellingViewConfiguration+Extensions.swift
-// Proton Pass - Created on 08/04/2024.
-// Copyright (c) 2024 Proton Technologies AG
+// Proton Pass - Created on 27/07/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -22,23 +22,22 @@ import DesignSystem
 import Entities
 import Macro
 import ProtonCoreUIFoundations
-import Screens
 
-extension UpsellingViewConfiguration {
+public extension UpsellingViewConfiguration {
     static var `default`: UpsellingViewConfiguration {
         UpsellingViewConfiguration(icon: PassIcon.passPlus,
-                                   title: #localized("Stay safer online"),
+                                   title: #localized("Stay safer online", bundle: .module),
                                    description: UpsellEntry.generic.description,
                                    upsellElements: .default,
-                                   ctaTitle: #localized("Get Pass Plus"))
+                                   ctaTitle: #localized("Get Pass Plus", bundle: .module))
     }
 
     static var essentials: UpsellingViewConfiguration {
         UpsellingViewConfiguration(icon: PassIcon.passPlus,
-                                   title: #localized("Stay safer online"),
+                                   title: #localized("Stay safer online", bundle: .module),
                                    description: UpsellEntry.generic.description,
                                    upsellElements: .essentials,
-                                   ctaTitle: #localized("Get Pass Business"))
+                                   ctaTitle: #localized("Get Pass Business", bundle: .module))
     }
 }
 
@@ -46,16 +45,16 @@ extension [UpsellElement] {
     static var `default`: Self {
         [
             UpsellElement(icon: IconProvider.user,
-                          title: #localized("Proton Sentinel"),
+                          title: #localized("Proton Sentinel", bundle: .module),
                           color: PassColor.interactionNormMajor2),
             UpsellElement(icon: IconProvider.lock,
-                          title: #localized("Integrated 2FA authenticator"),
+                          title: #localized("Integrated 2FA authenticator", bundle: .module),
                           color: PassColor.interactionNormMajor2),
             UpsellElement(icon: IconProvider.alias,
-                          title: #localized("Unlimited hide-my-email aliases"),
+                          title: #localized("Unlimited hide-my-email aliases", bundle: .module),
                           color: PassColor.interactionNormMajor2),
             UpsellElement(icon: IconProvider.usersPlus,
-                          title: #localized("Vault sharing (up to 10 people)"),
+                          title: #localized("Vault sharing (up to 10 people)", bundle: .module),
                           color: PassColor.interactionNormMajor2)
         ]
     }
@@ -63,13 +62,13 @@ extension [UpsellElement] {
     static var essentials: Self {
         [
             UpsellElement(icon: IconProvider.user,
-                          title: #localized("Proton Sentinel"),
+                          title: #localized("Proton Sentinel", bundle: .module),
                           color: PassColor.interactionNormMajor2),
             UpsellElement(icon: IconProvider.lock,
-                          title: #localized("Require 2FA for organization"),
+                          title: #localized("Require 2FA for organization", bundle: .module),
                           color: PassColor.interactionNormMajor2),
             UpsellElement(icon: IconProvider.checkmark,
-                          title: #localized("SSO integration (coming soon)"),
+                          title: #localized("SSO integration (coming soon)", bundle: .module),
                           color: PassColor.interactionNormMajor2)
         ]
     }

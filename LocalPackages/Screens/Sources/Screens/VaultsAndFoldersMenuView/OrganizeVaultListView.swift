@@ -1,6 +1,6 @@
 //
 // OrganizeVaultListView.swift
-// Proton Pass - Created on 15/01/2026.
+// Proton Pass - Created on 27/07/2026.
 // Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,11 +21,10 @@
 import DesignSystem
 import Entities
 import Foundation
-import Screens
 import SwiftUI
 
 struct OrganizeVaultListView: View {
-    @ObservedObject var viewModel: EditableVaultListViewModel
+    let viewModel: VaultsAndFoldersMenuViewModel
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -43,13 +42,13 @@ struct OrganizeVaultListView: View {
             Button(action: {
                 viewModel.updateMode(.view)
             }, label: {
-                Text("Cancel")
+                Text("Cancel", bundle: .module)
                     .foregroundStyle(PassColor.interactionNormMajor2)
             })
 
             Spacer()
 
-            Text("Organize vaults")
+            Text("Organize vaults", bundle: .module)
                 .fontWeight(.bold)
                 .foregroundStyle(PassColor.textNorm)
 
@@ -58,7 +57,7 @@ struct OrganizeVaultListView: View {
             Button(action: {
                 viewModel.applyVaultsOrganizations()
             }, label: {
-                Text("Done")
+                Text("Done", bundle: .module)
                     .fontWeight(.semibold)
                     .foregroundStyle(PassColor.interactionNormMajor2)
             })
@@ -69,7 +68,7 @@ struct OrganizeVaultListView: View {
     var vaultsScrollView: some View {
         LazyVStack(spacing: 0) {
             if case .loaded = viewModel.state {
-                Text("Visible vaults")
+                Text("Visible vaults", bundle: .module)
                     .fontWeight(.semibold)
                     .foregroundStyle(PassColor.textNorm)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -83,14 +82,15 @@ struct OrganizeVaultListView: View {
                 }
 
                 if !viewModel.hiddenShareIds.isEmpty {
-                    Text("Hidden vaults")
+                    Text("Hidden vaults", bundle: .module)
                         .fontWeight(.semibold)
                         .foregroundStyle(PassColor.textNorm)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.top)
                         .padding(.bottom, 4)
                     // swiftlint:disable:next line_length
-                    Text("These vaults will not be accessible and their content won't be available to Search or Autofill.")
+                    Text("These vaults will not be accessible and their content won't be available to Search or Autofill.",
+                         bundle: .module)
                         .foregroundStyle(PassColor.textWeak)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.bottom)
@@ -111,24 +111,11 @@ struct OrganizeVaultListView: View {
     @ViewBuilder
     func vaultRow(for selection: ShareSelection) -> some View {
         if let share = selection.share {
-            let vaultRowMode: VaultRowMode = .organise(isHidden: viewModel.hiddenShareIds
-                .contains(share.shareId))
-            HStack {
-                Button(action: {
-                    viewModel.hideOrUnhide(share: share)
-                }, label: {
-                    VaultRow(thumbnail: {
-                                 CircleButton(icon: selection.icon,
-                                              iconColor: selection.color,
-                                              backgroundColor: selection.color.opacity(0.16))
-                             },
-                             title: selection.title,
-                             itemCount: viewModel.itemCount(for: selection),
-                             share: share,
-                             mode: vaultRowMode,
-                             height: 74)
-                })
-                .buttonStyle(.plain)
+            let mode: VaultRowMode = .organise(isHidden: viewModel.hiddenShareIds.contains(share.shareId))
+            MenuVaultSelectionRow(selection: selection,
+                                  itemCount: viewModel.itemCount(for: selection),
+                                  mode: mode) {
+                viewModel.hideOrUnhide(share: share)
             }
         }
     }

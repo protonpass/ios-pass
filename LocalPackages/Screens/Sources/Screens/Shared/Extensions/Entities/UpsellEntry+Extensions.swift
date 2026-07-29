@@ -1,7 +1,7 @@
 //
 // UpsellEntry+Extensions.swift
-// Proton Pass - Created on 17/06/2024.
-// Copyright (c) 2024 Proton Technologies AG
+// Proton Pass - Created on 27/07/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -23,35 +23,39 @@ import Entities
 import Foundation
 import Macro
 import ProtonCoreUIFoundations
-import Screens
 
-extension UpsellEntry {
+public extension UpsellEntry {
     var description: String {
         switch self {
         case .generic, .missing2fa, .secureLink, .sentinel:
-            #localized("Unlock advanced security features and detailed logs to safeguard your online presence.")
+            #localized("Unlock advanced security features and detailed logs to safeguard your online presence.",
+                       bundle: .module)
 
         case .darkWebMonitorNoBreach:
-            #localized("Dark Web Monitoring is available with a paid plan. Upgrade for immediate access.")
+            #localized("Dark Web Monitoring is available with a paid plan. Upgrade for immediate access.",
+                       bundle: .module)
 
         case .darkWebMonitorBreach:
             // swiftlint:disable:next line_length
-            #localized("Your personal data was leaked by an online service in a data breach. Upgrade to view full details and get recommended actions.")
+            #localized("Your personal data was leaked by an online service in a data breach. Upgrade to view full details and get recommended actions.",
+                       bundle: .module)
 
         case .aliasManagement:
-            #localized("Advanced alias management is available with Pass Plus. Upgrade for immediate access.")
+            #localized("Advanced alias management is available with Pass Plus. Upgrade for immediate access.",
+                       bundle: .module)
 
         case .fileAttachments:
-            #localized("File attachments are available with Pass Plus. Upgrade for immediate access.")
+            #localized("File attachments are available with Pass Plus. Upgrade for immediate access.",
+                       bundle: .module)
         }
     }
 
     var defaultConfiguration: UpsellingViewConfiguration {
         UpsellingViewConfiguration(icon: PassIcon.passPlus,
-                                   title: #localized("Stay safer online"),
+                                   title: #localized("Stay safer online", bundle: .module),
                                    description: description,
                                    upsellElements: upsellElements,
-                                   ctaTitle: #localized("Get Pass Plus"))
+                                   ctaTitle: #localized("Get Pass Plus", bundle: .module))
     }
 
     var upsellElements: [UpsellElement] {
@@ -59,22 +63,22 @@ extension UpsellEntry {
         switch self {
         case .secureLink:
             upsellElements.append(UpsellElement(icon: IconProvider.link,
-                                                title: #localized("Secure links"),
+                                                title: #localized("Secure links", bundle: .module),
                                                 color: PassColor.interactionNormMajor2))
 
         case .darkWebMonitorNoBreach:
             upsellElements.append(UpsellElement(icon: PassIcon.shield2,
-                                                title: #localized("Dark Web Monitoring"),
+                                                title: #localized("Dark Web Monitoring", bundle: .module),
                                                 color: PassColor.interactionNormMajor2))
 
         case .aliasManagement:
             upsellElements.append(UpsellElement(icon: IconProvider.mailbox,
-                                                title: #localized("Advanced alias management"),
+                                                title: #localized("Advanced alias management", bundle: .module),
                                                 color: PassColor.interactionNormMajor2))
 
         case .fileAttachments:
             upsellElements.append(UpsellElement(icon: IconProvider.mailbox,
-                                                title: #localized("File attachments"),
+                                                title: #localized("File attachments", bundle: .module),
                                                 color: PassColor.interactionNormMajor2))
 
         default:

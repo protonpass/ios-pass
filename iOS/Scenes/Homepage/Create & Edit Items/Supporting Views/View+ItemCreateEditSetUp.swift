@@ -88,9 +88,9 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
             }
             .sheet(isPresented: $viewModel.isShowingVaultSelector) {
                 // Add more height when free users to make room for upsell banner
-                VaultSelectorView(selectedContainer: $viewModel.selectedContainer,
-                                  isFreeUser: viewModel.isFreeUser,
-                                  onUpgrade: { viewModel.upgrade() })
+                ContainerDestinationSelectionView(selectedContainer: $viewModel.selectedContainer,
+                                                  isFreeUser: viewModel.isFreeUser,
+                                                  onUpgrade: { viewModel.upgrade() })
                     .environment(\.colorScheme, colorScheme)
             }
             .fullScreenCover(item: $viewModel.filePreviewMode) { mode in
