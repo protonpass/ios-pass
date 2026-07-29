@@ -1544,7 +1544,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 
     func itemsTabViewModelWantsToPresentVaultList() {
         var sheetPresentationController: UISheetPresentationController?
-        let view = EditableVaultListView(onChangeMode: { mode in
+        let view = VaultsAndFoldersMenuView(onChangeMode: { mode in
             sheetPresentationController?.prefersGrabberVisible = mode.isView
         })
         let viewController = UIHostingController(rootView: view)
@@ -1612,10 +1612,6 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     }
 
     func presentBugReportView() {
-        let errorHandler: (any Error) -> Void = { [weak self] error in
-            guard let self else { return }
-            handle(error: error)
-        }
         let successHandler: () -> Void = { [weak self] in
             guard let self else { return }
             dismissTopMostViewController { [weak self] in

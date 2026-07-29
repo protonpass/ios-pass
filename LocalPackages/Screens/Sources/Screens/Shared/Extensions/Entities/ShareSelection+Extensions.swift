@@ -1,6 +1,6 @@
 //
 // ShareSelection+Extensions.swift
-// Proton Pass - Created on 15/01/2026.
+// Proton Pass - Created on 27/07/2026.
 // Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -24,23 +24,23 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
-extension ShareSelection {
+public extension ShareSelection {
     var title: String {
         switch self {
         case .all:
-            #localized("All items")
+            #localized("All items", bundle: .module)
 
         case let .precise(selection):
             selection.title
 
         case .trash:
-            #localized("Trash")
+            #localized("Trash", bundle: .module)
 
         case .sharedByMe:
-            #localized("Shared by me")
+            #localized("Shared by me", bundle: .module)
 
         case .sharedWithMe:
-            #localized("Shared with me")
+            #localized("Shared with me", bundle: .module)
         }
     }
 
@@ -89,23 +89,23 @@ extension ShareSelection {
     var accessibilityLabel: String {
         switch self {
         case .all:
-            #localized("Show all vaults")
+            #localized("Show all vaults", bundle: .module)
 
         case let .precise(selection):
             if selection.isFolderSelected {
-                #localized("Show %@ folder", selection.title)
+                #localized("Show %@ folder", bundle: .module, selection.title)
             } else {
-                #localized("Show %@ vault", selection.title)
+                #localized("Show %@ vault", bundle: .module, selection.title)
             }
 
         case .trash:
-            #localized("Show trash")
+            #localized("Show trash", bundle: .module)
 
         case .sharedByMe:
-            #localized("Show shared by me")
+            #localized("Show shared by me", bundle: .module)
 
         case .sharedWithMe:
-            #localized("Show shared with me")
+            #localized("Show shared with me", bundle: .module)
         }
     }
 }

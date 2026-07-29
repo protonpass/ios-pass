@@ -25,28 +25,28 @@ extension ItemTypeIdentifiable {
     var trashMessage: String {
         switch type {
         case .login:
-            #localized("Login moved to trash")
+            #localized("Login moved to trash", bundle: .module)
 
         case .alias:
-            #localized("Alias \"%@\" moved to trash", aliasEmail ?? "")
+            #localized("Alias \"%@\" moved to trash", bundle: .module, aliasEmail ?? "")
 
         case .creditCard:
-            #localized("Credit card moved to trash")
+            #localized("Credit card moved to trash", bundle: .module)
 
         case .note:
-            #localized("Note moved to trash")
+            #localized("Note moved to trash", bundle: .module)
 
         case .identity:
-            #localized("Identity moved to trash")
+            #localized("Identity moved to trash", bundle: .module)
 
         case .sshKey:
-            #localized("SSH key moved to trash")
+            #localized("SSH key moved to trash", bundle: .module)
 
         case .wifi:
-            #localized("WiFi network moved to trash")
+            #localized("WiFi network moved to trash", bundle: .module)
 
         case .custom:
-            #localized("Custom item moved to trash")
+            #localized("Custom item moved to trash", bundle: .module)
         }
     }
 }
