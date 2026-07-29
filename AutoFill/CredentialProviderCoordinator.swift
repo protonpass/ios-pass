@@ -52,6 +52,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     private let completeConfiguration = dependency(\AutoFillUseCaseContainer.completeConfiguration)
     private let cancelAutoFill = dependency(\AutoFillUseCaseContainer.cancelAutoFill)
     private let sendErrorToSentry = dependency(\UseCasesContainer.sendErrorToSentry)
+    private let generatePasswords = dependency(\AutoFillUseCaseContainer.generateAutofillPasswords)
 
     // Lazily injected because some use cases are dependent on repositories
     // which are not registered when the user is not logged in
@@ -75,6 +76,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
+    private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
     private var credentialsViewModel: CredentialsViewModel?
     private var startTask: Task<Void, Never>?
 
@@ -162,8 +164,7 @@ private extension CredentialProviderCoordinator {
             handleArbitraryTextInsertion(users: users)
 
         case let .generatePasswords(request, withUI: withUI):
-            if #available(iOS 26.2, *),
-               let request = request as? ASGeneratePasswordsRequest {
+            if #available(iOS 26.2, *) {
                 handleGeneratePasswords(request, withUI)
             }
         }
@@ -279,21 +280,35 @@ private extension CredentialProviderCoordinator {
 @available(iOS 26.2, *)
 private extension CredentialProviderCoordinator {
     // periphery:ignore:parameters request
-    func handleGeneratePasswords(_ request: ASGeneratePasswordsRequest, _ withUI: Bool) {
+    func handleGeneratePasswords(_ request: GeneratePasswordsRequest, _ withUI: Bool) {
         guard let context else { return }
 
         if withUI {
-            let view = GeneratePasswordView(mode: .random) { password in
-                var results = [ASGeneratedPassword]()
-                results.append(ASGeneratedPassword(kind: .strong, value: password))
+            let view = PasswordGeneratorView(mode: .autofill,
+                                             onResult: { [weak self] result in
+                                                 guard let self else { return }
 
-                context.completeGeneratePasswordRequest(results: results) { _ in }
-            }
+                                                 switch result {
+                                                 case let .success(password):
+                                                     var results = [ASGeneratedPassword]()
+                                                     results.append(ASGeneratedPassword(kind: .strong,
+                                                                                        value: password))
+                                                     context
+                                                         .completeGeneratePasswordRequest(results: results) { _ in
+                                                         }
+
+                                                 case let .failure(error):
+                                                     handle(error: error)
+                                                 }
+                                             },
+                                             onClose: { [weak self] in
+                                                 guard let self else { return }
+                                                 cancelAutoFill(reason: .userCanceled, context: context)
+                                             })
             showView(view)
             return
         }
 
-        let generatePasswords = resolve(\AutoFillUseCaseContainer.generateAutofillPasswords)
         do {
             let passwords = try generatePasswords()
             context.completeGeneratePasswordRequest(results: passwords) { _ in }
@@ -512,6 +527,7 @@ private extension CredentialProviderCoordinator {
                                                          upgradeChecker: upgradeChecker)
             viewModel.delegate = self
             present(CreateEditLoginView(viewModel: viewModel), dismissBeforePresenting: true)
+            currentCreateEditItemViewModel = viewModel
         } catch {
             logger.error(error)
             bannerManager.displayTopErrorMessage(error)
@@ -523,6 +539,7 @@ private extension CredentialProviderCoordinator {
             let viewModel = try CreateEditAliasViewModel(mode: .create(.alias),
                                                          upgradeChecker: upgradeChecker)
             present(CreateEditAliasView(viewModel: viewModel), dismissBeforePresenting: true)
+            currentCreateEditItemViewModel = viewModel
         } catch {
             logger.error(error)
             bannerManager.displayTopErrorMessage(error)

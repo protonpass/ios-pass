@@ -21,50 +21,47 @@
 //
 
 import AuthenticationServices
+import Client
 import Core
+import DIComposition
 import Entities
 import UseCases
 
-// sourcery: AutoMockable
-@available(iOS 26.2, *)
-public protocol GenerateAutofillPasswordsUseCase: Sendable {
+protocol GenerateAutofillPasswordsUseCase: Sendable {
+    @available(iOS 26.2, *)
     func callAsFunction() throws -> [ASGeneratedPassword]
 }
 
-@available(iOS 26.2, *)
-public struct GenerateAutofillPasswords: GenerateAutofillPasswordsUseCase {
+struct GenerateAutofillPasswords: GenerateAutofillPasswordsUseCase {
     private let generatePassword: any GeneratePasswordUseCase
     private let generateRandomWords: any GenerateRandomWordsUseCase
     private let generatePassphrase: any GeneratePassphraseUseCase
+    private let localDataSource: any LocalPasswordPreferencesDatasourceProtocol
 
     init(generatePassword: any GeneratePasswordUseCase,
          generateRandomWords: any GenerateRandomWordsUseCase,
-         generatePassphrase: any GeneratePassphraseUseCase) {
+         generatePassphrase: any GeneratePassphraseUseCase,
+         localDataSource: any LocalPasswordPreferencesDatasourceProtocol) {
         self.generatePassword = generatePassword
         self.generateRandomWords = generateRandomWords
         self.generatePassphrase = generatePassphrase
+        self.localDataSource = localDataSource
     }
 
-    public func callAsFunction() throws -> [ASGeneratedPassword] {
-        let characterCount = kSharedUserDefaults.object(forKey: "characterCount") as? Int ?? 20
-        let hasSpecialCharacters = kSharedUserDefaults.object(forKey: "hasSpecialCharacters") as? Bool ?? true
-        let hasCapitalCharacters = kSharedUserDefaults.object(forKey: "hasCapitalCharacters") as? Bool ?? true
-        let hasNumberCharacters = kSharedUserDefaults.object(forKey: "hasNumberCharacters") as? Bool ?? true
-        let wordCount = kSharedUserDefaults.object(forKey: "wordCount") as? Int ?? 5
-        let capitalizingWords = kSharedUserDefaults.object(forKey: "capitalizingWords") as? Bool ?? true
-        let includingNumbers = kSharedUserDefaults.object(forKey: "includingNumbers") as? Bool ?? true
-        let wordSeparatorRawValue = kSharedUserDefaults.object(forKey: "wordSeparator") as? Int
-        let wordSeparator = wordSeparatorRawValue.flatMap { WordSeparator(rawValue: $0) } ?? .hyphens
-        let rawValue = kSharedUserDefaults.integer(forKey: "passwordType")
-        let passwordType = PasswordType(rawValue: rawValue)
+    @available(iOS 26.2, *)
+    func callAsFunction() throws -> [ASGeneratedPassword] {
+        let preference = localDataSource.getPreferences()
 
-        var results = [ASGeneratedPassword]()
-
+        let characterCount = if preference.characterCount > PasswordPreferences.default.characterCount {
+            preference.characterCount
+        } else {
+            PasswordPreferences.default.characterCount
+        }
         // Strong password (with special characters)
         let strongPassword = try generatePassword(length: characterCount,
-                                                  numbers: hasNumberCharacters,
-                                                  uppercaseLetters: hasCapitalCharacters,
-                                                  symbols: hasSpecialCharacters)
+                                                  numbers: true,
+                                                  uppercaseLetters: true,
+                                                  symbols: true)
 
         // Alphanumeric password (no special characters)
         let alphanumericPassword = try generatePassword(length: characterCount,
@@ -73,14 +70,15 @@ public struct GenerateAutofillPasswords: GenerateAutofillPasswordsUseCase {
                                                         symbols: false)
 
         // Passphrase
-        let words = try generateRandomWords(wordCount: wordCount)
+        let words = try generateRandomWords(wordCount: preference.wordCount)
         let passphrase = try generatePassphrase(words: words,
-                                                separator: wordSeparator,
-                                                capitalise: capitalizingWords,
-                                                includeNumbers: includingNumbers)
+                                                separator: preference.wordSeparator,
+                                                capitalise: true,
+                                                includeNumbers: true)
+        var results = [ASGeneratedPassword]()
         results.append(ASGeneratedPassword(kind: .passphrase, value: passphrase))
 
-        if passwordType == .memorable {
+        if preference.passwordType == .memorable {
             results.append(ASGeneratedPassword(kind: .passphrase, value: passphrase))
             results.append(ASGeneratedPassword(kind: .strong, value: strongPassword))
         } else {
