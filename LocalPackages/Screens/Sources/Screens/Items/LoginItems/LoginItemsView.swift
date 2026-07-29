@@ -26,8 +26,13 @@ import Entities
 import Macro
 import SwiftUI
 
+private struct SearchTrigger: Equatable {
+    let query: String
+    let items: [SearchableItem]
+}
+
 public struct LoginItemsView<ItemRow: View, SearchResultRow: View>: View {
-    @State private var viewModel: LoginItemsViewModel
+    @State private var viewModel = LoginItemsViewModel()
     @FocusState private var isFocused
     @Binding private var selectedUser: UserUiModel?
     private let searchableItems: [SearchableItem]
@@ -55,8 +60,6 @@ public struct LoginItemsView<ItemRow: View, SearchResultRow: View>: View {
                 onRefresh: @escaping () async -> Void,
                 onCreate: @escaping () -> Void,
                 onCancel: @escaping () -> Void) {
-        _viewModel = .init(wrappedValue: .init(searchableItems: searchableItems,
-                                               uiModels: uiModels))
         self.searchableItems = searchableItems
         self.uiModels = uiModels
         self.mode = mode
@@ -79,9 +82,9 @@ public struct LoginItemsView<ItemRow: View, SearchResultRow: View>: View {
                 createButton
             }
         }
-        .task(id: viewModel.query) {
+        .task(id: SearchTrigger(query: viewModel.query, items: searchableItems)) {
             do { try await Task.sleep(for: .milliseconds(300)) } catch { return }
-            await viewModel.search(term: viewModel.query)
+            await viewModel.search(term: viewModel.query, in: searchableItems)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(PassColor.backgroundNorm)
@@ -132,7 +135,7 @@ private extension LoginItemsView {
     var allItems: some View {
         if useSwiftUIList {
             List {
-                ForEach(viewModel.uiModels) { item in
+                ForEach(uiModels) { item in
                     itemRow(item)
                         .plainListRow()
                 }
@@ -145,7 +148,7 @@ private extension LoginItemsView {
             ]
             TableView(sections: sections,
                       configuration: .init(rowSpacing: 8),
-                      id: nil,
+                      id: selectedUser?.hashValue,
                       itemView: { itemRow($0) },
                       headerView: { _ in nil },
                       onRefresh: { await onRefresh() })
