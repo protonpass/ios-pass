@@ -24,7 +24,7 @@ import Foundation
 import SwiftUI
 
 struct OrganizeVaultListView: View {
-    let viewModel: NavigationMenuViewModel
+    let viewModel: VaultsAndFoldersMenuViewModel
 
     var body: some View {
         VStack(alignment: .leading) {

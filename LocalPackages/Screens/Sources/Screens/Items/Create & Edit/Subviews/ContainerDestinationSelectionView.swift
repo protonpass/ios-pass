@@ -116,18 +116,23 @@ private struct ContainerList: View {
 }
 
 private struct ContainerRow: View {
-    let content: ShareContent
-    let folderSupported: Bool
-    @Binding var expandedContainerIds: Set<String>
-    @Binding var selectedContainer: ShareSelectionPayload
+    private let content: ShareContent
+    @Binding private var expandedContainerIds: Set<String>
+    @Binding private var selectedContainer: ShareSelectionPayload
+    private let folders: [FolderUiModel]?
 
-    private var folders: [FolderUiModel]? {
-        guard folderSupported,
-              let folders = content.folders(in: content.id),
-              !folders.isEmpty else {
-            return nil
+    init(content: ShareContent,
+         folderSupported: Bool,
+         expandedContainerIds: Binding<Set<String>>,
+         selectedContainer: Binding<ShareSelectionPayload>) {
+        self.content = content
+        folders = if folderSupported {
+            content.folders(in: content.id)?.nilIfEmpty
+        } else {
+            nil
         }
-        return folders
+        _expandedContainerIds = expandedContainerIds
+        _selectedContainer = selectedContainer
     }
 
     var body: some View {
@@ -167,7 +172,7 @@ private struct ContainerRow: View {
 extension ContainerRow: Equatable {
     static func == (lhs: ContainerRow, rhs: ContainerRow) -> Bool {
         lhs.content == rhs.content &&
-            lhs.folderSupported == rhs.folderSupported &&
+            lhs.folders == rhs.folders &&
             lhs.expandedContainerIds == rhs.expandedContainerIds &&
             lhs.selectedContainer == rhs.selectedContainer
     }
