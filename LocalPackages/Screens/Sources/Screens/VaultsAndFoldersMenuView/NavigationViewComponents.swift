@@ -54,7 +54,7 @@ struct MenuVaultSelectionRow: View {
 
 struct VaultScopeRow: View {
     let selection: ShareSelection
-    let viewModel: NavigationMenuViewModel
+    let viewModel: VaultsAndFoldersMenuViewModel
     let onSelect: (ShareSelection) -> Void
 
     var body: some View {
@@ -94,7 +94,7 @@ struct VaultScopeRow: View {
 
 // MARK: - Trailing menus
 
-struct ThreeDotsMenuLabel: View {
+private struct ThreeDotsMenuLabel: View {
     var body: some View {
         IconProvider.threeDotsVertical
             .resizable()
@@ -104,10 +104,10 @@ struct ThreeDotsMenuLabel: View {
     }
 }
 
-struct VaultTrailingMenu: View {
+private struct VaultTrailingMenu: View {
     let vault: Share
     let haveItems: Bool
-    let viewModel: NavigationMenuViewModel
+    let viewModel: VaultsAndFoldersMenuViewModel
 
     var body: some View {
         Menu(content: {
@@ -208,8 +208,8 @@ struct VaultTrailingMenu: View {
     }
 }
 
-struct TrashTrailingMenu: View {
-    let viewModel: NavigationMenuViewModel
+private struct TrashTrailingMenu: View {
+    let viewModel: VaultsAndFoldersMenuViewModel
     @State private var isShowingEmptyTrashAlert = false
 
     var body: some View {
@@ -240,8 +240,9 @@ struct TrashTrailingMenu: View {
                        })
             }, label: { ThreeDotsMenuLabel() })
                 .alert(showAliasWarning ?
-                    "You are about to permanently delete \(trashedAliasesCount) aliases" :
-                    "Empty trash",
+                    #localized("You are about to permanently delete %lld aliases", bundle: .module,
+                               trashedAliasesCount) :
+                    #localized("Empty trash", bundle: .module),
                     isPresented: $isShowingEmptyTrashAlert,
                     actions: {
                         Button(role: .destructive,
@@ -251,7 +252,7 @@ struct TrashTrailingMenu: View {
                                         bundle: .module)
                                })
 
-                        Button(role: .cancel, label: { Text("Cancel") })
+                        Button(role: .cancel, label: { Text("Cancel", bundle: .module) })
                     },
                     message: {
                         Text(showAliasWarning ?
@@ -296,7 +297,7 @@ struct UpsellRow: View {
                 .frame(width: 20, height: 20)
                 .scaledToFit()
                 .foregroundStyle(PassColor.interactionNormMajor2)
-            Text("Upgrade to Pass Plus")
+            Text("Upgrade to Pass Plus", bundle: .module)
                 .foregroundStyle(PassColor.textNorm)
                 .frame(maxWidth: .infinity, alignment: .leading)
             IconProvider.chevronRight
@@ -312,7 +313,7 @@ struct UpsellRow: View {
 }
 
 struct VaultListBottomBar: View {
-    let viewModel: NavigationMenuViewModel
+    let viewModel: VaultsAndFoldersMenuViewModel
 
     var body: some View {
         ViewThatFits {
@@ -334,7 +335,7 @@ struct VaultListBottomBar: View {
 
     private func createVaultButton(fixedSize: Bool) -> some View {
         CapsuleLabelButton(icon: IconProvider.plus,
-                           title: #localized("Create vault"),
+                           title: #localized("Create vault", bundle: .module),
                            titleColor: PassColor.interactionNormMajor2,
                            backgroundColor: PassColor.interactionNormMinor1,
                            fontWeight: .semibold,
@@ -347,7 +348,7 @@ struct VaultListBottomBar: View {
     private func organizeVaultsButton(fixedSize: Bool) -> some View {
         if viewModel.hideShowVaultSupported {
             CapsuleLabelButton(icon: IconProvider.listBullets,
-                               title: #localized("Organize vaults"),
+                               title: #localized("Organize vaults", bundle: .module),
                                titleColor: PassColor.interactionNormMajor2,
                                backgroundColor: PassColor.interactionNormMinor1,
                                fontWeight: .semibold,

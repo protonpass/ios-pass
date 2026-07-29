@@ -1,6 +1,6 @@
 //
 //
-// NavigationMenuViewModel.swift
+// VaultsAndFoldersMenuViewModel.swift
 // Proton Pass - Created on 27/07/2026.
 // Copyright (c) 2026 Proton Technologies AG
 //
@@ -32,8 +32,7 @@ import Observation
 import ProtonCoreLogin
 import Stores
 
-private extension NavigationMenuViewModel {
-    @MainActor
+private extension VaultsAndFoldersMenuViewModel {
     struct Count {
         let all: Int
         let vaultCounts: [String: Int]
@@ -71,7 +70,7 @@ private extension NavigationMenuViewModel {
 
 @MainActor
 @Observable
-public final class NavigationMenuViewModel: DeinitPrintable {
+public final class VaultsAndFoldersMenuViewModel: DeinitPrintable {
     private(set) var loading = false
     private(set) var state = AppContentState.loading
     private(set) var organization: Entities.Organization?
@@ -249,7 +248,7 @@ public final class NavigationMenuViewModel: DeinitPrintable {
 
 // MARK: - Public APIs
 
-extension NavigationMenuViewModel {
+extension VaultsAndFoldersMenuViewModel {
     func delete(container: ActionnableContainer) {
         Task { [weak self] in
             guard let self else { return }
@@ -445,7 +444,7 @@ extension NavigationMenuViewModel {
 
 // MARK: - Folder actions
 
-extension NavigationMenuViewModel {
+extension VaultsAndFoldersMenuViewModel {
     func editFolder(_ folder: FolderUiModel, name: String) async throws {
         let userId = try await userManager.getActiveUserId()
         try await appContentManager.editFolder(userId: userId,
@@ -496,7 +495,7 @@ extension NavigationMenuViewModel {
 
 // MARK: - Private APIs
 
-private extension NavigationMenuViewModel {
+private extension VaultsAndFoldersMenuViewModel {
     func setUp() {
         folderSupported = getFeatureFlagStatus(for: FeatureFlagType.passFolder)
 
@@ -594,7 +593,7 @@ private extension NavigationMenuViewModel {
     }
 }
 
-private extension NavigationMenuViewModel {
+private extension VaultsAndFoldersMenuViewModel {
     static let keyPrefix = "me.pass.editablevaultlistviewmodel.set"
 
     static func loadSet(for userId: String) -> Set<String> {

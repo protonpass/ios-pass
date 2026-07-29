@@ -1,6 +1,6 @@
 //
 //
-// NavigationMenuView.swift
+// VaultsAndFoldersMenuView.swift
 // Proton Pass - Created on 27/07/2026.
 // Copyright (c) 2026 Proton Technologies AG
 //
@@ -77,13 +77,13 @@ enum FolderAction: Equatable {
     }
 }
 
-public struct NavigationMenuView: View {
-    @State private var viewModel = NavigationMenuViewModel()
+public struct VaultsAndFoldersMenuView: View {
+    @State private var viewModel = VaultsAndFoldersMenuViewModel()
     @State private var containerNameConfirmation = ""
     @State private var folderName = ""
-    private let onChangeMode: (NavigationMenuViewModel.Mode) -> Void
+    private let onChangeMode: (VaultsAndFoldersMenuViewModel.Mode) -> Void
 
-    public init(onChangeMode: @escaping (NavigationMenuViewModel.Mode) -> Void) {
+    public init(onChangeMode: @escaping (VaultsAndFoldersMenuViewModel.Mode) -> Void) {
         self.onChangeMode = onChangeMode
     }
 
@@ -183,7 +183,7 @@ public struct NavigationMenuView: View {
 
 private struct VaultsScrollView: View {
     @Environment(\.dismiss) private var dismiss
-    @Bindable var viewModel: NavigationMenuViewModel
+    @Bindable var viewModel: VaultsAndFoldersMenuViewModel
 
     var body: some View {
         LazyVStack(spacing: 0) {
@@ -307,7 +307,7 @@ private struct VaultsScrollView: View {
 private struct FolderMenuView: View {
     let folder: FolderUiModel
     let content: ShareContent
-    let viewModel: NavigationMenuViewModel
+    let viewModel: VaultsAndFoldersMenuViewModel
 
     var body: some View {
         Menu {

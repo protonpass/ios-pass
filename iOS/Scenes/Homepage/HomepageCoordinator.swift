@@ -1544,7 +1544,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 
     func itemsTabViewModelWantsToPresentVaultList() {
         var sheetPresentationController: UISheetPresentationController?
-        let view = NavigationMenuView(onChangeMode: { mode in
+        let view = VaultsAndFoldersMenuView(onChangeMode: { mode in
             sheetPresentationController?.prefersGrabberVisible = mode.isView
         })
         let viewController = UIHostingController(rootView: view)
