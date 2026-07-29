@@ -127,6 +127,7 @@ extension AutoFillUseCaseContainer {
 
     var createAndAssociatePasskey: Factory<any CreateAndAssociatePasskeyUseCase> {
         self { CreateAndAssociatePasskey(itemRepository: self.itemRepository,
+                                         userManager: self.userManager,
                                          createPasskey: self.createPasskey,
                                          updateLastUseTimeAndReindex: self.updateLastUseTimeAndReindex(),
                                          completePasskeyRegistration: self.completePasskeyRegistration()) }
@@ -146,6 +147,7 @@ extension AutoFillUseCaseContainer {
     @MainActor
     var checkAndAutoFill: Factory<any CheckAndAutoFillUseCase> {
         self { CheckAndAutoFill(credentialProvider: DataContainer.shared.credentialProvider(),
+                                userManager: ServiceContainer.shared.userManager(),
                                 canSkipLocalAuthentication: self.canSkipLocalAuthentication(),
                                 generateAuthorizationCredential: self.generateAuthorizationCredential(),
                                 cancelAutoFill: self.cancelAutoFill(),
@@ -209,6 +211,8 @@ extension AutoFillUseCaseContainer {
 
     var updateLastUseTimeAndReindex: Factory<any UpdateLastUseTimeAndReindexUseCase> {
         self { UpdateLastUseTimeAndReindex(itemRepository: self.itemRepository,
+                                           localItemDatasource: RepositoryContainer.shared
+                                               .localItemDatasource(),
                                            localShareDatasource: RepositoryContainer.shared
                                                .localShareDatasource(),
                                            reindexLoginItem: self.reindexLoginItem()) }
@@ -220,11 +224,12 @@ extension AutoFillUseCaseContainer {
         }
     }
 
-    @available(iOS 26.2, *)
     var generateAutofillPasswords: Factory<any GenerateAutofillPasswordsUseCase> {
-        self { GenerateAutofillPasswords(generatePassword: SharedUseCasesContainer.shared.generatePassword(),
-                                         generateRandomWords: SharedUseCasesContainer.shared.generateRandomWords(),
-                                         generatePassphrase: SharedUseCasesContainer.shared.generatePassphrase())
+        self { GenerateAutofillPasswords(generatePassword: UseCasesContainer.shared.generatePassword(),
+                                         generateRandomWords: UseCasesContainer.shared.generateRandomWords(),
+                                         generatePassphrase: UseCasesContainer.shared.generatePassphrase(),
+                                         localDataSource: RepositoryContainer.shared
+                                             .localPasswordPreferencesDatasource())
         }
     }
 }

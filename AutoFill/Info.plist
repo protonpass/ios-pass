@@ -15,7 +15,7 @@
 			<key>ASCredentialProviderExtensionCapabilities</key>
 			<dict>
 				<key>SupportsSavePasswordCredentials</key>
-				<true/>
+				<false/>
 				<key>ProvidesPasskeys</key>
 				<true/>
 				<key>ProvidesPasswords</key>

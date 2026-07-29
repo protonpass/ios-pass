@@ -80,7 +80,7 @@ enum AutoFillMode {
 
     /// System asks extension to generate password suggestions silently (iOS 26.2+).
     /// Associated value is `ASGeneratePasswordsRequest` (type-erased for availability).
-    case generatePasswords(any Sendable, withUI: Bool = false)
+    case generatePasswords(GeneratePasswordsRequest, withUI: Bool = false)
 
     var isArbitraryTextInsertion: Bool {
         if case .arbitraryTextInsertion = self {
