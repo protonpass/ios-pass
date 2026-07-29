@@ -20,6 +20,7 @@
 
 @preconcurrency import AuthenticationServices
 import Client
+import Combine
 import Entities
 import FactoryKit
 import Foundation
@@ -52,6 +53,8 @@ final class PasskeyCredentialsViewModel: AutoFillViewModel<CredentialsForPasskey
     private(set) var searchableItems: [SearchableItem] = []
     @Published private(set) var items: [ItemUiModel] = []
 
+    private var filterTask: Task<Void, Never>?
+
     init(users: [UserUiModel],
          request: PasskeyCredentialRequest,
          context: ASCredentialProviderExtensionContext?,
@@ -60,6 +63,21 @@ final class PasskeyCredentialsViewModel: AutoFillViewModel<CredentialsForPasskey
         super.init(context: context,
                    users: users,
                    userForNewItemSubject: userForNewItemSubject)
+    }
+
+    override func setUp() {
+        super.setUp()
+        selectedUserUpdated
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                filterTask?.cancel()
+                filterTask = Task { [weak self] in
+                    guard let self else { return }
+                    await filterItems()
+                }
+            }
+            .store(in: &cancellables)
     }
 
     override func getVaults(userId: String) -> [Share]? {

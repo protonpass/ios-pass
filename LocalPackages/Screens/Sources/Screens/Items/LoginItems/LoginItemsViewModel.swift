@@ -20,8 +20,6 @@
 //
 
 import Client
-import Combine
-import Entities
 import Foundation
 
 enum LoginItemsViewModelState: Equatable {
@@ -36,15 +34,7 @@ final class LoginItemsViewModel {
     private(set) var state: LoginItemsViewModelState = .idle
     var query = ""
 
-    let uiModels: [ItemUiModel]
-    private let searchableItems: [SearchableItem]
-
-    init(searchableItems: [SearchableItem], uiModels: [ItemUiModel]) {
-        self.searchableItems = searchableItems
-        self.uiModels = uiModels
-    }
-
-    func search(term: String) async {
+    func search(term: String, in items: [SearchableItem]) async {
         let trimmed = term.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else {
             state = .idle
@@ -53,7 +43,7 @@ final class LoginItemsViewModel {
 
         state = .searching
         do {
-            let results = try await searchableItems.result(for: trimmed)
+            let results = try await items.result(for: trimmed)
             try Task.checkCancellation()
             state = .searchResults(results)
         } catch is CancellationError {
