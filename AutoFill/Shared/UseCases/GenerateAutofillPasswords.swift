@@ -52,11 +52,7 @@ struct GenerateAutofillPasswords: GenerateAutofillPasswordsUseCase {
     func callAsFunction() throws -> [ASGeneratedPassword] {
         let preference = localDataSource.getPreferences()
 
-        let characterCount = if preference.characterCount > PasswordPreferences.default.characterCount {
-            preference.characterCount
-        } else {
-            PasswordPreferences.default.characterCount
-        }
+        let characterCount = max(preference.characterCount, PasswordPreferences.default.characterCount)
         // Strong password (with special characters)
         let strongPassword = try generatePassword(length: characterCount,
                                                   numbers: true,
@@ -70,7 +66,9 @@ struct GenerateAutofillPasswords: GenerateAutofillPasswordsUseCase {
                                                         symbols: false)
 
         // Passphrase
-        let words = try generateRandomWords(wordCount: preference.wordCount)
+        let wordCount = max(preference.wordCount, PasswordPreferences.default.wordCount)
+        let words = try generateRandomWords(wordCount: wordCount)
+
         let passphrase = try generatePassphrase(words: words,
                                                 separator: preference.wordSeparator,
                                                 capitalise: true,
