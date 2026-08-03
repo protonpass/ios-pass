@@ -50,11 +50,36 @@ final class CompletePasskeyRegistration: CompletePasskeyRegistrationUseCase {
         // Add telemetry event before completing on purpose
         // because after completing the extension is dismissed
         addTelemetryEvent(with: .passkeyCreate)
-        let credential = ASPasskeyRegistrationCredential(relyingParty: response.rpId ?? response.rpName,
+        let credential: ASPasskeyRegistrationCredential
+        if #available(iOS 18.0, *) {
+            let extensionOutput = ASPasskeyRegistrationCredentialExtensionOutput(prf: response.prfOutput)
+            credential = ASPasskeyRegistrationCredential(relyingParty: response.rpId ?? response.rpName,
+                                                         clientDataHash: response.clientDataHash,
+                                                         credentialID: response.credentialId,
+                                                         attestationObject: response.attestationObject,
+                                                         extensionOutput: extensionOutput)
+        } else {
+            credential = ASPasskeyRegistrationCredential(relyingParty: response.rpId ?? response.rpName,
                                                          clientDataHash: response.clientDataHash,
                                                          credentialID: response.credentialId,
                                                          attestationObject: response.attestationObject)
+        }
         context.completeRegistrationRequest(using: credential)
         resetFactory()
+    }
+}
+
+private extension CreatePasskeyResponse {
+    @available(iOS 18.0, *)
+    var prfOutput: ASAuthorizationPublicKeyCredentialPRFRegistrationOutput? {
+        guard let prf, prf.supported else {
+            return nil
+        }
+
+        guard let first = prf.first else {
+            return .supported
+        }
+
+        return .init(first: .init(data: first), second: prf.second.map { .init(data: $0) })
     }
 }

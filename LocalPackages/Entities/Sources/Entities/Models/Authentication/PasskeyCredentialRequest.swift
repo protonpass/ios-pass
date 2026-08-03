@@ -29,6 +29,11 @@ public struct PasskeyCredentialRequest: Sendable, Equatable, Hashable {
     public let clientDataHash: Data
     public let userHandle: Data
     public let supportedAlgorithms: [ASCOSEAlgorithmIdentifier]
+    /// Whether the relying party requested the PRF extension. This is `true` even when no salts
+    /// are provided (Apple's `.checkForSupport`), in which case PRF is only enabled on the credential.
+    public let needsPrf: Bool
+    public let saltInput1: Data?
+    public let saltInput2: Data?
 
     public init(userName: String,
                 relyingPartyIdentifier: String,
@@ -36,7 +41,10 @@ public struct PasskeyCredentialRequest: Sendable, Equatable, Hashable {
                 recordIdentifier: String?,
                 clientDataHash: Data,
                 userHandle: Data,
-                supportedAlgorithms: [ASCOSEAlgorithmIdentifier]) {
+                supportedAlgorithms: [ASCOSEAlgorithmIdentifier],
+                needsPrf: Bool,
+                saltInput1: Data?,
+                saltInput2: Data?) {
         self.userName = userName
         self.relyingPartyIdentifier = relyingPartyIdentifier
         self.serviceIdentifier = serviceIdentifier
@@ -44,5 +52,8 @@ public struct PasskeyCredentialRequest: Sendable, Equatable, Hashable {
         self.clientDataHash = clientDataHash
         self.userHandle = userHandle
         self.supportedAlgorithms = supportedAlgorithms
+        self.needsPrf = needsPrf
+        self.saltInput1 = saltInput1
+        self.saltInput2 = saltInput2
     }
 }
