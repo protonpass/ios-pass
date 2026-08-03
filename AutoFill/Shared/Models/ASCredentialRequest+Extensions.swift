@@ -37,6 +37,22 @@ extension ASCredentialRequest {
             assertionFailure("Failed to extract request's information")
             return nil
         }
+        var needsPrf = false
+        var saltInput1: Data?
+        var saltInput2: Data?
+        if #available(iOS 18.0, *) {
+            switch request.extensionInput {
+            case let .registration(input):
+                if let prf = input.prf {
+                    needsPrf = true
+                    saltInput1 = prf.inputValues?.saltInput1
+                    saltInput2 = prf.inputValues?.saltInput2
+                }
+
+            default:
+                break
+            }
+        }
         return PasskeyCredentialRequest(userName: credentialIdentity.userName,
                                         relyingPartyIdentifier: credentialIdentity
                                             .relyingPartyIdentifier,
@@ -44,7 +60,10 @@ extension ASCredentialRequest {
                                         recordIdentifier: credentialIdentity.recordIdentifier,
                                         clientDataHash: request.clientDataHash,
                                         userHandle: credentialIdentity.userHandle,
-                                        supportedAlgorithms: request.supportedAlgorithms)
+                                        supportedAlgorithms: request.supportedAlgorithms,
+                                        needsPrf: needsPrf,
+                                        saltInput1: saltInput1,
+                                        saltInput2: saltInput2)
     }
 
     @available(iOSApplicationExtension 18.0, *)
