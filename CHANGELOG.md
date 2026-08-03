@@ -1,3 +1,13 @@
+# Version 1.21.0
+- Show penalties for password strength criteria
+- Added PRF (Pseudo-Random Function) support for passkeys
+- Fixed SSO-related issues
+- Improved the bug reporting experience with better file and input validation
+
+Others:
+- Core libraries upgraded from 37.4.0 to 37.5.0
+- Rust library upgraded from 1.6.1 to 1.7.3
+
 # Version 1.20.0
 - Introduced Liquid Glass, bringing a more refined and modern visual experience
 - Added support for username generator
