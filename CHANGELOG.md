@@ -7,6 +7,7 @@
 Others:
 - Core libraries upgraded from 37.4.0 to 37.5.0
 - Rust library upgraded from 1.6.1 to 1.7.3
+- Remove "PassHideShowVault" and "PassGroupInvitesV1" flags
 
 # Version 1.20.0
 - Introduced Liquid Glass, bringing a more refined and modern visual experience

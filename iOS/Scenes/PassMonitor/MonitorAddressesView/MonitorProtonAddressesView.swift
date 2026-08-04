@@ -64,13 +64,16 @@ private extension MonitorProtonAddressesView {
 
         if let access = viewModel.access {
             ToolbarItem(placement: .topBarTrailing) {
-                CircleMenu(icon: IconProvider.threeDotsVertical,
-                           iconColor: PassColor.interactionNormMajor2,
-                           backgroundColor: PassColor.interactionNormMinor1,
-                           accessibilityLabel: "Options") {
+                Menu(content: {
                     ToggleMonitorButton(monitored: access.monitor.protonAddress,
                                         action: { viewModel.toggleMonitor() })
-                }
+                }, label: {
+                    CircleButton(icon: IconProvider.threeDotsVertical,
+                                 iconColor: PassColor.interactionNormMajor2,
+                                 backgroundColor: PassColor.interactionNormMinor1,
+                                 accessibilityLabel: "Options",
+                                 action: {})
+                })
             }
         }
     }
