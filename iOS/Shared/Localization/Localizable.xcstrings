@@ -11571,36 +11571,6 @@
             }
           }
         },
-        "cs" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lldkrát"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lldkrát"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lldkrát"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lldkrát"
-                }
-              }
-            }
-          }
-        },
         "da" : {
           "variations" : {
             "plural" : {
@@ -24018,7 +23988,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Toate divulgările actuale vor fi marcate ca rezolvate. În caz de compromiteri ulterioare veți primi o notificare."
+            "value" : "Toate breșele actuale vor fi marcate ca rezolvate. În caz de breșe ulterioare veți primi o notificare."
           }
         },
         "ru" : {
@@ -29351,7 +29321,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Meniu acțiune detalii divulgare"
+            "value" : "Meniu acțiune detalii breșă"
           }
         },
         "ru" : {
@@ -29547,7 +29517,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Divulgare detectată pentru"
+            "value" : "Breșă detectată pentru"
           }
         },
         "ru" : {
@@ -29743,7 +29713,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Divulgări detectate"
+            "value" : "Breșă detectată"
           }
         },
         "ru" : {
@@ -29939,7 +29909,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Divulgări"
+            "value" : "Breșe"
           }
         },
         "ru" : {
@@ -30135,7 +30105,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Divulgări detectate"
+            "value" : "Breșe detectate"
           }
         },
         "ru" : {
@@ -30331,7 +30301,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Divulgări rezolvate"
+            "value" : "Breșe rezolvate"
           }
         },
         "ru" : {
@@ -83915,7 +83885,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ultima divulgare: %@"
+            "value" : "Ultima breșă: %@"
           }
         },
         "sk" : {
@@ -95690,7 +95660,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nu există divulgări"
+            "value" : "Nu există breșe"
           }
         },
         "ru" : {
@@ -95886,7 +95856,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Divulgări nedetectate pentru"
+            "value" : "Breșe nedetectate pentru"
           }
         },
         "ru" : {
@@ -119194,7 +119164,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Divulgări rezolvate"
+            "value" : "Breșe rezolvate"
           }
         },
         "ru" : {
@@ -121143,36 +121113,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "S'ha reutilitzat %lld vegades"
-                }
-              }
-            }
-          }
-        },
-        "cs" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Opakovaně použito %lldkrát"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Opakovaně použito %lldkrát"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Opakovaně použito %lldkrát"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Opakovaně použito %lldkrát"
                 }
               }
             }
