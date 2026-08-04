@@ -256,7 +256,9 @@ private struct EditModeView: View {
     @ViewBuilder
     var extraOptionsMenu: some View {
         if !viewModel.extraOptions.isEmpty {
-            Menu(content: {
+            CircleMenu(icon: IconProvider.threeDotsVertical,
+                       iconColor: PassColor.textNorm,
+                       backgroundColor: .clear) {
                 ForEach(viewModel.extraOptions, id: \.self) { option in
                     Section {
                         Button(action: { handle(extraOption: option) },
@@ -265,11 +267,7 @@ private struct EditModeView: View {
                                })
                     }
                 }
-            }, label: {
-                CircleButton(icon: IconProvider.threeDotsVertical,
-                             iconColor: PassColor.textNorm,
-                             backgroundColor: .clear)
-            })
+            }
         }
     }
 

@@ -80,19 +80,16 @@ private extension PasswordHistoryView {
 
         if !viewModel.passwords.isEmpty {
             ToolbarItem(placement: .topBarTrailing) {
-                Menu(content: {
+                CircleMenu(icon: IconProvider.threeDotsVertical,
+                           iconColor: PassColor.passwordInteractionNormMajor2,
+                           backgroundColor: PassColor.passwordInteractionNormMinor1) {
                     Button(role: .destructive,
                            action: viewModel.clearHistory,
                            label: {
                                Label(title: { Text("Clear history", bundle: .module) },
                                      icon: { PassIcon.clearHistory })
                            })
-                }, label: {
-                    CircleButton(icon: IconProvider.threeDotsVertical,
-                                 iconColor: PassColor.passwordInteractionNormMajor2,
-                                 backgroundColor: PassColor.passwordInteractionNormMinor1,
-                                 action: {})
-                })
+                }
             }
         }
     }
@@ -231,7 +228,9 @@ private struct GeneratedPasswordRow: View {
     }
 
     private var otherOptionsButton: some View {
-        Menu(content: {
+        CircleMenu(icon: IconProvider.threeDotsVertical,
+                   iconColor: PassColor.passwordInteractionNormMajor2,
+                   backgroundColor: .clear) {
             Button { action(.copy) } label: {
                 Label(title: { Text("Copy password", bundle: .module) },
                       icon: { IconProvider.key })
@@ -246,10 +245,6 @@ private struct GeneratedPasswordRow: View {
                 Label(title: { Text("Remove from history", bundle: .module) },
                       icon: { IconProvider.trashCross })
             }
-        }, label: {
-            CircleButton(icon: IconProvider.threeDotsVertical,
-                         iconColor: PassColor.passwordInteractionNormMajor2,
-                         backgroundColor: .clear)
-        })
+        }
     }
 }
