@@ -132,16 +132,19 @@ private extension FileAttachmentPreview {
 
         ToolbarItem(placement: .topBarTrailing) {
             if case let .fetched(url) = viewModel.url {
-                CircleMenu(icon: IconProvider.threeDotsVertical,
-                           iconColor: primaryTintColor,
-                           backgroundColor: secondaryTintColor) {
+                Menu(content: {
                     LabelButton(title: "Save",
                                 icon: IconProvider.arrowDownCircle,
                                 action: { viewModel.urlToSave = url })
                     LabelButton(title: "Share",
                                 icon: IconProvider.arrowUpFromSquare,
                                 action: { viewModel.urlToShare = url })
-                }
+                }, label: {
+                    CircleButton(icon: IconProvider.threeDotsVertical,
+                                 iconColor: primaryTintColor,
+                                 backgroundColor: secondaryTintColor,
+                                 action: {})
+                })
             }
         }
     }

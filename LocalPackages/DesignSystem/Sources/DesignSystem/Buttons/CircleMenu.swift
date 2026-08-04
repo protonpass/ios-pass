@@ -20,6 +20,8 @@
 
 import SwiftUI
 
+/// Renders `Menu` with liquid glass effect. Do NOT use inside a toolbar
+/// because toolbar renders extra padding. Prefer a normal `Menu` with `CircleButton` as label for toolbar.
 public struct CircleMenu<Content: View>: View {
     @Environment(\.isEnabled) private var isEnabled
     private let icon: Image

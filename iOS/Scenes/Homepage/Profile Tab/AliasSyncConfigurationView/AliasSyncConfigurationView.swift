@@ -298,10 +298,7 @@ private struct MailboxElementRow: View {
 
             Spacer()
 
-            CircleMenu(icon: IconProvider.threeDotsVertical,
-                       iconColor: PassColor.textWeak,
-                       backgroundColor: .clear,
-                       accessibilityLabel: "Mailbox action menu") {
+            Menu(content: {
                 if mailbox.verificationNeeded {
                     Label(title: { Text("Verify") },
                           icon: { IconProvider.checkmarkCircle })
@@ -329,7 +326,12 @@ private struct MailboxElementRow: View {
                           icon: { IconProvider.trash })
                         .buttonEmbeded(action: delete)
                 }
-            }
+            }, label: {
+                CircleButton(icon: IconProvider.threeDotsVertical,
+                             iconColor: PassColor.textWeak,
+                             backgroundColor: .clear,
+                             accessibilityLabel: "Mailbox action menu")
+            })
         }
     }
 
