@@ -319,9 +319,7 @@ struct VaultListBottomBar: View {
         ViewThatFits {
             HStack {
                 createVaultButton(fixedSize: true)
-                if viewModel.hideShowVaultSupported {
-                    Spacer()
-                }
+                Spacer()
                 organizeVaultsButton(fixedSize: true)
             }
 
@@ -344,16 +342,13 @@ struct VaultListBottomBar: View {
             .hidden(!viewModel.vaultCreationAllowed)
     }
 
-    @ViewBuilder
     private func organizeVaultsButton(fixedSize: Bool) -> some View {
-        if viewModel.hideShowVaultSupported {
-            CapsuleLabelButton(icon: IconProvider.listBullets,
-                               title: #localized("Organize vaults", bundle: .module),
-                               titleColor: PassColor.interactionNormMajor2,
-                               backgroundColor: PassColor.interactionNormMinor1,
-                               fontWeight: .semibold,
-                               action: { viewModel.updateMode(.organise) })
-                .fixedSize(horizontal: fixedSize, vertical: fixedSize)
-        }
+        CapsuleLabelButton(icon: IconProvider.listBullets,
+                           title: #localized("Organize vaults", bundle: .module),
+                           titleColor: PassColor.interactionNormMajor2,
+                           backgroundColor: PassColor.interactionNormMinor1,
+                           fontWeight: .semibold,
+                           action: { viewModel.updateMode(.organise) })
+            .fixedSize(horizontal: fixedSize, vertical: fixedSize)
     }
 }

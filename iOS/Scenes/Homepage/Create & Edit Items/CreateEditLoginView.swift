@@ -546,7 +546,10 @@ private extension CreateEditLoginView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            Menu(content: {
+            CircleMenu(icon: IconProvider.threeDotsVertical,
+                       iconColor: viewModel.itemContentType.normMajor1Color,
+                       backgroundColor: viewModel.itemContentType.normMinor1Color,
+                       accessibilityLabel: "Alias action menu") {
                 Button { viewModel.generateAlias() } label: {
                     Label(title: { Text("Edit alias") }, icon: { IconProvider.pencil })
                 }
@@ -556,12 +559,7 @@ private extension CreateEditLoginView {
                         Label(title: { Text("Remove alias") },
                               icon: { IconProvider.crossCircle })
                     }
-            }, label: {
-                CircleButton(icon: IconProvider.threeDotsVertical,
-                             iconColor: viewModel.itemContentType.normMajor1Color,
-                             backgroundColor: viewModel.itemContentType.normMinor1Color,
-                             accessibilityLabel: "Alias action menu")
-            })
+            }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .animation(.default, value: viewModel.email.isEmpty)
