@@ -61,7 +61,6 @@ final class EmailGroupSelectionViewModel: ObservableObject {
     private let userManager = dependency(\ServiceContainer.userManager)
     @LazyInjected(\RepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\RepositoryContainer.groupRepository) private var groupRepository
-    @LazyInjected(\UseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
     private var currentTask: Task<Void, Never>?
@@ -280,10 +279,6 @@ private extension EmailGroupSelectionViewModel {
     // MARK: - Utils
 
     func fetchGroupsInfos() async {
-        guard getFeatureFlagStatus(for: FeatureFlagType.passGroupSharingV1) else {
-            return
-        }
-
         guard let userAccess = accessRepository.access.value,
               userAccess.access.plan.isBusinessUser,
               let userId = try? await userManager.getActiveUserId() else {
