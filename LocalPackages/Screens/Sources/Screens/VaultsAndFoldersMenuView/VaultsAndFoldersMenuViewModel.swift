@@ -79,7 +79,6 @@ public final class VaultsAndFoldersMenuViewModel: DeinitPrintable {
     private(set) var folderLimits = FolderLimits.default
     private(set) var visibleVaults: [ShareContent] = []
     private(set) var hiddenVaults: [ShareContent] = []
-    private(set) var hideShowVaultSupported = false
     private(set) var folderSupported = false
 
     var containerToDelete: ActionnableContainer?
@@ -564,8 +563,6 @@ private extension VaultsAndFoldersMenuViewModel {
             visibleVaults = ordered.filter { !hiddenShareIds.contains($0.id) }
         }
         hiddenVaults = ordered.filter { hiddenShareIds.contains($0.id) }
-        hideShowVaultSupported = getFeatureFlagStatus(for: FeatureFlagType.passHideShowVault)
-            || ordered.contains(where: \.share.hidden)
     }
 
     func handle(_ error: any Error,
