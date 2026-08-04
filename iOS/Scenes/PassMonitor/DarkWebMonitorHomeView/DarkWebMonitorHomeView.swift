@@ -423,7 +423,10 @@ private extension DarkWebMonitorHomeView {
                 }
                 Spacer()
 
-                Menu(content: {
+                CircleMenu(icon: IconProvider.threeDotsVertical,
+                           iconColor: PassColor.textWeak,
+                           backgroundColor: .clear,
+                           accessibilityLabel: "Unverified email action menu") {
                     Label(title: { Text("Verify") },
                           icon: { IconProvider.paperPlane })
                         .buttonEmbeded { router.present(sheet: .addEmail(.customEmail(email))) }
@@ -431,12 +434,7 @@ private extension DarkWebMonitorHomeView {
                     Label(title: { Text("Remove") },
                           icon: { IconProvider.trash })
                         .buttonEmbeded { viewModel.removeCustomMailFromMonitor(email: email) }
-                }, label: {
-                    CircleButton(icon: IconProvider.threeDotsVertical,
-                                 iconColor: PassColor.textWeak,
-                                 backgroundColor: .clear,
-                                 accessibilityLabel: "Unverified email action menu")
-                })
+                }
             }
         }
     }

@@ -87,7 +87,10 @@ private extension ItemDetailToolbar {
     var activeMenuButton: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
             if case .active = viewModel.itemContent.item.itemState {
-                Menu(content: {
+                CircleMenu(icon: IconProvider.threeDotsVertical,
+                           iconColor: itemContentType.normMajor2Color,
+                           backgroundColor: itemContentType.normMinor1Color,
+                           accessibilityLabel: "Item's action Menu") {
                     if viewModel.itemIsLinkToVault, viewModel.isAllowedToEdit {
                         Label("Move to another container", uiImage: IconProvider.folderArrowIn)
                             .buttonEmbeded {
@@ -136,13 +139,7 @@ private extension ItemDetailToolbar {
                             }
                         })
                         .hidden(!viewModel.isAllowedToEdit)
-                }, label: {
-                    CircleButton(icon: IconProvider.threeDotsVertical,
-                                 iconColor: itemContentType.normMajor2Color,
-                                 backgroundColor: itemContentType.normMinor1Color,
-                                 accessibilityLabel: "Item's action Menu",
-                                 action: {})
-                })
+                }
             }
         }
     }
@@ -151,7 +148,9 @@ private extension ItemDetailToolbar {
     var trashMenuButton: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
             if case .trashed = viewModel.itemContent.item.itemState {
-                Menu(content: {
+                CircleMenu(icon: IconProvider.threeDotsVertical,
+                           iconColor: itemContentType.normMajor2Color,
+                           backgroundColor: itemContentType.normMinor1Color) {
                     Label("Restore", image: IconProvider.clockRotateLeft)
                         .buttonEmbeded { viewModel.restore() }
                         .hidden(!viewModel.isAllowedToEdit)
@@ -170,12 +169,7 @@ private extension ItemDetailToolbar {
                         .hidden(!viewModel.isAllowedToEdit)
 
                     leaveButton
-                }, label: {
-                    CircleButton(icon: IconProvider.threeDotsVertical,
-                                 iconColor: itemContentType.normMajor2Color,
-                                 backgroundColor: itemContentType.normMinor1Color,
-                                 action: {})
-                })
+                }
             }
         }
     }

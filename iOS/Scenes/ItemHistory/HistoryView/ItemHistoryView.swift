@@ -232,18 +232,15 @@ private extension ItemHistoryView {
         }
 
         ToolbarItem(placement: .topBarTrailing) {
-            Menu(content: {
+            CircleMenu(icon: IconProvider.threeDotsVertical,
+                       iconColor: viewModel.item.type.normMajor2Color,
+                       backgroundColor: viewModel.item.type.normMinor1Color,
+                       accessibilityLabel: "Item's action Menu") {
                 Button("Reset history",
                        systemImage: "arrow.counterclockwise.circle",
                        role: .destructive,
                        action: { showResetHistoryAlert.toggle() })
-            }, label: {
-                CircleButton(icon: IconProvider.threeDotsVertical,
-                             iconColor: viewModel.item.type.normMajor2Color,
-                             backgroundColor: viewModel.item.type.normMinor1Color,
-                             accessibilityLabel: "Item's action Menu",
-                             action: {}) // Explicit empty action to force liquid glass effect
-            })
+            }
         }
     }
 }

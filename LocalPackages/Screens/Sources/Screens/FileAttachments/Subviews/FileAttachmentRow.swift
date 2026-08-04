@@ -110,7 +110,9 @@ private extension FileAttachmentRow {
                 ProgressView()
 
             case .uploaded:
-                Menu(content: {
+                CircleMenu(icon: IconProvider.threeDotsVertical,
+                           iconColor: PassColor.textWeak,
+                           backgroundColor: .clear) {
                     switch mode {
                     case let .edit(onOpen, onRename, onDelete, _):
                         LabelButton(title: "Open",
@@ -136,15 +138,13 @@ private extension FileAttachmentRow {
                                     icon: IconProvider.arrowUpFromSquare,
                                     action: onShare)
                     }
-                }, label: {
-                    CircleButton(icon: IconProvider.threeDotsVertical,
-                                 iconColor: PassColor.textWeak,
-                                 backgroundColor: .clear)
-                })
+                }
 
             case .error:
                 if case let .edit(_, _, onDelete, onRetryUpload) = mode {
-                    Menu(content: {
+                    CircleMenu(icon: IconProvider.threeDotsVertical,
+                               iconColor: PassColor.textWeak,
+                               backgroundColor: .clear) {
                         LabelButton(title: "Retry",
                                     icon: IconProvider.arrowRotateRight,
                                     action: onRetryUpload)
@@ -152,11 +152,7 @@ private extension FileAttachmentRow {
                         LabelButton(title: "Delete",
                                     icon: IconProvider.trash,
                                     action: onDelete)
-                    }, label: {
-                        CircleButton(icon: IconProvider.threeDotsVertical,
-                                     iconColor: PassColor.textWeak,
-                                     backgroundColor: .clear)
-                    })
+                    }
                 }
             }
         }

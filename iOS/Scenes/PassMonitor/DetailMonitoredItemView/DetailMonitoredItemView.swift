@@ -225,7 +225,10 @@ private extension DetailMonitoredItemView {
 
         if viewModel.state.isFetched {
             ToolbarItem(placement: .topBarTrailing) {
-                Menu(content: {
+                CircleMenu(icon: IconProvider.threeDotsVertical,
+                           iconColor: PassColor.interactionNormMajor2,
+                           backgroundColor: PassColor.interactionNormMinor1,
+                           accessibilityLabel: "Breach detail action menu") {
                     if viewModel.isCustomEmail {
                         Button { viewModel.removeCustomMailFromMonitor() } label: {
                             Label(title: { Text("Remove") },
@@ -235,13 +238,7 @@ private extension DetailMonitoredItemView {
                         ToggleMonitorButton(monitored: viewModel.isMonitored,
                                             action: { viewModel.toggleMonitoring() })
                     }
-                }, label: {
-                    CircleButton(icon: IconProvider.threeDotsVertical,
-                                 iconColor: PassColor.interactionNormMajor2,
-                                 backgroundColor: PassColor.interactionNormMinor1,
-                                 accessibilityLabel: "Breach detail action menu",
-                                 action: {})
-                })
+                }
             }
         }
     }
