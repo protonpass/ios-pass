@@ -83,6 +83,10 @@ private struct Args {
     var refreshInviteInvokeCount: Int?
     var syncSimpleLoginNoteInvokeCount: Int?
     var storedLastEventId: String?
+    /// Type of the share returned by the stubbed `refreshShare`
+    var refreshedShareType: TargetType = .vault
+    var refreshFoldersInvokeCount: Int?
+    var refreshItemsInvokeCount: Int?
 
     static var noLocalLastEventIdTriggerFullRefresh: Self {
         .init(result: [.fullRefreshNeeded],
@@ -197,6 +201,47 @@ private struct Args {
               syncSimpleLoginNoteInvokeCount: 2,
               storedLastEventId: "TestID2")
     }
+
+    static var createdVaultShare: Self {
+        createdShare(type: .vault, refreshFoldersInvokeCount: 1)
+    }
+
+    /// Item shares have no folders, the endpoint answers 403 for them
+    static var createdItemShare: Self {
+        createdShare(type: .item, refreshFoldersInvokeCount: 0)
+    }
+
+    private static func createdShare(type: TargetType, refreshFoldersInvokeCount: Int) -> Self {
+        .init(lastEventId: .random(),
+              events: [
+                  .init(lastEventID: "CreatedShareID",
+                        itemsUpdated: [],
+                        itemsDeleted: [],
+                        aliasNoteChanged: [],
+                        invitesChanged: nil,
+                        groupInvitesChanged: nil,
+                        sharesCreated: .random(count: 1),
+                        sharesUpdated: [],
+                        sharesDeleted: [],
+                        sharesWithInvitesToCreate: [],
+                        foldersUpdated: [],
+                        foldersDeleted: [],
+                        pendingAliasToCreateChanged: nil,
+                        breachUpdate: nil,
+                        organizationUpdate: nil,
+                        refreshUser: false,
+                        eventsPending: false,
+                        fullRefresh: false)
+              ],
+              result: [.dataUpdated],
+              getUserEventsRouteCalled: true,
+              refreshShareInvokeCount: 1,
+              deleteShareInvokeCount: 0,
+              storedLastEventId: "CreatedShareID",
+              refreshedShareType: type,
+              refreshFoldersInvokeCount: refreshFoldersInvokeCount,
+              refreshItemsInvokeCount: 1)
+    }
 }
 
 private extension UserEventsSynchronizerTests {
@@ -205,11 +250,14 @@ private extension UserEventsSynchronizerTests {
             Args.noLocalLastEventIdTriggerFullRefresh,
             Args.fullRefresh,
             Args.oneEventBatch,
-            Args.twoEventBatches
+            Args.twoEventBatches,
+            Args.createdVaultShare,
+            Args.createdItemShare
           ])
     func sync(args: Args) async throws {
         await slNoteSynchronizer.stubResults()
         localUserEventIdDatasource.stubbedGetLastEventIdResult = args.lastEventId
+        shareRepository.stubbedRefreshShareResult = .random(targetType: args.refreshedShareType)
 
         if var events = args.events {
             remoteUserEventsDatasource.closureGetUserEvents = {
@@ -251,6 +299,49 @@ private extension UserEventsSynchronizerTests {
             #expect(localUserEventIdDatasource.invokedUpsertLastEventIdParameters?.lastEventId ==
                     storedLastEventId)
         }
+
+        if let refreshFoldersInvokeCount = args.refreshFoldersInvokeCount {
+            #expect(folderRepositoryProtocolMock.invokedRefreshFoldersUserIdShareIdAsyncCount5 ==
+                    refreshFoldersInvokeCount)
+        }
+
+        if let refreshItemsInvokeCount = args.refreshItemsInvokeCount {
+            #expect(itemRepository.invokedRefreshItemsCount == refreshItemsInvokeCount)
+        }
+    }
+
+    /// A failing share refresh must not advance the event cursor, otherwise the batch is skipped and the
+    /// local data it describes is never reconciled.
+    @Test("Failing to refresh a created share does not advance the last event ID")
+    func failedCreatedShareKeepsLastEventId() async throws {
+        await slNoteSynchronizer.stubResults()
+        localUserEventIdDatasource.stubbedGetLastEventIdResult = .random()
+        shareRepository.stubbedRefreshShareResult = .random(targetType: .vault)
+        folderRepositoryProtocolMock.refreshFoldersUserIdShareIdThrowableError5 = PassError.unexpectedError
+
+        remoteUserEventsDatasource.stubbedGetUserEventsResult = .init(lastEventID: "NeverStored",
+                                                                      itemsUpdated: [],
+                                                                      itemsDeleted: [],
+                                                                      aliasNoteChanged: [],
+                                                                      invitesChanged: nil,
+                                                                      groupInvitesChanged: nil,
+                                                                      sharesCreated: .random(count: 1),
+                                                                      sharesUpdated: [],
+                                                                      sharesDeleted: [],
+                                                                      sharesWithInvitesToCreate: [],
+                                                                      foldersUpdated: [],
+                                                                      foldersDeleted: [],
+                                                                      pendingAliasToCreateChanged: nil,
+                                                                      breachUpdate: nil,
+                                                                      organizationUpdate: nil,
+                                                                      refreshUser: false,
+                                                                      eventsPending: false,
+                                                                      fullRefresh: false)
+
+        await #expect(throws: (any Error).self) {
+            try await sut.sync(userId: .random())
+        }
+        #expect(!localUserEventIdDatasource.invokedUpsertLastEventIdfunction)
     }
 }
 

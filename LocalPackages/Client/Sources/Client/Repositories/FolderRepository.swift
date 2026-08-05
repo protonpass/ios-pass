@@ -31,7 +31,6 @@ public protocol FolderRepositoryProtocol: Sendable {
     func deleteAllLocalFolders(userId: String) async throws
     func deleteLocalFolders(userId: String, shareId: String, folderIds: [String]) async throws
     func deleteLocal(folders: [any FolderIdentifiable], userId: String) async throws
-    func deleteAllFoldersLocally(shareId: String, userId: String) async throws
 
     // MARK: - CRUD
 
@@ -100,12 +99,6 @@ public extension FolderRepository {
         logger.trace("Deleting \(folders.count) local folders of user \(userId)")
         try await localDatasource.deleteFolders(userId: userId, folders: folders)
         logger.trace("Deleted \(folders.count) local folders of user \(userId)")
-    }
-
-    func deleteAllFoldersLocally(shareId: String, userId: String) async throws {
-        logger.trace("Deleting all folders locally for share \(shareId) of user \(userId)")
-        try await localDatasource.deleteFolders(shareId: shareId, userId: userId)
-        logger.trace("Deleted all folders locally for share \(shareId)")
     }
 }
 
