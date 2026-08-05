@@ -32,6 +32,41 @@ import Observation
 import ProtonCoreLogin
 import Stores
 
+enum FolderSupportState: Sendable {
+    /// Flag is not enabled
+    case notSupported
+    /// Flag is enabled but plan doesn't and upsell is needed (e.g free users)
+    case supportedButShouldUpsell
+    /// Flag is enabled and plan fully allows
+    case supportedAndAllowed
+    /// Flag is enabled but plan doesn't allow (e.g Pass Essentials)
+    case supportedButNotAllowed
+
+    var canCreateFolders: Bool {
+        if case .supportedAndAllowed = self {
+            true
+        } else {
+            false
+        }
+    }
+
+    var isSupported: Bool {
+        if case .notSupported = self {
+            false
+        } else {
+            true
+        }
+    }
+
+    var shouldUpsell: Bool {
+        if case .supportedButShouldUpsell = self {
+            true
+        } else {
+            false
+        }
+    }
+}
+
 private extension VaultsAndFoldersMenuViewModel {
     struct Count {
         let all: Int
@@ -79,7 +114,7 @@ public final class VaultsAndFoldersMenuViewModel: DeinitPrintable {
     private(set) var folderLimits = FolderLimits.default
     private(set) var visibleVaults: [ShareContent] = []
     private(set) var hiddenVaults: [ShareContent] = []
-    private(set) var folderSupported = false
+    private(set) var folderSupportState: FolderSupportState = .notSupported
 
     var containerToDelete: ActionnableContainer?
     var folderAction: FolderAction?
@@ -496,18 +531,12 @@ extension VaultsAndFoldersMenuViewModel {
 
 private extension VaultsAndFoldersMenuViewModel {
     func setUp() {
-        folderSupported = getFeatureFlagStatus(for: FeatureFlagType.passFolder)
-
         if let userId = userManager.activeUserId {
             expandedContainerIds = Self.loadSet(for: userId)
         }
 
         if case let .precise(payload) = appContentManager.shareSelection {
             shareSelection = payload
-        }
-
-        if let newFolderLimits = accessRepository.access.value?.access.plan.folderLimits {
-            folderLimits = newFolderLimits
         }
 
         appContentManager.$state
@@ -538,13 +567,23 @@ private extension VaultsAndFoldersMenuViewModel {
         accessRepository.access
             .receive(on: DispatchQueue.main)
             .sink { [weak self] updatedAccess in
-                guard let self else {
+                guard let self, let plan = updatedAccess?.access.plan else {
                     return
                 }
-                plan = updatedAccess?.access.plan
-                if let newFolderLimits = accessRepository.access.value?.access.plan.folderLimits,
+
+                self.plan = plan
+
+                if let newFolderLimits = plan.folderLimits,
                    newFolderLimits != folderLimits {
                     folderLimits = newFolderLimits
+                }
+
+                if getFeatureFlagStatus(for: FeatureFlagType.passFolder) {
+                    if plan.isFreeUser {
+                        folderSupportState = plan.folderAllowed ? .supportedAndAllowed : .supportedButShouldUpsell
+                    } else {
+                        folderSupportState = plan.folderAllowed ? .supportedAndAllowed : .supportedButNotAllowed
+                    }
                 }
             }
             .store(in: &cancellables)
