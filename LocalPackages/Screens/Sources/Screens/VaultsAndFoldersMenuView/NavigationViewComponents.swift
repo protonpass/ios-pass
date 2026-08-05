@@ -125,13 +125,11 @@ private struct VaultTrailingMenu: View {
                 })
             }
 
-            if viewModel.folderSupported, viewModel.canAddFolderAtVaultRoot(for: vault), vault.shareRole != .read {
+            if viewModel.folderSupportState.canCreateFolders,
+               viewModel.canAddFolderAtVaultRoot(for: vault),
+               vault.shareRole != .read {
                 Button(action: {
-                    if viewModel.shouldUpsell {
-                        viewModel.upgradeSubscription()
-                    } else {
-                        viewModel.folderAction = .createNewFolder(vault, parentFolderId: nil)
-                    }
+                    viewModel.folderAction = .createNewFolder(vault, parentFolderId: nil)
                 }, label: {
                     Label(title: {
                         Text("Create folder", bundle: .module)
