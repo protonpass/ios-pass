@@ -273,18 +273,13 @@ private extension UserEventsSynchronizer {
             try await withThrowingTaskGroup(of: Void.self) { taskGroup in
                 for newShare in batch {
                     taskGroup.addTask { [shareRepository, folderRepository, itemRepository, userId] in
-                        // We need to start for a fresh data state
-                        if let localShare = try await shareRepository.getShare(shareId: newShare.shareID) {
-                            try await shareRepository.deleteShareLocally(userId: userId,
-                                                                         shareId: localShare.shareID)
-                            try await folderRepository.deleteAllFoldersLocally(shareId: localShare.shareID,
-                                                                               userId: userId)
-                            try await itemRepository.deleteAllItemsLocally(shareId: localShare.shareID)
+                        let share = try await shareRepository.refreshShare(userId: userId,
+                                                                           shareId: newShare.shareID,
+                                                                           eventToken: newShare.eventToken)
+                        if share.shareType == .vault {
+                            try await folderRepository.refreshFolders(userId: userId,
+                                                                      shareId: newShare.shareID)
                         }
-                        try await shareRepository.refreshShare(userId: userId,
-                                                               shareId: newShare.shareID,
-                                                               eventToken: newShare.eventToken)
-                        try await folderRepository.refreshFolders(userId: userId, shareId: newShare.shareID)
                         try await itemRepository.refreshItems(userId: userId, shareId: newShare.shareID)
                     }
                 }
