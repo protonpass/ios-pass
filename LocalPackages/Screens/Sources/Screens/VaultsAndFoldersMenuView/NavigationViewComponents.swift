@@ -125,7 +125,7 @@ private struct VaultTrailingMenu: View {
                 })
             }
 
-            if viewModel.folderSupportState.canCreateFolders,
+            if viewModel.folderSupportState.canCreateAndModifyFolders,
                viewModel.canAddFolderAtVaultRoot(for: vault),
                vault.shareRole != .read {
                 Button(action: {
