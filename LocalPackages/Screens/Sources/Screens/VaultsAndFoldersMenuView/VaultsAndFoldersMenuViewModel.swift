@@ -42,7 +42,7 @@ enum FolderSupportState: Sendable {
     /// Flag is enabled but plan doesn't allow (e.g Pass Essentials)
     case supportedButNotAllowed
 
-    var canCreateFolders: Bool {
+    var canCreateAndModifyFolders: Bool {
         if case .supportedAndAllowed = self {
             true
         } else {
@@ -167,6 +167,12 @@ public final class VaultsAndFoldersMenuViewModel: DeinitPrintable {
 
     func canAddSubFolder(in folder: FolderUiModel, content: ShareContent) -> Bool {
         content.canAddFolder(in: folder.folderId, limits: folderLimits)
+    }
+
+    /// Whether the create folder call to action can be shown, either to create or to upsell
+    func canOfferFolderCreation(in content: ShareContent) -> Bool {
+        guard folderSupportState.canCreateAndModifyFolders || folderSupportState.shouldUpsell else { return false }
+        return content.canAddFolder(in: content.id, limits: folderLimits)
     }
 
     var vaultCreationAllowed: Bool {
@@ -564,29 +570,36 @@ private extension VaultsAndFoldersMenuViewModel {
             }
         }
 
+        // Seeded synchronously: `access` already holds a value but `receive(on:)` only delivers it
+        // on the next main loop turn, which would pop the folder UI in after the first render
+        apply(plan: accessRepository.access.value?.access.plan)
+
         accessRepository.access
             .receive(on: DispatchQueue.main)
             .sink { [weak self] updatedAccess in
-                guard let self, let plan = updatedAccess?.access.plan else {
-                    return
-                }
-
-                self.plan = plan
-
-                if let newFolderLimits = plan.folderLimits,
-                   newFolderLimits != folderLimits {
-                    folderLimits = newFolderLimits
-                }
-
-                if getFeatureFlagStatus(for: FeatureFlagType.passFolder) {
-                    if plan.isFreeUser {
-                        folderSupportState = plan.folderAllowed ? .supportedAndAllowed : .supportedButShouldUpsell
-                    } else {
-                        folderSupportState = plan.folderAllowed ? .supportedAndAllowed : .supportedButNotAllowed
-                    }
-                }
+                guard let self else { return }
+                apply(plan: updatedAccess?.access.plan)
             }
             .store(in: &cancellables)
+    }
+
+    func apply(plan: Plan?) {
+        guard let plan else { return }
+        self.plan = plan
+
+        if let newFolderLimits = plan.folderLimits,
+           newFolderLimits != folderLimits {
+            folderLimits = newFolderLimits
+        }
+
+        guard getFeatureFlagStatus(for: FeatureFlagType.passFolder) else { return }
+        folderSupportState = if plan.folderAllowed {
+            .supportedAndAllowed
+        } else if plan.shouldUpsell {
+            .supportedButShouldUpsell
+        } else {
+            .supportedButNotAllowed
+        }
     }
 
     func recomputeVaults() {
