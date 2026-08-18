@@ -156,25 +156,6 @@ public final class VaultsAndFoldersMenuViewModel: DeinitPrintable {
         }
     }
 
-    func shareContent(for shareId: String) -> ShareContent? {
-        orderedVaults.first { $0.share.id == shareId }
-    }
-
-    func canAddFolderAtVaultRoot(for vault: Share) -> Bool {
-        guard let content = shareContent(for: vault.id) else { return false }
-        return content.canAddFolder(in: vault.id, limits: folderLimits)
-    }
-
-    func canAddSubFolder(in folder: FolderUiModel, content: ShareContent) -> Bool {
-        content.canAddFolder(in: folder.folderId, limits: folderLimits)
-    }
-
-    /// Whether the create folder call to action can be shown, either to create or to upsell
-    func canOfferFolderCreation(in content: ShareContent) -> Bool {
-        guard folderSupportState.canCreateAndModifyFolders || folderSupportState.shouldUpsell else { return false }
-        return content.canAddFolder(in: content.id, limits: folderLimits)
-    }
-
     var vaultCreationAllowed: Bool {
         checkVaultCreationAllowance(userData: userData,
                                     organization: organization,
@@ -283,6 +264,26 @@ public final class VaultsAndFoldersMenuViewModel: DeinitPrintable {
         }
 
         return content.totalFolderCount > 0
+    }
+
+    func shareContent(for shareId: String) -> ShareContent? {
+        orderedVaults.first { $0.share.id == shareId }
+    }
+
+    func canAddFolderAtVaultRoot(for vault: Share) -> Bool {
+        guard let content = shareContent(for: vault.id) else { return false }
+        return content.canAddFolder(in: vault.id, limits: folderLimits)
+    }
+
+    func canAddSubFolder(in folder: FolderUiModel, content: ShareContent) -> Bool {
+        content.canAddFolder(in: folder.folderId, limits: folderLimits)
+    }
+
+    /// Whether the create folder call to action can be shown, either to create or to upsell
+    func canOfferFolderCreation(in content: ShareContent) -> Bool {
+        guard folderSupportState.canCreateAndModifyFolders || folderSupportState.shouldUpsell else { return false
+        }
+        return content.canAddFolder(in: content.id, limits: folderLimits)
     }
 }
 

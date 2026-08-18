@@ -230,7 +230,7 @@ private struct VaultsScrollView: View {
                             }
                             .equatable()
                             .padding(.leading, 30)
-                        } else if content.canAddFolder(in: content.id, limits: viewModel.folderLimits) {
+                        } else if viewModel.canOfferFolderCreation(in: content) {
                             HStack {
                                 if #available(iOS 26.0, *) {
                                     createFolderButton(content)
