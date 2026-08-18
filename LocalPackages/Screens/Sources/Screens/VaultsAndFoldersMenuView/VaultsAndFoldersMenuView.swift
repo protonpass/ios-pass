@@ -312,54 +312,46 @@ private struct FolderMenuView: View {
 
     var body: some View {
         Menu {
-//            if viewModel.folderSupportState.canCreateAndModifyFolders {
-            Button(action: {
-                if viewModel.folderSupportState.canCreateAndModifyFolders {
+            if viewModel.folderSupportState.canCreateAndModifyFolders {
+                Button(action: {
                     viewModel.selectedFolderToMove(folderToMove: FolderToMove(folder: folder,
                                                                               shareContent: content))
-                } else {
-                    viewModel.upgradeSubscription()
-                }
-            }, label: {
-                Label(title: {
-                    Text("Move folder")
-                }, icon: {
-                    IconProvider.folderArrowIn
-                        .renderingMode(.template)
-                        .foregroundStyle(PassColor.textWeak)
-                })
-            })
-
-            if viewModel.canAddSubFolder(in: folder, content: content) {
-                Button(action: {
-                    if viewModel.folderSupportState.canCreateAndModifyFolders {
-                        viewModel.folderAction = .createNewFolder(content.share, parentFolderId: folder.folderId)
-                    } else {
-                        viewModel.upgradeSubscription()
-                    }
                 }, label: {
                     Label(title: {
-                        Text("Create sub-folder")
+                        Text("Move folder")
                     }, icon: {
-                        IconProvider.folderPlus
+                        IconProvider.folderArrowIn
+                            .renderingMode(.template)
+                            .foregroundStyle(PassColor.textWeak)
+                    })
+                })
+
+                if viewModel.canAddSubFolder(in: folder, content: content) {
+                    Button(action: {
+                        viewModel.folderAction = .createNewFolder(content.share, parentFolderId: folder.folderId)
+                    }, label: {
+                        Label(title: {
+                            Text("Create sub-folder")
+                        }, icon: {
+                            IconProvider.folderPlus
+                                .renderingMode(.template)
+                                .foregroundStyle(PassColor.textWeak)
+                        })
+                    })
+                }
+
+                Button(action: {
+                    viewModel.folderAction = .edit(folder)
+                }, label: {
+                    Label(title: {
+                        Text("Rename")
+                    }, icon: {
+                        IconProvider.pencil
                             .renderingMode(.template)
                             .foregroundStyle(PassColor.textWeak)
                     })
                 })
             }
-
-            Button(action: {
-                viewModel.folderAction = .edit(folder)
-            }, label: {
-                Label(title: {
-                    Text("Rename")
-                }, icon: {
-                    IconProvider.pencil
-                        .renderingMode(.template)
-                        .foregroundStyle(PassColor.textWeak)
-                })
-            })
-//            }
 
             if viewModel.canMoveItems(folder: folder) {
                 Button(action: {
