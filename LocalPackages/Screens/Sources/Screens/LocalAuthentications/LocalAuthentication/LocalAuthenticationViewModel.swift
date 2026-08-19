@@ -47,10 +47,6 @@ import Foundation
 import LocalAuthentication
 import Macro
 
-public enum PassLocalAuthenticationMode {
-    case biometric, pin
-}
-
 @Observable
 @MainActor
 public final class LocalAuthenticationViewModel: DeinitPrintable {

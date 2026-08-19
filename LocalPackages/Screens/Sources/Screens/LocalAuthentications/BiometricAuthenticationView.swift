@@ -21,10 +21,10 @@
 import DesignSystem
 import SwiftUI
 
-public struct BiometricAuthenticationView: View {
-    @Bindable public var viewModel: LocalAuthenticationViewModel
+struct BiometricAuthenticationView: View {
+    @Bindable var viewModel: LocalAuthenticationViewModel
 
-    public var body: some View {
+    var body: some View {
         GeometryReader { proxy in
             VStack {
                 Spacer()
