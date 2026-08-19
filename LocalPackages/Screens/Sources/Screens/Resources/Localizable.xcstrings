@@ -26387,8 +26387,201 @@
       }
     },
     "Enter your PIN code" : {
-
-    },
+        "localizations" : {
+          "be" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "Увядзіце свой PIN-код."
+            }
+          },
+          "ca" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "Introduïu el codi PIN"
+            }
+          },
+          "cs" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "Zadejte PIN kód"
+            }
+          },
+          "da" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "Indtast din pinkode"
+            }
+          },
+          "de" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "PIN-Code eingeben"
+            }
+          },
+          "el" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "Εισαγωγή κωδικού ΡΙΝ"
+            }
+          },
+          "en" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "Enter your PIN code"
+            }
+          },
+          "es" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "Ingresa tu código PIN."
+            }
+          },
+          "es-419" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "Ingrese el código PIN"
+            }
+          },
+          "fi" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "Syötä PIN-koodisi"
+            }
+          },
+          "fr" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "Saisissez votre code PIN."
+            }
+          },
+          "hu" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "Adja meg a PIN-kódját"
+            }
+          },
+          "id" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "Masukkan kode PIN Anda"
+            }
+          },
+          "it" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "Inserisci il tuo codice PIN"
+            }
+          },
+          "ja" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "PIN コードを入力してください"
+            }
+          },
+          "ka" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "შეიყვანეთ თქვენი PIN კოდი"
+            }
+          },
+          "ko" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "PIN 코드를 입력하세요"
+            }
+          },
+          "nb" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "Skriv inn din PIN-kode"
+            }
+          },
+          "nl" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "Voer uw pincode in"
+            }
+          },
+          "pl" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "Wpisz kod PIN"
+            }
+          },
+          "pt" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "Introduza o seu código PIN"
+            }
+          },
+          "pt-BR" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "Digite seu código PIN"
+            }
+          },
+          "ro" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "Introduceți codul PIN"
+            }
+          },
+          "ru" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "Введите свой PIN-код"
+            }
+          },
+          "sk" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "Zadajte PIN kód"
+            }
+          },
+          "sl" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "Vnesi svojo PIN kodo."
+            }
+          },
+          "sv" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "Ange din PIN-kod"
+            }
+          },
+          "tr" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "PIN kodunuzu yazın"
+            }
+          },
+          "uk" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "Введіть PIN-код"
+            }
+          },
+          "vi" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "Nhập mã PIN của bạn"
+            }
+          },
+          "zh-Hans" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "输入 PIN 码"
+            }
+          },
+          "zh-Hant" : {
+            "stringUnit" : {
+              "state" : "translated",
+              "value" : "輸入個人識別數字代碼"
+            }
+          }
+        }
+      },
     "Error occurred" : {
       "localizations" : {
         "be" : {
