@@ -32,6 +32,41 @@ import Observation
 import ProtonCoreLogin
 import Stores
 
+enum FolderSupportState: Sendable {
+    /// Flag is not enabled
+    case notSupported
+    /// Flag is enabled but plan doesn't and upsell is needed (e.g free users)
+    case supportedButShouldUpsell
+    /// Flag is enabled and plan fully allows
+    case supportedAndAllowed
+    /// Flag is enabled but plan doesn't allow (e.g Pass Essentials)
+    case supportedButNotAllowed
+
+    var canCreateAndModifyFolders: Bool {
+        if case .supportedAndAllowed = self {
+            true
+        } else {
+            false
+        }
+    }
+
+    var isSupported: Bool {
+        if case .notSupported = self {
+            false
+        } else {
+            true
+        }
+    }
+
+    var shouldUpsell: Bool {
+        if case .supportedButShouldUpsell = self {
+            true
+        } else {
+            false
+        }
+    }
+}
+
 private extension VaultsAndFoldersMenuViewModel {
     struct Count {
         let all: Int
@@ -79,7 +114,7 @@ public final class VaultsAndFoldersMenuViewModel: DeinitPrintable {
     private(set) var folderLimits = FolderLimits.default
     private(set) var visibleVaults: [ShareContent] = []
     private(set) var hiddenVaults: [ShareContent] = []
-    private(set) var folderSupported = false
+    private(set) var folderSupportState: FolderSupportState = .notSupported
 
     var containerToDelete: ActionnableContainer?
     var folderAction: FolderAction?
@@ -119,19 +154,6 @@ public final class VaultsAndFoldersMenuViewModel: DeinitPrintable {
             guard let shareSelection, shareSelection != oldValue else { return }
             select(.precise(shareSelection))
         }
-    }
-
-    func shareContent(for shareId: String) -> ShareContent? {
-        orderedVaults.first { $0.share.id == shareId }
-    }
-
-    func canAddFolderAtVaultRoot(for vault: Share) -> Bool {
-        guard let content = shareContent(for: vault.id) else { return false }
-        return content.canAddFolder(in: vault.id, limits: folderLimits)
-    }
-
-    func canAddSubFolder(in folder: FolderUiModel, content: ShareContent) -> Bool {
-        content.canAddFolder(in: folder.folderId, limits: folderLimits)
     }
 
     var vaultCreationAllowed: Bool {
@@ -242,6 +264,26 @@ public final class VaultsAndFoldersMenuViewModel: DeinitPrintable {
         }
 
         return content.totalFolderCount > 0
+    }
+
+    func shareContent(for shareId: String) -> ShareContent? {
+        orderedVaults.first { $0.share.id == shareId }
+    }
+
+    func canAddFolderAtVaultRoot(for vault: Share) -> Bool {
+        guard let content = shareContent(for: vault.id) else { return false }
+        return content.canAddFolder(in: vault.id, limits: folderLimits)
+    }
+
+    func canAddSubFolder(in folder: FolderUiModel, content: ShareContent) -> Bool {
+        content.canAddFolder(in: folder.folderId, limits: folderLimits)
+    }
+
+    /// Whether the create folder call to action can be shown, either to create or to upsell
+    func canOfferFolderCreation(in content: ShareContent) -> Bool {
+        guard folderSupportState.canCreateAndModifyFolders || folderSupportState.shouldUpsell else { return false
+        }
+        return content.canAddFolder(in: content.id, limits: folderLimits)
     }
 }
 
@@ -496,18 +538,12 @@ extension VaultsAndFoldersMenuViewModel {
 
 private extension VaultsAndFoldersMenuViewModel {
     func setUp() {
-        folderSupported = getFeatureFlagStatus(for: FeatureFlagType.passFolder)
-
         if let userId = userManager.activeUserId {
             expandedContainerIds = Self.loadSet(for: userId)
         }
 
         if case let .precise(payload) = appContentManager.shareSelection {
             shareSelection = payload
-        }
-
-        if let newFolderLimits = accessRepository.access.value?.access.plan.folderLimits {
-            folderLimits = newFolderLimits
         }
 
         appContentManager.$state
@@ -535,19 +571,36 @@ private extension VaultsAndFoldersMenuViewModel {
             }
         }
 
+        // Seeded synchronously: `access` already holds a value but `receive(on:)` only delivers it
+        // on the next main loop turn, which would pop the folder UI in after the first render
+        apply(plan: accessRepository.access.value?.access.plan)
+
         accessRepository.access
             .receive(on: DispatchQueue.main)
             .sink { [weak self] updatedAccess in
-                guard let self else {
-                    return
-                }
-                plan = updatedAccess?.access.plan
-                if let newFolderLimits = accessRepository.access.value?.access.plan.folderLimits,
-                   newFolderLimits != folderLimits {
-                    folderLimits = newFolderLimits
-                }
+                guard let self else { return }
+                apply(plan: updatedAccess?.access.plan)
             }
             .store(in: &cancellables)
+    }
+
+    func apply(plan: Plan?) {
+        guard let plan else { return }
+        self.plan = plan
+
+        if let newFolderLimits = plan.folderLimits,
+           newFolderLimits != folderLimits {
+            folderLimits = newFolderLimits
+        }
+
+        guard getFeatureFlagStatus(for: FeatureFlagType.passFolder) else { return }
+        folderSupportState = if plan.folderAllowed {
+            .supportedAndAllowed
+        } else if plan.shouldUpsell {
+            .supportedButShouldUpsell
+        } else {
+            .supportedButNotAllowed
+        }
     }
 
     func recomputeVaults() {

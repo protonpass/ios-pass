@@ -125,12 +125,13 @@ private struct VaultTrailingMenu: View {
                 })
             }
 
-            if viewModel.folderSupported, viewModel.canAddFolderAtVaultRoot(for: vault), vault.shareRole != .read {
+            if viewModel.canAddFolderAtVaultRoot(for: vault),
+               vault.shareRole != .read {
                 Button(action: {
-                    if viewModel.shouldUpsell {
-                        viewModel.upgradeSubscription()
-                    } else {
+                    if viewModel.folderSupportState.canCreateAndModifyFolders {
                         viewModel.folderAction = .createNewFolder(vault, parentFolderId: nil)
+                    } else {
+                        viewModel.upgradeSubscription()
                     }
                 }, label: {
                     Label(title: {

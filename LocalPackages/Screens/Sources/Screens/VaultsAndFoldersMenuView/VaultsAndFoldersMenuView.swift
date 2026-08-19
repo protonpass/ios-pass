@@ -199,7 +199,8 @@ private struct VaultsScrollView: View {
 
                 ForEach(viewModel.visibleVaults) { content in
                     HStack(spacing: 16) {
-                        if viewModel.folderSupported, viewModel.shouldShowToggleArrow(for: content) {
+                        if viewModel.folderSupportState.isSupported,
+                           viewModel.shouldShowToggleArrow(for: content) {
                             Button {
                                 withAnimation {
                                     viewModel.toggleDisplayContainerContent(containerId: content.id)
@@ -215,7 +216,7 @@ private struct VaultsScrollView: View {
                                       onSelect: selectAndDismiss)
                     }
 
-                    if viewModel.folderSupported,
+                    if viewModel.folderSupportState.isSupported,
                        viewModel.expandedContainerIds.contains(content.id) {
                         if let folders = content.folders(in: content.id), !folders.isEmpty {
                             FolderTreeView(content: content,
@@ -229,7 +230,7 @@ private struct VaultsScrollView: View {
                             }
                             .equatable()
                             .padding(.leading, 30)
-                        } else if content.canAddFolder(in: content.id, limits: viewModel.folderLimits) {
+                        } else if viewModel.canOfferFolderCreation(in: content) {
                             HStack {
                                 if #available(iOS 26.0, *) {
                                     createFolderButton(content)
@@ -274,7 +275,7 @@ private struct VaultsScrollView: View {
 
     private func createFolderButton(_ content: ShareContent) -> some View {
         Button(action: {
-            if viewModel.shouldUpsell {
+            if viewModel.folderSupportState.shouldUpsell {
                 viewModel.upgradeSubscription()
             } else {
                 viewModel.folderAction = .createNewFolder(content.share, parentFolderId: nil)
@@ -291,7 +292,7 @@ private struct VaultsScrollView: View {
                     .fontWeight(.semibold)
                     .foregroundStyle(PassColor.interactionNormMajor2)
                     .padding(.vertical, 2)
-                if viewModel.shouldUpsell {
+                if viewModel.folderSupportState.shouldUpsell {
                     PassIcon.passSubscriptionBadge
                         .resizable()
                         .scaledToFit()
@@ -311,47 +312,46 @@ private struct FolderMenuView: View {
 
     var body: some View {
         Menu {
-            Button(action: {
-                viewModel.selectedFolderToMove(folderToMove: FolderToMove(folder: folder, shareContent: content))
-            }, label: {
-                Label(title: {
-                    Text("Move folder")
-                }, icon: {
-                    IconProvider.folderArrowIn
-                        .renderingMode(.template)
-                        .foregroundStyle(PassColor.textWeak)
-                })
-            })
-
-            if viewModel.canAddSubFolder(in: folder, content: content) {
+            if viewModel.folderSupportState.canCreateAndModifyFolders {
                 Button(action: {
-                    if viewModel.shouldUpsell {
-                        viewModel.upgradeSubscription()
-                    } else {
-                        viewModel.folderAction = .createNewFolder(content.share, parentFolderId: folder.folderId)
-                    }
+                    viewModel.selectedFolderToMove(folderToMove: FolderToMove(folder: folder,
+                                                                              shareContent: content))
                 }, label: {
                     Label(title: {
-                        Text("Create sub-folder")
+                        Text("Move folder")
                     }, icon: {
-                        IconProvider.folderPlus
+                        IconProvider.folderArrowIn
+                            .renderingMode(.template)
+                            .foregroundStyle(PassColor.textWeak)
+                    })
+                })
+
+                if viewModel.canAddSubFolder(in: folder, content: content) {
+                    Button(action: {
+                        viewModel.folderAction = .createNewFolder(content.share, parentFolderId: folder.folderId)
+                    }, label: {
+                        Label(title: {
+                            Text("Create sub-folder")
+                        }, icon: {
+                            IconProvider.folderPlus
+                                .renderingMode(.template)
+                                .foregroundStyle(PassColor.textWeak)
+                        })
+                    })
+                }
+
+                Button(action: {
+                    viewModel.folderAction = .edit(folder)
+                }, label: {
+                    Label(title: {
+                        Text("Rename")
+                    }, icon: {
+                        IconProvider.pencil
                             .renderingMode(.template)
                             .foregroundStyle(PassColor.textWeak)
                     })
                 })
             }
-
-            Button(action: {
-                viewModel.folderAction = .edit(folder)
-            }, label: {
-                Label(title: {
-                    Text("Rename")
-                }, icon: {
-                    IconProvider.pencil
-                        .renderingMode(.template)
-                        .foregroundStyle(PassColor.textWeak)
-                })
-            })
 
             if viewModel.canMoveItems(folder: folder) {
                 Button(action: {
