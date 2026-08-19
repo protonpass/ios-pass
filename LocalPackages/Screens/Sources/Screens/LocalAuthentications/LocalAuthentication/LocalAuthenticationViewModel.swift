@@ -143,7 +143,7 @@ public final class LocalAuthenticationViewModel: DeinitPrintable {
                 onFailure(#localized("We have detected a change in your biometric authentication settings. For security reasons, you have been logged out."))
             } catch let error as LAError where error.reachedNoVerdict {
                 promptDismissed = true
-                logger.warning("\(mode.rawValue) prompt dismissed without a verdict. \(error)")
+                logger.warning("\(mode.type) prompt dismissed without a verdict. \(error)")
             } catch {
                 await recordFailure(error)
             }
@@ -198,7 +198,7 @@ private extension LocalAuthenticationViewModel {
         do {
             try await updateSharedPreferences(\.failedAttemptCount, value: failedAttemptCount + 1)
 
-            let logMessage = "\(mode.rawValue) authentication failed. Increased failed attempt count."
+            let logMessage = "\(mode.type) authentication failed. Increased failed attempt count."
             if let error {
                 logger.error(logMessage + " Reason \(error)")
             } else {

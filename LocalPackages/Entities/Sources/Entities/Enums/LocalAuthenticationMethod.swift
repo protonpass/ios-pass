@@ -20,10 +20,23 @@
 
 import LocalAuthentication
 
-public enum LocalAuthenticationMethod: String, Codable, CaseIterable, Sendable, Equatable {
+public enum LocalAuthenticationMethod: Codable, CaseIterable, Sendable, Equatable {
     case none, biometric, pin
 
     public static var `default`: Self {
         .none
+    }
+
+    public var type: String {
+        switch self {
+        case .biometric:
+            "Biometric"
+
+        case .pin:
+            "pin"
+
+        case .none:
+            "none"
+        }
     }
 }
