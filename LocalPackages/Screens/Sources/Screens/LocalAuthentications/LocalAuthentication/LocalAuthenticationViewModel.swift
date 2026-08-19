@@ -49,7 +49,7 @@ import Macro
 
 @Observable
 @MainActor
-public final class LocalAuthenticationViewModel: DeinitPrintable {
+final class LocalAuthenticationViewModel: DeinitPrintable {
     private(set) var state: LocalAuthenticationState = .noAttempts
 
     /// The last prompt was dismissed without reaching a verdict, so no attempt was consumed and
