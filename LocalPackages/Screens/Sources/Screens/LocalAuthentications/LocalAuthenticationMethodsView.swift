@@ -62,7 +62,7 @@ public struct LocalAuthenticationMethodsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("Unlock with")
+                    Text("Unlock with", bundle: .module)
                         .navigationTitleText()
                 }
             }

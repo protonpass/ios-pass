@@ -37,7 +37,7 @@ struct PinAuthenticationView: View {
                 .scaledToFit()
                 .frame(maxWidth: 160)
 
-            Text("Enter your PIN code")
+            Text("Enter your PIN code", bundle: .module)
                 .foregroundStyle(PassColor.textNorm)
                 .font(.title.bold())
 
@@ -58,14 +58,15 @@ struct PinAuthenticationView: View {
                 EmptyView()
 
             case let .remainingAttempts(count):
-                Text("Incorrect PIN code.")
+                Text("Incorrect PIN code.", bundle: .module)
                     .foregroundStyle(PassColor.signalDanger) +
                     Text(verbatim: " ") +
-                    Text("\(count) remaining attempt(s)")
+                    Text("\(count) remaining attempt(s)", bundle: .module)
                     .foregroundStyle(PassColor.signalDanger)
 
             case .lastAttempt:
-                Text("This is your last attempt. You will be logged out after failing to authenticate again.")
+                Text("This is your last attempt. You will be logged out after failing to authenticate again.",
+                     bundle: .module)
                     .foregroundStyle(PassColor.signalDanger)
                     .multilineTextAlignment(.center)
 
@@ -75,7 +76,7 @@ struct PinAuthenticationView: View {
 
             Spacer()
 
-            DisablableCapsuleTextButton(title: #localized("Unlock"),
+            DisablableCapsuleTextButton(title: #localized("Unlock", bundle: .module),
                                         titleColor: PassColor.textInvert,
                                         disableTitleColor: PassColor.textInvert,
                                         backgroundColor: PassColor.interactionNormMajor1,
