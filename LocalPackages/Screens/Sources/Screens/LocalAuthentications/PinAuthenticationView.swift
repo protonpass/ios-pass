@@ -68,6 +68,9 @@ struct PinAuthenticationView: View {
                 Text("This is your last attempt. You will be logged out after failing to authenticate again.")
                     .foregroundStyle(PassColor.signalDanger)
                     .multilineTextAlignment(.center)
+
+            case .exhausted:
+                EmptyView()
             }
 
             Spacer()
@@ -94,14 +97,10 @@ struct PinAuthenticationView: View {
         .accentColor(PassColor.interactionNorm)
         .tint(PassColor.interactionNorm)
         .animation(.default, value: viewModel.state)
-        .onAppear {
-            let notifyAuthProcessAndFocus: () -> Void = {
-                viewModel.onAuth()
-                isFocused = true
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + viewModel.delayedTime) {
-                notifyAuthProcessAndFocus()
-            }
+        .task {
+            try? await Task.sleep(for: viewModel.delayedTime)
+            viewModel.onAuth()
+            isFocused = true
         }
     }
 }

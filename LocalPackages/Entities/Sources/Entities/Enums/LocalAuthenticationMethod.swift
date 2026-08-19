@@ -20,7 +20,7 @@
 
 import LocalAuthentication
 
-public enum LocalAuthenticationMethod: Codable, CaseIterable, Sendable {
+public enum LocalAuthenticationMethod: String, Codable, CaseIterable, Sendable, Equatable {
     case none, biometric, pin
 
     public static var `default`: Self {

@@ -1,7 +1,7 @@
 //
 // LocalAuthenticationMethodUiModel+Extensions.swift
-// Proton Pass - Created on 31/10/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Proton Pass - Created on 19/08/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -19,25 +19,24 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Entities
-import LocalAuthentication
 import Macro
 
-extension LocalAuthenticationMethodUiModel {
+public extension LocalAuthenticationMethodUiModel {
     var title: String {
         switch self {
         case .none:
-            return #localized("No unlock")
+            return #localized("No unlock", bundle: .module)
 
         case let .biometric(type):
             switch type {
             case .faceID:
-                return #localized("Face ID")
+                return #localized("Face ID", bundle: .module)
 
             case .touchID:
-                return #localized("Touch ID")
+                return #localized("Touch ID", bundle: .module)
 
             case .opticID:
-                return #localized("Optic ID")
+                return #localized("Optic ID", bundle: .module)
 
             default:
                 assertionFailure("Not usable biometric type")
@@ -45,26 +44,7 @@ extension LocalAuthenticationMethodUiModel {
             }
 
         case .pin:
-            return #localized("PIN code")
+            return #localized("PIN code", bundle: .module)
         }
-    }
-
-    var method: LocalAuthenticationMethod {
-        switch self {
-        case .none:
-            .none
-
-        case .biometric:
-            .biometric
-
-        case .pin:
-            .pin
-        }
-    }
-}
-
-extension LocalAuthenticationMethodUiModel: @retroactive Equatable {
-    public static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.method == rhs.method
     }
 }

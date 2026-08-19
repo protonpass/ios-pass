@@ -1,7 +1,7 @@
 //
 // BiometricAuthenticationView.swift
-// Proton Pass - Created on 22/06/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Proton Pass - Created on 18/08/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -21,10 +21,10 @@
 import DesignSystem
 import SwiftUI
 
-struct BiometricAuthenticationView: View {
-    @Bindable var viewModel: LocalAuthenticationViewModel
+public struct BiometricAuthenticationView: View {
+    @Bindable public var viewModel: LocalAuthenticationViewModel
 
-    var body: some View {
+    public var body: some View {
         GeometryReader { proxy in
             VStack {
                 Spacer()
@@ -33,7 +33,12 @@ struct BiometricAuthenticationView: View {
 
                 switch viewModel.state {
                 case .noAttempts:
-                    EmptyView()
+                    if viewModel.promptDismissed {
+                        Text("Please authenticate")
+                            .foregroundStyle(PassColor.textNorm)
+                        retryButton
+                            .padding(.top)
+                    }
 
                 case .lastAttempt:
                     Text("This is your last attempt. You will be logged out after failing to authenticate again.")
@@ -47,6 +52,9 @@ struct BiometricAuthenticationView: View {
                         .foregroundStyle(PassColor.textNorm)
                     retryButton
                         .padding(.top)
+
+                case .exhausted:
+                    EmptyView()
                 }
 
                 Spacer()
@@ -54,16 +62,13 @@ struct BiometricAuthenticationView: View {
             }
             .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .onAppear {
-                if case .noAttempts = viewModel.state {
-                    // Only automatically prompt for biometric authentication when no attempts were made
-                    // Otherwise let the users know how many attempts are remaining
-                    // and let them retry explicitly
-                    DispatchQueue.main.asyncAfter(deadline: .now() + viewModel.delayedTime) {
-                        viewModel.onAuth()
-                        viewModel.biometricallyAuthenticate()
-                    }
+            .task {
+                guard case .noAttempts = viewModel.state else {
+                    return
                 }
+                try? await Task.sleep(for: viewModel.delayedTime)
+                viewModel.onAuth()
+                viewModel.biometricallyAuthenticate()
             }
         }
     }

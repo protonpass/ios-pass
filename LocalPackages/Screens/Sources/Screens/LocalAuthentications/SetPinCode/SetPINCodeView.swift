@@ -22,12 +22,14 @@ import DesignSystem
 import ProtonCoreUIFoundations
 import SwiftUI
 
-struct SetPINCodeView: View {
+public struct SetPINCodeView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isFocused: Bool
-    @StateObject private var viewModel = SetPINCodeViewModel()
+    @State private var viewModel = SetPINCodeViewModel()
 
-    var body: some View {
+    public init() {}
+
+    public var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 12) {
                 Text(viewModel.state.title)

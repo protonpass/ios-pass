@@ -24,6 +24,7 @@ import DIComposition
 import Entities
 import FactoryKit
 import ProtonCoreKeymaker
+import Screens
 import SwiftUI
 
 extension Notification.Name {

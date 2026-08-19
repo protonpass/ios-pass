@@ -1,7 +1,7 @@
 //
 // LocalAuthenticationView.swift
-// Proton Pass - Created on 22/06/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Proton Pass - Created on 18/08/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -19,15 +19,16 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Entities
 import ProtonCoreUIFoundations
 import SwiftUI
 
 /// Not to be used directly but via `localAuthentication` view modifier
-struct LocalAuthenticationView: View {
+public struct LocalAuthenticationView: View {
     @State private var viewModel: LocalAuthenticationViewModel
     private let logOutButtonMode: LogOutButtonMode
 
-    enum LogOutButtonMode {
+    public enum LogOutButtonMode {
         case topBarTrailing(onClose: () -> Void)
         case topRight
 
@@ -40,13 +41,13 @@ struct LocalAuthenticationView: View {
         }
     }
 
-    init(mode: LocalAuthenticationViewModel.Mode,
-         delayed: Bool = false,
-         manuallyAvoidKeyboard: Bool = false,
-         logOutButtonMode: LogOutButtonMode = .topRight,
-         onAuth: @escaping () -> Void,
-         onSuccess: @escaping () async throws -> Void,
-         onFailure: @escaping (String?) -> Void) {
+    public init(mode: LocalAuthenticationMethod,
+                delayed: Bool = false,
+                manuallyAvoidKeyboard: Bool = false,
+                logOutButtonMode: LogOutButtonMode = .topRight,
+                onAuth: @escaping () -> Void,
+                onSuccess: @escaping () async throws -> Void,
+                onFailure: @escaping (String?) -> Void) {
         _viewModel = .init(wrappedValue: .init(mode: mode,
                                                delayed: delayed,
                                                manuallyAvoidKeyboard: manuallyAvoidKeyboard,
@@ -56,7 +57,7 @@ struct LocalAuthenticationView: View {
         self.logOutButtonMode = logOutButtonMode
     }
 
-    var body: some View {
+    public var body: some View {
         ZStack(alignment: .topTrailing) {
             PassColor.backgroundNorm
                 .ignoresSafeArea()
@@ -67,6 +68,9 @@ struct LocalAuthenticationView: View {
 
             case .pin:
                 PinAuthenticationView(viewModel: viewModel)
+
+            case .none:
+                EmptyView()
             }
 
             if case .topRight = logOutButtonMode {
@@ -74,31 +78,34 @@ struct LocalAuthenticationView: View {
                     .padding()
             }
         }
-        .if(logOutButtonMode.isTopBarTrailing) { view in
-            view
-                .toolbar {
-                    ToolbarItem(placement: .topBarLeading) {
-                        CircleButton(icon: IconProvider.cross,
-                                     iconColor: PassColor.interactionNormMajor2,
-                                     backgroundColor: PassColor.interactionNormMinor1,
-                                     accessibilityLabel: "Cancel",
-                                     action: {
-                                         if case let .topBarTrailing(onClose) = logOutButtonMode {
-                                             onClose()
-                                         }
-                                     })
-                    }
-
-                    ToolbarItem(placement: .topBarTrailing) {
-                        logOutButton
-                    }
-                }
-                .navigationStackEmbeded()
+        .toolbar {
+            if logOutButtonMode.isTopBarTrailing {
+                toolbarContent
+            }
         }
     }
 }
 
 private extension LocalAuthenticationView {
+    @ToolbarContentBuilder
+    var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .topBarLeading) {
+            CircleButton(icon: IconProvider.cross,
+                         iconColor: PassColor.interactionNormMajor2,
+                         backgroundColor: PassColor.interactionNormMinor1,
+                         accessibilityLabel: "Cancel",
+                         action: {
+                             if case let .topBarTrailing(onClose) = logOutButtonMode {
+                                 onClose()
+                             }
+                         })
+        }
+
+        ToolbarItem(placement: .topBarTrailing) {
+            logOutButton
+        }
+    }
+
     var logOutButton: some View {
         Button { viewModel.logOut() } label: {
             IconProvider.arrowOutFromRectangle

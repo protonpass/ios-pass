@@ -22,13 +22,13 @@ import Core
 import LocalAuthentication
 
 /// Biometrically authenticate with a given reason
-public protocol AuthenticateBiometricallyUseCase: Sendable {
-    func execute(policy: LAPolicy, reason: String) async throws -> Bool
+public protocol AuthenticateBiometricallyUseCase {
+    func callAsFunction(policy: LAPolicy, reason: String, retries: Int) async throws -> Bool
 }
 
 public extension AuthenticateBiometricallyUseCase {
-    func callAsFunction(policy: LAPolicy, reason: String) async throws -> Bool {
-        try await execute(policy: policy, reason: reason)
+    func callAsFunction(policy: LAPolicy, reason: String, retries: Int = 5) async throws -> Bool {
+        try await callAsFunction(policy: policy, reason: reason, retries: retries)
     }
 }
 
@@ -39,28 +39,35 @@ public extension AuthenticateBiometricallyUseCase {
  multiple times on a same `LAContext` always succeed without repeating authentication
  (maybe the result is cached but found no info in the docs)
  */
-public final class AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
+public struct AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
     private let keychainService: any KeychainProtocol
 
     public init(keychainService: any KeychainProtocol) {
         self.keychainService = keychainService
     }
 
-    public func execute(policy: LAPolicy, reason: String) async throws -> Bool {
-        let context = LAContext()
-        do {
-            // swiftlint:disable:next todo
-            // TODO: `evaluatedPolicyDomainState` is deprecated on iOS 18
-            // Think about other way to make biometric change detection future proof
-            /*
-             if try checkIfUserBiometricsSettingsChanged(context: context) {
-                 throw PassError.biometricChange
-             }
-             */
+    public func callAsFunction(policy: LAPolicy, reason: String, retries: Int = 5) async throws -> Bool {
+        var retriesLeft = retries
+        while true {
+            let context = LAContext()
+            do {
+                // swiftlint:disable:next todo
+                // TODO: `evaluatedPolicyDomainState` is deprecated on iOS 18
+                // Think about other way to make biometric change detection future proof
+                /*
+                 if try checkIfUserBiometricsSettingsChanged(context: context) {
+                     throw PassError.biometricChange
+                 }
+                 */
 
-            return try await context.evaluatePolicy(policy, localizedReason: reason)
-        } catch {
-            throw error
+                return try await context.evaluatePolicy(policy, localizedReason: reason)
+            } catch let error as LAError where error.code == .notInteractive && retriesLeft > 0 {
+                // -1004 "Caller is not running foreground": the system refused to show the sheet
+                // because our UI isn't frontmost yet. Transient, so ask again shortly instead of
+                // reporting it, as callers treat any thrown error as a failed unlock attempt.
+                retriesLeft -= 1
+                try await Task.sleep(for: .milliseconds(250))
+            }
         }
     }
 

@@ -20,6 +20,31 @@
 
 import LocalAuthentication
 
-public enum LocalAuthenticationMethodUiModel: Sendable {
+public enum LocalAuthenticationMethodUiModel: Sendable, Identifiable, Hashable {
     case none, biometric(LABiometryType), pin
+
+    public var id: Self {
+        self
+    }
+}
+
+public extension LocalAuthenticationMethodUiModel {
+    var method: LocalAuthenticationMethod {
+        switch self {
+        case .none:
+            .none
+
+        case .biometric:
+            .biometric
+
+        case .pin:
+            .pin
+        }
+    }
+}
+
+extension LocalAuthenticationMethodUiModel: Equatable {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.method == rhs.method
+    }
 }
