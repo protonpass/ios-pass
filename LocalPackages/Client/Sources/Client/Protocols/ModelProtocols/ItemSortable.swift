@@ -22,7 +22,22 @@ import Entities
 import Foundation
 
 public protocol DateSortable: Hashable, Sendable {
-    var dateForSorting: Date { get }
+    var lastUseTime: Int64 { get }
+    var modifyTime: Int64 { get }
+}
+
+private extension DateSortable {
+    var mostRecentDate: Date {
+        max(lastUseDate, modifyDate)
+    }
+
+    var lastUseDate: Date {
+        Date(timeIntervalSince1970: TimeInterval(lastUseTime))
+    }
+
+    var modifyDate: Date {
+        Date(timeIntervalSince1970: TimeInterval(modifyTime))
+    }
 }
 
 // MARK: - Most recent
@@ -111,13 +126,13 @@ public extension Array where Element: DateSortable {
 
         for item in self {
             try Task.checkCancellation()
-            let bucketIndex = cutOffDates.firstIndex { item.dateForSorting >= $0 } ?? (cutOffDates.count - 1)
+            let bucketIndex = cutOffDates.firstIndex { item.mostRecentDate >= $0 } ?? (cutOffDates.count - 1)
             buckets[bucketIndex].items.append(item)
         }
 
         for index in buckets.indices {
             try Task.checkCancellation()
-            buckets[index].items.sort { $0.dateForSorting > $1.dateForSorting }
+            buckets[index].items.sort { $0.mostRecentDate > $1.mostRecentDate }
         }
 
         return MostRecentSortResult(numberOfItems: count, buckets: buckets)
@@ -350,18 +365,18 @@ public extension Array where Element: DateSortable {
         case .ascending:
             try sorted(by: {
                 try Task.checkCancellation()
-                return $0.dateForSorting < $1.dateForSorting
+                return $0.modifyDate < $1.modifyDate
             })
 
         case .descending:
             try sorted(by: {
                 try Task.checkCancellation()
-                return $0.dateForSorting > $1.dateForSorting
+                return $0.modifyDate > $1.modifyDate
             })
         }
         let dict = try Dictionary(grouping: sortedElements) { element in
             try Task.checkCancellation()
-            return MonthYear(date: element.dateForSorting)
+            return MonthYear(date: element.modifyDate)
         }
 
         var buckets = [MonthYearBucket<Element>]()

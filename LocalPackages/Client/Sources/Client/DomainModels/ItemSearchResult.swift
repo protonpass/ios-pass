@@ -187,11 +187,7 @@ extension ItemSearchResult: ItemThumbnailable {
     }
 }
 
-extension ItemSearchResult: DateSortable {
-    public var dateForSorting: Date {
-        Date(timeIntervalSince1970: TimeInterval(max(lastUseTime, modifyTime)))
-    }
-}
+extension ItemSearchResult: DateSortable {}
 
 extension ItemSearchResult: AlphabeticalSortable {
     public var alphabeticalSortableString: String {
