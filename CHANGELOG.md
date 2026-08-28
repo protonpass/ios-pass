@@ -1,3 +1,6 @@
+# Version 1.20.1
+Resolved SSO login issue (core libraries upgraded from 37.4.0 to 37.5.3)
+
 # Version 1.20.0
 - Introduced Liquid Glass, bringing a more refined and modern visual experience
 - Added support for username generator
