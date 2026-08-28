@@ -253,7 +253,9 @@ public extension UseCasesContainer {
     }
 
     var acceptInvitation: Factory<any AcceptInvitationUseCase> {
-        self { AcceptInvitation(repository: self.inviteRepository,
+        self { AcceptInvitation(inviteRepository: self.inviteRepository,
+                                itemRepository: self.itemRepository,
+                                shareRepository: self.shareRepository,
                                 userManager: self.userManager,
                                 getEmailPublicKey: self.getEmailPublicKey(),
                                 getInviteDecryptionKeys: self.getInviteDecryptionKeys(),
@@ -264,11 +266,6 @@ public extension UseCasesContainer {
         self { DecodeShareVaultInformation(getEmailPublicKey: self.getEmailPublicKey(),
                                            getInviteDecryptionKeys: self.getInviteDecryptionKeys(),
                                            logManager: self.logManager) }
-    }
-
-    var updateCachedInvitations: Factory<any UpdateCachedInvitationsUseCase> {
-        self { UpdateCachedInvitations(repository: self.inviteRepository,
-                                       userManager: self.userManager) }
     }
 
     var revokeInvitation: Factory<any RevokeInvitationUseCase> {
