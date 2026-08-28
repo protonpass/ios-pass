@@ -26,9 +26,11 @@ import Macro
 import SwiftUI
 
 struct AcceptRejectInviteView: View {
-    @Environment(\.dismiss) private var dismiss
-    // swiftlint:disable:next private_swiftui_state
-    @StateObject var viewModel: AcceptRejectInviteViewModel
+    @StateObject private var viewModel: AcceptRejectInviteViewModel
+
+    init(invite: Invite, onResult: @escaping (AcceptRejectInviteResult) -> Void) {
+        _viewModel = .init(wrappedValue: .init(invite: invite, onResult: onResult))
+    }
 
     var body: some View {
         GeometryReader { geometry in
@@ -62,12 +64,10 @@ struct AcceptRejectInviteView: View {
         .padding(.vertical, 24)
         .background(PassColor.backgroundWeak)
         .animation(.default, value: viewModel.vaultInfos)
-        .showSpinner(viewModel.executingAction)
-        .onChange(of: viewModel.shouldCloseSheet) {
-            if viewModel.shouldCloseSheet {
-                dismiss()
-            }
+        .task {
+            await viewModel.decodeVaultDataIfApplicable()
         }
+        .showSpinner(viewModel.executingAction)
     }
 }
 
@@ -147,10 +147,6 @@ private extension AcceptRejectInviteView {
                               action: { viewModel.reject() })
         }
     }
-}
-
-#Preview("AcceptRejectInviteView Preview") {
-    AcceptRejectInviteView(viewModel: AcceptRejectInviteViewModel(invite: .user(UserInvite.mocked)))
 }
 
 private extension Invite {

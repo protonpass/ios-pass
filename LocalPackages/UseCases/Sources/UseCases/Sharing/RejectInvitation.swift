@@ -23,16 +23,10 @@ import Client
 import Entities
 
 public protocol RejectInvitationUseCase: Sendable {
-    func execute(_ invite: Invite) async throws
+    func callAsFunction(_ invite: Invite) async throws
 }
 
-public extension RejectInvitationUseCase {
-    func callAsFunction(_ invite: Invite) async throws {
-        try await execute(invite)
-    }
-}
-
-public final class RejectInvitation: RejectInvitationUseCase {
+public struct RejectInvitation: RejectInvitationUseCase {
     private let repository: any InviteRepositoryProtocol
     private let userManager: any UserManagerProtocol
 
@@ -42,8 +36,9 @@ public final class RejectInvitation: RejectInvitationUseCase {
         self.userManager = userManager
     }
 
-    public func execute(_ invite: Invite) async throws {
+    public func callAsFunction(_ invite: Invite) async throws {
         let userId = try await userManager.getActiveUserId()
         try await repository.rejectInvite(userId: userId, invite: invite)
+        try await repository.removeCachedInvite(userId: userId, invite: invite)
     }
 }
