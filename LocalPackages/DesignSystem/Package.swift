@@ -21,7 +21,7 @@ let package = Package(name: "DesignSystem",
                       ],
                       dependencies: [
                           // Dependencies declare other packages that this package depends on.
-                        .package(url: "https://github.com/ProtonMail/protoncore_ios", from: "37.4.0"),
+                        .package(url: "https://github.com/ProtonMail/protoncore_ios", from: "37.5.3"),
                         .package(url: "https://github.com/jdg/MBProgressHUD", exact: "1.2.0"),
                         .package(url: "https://github.com/protonpass/swift-macro", exact: "1.0.0")
                       ],
