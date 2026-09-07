@@ -5,9 +5,12 @@
 - Improved the bug reporting experience with better file and input validation
 
 Others:
-- Core libraries upgraded from 37.4.0 to 37.5.0
-- Rust library upgraded from 1.6.1 to 1.7.3
+- Core libraries upgraded from 37.5.3 to 37.5.5
+- Rust library upgraded from 1.6.1 to 2.0.0
 - Remove "PassHideShowVault" and "PassGroupInvitesV1" flags
+
+# Version 1.20.1
+Resolved SSO login issue (core libraries upgraded from 37.4.0 to 37.5.3)
 
 # Version 1.20.0
 - Introduced Liquid Glass, bringing a more refined and modern visual experience
