@@ -49,28 +49,28 @@ public enum MostRecentType: String, Hashable, Sendable, CaseIterable, Identifiab
         return allCases.compactMap { type -> Date? in
             switch type {
             case .today:
-                return startOfToday
+                startOfToday
 
             case .yesterday:
-                return calendar.date(byAdding: .day, value: -1, to: startOfToday)
+                calendar.date(byAdding: .day, value: -1, to: startOfToday)
 
             case .last7Days:
-                return calendar.date(byAdding: .day, value: -7, to: startOfToday)
+                calendar.date(byAdding: .day, value: -7, to: startOfToday)
 
             case .last14Days:
-                return calendar.date(byAdding: .day, value: -14, to: startOfToday)
+                calendar.date(byAdding: .day, value: -14, to: startOfToday)
 
             case .last30Days:
-                return calendar.date(byAdding: .day, value: -30, to: startOfToday)
+                calendar.date(byAdding: .day, value: -30, to: startOfToday)
 
             case .last60Days:
-                return calendar.date(byAdding: .day, value: -60, to: startOfToday)
+                calendar.date(byAdding: .day, value: -60, to: startOfToday)
 
             case .last90Days:
-                return calendar.date(byAdding: .day, value: -90, to: startOfToday)
+                calendar.date(byAdding: .day, value: -90, to: startOfToday)
 
             default:
-                return Date.distantPast
+                Date.distantPast
             }
         }
     }
