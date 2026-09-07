@@ -22,11 +22,7 @@ import Core
 import Entities
 import Foundation
 
-extension ItemUiModel: DateSortable {
-    public var dateForSorting: Date {
-        Date(timeIntervalSince1970: TimeInterval(max(lastUseTime, modifyTime)))
-    }
-}
+extension ItemUiModel: DateSortable {}
 
 extension ItemUiModel: AlphabeticalSortable {
     public var alphabeticalSortableString: String {
