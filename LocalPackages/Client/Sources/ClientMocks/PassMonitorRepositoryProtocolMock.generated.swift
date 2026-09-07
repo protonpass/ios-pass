@@ -112,11 +112,11 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
     public var closureGetItemsWithSamePassword: () -> () = {}
     public var invokedGetItemsWithSamePasswordfunction = false
     public var invokedGetItemsWithSamePasswordCount = 0
-    public var invokedGetItemsWithSamePasswordParameters: (item: ItemContent, Void)?
-    public var invokedGetItemsWithSamePasswordParametersList = [(item: ItemContent, Void)]()
-    public nonisolated(unsafe) var stubbedGetItemsWithSamePasswordResult: [ItemContent]!
+    public var invokedGetItemsWithSamePasswordParameters: (item: Entities.ItemContent, Void)?
+    public var invokedGetItemsWithSamePasswordParametersList = [(item: Entities.ItemContent, Void)]()
+    public nonisolated(unsafe) var stubbedGetItemsWithSamePasswordResult: [Entities.ItemContent]!
 
-    public func getItemsWithSamePassword(item: ItemContent) async throws -> [ItemContent] {
+    public func getItemsWithSamePassword(item: Entities.ItemContent) async throws -> [Entities.ItemContent] {
         invokedGetItemsWithSamePasswordfunction = true
         invokedGetItemsWithSamePasswordCount += 1
         invokedGetItemsWithSamePasswordParameters = (item, ())
