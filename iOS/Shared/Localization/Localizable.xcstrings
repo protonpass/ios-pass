@@ -93396,16 +93396,6 @@
         }
       }
     },
-    "Move to another container" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Move to another container"
-          }
-        }
-      }
-    },
     "Move to Trash" : {
       "localizations" : {
         "be" : {
