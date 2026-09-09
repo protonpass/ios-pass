@@ -126,9 +126,9 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                     urls = data.urls.map { .init(value: $0) }
                 }
 
-                if data.autofillUrls.isEmpty {
+                if data.autofillUrls.isEmpty, !data.urls.isEmpty {
                     autofillUrls = data.urls.map { .init(value: .init(url: $0, mode: .default)) }
-                } else {
+                } else if !data.autofillUrls.isEmpty {
                     autofillUrls = data.autofillUrls.map { .init(value: .init(url: $0.url,
                                                                               mode: $0.mode)) }
                 }
