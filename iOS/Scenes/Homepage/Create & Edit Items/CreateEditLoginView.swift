@@ -784,9 +784,6 @@ private struct DomainMatchingWebsiteSection<Field: Hashable>: View {
                                 Text(verbatim: "https://")
                             }
                             .focused(focusedField, equals: field)
-                            .onChange(of: viewModel.autofillUrls) {
-                                viewModel.invalidURLs.removeAll()
-                            }
                             .keyboardType(.URL)
                             .textInputAutocapitalization(.never)
                             .autocorrectionDisabled()
@@ -836,6 +833,9 @@ private struct DomainMatchingWebsiteSection<Field: Hashable>: View {
                     addUrlButton
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .onChange(of: viewModel.autofillUrls) {
+                    viewModel.invalidURLs.removeAll()
+                }
                 .animation(.default, value: viewModel.autofillUrls)
             }
             .frame(maxWidth: .infinity, alignment: .leading)

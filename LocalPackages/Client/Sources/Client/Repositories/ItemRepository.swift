@@ -834,6 +834,7 @@ public extension ItemRepository {
         logger.trace("Importing \(logins.count) logins for user \(userId)")
         let vaultKey = try await passKeyManager.getLatestShareKey(userId: userId, shareId: shareId)
         let chunks = logins.chunked(into: 100)
+        let isDomainMatchingSupported = domainMatchingSupported
         for chunk in chunks {
             let itemsToImport: [ItemToImport] = try chunk.map { login in
                 let loginData = ItemContentData.login(.init(email: login.email,
@@ -852,7 +853,7 @@ public extension ItemRepository {
                                                   customFields: [])
                 return try .init(containerKey: vaultKey,
                                  itemContent: content,
-                                 domainMatchingSupported: domainMatchingSupported)
+                                 domainMatchingSupported: isDomainMatchingSupported)
             }
             logger.debug("Bulk importing \(itemsToImport.count) logins")
             let items = try await remoteDatasource.importItems(userId: userId,
