@@ -1,7 +1,5 @@
 # Version 1.21.0
 - Show penalties for password strength criteria
-- Added PRF (Pseudo-Random Function) support for passkeys
-- Fixed SSO-related issues
 - Improved the bug reporting experience with better file and input validation
 
 Others:
