@@ -1,10 +1,27 @@
-# Version 1.20.0
-- Introduced Liquid Glass, bringing a more refined and modern visual experience
-- Added support for folders (behind feature flag)
+# Version 1.21.0
+- Show penalties for password strength criteria
+- Added PRF (Pseudo-Random Function) support for passkeys
+- Fixed SSO-related issues
+- Improved the bug reporting experience with better file and input validation
 
 Others:
-- Core libraries upgraded from 36.0.3 to 37.3.1
+- Core libraries upgraded from 37.5.3 to 37.5.5
+- Rust library upgraded from 1.6.1 to 2.0.0
+- Remove "PassHideShowVault" and "PassGroupInvitesV1" flags
+
+# Version 1.20.1
+Resolved SSO login issue (core libraries upgraded from 37.4.0 to 37.5.3)
+
+# Version 1.20.0
+- Introduced Liquid Glass, bringing a more refined and modern visual experience
+- Added support for username generator
+- Added support for folders (behind feature flag)
+- Search is now diacritic-insensitive
+
+Others:
+- Core libraries upgraded from 36.0.3 to 37.4.0
 - Rust library upgraded from 1.1.2 to 1.6.1
+- Surface file upload errors
 
 # Version 1.19.2
 - Added handling for newly added account keys during an active session

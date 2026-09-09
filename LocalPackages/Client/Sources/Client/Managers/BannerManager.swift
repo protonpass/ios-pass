@@ -24,20 +24,23 @@ import Macro
 @preconcurrency import ProtonCoreUIFoundations
 import SwiftUI
 
+@MainActor
 public protocol BannerDisplayProtocol: Sendable {
     func displayBottomSuccessMessage(_ message: String)
 
     func displayBottomInfoMessage(_ message: String,
                                   dismissButtonTitle: String,
-                                  onDismiss: @escaping (@Sendable @MainActor (PMBanner) -> Void))
+                                  onDismiss: @escaping @MainActor (PMBanner) -> Void)
 
     func displayBottomInfoMessage(_ message: String)
+
     func displayTopErrorMessage(_ message: String,
                                 dismissButtonTitle: String,
-                                onDismiss: (@Sendable (PMBanner) -> Void)?)
+                                onDismiss: (@MainActor (PMBanner) -> Void)?)
+
     func displayBottomErrorMessage(_ message: String,
                                    dismissButtonTitle: String,
-                                   onDismiss: (@Sendable (PMBanner) -> Void)?)
+                                   onDismiss: (@MainActor (PMBanner) -> Void)?)
 
     func displayTopErrorMessage(_ error: any Error)
 }
@@ -45,31 +48,19 @@ public protocol BannerDisplayProtocol: Sendable {
 public extension BannerDisplayProtocol {
     func displayTopErrorMessage(_ message: String,
                                 dismissButtonTitle: String? = nil,
-                                onDismiss: (@Sendable (PMBanner) -> Void)? = nil) {
-        let dismissButtonTitle = dismissButtonTitle ?? #localized("OK", bundle: .module)
-        displayTopErrorMessage(message, dismissButtonTitle: dismissButtonTitle, onDismiss: onDismiss)
+                                onDismiss: (@MainActor (PMBanner) -> Void)? = nil) {
+        displayTopErrorMessage(message,
+                               dismissButtonTitle: dismissButtonTitle ?? #localized("OK", bundle: .module),
+                               onDismiss: onDismiss)
     }
 }
 
-public final class BannerManager: @unchecked Sendable, BannerDisplayProtocol {
+@MainActor
+public final class BannerManager: BannerDisplayProtocol {
     private weak var container: UIViewController?
 
-    public init(container: UIViewController?) {
+    public nonisolated init(container: UIViewController?) {
         self.container = container
-    }
-
-    private func display(message: String, at position: PMBannerPosition, style: PMBannerNewStyle) {
-        guard let container else {
-            return
-        }
-        Task { @MainActor in
-            let currentDisplayedBanners = PMBanner.getBanners(in: container.topMostViewController)
-            guard !currentDisplayedBanners.contains(where: { $0.message == message }) else {
-                return
-            }
-            let banner = PMBanner(message: message, style: style)
-            banner.show(at: position, on: container.topMostViewController)
-        }
     }
 
     public func displayBottomSuccessMessage(_ message: String) {
@@ -78,16 +69,12 @@ public final class BannerManager: @unchecked Sendable, BannerDisplayProtocol {
 
     public func displayBottomInfoMessage(_ message: String,
                                          dismissButtonTitle: String,
-                                         onDismiss: @escaping (@Sendable @MainActor (PMBanner) -> Void)) {
-        guard let container else {
-            return
-        }
-
-        Task { @MainActor in
-            let banner = PMBanner(message: message, style: PMBannerNewStyle.info)
-            banner.addButton(text: dismissButtonTitle, handler: onDismiss)
-            banner.show(at: .passBottom, on: container.topMostViewController)
-        }
+                                         onDismiss: @escaping @MainActor (PMBanner) -> Void) {
+        display(message: message,
+                at: .passBottom,
+                style: .info,
+                dismissButtonTitle: dismissButtonTitle,
+                onDismiss: onDismiss)
     }
 
     public func displayBottomInfoMessage(_ message: String) {
@@ -96,52 +83,51 @@ public final class BannerManager: @unchecked Sendable, BannerDisplayProtocol {
 
     public func displayTopErrorMessage(_ message: String,
                                        dismissButtonTitle: String,
-                                       onDismiss: (@Sendable (PMBanner) -> Void)? = nil) {
-        guard let container else {
-            return
-        }
-
-        Task { @MainActor in
-            let onDismiss = onDismiss ?? { banner in
-                Task { @MainActor in
-                    banner.dismiss()
-                }
-            }
-            let banner = PMBanner(message: message, style: PMBannerNewStyle.error)
-            banner.addButton(text: dismissButtonTitle, handler: onDismiss)
-            banner.show(at: .top, on: container.topMostViewController)
-        }
+                                       onDismiss: (@MainActor (PMBanner) -> Void)? = nil) {
+        display(message: message,
+                at: .top,
+                style: .error,
+                dismissButtonTitle: dismissButtonTitle,
+                onDismiss: onDismiss)
     }
 
     public func displayBottomErrorMessage(_ message: String,
                                           dismissButtonTitle: String,
-                                          onDismiss: (@Sendable (PMBanner) -> Void)?) {
-        guard let container else {
-            return
-        }
-
-        Task { @MainActor in
-            let onDismiss = onDismiss ?? { banner in
-                Task { @MainActor in
-                    banner.dismiss()
-                }
-            }
-            let banner = PMBanner(message: message, style: PMBannerNewStyle.error)
-            banner.addButton(text: dismissButtonTitle, handler: onDismiss)
-            banner.show(at: .bottom, on: container.topMostViewController)
-        }
+                                          onDismiss: (@MainActor (PMBanner) -> Void)?) {
+        display(message: message,
+                at: .bottom,
+                style: .error,
+                dismissButtonTitle: dismissButtonTitle,
+                onDismiss: onDismiss)
     }
 
     public func displayTopErrorMessage(_ error: any Error) {
-        if let customizedMessage = customizedMessage(for: error) {
-            displayTopErrorMessage(customizedMessage)
-        } else {
-            displayTopErrorMessage(error.localizedDebugDescription)
-        }
+        displayTopErrorMessage(customizedMessage(for: error) ?? error.localizedDebugDescription)
     }
 }
 
 private extension BannerManager {
+    func display(message: String,
+                 at position: PMBannerPosition,
+                 style: PMBannerNewStyle,
+                 dismissButtonTitle: String? = nil,
+                 onDismiss: (@MainActor (PMBanner) -> Void)? = nil) {
+        guard let host = container?.topMostViewController else { return }
+
+        let displayed = PMBanner.getBanners(in: host)
+        guard !displayed.contains(where: { $0.message == message }) else { return }
+
+        let banner = PMBanner(message: message, style: style)
+        if let dismissButtonTitle {
+            banner.addButton(text: dismissButtonTitle,
+                             handler: { banner in
+                                 banner.dismiss()
+                                 onDismiss?(banner)
+                             })
+        }
+        banner.show(at: position, on: host)
+    }
+
     func customizedMessage(for error: any Error) -> String? {
         if let passError = error as? PassError {
             switch passError {

@@ -226,3 +226,8 @@ custom_rules:
     regex: '\bnonisolated\b\s*\n?\s*func\s+\w+\s*\([^)]*\)\s*async\b'
     message: "Consider migrating this `nonisolated func ... async` to the new Swift 6.2 `@concurrent` isolation model."
     severity: warning
+
+  incomplete_forwarded_log_call_site:
+    name: "Incomplete forwarded log call site"
+    regex: 'logger\.[a-z]+\((?![^)\n]*file: file)[^)\n]*function: function'
+    message: "Forward `file: file` too. LogFormatter prints `file.function:line:column`, so a forwarded function/line paired with the helper's own file points at a line in a different file."

@@ -20,8 +20,10 @@
 
 import Client
 import Combine
+import DIComposition
 import Entities
 import FactoryKit
+import Screens
 import SwiftUI
 
 @MainActor
@@ -47,17 +49,16 @@ final class CreateAliasLiteViewModel: ObservableObject {
     @Published private(set) var aliasCount: Int?
     @Published var mailboxSelection: AliasLinkedMailboxSelection
     @Published var suffixSelection: SuffixSelection
-    let module = resolve(\SharedToolingContainer.module)
+    let module = dependency(\ToolingContainer.module)
 
     private var cancellables = Set<AnyCancellable>()
 
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let validateAliasPrefix = resolve(\SharedUseCasesContainer.validateAliasPrefix)
-    @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
-    @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
-    @LazyInjected(\SharedToolingContainer.logger) private var logger
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedRepositoryContainer.localItemDatasource) private var localItemDatasource
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let validateAliasPrefix = dependency(\UseCasesContainer.validateAliasPrefix)
+    @LazyInjected(\RepositoryContainer.accessRepository) private var accessRepository
+    @LazyInjected(\ToolingContainer.logger) private var logger
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
+    @LazyInjected(\RepositoryContainer.localItemDatasource) private var localItemDatasource
 
     weak var aliasCreationDelegate: (any AliasCreationLiteInfoDelegate)?
 
@@ -122,8 +123,12 @@ extension CreateAliasLiteViewModel {
         router.present(for: .upgradeFlow)
     }
 
-    func handle(_ error: any Error) {
-        logger.error(error)
+    func handle(_ error: any Error,
+                file: String = #file,
+                function: String = #function,
+                line: UInt = #line,
+                column: UInt = #column) {
+        logger.error(error, file: file, function: function, line: line, column: column)
         router.display(element: .displayErrorBanner(error))
     }
 }

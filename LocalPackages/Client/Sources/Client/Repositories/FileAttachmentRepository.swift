@@ -33,13 +33,6 @@ private struct UploadMultipartResponse: Decodable {
         case code = "Code"
         case error = "Error"
     }
-
-    var formattedErrorMessage: String? {
-        if let error {
-            return "\(error) (\(code))"
-        }
-        return nil
-    }
 }
 
 public protocol FileAttachmentRepositoryProtocol: Sendable {
@@ -151,7 +144,7 @@ public extension FileAttachmentRepository {
                         continuation.yield(overallProgress)
 
                     case let .result(response):
-                        if let errorMessage = response.formattedErrorMessage {
+                        if let errorMessage = response.error {
                             let error = PassError.fileAttachment(.failedToUpload(errorMessage))
                             continuation.yield(with: .failure(error))
                         }

@@ -20,7 +20,6 @@
 
 import CodeScanner
 import DesignSystem
-import FactoryKit
 import ProtonCoreUIFoundations
 import SwiftUI
 

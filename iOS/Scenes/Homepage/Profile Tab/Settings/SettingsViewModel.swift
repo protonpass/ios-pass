@@ -21,9 +21,12 @@
 import Client
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Macro
+import Screens
+import Stores
 import SwiftUI
 
 @MainActor
@@ -31,21 +34,21 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     let isShownAsSheet: Bool
-    private let favIconRepository = resolve(\SharedRepositoryContainer.favIconRepository)
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let indexItemsForSpotlight = resolve(\SharedUseCasesContainer.indexItemsForSpotlight)
-    private let getSpotlightVaults = resolve(\UseCasesContainer.getSpotlightVaults)
-    private let updateSpotlightVaults = resolve(\UseCasesContainer.updateSpotlightVaults)
-    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
-    private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
-    private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
-    private let updateUserPreferences = resolve(\SharedUseCasesContainer.updateUserPreferences)
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedUseCasesContainer.fullContentSync) private var fullContentSync
-    @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
-    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
+    private let favIconRepository = dependency(\RepositoryContainer.favIconRepository)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let indexItemsForSpotlight = dependency(\UseCasesContainer.indexItemsForSpotlight)
+    private let getSpotlightVaults = dependency(\UseCasesContainer.getSpotlightVaults)
+    private let updateSpotlightVaults = dependency(\UseCasesContainer.updateSpotlightVaults)
+    private let getSharedPreferences = dependency(\UseCasesContainer.getSharedPreferences)
+    private let updateSharedPreferences = dependency(\UseCasesContainer.updateSharedPreferences)
+    private let getUserPreferences = dependency(\UseCasesContainer.getUserPreferences)
+    private let updateUserPreferences = dependency(\UseCasesContainer.updateUserPreferences)
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
+    @LazyInjected(\UseCasesContainer.fullContentSync) private var fullContentSync
+    @LazyInjected(\RepositoryContainer.accessRepository) private var accessRepository
+    @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
 
     @Published private(set) var selectedBrowser: Browser
     @Published private(set) var selectedTheme: Theme
@@ -247,7 +250,7 @@ extension SettingsViewModel {
             guard let self else {
                 return
             }
-            let modules = PassModule.allCases.map(LogManager.init)
+            let modules = PassModule.allCases.map { LogManager(module: $0) }
             await modules.asyncForEach { await $0.removeAllLogs() }
             router.display(element: .successMessage(#localized("All logs cleared"), config: nil))
         }
@@ -414,8 +417,12 @@ private extension SettingsViewModel {
         }
     }
 
-    func handle(_ error: any Error) {
-        logger.error(error)
+    func handle(_ error: any Error,
+                file: String = #file,
+                function: String = #function,
+                line: UInt = #line,
+                column: UInt = #column) {
+        logger.error(error, file: file, function: function, line: line, column: column)
         router.display(element: .displayErrorBanner(error))
     }
 }

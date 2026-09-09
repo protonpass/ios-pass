@@ -74,6 +74,16 @@ public struct FolderTreeView<Content: View>: View {
     }
 }
 
+extension FolderTreeView: Equatable {
+    public static func == (lhs: FolderTreeView, rhs: FolderTreeView) -> Bool {
+        lhs.content == rhs.content &&
+            lhs.folders == rhs.folders &&
+            lhs.shouldDismissOnSelection == rhs.shouldDismissOnSelection &&
+            lhs.expandedContainerIds == rhs.expandedContainerIds &&
+            lhs.selectedContainer == rhs.selectedContainer
+    }
+}
+
 private extension FolderTreeView {
     func row(for folder: FolderUiModel) -> some View {
         HStack(spacing: 16) {
@@ -85,7 +95,9 @@ private extension FolderTreeView {
     func disclosureButton(for folder: FolderUiModel) -> some View {
         let hasSubfolders = content.containsSubfolders(containerId: folder.folderId)
         return Button {
-            toggleDisplayContainerContent(containerId: folder.id)
+            withAnimation {
+                toggleDisplayContainerContent(containerId: folder.id)
+            }
         } label: {
             ExpandRowButtonDisplay(expanded: expandedContainerIds.contains(folder.id))
         }
@@ -127,10 +139,9 @@ private extension FolderTreeView {
                         .foregroundStyle(PassColor.textNorm)
                         .frame(maxWidth: .infinity, alignment: .topLeading)
                 }
+                .contentShape(.rect)
             }
             .buttonStyle(.plain)
-
-            Spacer()
 
             trailingView(folder, content)
         }

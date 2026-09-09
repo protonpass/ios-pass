@@ -331,7 +331,6 @@ private struct ItemRow: View {
                                      },
                                      uri: totpUri,
                                      title: title,
-                                     totpManager: SharedServiceContainer.shared.totpManager(),
                                      onCopyTotpToken: { _ in onSelect(item) })
                         .padding(.top, DesignConstant.sectionPadding / 2)
                 }

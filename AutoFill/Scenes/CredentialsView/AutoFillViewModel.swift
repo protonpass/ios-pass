@@ -21,10 +21,12 @@
 @preconcurrency import AuthenticationServices
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 import SwiftUI
 
 @MainActor
@@ -56,10 +58,10 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
 
     let users: [UserUiModel]
 
-    @LazyInjected(\SharedServiceContainer.eventSynchronizer) private var eventSynchronizer
-    @LazyInjected(\SharedToolingContainer.logger) var logger
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) var router
-    @LazyInjected(\SharedUseCasesContainer.canEditItem) var canEditItem
+    @LazyInjected(\ServiceContainer.eventSynchronizer) private var eventSynchronizer
+    @LazyInjected(\ToolingContainer.logger) var logger
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) var router
+    @LazyInjected(\UseCasesContainer.canEditItem) var canEditItem
     @LazyInjected(\AutoFillUseCaseContainer.associateUrlAndAutoFill) var associateUrlAndAutoFill
 
     weak var delegate: (any AutoFillViewModelDelegate)?
@@ -267,11 +269,15 @@ extension AutoFillViewModel {
         router.present(for: .upgradeFlow)
     }
 
-    func handle(_ error: any Error) {
+    func handle(_ error: any Error,
+                file: String = #file,
+                function: String = #function,
+                line: UInt = #line,
+                column: UInt = #column) {
         if error is CancellationError {
             return
         }
-        logger.error(error)
+        logger.error(error, file: file, function: function, line: line, column: column)
         router.display(element: .displayErrorBanner(error))
     }
 }

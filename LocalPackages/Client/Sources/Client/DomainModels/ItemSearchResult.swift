@@ -74,7 +74,7 @@ public enum SearchResultEither: HighlightableText, Hashable {
     }
 }
 
-public struct ItemSearchResult: Sendable, ItemTypeIdentifiable, Identifiable, Pinnable {
+public struct ItemSearchResult: Sendable, ItemTypeIdentifiable, Identifiable, Pinnable, Equatable {
     public var id: String {
         "\(itemId + shareId)"
     }
@@ -187,11 +187,7 @@ extension ItemSearchResult: ItemThumbnailable {
     }
 }
 
-extension ItemSearchResult: DateSortable {
-    public var dateForSorting: Date {
-        Date(timeIntervalSince1970: TimeInterval(max(lastUseTime, modifyTime)))
-    }
-}
+extension ItemSearchResult: DateSortable {}
 
 extension ItemSearchResult: AlphabeticalSortable {
     public var alphabeticalSortableString: String {

@@ -18,104 +18,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// swiftlint:disable file_length
 import Client
 import Combine
 import Core
 import DesignSystem
+import DIComposition
 import DocScanner
 import Entities
 import FactoryKit
 import Foundation
 import Macro
 import Screens
+
+// swiftlint:disable file_length
+import Stores
 import SwiftUI
 import UseCases
 
 typealias ScanResponsePublisher = PassthroughSubject<(any ScanResult)?, any Error>
-
-enum ItemMode: Equatable, Hashable {
-    case create(ItemCreationType)
-    case clone(ItemContent)
-    case edit(ItemContent)
-
-    var itemContent: ItemContent? {
-        switch self {
-        case let .clone(content), let .edit(content):
-            content
-
-        default:
-            nil
-        }
-    }
-
-    var isEditMode: Bool {
-        switch self {
-        case .edit:
-            true
-
-        default:
-            false
-        }
-    }
-
-    var canChangeVault: Bool {
-        switch self {
-        case .clone, .create:
-            true
-
-        default:
-            false
-        }
-    }
-}
-
-enum ItemCreationType: Equatable, Hashable {
-    case note(title: String, note: String)
-    case alias
-    // swiftlint:disable:next enum_case_associated_values_count
-    case login(title: String? = nil,
-               email: String? = nil,
-               password: String? = nil,
-               url: String? = nil,
-               note: String? = nil,
-               totpUri: String? = nil,
-               autofill: Bool,
-               passkeyCredentialRequest: PasskeyCredentialRequest? = nil)
-    case creditCard
-    case identity
-    case sshKey
-    case wifi
-    case custom(CustomItemTemplate)
-
-    var itemContentType: ItemContentType {
-        switch self {
-        case .note:
-            .note
-
-        case .alias:
-            .alias
-
-        case .login:
-            .login
-
-        case .creditCard:
-            .creditCard
-
-        case .identity:
-            .identity
-
-        case .sshKey:
-            .sshKey
-
-        case .wifi:
-            .wifi
-
-        case .custom:
-            .custom
-        }
-    }
-}
 
 private struct PendingFileNameUpdate {
     let fileId: String
@@ -196,28 +116,28 @@ class BaseCreateEditItemViewModel: ObservableObject {
     private lazy var renameAttachmentDelegate = RenameAttachmentDelegate()
 
     let mode: ItemMode
-    let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
+    let itemRepository = dependency(\RepositoryContainer.itemRepository)
     let upgradeChecker: any UpgradeCheckerProtocol
-    let logger = resolve(\SharedToolingContainer.logger)
-    let userManager = resolve(\SharedServiceContainer.userManager)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
-    private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
-    private let updateUserPreferences = resolve(\SharedUseCasesContainer.updateUserPreferences)
-    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
-    @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
-    @LazyInjected(\SharedRepositoryContainer.fileAttachmentRepository) private var fileRepository
-    @LazyInjected(\SharedUseCasesContainer.generateDatedFileName) private var generateDatedFileName
-    @LazyInjected(\SharedUseCasesContainer.writeToUrl) private var writeToUrl
-    @LazyInjected(\SharedUseCasesContainer.getFileSize) private var getFileSize
-    @LazyInjected(\SharedUseCasesContainer.getMimeType) private var getMimeType
-    @LazyInjected(\SharedUseCasesContainer.getFileGroup) private var getFileGroup
-    @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
-    @LazyInjected(\SharedUseCasesContainer.getFilesToLink) private var getFilesToLink
-    @LazyInjected(\SharedUseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
-    @LazyInjected(\SharedUseCasesContainer.checkCameraPermission) private var checkCameraPermission
-    @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
+    let logger = dependency(\ToolingContainer.logger)
+    let userManager = dependency(\ServiceContainer.userManager)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let addTelemetryEvent = dependency(\UseCasesContainer.addTelemetryEvent)
+    private let getUserPreferences = dependency(\UseCasesContainer.getUserPreferences)
+    private let updateUserPreferences = dependency(\UseCasesContainer.updateUserPreferences)
+    private let appContentManager = dependency(\ServiceContainer.appContentManager)
+    @LazyInjected(\ToolingContainer.preferencesManager) var preferencesManager
+    @LazyInjected(\RepositoryContainer.fileAttachmentRepository) private var fileRepository
+    @LazyInjected(\UseCasesContainer.generateDatedFileName) private var generateDatedFileName
+    @LazyInjected(\UseCasesContainer.writeToUrl) private var writeToUrl
+    @LazyInjected(\UseCasesContainer.getFileSize) private var getFileSize
+    @LazyInjected(\UseCasesContainer.getMimeType) private var getMimeType
+    @LazyInjected(\UseCasesContainer.getFileGroup) private var getFileGroup
+    @LazyInjected(\UseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
+    @LazyInjected(\UseCasesContainer.getFilesToLink) private var getFilesToLink
+    @LazyInjected(\UseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
+    @LazyInjected(\UseCasesContainer.checkCameraPermission) private var checkCameraPermission
+    @LazyInjected(\UseCasesContainer.getSharedPreferences) private var getSharedPreferences
+    @LazyInjected(\UseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
 
     var isFetchingAttachedFiles: Bool {
         attachedFiles?.isFetching == true
@@ -636,8 +556,12 @@ private extension BaseCreateEditItemViewModel {
 // MARK: - Public APIs
 
 extension BaseCreateEditItemViewModel {
-    func handle(_ error: any Error) {
-        logger.error(error)
+    func handle(_ error: any Error,
+                file: String = #file,
+                function: String = #function,
+                line: UInt = #line,
+                column: UInt = #column) {
+        logger.error(error, file: file, function: function, line: line, column: column)
 
         var customErrorMessage: String?
         if let passError = error as? PassError,

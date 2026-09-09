@@ -43,7 +43,7 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
         content
             .background(PassColor.backgroundNorm)
             .navigationBarTitleDisplayMode(.inline)
-            .tint(viewModel.itemContentType.normMajor1Color)
+            .tint(viewModel.itemContentType.normMajor2Color)
             .disabled(viewModel.isSaving)
             .animation(.default, value: viewModel.customFields)
             .animation(.default, value: viewModel.customSections)
@@ -88,9 +88,9 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
             }
             .sheet(isPresented: $viewModel.isShowingVaultSelector) {
                 // Add more height when free users to make room for upsell banner
-                VaultSelectorView(selectedContainer: $viewModel.selectedContainer,
-                                  isFreeUser: viewModel.isFreeUser,
-                                  onUpgrade: { viewModel.upgrade() })
+                ContainerDestinationSelectionView(selectedContainer: $viewModel.selectedContainer,
+                                                  isFreeUser: viewModel.isFreeUser,
+                                                  onUpgrade: { viewModel.upgrade() })
                     .environment(\.colorScheme, colorScheme)
             }
             .fullScreenCover(item: $viewModel.filePreviewMode) { mode in

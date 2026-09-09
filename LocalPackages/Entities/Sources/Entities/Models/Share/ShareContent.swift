@@ -20,7 +20,7 @@
 
 private typealias ContainerId = String
 
-public struct ShareContent: Identifiable, Hashable, Sendable {
+public struct ShareContent: Identifiable, Hashable, Sendable, Equatable {
     public let share: Share
     public let itemCount: Int
     public let aliasCount: Int
@@ -32,6 +32,10 @@ public struct ShareContent: Identifiable, Hashable, Sendable {
 
     public var id: String {
         share.id
+    }
+
+    public var isReadOnly: Bool {
+        share.shareRole == .read
     }
 
     public init(share: Share, elements: [ShareContentElement]) {
@@ -48,8 +52,12 @@ public struct ShareContent: Identifiable, Hashable, Sendable {
             switch element {
             case let .item(item):
                 itemCount += 1
-                if item.isAlias { aliasCount += 1 }
-                if item.hasTotpUri { totpCount += 1 }
+                if item.isAlias {
+                    aliasCount += 1
+                }
+                if item.hasTotpUri {
+                    totpCount += 1
+                }
                 itemsByContainer[element.containerId, default: []].append(item)
 
             case let .folder(folder):
@@ -205,8 +213,10 @@ public extension ShareContent {
 
     /// `true` when a new folder can be added directly under `parentId` (vault id or folder id).
     func canAddFolder(in parentId: String, limits: FolderLimits) -> Bool {
-        guard !isVaultFolderLimitReached(limits: limits) else { return false }
-        guard depth(of: parentId) < limits.maxFolderDepth else { return false }
+        guard !isReadOnly,
+              !isVaultFolderLimitReached(limits: limits),
+              depth(of: parentId) < limits.maxFolderDepth else { return false }
+
         return (foldersByContainer[parentId]?.count ?? 0) < limits.maxFoldersPerLayer
     }
 
@@ -217,7 +227,9 @@ public extension ShareContent {
         var maxBelow = 0
         for child in children {
             let below = subtreeDepth(from: child.folderId)
-            if below > maxBelow { maxBelow = below }
+            if below > maxBelow {
+                maxBelow = below
+            }
         }
         return maxBelow + 1
     }

@@ -26,9 +26,7 @@ import ProtonCoreFeatureFlags
 ///    case passSharingV1 = "PassSharingV1"
 public enum FeatureFlagType: String, CaseIterable, FeatureFlagTypeProtocol {
     case passRenameAdminToManager = "PassRenameAdminToManager"
-    case passHideShowVault = "PassHideShowVault"
     case passUserEventsV1 = "PassUserEventsV1"
-    case passGroupSharingV1 = "PassGroupInvitesV1"
     case passFolder = "PassFolder"
     case passAutofillUrlAdvancedModes = "PassAutofillUrlAdvancedModes"
 }

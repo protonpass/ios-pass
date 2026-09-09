@@ -73,7 +73,7 @@ LocalPackages/PassRustCore
 # AI files
 # ==================================================================
 
-.claude/
+.claude/scheduled_tasks.*
 .claude/config.local.json
 .claude/settings.local.json
 docs/superpowers

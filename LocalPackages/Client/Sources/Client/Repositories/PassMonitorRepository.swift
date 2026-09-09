@@ -42,7 +42,7 @@ public protocol PassMonitorRepositoryProtocol: Sendable {
     var itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> { get }
 
     func refreshSecurityChecks() async throws
-    func getItemsWithSamePassword(item: ItemContent) async throws -> [ItemContent]
+    func getItemsWithSamePassword(item: Entities.ItemContent) async throws -> [Entities.ItemContent]
 
     func reset() async
 
@@ -114,7 +114,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
         itemsWithSecurityIssues.send(result.1)
     }
 
-    public func getItemsWithSamePassword(item: ItemContent) async throws -> [ItemContent] {
+    public func getItemsWithSamePassword(item: Entities.ItemContent) async throws -> [Entities.ItemContent] {
         guard let login = item.loginItem else {
             return []
         }

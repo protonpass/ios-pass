@@ -286,7 +286,9 @@ private extension SyncEventLoop {
         do {
             delegate?.syncEventLoopDidBeginNewLoop(userId: userId)
             let userEventsEnabled = await delegate?.syncEventLoopShouldUseUserEvents()
-            if Task.isCancelled { return }
+            if Task.isCancelled {
+                return
+            }
 
             try await coreEventsSynchronizer.sync(userId: userId)
 
@@ -309,7 +311,9 @@ private extension SyncEventLoop {
                 for task in additionalTasks {
                     do {
                         delegate?.syncEventLoopDidBeginExecutingAdditionalTask(userId: userId, label: task.label)
-                        if Task.isCancelled { return }
+                        if Task.isCancelled {
+                            return
+                        }
                         try await task()
                         delegate?.syncEventLoopDidFinishAdditionalTask(userId: userId, label: task.label)
                     } catch {

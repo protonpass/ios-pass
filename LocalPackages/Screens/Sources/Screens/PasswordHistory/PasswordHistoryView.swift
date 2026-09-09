@@ -25,18 +25,18 @@ import Entities
 import ProtonCoreUIFoundations
 import SwiftUI
 
+public enum PasswordHistoryViewAction {
+    case create(String)
+    case copy(String)
+}
+
 public struct PasswordHistoryView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var viewModel: PasswordHistoryViewModel
-    let onCreateLogin: (String) -> Void
-    let onCopy: (String) -> Void
+    @State private var viewModel = PasswordHistoryViewModel()
+    let action: (PasswordHistoryViewAction) -> Void
 
-    public init(repository: any PasswordHistoryRepositoryProtocol,
-                onCreateLogin: @escaping (String) -> Void,
-                onCopy: @escaping (String) -> Void) {
-        _viewModel = .init(wrappedValue: .init(repository: repository))
-        self.onCreateLogin = onCreateLogin
-        self.onCopy = onCopy
+    public init(action: @escaping (PasswordHistoryViewAction) -> Void) {
+        self.action = action
     }
 
     public var body: some View {
@@ -125,11 +125,9 @@ private extension PasswordHistoryView {
     var history: some View {
         LazyVStack(spacing: DesignConstant.sectionPadding) {
             ForEach(viewModel.passwords) { password in
-                GeneratedPasswordRow(password: password,
-                                     onCopy: { handleCopy(for: password) },
-                                     onToggleVisibility: { viewModel.toggleVisibility(for: password) },
-                                     onCreateLogin: { handleLoginCreation(for: password) },
-                                     onRemove: { viewModel.delete(password) })
+                GeneratedPasswordRow(password: password) { action in
+                    handleAction(password: password, action: action)
+                }
             }
 
             twoWeeksNotice(font: .callout)
@@ -140,10 +138,26 @@ private extension PasswordHistoryView {
 }
 
 private extension PasswordHistoryView {
+    func handleAction(password: GeneratedPasswordUiModel, action: GeneratedPasswordRowAction) {
+        switch action {
+        case .copy:
+            handleCopy(for: password)
+
+        case .toggleVisibility:
+            viewModel.toggleVisibility(for: password)
+
+        case .createLogin:
+            handleLoginCreation(for: password)
+
+        case .remove:
+            viewModel.delete(password)
+        }
+    }
+
     func handleLoginCreation(for password: GeneratedPasswordUiModel) {
         Task {
             if let clearPassword = await viewModel.getClearPassword(for: password) {
-                onCreateLogin(clearPassword)
+                action(.create(clearPassword))
             }
         }
     }
@@ -151,46 +165,52 @@ private extension PasswordHistoryView {
     func handleCopy(for password: GeneratedPasswordUiModel) {
         Task {
             if let clearPassword = await viewModel.getClearPassword(for: password) {
-                onCopy(clearPassword)
+                action(.copy(clearPassword))
             }
         }
     }
 }
 
+private enum GeneratedPasswordRowAction {
+    case copy
+    case toggleVisibility
+    case createLogin
+    case remove
+}
+
 private struct GeneratedPasswordRow: View {
     let password: GeneratedPasswordUiModel
-    let onCopy: () -> Void
-    let onToggleVisibility: () -> Void
-    let onCreateLogin: () -> Void
-    let onRemove: () -> Void
+    let action: (GeneratedPasswordRowAction) -> Void
 
     var body: some View {
         HStack {
-            VStack(alignment: .leading) {
-                switch password.visibility {
-                case .masked:
-                    Text(verbatim: String(repeating: "•", count: 12))
-                        .foregroundStyle(PassColor.textNorm)
+            Button { action(.copy) } label: {
+                VStack(alignment: .leading) {
+                    switch password.visibility {
+                    case .masked:
+                        Text(verbatim: String(repeating: "•", count: 12))
+                            .foregroundStyle(PassColor.textNorm)
 
-                case let .unmasked(clearPassword):
-                    Text(clearPassword.coloredPassword())
-                        .foregroundStyle(PassColor.textNorm)
+                    case let .unmasked(clearPassword):
+                        Text(clearPassword.coloredPassword())
+                            .foregroundStyle(PassColor.textNorm)
 
-                case .failedToUnmask:
-                    Image(systemName: "exclamationmark.3")
-                        .resizable()
-                        .scaledToFit()
-                        .foregroundStyle(PassColor.signalWarning)
-                        .frame(width: 24)
+                    case .failedToUnmask:
+                        Image(systemName: "exclamationmark.3")
+                            .resizable()
+                            .scaledToFit()
+                            .foregroundStyle(PassColor.signalWarning)
+                            .frame(width: 24)
+                    }
+
+                    Text(verbatim: password.relativeCreationDate)
+                        .font(.callout)
+                        .foregroundStyle(PassColor.textWeak)
                 }
-
-                Text(verbatim: password.relativeCreationDate)
-                    .font(.callout)
-                    .foregroundStyle(PassColor.textWeak)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .contentShape(.rect)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(.rect)
-            .onTapGesture(perform: onCopy)
+            .buttonStyle(.plain)
 
             visibilityButton
             otherOptionsButton
@@ -204,24 +224,25 @@ private struct GeneratedPasswordRow: View {
         CircleButton(icon: password.visibility.isUnmasked ? IconProvider.eyeSlash : IconProvider.eye,
                      iconColor: PassColor.passwordInteractionNormMajor2,
                      backgroundColor: PassColor.passwordInteractionNormMinor2,
-                     accessibilityLabel: password.visibility.isUnmasked ? "Hide password" : "Show password",
-                     action: onToggleVisibility)
-            .fixedSize(horizontal: true, vertical: true)
+                     accessibilityLabel: password.visibility.isUnmasked ? "Hide password" : "Show password") {
+            action(.toggleVisibility)
+        }
+        .fixedSize(horizontal: true, vertical: true)
     }
 
     private var otherOptionsButton: some View {
         Menu(content: {
-            Button(action: onCopy) {
+            Button { action(.copy) } label: {
                 Label(title: { Text("Copy password", bundle: .module) },
                       icon: { IconProvider.key })
             }
 
-            Button(action: onCreateLogin) {
+            Button { action(.createLogin) } label: {
                 Label(title: { Text("Create login", bundle: .module) },
                       icon: { IconProvider.user })
             }
 
-            Button(action: onRemove) {
+            Button { action(.remove) } label: {
                 Label(title: { Text("Remove from history", bundle: .module) },
                       icon: { IconProvider.trashCross })
             }

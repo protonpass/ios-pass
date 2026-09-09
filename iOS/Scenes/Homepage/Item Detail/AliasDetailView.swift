@@ -20,7 +20,6 @@
 
 import DesignSystem
 import Entities
-import FactoryKit
 import Macro
 import ProtonCoreUIFoundations
 import Screens
@@ -196,6 +195,7 @@ struct AliasDetailView: View {
                 }
             }
             .frame(width: 42)
+            .padding(.trailing, DesignConstant.sectionPadding)
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .animation(.default, value: viewModel.togglingAliasStatus)

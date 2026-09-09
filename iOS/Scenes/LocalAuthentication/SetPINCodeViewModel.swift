@@ -20,10 +20,12 @@
 
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 
 @MainActor
 final class SetPINCodeViewModel: ObservableObject, DeinitPrintable {
@@ -42,8 +44,8 @@ final class SetPINCodeViewModel: ObservableObject, DeinitPrintable {
     @Published var definedPIN = ""
     @Published var confirmedPIN = ""
 
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let updateSharedPreferences = dependency(\UseCasesContainer.updateSharedPreferences)
     private var cancellables = Set<AnyCancellable>()
 
     var actionNotAllowed: Bool {

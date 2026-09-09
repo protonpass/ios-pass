@@ -27,7 +27,8 @@ import SwiftUI
 
 struct LogInDetailView: View {
     @StateObject private var viewModel: LogInDetailViewModel
-    @State private var isShowingPassword = false
+    @State private var showPassword = false
+    @State private var showPenalties = false
     @Namespace private var bottomID
 
     private var iconTintColor: Color {
@@ -118,6 +119,8 @@ private extension LogInDetailView {
                     .padding()
                 }
                 .animation(.default, value: viewModel.moreInfoSectionExpanded)
+                .animation(.default, value: viewModel.password.isEmpty)
+                .animation(.default, value: showPenalties)
                 .onChange(of: viewModel.moreInfoSectionExpanded) {
                     withAnimation { value.scrollTo(bottomID, anchor: .bottom) }
                 }
@@ -268,23 +271,34 @@ private extension LogInDetailView {
 
     var passwordRow: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
-            if let passwordStrength = viewModel.passwordStrength {
-                PasswordStrengthIcon(strength: passwordStrength)
+            let strength = viewModel.passwordScore?.strength
+            let penalties = viewModel.passwordScore?.penalties ?? []
+            if let strength {
+                PasswordStrengthIcon(strength: strength)
             } else {
                 ItemDetailSectionIcon(icon: IconProvider.key, color: iconTintColor)
             }
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text(viewModel.passwordStrength
-                    .sectionTitle(reuseCount: viewModel.reusedItems.fetchedObject?.count))
-                    .font(.footnote)
-                    .foregroundStyle(viewModel.passwordStrength.sectionTitleColor)
+                Button(action: { showPenalties.toggle() },
+                       label: {
+                           Text(strength
+                               .sectionTitle(reuseCount: viewModel.reusedItems.fetchedObject?.count))
+                               .font(.footnote)
+                               .foregroundStyle(strength.sectionTitleColor)
+                               .underline(!viewModel.password.isEmpty,
+                                          color: strength.sectionTitleColor)
+                       })
+
+                if !viewModel.password.isEmpty, showPenalties {
+                    PasswordPenaltiesSection(penalties: penalties)
+                }
 
                 if viewModel.password.isEmpty {
                     Text("Empty")
                         .placeholderText()
                 } else {
-                    if isShowingPassword {
+                    if showPassword {
                         Text(viewModel.password.coloredPassword())
                             .font(.body.monospaced())
                     } else {
@@ -300,11 +314,11 @@ private extension LogInDetailView {
             Spacer()
 
             if !viewModel.password.isEmpty {
-                CircleButton(icon: isShowingPassword ? IconProvider.eyeSlash : IconProvider.eye,
+                CircleButton(icon: showPassword ? IconProvider.eyeSlash : IconProvider.eye,
                              iconColor: viewModel.itemContent.type.normMajor2Color,
                              backgroundColor: viewModel.itemContent.type.normMinor2Color,
-                             accessibilityLabel: isShowingPassword ? "Hide password" : "Show password",
-                             action: { isShowingPassword.toggle() })
+                             accessibilityLabel: showPassword ? "Hide password" : "Show password",
+                             action: { showPassword.toggle() })
                     .animationsDisabled()
             }
         }
@@ -312,10 +326,10 @@ private extension LogInDetailView {
         .contextMenu {
             Button(action: {
                 withAnimation {
-                    isShowingPassword.toggle()
+                    showPassword.toggle()
                 }
             }, label: {
-                Text(isShowingPassword ? "Conceal" : "Reveal")
+                Text(showPassword ? "Conceal" : "Reveal")
             })
 
             Button { viewModel.copyPassword() } label: {

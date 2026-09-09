@@ -23,7 +23,9 @@ let package = Package(name: "UseCases",
                           .library(name: "UseCases",
                                    targets: ["UseCases"]),
                           .library(name: "UseCasesMocks",
-                                   targets: ["UseCasesMocks"])
+                                   targets: ["UseCasesMocks"]),
+                          .library(name: "Stores",
+                                   targets: ["Stores"])
                       ],
                       dependencies: [
                           // Dependencies declare other packages that this package depends on.
@@ -31,8 +33,9 @@ let package = Package(name: "UseCases",
                           .package(name: "Core", path: "../Core"),
                           .package(name: "Client", path: "../Client"),
                           .package(name: "PassRustCore", path: "../PassRustCore"),
-                          .package(url: "https://github.com/getsentry/sentry-cocoa.git", exact: "9.18.0"),
-                          .package(url: "https://github.com/ProtonMail/protoncore_ios", from: "37.3.1")
+                          .package(url: "https://github.com/getsentry/sentry-cocoa.git", exact: "9.26.0"),
+                          .package(url: "https://github.com/ProtonMail/protoncore_ios", from: "37.5.5"),
+                          .package(url: "https://github.com/protonpass/swift-macro", exact: "1.0.0")
                       ],
                       targets: [
                           // Targets are the basic building blocks of a package. A target can define a module or a
@@ -55,6 +58,16 @@ let package = Package(name: "UseCases",
                           .target(
                               name: "UseCasesMocks",
                               dependencies: ["UseCases"]),
+                          .target(name: "Stores",
+                                  dependencies: [
+                                      "UseCases",
+                                      .product(name: "Client", package: "Client"),
+                                      .product(name: "Core", package: "Core"),
+                                      .product(name: "Entities", package: "Entities"),
+                                      .product(name: "Macro", package: "swift-macro"),
+                                      .product(name: "ProtonCoreLogin", package: "protoncore_ios")
+                                  ],
+                                  swiftSettings: swiftSettings),
                           .testTarget(name: "UseCasesTests",
                                       dependencies: ["UseCases",
                                                      "UseCasesMocks",

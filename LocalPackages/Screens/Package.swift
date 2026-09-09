@@ -26,10 +26,11 @@ let package = Package(
         .package(name: "Entities", path: "../Entities"),
         .package(name: "UseCases", path: "../UseCases"),
         .package(name: "DesignSystem", path: "../DesignSystem"),
+        .package(name: "DIComposition", path: "../DIComposition"),
         .package(url: "https://github.com/protonpass/swift-macro", exact: "1.0.0"),
-        .package(url: "https://github.com/ProtonMail/protoncore_ios", from: "37.3.1"),
-        .package(url: "https://github.com/protonpass/DocScanner", .upToNextMajor(from: "0.2.3"))
-
+        .package(url: "https://github.com/ProtonMail/protoncore_ios", from: "37.5.5"),
+        .package(url: "https://github.com/protonpass/DocScanner", .upToNextMajor(from: "0.2.3")),
+        .package(url: "https://github.com/hmlongco/Factory", exact: "3.3.2"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -46,13 +47,15 @@ let package = Package(
                 .product(name: "DocScanner", package: "DocScanner"),
                 .product(name: "ProtonCoreLoginUI", package: "protoncore_ios"),
                 .product(name: "ProtonCoreUIFoundations", package: "protoncore_ios"),
-                .product(name: "ProtonCorePaymentsV2", package: "protoncore_ios")
-
+                .product(name: "ProtonCorePaymentsV2", package: "protoncore_ios"),
+                .product(name: "ProtonCorePasswordChange", package: "protoncore_ios"),
+                .product(name: "FactoryKit", package: "Factory"),
+                .product(name: "DIComposition", package: "DIComposition"),
             ],
             resources: [.process("Resources")],
             swiftSettings: [
               .defaultIsolation(MainActor.self),
-//              .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
+              .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
               .enableUpcomingFeature("InferIsolatedConformances")
             ]
         )

@@ -22,7 +22,6 @@
 
 import DesignSystem
 import Entities
-import FactoryKit
 import Macro
 import ProtonCoreUIFoundations
 import Screens
@@ -199,9 +198,6 @@ struct PassMonitorView: View {
                                   sentinelActive: viewModel.isSentinelActive,
                                   mainAction: { viewModel.sentinelSheetAction() },
                                   secondaryAction: { viewModel.showSentinelInformation() })
-                    .presentationDetents([.height(520)])
-                    .presentationBackground(.clear)
-                    .padding(.horizontal)
             }
             .refreshable {
                 await viewModel.refresh()

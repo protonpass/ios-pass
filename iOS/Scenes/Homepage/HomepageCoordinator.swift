@@ -18,12 +18,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// swiftlint:disable file_length
 import Client
 import Combine
 import Core
 @preconcurrency import CryptoKit
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import Macro
@@ -38,6 +38,9 @@ import ProtonCorePasswordChange
 import ProtonCoreUIFoundations
 import Screens
 import StoreKit
+
+// swiftlint:disable file_length
+import Stores
 import SwiftUI
 
 private let kRefreshInvitationsTaskLabel = "RefreshInvitationsTask"
@@ -52,65 +55,64 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     // Injected & self-initialized properties
-    let logger = resolve(\SharedToolingContainer.logger)
-    let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
-    private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
+    let logger = dependency(\ToolingContainer.logger)
+    let preferencesManager = dependency(\ToolingContainer.preferencesManager)
+    private let telemetryEventRepository = dependency(\RepositoryContainer.telemetryEventRepository)
     let urlOpener = UrlOpener()
-    let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
-    private let organizationRepository = resolve(\SharedRepositoryContainer.organizationRepository)
-    let appContentManager = resolve(\SharedServiceContainer.appContentManager)
-    private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
-    private let loginMethod = resolve(\SharedDataContainer.loginMethod)
-    private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
-    private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
+    let accessRepository = dependency(\RepositoryContainer.accessRepository)
+    private let organizationRepository = dependency(\RepositoryContainer.organizationRepository)
+    let appContentManager = dependency(\ServiceContainer.appContentManager)
+    private let refreshInvitations = dependency(\UseCasesContainer.refreshInvitations)
+    private let loginMethod = dependency(\DataContainer.loginMethod)
+    private let userSettingsRepository = dependency(\RepositoryContainer.userSettingsRepository)
+    private let symmetricKeyProvider = dependency(\DataContainer.symmetricKeyProvider)
 
     // App cover/local authentication
-    @LazyInjected(\RouterContainer.window) var window
+    @LazyInjected(\UIComponentsContainer.window) var window
     weak var appCoverView: UIView?
 
     // Lazily initialised properties
-    @LazyInjected(\SharedServiceContainer.syncEventLoop) var eventLoop
-    @LazyInjected(\SharedViewContainer.bannerManager) var bannerManager
-    @LazyInjected(\SharedToolingContainer.apiManager) var apiManager
-    @LazyInjected(\SharedToolingContainer.authManager) var authManager
-    @LazyInjected(\SharedServiceContainer.upgradeChecker) var upgradeChecker
-    @LazyInjected(\SharedServiceContainer.userManager) var userManager
-    @LazyInjected(\SharedServiceContainer.inAppNotificationManager) var inAppNotificationManager
-    @LazyInjected(\SharedRepositoryContainer.itemRepository) var itemRepository
-    @LazyInjected(\SharedRepositoryContainer.shareRepository) var shareRepository
-    @LazyInjected(\SharedRepositoryContainer.passMonitorRepository) var passMonitorRepository
-    @LazyInjected(\SharedRepositoryContainer.aliasRepository) var aliasRepository
-    @LazyInjected(\SharedRepositoryContainer.passwordHistoryRepository)
+    @LazyInjected(\ServiceContainer.syncEventLoop) var eventLoop
+    @LazyInjected(\UIComponentsContainer.bannerManager) var bannerManager
+    @LazyInjected(\ToolingContainer.apiManager) var apiManager
+    @LazyInjected(\ToolingContainer.authManager) var authManager
+    @LazyInjected(\ServiceContainer.upgradeChecker) var upgradeChecker
+    @LazyInjected(\ServiceContainer.userManager) var userManager
+    @LazyInjected(\ServiceContainer.inAppNotificationManager) var inAppNotificationManager
+    @LazyInjected(\RepositoryContainer.itemRepository) var itemRepository
+    @LazyInjected(\RepositoryContainer.shareRepository) var shareRepository
+    @LazyInjected(\RepositoryContainer.passMonitorRepository) var passMonitorRepository
+    @LazyInjected(\RepositoryContainer.aliasRepository) var aliasRepository
+    @LazyInjected(\RepositoryContainer.passwordHistoryRepository)
     private var passwordHistoryRepository
-    @LazyInjected(\ServiceContainer.onboardingHandler) private var onboardingHandler
-    @LazyInjected(\SharedServiceContainer.featureDiscoveryManager)
+    @LazyInjected(\ServiceContainer.featureDiscoveryManager)
     private var featureDiscoveryManager
 
     // Use cases
-    private let refreshFeatureFlags = resolve(\SharedUseCasesContainer.refreshFeatureFlags)
-    let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
-    private let makeAccountSettingsUrl = resolve(\UseCasesContainer.makeAccountSettingsUrl)
-    private let refreshUserSettings = resolve(\SharedUseCasesContainer.refreshUserSettings)
-    private let overrideSecuritySettings = resolve(\UseCasesContainer.overrideSecuritySettings)
-    private let copyToClipboard = resolve(\SharedUseCasesContainer.copyToClipboard)
-    private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
+    private let refreshFeatureFlags = dependency(\UseCasesContainer.refreshFeatureFlags)
+    let revokeCurrentSession = dependency(\UseCasesContainer.revokeCurrentSession)
+    private let makeAccountSettingsUrl = dependency(\UseCasesContainer.makeAccountSettingsUrl)
+    private let refreshUserSettings = dependency(\UseCasesContainer.refreshUserSettings)
+    private let overrideSecuritySettings = dependency(\UseCasesContainer.overrideSecuritySettings)
+    private let copyToClipboard = dependency(\UseCasesContainer.copyToClipboard)
+    private let refreshAccessAndMonitorState = dependency(\UseCasesContainer.refreshAccessAndMonitorState)
     @LazyInjected(\UseCasesContainer.logOutExcessFreeAccounts) private var logOutExcessFreeAccounts
     @LazyInjected(\UseCasesContainer.canAddNewAccount) var canAddNewAccount
-    @LazyInjected(\SharedUseCasesContainer.switchUser) var switchUser
-    @LazyInjected(\SharedUseCasesContainer.logOutUser) var logOutUser
-    @LazyInjected(\SharedUseCasesContainer.sendUserMonitoringStats) private var sendUserMonitoringStats
-    @LazyInjected(\SharedUseCasesContainer.addAndSwitchToNewUserAccount)
+    @LazyInjected(\UseCasesContainer.switchUser) var switchUser
+    @LazyInjected(\UseCasesContainer.logOutUser) var logOutUser
+    @LazyInjected(\UseCasesContainer.sendUserMonitoringStats) private var sendUserMonitoringStats
+    @LazyInjected(\UseCasesContainer.addAndSwitchToNewUserAccount)
     var addAndSwitchToNewUserAccount
-    @LazyInjected(\ SharedUseCasesContainer.addTelemetryEvent) var addTelemetryEvent
-    @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
-    @LazyInjected(\SharedUseCasesContainer.fullContentSync) var fullContentSync
+    @LazyInjected(\ UseCasesContainer.addTelemetryEvent) var addTelemetryEvent
+    @LazyInjected(\UseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
+    @LazyInjected(\UseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
+    @LazyInjected(\UseCasesContainer.fullContentSync) var fullContentSync
     @LazyInjected(\UseCasesContainer.postbackConversionValue) var postbackConversionValue
 
-    private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
-    let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
-    let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
-    let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
+    private let getAppPreferences = dependency(\UseCasesContainer.getAppPreferences)
+    let updateAppPreferences = dependency(\UseCasesContainer.updateAppPreferences)
+    let getSharedPreferences = dependency(\UseCasesContainer.getSharedPreferences)
+    let getUserPreferences = dependency(\UseCasesContainer.getUserPreferences)
 
     // References
     private(set) weak var itemsTabViewModel: ItemsTabViewModel?
@@ -122,7 +124,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     // MARK: - Navigation Router
 
-    let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
 
     var authenticated = false
 
@@ -131,7 +133,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     override init() {
         super.init()
-        SharedViewContainer.shared.register(rootViewController: rootViewController)
+        UIComponentsContainer.shared.register(rootViewController: rootViewController)
         setUpRouting()
         finalizeInitialization()
         start()
@@ -145,7 +147,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         refreshOrganizationAndOverrideSecuritySettings()
         refreshAccessAndMonitorStateSync()
         refreshSettings()
-        refreshFeatureFlags()
+        // No `refreshFeatureFlags()` here: `AppCoordinator.setUpAndStart` already ran it
+        // for this user before building this coordinator.
         sendAllEventsIfApplicable()
         doLogOutExcessFreeAccounts()
         cleanUpPasswordHistory()
@@ -305,7 +308,7 @@ private extension HomepageCoordinator {
                         doLogOutExcessFreeAccounts()
                         try await sendUserMonitoringStats()
                     } catch {
-                        logger.error(error)
+                        logger.error(message: "Failed to set up after entering foreground", error: error)
                     }
                 }
             }
@@ -363,7 +366,7 @@ private extension HomepageCoordinator {
                 eventLoop.forceSync()
                 eventLoop.start()
             } catch {
-                logger.error(error)
+                logger.error(message: "Failed to synchronise data", error: error)
             }
         }
     }
@@ -375,7 +378,7 @@ private extension HomepageCoordinator {
                 let userId = try await userManager.getActiveUserId()
                 try await refreshAccessAndMonitorState(userId: userId)
             } catch {
-                logger.error(error)
+                logger.error(message: "Failed to refresh access and monitor state", error: error)
             }
         }
     }
@@ -387,7 +390,7 @@ private extension HomepageCoordinator {
                 try await accessRepository.loadAccesses()
                 try await completion()
             } catch {
-                logger.error(error)
+                logger.error(message: "Failed to load accesses", error: error)
             }
         }
     }
@@ -401,7 +404,7 @@ private extension HomepageCoordinator {
                     try await overrideSecuritySettings(with: organization)
                 }
             } catch {
-                logger.error(error)
+                logger.error(message: "Failed to refresh organization", error: error)
             }
         }
     }
@@ -413,7 +416,7 @@ private extension HomepageCoordinator {
                 let userId = try await userManager.getActiveUserId()
                 try await refreshUserSettings(for: userId)
             } catch {
-                logger.error(error)
+                logger.error(message: "Failed to refresh user settings", error: error)
             }
         }
     }
@@ -495,7 +498,9 @@ private extension HomepageCoordinator {
     /// - Parameter error: The current error to check
     /// - Returns: A boolean to indicate if we should display the error banner
     func shouldDisplayError(error: any Error) -> Bool {
-        if error is CancellationError { return false }
+        if error is CancellationError {
+            return false
+        }
 
         if let urlError = error as? URLError,
            urlError.code == .cancelled {
@@ -822,8 +827,12 @@ extension HomepageCoordinator {
             .store(in: &cancellables)
     }
 
-    func handle(error: any Error) {
-        logger.error(error)
+    func handle(error: any Error,
+                file: String = #file,
+                function: String = #function,
+                line: UInt = #line,
+                column: UInt = #column) {
+        logger.error(error, file: file, function: function, line: line, column: column)
         bannerManager.displayTopErrorMessage(error)
     }
 
@@ -970,28 +979,19 @@ extension HomepageCoordinator {
         }
 
         var sheetPresentationController: UISheetPresentationController?
-        let updateSheetHeight: (Double) -> Void = { height in
-            guard let sheetPresentationController else {
-                assertionFailure("sheetPresentationController is not set")
-                return
-            }
-            let detent = UISheetPresentationController.Detent.custom { _ in
-                height
-            }
-            let detentIdentifier = detent.identifier
+        let view = PasswordGeneratorView(mode: .random,
+                                         onResult: { [weak self] result in
+                                             guard let self else { return }
+                                             switch result {
+                                             case let .success(password): copyPassword(password)
 
-            sheetPresentationController.animateChanges {
-                sheetPresentationController.detents = [detent]
-                sheetPresentationController.selectedDetentIdentifier = detentIdentifier
-            }
-        }
-
-        let view = GeneratePasswordView(mode: .random,
-                                        onConfirm: copyPassword,
-                                        onUpdateHeight: updateSheetHeight)
+                                             case let .failure(error): handle(error: error)
+                                             }
+                                         },
+                                         onHeightChanged: { sheetPresentationController?.updateHeight($0) })
         let viewController = UIHostingController(rootView: view)
+        viewController.view.backgroundColor = UIColor(PassColor.backgroundNorm)
         sheetPresentationController = viewController.sheetPresentationController
-        sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
 
@@ -1183,14 +1183,19 @@ extension HomepageCoordinator {
                                                                 autofill: false)))
             }
         }
-        let view = PasswordHistoryView(repository: passwordHistoryRepository,
-                                       onCreateLogin: createLogin,
-                                       onCopy: { [weak self] password in
-                                           guard let self else { return }
-                                           copyToClipboard(password,
-                                                           bannerMessage: #localized("Password copied"),
-                                                           bannerDisplay: bannerManager)
-                                       })
+        let view = PasswordHistoryView { [weak self] action in
+            guard let self else { return }
+            switch action {
+            case let .copy(password):
+                copyToClipboard(password,
+                                bannerMessage: #localized("Password copied"),
+                                bannerDisplay: bannerManager)
+
+            case let .create(password):
+                createLogin(password)
+            }
+        }
+
         present(view)
     }
 
@@ -1439,7 +1444,7 @@ private extension HomepageCoordinator {
 
     func presentOnboardView(forced: Bool, mode: OnboardingDisplayMode) {
         guard forced || !getAppPreferences().onboarded else { return }
-        let view = OnboardingView(handler: onboardingHandler, mode: mode)
+        let view = OnboardingView(mode: mode)
         let vc = UIHostingController(rootView: view)
         vc.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
         vc.isModalInPresentation = true
@@ -1539,7 +1544,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 
     func itemsTabViewModelWantsToPresentVaultList() {
         var sheetPresentationController: UISheetPresentationController?
-        let view = EditableVaultListView(onChangeMode: { mode in
+        let view = VaultsAndFoldersMenuView(onChangeMode: { mode in
             sheetPresentationController?.prefersGrabberVisible = mode.isView
         })
         let viewController = UIHostingController(rootView: view)
@@ -1607,10 +1612,6 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     }
 
     func presentBugReportView() {
-        let errorHandler: (any Error) -> Void = { [weak self] error in
-            guard let self else { return }
-            handle(error: error)
-        }
         let successHandler: () -> Void = { [weak self] in
             guard let self else { return }
             dismissTopMostViewController { [weak self] in
@@ -1618,7 +1619,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
                 bannerManager.displayBottomSuccessMessage(#localized("Report successfully sent"))
             }
         }
-        let view = BugReportView(onError: errorHandler, onSuccess: successHandler)
+        let view = BugReportView(onSuccess: successHandler)
         present(view)
     }
 }

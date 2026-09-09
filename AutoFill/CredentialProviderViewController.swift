@@ -25,7 +25,7 @@ import ProtonCoreCryptoGoImplementation
 final class CredentialProviderViewController: ASCredentialProviderViewController {
     private lazy var coordinator: CredentialProviderCoordinator = .init(rootViewController: self,
                                                                         context: extensionContext)
-    private let resetFactory = resolve(\AutoFillUseCaseContainer.resetFactory)
+    private let resetFactory = dependency(\AutoFillUseCaseContainer.resetFactory)
 
     override func viewDidLoad() {
         super.viewDidLoad()
