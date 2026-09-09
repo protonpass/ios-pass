@@ -160,28 +160,29 @@ private extension EditDomainMatchingView {
     @ViewBuilder
     func row(for mode: AutofillUrlMode) -> some View {
         let isSelected = mode == selectedMode
-        HStack {
-            Image(systemName: isSelected ? "circle.inset.filled" : "circle")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 24)
-                .foregroundStyle(isSelected ? itemContentType.normMajor2Color : PassColor.textWeak)
-
-            ViewThatFits {
-                HStack {
-                    text(for: mode)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-                VStack(alignment: .leading) {
-                    text(for: mode)
-                }
-                .frame(maxWidth: .infinity)
-            }
-        }
-        .contentShape(.rect)
-        .onTapGesture {
+        Button {
             selectedMode = mode
+        } label: {
+            HStack {
+                Image(systemName: isSelected ? "circle.inset.filled" : "circle")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 24)
+                    .foregroundStyle(isSelected ? itemContentType.normMajor2Color : PassColor.textWeak)
+
+                ViewThatFits {
+                    HStack {
+                        text(for: mode)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                    VStack(alignment: .leading) {
+                        text(for: mode)
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+            }
+            .contentShape(.rect)
         }
         .disabled(!mode.isSupported)
         .opacity(mode.isSupported ? 1.0 : 0.5)
