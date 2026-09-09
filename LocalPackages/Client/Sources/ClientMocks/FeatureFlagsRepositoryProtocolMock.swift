@@ -22,6 +22,11 @@ import ProtonCoreFeatureFlags
 import ProtonCoreUtilities
 
 public final class FeatureFlagsRepositoryMock: FeatureFlagsRepositoryProtocol {
+    public var flagsUpdates: AsyncStream<String> {
+        let (stream, _) = AsyncStream.makeStream(of: String.self)
+        return stream
+    }
+    
     public init() {}
 
     public func updateLocalDataSource(_ localDataSource: Atomic<any LocalFeatureFlagsDataSourceProtocol>) {}

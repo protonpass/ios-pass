@@ -39,6 +39,7 @@ struct ItemRepositoryTests {
     private let shareEventIDRepository: ShareEventIDRepositoryProtocolMock
     private let passKeyManager: PassKeyManagerProtocolMock
     private let logManager: LogManagerProtocolMock
+    private let featureFlagsRepository: FeatureFlagsRepositoryMock
 
     init() {
         symmetricKeyProvider = SymmetricKeyProviderMock()
@@ -78,6 +79,7 @@ extension ItemRepositoryTests {
                                  localShareDatasource: localShareDatasource,
                                  shareEventIDRepository: shareEventIDRepository,
                                  passKeyManager: passKeyManager,
+                                 featureFlagsRepository: featureFlagsRepository,
                                  logManager: logManager)
 
         let pinnedItems = try await sut.getAllPinnedItems()
