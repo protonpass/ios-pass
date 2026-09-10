@@ -44,9 +44,11 @@ extension ASCredentialRequest {
             switch request.extensionInput {
             case let .registration(input):
                 if let prf = input.prf {
-                    needsPrf = true
-                    saltInput1 = prf.inputValues?.saltInput1
-                    saltInput2 = prf.inputValues?.saltInput2
+                    // swiftlint:disable:next todo
+                    // TODO: Re-enable for PRF support
+//                    needsPrf = true
+//                    saltInput1 = prf.inputValues?.saltInput1
+//                    saltInput2 = prf.inputValues?.saltInput2
                 }
 
             default:
