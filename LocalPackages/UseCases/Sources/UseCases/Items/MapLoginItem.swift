@@ -51,7 +51,7 @@ public final class MapLoginItem: Sendable, MapLoginItemUseCase {
         // Decompose into password identities
         var passwords = [CredentialIdentity]()
         if !data.authIdentifier.isEmpty, !data.password.isEmpty {
-            passwords = data.urls.map {
+            passwords = data.autofillableUrls.map {
                 CredentialIdentity.password(.init(shareId: itemContent.shareId,
                                                   itemId: itemContent.item.itemID,
                                                   username: data.authIdentifier,
@@ -63,7 +63,7 @@ public final class MapLoginItem: Sendable, MapLoginItemUseCase {
         // Decompose into one-time code identities
         var oneTimeCodes = [CredentialIdentity]()
         if !data.authIdentifier.isEmpty, !data.totpUri.isEmpty {
-            oneTimeCodes = data.urls.map {
+            oneTimeCodes = data.autofillableUrls.map {
                 CredentialIdentity.oneTimeCode(.init(shareId: itemContent.shareId,
                                                      itemId: itemContent.itemId,
                                                      username: data.authIdentifier,

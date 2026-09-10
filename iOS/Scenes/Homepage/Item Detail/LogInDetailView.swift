@@ -75,13 +75,8 @@ private extension LogInDetailView {
 
                         usernamePassword2FaSection
 
-                        if viewModel.domainMatchingSupported, !viewModel.autofillUrls.isEmpty {
+                        if !viewModel.autofillUrls.isEmpty {
                             autofillUrlsSection
-                                .padding(.top, 8)
-                        }
-
-                        if !viewModel.domainMatchingSupported, !viewModel.urls.isEmpty {
-                            urlsSection
                                 .padding(.top, 8)
                         }
 
@@ -359,47 +354,6 @@ private extension LogInDetailView {
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
 
-    var urlsSection: some View {
-        HStack(spacing: DesignConstant.sectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.earth, color: iconTintColor)
-
-            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text("Website")
-                    .sectionTitleText()
-
-                VStack(alignment: .leading, spacing: 12) {
-                    ForEach(viewModel.urls, id: \.self) { url in
-                        Button(action: {
-                            viewModel.openUrl(url)
-                        }, label: {
-                            Text(url)
-                                .foregroundStyle(viewModel.itemContent.type.normMajor2Color)
-                                .multilineTextAlignment(.leading)
-                                .lineLimit(2)
-                        })
-                        .contextMenu {
-                            Button(action: {
-                                viewModel.openUrl(url)
-                            }, label: {
-                                Text("Open")
-                            })
-
-                            Button(action: {
-                                viewModel.copyToClipboard(text: url, message: #localized("Website copied"))
-                            }, label: {
-                                Text("Copy")
-                            })
-                        }
-                    }
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .animation(.default, value: viewModel.urls)
-        }
-        .padding(DesignConstant.sectionPadding)
-        .roundedDetailSection()
-    }
-
     var autofillUrlsSection: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.earth, color: iconTintColor)
@@ -413,20 +367,7 @@ private extension LogInDetailView {
                         Button(action: {
                             viewModel.openUrl(url.url)
                         }, label: {
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text(verbatim: url.url)
-                                    .foregroundStyle(viewModel.itemContent.type.normMajor2Color)
-                                    .multilineTextAlignment(.leading)
-                                    .lineLimit(2)
-
-                                if url.mode != .default {
-                                    Text(verbatim: url.mode.title)
-                                        .foregroundStyle(PassColor.textWeak)
-                                }
-                            }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(DesignConstant.sectionPadding / 2)
-                            .roundedEditableSection()
+                            urlRow(url)
                         })
                         .contextMenu {
                             Button(action: {
@@ -450,6 +391,32 @@ private extension LogInDetailView {
         }
         .padding(DesignConstant.sectionPadding)
         .roundedDetailSection()
+    }
+
+    /// The enclosing box exists to group a url with its matching rule, so a url without one
+    /// stays a plain row rather than gaining a box nested inside the detail section.
+    @ViewBuilder
+    func urlRow(_ url: AutofillUrl) -> some View {
+        if viewModel.domainMatchingSupported, url.mode != .default, let title = url.mode.title {
+            VStack(alignment: .leading, spacing: 4) {
+                urlText(url.url)
+
+                Text(verbatim: title)
+                    .foregroundStyle(PassColor.textWeak)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(DesignConstant.sectionPadding / 2)
+            .roundedEditableSection()
+        } else {
+            urlText(url.url)
+        }
+    }
+
+    func urlText(_ url: String) -> some View {
+        Text(verbatim: url)
+            .foregroundStyle(viewModel.itemContent.type.normMajor2Color)
+            .multilineTextAlignment(.leading)
+            .lineLimit(2)
     }
 }
 

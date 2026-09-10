@@ -941,10 +941,8 @@ public extension ItemRepository {
 // MARK: - Private util functions
 
 private extension ItemRepository {
-    /// Temporary workaround. To be removed once the feature is stablelized
-    /// We copy paste the logic of `GetFeatureFlagStatusUseCase`
-    /// here because `Client` package doesn't depend on `UseCase` package.
-    /// This is to avoid injecting `domainMatchingSupported` bool from up to 3 4 layers above
+    /// Mirrors `GetFeatureFlagStatus`, which lives in `UseCases` and so is not reachable from
+    /// `Client`. Duplicated rather than threaded down as a parameter through four call layers.
     var domainMatchingSupported: Bool {
         let flag = FeatureFlagType.passAutofillUrlAdvancedModes
         if Bundle.main.isQaBuild, kSharedUserDefaults.bool(forKey: flag.rawValue) {
