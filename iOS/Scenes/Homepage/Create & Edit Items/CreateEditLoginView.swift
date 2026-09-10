@@ -91,20 +91,11 @@ struct CreateEditLoginView: View {
                         editablePasskeySection
                         readOnlyPasskeySection
                         usernamePasswordTOTPSection
-                        if viewModel.domainMatchingSupported {
-                            DomainMatchingWebsiteSection(viewModel: viewModel,
-                                                         focusedField: $focusedField,
-                                                         field: .websites,
-                                                         onSubmit: { focusedField = .note })
-                                .id(websitesID)
-                        } else {
-                            WebsiteSection(viewModel: viewModel,
-                                           focusedField: $focusedField,
-                                           field: .websites,
-                                           onSubmit: { focusedField = .note })
-                                .id(websitesID)
-                        }
-
+                        WebsiteSection(viewModel: viewModel,
+                                       focusedField: $focusedField,
+                                       field: .websites,
+                                       onSubmit: { focusedField = .note })
+                            .id(websitesID)
                         NoteEditSection(note: $viewModel.note,
                                         focusedField: $focusedField,
                                         field: .note)
@@ -678,92 +669,6 @@ private extension CreateEditLoginView {
 
 private struct WebsiteSection<Field: Hashable>: View {
     @ObservedObject var viewModel: CreateEditLoginViewModel
-    let focusedField: FocusState<Field?>.Binding
-    let field: Field
-    let onSubmit: () -> Void
-
-    var body: some View {
-        HStack(spacing: DesignConstant.sectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.earth)
-
-            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text("Website")
-                    .editableSectionTitleText(for: viewModel.urls.first?.value)
-
-                VStack(alignment: .leading) {
-                    ForEach($viewModel.urls) { $url in
-                        HStack {
-                            TextField(text: $url.value) {
-                                Text(verbatim: "https://")
-                            }
-                            .focused(focusedField, equals: field)
-                            .onChange(of: viewModel.urls) {
-                                viewModel.invalidURLs.removeAll()
-                            }
-                            .keyboardType(.URL)
-                            .textInputAutocapitalization(.never)
-                            .autocorrectionDisabled()
-                            .foregroundStyle(isValid(url) ?
-                                PassColor.textNorm : PassColor.signalDanger)
-                            .onSubmit(onSubmit)
-
-                            if !url.value.isEmpty {
-                                Button(action: {
-                                    withAnimation {
-                                        if viewModel.urls.count == 1 {
-                                            url.value = ""
-                                        } else {
-                                            viewModel.urls.removeAll { $0.id == url.id }
-                                        }
-                                    }
-                                }, label: {
-                                    ItemDetailSectionIcon(icon: IconProvider.cross)
-                                })
-                                .fixedSize(horizontal: false, vertical: true)
-                            }
-                        }
-
-                        if viewModel.urls.count > 1 || viewModel.urls.first?.value.isEmpty == false {
-                            PassSectionDivider()
-                        }
-                    }
-
-                    addUrlButton
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .animation(.default, value: viewModel.urls)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .padding(DesignConstant.sectionPadding)
-        .roundedEditableSection()
-        .contentShape(.rect)
-    }
-
-    private func isValid(_ url: IdentifiableObject<String>) -> Bool {
-        !viewModel.invalidURLs.contains { $0 == url.value }
-    }
-
-    @ViewBuilder
-    private var addUrlButton: some View {
-        if viewModel.urls.first?.value.isEmpty == false {
-            Button(action: {
-                if viewModel.urls.last?.value.isEmpty == false {
-                    // Only add new URL when last URL has value to avoid adding blank URLs
-                    viewModel.urls.append(.init(value: ""))
-                }
-            }, label: {
-                Label("Add", systemImage: "plus")
-            })
-            .opacityReduced(viewModel.urls.last?.value.isEmpty == true)
-        }
-    }
-}
-
-// MARK: - DomainMatchingWebsiteSection
-
-private struct DomainMatchingWebsiteSection<Field: Hashable>: View {
-    @ObservedObject var viewModel: CreateEditLoginViewModel
     @State private var selectedAutofillUrl: IdentifiableObject<AutofillUrl>?
     let focusedField: FocusState<Field?>.Binding
     let field: Field
@@ -792,10 +697,12 @@ private struct DomainMatchingWebsiteSection<Field: Hashable>: View {
                             .onSubmit(onSubmit)
 
                             if !url.value.url.isEmpty {
-                                Button(action: { selectedAutofillUrl = url },
-                                       label: {
-                                           ItemDetailSectionIcon(icon: IconProvider.threeDotsVertical)
-                                       })
+                                if viewModel.domainMatchingSupported {
+                                    Button(action: { selectedAutofillUrl = url },
+                                           label: {
+                                               ItemDetailSectionIcon(icon: IconProvider.threeDotsVertical)
+                                           })
+                                }
 
                                 Button(action: {
                                     withAnimation {
@@ -812,8 +719,10 @@ private struct DomainMatchingWebsiteSection<Field: Hashable>: View {
                             }
                         }
 
-                        if !url.value.url.isEmpty {
-                            Text(url.value.mode.title)
+                        if viewModel.domainMatchingSupported,
+                           !url.value.url.isEmpty,
+                           let title = url.value.mode.title {
+                            Text(verbatim: title)
                                 .font(.callout)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .foregroundStyle(viewModel.itemContentType.normMajor2Color)
@@ -823,8 +732,7 @@ private struct DomainMatchingWebsiteSection<Field: Hashable>: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                         }
 
-                        if viewModel.autofillUrls.count > 1 ||
-                            viewModel.autofillUrls.first?.value.url.isEmpty == false {
+                        if url.id != viewModel.autofillUrls.last?.id {
                             PassSectionDivider()
                                 .padding(.top, 4)
                         }

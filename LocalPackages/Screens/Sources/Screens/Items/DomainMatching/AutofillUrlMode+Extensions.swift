@@ -23,7 +23,9 @@ import Entities
 import Macro
 
 public extension AutofillUrlMode {
-    var title: String {
+    /// `nil` for a mode added to the protobuf after this build: it has no name to show and
+    /// must not be offered as a choice, but the raw value is still round-tripped on save.
+    var title: String? {
         switch self {
         case .default:
             #localized("Parent domain and subdomains", bundle: .module)
@@ -45,6 +47,9 @@ public extension AutofillUrlMode {
 
         case .exactPath:
             #localized("Exact URL matching", bundle: .module)
+
+        case .unrecognized:
+            nil
         }
     }
 }
