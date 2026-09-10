@@ -86,13 +86,13 @@ private extension EditDomainMatchingView {
             VStack(spacing: DesignConstant.sectionPadding) {
                 descriptionText
 
-                EnumSegmentedPicker(selection: $selectedType,
-                                    options: [
-                                        DomainMatchingType.basic.title,
-                                        DomainMatchingType.advanced.title
-                                    ],
-                                    mainColor: itemContentType.normMajor1Color,
-                                    backgroundColor: itemContentType.normMinor1Color)
+                SegmentedPicker(selection: $selectedType,
+                                options: [
+                                    .init(value: .basic, title: DomainMatchingType.basic.title),
+                                    .init(value: .advanced, title: DomainMatchingType.advanced.title)
+                                ],
+                                mainColor: itemContentType.normMajor1Color,
+                                backgroundColor: itemContentType.normMinor1Color)
 
                 switch selectedType {
                 case .basic:
