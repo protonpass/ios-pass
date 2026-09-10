@@ -159,7 +159,7 @@ private extension ProtonPassItemV1_AutofillUrl.Mode {
         case .pattern: .pattern
         case .regularExpression: .regularExpression
         case .exactPath: .exactPath
-        case .UNRECOGNIZED: .default
+        case let .UNRECOGNIZED(value): .unrecognized(value)
         }
     }
 }
@@ -174,6 +174,7 @@ private extension AutofillUrlMode {
         case .pattern: .pattern
         case .regularExpression: .regularExpression
         case .exactPath: .exactPath
+        case let .unrecognized(value): .init(rawValue: value) ?? .default
         }
     }
 }

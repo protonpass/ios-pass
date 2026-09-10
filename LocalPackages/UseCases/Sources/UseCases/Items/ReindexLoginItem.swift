@@ -61,7 +61,9 @@ public final class ReindexLoginItem: ReindexLoginItemUseCase {
             throw PassError.credentialProvider(.notLogInItem)
         }
 
-        // First we remove existing indexed credentials
+        // First we remove existing indexed credentials.
+        // Deliberately every url, not just the autofillable ones: a url whose mode just
+        // became `.never` was indexed under its old mode and still has to be removed.
         let oldPasswords = data.urls.map {
             CredentialIdentity.password(.init(shareId: item.shareId,
                                               itemId: item.item.itemID,
@@ -91,7 +93,7 @@ public final class ReindexLoginItem: ReindexLoginItemUseCase {
 
         var passwords = [CredentialIdentity]()
         if !data.authIdentifier.isEmpty, !data.password.isEmpty {
-            passwords = data.urls.map { url -> CredentialIdentity in
+            passwords = data.autofillableUrls.map { url -> CredentialIdentity in
                 let lastUseTime = getLastUseTime(url)
                 return CredentialIdentity.password(.init(shareId: item.shareId,
                                                          itemId: item.itemId,
@@ -103,7 +105,7 @@ public final class ReindexLoginItem: ReindexLoginItemUseCase {
 
         var oneTimeCodes = [CredentialIdentity]()
         if !data.authIdentifier.isEmpty, !data.totpUri.isEmpty {
-            oneTimeCodes = data.urls.map { url -> CredentialIdentity in
+            oneTimeCodes = data.autofillableUrls.map { url -> CredentialIdentity in
                 let lastUseTime = getLastUseTime(url)
                 return CredentialIdentity.oneTimeCode(.init(shareId: item.shareId,
                                                             itemId: item.itemId,

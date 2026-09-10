@@ -190,8 +190,10 @@ private extension EditDomainMatchingView {
 
     @ViewBuilder
     func text(for mode: AutofillUrlMode) -> some View {
-        Text(mode.title)
-            .foregroundStyle(PassColor.textNorm)
+        if let title = mode.title {
+            Text(verbatim: title)
+                .foregroundStyle(PassColor.textNorm)
+        }
 
         if mode == .default {
             Text("DEFAULT", bundle: .module)

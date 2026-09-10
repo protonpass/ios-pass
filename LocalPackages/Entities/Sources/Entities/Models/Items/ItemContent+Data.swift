@@ -69,6 +69,9 @@ public enum AutofillUrlMode: Sendable, Equatable, Hashable {
     case pattern
     case regularExpression
     case exactPath
+    /// A mode added to the protobuf after this build. Carries the raw value so saving an
+    /// item edited on this client does not overwrite another platform's rule with `.default`.
+    case unrecognized(Int)
 }
 
 public struct AutofillUrl: Sendable, Equatable, Hashable {
@@ -107,6 +110,24 @@ public struct LogInItemData: Sendable, Equatable, Hashable {
         self.autofillUrls = autofillUrls
         self.allowedAndroidApps = allowedAndroidApps
         self.passkeys = passkeys
+    }
+
+    /// `autofillUrls` only exists from content format version 8 on; every item created
+    /// before that carries its websites in `urls` alone. Read websites through this and
+    /// never through `autofillUrls` directly, or pre-feature items look website-less.
+    public var resolvedAutofillUrls: [AutofillUrl] {
+        if autofillUrls.isEmpty {
+            return urls.map { AutofillUrl(url: $0, mode: .default) }
+        }
+        return autofillUrls
+    }
+
+    /// Websites eligible for autofill. `.never` stays in `urls` because it is still one of
+    /// the item's websites for display, search, favicons and 2FA monitoring; it just must
+    /// not reach the credential store. An unrecognized mode stays autofillable so a rule
+    /// this build cannot interpret degrades to the pre-feature behaviour.
+    public var autofillableUrls: [String] {
+        resolvedAutofillUrls.filter { $0.mode != .never }.map(\.url)
     }
 
     /// This variable should be used as the new main authentication variable
