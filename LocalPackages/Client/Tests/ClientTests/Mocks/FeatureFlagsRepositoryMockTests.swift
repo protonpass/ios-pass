@@ -27,12 +27,12 @@ import Testing
 /// extensions that call themselves, so dropping a witness from the mock does not fail to
 /// compile - it recurses until the stack overflows. These read the flag through every
 /// overload so that regression shows up here rather than inside an unrelated suite.
-@Suite("FeatureFlagsRepositoryMock Tests", .tags(.repository))
+@Suite(.tags(.repository))
 struct FeatureFlagsRepositoryMockTests {
     private let flag = FeatureFlagType.passAutofillUrlAdvancedModes
 
-    @Test("Reports the stubbed value through every isEnabled overload", .timeLimit(.minutes(1)))
-    func isEnabled_returnsStubbedValue() {
+    @Test(.timeLimit(.minutes(1)))
+    func `every isEnabled overload reports the stubbed value`() {
         let enabled = FeatureFlagsRepositoryMock(isEnabled: { _ in true })
         #expect(enabled.isEnabled(flag, reloadValue: true))
         #expect(enabled.isEnabled(flag, for: "user-id", reloadValue: true))
@@ -44,9 +44,8 @@ struct FeatureFlagsRepositoryMockTests {
         #expect(disabled.getFlag(flag, for: "user-id", reloadValue: true)?.enabled == false)
     }
 
-    @Test("flagsUpdates yields, rather than hanging on a dropped continuation",
-          .timeLimit(.minutes(1)))
-    func flagsUpdates_yieldsSimulatedUpdate() async throws {
+    @Test(.timeLimit(.minutes(1)))
+    func `flagsUpdates yields rather than hanging on a dropped continuation`() async throws {
         let sut = FeatureFlagsRepositoryMock()
         sut.simulateFlagsUpdate(for: "user-id")
 
