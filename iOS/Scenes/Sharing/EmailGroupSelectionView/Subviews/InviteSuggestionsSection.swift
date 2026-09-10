@@ -53,8 +53,11 @@ struct InviteSuggestionsSection: View {
     @ViewBuilder
     var suggestionPicker: some View {
         if let organizationTitle = viewModel.organizationTitle {
-            EnumSegmentedPicker(selection: $viewModel.displayType,
-                                options: [#localized("Suggestions"), organizationTitle])
+            SegmentedPicker(selection: $viewModel.displayType,
+                            options: [
+                                .init(value: .suggestion, title: #localized("Suggestions")),
+                                .init(value: .organisation, title: organizationTitle)
+                            ])
         }
     }
 }

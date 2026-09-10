@@ -21,19 +21,32 @@
 
 import SwiftUI
 
-public struct SegmentedPicker: View {
-    @Binding private var selectedIndex: Int
+public struct SegmentedPickerOption<Value: Hashable>: Hashable {
+    public let value: Value
+    public let title: String
+
+    public init(value: Value, title: String) {
+        self.value = value
+        self.title = title
+    }
+}
+
+public struct SegmentedPicker<Selection: Hashable>: View {
+    @Binding private var selection: Selection
+    private let options: [SegmentedPickerOption<Selection>]
     private let highlightTextColor: Color
     private let mainColor: Color
     private let backgroundColor: Color
-    private let options: [String]
 
-    public init(selectedIndex: Binding<Int>,
-                options: [String],
+    /// Takes the caller's own `Binding` unchanged. Deriving one here with `Binding(get:set:)`
+    /// would allocate a fresh `AnyLocation` per `body` evaluation, and because `Binding` is not
+    /// `Equatable` that makes this view compare unequal every time and re-render needlessly.
+    public init(selection: Binding<Selection>,
+                options: [SegmentedPickerOption<Selection>],
                 highlightTextColor: Color = PassColor.textNorm,
                 mainColor: Color = PassColor.interactionNormMajor1,
                 backgroundColor: Color = PassColor.interactionNormMinor1) {
-        _selectedIndex = selectedIndex
+        _selection = selection
         self.options = options
         self.mainColor = mainColor
         self.backgroundColor = backgroundColor
@@ -41,6 +54,7 @@ public struct SegmentedPicker: View {
     }
 
     public var body: some View {
+        let selectedIndex = options.firstIndex { $0.value == selection } ?? 0
         ZStack {
             GeometryReader { proxy in
                 let thumbWidth = proxy.size.width / CGFloat(options.count)
@@ -52,13 +66,13 @@ public struct SegmentedPicker: View {
             }
 
             HStack {
-                ForEach(Array(options.enumerated()), id: \.element) { index, option in
+                ForEach(options, id: \.value) { option in
                     Button(action: {
-                        selectedIndex = index
+                        selection = option.value
                     }, label: {
-                        Text(option)
+                        Text(option.title)
                             .font(.body.weight(.medium))
-                            .foregroundStyle(index == selectedIndex ?
+                            .foregroundStyle(option.value == selection ?
                                 highlightTextColor : PassColor.textNorm)
                             .frame(maxWidth: .infinity, alignment: .center)
                     })
@@ -70,5 +84,20 @@ public struct SegmentedPicker: View {
         .background(backgroundColor)
         .clipShape(Capsule())
         .frame(height: DesignConstant.defaultPickerHeight)
+    }
+}
+
+public extension SegmentedPicker where Selection == Int {
+    /// Index-based convenience: the position in `options` is the selection.
+    init(selectedIndex: Binding<Int>,
+         options: [String],
+         highlightTextColor: Color = PassColor.textNorm,
+         mainColor: Color = PassColor.interactionNormMajor1,
+         backgroundColor: Color = PassColor.interactionNormMinor1) {
+        self.init(selection: selectedIndex,
+                  options: options.enumerated().map { .init(value: $0.offset, title: $0.element) },
+                  highlightTextColor: highlightTextColor,
+                  mainColor: mainColor,
+                  backgroundColor: backgroundColor)
     }
 }
