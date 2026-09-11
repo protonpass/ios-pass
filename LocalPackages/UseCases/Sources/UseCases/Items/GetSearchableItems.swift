@@ -42,17 +42,20 @@ public final class GetSearchableItems: GetSearchableItemsUseCase {
     private let getAllPinnedItems: any GetAllPinnedItemsUseCase
     private let dedupShare: any DedupShareUseCase
     private let symmetricKeyProvider: any SymmetricKeyProvider
+    private let appContentManager: any AppContentManagerProtocol
 
     public init(itemRepository: any ItemRepositoryProtocol,
                 shareRepository: any ShareRepositoryProtocol,
                 getAllPinnedItems: any GetAllPinnedItemsUseCase,
                 dedupShare: any DedupShareUseCase,
-                symmetricKeyProvider: any SymmetricKeyProvider) {
+                symmetricKeyProvider: any SymmetricKeyProvider,
+                appContentManager: any AppContentManagerProtocol) {
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
         self.getAllPinnedItems = getAllPinnedItems
         self.dedupShare = dedupShare
         self.symmetricKeyProvider = symmetricKeyProvider
+        self.appContentManager = appContentManager
     }
 
     public func execute(userId: String, for searchMode: SearchMode) async throws -> [SearchableItem] {
@@ -105,9 +108,12 @@ private extension GetSearchableItems {
 
             case let .precise(selection):
                 try Task.checkCancellation()
-                return try await itemRepository.getItems(shareId: selection.share.shareId,
-                                                         folderId: selection.folder?.folderId,
-                                                         state: .active)
+                let items = try await itemRepository.getItems(shareId: selection.share.shareId,
+                                                              state: .active)
+                guard let folderId = selection.folder?.folderId else { return items }
+                let containerIds = await subtreeFolderIds(shareId: selection.share.shareId,
+                                                          folderId: folderId)
+                return items.filter { containerIds.contains($0.parentId) }
 
             case .trash:
                 try Task.checkCancellation()
@@ -124,5 +130,14 @@ private extension GetSearchableItems {
                     .filter(\.item.isASharedWithMeItem)
             }
         }
+    }
+
+    /// Search stays scoped to the selected container but spans its whole subtree, so items in
+    /// subfolders remain findable even though the items list only shows direct children.
+    func subtreeFolderIds(shareId: String, folderId: String) async -> Set<String> {
+        guard let content = await appContentManager.getShareContent(for: shareId) else {
+            return [folderId]
+        }
+        return Set(content.flattenedFolders(from: folderId).map(\.folderId)).union([folderId])
     }
 }
