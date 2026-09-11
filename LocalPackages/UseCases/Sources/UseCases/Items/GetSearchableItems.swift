@@ -27,11 +27,11 @@ import Entities
 import Foundation
 
 public protocol GetSearchableItemsUseCase: Sendable {
-    func execute(userId: String, for searchMode: SearchMode) async throws -> [SearchableItem]
+    func execute(userId: String, for searchMode: SearchMode) async throws -> SearchableItems
 }
 
 public extension GetSearchableItemsUseCase {
-    func callAsFunction(userId: String, for searchMode: SearchMode) async throws -> [SearchableItem] {
+    func callAsFunction(userId: String, for searchMode: SearchMode) async throws -> SearchableItems {
         try await execute(userId: userId, for: searchMode)
     }
 }
@@ -58,15 +58,90 @@ public final class GetSearchableItems: GetSearchableItemsUseCase {
         self.appContentManager = appContentManager
     }
 
-    public func execute(userId: String, for searchMode: SearchMode) async throws -> [SearchableItem] {
+    public func execute(userId: String, for searchMode: SearchMode) async throws -> SearchableItems {
         async let getShares = shareRepository.getDecryptedShares(userId: userId)
-        async let getItems = getEncryptedItems(userId: userId, searchMode: searchMode)
         async let getSymmetricKey = symmetricKeyProvider.getSymmetricKey()
-        let (vaults, items, symmetricKey) = try await (getShares, getItems, getSymmetricKey)
+        let (shares, symmetricKey) = try await (getShares, getSymmetricKey)
+        let vaults = dedupShare(shares: shares, filterHidden: true)
+        let context = DecryptionContext(symmetricKey: symmetricKey, vaults: vaults)
 
-        let deduplicatedVaults = dedupShare(shares: vaults, filterHidden: true)
-        let applicableShareIds = deduplicatedVaults.map(\.shareId)
+        switch searchMode {
+        case .pinned:
+            try Task.checkCancellation()
+            let pinned = try await getAllPinnedItems()
+            return try await .init(scoped: decrypt(pinned, context: context), all: nil)
+
+        case let .all(shareSelection):
+            return try await searchableItems(userId: userId,
+                                             shareSelection: shareSelection,
+                                             context: context)
+        }
+    }
+}
+
+private extension GetSearchableItems {
+    struct DecryptionContext {
+        let symmetricKey: SymmetricKey
+        let vaults: [Share]
+
+        var applicableShareIds: Set<String> {
+            Set(vaults.map(\.shareId))
+        }
+    }
+
+    struct ActiveSet {
+        let decrypted: [SearchableItem]
+        let encrypted: [SymmetricallyEncryptedItem]
+
+        func filtered(by predicate: (SymmetricallyEncryptedItem) -> Bool) -> [SearchableItem] {
+            let ids = Set(encrypted.filter(predicate).map(\.ids))
+            return decrypted.filter { ids.contains($0.ids) }
+        }
+    }
+
+    func searchableItems(userId: String,
+                         shareSelection: ShareSelection,
+                         context: DecryptionContext) async throws -> SearchableItems {
+        switch shareSelection {
+        case .all:
+            try Task.checkCancellation()
+            let items = try await itemRepository.getItems(userId: userId, state: .active)
+            return try await .init(scoped: decrypt(items, context: context), all: nil)
+
+        case .trash:
+            try Task.checkCancellation()
+            async let getTrashed = itemRepository.getItems(userId: userId, state: .trashed)
+            async let getActive = itemRepository.getItems(userId: userId, state: .active)
+            let (trashed, active) = try await (getTrashed, getActive)
+            return try await .init(scoped: decrypt(trashed, context: context),
+                                   all: decrypt(active, context: context))
+
+        case let .precise(selection):
+            let active = try await activeSet(userId: userId, context: context)
+            return await .init(scoped: scoped(active.decrypted, to: selection), all: active.decrypted)
+
+        case .sharedByMe:
+            let active = try await activeSet(userId: userId, context: context)
+            return .init(scoped: active.filtered(by: \.item.isASharedByMeItem), all: active.decrypted)
+
+        case .sharedWithMe:
+            let active = try await activeSet(userId: userId, context: context)
+            return .init(scoped: active.filtered(by: \.item.isASharedWithMeItem), all: active.decrypted)
+        }
+    }
+
+    func activeSet(userId: String, context: DecryptionContext) async throws -> ActiveSet {
+        try Task.checkCancellation()
+        let encrypted = try await itemRepository.getItems(userId: userId, state: .active)
+        return try await .init(decrypted: decrypt(encrypted, context: context), encrypted: encrypted)
+    }
+
+    func decrypt(_ items: [SymmetricallyEncryptedItem],
+                 context: DecryptionContext) async throws -> [SearchableItem] {
+        let applicableShareIds = context.applicableShareIds
         let filteredItems = items.filter { applicableShareIds.contains($0.shareId) }
+        let symmetricKey = context.symmetricKey
+        let vaults = context.vaults
 
         return try await withThrowingTaskGroup(of: [SearchableItem].self,
                                                returning: [SearchableItem].self) { @Sendable group in
@@ -79,7 +154,7 @@ public final class GetSearchableItems: GetSearchableItemsUseCase {
                         try Task.checkCancellation()
                         return try SearchableItem(from: $0,
                                                   symmetricKey: symmetricKey,
-                                                  allVaults: deduplicatedVaults)
+                                                  allVaults: vaults)
                     }
                 }
             }
@@ -91,49 +166,17 @@ public final class GetSearchableItems: GetSearchableItemsUseCase {
             return results
         }
     }
-}
 
-private extension GetSearchableItems {
-    func getEncryptedItems(userId: String, searchMode: SearchMode) async throws -> [SymmetricallyEncryptedItem] {
-        switch searchMode {
-        case .pinned:
-            try Task.checkCancellation()
-            return try await getAllPinnedItems()
-
-        case let .all(vaultSelection):
-            switch vaultSelection {
-            case .all:
-                try Task.checkCancellation()
-                return try await itemRepository.getItems(userId: userId, state: .active)
-
-            case let .precise(selection):
-                try Task.checkCancellation()
-                let items = try await itemRepository.getItems(shareId: selection.share.shareId,
-                                                              state: .active)
-                guard let folderId = selection.folder?.folderId else { return items }
-                let containerIds = await subtreeFolderIds(shareId: selection.share.shareId,
-                                                          folderId: folderId)
-                return items.filter { containerIds.contains($0.parentId) }
-
-            case .trash:
-                try Task.checkCancellation()
-                return try await itemRepository.getItems(userId: userId, state: .trashed)
-
-            case .sharedByMe:
-                try Task.checkCancellation()
-                return try await itemRepository.getItems(userId: userId, state: .active)
-                    .filter(\.item.isASharedByMeItem)
-
-            case .sharedWithMe:
-                try Task.checkCancellation()
-                return try await itemRepository.getItems(userId: userId, state: .active)
-                    .filter(\.item.isASharedWithMeItem)
-            }
+    func scoped(_ items: [SearchableItem],
+                to selection: ShareSelectionPayload) async -> [SearchableItem] {
+        let shareId = selection.share.shareId
+        guard let folderId = selection.folder?.folderId else {
+            return items.scoped(toShare: shareId, containerIds: nil)
         }
+        return await items.scoped(toShare: shareId,
+                                  containerIds: subtreeFolderIds(shareId: shareId, folderId: folderId))
     }
 
-    /// Search stays scoped to the selected container but spans its whole subtree, so items in
-    /// subfolders remain findable even though the items list only shows direct children.
     func subtreeFolderIds(shareId: String, folderId: String) async -> Set<String> {
         guard let content = await appContentManager.getShareContent(for: shareId) else {
             return [folderId]

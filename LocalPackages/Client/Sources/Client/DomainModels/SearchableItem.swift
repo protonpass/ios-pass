@@ -318,6 +318,19 @@ public extension [SearchableItem] {
     }
 
     var toItemSearchResults: [ItemSearchResult] {
-        self.map(\.toItemSearchResult)
+        map(\.toItemSearchResult)
+    }
+}
+
+/// The item sets a search screen needs: the current selection's items, plus the global set
+/// backing the "All vaults" tab. `scoped` is always a subset of `all` when `all` is present.
+public struct SearchableItems: Sendable {
+    public let scoped: [SearchableItem]
+    /// Global active set; `nil` when `scoped` is already global, so there is no second tab to fill.
+    public let all: [SearchableItem]?
+
+    public init(scoped: [SearchableItem], all: [SearchableItem]?) {
+        self.scoped = scoped
+        self.all = all
     }
 }
