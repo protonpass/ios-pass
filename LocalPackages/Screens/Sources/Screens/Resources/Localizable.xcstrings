@@ -10021,126 +10021,126 @@
         }
       }
     },
-    "At least 12 characters" : {
+    "At least 13 characters" : {
       "localizations" : {
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Прынамсі 12 сімвалаў"
+            "value" : "Прынамсі 13 сімвалаў"
           }
         },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ha de tenir com a mínim 12 caràcters."
+            "value" : "Ha de tenir com a mínim 13 caràcters."
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alespoň 12 znaků"
+            "value" : "Alespoň 13 znaků"
           }
         },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mindst 12 tegn"
+            "value" : "Mindst 13 tegn"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mindestens 12 Zeichen"
+            "value" : "Mindestens 13 Zeichen"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Τουλάχιστον 12 χαρακτήρες"
+            "value" : "Τουλάχιστον 13 χαρακτήρες"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "At least 12 characters"
+            "value" : "At least 13 characters"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Al menos 12 caracteres"
+            "value" : "Al menos 13 caracteres"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Au moins 12 caractères"
+            "value" : "Au moins 13 caractères"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Almeno 12 caratteri"
+            "value" : "Almeno 13 caratteri"
           }
         },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "სულ მცირე, 12 სიმბოლო"
+            "value" : "სულ მცირე, 13 სიმბოლო"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "최소 12자"
+            "value" : "최소 13자"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Minst 12 tegn"
+            "value" : "Minst 13 tegn"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Minstens 12 tekens"
+            "value" : "Minstens 13 tekens"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pelo menos 12 caracteres"
+            "value" : "Pelo menos 13 caracteres"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cel puțin 12 caractere"
+            "value" : "Cel puțin 13 caractere"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aspoň 12 znakov"
+            "value" : "Aspoň 13 znakov"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Minst 12 tecken"
+            "value" : "Minst 13 tecken"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "En az 12 karakter"
+            "value" : "En az 13 karakter"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "至少 12 个字符"
+            "value" : "至少 13 个字符"
           }
         }
       }
