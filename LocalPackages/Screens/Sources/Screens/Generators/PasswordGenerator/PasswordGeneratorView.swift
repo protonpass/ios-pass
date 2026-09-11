@@ -427,7 +427,7 @@ private extension PasswordPenalty {
         case .noUppercase: "Uppercase letters"
         case .noNumbers: "Numbers"
         case .noSymbols: "Symbols"
-        case .short: "At least 12 characters"
+        case .short: "At least 13 characters"
         case .consecutive: "No repeated characters"
         case .progressive: "No sequential characters"
         case .containsCommonPassword: "No common passwords"
