@@ -413,7 +413,7 @@ extension LocalItemDatasourceTests {
         let updatedItem1 = LastUseItem(itemID: item1.itemId, lastUseTime: 123)
         let updatedItem2 = LastUseItem(itemID: item2.itemId, lastUseTime: 234)
         let updatedItem3 = LastUseItem(itemID: item3.itemId, lastUseTime: 345)
-        try  sut.update(lastUseItems: [updatedItem1, updatedItem2, updatedItem3],
+        try sut.update(lastUseItems: [updatedItem1, updatedItem2, updatedItem3],
                              shareId: givenShareId)
 
         // Then
