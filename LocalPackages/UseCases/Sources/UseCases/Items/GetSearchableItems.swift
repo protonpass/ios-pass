@@ -102,10 +102,16 @@ private extension GetSearchableItems {
     func encryptedItems(userId: String, searchMode: SearchMode) async throws -> EncryptedItems {
         try Task.checkCancellation()
 
-        guard case let .all(shareSelection) = searchMode else {
+        switch searchMode {
+        case .pinned:
             return try await .standalone(getAllPinnedItems())
-        }
 
+        case let .all(shareSelection):
+            return try await getItems(for: shareSelection, userId: userId)
+        }
+    }
+
+    func getItems(for shareSelection: ShareSelection, userId: String) async throws -> EncryptedItems {
         switch shareSelection {
         case .all:
             return try await .standalone(itemRepository.getItems(userId: userId, state: .active))

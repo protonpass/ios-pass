@@ -270,17 +270,6 @@ public extension ItemRepository {
         try await localDatasource.getItems(shareId: shareId, state: state)
     }
 
-    /// Get all local items of a share or folder by state
-    func getItems(shareId: String,
-                  folderId: String?,
-                  state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
-        if let folderId {
-            try await localDatasource.getItems(shareId: shareId, folderId: folderId, state: state)
-        } else {
-            try await getItems(shareId: shareId, state: state)
-        }
-    }
-
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem? {
         try await localDatasource.getItem(shareId: shareId, itemId: itemId)
     }
