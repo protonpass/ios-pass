@@ -413,7 +413,7 @@ extension LocalItemDatasourceTests {
         let updatedItem1 = LastUseItem(itemID: item1.itemId, lastUseTime: 123)
         let updatedItem2 = LastUseItem(itemID: item2.itemId, lastUseTime: 234)
         let updatedItem3 = LastUseItem(itemID: item3.itemId, lastUseTime: 345)
-        try await sut.update(lastUseItems: [updatedItem1, updatedItem2, updatedItem3],
+        try  sut.update(lastUseItems: [updatedItem1, updatedItem2, updatedItem3],
                              shareId: givenShareId)
 
         // Then
@@ -510,10 +510,10 @@ extension LocalItemDatasourceTests {
     func getItemsByIds() async throws {
         // Given
         let givenItem1 = try await sut.givenInsertedItem()
-        let givenItem2 = try await sut.givenInsertedItem()
+        _ = try await sut.givenInsertedItem()
         let givenItem3 = try await sut.givenInsertedItem()
         let givenItem4 = try await sut.givenInsertedItem()
-        let givenItem5 = try await sut.givenInsertedItem()
+        _ = try await sut.givenInsertedItem()
 
         // When
         let items = try await sut.getItems([givenItem1, givenItem3, givenItem4])

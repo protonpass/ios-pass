@@ -238,7 +238,7 @@ private extension UserEventsSynchronizerTests {
         }
 
         if let deleteItemsInvokeCount = args.deleteItemsInvokeCount {
-            #expect(itemRepository.invokedDeleteItemsLocallyItemsAsyncCount36 == deleteItemsInvokeCount)
+            #expect(itemRepository.invokedDeleteItemsLocallyItemsAsyncCount35 == deleteItemsInvokeCount)
         }
 
         if let refreshShareInvokeCount = args.refreshShareInvokeCount {

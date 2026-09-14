@@ -59,8 +59,8 @@ struct MoveItemsBetweenVaultsTests {
                               to: destinationShareId,
                               destinationFolderId: "F-dest")
 
-        #expect(repository.invokedMoveItemsToShareIdDestinationFolderIdAsyncCount30 == 1)
-        let args = try #require(repository.invokedMoveItemsToShareIdDestinationFolderIdAsyncParameters30)
+        #expect(repository.invokedMoveItemsToShareIdDestinationFolderIdAsyncCount29 == 1)
+        let args = try #require(repository.invokedMoveItemsToShareIdDestinationFolderIdAsyncParameters29)
         #expect(args.items.map(\.itemId).sorted() == ["I1", "I2"])
         #expect(args.toShareId == destinationShareId)
         #expect(args.destinationFolderId == "F-dest")
@@ -91,7 +91,7 @@ struct MoveItemsBetweenVaultsTests {
                               to: destinationShareId,
                               destinationFolderId: nil)
 
-        let args = try #require(repository.invokedMoveItemsToShareIdDestinationFolderIdAsyncParameters30)
+        let args = try #require(repository.invokedMoveItemsToShareIdDestinationFolderIdAsyncParameters29)
         #expect(args.items.map(\.itemId).sorted() == ["I-deep", "I-direct", "I-nested"])
         #expect(args.destinationFolderId == nil)
         #expect(args.toShareId == destinationShareId)
@@ -107,7 +107,7 @@ struct MoveItemsBetweenVaultsTests {
                               to: destinationShareId,
                               destinationFolderId: nil)
 
-        #expect(repository.invokedMoveItemsToShareIdDestinationFolderIdAsyncCount30 == 0)
+        #expect(repository.invokedMoveItemsToShareIdDestinationFolderIdAsyncCount29 == 0)
     }
 
     @Test
@@ -119,6 +119,6 @@ struct MoveItemsBetweenVaultsTests {
                               to: destinationShareId,
                               destinationFolderId: nil)
 
-        #expect(repository.invokedMoveItemsToShareIdDestinationFolderIdAsyncCount30 == 0)
+        #expect(repository.invokedMoveItemsToShareIdDestinationFolderIdAsyncCount29 == 0)
     }
 }
