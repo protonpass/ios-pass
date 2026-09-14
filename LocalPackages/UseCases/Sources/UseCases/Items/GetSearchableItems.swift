@@ -214,6 +214,6 @@ private extension GetSearchableItems {
             logger.trace("Could not find subtree folder ids for \(shareId). Returning only the provided folder.")
             return [folderId]
         }
-        return Set(content.flattenedFolders(from: folderId).map(\.folderId)).union([folderId])
+        return content.subtreeFolderIds(from: folderId)
     }
 }

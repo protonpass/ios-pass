@@ -603,22 +603,31 @@ struct ShareContentTests {
         #expect(f1List.map(\.itemId) == ["item-B"])
 
         // Search: F1 selected spans F1 and every descendant
-        let f1SubtreeIds = Set(content.flattenedFolders(from: "folder-F1").map(\.folderId))
-            .union(["folder-F1"])
-        #expect(f1SubtreeIds == ["folder-F1", "folder-F2"])
-
         let f1Search = content.flattenedItems(from: "folder-F1")
         #expect(Set(f1Search.map(\.itemId)) == ["item-B", "item-C"])
         #expect(Set(f1List.map(\.itemId)).isSubset(of: Set(f1Search.map(\.itemId))))
     }
 
+    /// `flattenedFolders(from:)` deliberately excludes the container, so anything scoping by
+    /// container id would drop the folder's own items without this.
     @Test
-    func `subtree id set of a leaf folder is the folder itself`() {
+    func `subtreeFolderIds includes the folder itself as well as its descendants`() {
+        let f1 = FolderUiModel.mock(folderId: "folder-F1", shareId: shareId)
+        let f2 = FolderUiModel.mock(folderId: "folder-F2", shareId: shareId, parentFolderId: "folder-F1")
         let leaf = FolderUiModel.mock(folderId: "folder-leaf", shareId: shareId)
-        let content = ShareContent(share: share, elements: [.folder(leaf)])
+        let content = ShareContent(share: share,
+                                   elements: [.folder(f1), .folder(f2), .folder(leaf)])
 
-        let ids = Set(content.flattenedFolders(from: "folder-leaf").map(\.folderId))
-            .union(["folder-leaf"])
-        #expect(ids == ["folder-leaf"])
+        #expect(content.subtreeFolderIds(from: "folder-F1") == ["folder-F1", "folder-F2"])
+        #expect(content.subtreeFolderIds(from: "folder-leaf") == ["folder-leaf"])
+    }
+
+    /// Deliberate: the result is a membership filter, so an id that matches nothing narrows a
+    /// scope instead of emptying it. Returning `[]` would make a stale tree hide every result.
+    @Test
+    func `subtreeFolderIds degrades to the folder itself when it is absent from the tree`() {
+        let content = ShareContent(share: share, elements: [])
+
+        #expect(content.subtreeFolderIds(from: "unknown-folder") == ["unknown-folder"])
     }
 }
