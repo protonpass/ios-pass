@@ -62,22 +62,29 @@ public final class GetSearchableItems: GetSearchableItemsUseCase {
     }
 
     public func execute(userId: String, for searchMode: SearchMode) async throws -> SearchableItems {
+        // The item lookups depend on neither the shares nor the key, so all three start together
+        // and we only pay for the slowest.
         async let getShares = shareRepository.getDecryptedShares(userId: userId)
         async let getSymmetricKey = symmetricKeyProvider.getSymmetricKey()
-        let (shares, symmetricKey) = try await (getShares, getSymmetricKey)
-        let vaults = dedupShare(shares: shares, filterHidden: true)
-        let context = DecryptionContext(symmetricKey: symmetricKey, vaults: vaults)
+        async let getItems = encryptedItems(userId: userId, searchMode: searchMode)
+        let (shares, symmetricKey, items) = try await (getShares, getSymmetricKey, getItems)
 
-        switch searchMode {
-        case .pinned:
-            try Task.checkCancellation()
-            let pinned = try await getAllPinnedItems()
-            return try await .init(scoped: decrypt(pinned, context: context), all: nil)
+        let context = DecryptionContext(symmetricKey: symmetricKey,
+                                        vaults: dedupShare(shares: shares, filterHidden: true))
 
-        case let .all(shareSelection):
-            return try await searchableItems(userId: userId,
-                                             shareSelection: shareSelection,
-                                             context: context)
+        switch items {
+        case let .standalone(items):
+            return try await .init(scoped: decrypt(items, context: context), all: nil)
+
+        case let .disjoint(selected, active):
+            return try await .init(scoped: decrypt(selected, context: context),
+                                   all: decrypt(active, context: context))
+
+        case let .subset(active, selection):
+            let all = try await decrypt(active, context: context)
+            let selectedIds = await Set(active.matching(selection,
+                                                        subtreeFolderIds: subtreeFolderIds).map(\.ids))
+            return .init(scoped: all.filter { selectedIds.contains($0.ids) }, all: all)
         }
     }
 }
@@ -92,53 +99,79 @@ private extension GetSearchableItems {
         }
     }
 
-    struct ActiveSet {
-        let decrypted: [SearchableItem]
-        let encrypted: [SymmetricallyEncryptedItem]
+    func encryptedItems(userId: String, searchMode: SearchMode) async throws -> EncryptedItems {
+        try Task.checkCancellation()
 
-        func filtered(by predicate: (SymmetricallyEncryptedItem) -> Bool) -> [SearchableItem] {
-            let ids = Set(encrypted.filter(predicate).map(\.ids))
-            return decrypted.filter { ids.contains($0.ids) }
+        guard case let .all(shareSelection) = searchMode else {
+            return try await .standalone(getAllPinnedItems())
         }
-    }
 
-    func searchableItems(userId: String,
-                         shareSelection: ShareSelection,
-                         context: DecryptionContext) async throws -> SearchableItems {
         switch shareSelection {
         case .all:
-            try Task.checkCancellation()
-            let items = try await itemRepository.getItems(userId: userId, state: .active)
-            return try await .init(scoped: decrypt(items, context: context), all: nil)
+            return try await .standalone(itemRepository.getItems(userId: userId, state: .active))
 
         case .trash:
-            try Task.checkCancellation()
+            // Trashed and active items are disjoint, so this is the one selection that cannot be
+            // derived from the global set and genuinely needs a second fetch.
             async let getTrashed = itemRepository.getItems(userId: userId, state: .trashed)
             async let getActive = itemRepository.getItems(userId: userId, state: .active)
-            let (trashed, active) = try await (getTrashed, getActive)
-            return try await .init(scoped: decrypt(trashed, context: context),
-                                   all: decrypt(active, context: context))
+            return try await .disjoint(selected: getTrashed, active: getActive)
 
         case let .precise(selection):
-            let active = try await activeSet(userId: userId, context: context)
-            return await .init(scoped: scoped(active.decrypted, to: selection), all: active.decrypted)
+            return try await .subset(itemRepository.getItems(userId: userId, state: .active),
+                                     .container(selection))
 
         case .sharedByMe:
-            let active = try await activeSet(userId: userId, context: context)
-            return .init(scoped: active.filtered(by: \.item.isASharedByMeItem), all: active.decrypted)
+            return try await .subset(itemRepository.getItems(userId: userId, state: .active), .sharedByMe)
 
         case .sharedWithMe:
-            let active = try await activeSet(userId: userId, context: context)
-            return .init(scoped: active.filtered(by: \.item.isASharedWithMeItem), all: active.decrypted)
+            return try await .subset(itemRepository.getItems(userId: userId, state: .active), .sharedWithMe)
         }
     }
+}
 
-    func activeSet(userId: String, context: DecryptionContext) async throws -> ActiveSet {
-        try Task.checkCancellation()
-        let encrypted = try await itemRepository.getItems(userId: userId, state: .active)
-        return try await .init(decrypted: decrypt(encrypted, context: context), encrypted: encrypted)
+/// What a search mode needs out of the database, decided before any decryption so the fetches can
+/// run alongside the share and key lookups.
+private enum EncryptedItems: Sendable {
+    /// One set, and no "All vaults" tab to fill.
+    case standalone([SymmetricallyEncryptedItem])
+    /// The selection is disjoint from the global active set, so both had to be fetched.
+    case disjoint(selected: [SymmetricallyEncryptedItem], active: [SymmetricallyEncryptedItem])
+    /// The selection is contained in the global active set, so it is narrowed down after a single
+    /// decryption pass rather than fetched and decrypted a second time.
+    case subset([SymmetricallyEncryptedItem], SubsetSelection)
+}
+
+private enum SubsetSelection: Sendable {
+    case container(ShareSelectionPayload)
+    case sharedByMe
+    case sharedWithMe
+}
+
+private extension [SymmetricallyEncryptedItem] {
+    /// Narrows the global active set while still encrypted — the shared/owned flags live only on
+    /// the encrypted item, and doing it here keeps the whole derivation to one decryption pass.
+    func matching(_ selection: SubsetSelection,
+                  subtreeFolderIds: (String, String) async -> Set<String>) async -> Self {
+        switch selection {
+        case let .container(payload):
+            let shareId = payload.share.shareId
+            guard let folderId = payload.folder?.folderId else {
+                return scoped(toShare: shareId, containerIds: nil)
+            }
+            return await scoped(toShare: shareId,
+                                containerIds: subtreeFolderIds(shareId, folderId))
+
+        case .sharedByMe:
+            return filter(\.item.isASharedByMeItem)
+
+        case .sharedWithMe:
+            return filter(\.item.isASharedWithMeItem)
+        }
     }
+}
 
+private extension GetSearchableItems {
     func decrypt(_ items: [SymmetricallyEncryptedItem],
                  context: DecryptionContext) async throws -> [SearchableItem] {
         let applicableShareIds = context.applicableShareIds
@@ -168,16 +201,6 @@ private extension GetSearchableItems {
             }
             return results
         }
-    }
-
-    func scoped(_ items: [SearchableItem],
-                to selection: ShareSelectionPayload) async -> [SearchableItem] {
-        let shareId = selection.share.shareId
-        guard let folderId = selection.folder?.folderId else {
-            return items.scoped(toShare: shareId, containerIds: nil)
-        }
-        return await items.scoped(toShare: shareId,
-                                  containerIds: subtreeFolderIds(shareId: shareId, folderId: folderId))
     }
 
     func subtreeFolderIds(shareId: String, folderId: String) async -> Set<String> {
