@@ -371,12 +371,15 @@ public extension UseCasesContainer {
         self { GetAllPinnedItems(itemRepository: self.itemRepository) }
     }
 
+    @MainActor
     var getSearchableItems: Factory<any GetSearchableItemsUseCase> {
         self { GetSearchableItems(itemRepository: self.itemRepository,
                                   shareRepository: self.shareRepository,
                                   getAllPinnedItems: self.getAllPinnedItems(),
                                   dedupShare: self.dedupShare(),
-                                  symmetricKeyProvider: self.symmetricKeyProvider) }
+                                  symmetricKeyProvider: self.symmetricKeyProvider,
+                                  appContentManager: self.appContentManager,
+                                  logManager: self.logManager) }
     }
 
     var getItemHistory: Factory<any GetItemHistoryUseCase> {

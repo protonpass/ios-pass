@@ -122,10 +122,9 @@ private extension SearchViewModel {
                 state = .initializing
             }
             let userId = try await userManager.getActiveUserId()
-            searchableItems = try await getSearchableItems(userId: userId, for: searchMode)
-            if searchMode.isSpecificSelection {
-                allSearchableItems = try await getSearchableItems(userId: userId, for: .all(.all))
-            }
+            let items = try await getSearchableItems(userId: userId, for: searchMode)
+            searchableItems = items.scoped
+            allSearchableItems = items.all ?? []
             try await refreshSearchHistory()
         } catch {
             state = .error(error)

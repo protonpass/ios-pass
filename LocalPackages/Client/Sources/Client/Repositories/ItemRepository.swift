@@ -48,10 +48,6 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     /// Get all local items of a share by state
     func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem]
 
-    /// Get all local items of a share or folder by state
-    func getItems(shareId: String, folderId: String?, state: ItemState) async throws
-        -> [SymmetricallyEncryptedItem]
-
     /// Get a specific Item
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem?
 
@@ -272,17 +268,6 @@ public extension ItemRepository {
 
     func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
         try await localDatasource.getItems(shareId: shareId, state: state)
-    }
-
-    /// Get all local items of a share or folder by state
-    func getItems(shareId: String,
-                  folderId: String?,
-                  state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
-        if let folderId {
-            try await localDatasource.getItems(shareId: shareId, folderId: folderId, state: state)
-        } else {
-            try await getItems(shareId: shareId, state: state)
-        }
     }
 
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem? {

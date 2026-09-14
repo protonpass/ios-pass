@@ -166,6 +166,18 @@ public extension ShareContent {
         return folders
     }
 
+    /// Returns Ids of `folderId` together with every folder beneath it.
+    /// Unlike `flattenedFolders(from:)`, which returns descendants only, this includes `folderId`
+    /// itself — so a caller scoping by container id still matches the folder's own items.
+    ///
+    /// An id absent from the tree yields just itself rather than an empty set. That is safe only
+    /// because the result is used as a membership filter, where an unmatched id is inert, and it
+    /// lets a stale tree narrow a scope instead of emptying it. Do not use this to authorise or
+    /// delete: there, an id resolving to nothing is not a safe default.
+    func subtreeFolderIds(from folderId: String) -> Set<String> {
+        Set(flattenedFolders(from: folderId).map(\.folderId)).union([folderId])
+    }
+
     func items(in containerId: String) -> [ItemUiModel]? {
         itemsByContainer[containerId]
     }
