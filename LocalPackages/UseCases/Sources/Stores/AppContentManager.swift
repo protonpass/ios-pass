@@ -471,7 +471,7 @@ public extension AppContentManager {
 
         case let .precise(selection):
             if let shareContent = sharesData.shares[selection.share.id] {
-                shareContent.flattenedItems(from: selection.folder?.folderId ?? selection.share.shareId)
+                shareContent.items(in: selection.folder?.folderId ?? selection.share.shareId) ?? []
             } else {
                 []
             }
