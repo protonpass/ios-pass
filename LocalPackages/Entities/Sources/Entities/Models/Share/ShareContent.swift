@@ -166,7 +166,7 @@ public extension ShareContent {
         return folders
     }
 
-    /// Ids of `folderId` together with every folder beneath it.
+    /// Returns Ids of `folderId` together with every folder beneath it.
     /// Unlike `flattenedFolders(from:)`, which returns descendants only, this includes `folderId`
     /// itself — so a caller scoping by container id still matches the folder's own items.
     ///
