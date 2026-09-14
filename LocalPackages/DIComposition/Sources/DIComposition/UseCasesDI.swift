@@ -378,7 +378,8 @@ public extension UseCasesContainer {
                                   getAllPinnedItems: self.getAllPinnedItems(),
                                   dedupShare: self.dedupShare(),
                                   symmetricKeyProvider: self.symmetricKeyProvider,
-                                  appContentManager: self.appContentManager) }
+                                  appContentManager: self.appContentManager,
+                                  logManager: self.logManager) }
     }
 
     var getItemHistory: Factory<any GetItemHistoryUseCase> {
