@@ -43,19 +43,22 @@ public final class GetSearchableItems: GetSearchableItemsUseCase {
     private let dedupShare: any DedupShareUseCase
     private let symmetricKeyProvider: any SymmetricKeyProvider
     private let appContentManager: any AppContentManagerProtocol
+    private let logger: Logger
 
     public init(itemRepository: any ItemRepositoryProtocol,
                 shareRepository: any ShareRepositoryProtocol,
                 getAllPinnedItems: any GetAllPinnedItemsUseCase,
                 dedupShare: any DedupShareUseCase,
                 symmetricKeyProvider: any SymmetricKeyProvider,
-                appContentManager: any AppContentManagerProtocol) {
+                appContentManager: any AppContentManagerProtocol,
+                logManager: any LogManagerProtocol) {
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
         self.getAllPinnedItems = getAllPinnedItems
         self.dedupShare = dedupShare
         self.symmetricKeyProvider = symmetricKeyProvider
         self.appContentManager = appContentManager
+        logger = .init(manager: logManager)
     }
 
     public func execute(userId: String, for searchMode: SearchMode) async throws -> SearchableItems {
@@ -179,6 +182,7 @@ private extension GetSearchableItems {
 
     func subtreeFolderIds(shareId: String, folderId: String) async -> Set<String> {
         guard let content = await appContentManager.getShareContent(for: shareId) else {
+            logger.trace("Could not find subtree folder ids for \(shareId). Returning only the provided folder.")
             return [folderId]
         }
         return Set(content.flattenedFolders(from: folderId).map(\.folderId)).union([folderId])
