@@ -233,7 +233,8 @@ private extension ItemsTabView {
     }
 
     func emptyVaultView(canCreateItems: Bool) -> some View {
-        EmptyVaultView(canCreateAliases: viewModel.aliasesAllowed,
+        EmptyVaultView(isFolderSelected: viewModel.appContentManager.shareSelection.isFolderSelection,
+                       canCreateAliases: viewModel.aliasesAllowed,
                        canCreateItems: canCreateItems,
                        onCreate: { viewModel.createNewItem(type: $0) })
             .task {

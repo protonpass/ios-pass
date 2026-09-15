@@ -26,6 +26,7 @@ import SwiftUI
 
 struct EmptyVaultView: View {
     private let columns = [GridItem(.flexible()), GridItem(.flexible())]
+    private let isFolderSelected: Bool
     private let canCreateAliases: Bool
     private let canCreateItems: Bool
     private let onCreate: (ItemContentType) -> Void
@@ -33,9 +34,11 @@ struct EmptyVaultView: View {
     @AppStorage(Constants.filterTypeKey, store: kSharedUserDefaults)
     private(set) var filterOption = ItemTypeFilterOption.all
 
-    init(canCreateAliases: Bool,
+    init(isFolderSelected: Bool,
+         canCreateAliases: Bool,
          canCreateItems: Bool,
          onCreate: @escaping (ItemContentType) -> Void) {
+        self.isFolderSelected = isFolderSelected
         self.canCreateAliases = canCreateAliases
         self.canCreateItems = canCreateItems
         self.onCreate = onCreate
@@ -59,7 +62,9 @@ private extension EmptyVaultView {
     var createItemButtons: some View {
         ScrollView {
             VStack(alignment: .center, spacing: 0) {
-                Text("Your vault is empty")
+                let title: LocalizedStringKey = isFolderSelected ? "Your folder is empty" :
+                    "Your vault is empty"
+                Text(title)
                     .font(.title2)
                     .fontWeight(.bold)
                     .foregroundStyle(PassColor.textNorm)
