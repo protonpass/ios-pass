@@ -72,7 +72,7 @@ struct VaultScopeRow: View {
                 EmptyView()
 
             case let .precise(payload):
-                VaultTrailingMenu(vault: payload.share, haveItems: itemCount > 0, viewModel: viewModel)
+                VaultTrailingMenu(vault: payload.share, viewModel: viewModel)
 
             case .trash:
                 TrashTrailingMenu(viewModel: viewModel)
@@ -106,7 +106,6 @@ private struct ThreeDotsMenuLabel: View {
 
 private struct VaultTrailingMenu: View {
     let vault: Share
-    let haveItems: Bool
     let viewModel: VaultsAndFoldersMenuViewModel
 
     var body: some View {
@@ -168,7 +167,7 @@ private struct VaultTrailingMenu: View {
                 })
             }
 
-            if viewModel.canMoveItems(vault: vault), haveItems {
+            if viewModel.canMoveItems(vault: vault) {
                 Button(action: {
                     viewModel.router.present(for: .moveItemsBetweenVaults(.allItems(vault)))
                 }, label: {

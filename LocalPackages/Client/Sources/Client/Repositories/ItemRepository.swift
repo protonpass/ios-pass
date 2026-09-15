@@ -755,6 +755,7 @@ public extension ItemRepository {
                                    destinationFolderId: destinationFolderId)
         }
         try await refreshPinnedItemDataStream()
+        itemsWereUpdated.send()
         logger.info("Bulk moved \(items.count) items to share \(toShareId)")
     }
 

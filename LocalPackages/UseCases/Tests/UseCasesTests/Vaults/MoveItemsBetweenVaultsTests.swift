@@ -67,7 +67,7 @@ struct MoveItemsBetweenVaultsTests {
     }
 
     @Test
-    func `allItemsInFolder flattens items from subfolders recursively`() async throws {
+    func `allItemsInFolder leaves items of subfolders in place`() async throws {
         // Hierarchy: F-root (direct item I-direct)
         //   |__ F-child (item I-nested)
         //         |__ F-grandchild (item I-deep)
@@ -92,7 +92,7 @@ struct MoveItemsBetweenVaultsTests {
                               destinationFolderId: nil)
 
         let args = try #require(repository.invokedMoveItemsToShareIdDestinationFolderIdAsyncParameters29)
-        #expect(args.items.map(\.itemId).sorted() == ["I-deep", "I-direct", "I-nested"])
+        #expect(args.items.map(\.itemId) == ["I-direct"])
         #expect(args.destinationFolderId == nil)
         #expect(args.toShareId == destinationShareId)
     }
@@ -116,6 +116,60 @@ struct MoveItemsBetweenVaultsTests {
         appContentManager.stubbedGetShareContentResult = nil
 
         try await sut.execute(context: .allItemsInFolder(folder),
+                              to: destinationShareId,
+                              destinationFolderId: nil)
+
+        #expect(repository.invokedMoveItemsToShareIdDestinationFolderIdAsyncCount29 == 0)
+    }
+
+    // MARK: - .allItems
+
+    @Test
+    func `allItems leaves items of folders in place`() async throws {
+        let vault = Share.random(shareID: sourceShareId)
+        let folder = FolderUiModel.mock(folderId: "F1", shareId: sourceShareId)
+        let root = ItemUiModel.mock(itemId: "I-root", shareId: sourceShareId, folderId: nil)
+        let inFolder = ItemUiModel.mock(itemId: "I-in-folder", shareId: sourceShareId, folderId: "F1")
+        appContentManager.stubbedGetShareContentResult = ShareContent(share: vault,
+                                                                      elements: [
+                                                                          .folder(folder),
+                                                                          .item(root),
+                                                                          .item(inFolder)
+                                                                      ])
+
+        try await sut.execute(context: .allItems(vault),
+                              to: destinationShareId,
+                              destinationFolderId: "F-dest")
+
+        let args = try #require(repository.invokedMoveItemsToShareIdDestinationFolderIdAsyncParameters29)
+        #expect(args.items.map(\.itemId) == ["I-root"])
+        #expect(args.toShareId == destinationShareId)
+        #expect(args.destinationFolderId == "F-dest")
+    }
+
+    @Test
+    func `allItems with items only in folders does not call the repository`() async throws {
+        let vault = Share.random(shareID: sourceShareId)
+        let folder = FolderUiModel.mock(folderId: "F1", shareId: sourceShareId)
+        let inFolder = ItemUiModel.mock(itemId: "I-in-folder", shareId: sourceShareId, folderId: "F1")
+        appContentManager.stubbedGetShareContentResult = ShareContent(share: vault,
+                                                                      elements: [
+                                                                          .folder(folder),
+                                                                          .item(inFolder)
+                                                                      ])
+
+        try await sut.execute(context: .allItems(vault),
+                              to: destinationShareId,
+                              destinationFolderId: nil)
+
+        #expect(repository.invokedMoveItemsToShareIdDestinationFolderIdAsyncCount29 == 0)
+    }
+
+    @Test
+    func `allItems with no share content does not call the repository`() async throws {
+        appContentManager.stubbedGetShareContentResult = nil
+
+        try await sut.execute(context: .allItems(.random(shareID: sourceShareId)),
                               to: destinationShareId,
                               destinationFolderId: nil)
 
