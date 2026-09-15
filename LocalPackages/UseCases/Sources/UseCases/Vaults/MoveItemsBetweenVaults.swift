@@ -51,20 +51,33 @@ public final class MoveItemsBetweenContainers: MoveItemsBetweenContainersUseCase
             try await repository.move(items: [item], toShareId: shareId, destinationFolderId: destinationFolderId)
 
         case let .allItems(fromVault):
-            try await repository.move(currentShareId: fromVault.shareId,
-                                      toShareId: shareId,
+            try await moveDirectItems(inShare: fromVault.shareId,
+                                      container: fromVault.shareId,
+                                      to: shareId,
                                       destinationFolderId: destinationFolderId)
 
         case let .allItemsInFolder(folder):
-            guard let shareContent = appContentManager.getShareContent(for: folder.shareId) else { return }
-            let items = shareContent.flattenedItems(from: folder.folderId)
-            guard !items.isEmpty else { return }
-            try await repository.move(items: items,
-                                      toShareId: shareId,
+            try await moveDirectItems(inShare: folder.shareId,
+                                      container: folder.folderId,
+                                      to: shareId,
                                       destinationFolderId: destinationFolderId)
 
         case let .selectedItems(items):
             try await repository.move(items: items, toShareId: shareId, destinationFolderId: destinationFolderId)
         }
+    }
+}
+
+private extension MoveItemsBetweenContainers {
+    func moveDirectItems(inShare sourceShareId: String,
+                         container containerId: String,
+                         to shareId: ShareID,
+                         destinationFolderId: String?) async throws {
+        guard let shareContent = appContentManager.getShareContent(for: sourceShareId) else { return }
+        let items = shareContent.items(in: containerId) ?? []
+        guard !items.isEmpty else { return }
+        try await repository.move(items: items,
+                                  toShareId: shareId,
+                                  destinationFolderId: destinationFolderId)
     }
 }

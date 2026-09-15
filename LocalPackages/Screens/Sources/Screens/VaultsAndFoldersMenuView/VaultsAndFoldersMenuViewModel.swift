@@ -228,13 +228,15 @@ public final class VaultsAndFoldersMenuViewModel: DeinitPrintable {
     }
 
     func canMoveItems(vault: Share) -> Bool {
-        canUserPerformActionOnVault(for: vault)
+        guard let content = shareContent(for: vault.shareId),
+              canUserPerformActionOnVault(for: content.share) else { return false }
+        return content.items(in: vault.shareId)?.isEmpty == false
     }
 
     func canMoveItems(folder: FolderUiModel) -> Bool {
         guard let content = shareContent(for: folder.shareId),
               canUserPerformActionOnVault(for: content.share) else { return false }
-        return !content.flattenedItems(from: folder.folderId).isEmpty
+        return content.items(in: folder.folderId)?.isEmpty == false
     }
 
     func canSelectVault(selection: ShareSelection) -> Bool {
