@@ -171986,6 +171986,16 @@
         }
       }
     },
+    "Your folder is empty" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your folder is empty"
+          }
+        }
+      }
+    },
     "Your info was in a data breach and found on **%@**" : {
       "localizations" : {
         "be" : {
