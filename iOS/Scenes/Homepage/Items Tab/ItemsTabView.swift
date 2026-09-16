@@ -208,8 +208,8 @@ private extension ItemsTabView {
                 emptyVaultView(canCreateItems: !viewModel.appContentManager.getAllEditableVaultContents().isEmpty)
             }
 
-        case let .precise(selection):
-            emptyVaultView(canCreateItems: selection.share.canEdit)
+        case .precise:
+            emptyVaultView(canCreateItems: !viewModel.createButtonHidden)
 
         case .trash:
             EmptyTrashView()

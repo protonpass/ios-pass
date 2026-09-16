@@ -243,9 +243,11 @@ private extension HomepageCoordinator {
             }
             .store(in: &cancellables)
 
-        Publishers.CombineLatest(appContentManager.$shareSelection, appContentManager.$state)
+        Publishers.CombineLatest3(appContentManager.$shareSelection,
+                                  appContentManager.$state,
+                                  accessRepository.access)
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] selection, _ in
+            .sink { [weak self] selection, _, access in
                 guard let self else { return }
                 var createButtonDisabled = false
                 switch selection {
@@ -253,7 +255,10 @@ private extension HomepageCoordinator {
                     createButtonDisabled = !appContentManager.hasEditableContainers
 
                 case let .precise(selection):
-                    createButtonDisabled = !selection.share.canEdit
+                    // Default to no folder access so a not-yet-loaded plan can't let
+                    // free users slip an item into a folder they can only read
+                    let folderAllowed = access?.access.plan.folderAllowed ?? false
+                    createButtonDisabled = !selection.canCreateItem(folderAllowed: folderAllowed)
 
                 default:
                     createButtonDisabled = true
