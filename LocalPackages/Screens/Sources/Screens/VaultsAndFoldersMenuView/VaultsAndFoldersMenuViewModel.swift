@@ -261,7 +261,7 @@ public final class VaultsAndFoldersMenuViewModel: DeinitPrintable {
     }
 
     func shouldShowToggleArrow(for content: ShareContent) -> Bool {
-        guard content.isReadOnly else {
+        guard content.isReadOnly || folderSupportState == .supportedButNotAllowed else {
             return true
         }
 
