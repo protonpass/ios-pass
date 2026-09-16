@@ -59,8 +59,8 @@ struct MoveItemsBetweenVaultsTests {
                               to: destinationShareId,
                               destinationFolderId: "F-dest")
 
-        #expect(repository.invokedMoveItemsToShareIdDestinationFolderIdAsyncCount29 == 1)
-        let args = try #require(repository.invokedMoveItemsToShareIdDestinationFolderIdAsyncParameters29)
+        #expect(repository.invokedMoveCount == 1)
+        let args = try #require(repository.invokedMoveParameters)
         #expect(args.items.map(\.itemId).sorted() == ["I1", "I2"])
         #expect(args.toShareId == destinationShareId)
         #expect(args.destinationFolderId == "F-dest")
@@ -91,7 +91,7 @@ struct MoveItemsBetweenVaultsTests {
                               to: destinationShareId,
                               destinationFolderId: nil)
 
-        let args = try #require(repository.invokedMoveItemsToShareIdDestinationFolderIdAsyncParameters29)
+        let args = try #require(repository.invokedMoveParameters)
         #expect(args.items.map(\.itemId) == ["I-direct"])
         #expect(args.destinationFolderId == nil)
         #expect(args.toShareId == destinationShareId)
@@ -107,7 +107,7 @@ struct MoveItemsBetweenVaultsTests {
                               to: destinationShareId,
                               destinationFolderId: nil)
 
-        #expect(repository.invokedMoveItemsToShareIdDestinationFolderIdAsyncCount29 == 0)
+        #expect(repository.invokedMoveCount == 0)
     }
 
     @Test
@@ -119,7 +119,7 @@ struct MoveItemsBetweenVaultsTests {
                               to: destinationShareId,
                               destinationFolderId: nil)
 
-        #expect(repository.invokedMoveItemsToShareIdDestinationFolderIdAsyncCount29 == 0)
+        #expect(repository.invokedMoveCount == 0)
     }
 
     // MARK: - .allItems
@@ -141,7 +141,7 @@ struct MoveItemsBetweenVaultsTests {
                               to: destinationShareId,
                               destinationFolderId: "F-dest")
 
-        let args = try #require(repository.invokedMoveItemsToShareIdDestinationFolderIdAsyncParameters29)
+        let args = try #require(repository.invokedMoveParameters)
         #expect(args.items.map(\.itemId) == ["I-root"])
         #expect(args.toShareId == destinationShareId)
         #expect(args.destinationFolderId == "F-dest")
@@ -162,7 +162,7 @@ struct MoveItemsBetweenVaultsTests {
                               to: destinationShareId,
                               destinationFolderId: nil)
 
-        #expect(repository.invokedMoveItemsToShareIdDestinationFolderIdAsyncCount29 == 0)
+        #expect(repository.invokedMoveCount == 0)
     }
 
     @Test
@@ -173,6 +173,6 @@ struct MoveItemsBetweenVaultsTests {
                               to: destinationShareId,
                               destinationFolderId: nil)
 
-        #expect(repository.invokedMoveItemsToShareIdDestinationFolderIdAsyncCount29 == 0)
+        #expect(repository.invokedMoveCount == 0)
     }
 }
