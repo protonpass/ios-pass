@@ -39,6 +39,7 @@ final class ItemMoveVaultListViewModel: ObservableObject, DeinitPrintable {
     private let currentSelectedItems = dependency(\DataContainer.currentSelectedItems)
     @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
     @LazyInjected(\RepositoryContainer.itemRepository) private var itemRepository
+    @LazyInjected(\RepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\UseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     @Published private(set) var isFreeUser = false
@@ -50,7 +51,9 @@ final class ItemMoveVaultListViewModel: ObservableObject, DeinitPrintable {
     private let context: MovingContext
 
     var folderSupported: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passFolder)
+        FolderSupportState(flagEnabled: getFeatureFlagStatus(for: FeatureFlagType.passFolder),
+                           plan: accessRepository.access.value?.access.plan)
+            .canCreateAndModifyFolders
     }
 
     init(allVaults: [ShareContent], context: MovingContext) {
