@@ -45,10 +45,10 @@ public struct FlowLayout: Layout {
             Self.layout(sizes: sizes,
                         spacing: spacing,
                         containerWidth: bounds.width).offsets
-        for index in subviews.indices {
-            subviews[index].place(at: .init(x: offsets[index].x + bounds.minX,
-                                            y: offsets[index].y + bounds.minY),
-                                  proposal: .init(sizes[index]))
+        for (index, subview) in zip(offsets.indices, subviews) {
+            subview.place(at: .init(x: offsets[index].x + bounds.minX,
+                                    y: offsets[index].y + bounds.minY),
+                          proposal: .init(sizes[index]))
         }
     }
 
