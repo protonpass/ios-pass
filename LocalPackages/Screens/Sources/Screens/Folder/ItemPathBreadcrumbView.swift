@@ -54,7 +54,6 @@ public struct ItemPathBreadcrumbView: View {
             }
             .padding(DesignConstant.sectionPadding)
             .roundedDetailSection()
-//            .animation(.default, value: expanded)
         }
     }
 }
