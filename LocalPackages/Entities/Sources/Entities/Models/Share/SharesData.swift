@@ -94,4 +94,27 @@ public struct SharesData: Hashable, Sendable {
     public var vaultCount: Int {
         shares.values.count(where: \.share.isVaultRepresentation)
     }
+
+    /// Items directly contained by `selection`, without recursing into sub folders.
+    /// Both the displayed item list and the item type filter counts must derive from here,
+    /// or the counts stop describing the list.
+    public func items(for selection: ShareSelection) -> [ItemUiModel] {
+        switch selection {
+        case .all:
+            visibleShareContents.flatMap(\.allItems)
+
+        case let .precise(selection):
+            shares[selection.share.id]?
+                .items(in: selection.folder?.folderId ?? selection.share.shareId) ?? []
+
+        case .sharedByMe:
+            itemsSharedByMe
+
+        case .sharedWithMe:
+            itemsSharedWithMe
+
+        case .trash:
+            trashedItems.filter { !hiddenSharesIds.contains($0.shareId) }
+        }
+    }
 }
