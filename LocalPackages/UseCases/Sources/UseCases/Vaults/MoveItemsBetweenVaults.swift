@@ -21,6 +21,7 @@
 //
 
 import Client
+import Entities
 
 // sourcery: AutoMockable
 @MainActor
@@ -73,7 +74,9 @@ private extension MoveItemsBetweenContainers {
                          container containerId: String,
                          to shareId: ShareID,
                          destinationFolderId: String?) async throws {
-        guard let shareContent = appContentManager.getShareContent(for: sourceShareId) else { return }
+        guard let shareContent = appContentManager.getShareContent(for: sourceShareId) else {
+            throw PassError.shareNotFoundInLocalDB(shareID: sourceShareId)
+        }
         let items = shareContent.items(in: containerId) ?? []
         guard !items.isEmpty else { return }
         try await repository.move(items: items,
