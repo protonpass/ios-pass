@@ -52,7 +52,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published private(set) var showingUpgradeAppBanner = false
     @Published private(set) var banners: [InfoBanner] = []
     @Published private(set) var shouldShowSyncProgress = false
-    @Published private(set) var createButtonHidden = false
+    @Published private(set) var canCreateItem = true
     @Published var isEditMode = false
     @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)?
     @Published private(set) var sectionedItems: FetchableObject<[SectionedItemUiModel]> = .fetching
@@ -399,8 +399,8 @@ extension ItemsTabViewModel {
         router.present(for: .vaultCreateEdit(vault: nil))
     }
 
-    func hideCreateButton(_ isHidden: Bool) {
-        createButtonHidden = isHidden
+    func setCanCreateItem(_ canCreate: Bool) {
+        canCreateItem = canCreate
     }
 
     func filterAndSortItems() {
