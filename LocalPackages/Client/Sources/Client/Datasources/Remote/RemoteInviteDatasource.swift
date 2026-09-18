@@ -20,6 +20,7 @@
 
 import Entities
 
+// sourcery: AutoMockable
 public protocol RemoteInviteDatasourceProtocol: Sendable {
     // MARK: - Users
 
