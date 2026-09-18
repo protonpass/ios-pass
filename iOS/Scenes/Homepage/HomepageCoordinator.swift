@@ -107,6 +107,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\UseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\UseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
     @LazyInjected(\UseCasesContainer.fullContentSync) var fullContentSync
+    @LazyInjected(\UseCasesContainer.shouldForceSyncForFolders) private var shouldForceSyncForFolders
     @LazyInjected(\UseCasesContainer.postbackConversionValue) var postbackConversionValue
 
     private let getAppPreferences = dependency(\UseCasesContainer.getAppPreferences)
@@ -115,6 +116,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     let getUserPreferences = dependency(\UseCasesContainer.getUserPreferences)
 
     // References
+    private var checkingFolderForceSync = false
     private(set) weak var itemsTabViewModel: ItemsTabViewModel?
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
@@ -310,6 +312,7 @@ private extension HomepageCoordinator {
                         sendAllEventsIfApplicable()
                         eventLoop.start()
                         eventLoop.forceSync()
+                        await forceSyncForFoldersIfNeededForActiveUser()
                         refreshOrganizationAndOverrideSecuritySettings()
                         refreshAccessAndMonitorStateSync()
                         refreshSettings()
@@ -373,11 +376,43 @@ private extension HomepageCoordinator {
             do {
                 let userId = try await userManager.getActiveUserId()
                 await appContentManager.refresh(userId: userId)
+                await forceSyncForFoldersIfNeeded(userId: userId)
                 eventLoop.forceSync()
                 eventLoop.start()
             } catch {
                 logger.error(message: "Failed to synchronise data", error: error)
             }
+        }
+    }
+
+    func forceSyncForFoldersIfNeededForActiveUser() async {
+        do {
+            let userId = try await userManager.getActiveUserId()
+            await forceSyncForFoldersIfNeeded(userId: userId)
+        } catch {
+            logger.error(message: "Failed to resolve active user for folder force sync", error: error)
+        }
+    }
+
+    /// One-shot repair for users upgrading from a build without folder support, which could not
+    /// decrypt items inside folders and so dropped them.
+    func forceSyncForFoldersIfNeeded(userId: String) async {
+        // The first guard covers the window before the check records its attempt; the second
+        // avoids wrapping an already-running sync in a stopped event loop and a second
+        // progress sheet.
+        guard !checkingFolderForceSync, !appContentManager.isFullSyncing else { return }
+        checkingFolderForceSync = true
+        defer { checkingFolderForceSync = false }
+
+        do {
+            guard try await shouldForceSyncForFolders(userId: userId) else { return }
+            router.present(for: .fullSync)
+            logger.info("Force syncing for folders migration")
+            await fullContentSync(userId: userId, shouldStopEventLoop: true)
+            logger.info("Done force syncing for folders migration")
+            await router.display(element: .successMessage(config: .refresh))
+        } catch {
+            logger.error(message: "Failed folder force sync check", error: error)
         }
     }
 
@@ -1891,6 +1926,13 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
             }
         } else {
             logger.info("Has no new events for userId \(userId). Do nothing.")
+        }
+
+        // Carries the periodic folder repair check. Cheaper than a dedicated timer: the check
+        // short-circuits on in-memory reads, and its own throttle does the real pacing.
+        Task { [weak self] in
+            guard let self else { return }
+            await forceSyncForFoldersIfNeeded(userId: userId)
         }
     }
 

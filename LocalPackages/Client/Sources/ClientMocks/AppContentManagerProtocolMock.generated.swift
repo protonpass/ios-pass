@@ -62,6 +62,27 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
             return stubbedHasOnlyOneOwnedVault
         }
     }
+    // MARK: - isFullSyncing
+    public var invokedIsFullSyncingSetter = false
+    public var invokedIsFullSyncingSetterCount = 0
+    public var invokedIsFullSyncing: Bool?
+    public var invokedIsFullSyncingList = [Bool?]()
+    public var invokedIsFullSyncingGetter = false
+    public var invokedIsFullSyncingGetterCount = 0
+    public var stubbedIsFullSyncing: Bool!
+
+    public var isFullSyncing: Bool {
+        set {
+            invokedIsFullSyncingSetter = true
+            invokedIsFullSyncingSetterCount += 1
+            invokedIsFullSyncing = newValue
+            invokedIsFullSyncingList.append(newValue)
+        } get {
+            invokedIsFullSyncingGetter = true
+            invokedIsFullSyncingGetterCount += 1
+            return stubbedIsFullSyncing
+        }
+    }
     // MARK: - select
     public var closureSelect: () -> () = {}
     public var invokedSelectfunction = false

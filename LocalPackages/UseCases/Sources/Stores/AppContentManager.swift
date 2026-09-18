@@ -102,6 +102,7 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
     private var cancellables = Set<AnyCancellable>()
     private var refreshingUserId: String?
     private var pendingRefreshUserId: String?
+    private var fullSyncingUserId: String?
     /// The filter option after switching vaults
     private var pendingItemTypeFilterOption: ItemTypeFilterOption?
 
@@ -148,6 +149,10 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
 
     public var hasOnlyOneOwnedVault: Bool {
         getAllShares().numberOfOwnedVault <= 1
+    }
+
+    public var isFullSyncing: Bool {
+        fullSyncingUserId != nil
     }
 
     public func reset() {
@@ -216,6 +221,16 @@ public extension AppContentManager {
 
     /// Delete everything and download again
     func fullSync(userId: String) async {
+        // Several unrelated triggers can land here at once (settings, server-forced refresh,
+        // crash resume, folder repair). Re-entering would wipe local data underneath a sync
+        // that is already downloading.
+        guard fullSyncingUserId == nil else {
+            logger.info("Full sync already in progress, ignoring request for user \(userId)")
+            return
+        }
+        fullSyncingUserId = userId
+        defer { fullSyncingUserId = nil }
+
         vaultSyncEventStream.send(.started)
 
         incompleteFullSyncUserId = userId
@@ -294,6 +309,7 @@ public extension AppContentManager {
         }
 
         incompleteFullSyncUserId = nil
+        await markFolderForceSyncDone()
         vaultSyncEventStream.send(.done(hasUndecryptableShares: hasUndecryptableShares))
     }
 
@@ -553,6 +569,24 @@ extension AppContentManager: LimitationCounterProtocol {
 // MARK: - Private APIs
 
 private extension AppContentManager {
+    /// A completed full sync has re-downloaded every folder and every item keyed to one, which is
+    /// exactly what the folder repair exists to achieve. Recording it here covers every entry
+    /// point at once: login, added account, settings, server-forced refresh and the repair itself.
+    ///
+    /// `updateUserPreferences` resolves the active user internally and ignores the id passed to
+    /// `fullSync`. Every current caller full-syncs the active user, so this is consistent; a
+    /// future non-active-user full sync would need to write that user's row explicitly.
+    func markFolderForceSyncDone() async {
+        guard var state = preferencesManager.userPreferences.value?.folderForceSync,
+              !state.done else { return }
+        state.done = true
+        do {
+            try await preferencesManager.updateUserPreferences(\.folderForceSync, value: state)
+        } catch {
+            logger.error(error)
+        }
+    }
+
     func setUp() {
         $state
             .removeDuplicates()
