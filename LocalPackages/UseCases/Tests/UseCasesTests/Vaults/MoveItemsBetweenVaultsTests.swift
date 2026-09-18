@@ -111,15 +111,15 @@ struct MoveItemsBetweenVaultsTests {
     }
 
     @Test
-    func `allItemsInFolder with no share content does not call the repository`() async throws {
+    func `allItemsInFolder with no share content does not call the repository and throws an error`() async throws {
         let folder = FolderUiModel.mock(folderId: "F1", shareId: sourceShareId)
         appContentManager.stubbedGetShareContentResult = nil
 
-        try await sut.execute(context: .allItemsInFolder(folder),
-                              to: destinationShareId,
-                              destinationFolderId: nil)
-
-        #expect(repository.invokedMoveCount == 0)
+        await #expect(throws: PassError.self) {
+            try await sut.execute(context: .allItemsInFolder(folder),
+                                  to: destinationShareId,
+                                  destinationFolderId: nil)
+        }
     }
 
     // MARK: - .allItems
@@ -166,13 +166,13 @@ struct MoveItemsBetweenVaultsTests {
     }
 
     @Test
-    func `allItems with no share content does not call the repository`() async throws {
+    func `allItems with no share content does not call the repository and throws and error`() async throws {
         appContentManager.stubbedGetShareContentResult = nil
 
-        try await sut.execute(context: .allItems(.random(shareID: sourceShareId)),
-                              to: destinationShareId,
-                              destinationFolderId: nil)
-
-        #expect(repository.invokedMoveCount == 0)
+        await #expect(throws: PassError.self) {
+            try await sut.execute(context: .allItems(.random(shareID: sourceShareId)),
+                                  to: destinationShareId,
+                                  destinationFolderId: nil)
+        }
     }
 }
