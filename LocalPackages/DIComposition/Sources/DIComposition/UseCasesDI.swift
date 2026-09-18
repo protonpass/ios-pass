@@ -782,6 +782,34 @@ public extension UseCasesContainer {
     }
 }
 
+// MARK: - Folders
+
+public extension UseCasesContainer {
+    var userHasRemoteFolders: Factory<any UserHasRemoteFoldersUseCase> {
+        self { UserHasRemoteFolders(shareRepository: RepositoryContainer.shared.shareRepository(),
+                                    remoteFolderDatasource: RepositoryContainer.shared
+                                        .remoteFolderDatasource()) }
+    }
+
+    var shouldShowFolderSyncBanner: Factory<any ShouldShowFolderSyncBannerUseCase> {
+        self { ShouldShowFolderSyncBanner(getUserPreferences: self.getUserPreferences(),
+                                          getFeatureFlagStatus: self.getFeatureFlagStatus(),
+                                          userHasRemoteFolders: self.userHasRemoteFolders(),
+                                          updateUserPreferences: self.updateUserPreferences(),
+                                          userManager: self.userManager,
+                                          logManager: self.logManager) }
+    }
+
+    var shouldForceSyncForFolders: Factory<any ShouldForceSyncForFoldersUseCase> {
+        self { ShouldForceSyncForFolders(getUserPreferences: self.getUserPreferences(),
+                                         getFeatureFlagStatus: self.getFeatureFlagStatus(),
+                                         userHasRemoteFolders: self.userHasRemoteFolders(),
+                                         updateUserPreferences: self.updateUserPreferences(),
+                                         reachability: ServiceContainer.shared
+                                             .reachabilityService()) }
+    }
+}
+
 // MARK: - Feature Flags
 
 public extension UseCasesContainer {
