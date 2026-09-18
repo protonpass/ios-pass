@@ -114,7 +114,11 @@ public struct SharesData: Hashable, Sendable {
             itemsSharedWithMe
 
         case .trash:
-            trashedItems.filter { !hiddenSharesIds.contains($0.shareId) }
+            trashedItems(excluding: Set(hiddenSharesIds))
         }
+    }
+
+    private func trashedItems(excluding hiddenShareIds: Set<String>) -> [ItemUiModel] {
+        trashedItems.filter { !hiddenShareIds.contains($0.shareId) }
     }
 }

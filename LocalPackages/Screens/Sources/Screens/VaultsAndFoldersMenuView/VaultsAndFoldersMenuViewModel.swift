@@ -552,10 +552,9 @@ private extension VaultsAndFoldersMenuViewModel {
     }
 
     func apply(plan: Plan?) {
-        guard let plan else { return }
         self.plan = plan
 
-        if let newFolderLimits = plan.folderLimits,
+        if let newFolderLimits = plan?.folderLimits,
            newFolderLimits != folderLimits {
             folderLimits = newFolderLimits
         }
