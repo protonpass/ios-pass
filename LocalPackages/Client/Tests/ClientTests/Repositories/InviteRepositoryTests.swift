@@ -28,13 +28,18 @@ import Testing
 @Suite(.tags(.repository))
 struct InviteRepositoryTests {
     let remoteDatasource: RemoteInviteDatasourceProtocolMock
+    let localDatasource: LocalInviteDatasourceProtocolMock
+
     let sut: any InviteRepositoryProtocol
 
     init() {
         remoteDatasource = .init()
         remoteDatasource.stubbedGetPendingGroupInvitesForUserResult = .init(invites: [], total: 0, lastID: nil)
+        localDatasource = LocalInviteDatasourceProtocolMock()
+        localDatasource.stubbedGetUserInvitesResult = []
+        localDatasource.stubbedGetGroupInvitesResult = []
         sut = InviteRepository(remoteDatasource: remoteDatasource,
-                               localDatasource: LocalInviteDatasource(databaseService: .init(inMemory: true)),
+                               localDatasource: localDatasource,
                                logManager: LogManagerProtocolMock())
     }
 
@@ -47,6 +52,7 @@ struct InviteRepositoryTests {
         let invite2 = UserInvite.random()
 
         // When
+        
         remoteDatasource.stubbedGetPendingInvitesForUserResult = [invite1]
         try await sut.refreshAllInvites(userId: userId1)
 
@@ -65,18 +71,24 @@ struct InviteRepositoryTests {
         let userId2 = String.random()
         let invite1 = UserInvite.random()
         let invite2 = UserInvite.random()
+        let localInvite = UserInvite.random()
 
         remoteDatasource.stubbedGetPendingInvitesForUserResult = [invite1]
         try await sut.refreshAllInvites(userId: userId1)
         remoteDatasource.stubbedGetPendingInvitesForUserResult = [invite2]
         try await sut.refreshAllInvites(userId: userId2)
 
+        // Local returns something different from the cached invite2 so a no-op
+        // loadLocalInvites cannot pass the userId2 assertion below
+        localDatasource.stubbedGetUserInvitesResult = [localInvite]
+
         // When
         try await sut.loadLocalInvites(userId: userId2)
 
         // Then
+        #expect(localDatasource.invokedGetUserInvitesParameters?.userId == userId2)
         #expect(sut.currentPendingInvites.value[userId1] == [.user(invite1)])
-        #expect(sut.currentPendingInvites.value[userId2] == [.user(invite2)])
+        #expect(sut.currentPendingInvites.value[userId2] == [.user(localInvite)])
     }
 
     @Test
@@ -87,6 +99,8 @@ struct InviteRepositoryTests {
         let sharedToken = String.random()
         let invite1 = UserInvite.random(inviteToken: sharedToken)
         let invite2 = UserInvite.random(inviteToken: sharedToken)
+
+        localDatasource.stubbedGetUserInvitesResult = []
 
         remoteDatasource.stubbedGetPendingInvitesForUserResult = [invite1]
         try await sut.refreshAllInvites(userId: userId1)

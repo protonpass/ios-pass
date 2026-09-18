@@ -21,6 +21,7 @@
 import CoreData
 import Entities
 
+// sourcery: AutoMockable
 public protocol LocalInviteDatasourceProtocol: Sendable {
     // MARK: - User invites
 
