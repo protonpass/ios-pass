@@ -24,6 +24,7 @@ import Core
 import DIComposition
 import Entities
 import FactoryKit
+import Foundation
 import Macro
 import Screens
 import Stores
@@ -44,17 +45,13 @@ final class ItemMoveVaultListViewModel: ObservableObject, DeinitPrintable {
 
     @Published private(set) var isFreeUser = false
     @Published private(set) var showWarning = false
+    @Published private(set) var folderSupported = false
     @Published var selectedContainer: ShareSelectionPayload?
     @Published var expandedContainerIds = Set<String>()
 
     let allSharesContent: [ShareContent]
     private let context: MovingContext
-
-    var folderSupported: Bool {
-        FolderSupportState(flagEnabled: getFeatureFlagStatus(for: FeatureFlagType.passFolder),
-                           plan: accessRepository.access.value?.access.plan)
-            .canCreateAndModifyFolders
-    }
+    private var cancellables = Set<AnyCancellable>()
 
     init(allVaults: [ShareContent], context: MovingContext) {
         allSharesContent = allVaults.sortedByHidden()
@@ -78,6 +75,18 @@ final class ItemMoveVaultListViewModel: ObservableObject, DeinitPrintable {
            .getShareContent(for: fromShareId) {
             selectedContainer = ShareSelectionPayload(share: shareContent.share, folder: nil)
         }
+
+        accessRepository.access
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] access in
+                guard let self else { return }
+                folderSupported =
+                    FolderSupportState(flagEnabled: getFeatureFlagStatus(for: FeatureFlagType
+                                           .passFolder),
+                    plan: access?.access.plan)
+                    .canCreateAndModifyFolders
+            }
+            .store(in: &cancellables)
 
         Task { [weak self] in
             guard let self else { return }

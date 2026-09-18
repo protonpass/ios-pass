@@ -953,12 +953,14 @@ extension HomepageCoordinator {
     }
 
     func presentCreateItemView(for itemType: ItemType) {
-        if appContentManager.shareSelection.isFolderSelection, folderSupportState.shouldUpsell {
-            router.present(for: .upgradeFlow)
-            return
-        }
+        // Ahead of the folder upsell: the generator creates nothing, so it is unaffected by
+        // folder entitlements.
         if itemType == .password {
             presentPasswordGenerator()
+            return
+        }
+        if appContentManager.shareSelection.isFolderSelection, folderSupportState.shouldUpsell {
+            router.present(for: .upgradeFlow)
             return
         }
         Task { [weak self] in
