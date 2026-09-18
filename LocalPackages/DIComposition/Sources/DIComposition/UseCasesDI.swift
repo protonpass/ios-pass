@@ -797,8 +797,8 @@ public extension UseCasesContainer {
         self { ShouldShowFolderSyncBanner(getUserPreferences: self.getUserPreferences(),
                                           getFeatureFlagStatus: self.getFeatureFlagStatus(),
                                           userHasRemoteFolders: self.userHasRemoteFolders(),
-                                          updateUserPreferences: self.updateUserPreferences(),
                                           userManager: self.userManager,
+                                          storage: kSharedUserDefaults,
                                           logManager: self.logManager) }
     }
 
