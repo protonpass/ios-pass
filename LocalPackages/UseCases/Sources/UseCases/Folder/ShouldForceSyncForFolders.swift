@@ -76,13 +76,13 @@ public struct ShouldForceSyncForFolders: ShouldForceSyncForFoldersUseCase {
             return false
         }
 
-        if state.foldersDetected {
-            return true
-        }
-
         state.attempts += 1
         state.lastAttempt = Date()
         try await updateUserPreferences(\.folderForceSync, value: state)
+
+        if state.foldersDetected {
+            return true
+        }
 
         let hasFolders = try await userHasRemoteFolders(userId: userId)
         if hasFolders {

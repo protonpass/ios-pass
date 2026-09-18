@@ -28,77 +28,6 @@ import Network
 import ProtonCoreFeatureFlags
 import Testing
 
-/// Shared preference store so writes made by the use case are visible to subsequent reads,
-/// which is what the multi-attempt cases exercise.
-private final class PreferencesStore: @unchecked Sendable {
-    var preferences = UserPreferences.default
-    private(set) var writtenStates: [FolderForceSyncState] = []
-    private let lock = NSLock()
-
-    func record(_ state: FolderForceSyncState) {
-        lock.withLock {
-            preferences.folderForceSync = state
-            writtenStates.append(state)
-        }
-    }
-}
-
-private struct GetPreferencesStub: GetUserPreferencesUseCase {
-    let store: PreferencesStore
-    func execute() -> UserPreferences {
-        store.preferences
-    }
-}
-
-private struct UpdatePreferencesStub: UpdateUserPreferencesUseCase {
-    let store: PreferencesStore
-    func execute<T: Sendable>(_ keyPath: WritableKeyPath<UserPreferences, T>, value: T) async throws {
-        guard let state = value as? FolderForceSyncState else {
-            fatalError("Only the folder force sync state is expected here")
-        }
-        store.record(state)
-    }
-}
-
-/// Keyed by flag so the two folder flags can be varied independently, which the single stubbed
-/// result on the generated mock cannot express.
-private struct FeatureFlagStub: GetFeatureFlagStatusUseCase {
-    let enabled: Set<String>
-    func execute(for flag: any FeatureFlagTypeProtocol) -> Bool {
-        enabled.contains(flag.rawValue)
-    }
-}
-
-private final class HasFoldersStub: UserHasRemoteFoldersUseCase, @unchecked Sendable {
-    var result = false
-    var error: (any Error)?
-    private(set) var callCount = 0
-    private let lock = NSLock()
-
-    @concurrent
-    func execute(userId: String) async throws -> Bool {
-        lock.withLock { callCount += 1 }
-        if let error {
-            throw error
-        }
-        return result
-    }
-}
-
-private final class ReachabilityStub: ReachabilityServicing {
-    let reachabilityInfos = CurrentValueSubject<NWPath?, Never>(nil)
-    let isNetworkAvailable: CurrentValueSubject<Bool, Never>
-    let typeOfCurrentConnection = CurrentValueSubject<NerworkType, Never>(.unknown)
-
-    init(available: Bool) {
-        isNetworkAvailable = .init(available)
-    }
-}
-
-private enum TestError: Error {
-    case boom
-}
-
 @Suite(.serialized)
 struct ShouldForceSyncForFoldersTests {
     private let store = PreferencesStore()
@@ -111,7 +40,7 @@ struct ShouldForceSyncForFoldersTests {
                          retryDelay: TimeInterval = 30 * 60) -> any ShouldForceSyncForFoldersUseCase {
         ShouldForceSyncForFolders(getUserPreferences: GetPreferencesStub(store: store),
                                   getFeatureFlagStatus:
-                                  FeatureFlagStub(enabled: flagOn ? ["FolderForceSync"] : []),
+                                  FeatureFlagStub(enabled: flagOn ? ["PassForceSyncFolders"] : []),
                                   userHasRemoteFolders: hasFolders,
                                   updateUserPreferences: UpdatePreferencesStub(store: store),
                                   reachability: ReachabilityStub(available: online),
@@ -119,19 +48,9 @@ struct ShouldForceSyncForFoldersTests {
                                   retryDelay: retryDelay)
     }
 
-    private func setState(done: Bool = false,
-                          attempts: Int = 0,
-                          lastAttempt: Date? = nil,
-                          foldersDetected: Bool = false) {
-        store.preferences.folderForceSync = .init(done: done,
-                                                  attempts: attempts,
-                                                  lastAttempt: lastAttempt,
-                                                  foldersDetected: foldersDetected)
-    }
-
     @Test
     func `Already synced users are never checked again`() async throws {
-        setState(done: true)
+        store.setState(done: true)
 
         #expect(try await makeSut()(userId: userId) == false)
         #expect(hasFolders.callCount == 0)
@@ -140,7 +59,7 @@ struct ShouldForceSyncForFoldersTests {
 
     @Test
     func `Stops permanently once the retry budget is spent`() async throws {
-        setState(attempts: 10)
+        store.setState(attempts: 10)
 
         #expect(try await makeSut(maxAttempts: 10)(userId: userId) == false)
         #expect(hasFolders.callCount == 0)
@@ -158,12 +77,12 @@ struct ShouldForceSyncForFoldersTests {
     func `Being offline does not consume an attempt`() async throws {
         #expect(try await makeSut(online: false)(userId: userId) == false)
         #expect(hasFolders.callCount == 0)
-        #expect(store.preferences.folderForceSync.attempts == 0)
+        #expect(store.state.attempts == 0)
     }
 
     @Test
     func `A recent attempt is not retried before the delay elapses`() async throws {
-        setState(attempts: 1, lastAttempt: Date().addingTimeInterval(-5 * 60))
+        store.setState(attempts: 1, lastAttempt: Date().addingTimeInterval(-5 * 60))
 
         #expect(try await makeSut(retryDelay: 30 * 60)(userId: userId) == false)
         #expect(hasFolders.callCount == 0)
@@ -171,12 +90,12 @@ struct ShouldForceSyncForFoldersTests {
 
     @Test
     func `Retries once the delay has elapsed, consuming exactly one attempt`() async throws {
-        setState(attempts: 1, lastAttempt: Date().addingTimeInterval(-31 * 60))
+        store.setState(attempts: 1, lastAttempt: Date().addingTimeInterval(-31 * 60))
         hasFolders.result = true
 
         #expect(try await makeSut(retryDelay: 30 * 60)(userId: userId) == true)
         #expect(hasFolders.callCount == 1)
-        #expect(store.preferences.folderForceSync.attempts == 2)
+        #expect(store.state.attempts == 2)
     }
 
     @Test
@@ -184,9 +103,9 @@ struct ShouldForceSyncForFoldersTests {
         hasFolders.result = true
 
         #expect(try await makeSut()(userId: userId) == true)
-        #expect(store.preferences.folderForceSync.foldersDetected)
+        #expect(store.state.foldersDetected)
         // Only a completed full sync may set `done`.
-        #expect(!store.preferences.folderForceSync.done)
+        #expect(!store.state.done)
     }
 
     @Test
@@ -194,41 +113,76 @@ struct ShouldForceSyncForFoldersTests {
         hasFolders.result = false
 
         #expect(try await makeSut()(userId: userId) == false)
-        #expect(store.preferences.folderForceSync.done)
-        #expect(!store.preferences.folderForceSync.foldersDetected)
+        #expect(store.state.done)
+        #expect(!store.state.foldersDetected)
     }
 
     @Test
-    func `A cached positive skips the network entirely`() async throws {
-        setState(foldersDetected: true)
+    func `A cached positive skips the network but still consumes an attempt`() async throws {
+        store.setState(foldersDetected: true)
 
         #expect(try await makeSut()(userId: userId) == true)
         #expect(hasFolders.callCount == 0)
+        // The caller's full sync wipes before re-downloading and only marks `done` on success,
+        // so this path must be budgeted too or a failing sync re-wipes on every event loop.
+        #expect(store.state.attempts == 1)
+        #expect(store.state.lastAttempt != nil)
+    }
+
+    @Test
+    func `A cached positive is throttled between attempts`() async throws {
+        store.setState(attempts: 1,
+                       lastAttempt: Date().addingTimeInterval(-5 * 60),
+                       foldersDetected: true)
+
+        #expect(try await makeSut(retryDelay: 30 * 60)(userId: userId) == false)
+        #expect(store.writtenStates.isEmpty)
+    }
+
+    @Test
+    func `A cached positive stops once the budget is spent`() async throws {
+        store.setState(attempts: 10, foldersDetected: true)
+
+        #expect(try await makeSut(maxAttempts: 10)(userId: userId) == false)
+        #expect(store.writtenStates.isEmpty)
+    }
+
+    @Test
+    func `A repeatedly failing sync exhausts the budget instead of looping`() async throws {
+        store.setState(foldersDetected: true)
+        let sut = makeSut(maxAttempts: 3, retryDelay: 0)
+
+        // Mimics the caller force syncing and failing: `done` is never set.
+        for _ in 0..<3 {
+            #expect(try await sut(userId: userId) == true)
+        }
+        #expect(store.state.attempts == 3)
+        #expect(try await sut(userId: userId) == false)
     }
 
     @Test
     func `A thrown lookup still consumes the attempt, so failures cannot loop forever`() async throws {
-        hasFolders.error = TestError.boom
+        hasFolders.error = FolderSyncTestError.boom
 
-        await #expect(throws: TestError.self) {
+        await #expect(throws: FolderSyncTestError.self) {
             try await makeSut()(userId: userId)
         }
-        #expect(store.preferences.folderForceSync.attempts == 1)
-        #expect(store.preferences.folderForceSync.lastAttempt != nil)
-        #expect(!store.preferences.folderForceSync.done)
+        #expect(store.state.attempts == 1)
+        #expect(store.state.lastAttempt != nil)
+        #expect(!store.state.done)
     }
 
     @Test
     func `Ten failures exhaust the budget and the eleventh check makes no call`() async throws {
-        hasFolders.error = TestError.boom
+        hasFolders.error = FolderSyncTestError.boom
 
         for _ in 0..<10 {
             // Zero delay so the throttle does not mask the budget being counted.
-            await #expect(throws: TestError.self) {
+            await #expect(throws: FolderSyncTestError.self) {
                 try await makeSut(retryDelay: 0)(userId: userId)
             }
         }
-        #expect(store.preferences.folderForceSync.attempts == 10)
+        #expect(store.state.attempts == 10)
 
         let callsBefore = hasFolders.callCount
         #expect(try await makeSut(retryDelay: 0)(userId: userId) == false)
