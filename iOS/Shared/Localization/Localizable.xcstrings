@@ -109062,6 +109062,16 @@
         }
       }
     },
+    "Please open the Proton Pass app and run a full data sync to improve performance" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please open the Proton Pass app and run a full data sync to improve performance"
+          }
+        }
+      }
+    },
     "Points balance" : {
       "comment" : "Default custom item field for reward program template",
       "localizations" : {
